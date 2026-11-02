@@ -103,11 +103,12 @@ namespace BubbleWash.EditorTools
             var rig = cam.GetComponent<RunnerCameraRig>();
             ScreenComposition.Build(layout, rig, mascot.transform, mats, envGo.transform);
             TowerWaterfalls.Build(layout, ScreenComposition.Screen3Pose(layout, rig), castle, mats, envGo.transform, Log);
+            BuildGemFx(mats, mascot.transform);
             BuildHud(env.runner);
 
             // Live look tuning (water, foam, glow, bloom, fog) in one inspector.
             var look = envGo.AddComponent<BubbleWashLook>();
-            look.water = mats.water; look.waterfall = mats.waterfall; look.brush = mats.brush; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
+            look.water = mats.water; look.waterfall = mats.waterfall; look.brush = mats.brush; look.gem = mats.meshyGem; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
             look.post = mats.postProfile; look.sun = sun;
             look.Apply();
 
@@ -161,7 +162,7 @@ namespace BubbleWash.EditorTools
         /// Render a Meshy model with BubbleWash/MeshyBaked using its own baked colour texture (the artwork
         /// is unchanged; only saturation, light response and glow of bright stripes are controlled).
         /// </summary>
-        internal static void ApplyMeshyLook(GameObject root, Material template, string label)
+        internal static void ApplyMeshyLook(GameObject root, Material template, string label, bool report = true)
         {
             int n = 0;
             foreach (var r in root.GetComponentsInChildren<Renderer>(true))
@@ -175,6 +176,7 @@ namespace BubbleWash.EditorTools
                     if (template.GetTexture("_BaseMap") == null || template.GetTexture("_BaseMap") == tex)
                     {
                         template.SetTexture("_BaseMap", tex);
+                        CopyNormalMap(src[i], template);
                         dst[i] = template;
                     }
                     else
@@ -185,6 +187,7 @@ namespace BubbleWash.EditorTools
                         if (m == null) { m = new Material(template); AssetDatabase.CreateAsset(m, path); }
                         m.CopyPropertiesFromMaterial(template);
                         m.SetTexture("_BaseMap", tex);
+                        CopyNormalMap(src[i], m);
                         dst[i] = m;
                     }
                     n++;
@@ -192,7 +195,15 @@ namespace BubbleWash.EditorTools
                 r.sharedMaterials = dst;
             }
             EditorUtility.SetDirty(template);
-            Log.AppendLine($"- {label}: {n} material slot(s) rendered with BubbleWash/MeshyBaked (Meshy baked texture kept as-is).");
+            if (report) Log.AppendLine($"- {label}: {n} material slot(s) rendered with {template.shader.name} (Meshy texture kept as-is).");
+        }
+
+        /// <summary>Hand the Meshy normal map to shaders that use one (the gem); the others ignore it.</summary>
+        static void CopyNormalMap(Material src, Material dst)
+        {
+            if (src == null || !dst.HasProperty("_NormalMap")) return;
+            foreach (var p in new[] { "normalTexture", "_BumpMap", "_NormalMap" })
+                if (src.HasProperty(p) && src.GetTexture(p) != null) { dst.SetTexture("_NormalMap", src.GetTexture(p)); return; }
         }
 
         static Texture BaseTexture(Material m)
@@ -598,6 +609,22 @@ namespace BubbleWash.EditorTools
             var sparkles = Fx(null, "FX_Sparkles", ps => ParticleFactory.Sparkles(ps, mats.sparkle, new Vector3(5.5f, 3.2f, 16f), 22f, 70));
             var f2 = sparkles.gameObject.AddComponent<AmbientFollower>();
             f2.follow = cam; f2.offset = new Vector3(0f, 0.8f, 10f);
+        }
+
+        /// <summary>One shared sparkle effect for every gem: twinkles that rise near the mascot, and the collection burst and chime.</summary>
+        static void BuildGemFx(MaterialSet mats, Transform mascot)
+        {
+            var go = new GameObject("FX_GemSparkles (shared by every gem)");
+            var fx = go.AddComponent<GemSparkles>();
+            fx.mascot = mascot;
+            fx.twinkles = Fx(go.transform, "FX_GemTwinkles", ps => ParticleFactory.GemTwinkles(ps, mats.sparkle));
+            fx.burst = Fx(go.transform, "FX_GemCollectBurst", ps => ParticleFactory.GemBurst(ps, mats.sparkle));
+            fx.glow = Fx(go.transform, "FX_GemCollectGlow", ps => ParticleFactory.GemGlow(ps, mats.gemGlow));
+            int gems = 0;
+            foreach (var c in Object.FindObjectsByType<Collectible>(FindObjectsSortMode.None)) if (c.kind == CollectibleKind.Gem) gems++;
+            Log.AppendLine($"- Gems: {gems} in the level, " + (PropFactory.Has(PropSlot.Gem)
+                ? "all from the one Meshy gem model and one shared material (BubbleWash/Gem)."
+                : "PLACEHOLDER gem mesh (drop the Meshy gem into Assets/BubbleWash/Models/Gem/)."));
         }
 
         static void BuildHud(BubbleRunner runner)

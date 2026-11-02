@@ -36,6 +36,29 @@ namespace BubbleWash.Tests
                 Assert.Less(p.landing.z, env.layout.castleFrontZ, $"Waterfall {p.side} must land in the moat in front of the castle");
             }
 
+            // Gems: every one is a trigger the mascot can touch (checked by the validation above); with the
+            // Meshy gem in its slot they all share one mesh and one material, so extra gems cost no memory.
+            var gems = System.Array.FindAll(Object.FindObjectsByType<Collectible>(FindObjectsSortMode.None), c => c.kind == CollectibleKind.Gem);
+            Assert.GreaterOrEqual(gems.Length, 5, "expected the Screen 4 gem plus the gems along the water path");
+            Assert.AreEqual(0, r.unreachableGems);
+            var fx = Object.FindFirstObjectByType<GemSparkles>();
+            Assert.IsNotNull(fx, "shared gem sparkle effect missing");
+            Assert.IsNotNull(fx.twinkles); Assert.IsNotNull(fx.burst); Assert.IsNotNull(fx.glow);
+            if (PropFactory.Has(PropSlot.Gem))
+            {
+                var meshes = new System.Collections.Generic.HashSet<Mesh>();
+                var materials = new System.Collections.Generic.HashSet<Material>();
+                foreach (var g in gems)
+                {
+                    Assert.IsTrue(g.GetComponent<Collider>().isTrigger);
+                    foreach (var mf in g.GetComponentsInChildren<MeshFilter>()) meshes.Add(mf.sharedMesh);
+                    foreach (var mr in g.GetComponentsInChildren<MeshRenderer>()) foreach (var m in mr.sharedMaterials) materials.Add(m);
+                }
+                Assert.AreEqual(1, meshes.Count, "every gem should reuse the one Meshy gem mesh");
+                Assert.AreEqual(1, materials.Count, "every gem should share one material");
+                foreach (var m in materials) Assert.AreEqual("BubbleWash/Gem", m.shader.name);
+            }
+
             // With the Meshy washing roller in its slot, every brush is the roller, spins about its long
             // axis and is a solid capsule; the validation above already proved it clears every lane.
             if (PropFactory.Has(PropSlot.SpinningBrush))

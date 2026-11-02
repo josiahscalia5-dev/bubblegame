@@ -57,8 +57,13 @@ namespace BubbleWash.EditorTools
             return p;
         }
 
+        static MaterialSet _mats;
+        static int _meshyGems;
+
         public static void Build(LevelLayout l, RunnerCameraRig rig, Transform mascot, MaterialSet mats, Transform parent)
         {
+            _mats = mats;
+            _meshyGems = 0;
             var root = new GameObject("Level1_Props").transform;
             root.SetParent(parent, false);
 
@@ -120,6 +125,12 @@ namespace BubbleWash.EditorTools
             for (int i = 0; i < 5; i++) Collect(play, "Coin", coinMesh, mats.coin, new Vector3(l.LaneX(2), 0.65f + Mathf.Sin(i / 4f * Mathf.PI) * 0.9f, z0 + 4f + i * 1.5f), CollectibleKind.Coin, 0.3f);
             for (int i = 0; i < 5; i++) Collect(play, "Coin", coinMesh, mats.coin, new Vector3(l.LaneX(0), 0.65f, zAfter + i * 1.3f), CollectibleKind.Coin, 0.3f);
             Collect(play, "Gem", gemMesh, mats.gem, new Vector3(l.LaneX(1), 1.7f, l.tunnelEndZ - 1.5f), CollectibleKind.Gem, 0.3f);
+            // Pink gemstones along the water path, all sharing the one gem model and material: one to
+            // jump for above the left lane, one on the water in the centre lane (both behind the Screen 4
+            // camera), and one on the water in the right lane in the last drum segment.
+            Collect(play, "Gem", gemMesh, mats.gem, new Vector3(l.LaneX(0), 1.35f, z0 + 10.5f), CollectibleKind.Gem, 0.3f);
+            Collect(play, "Gem", gemMesh, mats.gem, new Vector3(l.LaneX(1), 0.7f, z0 + 12f), CollectibleKind.Gem, 0.3f);
+            Collect(play, "Gem", gemMesh, mats.gem, new Vector3(l.LaneX(2), 0.7f, zAfter + 1.5f), CollectibleKind.Gem, 0.3f);
             Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(0), 0.45f, z0 + 7f), 2);
             Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(2), 0.45f, z0 + 12.5f), 3);
             Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(1), 0.45f, zAfter + 3f), 4);
@@ -243,7 +254,13 @@ namespace BubbleWash.EditorTools
             go.transform.SetParent(parent, false);
             go.transform.position = pos;
             go.transform.rotation = Quaternion.Euler(0f, kind == CollectibleKind.Coin ? 15f : 0f, 0f);
-            if (meshy) PropFactory.Create(slot, go.transform);
+            if (meshy)
+            {
+                var holder = PropFactory.Create(slot, go.transform);
+                // Every Meshy gem shares the model's mesh and one GPU-instanced crystal material.
+                if (kind == CollectibleKind.Gem && _mats != null)
+                    Level1SceneBuilder.ApplyMeshyLook(holder, _mats.meshyGem, "gems", report: _meshyGems++ == 0);
+            }
             else
             {
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
@@ -258,6 +275,7 @@ namespace BubbleWash.EditorTools
             col.kind = kind;
             col.value = kind == CollectibleKind.Coin ? 1 : 1;
             col.spinSpeed = kind == CollectibleKind.Coin ? 120f : 70f;
+            if (kind == CollectibleKind.Gem) { col.bobAmplitude = 0.1f; col.bobFrequency = 0.75f; }   // gentle float
             return go;
         }
 

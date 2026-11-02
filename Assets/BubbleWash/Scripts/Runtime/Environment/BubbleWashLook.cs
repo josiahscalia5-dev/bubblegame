@@ -20,6 +20,7 @@ namespace BubbleWash
         public Material castle;
         public Material drum;
         public Material brush;
+        public Material gem;
         public Material glowRing;
         public VolumeProfile post;
         public Light sun;
@@ -62,6 +63,14 @@ namespace BubbleWash
         [Range(0f, 2f)] public float brushBrightness = 1.05f;
         [Range(0f, 1f)] public float brushSceneLight = 0.45f;
         [Range(0f, 6f)] public float brushGlow = 0.5f;
+
+        [Header("Meshy pink gemstones")]
+        [Range(0f, 2f)] public float gemSaturation = 1.15f;
+        [Range(0f, 2f)] public float gemBrightness = 1.1f;
+        [Range(0f, 2f)] public float gemGlow = 0.35f;
+        [Range(0f, 3f)] public float gemGlowNearMascot = 0.8f;
+        [Range(0f, 2f)] public float gemReflection = 0.9f;
+        [Range(0f, 6f)] public float gemSparkle = 2.5f;
 
         [Header("Glowing drum rings")]
         [Range(0f, 6f)] public float ringIntensity = 1.6f;
@@ -108,6 +117,15 @@ namespace BubbleWash
             }
             Meshy(castle, castleSaturation, castleBrightness, castleSceneLight, 0.85f, castleGlow);
             Meshy(drum, drumSaturation, drumBrightness, drumSceneLight, drumGlowThreshold, drumGlow);
+            if (gem != null)
+            {
+                gem.SetFloat("_Saturation", gemSaturation);
+                gem.SetFloat("_Brightness", gemBrightness);
+                gem.SetFloat("_Glow", gemGlow);
+                gem.SetFloat("_NearGlow", gemGlowNearMascot);
+                gem.SetFloat("_Reflection", gemReflection);
+                gem.SetFloat("_Sparkle", gemSparkle);
+            }
             Meshy(brush, brushSaturation, brushBrightness, brushSceneLight, 0.9f, brushGlow);
             if (glowRing != null) glowRing.SetFloat("_CoreBoost", ringIntensity);
 

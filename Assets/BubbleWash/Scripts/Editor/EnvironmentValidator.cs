@@ -13,6 +13,7 @@ namespace BubbleWash.EditorTools
     /// - castle portal vs drum opening alignment,
     /// - mascot clearance along every lane (floating, jump apex) and camera clearance along its path,
     /// - the Screen 3 tower waterfalls stay off the raised run path,
+    /// - every gem can be collected from some lane, floating or jumping,
     /// - triangle / material budget for mobile.
     /// Results go to Previews/validation_report.md. Frame rate must be measured on device
     /// (PerformanceProbe logs it); see README.
@@ -29,6 +30,7 @@ namespace BubbleWash.EditorTools
             public float minMascotClearance = float.MaxValue;
             public float minCameraClearance = float.MaxValue;
             public string mascotWorst = "", cameraWorst = "";
+            public int gems, unreachableGems;
             public int waterfallParts;
             public float waterfallPathGap = float.MaxValue;
             public int triangles;
@@ -159,6 +161,27 @@ namespace BubbleWash.EditorTools
                 else if (r.waterfallPathGap < 0f) r.failures.Add($"A tower waterfall piece reaches {-r.waterfallPathGap:F2} m onto the run path");
             }
 
+            // ---- gems: the mascot's body sphere must be able to touch each gem's trigger from some lane,
+            // somewhere between floating and the top of a jump.
+            float apex = runner.jumpVelocity * runner.jumpVelocity / (2f * Mathf.Max(0.1f, runner.gravity));
+            foreach (var c in Object.FindObjectsByType<Collectible>(FindObjectsSortMode.None))
+            {
+                if (c.kind != CollectibleKind.Gem) continue;
+                r.gems++;
+                var trigger = c.GetComponent<SphereCollider>();
+                float reach = runner.bodyRadius + (trigger != null ? trigger.radius * c.transform.lossyScale.x : 0f);
+                Vector3 p = c.transform.position;
+                float y0 = l.waterLevel + WaveField.SlideOffset(0f, p.z) + runner.floatHeight, y1 = y0 + apex;
+                float dy = p.y < y0 ? y0 - p.y : p.y > y1 ? p.y - y1 : 0f;
+                bool ok = false;
+                for (int lane = 0; lane < l.laneCount && !ok; lane++)
+                {
+                    float dx = p.x - l.LaneX(lane);
+                    ok = dx * dx + dy * dy <= reach * reach;
+                }
+                if (!ok) { r.unreachableGems++; r.failures.Add($"Gem at {p:F2} cannot be reached from any lane"); }
+            }
+
             // ---- mobile budget
             var mats = new HashSet<Material>();
             foreach (var mr in Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None))
@@ -218,6 +241,7 @@ namespace BubbleWash.EditorTools
             sb.AppendLine($"| Castle portal vs drum opening (centre + radius error) | {r.alignmentError:F3} m |");
             sb.AppendLine($"| Minimum mascot clearance (all lanes, float + jump heights) | {r.minMascotClearance:F2} m at {r.mascotWorst} |");
             sb.AppendLine($"| Minimum camera clearance (0.2 m probe) | {r.minCameraClearance:F2} m at {r.cameraWorst} |");
+            sb.AppendLine($"| Gems reachable from a lane (floating or jumping) | {r.gems - r.unreachableGems} of {r.gems} |");
             sb.AppendLine($"| Tower waterfalls: pieces / closest approach to the run path | {r.waterfallParts} / {(r.waterfallParts > 0 ? r.waterfallPathGap.ToString("F2") + " m clear" : "missing")} |");
             sb.AppendLine($"| Scene triangles / renderers / materials | {r.triangles:N0} / {r.renderers} / {r.materials} |");
             sb.AppendLine().AppendLine("Mobile notes: the castle (150k tris) and each drum segment (136k tris) dominate the budget. " +

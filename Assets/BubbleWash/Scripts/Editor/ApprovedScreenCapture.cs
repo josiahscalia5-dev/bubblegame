@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -29,6 +30,9 @@ namespace BubbleWash.EditorTools
         const int Width = 1080;
         const string PendingKey = "BubbleWash.PlayCapturePending";
         const string RevealKey = "BubbleWash.PlayCaptureReveal";
+        const string GemPendingKey = "BubbleWash.GemCapturePending";
+        const string GemRevealKey = "BubbleWash.GemCaptureReveal";
+        const int GemFrameWidth = 540, GemFrameHeight = 1080;
 
         public struct Target
         {
@@ -64,8 +68,90 @@ namespace BubbleWash.EditorTools
             EditorApplication.EnterPlaymode();
         }
 
+        [MenuItem("Bubble Wash/2c. Capture Gem Collection (Play Mode)", priority = 4)]
+        public static void CaptureGemFromMenu()
+        {
+            if (EditorApplication.isPlaying) { Debug.LogWarning("[BubbleWash] Stop Play mode first; the capture enters Play mode by itself."); return; }
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
+            EditorSceneManager.OpenScene(Level1SceneBuilder.ScenePath, OpenSceneMode.Single);
+            SessionState.SetBool(GemPendingKey, true);
+            Debug.Log("[BubbleWash] Gem capture: entering Play mode to film the mascot collecting a gem...");
+            EditorApplication.EnterPlaymode();
+        }
+
+        static readonly List<Texture2D> GemFrames = new List<Texture2D>();
+        static readonly List<int> GemCounts = new List<int>();
+
+        static void StartGemCapture()
+        {
+            Directory.CreateDirectory(OutDir);
+            GemFrames.Clear(); GemCounts.Clear();
+            var director = new GameObject("__BubbleWashGemCapture").AddComponent<CaptureDirector>();
+            director.gemSequence = true;
+            director.captureGemFrame = (i, gems) =>
+            {
+                var rig = UnityEngine.Object.FindFirstObjectByType<RunnerCameraRig>();
+                var hud = UnityEngine.Object.FindFirstObjectByType<GameHud>();
+                var frame = Render(rig.GetComponent<Camera>(), hud, GemFrameWidth, GemFrameHeight);
+                File.WriteAllBytes(Path.Combine(OutDir, $"GemCollect_{i:00}.png"), frame.EncodeToPNG());
+                GemFrames.Add(frame); GemCounts.Add(gems);
+            };
+            director.finished = () =>
+            {
+                WriteGemSheet();
+                SessionState.SetBool(GemRevealKey, true);
+                EditorApplication.ExitPlaymode();
+            };
+        }
+
+        /// <summary>All frames on one sheet (4 across), with the HUD gem count of the first and last frame in the report.</summary>
+        static void WriteGemSheet()
+        {
+            if (GemFrames.Count == 0) return;
+            const int cols = 4, w = GemFrameWidth / 2, h = GemFrameHeight / 2;
+            int rows = (GemFrames.Count + cols - 1) / cols;
+            var sheet = new Texture2D(cols * w, rows * h, TextureFormat.RGB24, false);
+            var fill = new Color32[sheet.width * sheet.height];
+            for (int i = 0; i < fill.Length; i++) fill[i] = new Color32(255, 255, 255, 255);
+            sheet.SetPixels32(fill);
+            for (int i = 0; i < GemFrames.Count; i++)
+            {
+                var small = Resize(GemFrames[i], w, h);
+                sheet.SetPixels(i % cols * w, (rows - 1 - i / cols) * h, w, h, small.GetPixels());
+                UnityEngine.Object.DestroyImmediate(small);
+            }
+            sheet.Apply();
+            File.WriteAllBytes(Path.Combine(OutDir, "GemCollect_sheet.png"), sheet.EncodeToPNG());
+            UnityEngine.Object.DestroyImmediate(sheet);
+            var sb = new StringBuilder("# Gem collection capture\n\n");
+            sb.AppendLine($"Captured {DateTime.Now:yyyy-MM-dd HH:mm} in Play mode - Unity {Application.unityVersion}, {SystemInfo.graphicsDeviceName}.").AppendLine();
+            sb.AppendLine($"- {GemFrames.Count} frames, `GemCollect_00.png` .. `GemCollect_{GemFrames.Count - 1:00}.png`, and `GemCollect_sheet.png` (read left to right, top to bottom).");
+            sb.AppendLine($"- HUD gem counter: {GemCounts[0]} in the first frame, {GemCounts[GemCounts.Count - 1]} in the last.");
+            File.WriteAllText(Path.Combine(OutDir, "gem_capture_report.md"), sb.ToString());
+            foreach (var f in GemFrames) UnityEngine.Object.DestroyImmediate(f);
+            GemFrames.Clear();
+            Debug.Log("[BubbleWash] Gem capture finished: " + Path.GetFullPath(Path.Combine(OutDir, "GemCollect_sheet.png")));
+        }
+
         static void OnPlayModeChanged(PlayModeStateChange change)
         {
+            if (change == PlayModeStateChange.EnteredPlayMode && SessionState.GetBool(GemPendingKey, false))
+            {
+                SessionState.SetBool(GemPendingKey, false);
+                StartGemCapture();
+                return;
+            }
+            if (change == PlayModeStateChange.EnteredEditMode && SessionState.GetBool(GemRevealKey, false))
+            {
+                SessionState.SetBool(GemRevealKey, false);
+                AssetDatabase.Refresh();
+                EditorUtility.RevealInFinder(Path.GetFullPath(Path.Combine(OutDir, "GemCollect_sheet.png")));
+                EditorUtility.DisplayDialog("Bubble Wash gem capture",
+                    "Filmed the running game collecting a gem.\n\n" + Path.GetFullPath(OutDir) +
+                    "\n\nGemCollect_sheet.png shows every frame; gem_capture_report.md has the HUD count before and after.", "OK");
+                return;
+            }
             if (change == PlayModeStateChange.EnteredPlayMode && SessionState.GetBool(PendingKey, false))
             {
                 SessionState.SetBool(PendingKey, false);
