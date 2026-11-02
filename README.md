@@ -12,7 +12,11 @@ This project recreates the 12 approved Bubble Wash Kingdom screens as real-time,
 
 **Neither screen is marked visually complete.** That decision waits for real Unity captures compared against the approved images (step 5 below). The remaining known differences are listed in [`Design/VISUAL_DIFFERENCES.md`](Design/VISUAL_DIFFERENCES.md).
 
-## Open the project on Windows
+## Play in a browser, with nothing installed
+
+The project builds as a **WebGL** browser game in the cloud, either with Unity Build Automation (no installs) or with GitHub Actions. You then open a link to play the real Unity game on a laptop or phone. Step-by-step setup: **[CLOUD_BUILD.md](CLOUD_BUILD.md)**.
+
+## Open the project on Windows (optional, full Unity editor)
 
 1. **Install Unity 6.3.**
    - Install [Unity Hub](https://unity.com/download).
@@ -138,6 +142,9 @@ Assets/BubbleWash/
   Tests/EditMode/    unit + scene validation tests
 Design/              approved screens, measurements, visual differences
 Previews/            build/validation reports, Unity captures
+Assets/WebGLTemplates/BubbleWash/   portrait browser page for the WebGL build
+.github/workflows/webgl-build.yml   cloud WebGL build (GameCI)
 Tools/               HUD sprite generator
 Open_BubbleWash_In_Unity.bat
+CLOUD_BUILD.md       browser version: cloud build + hosting steps
 ```

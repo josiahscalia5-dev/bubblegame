@@ -1,0 +1,108 @@
+# Builds the playable browser (WebGL) version of Bubble Wash Kingdom in the cloud with GameCI,
+# so no Unity installation is needed on your computer.
+#
+# One-time setup (see CLOUD_BUILD.md):
+#   Repository secrets: UNITY_LICENSE (contents of Unity_lic.ulf), UNITY_EMAIL, UNITY_PASSWORD
+#   Optional itch.io hosting: secret ITCH_API_KEY + repository variable ITCH_GAME (e.g. yourname/bubble-wash-kingdom)
+#   Optional GitHub Pages hosting (public repo or paid plan): repository variable DEPLOY_PAGES = true
+# Run: GitHub > Actions > "WebGL build (browser version)" > Run workflow.
+
+name: WebGL build (browser version)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: webgl-build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build WebGL with Unity 6.3
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      ITCH_API_KEY: ${{ secrets.ITCH_API_KEY }}
+      ITCH_GAME: ${{ vars.ITCH_GAME }}
+      DEPLOY_PAGES: ${{ vars.DEPLOY_PAGES }}
+    steps:
+      - name: Check the Unity license secrets are set
+        run: |
+          if [ -z "$UNITY_LICENSE" ] || [ -z "$UNITY_EMAIL" ] || [ -z "$UNITY_PASSWORD" ]; then
+            echo "::error::Add the UNITY_LICENSE, UNITY_EMAIL and UNITY_PASSWORD repository secrets first (see CLOUD_BUILD.md)."
+            exit 1
+          fi
+
+      - name: Free disk space for the Unity image
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          swap-storage: false
+
+      - uses: actions/checkout@v4
+
+      - name: Cache Unity Library (faster rebuilds)
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Packages/manifest.json', 'ProjectSettings/ProjectVersion.txt') }}-${{ hashFiles('Assets/**/*.cs', 'Assets/**/*.shader', 'Assets/**/*.hlsl') }}
+          restore-keys: |
+            Library-WebGL-${{ hashFiles('Packages/manifest.json', 'ProjectSettings/ProjectVersion.txt') }}-
+            Library-WebGL-
+
+      - name: Build WebGL (generates the Level 1 scene from the Meshy models first)
+        uses: game-ci/unity-builder@v4
+        with:
+          targetPlatform: WebGL
+          unityVersion: auto
+          buildName: BubbleWashKingdom
+          buildsPath: build
+          buildMethod: BubbleWash.EditorTools.CloudBuild.BuildWebGL
+          allowDirtyBuild: true
+
+      - name: Upload the playable build (download from this run's Summary page)
+        uses: actions/upload-artifact@v4
+        with:
+          name: BubbleWashKingdom-WebGL
+          path: build/WebGL/BubbleWashKingdom
+          retention-days: 30
+
+      - name: Publish to itch.io (optional)
+        if: env.ITCH_API_KEY != '' && env.ITCH_GAME != ''
+        env:
+          BUTLER_API_KEY: ${{ secrets.ITCH_API_KEY }}
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip -q butler.zip -d butler && chmod +x butler/butler
+          ./butler/butler push build/WebGL/BubbleWashKingdom "$ITCH_GAME:html5" --userversion "${GITHUB_RUN_NUMBER}"
+          echo "### Playable link: https://${ITCH_GAME%%/*}.itch.io/${ITCH_GAME#*/}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prepare GitHub Pages (optional)
+        if: env.DEPLOY_PAGES == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/WebGL/BubbleWashKingdom
+
+  pages:
+    name: Publish to GitHub Pages (optional)
+    needs: build
+    if: vars.DEPLOY_PAGES == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
