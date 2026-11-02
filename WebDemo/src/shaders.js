@@ -77,6 +77,19 @@ export const brushGrade = (rMax) => /* glsl */ `
   diffuseColor.rgb = col * clamp(0.72 + l * 0.75, 0.72, 1.25); }
 `;
 
+// The Meshy duck helper wears purple and blue swim goggles; the approved Screen 3 helper is small and
+// has none, so they are softened (less saturated, a little lighter) to keep them from drawing the eye.
+// Only purple-to-blue colours on the upper head (model y above the eyes) change; the float, star,
+// beak, cheeks and eyes keep their colours. Runs after the vertex colours (vObj = model position).
+export const DUCK_GOGGLES_SOFTEN = /* glsl */ `
+{ vec3 hsv = bwRgb2hsv(diffuseColor.rgb);
+  float h = hsv.x * 360.0;
+  float goggle = smoothstep(0.15, 0.3, vObj.y) * smoothstep(195.0, 215.0, h) * (1.0 - smoothstep(325.0, 340.0, h)) * smoothstep(0.2, 0.35, hsv.y);
+  hsv.y *= 1.0 - 0.45 * goggle;
+  hsv.z = mix(hsv.z, min(1.0, hsv.z * 0.9 + 0.12), goggle);
+  diffuseColor.rgb = bwHsv2rgb(hsv); }
+`;
+
 export const RIPPLES = 8;
 
 // The raised water around the mascot (visual only: the mascot's ride height is unchanged): a mound
@@ -132,6 +145,7 @@ ${HEIGHT_GLSL}
 ${NOISE}
 ${BOW_GLSL}
 uniform vec4 uRipples[${RIPPLES}];
+uniform vec3 uHelper;       // the duck helper: track x, float radius, u
 uniform float uFlow;        // current speed (m/s)
 uniform float uSlideHalf;   // half width of the raised slide
 uniform vec3 uDeep, uShallow, uTurq, uGlow, uSky, uPink, uGold, uRingA, uRingB, uFog, uSunDir;
@@ -212,7 +226,9 @@ void main() {
   float wake = max(wakeLine, trail) * step(toP.y, 0.35) * (1.0 - behind);
   wake *= 0.18 + 0.22 * uPlayerMove.y + 0.3 * uPlayerMove.z;
   float ring = (1.0 - smoothstep(0.42, mix(1.0, 0.78, uPlayerMove.y), length(toP * vec2(1.0, 0.8)))) * mix(0.85, 0.4, uPlayerMove.y);   // full collar at rest, lighter while running   // the foam collar around the mascot (approved Screen 3)
-  float mask = clamp(wall * 0.35 + pathEdge * 0.85 + crest * crest * 0.08 + wake + ring + steep * 0.25 + rip * 0.5, 0.0, 1.2);
+  vec2 toH = xz - uHelper.xz;   // a thin foam ring where the helper's float sits in the water
+  float helperRing = (1.0 - smoothstep(0.0, 0.16, abs(length(toH * vec2(1.0, 1.15)) - uHelper.y * 1.02))) * 0.75;
+  float mask = clamp(helperRing + wall * 0.35 + pathEdge * 0.85 + crest * crest * 0.08 + wake + ring + steep * 0.25 + rip * 0.5, 0.0, 1.2);
   float foam = smoothstep(0.5, 0.78, streak * 0.6 + mask * 0.7 - 0.1);   // no foam unless the water churns (mask)
   foam = clamp(foam + lace * 0.5 * min(mask, 1.0), 0.0, 1.0) * 0.92;
 

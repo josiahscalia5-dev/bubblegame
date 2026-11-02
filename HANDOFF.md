@@ -34,9 +34,10 @@ The user wants Screen 3 to look and move right before the remaining screens. The
     - six gold gears with teal and navy hubs at the portal mouth
     - curved gold pipes, pink fluffy trim and glowing bulbs
     - Wheels, gears and collars turn.
-  - **Golden helper** (`WebDemo/src/helper.js`): the duck-like friend on a pink float, in front of the portal, facing the mascot. It leads the way into the washing machine.
+  - **Duck helper:** the user's Meshy duck on its pink float (`Design/MeshyDeliveries/DuckHelper/`, Balanced copy in `WebDemo/models/duck.glb`). It replaced the code-built helper. `WebDemo/src/helper.js` places it ahead of the mascot, facing it, with gentle splashes and softened goggles. It leads the way into the washing machine.
   - **Brushes:** a 3 m Meshy brush turns end-on at the lower left; a second one shows its pink fringe on the right.
   - **Water:** a soft, wavy caustic shimmer and twinkling sparkles instead of the polygon grid. Foam only where water churns, including a foam collar around the mascot. Fewer droplets.
+- **Fix:** every baked Meshy material shared one compiled shader (three.js caches by the `onBeforeCompile` source), so materials could render with another's settings. The duck first showed all pink from the brushes' recolour. Each now has its own `customProgramCacheKey`. This also corrected the left brush's gold-and-blue hub.
 - **Visual-fidelity round (after the user's review of the side-by-side):**
   - glossier lighting: studio reflections, a rim light, and shading on the Meshy models
   - raised water mound and V ridges around the mascot (visual only), deeper troughs, clear bow spray
@@ -51,7 +52,8 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 - **Known differences from the approved Screen 3:**
   - The approved vortex inside the portal is whiter and pinker than ours.
   - In the approved image the left brush overlaps the slide's edge. Ours stays just clear of the left lane, so it sits a little further left and is cut by the screen edge.
-  - The code-built helper and machinery are simpler than hand-sculpted models. `Design/MESHY_ASSET_REVIEW.md` lists the two optional Meshy upgrades.
+  - The Meshy duck has big open eyes and goggles; the approved helper's eyes are closed and it has no goggles (the goggles are softened). Its float is about 15 % wider than the approved one.
+  - The code-built machinery is simpler than hand-sculpted models. `Design/MESHY_ASSET_REVIEW.md` lists the one optional Meshy upgrade left (the machinery tower).
 - **Build and record:**
   - Build: `cd WebDemo && npm install && node build.mjs`.
   - Play-test: `node tools/playtest.cjs "$PWD" <out> quick`.
@@ -68,7 +70,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 ## Open requests from the user
 
 1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens.
-2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). The three models it first listed as missing are now built in code. No new Meshy model is required; two optional upgrades are listed there.
+2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). The three models it first listed as missing are now built in code. No new Meshy model is required. The duck helper has been delivered and is in use, and one optional upgrade (the machinery tower) is listed there.
 3. Keep PR #1 as a draft. Do not merge it.
 4. Not yet asked: whether to move this evening's commits onto PR #1's branch, and how to resolve PR #1's conflicts with its base.
 

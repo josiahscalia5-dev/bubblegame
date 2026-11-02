@@ -1,0 +1,21 @@
+BUBBLE WASH KINGDOM — YELLOW HELPER / PINK FLOAT
+
+Approved role: prototype/testing asset, not yet a perfect copy of approved Screen 3.
+
+ORIGINAL MESHY MASTER:
+Meshy_AI_bubble_duck_helper_1102214920_image-to-3d-texture.glb
+~108 MiB; 3,333,478 triangles; 4K basecolor and normal maps.
+Keep this original untouched.
+
+OPTIMIZED COPIES FOR CLAUDIA CODE:
+1) BubbleWash_Duck_Helper_Claudia_Balanced_ColorSafe.glb — ~1.67 MiB, 89,620 triangles.
+2) BubbleWash_Duck_Helper_Claudia_Small_ColorSafe.glb — ~0.75 MiB, 39,946 triangles.
+
+IMPORTANT: These are lightweight viewport/gameplay trial assets. Their reduced polygons and baked vertex colors simplify the original fine fur, highlights, and PBR material detail. Do not present them as pixel-perfect replicas. The original master has more detail.
+
+COPY TO CLAUDIA CODE:
+Claudia, I am uploading the yellow duck helper sitting in the pink inflatable float for the beginning of my approved Bubble Wash Kingdom Screen 3.
+Please import the Balanced ColorSafe GLB into my EXISTING browser-playable demo first. Use it as the little yellow guide positioned ahead of the pink mascot near the entrance to the washer tunnel. Preserve the existing slide, castle, camera, controls, and gameplay. Match the approved screenshot's character size, placement, and float height as closely as possible. Do not rebuild or redesign my project.
+Make the helper bob naturally with the water and splash gently, while keeping the duck and pink float visually recognizable. Ensure the star and goggles do not become distracting because the approved helper in Screen 3 is quite small. If the model is visually too simplified, tell me whether it would help to use the original master or request a corrected Meshy model. Show me an actual rendered comparison of the approved Screen 3 opening and the playable browser version; do not claim an exact match before comparing them.
+
+The original GLB and optimized GLBs are separate; no edits were made to the master.

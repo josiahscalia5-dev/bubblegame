@@ -57,7 +57,7 @@ scene.add(rimLight);
 // ------------------------------------------------------------------ loading
 const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
-  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb',
+  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', duck: 'models/duck.glb',
 };
 const progress = {};
 function showProgress() {
@@ -129,7 +129,7 @@ function bakedMaterial(src, opts = {}) {
       s.fragmentShader = s.fragmentShader.replace('void main() {', 'varying vec3 vObj;\nvoid main() {')
         .replace('#include <color_fragment>', '#include <color_fragment>\n' + opts.afterColor);
     }
-    if (opts.grade) s.fragmentShader = s.fragmentShader.replace('void main() {', `${SH.HSV_GLSL}\nvoid main() {`);
+    if (opts.grade || opts.afterColor) s.fragmentShader = s.fragmentShader.replace('void main() {', `${SH.HSV_GLSL}\nvoid main() {`);
     s.fragmentShader = s.fragmentShader.replace('#include <map_fragment>', `#include <map_fragment>
       ${opts.grade || ''}
       { float l = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
@@ -144,6 +144,11 @@ function bakedMaterial(src, opts = {}) {
         diffuseColor.rgb += vec3(0.85, 0.9, 1.0) * rim * ${shade[2].toFixed(3)}; }` : ''}
       ${haze ? `diffuseColor.rgb = mix(diffuseColor.rgb, vec3(${haze[3].map((v) => v.toFixed(3)).join(', ')}), ${haze[0].toFixed(3)} * smoothstep(${haze[1].toFixed(2)}, ${haze[2].toFixed(2)}, vHazeDepth));` : ''}`);
   };
+  // three.js caches compiled shaders by the onBeforeCompile source text, which is the same for every
+  // baked material; without its own key, a material could reuse another's shader and its settings
+  // (the duck once rendered with the brushes' recolour). The key holds everything the code above bakes in.
+  const key = 'baked:' + JSON.stringify([sat, bright, glow, opts.lift ?? 0, haze || 0, shade || 0, opts.grade || '', opts.afterColor || '']);
+  m.customProgramCacheKey = () => key;
   return m;
 }
 
@@ -255,6 +260,7 @@ function buildWater() {
     uRipples: { value: ripples }, uPlayer: { value: new THREE.Vector3() }, uPlayerMove: { value: new THREE.Vector3() },
     uFlow: { value: 9 }, uSlideHalf: { value: W.SLIDE.half },
     uDeep: { value: C(0x0636d8) }, uShallow: { value: C(0x1f9bff) }, uTurq: { value: C(0x3eeaf8) }, uGlow: { value: C(0x9af2ff) },
+    uHelper: { value: new THREE.Vector3(0, 0.4, -99) },   // helper track x, float radius, u (its foam ring)
     uSky: { value: C(0xa9c4ff) }, uPink: { value: C(0xff9be0) }, uGold: { value: C(0xffcc5a) },
     uRingA: { value: C(0xffd873) }, uRingB: { value: C(0x8ce6ff) }, uFog: { value: C(0xccccff) }, uSunDir: { value: SUN_DIR },
     uRings: { value: new THREE.Vector3(L.tunnelStart + 0.25, L.segmentLength - Math.max(0.02, L.segmentLength * 0.005), 4) },
@@ -744,18 +750,30 @@ function buildMascot(gltf) {
   };
 }
 
-// The golden helper on its pink float waits on the slide in front of the portal (where the approved
-// Screen 3 shows it), facing the mascot. Once the run starts it rides ahead into the washing machine,
-// leading the way, and fades into the light at the tunnel's end.
-const HELPER = { z0: -8.0, lead: 6.5, scale: 1.25 };
+// The Meshy duck helper on its pink float waits on the slide in front of the portal (where the
+// approved Screen 3 shows it), facing the mascot, bobbing with small splashes and ripples. Once the
+// run starts it rides ahead into the washing machine, leading the way, into the light at the tunnel's end.
+const HELPER = { z0: -8.6, lead: 6.5, height: 0.7 };   // size and place measured against the approved screen
 function updateHelper(dt) {
   if (!helper) return;
   if (state.phase === 'running') helper.z = Math.max(helper.z, mascot.z + HELPER.lead);
   const t = state.time, z = helper.z;
-  TR.map(0, W.surface(L, 0, z, t) - 0.02, z, helper.root.position);
-  TR.quaternion(z, helper.root.quaternion);   // its face (local -Z) looks back up the run, at the mascot
+  const surf = W.surface(L, 0, z, t), riding = state.phase === 'running';
+  TR.map(0, surf, z, helper.root.position);
+  TR.quaternion(z, helper.root.quaternion);   // its face (turned to local -Z) looks back up the run, at the mascot
   helper.root.visible = z < L.tunnelEnd + 0.5;
-  helper.animate(t, state.phase === 'running' ? 1 : 0);
+  helper.animate(t, riding ? 1 : 0);
+  waterU.uHelper.value.set(0, helper.width * 0.5, z);
+  if (!helper.root.visible) return;
+  // Gentle splashes: a few clear droplets around the float (more while riding), and slow ripples
+  // spreading from it while it waits.
+  helper.splash = (helper.splash || 0) + dt * (riding ? 9 : 3.5);
+  for (; helper.splash >= 1; helper.splash--) {
+    const a = Math.random() * Math.PI * 2, r = helper.width * 0.5;
+    fx.emitT(Math.cos(a) * r, surf + 0.03, z + Math.sin(a) * r * 0.8, Math.cos(a) * 0.35, 0.45 + Math.random() * 0.6, riding ? mascot.speed * 0.25 : 0,
+      0.03 + Math.random() * 0.04, 0.45 + Math.random() * 0.3, 0);
+  }
+  if (!riding) { helper.rip = (helper.rip ?? 0) - dt; if (helper.rip < 0) { addRipple(0, z, 0.45); helper.rip = 1.6; } }
 }
 
 function resetRun() {
@@ -1277,8 +1295,8 @@ async function main() {
     L = await layoutRes.json();
     TR = makeTrack(L);
     buildSky();
-    const [castle, drum, mascotG, roller, gem, sock, coinFace] = await Promise.all([
-      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
+    const [castle, drum, mascotG, roller, gem, sock, duckG, coinFace] = await Promise.all([
+      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'duck'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
@@ -1296,8 +1314,8 @@ async function main() {
     buildCollectibles(gem, coinFace);
     buildSocks(sock);
     buildMascot(mascotG);
-    helper = buildHelper(mats.env);
-    helper.root.scale.setScalar(HELPER.scale);
+    repairNormals(duckG.scene);   // the ColorSafe export has no normals: rebuild them for the soft shading
+    helper = buildHelper(duckG, (o) => bakedMaterial(o.material, { vertexColors: !!o.geometry.attributes.color, shade: [0.84, 0.28, 0.4], afterColor: SH.DUCK_GOGGLES_SOFTEN }), HELPER.height);
     helper.z = HELPER.z0;
     scene.add(helper.root);
     if (SIDE) buildSideView();
@@ -1340,6 +1358,8 @@ window.__bw = {
   lookBack: (v) => { mascot.look = v; mascot.lookT = -0.5; },
   setBloom: (on) => { bloom.enabled = !!on; },
   // Try a Tap to Start framing (camera offset and aim from the mascot, field of view) without a rebuild.
+  // Try a helper placement (distance along the run, height in metres) without a rebuild.
+  setHelper: (z, height) => { if (!helper) return; HELPER.z0 = z; helper.z = z; helper.root.scale.setScalar(height / HELPER.height); },
   setFraming: (f) => { if (f.off) S3.off.set(...f.off); if (f.look) S3.look.set(...f.look); if (f.fov) S3.fov = f.fov; rig.snap = true; },
   debug: () => ({ scene, water, mascot: mascot.root, particles: fx.points }),
 };
