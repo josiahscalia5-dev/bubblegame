@@ -104,11 +104,26 @@ function bakedMaterial(src, opts = {}) {
   // Meshy colour texture rendered as baked art with a saturation/brightness lift (Unity MeshyBaked).
   const m = new THREE.MeshBasicMaterial({ map: src.map || null, color: 0xffffff, vertexColors: !!opts.vertexColors, side: THREE.DoubleSide });
   const sat = opts.saturation ?? 1.15, bright = opts.brightness ?? 1.0, glow = opts.glow ?? 0.0;
+  const haze = opts.haze;   // [amount, near m, far m, colour]: soft distance haze, as over the approved castle
   m.onBeforeCompile = (s) => {
+    if (haze) {
+      s.vertexShader = s.vertexShader.replace('void main() {', 'varying float vHazeDepth;\nvoid main() {')
+        .replace('#include <project_vertex>', '#include <project_vertex>\n  vHazeDepth = -mvPosition.z;');
+      s.fragmentShader = 'varying float vHazeDepth;\n' + s.fragmentShader;
+    }
+    if (opts.afterColor) {   // extra colour work after the vertex colours, with the mesh's own position
+      s.vertexShader = s.vertexShader.replace('void main() {', 'varying vec3 vObj;\nvoid main() {\n  vObj = position;');
+      s.fragmentShader = s.fragmentShader.replace('void main() {', 'varying vec3 vObj;\nvoid main() {')
+        .replace('#include <color_fragment>', '#include <color_fragment>\n' + opts.afterColor);
+    }
+    if (opts.grade) s.fragmentShader = s.fragmentShader.replace('void main() {', `${SH.HSV_GLSL}\nvoid main() {`);
     s.fragmentShader = s.fragmentShader.replace('#include <map_fragment>', `#include <map_fragment>
+      ${opts.grade || ''}
       { float l = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
         diffuseColor.rgb = mix(vec3(l), diffuseColor.rgb, ${sat.toFixed(3)}) * ${bright.toFixed(3)};
-        diffuseColor.rgb += diffuseColor.rgb * smoothstep(0.55, 0.95, l) * ${glow.toFixed(3)}; }`);
+        diffuseColor.rgb += diffuseColor.rgb * smoothstep(0.55, 0.95, l) * ${glow.toFixed(3)};
+        diffuseColor.rgb += (1.0 - min(diffuseColor.rgb, 1.0)) * ${(opts.lift ?? 0).toFixed(3)}; }
+      ${haze ? `diffuseColor.rgb = mix(diffuseColor.rgb, vec3(${haze[3].map((v) => v.toFixed(3)).join(', ')}), ${haze[0].toFixed(3)} * smoothstep(${haze[1].toFixed(2)}, ${haze[2].toFixed(2)}, vHazeDepth));` : ''}`);
   };
   return m;
 }
@@ -121,7 +136,8 @@ const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.
 function buildSky() {
   const sky = new THREE.Mesh(new THREE.SphereGeometry(170, 32, 16), new THREE.ShaderMaterial({
     vertexShader: SH.skyVertex, fragmentShader: SH.skyFragment, side: THREE.BackSide, depthWrite: false,
-    uniforms: { uTop: { value: C(0xb59cff) }, uMid: { value: C(0xf4b8f0) }, uHorizon: { value: C(0xffe2f4) }, uBottom: { value: C(0x7fb6ff) } },
+    // Pale lavender haze behind the castle, as in the approved Screen 3 (it was a pink-violet gradient).
+    uniforms: { uTop: { value: C(0xc2b0ff) }, uMid: { value: C(0xe6d6ff) }, uHorizon: { value: C(0xfaeeff) }, uBottom: { value: C(0x8fbcff) } },
   }));
   sky.renderOrder = -10;
   scene.add(sky);
@@ -161,10 +177,10 @@ function place(obj, matrixArray) {
   return g;
 }
 
-function bake(root, opts) {
+function bake(root, opts, perMesh) {
   root.traverse((o) => {
     if (!o.isMesh) return;
-    o.material = bakedMaterial(o.material, { ...opts, vertexColors: !!o.geometry.attributes.color });
+    o.material = bakedMaterial(o.material, { ...opts, ...(perMesh ? perMesh(o) : {}), vertexColors: !!o.geometry.attributes.color });
     o.frustumCulled = true;
   });
 }
@@ -223,19 +239,32 @@ function buildWater() {
 }
 
 function buildRails() {
-  // Gold rims along the raised slide (they ride its hills), like the Unity PLACEHOLDER_WaterSlideRails.
+  // Chunky gold rails along the raised slide, as in the approved Screen 3: a thick top rail and a lower
+  // rail riding the slide's hills, with rounded gold balusters set with blue gem studs.
+  const blueGem = new THREE.MeshStandardMaterial({ color: 0x2f6bff, metalness: 0.2, roughness: 0.12, envMap: mats.env, envMapIntensity: 1.6, emissive: 0x0a2a9a, emissiveIntensity: 0.5 });
+  const z0 = L.startZ - 24, z1 = -2.5, step = 1.25;
+  const nPosts = Math.floor((z1 - z0) / step) + 1;
+  const posts = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.1, 0.12, 0.42, 14), mats.gold, nPosts * 2);
+  const caps = new THREE.InstancedMesh(new THREE.SphereGeometry(0.12, 14, 10), mats.gold, nPosts * 2);
+  const studs = new THREE.InstancedMesh(new THREE.SphereGeometry(0.065, 12, 8), blueGem, nPosts * 2);
+  let k = 0;
   for (const side of [-1, 1]) {
-    const pts = [];
-    const rx = side * (W.SLIDE.half + 0.12);
-    for (let z = L.startZ - 24; z <= -2.5; z += 0.5) pts.push(new THREE.Vector3(rx, W.baseHeight(L, side * W.SLIDE.half, z) + 0.12, z));
-    const tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, 0.07, 8), mats.gold);
-    scene.add(tube);
-    for (let z = L.startZ - 24; z <= -2.5; z += 3) {
-      const post = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.7, 8), mats.gold);
-      post.position.set(rx, W.baseHeight(L, side * W.SLIDE.half, z) - 0.2, z);
-      scene.add(post);
+    const rx = side * (W.SLIDE.half + 0.14);
+    const top = [], low = [];
+    for (let z = z0; z <= z1; z += 0.5) {
+      const y = W.baseHeight(L, side * W.SLIDE.half, z);
+      top.push(new THREE.Vector3(rx, y + 0.2, z)); low.push(new THREE.Vector3(rx + side * 0.02, y - 0.02, z));
+    }
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(top), top.length * 2, 0.1, 12), mats.gold));
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(low), low.length * 2, 0.06, 10), mats.gold));
+    for (let i = 0; i < nPosts; i++, k++) {
+      const z = z0 + i * step, y = W.baseHeight(L, side * W.SLIDE.half, z);
+      posts.setMatrixAt(k, tmpM.makeTranslation(rx, y - 0.02, z));
+      caps.setMatrixAt(k, tmpM.makeTranslation(rx, y + 0.22, z));
+      studs.setMatrixAt(k, tmpM.makeTranslation(rx + side * 0.11, y + 0.03, z));
     }
   }
+  scene.add(posts, caps, studs);
 }
 
 function fallGeometry(throwDist, drop, w0, w1, across = 12, along = 26) {
@@ -331,11 +360,36 @@ function buildDrumLights() {
     scene.add(m);
     mats.rings = mats.rings || []; mats.rings.push(m);
   });
-  const glowTex = radialTexture();
-  const end = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), new THREE.MeshBasicMaterial({ map: glowTex, color: new THREE.Color(0.45, 0.7, 1.1), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
-  end.matrixAutoUpdate = false;
-  TR.mapMatrix(new THREE.Matrix4().makeTranslation(0, W.WATER + W.AXIS_H, L.tunnelEnd + 1.5).multiply(new THREE.Matrix4().makeRotationY(Math.PI)), end.matrix);
-  scene.add(end);
+  // The tunnel's far end opens onto a bright portal of light (white core, pale cyan, lavender and pink
+  // rays), like the glowing heart of the approved vortex, instead of plain sky. The run flashes back to
+  // the slide inside this light (Screens 5 onward are not built yet).
+  const atEnd = (du, size, mat, order) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), mat);
+    m.matrixAutoUpdate = false; m.renderOrder = order;
+    TR.mapMatrix(new THREE.Matrix4().makeTranslation(0, W.WATER + W.AXIS_H, L.tunnelEnd + du).multiply(new THREE.Matrix4().makeRotationY(Math.PI)), m.matrix);
+    scene.add(m);
+    return m;
+  };
+  mats.exitLight = [atEnd(4.5, 16, new THREE.MeshBasicMaterial({ map: lightTexture(), toneMapped: false }), 0)];
+  mats.exitLight[1] = atEnd(1.5, 7,new THREE.MeshBasicMaterial({ map: radialTexture(), color: new THREE.Color(0.9, 1.1, 1.4), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }), 3);
+}
+
+function lightTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 512;
+  const g = c.getContext('2d');
+  const grd = g.createRadialGradient(256, 256, 0, 256, 256, 256);
+  grd.addColorStop(0, '#ffffff'); grd.addColorStop(0.22, '#f4fbff'); grd.addColorStop(0.45, '#bfe9ff');
+  grd.addColorStop(0.7, '#d9c4ff'); grd.addColorStop(1, '#ffc6ec');
+  g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+  g.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 18; i++) {   // soft rays
+    const a = (i / 18) * Math.PI * 2 + (i % 2) * 0.09, w = 0.05 + (i % 3) * 0.025;
+    const ray = g.createRadialGradient(256, 256, 30, 256, 256, 256);
+    ray.addColorStop(0, 'rgba(255,255,255,0.32)'); ray.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = ray; g.beginPath(); g.moveTo(256, 256);
+    g.arc(256, 256, 256, a - w, a + w); g.closePath(); g.fill();
+  }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
 function radialTexture() {
@@ -350,14 +404,16 @@ function radialTexture() {
 // approved screen: a big one close on the left, seen nearly end-on (blue hub, fluffy pink ring), and
 // more along both sides toward the castle. [track x, h, u], axis, diameter (m), spin (deg/s).
 const SCREEN3_BRUSHES = [
-  { at: [2.22, 1.05, -13.6], axis: [-0.45, 0.05, -0.89], d: 2.2, spin: 110 },
+  { at: [2.4, 0.4, -10.6], axis: [-0.32, 0.12, -0.94], d: 2.4, spin: 110 },
   { at: [2.75, 1.1, -7.4], axis: [-0.3, 0.0, -0.95], d: 1.7, spin: -95 },
 ];
 // The three Meshy drum segments, chained as in the Unity layout and then bent along the 3D path:
 // every vertex's straight-layout z becomes its distance along the path and its x/y are carried by
 // the path frame there. The segments stay seamless because they share one continuous frame.
 function buildDrum(gltf) {
-  bake(gltf.scene, { saturation: 1.3, brightness: 1.05, glow: 0.9 });
+  // Lighter than the raw texture, and misting to a bright pale core with distance, like the white,
+  // light-blue and pink vortex of the approved Screens 3 and 4.
+  bake(gltf.scene, { saturation: 1.25, brightness: 1.1, glow: 0.9, lift: 0.08, haze: [0.45, 6, 32, [0.78, 0.86, 1.0]] });
   gltf.scene.updateMatrixWorld(true);
   const meshes = [];
   gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
@@ -387,7 +443,13 @@ function buildDrum(gltf) {
 
 function buildRollers(gltf) {
   const src = gltf.scene;
-  bake(src, { saturation: 1.25, brightness: 1.08 });
+  // Bristles recoloured as the approved brushes: blue toward the hub, a white band, a pink fringe.
+  bake(src, { saturation: 1.25, brightness: 1.08 }, (o) => {
+    if (!/Bristles/.test(o.material.name)) return {};
+    const p = o.geometry.attributes.position; let rMax = 0;
+    for (let i = 0; i < p.count; i++) rMax = Math.max(rMax, Math.hypot(p.getX(i), p.getZ(i)));
+    return { afterColor: SH.brushGrade(rMax) };
+  });
   // Screen 4 rollers from the Unity layout, carried onto the 3D path inside the drum.
   for (const r of L.rollers) {
     if (r.centre[2] < L.tunnelStart) continue;   // Screen 3's roller is replaced by SCREEN3_BRUSHES
@@ -468,7 +530,7 @@ function buildMachinery() {
     for (let s = 0.12; s < 1; s += 0.38) { const ring = new THREE.Mesh(new THREE.TorusGeometry(r * 1.15, r * 0.3, 8, 24), blue); ring.position.set(...a).addScaledVector(d, s); ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), d.clone().normalize()); works.add(ring); }
   };
   // Left (screen-left = +x), behind the big brush.
-  tank([2.95, 0.15, -10.4], 0.5, 1.7, 0.4);
+  tank([3.4, 0.15, -13.2], 0.5, 1.7, 0.4);
   gear([2.6, 2.35, -11.4], 0.75, 16, -0.35, 0.7);
   porthole([2.25, 2.55, -8.3], 0.42, -0.3);
   gear([3.3, 1.55, -6.2], 0.8, 18, -0.25, -0.45);
@@ -510,8 +572,8 @@ function buildBubbles() {
 }
 
 // ------------------------------------------------------------------ collectibles
-function buildCollectibles(gemGltf) {
-  const face = new THREE.TextureLoader().load('ui/coin_face.png'); face.colorSpace = THREE.SRGBColorSpace;
+function buildCollectibles(gemGltf, face) {
+  face.colorSpace = THREE.SRGBColorSpace;   // loaded before the first frame, so the portal coins never show dark
   // Coins glow gold even when backlit in the portal, as in the approved screens.
   const goldFace = new THREE.MeshStandardMaterial({ map: face, color: 0xffffff, metalness: 0.6, roughness: 0.3, envMap: mats.env, emissive: 0x8a5a00, emissiveMap: face, emissiveIntensity: 1.25 });
   const coinRim = new THREE.MeshStandardMaterial({ color: 0xffc24a, metalness: 1, roughness: 0.25, envMap: mats.env, envMapIntensity: 1.3, emissive: 0x7a4a00, emissiveIntensity: 0.8 });
@@ -862,22 +924,31 @@ function updateCamera(dt) {
   // so the Tap-to-Start view is exactly the approved framing).
   let ahead = 0; for (let d = 1; d <= 6; d++) ahead += W.slopeAt(L, m.x, m.z + d * 1.2); ahead /= 6;
   const tiltTarget = state.phase === 'running' ? ahead : 0;
+  const snap = rig.snap;
   if (rig.snap) { rig.x = targetX; rig.y = targetY; rig.tilt = tiltTarget; rig.snap = false; }
   const a = 1 - Math.exp(-dt / 0.14);
   rig.x += (targetX - rig.x) * a; rig.y += (targetY - rig.y) * (1 - Math.exp(-dt / 0.12)); rig.tilt += (tiltTarget - rig.tilt) * (1 - Math.exp(-dt / 0.35));
-  // Camera and aim point in track coordinates, each placed through the path frame at its own distance
-  // along the run: the camera rides the tube's climbs, drops and banked turns behind the mascot.
-  let cx = rig.x + off.x, ch = rig.y + off.y + rig.tilt * off.z * 0.6;   // ride behind and below on climbs, above on drops
+  // Camera and aim point are set out from the mascot in its own path frame (smoothed over about a
+  // quarter second), so the mascot keeps the approved place on screen while the tube climbs, crests,
+  // drops and banks. (Placing them through the frames 4 m behind and 6 m ahead left the mascot high
+  // in the frame at the crest.) On the straight slide this is the same as the plain layout offsets.
+  const cx = rig.x + off.x, ch = rig.y + off.y + rig.tilt * off.z * 0.6;   // ride behind and below on climbs, above on drops
   const cu = m.z + off.z;
-  // Stay inside the castle portal and the drum.
-  if (cu > -0.25 && cu < L.tunnelEnd) {
-    const dx = cx, dy = ch - (W.WATER + W.AXIS_H), r = Math.hypot(dx, dy), max = L.clearRadius - 0.4;
-    if (r > max) { cx = (dx / r) * max; ch = W.WATER + W.AXIS_H + (dy / r) * max; }
-  }
-  const pos = TR.map(cx, ch, cu);
-  const target = TR.map(rig.x + lk.x, rig.y + lk.y + rig.tilt * lk.z, m.z + lk.z);
-  // Bank gently with the water (three quarters of its tilt).
+  TR.frame(m.z, F);
+  if (snap || !rig.fT) { rig.fP = F.P.clone(); rig.fR = F.R.clone(); rig.fU = F.U.clone(); rig.fT = F.T.clone(); }
+  const fa = 1 - Math.exp(-dt / 0.25);
+  rig.fP.copy(F.P); rig.fT.lerp(F.T, fa).normalize(); rig.fU.lerp(F.U, fa); rig.fR.crossVectors(rig.fU, rig.fT).normalize(); rig.fU.crossVectors(rig.fT, rig.fR).normalize();
+  const inFrame = (x, h, u, out) => out.copy(rig.fP).addScaledVector(rig.fR, x).addScaledVector(rig.fU, h).addScaledVector(rig.fT, u);
+  const pos = inFrame(cx, ch, off.z, new THREE.Vector3());
+  const target = inFrame(rig.x + lk.x, rig.y + lk.y + rig.tilt * lk.z, lk.z, new THREE.Vector3());
+  // Stay inside the castle portal and the drum (checked in the path frame where the camera is).
   TR.frame(cu, F);
+  if (cu > -0.25 && cu < L.tunnelEnd) {
+    const rel = pos.clone().sub(F.P), dx = rel.dot(F.R), dy = rel.dot(F.U) - (W.WATER + W.AXIS_H), du = rel.dot(F.T);
+    const r = Math.hypot(dx, dy), max = L.clearRadius - 0.4;
+    if (r > max) pos.copy(F.P).addScaledVector(F.R, (dx / r) * max).addScaledVector(F.U, W.WATER + W.AXIS_H + (dy / r) * max).addScaledVector(F.T, du);
+  }
+  // Bank gently with the water (three quarters of its tilt).
   camera.up.set(0, 1, 0).lerp(F.U, 0.75).normalize();
   camera.position.copy(pos);
   camera.lookAt(target);
@@ -1065,7 +1136,7 @@ function buildSideView() {
   const dots = new THREE.Points(tg, new THREE.PointsMaterial({ color: 0xff1f9e, size: 5, sizeAttenuation: false }));
   dots.frustumCulled = false; g.add(dots);
   // Only the run itself: the castle, drum, scenery and water sheet would hide the mascot from the side.
-  for (const o of [mats.castle, water, mats.machinery, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
+  for (const o of [mats.castle, water, mats.machinery, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
   side = { cam, g, dots, tp, n: 0, N, yc: 1.0, width: 22, startY: mascot.root.position.y };
 }
 function sideTrail() {
@@ -1202,9 +1273,11 @@ async function main() {
     L = await layoutRes.json();
     TR = makeTrack(L);
     buildSky();
-    const [castle, drum, mascotG, roller, gem, sock] = await Promise.all(['castle', 'drum', 'mascot', 'roller', 'gem', 'sock'].map(loadGltf));
+    const [castle, drum, mascotG, roller, gem, sock, coinFace] = await Promise.all([
+      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
-    bake(castle.scene, { saturation: 1.2, brightness: 1.04, glow: 0.35 });
+    // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
+    bake(castle.scene, { saturation: 1.0, brightness: 1.06, glow: 0.35, grade: SH.CASTLE_GRADE, haze: [0.3, 14, 45, [0.86, 0.79, 1.0]] });
     mats.castle = place(castle.scene, L.castle);
     buildDrum(drum);
     buildWater();
@@ -1214,7 +1287,7 @@ async function main() {
     buildRollers(roller);
     buildMachinery();
     buildBubbles();
-    buildCollectibles(gem);
+    buildCollectibles(gem, coinFace);
     buildSocks(sock);
     buildMascot(mascotG);
     if (SIDE) buildSideView();

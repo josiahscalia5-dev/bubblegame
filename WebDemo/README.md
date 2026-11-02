@@ -2,7 +2,8 @@
 
 A separate, playable browser version of approved Screen 3, built from the Meshy models and the Unity project's layout. The Unity project is not changed by it.
 
-**Play:** https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (private until shared from its Share menu). Or serve this folder (`python3 -m http.server`) and open `index.html`.
+**Play:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (private until shared from its Share menu). Or serve this folder (`python3 -m http.server`) and open `index.html`.
+- That page was published from the account that ran the 2 November evening session. The earlier link, https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC, belongs to the other account and shows the version from before that session.
 
 **Recordings:** [`Previews/WebDemo/`](../Previews/WebDemo): the gameplay video, a side-view debug video proving the height changes, both side by side, and a height chart.
 
@@ -36,11 +37,15 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
 - **Mascot fur:** lighting blends the bristles' own normals (strand detail) with the body's sphere (round volume). It adds glowing pink fur tips around the silhouette, a deeper magenta toward the water, and droplets twinkling in the fur.
   - Its width is 0.41 of the screen at Tap to Start, the same as the approved image.
   - Its face is clear and unobstructed when it glances back.
+- **Castle colours:** the Meshy castle's texture is orange and hot pink. A shader grade (`CASTLE_GRADE` in `src/shaders.js`) turns its orange to warm gold and its soft pinks to lavender, and leaves strong pink accents (the crest banner) and the blue glass alone. A light lavender haze softens it with distance, and the sky behind it is pale lavender, as in the approved image.
+- **Washing brushes:** the Meshy roller's bristles are recoloured in code (`brushGrade`) as on approved Screens 3 and 4: round blue tufts in rings toward the hub, then a white band, then a pink fringe. The big Screen 3 brush now sits where the approved one is, low at the left edge beside the slide.
+- **Tunnel:** the drum is lighter, and it mists to a bright pale core with distance, like the approved vortex. Its far end opens onto a glowing portal of light (white, pale cyan, lavender and pink, with soft rays) instead of plain sky.
+- **Rails:** chunky gold rails ride the slide's hills on both sides: a thick top rail, a lower rail, and rounded gold balusters with blue gem studs.
 - **Scenery:** the slide is narrower, about three lanes wide, as in the approved image.
-  - The Meshy washing roller stands beside it as the big fluffy brush on the left, with a second further back.
   - Gold-and-blue machinery: turning gears with blue hubs, blue barrel tanks banded in gold, gold pipes and portholes.
   - Big iridescent bubbles at the lower corners and on the right.
-  - Coins glow gold even when backlit in the portal.
+  - Coins glow gold even when backlit in the portal. Their face texture now loads before the first frame, so they never show dark at Tap to Start.
+- **Camera:** it follows the mascot's own path frame, smoothed over about a quarter second. The mascot keeps the approved place on screen (lower middle) while the tube climbs, crests, drops and banks. On the straight slide this is the same view as before, so the Tap to Start framing is unchanged.
 - **Lost socks:** five Meshy socks float through the drum. Touching one rescues it, and the approved Screen 4 panel "Rescue 5 lost socks" counts them.
 
 ## Debug views

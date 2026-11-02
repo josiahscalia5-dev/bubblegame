@@ -8,10 +8,10 @@ The approved image is small (269 × 538 px, shown at 3×). Shapes smaller than a
 
 | Approved Screen 3 | Meshy model you have | What is left (no new model) |
 |---|---|---|
-| Castle and portal arch | Castle portal | The approved castle is lavender and gold; the Meshy one renders pink and orange. Colour grading in code. |
-| Swirling tunnel inside the portal | Washing-machine tunnel | The approved interior is a pink, blue and white vortex; ours is blue with gold rings. Material and lighting. |
+| Castle and portal arch | Castle portal | **Done (colour grade in code).** The castle now renders lavender, white and gold, with its pink crest banner kept. |
+| Swirling tunnel inside the portal | Washing-machine tunnel | **Lighter, misting to a bright core (in code).** The approved vortex is still whiter and pinker than ours. |
 | Pink fluffy mascot | Pink mascot | Fur shader and size are done. Only fine tuning is left. |
-| Big fluffy brush on the left, and pink fluffy shapes on the right | Washing roller | The approved near brush is mostly blue with a white and pink fringe, seen end on. Recolour the roller in code. No new brush is needed. |
+| Big fluffy brush on the left, and pink fluffy shapes on the right | Washing roller | **Done (recoloured in code):** blue tufts toward the hub, a white band and a pink fringe, placed low at the left edge as in the approved screen. No new brush is needed. |
 | Gems | Gemstone | Done. |
 | Socks (Screen 4, inside the tunnel) | Lost sock | Done. |
 
@@ -19,7 +19,7 @@ The approved image is small (269 × 538 px, shown at 3×). Shapes smaller than a
 
 - **The water slide and its uphill and downhill path.** It bends with the 3D path, so a fixed Meshy slide piece would not fit.
 - **The water, foam, wake, droplets and splashes.**
-- **Water-slide rails.** The gold rails must follow the slide's curves and hills, so they are generated in code. Their look can be made richer in code.
+- **Water-slide rails.** The gold rails must follow the slide's curves and hills, so they are generated in code. They now have a thick top rail, a lower rail and gold balusters with blue gem studs.
 - **Tower waterfalls** and their gold spouts and basins.
 - **Iridescent bubbles.**
 - **Paw coins**, including the gold discs around the portal mouth. Most of those are coins.

@@ -21,6 +21,8 @@ The project builds as a **WebGL** browser game in the cloud, either with Unity B
 A separate three.js version of approved Screen 3, built from the Meshy models and this project's layout, so the run can be played and checked without Unity. The Unity project is not changed by it.
 - The pink mascot rides a real 3D path. It goes down the slide, over its crest and into the portal. In the washing machine the tube climbs, crests, drops and banks through left and right turns.
 - It collects coins, gems and the Meshy lost socks.
+- The Meshy castle and washing brushes are recoloured in code to the approved lavender, white and gold castle and blue, white and pink brushes.
+- Play it: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (private until shared).
 - Details, debug views and recordings: [`WebDemo/README.md`](WebDemo/README.md) and [`Previews/WebDemo/`](Previews/WebDemo).
 
 ## Open the project on Windows (optional, full Unity editor)

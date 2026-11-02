@@ -22,6 +22,61 @@ vec2 bwVoronoi(vec2 p) {
 }
 `;
 
+export const HSV_GLSL = /* glsl */ `
+vec3 bwRgb2hsv(vec3 c) {
+  vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+  vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+  vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+  float d = q.x - min(q.w, q.y);
+  return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + 1e-10)), d / (q.x + 1e-10), q.x);
+}
+vec3 bwHsv2rgb(vec3 c) {
+  vec3 p = abs(fract(c.xxx + vec3(1.0, 2.0 / 3.0, 1.0 / 3.0)) * 6.0 - 3.0);
+  return c.z * mix(vec3(1.0), clamp(p - 1.0, 0.0, 1.0), c.y);
+}
+`;
+
+// The approved Screen 3 castle is lavender and white with warm gold trim and blue glass; the Meshy
+// castle's texture is orange and hot pink. Graded per texel (in display space): orange and amber
+// become warm gold, soft pinks turn lavender, and strongly saturated pink accents (the crest banner)
+// stay pink. Blues are left alone. Runs on diffuseColor right after the texture is read.
+export const CASTLE_GRADE = /* glsl */ `
+{ vec3 c = pow(max(diffuseColor.rgb, 0.0), vec3(1.0 / 2.2));
+  vec3 hsv = bwRgb2hsv(c);
+  float h = hsv.x * 360.0, hp = h < 40.0 ? h + 360.0 : h;
+  float gold = smoothstep(10.0, 18.0, h) * (1.0 - smoothstep(55.0, 70.0, h)) * smoothstep(0.22, 0.4, hsv.y);
+  float pink = smoothstep(286.0, 302.0, hp) * (1.0 - smoothstep(368.0, 376.0, hp)) * (1.0 - smoothstep(0.5, 0.72, hsv.y));
+  float hn = mix(h, 40.0 + (h - 35.0) * 0.3, gold);
+  float hpn = mix(hp, 268.0, pink * 0.82);
+  hn = pink > 0.0 ? mod(hpn, 360.0) : hn;
+  hsv.x = hn / 360.0;
+  hsv.y *= mix(1.0, 0.88, gold) * mix(1.0, 0.62, pink);
+  hsv.z = min(1.0, hsv.z * mix(1.0, 1.06, gold) * mix(1.0, 1.05, pink));
+  diffuseColor.rgb = pow(bwHsv2rgb(hsv), vec3(2.2)); }
+`;
+
+// The approved washing brushes (Screen 3 left, Screen 4 both sides), seen end-on, are royal blue
+// toward the hub, then a white band, then a pink fringe. The Meshy roller's bristles are mixed pink,
+// purple and blue, so they are recoloured by distance from the spin axis (the model's Y). Each tuft
+// keeps its own light and shade from the vertex colours. rMax: the bristles' largest radius.
+export const brushGrade = (rMax) => /* glsl */ `
+{ float r = length(vObj.xz) / ${rMax.toFixed(4)};
+  float j = fract(sin(dot(floor(vObj * 38.0), vec3(12.99, 78.23, 37.71))) * 43758.55) - 0.5;   // ragged band edges
+  r += j * 0.07;
+  // Round blue tufts set in rings around the hub, each lit in its middle and shaded at its edge.
+  float rr = length(vObj.xz) / ${rMax.toFixed(4)} * 7.0, ring = floor(rr);
+  float segs = 9.0 + ring * 5.0, seg = (atan(vObj.z, vObj.x) / 6.28318 + 0.5) * segs + ring * 0.5;
+  vec2 cellUv = vec2(fract(rr), fract(seg)) - 0.5;
+  float tuft = 1.0 - smoothstep(0.15, 0.62, length(cellUv));
+  float tone = fract(sin(ring * 17.3 + floor(seg) * 3.71) * 4375.85);
+  vec3 blue = mix(vec3(0.02, 0.06, 0.5), mix(vec3(0.08, 0.22, 0.95), vec3(0.3, 0.5, 1.0), tone), tuft);
+  vec3 white = vec3(1.0, 0.88, 0.95), pink = vec3(1.0, 0.22, 0.58);
+  vec3 col = mix(blue, white, smoothstep(0.5, 0.57, r));
+  col = mix(col, pink, smoothstep(0.68, 0.76, r));
+  float l = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+  diffuseColor.rgb = col * clamp(0.72 + l * 0.75, 0.72, 1.25); }
+`;
+
 export const RIPPLES = 8;
 
 export const waterVertex = /* glsl */ `

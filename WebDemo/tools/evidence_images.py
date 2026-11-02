@@ -45,8 +45,8 @@ cam = [(tx(T[i]), ty(s['camera'][1])) for i, s in enumerate(track)]
 d.line(cam, fill=(120, 150, 230), width=2)
 pts = [(tx(T[i]), ty(s['world'][1])) for i, s in enumerate(track)]
 d.line(pts, fill=(255, 31, 158), width=4)
-d.text((L + 12, ty(-0.55)), "— mascot height", font=F(16, True), fill=(255, 31, 158))
-d.text((L + 12, ty(-0.55) + 22), "— follow-camera height", font=F(16, True), fill=(120, 150, 230))
+d.text((L + 12, ty(2.95)), "— mascot height", font=F(16, True), fill=(255, 31, 158))
+d.text((L + 12, ty(2.95) + 22), "— follow-camera height", font=F(16, True), fill=(120, 150, 230))
 # gestures
 for t, a in SCRIPT:
     x = tx(t)
