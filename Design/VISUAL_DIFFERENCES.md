@@ -22,6 +22,10 @@ Precision note: the approved screens are about 270 × 540 px crops of one board.
   - The white and gold ring stripes in the drum texture glow.
   - The fog now starts at 40 m, so it no longer pales the drum interior.
 - **Brighter, thicker glowing rings** at the drum joints, cooler blue drum lights, and stronger bloom and saturation.
+- **Waterfalls from the castle towers (Screen 3).**
+  - On each side, water pours from a gold spout on the outer Meshy tower into a gold catch basin, then on down into the moat.
+  - Each spout is placed by casting the approved screen position from the fitted Screen 3 camera onto the Meshy tower. A check against the real castle mesh puts both spouts and basins within 0.01 of the approved positions.
+  - The falling water accelerates under gravity, with streaks, foam lace, frothy edges and glints. It ripples as it falls and ends in spray and foam where it lands.
 - All of these can be tuned live on the **Bubble Wash Look** component.
 
 ## Screen 3: Let's go! Into the washing machine
@@ -29,9 +33,9 @@ Precision note: the approved screens are about 270 × 540 px crops of one board.
 | # | Difference | Cause | Fix |
 |---|---|---|---|
 | 1 | The approved castle facade is wider. Towers and pillars run off both screen edges, and the pink crest sign sits above the banner at about 10 % height. In the Meshy castle the towers sit closer to the portal and the crest is hidden behind the banner (about 20 % height). | Meshy castle proportions differ from the painting. The camera is kept on the portal/mascot framing. | Needs a wider castle model, or extra side-tower pieces from Meshy. The camera should not be moved off the approved composition. |
-| 2 | Waterfalls pour from the towers on both sides. | Not in the castle model. | Waterfall FX (particles + scrolling water mesh). Next step. |
+| 2 | Waterfalls pour from the towers on both sides, in two tiers between gold collars. | **Implemented:** a two-tier cascade on each outer Meshy tower (spout, catch basin, moat). It uses `Waterfall.shader` and spray particles, built by `TowerWaterfalls.cs`. The gold spouts and basins are `PLACEHOLDER_` pieces. | Check in the first capture: thickness, brightness and foam (Bubble Wash Look → Tower waterfalls). Meshy spout/basin pieces can replace the gold placeholders. |
 | 3 | The water is a raised, glowing, crystalline water slide that narrows and rises into the portal, with gold slide edges. | **Implemented this round:** a raised, crowned, flowing path with gold rims and spill foam. It is still procedural, and its shape is not yet compared with the approved image. | Check in the first capture. Meshy water-slide pieces can replace the gold rims and edge geometry. |
-| 4 | Large blue/pink spinning brush with a gold mechanism on the left. | `PLACEHOLDER_SpinningBrush_Entrance_L` is a simple procedural wheel. | Meshy brush model. |
+| 4 | Large blue/pink spinning brush with a gold mechanism on the left. | **Meshy washing roller**, seen end-on: gold pin, blue hub, pink fur. Re-measured on the approved crop including the fur: centre (0.03, 0.53), 0.42 of the width across. The old placeholder size covered only the blue disc. The approved brush reads wider, showing more fur toward the path. | Check in the first capture. If needed, turn it to face the camera more (the −32° in `ScreenComposition`). |
 | 5 | Gold pipes/rails and machinery on the right. | `PLACEHOLDER_WaterSlideRails` are plain gold cylinders. | Meshy slide/rail pieces. |
 | 6 | The golden figure on the water at the portal (a duck or similar toy). | `PLACEHOLDER_RubberDuck`. | Please confirm what this character is, and supply the model. |
 | 7 | Pink fluffy mascot seen from behind, with a dense fur texture and little side arms. | `PLACEHOLDER_PinkMascot` uses a procedural fur shader. | Meshy mascot GLB. |
@@ -45,10 +49,10 @@ Precision note: the approved screens are about 270 × 540 px crops of one board.
 | # | Difference | Cause | Fix |
 |---|---|---|---|
 | 1 | The drum reads as bright blue concentric swirl rings with sparkles, a strong vortex and a luminous centre. | We render the Meshy drum (blue perforated walls, gold portholes, paddle fins) with restored saturation and glowing ring stripes, plus glow rings, drum lights and end glow. The swirl/vortex animation is not reproduced. | Check the Unity capture first. Then add an animated swirl/sparkle layer if still needed, without replacing the Meshy drum. |
-| 2 | Big fluffy pink-and-white brushes with blue centres on both walls, cropped by the screen edges. | `PLACEHOLDER_SpinningBrush_Drum_*`, wall-mounted at the approved positions. | Meshy brush model. |
+| 2 | Big fluffy pink-and-white brushes with blue centres on both walls, cropped by the screen edges. | **Meshy washing rollers** at the approved wall positions, long axis toward the drum centre, so the fur bands nest as in the approved image. Each reaches as far in as gameplay allows: left 1.05 m (above the highest jump), right 0.75 m (stops 10 cm outside the outer lane). The approved right brush bulges further in than a playable lane allows. The roller's bands are pink/purple/blue; the approved brush is pink/white/blue. | Check in the first capture. Tune the colours with Bubble Wash Look → Meshy spinning brushes. |
 | 3 | Large glossy gold coins with embossed paw prints, tilted toward the viewer. | Placeholder coin with a paw texture, spinning. | Meshy coin. Optional tilt toward the camera. |
 | 4 | Cute white sock buddy with purple stripes, blue toe and a face. | `PLACEHOLDER_LostSock_*`. | Meshy sock model. |
-| 5 | Faceted purple gem. | Placeholder gem. | Meshy gem. |
+| 5 | Faceted purple gem. | **Meshy pink gemstone** at the approved position and size: on Screen 4 it spans x 0.23–0.35, y 0.45–0.49, against the approved 0.24–0.34, 0.43–0.50. Its colours are the Meshy texture's pink and magenta, so it is pinker than the purple gem painted on the board, as delivered. | Check gloss and sparkle in the first capture (Bubble Wash Look → Meshy pink gemstones). |
 | 6 | Huge white foam splash across the bottom of the screen. | Wake/burst particles and shader foam; not yet tuned. | Tune after the Unity capture. |
 | 7 | Gold ring band arcing across the top behind the mission panel. | Should come from the drum porthole ahead. | Verify in the Unity capture. |
 | 8 | Power-up icons (pink bubble blaster, yellow propeller) are detailed glossy art in the approved. | Generated stand-in sprites. | Final UI art. |

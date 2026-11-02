@@ -5,8 +5,9 @@ namespace BubbleWash
     public enum CollectibleKind { Coin, Gem, Sock }
 
     /// <summary>
-    /// Paw coins, purple gems and lost socks. Spins/bobs while waiting, pops towards the mascot when
-    /// collected and re-appears on the next lap.
+    /// Paw coins, gemstones and lost socks. Spins/bobs while waiting, pops towards the mascot when
+    /// collected and re-appears on the next lap (the same objects are reused, never re-created).
+    /// Gems turn smoothly and rock gently so their facets catch the light.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public class Collectible : MonoBehaviour
@@ -17,9 +18,13 @@ namespace BubbleWash
         public float bobAmplitude = 0.08f;
         public float bobFrequency = 1.2f;
 
+        /// <summary>Raised once each time anything is collected (gem sparkles and the HUD counter pop listen).</summary>
+        public static event System.Action<Collectible> Collected;
+
         Vector3 _home;
         Vector3 _homeScale;
         float _phase;
+        float _spin;
         float _collectedT = -1f;
         Transform _target;
 
@@ -30,6 +35,7 @@ namespace BubbleWash
             _home = transform.position;
             _homeScale = transform.localScale;
             _phase = (transform.position.x * 1.7f + transform.position.z * 0.37f) % (2f * Mathf.PI);
+            _spin = transform.eulerAngles.y;
             GetComponent<Collider>().isTrigger = true;
         }
 
@@ -49,7 +55,12 @@ namespace BubbleWash
             }
             float y = Mathf.Sin(time * bobFrequency * 2f * Mathf.PI + _phase) * bobAmplitude;
             transform.position = _home + Vector3.up * y;
-            if (kind != CollectibleKind.Sock)
+            if (kind == CollectibleKind.Gem)
+            {
+                _spin = (_spin + spinSpeed * dt) % 360f;
+                transform.rotation = Quaternion.Euler(Mathf.Sin(time * 0.9f + _phase) * 9f, _spin, Mathf.Sin(time * 0.7f + _phase * 1.3f) * 7f);
+            }
+            else if (kind != CollectibleKind.Sock)
                 transform.Rotate(Vector3.up, spinSpeed * dt, Space.World);
             else
                 transform.localRotation = Quaternion.Euler(0f, 180f + Mathf.Sin(time * 2.2f + _phase) * 20f, Mathf.Sin(time * 3.1f + _phase) * 10f);
@@ -61,13 +72,16 @@ namespace BubbleWash
             _collectedT = 0f;
             _target = collector;
             var session = GameSession.Active;
-            if (session == null) return;
-            switch (kind)
+            if (session != null)
             {
-                case CollectibleKind.Coin: session.AddCoins(value); break;
-                case CollectibleKind.Gem: session.AddGems(value); break;
-                case CollectibleKind.Sock: session.RescueSock(); break;
+                switch (kind)
+                {
+                    case CollectibleKind.Coin: session.AddCoins(value); break;
+                    case CollectibleKind.Gem: session.AddGems(value); break;
+                    case CollectibleKind.Sock: session.RescueSock(); break;
+                }
             }
+            Collected?.Invoke(this);
         }
 
         public void ResetForLap()

@@ -8,10 +8,10 @@ namespace BubbleWash.EditorTools
     /// <summary>Creates (or refreshes) every generated material and the post-processing profile.</summary>
     public class MaterialSet
     {
-        public Material water, mascotFur, brushFur, sockFur, duck, eye, white, cheek;
-        public Material glowRing, endGlow, bubble, droplet, sparkle, sky;
-        public Material coin, gem, rail, placeholderDrum;
-        public Material castle, drum;
+        public Material water, waterfall, mascotFur, brushFur, sockFur, duck, eye, white, cheek;
+        public Material glowRing, endGlow, gemGlow, bubble, droplet, sparkle, sky;
+        public Material coin, gem, meshyGem, rail, placeholderDrum;
+        public Material castle, drum, brush;
         public VolumeProfile postProfile;
 
         const string Dir = Level1SceneBuilder.GeneratedDir + "/Materials/";
@@ -20,6 +20,7 @@ namespace BubbleWash.EditorTools
         {
             // Values here are starting points; BubbleWashLook (on Level1_WasherEntry) tunes them live.
             water = Mat("Water_ElectricBlue", "BubbleWash/Water", null);
+            waterfall = Mat("Waterfall_ElectricBlue", "BubbleWash/Waterfall", m => m.renderQueue = 3000);
             castle = Mat("Meshy_CastlePortal", "BubbleWash/MeshyBaked", m =>
             {
                 m.SetFloat("_Saturation", 1.2f); m.SetFloat("_Brightness", 1.05f); m.SetFloat("_LightInfluence", 0.4f);
@@ -32,6 +33,12 @@ namespace BubbleWash.EditorTools
                 m.SetFloat("_LightInfluence", 0.3f); m.SetFloat("_GlowThreshold", 0.72f); m.SetFloat("_GlowStrength", 2.2f);
                 m.SetColor("_GlowTint", new Color(1f, 0.95f, 0.85f));
                 m.SetFloat("_Cull", 0f);
+            });
+            brush = Mat("Meshy_SpinningBrush", "BubbleWash/MeshyBaked", m =>
+            {
+                m.SetFloat("_Saturation", 1.2f); m.SetFloat("_Brightness", 1.05f); m.SetFloat("_LightInfluence", 0.45f);
+                m.SetFloat("_GlowThreshold", 0.9f); m.SetFloat("_GlowStrength", 0.5f);
+                m.SetFloat("_Cull", 0f); // Meshy exports are double-sided
             });
             mascotFur = Mat("PLACEHOLDER_MascotFur", "BubbleWash/FluffyToon", m =>
             {
@@ -64,6 +71,7 @@ namespace BubbleWash.EditorTools
 
             glowRing = Mat("GlowRing", "BubbleWash/Glow", m => { m.SetColor("_Color", new Color(2.6f, 2.0f, 0.95f)); m.SetFloat("_CoreBoost", 1.6f); });
             endGlow = Particle("DrumEndGlow", new Color(1.3f, 1.6f, 2.0f, 1f), 2f, additive: true);
+            gemGlow = Particle("GemCollectGlow", new Color(2.0f, 0.9f, 1.7f, 1f), 2f, additive: true);
             bubble = Mat("IridescentBubble", "BubbleWash/IridescentBubble", m => m.renderQueue = 3000);
             droplet = Particle("SplashDroplet", new Color(1f, 1f, 1f, 0.95f), 0f, additive: false);
             sparkle = Particle("Sparkle", new Color(1.6f, 1.5f, 1.2f, 1f), 1f, additive: true);
@@ -83,6 +91,12 @@ namespace BubbleWash.EditorTools
                 m.SetFloat("_Metallic", 0.2f);
                 m.SetFloat("_Smoothness", 0.95f);
                 Emissive(m, new Color(0.45f, 0.1f, 0.75f));
+            });
+            // The Meshy pink gemstone: one shared, GPU-instanced material for every gem.
+            meshyGem = Mat("Meshy_PinkGem", "BubbleWash/Gem", m =>
+            {
+                m.enableInstancing = true;
+                m.SetFloat("_Cull", 0f); // Meshy exports are double-sided
             });
             rail = Lit("PLACEHOLDER_GoldRail", new Color(1f, 0.75f, 0.28f), 0.9f, 0.82f);
             placeholderDrum = Lit("PLACEHOLDER_WasherDrum", new Color(0.3f, 0.55f, 1f), 0.2f, 0.7f);

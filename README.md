@@ -6,7 +6,7 @@ This project recreates the 12 approved Bubble Wash Kingdom screens as real-time,
 
 | Screen | State |
 |---|---|
-| 3 · Let's go! Into the washing machine | **Playable, awaiting the first Unity capture.** It uses the Meshy castle portal, a raised flowing water path, electric-blue water, the mascot controls, the approved camera framing and the HUD. |
+| 3 · Let's go! Into the washing machine | **Playable, awaiting the first Unity capture.** It uses the Meshy castle portal, a raised flowing water path, electric-blue water, waterfalls pouring from both towers, the mascot controls, the approved camera framing and the HUD. |
 | 4 · Rescue 5 lost socks | **Playable, awaiting the first Unity capture.** It continues from Screen 3 in one run through three Meshy drum segments. You can collect the socks, coins and gem, and the 0/5 counter updates. |
 | 1, 2, 5–12 | Not started. |
 
@@ -41,6 +41,7 @@ The project builds as a **WebGL** browser game in the cloud, either with Unity B
    - A folder opens with `Previews/Captures/Screen03_compare.png` and `Screen04_compare.png`. Each shows **approved | Unity | 50 % overlay**.
    - **Send me those two images** and I'll correct the largest differences first.
    - **Bubble Wash → 2b. Quick Capture (Edit Mode)** produces the same images without entering Play mode.
+   - **Bubble Wash → 2c. Capture Gem Collection (Play Mode)** films the running game as the mascot runs into a gem. It saves `GemCollect_00.png` onward and `GemCollect_sheet.png`, showing the gem turning, the sparkle burst and the HUD gem counter going up. The before and after counts go in `gem_capture_report.md`.
    - **F12** during Play saves a screenshot of any moment to `Previews/Captures/`.
 6. **Optional checks.**
    - **Bubble Wash → 3. Validate Clearance, Gaps & Budget** checks against the real Meshy meshes:
@@ -48,6 +49,7 @@ The project builds as a **WebGL** browser game in the cloud, either with Unity B
      - castle/drum opening alignment;
      - mascot clearance in every lane, while floating and jumping;
      - camera clearance;
+     - that the tower waterfalls stay off the run path;
      - the triangle budget.
 
      Results go to `Previews/validation_report.md`.
@@ -71,6 +73,7 @@ The mascot floats on the moving waves and the raised path, paddles its arms, kic
 
 Select **Level1_WasherEntry** in the Hierarchy. The **Bubble Wash Look** component holds every look setting, and changes show immediately in the editor and in Play mode:
 - water colours, foam, foam lace, caustics, reflections and drum-ring reflections;
+- the tower waterfalls: colours, opacity, foam, glow and falling speed;
 - the saturation and glow of the Meshy castle and drum;
 - ring glow;
 - bloom, saturation, contrast and exposure;
@@ -85,10 +88,10 @@ Each upcoming model has a drop folder:
 | Model | Folder | Replaces |
 |---|---|---|
 | Pink mascot | `Assets/BubbleWash/Models/Mascot/` | `PLACEHOLDER_PinkMascot` |
-| Spinning brush | `Assets/BubbleWash/Models/SpinningBrush/` | `PLACEHOLDER_SpinningBrush_*` |
+| Spinning brush | `Assets/BubbleWash/Models/SpinningBrush/` | **In:** the Meshy washing roller (`BubbleWash_WashingRoller_Claudia_Textured.glb`) replaces `PLACEHOLDER_SpinningBrush_*` |
 | Rescue sock | `Assets/BubbleWash/Models/RescueSock/` | `PLACEHOLDER_LostSock_*` |
 | Paw coin | `Assets/BubbleWash/Models/Coin/` | placeholder coins |
-| Gem | `Assets/BubbleWash/Models/Gem/` | placeholder gem |
+| Gem | `Assets/BubbleWash/Models/Gem/` | **In:** the Meshy pink gemstone (`BubbleWash_Pink_Gemstone_Claudia_Small.glb`) replaces the placeholder gem |
 | Duck / golden figure at the portal | `Assets/BubbleWash/Models/RubberDuck/` | `PLACEHOLDER_RubberDuck` |
 
 1. Drop the GLB into its folder.
@@ -104,11 +107,14 @@ Or send me the GLBs and I'll wire them in.
 |---|---|
 | Castle portal | **Meshy** `Models/CastlePortal/BubbleWashCastle.glb`, rendered with `MeshyBaked.shader`. Its texture is unchanged; saturation and glow are tunable. |
 | Washing-machine drum, 3 segments | **Meshy** `Models/WasherTunnel/BubbleWashTunnel_Mobile_2K_Lite.glb`. The white and gold ring stripes in its texture glow. |
+| Waterfalls from both castle towers (Screen 3) | `Waterfall.shader` and spray particles. `TowerWaterfalls.cs` mounts them on the Meshy towers at the approved screen positions. The gold spouts and catch basins are `PLACEHOLDER_` pieces. |
 | Electric-blue rushing water | `Water.shader`: raised crowned path with spill foam, foam lace and streaks, caustics, glints, and sky and drum-ring reflections. The mascot floats on the same surface (`WaveField.cs`). |
 | Splashes, iridescent bubbles, sparkles, glowing rings, drum lights, bloom | particle systems, `IridescentBubble.shader`, `Glow.shader`, URP Volume |
 | Follow camera fitted to Screen 3 and Screen 4 | `RunnerCameraRig.cs` |
 | Movement, animation, collisions, collectibles, power-ups | `BubbleRunner.cs`, `MascotAnimator.cs`, `Collectible.cs`, `GameSession.cs` |
+| Pink gemstones | **Meshy** `Models/Gem/BubbleWash_Pink_Gemstone_Claudia_Small.glb`, rendered with `Gem.shader` (glossy crystal from the Meshy colour and normal maps). Every gem shares the one mesh and one material. One sits at the approved Screen 4 position and four along the water path. Each turns, rocks gently and floats, and glows and sparkles more as the mascot approaches. Touching one collects it: the gem pops into the mascot, `GemSparkles.cs` fires a star burst, glow flash and chime, and the HUD gem counter goes up and pops. Gems come back on the next lap: the same objects are reused, never re-created. |
 | HUD for Screens 3 and 4 | `GameHud.cs`. The sprites are generated stand-ins (`Tools/generate_ui_sprites.py`). |
+| Spinning brushes, Screens 3 and 4 | **Meshy** `Models/SpinningBrush/BubbleWash_WashingRoller_Claudia_Textured.glb`, rendered with `MeshyBaked.shader`. Each roller spins about its long axis and has a capsule collider. It reaches as far into the drum as it can without touching any lane or jump. |
 | Everything named `PLACEHOLDER_` | temporary until the Meshy model arrives |
 
 How the two Meshy models are measured, aligned and chained is explained in [`Design/MODEL_MEASUREMENTS.md`](Design/MODEL_MEASUREMENTS.md).
@@ -116,9 +122,15 @@ How the two Meshy models are measured, aligned and chained is explained in [`Des
 ## What has and hasn't been tested
 
 Done in the cloud build environment, which has no Unity editor:
-- All C# compiles against the Unity 6.3 reference assemblies, uGUI, and the URP and Input System APIs, with both input backends.
-- All 7 shaders compile with Microsoft DXC against URP 17.3's shader library, in every keyword variant: fog, additional lights, and Forward / Forward+.
+- All C# compiles with the Unity 6.3.27 editor's own compiler against its engine and editor assemblies, with both input backends.
+  - uGUI and the Input System are built from their package sources.
+  - The few URP types the code uses are checked against their URP 17.3 signatures.
+  - The game code also compiles as the WebGL player sees it, without editor code.
+- All 9 shaders compile with the DXC bundled with Unity 6.3, against URP 17.3's shader library. That covers every keyword variant (fog, instancing, additional lights, Forward / Forward+), for desktop and mobile API headers.
 - The measurement code was run on both GLBs.
+- The tower waterfall placement was checked against the real castle mesh. Both spouts reach the Meshy towers and sit within 1 % of the approved screen positions.
+
+These checks can be re-run with [`Tools/verify/`](Tools/verify/README.md).
 
 **Still needs your machine:**
 - importing the project in the Unity editor;
@@ -127,7 +139,7 @@ Done in the cloud build environment, which has no Unity editor:
 - the capture tool;
 - frame rate on a phone.
 
-The Meshy castle (150k triangles) plus three drum segments (136k each) total about 560k triangles, which is heavy for mid-range phones. If the frame rate on the phone is short, lower-poly Meshy exports are the fix.
+The Meshy castle (150k triangles) plus three drum segments (136k each) total about 560k triangles. The three washing rollers add 133k each, about 960k in the whole scene, though not all of it is on screen at once. Each gem adds 40,768 triangles (the Meshy gem isn't decimated); usually one or two are on screen. That is heavy for mid-range phones. If the frame rate on the phone is short, lower-poly Meshy exports are the fix, starting with the roller: a 20–30k-triangle version would look the same at these sizes.
 
 ## Project layout
 
@@ -144,7 +156,7 @@ Design/              approved screens, measurements, visual differences
 Previews/            build/validation reports, Unity captures
 Assets/WebGLTemplates/BubbleWash/   portrait browser page for the WebGL build
 .github/workflows/webgl-build.yml   cloud WebGL build (GameCI)
-Tools/               HUD sprite generator
+Tools/               HUD sprite generator; verify/ checks C# and shaders without the editor
 Open_BubbleWash_In_Unity.bat
 CLOUD_BUILD.md       browser version: cloud build + hosting steps
 ```

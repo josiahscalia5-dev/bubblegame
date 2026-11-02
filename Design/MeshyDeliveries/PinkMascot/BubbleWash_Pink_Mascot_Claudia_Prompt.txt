@@ -1,0 +1,11 @@
+Claudia, I am attaching the SMALL OPTIMIZED PINK MASCOT GLB from Meshy for Bubble Wash Kingdom. This file replaces the temporary pink ball character in my existing project. DO NOT rebuild the app or change the approved Screen 3 composition.
+
+1. Import this small standalone textured GLB and preserve its fuchsia-pink color and soft fuzzy silhouette. It uses an unlit color-safe material so the fur does not appear black in previews. If using a custom shader, retain the original look and ensure two-sided rendering as needed.
+2. Orient and scale it to the approved portrait Screen 3 reference. Check which face direction is forward; don't let the furry back face the camera.
+3. Attach it to the already implemented gameplay character controller. Keep its pivot centered. The Meshy GLB is not confirmed to be rigged, so first animate the entire character for bobbing, leaning, rolling, jumping and rotating. Do not claim independently movable arms unless a working rig is added.
+4. Build the real gameplay movement: character physically rides a three-dimensional path that rises, descends and curves through the existing washer tunnel; a smooth camera follows its changing height and angle.
+5. Add animated moving water, wake, ripples, splash droplets and foam that visibly react to forward speed, turns, and downhill drops. Make swipe control responsive.
+6. Give me a real running gameplay preview rather than only static renders or compile claims. Compare to my approved Screen 3 screenshot. Report clearly whether it was actually run.
+7. Important QA: In a preliminary 3D model preview, some fluffy bristles appear to obscure parts of the face. Check the character's face from the actual gameplay camera. If needed, trim only the fur blocking its eyes or mouth, without redesigning its facial features.
+
+Use the SMALL 4 MB GLB first. If it looks too coarse and uploads are accepted, use the 10 MB balanced GLB.

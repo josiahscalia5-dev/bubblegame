@@ -50,11 +50,18 @@ namespace BubbleWash.EditorTools
         static readonly Dictionary<PropSlot, (float size, SizeAxis axis)> Defaults = new Dictionary<PropSlot, (float, SizeAxis)>
         {
             { PropSlot.Mascot, (1.04f, SizeAxis.Width) },          // arms-to-arms width that fits Screens 3/4
-            { PropSlot.SpinningBrush, (2.0f, SizeAxis.Largest) },  // diameter at instance scale 1 (instances scale it)
+            // The Meshy washing roller: 2 m diameter at instance scale 1 (instances scale it). Its long axis
+            // (Meshy local Y) is turned onto the brush's spin axis (local Z) by DefaultRotation below.
+            { PropSlot.SpinningBrush, (2.0f, SizeAxis.Width) },
             { PropSlot.RescueSock, (0.66f, SizeAxis.Height) },
             { PropSlot.Coin, (0.6f, SizeAxis.Largest) },
             { PropSlot.Gem, (0.42f, SizeAxis.Height) },
             { PropSlot.RubberDuck, (1.0f, SizeAxis.Largest) },     // instances scale it to the approved size
+        };
+
+        static readonly Dictionary<PropSlot, Vector3> DefaultRotation = new Dictionary<PropSlot, Vector3>
+        {
+            { PropSlot.SpinningBrush, new Vector3(90f, 0f, 0f) },  // roller long axis Y -> spin axis Z
         };
 
         public static MeshyAssetSlots LoadOrCreate()
@@ -72,7 +79,8 @@ namespace BubbleWash.EditorTools
                 if (!AssetDatabase.IsValidFolder(folder)) AssetDatabase.CreateFolder(ModelsRoot, s.ToString());
                 if (slots.slots.Exists(e => e.slot == s)) continue;
                 var d = Defaults[s];
-                slots.slots.Add(new SlotEntry { slot = s, targetSize = d.size, sizeAxis = d.axis });
+                slots.slots.Add(new SlotEntry { slot = s, targetSize = d.size, sizeAxis = d.axis,
+                    rotationOffset = DefaultRotation.TryGetValue(s, out var rot) ? rot : Vector3.zero });
             }
             EditorUtility.SetDirty(slots);
             return slots;

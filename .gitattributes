@@ -13,3 +13,4 @@
 *.ttf binary
 *.zip binary
 *.bat text eol=crlf
+*.mp4 binary

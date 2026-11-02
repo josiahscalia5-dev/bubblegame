@@ -6,7 +6,8 @@ namespace BubbleWash
 {
     /// <summary>
     /// One place to tune the look of Screens 3 and 4 against the approved images: water colours and
-    /// foam, drum ring glow, Meshy model saturation/glow, bloom, colour grading, fog and ambient light.
+    /// foam, the tower waterfalls, drum ring glow, Meshy model saturation/glow, bloom, colour grading,
+    /// fog and ambient light.
     /// Changes apply immediately in the editor and in Play mode (they are written to the generated
     /// materials, so they persist). Select "Level1_WasherEntry" in the Hierarchy to find it.
     /// </summary>
@@ -15,8 +16,11 @@ namespace BubbleWash
     {
         [Header("Materials (assigned by the builder)")]
         public Material water;
+        public Material waterfall;
         public Material castle;
         public Material drum;
+        public Material brush;
+        public Material gem;
         public Material glowRing;
         public VolumeProfile post;
         public Light sun;
@@ -32,6 +36,15 @@ namespace BubbleWash
         [Range(0f, 2f)] public float reflections = 0.9f;
         [Range(0f, 4f)] public float ringReflections = 1.6f;
 
+        [Header("Tower waterfalls (Screen 3)")]
+        public Color waterfallDeep = new Color(0.0f, 0.32f, 1.0f);
+        public Color waterfallBright = new Color(0.25f, 0.86f, 1.0f);
+        [Range(0f, 1f)] public float waterfallOpacity = 0.82f;
+        [Range(0f, 2f)] public float waterfallFoam = 1f;
+        [Range(0f, 3f)] public float waterfallEmission = 0.8f;
+        [Tooltip("Speed the water leaves the spouts (m/s); it speeds up under gravity as it falls.")]
+        public float waterfallSpeed = 1.2f;
+
         [Header("Meshy castle (baked texture)")]
         [Range(0f, 2f)] public float castleSaturation = 1.2f;
         [Range(0f, 2f)] public float castleBrightness = 1.05f;
@@ -44,6 +57,20 @@ namespace BubbleWash
         [Range(0f, 1f)] public float drumSceneLight = 0.3f;
         [Range(0f, 1f)] public float drumGlowThreshold = 0.72f;
         [Range(0f, 6f)] public float drumGlow = 2.2f;
+
+        [Header("Meshy spinning brushes (washing roller)")]
+        [Range(0f, 2f)] public float brushSaturation = 1.2f;
+        [Range(0f, 2f)] public float brushBrightness = 1.05f;
+        [Range(0f, 1f)] public float brushSceneLight = 0.45f;
+        [Range(0f, 6f)] public float brushGlow = 0.5f;
+
+        [Header("Meshy pink gemstones")]
+        [Range(0f, 2f)] public float gemSaturation = 1.15f;
+        [Range(0f, 2f)] public float gemBrightness = 1.1f;
+        [Range(0f, 2f)] public float gemGlow = 0.35f;
+        [Range(0f, 3f)] public float gemGlowNearMascot = 0.8f;
+        [Range(0f, 2f)] public float gemReflection = 0.9f;
+        [Range(0f, 6f)] public float gemSparkle = 2.5f;
 
         [Header("Glowing drum rings")]
         [Range(0f, 6f)] public float ringIntensity = 1.6f;
@@ -79,8 +106,27 @@ namespace BubbleWash
                 water.SetFloat("_Reflection", reflections);
                 water.SetFloat("_RingReflection", ringReflections);
             }
+            if (waterfall != null)
+            {
+                waterfall.SetColor("_DeepColor", waterfallDeep);
+                waterfall.SetColor("_BrightColor", waterfallBright);
+                waterfall.SetFloat("_Opacity", waterfallOpacity);
+                waterfall.SetFloat("_FoamAmount", waterfallFoam);
+                waterfall.SetFloat("_Emission", waterfallEmission);
+                waterfall.SetFloat("_LipSpeed", waterfallSpeed);
+            }
             Meshy(castle, castleSaturation, castleBrightness, castleSceneLight, 0.85f, castleGlow);
             Meshy(drum, drumSaturation, drumBrightness, drumSceneLight, drumGlowThreshold, drumGlow);
+            if (gem != null)
+            {
+                gem.SetFloat("_Saturation", gemSaturation);
+                gem.SetFloat("_Brightness", gemBrightness);
+                gem.SetFloat("_Glow", gemGlow);
+                gem.SetFloat("_NearGlow", gemGlowNearMascot);
+                gem.SetFloat("_Reflection", gemReflection);
+                gem.SetFloat("_Sparkle", gemSparkle);
+            }
+            Meshy(brush, brushSaturation, brushBrightness, brushSceneLight, 0.9f, brushGlow);
             if (glowRing != null) glowRing.SetFloat("_CoreBoost", ringIntensity);
 
             if (post != null)

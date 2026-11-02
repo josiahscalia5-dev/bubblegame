@@ -25,6 +25,8 @@ namespace BubbleWash
         public RectTransform root;
         public Text heartsText, coinsText, gemsText, socksText, blastBadgeText, turboBadgeText;
         public Image socksFill;
+        [Tooltip("Gem icon and counter, popped when a gem is collected.")]
+        public RectTransform gemIcon, gemCount;
         public GameObject introGroup, runningGroup, gearButton, pauseButton;
         public Button pause, blast, turbo;
         public GameObject pausedOverlay;
@@ -33,6 +35,7 @@ namespace BubbleWash
         static readonly Color Gold = new Color(1f, 0.86f, 0.3f, 1f);
 
         GameSession _session;
+        float _gemPop = -1f;
 
         void Start()
         {
@@ -43,6 +46,7 @@ namespace BubbleWash
                 _session.Changed += Refresh;
                 _session.PhaseChanged += OnPhase;
             }
+            Collectible.Collected += OnCollected;
             if (pause) pause.onClick.AddListener(() => { if (GameSession.Active != null) GameSession.Active.TogglePause(); });
             if (blast) blast.onClick.AddListener(() => { if (runner) runner.UseBubbleBlast(); });
             if (turbo) turbo.onClick.AddListener(() => { if (runner) runner.UseTurboSpin(); });
@@ -52,7 +56,30 @@ namespace BubbleWash
 
         void OnDestroy()
         {
+            Collectible.Collected -= OnCollected;
             if (_session != null) { _session.Changed -= Refresh; _session.PhaseChanged -= OnPhase; }
+        }
+
+        void OnCollected(Collectible c)
+        {
+            if (c != null && c.kind == CollectibleKind.Gem) _gemPop = 0f;   // the count itself updates through Refresh
+        }
+
+        // Gem counter pop: the icon and number grow, wobble and settle (0.4 s, also while paused).
+        void Update()
+        {
+            if (_gemPop < 0f) return;
+            _gemPop += Time.unscaledDeltaTime;
+            float k = Mathf.Clamp01(_gemPop / 0.4f);
+            float pop = Mathf.Sin(k * Mathf.PI) * (1f - 0.35f * k);
+            if (gemIcon) { gemIcon.localScale = Vector3.one * (1f + 0.45f * pop); gemIcon.localRotation = Quaternion.Euler(0f, 0f, Mathf.Sin(k * Mathf.PI * 3f) * 12f * (1f - k)); }
+            if (gemCount) gemCount.localScale = Vector3.one * (1f + 0.25f * pop);
+            if (k >= 1f)
+            {
+                _gemPop = -1f;
+                if (gemIcon) { gemIcon.localScale = Vector3.one; gemIcon.localRotation = Quaternion.identity; }
+                if (gemCount) gemCount.localScale = Vector3.one;
+            }
         }
 
         public void OnPhase(RunPhase phase) => ShowScreen(phase == RunPhase.Intro ? 3 : 4, phase == RunPhase.Paused);
@@ -104,8 +131,9 @@ namespace BubbleWash
             coinsText = Label(coin, "1,280", 15, TextAnchor.MiddleLeft, 25, 0, 42, 22);
 
             var gem = Pill("Gems", 166, 14, 57, 22);
-            Icon(gem, sprites.gem, 0, -2, 27, 25);
+            gemIcon = CentrePivot((RectTransform)Icon(gem, sprites.gem, 0, -2, 27, 25).transform);
             gemsText = Label(gem, "36", 15, TextAnchor.MiddleLeft, 31, 0, 24, 22);
+            gemCount = CentrePivot((RectTransform)gemsText.transform);
 
             // ---- Screen 3 only
             gearButton = RoundButton("SettingsGear", sprites.buttonRound, sprites.gear, 226, 12, 27, 27, anchorRight: false).gameObject;
@@ -210,6 +238,15 @@ namespace BubbleWash
             img.sprite = sprite; img.type = Image.Type.Sliced; img.raycastTarget = false;
             var rt = (RectTransform)go.transform;
             Place(rt, a, x, y, w, h);
+            return rt;
+        }
+
+        /// <summary>Move the pivot to the centre without moving the element, so it scales and turns in place.</summary>
+        static RectTransform CentrePivot(RectTransform rt)
+        {
+            Vector2 d = new Vector2(0.5f, 0.5f) - rt.pivot;
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition += new Vector2(d.x * rt.sizeDelta.x, d.y * rt.sizeDelta.y);
             return rt;
         }
 

@@ -1,0 +1,10 @@
+Bubble Wash Kingdom - Pink Gemstone smaller GLB files
+
+Original Meshy master: 15.20 MiB; 40,768 triangles; base and normal textures 4096x4096.
+
+Claudia Small: 1.35 MiB; 40,768 triangles; base/normal maps 1024x1024, metallic-roughness 512x512. Recommended first.
+Claudia Tiny: 1.23 MiB; 40,768 triangles; base/normal maps 512x512, metallic-roughness 256x256. Use if Small is too large.
+
+These are smaller-file textured versions; geometry was preserved and has NOT been decimated. Smaller upload does not automatically mean lower triangle complexity. Actual visual performance must be checked in Claudia's game.
+
+See the included prompt for Claudia Code.

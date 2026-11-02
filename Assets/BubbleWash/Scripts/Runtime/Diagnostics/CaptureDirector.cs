@@ -18,8 +18,16 @@ namespace BubbleWash
         /// <summary>Called when every screen has been captured.</summary>
         public Action finished;
 
+        [Header("Gem collection sequence (instead of the approved screens)")]
+        public bool gemSequence;
+        public int gemFrames = 16;
+        public float gemFrameInterval = 0.1f;
+        /// <summary>Called at the end of the frame for each gem-sequence frame (index, gem count shown on the HUD).</summary>
+        public Action<int, int> captureGemFrame;
+
         IEnumerator Start()
         {
+            if (gemSequence) { yield return GemSequence(); yield break; }
             var env = Level1Environment.Active;
             var session = GameSession.Active;
             var runner = env != null ? env.runner : FindFirstObjectByType<BubbleRunner>();
@@ -48,6 +56,47 @@ namespace BubbleWash
                 capture?.Invoke(screen);
             }
             runner.holdPosition = false;
+            finished?.Invoke();
+        }
+
+        /// <summary>
+        /// The real game running into a gem: the mascot starts about a second before a gem on the water
+        /// in its lane, and frames are captured while the gem turns, is collected (sparkle burst, chime)
+        /// and the HUD gem counter goes up.
+        /// </summary>
+        IEnumerator GemSequence()
+        {
+            var env = Level1Environment.Active;
+            var session = GameSession.Active;
+            var runner = env != null ? env.runner : FindFirstObjectByType<BubbleRunner>();
+            var rig = FindFirstObjectByType<RunnerCameraRig>();
+            var hud = FindFirstObjectByType<GameHud>();
+            Collectible gem = null;
+            foreach (var c in FindObjectsByType<Collectible>(FindObjectsSortMode.None))
+                if (c.kind == CollectibleKind.Gem && c.transform.position.y < 1f && (gem == null || c.transform.position.z < gem.transform.position.z)) gem = c;
+            if (env == null || runner == null || rig == null || gem == null)
+            {
+                Debug.LogError("[BubbleWash] Gem capture: Level 1 scene or a gem on the water not found in Play mode.");
+                finished?.Invoke();
+                yield break;
+            }
+            var l = env.layout;
+            int lane = 0;
+            for (int i = 1; i < l.laneCount; i++)
+                if (Mathf.Abs(l.LaneX(i) - gem.transform.position.x) < Mathf.Abs(l.LaneX(lane) - gem.transform.position.x)) lane = i;
+
+            yield return null;
+            if (session != null) session.SetPhase(RunPhase.Running);
+            runner.holdPosition = false;
+            runner.PoseAt(gem.transform.position.z - runner.cruiseSpeed * 1.0f, lane, Time.timeSinceLevelLoad);
+            rig.Snap();
+            if (hud != null) hud.ShowScreen(4);
+            for (int f = 0; f < gemFrames; f++)
+            {
+                yield return new WaitForSeconds(gemFrameInterval);
+                yield return new WaitForEndOfFrame();
+                captureGemFrame?.Invoke(f, session != null ? session.gems : -1);
+            }
             finished?.Invoke();
         }
     }

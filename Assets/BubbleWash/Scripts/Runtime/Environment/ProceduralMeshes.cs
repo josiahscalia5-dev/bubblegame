@@ -365,6 +365,75 @@ namespace BubbleWash
             return Build("Disc", v, n, uv, c, t);
         }
 
+        /// <summary>
+        /// Falling water column for the tower waterfalls (Screen 3). Built with the lip at the origin and
+        /// the water thrown along +Z: the centre line follows the ballistic curve
+        /// y = -drop * (z / throwDistance)^2 and ends at (0, -drop, throwDistance). The cross-section is a
+        /// half-ellipse bulging away from the wall it pours from, so the fall reads as a round column of
+        /// water, widening from <paramref name="topWidth"/> to <paramref name="bottomWidth"/>.
+        /// Rows are spaced evenly along the curve.
+        /// UV.x = across the column (0..1); UV.y = metres along the fall from the lip (the shader scrolls
+        /// it downward at the falling speed). Vertex colour.r = progress down the fall (0 lip, 1 bottom).
+        /// </summary>
+        public static Mesh Waterfall(float throwDistance, float drop, float topWidth, float bottomWidth,
+            float bulge = 0.35f, int across = 12, int along = 28, string name = "Waterfall")
+        {
+            across = Mathf.Max(2, across);
+            along = Mathf.Max(2, along);
+            throwDistance = Mathf.Max(0.01f, throwDistance);
+            drop = Mathf.Max(0.01f, drop);
+
+            // Arc-length table of the centre line, so rows are evenly spaced along the fall.
+            const int samples = 256;
+            var arc = new float[samples + 1];
+            Vector3 prev = Vector3.zero;
+            for (int k = 1; k <= samples; k++)
+            {
+                float tau = (float)k / samples;
+                var p = new Vector3(0f, -drop * tau * tau, throwDistance * tau);
+                arc[k] = arc[k - 1] + Vector3.Distance(prev, p);
+                prev = p;
+            }
+            float total = arc[samples];
+
+            var v = new List<Vector3>(); var n = new List<Vector3>(); var uv = new List<Vector2>(); var c = new List<Color>(); var t = new List<int>();
+            int seek = 0;
+            for (int r = 0; r <= along; r++)
+            {
+                float s = (float)r / along;
+                float target = s * total;
+                while (seek < samples - 1 && arc[seek + 1] < target) seek++;
+                float span = Mathf.Max(1e-6f, arc[seek + 1] - arc[seek]);
+                float tau = (seek + Mathf.Clamp01((target - arc[seek]) / span)) / samples;
+
+                var centre = new Vector3(0f, -drop * tau * tau, throwDistance * tau);
+                var tangent = new Vector3(0f, -2f * drop * tau, throwDistance).normalized;
+                var outward = new Vector3(0f, tangent.z, -tangent.y);   // up at the lip, toward +Z lower down
+                float w = Mathf.Lerp(topWidth, bottomWidth, s);
+                float a = Mathf.Max(0.005f, w * 0.5f), b = Mathf.Max(0.005f, w * bulge);
+                for (int j = 0; j <= across; j++)
+                {
+                    float theta = Mathf.PI * j / across;
+                    float cx = -Mathf.Cos(theta), sy = Mathf.Sin(theta);
+                    v.Add(centre + Vector3.right * (cx * a) + outward * (sy * b));
+                    n.Add((Vector3.right * (cx / a) + outward * (sy / b)).normalized);
+                    uv.Add(new Vector2((float)j / across, target));
+                    c.Add(new Color(s, 0f, 0f, 1f));
+                }
+            }
+            for (int r = 0; r < along; r++)
+                for (int j = 0; j < across; j++)
+                {
+                    int i0 = r * (across + 1) + j, i1 = i0 + across + 1;
+                    t.Add(i0); t.Add(i0 + 1); t.Add(i1);
+                    t.Add(i1); t.Add(i0 + 1); t.Add(i1 + 1);
+                }
+            var mesh = Build(name, v, n, uv, c, t);
+            // The shader ripples the column a few centimetres; keep culling generous.
+            var bounds = mesh.bounds; bounds.Expand(0.3f); mesh.bounds = bounds;
+            return mesh;
+        }
+
         // ---------------------------------------------------------------- helpers
 
         static void AddTri(List<Vector3> v, List<Vector3> n, List<Vector2> uv, List<Color> c, List<int> t, Vector3 a, Vector3 b, Vector3 d, float shade)
