@@ -2,7 +2,9 @@
 
 A separate, playable browser version of approved Screen 3, built from the Meshy models and the Unity project's layout. The Unity project is not changed by it.
 
-**Play:** serve this folder (`python3 -m http.server`) and open `index.html`, or open the published link given in the latest session report.
+**Play:** https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (private until shared from its Share menu). Or serve this folder (`python3 -m http.server`) and open `index.html`.
+
+**Recordings:** [`Previews/WebDemo/`](../Previews/WebDemo): the gameplay video, a side-view debug video proving the height changes, both side by side, and a height chart.
 
 **Controls:**
 - Tap to start.
