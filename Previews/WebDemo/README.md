@@ -2,7 +2,7 @@
 
 Recorded late on 2 November 2026 from `WebDemo/` in headless Chromium with `WebDemo/tools/record.cjs`. WebGL is rendered in software and the game is stepped at exactly 30 frames per game-second, so the videos play at true game speed. The player's view is recorded at an exact 1:2 portrait stage (538 × 1076), the same shape as the approved screens.
 
-This version adds the washing machinery built in code (gold washing wheel, blue-and-gold wheel, machinery towers with waterfalls, gears, pipes), the golden helper on its pink float, the approved framing and narrow flume slide, glossier lighting, the raised water around the mascot, the coloured glowing rings in the tunnel and the glossy tutorial panels. The ride itself is unchanged: it climbs, crests, drops and banks over the same heights.
+This version adds the washing machinery built in code (gold washing wheel, blue-and-gold wheel, machinery towers with waterfalls, gears, pipes), your Meshy duck helper on its pink float (it leads the way into the washing machine), the approved framing and narrow flume slide, glossier lighting, the raised water around the mascot, the coloured glowing rings in the tunnel and the glossy tutorial panels. The ride itself is unchanged: it climbs, crests, drops and banks over the same heights.
 
 Every input is a real pointer gesture on the game stage (press, drag, release), the same events a finger makes on a phone. Both views use the same script, and their runs match: the mascot's height ranges over the same values, they visit the same lanes and both rescue 3 socks. Neither logged console errors.
 
@@ -15,6 +15,7 @@ Every input is a real pointer gesture on the game stage (press, drag, release), 
 | `gameplay_frames.png`, `side_view_frames.png` | Frames from both videos. |
 | `screen3_start_vs_approved.png` | Approved Screen 3 beside the recorded Tap to Start frame. |
 | `screen3_start_vs_approved_overlay.png` | Approved Screen 3, the browser's Tap to Start frame and the two blended, all at 538 × 1076. |
+| `duck_helper_vs_approved.png` | Close-up: the approved helper beside the Meshy duck helper in the browser game, same crop and scale. |
 | `gameplay_track.json` | The game state for every recorded frame: track and world position, lane, speed, path pitch and bank, camera, and coins, gems and socks. |
 | `published_page_check.png` | The published page (`artifact.html`) served locally the way it is published: models only as base64 JSON, no `.glb` files. It played through with no console errors. |
 
