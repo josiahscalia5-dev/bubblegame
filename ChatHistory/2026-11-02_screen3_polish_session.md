@@ -388,3 +388,91 @@ The published version loads the duck and plays through without errors. I'll wait
 
 In the blended view the duck sits where the approved helper sits, at about the same head size. While the side view finishes, I'll add the new close-up to the recordings README.
 
+The duck leads the way through the whole run. I'll save everything, push, and send you the comparison and the video.
+
+_[Sent you files: Previews/WebDemo/duck_helper_vs_approved.png, Previews/WebDemo/screen3_start_vs_approved_overlay.png, Previews/WebDemo/bubblewash_screen3_gameplay.mp4]_
+
+Your Meshy duck is now the helper in the playable Screen 3, replacing the one I'd built from shapes. At Tap to Start it sits where the approved helper sits, just ahead of the mascot's head, and its head is the same size on screen. It bobs and rocks on the water, with a thin foam ring, a few droplets and slow ripples around the float. When the run starts it rides ahead and leads the mascot into the washing machine. The slide, castle, camera, controls and ride are unchanged.
+
+It's close, not an exact match: the comparison images show both side by side. The video was recorded in a headless browser on this machine with no console errors; it hasn't been tried on a phone.
+
+**Play it:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (same link, updated; private until you share it).
+
+**Fitting it to the approved screen:**
+- **Size and place:** I used the Balanced copy unchanged and tried several positions. Too close, and the slide's dip hides the duck behind the mascot; the chosen spot matches the approved one.
+- **Goggles:** I softened them about 45% to a pale lilac, because the approved helper is small and has none. They are still clearly goggles. The star stays: at this size it reads as a small yellow mark on the float.
+- **Bug fix:** at first the duck rendered all pink. The demo had a bug where all the Meshy models' colour settings shared one compiled shader, so the duck was being drawn with the brushes' blue-white-pink recolour. Each model now gets its own shader. A side effect: the left brush now shows its own gold-and-blue Meshy hub in the centre.
+
+**Still different from the approved helper:**
+- Your duck has big open eyes and goggles; the approved one has closed, happy eyes and a small purple mouth.
+- It's a brighter lemon yellow than the approved golden yellow.
+- Its wings spread wider, so the float looks about 15% wider.
+
+**Master or a new model?** The original master wouldn't help. At this size the Balanced copy's 89,620 triangles already show everything the screen can hold, and a 108 MB file is far too heavy for a browser page. If you want the remaining differences gone, a corrected Meshy model would do it:
+- `BubbleWash_Duck_Helper_ClosedEyes`
+- Prompt: "the same duck in the same pink float, closed happy curved eyes, small purple mouth, no goggles, warm golden-yellow, wings tucked close to the body".
+
+Otherwise, the current duck works well at this size.
+
+Your package is saved in `Design/MeshyDeliveries/DuckHelper/` and everything is pushed to `ccr-052e5531-zna8s3`, including this chat. PR #1 is still an open draft and unmerged. My two questions about it still stand: should I move these commits onto its branch, and should I resolve its conflicts with the Screens 1–12 work?
+
+---
+
+### You · 2026-11-02 22:21 UTC
+
+[attached file: BubbleWash_Side_Machinery_Claudia_Import_Prompt.txt] [attached file: BubbleWash_Giant_Side_Machinery_for_Claudia.zip] Claudia, I have completed the Giant Blue-and-Gold Side Washing Machinery model in Meshy, and ChatGPT has created a smaller GLB for you.
+
+Please import the attached optimized GLB into my EXISTING browser-playable Bubble Wash Kingdom Screen 3.
+
+This is a decorative machinery assembly, NOT a replacement for my existing spinning washing roller.
+
+My approved blue Screen 3 is the exact visual target.
+
+Please:
+
+1. Position the giant machinery prominently on the LOWER-LEFT side of the water slide, matching my approved screenshot's size, perspective and placement.
+
+2. Keep its beautiful blue mechanical wheel, pink-and-white fluffy bristles, glossy golden housing, pink star and mechanical piping visible.
+
+3. Make it large and dimensional enough to create the rich mechanical scenery shown in my approved screen.
+
+4. Preserve the existing washing-machine tunnel, pink mascot, yellow helper, water movement, camera, swipe controls and collectibles.
+
+5. Adjust its materials and lighting so the colors look bright, glossy and premium, without excessive glare.
+
+6. Keep the machinery out of the playable lanes and do not let it block the mascot or interface.
+
+7. The supplied model is one combined mesh. Do not rotate the entire assembly as a washing brush. If the central wheel needs independent rotation, explain what separation is needed.
+
+8. Start with the 4.90 MB Balanced GLB. If the bristles look too faceted or damaged, try the 8.06 MB Medium version.
+
+After integration, show me the ACTUAL browser-rendered opening screen alongside my approved Screen 3 and demonstrate that the existing gameplay still works.
+
+Do not restart my project or redesign my approved screen. I want to get closer to the exact approved artwork while preserving everything already built.
+
+---
+
+### Claude · 2026-11-02 22:21 UTC
+
+I'll unpack the machinery package into its own folder and inspect the three GLBs.
+
+That `setRoller` hook does nothing useful, so I'll remove it before building.
+
+While the recordings run (about 10 minutes), I'll save the start-frame comparisons, commit the code and update the docs.
+
+In the blend, the machinery's blue-and-white wheel lines up with the approved lower-left wheel. I'll update the docs now.
+
+Pushed. Now I'll update the playable page with the new bundle and the machinery model. The model adds about 11 MB to the page, which stays within the size limit.
+
+Each file is under the 16 MB per-file limit and the total is well under 64 MB. Publishing:
+
+_[Published the page WebDemo/artifact.html]_
+
+The working directory changed to `WebDemo/`, so the paths must be relative to it:
+
+_[Published the page WebDemo/artifact.html]_
+
+The page is updated (version 4). I'll check the published-page version with the machinery model, then wait for the recordings.
+
+Both recordings match the earlier runs. Now the videos and evidence images:
+
