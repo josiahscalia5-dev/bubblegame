@@ -14,11 +14,15 @@ namespace BubbleWash
         public static readonly int PlayerPosId = Shader.PropertyToID("_BW_PlayerPos");
         public static readonly int TunnelId = Shader.PropertyToID("_BW_Tunnel");      // x=startZ, y=endZ, z=radius, w=axisHeight
         public static readonly int ChannelId = Shader.PropertyToID("_BW_Channel");    // x=waterLevel, y=edge curl height, z=curl width
+        public static readonly int SlideId = Shader.PropertyToID("_BW_Slide");        // x=raised path half-width, y=moat offset, z=crown, w=path end z
+        public static readonly int RingsId = Shader.PropertyToID("_BW_Rings");        // x=first ring z, y=spacing, z=count
 
         public static float Time;
         public static float Scale = 1f;
         public static Vector4 Tunnel = new Vector4(3.90f, 37.20f, 2.5f, 1.5f);
         public static Vector4 Channel = new Vector4(0f, 0.35f, 0.45f, 0f);
+        public static Vector4 Slide = new Vector4(2.0f, -0.6f, 0.12f, 3.90f);
+        public static Vector4 Rings = new Vector4(4.15f, 11.08f, 4f, 0f);
 
         /// <summary>Water surface height at world (x, z). Must match BW_WaveHeight in the shader.</summary>
         public static float Height(float x, float z, float t)
@@ -30,6 +34,7 @@ namespace BubbleWash
             h += 0.012f * Mathf.Sin(x * 6.00f + t * 4.0f + z * 0.50f);
             h *= Scale;
             h += EdgeCurl(x, z);
+            h += SlideOffset(x, z);
             return Channel.x + h;
         }
 
@@ -44,6 +49,21 @@ namespace BubbleWash
             float half = Mathf.Sqrt(Mathf.Max(0.01f, radius * radius - axis * axis));
             float u = Mathf.Clamp01((Mathf.Abs(x) - (half - Channel.z)) / Mathf.Max(0.01f, Channel.z));
             return inside * Channel.y * u * u;
+        }
+
+        /// <summary>
+        /// Screen 3's raised water path: a crowned channel standing above the surrounding moat, the
+        /// water spilling off its edges. Must match BW_SlideOffset in BubbleWashCommon.hlsl.
+        /// </summary>
+        public static float SlideOffset(float x, float z)
+        {
+            if (Slide.x <= 0f) return 0f;
+            float before = Mathf.Clamp01((Slide.w - z) * 0.5f);
+            float ax = Mathf.Abs(x);
+            float crown = Slide.z * Mathf.Clamp01(1f - ax * ax / (Slide.x * Slide.x));
+            float t = Mathf.Clamp01((ax - Slide.x) / 0.55f);
+            float edge = t * t * (3f - 2f * t);
+            return before * Mathf.Lerp(crown, Slide.y, edge);
         }
 
         /// <summary>Approximate surface normal from central differences.</summary>
@@ -63,6 +83,8 @@ namespace BubbleWash
             Shader.SetGlobalVector(PlayerPosId, playerPos);
             Shader.SetGlobalVector(TunnelId, Tunnel);
             Shader.SetGlobalVector(ChannelId, Channel);
+            Shader.SetGlobalVector(SlideId, Slide);
+            Shader.SetGlobalVector(RingsId, Rings);
         }
     }
 }

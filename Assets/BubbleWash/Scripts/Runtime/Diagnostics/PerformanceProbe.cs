@@ -35,17 +35,20 @@ namespace BubbleWash
             // Toggle: three fingers down, or F1. Uses whichever input backend the project has enabled
             // (calling the legacy Input class with only the Input System enabled throws).
             int fingers = 0;
-            bool f1 = false;
+            bool f1 = false, f12 = false;
 #if BW_INPUT_SYSTEM && ENABLE_INPUT_SYSTEM
             var ts = UnityEngine.InputSystem.Touchscreen.current;
             if (ts != null) foreach (var t in ts.touches) if (t.press.isPressed) fingers++;
             var kb = UnityEngine.InputSystem.Keyboard.current;
             f1 = kb != null && kb.f1Key.wasPressedThisFrame;
+            f12 = kb != null && kb.f12Key.wasPressedThisFrame;
 #else
             fingers = Input.touchCount;
             f1 = Input.GetKeyDown(KeyCode.F1);
+            f12 = Input.GetKeyDown(KeyCode.F12);
 #endif
             if ((fingers >= 3 && _lastFingers < 3) || f1) showOverlay = !showOverlay;
+            if (f12) SaveScreenshot();
             _lastFingers = fingers;
             if (Time.unscaledTime - _windowStart >= sampleSeconds)
             {
@@ -53,6 +56,16 @@ namespace BubbleWash
                 _summary = Summarise();
                 Debug.Log("[BubbleWash perf] " + _summary);
             }
+        }
+
+        /// <summary>F12: save the current Game view (editor: Previews/Captures, device: persistent data path).</summary>
+        public static void SaveScreenshot()
+        {
+            string dir = Application.isEditor ? "Previews/Captures" : Application.persistentDataPath;
+            System.IO.Directory.CreateDirectory(dir);
+            string path = System.IO.Path.Combine(dir, $"manual_{System.DateTime.Now:yyyyMMdd_HHmmss}.png");
+            ScreenCapture.CaptureScreenshot(path);
+            Debug.Log("[BubbleWash] Screenshot saved: " + System.IO.Path.GetFullPath(path));
         }
 
         public string Summarise()

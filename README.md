@@ -1,132 +1,143 @@
 # Bubble Wash Kingdom (Unity 6.3 LTS, mobile)
 
-Faithful recreation of the 12 approved Bubble Wash Kingdom screens as real-time, playable 3D.
-The approved designs are the permanent visual targets: [`Design/ApprovedScreens/`](Design/ApprovedScreens).
+This project recreates the 12 approved Bubble Wash Kingdom screens as real-time, playable 3D. The approved designs are the permanent visual targets: [`Design/ApprovedScreens/`](Design/ApprovedScreens).
 
 ## Status
 
 | Screen | State |
 |---|---|
-| 3 · Let's go! Into the washing machine | **Built, not yet verified.** Playable 3D scene: castle portal (Meshy), animated water, mascot controls, camera framing fitted to the approved image, HUD. Needs the Unity capture comparison before it can be called visually complete. |
-| 4 · Rescue 5 lost socks | **Built, not yet verified.** Continuous with Screen 3: the same run enters three Meshy drum segments; socks, coins and gem are collected and counted. Same verification still needed. |
+| 3 · Let's go! Into the washing machine | **Playable, awaiting the first Unity capture.** It uses the Meshy castle portal, a raised flowing water path, electric-blue water, the mascot controls, the approved camera framing and the HUD. |
+| 4 · Rescue 5 lost socks | **Playable, awaiting the first Unity capture.** It continues from Screen 3 in one run through three Meshy drum segments. You can collect the socks, coins and gem, and the 0/5 counter updates. |
 | 1, 2, 5–12 | Not started. |
 
-Remaining differences are tracked in [`Design/VISUAL_DIFFERENCES.md`](Design/VISUAL_DIFFERENCES.md). No screen is marked complete until a Unity capture has been compared with the approved image.
+**Neither screen is marked visually complete.** That decision waits for real Unity captures compared against the approved images (step 5 below). The remaining known differences are listed in [`Design/VISUAL_DIFFERENCES.md`](Design/VISUAL_DIFFERENCES.md).
 
-**About the previews in this commit.** The cloud environment this was built in has no Unity editor or license. The images in [`Previews/PreCheck_WebGL/`](Previews/PreCheck_WebGL) come from a WebGL layout pre-check, **not from Unity**. It uses the same Meshy models, placement maths, camera framings and HUD layout, so it checks composition and alignment only. The real comparison comes from the one-click tool below.
+## Open the project on Windows
 
-## Open and test on Windows
-
-1. Install **Unity Hub**, then **Unity 6000.3.27f2**, or any Unity 6.3 LTS, from the Hub's *Installs* tab. Add **Android Build Support**, and **iOS Build Support** if you will build for iPhone from a Mac.
-2. Get the project:
-   ```
-   git clone https://github.com/josiahscalia5-dev/bubblegame.git
-   cd bubblegame
-   git checkout claude/new-session-oth0dd
-   ```
-3. In Unity Hub choose **Add → Add project from disk** and select the `bubblegame` folder, then open it.
-   - The first import takes a few minutes: Unity downloads glTFast and imports both GLBs (about 17 MB each).
-4. When importing finishes, the scene builds itself the first time and opens: `Assets/BubbleWash/Scenes/Level1_WasherEntry.unity`.
+1. **Install Unity 6.3.**
+   - Install [Unity Hub](https://unity.com/download).
+   - In Hub → **Installs → Install Editor**, choose **Unity 6.3 LTS** (6000.3.27f2, or any 6000.3.x).
+   - Tick **Android Build Support** if you want to put it on a phone.
+2. **Get the project.** Use one of these:
+   - Download the zip you were sent, `BubbleWashKingdom_Unity6.3.zip`, and unzip it to a short path such as `C:\BubbleWash`.
+   - Or, on GitHub, open branch `claude/new-session-oth0dd` and choose **Code → Download ZIP**.
+   - Or clone it: `git clone https://github.com/josiahscalia5-dev/bubblegame.git`, then `git checkout claude/new-session-oth0dd`.
+3. **Open it.**
+   - Double-click **`Open_BubbleWash_In_Unity.bat`**.
+   - Or, in Unity Hub, choose **Add → Add project from disk** and select the folder.
+   - The first open takes a few minutes. Unity downloads glTFast and imports the castle and tunnel GLBs.
+   - The Level 1 scene then **builds itself** and opens: `Assets/BubbleWash/Scenes/Level1_WasherEntry.unity`.
    - If it doesn't, use the menu **Bubble Wash → 1. Build Level 1 Scene (Screens 3-4)**.
-   - The build log is written to `Previews/Level1_build_report.md`. It records the measured castle/tunnel sizes, the detected tunnel axis, scales and segment positions.
-5. In the **Game** view, pick a portrait resolution, for example 1080×2160 (add it with the "+" in the resolution dropdown). Press **Play**.
+4. **Play.**
+   - In the **Game** tab, set a portrait size: open the resolution dropdown, press **+**, and add **1080 × 2160**.
+   - Press **▶ Play**. See the controls below.
+5. **Capture and compare.** This is the first real Unity test milestone.
+   - Use **Bubble Wash → 2. Capture & Compare Screens 3 and 4** (Ctrl+Shift+K).
+   - Unity enters Play mode by itself and positions the *running* game at each approved camera position. It lets the waves, foam, splashes, paddling and camera run for a moment, then photographs the result and leaves Play mode.
+   - A folder opens with `Previews/Captures/Screen03_compare.png` and `Screen04_compare.png`. Each shows **approved | Unity | 50 % overlay**.
+   - **Send me those two images** and I'll correct the largest differences first.
+   - **Bubble Wash → 2b. Quick Capture (Edit Mode)** produces the same images without entering Play mode.
+   - **F12** during Play saves a screenshot of any moment to `Previews/Captures/`.
+6. **Optional checks.**
+   - **Bubble Wash → 3. Validate Clearance, Gaps & Budget** checks against the real Meshy meshes:
+     - the gap between tunnel segments;
+     - castle/drum opening alignment;
+     - mascot clearance in every lane, while floating and jumping;
+     - camera clearance;
+     - the triangle budget.
+
+     Results go to `Previews/validation_report.md`.
+   - **Window → General → Test Runner → EditMode → Run All** runs the unit tests and a full build-and-validate test.
 
 ### Controls
 
-| Action | Touch | Editor |
+| Action | Phone | Editor |
 |---|---|---|
-| Start (Screen 3 "Tap to Start") | tap | click, Space or Enter |
-| Change lane | swipe left / right | drag left/right, ←/→, A/D |
-| Jump (with a tumble flip) | swipe up | drag up, ↑, W |
+| Start the run (Screen 3 "Tap to Start") | tap | click, Space or Enter |
+| Steer between the 3 lanes (lean and turn) | swipe left / right | drag left/right, ←/→, A/D |
+| Jump (with a tumble flip, splash on landing) | swipe up | drag up, ↑, W |
 | Dive under the water | swipe down | drag down, ↓, S |
-| Bubble Blast / Turbo Spin / Pause | HUD buttons | click the buttons |
-| FPS overlay | three-finger tap | F1 |
+| Spin on the water | tap while running | click, Space |
+| Turbo Spin (fast spin, speed boost) / Bubble Blast (pulls in coins and socks) / Pause | HUD buttons | click them |
+| FPS overlay / screenshot | three-finger tap | F1 / F12 |
 
-The opening loops back to Screen 3 after the third drum segment, because Screens 5 onwards aren't built yet.
+The mascot floats on the moving waves and the raised path, paddles its arms, kicks its feet, blinks, and squashes and stretches as it moves. The opening loops back to Screen 3 after the third drum segment until Screens 5 onwards are built.
 
-### Verify against the approved screens (please run and send me the results)
+## Tuning the look
 
-- **Bubble Wash → 2. Capture & Compare Screens 3 and 4**
-  - Renders the actual Unity scene (URP, post-processing and HUD) at each approved screen's aspect ratio.
-  - Writes `Previews/Captures/Screen03_compare.png` and `Screen04_compare.png`. Each shows approved | Unity | 50 % overlay.
-  - Also writes `Screen0X_unity.png` and `compare_report.md`.
-- **Bubble Wash → 3. Validate Clearance, Gaps & Budget** checks against the real Meshy meshes:
-  - the gap between tunnel segments;
-  - whether the castle portal lines up with the drum opening;
-  - mascot clearance in every lane, while floating and at jump height;
-  - camera clearance along its whole path;
-  - the triangle and material budget.
+Select **Level1_WasherEntry** in the Hierarchy. The **Bubble Wash Look** component holds every look setting, and changes show immediately in the editor and in Play mode:
+- water colours, foam, foam lace, caustics, reflections and drum-ring reflections;
+- the saturation and glow of the Meshy castle and drum;
+- ring glow;
+- bloom, saturation, contrast and exposure;
+- fog and ambient light.
 
-  Results go to `Previews/validation_report.md`.
-- **Window → General → Test Runner → EditMode → Run All** runs the unit tests:
-  - opening measurement and tunnel axis detection;
-  - segment chaining and lane clearance;
-  - a full build-and-validate of the Level 1 scene.
+The raised water path (width, height, crown) is on the **Level 1 Environment** component.
 
-You can also run the capture from a command prompt. It needs a GPU, so don't add `-nographics`:
-```
-"C:\Program Files\Unity\Hub\Editor\6000.3.27f2\Editor\Unity.exe" -projectPath . -executeMethod BubbleWash.EditorTools.ApprovedScreenCapture.CaptureFromCommandLine -logFile capture.log
-```
+## Adding the remaining Meshy models
 
-### On a phone
+Each upcoming model has a drop folder:
 
-**File → Build Profiles → Android → Switch Platform → Build And Run** with the phone connected by USB, with USB debugging on. Play a few laps. The FPS overlay (three-finger tap) and the `[BubbleWash perf]` log lines show the average and 1 % low frame rate.
+| Model | Folder | Replaces |
+|---|---|---|
+| Pink mascot | `Assets/BubbleWash/Models/Mascot/` | `PLACEHOLDER_PinkMascot` |
+| Spinning brush | `Assets/BubbleWash/Models/SpinningBrush/` | `PLACEHOLDER_SpinningBrush_*` |
+| Rescue sock | `Assets/BubbleWash/Models/RescueSock/` | `PLACEHOLDER_LostSock_*` |
+| Paw coin | `Assets/BubbleWash/Models/Coin/` | placeholder coins |
+| Gem | `Assets/BubbleWash/Models/Gem/` | placeholder gem |
+| Duck / golden figure at the portal | `Assets/BubbleWash/Models/RubberDuck/` | `PLACEHOLDER_RubberDuck` |
+
+1. Drop the GLB into its folder.
+2. Run **Bubble Wash → 1. Build Level 1 Scene**. The model is fitted to the size and position the approved screens need.
+3. If a model faces the wrong way or needs a size tweak, edit **`Assets/BubbleWash/Config/MeshyAssetSlots.asset`**, which has rotation, size and offset per model. Then rebuild.
+4. For the mascot's swimming animation, enter the names of its arm, foot and eye nodes in that asset. Without them it still floats, leans, flips, spins and squashes.
+
+Or send me the GLBs and I'll wire them in.
 
 ## What is in the scene
 
 | Part | Source |
 |---|---|
-| Castle portal | **Meshy** `Assets/BubbleWash/Models/CastlePortal/BubbleWashCastle.glb` |
-| Washing-machine tunnel, 3 segments | **Meshy** `Assets/BubbleWash/Models/WasherTunnel/BubbleWashTunnel_Mobile_2K_Lite.glb` |
-| Electric-blue water with waves, foam, wake and glints | `Shaders/Water.shader`; the mascot floats on the same waves (`WaveField.cs`) |
-| Splashes, iridescent bubbles, sparkles | particle systems (`ParticleFactory.cs`, `IridescentBubble.shader`) |
-| Glowing rings at the drum joints, drum lights, bloom | `Glow.shader`, URP Volume |
-| Following camera with Screen 3 / Screen 4 framings | `RunnerCameraRig.cs` |
-| Swimming-style mascot movement: paddle, kick, float, lean/turn, jump flip, turbo spin, dive, splash | `BubbleRunner.cs`, `MascotAnimator.cs` |
-| HUD for Screens 3 and 4 | `GameHud.cs`; sprites from `Tools/generate_ui_sprites.py` |
-| `PLACEHOLDER_PinkMascot` | temporary procedural mascot |
-| `PLACEHOLDER_SpinningBrush_*`, `PLACEHOLDER_LostSock_*`, `PLACEHOLDER_RubberDuck`, `PLACEHOLDER_WaterSlideRails`, paw coins, gem | temporary procedural props |
+| Castle portal | **Meshy** `Models/CastlePortal/BubbleWashCastle.glb`, rendered with `MeshyBaked.shader`. Its texture is unchanged; saturation and glow are tunable. |
+| Washing-machine drum, 3 segments | **Meshy** `Models/WasherTunnel/BubbleWashTunnel_Mobile_2K_Lite.glb`. The white and gold ring stripes in its texture glow. |
+| Electric-blue rushing water | `Water.shader`: raised crowned path with spill foam, foam lace and streaks, caustics, glints, and sky and drum-ring reflections. The mascot floats on the same surface (`WaveField.cs`). |
+| Splashes, iridescent bubbles, sparkles, glowing rings, drum lights, bloom | particle systems, `IridescentBubble.shader`, `Glow.shader`, URP Volume |
+| Follow camera fitted to Screen 3 and Screen 4 | `RunnerCameraRig.cs` |
+| Movement, animation, collisions, collectibles, power-ups | `BubbleRunner.cs`, `MascotAnimator.cs`, `Collectible.cs`, `GameSession.cs` |
+| HUD for Screens 3 and 4 | `GameHud.cs`. The sprites are generated stand-ins (`Tools/generate_ui_sprites.py`). |
+| Everything named `PLACEHOLDER_` | temporary until the Meshy model arrives |
 
-Everything named `PLACEHOLDER_` is a stand-in until the Meshy model arrives. The HUD icons are generated stand-ins too, because the approved screens are only about 270 px wide.
+How the two Meshy models are measured, aligned and chained is explained in [`Design/MODEL_MEASUREMENTS.md`](Design/MODEL_MEASUREMENTS.md).
 
-### How the two Meshy models are connected
+## What has and hasn't been tested
 
-The models are measured on import; see [`Design/MODEL_MEASUREMENTS.md`](Design/MODEL_MEASUREMENTS.md).
+Done in the cloud build environment, which has no Unity editor:
+- All C# compiles against the Unity 6.3 reference assemblies, uGUI, and the URP and Input System APIs, with both input backends.
+- All 7 shaders compile with Microsoft DXC against URP 17.3's shader library, in every keyword variant: fog, additional lights, and Forward / Forward+.
+- The measurement code was run on both GLBs.
 
-1. **Castle portal.** The castle's see-through opening is found by projecting its triangles and fitting the largest circle that fits through the portal: radius 0.2705 units.
-2. **Tunnel axis.** The tunnel is tested along X, Y and Z. It is only see-through along **X**, which confirms Meshy's X-length export, so it is rotated −90° about Y onto Unity's travel direction (+Z).
-3. **Tunnel opening.** The tunnel's end porthole has radius 0.4272. Its paddle fins narrow the clear radius to 0.3443.
-4. **Shared opening.** Both models are scaled so the castle portal and the drum porthole share one 2.5 m opening. The drum starts right behind the castle's narrowest portal ring, centred on the same axis.
-5. **Chaining.** Three segments are chained with a 5.6 cm overlap so the joints never show a gap. Each joint gets a glowing ring.
-6. **Water and lanes.** The water sits 1.5 m below the axis. The three lanes (0.85 m apart) and the camera are kept inside the 2.0 m clear radius past the fins.
+**Still needs your machine:**
+- importing the project in the Unity editor;
+- how the materials, lighting and particles actually look;
+- Play-mode feel;
+- the capture tool;
+- frame rate on a phone.
 
-## Adding the next Meshy models
-
-Send the GLB and I will wire it in. Expected drop locations:
-- mascot: `Assets/BubbleWash/Models/Mascot/`
-- brushes, socks, coins, slides: `Assets/BubbleWash/Models/Props/`
-
-The mascot needs its arms and feet as separate nodes so the swimming animation can drive them, or a rigged model. Placeholders keep their names, so you can see what is still temporary.
-
-## Mobile performance notes
-
-The castle (150k triangles) and each drum segment (136k) dominate the budget: about 560k triangles in total. That is heavy for mid-range phones. Measure on device first. If the frame rate is short of 60, the cheapest fix is a lower-poly Meshy export (Meshy's remesh, 30–50k triangles each) or LODs. Water, particles and post-processing are kept mobile-friendly:
-- no realtime shadows;
-- particle counts capped at about 90–220 per system;
-- FXAA;
-- render scale 0.8 on the Mobile quality level.
+The Meshy castle (150k triangles) plus three drum segments (136k each) total about 560k triangles, which is heavy for mid-range phones. If the frame rate on the phone is short, lower-poly Meshy exports are the fix.
 
 ## Project layout
 
 ```
 Assets/BubbleWash/
-  Models/            Meshy GLBs (imported by glTFast)
-  Scripts/Runtime/   gameplay, camera, FX, HUD, measurement
-  Scripts/Editor/    scene builder, capture & compare, validator
-  Shaders/           water, fur, bubbles, glow, particles, sky
-  UI/                fonts (Fredoka Bold, OFL) and HUD sprites
+  Models/            Meshy GLBs + drop folders for upcoming models
+  Config/            MeshyAssetSlots.asset (created on first build)
+  Scripts/Runtime/   gameplay, camera, FX, HUD, look tuning, measurement
+  Scripts/Editor/    scene builder, capture & compare, validator, model slots
+  Shaders/           water, Meshy baked, fur, bubbles, glow, particles, sky
+  UI/                Fredoka Bold (OFL) and HUD sprites
   Tests/EditMode/    unit + scene validation tests
 Design/              approved screens, measurements, visual differences
-Previews/            build/validation reports, captures, WebGL pre-check
-Tools/               sprite generator
+Previews/            build/validation reports, Unity captures
+Tools/               HUD sprite generator
+Open_BubbleWash_In_Unity.bat
 ```

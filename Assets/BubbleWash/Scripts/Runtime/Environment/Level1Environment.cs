@@ -7,6 +7,7 @@ namespace BubbleWash
     /// layout here; gameplay, camera and FX read it through <see cref="Active"/>.
     /// </summary>
     [DefaultExecutionOrder(-200)]
+    [ExecuteAlways] // keeps the water shape (raised path, drum curl) correct in the Scene view too
     public class Level1Environment : MonoBehaviour
     {
         public static Level1Environment Active { get; private set; }
@@ -18,7 +19,15 @@ namespace BubbleWash
         public float flowSpeed = 9f;
         public float waveScale = 1f;
         [Tooltip("How far the water climbs the drum walls (m).")]
-        public float edgeCurlHeight = 0.35f;
+        public float edgeCurlHeight = 0.45f;
+
+        [Header("Screen 3 raised water path")]
+        [Tooltip("Half-width of the raised path in front of the castle (m). 0 = flat moat.")]
+        public float pathHalfWidth = 2.0f;
+        [Tooltip("Height of the path above the surrounding moat (m).")]
+        public float pathRaise = 0.6f;
+        [Tooltip("Extra height at the centre of the path (crowned water) (m).")]
+        public float pathCrown = 0.12f;
 
         [Header("References (filled by the builder)")]
         public Transform castle;
@@ -39,7 +48,7 @@ namespace BubbleWash
 
         void Update()
         {
-            WaveField.Time = Time.timeSinceLevelLoad;
+            if (Application.isPlaying) WaveField.Time = Time.timeSinceLevelLoad;
             PushWaveGlobals(runner != null ? runner.transform.position : Vector3.zero);
         }
 
@@ -49,6 +58,9 @@ namespace BubbleWash
             WaveField.Scale = waveScale;
             WaveField.Tunnel = new Vector4(layout.tunnelStartZ, layout.tunnelEndZ, layout.tunnelRadius, layout.axisHeight);
             WaveField.Channel = new Vector4(layout.waterLevel, edgeCurlHeight, 0.45f, 0f);
+            WaveField.Slide = new Vector4(pathHalfWidth, -pathRaise, pathCrown, layout.tunnelStartZ);
+            float spacing = layout.segmentLength - Mathf.Max(0.02f, layout.segmentLength * 0.005f);
+            WaveField.Rings = new Vector4(layout.tunnelStartZ + 0.25f, spacing, layout.segmentCount + 1, 0f);
             WaveField.PushGlobals(playerPos, flowSpeed);
         }
 

@@ -80,11 +80,19 @@ namespace BubbleWash.Tests
         }
 
         [Test]
-        public void WaveField_StaysGentleOutsideTheDrum()
+        public void WaveField_RaisedPathStandsAboveTheMoat()
         {
+            WaveField.Slide = new Vector4(2.0f, -0.6f, 0.12f, 3.9f);
             for (float z = -40f; z < 0f; z += 0.37f)
-                for (float x = -3f; x <= 3f; x += 0.5f)
-                    Assert.Less(Mathf.Abs(WaveField.Height(x, z, 1.7f)), 0.2f);
+            {
+                // On the raised path (lanes): gentle waves around the crowned surface.
+                for (float x = -1.2f; x <= 1.2f; x += 0.4f)
+                    Assert.Less(Mathf.Abs(WaveField.Height(x, z, 1.7f) - WaveField.SlideOffset(x, z)), 0.2f);
+                // The moat beside the path sits about 0.6 m lower.
+                Assert.Less(WaveField.Height(4f, z, 1.7f), WaveField.Height(0f, z, 1.7f) - 0.4f);
+            }
+            // Inside the drum the path offset is gone.
+            Assert.AreEqual(0f, WaveField.SlideOffset(0f, 10f), 1e-5f);
         }
     }
 }

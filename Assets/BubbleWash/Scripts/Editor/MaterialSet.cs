@@ -11,18 +11,27 @@ namespace BubbleWash.EditorTools
         public Material water, mascotFur, brushFur, sockFur, duck, eye, white, cheek;
         public Material glowRing, endGlow, bubble, droplet, sparkle, sky;
         public Material coin, gem, rail, placeholderDrum;
+        public Material castle, drum;
         public VolumeProfile postProfile;
 
         const string Dir = Level1SceneBuilder.GeneratedDir + "/Materials/";
 
         public void Create()
         {
-            water = Mat("Water_ElectricBlue", "BubbleWash/Water", m =>
+            // Values here are starting points; BubbleWashLook (on Level1_WasherEntry) tunes them live.
+            water = Mat("Water_ElectricBlue", "BubbleWash/Water", null);
+            castle = Mat("Meshy_CastlePortal", "BubbleWash/MeshyBaked", m =>
             {
-                m.SetColor("_DeepColor", new Color(0.03f, 0.33f, 0.95f));
-                m.SetColor("_ShallowColor", new Color(0.12f, 0.72f, 1.0f));
-                m.SetColor("_GlowColor", new Color(0.45f, 0.95f, 1.0f));
-                m.SetColor("_SkyColor", new Color(0.86f, 0.78f, 1.0f));
+                m.SetFloat("_Saturation", 1.2f); m.SetFloat("_Brightness", 1.05f); m.SetFloat("_LightInfluence", 0.4f);
+                m.SetFloat("_GlowThreshold", 0.85f); m.SetFloat("_GlowStrength", 0.8f);
+                m.SetFloat("_Cull", 0f); // Meshy exports are double-sided
+            });
+            drum = Mat("Meshy_WasherDrum", "BubbleWash/MeshyBaked", m =>
+            {
+                m.SetFloat("_Saturation", 1.35f); m.SetFloat("_Contrast", 1.08f); m.SetFloat("_Brightness", 1.05f);
+                m.SetFloat("_LightInfluence", 0.3f); m.SetFloat("_GlowThreshold", 0.72f); m.SetFloat("_GlowStrength", 2.2f);
+                m.SetColor("_GlowTint", new Color(1f, 0.95f, 0.85f));
+                m.SetFloat("_Cull", 0f);
             });
             mascotFur = Mat("PLACEHOLDER_MascotFur", "BubbleWash/FluffyToon", m =>
             {
@@ -53,7 +62,7 @@ namespace BubbleWash.EditorTools
             white = Mat("Shine", "BubbleWash/Glow", m => { m.SetColor("_Color", new Color(1.4f, 1.4f, 1.4f)); m.SetFloat("_CoreBoost", 0.2f); });
             cheek = Lit("MascotCheek", new Color(1f, 0.55f, 0.72f), 0f, 0.4f);
 
-            glowRing = Mat("GlowRing", "BubbleWash/Glow", m => m.SetColor("_Color", new Color(1.9f, 1.55f, 0.75f)));
+            glowRing = Mat("GlowRing", "BubbleWash/Glow", m => { m.SetColor("_Color", new Color(2.6f, 2.0f, 0.95f)); m.SetFloat("_CoreBoost", 1.6f); });
             endGlow = Particle("DrumEndGlow", new Color(1.3f, 1.6f, 2.0f, 1f), 2f, additive: true);
             bubble = Mat("IridescentBubble", "BubbleWash/IridescentBubble", m => m.renderQueue = 3000);
             droplet = Particle("SplashDroplet", new Color(1f, 1f, 1f, 0.95f), 0f, additive: false);
@@ -144,19 +153,19 @@ namespace BubbleWash.EditorTools
             p.components.Clear();
 
             var bloom = p.Add<Bloom>(true);
-            bloom.threshold.value = 0.95f;
-            bloom.intensity.value = 0.9f;
-            bloom.scatter.value = 0.65f;
+            bloom.threshold.value = 0.9f;
+            bloom.intensity.value = 1.1f;
+            bloom.scatter.value = 0.7f;
             bloom.tint.value = Color.white;
             var tone = p.Add<Tonemapping>(true);
             tone.mode.value = TonemappingMode.Neutral;
             var color = p.Add<ColorAdjustments>(true);
-            color.postExposure.value = 0.25f;
-            color.saturation.value = 18f;
-            color.contrast.value = 8f;
+            color.postExposure.value = 0f;
+            color.saturation.value = 25f;
+            color.contrast.value = 12f;
             color.colorFilter.value = Color.white;
             var vig = p.Add<Vignette>(true);
-            vig.intensity.value = 0.16f;
+            vig.intensity.value = 0.18f;
             vig.smoothness.value = 0.45f;
             vig.color.value = new Color(0.12f, 0.1f, 0.35f);
             foreach (var c in p.components)

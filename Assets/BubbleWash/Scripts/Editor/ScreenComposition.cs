@@ -23,7 +23,7 @@ namespace BubbleWash.EditorTools
 
         static CamPose Pose(LevelLayout l, CameraPreset p, float mascotZ, float aspect, float wallClearance)
         {
-            var anchor = new Vector3(0f, l.waterLevel + Level1SceneBuilder.MascotFloat, mascotZ);
+            var anchor = new Vector3(0f, l.waterLevel + WaveField.SlideOffset(0f, mascotZ) + Level1SceneBuilder.MascotFloat, mascotZ);
             var pos = l.ClampInsidePassage(anchor + p.offset, wallClearance);
             return new CamPose { pos = pos, rot = Quaternion.LookRotation(anchor + p.lookOffset - pos), fov = p.fieldOfView, aspect = aspect };
         }
@@ -136,14 +136,19 @@ namespace BubbleWash.EditorTools
 
         static void Brush(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, float radius, Quaternion rot, float spin)
         {
-            var go = new GameObject(name) { layer = EnvironmentLayer };
+            bool meshy = PropFactory.Has(PropSlot.SpinningBrush);
+            var go = new GameObject(meshy ? name.Replace("PLACEHOLDER_", "") : name) { layer = EnvironmentLayer };
             go.transform.SetParent(parent, false);
             go.transform.SetPositionAndRotation(pos, rot);
             go.transform.localScale = Vector3.one * radius;
-            go.AddComponent<MeshFilter>().sharedMesh = mesh;
-            var r = go.AddComponent<MeshRenderer>();
-            r.sharedMaterial = mat;
-            r.shadowCastingMode = ShadowCastingMode.Off;
+            if (meshy) PropFactory.Create(PropSlot.SpinningBrush, go.transform);
+            else
+            {
+                go.AddComponent<MeshFilter>().sharedMesh = mesh;
+                var r = go.AddComponent<MeshRenderer>();
+                r.sharedMaterial = mat;
+                r.shadowCastingMode = ShadowCastingMode.Off;
+            }
             var s = go.AddComponent<Spinner>();
             s.localAxis = Vector3.forward;
             s.speed = spin;
@@ -168,14 +173,20 @@ namespace BubbleWash.EditorTools
 
         static GameObject Collect(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, CollectibleKind kind, float radius)
         {
-            var go = new GameObject(name) { layer = CollectibleLayer };
+            var slot = kind == CollectibleKind.Coin ? PropSlot.Coin : kind == CollectibleKind.Gem ? PropSlot.Gem : PropSlot.RescueSock;
+            bool meshy = PropFactory.Has(slot);
+            var go = new GameObject(meshy ? name.Replace("PLACEHOLDER_", "") : name) { layer = CollectibleLayer };
             go.transform.SetParent(parent, false);
             go.transform.position = pos;
             go.transform.rotation = Quaternion.Euler(0f, kind == CollectibleKind.Coin ? 15f : 0f, 0f);
-            go.AddComponent<MeshFilter>().sharedMesh = mesh;
-            var r = go.AddComponent<MeshRenderer>();
-            r.sharedMaterial = mat;
-            r.shadowCastingMode = ShadowCastingMode.Off;
+            if (meshy) PropFactory.Create(slot, go.transform);
+            else
+            {
+                go.AddComponent<MeshFilter>().sharedMesh = mesh;
+                var r = go.AddComponent<MeshRenderer>();
+                r.sharedMaterial = mat;
+                r.shadowCastingMode = ShadowCastingMode.Off;
+            }
             var c = go.AddComponent<SphereCollider>();
             c.radius = radius * 1.4f;
             c.isTrigger = true;
@@ -190,6 +201,7 @@ namespace BubbleWash.EditorTools
         {
             var go = Collect(parent, $"PLACEHOLDER_LostSock_{index}", body, mats.sockFur, pos, CollectibleKind.Sock, 0.35f);
             go.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            if (PropFactory.Has(PropSlot.RescueSock)) return;
             go.transform.localScale = Vector3.one * 1.2f;
             foreach (float side in new[] { -1f, 1f })
             {
@@ -204,13 +216,21 @@ namespace BubbleWash.EditorTools
 
         static void Duck(Transform parent, MaterialSet mats, Mesh body, Mesh sphere, Vector3 pos, float size, Transform mascot)
         {
-            var go = new GameObject("PLACEHOLDER_RubberDuck (drifts ahead into the drum)");
+            bool meshy = PropFactory.Has(PropSlot.RubberDuck);
+            var go = new GameObject(meshy ? "RubberDuck (Meshy, drifts ahead into the drum)" : "PLACEHOLDER_RubberDuck (drifts ahead into the drum)");
             go.transform.SetParent(parent, false);
             go.transform.position = pos;
-            var b = Child(go.transform, "Body", body, mats.duck, new Vector3(0f, 0f, 0f), new Vector3(size * 0.5f, size * 0.38f, size * 0.55f));
-            Child(go.transform, "Head", sphere, mats.duck, new Vector3(0f, size * 0.42f, size * 0.2f), Vector3.one * size * 0.45f);
-            Child(go.transform, "Beak", sphere, mats.cheek, new Vector3(0f, size * 0.38f, size * 0.45f), new Vector3(size * 0.22f, size * 0.09f, size * 0.18f));
-            b.name = "Body";
+            if (meshy)
+            {
+                var m = PropFactory.Create(PropSlot.RubberDuck, go.transform);
+                m.transform.localScale *= size;
+            }
+            else
+            {
+                Child(go.transform, "Body", body, mats.duck, new Vector3(0f, 0f, 0f), new Vector3(size * 0.5f, size * 0.38f, size * 0.55f));
+                Child(go.transform, "Head", sphere, mats.duck, new Vector3(0f, size * 0.42f, size * 0.2f), Vector3.one * size * 0.45f);
+                Child(go.transform, "Beak", sphere, mats.cheek, new Vector3(0f, size * 0.38f, size * 0.45f), new Vector3(size * 0.22f, size * 0.09f, size * 0.18f));
+            }
             var drift = go.AddComponent<DriftAhead>();
             drift.mascot = mascot;
         }
@@ -234,14 +254,16 @@ namespace BubbleWash.EditorTools
             var mesh = cyl.GetComponent<MeshFilter>().sharedMesh;
             Object.DestroyImmediate(cyl);
             var root = Group(parent, "PLACEHOLDER_WaterSlideRails (replace with Meshy water-slide pieces)");
-            // Low rails along the slide in front of the castle (Screen 3 shows them near the bottom corners).
-            float zA = l.startZ - 22f, zB = l.castleFrontZ - 4f;
+            // Gold rims along the edges of the raised water path (Screen 3 shows gold slide edges with
+            // the water spilling over them).
+            float zA = l.startZ - 22f, zB = l.castleFrontZ - 3f;
+            float x = WaveField.Slide.x + 0.12f;
             foreach (float side in new[] { -1f, 1f })
             {
-                var rail = Child(root, side < 0 ? "Rail_L" : "Rail_R", mesh, mat, new Vector3(2.3f * side, 0.25f, (zA + zB) * 0.5f), new Vector3(0.16f, (zB - zA) * 0.5f, 0.16f));
+                var rail = Child(root, side < 0 ? "Rail_L" : "Rail_R", mesh, mat, new Vector3(x * side, 0.12f, (zA + zB) * 0.5f), new Vector3(0.14f, (zB - zA) * 0.5f, 0.14f));
                 rail.rotation = Quaternion.Euler(90f, 0f, 0f);
                 for (float z = zA; z <= zB; z += 3f)
-                    Child(root, "Post", mesh, mat, new Vector3(2.3f * side, 0.1f, z), new Vector3(0.09f, 0.15f, 0.09f));
+                    Child(root, "Post", mesh, mat, new Vector3(x * side, -0.2f, z), new Vector3(0.08f, 0.32f, 0.08f));
             }
         }
 

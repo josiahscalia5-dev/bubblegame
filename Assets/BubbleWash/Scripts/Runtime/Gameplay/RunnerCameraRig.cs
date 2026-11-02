@@ -121,7 +121,8 @@ namespace BubbleWash
         {
             if (_runner == null && target != null) _runner = target.GetComponent<BubbleRunner>();
             float floatHeight = _runner != null ? _runner.floatHeight : 0.34f;
-            float rest = env != null ? env.layout.waterLevel + floatHeight : mascot.y;
+            // Follow the water path's elevation (Screen 3's raised path) but not the wave bobbing.
+            float rest = env != null ? env.layout.waterLevel + WaveField.SlideOffset(0f, mascot.z) + floatHeight : mascot.y;
             return new Vector3(mascot.x * lateralFollow, Mathf.Lerp(rest, mascot.y, verticalFollow), mascot.z);
         }
 

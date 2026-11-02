@@ -117,20 +117,37 @@ namespace BubbleWash
         /// </summary>
         public static Mesh WaterSheet(float zStart, float zEnd, float rowSpacing, int columns, System.Func<float, float> halfWidthAtZ)
         {
+            return WaterSheet(zStart, zEnd, rowSpacing, columns, z =>
+            {
+                float hw = halfWidthAtZ(z);
+                var xs = new float[columns + 1];
+                for (int s = 0; s <= columns; s++)
+                {
+                    float u = (float)s / columns * 2f - 1f;
+                    xs[s] = Mathf.Sign(u) * Mathf.Pow(Mathf.Abs(u), 1.8f) * hw; // dense in the middle
+                }
+                return xs;
+            });
+        }
+
+        /// <summary>
+        /// Water sheet with explicit column positions per row (<paramref name="columnsAtZ"/> must return
+        /// <paramref name="columns"/>+1 sorted x values), so the raised path can be dense while the moat is sparse.
+        /// </summary>
+        public static Mesh WaterSheet(float zStart, float zEnd, float rowSpacing, int columns, System.Func<float, float[]> columnsAtZ)
+        {
             int rows = Mathf.Max(2, Mathf.CeilToInt((zEnd - zStart) / rowSpacing) + 1);
             columns = Mathf.Max(4, columns);
             var v = new List<Vector3>(rows * (columns + 1)); var n = new List<Vector3>(); var uv = new List<Vector2>(); var c = new List<Color>(); var t = new List<int>();
             for (int r = 0; r < rows; r++)
             {
                 float z = Mathf.Lerp(zStart, zEnd, (float)r / (rows - 1));
-                float hw = halfWidthAtZ(z);
+                var xs = columnsAtZ(z);
                 for (int s = 0; s <= columns; s++)
                 {
-                    float u = (float)s / columns * 2f - 1f;          // -1..1
-                    float shaped = Mathf.Sign(u) * Mathf.Pow(Mathf.Abs(u), 1.8f); // dense in the middle
-                    float x = shaped * hw;
+                    float x = xs[s];
                     v.Add(new Vector3(x, 0f, z)); n.Add(Vector3.up);
-                    uv.Add(new Vector2(x, z)); c.Add(new Color(Mathf.Abs(u), 0f, 0f, 1f));
+                    uv.Add(new Vector2(x, z)); c.Add(new Color((float)s / columns, 0f, 0f, 1f));
                 }
             }
             for (int r = 0; r < rows - 1; r++)

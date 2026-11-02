@@ -10,20 +10,25 @@ using UnityEngine.UI;
 namespace BubbleWash.EditorTools
 {
     /// <summary>
-    /// One-click visual verification: renders the running-game framing for each approved screen with
-    /// the real Unity renderer (URP, post-processing, HUD) at the approved crop's aspect ratio, then
-    /// writes side-by-side and overlay comparisons next to the approved image.
+    /// One-click visual verification against the approved screens, rendered by Unity itself (URP,
+    /// post-processing, HUD) at each approved crop's aspect ratio.
     ///
-    /// Menu: Bubble Wash > 2. Capture & Compare Screens 3 and 4
+    /// Bubble Wash > 2. Capture & Compare Screens 3 and 4 (Ctrl+Shift+K)
+    ///     Enters Play mode, poses the RUNNING game at each approved camera position, lets waves,
+    ///     foam, splashes, paddling and the follow camera run for a moment, captures, exits Play mode.
+    /// Bubble Wash > 2b. Quick Capture (Edit Mode)
+    ///     Same framing without entering Play mode (particles are pre-simulated).
     /// Batch: Unity.exe -projectPath . -executeMethod BubbleWash.EditorTools.ApprovedScreenCapture.CaptureFromCommandLine
-    /// (run without -nographics; it needs a GPU).
-    /// Output: Previews/Captures/Screen03_unity.png, Screen03_compare.png, ... and compare_report.md
+    /// Output: Previews/Captures/Screen03_unity.png, Screen03_compare.png (approved | Unity | overlay), compare_report.md
     /// </summary>
+    [InitializeOnLoad]
     public static class ApprovedScreenCapture
     {
         public const string ApprovedDir = "Design/ApprovedScreens";
         public const string OutDir = "Previews/Captures";
         const int Width = 1080;
+        const string PendingKey = "BubbleWash.PlayCapturePending";
+        const string RevealKey = "BubbleWash.PlayCaptureReveal";
 
         public struct Target
         {
@@ -38,12 +43,68 @@ namespace BubbleWash.EditorTools
             new Target { screen = 4, approvedFile = "04_Rescue_Socks_Inside_Tunnel.png", title = "Screen 4 - Rescue 5 lost socks" },
         };
 
-        [MenuItem("Bubble Wash/2. Capture & Compare Screens 3 and 4", priority = 2)]
+        static StringBuilder _report;
+
+        static ApprovedScreenCapture()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeChanged;
+        }
+
+        // ------------------------------------------------------------------ Play mode (the running game)
+
+        [MenuItem("Bubble Wash/2. Capture & Compare Screens 3 and 4 %#k", priority = 2)]
         public static void CaptureFromMenu()
+        {
+            if (EditorApplication.isPlaying) { Debug.LogWarning("[BubbleWash] Stop Play mode first; the capture enters Play mode by itself."); return; }
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
+            EditorSceneManager.OpenScene(Level1SceneBuilder.ScenePath, OpenSceneMode.Single);
+            SessionState.SetBool(PendingKey, true);
+            Debug.Log("[BubbleWash] Capture: entering Play mode to photograph the running game...");
+            EditorApplication.EnterPlaymode();
+        }
+
+        static void OnPlayModeChanged(PlayModeStateChange change)
+        {
+            if (change == PlayModeStateChange.EnteredPlayMode && SessionState.GetBool(PendingKey, false))
+            {
+                SessionState.SetBool(PendingKey, false);
+                Directory.CreateDirectory(OutDir);
+                _report = Header("Play mode (running game)");
+                var go = new GameObject("__BubbleWashCapture");
+                var director = go.AddComponent<CaptureDirector>();
+                director.capture = screen =>
+                {
+                    var rig = UnityEngine.Object.FindFirstObjectByType<RunnerCameraRig>();
+                    var hud = UnityEngine.Object.FindFirstObjectByType<GameHud>();
+                    CaptureOne(screen, rig.GetComponent<Camera>(), hud, _report);
+                };
+                director.finished = () =>
+                {
+                    Finish(_report);
+                    SessionState.SetBool(RevealKey, true);
+                    EditorApplication.ExitPlaymode();
+                };
+            }
+            else if (change == PlayModeStateChange.EnteredEditMode && SessionState.GetBool(RevealKey, false))
+            {
+                SessionState.SetBool(RevealKey, false);
+                AssetDatabase.Refresh();
+                EditorUtility.RevealInFinder(Path.GetFullPath(Path.Combine(OutDir, "Screen03_compare.png")));
+                EditorUtility.DisplayDialog("Bubble Wash capture",
+                    "Captured the running game for Screens 3 and 4.\n\n" + Path.GetFullPath(OutDir) +
+                    "\n\nScreen03_compare.png and Screen04_compare.png show: approved | Unity | 50% overlay.", "OK");
+            }
+        }
+
+        // ------------------------------------------------------------------ Edit mode (quick)
+
+        [MenuItem("Bubble Wash/2b. Quick Capture (Edit Mode)", priority = 3)]
+        public static void QuickCaptureFromMenu()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             string report = CaptureAll();
-            EditorUtility.RevealInFinder(Path.Combine(OutDir, "compare_report.md"));
+            EditorUtility.RevealInFinder(Path.GetFullPath(Path.Combine(OutDir, "Screen03_compare.png")));
             Debug.Log(report);
         }
 
@@ -77,55 +138,73 @@ namespace BubbleWash.EditorTools
             env.MakeActive();
             if (session != null) session.MakeActive();
             var cam = rig.GetComponent<Camera>();
+            var look = UnityEngine.Object.FindFirstObjectByType<BubbleWashLook>();
+            if (look != null) look.Apply();
 
-            var sb = new StringBuilder();
-            sb.AppendLine("# Approved screen comparison").AppendLine();
-            sb.AppendLine($"Captured {DateTime.Now:yyyy-MM-dd HH:mm} with Unity {Application.unityVersion}, {SystemInfo.graphicsDeviceName}.").AppendLine();
-            sb.AppendLine("Each comparison image is: approved design | Unity render | 50 % overlay (for alignment).").AppendLine();
-
+            var sb = Header("Edit mode (pre-simulated)");
             foreach (var t in Targets)
             {
-                string approvedPath = Path.Combine(ApprovedDir, t.approvedFile);
-                var approved = LoadPng(approvedPath);
-                int height = approved != null ? Mathf.RoundToInt(Width * (float)approved.height / approved.width) : Width * 2;
-
                 Pose(t.screen, env, runner, rig, hud);
-                var render = Render(cam, hud, Width, height);
-                string renderPath = Path.Combine(OutDir, $"Screen{t.screen:00}_unity.png");
-                File.WriteAllBytes(renderPath, render.EncodeToPNG());
-
-                string comparePath = Path.Combine(OutDir, $"Screen{t.screen:00}_compare.png");
-                if (approved != null)
-                {
-                    var scaled = Resize(approved, Width, height);
-                    var compare = SideBySide(scaled, render);
-                    File.WriteAllBytes(comparePath, compare.EncodeToPNG());
-                    float diff = MeanDifference(scaled, render);
-                    sb.AppendLine($"## {t.title}").AppendLine();
-                    sb.AppendLine($"- Approved: `{approvedPath}` ({approved.width}x{approved.height})");
-                    sb.AppendLine($"- Unity render: `{renderPath}` ({Width}x{height})");
-                    sb.AppendLine($"- Comparison: `{comparePath}`");
-                    sb.AppendLine($"- Mean colour difference (0 = identical, 1 = opposite): {diff:F3}. Use it to track progress between captures; it is not a pass/fail score.");
-                    sb.AppendLine();
-                    UnityEngine.Object.DestroyImmediate(scaled);
-                    UnityEngine.Object.DestroyImmediate(compare);
-                }
-                else
-                {
-                    sb.AppendLine($"## {t.title}\n\n- Approved image missing: `{approvedPath}`\n");
-                }
-                UnityEngine.Object.DestroyImmediate(render);
-                if (approved != null) UnityEngine.Object.DestroyImmediate(approved);
+                CaptureOne(t.screen, cam, hud, sb);
             }
 
             // Leave the scene as it was saved.
             runner.ResetToStart();
             rig.Snap();
             if (hud != null) hud.ShowScreen(3);
-            sb.AppendLine("Review the differences against Design/VISUAL_DIFFERENCES.md before marking a screen complete.");
+            return Finish(sb);
+        }
+
+        // ------------------------------------------------------------------ shared
+
+        static StringBuilder Header(string mode)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("# Approved screen comparison").AppendLine();
+            sb.AppendLine($"Captured {DateTime.Now:yyyy-MM-dd HH:mm} - {mode} - Unity {Application.unityVersion}, {SystemInfo.graphicsDeviceName}.").AppendLine();
+            sb.AppendLine("Each comparison image is: approved design | Unity render | 50 % overlay (for alignment).").AppendLine();
+            return sb;
+        }
+
+        static string Finish(StringBuilder sb)
+        {
+            sb.AppendLine("Send Screen03_compare.png and Screen04_compare.png back for the next round of corrections.");
+            sb.AppendLine("Screens are only marked complete after these comparisons are reviewed against Design/VISUAL_DIFFERENCES.md.");
             File.WriteAllText(Path.Combine(OutDir, "compare_report.md"), sb.ToString());
-            AssetDatabase.Refresh();
+            Debug.Log("[BubbleWash] Capture finished: " + Path.GetFullPath(OutDir));
             return sb.ToString();
+        }
+
+        /// <summary>Render one approved screen with the given camera and write the render + comparison images.</summary>
+        static void CaptureOne(int screen, Camera cam, GameHud hud, StringBuilder sb)
+        {
+            var t = Array.Find(Targets, x => x.screen == screen);
+            string approvedPath = Path.Combine(ApprovedDir, t.approvedFile);
+            var approved = LoadPng(approvedPath);
+            int height = approved != null ? Mathf.RoundToInt(Width * (float)approved.height / approved.width) : Width * 2;
+
+            var render = Render(cam, hud, Width, height);
+            string renderPath = Path.Combine(OutDir, $"Screen{screen:00}_unity.png");
+            File.WriteAllBytes(renderPath, render.EncodeToPNG());
+            sb.AppendLine($"## {t.title}").AppendLine();
+            sb.AppendLine($"- Unity render: `{renderPath}` ({Width}x{height})");
+            if (approved != null)
+            {
+                var scaled = Resize(approved, Width, height);
+                var compare = SideBySide(scaled, render);
+                string comparePath = Path.Combine(OutDir, $"Screen{screen:00}_compare.png");
+                File.WriteAllBytes(comparePath, compare.EncodeToPNG());
+                float diff = MeanDifference(scaled, render);
+                sb.AppendLine($"- Approved: `{approvedPath}` ({approved.width}x{approved.height})");
+                sb.AppendLine($"- Comparison: `{comparePath}`");
+                sb.AppendLine($"- Mean colour difference (0 = identical): {diff:F3}. Tracks progress between captures; not a pass/fail score.");
+                UnityEngine.Object.DestroyImmediate(scaled);
+                UnityEngine.Object.DestroyImmediate(compare);
+                UnityEngine.Object.DestroyImmediate(approved);
+            }
+            else sb.AppendLine($"- Approved image missing: `{approvedPath}`");
+            sb.AppendLine();
+            UnityEngine.Object.DestroyImmediate(render);
         }
 
         /// <summary>Pose the mascot, camera, water, particles and HUD for an approved screen.</summary>

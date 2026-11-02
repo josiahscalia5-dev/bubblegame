@@ -67,6 +67,7 @@ namespace BubbleWash.EditorTools
             Log.AppendLine("# Level 1 build report").AppendLine().AppendLine($"Built {DateTime.Now:yyyy-MM-dd HH:mm}").AppendLine();
             EnsureFolders();
             HudImport.ConfigureSprites();
+            PropFactory.Begin();
             var mats = new MaterialSet();
             mats.Create();
 
@@ -79,9 +80,11 @@ namespace BubbleWash.EditorTools
             session.MakeActive();
             var layout = env.layout;
 
-            SetupLighting(mats);
+            var sun = SetupLighting(mats);
             var castle = BuildCastle(layout, envGo.transform);
+            if (castle != null) ApplyMeshyLook(castle, mats.castle, "castle");
             var tunnel = BuildTunnel(layout, envGo.transform, mats);
+            if (!layout.usingPlaceholderTunnel) ApplyMeshyLook(tunnel.gameObject, mats.drum, "tunnel");
             layout.loopZ = layout.tunnelEndZ + 3.5f;
             env.castle = castle != null ? castle.transform : null;
             env.tunnelRoot = tunnel;
@@ -95,6 +98,12 @@ namespace BubbleWash.EditorTools
             BuildAmbientFx(cam.transform, mats);
             ScreenComposition.Build(layout, cam.GetComponent<RunnerCameraRig>(), mascot.transform, mats, envGo.transform);
             BuildHud(env.runner);
+
+            // Live look tuning (water, foam, glow, bloom, fog) in one inspector.
+            var look = envGo.AddComponent<BubbleWashLook>();
+            look.water = mats.water; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
+            look.post = mats.postProfile; look.sun = sun;
+            look.Apply();
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
@@ -117,28 +126,75 @@ namespace BubbleWash.EditorTools
             Directory.CreateDirectory("Previews/Captures");
         }
 
-        static void SetupLighting(MaterialSet mats)
+        static Light SetupLighting(MaterialSet mats)
         {
             var sunGo = new GameObject("Sun");
             var sun = sunGo.AddComponent<Light>();
             sun.type = LightType.Directional;
             sun.color = new Color(1f, 0.95f, 0.9f);
-            sun.intensity = 1.35f;
+            sun.intensity = 1.25f;
             sun.shadows = LightShadows.None; // mobile: no realtime shadow maps, matches the bright approved look
             sunGo.transform.rotation = Quaternion.Euler(36f, 12f, 0f);
 
             RenderSettings.skybox = mats.sky;
             RenderSettings.sun = sun;
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.98f, 0.86f, 1.0f);
-            RenderSettings.ambientEquatorColor = new Color(0.72f, 0.86f, 1.0f);
-            RenderSettings.ambientGroundColor = new Color(0.45f, 0.62f, 1.0f);
-            RenderSettings.ambientIntensity = 1f;
+            RenderSettings.ambientSkyColor = new Color(0.95f, 0.82f, 1.0f);
+            RenderSettings.ambientEquatorColor = new Color(0.6f, 0.8f, 1.0f);
+            RenderSettings.ambientGroundColor = new Color(0.35f, 0.55f, 1.0f);
+            RenderSettings.ambientIntensity = 0.9f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(0.86f, 0.84f, 1.0f);
-            RenderSettings.fogStartDistance = 28f;
-            RenderSettings.fogEndDistance = 120f;
+            RenderSettings.fogColor = new Color(0.8f, 0.8f, 1.0f);
+            RenderSettings.fogStartDistance = 40f;  // far enough not to wash out the drum interior
+            RenderSettings.fogEndDistance = 160f;
+            return sun;
+        }
+
+        /// <summary>
+        /// Render a Meshy model with BubbleWash/MeshyBaked using its own baked colour texture (the artwork
+        /// is unchanged; only saturation, light response and glow of bright stripes are controlled).
+        /// </summary>
+        static void ApplyMeshyLook(GameObject root, Material template, string label)
+        {
+            int n = 0;
+            foreach (var r in root.GetComponentsInChildren<Renderer>(true))
+            {
+                var src = r.sharedMaterials;
+                var dst = new Material[src.Length];
+                for (int i = 0; i < src.Length; i++)
+                {
+                    var tex = BaseTexture(src[i]);
+                    if (tex == null) { dst[i] = src[i]; continue; }
+                    if (template.GetTexture("_BaseMap") == null || template.GetTexture("_BaseMap") == tex)
+                    {
+                        template.SetTexture("_BaseMap", tex);
+                        dst[i] = template;
+                    }
+                    else
+                    {
+                        // A second texture on the same model: clone the settings for it.
+                        string path = $"{GeneratedDir}/Materials/{template.name}_{tex.name}.mat";
+                        var m = AssetDatabase.LoadAssetAtPath<Material>(path);
+                        if (m == null) { m = new Material(template); AssetDatabase.CreateAsset(m, path); }
+                        m.CopyPropertiesFromMaterial(template);
+                        m.SetTexture("_BaseMap", tex);
+                        dst[i] = m;
+                    }
+                    n++;
+                }
+                r.sharedMaterials = dst;
+            }
+            EditorUtility.SetDirty(template);
+            Log.AppendLine($"- {label}: {n} material slot(s) rendered with BubbleWash/MeshyBaked (Meshy baked texture kept as-is).");
+        }
+
+        static Texture BaseTexture(Material m)
+        {
+            if (m == null) return null;
+            foreach (var p in new[] { "baseColorTexture", "_BaseMap", "_BaseColorMap", "_MainTex" })
+                if (m.HasProperty(p) && m.GetTexture(p) != null) return m.GetTexture(p);
+            return m.mainTexture;
         }
 
         // ------------------------------------------------------------------ castle
@@ -322,8 +378,20 @@ namespace BubbleWash.EditorTools
         {
             float channel = Mathf.Sqrt(Mathf.Max(0.1f, Mathf.Pow(layout.tunnelRadius * 1.02f, 2f) - layout.axisHeight * layout.axisHeight));
             float moatUntil = layout.castleBackZ + 1.5f;
-            var mesh = ProceduralMeshes.WaterSheet(layout.startZ - 26f, layout.tunnelEndZ + 6f, 0.3f, 40,
-                z => z < moatUntil ? 24f : channel);
+            float pathEdge = WaveField.Slide.x + 0.9f;      // raised path + its spill slope
+            const int side = 8, path = 34, cols = side * 2 + path;
+            var moatRow = new float[cols + 1];
+            for (int i = 0; i <= side; i++)
+            {
+                float k = Mathf.Pow((float)i / side, 1.7f);      // denser toward the path
+                moatRow[side - i] = -Mathf.Lerp(pathEdge, 24f, k);
+                moatRow[cols - side + i] = Mathf.Lerp(pathEdge, 24f, k);
+            }
+            for (int i = 0; i <= path; i++) moatRow[side + i] = Mathf.Lerp(-pathEdge, pathEdge, (float)i / path);
+            var channelRow = new float[cols + 1];
+            for (int i = 0; i <= cols; i++) channelRow[i] = Mathf.Lerp(-channel, channel, (float)i / cols);
+            var mesh = ProceduralMeshes.WaterSheet(layout.startZ - 26f, layout.tunnelEndZ + 6f, 0.3f, cols,
+                z => z < moatUntil ? moatRow : channelRow);
             mesh = SaveMesh(mesh, "WaterSheet");
             var go = new GameObject("Water (electric blue, animated)") { layer = 4 };
             go.transform.SetParent(parent, false);
@@ -331,7 +399,7 @@ namespace BubbleWash.EditorTools
             var r = go.AddComponent<MeshRenderer>();
             r.sharedMaterial = mats.water;
             r.shadowCastingMode = ShadowCastingMode.Off;
-            Log.AppendLine($"- Water: {mesh.vertexCount:N0} vertices, moat to z={moatUntil:F1}, channel half-width {channel:F2} m inside the drum.");
+            Log.AppendLine($"- Water: {mesh.vertexCount:N0} vertices. Raised Screen 3 path half-width {WaveField.Slide.x:F1} m standing {-WaveField.Slide.y:F2} m above the moat (to z={moatUntil:F1}); channel half-width {channel:F2} m inside the drum.");
             return go.transform;
         }
 
@@ -339,7 +407,7 @@ namespace BubbleWash.EditorTools
         {
             var root = new GameObject("DrumLighting").transform;
             root.SetParent(parent, false);
-            var ring = SaveMesh(ProceduralMeshes.Torus(layout.tunnelRadius * 0.965f, 0.055f, 72, 8), "GlowRing");
+            var ring = SaveMesh(ProceduralMeshes.Torus(layout.tunnelRadius * 0.965f, 0.075f, 72, 8), "GlowRing");
             var chain = TunnelChain.Layout(layout.tunnelStartZ, layout.segmentLength, layout.segmentCount, Mathf.Max(0.02f, layout.segmentLength * 0.005f));
             int n = 0;
             for (int i = 0; i <= chain.Count; i++)
@@ -353,7 +421,7 @@ namespace BubbleWash.EditorTools
                 mr.sharedMaterial = mats.glowRing;
                 mr.shadowCastingMode = ShadowCastingMode.Off;
                 var pulse = go.AddComponent<GlowPulse>();
-                pulse.color = i % 2 == 0 ? new Color(1.9f, 1.55f, 0.75f) : new Color(1.2f, 1.7f, 2.2f);
+                pulse.color = i % 2 == 0 ? new Color(2.6f, 2.0f, 0.95f) : new Color(1.4f, 2.2f, 2.9f);
                 pulse.phase = i * 0.9f;
             }
             for (int i = 0; i < chain.Count; i++)
@@ -365,7 +433,7 @@ namespace BubbleWash.EditorTools
                 l.type = LightType.Point;
                 l.color = new Color(0.62f, 0.8f, 1f);
                 l.range = layout.segmentLength * 1.1f;
-                l.intensity = 2.5f;
+                l.intensity = 3.0f;
                 l.shadows = LightShadows.None;
             }
             // Bright light at the far end of the drum (the luminous centre of the approved Screen 4 vortex).
@@ -384,39 +452,29 @@ namespace BubbleWash.EditorTools
         {
             var root = new GameObject("PLACEHOLDER_PinkMascot (replace with Meshy mascot GLB)") { layer = PlayerLayer };
             root.transform.position = new Vector3(0f, layout.waterLevel + MascotFloat, layout.startZ);
-            var body = new GameObject("Body").transform;      // animated (squash, lean, flips)
+            var body = new GameObject("Body").transform;      // animated (squash, lean, flips, spins)
             body.SetParent(root.transform, false);
-            var visual = new GameObject("Visual").transform;  // overall size of the placeholder
-            visual.SetParent(body, false);
-            visual.localScale = Vector3.one * MascotScale;
-
-            var pink = new Color(1f, 0.33f, 0.72f);
-            var tip = new Color(1f, 0.72f, 0.9f);
-            var furMesh = SaveMesh(ProceduralMeshes.FluffBall(0.5f, 4, 0.16f, 7, pink, tip, "PLACEHOLDER_MascotFur"), "PLACEHOLDER_MascotFur");
-            var smallFur = SaveMesh(ProceduralMeshes.FluffBall(1f, 3, 0.2f, 11, pink, tip, "PLACEHOLDER_MascotTuft"), "PLACEHOLDER_MascotTuft");
-            Part(visual, "Fur", furMesh, mats.mascotFur, Vector3.zero, Vector3.one);
-            Part(visual, "Ear_L", smallFur, mats.mascotFur, new Vector3(-0.3f, 0.36f, -0.02f), Vector3.one * 0.15f);
-            Part(visual, "Ear_R", smallFur, mats.mascotFur, new Vector3(0.3f, 0.36f, -0.02f), Vector3.one * 0.15f);
-            var armL = Part(visual, "Arm_L", smallFur, mats.mascotFur, new Vector3(-0.5f, -0.06f, 0.05f), new Vector3(0.15f, 0.13f, 0.15f));
-            var armR = Part(visual, "Arm_R", smallFur, mats.mascotFur, new Vector3(0.5f, -0.06f, 0.05f), new Vector3(0.15f, 0.13f, 0.15f));
-            var footL = Part(visual, "Foot_L", smallFur, mats.mascotFur, new Vector3(-0.2f, -0.44f, 0.16f), new Vector3(0.14f, 0.1f, 0.17f));
-            var footR = Part(visual, "Foot_R", smallFur, mats.mascotFur, new Vector3(0.2f, -0.44f, 0.16f), new Vector3(0.14f, 0.1f, 0.17f));
-
-            // Face on the front (+Z, away from the follow camera; visible on Screens 1, 8, 10-12).
-            var eyes = new GameObject("Eyes").transform;
-            eyes.SetParent(visual, false);
-            eyes.localPosition = new Vector3(0f, 0.08f, 0.43f);
-            var sphere = BuiltinSphere();
-            foreach (float side in new[] { -1f, 1f })
-            {
-                var eye = Part(eyes, side < 0 ? "Eye_L" : "Eye_R", sphere, mats.eye, new Vector3(0.16f * side, 0f, 0f), new Vector3(0.15f, 0.19f, 0.09f));
-                Part(eye, "Shine", sphere, mats.white, new Vector3(-0.22f, 0.25f, -0.45f), Vector3.one * 0.35f);
-                Part(visual, side < 0 ? "Cheek_L" : "Cheek_R", sphere, mats.cheek, new Vector3(0.3f * side, -0.07f, 0.4f), new Vector3(0.13f, 0.07f, 0.04f));
-            }
-            Part(visual, "Mouth", sphere, mats.eye, new Vector3(0f, -0.06f, 0.48f), new Vector3(0.09f, 0.05f, 0.03f));
-
             var anim = root.AddComponent<MascotAnimator>();
-            anim.body = body; anim.armLeft = armL; anim.armRight = armR; anim.footLeft = footL; anim.footRight = footR; anim.eyes = eyes;
+            anim.body = body;
+
+            // Final Meshy mascot, if supplied (Assets/BubbleWash/Models/Mascot/ or the asset slot).
+            var meshy = PropFactory.Create(PropSlot.Mascot, body);
+            if (meshy != null)
+            {
+                root.name = "PinkMascot (Meshy)";
+                var e = MeshyAssetSlots.LoadOrCreate().Get(PropSlot.Mascot);
+                anim.armLeft = PropFactory.FindChild(meshy.transform, e.armLeft);
+                anim.armRight = PropFactory.FindChild(meshy.transform, e.armRight);
+                anim.footLeft = PropFactory.FindChild(meshy.transform, e.footLeft);
+                anim.footRight = PropFactory.FindChild(meshy.transform, e.footRight);
+                anim.eyes = PropFactory.FindChild(meshy.transform, e.eyes);
+                Log.AppendLine($"- Mascot: **Meshy model** `{meshy.name}` fitted to {e.targetSize:F2} m ({e.sizeAxis}). Animated nodes found: arms {(anim.armLeft && anim.armRight ? "yes" : "no")}, feet {(anim.footLeft && anim.footRight ? "yes" : "no")}, eyes {(anim.eyes ? "yes" : "no")}.");
+            }
+            else
+            {
+                BuildPlaceholderMascot(body, mats, anim);
+                Log.AppendLine("- Mascot: **PLACEHOLDER_PinkMascot** (procedural fluffy pink body with arms, feet, ears and face). Drop the Meshy mascot GLB into Assets/BubbleWash/Models/Mascot/ and rebuild.");
+            }
 
             var input = root.AddComponent<SwipeInput>();
             var splash = root.AddComponent<SplashFX>();
@@ -431,8 +489,40 @@ namespace BubbleWash.EditorTools
             runner.environmentMask = 1 << EnvironmentLayer;
             runner.floatHeight = MascotFloat;
             runner.bodyRadius = 0.5f * MascotScale;
-            Log.AppendLine("- Mascot: **PLACEHOLDER_PinkMascot** (procedural fluffy pink body with arms, feet, ears and face). Replace with the Meshy mascot GLB (see README).");
             return root;
+        }
+
+        static void BuildPlaceholderMascot(Transform body, MaterialSet mats, MascotAnimator anim)
+        {
+            var visual = new GameObject("Visual").transform;  // overall size of the placeholder
+            visual.SetParent(body, false);
+            visual.localScale = Vector3.one * MascotScale;
+
+            var pink = new Color(1f, 0.33f, 0.72f);
+            var tip = new Color(1f, 0.72f, 0.9f);
+            var furMesh = SaveMesh(ProceduralMeshes.FluffBall(0.5f, 4, 0.16f, 7, pink, tip, "PLACEHOLDER_MascotFur"), "PLACEHOLDER_MascotFur");
+            var smallFur = SaveMesh(ProceduralMeshes.FluffBall(1f, 3, 0.2f, 11, pink, tip, "PLACEHOLDER_MascotTuft"), "PLACEHOLDER_MascotTuft");
+            Part(visual, "Fur", furMesh, mats.mascotFur, Vector3.zero, Vector3.one);
+            Part(visual, "Ear_L", smallFur, mats.mascotFur, new Vector3(-0.3f, 0.36f, -0.02f), Vector3.one * 0.15f);
+            Part(visual, "Ear_R", smallFur, mats.mascotFur, new Vector3(0.3f, 0.36f, -0.02f), Vector3.one * 0.15f);
+            anim.armLeft = Part(visual, "Arm_L", smallFur, mats.mascotFur, new Vector3(-0.5f, -0.06f, 0.05f), new Vector3(0.15f, 0.13f, 0.15f));
+            anim.armRight = Part(visual, "Arm_R", smallFur, mats.mascotFur, new Vector3(0.5f, -0.06f, 0.05f), new Vector3(0.15f, 0.13f, 0.15f));
+            anim.footLeft = Part(visual, "Foot_L", smallFur, mats.mascotFur, new Vector3(-0.2f, -0.44f, 0.16f), new Vector3(0.14f, 0.1f, 0.17f));
+            anim.footRight = Part(visual, "Foot_R", smallFur, mats.mascotFur, new Vector3(0.2f, -0.44f, 0.16f), new Vector3(0.14f, 0.1f, 0.17f));
+
+            // Face on the front (+Z, away from the follow camera; visible on Screens 1, 8, 10-12).
+            var eyes = new GameObject("Eyes").transform;
+            eyes.SetParent(visual, false);
+            eyes.localPosition = new Vector3(0f, 0.08f, 0.43f);
+            var sphere = BuiltinSphere();
+            foreach (float side in new[] { -1f, 1f })
+            {
+                var eye = Part(eyes, side < 0 ? "Eye_L" : "Eye_R", sphere, mats.eye, new Vector3(0.16f * side, 0f, 0f), new Vector3(0.15f, 0.19f, 0.09f));
+                Part(eye, "Shine", sphere, mats.white, new Vector3(-0.22f, 0.25f, -0.45f), Vector3.one * 0.35f);
+                Part(visual, side < 0 ? "Cheek_L" : "Cheek_R", sphere, mats.cheek, new Vector3(0.3f * side, -0.07f, 0.4f), new Vector3(0.13f, 0.07f, 0.04f));
+            }
+            Part(visual, "Mouth", sphere, mats.eye, new Vector3(0f, -0.06f, 0.48f), new Vector3(0.09f, 0.05f, 0.03f));
+            anim.eyes = eyes;
         }
 
         static Transform Part(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, Vector3 scale)

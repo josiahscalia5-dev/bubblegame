@@ -8,30 +8,8 @@ float _BW_FlowSpeed;
 float4 _BW_PlayerPos;
 float4 _BW_Tunnel;   // x = tunnel start z, y = tunnel end z, z = opening radius, w = axis height above water
 float4 _BW_Channel;  // x = water level, y = edge curl height, z = curl width
-
-// Keep in sync with WaveField.Height (C#).
-float BW_WaveBase(float2 xz, float t)
-{
-    float h = 0.0;
-    h += 0.060 * sin(xz.y * 0.90 - t * 3.1 + xz.x * 0.35);
-    h += 0.035 * sin(xz.y * 2.30 - t * 5.3 - xz.x * 1.10 + 1.7);
-    h += 0.020 * sin(xz.y * 4.70 - t * 7.9 + xz.x * 2.30 + 0.4);
-    h += 0.012 * sin(xz.x * 6.00 + t * 4.0 + xz.y * 0.50);
-    return h * _BW_WaveScale;
-}
-
-float BW_EdgeCurl(float2 xz)
-{
-    float inside = saturate((xz.y - _BW_Tunnel.x) * 0.5) * saturate((_BW_Tunnel.y - xz.y) * 0.5);
-    float half_ = sqrt(max(0.01, _BW_Tunnel.z * _BW_Tunnel.z - _BW_Tunnel.w * _BW_Tunnel.w));
-    float u = saturate((abs(xz.x) - (half_ - _BW_Channel.z)) / max(0.01, _BW_Channel.z));
-    return inside * _BW_Channel.y * u * u;
-}
-
-float BW_WaveHeight(float2 xz, float t)
-{
-    return _BW_Channel.x + BW_WaveBase(xz, t) + BW_EdgeCurl(xz);
-}
+float4 _BW_Slide;    // x = raised path half-width, y = moat level offset, z = crown height, w = z where the path enters the drum
+float4 _BW_Rings;    // x = first glow ring z, y = ring spacing, z = ring count
 
 float BW_Hash21(float2 p)
 {
@@ -59,6 +37,59 @@ float BW_Fbm(float2 p)
     v += 0.30 * BW_ValueNoise(p * 2.07 + 13.1);
     v += 0.15 * BW_ValueNoise(p * 4.13 + 7.7);
     return v;
+}
+
+// Keep in sync with WaveField.Height (C#).
+float BW_WaveBase(float2 xz, float t)
+{
+    float h = 0.0;
+    h += 0.060 * sin(xz.y * 0.90 - t * 3.1 + xz.x * 0.35);
+    h += 0.035 * sin(xz.y * 2.30 - t * 5.3 - xz.x * 1.10 + 1.7);
+    h += 0.020 * sin(xz.y * 4.70 - t * 7.9 + xz.x * 2.30 + 0.4);
+    h += 0.012 * sin(xz.x * 6.00 + t * 4.0 + xz.y * 0.50);
+    return h * _BW_WaveScale;
+}
+
+float BW_EdgeCurl(float2 xz)
+{
+    float inside = saturate((xz.y - _BW_Tunnel.x) * 0.5) * saturate((_BW_Tunnel.y - xz.y) * 0.5);
+    float half_ = sqrt(max(0.01, _BW_Tunnel.z * _BW_Tunnel.z - _BW_Tunnel.w * _BW_Tunnel.w));
+    float u = saturate((abs(xz.x) - (half_ - _BW_Channel.z)) / max(0.01, _BW_Channel.z));
+    return inside * _BW_Channel.y * u * u;
+}
+
+// Screen 3's raised water path: a crowned channel standing above the surrounding moat, with the
+// water spilling off its edges. Keep in sync with WaveField.SlideOffset (C#).
+float BW_SlideOffset(float2 xz)
+{
+    if (_BW_Slide.x <= 0.0) return 0.0;
+    float before = saturate((_BW_Slide.w - xz.y) * 0.5);
+    float ax = abs(xz.x);
+    float crown = _BW_Slide.z * saturate(1.0 - (ax * ax) / (_BW_Slide.x * _BW_Slide.x));
+    float edge = smoothstep(_BW_Slide.x, _BW_Slide.x + 0.55, ax);
+    return before * lerp(crown, _BW_Slide.y, edge);
+}
+
+float BW_WaveHeight(float2 xz, float t)
+{
+    return _BW_Channel.x + BW_WaveBase(xz, t) + BW_EdgeCurl(xz) + BW_SlideOffset(xz);
+}
+
+// Cellular noise: x = distance to nearest cell point, y = distance to the second nearest.
+float2 BW_Voronoi(float2 p)
+{
+    float2 i = floor(p);
+    float2 f = frac(p);
+    float d1 = 8.0, d2 = 8.0;
+    [unroll] for (int y = -1; y <= 1; y++)
+    [unroll] for (int x = -1; x <= 1; x++)
+    {
+        float2 g = float2(x, y);
+        float2 o = float2(BW_Hash21(i + g), BW_Hash21(i + g + 17.17));
+        float d = length(g + o - f);
+        if (d < d1) { d2 = d1; d1 = d; } else if (d < d2) { d2 = d; }
+    }
+    return float2(d1, d2);
 }
 
 // Thin-film interference colour used by the soap bubbles (0..1 thickness, view angle term).

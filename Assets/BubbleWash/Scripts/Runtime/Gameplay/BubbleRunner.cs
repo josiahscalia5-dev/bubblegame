@@ -45,6 +45,10 @@ namespace BubbleWash
         public LayerMask environmentMask = 1 << 8;
         public float wallClearance = 0.12f;
 
+        [Header("Capture / testing")]
+        [Tooltip("Keep the mascot at its current z while still swimming, bobbing and splashing (used by the screenshot comparison).")]
+        public bool holdPosition;
+
         public event Action<string> Bumped;
 
         public int Lane { get; private set; }
@@ -99,7 +103,15 @@ namespace BubbleWash
 
         void OnTap()
         {
-            if (_session != null && _session.Phase == RunPhase.Intro) _session.SetPhase(RunPhase.Running);
+            if (_session != null && _session.Phase == RunPhase.Intro) { _session.SetPhase(RunPhase.Running); return; }
+            if (_session == null || _session.Phase == RunPhase.Running) Spin();
+        }
+
+        /// <summary>Quick playful 360-degree spin on the water (tap while running).</summary>
+        public void Spin()
+        {
+            if (animator) { animator.Spin(360f); animator.Squash(-0.06f); }
+            if (splash && !Airborne) splash.Burst(transform.position, 0.45f);
         }
 
         void OnSwipe(SwipeDirection dir)
@@ -175,7 +187,7 @@ namespace BubbleWash
             float target = running ? cruiseSpeed * (_turboT > 0f ? turboMultiplier : 1f) : 0f;
             Speed = Mathf.MoveTowards(Speed, target, accelerate * dt * (target > Speed ? 1f : 2f));
             _turboT = Mathf.Max(0f, _turboT - dt);
-            _z += Speed * dt;
+            if (holdPosition) Speed = cruiseSpeed; else _z += Speed * dt;
 
             // Smooth lane change, limited by the passage width at body height.
             float laneX = l.LaneX(Lane);
