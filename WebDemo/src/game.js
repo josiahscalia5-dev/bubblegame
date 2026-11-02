@@ -8,9 +8,12 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import * as W from './world.js';
 import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
+import { buildScenery } from './scenery.js';
+import { buildHelper } from './helper.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -129,7 +132,7 @@ function bakedMaterial(src, opts = {}) {
 }
 
 // ------------------------------------------------------------------ world
-let water, waterU, mascot, rig, fx;
+let water, waterU, mascot, rig, fx, scenery, helper;
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -225,7 +228,7 @@ function buildWater() {
     uTime: { value: 0 }, uTunnel: { value: new THREE.Vector4(L.tunnelStart, L.tunnelEnd, L.tunnelRadius, L.axisHeight) },
     uRipples: { value: ripples }, uPlayer: { value: new THREE.Vector3() }, uPlayerMove: { value: new THREE.Vector3() },
     uFlow: { value: 9 }, uSlideHalf: { value: W.SLIDE.half },
-    uDeep: { value: C(0x0636e8) }, uShallow: { value: C(0x0a86ff) }, uTurq: { value: C(0x14d9ef) }, uGlow: { value: C(0x5ee8ff) },
+    uDeep: { value: C(0x0a44f0) }, uShallow: { value: C(0x1a98ff) }, uTurq: { value: C(0x2ee6f6) }, uGlow: { value: C(0x8af0ff) },
     uSky: { value: C(0xa9c4ff) }, uPink: { value: C(0xff9be0) }, uGold: { value: C(0xffcc5a) },
     uRingA: { value: C(0xffd873) }, uRingB: { value: C(0x8ce6ff) }, uFog: { value: C(0xccccff) }, uSunDir: { value: SUN_DIR },
     uRings: { value: new THREE.Vector3(L.tunnelStart + 0.25, L.segmentLength - Math.max(0.02, L.segmentLength * 0.005), 4) },
@@ -239,32 +242,41 @@ function buildWater() {
 }
 
 function buildRails() {
-  // Chunky gold rails along the raised slide, as in the approved Screen 3: a thick top rail and a lower
-  // rail riding the slide's hills, with rounded gold balusters set with blue gem studs.
+  // The raised slide is a flume, as in the approved Screen 3: a pearly lavender wall along each edge,
+  // capped by a thick gold rail and a row of chunky gold segments set with blue gem studs, all riding
+  // the slide's hills.
   const blueGem = new THREE.MeshStandardMaterial({ color: 0x2f6bff, metalness: 0.2, roughness: 0.12, envMap: mats.env, envMapIntensity: 1.6, emissive: 0x0a2a9a, emissiveIntensity: 0.5 });
-  const z0 = L.startZ - 24, z1 = -2.5, step = 1.25;
-  const nPosts = Math.floor((z1 - z0) / step) + 1;
-  const posts = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.1, 0.12, 0.42, 14), mats.gold, nPosts * 2);
-  const caps = new THREE.InstancedMesh(new THREE.SphereGeometry(0.12, 14, 10), mats.gold, nPosts * 2);
-  const studs = new THREE.InstancedMesh(new THREE.SphereGeometry(0.065, 12, 8), blueGem, nPosts * 2);
+  const pearl = new THREE.MeshStandardMaterial({ color: 0xe6d8ff, metalness: 0.15, roughness: 0.32, envMap: mats.env, envMapIntensity: 1.0, side: THREE.DoubleSide });
+  const goldWarm = new THREE.MeshStandardMaterial({ color: 0xf2a93b, metalness: 1, roughness: 0.3, envMap: mats.env, envMapIntensity: 1.25, emissive: 0x3a2200, emissiveIntensity: 0.6 });
+  const z0 = L.startZ - 24, z1 = -0.6, step = 0.62;
+  const nSeg = Math.floor((z1 - z0) / step) + 1;
+  const segs = new THREE.InstancedMesh(new RoundedBoxGeometry(0.22, 0.26, 0.5, 2, 0.06), goldWarm, nSeg * 2);
+  const studs = new THREE.InstancedMesh(new THREE.SphereGeometry(0.055, 12, 8), blueGem, nSeg * 2);
+  // Wall cross-section (sideways offset from the slide edge, height above the edge's water level).
+  const profile = [[-0.06, -0.06], [0.04, 0.1], [0.14, 0.2], [0.26, 0.2], [0.34, 0.08], [0.36, -0.8]];
   let k = 0;
   for (const side of [-1, 1]) {
-    const rx = side * (W.SLIDE.half + 0.14);
-    const top = [], low = [];
-    for (let z = z0; z <= z1; z += 0.5) {
+    const pos = [], idx = [], top = [];
+    let rows = 0;
+    for (let z = z0; z <= z1 + 1e-6; z += 0.25, rows++) {
       const y = W.baseHeight(L, side * W.SLIDE.half, z);
-      top.push(new THREE.Vector3(rx, y + 0.2, z)); low.push(new THREE.Vector3(rx + side * 0.02, y - 0.02, z));
+      for (const [dx, dy] of profile) pos.push(side * (W.SLIDE.half + dx), y + dy, z);
+      top.push(new THREE.Vector3(side * (W.SLIDE.half + 0.2), y + 0.26, z));
     }
-    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(top), top.length * 2, 0.1, 12), mats.gold));
-    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(low), low.length * 2, 0.06, 10), mats.gold));
-    for (let i = 0; i < nPosts; i++, k++) {
+    const n = profile.length;
+    for (let r = 0; r < rows - 1; r++) for (let c = 0; c < n - 1; c++) { const a = r * n + c, b = a + n; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+    scene.add(new THREE.Mesh(g, pearl));
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(top), top.length * 2, 0.1, 14), mats.gold));
+    for (let i = 0; i < nSeg; i++, k++) {
       const z = z0 + i * step, y = W.baseHeight(L, side * W.SLIDE.half, z);
-      posts.setMatrixAt(k, tmpM.makeTranslation(rx, y - 0.02, z));
-      caps.setMatrixAt(k, tmpM.makeTranslation(rx, y + 0.22, z));
-      studs.setMatrixAt(k, tmpM.makeTranslation(rx + side * 0.11, y + 0.03, z));
+      const slope = (W.baseHeight(L, side * W.SLIDE.half, z + 0.2) - W.baseHeight(L, side * W.SLIDE.half, z - 0.2)) / 0.4;
+      tmpQ.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.atan(slope));
+      segs.setMatrixAt(k, tmpM.compose(new THREE.Vector3(side * (W.SLIDE.half + 0.36), y + 0.1, z), tmpQ, new THREE.Vector3(1, 1, 1)));
+      studs.setMatrixAt(k, tmpM.makeTranslation(side * (W.SLIDE.half + 0.48), y + 0.1, z));
     }
   }
-  scene.add(posts, caps, studs);
+  scene.add(segs, studs);
 }
 
 function fallGeometry(throwDist, drop, w0, w1, across = 12, along = 26) {
@@ -313,6 +325,7 @@ function buildWaterfalls() {
   const falls = new THREE.Group(); scene.add(falls); mats.falls = falls;
   const mat = new THREE.ShaderMaterial({ vertexShader: SH.fallVertex, fragmentShader: SH.fallFragment, uniforms: u,
     transparent: true, depthWrite: false, side: THREE.DoubleSide });
+  mats.fallMat = mat;   // shared with the machinery towers' waterfalls (scenery.js)
   const addFall = (from, to, w0, w1) => {
     const flat = to.clone().sub(from); const drop = from.y - to.y; flat.y = 0;
     const mesh = new THREE.Mesh(fallGeometry(Math.max(0.02, flat.length()), Math.max(0.05, drop), w0, w1), mat);
@@ -404,8 +417,8 @@ function radialTexture() {
 // approved screen: a big one close on the left, seen nearly end-on (blue hub, fluffy pink ring), and
 // more along both sides toward the castle. [track x, h, u], axis, diameter (m), spin (deg/s).
 const SCREEN3_BRUSHES = [
-  { at: [2.4, 0.4, -10.6], axis: [-0.32, 0.12, -0.94], d: 2.4, spin: 110 },
-  { at: [2.75, 1.1, -7.4], axis: [-0.3, 0.0, -0.95], d: 1.7, spin: -95 },
+  { at: [2.75, 0.1, -7.0], axis: [-0.2, 0.08, -0.98], d: 3.0, spin: 110 },    // lower left, end-on: the approved big brush
+  { at: [-2.45, 1.3, -5.0], axis: [0.3, 0.05, -0.95], d: 1.8, spin: -95 },   // right, above the gold wheel: pink fringe
 ];
 // The three Meshy drum segments, chained as in the Unity layout and then bent along the 3D path:
 // every vertex's straight-layout z becomes its distance along the path and its x/y are carried by
@@ -474,78 +487,6 @@ function buildRollers(gltf) {
   }
 }
 
-// Gold-and-blue washing-machine works beside the slide, as in the approved Screen 3: turning gears
-// with blue hubs, blue barrel tanks banded in gold, and portholes of blue glass in gold rims.
-function buildMachinery() {
-  const blue = new THREE.MeshStandardMaterial({ color: 0x2a5cff, metalness: 0.35, roughness: 0.3, envMap: mats.env, envMapIntensity: 1.1 });
-  const glass = new THREE.MeshStandardMaterial({ color: 0x5fc4ff, metalness: 0.1, roughness: 0.06, envMap: mats.env, envMapIntensity: 1.6, emissive: 0x0b3a8a, emissiveIntensity: 0.6 });
-  const works = new THREE.Group(); scene.add(works); mats.machinery = works;
-  const face = (g, at, yaw) => { g.position.set(...at); g.rotation.y = yaw; works.add(g); return g; };
-  mats.gears = [];
-  const gearGeo = (r, teeth) => {
-    const sh = new THREE.Shape(), r0 = r * 0.8, step = (Math.PI * 2) / teeth;
-    for (let i = 0; i < teeth; i++) {
-      const a = i * step;
-      const pts = [[r0, a], [r, a + step * 0.12], [r, a + step * 0.42], [r0, a + step * 0.56]];
-      pts.forEach(([rr, aa], j) => { const x = Math.cos(aa) * rr, y = Math.sin(aa) * rr; if (i === 0 && j === 0) sh.moveTo(x, y); else sh.lineTo(x, y); });
-    }
-    sh.closePath();
-    const hole = new THREE.Path(); hole.absarc(0, 0, r * 0.36, 0, Math.PI * 2, true); sh.holes.push(hole);
-    const g = new THREE.ExtrudeGeometry(sh, { depth: r * 0.2, bevelEnabled: true, bevelThickness: r * 0.05, bevelSize: r * 0.03, bevelSegments: 2, curveSegments: 8 });
-    g.center();
-    return g;
-  };
-  const gear = (at, r, teeth, yaw, speed) => {
-    const g = new THREE.Group();
-    const wheel = new THREE.Mesh(gearGeo(r, teeth), mats.gold);
-    const hub = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.38, r * 0.38, r * 0.32, 28), blue); hub.rotation.x = Math.PI / 2;
-    const cap = new THREE.Mesh(new THREE.SphereGeometry(r * 0.17, 18, 12), mats.gold); cap.position.z = -r * 0.16;
-    g.add(wheel, hub, cap);
-    mats.gears.push({ obj: wheel, speed });
-    return face(g, at, yaw);
-  };
-  const tank = (at, r, h, yaw) => {
-    const g = new THREE.Group();
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 32), blue);
-    g.add(body);
-    for (const y of [-h / 2, -h / 6, h / 6, h / 2]) { const band = new THREE.Mesh(new THREE.TorusGeometry(r * 1.01, r * 0.07, 8, 40), mats.gold); band.rotation.x = Math.PI / 2; band.position.y = y; g.add(band); }
-    const dome = new THREE.Mesh(new THREE.SphereGeometry(r, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2), mats.gold); dome.position.y = h / 2; g.add(dome);
-    const knob = new THREE.Mesh(new THREE.SphereGeometry(r * 0.22, 16, 10), blue); knob.position.y = h / 2 + r * 0.95; g.add(knob);
-    return face(g, at, yaw);
-  };
-  const porthole = (at, r, yaw) => {
-    const g = new THREE.Group();
-    const rim = new THREE.Mesh(new THREE.TorusGeometry(r, r * 0.18, 12, 40), mats.gold);
-    const pane = new THREE.Mesh(new THREE.CircleGeometry(r * 0.92, 40), glass); pane.position.z = -0.01; pane.rotation.y = Math.PI;
-    g.add(rim, pane);
-    for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2, b = new THREE.Mesh(new THREE.SphereGeometry(r * 0.07, 10, 8), mats.gold); b.position.set(Math.cos(a) * r, Math.sin(a) * r, -r * 0.14); g.add(b); }
-    return face(g, at, yaw);
-  };
-  const pipe = (a, b, r) => {
-    const d = new THREE.Vector3(...b).sub(new THREE.Vector3(...a)), len = d.length();
-    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 20), mats.gold);
-    m.position.set(...a).add(new THREE.Vector3(...b)).multiplyScalar(0.5);
-    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
-    works.add(m);
-    for (let s = 0.12; s < 1; s += 0.38) { const ring = new THREE.Mesh(new THREE.TorusGeometry(r * 1.15, r * 0.3, 8, 24), blue); ring.position.set(...a).addScaledVector(d, s); ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), d.clone().normalize()); works.add(ring); }
-  };
-  // Left (screen-left = +x), behind the big brush.
-  tank([3.4, 0.15, -13.2], 0.5, 1.7, 0.4);
-  gear([2.6, 2.35, -11.4], 0.75, 16, -0.35, 0.7);
-  porthole([2.25, 2.55, -8.3], 0.42, -0.3);
-  gear([3.3, 1.55, -6.2], 0.8, 18, -0.25, -0.45);
-  pipe([2.05, -0.5, -9.2], [2.05, 3.1, -9.2], 0.09);
-  // Right (screen-right = -x).
-  gear([-2.75, 2.0, -9.6], 1.0, 20, 0.35, 0.5);
-  gear([-2.0, 0.95, -11.4], 0.45, 11, 0.35, -1.1);
-  tank([-2.9, 0.2, -13.4], 0.48, 1.5, -0.4);
-  porthole([-2.1, 1.05, -14.9], 0.48, 0.3);
-  pipe([-2.15, -0.5, -12.6], [-2.15, 3.3, -12.6], 0.16);
-  porthole([-3.0, 2.7, -12.4], 0.45, 0.35);
-  pipe([-1.95, 0.35, -17.5], [-1.95, 0.35, -5.5], 0.08);
-  pipe([-2.35, -0.5, -8.0], [-2.35, 3.4, -8.0], 0.1);
-}
-
 function buildBubbles() {
   const base = new THREE.PlaneGeometry(2, 2);
   const geo = new THREE.InstancedBufferGeometry();
@@ -586,8 +527,9 @@ function buildCollectibles(gemGltf, face) {
     m.position.copy(p); scene.add(m);
     coins.push({ obj: m, home: p.clone(), kind: 'coin', live: true, pop: -1, phase: Math.random() * 6, compose });
   };
-  for (const p of L.coins3) addCoin(V3(p), true);
-  for (const p of L.coins4) addCoin(V3(p), true);
+  const onLanes = (p) => V3(p).multiply(new THREE.Vector3(W.LANE / W.LAYOUT_LANE, 1, 1));   // layout lanes -> this slide's lanes
+  for (const p of L.coins3) addCoin(onLanes(p), true);
+  for (const p of L.coins4) addCoin(onLanes(p), true);
   const z0 = L.tunnelStart, zAfter = L.screen4Z + 11;
   const onWater = (x, yAbove, z) => new THREE.Vector3(x, W.baseHeight(L, x, z) + yAbove, z);
   for (let i = 0; i < 6; i++) addCoin(onWater(W.laneX(1), 0.65, z0 + 2.5 + i * 1.6));
@@ -618,7 +560,7 @@ function buildCollectibles(gemGltf, face) {
     scene.add(holder);
     gems.push({ obj: holder, home: p.clone(), kind: 'gem', live: true, pop: -1, phase: Math.random() * 6, spin: Math.random() * 6, compose });
   };
-  addGem(V3(L.gem4), true);
+  addGem(onLanes(L.gem4), true);
   addGem(onWater(W.laneX(1), 1.7, L.tunnelEnd - 1.5));
   addGem(onWater(W.laneX(0), 1.35, z0 + 10.5));
   addGem(onWater(W.laneX(1), 0.7, z0 + 12));
@@ -774,8 +716,23 @@ function buildMascot(gltf) {
   };
 }
 
+// The golden helper on its pink float waits on the slide in front of the portal (where the approved
+// Screen 3 shows it), facing the mascot. Once the run starts it rides ahead into the washing machine,
+// leading the way, and fades into the light at the tunnel's end.
+const HELPER = { z0: -9.0, lead: 6.5, scale: 1.15 };
+function updateHelper(dt) {
+  if (!helper) return;
+  if (state.phase === 'running') helper.z = Math.max(helper.z, mascot.z + HELPER.lead);
+  const t = state.time, z = helper.z;
+  TR.map(0, W.surface(L, 0, z, t) - 0.02, z, helper.root.position);
+  TR.quaternion(z, helper.root.quaternion);   // its face (local -Z) looks back up the run, at the mascot
+  helper.root.visible = z < L.tunnelEnd + 0.5;
+  helper.animate(t, state.phase === 'running' ? 1 : 0);
+}
+
 function resetRun() {
   const m = mascot;
+  if (helper) helper.z = HELPER.z0;
   Object.assign(m, { lane: 1, x: 0, xv: 0, z: L.startZ, speed: 0, air: false, vy: 0, pitch: 0, lean: 0, yaw: 0, flip: 0, spin: 0, spinV: 0, sq: 0, sqV: 0 });
   m.yAbs = W.surface(L, 0, L.startZ, state.time) + W.FLOAT_H;
   for (const c of [...coins, ...gems, ...socks]) { c.live = true; c.pop = -1; c.obj.visible = true; c.obj.scale.setScalar(1); c.obj.position.copy(c.home); }
@@ -791,7 +748,7 @@ function changeLane(dir) {
   mascot.lane = lane;
   const m = mascot;
   // Side spray thrown the way the mascot is moving.
-  fx.burstT(m.x, W.surface(L, m.x, m.z, state.time) + 0.05, m.z, 26, 1.1, { dir: W.laneX(lane) > m.x ? 1 : -1, vz: m.speed * 0.5 });
+  fx.burstT(m.x, W.surface(L, m.x, m.z, state.time) + 0.05, m.z, 16, 1.0, { dir: W.laneX(lane) > m.x ? 1 : -1, vz: m.speed * 0.5 });
   addRipple(m.x, m.z, 1);
   state.lastGesture = { t: state.time, lane };
   sfx('swish');
@@ -800,7 +757,7 @@ function jump() {
   if (state.phase !== 'running' || mascot.air) return;
   mascot.air = true; mascot.vy = W.JUMP_V; mascot.flip = 0; mascot.sqV += 6;
   const m = mascot;
-  fx.burstT(m.x, m.yAbs - W.FLOAT_H + 0.05, m.z, 30, 1.2, { vz: m.speed * 0.4 });
+  fx.burstT(m.x, m.yAbs - W.FLOAT_H + 0.05, m.z, 20, 1.1, { vz: m.speed * 0.4 });
   addRipple(m.x, m.z, 1.2);
   sfx('splash');
 }
@@ -830,7 +787,7 @@ function updateMascot(dt) {
     m.flip = Math.min(Math.PI * 2, m.flip + dt * (Math.PI * 2) / 0.62);
     if (m.yAbs <= rideY && m.vy < 0) {
       m.air = false; m.flip = 0; m.sqV -= 9 + Math.min(8, -m.vy);
-      fx.burstT(m.x, surf + 0.05, m.z, 55, 1.5, { vz: m.speed * 0.5 }); fx.burstT(m.x, surf + 0.05, m.z, 10, 0.8, { kind: 1, size: 0.26, grav: 0.15, up: 0.5 });
+      fx.burstT(m.x, surf + 0.05, m.z, 34, 1.4, { vz: m.speed * 0.5 }); fx.burstT(m.x, surf + 0.05, m.z, 6, 0.8, { kind: 1, size: 0.22, grav: 0.15, up: 0.5 });
       addRipple(m.x, m.z, 1.6); sfx('splash');
     }
   } else {
@@ -841,7 +798,7 @@ function updateMascot(dt) {
   // Bottom of a drop: the water levels out under the mascot and throws a splash forward and sideways.
   const flatten = Math.max(0, slopeAll - m.lastSlope) / Math.max(dt, 1e-3);
   if (running && !m.air && flatten > 0.35 && m.lastSlope < -0.1) {
-    m.splashCarry = (m.splashCarry || 0) + flatten * dt * 60;
+    m.splashCarry = (m.splashCarry || 0) + flatten * dt * 36;
     for (; m.splashCarry >= 1; m.splashCarry--) fx.emitT(m.x + (Math.random() * 2 - 1) * 0.55, surf + 0.05, m.z + 0.2 + Math.random() * 0.4,
       (Math.random() * 2 - 1) * 2.2, 2.2 + Math.random() * 2.4, m.speed * (0.6 + Math.random() * 0.3), 0.07 + Math.random() * 0.08, 0.6 + Math.random() * 0.4, 0);
     m.sqV -= flatten * dt * 25;
@@ -872,18 +829,25 @@ function updateMascot(dt) {
   // side spray while changing lanes, gentle ripples while bobbing at the start.
   if (!m.air) {
     const speed01 = m.speed / W.CRUISE;
-    m.wakeCarry += (running ? 14 + 40 * speed01 + 90 * m.downhill + Math.abs(m.xv) * 30 : 3) * dt;
+    m.wakeCarry += (running ? 8 + 22 * speed01 + 50 * m.downhill + Math.abs(m.xv) * 18 : 2) * dt;
     for (; m.wakeCarry >= 1; m.wakeCarry--) {
       const side = Math.random() < 0.5 ? -1 : 1;
       fx.emitT(m.x + side * (0.25 + Math.random() * 0.25), surf + 0.04, m.z - 0.15 - Math.random() * 0.3,
         side * (0.5 + Math.random() * 1.2) - m.xv * 0.4, 1.0 + Math.random() * (1.6 + 2.2 * m.downhill), m.speed * (0.35 + Math.random() * 0.3),
         0.04 + Math.random() * 0.07, 0.45 + Math.random() * 0.4, 0);
     }
-    m.foamCarry += (running ? 3 + 6 * speed01 + 10 * m.downhill : 1.2) * dt;
+    m.foamCarry += (running ? 1.5 + 3 * speed01 + 5 * m.downhill : 0.8) * dt;
     for (; m.foamCarry >= 1; m.foamCarry--) {
       const side = Math.random() < 0.5 ? -1 : 1;
       fx.emitT(m.x + side * (0.32 + Math.random() * 0.25), surf + 0.05, m.z - 0.35 - Math.random() * 0.6,
         side * 0.45, 0.2, m.speed * 0.75, 0.1 + Math.random() * 0.12, 0.45 + Math.random() * 0.3, 1, 0.1);
+    }
+    if (!running) {   // while waiting at Tap to Start: little bubbles rising around the body, as in the approved screen
+      m.restBubbles = (m.restBubbles || 0) + 14 * dt;
+      for (; m.restBubbles >= 1; m.restBubbles--) {
+        const a = Math.random() * Math.PI * 2, r = 0.42 + Math.random() * 0.28;
+        fx.emitT(m.x + Math.cos(a) * r, surf + 0.02, m.z + Math.sin(a) * r * 0.7, Math.cos(a) * 0.15, 0.25 + Math.random() * 0.3, 0, 0.07 + Math.random() * 0.09, 1.0 + Math.random() * 0.8, 0, -0.03);
+      }
     }
     m.bobRipple -= dt;
     if (m.bobRipple < 0) { addRipple(m.x, m.z, running ? 0.35 : 0.6); m.bobRipple = running ? 0.45 : 1.2; }
@@ -909,7 +873,10 @@ function loopRun() {
 }
 
 // ------------------------------------------------------------------ camera rig
-const S3 = { off: new THREE.Vector3(0, 1.11, -4.01), look: new THREE.Vector3(0, 0.45, 5.97), fov: 55 };
+// Tap to Start framing, measured against the approved Screen 3: a longer lens from further back keeps
+// the mascot's size and place (42 % of the width, centred at 65 % of the height) while the portal
+// arch grows to the approved 64 % of the width.
+const S3 = { off: new THREE.Vector3(0, 1.0, -6.4), look: new THREE.Vector3(0, 0.5, 5.97), fov: 36 };
 const S4 = { off: new THREE.Vector3(0, 1.03, -3.58), look: new THREE.Vector3(0, 0.89, 6.42), fov: 60 };
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
@@ -1000,9 +967,9 @@ function popTowardMascot(c, dt) {
 }
 function collect(c) {
   c.live = false; c.pop = 0;
-  if (c.kind === 'coin') { state.coins++; state.collected.coins++; fx.sparkle(c.obj.position, 10); sfx('coin'); }
-  else if (c.kind === 'sock') { state.socks++; state.collected.socks = (state.collected.socks || 0) + 1; fx.sparkle(c.obj.position, 26); sfx('gem'); popHud('sockPanel'); }
-  else { state.gems++; state.collected.gems++; fx.sparkle(c.obj.position, 30); sfx('gem'); popHud('gemPill'); }
+  if (c.kind === 'coin') { state.coins++; state.collected.coins++; fx.sparkle(c.obj.position, 7); sfx('coin'); }
+  else if (c.kind === 'sock') { state.socks++; state.collected.socks = (state.collected.socks || 0) + 1; fx.sparkle(c.obj.position, 16); sfx('gem'); popHud('sockPanel'); }
+  else { state.gems++; state.collected.gems++; fx.sparkle(c.obj.position, 18); sfx('gem'); popHud('gemPill'); }
   refreshHud();
 }
 
@@ -1224,6 +1191,7 @@ function step(dt) {
   for (const u of fallsU) u.uTime.value = state.time;
   mats.bubbleU.uTime.value = state.time;
   updateMascot(dt);
+  updateHelper(dt);
   updateCollectibles(dt);
   for (const r of rollers) {
     r.angle += r.speed * dt;
@@ -1231,7 +1199,7 @@ function step(dt) {
     tmpM.makeTranslation(r.centre.x, r.centre.y, r.centre.z).multiply(tmpM2.makeRotationFromQuaternion(tmpQ)).multiply(new THREE.Matrix4().makeTranslation(-r.centre.x, -r.centre.y, -r.centre.z));
     r.g.matrix.multiplyMatrices(tmpM, r.m0);
   }
-  for (const g of mats.gears) g.obj.rotation.z += g.speed * dt;
+  scenery.update(dt, state.time);
   for (const ring of mats.rings) ring.material.color.copy(ring.userData.base).multiplyScalar(0.8 + 0.25 * Math.sin(state.time * 2.4 + ring.userData.pulse));
   fx.update(dt);
   updateCamera(dt);
@@ -1285,11 +1253,16 @@ async function main() {
     buildWaterfalls();
     buildDrumLights();
     buildRollers(roller);
-    buildMachinery();
+    scenery = buildScenery({ scene, mats, fallGeometry, fallMaterial: mats.fallMat, fx });
+    mats.machinery = scenery.root;
     buildBubbles();
     buildCollectibles(gem, coinFace);
     buildSocks(sock);
     buildMascot(mascotG);
+    helper = buildHelper(mats.env);
+    helper.root.scale.setScalar(HELPER.scale);
+    helper.z = HELPER.z0;
+    scene.add(helper.root);
     if (SIDE) buildSideView();
     resize();
     resetRun();
@@ -1321,7 +1294,7 @@ window.__bw = {
     lane: mascot.lane, speed: +mascot.speed.toFixed(2), air: mascot.air, slope: +mascot.lastSlope.toFixed(3), pitchDeg: +THREE.MathUtils.radToDeg(mascot.pitch).toFixed(1),
     leanDeg: +THREE.MathUtils.radToDeg(mascot.lean).toFixed(1), coins: state.coins, gems: state.gems, socks: state.socks, collected: { ...state.collected }, laps: state.laps,
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
-    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals,
+    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, helperZ: helper ? +helper.z.toFixed(2) : null,
   }),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
@@ -1329,5 +1302,7 @@ window.__bw = {
   render,
   lookBack: (v) => { mascot.look = v; mascot.lookT = -0.5; },
   setBloom: (on) => { bloom.enabled = !!on; },
+  // Try a Tap to Start framing (camera offset and aim from the mascot, field of view) without a rebuild.
+  setFraming: (f) => { if (f.off) S3.off.set(...f.off); if (f.look) S3.look.set(...f.look); if (f.fov) S3.fov = f.fov; rig.snap = true; },
   debug: () => ({ scene, water, mascot: mascot.root, particles: fx.points }),
 };

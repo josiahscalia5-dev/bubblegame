@@ -9,15 +9,17 @@
 
 export const WATER = 0;
 export const AXIS_H = 1.5;          // drum axis above the water
-export const LANE = 0.85;           // lane spacing
+export const LANE = 0.7;            // lane spacing (three lanes on the approved narrow slide)
+export const LAYOUT_LANE = 0.85;    // lane spacing of the Unity layout's coin and gem positions
 export const FLOAT_H = 0.34;        // body centre above the water
 export const BODY_R = 0.4;
 export const CRUISE = 7;            // m/s
 export const JUMP_V = 6.2;
 export const GRAVITY = 17;
-// The approved Screen 3 slide is narrow: about three lanes wide, with the brushes, gold machinery and
-// bubbles close beside it (the Unity layout's 2 m half-width left them off screen).
-export const SLIDE = { half: 1.45, moat: -0.6, crown: 0.12 };
+// The approved Screen 3 slide is narrow: at the mascot it is only about 1.6 mascots wide, with the
+// brushes, gold machinery and bubbles close beside it (the Unity layout's 2 m half-width left them off
+// screen). 2.2 m keeps three lanes playable.
+export const SLIDE = { half: 1.1, moat: -0.6, crown: 0.1 };
 
 // The raised water slide in front of the castle runs downhill, climbs a crest and drops into the
 // portal (approved Screen 3: "a raised water slide that rises into the portal"). The crest stays

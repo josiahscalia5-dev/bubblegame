@@ -24,20 +24,26 @@ Read this first when you continue in a new Claude conversation.
 The user wants Screen 3 to look and move right before the remaining screens. The approved Screen 3 is the target.
 
 - **Play:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening's version, from the account that ran it). The afternoon version is at https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC on the other account. Both are private until shared from their Share menu. Locally: `cd WebDemo && python3 -m http.server`.
-- **Done this evening** (details in [`WebDemo/README.md`](WebDemo/README.md)), with no new Meshy models:
-  - **Castle colours:** a shader grade turns the Meshy castle's orange to warm gold and its soft pinks to lavender, keeps the pink crest banner, and adds a light lavender haze. The sky is pale lavender.
-  - **Brushes:** the Meshy roller's bristles are recoloured as on approved Screens 3 and 4 (blue tufts toward the hub, a white band, a pink fringe). The big brush sits low at the left edge, as in the approved image.
-  - **Rails:** chunky gold rails with balusters and blue gem studs ride the slide's hills.
-  - **Tunnel:** lighter, misting to a bright core. Its far end is a glowing portal of light instead of plain sky.
-  - **Camera:** it follows the mascot's own smoothed path frame, so the mascot stays in the lower middle of the screen over the crest and drop. The Tap to Start view is unchanged.
-  - **Coins:** their face texture loads before the first frame, so they are never dark at Tap to Start.
+- **Latest round (Screen 3 completion), all in code, no new Meshy models:**
+  - **Framing:** measured against the approved image. A 36° lens from further back keeps the mascot's size and place, and the portal arch now fills the approved 64 % of the width.
+  - **Slide:** narrower, as in the approved image (2.2 m, lanes 0.70 m apart). It is a flume with lavender walls, thick gold rails and chunky gold segments.
+  - **Machinery** (`WebDemo/src/scenery.js`):
+    - the huge gold washing wheel (lower right) and a blue-and-gold wheel (upper left)
+    - a cream-and-gold housing
+    - gold machinery towers with water tubes and waterfalls on both sides of the castle
+    - six gold gears with teal and navy hubs at the portal mouth
+    - curved gold pipes, pink fluffy trim and glowing bulbs
+    - Wheels, gears and collars turn.
+  - **Golden helper** (`WebDemo/src/helper.js`): the duck-like friend on a pink float, in front of the portal, facing the mascot. It leads the way into the washing machine.
+  - **Brushes:** a 3 m Meshy brush turns end-on at the lower left; a second one shows its pink fringe on the right.
+  - **Water:** a soft, wavy caustic shimmer and twinkling sparkles instead of the polygon grid. Foam only where water churns, including a foam collar around the mascot. Fewer droplets.
+- **Earlier this evening:** castle colour grade (lavender, white and gold), brush recolour, lighter tunnel with a light at its end, camera follow over the crest, coins gold from the first frame.
 - **Done in the afternoon session:** the real 3D path (climb, crest, drop, banked turns), electric-blue water with caustics and foam, the fur shader, the Meshy lost socks with the "Rescue 5 lost socks" panel, the touch overlay (`?touches`) and the side view (`?side`).
 - **Evidence:** [`Previews/WebDemo/`](Previews/WebDemo): this evening's gameplay and side-view recordings, the height chart, the start frame beside the approved screen, and the per-frame game state. Recorded in headless Chromium with software WebGL. **Not tried on a real phone.**
 - **Known differences from the approved Screen 3:**
-  - The golden figure on the slide in front of the portal is missing (no Meshy model yet).
-  - The gold machinery towers and gears are simple procedural shapes (Meshy models are missing).
   - The approved vortex inside the portal is whiter and pinker than ours.
-  - The approved slide has more white foam and bubbles around the mascot's base.
+  - In the approved image the left brush overlaps the slide's edge. Ours stays just clear of the left lane, so it sits a little further left and is cut by the screen edge.
+  - The code-built helper and machinery are simpler than hand-sculpted models. `Design/MESHY_ASSET_REVIEW.md` lists the two optional Meshy upgrades.
 - **Build and record:**
   - Build: `cd WebDemo && npm install && node build.mjs`.
   - Play-test: `node tools/playtest.cjs "$PWD" <out> quick`.
@@ -47,14 +53,14 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 ## Unity project (unchanged since the afternoon)
 
 - Screens 3–4 are playable in Unity and wait for the first real Unity capture and compare (see `README.md`).
-- None of the demo-only changes have been ported to Unity: the 3D path, narrower slide, machinery, fur shader, castle grade, brush recolour, rails, exit light and camera follow.
+- None of the demo-only changes have been ported to Unity: the 3D path, narrower slide and flume, machinery, helper, fur shader, castle grade, brush recolour, water shimmer, exit light and camera framing.
 - **Pink mascot:** not yet in Unity. Copy `Design/MeshyDeliveries/PinkMascot/BubbleWash_Pink_Mascot_Claudia_4MB_ColorSafe.glb` into `Assets/BubbleWash/Models/Mascot/` and rebuild. It is a static mesh (no rig) with an unlit, double-sided material, facing +Z.
 - **Lost sock:** not yet in Unity. Copy `Design/MeshyDeliveries/LostSock/BubbleWash_Lost_Sock_Claudia_Small.glb` into `Assets/BubbleWash/Models/RescueSock/`. Its face is on +Z, and its material is fully metallic, so it needs a non-metallic material.
 
 ## Open requests from the user
 
 1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens.
-2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). Three models are genuinely missing: a gold machinery tower, a gold gear with a blue hub, and the golden toy figure on the slide.
+2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). The three models it first listed as missing are now built in code. No new Meshy model is required; two optional upgrades are listed there.
 3. Keep PR #1 as a draft. Do not merge it.
 4. Not yet asked: whether to move this evening's commits onto PR #1's branch, and how to resolve PR #1's conflicts with its base.
 

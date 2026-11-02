@@ -69,7 +69,7 @@ export const brushGrade = (rMax) => /* glsl */ `
   vec2 cellUv = vec2(fract(rr), fract(seg)) - 0.5;
   float tuft = 1.0 - smoothstep(0.15, 0.62, length(cellUv));
   float tone = fract(sin(ring * 17.3 + floor(seg) * 3.71) * 4375.85);
-  vec3 blue = mix(vec3(0.02, 0.06, 0.5), mix(vec3(0.08, 0.22, 0.95), vec3(0.3, 0.5, 1.0), tone), tuft);
+  vec3 blue = mix(vec3(0.02, 0.05, 0.45), mix(vec3(0.05, 0.16, 0.85), vec3(0.5, 0.7, 1.0), tone * tone), tuft);   // varied tufts make the spin easy to see
   vec3 white = vec3(1.0, 0.88, 0.95), pink = vec3(1.0, 0.22, 0.58);
   vec3 col = mix(blue, white, smoothstep(0.5, 0.57, r));
   col = mix(col, pink, smoothstep(0.68, 0.76, r));
@@ -166,11 +166,16 @@ void main() {
   float turq = smoothstep(0.35, 0.85, bwNoise(xz * vec2(0.9, 0.45) - vec2(0.0, flowT * 0.22)) * 0.6 + crest * 0.5);
   col = mix(col, uTurq, turq * 0.55 * (1.0 - moat));
   col = mix(col, uDeep * vec3(0.35, 0.45, 0.75), moat * 0.7);      // the spill beside the raised slide sits deeper and darker
-  // The approved slide's crackle: a fine network of bright caustic lines flowing with the current.
-  vec2 cv = bwVoronoi(xz * vec2(2.3, 1.15) - vec2(0.0, flowT * 0.42));
-  vec2 cv2 = bwVoronoi(xz * vec2(4.6, 2.2) - vec2(0.0, flowT * 0.6) + 7.0);
-  float caustic = (1.0 - smoothstep(0.0, 0.075, cv.y - cv.x)) * 0.75 + (1.0 - smoothstep(0.0, 0.06, cv2.y - cv2.x)) * 0.35;
-  col += mix(uGlow, vec3(1.0), 0.45) * caustic * (0.55 + 0.45 * crest) * (1.0 - moat * 0.6);
+  // The approved slide's shimmer: soft, wavy caustic light flowing with the current. The cell network
+  // is warped by flowing noise (no straight polygon edges), its lines are thin and soft, and they fade
+  // in and out in patches instead of covering the slide as one even grid.
+  vec2 fq = xz * vec2(1.0, 0.5) - vec2(0.0, flowT * 0.21);
+  vec2 warp = vec2(bwFbm(fq * 1.7 + vec2(0.0, t * 0.35)), bwFbm(fq * 1.7 + vec2(5.2, -t * 0.3))) - 0.5;
+  vec2 cv = bwVoronoi((xz + warp * 0.55) * vec2(3.2, 1.6) - vec2(0.0, flowT * 0.5));
+  vec2 cv2 = bwVoronoi((xz - warp * 0.4) * vec2(6.4, 3.1) - vec2(0.0, flowT * 0.68) + 7.0);
+  float patchy = smoothstep(0.32, 0.72, bwNoise(xz * vec2(0.7, 0.35) - vec2(0.0, flowT * 0.12) + 3.0));
+  float caustic = (1.0 - smoothstep(0.0, 0.05, cv.y - cv.x)) * (0.25 + 0.5 * patchy) + (1.0 - smoothstep(0.0, 0.04, cv2.y - cv2.x)) * 0.22 * patchy;
+  col += mix(uGlow, vec3(1.0), 0.35) * caustic * (0.5 + 0.4 * crest) * (1.0 - moat * 0.6);
 
   // Foam, kept to where water really churns: thin lace at the slide edges and drum walls, the
   // mascot's V wake and bow ring (stronger when fast or dropping), steep drops and splash rings.
@@ -181,22 +186,28 @@ void main() {
   float halfW = sqrt(max(0.01, uTunnel.z * uTunnel.z - uTunnel.w * uTunnel.w));
   float wall = inDrum * smoothstep(halfW - 0.35, halfW - 0.02, ax) * 0.75;
   vec2 toP = xz - uPlayer.xz;
-  float behind = clamp(-toP.y / (4.0 + 6.0 * uPlayerMove.y), 0.0, 1.0);
+  float behind = clamp(-toP.y / (2.2 + 2.8 * uPlayerMove.y), 0.0, 1.0);   // a short wake: foam hugs the mascot
   float spread = 0.22 + behind * (0.9 + 0.8 * uPlayerMove.y);
   float wakeLine = 1.0 - smoothstep(0.0, 0.28, abs(abs(toP.x - uPlayerMove.x * 0.15 * behind) - spread));
-  float trail = (1.0 - smoothstep(0.0, 0.14 + 0.2 * behind, abs(toP.x))) * 0.32;
+  float trail = (1.0 - smoothstep(0.0, 0.12 + 0.16 * behind, abs(toP.x))) * 0.16;
   float wake = max(wakeLine, trail) * step(toP.y, 0.35) * (1.0 - behind);
-  wake *= 0.35 + 0.45 * uPlayerMove.y + 0.5 * uPlayerMove.z;
-  float ring = (1.0 - smoothstep(0.32, 0.62, length(toP))) * (0.35 + 0.3 * uPlayerMove.y);
-  float mask = clamp(wall * 0.8 + pathEdge * 1.25 + crest * crest * 0.12 + wake + ring + steep * 0.45 + rip * 1.0, 0.0, 1.3);
-  float foam = smoothstep(0.5, 0.78, streak + mask * 0.6 - 0.22);
+  wake *= 0.18 + 0.22 * uPlayerMove.y + 0.3 * uPlayerMove.z;
+  float ring = (1.0 - smoothstep(0.45, 1.0, length(toP * vec2(1.0, 0.8)))) * (0.85 + 0.2 * uPlayerMove.y);   // the foam collar around the mascot (approved Screen 3)
+  float mask = clamp(wall * 0.35 + pathEdge * 0.85 + crest * crest * 0.08 + wake + ring + steep * 0.25 + rip * 0.5, 0.0, 1.2);
+  float foam = smoothstep(0.5, 0.78, streak * 0.6 + mask * 0.7 - 0.1);   // no foam unless the water churns (mask)
   foam = clamp(foam + lace * 0.5 * min(mask, 1.0), 0.0, 1.0) * 0.92;
 
   vec3 L = normalize(uSunDir);
   float NdotL = clamp(dot(N, L), 0.0, 1.0);
   vec3 H = normalize(L + V);
   float spec = pow(clamp(dot(N, H), 0.0, 1.0), 400.0) * 3.0;
-  float glint = step(0.982, bwHash(floor(xz * 9.0 + vec2(0.0, -flowT * 0.45)))) * pow(clamp(dot(N, H), 0.0, 1.0), 6.0) * 1.8;
+  vec2 gp = xz * 9.0 + vec2(0.0, -flowT * 0.45);   // sun glints: round points, not whole grid cells
+  float glint = step(0.982, bwHash(floor(gp))) * (1.0 - smoothstep(0.0, 0.2, length(fract(gp) - 0.5))) * pow(clamp(dot(N, H), 0.0, 1.0), 6.0) * 1.8;
+  // Twinkling sparkles over the water, as in the approved screen (each cell blinks on its own beat).
+  vec2 sp = xz * vec2(7.0, 4.0) - vec2(0.0, flowT * 0.3), sc = floor(sp);
+  float sh = bwHash(sc + 31.7);
+  float star = 1.0 - smoothstep(0.0, 0.03, length((fract(sp) - 0.5 + (vec2(bwHash(sc + 3.1), bwHash(sc + 8.3)) - 0.5) * 0.6) * vec2(0.143, 0.25)));
+  glint += step(0.955, sh) * star * pow(max(0.0, sin(t * (3.0 + sh * 4.0) + sh * 40.0)), 6.0) * (1.0 - moat * 0.7) * 1.4;
   vec3 R = reflect(-V, N);
   vec3 env = mix(uSky, uPink, clamp(R.x * 0.9 + 0.5, 0.0, 1.0));
   env = mix(env, uGold, clamp(1.0 - abs(R.y) * 6.0, 0.0, 1.0) * 0.6);
@@ -261,6 +272,32 @@ void main() {
   float alpha = clamp(0.82 * (0.65 + 0.35 * n) + foam * 0.35, 0.0, 1.0);
   alpha *= smoothstep(0.0, 0.18, middle + foam * 0.1) * (1.0 - smoothstep(0.93, 1.0, progress) * 0.85);
   gl_FragColor = vec4(col, alpha);
+}
+`;
+
+// ---- water rushing up the glass tubes of the gold machinery towers (scenery.js)
+export const tubeWaterVertex = /* glsl */ `
+varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
+void main() {
+  vUv = uv; vN = normalize(mat3(modelMatrix) * normal);
+  vec4 w = modelMatrix * vec4(position, 1.0); vWorld = w.xyz;
+  gl_Position = projectionMatrix * viewMatrix * w;
+}
+`;
+export const tubeWaterFragment = /* glsl */ `
+${NOISE}
+uniform float uTime;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
+void main() {
+  vec2 p = vec2(vUv.x * 9.0, vUv.y * 14.0 - uTime * 2.6);
+  float n = bwFbm(p * vec2(1.0, 0.5));
+  float streak = smoothstep(0.55, 0.8, bwNoise(vec2(vUv.x * 22.0, vUv.y * 5.0 - uTime * 3.4)) * 0.7 + n * 0.45);
+  vec3 V = normalize(cameraPosition - vWorld);
+  float edge = pow(1.0 - abs(dot(normalize(vN), V)), 2.0);
+  vec3 col = mix(vec3(0.02, 0.22, 0.95), vec3(0.15, 0.85, 1.0), n);
+  col += vec3(0.75, 0.95, 1.0) * streak * 0.8 + vec3(0.6, 0.85, 1.0) * edge * 0.6;
+  col += step(0.985, bwHash(floor(p * vec2(1.0, 2.0)))) * 1.6;   // bubbles catching the light
+  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
@@ -334,8 +371,8 @@ void main() {
     a = (1.0 - smoothstep(0.8, 1.0, r)) * (0.42 + 0.45 * smoothstep(0.45, 0.9, r)) + hl * 0.5;
     col = mix(vec3(0.55, 0.88, 1.0), vec3(1.25), clamp(hl + smoothstep(0.6, 0.95, r) * 0.45, 0.0, 1.0));
   } else if (vKind < 1.5) {     // foam puff: soft, see-through white
-    a = (1.0 - smoothstep(0.15, 1.0, r)) * 0.55;
-    col = vec3(0.95, 0.98, 1.0);
+    a = (1.0 - smoothstep(0.15, 1.0, r)) * 0.4;
+    col = vec3(0.9, 0.96, 1.0);
   } else {                      // sparkle star
     float cross_ = max((1.0 - smoothstep(0.0, 0.14, abs(p.x))) * (1.0 - abs(p.y)), (1.0 - smoothstep(0.0, 0.14, abs(p.y))) * (1.0 - abs(p.x)));
     a = clamp(cross_ + (1.0 - smoothstep(0.0, 0.35, r)), 0.0, 1.0);
@@ -358,7 +395,7 @@ export const GradeShader = {
       c.rgb = mix(vec3(l), c.rgb, uSat);
       c.rgb = (c.rgb - 0.18) * uContrast + 0.18;
       vec2 d = vUv - 0.5; d.x *= 0.6;
-      c.rgb *= mix(vec3(1.0), vec3(0.55, 0.5, 0.85), smoothstep(0.35, 0.75, length(d)) * uVignette * 2.0);
+      c.rgb *= mix(vec3(1.0), vec3(0.7, 0.66, 0.92), smoothstep(0.4, 0.8, length(d)) * uVignette * 2.0);
       gl_FragColor = max(c, 0.0);
     }`,
 };
