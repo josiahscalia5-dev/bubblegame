@@ -1,0 +1,256 @@
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+namespace BubbleWash.EditorTools
+{
+    /// <summary>
+    /// Places the props seen in the approved Screens 3 and 4 so they land where the approved images
+    /// show them: each prop is positioned by casting from the fitted camera framing through the
+    /// prop's measured screen position (fractions of the approved crop) to a chosen depth.
+    /// Also lays out the gameplay coins, gems and the five lost socks.
+    /// Every prop without a Meshy model is named PLACEHOLDER_*.
+    /// </summary>
+    public static class ScreenComposition
+    {
+        public const float Aspect3 = 269f / 538f;
+        public const float Aspect4 = 231f / 537f;
+        const int CollectibleLayer = 10, EnvironmentLayer = 8;
+
+        public static float Screen4Z(LevelLayout l) => l.tunnelStartZ + l.segmentLength * 1.45f;
+
+        struct CamPose { public Vector3 pos; public Quaternion rot; public float fov; public float aspect; }
+
+        static CamPose Pose(LevelLayout l, CameraPreset p, float mascotZ, float aspect, float wallClearance)
+        {
+            var anchor = new Vector3(0f, l.waterLevel + Level1SceneBuilder.MascotFloat, mascotZ);
+            var pos = l.ClampInsidePassage(anchor + p.offset, wallClearance);
+            return new CamPose { pos = pos, rot = Quaternion.LookRotation(anchor + p.lookOffset - pos), fov = p.fieldOfView, aspect = aspect };
+        }
+
+        /// <summary>World point seen at (xFrac from left, yFrac from top) of the approved crop, at a camera depth.</summary>
+        static Vector3 At(CamPose c, float xFrac, float yFrac, float depth)
+        {
+            float t = Mathf.Tan(c.fov * 0.5f * Mathf.Deg2Rad);
+            var local = new Vector3((xFrac * 2f - 1f) * t * c.aspect * depth, (1f - yFrac * 2f) * t * depth, depth);
+            return c.pos + c.rot * local;
+        }
+
+        /// <summary>World size for something spanning <paramref name="widthFrac"/> of the screen width at that depth.</summary>
+        static float SizeAt(CamPose c, float widthFrac, float depth) =>
+            widthFrac * 2f * depth * Mathf.Tan(c.fov * 0.5f * Mathf.Deg2Rad) * c.aspect;
+
+        /// <summary>March along the view ray until it reaches <paramref name="radius"/> from the drum axis (wall-mounted props).</summary>
+        static Vector3 OnWall(CamPose c, LevelLayout l, float xFrac, float yFrac, float radius)
+        {
+            Vector3 dir = (At(c, xFrac, yFrac, 1f) - c.pos).normalized;
+            Vector3 p = c.pos;
+            for (int i = 0; i < 4000; i++)
+            {
+                p += dir * 0.02f;
+                var d = new Vector2(p.x, p.y - (l.waterLevel + l.axisHeight));
+                if (d.magnitude >= radius) break;
+            }
+            return p;
+        }
+
+        public static void Build(LevelLayout l, RunnerCameraRig rig, Transform mascot, MaterialSet mats, Transform parent)
+        {
+            var root = new GameObject("Level1_Props").transform;
+            root.SetParent(parent, false);
+
+            var coinMesh = Level1SceneBuilder.SaveMesh(ProceduralMeshes.Coin(0.3f, 0.08f), "PawCoin");
+            var gemMesh = Level1SceneBuilder.SaveMesh(ProceduralMeshes.Gem(0.2f, 0.42f), "Gem");
+            var sockMesh = Level1SceneBuilder.SaveMesh(ProceduralMeshes.SockBody(Color.white, new Color(0.62f, 0.45f, 0.95f), new Color(0.35f, 0.3f, 0.85f)), "PLACEHOLDER_SockBody");
+            var brushBluePink = Level1SceneBuilder.SaveMesh(ProceduralMeshes.BrushWheel(1f, 0.38f, new Color(0.15f, 0.3f, 0.95f), new Color(1f, 0.42f, 0.75f), 3), "PLACEHOLDER_BrushWheel_BluePink");
+            var brushPink = Level1SceneBuilder.SaveMesh(ProceduralMeshes.BrushWheel(1f, 0.38f, new Color(0.25f, 0.3f, 0.9f), new Color(1f, 0.55f, 0.82f), 9), "PLACEHOLDER_BrushWheel_Pink");
+            var duckBody = Level1SceneBuilder.SaveMesh(ProceduralMeshes.FluffBall(1f, 3, 0.03f, 5, Color.white, Color.white, "PLACEHOLDER_DuckBody"), "PLACEHOLDER_DuckBody");
+            var quad = QuadMesh();
+            var sphere = Level1SceneBuilder.BuiltinSphere();
+
+            var c3 = Pose(l, rig.screen3, l.startZ, Aspect3, rig.wallClearance);
+            var c4 = Pose(l, rig.screen4, Screen4Z(l), Aspect4, rig.wallClearance);
+
+            // ---------------- Screen 3: "Let's go! Into the washing machine!"
+            var s3 = Group(root, "Screen3_Composition");
+            var brush3 = At(c3, 0.07f, 0.53f, 9f);
+            Brush(s3, "PLACEHOLDER_SpinningBrush_Entrance_L", brushBluePink, mats.brushFur, brush3, SizeAt(c3, 0.26f, 9f) * 0.5f,
+                Quaternion.LookRotation(Quaternion.Euler(0f, -32f, 0f) * (brush3 - c3.pos).normalized), 90f);
+            HeroBubble(s3, quad, mats.bubble, At(c3, 0.87f, 0.47f, 7f), SizeAt(c3, 0.26f, 7f));
+            HeroBubble(s3, quad, mats.bubble, At(c3, 0.95f, 0.66f, 6f), SizeAt(c3, 0.16f, 6f));
+            HeroBubble(s3, quad, mats.bubble, At(c3, 0.05f, 0.71f, 6f), SizeAt(c3, 0.13f, 6f));
+            HeroBubble(s3, quad, mats.bubble, At(c3, 0.25f, 0.83f, 5f), SizeAt(c3, 0.1f, 5f));
+            Collect(s3, "Coin", coinMesh, mats.coin, At(c3, 0.33f, 0.47f, 19.5f), CollectibleKind.Coin, 0.3f);
+            Collect(s3, "Coin", coinMesh, mats.coin, At(c3, 0.64f, 0.52f, 19.5f), CollectibleKind.Coin, 0.3f);
+            Collect(s3, "Coin", coinMesh, mats.coin, At(c3, 0.44f, 0.43f, 27f), CollectibleKind.Coin, 0.3f);
+            Collect(s3, "Coin", coinMesh, mats.coin, At(c3, 0.56f, 0.43f, 27f), CollectibleKind.Coin, 0.3f);
+            Collect(s3, "Coin", coinMesh, mats.coin, At(c3, 0.50f, 0.40f, 33f), CollectibleKind.Coin, 0.3f);
+            Duck(s3, mats, duckBody, sphere, At(c3, 0.49f, 0.555f, 11.8f), SizeAt(c3, 0.14f, 11.8f), mascot);
+            Rails(s3, mats.rail, l);
+
+            // ---------------- Screen 4: "Rescue 5 lost socks" inside the drum
+            var s4 = Group(root, "Screen4_Composition");
+            float wallR = l.clearRadius + 0.12f;
+            var bl = OnWall(c4, l, 0.08f, 0.30f, wallR);
+            var br = OnWall(c4, l, 0.90f, 0.47f, wallR);
+            Brush(s4, "PLACEHOLDER_SpinningBrush_Drum_L", brushPink, mats.brushFur, bl, 1.1f, FaceAxis(l, bl), 140f);
+            Brush(s4, "PLACEHOLDER_SpinningBrush_Drum_R", brushBluePink, mats.brushFur, br, 1.1f, FaceAxis(l, br), -140f);
+            Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.17f, 0.56f, 5.5f), CollectibleKind.Coin, 0.3f);
+            Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.83f, 0.67f, 5.0f), CollectibleKind.Coin, 0.3f);
+            Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.13f, 0.42f, 9f), CollectibleKind.Coin, 0.3f);
+            Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.50f, 0.51f, 16f), CollectibleKind.Coin, 0.3f);
+            Collect(s4, "Gem", gemMesh, mats.gem, At(c4, 0.29f, 0.465f, 9f), CollectibleKind.Gem, 0.3f);
+            Sock(s4, sockMesh, mats, sphere, At(c4, 0.69f, 0.56f, 8.5f), 1);
+            HeroBubble(s4, quad, mats.bubble, At(c4, 0.74f, 0.33f, 7f), SizeAt(c4, 0.24f, 7f));
+            HeroBubble(s4, quad, mats.bubble, At(c4, 0.08f, 0.69f, 5f), SizeAt(c4, 0.13f, 5f));
+            HeroBubble(s4, quad, mats.bubble, At(c4, 0.93f, 0.47f, 5f), SizeAt(c4, 0.11f, 5f));
+            HeroBubble(s4, quad, mats.bubble, At(c4, 0.62f, 0.41f, 9f), SizeAt(c4, 0.09f, 9f));
+            HeroBubble(s4, quad, mats.bubble, At(c4, 0.36f, 0.36f, 10f), SizeAt(c4, 0.08f, 10f));
+
+            // ---------------- gameplay layout: coin trails, the other four socks and a gem, kept out of the
+            // Screen 4 view (camera z4-3.6 .. z4+12) so that framing stays as approved.
+            var play = Group(root, "Gameplay_Collectibles");
+            float z0 = l.tunnelStartZ, zAfter = Screen4Z(l) + 11f;
+            for (int i = 0; i < 6; i++) Collect(play, "Coin", coinMesh, mats.coin, new Vector3(l.LaneX(1), 0.65f, z0 + 2.5f + i * 1.6f), CollectibleKind.Coin, 0.3f);
+            for (int i = 0; i < 5; i++) Collect(play, "Coin", coinMesh, mats.coin, new Vector3(l.LaneX(2), 0.65f + Mathf.Sin(i / 4f * Mathf.PI) * 0.9f, z0 + 4f + i * 1.5f), CollectibleKind.Coin, 0.3f);
+            for (int i = 0; i < 5; i++) Collect(play, "Coin", coinMesh, mats.coin, new Vector3(l.LaneX(0), 0.65f, zAfter + i * 1.3f), CollectibleKind.Coin, 0.3f);
+            Collect(play, "Gem", gemMesh, mats.gem, new Vector3(l.LaneX(1), 1.7f, l.tunnelEndZ - 1.5f), CollectibleKind.Gem, 0.3f);
+            Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(0), 0.45f, z0 + 7f), 2);
+            Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(2), 0.45f, z0 + 12.5f), 3);
+            Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(1), 0.45f, zAfter + 3f), 4);
+            Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(2), 0.45f, l.tunnelEndZ - 1.5f), 5);
+        }
+
+        static Transform Group(Transform parent, string name)
+        {
+            var t = new GameObject(name).transform;
+            t.SetParent(parent, false);
+            return t;
+        }
+
+        static Quaternion FaceAxis(LevelLayout l, Vector3 p)
+        {
+            var outward = new Vector3(p.x, p.y - (l.waterLevel + l.axisHeight), 0f).normalized;
+            return Quaternion.LookRotation(outward, Vector3.forward); // brush face (-Z) looks at the axis
+        }
+
+        static void Brush(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, float radius, Quaternion rot, float spin)
+        {
+            var go = new GameObject(name) { layer = EnvironmentLayer };
+            go.transform.SetParent(parent, false);
+            go.transform.SetPositionAndRotation(pos, rot);
+            go.transform.localScale = Vector3.one * radius;
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var r = go.AddComponent<MeshRenderer>();
+            r.sharedMaterial = mat;
+            r.shadowCastingMode = ShadowCastingMode.Off;
+            var s = go.AddComponent<Spinner>();
+            s.localAxis = Vector3.forward;
+            s.speed = spin;
+        }
+
+        static void HeroBubble(Transform parent, Mesh quad, Material mat, Vector3 pos, float size)
+        {
+            var go = new GameObject("HeroBubble");
+            go.transform.SetParent(parent, false);
+            go.transform.position = pos;
+            go.transform.localScale = Vector3.one * size;
+            go.AddComponent<MeshFilter>().sharedMesh = quad;
+            var r = go.AddComponent<MeshRenderer>();
+            r.sharedMaterial = mat;
+            r.shadowCastingMode = ShadowCastingMode.Off;
+            go.AddComponent<Billboard>();
+            var h = go.AddComponent<Hover>();
+            h.amplitude = size * 0.08f;
+            h.frequency = 0.35f;
+            h.phase = pos.x * 1.3f + pos.z;
+        }
+
+        static GameObject Collect(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, CollectibleKind kind, float radius)
+        {
+            var go = new GameObject(name) { layer = CollectibleLayer };
+            go.transform.SetParent(parent, false);
+            go.transform.position = pos;
+            go.transform.rotation = Quaternion.Euler(0f, kind == CollectibleKind.Coin ? 15f : 0f, 0f);
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var r = go.AddComponent<MeshRenderer>();
+            r.sharedMaterial = mat;
+            r.shadowCastingMode = ShadowCastingMode.Off;
+            var c = go.AddComponent<SphereCollider>();
+            c.radius = radius * 1.4f;
+            c.isTrigger = true;
+            var col = go.AddComponent<Collectible>();
+            col.kind = kind;
+            col.value = kind == CollectibleKind.Coin ? 1 : 1;
+            col.spinSpeed = kind == CollectibleKind.Coin ? 120f : 70f;
+            return go;
+        }
+
+        static void Sock(Transform parent, Mesh body, MaterialSet mats, Mesh sphere, Vector3 pos, int index)
+        {
+            var go = Collect(parent, $"PLACEHOLDER_LostSock_{index}", body, mats.sockFur, pos, CollectibleKind.Sock, 0.35f);
+            go.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            go.transform.localScale = Vector3.one * 1.2f;
+            foreach (float side in new[] { -1f, 1f })
+            {
+                var eye = new GameObject("Eye");
+                eye.transform.SetParent(go.transform, false);
+                eye.transform.localPosition = new Vector3(0.065f * side, 0.33f, 0.15f);
+                eye.transform.localScale = new Vector3(0.05f, 0.06f, 0.03f);
+                eye.AddComponent<MeshFilter>().sharedMesh = sphere;
+                eye.AddComponent<MeshRenderer>().sharedMaterial = mats.eye;
+            }
+        }
+
+        static void Duck(Transform parent, MaterialSet mats, Mesh body, Mesh sphere, Vector3 pos, float size, Transform mascot)
+        {
+            var go = new GameObject("PLACEHOLDER_RubberDuck (drifts ahead into the drum)");
+            go.transform.SetParent(parent, false);
+            go.transform.position = pos;
+            var b = Child(go.transform, "Body", body, mats.duck, new Vector3(0f, 0f, 0f), new Vector3(size * 0.5f, size * 0.38f, size * 0.55f));
+            Child(go.transform, "Head", sphere, mats.duck, new Vector3(0f, size * 0.42f, size * 0.2f), Vector3.one * size * 0.45f);
+            Child(go.transform, "Beak", sphere, mats.cheek, new Vector3(0f, size * 0.38f, size * 0.45f), new Vector3(size * 0.22f, size * 0.09f, size * 0.18f));
+            b.name = "Body";
+            var drift = go.AddComponent<DriftAhead>();
+            drift.mascot = mascot;
+        }
+
+        static Transform Child(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, Vector3 scale)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = pos;
+            go.transform.localScale = scale;
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var r = go.AddComponent<MeshRenderer>();
+            r.sharedMaterial = mat;
+            r.shadowCastingMode = ShadowCastingMode.Off;
+            return go.transform;
+        }
+
+        static void Rails(Transform parent, Material mat, LevelLayout l)
+        {
+            var cyl = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            var mesh = cyl.GetComponent<MeshFilter>().sharedMesh;
+            Object.DestroyImmediate(cyl);
+            var root = Group(parent, "PLACEHOLDER_WaterSlideRails (replace with Meshy water-slide pieces)");
+            // Low rails along the slide in front of the castle (Screen 3 shows them near the bottom corners).
+            float zA = l.startZ - 22f, zB = l.castleFrontZ - 4f;
+            foreach (float side in new[] { -1f, 1f })
+            {
+                var rail = Child(root, side < 0 ? "Rail_L" : "Rail_R", mesh, mat, new Vector3(2.3f * side, 0.25f, (zA + zB) * 0.5f), new Vector3(0.16f, (zB - zA) * 0.5f, 0.16f));
+                rail.rotation = Quaternion.Euler(90f, 0f, 0f);
+                for (float z = zA; z <= zB; z += 3f)
+                    Child(root, "Post", mesh, mat, new Vector3(2.3f * side, 0.1f, z), new Vector3(0.09f, 0.15f, 0.09f));
+            }
+        }
+
+        static Mesh QuadMesh()
+        {
+            var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            var mesh = q.GetComponent<MeshFilter>().sharedMesh;
+            Object.DestroyImmediate(q);
+            return mesh;
+        }
+    }
+}
