@@ -94,5 +94,44 @@ namespace BubbleWash.Tests
             // Inside the drum the path offset is gone.
             Assert.AreEqual(0f, WaveField.SlideOffset(0f, 10f), 1e-5f);
         }
+
+        [Test]
+        public void Waterfall_FollowsItsBallisticCurveFromLipToLanding()
+        {
+            const float throwDistance = 0.7f, drop = 3.5f, top = 0.55f, bottom = 0.9f;
+            const int across = 12, along = 30;
+            var m = ProceduralMeshes.Waterfall(throwDistance, drop, top, bottom, 0.35f, across, along);
+            var v = m.vertices; var uv = m.uv; var c = m.colors; var n = m.normals;
+            Assert.AreEqual((across + 1) * (along + 1), v.Length);
+            Assert.AreEqual(across * along * 6, m.triangles.Length);
+
+            int mid = across / 2;
+            // The middle of the first row sits on top of the lip (bulging up); the last row lands at (0, -drop, throw).
+            Assert.Less(Vector3.Distance(v[mid], new Vector3(0f, top * 0.35f, 0f)), 1e-3f);
+            int last = along * (across + 1);
+            Vector3 Centre(int row) => (v[row * (across + 1)] + v[row * (across + 1) + across]) * 0.5f;
+            Assert.Less(Vector3.Distance(Centre(along), new Vector3(0f, -drop, throwDistance)), 1e-3f);
+            Assert.Greater(v[last + mid].z, throwDistance + 0.2f);   // the bulge faces outward at the bottom
+
+            // The edges of each row are its width apart; UV.y runs along the fall; colour.r is the progress.
+            Assert.AreEqual(top, Vector3.Distance(v[0], v[across]), 1e-3f);
+            Assert.AreEqual(bottom, Vector3.Distance(v[last], v[last + across]), 1e-3f);
+            for (int r = 1; r <= along; r++)
+            {
+                Assert.Greater(uv[r * (across + 1)].y, uv[(r - 1) * (across + 1)].y, "UV.y must increase down the fall");
+                Assert.AreEqual((float)r / along, c[r * (across + 1)].r, 1e-4f);
+            }
+            // Rows are evenly spaced along the curve: each chord is at most the arc spacing, and only a few
+            // per cent shorter where the fall bends sharply just past the lip.
+            float rowGap = uv[last].y / along;
+            for (int r = 1; r <= along; r++)
+            {
+                float chord = Vector3.Distance(Centre(r), Centre(r - 1));
+                Assert.LessOrEqual(chord, rowGap * 1.002f, $"row {r}");
+                Assert.GreaterOrEqual(chord, rowGap * 0.94f, $"row {r}");
+            }
+            foreach (var nn in n) Assert.AreEqual(1f, nn.magnitude, 1e-3f);
+            Object.DestroyImmediate(m);
+        }
     }
 }

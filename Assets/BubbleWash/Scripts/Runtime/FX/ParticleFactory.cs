@@ -99,6 +99,55 @@ namespace BubbleWash
             Renderer(ps, bubble, 0.9f);
         }
 
+        /// <summary>
+        /// Looping spray and mist where a waterfall lands: droplets thrown up and out, and puffs that
+        /// grow and fade. <paramref name="strength"/> scales the rate, speed and particle budget
+        /// (1 = landing in the moat, about 0.6 = landing in a catch basin).
+        /// </summary>
+        public static void WaterfallSplash(ParticleSystem ps, Material droplet, float radius, float strength)
+        {
+            Reset(ps);
+            strength = Mathf.Max(0.1f, strength);
+            var main = ps.main;
+            main.duration = 2f; main.loop = true; main.playOnAwake = true; main.prewarm = true;
+            main.startLifetime = Range(0.5f, 1.1f);
+            main.startSpeed = Range(0.8f * strength, 2.4f * strength);
+            main.startSize = Range(0.1f, 0.34f);
+            main.startColor = new ParticleSystem.MinMaxGradient(new Color(1f, 1f, 1f, 0.9f), new Color(0.8f, 0.93f, 1f, 0.75f));
+            main.gravityModifier = 0.9f;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = Mathf.Clamp(Mathf.RoundToInt(36f * strength), 8, 48);
+            var em = ps.emission; em.rateOverTime = 30f * strength;
+            var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = 40f; sh.radius = Mathf.Max(0.05f, radius);
+            sh.rotation = new Vector3(-90f, 0f, 0f); // straight up
+            var col = ps.colorOverLifetime; col.enabled = true; col.color = new ParticleSystem.MinMaxGradient(Fade(Color.white, 0.9f));
+            var size = ps.sizeOverLifetime; size.enabled = true; size.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.EaseInOut(0f, 0.6f, 1f, 1.6f));
+            Renderer(ps, droplet, 0.5f);
+        }
+
+        /// <summary>
+        /// Droplets peeling off the edges of a falling column: emitted across the lip with the water's
+        /// throw speed, then falling under gravity. The emitter's +Z is the throw direction.
+        /// </summary>
+        public static void WaterfallDroplets(ParticleSystem ps, Material droplet, float width, float throwSpeed)
+        {
+            Reset(ps);
+            var main = ps.main;
+            main.duration = 2f; main.loop = true; main.playOnAwake = true; main.prewarm = true;
+            main.startLifetime = Range(0.6f, 1.0f);
+            main.startSpeed = Range(throwSpeed * 0.8f, throwSpeed * 1.4f);
+            main.startSize = Range(0.04f, 0.1f);
+            main.startColor = new ParticleSystem.MinMaxGradient(new Color(1f, 1f, 1f, 0.95f), new Color(0.75f, 0.92f, 1f, 0.9f));
+            main.gravityModifier = 1f;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = 16;
+            var em = ps.emission; em.rateOverTime = 14f;
+            var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Box;
+            sh.scale = new Vector3(Mathf.Max(0.05f, width), 0.05f, 0.05f);
+            var col = ps.colorOverLifetime; col.enabled = true; col.color = new ParticleSystem.MinMaxGradient(Fade(Color.white));
+            Renderer(ps, droplet, 0.2f);
+        }
+
         /// <summary>Tiny twinkling star sparkles (additive).</summary>
         public static void Sparkles(ParticleSystem ps, Material sparkle, Vector3 box, float rate, int max)
         {

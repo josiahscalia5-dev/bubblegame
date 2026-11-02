@@ -30,16 +30,21 @@ namespace BubbleWash.EditorTools
         public static void PreExport()
         {
             Debug.Log("[BubbleWash] Cloud pre-export: building Level 1 scene and configuring WebGL.");
-            PrepareProject();
+            PrepareProject(regenerateScene: true);
         }
 
-        /// <summary>Generate the Level 1 scene (if needed), register it for the build and set WebGL player options.</summary>
-        public static void PrepareProject()
+        /// <summary>
+        /// Generate the Level 1 scene, register it for the build and set WebGL player options.
+        /// Cloud builds regenerate the scene every time, so a cached workspace (Unity Build Automation
+        /// keeps one between builds) can never ship a scene from older code. Local builds keep an
+        /// existing scene, so look tuning saved in it survives.
+        /// </summary>
+        public static void PrepareProject(bool regenerateScene)
         {
             AssetDatabase.Refresh();
             if (AssetDatabase.LoadAssetAtPath<GameObject>(Level1SceneBuilder.CastlePath) == null)
                 throw new Exception("[BubbleWash] The castle GLB did not import. Check that com.unity.cloud.gltfast is in Packages/manifest.json.");
-            if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
+            if (regenerateScene || !File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
             else
             {
                 // Make sure the scene is the first scene in the build.
@@ -69,7 +74,7 @@ namespace BubbleWash.EditorTools
         {
             try
             {
-                PrepareProject();
+                PrepareProject(regenerateScene: Application.isBatchMode);
                 string output = ArgValue("-customBuildPath") ?? DefaultOutput;
                 Directory.CreateDirectory(output);
                 var options = new BuildPlayerOptions

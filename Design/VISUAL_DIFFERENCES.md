@@ -22,6 +22,10 @@ Precision note: the approved screens are about 270 × 540 px crops of one board.
   - The white and gold ring stripes in the drum texture glow.
   - The fog now starts at 40 m, so it no longer pales the drum interior.
 - **Brighter, thicker glowing rings** at the drum joints, cooler blue drum lights, and stronger bloom and saturation.
+- **Waterfalls from the castle towers (Screen 3).**
+  - On each side, water pours from a gold spout on the outer Meshy tower into a gold catch basin, then on down into the moat.
+  - Each spout is placed by casting the approved screen position from the fitted Screen 3 camera onto the Meshy tower. A check against the real castle mesh puts both spouts and basins within 0.01 of the approved positions.
+  - The falling water accelerates under gravity, with streaks, foam lace, frothy edges and glints. It ripples as it falls and ends in spray and foam where it lands.
 - All of these can be tuned live on the **Bubble Wash Look** component.
 
 ## Screen 3: Let's go! Into the washing machine
@@ -29,7 +33,7 @@ Precision note: the approved screens are about 270 × 540 px crops of one board.
 | # | Difference | Cause | Fix |
 |---|---|---|---|
 | 1 | The approved castle facade is wider. Towers and pillars run off both screen edges, and the pink crest sign sits above the banner at about 10 % height. In the Meshy castle the towers sit closer to the portal and the crest is hidden behind the banner (about 20 % height). | Meshy castle proportions differ from the painting. The camera is kept on the portal/mascot framing. | Needs a wider castle model, or extra side-tower pieces from Meshy. The camera should not be moved off the approved composition. |
-| 2 | Waterfalls pour from the towers on both sides. | Not in the castle model. | Waterfall FX (particles + scrolling water mesh). Next step. |
+| 2 | Waterfalls pour from the towers on both sides, in two tiers between gold collars. | **Implemented:** a two-tier cascade on each outer Meshy tower (spout, catch basin, moat). It uses `Waterfall.shader` and spray particles, built by `TowerWaterfalls.cs`. The gold spouts and basins are `PLACEHOLDER_` pieces. | Check in the first capture: thickness, brightness and foam (Bubble Wash Look → Tower waterfalls). Meshy spout/basin pieces can replace the gold placeholders. |
 | 3 | The water is a raised, glowing, crystalline water slide that narrows and rises into the portal, with gold slide edges. | **Implemented this round:** a raised, crowned, flowing path with gold rims and spill foam. It is still procedural, and its shape is not yet compared with the approved image. | Check in the first capture. Meshy water-slide pieces can replace the gold rims and edge geometry. |
 | 4 | Large blue/pink spinning brush with a gold mechanism on the left. | `PLACEHOLDER_SpinningBrush_Entrance_L` is a simple procedural wheel. | Meshy brush model. |
 | 5 | Gold pipes/rails and machinery on the right. | `PLACEHOLDER_WaterSlideRails` are plain gold cylinders. | Meshy slide/rail pieces. |

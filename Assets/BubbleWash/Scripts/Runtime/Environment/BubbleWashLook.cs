@@ -6,7 +6,8 @@ namespace BubbleWash
 {
     /// <summary>
     /// One place to tune the look of Screens 3 and 4 against the approved images: water colours and
-    /// foam, drum ring glow, Meshy model saturation/glow, bloom, colour grading, fog and ambient light.
+    /// foam, the tower waterfalls, drum ring glow, Meshy model saturation/glow, bloom, colour grading,
+    /// fog and ambient light.
     /// Changes apply immediately in the editor and in Play mode (they are written to the generated
     /// materials, so they persist). Select "Level1_WasherEntry" in the Hierarchy to find it.
     /// </summary>
@@ -15,6 +16,7 @@ namespace BubbleWash
     {
         [Header("Materials (assigned by the builder)")]
         public Material water;
+        public Material waterfall;
         public Material castle;
         public Material drum;
         public Material glowRing;
@@ -31,6 +33,15 @@ namespace BubbleWash
         [Range(0f, 2f)] public float caustics = 0.7f;
         [Range(0f, 2f)] public float reflections = 0.9f;
         [Range(0f, 4f)] public float ringReflections = 1.6f;
+
+        [Header("Tower waterfalls (Screen 3)")]
+        public Color waterfallDeep = new Color(0.0f, 0.32f, 1.0f);
+        public Color waterfallBright = new Color(0.25f, 0.86f, 1.0f);
+        [Range(0f, 1f)] public float waterfallOpacity = 0.82f;
+        [Range(0f, 2f)] public float waterfallFoam = 1f;
+        [Range(0f, 3f)] public float waterfallEmission = 0.8f;
+        [Tooltip("Speed the water leaves the spouts (m/s); it speeds up under gravity as it falls.")]
+        public float waterfallSpeed = 1.2f;
 
         [Header("Meshy castle (baked texture)")]
         [Range(0f, 2f)] public float castleSaturation = 1.2f;
@@ -78,6 +89,15 @@ namespace BubbleWash
                 water.SetFloat("_Caustics", caustics);
                 water.SetFloat("_Reflection", reflections);
                 water.SetFloat("_RingReflection", ringReflections);
+            }
+            if (waterfall != null)
+            {
+                waterfall.SetColor("_DeepColor", waterfallDeep);
+                waterfall.SetColor("_BrightColor", waterfallBright);
+                waterfall.SetFloat("_Opacity", waterfallOpacity);
+                waterfall.SetFloat("_FoamAmount", waterfallFoam);
+                waterfall.SetFloat("_Emission", waterfallEmission);
+                waterfall.SetFloat("_LipSpeed", waterfallSpeed);
             }
             Meshy(castle, castleSaturation, castleBrightness, castleSceneLight, 0.85f, castleGlow);
             Meshy(drum, drumSaturation, drumBrightness, drumSceneLight, drumGlowThreshold, drumGlow);

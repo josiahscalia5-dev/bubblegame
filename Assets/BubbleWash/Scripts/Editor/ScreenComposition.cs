@@ -19,7 +19,10 @@ namespace BubbleWash.EditorTools
 
         public static float Screen4Z(LevelLayout l) => l.tunnelStartZ + l.segmentLength * 1.45f;
 
-        struct CamPose { public Vector3 pos; public Quaternion rot; public float fov; public float aspect; }
+        internal struct CamPose { public Vector3 pos; public Quaternion rot; public float fov; public float aspect; }
+
+        /// <summary>The fitted Screen 3 camera ("Tap to Start" view), the same pose the capture tool uses.</summary>
+        internal static CamPose Screen3Pose(LevelLayout l, RunnerCameraRig rig) => Pose(l, rig.screen3, l.startZ, Aspect3, rig.wallClearance);
 
         static CamPose Pose(LevelLayout l, CameraPreset p, float mascotZ, float aspect, float wallClearance)
         {
@@ -29,7 +32,7 @@ namespace BubbleWash.EditorTools
         }
 
         /// <summary>World point seen at (xFrac from left, yFrac from top) of the approved crop, at a camera depth.</summary>
-        static Vector3 At(CamPose c, float xFrac, float yFrac, float depth)
+        internal static Vector3 At(CamPose c, float xFrac, float yFrac, float depth)
         {
             float t = Mathf.Tan(c.fov * 0.5f * Mathf.Deg2Rad);
             var local = new Vector3((xFrac * 2f - 1f) * t * c.aspect * depth, (1f - yFrac * 2f) * t * depth, depth);
@@ -37,7 +40,7 @@ namespace BubbleWash.EditorTools
         }
 
         /// <summary>World size for something spanning <paramref name="widthFrac"/> of the screen width at that depth.</summary>
-        static float SizeAt(CamPose c, float widthFrac, float depth) =>
+        internal static float SizeAt(CamPose c, float widthFrac, float depth) =>
             widthFrac * 2f * depth * Mathf.Tan(c.fov * 0.5f * Mathf.Deg2Rad) * c.aspect;
 
         /// <summary>March along the view ray until it reaches <paramref name="radius"/> from the drum axis (wall-mounted props).</summary>
@@ -68,7 +71,7 @@ namespace BubbleWash.EditorTools
             var quad = QuadMesh();
             var sphere = Level1SceneBuilder.BuiltinSphere();
 
-            var c3 = Pose(l, rig.screen3, l.startZ, Aspect3, rig.wallClearance);
+            var c3 = Screen3Pose(l, rig);
             var c4 = Pose(l, rig.screen4, Screen4Z(l), Aspect4, rig.wallClearance);
 
             // ---------------- Screen 3: "Let's go! Into the washing machine!"

@@ -8,7 +8,7 @@ namespace BubbleWash.EditorTools
     /// <summary>Creates (or refreshes) every generated material and the post-processing profile.</summary>
     public class MaterialSet
     {
-        public Material water, mascotFur, brushFur, sockFur, duck, eye, white, cheek;
+        public Material water, waterfall, mascotFur, brushFur, sockFur, duck, eye, white, cheek;
         public Material glowRing, endGlow, bubble, droplet, sparkle, sky;
         public Material coin, gem, rail, placeholderDrum;
         public Material castle, drum;
@@ -20,6 +20,7 @@ namespace BubbleWash.EditorTools
         {
             // Values here are starting points; BubbleWashLook (on Level1_WasherEntry) tunes them live.
             water = Mat("Water_ElectricBlue", "BubbleWash/Water", null);
+            waterfall = Mat("Waterfall_ElectricBlue", "BubbleWash/Waterfall", m => m.renderQueue = 3000);
             castle = Mat("Meshy_CastlePortal", "BubbleWash/MeshyBaked", m =>
             {
                 m.SetFloat("_Saturation", 1.2f); m.SetFloat("_Brightness", 1.05f); m.SetFloat("_LightInfluence", 0.4f);

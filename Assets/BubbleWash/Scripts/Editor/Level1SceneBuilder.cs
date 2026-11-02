@@ -20,8 +20,9 @@ namespace BubbleWash.EditorTools
     /// Both models are measured on import: the castle's see-through portal and the tunnel's end
     /// opening are found by silhouette analysis, the tunnel's length axis (Meshy: X) is detected and
     /// rotated onto Unity +Z, both are scaled to one shared opening radius, and three tunnel
-    /// segments are chained with a small overlap so there is no gap. Everything without a Meshy
-    /// model yet is built procedurally and named PLACEHOLDER_*.
+    /// segments are chained with a small overlap so there is no gap. The tower waterfalls are mounted
+    /// on the measured castle (see TowerWaterfalls). Everything without a Meshy model yet is built
+    /// procedurally and named PLACEHOLDER_*.
     /// </summary>
     public static class Level1SceneBuilder
     {
@@ -96,12 +97,14 @@ namespace BubbleWash.EditorTools
             env.runner = mascot.GetComponent<BubbleRunner>();
             var cam = BuildCamera(mascot.transform, mats);
             BuildAmbientFx(cam.transform, mats);
-            ScreenComposition.Build(layout, cam.GetComponent<RunnerCameraRig>(), mascot.transform, mats, envGo.transform);
+            var rig = cam.GetComponent<RunnerCameraRig>();
+            ScreenComposition.Build(layout, rig, mascot.transform, mats, envGo.transform);
+            TowerWaterfalls.Build(layout, ScreenComposition.Screen3Pose(layout, rig), castle, mats, envGo.transform, Log);
             BuildHud(env.runner);
 
             // Live look tuning (water, foam, glow, bloom, fog) in one inspector.
             var look = envGo.AddComponent<BubbleWashLook>();
-            look.water = mats.water; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
+            look.water = mats.water; look.waterfall = mats.waterfall; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
             look.post = mats.postProfile; look.sun = sun;
             look.Apply();
 

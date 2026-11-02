@@ -12,6 +12,7 @@ namespace BubbleWash.EditorTools
     /// - tunnel segment joints (gap / overlap),
     /// - castle portal vs drum opening alignment,
     /// - mascot clearance along every lane (floating, jump apex) and camera clearance along its path,
+    /// - the Screen 3 tower waterfalls stay off the raised run path,
     /// - triangle / material budget for mobile.
     /// Results go to Previews/validation_report.md. Frame rate must be measured on device
     /// (PerformanceProbe logs it); see README.
@@ -28,6 +29,8 @@ namespace BubbleWash.EditorTools
             public float minMascotClearance = float.MaxValue;
             public float minCameraClearance = float.MaxValue;
             public string mascotWorst = "", cameraWorst = "";
+            public int waterfallParts;
+            public float waterfallPathGap = float.MaxValue;
             public int triangles;
             public int renderers;
             public int materials;
@@ -138,6 +141,24 @@ namespace BubbleWash.EditorTools
                 Physics.SyncTransforms();
             }
 
+            // ---- tower waterfalls (Screen 3): every piece must stay off the raised run path and its spill slope
+            var falls = GameObject.Find(TowerWaterfalls.RootName);
+            if (falls == null) r.failures.Add("Screen 3 tower waterfalls missing - rebuild with Bubble Wash > 1.");
+            else
+            {
+                float pathEdge = env.pathHalfWidth + 0.55f;
+                foreach (var rend in falls.GetComponentsInChildren<Renderer>())
+                {
+                    if (rend is ParticleSystemRenderer) continue;
+                    var b = rend.bounds;
+                    float inner = b.min.x > 0f ? b.min.x : b.max.x < 0f ? -b.max.x : 0f;   // closest approach to x = 0
+                    r.waterfallParts++;
+                    r.waterfallPathGap = Mathf.Min(r.waterfallPathGap, inner - pathEdge);
+                }
+                if (r.waterfallParts == 0) r.failures.Add("Screen 3 tower waterfalls have no visible parts");
+                else if (r.waterfallPathGap < 0f) r.failures.Add($"A tower waterfall piece reaches {-r.waterfallPathGap:F2} m onto the run path");
+            }
+
             // ---- mobile budget
             var mats = new HashSet<Material>();
             foreach (var mr in Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None))
@@ -189,6 +210,7 @@ namespace BubbleWash.EditorTools
             sb.AppendLine($"| Castle portal vs drum opening (centre + radius error) | {r.alignmentError:F3} m |");
             sb.AppendLine($"| Minimum mascot clearance (all lanes, float + jump heights) | {r.minMascotClearance:F2} m at {r.mascotWorst} |");
             sb.AppendLine($"| Minimum camera clearance (0.2 m probe) | {r.minCameraClearance:F2} m at {r.cameraWorst} |");
+            sb.AppendLine($"| Tower waterfalls: pieces / closest approach to the run path | {r.waterfallParts} / {(r.waterfallParts > 0 ? r.waterfallPathGap.ToString("F2") + " m clear" : "missing")} |");
             sb.AppendLine($"| Scene triangles / renderers / materials | {r.triangles:N0} / {r.renderers} / {r.materials} |");
             sb.AppendLine().AppendLine("Mobile notes: the castle (150k tris) and each drum segment (136k tris) dominate the budget. " +
                 "Target under ~300k visible triangles on mid-range phones: request lower-poly Meshy exports or add LODs. " +

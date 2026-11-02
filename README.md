@@ -6,7 +6,7 @@ This project recreates the 12 approved Bubble Wash Kingdom screens as real-time,
 
 | Screen | State |
 |---|---|
-| 3 · Let's go! Into the washing machine | **Playable, awaiting the first Unity capture.** It uses the Meshy castle portal, a raised flowing water path, electric-blue water, the mascot controls, the approved camera framing and the HUD. |
+| 3 · Let's go! Into the washing machine | **Playable, awaiting the first Unity capture.** It uses the Meshy castle portal, a raised flowing water path, electric-blue water, waterfalls pouring from both towers, the mascot controls, the approved camera framing and the HUD. |
 | 4 · Rescue 5 lost socks | **Playable, awaiting the first Unity capture.** It continues from Screen 3 in one run through three Meshy drum segments. You can collect the socks, coins and gem, and the 0/5 counter updates. |
 | 1, 2, 5–12 | Not started. |
 
@@ -48,6 +48,7 @@ The project builds as a **WebGL** browser game in the cloud, either with Unity B
      - castle/drum opening alignment;
      - mascot clearance in every lane, while floating and jumping;
      - camera clearance;
+     - that the tower waterfalls stay off the run path;
      - the triangle budget.
 
      Results go to `Previews/validation_report.md`.
@@ -71,6 +72,7 @@ The mascot floats on the moving waves and the raised path, paddles its arms, kic
 
 Select **Level1_WasherEntry** in the Hierarchy. The **Bubble Wash Look** component holds every look setting, and changes show immediately in the editor and in Play mode:
 - water colours, foam, foam lace, caustics, reflections and drum-ring reflections;
+- the tower waterfalls: colours, opacity, foam, glow and falling speed;
 - the saturation and glow of the Meshy castle and drum;
 - ring glow;
 - bloom, saturation, contrast and exposure;
@@ -104,6 +106,7 @@ Or send me the GLBs and I'll wire them in.
 |---|---|
 | Castle portal | **Meshy** `Models/CastlePortal/BubbleWashCastle.glb`, rendered with `MeshyBaked.shader`. Its texture is unchanged; saturation and glow are tunable. |
 | Washing-machine drum, 3 segments | **Meshy** `Models/WasherTunnel/BubbleWashTunnel_Mobile_2K_Lite.glb`. The white and gold ring stripes in its texture glow. |
+| Waterfalls from both castle towers (Screen 3) | `Waterfall.shader` and spray particles. `TowerWaterfalls.cs` mounts them on the Meshy towers at the approved screen positions. The gold spouts and catch basins are `PLACEHOLDER_` pieces. |
 | Electric-blue rushing water | `Water.shader`: raised crowned path with spill foam, foam lace and streaks, caustics, glints, and sky and drum-ring reflections. The mascot floats on the same surface (`WaveField.cs`). |
 | Splashes, iridescent bubbles, sparkles, glowing rings, drum lights, bloom | particle systems, `IridescentBubble.shader`, `Glow.shader`, URP Volume |
 | Follow camera fitted to Screen 3 and Screen 4 | `RunnerCameraRig.cs` |
@@ -116,9 +119,13 @@ How the two Meshy models are measured, aligned and chained is explained in [`Des
 ## What has and hasn't been tested
 
 Done in the cloud build environment, which has no Unity editor:
-- All C# compiles against the Unity 6.3 reference assemblies, uGUI, and the URP and Input System APIs, with both input backends.
-- All 7 shaders compile with Microsoft DXC against URP 17.3's shader library, in every keyword variant: fog, additional lights, and Forward / Forward+.
+- All C# compiles with the Unity 6.3.27 editor's own compiler against its engine and editor assemblies, with both input backends.
+  - uGUI and the Input System are built from their package sources.
+  - The few URP types the code uses are checked against their URP 17.3 signatures.
+  - The game code also compiles as the WebGL player sees it, without editor code.
+- All 8 shaders compile with the DXC bundled with Unity 6.3, against URP 17.3's shader library. That covers every keyword variant (fog, instancing, additional lights, Forward / Forward+), for desktop and mobile API headers.
 - The measurement code was run on both GLBs.
+- The tower waterfall placement was checked against the real castle mesh. Both spouts reach the Meshy towers and sit within 1 % of the approved screen positions.
 
 **Still needs your machine:**
 - importing the project in the Unity editor;
