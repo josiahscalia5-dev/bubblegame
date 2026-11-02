@@ -476,3 +476,63 @@ The page is updated (version 4). I'll check the published-page version with the 
 
 Both recordings match the earlier runs. Now the videos and evidence images:
 
+The ride still plays the same: every swipe, jump and spin registers, and the run collects coins, gems and 3 socks. I'll save the recordings and docs, push, and send you the comparison and video.
+
+_[Sent you files: Previews/WebDemo/screen3_start_vs_approved_overlay.png, Previews/WebDemo/side_machinery_vs_approved.png, Previews/WebDemo/bubblewash_screen3_gameplay.mp4]_
+
+Your giant side machinery is now in the playable Screen 3, at the lower left of the slide where the approved screen has it. In the blended comparison its blue-and-white bristle wheel lines up with the approved wheel. It's close but not an exact match, and I haven't called it one. The gameplay still works: a new 13-second run shows every swipe, jump and spin working, the climbs and drops unchanged, and 3 socks rescued, with no console errors.
+
+**Play it:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (same link, updated; private until you share it).
+
+- **Which file:** I started with the Balanced GLB as you asked. At game size it showed thin gold cracks across the bristles, so I switched to the Medium GLB, which mostly closes them. The page now loads about 33 MB of models, so it will take a little longer to open on a phone.
+- **What's visible:** the bristle wheel and pink star face the camera, angled slightly toward the slide. The gold housing, pump and piping sit on the outer side. It keeps its own colour, metal, roughness and bump textures. The gold is glossy without glare and the bristles stay bright.
+- **Clear of play:** its nearest point is 1.18 m from the middle of the slide, and the mascot's body reaches 1.10 m, so it never blocks the lanes. It doesn't cover the mascot, the helper or the panels.
+- **It stands still,** because it's one combined mesh. To make only the wheel turn, the bristle wheel and star hub would need to be a separate mesh, with its centre on the axle and the axle facing +Z. The housing and pipes would stay as the other part. If Meshy (or ChatGPT in Blender) can export it that way, I can spin the wheel and leave the housing still.
+- **One change to the scene:** the blue-and-gold wheel I'd built in code on the upper left overlapped the new machinery, so I removed it. Your Meshy washing roller now spins in that spot. Everything else is unchanged.
+- **No mirrored copy:** the approved right side shows a different gold wheel, so I didn't add one there.
+
+**Still different from the approved screen:**
+- The approved wheel is seen more from the side and looks thicker.
+- In the approved screen the wheel overlaps the slide's edge. Ours sits a little further left so it stays out of the lanes.
+- A few faint cracks remain in the bristles. The 15.6 MB HighQuality version would close them, but it would make the page heavier still.
+
+Your package is saved in `Design/MeshyDeliveries/SideMachinery/`, and everything is pushed to `ccr-052e5531-zna8s3`, including this chat. PR #1 is still a draft and isn't merged. Two questions about it are still open: should I move these commits onto its branch, and should I resolve its conflicts with the Screens 1–12 work?
+
+---
+
+### You · 2026-11-02 22:43 UTC
+
+And you can save everything to my GitHub repository, including the chat history between me and you just now, and just everything, my entire mobile app and project, everything. Make sure it's the most recent up-to-date chat history between me and you and everything. What you built.
+
+---
+
+### Claude · 2026-11-02 22:44 UTC
+
+I'll check what's not yet in the repository, starting with uncommitted files and anything in my scratch folder worth keeping.
+
+The tools work from their new place. Next I'll list them in the demo README and bring the hand-off note up to date.
+
+Everything is saved to your GitHub repository `josiahscalia5-dev/bubblegame`, on the branch `ccr-052e5531-zna8s3`. The newest chat export follows this message. It includes your last request and this reply.
+
+**What's in the repository:**
+- **Your Unity mobile game project:** `Assets/`, `Packages/`, `ProjectSettings/`, the cloud-build setup and the Windows opener.
+- **The playable Screen 3 browser game:** all its code, the page, and every model it uses (castle, tunnel, mascot, roller, gem, sock, duck helper and side machinery). It's in `WebDemo/`.
+- **Every Meshy package you sent,** kept as delivered, including tonight's duck helper and giant side machinery: `Design/MeshyDeliveries/`.
+- **Your 12 approved screens:** `Design/ApprovedScreens/`.
+- **The latest gameplay videos, side-view proof and side-by-side comparisons:** `Previews/WebDemo/`.
+- **Notes for picking up later:** `HANDOFF.md` says where everything stands. The Meshy asset review is in `Design/MESHY_ASSET_REVIEW.md`, and the build steps are in the READMEs.
+- **The chat history:** `ChatHistory/2026-11-02_screen3_polish_session.md` (tonight's whole conversation) and the earlier session's file.
+- **The test tools** for comparing the game with your approved screen at the same size: `WebDemo/tools/`.
+
+Three build folders are left out on purpose, because the setup steps recreate them: `node_modules/`, `artifact-models/` and `package-lock.json`.
+
+**To continue from your other account:**
+1. Open the repository on GitHub and switch to the branch `ccr-052e5531-zna8s3`.
+2. Ask Claude to read `HANDOFF.md` first.
+
+That branch is not the repository's main branch. The main branch, `claude/new-session-oth0dd`, holds another session's Screens 1–12 work, and PR #1 has only this afternoon's work. If you'd like this work merged into the main branch or PR #1, tell me and I'll do it. Merging into PR #1 would also mean resolving its conflicts with the main branch first.
+
+Two reminders:
+- The repository is public, so anyone can read the chat history.
+- The playable page (https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb) is private to this account. Your other account can open it only if you share it from its Share menu.
+
