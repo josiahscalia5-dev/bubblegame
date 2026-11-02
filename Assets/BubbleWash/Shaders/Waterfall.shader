@@ -153,19 +153,20 @@ Shader "BubbleWash/Waterfall"
                 float NdotV = abs(dot(N, V));
                 float fresnel = pow(1.0 - NdotV, 3.0);
 
-                half3 col = lerp(_DeepColor.rgb, _BrightColor.rgb, saturate(0.25 + n * 0.8 + NdotV * 0.2));
-                col += _BrightColor.rgb * _Emission * (0.3 + 0.7 * n);
-                half3 sheen = lerp(_SkyColor.rgb, _PinkColor.rgb, saturate(N.x * 0.5 + 0.5));
-                col += sheen * (fresnel * _Sheen);
+                // Colour maths in half precision (explicit casts keep the mobile variants warning-free).
+                half3 col = lerp(_DeepColor.rgb, _BrightColor.rgb, (half)saturate(0.25 + n * 0.8 + NdotV * 0.2));
+                col += _BrightColor.rgb * (_Emission * (half)(0.3 + 0.7 * n));
+                half3 sheen = lerp(_SkyColor.rgb, _PinkColor.rgb, (half)saturate(N.x * 0.5 + 0.5));
+                col += sheen * (half)(fresnel * _Sheen);
                 // Glints riding down the fall.
                 float glint = step(0.975, BW_Hash21(floor(float2(across * 14.0, flow * 3.0)))) * _Glints;
                 Light mainLight = GetMainLight();
-                col += mainLight.color * glint;
-                half3 lit = lerp(col, _FoamColor.rgb, foam);
+                col += mainLight.color * (half)glint;
+                half3 lit = lerp(col, _FoamColor.rgb, (half)foam);
 
-                half alpha = saturate(_Opacity * (0.65 + 0.35 * n) + foam * 0.35);
-                alpha *= smoothstep(0.0, 0.18, middle + foam * 0.1);    // soft sides
-                alpha *= 1.0 - smoothstep(0.93, 1.0, progress) * 0.85;  // dissolves into the splash
+                half alpha = (half)saturate(_Opacity * (0.65 + 0.35 * n) + foam * 0.35);
+                alpha *= (half)smoothstep(0.0, 0.18, middle + foam * 0.1);      // soft sides
+                alpha *= (half)(1.0 - smoothstep(0.93, 1.0, progress) * 0.85);  // dissolves into the splash
 
                 lit = MixFog(lit, i.fogFactor);
                 return half4(lit, alpha);

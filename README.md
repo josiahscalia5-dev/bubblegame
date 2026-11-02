@@ -127,6 +127,8 @@ Done in the cloud build environment, which has no Unity editor:
 - The measurement code was run on both GLBs.
 - The tower waterfall placement was checked against the real castle mesh. Both spouts reach the Meshy towers and sit within 1 % of the approved screen positions.
 
+These checks can be re-run with [`Tools/verify/`](Tools/verify/README.md).
+
 **Still needs your machine:**
 - importing the project in the Unity editor;
 - how the materials, lighting and particles actually look;
@@ -151,7 +153,7 @@ Design/              approved screens, measurements, visual differences
 Previews/            build/validation reports, Unity captures
 Assets/WebGLTemplates/BubbleWash/   portrait browser page for the WebGL build
 .github/workflows/webgl-build.yml   cloud WebGL build (GameCI)
-Tools/               HUD sprite generator
+Tools/               HUD sprite generator; verify/ checks C# and shaders without the editor
 Open_BubbleWash_In_Unity.bat
 CLOUD_BUILD.md       browser version: cloud build + hosting steps
 ```
