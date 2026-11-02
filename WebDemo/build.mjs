@@ -22,4 +22,10 @@ ${page}
 // The published preview cannot serve .glb files, so its page loads the same models wrapped as JSON.
 fs.writeFileSync('artifact.html', page.replace('<script type="module" src="game.bundle.js"></script>',
   '<script>window.__BW_MODEL_FORMAT__ = "json";</script>\n<script type="module" src="game.bundle.js"></script>'));
-console.log('built game.bundle.js (' + (fs.statSync('game.bundle.js').size / 1024).toFixed(0) + ' KB), index.html and artifact.html');
+// Models for republishing the preview page, which cannot serve .glb: the same bytes as base64 JSON.
+fs.mkdirSync('artifact-models', { recursive: true });
+for (const f of fs.readdirSync('models').filter((n) => n.endsWith('.glb'))) {
+  const bytes = fs.readFileSync('models/' + f);
+  fs.writeFileSync(`artifact-models/${f}.json`, JSON.stringify({ format: 'glb-base64', name: f, bytes: bytes.length, data: bytes.toString('base64') }));
+}
+console.log('built game.bundle.js (' + (fs.statSync('game.bundle.js').size / 1024).toFixed(0) + ' KB), index.html, artifact.html and artifact-models/');

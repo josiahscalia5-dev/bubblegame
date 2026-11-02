@@ -1,0 +1,12 @@
+CLAUDIA CODE — ADD THE PINK GEMSTONE COLLECTIBLE TO BUBBLE WASH KINGDOM
+
+I'm providing a small, textured 3D GLB named BubbleWash_Pink_Gemstone_Claudia_Small.glb (or the Tiny version if the Small upload is too large).
+
+Please import THIS asset into my EXISTING Bubble Wash Kingdom project and use it as the purple-pink faceted gemstone collectible seen in my 12 approved gameplay screens, particularly the washing-machine tunnel. Do not rebuild the game, redesign the gem, or replace my approved scene.
+
+• Preserve its vivid pink-magenta faceted material, glossy highlights, and recognizable diamond silhouette.
+• Use a centered parent/pivot to make the gemstone continuously rotate smoothly and hover gently up and down. Add subtle light-catching sparkle particles or light pulses in gameplay, not a permanent static overlay.
+• Place it above the moving water pathway where the player can reach it. Create a trigger/collider that detects when the pink mascot touches it; add the correct gem currency amount to the HUD, play a brief collectible sparkle/sound, then despawn or pool the gem. Make it possible to place several copies using one shared model.
+• Keep this asset lightweight for the existing mobile game. Reuse materials and use object pooling for multiple gems. The source mesh is still 40,768 triangles even though the file is much smaller because its textures were reduced. If many gems are visible at once, consider a lower-poly replacement after verifying visual quality; do not silently replace with a wrong-looking gem.
+• Maintain existing swipe controls, moving camera, water splashes, and approved screen composition.
+• Show me a real running gameplay preview of the mascot approaching, rotating gemstone, collecting it, and the HUD updating. If a running preview is unavailable, tell me plainly and show the closest testable output without claiming it has been tested.
