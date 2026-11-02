@@ -2,8 +2,8 @@
 
 A separate, playable browser version of approved Screen 3, built from the Meshy models and the Unity project's layout. The Unity project is not changed by it.
 
-**Play:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (private until shared from its Share menu). Or serve this folder (`python3 -m http.server`) and open `index.html`.
-- That page was published from the account that ran the 2 November evening session. The earlier link, https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC, belongs to the other account and shows the version from before that session.
+**Play:** https://claude.ai/artifact/1zbgcsX6AF7HTNJMesKmiX (the version with the four Meshy entrance decorations, private until shared from its Share menu). Or serve this folder (`python3 -m http.server`) and open `index.html`.
+- Older versions: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (the 2 November evening version) and https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (the afternoon version). They were published from the user's other account. Each page is private to the account that published it.
 
 **Recordings:** [`Previews/WebDemo/`](../Previews/WebDemo): the gameplay video, a side-view debug video proving the height changes, both side by side, and a height chart.
 
@@ -93,6 +93,7 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
   - `tools/try_settings.cjs` tries camera framings, helper placements or machinery placements without a rebuild. For the machinery it prints its distance to the lanes.
   - In the page, `window.__bw.setDecor(kind, i, props)` moves a Meshy decoration (`towers`, `gears`, `pipes` or `crowns`, fields as in `DECOR` in `src/decor.js`) and returns each kind's distance to the lanes. `window.__bw.pick(x, y)` gives the world point under a stage pixel, and `window.__bw.project([x, y, z])` gives the stage pixel of a world point.
   - `python3 -I tools/compare_approved.py` puts the approved screen beside your frames, and `tools/overlay_approved.py` adds a 50 % blend.
+- `tools/seeded_run.cjs <demo-dir> <seed>` plays the recording's input script with `Math.random` seeded, and prints where the run ends and what it collected. Run it on two builds with the same seed to prove a visual change did not alter gameplay. Unseeded runs can differ by a coin, because coins bob with a random phase.
 - Chromium here has no GPU, so WebGL is rendered in software and the game is stepped at 30 frames per game-second.
 
 Not tested: real phones and their frame rate. The page lowers its own quality if the frame rate stays low.

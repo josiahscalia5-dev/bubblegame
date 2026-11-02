@@ -15,7 +15,7 @@ Read this first when you continue in a new Claude conversation.
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
   | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
 
-- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`. The latest is `2026-11-02_screen3_polish_session.md` (this evening's whole conversation: castle colours, machinery, the duck helper and the side machinery).
+- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`. The latest is `2026-11-02_screen3_polish_session.md` (this evening: castle colours, machinery, the duck helper and the side machinery). Tonight's entrance-decor session is not exported: exporting its log into this public repository was blocked by a permission check, so it needs the user's go-ahead.
 - **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
 - **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
@@ -25,7 +25,10 @@ Read this first when you continue in a new Claude conversation.
 
 The user wants Screen 3 to look and move right before the remaining screens. The approved Screen 3 is the target.
 
-- **Play:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening's version, from the account that ran it). The afternoon version is at https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC on the other account. Both are private until shared from their Share menu. Locally: `cd WebDemo && python3 -m http.server`.
+- **Play:** https://claude.ai/artifact/1zbgcsX6AF7HTNJMesKmiX (tonight's version with the Meshy entrance decor). It was published from the account that ran tonight's session, as an update of that account's earlier Bubble Wash Kingdom page, so the link stayed the same.
+  - Older versions: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening) and https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (afternoon).
+  - All are private until shared from their Share menu.
+  - Locally: `cd WebDemo && python3 -m http.server`.
 - **Latest round (night of 2 November): the four Meshy entrance decorations** (`Design/MeshyDeliveries/EntranceDecor/`, placed and animated by `WebDemo/src/decor.js`):
   - **Glowing water towers:** one on each side of the castle, where the approved image has its tall gold-and-blue columns. Each stands on a gold plinth.
     - The fluid glows and swirls in the shader (`TOWER_FLUID`), with bubbles rising and a pulsing light.
@@ -36,6 +39,13 @@ The user wants Screen 3 to look and move right before the remaining screens. The
   - Every decoration stays at least 1.25 m from the slide's middle up to the highest jump (the mascot reaches 1.10 m).
   - Web copies come from the Balanced files, simplified within a small error, with their metal/roughness and normal maps kept. The Small files have stray sliver triangles and are not used.
   - **Tried and dropped:** extra elbows at the lower corners. On the left they would only cover the side machinery; on the right the bubbles and gold wheel hid them.
+  - **Evidence** in `Previews/WebDemo/`: a new gameplay video, `entrance_decor_before_after.png`, `entrance_decor_closeups.png`, and the start frame beside and blended with the approved screen.
+    - The ride is unchanged: every recorded frame matches the build before this round (position, height, lane, speed, jumps, path, camera).
+    - The coin count can differ by one between unseeded runs, because coins bob with a random phase. `WebDemo/tools/seeded_run.cjs` shows both builds collect the same with the same seed.
+  - **Known differences from the approved image:**
+    - The crown keystone is hidden by the "Let's go!" banner at Tap to Start. The approved arch top has no crown; it was added because the user asked for it.
+    - The approved portal-mouth gears are chunkier and sit right at the water's edge. Ours are a little smaller and further out, to stay clear of the lanes, and partly behind the side machinery and the right brush.
+    - Pipe elbows appear only as the two tower spouts.
 - **Previous round (Screen 3 completion), all in code, no new Meshy models:**
   - **Framing:** measured against the approved image. A 36° lens from further back keeps the mascot's size and place, and the portal arch now fills the approved 64 % of the width.
   - **Slide:** narrower, as in the approved image (2.2 m, lanes 0.70 m apart). It is a flume with lavender walls, thick gold rails and chunky gold segments.
