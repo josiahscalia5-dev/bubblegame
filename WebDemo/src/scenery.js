@@ -11,7 +11,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import * as SH from './shaders.js';
 
-export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx }) {
+export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, track }) {
   const root = new THREE.Group();
   root.name = 'scenery';
   scene.add(root);
@@ -230,9 +230,64 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx }) {
     }
   }
 
+  // ---------------------------------------------------------------- the illuminated tunnel
+  // Glowing rings all the way down the drum (gold, pink, cyan and lavender, each set with bulbs that
+  // twinkle), and gold gears with blue and teal hubs turning on the upper walls, carried onto the
+  // bent 3D path so they climb, drop and bank with the tube.
+  const tunnel = new THREE.Group(); tunnel.name = 'tunnelDecor'; scene.add(tunnel);
+  const glowRings = [];
+  if (track) {
+    const { TR, L, W } = track;
+    const ringCols = [[2.6, 1.9, 0.9], [2.6, 0.9, 2.0], [0.9, 2.2, 2.8], [1.9, 1.4, 2.8]];   // gold, pink, cyan, lavender (above 1: they glow)
+    const R = L.tunnelRadius * 0.955, step = 2.3;
+    const ringGeo = new THREE.TorusGeometry(R, 0.05, 8, 96);
+    const bulbGeo = new THREE.SphereGeometry(0.055, 8, 6);
+    let i = 0;
+    for (let u = L.tunnelStart + 1.4; u < L.tunnelEnd - 0.8; u += step, i++) {
+      const base = new THREE.Color(...ringCols[i % 4]);
+      const mat = new THREE.MeshBasicMaterial({ color: base.clone() });
+      const ringMesh = new THREE.Mesh(ringGeo, mat);
+      ringMesh.matrixAutoUpdate = false;
+      TR.mapMatrix(new THREE.Matrix4().makeTranslation(0, W.WATER + W.AXIS_H, u), ringMesh.matrix);
+      tunnel.add(ringMesh);
+      const bulbs = new THREE.InstancedMesh(bulbGeo, new THREE.MeshBasicMaterial({ color: new THREE.Color(2.8, 2.6, 2.2) }), 28);
+      const m4 = new THREE.Matrix4(), local = new THREE.Matrix4();
+      for (let k = 0; k < 28; k++) {
+        const a = (k / 28) * Math.PI * 2;
+        local.makeTranslation(Math.cos(a) * R, W.WATER + W.AXIS_H + Math.sin(a) * R, u + 0.08);
+        TR.mapMatrix(local, m4); bulbs.setMatrixAt(k, m4);
+      }
+      bulbs.frustumCulled = false;
+      tunnel.add(bulbs);
+      glowRings.push({ mat, base, phase: i * 0.8 });
+    }
+    // gold gears on the upper walls, both sides, every few metres
+    let j = 0;
+    for (let u = L.tunnelStart + 3.0; u < L.tunnelEnd - 2; u += 4.6, j++) {
+      for (const side of [1, -1]) {
+        const a = side * (0.62 + 0.12 * (j % 2));   // angle up from the side wall
+        const x = side * Math.cos(a * side) * (L.tunnelRadius - 0.12), h = W.WATER + W.AXIS_H + Math.sin(Math.abs(a)) * (L.tunnelRadius - 0.12);
+        const holder = new THREE.Group(); holder.matrixAutoUpdate = false;
+        // face the gear toward the tube's axis
+        const inward = new THREE.Vector3(-x, W.WATER + W.AXIS_H - h, 0).normalize();
+        const local = new THREE.Matrix4().compose(new THREE.Vector3(x, h, u), new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), inward), new THREE.Vector3(1, 1, 1));
+        TR.mapMatrix(local, holder.matrix);
+        tunnel.add(holder);
+        const r = 0.34 + 0.08 * ((j + (side > 0 ? 1 : 0)) % 2);
+        const g = new THREE.Group(); holder.add(g);
+        const wheel = mesh(gearGeometry(r, Math.round(r * 26), r * 0.3), gold, null, g);
+        const hub = mesh(new THREE.CylinderGeometry(r * 0.4, r * 0.4, r * 0.3, 24), (j + side) % 2 ? teal : blue, null, wheel); hub.rotation.x = Math.PI / 2;
+        mesh(new THREE.SphereGeometry(r * 0.15, 14, 10), gold, [0, 0, r * 0.18], wheel);
+        ring(wheel, r * 0.62, 6, r * 0.06, bulb, r * 0.18);
+        spinners.push({ obj: wheel, axis: new THREE.Vector3(0, 0, 1), speed: side * (0.8 + 0.2 * (j % 3)) });
+      }
+    }
+  }
+
   return {
-    root, towers,
+    root, towers, tunnel,
     update(dt, t) {
+      for (const g of glowRings) g.mat.color.copy(g.base).multiplyScalar(0.75 + 0.3 * Math.sin(t * 2.2 + g.phase));
       tubeWaterU.uTime.value = t;
       for (const s of spinners) s.obj.rotateOnAxis(s.axis, s.speed * dt);
     },

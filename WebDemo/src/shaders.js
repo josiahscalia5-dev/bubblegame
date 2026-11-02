@@ -79,8 +79,28 @@ export const brushGrade = (rMax) => /* glsl */ `
 
 export const RIPPLES = 8;
 
+// The raised water around the mascot (visual only: the mascot's ride height is unchanged): a mound
+// pushed up around its body, higher in front where it pushes the current, a slight hollow under it,
+// and raised ridges trailing behind in a V that open wider at speed.
+const BOW_GLSL = /* glsl */ `
+uniform vec3 uPlayer;       // mascot track x, water height under it, u
+uniform vec3 uPlayerMove;   // sideways velocity, speed 0..1, downhill 0..1
+float bowWave(vec2 xz) {
+  vec2 d = xz - uPlayer.xz;
+  float r = length(d * vec2(1.0, 0.85));
+  float front = smoothstep(-0.3, 0.5, d.y);
+  float mound = exp(-pow((r - 0.6) / 0.17, 2.0)) * (0.06 + 0.06 * uPlayerMove.y + 0.05 * uPlayerMove.z) * (0.55 + 0.75 * front);
+  float hollow = -exp(-r * r * 9.0) * 0.04;
+  float behind = clamp(-d.y / (2.4 + 2.6 * uPlayerMove.y), 0.0, 1.0);
+  float spread = 0.6 + behind * (0.8 + 0.7 * uPlayerMove.y);
+  float ridge = exp(-pow((abs(d.x - uPlayerMove.x * 0.12 * behind) - spread) / 0.15, 2.0)) * step(d.y, 0.0) * (1.0 - behind) * (0.02 + 0.07 * uPlayerMove.y);
+  return mound + hollow + ridge;
+}
+`;
+
 export const waterVertex = /* glsl */ `
 ${HEIGHT_GLSL}
+${BOW_GLSL}
 uniform vec4 uRipples[${RIPPLES}];   // x, u, start time, strength (track coordinates)
 // Each vertex knows its track position (sideways x, along u) and the path frame there, so the sheet
 // follows the 3D path: it climbs, drops and banks with the bent drum (track.js).
@@ -100,7 +120,7 @@ float rippleHeight(vec2 xz) {
   return h;
 }
 void main() {
-  float h = bwHeight(aTrack, uTime) + rippleHeight(aTrack);
+  float h = bwHeight(aTrack, uTime) + rippleHeight(aTrack) + bowWave(aTrack);
   vec3 w = aP + aR * aTrack.x + aU * h;
   vTrack = aTrack; vWorld = w; vR = aR; vU = aU; vT = aT;
   gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
@@ -110,9 +130,8 @@ void main() {
 export const waterFragment = /* glsl */ `
 ${HEIGHT_GLSL}
 ${NOISE}
+${BOW_GLSL}
 uniform vec4 uRipples[${RIPPLES}];
-uniform vec3 uPlayer;       // mascot track x, water height under it, u
-uniform vec3 uPlayerMove;   // sideways velocity, speed 0..1, downhill 0..1
 uniform float uFlow;        // current speed (m/s)
 uniform float uSlideHalf;   // half width of the raised slide
 uniform vec3 uDeep, uShallow, uTurq, uGlow, uSky, uPink, uGold, uRingA, uRingB, uFog, uSunDir;
@@ -137,8 +156,8 @@ void main() {
   vec2 xz = vTrack;
   float flowT = t * uFlow;
   const float e = 0.06;
-  float hx = bwHeight(xz + vec2(e, 0.0), t) - bwHeight(xz - vec2(e, 0.0), t);
-  float hz = bwHeight(xz + vec2(0.0, e), t) - bwHeight(xz - vec2(0.0, e), t);
+  float hx = bwHeight(xz + vec2(e, 0.0), t) + bowWave(xz + vec2(e, 0.0)) - bwHeight(xz - vec2(e, 0.0), t) - bowWave(xz - vec2(e, 0.0));
+  float hz = bwHeight(xz + vec2(0.0, e), t) + bowWave(xz + vec2(0.0, e)) - bwHeight(xz - vec2(0.0, e), t) - bowWave(xz - vec2(0.0, e));
   float n1 = bwNoise(xz * vec2(3.1, 1.4) - vec2(0.0, flowT * 0.35));
   float n2 = bwNoise(xz * vec2(5.7, 2.6) - vec2(0.0, flowT * 0.6) + 3.3);
   float rip = ripples(xz);
@@ -192,7 +211,7 @@ void main() {
   float trail = (1.0 - smoothstep(0.0, 0.12 + 0.16 * behind, abs(toP.x))) * 0.16;
   float wake = max(wakeLine, trail) * step(toP.y, 0.35) * (1.0 - behind);
   wake *= 0.18 + 0.22 * uPlayerMove.y + 0.3 * uPlayerMove.z;
-  float ring = (1.0 - smoothstep(0.45, 1.0, length(toP * vec2(1.0, 0.8)))) * (0.85 + 0.2 * uPlayerMove.y);   // the foam collar around the mascot (approved Screen 3)
+  float ring = (1.0 - smoothstep(0.42, mix(1.0, 0.78, uPlayerMove.y), length(toP * vec2(1.0, 0.8)))) * mix(0.85, 0.4, uPlayerMove.y);   // full collar at rest, lighter while running   // the foam collar around the mascot (approved Screen 3)
   float mask = clamp(wall * 0.35 + pathEdge * 0.85 + crest * crest * 0.08 + wake + ring + steep * 0.25 + rip * 0.5, 0.0, 1.2);
   float foam = smoothstep(0.5, 0.78, streak * 0.6 + mask * 0.7 - 0.1);   // no foam unless the water churns (mask)
   foam = clamp(foam + lace * 0.5 * min(mask, 1.0), 0.0, 1.0) * 0.92;
@@ -217,6 +236,11 @@ void main() {
   float ringBand = exp(-dRing * dRing * 1.8) * inDrum;
   vec3 ringCol = mod(idx, 2.0) < 0.5 ? uRingA : uRingB;
 
+  // Depth: troughs a little deeper, crests and the raised water around the mascot lighter and more
+  // turquoise (thin water lit through), so the surface reads as moving volume.
+  col = mix(col, uDeep * 0.72, (1.0 - crest) * 0.22 * (1.0 - moat));
+  col += uTurq * smoothstep(0.55, 0.95, crest) * 0.22 * (1.0 - moat);
+  col += uTurq * clamp(bowWave(xz) * 5.0, 0.0, 1.0) * 0.3;
   vec3 lit = col * (0.8 + 0.3 * NdotL);
   lit += env * fresnel * 0.28 * (1.0 - inDrum * 0.6);
   lit += ringCol * ringBand * 1.3 * (0.35 + fresnel);
@@ -433,15 +457,15 @@ void main() {
   float hgt = dot(rel, uUp) / uRadius;                               // -1 at the water .. +1 on top
   vec3 amb = mix(uGround, uSky, up);
   vec3 c = base * (amb * 0.52 + vec3(1.0, 0.94, 0.97) * key * 0.92);
-  c *= 0.58 + 0.56 * strand;
+  c *= 0.5 + 0.72 * strand;                                          // each spike lit on one side, shaded on the other
   c *= 0.7 + 0.3 * smoothstep(-1.05, 0.35, hgt);                     // deeper magenta toward the water
   float rim = pow(1.0 - clamp(dot(Ns, V), 0.0, 1.0), 2.4);
   c += uRim * rim * (0.25 + 0.75 * up) * 0.85;                       // fur tips glowing around the silhouette
-  c += uTip * smoothstep(0.62, 1.0, strand) * smoothstep(0.3, 1.0, up) * 0.32;
+  c += uTip * smoothstep(0.55, 1.0, strand) * smoothstep(0.15, 1.0, up) * 0.4;   // pale pink tips catching the light, as in the approved fur
   // Water droplets caught in the fur twinkle in the light.
   vec3 cell = floor(rel * 34.0);
   float h = bwHash(cell.xy + cell.z * 17.13);
-  float tw = step(0.986, h) * (0.55 + 0.45 * sin(uTime * 5.0 + h * 40.0)) * smoothstep(0.25, 0.85, strand);
+  float tw = step(0.97, h) * (0.55 + 0.45 * sin(uTime * 5.0 + h * 40.0)) * smoothstep(0.25, 0.85, strand);
   c += vec3(1.0, 0.96, 1.0) * tw * 1.1;
   gl_FragColor = vec4(c, 1.0);
 }

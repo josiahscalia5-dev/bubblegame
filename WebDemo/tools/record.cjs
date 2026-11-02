@@ -30,7 +30,8 @@ const SCRIPT = [ // [game second, action]
   fs.rmSync(OUT, { recursive: true, force: true }); fs.mkdirSync(OUT, { recursive: true });
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const proxy = process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' } : undefined;
-  const viewport = MODE === 'side' ? { width: 960, height: 540 } : { width: 476, height: 920 };
+  // The player's view is an exact 1:2 stage (538 x 1076), the same portrait shape as the approved screens.
+  const viewport = MODE === 'side' ? { width: 960, height: 540 } : { width: 700, height: 1076 };
   const page = await (await browser.newContext({ viewport, ignoreHTTPSErrors: true, proxy })).newPage();
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${m.type()}] ${m.text()}`); });

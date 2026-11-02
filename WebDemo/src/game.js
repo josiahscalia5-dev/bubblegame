@@ -38,6 +38,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(55, 0.5, 0.1, 200);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
+// Soft glow over the bright parts of the scene, as in the approved artwork.
 const bloom = new UnrealBloomPass(new THREE.Vector2(256, 512), 0.32, 0.45, 0.97);
 composer.addPass(bloom);
 composer.addPass(new ShaderPass(SH.GradeShader));
@@ -48,6 +49,10 @@ const sun = new THREE.DirectionalLight(0xfff2e6, 1.7);
 sun.position.set(-3, 6, -4);
 scene.add(sun);
 const SUN_DIR = sun.position.clone().normalize();
+// A cool rim light from behind and above: bright edges on the machinery, wheels and helper.
+const rimLight = new THREE.DirectionalLight(0xcfe8ff, 1.3);
+rimLight.position.set(2, 7, 12);
+scene.add(rimLight);
 
 // ------------------------------------------------------------------ loading
 const files = {
@@ -108,7 +113,12 @@ function bakedMaterial(src, opts = {}) {
   const m = new THREE.MeshBasicMaterial({ map: src.map || null, color: 0xffffff, vertexColors: !!opts.vertexColors, side: THREE.DoubleSide });
   const sat = opts.saturation ?? 1.15, bright = opts.brightness ?? 1.0, glow = opts.glow ?? 0.0;
   const haze = opts.haze;   // [amount, near m, far m, colour]: soft distance haze, as over the approved castle
+  const shade = opts.shade;   // [base, light amount, rim]: soft directional light and a bright rim on the baked colour
   m.onBeforeCompile = (s) => {
+    if (shade) {
+      s.vertexShader = s.vertexShader.replace('void main() {', 'varying vec3 vShadeN; varying vec3 vShadeP;\nvoid main() {\n  vShadeN = normalize(mat3(modelMatrix) * normal);\n  vShadeP = (modelMatrix * vec4(position, 1.0)).xyz;');
+      s.fragmentShader = 'varying vec3 vShadeN; varying vec3 vShadeP;\n' + s.fragmentShader;
+    }
     if (haze) {
       s.vertexShader = s.vertexShader.replace('void main() {', 'varying float vHazeDepth;\nvoid main() {')
         .replace('#include <project_vertex>', '#include <project_vertex>\n  vHazeDepth = -mvPosition.z;');
@@ -126,6 +136,12 @@ function bakedMaterial(src, opts = {}) {
         diffuseColor.rgb = mix(vec3(l), diffuseColor.rgb, ${sat.toFixed(3)}) * ${bright.toFixed(3)};
         diffuseColor.rgb += diffuseColor.rgb * smoothstep(0.55, 0.95, l) * ${glow.toFixed(3)};
         diffuseColor.rgb += (1.0 - min(diffuseColor.rgb, 1.0)) * ${(opts.lift ?? 0).toFixed(3)}; }
+      ${shade ? `{ vec3 N = normalize(vShadeN) * (gl_FrontFacing ? 1.0 : -1.0);
+        vec3 V = normalize(cameraPosition - vShadeP);
+        float key = dot(N, normalize(vec3(0.45, 0.75, -0.5)));
+        float rim = pow(1.0 - clamp(dot(N, V), 0.0, 1.0), 3.0) * clamp(dot(N, vec3(0.0, 0.6, 0.8)) + 0.4, 0.0, 1.0);
+        diffuseColor.rgb *= ${shade[0].toFixed(3)} + ${shade[1].toFixed(3)} * key;
+        diffuseColor.rgb += vec3(0.85, 0.9, 1.0) * rim * ${shade[2].toFixed(3)}; }` : ''}
       ${haze ? `diffuseColor.rgb = mix(diffuseColor.rgb, vec3(${haze[3].map((v) => v.toFixed(3)).join(', ')}), ${haze[0].toFixed(3)} * smoothstep(${haze[1].toFixed(2)}, ${haze[2].toFixed(2)}, vHazeDepth));` : ''}`);
   };
   return m;
@@ -144,12 +160,22 @@ function buildSky() {
   }));
   sky.renderOrder = -10;
   scene.add(sky);
-  // Environment reflections for the gold and the gems, from the same sky.
+  // Environment reflections for the gold, blue and gems: the same sky plus a few bright soft panels
+  // (white overhead, warm pink and cool cyan at the sides), so glossy surfaces catch highlights and
+  // read round, like the approved artwork, instead of mirroring an even pastel sky.
   const envScene = new THREE.Scene();
-  envScene.add(sky.clone());
+  const envSky = sky.clone();   // a deeper copy of the sky, so metals show shading as well as highlights
+  envSky.material = sky.material.clone();
+  envSky.material.uniforms = { uTop: { value: C(0x6f5fc0) }, uMid: { value: C(0x9a86d8) }, uHorizon: { value: C(0xd6b8f0) }, uBottom: { value: C(0x23306f) } };
+  envScene.add(envSky);
+  for (const [pos, size, col] of [[[0, 60, 10], [90, 50], [3.2, 3.0, 3.2]], [[-70, 25, 20], [40, 60], [2.6, 1.6, 2.4]],
+    [[70, 20, 10], [40, 60], [1.4, 2.4, 3.0]], [[0, 18, -80], [70, 30], [2.0, 1.9, 2.2]], [[0, 10, 85], [60, 25], [1.6, 2.0, 2.8]]]) {
+    const panel = new THREE.Mesh(new THREE.PlaneGeometry(...size), new THREE.MeshBasicMaterial({ color: new THREE.Color(...col), side: THREE.DoubleSide }));
+    panel.position.set(...pos); panel.lookAt(0, 0, 0); envScene.add(panel);
+  }
   const pmrem = new THREE.PMREMGenerator(renderer);
   mats.env = pmrem.fromScene(envScene, 0.02, 0.1, 400).texture;   // far plane beyond the 170 m sky
-  mats.gold = new THREE.MeshStandardMaterial({ color: 0xffc24a, metalness: 1, roughness: 0.28, envMap: mats.env, envMapIntensity: 1.3 });
+  mats.gold = new THREE.MeshStandardMaterial({ color: 0xffbf45, metalness: 1, roughness: 0.22, envMap: mats.env, envMapIntensity: 1.25, emissive: 0x3a2200, emissiveIntensity: 0.35 });
 }
 
 /** Replace zero-length or invalid normals (left by Meshy's decimation) so lighting never produces NaN. */
@@ -228,7 +254,7 @@ function buildWater() {
     uTime: { value: 0 }, uTunnel: { value: new THREE.Vector4(L.tunnelStart, L.tunnelEnd, L.tunnelRadius, L.axisHeight) },
     uRipples: { value: ripples }, uPlayer: { value: new THREE.Vector3() }, uPlayerMove: { value: new THREE.Vector3() },
     uFlow: { value: 9 }, uSlideHalf: { value: W.SLIDE.half },
-    uDeep: { value: C(0x0a44f0) }, uShallow: { value: C(0x1a98ff) }, uTurq: { value: C(0x2ee6f6) }, uGlow: { value: C(0x8af0ff) },
+    uDeep: { value: C(0x0636d8) }, uShallow: { value: C(0x1f9bff) }, uTurq: { value: C(0x3eeaf8) }, uGlow: { value: C(0x9af2ff) },
     uSky: { value: C(0xa9c4ff) }, uPink: { value: C(0xff9be0) }, uGold: { value: C(0xffcc5a) },
     uRingA: { value: C(0xffd873) }, uRingB: { value: C(0x8ce6ff) }, uFog: { value: C(0xccccff) }, uSunDir: { value: SUN_DIR },
     uRings: { value: new THREE.Vector3(L.tunnelStart + 0.25, L.segmentLength - Math.max(0.02, L.segmentLength * 0.005), 4) },
@@ -426,7 +452,7 @@ const SCREEN3_BRUSHES = [
 function buildDrum(gltf) {
   // Lighter than the raw texture, and misting to a bright pale core with distance, like the white,
   // light-blue and pink vortex of the approved Screens 3 and 4.
-  bake(gltf.scene, { saturation: 1.25, brightness: 1.1, glow: 0.9, lift: 0.08, haze: [0.45, 6, 32, [0.78, 0.86, 1.0]] });
+  bake(gltf.scene, { saturation: 1.25, brightness: 1.1, glow: 0.9, lift: 0.08, haze: [0.45, 6, 32, [0.78, 0.86, 1.0]], shade: [0.88, 0.22, 0.25] });
   gltf.scene.updateMatrixWorld(true);
   const meshes = [];
   gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
@@ -446,6 +472,7 @@ function buildDrum(gltf) {
       g.setAttribute('position', new THREE.BufferAttribute(p, 3));
       for (const name of ['uv', 'color']) if (src.attributes[name]) g.setAttribute(name, src.attributes[name]);
       g.setIndex(src.index);
+      g.computeVertexNormals();   // for the soft shading on the baked colour
       g.computeBoundingSphere();
       const m = new THREE.Mesh(g, mesh.material);
       scene.add(m);
@@ -457,7 +484,8 @@ function buildDrum(gltf) {
 function buildRollers(gltf) {
   const src = gltf.scene;
   // Bristles recoloured as the approved brushes: blue toward the hub, a white band, a pink fringe.
-  bake(src, { saturation: 1.25, brightness: 1.08 }, (o) => {
+  repairNormals(src);
+  bake(src, { saturation: 1.25, brightness: 1.08, shade: [0.8, 0.38, 0.45] }, (o) => {
     if (!/Bristles/.test(o.material.name)) return {};
     const p = o.geometry.attributes.position; let rMax = 0;
     for (let i = 0; i < p.count; i++) rMax = Math.max(rMax, Math.hypot(p.getX(i), p.getZ(i)));
@@ -697,7 +725,7 @@ function buildMascot(gltf) {
     uCentre: { value: new THREE.Vector3() }, uUp: { value: new THREE.Vector3(0, 1, 0) }, uRadius: { value: size.y * s * 0.5 },
     uKey: { value: new THREE.Vector3(0.35, 0.85, -0.42).normalize() }, uTime: { value: 0 },
     uSky: { value: new THREE.Color(1.0, 0.86, 1.0) }, uGround: { value: new THREE.Color(0.55, 0.42, 0.95) },
-    uRim: { value: new THREE.Color(1.0, 0.5, 0.86) }, uTip: { value: new THREE.Color(1.0, 0.72, 0.94) },
+    uRim: { value: new THREE.Color(1.0, 0.55, 0.88) }, uTip: { value: new THREE.Color(1.0, 0.8, 0.96) },
   };
   model.traverse((o) => {
     if (!o.isMesh) return;
@@ -719,7 +747,7 @@ function buildMascot(gltf) {
 // The golden helper on its pink float waits on the slide in front of the portal (where the approved
 // Screen 3 shows it), facing the mascot. Once the run starts it rides ahead into the washing machine,
 // leading the way, and fades into the light at the tunnel's end.
-const HELPER = { z0: -9.0, lead: 6.5, scale: 1.15 };
+const HELPER = { z0: -8.0, lead: 6.5, scale: 1.25 };
 function updateHelper(dt) {
   if (!helper) return;
   if (state.phase === 'running') helper.z = Math.max(helper.z, mascot.z + HELPER.lead);
@@ -836,6 +864,14 @@ function updateMascot(dt) {
         side * (0.5 + Math.random() * 1.2) - m.xv * 0.4, 1.0 + Math.random() * (1.6 + 2.2 * m.downhill), m.speed * (0.35 + Math.random() * 0.3),
         0.04 + Math.random() * 0.07, 0.45 + Math.random() * 0.4, 0);
     }
+    // Bow spray: clear droplets thrown up and outward where the body pushes the current.
+    m.bowCarry = (m.bowCarry || 0) + (running ? 6 + 18 * speed01 + 24 * m.downhill : 0) * dt;
+    for (; m.bowCarry >= 1; m.bowCarry--) {
+      const side = Math.random() < 0.5 ? -1 : 1, a = Math.random() * 0.9;
+      fx.emitT(m.x + side * (0.42 + Math.random() * 0.15), surf + 0.08, m.z + 0.15 + a * 0.3,
+        side * (0.9 + Math.random() * 1.1) - m.xv * 0.3, 1.4 + Math.random() * 1.6, m.speed * (0.55 + Math.random() * 0.25),
+        0.04 + Math.random() * 0.05, 0.4 + Math.random() * 0.3, 0);
+    }
     m.foamCarry += (running ? 1.5 + 3 * speed01 + 5 * m.downhill : 0.8) * dt;
     for (; m.foamCarry >= 1; m.foamCarry--) {
       const side = Math.random() < 0.5 ? -1 : 1;
@@ -873,10 +909,10 @@ function loopRun() {
 }
 
 // ------------------------------------------------------------------ camera rig
-// Tap to Start framing, measured against the approved Screen 3: a longer lens from further back keeps
-// the mascot's size and place (42 % of the width, centred at 65 % of the height) while the portal
-// arch grows to the approved 64 % of the width.
-const S3 = { off: new THREE.Vector3(0, 1.0, -6.4), look: new THREE.Vector3(0, 0.5, 5.97), fov: 36 };
+// Tap to Start framing, measured against the approved Screen 3 at the same 1:2 size: a longer lens
+// from further back keeps the mascot's size and place (43 % of the width, from 58 % to 75 % of the
+// height) while the portal arch grows to the approved size.
+const S3 = { off: new THREE.Vector3(0, 1.0, -6.4), look: new THREE.Vector3(0, 0.5, 5.97), fov: 40 };
 const S4 = { off: new THREE.Vector3(0, 1.03, -3.58), look: new THREE.Vector3(0, 0.89, 6.42), fov: 60 };
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
@@ -1103,7 +1139,7 @@ function buildSideView() {
   const dots = new THREE.Points(tg, new THREE.PointsMaterial({ color: 0xff1f9e, size: 5, sizeAttenuation: false }));
   dots.frustumCulled = false; g.add(dots);
   // Only the run itself: the castle, drum, scenery and water sheet would hide the mascot from the side.
-  for (const o of [mats.castle, water, mats.machinery, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
+  for (const o of [mats.castle, water, mats.machinery, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
   side = { cam, g, dots, tp, n: 0, N, yc: 1.0, width: 22, startY: mascot.root.position.y };
 }
 function sideTrail() {
@@ -1245,7 +1281,8 @@ async function main() {
       ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
-    bake(castle.scene, { saturation: 1.0, brightness: 1.06, glow: 0.35, grade: SH.CASTLE_GRADE, haze: [0.3, 14, 45, [0.86, 0.79, 1.0]] });
+    repairNormals(castle.scene);
+    bake(castle.scene, { saturation: 1.0, brightness: 1.06, glow: 0.35, grade: SH.CASTLE_GRADE, haze: [0.3, 14, 45, [0.86, 0.79, 1.0]], shade: [0.86, 0.26, 0.35] });
     mats.castle = place(castle.scene, L.castle);
     buildDrum(drum);
     buildWater();
@@ -1253,7 +1290,7 @@ async function main() {
     buildWaterfalls();
     buildDrumLights();
     buildRollers(roller);
-    scenery = buildScenery({ scene, mats, fallGeometry, fallMaterial: mats.fallMat, fx });
+    scenery = buildScenery({ scene, mats, fallGeometry, fallMaterial: mats.fallMat, fx, track: { TR, L, W } });
     mats.machinery = scenery.root;
     buildBubbles();
     buildCollectibles(gem, coinFace);
