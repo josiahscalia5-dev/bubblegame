@@ -10,7 +10,7 @@ Read this first when you continue in a new Claude conversation.
   | Branch | What it holds |
   |---|---|
   | `ccr-ce4e9217-j1l0vl` | **Latest work.** Everything in PR #1, plus the Screen 3 demo improvements, the lost sock, the recordings, this hand-off and the chat history. |
-  | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It does **not** include the work above. |
+  | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It was fast-forwarded to the same commits as the branch above. |
   | `claude/new-session-oth0dd` | PR #1's base. Another session started on 2 November at 14:33 was building Screens 5–12 in Unity on it, with uncommitted work at the time. Check this branch before starting Screens 5–12, to avoid duplicating it. |
 
 - **Chat history:** [`ChatHistory/`](ChatHistory). This session's messages and replies, exported with `Tools/export_chat_history.py`. Earlier sessions' chats could not be opened from this session, so they are not here. Their work is in the commits and in `README.md`.
@@ -60,9 +60,9 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 ## Open requests from the user
 
 1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens.
-2. **Meshy asset review:** which 3D models are genuinely missing from Screen 3, so no Meshy credits are spent on duplicates. The answer is in the chat history ([`ChatHistory/`](ChatHistory)), dated 2 November.
+2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). Three models are genuinely missing: a gold machinery tower, a gold gear with a blue hub, and the golden toy figure on the slide.
 3. Keep PR #1 as a draft. Do not merge it.
-4. Still unanswered: move this branch's commits onto PR #1's branch, or open a separate draft PR?
+4. The user said yes to moving this work into PR #1. PR #1's branch (`ccr-e6a125ac-2krpmp`) was fast-forwarded to match `ccr-ce4e9217-j1l0vl`, and the PR stays a draft.
 
 ## How the user likes to work
 
