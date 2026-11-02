@@ -11,7 +11,7 @@ Read this first when you continue in a new Claude conversation.
   |---|---|
   | `ccr-ce4e9217-j1l0vl` | **Latest work.** Everything in PR #1, plus the Screen 3 demo improvements, the lost sock, the recordings, this hand-off and the chat history. |
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It was fast-forwarded to the same commits as the branch above. |
-  | `claude/new-session-oth0dd` | PR #1's base. Another session started on 2 November at 14:33 was building Screens 5–12 in Unity on it, with uncommitted work at the time. Check this branch before starting Screens 5–12, to avoid duplicating it. |
+  | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 now **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
 
 - **Chat history:** [`ChatHistory/`](ChatHistory). This session's messages and replies, exported with `Tools/export_chat_history.py`. Earlier sessions' chats could not be opened from this session, so they are not here. Their work is in the commits and in `README.md`.
 - **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
