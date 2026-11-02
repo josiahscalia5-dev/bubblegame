@@ -16,5 +16,10 @@ namespace BubbleWash
         public Sprite arrowLeft, arrowRight, hand;
         public Sprite sock, bubbleBlast, turboSpin;
         public Sprite badge, progressTrack, progressFill;
+
+        [Header("Screens 1, 2 and 5-12")]
+        public Sprite logo, crown, buttonGreen, cardCream, panelRow, panelWhite, panelRed, navBar;
+        public Sprite starFull, starEmpty, check, lockIcon, warning, playTriangle, arrowDownPink;
+        public Sprite navLevels, navCharacters, navShop;
     }
 }

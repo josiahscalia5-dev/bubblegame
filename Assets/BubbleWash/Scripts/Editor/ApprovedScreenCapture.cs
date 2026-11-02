@@ -10,16 +10,17 @@ using UnityEngine.UI;
 namespace BubbleWash.EditorTools
 {
     /// <summary>
-    /// One-click visual verification against the approved screens, rendered by Unity itself (URP,
+    /// One-click visual verification against all 12 approved screens, rendered by Unity itself (URP,
     /// post-processing, HUD) at each approved crop's aspect ratio.
     ///
-    /// Bubble Wash > 2. Capture & Compare Screens 3 and 4 (Ctrl+Shift+K)
-    ///     Enters Play mode, poses the RUNNING game at each approved camera position, lets waves,
-    ///     foam, splashes, paddling and the follow camera run for a moment, captures, exits Play mode.
+    /// Bubble Wash > 2. Capture & Compare All 12 Screens (Ctrl+Shift+K)
+    ///     Enters Play mode, poses the RUNNING game at each approved moment of Level 1 (Screens 3-12),
+    ///     lets waves, foam, splashes, paddling, enemies and the follow camera run for a moment, captures,
+    ///     exits Play mode, then captures the menu (Screens 1-2).
     /// Bubble Wash > 2b. Quick Capture (Edit Mode)
-    ///     Same framing without entering Play mode (particles are pre-simulated).
+    ///     Same framings without entering Play mode (particles are pre-simulated).
     /// Batch: Unity.exe -projectPath . -executeMethod BubbleWash.EditorTools.ApprovedScreenCapture.CaptureFromCommandLine
-    /// Output: Previews/Captures/Screen03_unity.png, Screen03_compare.png (approved | Unity | overlay), compare_report.md
+    /// Output: Previews/Captures/ScreenNN_unity.png, ScreenNN_compare.png (approved | Unity | overlay), compare_report.md
     /// </summary>
     [InitializeOnLoad]
     public static class ApprovedScreenCapture
@@ -39,9 +40,21 @@ namespace BubbleWash.EditorTools
 
         public static readonly Target[] Targets =
         {
+            new Target { screen = 1, approvedFile = "01_Home_Screen.png", title = "Screen 1 - Home" },
+            new Target { screen = 2, approvedFile = "02_Select_Level.png", title = "Screen 2 - Select Level" },
             new Target { screen = 3, approvedFile = "03_Lets_Go_Washer_Entry.png", title = "Screen 3 - Let's go! Into the washing machine!" },
             new Target { screen = 4, approvedFile = "04_Rescue_Socks_Inside_Tunnel.png", title = "Screen 4 - Rescue 5 lost socks" },
+            new Target { screen = 5, approvedFile = "05_Jump_To_Side_Paths.png", title = "Screen 5 - Jump to Side Paths!" },
+            new Target { screen = 6, approvedFile = "06_Drop_Down_To_Lower_Paths.png", title = "Screen 6 - Drop Down to Lower Paths!" },
+            new Target { screen = 7, approvedFile = "07_Watch_Out_Spinning_Brushes.png", title = "Screen 7 - Watch out! Spinning brushes!" },
+            new Target { screen = 8, approvedFile = "08_Collect_Coins_Gems_Socks.png", title = "Screen 8 - Collect Coins, Gems & Rescue Socks!" },
+            new Target { screen = 9, approvedFile = "09_Avoid_Enemies.png", title = "Screen 9 - Avoid Enemies!" },
+            new Target { screen = 10, approvedFile = "10_Enter_Bubble_Kingdom.png", title = "Screen 10 - Enter the Bubble Kingdom!" },
+            new Target { screen = 11, approvedFile = "11_Rescue_Progress.png", title = "Screen 11 - Rescue progress 4/5" },
+            new Target { screen = 12, approvedFile = "12_Level_Complete.png", title = "Screen 12 - Level Complete!" },
         };
+
+        static readonly int[] LevelScreens = { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
         static StringBuilder _report;
 
@@ -52,12 +65,12 @@ namespace BubbleWash.EditorTools
 
         // ------------------------------------------------------------------ Play mode (the running game)
 
-        [MenuItem("Bubble Wash/2. Capture & Compare Screens 3 and 4 %#k", priority = 2)]
+        [MenuItem("Bubble Wash/2. Capture & Compare All 12 Screens %#k", priority = 2)]
         public static void CaptureFromMenu()
         {
             if (EditorApplication.isPlaying) { Debug.LogWarning("[BubbleWash] Stop Play mode first; the capture enters Play mode by itself."); return; }
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
+            if (Level1SceneBuilder.SceneIsOutdated()) Level1SceneBuilder.Build();
             EditorSceneManager.OpenScene(Level1SceneBuilder.ScenePath, OpenSceneMode.Single);
             SessionState.SetBool(PendingKey, true);
             Debug.Log("[BubbleWash] Capture: entering Play mode to photograph the running game...");
@@ -73,11 +86,12 @@ namespace BubbleWash.EditorTools
                 _report = Header("Play mode (running game)");
                 var go = new GameObject("__BubbleWashCapture");
                 var director = go.AddComponent<CaptureDirector>();
+                director.screens = LevelScreens;
                 director.capture = screen =>
                 {
                     var rig = UnityEngine.Object.FindFirstObjectByType<RunnerCameraRig>();
                     var hud = UnityEngine.Object.FindFirstObjectByType<GameHud>();
-                    CaptureOne(screen, rig.GetComponent<Camera>(), hud, _report);
+                    CaptureOne(screen, rig.GetComponent<Camera>(), hud != null ? hud.GetComponent<Canvas>() : null, _report);
                 };
                 director.finished = () =>
                 {
@@ -89,11 +103,16 @@ namespace BubbleWash.EditorTools
             else if (change == PlayModeStateChange.EnteredEditMode && SessionState.GetBool(RevealKey, false))
             {
                 SessionState.SetBool(RevealKey, false);
+                // The menu screens live in their own scene: capture them now, in edit mode.
+                var menu = new StringBuilder();
+                CaptureMenu(menu);
+                File.AppendAllText(Path.Combine(OutDir, "compare_report.md"), menu.ToString());
+                EditorSceneManager.OpenScene(Level1SceneBuilder.ScenePath, OpenSceneMode.Single);
                 AssetDatabase.Refresh();
                 EditorUtility.RevealInFinder(Path.GetFullPath(Path.Combine(OutDir, "Screen03_compare.png")));
                 EditorUtility.DisplayDialog("Bubble Wash capture",
-                    "Captured the running game for Screens 3 and 4.\n\n" + Path.GetFullPath(OutDir) +
-                    "\n\nScreen03_compare.png and Screen04_compare.png show: approved | Unity | 50% overlay.", "OK");
+                    "Captured all 12 approved screens (3-12 from the running game, 1-2 from the menu).\n\n" + Path.GetFullPath(OutDir) +
+                    "\n\nEach ScreenNN_compare.png shows: approved | Unity | 50% overlay.", "OK");
             }
         }
 
@@ -112,7 +131,7 @@ namespace BubbleWash.EditorTools
         {
             try
             {
-                if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
+                if (Level1SceneBuilder.SceneIsOutdated()) Level1SceneBuilder.Build();
                 Debug.Log(CaptureAll());
                 EditorApplication.Exit(0);
             }
@@ -126,7 +145,10 @@ namespace BubbleWash.EditorTools
         public static string CaptureAll()
         {
             Directory.CreateDirectory(OutDir);
-            if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
+            var sb = Header("Edit mode (pre-simulated)");
+            CaptureMenu(sb);
+
+            if (Level1SceneBuilder.SceneIsOutdated()) Level1SceneBuilder.Build();
             EditorSceneManager.OpenScene(Level1SceneBuilder.ScenePath, OpenSceneMode.Single);
 
             var env = UnityEngine.Object.FindFirstObjectByType<Level1Environment>();
@@ -140,19 +162,55 @@ namespace BubbleWash.EditorTools
             var cam = rig.GetComponent<Camera>();
             var look = UnityEngine.Object.FindFirstObjectByType<BubbleWashLook>();
             if (look != null) look.Apply();
+            var director = UnityEngine.Object.FindFirstObjectByType<SectionDirector>();
+            var canvas = hud != null ? hud.GetComponent<Canvas>() : null;
 
-            var sb = Header("Edit mode (pre-simulated)");
-            foreach (var t in Targets)
+            int socks = session != null ? session.socksRescued : 0;
+            foreach (int screen in LevelScreens)
             {
-                Pose(t.screen, env, runner, rig, hud);
-                CaptureOne(t.screen, cam, hud, sb);
+                if (!Pose(screen, env, runner, rig, hud, director, session))
+                {
+                    sb.AppendLine($"## Screen {screen}").AppendLine().AppendLine("- Not in this Level 1 scene: rebuild it with Bubble Wash > 1.").AppendLine();
+                    continue;
+                }
+                CaptureOne(screen, cam, canvas, sb);
             }
 
             // Leave the scene as it was saved.
+            if (session != null) session.socksRescued = socks;
             runner.ResetToStart();
+            rig.mode = CameraMode.Default;
             rig.Snap();
-            if (hud != null) hud.ShowScreen(3);
+            if (hud != null) { hud.ShowScreen(3); hud.Refresh(); }
             return Finish(sb);
+        }
+
+        /// <summary>Screens 1 and 2: the menu scene with the approved counters.</summary>
+        static void CaptureMenu(StringBuilder sb)
+        {
+            if (!File.Exists(MainMenuBuilder.ScenePath)) MainMenuBuilder.Build();
+            EditorSceneManager.OpenScene(MainMenuBuilder.ScenePath, OpenSceneMode.Single);
+            var menu = UnityEngine.Object.FindFirstObjectByType<MenuUI>();
+            var director = UnityEngine.Object.FindFirstObjectByType<MainMenuDirector>();
+            var cam = Camera.main;
+            if (menu == null || cam == null)
+            {
+                sb.AppendLine("## Screens 1-2").AppendLine().AppendLine("- Menu scene incomplete: rebuild it with Bubble Wash > 1b.").AppendLine();
+                return;
+            }
+            if (director != null)
+            {
+                director.PushWater(2.4f);
+                if (director.mascot != null) director.mascot.Tick(0.016f, 2.4f);
+                if (director.thumbnailCamera != null) director.thumbnailCamera.Render();
+            }
+            SimulateParticles(cam);
+            var canvas = menu.GetComponent<Canvas>();
+            menu.ShowHome(); menu.ShowApprovedValues();
+            CaptureOne(1, cam, canvas, sb);
+            menu.ShowSelect(); menu.ShowApprovedValues();
+            CaptureOne(2, cam, canvas, sb);
+            menu.ShowHome(); menu.Refresh();
         }
 
         // ------------------------------------------------------------------ shared
@@ -168,7 +226,7 @@ namespace BubbleWash.EditorTools
 
         static string Finish(StringBuilder sb)
         {
-            sb.AppendLine("Send Screen03_compare.png and Screen04_compare.png back for the next round of corrections.");
+            sb.AppendLine("Send the ScreenNN_compare.png images back for the next round of corrections.");
             sb.AppendLine("Screens are only marked complete after these comparisons are reviewed against Design/VISUAL_DIFFERENCES.md.");
             File.WriteAllText(Path.Combine(OutDir, "compare_report.md"), sb.ToString());
             Debug.Log("[BubbleWash] Capture finished: " + Path.GetFullPath(OutDir));
@@ -176,14 +234,14 @@ namespace BubbleWash.EditorTools
         }
 
         /// <summary>Render one approved screen with the given camera and write the render + comparison images.</summary>
-        static void CaptureOne(int screen, Camera cam, GameHud hud, StringBuilder sb)
+        static void CaptureOne(int screen, Camera cam, Canvas canvas, StringBuilder sb)
         {
             var t = Array.Find(Targets, x => x.screen == screen);
             string approvedPath = Path.Combine(ApprovedDir, t.approvedFile);
             var approved = LoadPng(approvedPath);
             int height = approved != null ? Mathf.RoundToInt(Width * (float)approved.height / approved.width) : Width * 2;
 
-            var render = Render(cam, hud, Width, height);
+            var render = Render(cam, canvas, Width, height);
             string renderPath = Path.Combine(OutDir, $"Screen{screen:00}_unity.png");
             File.WriteAllBytes(renderPath, render.EncodeToPNG());
             sb.AppendLine($"## {t.title}").AppendLine();
@@ -207,47 +265,43 @@ namespace BubbleWash.EditorTools
             UnityEngine.Object.DestroyImmediate(render);
         }
 
-        /// <summary>Pose the mascot, camera, water, particles and HUD for an approved screen.</summary>
-        public static void Pose(int screen, Level1Environment env, BubbleRunner runner, RunnerCameraRig rig, GameHud hud)
+        /// <summary>Pose the mascot, camera, water, particles and HUD for an approved Level 1 screen (3-12).</summary>
+        public static bool Pose(int screen, Level1Environment env, BubbleRunner runner, RunnerCameraRig rig, GameHud hud,
+                                SectionDirector director, GameSession session)
         {
-            var l = env.layout;
             const float time = 2.4f; // fixed so captures are repeatable
             WaveField.Time = time;
-            float z = screen == 3 ? l.startZ : ScreenComposition.Screen4Z(l);
-            runner.PoseAt(z, l.laneCount / 2, time);
-            env.PushWaveGlobals(runner.transform.position);
-            var anim = runner.GetComponent<MascotAnimator>();
-            if (anim != null) anim.Tick(0.016f, time);
-            rig.ApplyPreset(screen == 3 ? rig.screen3 : rig.screen4, runner.transform.position);
+            if (!ApprovedScreenPoses.Pose(screen, env, runner, rig, hud, director, session, time)) return false;
 
+            var cam = rig.GetComponent<Camera>();
             foreach (var f in UnityEngine.Object.FindObjectsByType<AmbientFollower>(FindObjectsSortMode.None))
             {
                 f.follow = rig.transform;
                 f.SnapNow();
             }
-            foreach (var b in UnityEngine.Object.FindObjectsByType<Billboard>(FindObjectsSortMode.None)) b.Face(rig.GetComponent<Camera>());
-            foreach (var ps in UnityEngine.Object.FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None))
-            {
-                if (ps.main.loop) ps.Simulate(4f, true, true, true);
-            }
+            SimulateParticles(cam);
             var splash = runner.GetComponent<SplashFX>();
             if (splash != null && splash.wake != null)
             {
                 splash.Wake(runner.transform.position, runner.cruiseSpeed, false);
                 splash.wake.Simulate(1.2f, true, true, true);
             }
-            if (hud != null)
+            return true;
+        }
+
+        static void SimulateParticles(Camera cam)
+        {
+            foreach (var b in UnityEngine.Object.FindObjectsByType<Billboard>(FindObjectsSortMode.None)) b.Face(cam);
+            foreach (var ps in UnityEngine.Object.FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None))
             {
-                hud.Refresh();
-                hud.ShowScreen(screen);
+                if (ps.main.loop) ps.Simulate(4f, true, true, true);
             }
         }
 
-        static Texture2D Render(Camera cam, GameHud hud, int w, int h)
+        static Texture2D Render(Camera cam, Canvas canvas, int w, int h)
         {
             var desc = new RenderTextureDescriptor(w, h, RenderTextureFormat.ARGB32, 24) { sRGB = true, msaaSamples = 1 };
             var rt = RenderTexture.GetTemporary(desc);
-            Canvas canvas = hud != null ? hud.GetComponent<Canvas>() : null;
             var oldMode = canvas != null ? canvas.renderMode : RenderMode.ScreenSpaceOverlay;
             var oldTarget = cam.targetTexture;
             try

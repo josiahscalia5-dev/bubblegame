@@ -33,6 +33,12 @@ namespace BubbleWash
         public int segmentCount = 3;
         public bool usingPlaceholderTunnel = false;
 
+        [Header("Second washer drum (Screens 7-9) and the finish (filled by the builder)")]
+        public float drum2StartZ = 0f;
+        public float drum2EndZ = 0f;
+        [Tooltip("Where the run ends and Level Complete (Screen 12) appears.")]
+        public float finishZ = 175f;
+
         [Header("Runner lanes")]
         public int laneCount = 3;
         public float laneSpacing = 0.85f;
@@ -44,8 +50,14 @@ namespace BubbleWash
 
         public Vector3 AxisPoint(float z) => new Vector3(0f, waterLevel + axisHeight, z);
 
-        /// <summary>True between the castle front face and the tunnel exit.</summary>
-        public bool IsEnclosed(float z) => z >= castleFrontZ - 0.25f && z <= tunnelEndZ;
+        /// <summary>True inside the castle portal or either washer drum (where the circular passage limits movement).</summary>
+        public bool IsEnclosed(float z) =>
+            (z >= castleFrontZ - 0.25f && z <= tunnelEndZ) ||
+            (drum2EndZ > drum2StartZ && z >= drum2StartZ - 0.25f && z <= drum2EndZ);
+
+        /// <summary>True inside either washer drum.</summary>
+        public bool InDrum(float z) =>
+            (z >= tunnelStartZ && z <= tunnelEndZ) || (drum2EndZ > drum2StartZ && z >= drum2StartZ && z <= drum2EndZ);
 
         /// <summary>Half-width of the clear circular passage at a height above the water (0 when outside the circle).</summary>
         public float PassageHalfWidth(float heightAboveWater)

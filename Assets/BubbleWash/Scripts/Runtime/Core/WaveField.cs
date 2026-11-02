@@ -16,6 +16,7 @@ namespace BubbleWash
         public static readonly int ChannelId = Shader.PropertyToID("_BW_Channel");    // x=waterLevel, y=edge curl height, z=curl width
         public static readonly int SlideId = Shader.PropertyToID("_BW_Slide");        // x=raised path half-width, y=moat offset, z=crown, w=path end z
         public static readonly int RingsId = Shader.PropertyToID("_BW_Rings");        // x=first ring z, y=spacing, z=count
+        public static readonly int Tunnel2Id = Shader.PropertyToID("_BW_Tunnel2");    // second drum: x=start z, y=end z
 
         public static float Time;
         public static float Scale = 1f;
@@ -23,16 +24,31 @@ namespace BubbleWash
         public static Vector4 Channel = new Vector4(0f, 0.35f, 0.45f, 0f);
         public static Vector4 Slide = new Vector4(2.0f, -0.6f, 0.12f, 3.90f);
         public static Vector4 Rings = new Vector4(4.15f, 11.08f, 4f, 0f);
+        public static Vector4 Tunnel2 = Vector4.zero;
 
-        /// <summary>Water surface height at world (x, z). Must match BW_WaveHeight in the shader.</summary>
-        public static float Height(float x, float z, float t)
+        /// <summary>1 inside either washer drum, 0 outside. Must match BW_InDrum in the shader.</summary>
+        public static float InDrum(float z)
+        {
+            float a = Mathf.Clamp01((z - Tunnel.x) * 0.5f) * Mathf.Clamp01((Tunnel.y - z) * 0.5f);
+            float b = Mathf.Clamp01((z - Tunnel2.x) * 0.5f) * Mathf.Clamp01((Tunnel2.y - z) * 0.5f);
+            return Mathf.Max(a, b);
+        }
+
+        /// <summary>Waves only (no level shape): the surface of an elevated side path is height + this.</summary>
+        public static float WaveOnly(float x, float z, float t)
         {
             float h = 0f;
             h += 0.060f * Mathf.Sin(z * 0.90f - t * 3.1f + x * 0.35f);
             h += 0.035f * Mathf.Sin(z * 2.30f - t * 5.3f - x * 1.10f + 1.7f);
             h += 0.020f * Mathf.Sin(z * 4.70f - t * 7.9f + x * 2.30f + 0.4f);
             h += 0.012f * Mathf.Sin(x * 6.00f + t * 4.0f + z * 0.50f);
-            h *= Scale;
+            return h * Scale;
+        }
+
+        /// <summary>Water surface height at world (x, z). Must match BW_WaveHeight in the shader.</summary>
+        public static float Height(float x, float z, float t)
+        {
+            float h = WaveOnly(x, z, t);
             h += EdgeCurl(x, z);
             h += SlideOffset(x, z);
             return Channel.x + h;
@@ -43,7 +59,7 @@ namespace BubbleWash
         /// <summary>Inside the drum the water climbs the walls a little, like a washing machine mid-cycle.</summary>
         public static float EdgeCurl(float x, float z)
         {
-            float inside = Mathf.Clamp01((z - Tunnel.x) * 0.5f) * Mathf.Clamp01((Tunnel.y - z) * 0.5f);
+            float inside = InDrum(z);
             if (inside <= 0f) return 0f;
             float radius = Tunnel.z, axis = Tunnel.w;
             float half = Mathf.Sqrt(Mathf.Max(0.01f, radius * radius - axis * axis));
@@ -58,7 +74,7 @@ namespace BubbleWash
         public static float SlideOffset(float x, float z)
         {
             if (Slide.x <= 0f) return 0f;
-            float before = Mathf.Clamp01((Slide.w - z) * 0.5f);
+            float before = 1f - InDrum(z);
             float ax = Mathf.Abs(x);
             float crown = Slide.z * Mathf.Clamp01(1f - ax * ax / (Slide.x * Slide.x));
             float t = Mathf.Clamp01((ax - Slide.x) / 0.55f);
@@ -85,6 +101,7 @@ namespace BubbleWash
             Shader.SetGlobalVector(ChannelId, Channel);
             Shader.SetGlobalVector(SlideId, Slide);
             Shader.SetGlobalVector(RingsId, Rings);
+            Shader.SetGlobalVector(Tunnel2Id, Tunnel2);
         }
     }
 }

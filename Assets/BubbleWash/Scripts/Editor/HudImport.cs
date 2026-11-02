@@ -21,6 +21,12 @@ namespace BubbleWash.EditorTools
             ("heart", Vector4.zero), ("coin", Vector4.zero), ("gem", Vector4.zero), ("gear", Vector4.zero),
             ("pause", Vector4.zero), ("plus", Vector4.zero), ("arrow_left", Vector4.zero), ("arrow_right", Vector4.zero),
             ("hand", Vector4.zero), ("sock", Vector4.zero), ("bubble_blast", Vector4.zero), ("turbo_spin", Vector4.zero),
+            ("button_green", new Vector4(48, 47, 48, 47)), ("card_cream", new Vector4(58, 58, 58, 58)),
+            ("panel_row", new Vector4(38, 38, 38, 38)), ("panel_white", new Vector4(46, 46, 46, 46)),
+            ("panel_red", new Vector4(62, 62, 62, 62)), ("nav_bar", new Vector4(32, 32, 32, 32)),
+            ("logo", Vector4.zero), ("crown", Vector4.zero), ("star_full", Vector4.zero), ("star_empty", Vector4.zero),
+            ("check", Vector4.zero), ("lock", Vector4.zero), ("warning", Vector4.zero), ("play_triangle", Vector4.zero),
+            ("arrow_down_pink", Vector4.zero), ("nav_levels", Vector4.zero), ("nav_characters", Vector4.zero), ("nav_shop", Vector4.zero),
         };
 
         public static void ConfigureSprites()
@@ -52,6 +58,11 @@ namespace BubbleWash.EditorTools
                 arrowLeft = S("arrow_left"), arrowRight = S("arrow_right"), hand = S("hand"),
                 sock = S("sock"), bubbleBlast = S("bubble_blast"), turboSpin = S("turbo_spin"),
                 badge = S("badge"), progressTrack = S("progress_track"), progressFill = S("progress_fill"),
+                logo = S("logo"), crown = S("crown"), buttonGreen = S("button_green"), cardCream = S("card_cream"),
+                panelRow = S("panel_row"), panelWhite = S("panel_white"), panelRed = S("panel_red"), navBar = S("nav_bar"),
+                starFull = S("star_full"), starEmpty = S("star_empty"), check = S("check"), lockIcon = S("lock"),
+                warning = S("warning"), playTriangle = S("play_triangle"), arrowDownPink = S("arrow_down_pink"),
+                navLevels = S("nav_levels"), navCharacters = S("nav_characters"), navShop = S("nav_shop"),
             };
         }
     }

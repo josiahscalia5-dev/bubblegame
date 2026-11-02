@@ -350,6 +350,35 @@ namespace BubbleWash
             return Build("PLACEHOLDER_SockBody", v, n, uv, c, t, recalcNormals: true);
         }
 
+        /// <summary>
+        /// Falling-water ribbon: starts at the origin and falls <paramref name="height"/> metres, curving
+        /// <paramref name="outward"/> metres toward -Z (toward the viewer) as it falls. UV.x across, UV.y down.
+        /// </summary>
+        public static Mesh WaterfallRibbon(float width, float height, float outward, int rows = 14)
+        {
+            var v = new List<Vector3>(); var n = new List<Vector3>(); var uv = new List<Vector2>(); var c = new List<Color>(); var t = new List<int>();
+            for (int r = 0; r <= rows; r++)
+            {
+                float k = (float)r / rows;
+                float w = width * (0.8f + 0.4f * k);              // spreads as it falls
+                float z = -outward * Mathf.Sqrt(k);
+                float y = -height * k;
+                for (int s = 0; s <= 1; s++)
+                {
+                    v.Add(new Vector3((s - 0.5f) * w, y, z)); n.Add(Vector3.back);
+                    uv.Add(new Vector2(s, k)); c.Add(Color.white);
+                }
+            }
+            for (int r = 0; r < rows; r++)
+            {
+                int a = r * 2;
+                t.Add(a); t.Add(a + 2); t.Add(a + 1);
+                t.Add(a + 1); t.Add(a + 2); t.Add(a + 3);
+            }
+            var mesh = Build("WaterfallRibbon", v, n, uv, c, t);
+            return mesh;
+        }
+
         /// <summary>Flat disc facing +Z, used for the bright light at the far end of the drum.</summary>
         public static Mesh Disc(float radius, int seg = 48)
         {

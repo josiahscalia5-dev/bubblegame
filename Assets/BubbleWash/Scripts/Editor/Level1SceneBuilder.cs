@@ -14,8 +14,10 @@ using Object = UnityEngine.Object;
 namespace BubbleWash.EditorTools
 {
     /// <summary>
-    /// Builds the playable Level 1 opening (approved Screens 3 and 4) from the user's Meshy models:
+    /// Builds the playable Level 1 (approved Screens 3-12) from the user's Meshy models:
     /// BubbleWashCastle.glb (castle portal) and BubbleWashTunnel_Mobile_2K_Lite.glb (washer drum).
+    /// The opening (Screens 3-4) is built here; the outdoor side paths, the second drum, the Bubble
+    /// Kingdom and the finish (Screens 5-12) are added by <see cref="Level1Sections"/>.
     ///
     /// Both models are measured on import: the castle's see-through portal and the tunnel's end
     /// opening are found by silhouette analysis, the tunnel's length axis (Meshy: X) is detected and
@@ -31,6 +33,9 @@ namespace BubbleWash.EditorTools
         public const string ScenePath = Root + "/Scenes/Level1_WasherEntry.unity";
         public const string GeneratedDir = Root + "/Generated";
         public const string ReportPath = "Previews/Level1_build_report.md";
+        /// <summary>Bumped whenever the generated scene changes shape; an older generated scene is rebuilt on open.</summary>
+        public const int SceneVersion = 3;
+        public const string VersionPath = GeneratedDir + "/Level1_SceneVersion.txt";
 
         // Measurements of the supplied GLBs (Unity space after glTFast import), used when live
         // measurement is unavailable. Produced by this same ApertureMeasurer code on the files in
@@ -50,15 +55,23 @@ namespace BubbleWash.EditorTools
         /// <summary>Body centre above the water (the lower part of the fur sits in the foam).</summary>
         public const float MascotFloat = 0.34f;
 
-        static readonly StringBuilder Log = new StringBuilder();
+        internal static readonly StringBuilder Log = new StringBuilder();
 
-        [MenuItem("Bubble Wash/1. Build Level 1 Scene (Screens 3-4)", priority = 1)]
+        [MenuItem("Bubble Wash/1. Build Level 1 Scene (Screens 3-12)", priority = 1)]
         public static void BuildFromMenu()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             Build();
             EditorUtility.DisplayDialog("Bubble Wash", "Level 1 scene built:\n" + ScenePath + "\n\nReport: " + ReportPath +
                 "\n\nNext: Bubble Wash > 2. Capture & Compare Screens 3 and 4.", "OK");
+        }
+
+        /// <summary>True when the generated Level 1 scene is missing or was made by an older version of this builder.</summary>
+        public static bool SceneIsOutdated()
+        {
+            if (!File.Exists(ScenePath)) return true;
+            if (!File.Exists(VersionPath)) return true;
+            return !int.TryParse(File.ReadAllText(VersionPath).Trim(), out int v) || v < SceneVersion;
         }
 
         public static Level1Environment Build()
@@ -85,19 +98,27 @@ namespace BubbleWash.EditorTools
             if (castle != null) ApplyMeshyLook(castle, mats.castle, "castle");
             var tunnel = BuildTunnel(layout, envGo.transform, mats);
             if (!layout.usingPlaceholderTunnel) ApplyMeshyLook(tunnel.gameObject, mats.drum, "tunnel");
-            layout.loopZ = layout.tunnelEndZ + 3.5f;
+            Level1Sections.PlanLayout(layout);                       // second drum, finish (Screens 7-12)
+            Level1Sections.BuildDrumB(layout, tunnel, envGo.transform, mats);
             env.castle = castle != null ? castle.transform : null;
             env.tunnelRoot = tunnel;
+            // Mobile budget: the opening castle and first drum are not drawn once the run is well past them.
+            if (castle != null) castle.AddComponent<ZRangeVisibility>().maxCameraZ = layout.tunnelEndZ + 3f;
+            tunnel.gameObject.AddComponent<ZRangeVisibility>().maxCameraZ = layout.tunnelEndZ + 25f;
             env.PushWaveGlobals(Vector3.zero);
 
             env.water = BuildWater(layout, envGo.transform, mats);
-            BuildDrumLights(layout, envGo.transform, mats);
+            BuildDrumLights(layout, envGo.transform, mats, layout.tunnelStartZ, "A", endGlow: true);
+            BuildDrumLights(layout, envGo.transform, mats, layout.drum2StartZ, "B", endGlow: false);
             var mascot = BuildMascot(layout, mats);
             env.runner = mascot.GetComponent<BubbleRunner>();
             var cam = BuildCamera(mascot.transform, mats);
+            var rig = cam.GetComponent<RunnerCameraRig>();
             BuildAmbientFx(cam.transform, mats);
-            ScreenComposition.Build(layout, cam.GetComponent<RunnerCameraRig>(), mascot.transform, mats, envGo.transform);
-            BuildHud(env.runner);
+            ScreenComposition.Build(layout, rig, mascot.transform, mats, envGo.transform);
+            Level1Sections.Build(layout, mats, envGo.transform, castle, mascot.transform);
+            var hud = BuildHud(env.runner);
+            Level1Sections.AddDirector(envGo, layout, env.runner, rig, hud);
 
             // Live look tuning (water, foam, glow, bloom, fog) in one inspector.
             var look = envGo.AddComponent<BubbleWashLook>();
@@ -107,7 +128,9 @@ namespace BubbleWash.EditorTools
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
-            AddToBuildSettings();
+            File.WriteAllText(VersionPath, SceneVersion.ToString());
+            AssetDatabase.ImportAsset(VersionPath);
+            BuildSettingsUtil.Register();
             WriteReport(layout);
             Debug.Log("[BubbleWash] Level 1 scene built. " + ReportPath);
             return env;
@@ -126,7 +149,7 @@ namespace BubbleWash.EditorTools
             Directory.CreateDirectory("Previews/Captures");
         }
 
-        static Light SetupLighting(MaterialSet mats)
+        internal static Light SetupLighting(MaterialSet mats)
         {
             var sunGo = new GameObject("Sun");
             var sun = sunGo.AddComponent<Light>();
@@ -155,7 +178,7 @@ namespace BubbleWash.EditorTools
         /// Render a Meshy model with BubbleWash/MeshyBaked using its own baked colour texture (the artwork
         /// is unchanged; only saturation, light response and glow of bright stripes are controlled).
         /// </summary>
-        static void ApplyMeshyLook(GameObject root, Material template, string label)
+        internal static void ApplyMeshyLook(GameObject root, Material template, string label)
         {
             int n = 0;
             foreach (var r in root.GetComponentsInChildren<Renderer>(true))
@@ -199,7 +222,7 @@ namespace BubbleWash.EditorTools
 
         // ------------------------------------------------------------------ castle
 
-        static GameObject BuildCastle(LevelLayout layout, Transform parent)
+        internal static GameObject BuildCastle(LevelLayout layout, Transform parent)
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(CastlePath);
             if (prefab == null)
@@ -390,25 +413,56 @@ namespace BubbleWash.EditorTools
             for (int i = 0; i <= path; i++) moatRow[side + i] = Mathf.Lerp(-pathEdge, pathEdge, (float)i / path);
             var channelRow = new float[cols + 1];
             for (int i = 0; i <= cols; i++) channelRow[i] = Mathf.Lerp(-channel, channel, (float)i / cols);
-            var mesh = ProceduralMeshes.WaterSheet(layout.startZ - 26f, layout.tunnelEndZ + 6f, 0.3f, cols,
-                z => z < moatUntil ? moatRow : channelRow);
-            mesh = SaveMesh(mesh, "WaterSheet");
-            var go = new GameObject("Water (electric blue, animated)") { layer = 4 };
-            go.transform.SetParent(parent, false);
-            go.AddComponent<MeshFilter>().sharedMesh = mesh;
-            var r = go.AddComponent<MeshRenderer>();
-            r.sharedMaterial = mats.water;
-            r.shadowCastingMode = ShadowCastingMode.Off;
-            Log.AppendLine($"- Water: {mesh.vertexCount:N0} vertices. Raised Screen 3 path half-width {WaveField.Slide.x:F1} m standing {-WaveField.Slide.y:F2} m above the moat (to z={moatUntil:F1}); channel half-width {channel:F2} m inside the drum.");
-            return go.transform;
+            bool full = layout.drum2EndZ > layout.drum2StartZ;
+            // Narrow channel rows inside the drums, the raised path with its moat everywhere else.
+            Func<float, float[]> rows = z =>
+                (z >= moatUntil && z <= layout.tunnelEndZ - 0.5f) ||
+                (full && z >= layout.drum2StartZ + 1.5f && z <= layout.drum2EndZ - 0.5f) ? channelRow : moatRow;
+
+            var root = new GameObject("Water (electric blue, animated)") { layer = 4 };
+            root.transform.SetParent(parent, false);
+            // Separate pieces so the parts out of view are culled; the opening piece is unchanged (Screens 3-4).
+            var pieces = new List<(string name, float z0, float z1)> { ("WaterSheet", layout.startZ - 26f, layout.tunnelEndZ + 6f) };
+            if (full)
+            {
+                pieces.Add(("WaterSheet_SidePathsDrumB", layout.tunnelEndZ + 6f, layout.drum2EndZ + 6f));
+                pieces.Add(("WaterSheet_Kingdom", layout.drum2EndZ + 6f, layout.finishZ + 30f));
+            }
+            int verts = 0;
+            foreach (var (name, z0, z1) in pieces)
+            {
+                var mesh = ProceduralMeshes.WaterSheet(z0, z1, 0.3f, cols, rows);
+                var b = mesh.bounds; b.Expand(new Vector3(0f, 3f, 0f)); mesh.bounds = b; // waves and the raised path move vertices
+                mesh = SaveMesh(mesh, name);
+                verts += mesh.vertexCount;
+                var go = new GameObject(name) { layer = 4 };
+                go.transform.SetParent(root.transform, false);
+                go.AddComponent<MeshFilter>().sharedMesh = mesh;
+                var r = go.AddComponent<MeshRenderer>();
+                r.sharedMaterial = mats.water;
+                r.shadowCastingMode = ShadowCastingMode.Off;
+            }
+            Log.AppendLine($"- Water: {verts:N0} vertices in {pieces.Count} piece(s). Raised path half-width {WaveField.Slide.x:F1} m standing {-WaveField.Slide.y:F2} m above the moat outside the drums; channel half-width {channel:F2} m inside the drums.");
+            return root.transform;
         }
 
-        static void BuildDrumLights(LevelLayout layout, Transform parent, MaterialSet mats)
+        static void BuildDrumLights(LevelLayout layout, Transform parent, MaterialSet mats, float startZ, string label, bool endGlow)
         {
-            var root = new GameObject("DrumLighting").transform;
+            var root = new GameObject($"DrumLighting_{label}").transform;
             root.SetParent(parent, false);
             var ring = SaveMesh(ProceduralMeshes.Torus(layout.tunnelRadius * 0.965f, 0.075f, 72, 8), "GlowRing");
-            var chain = TunnelChain.Layout(layout.tunnelStartZ, layout.segmentLength, layout.segmentCount, Mathf.Max(0.02f, layout.segmentLength * 0.005f));
+            var chain = TunnelChain.Layout(startZ, layout.segmentLength, layout.segmentCount, Mathf.Max(0.02f, layout.segmentLength * 0.005f));
+            float drumEnd = chain[chain.Count - 1].endZ;
+
+            // Soft spiral of light swirling round the drum walls (approved Screens 4 and 7-9).
+            var swirl = new GameObject($"DrumSwirl_{label}");
+            swirl.transform.SetParent(root, false);
+            swirl.transform.position = layout.AxisPoint(startZ + 0.3f);
+            swirl.AddComponent<MeshFilter>().sharedMesh = SaveMesh(
+                ProceduralMeshes.WasherTube(layout.clearRadius - 0.05f, 0.001f, drumEnd - startZ - 0.6f, 56, 1.5f, 0f), $"DrumSwirl_{label}");
+            var sr = swirl.AddComponent<MeshRenderer>();
+            sr.sharedMaterial = mats.swirl;
+            sr.shadowCastingMode = ShadowCastingMode.Off;
             int n = 0;
             for (int i = 0; i <= chain.Count; i++)
             {
@@ -436,14 +490,17 @@ namespace BubbleWash.EditorTools
                 l.intensity = 3.0f;
                 l.shadows = LightShadows.None;
             }
+            if (!endGlow) return;
             // Bright light at the far end of the drum (the luminous centre of the approved Screen 4 vortex).
+            // It shrinks away as the camera nears it so the run continues out to the side paths.
             var end = new GameObject("DrumEndGlow");
             end.transform.SetParent(root, false);
-            end.transform.position = layout.AxisPoint(layout.tunnelEndZ + 1.5f);
+            end.transform.position = layout.AxisPoint(drumEnd + 1.5f);
             end.AddComponent<MeshFilter>().sharedMesh = SaveMesh(ProceduralMeshes.Disc(layout.tunnelRadius * 1.6f), "EndGlowDisc");
             var er = end.AddComponent<MeshRenderer>();
             er.sharedMaterial = mats.endGlow;
             er.shadowCastingMode = ShadowCastingMode.Off;
+            end.AddComponent<ShrinkNearCamera>();
         }
 
         // ------------------------------------------------------------------ mascot
@@ -492,7 +549,7 @@ namespace BubbleWash.EditorTools
             return root;
         }
 
-        static void BuildPlaceholderMascot(Transform body, MaterialSet mats, MascotAnimator anim)
+        internal static void BuildPlaceholderMascot(Transform body, MaterialSet mats, MascotAnimator anim)
         {
             var visual = new GameObject("Visual").transform;  // overall size of the placeholder
             visual.SetParent(body, false);
@@ -525,7 +582,7 @@ namespace BubbleWash.EditorTools
             anim.eyes = eyes;
         }
 
-        static Transform Part(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, Vector3 scale)
+        internal static Transform Part(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, Vector3 scale)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -594,9 +651,9 @@ namespace BubbleWash.EditorTools
             f2.follow = cam; f2.offset = new Vector3(0f, 0.8f, 10f);
         }
 
-        static void BuildHud(BubbleRunner runner)
+        static GameHud BuildHud(BubbleRunner runner)
         {
-            var go = new GameObject("HUD (approved Screen 3/4 layout)") { layer = UILayer };
+            var go = new GameObject("HUD (approved Screens 3-12 layout)") { layer = UILayer };
             var canvas = go.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 10;
@@ -618,6 +675,7 @@ namespace BubbleWash.EditorTools
 #else
             es.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
 #endif
+            return hud;
         }
 
         // ------------------------------------------------------------------ assets
@@ -639,14 +697,6 @@ namespace BubbleWash.EditorTools
             return mesh;
         }
 
-        static void AddToBuildSettings()
-        {
-            var scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-            scenes.RemoveAll(s => s.path == ScenePath);
-            scenes.Insert(0, new EditorBuildSettingsScene(ScenePath, true));
-            EditorBuildSettings.scenes = scenes.ToArray();
-        }
-
         static void WriteReport(LevelLayout l)
         {
             Log.AppendLine().AppendLine("## Layout (metres, +Z forward, water at y=0)").AppendLine();
@@ -659,6 +709,11 @@ namespace BubbleWash.EditorTools
             Log.AppendLine($"| Segment length | {l.segmentLength:F2} |");
             Log.AppendLine($"| Lanes | {l.laneCount} x {l.laneSpacing:F2} |");
             Log.AppendLine($"| Screen 3 start z / Screen 4 capture z | {l.startZ:F2} / {ScreenComposition.Screen4Z(l):F2} |");
+            var p = Level1Sections.PlanFor(l);
+            Log.AppendLine($"| Side paths (Screens 5-6) left / right z | {p.sideLStart:F1}-{p.sideLEnd:F1} / {p.sideRStart:F1}-{p.sideREnd:F1} |");
+            Log.AppendLine($"| Second drum (Screens 7-9) z | {l.drum2StartZ:F2} - {l.drum2EndZ:F2} |");
+            Log.AppendLine($"| Kingdom gate (Screens 10-11) z | {p.gateZ:F1} |");
+            Log.AppendLine($"| Finish line / stop (Screen 12) z | {l.finishZ:F1} / {p.stopZ:F1} |");
             Log.AppendLine().AppendLine("Run **Bubble Wash > 3. Validate Clearance, Gaps & Budget** for the collision/clearance check.");
             File.WriteAllText(ReportPath, Log.ToString());
         }

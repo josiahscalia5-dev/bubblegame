@@ -10,6 +10,7 @@ float4 _BW_Tunnel;   // x = tunnel start z, y = tunnel end z, z = opening radius
 float4 _BW_Channel;  // x = water level, y = edge curl height, z = curl width
 float4 _BW_Slide;    // x = raised path half-width, y = moat level offset, z = crown height, w = z where the path enters the drum
 float4 _BW_Rings;    // x = first glow ring z, y = ring spacing, z = ring count
+float4 _BW_Tunnel2;  // second washer drum: x = start z, y = end z (0,0 = none)
 
 float BW_Hash21(float2 p)
 {
@@ -50,20 +51,28 @@ float BW_WaveBase(float2 xz, float t)
     return h * _BW_WaveScale;
 }
 
+// 1 inside either washer drum, 0 outside (2 m blend at the ends). Keep in sync with WaveField.InDrum.
+float BW_InDrum(float z)
+{
+    float a = saturate((z - _BW_Tunnel.x) * 0.5) * saturate((_BW_Tunnel.y - z) * 0.5);
+    float b = saturate((z - _BW_Tunnel2.x) * 0.5) * saturate((_BW_Tunnel2.y - z) * 0.5);
+    return max(a, b);
+}
+
 float BW_EdgeCurl(float2 xz)
 {
-    float inside = saturate((xz.y - _BW_Tunnel.x) * 0.5) * saturate((_BW_Tunnel.y - xz.y) * 0.5);
+    float inside = BW_InDrum(xz.y);
     float half_ = sqrt(max(0.01, _BW_Tunnel.z * _BW_Tunnel.z - _BW_Tunnel.w * _BW_Tunnel.w));
     float u = saturate((abs(xz.x) - (half_ - _BW_Channel.z)) / max(0.01, _BW_Channel.z));
     return inside * _BW_Channel.y * u * u;
 }
 
-// Screen 3's raised water path: a crowned channel standing above the surrounding moat, with the
-// water spilling off its edges. Keep in sync with WaveField.SlideOffset (C#).
+// The raised water path (Screens 3, 5, 6, 10): a crowned channel standing above the surrounding
+// water, spilling off its edges, everywhere outside the drums. Keep in sync with WaveField.SlideOffset (C#).
 float BW_SlideOffset(float2 xz)
 {
     if (_BW_Slide.x <= 0.0) return 0.0;
-    float before = saturate((_BW_Slide.w - xz.y) * 0.5);
+    float before = 1.0 - BW_InDrum(xz.y);
     float ax = abs(xz.x);
     float crown = _BW_Slide.z * saturate(1.0 - (ax * ax) / (_BW_Slide.x * _BW_Slide.x));
     float edge = smoothstep(_BW_Slide.x, _BW_Slide.x + 0.55, ax);

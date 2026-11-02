@@ -12,6 +12,7 @@ namespace BubbleWash.EditorTools
         public Material glowRing, endGlow, bubble, droplet, sparkle, sky;
         public Material coin, gem, rail, placeholderDrum;
         public Material castle, drum;
+        public Material waterfall, swirl, cloud, buddyBlue, starBall, enemyFur, chest, island, grass;
         public VolumeProfile postProfile;
 
         const string Dir = Level1SceneBuilder.GeneratedDir + "/Materials/";
@@ -86,6 +87,24 @@ namespace BubbleWash.EditorTools
             });
             rail = Lit("PLACEHOLDER_GoldRail", new Color(1f, 0.75f, 0.28f), 0.9f, 0.82f);
             placeholderDrum = Lit("PLACEHOLDER_WasherDrum", new Color(0.3f, 0.55f, 1f), 0.2f, 0.7f);
+
+            waterfall = Mat("Waterfall", "BubbleWash/Waterfall", m => m.renderQueue = 3001);
+            swirl = Mat("DrumSwirl", "BubbleWash/DrumSwirl", m => m.renderQueue = 2990);
+            cloud = Mat("FoamCloud", "BubbleWash/FluffyToon", m =>
+            {
+                m.SetFloat("_FuzzScale", 12f); m.SetFloat("_FuzzStrength", 0.35f);
+                m.SetFloat("_Emission", 0.35f); m.SetColor("_RimColor", Color.white);
+            });
+            buddyBlue = Lit("PLACEHOLDER_WaterDropBuddy", new Color(0.2f, 0.62f, 1f), 0.1f, 0.85f);
+            starBall = Lit("PLACEHOLDER_StarBall", new Color(1f, 0.45f, 0.8f), 0.1f, 0.8f);
+            enemyFur = Mat("PLACEHOLDER_DustBunny", "BubbleWash/FluffyToon", m =>
+            {
+                m.SetColor("_BaseColor", new Color(0.12f, 0.1f, 0.25f)); m.SetColor("_TipColor", new Color(0.35f, 0.3f, 0.6f));
+                m.SetColor("_RimColor", new Color(0.55f, 0.45f, 1f)); m.SetFloat("_FuzzScale", 30f); m.SetFloat("_Emission", 0.05f);
+            });
+            chest = Lit("PLACEHOLDER_TreasureChest", new Color(0.75f, 0.42f, 0.18f), 0.2f, 0.5f);
+            island = Lit("PLACEHOLDER_IslandRock", new Color(0.95f, 0.78f, 0.9f), 0.05f, 0.35f);
+            grass = Lit("PLACEHOLDER_IslandGrass", new Color(0.45f, 0.85f, 0.45f), 0f, 0.3f);
 
             postProfile = Profile();
             AssetDatabase.SaveAssets();

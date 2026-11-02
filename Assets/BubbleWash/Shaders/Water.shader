@@ -29,6 +29,8 @@ Shader "BubbleWash/Water"
         _Reflection ("Reflection Strength", Range(0, 2)) = 0.9
         _RingReflection ("Ring Reflection", Range(0, 4)) = 1.6
         _Smoothness ("Smoothness", Range(0, 1)) = 0.92
+        [Toggle] _LevelShape ("Use level water shape (off = side path at fixed height)", Float) = 1
+        _HeightOffset ("Side path height (m)", Float) = 0
     }
     SubShader
     {
@@ -58,11 +60,20 @@ Shader "BubbleWash/Water"
             half _Reflection;
             half _RingReflection;
             half _Smoothness;
+            float _LevelShape;
+            float _HeightOffset;
         CBUFFER_END
+
+        float SurfaceHeight(float2 xz, float t)
+        {
+            // Main water follows the level shape (raised path, drum curl); elevated side paths ride
+            // their own height with the same waves (Screens 5 and 6).
+            return _LevelShape > 0.5 ? BW_WaveHeight(xz, t) : _HeightOffset + BW_WaveBase(xz, t);
+        }
 
         float3 DisplaceWS(float3 positionWS)
         {
-            positionWS.y = BW_WaveHeight(positionWS.xz, _BW_WaveTime);
+            positionWS.y = SurfaceHeight(positionWS.xz, _BW_WaveTime);
             return positionWS;
         }
         ENDHLSL
@@ -118,8 +129,8 @@ Shader "BubbleWash/Water"
 
                 // Normal from the wave field plus fine ripples moving with the current.
                 const float e = 0.06;
-                float hx = BW_WaveHeight(xz + float2(e, 0), t) - BW_WaveHeight(xz - float2(e, 0), t);
-                float hz = BW_WaveHeight(xz + float2(0, e), t) - BW_WaveHeight(xz - float2(0, e), t);
+                float hx = SurfaceHeight(xz + float2(e, 0), t) - SurfaceHeight(xz - float2(e, 0), t);
+                float hz = SurfaceHeight(xz + float2(0, e), t) - SurfaceHeight(xz - float2(0, e), t);
                 float n1 = BW_ValueNoise(xz * float2(3.1, 1.4) - float2(0, flowT * 0.35));
                 float n2 = BW_ValueNoise(xz * float2(5.7, 2.6) - float2(0, flowT * 0.6) + 3.3);
                 float3 N = normalize(float3(-hx * 1.4 + (n1 - 0.5) * 0.22, 2.0 * e, -hz * 1.4 + (n2 - 0.5) * 0.22));
@@ -131,8 +142,8 @@ Shader "BubbleWash/Water"
                 float fresnel = pow(1.0 - NdotV, 3.0);
 
                 // Where are we? (drum interior, raised path, moat)
-                float inDrum = saturate((xz.y - _BW_Tunnel.x) * 0.5) * saturate((_BW_Tunnel.y - xz.y) * 0.5);
-                float onPathZ = saturate((_BW_Slide.w - xz.y) * 0.5) * step(0.001, _BW_Slide.x);
+                float inDrum = BW_InDrum(xz.y);
+                float onPathZ = (1.0 - inDrum) * step(0.001, _BW_Slide.x) * _LevelShape;
                 float ax = abs(xz.x);
                 float pathEdge = onPathZ * (1.0 - smoothstep(0.0, 0.45, abs(ax - _BW_Slide.x - 0.15)));
                 float moat = onPathZ * smoothstep(_BW_Slide.x + 0.2, _BW_Slide.x + 0.7, ax);
@@ -179,9 +190,11 @@ Shader "BubbleWash/Water"
                 float ringBand = 0.0; half3 ringCol = _RingColorA.rgb;
                 if (_BW_Rings.y > 0.0)
                 {
-                    float k = (xz.y - _BW_Rings.x) / _BW_Rings.y;
+                    // Rings repeat at the same spacing from the start of each drum.
+                    float first = xz.y < _BW_Tunnel2.x - 1.0 || _BW_Tunnel2.y <= 0.0 ? _BW_Rings.x : _BW_Tunnel2.x + 0.25;
+                    float k = (xz.y - first) / _BW_Rings.y;
                     float idx = clamp(floor(k + 0.5), 0.0, max(0.0, _BW_Rings.z - 1.0));
-                    float d = xz.y - (_BW_Rings.x + idx * _BW_Rings.y);
+                    float d = xz.y - (first + idx * _BW_Rings.y);
                     ringBand = exp(-d * d * 1.8) * inDrum;
                     ringCol = fmod(idx, 2.0) < 0.5 ? _RingColorA.rgb : _RingColorB.rgb;
                 }

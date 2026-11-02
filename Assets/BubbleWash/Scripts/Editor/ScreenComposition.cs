@@ -19,7 +19,7 @@ namespace BubbleWash.EditorTools
 
         public static float Screen4Z(LevelLayout l) => l.tunnelStartZ + l.segmentLength * 1.45f;
 
-        struct CamPose { public Vector3 pos; public Quaternion rot; public float fov; public float aspect; }
+        internal struct CamPose { public Vector3 pos; public Quaternion rot; public float fov; public float aspect; }
 
         static CamPose Pose(LevelLayout l, CameraPreset p, float mascotZ, float aspect, float wallClearance)
         {
@@ -29,7 +29,7 @@ namespace BubbleWash.EditorTools
         }
 
         /// <summary>World point seen at (xFrac from left, yFrac from top) of the approved crop, at a camera depth.</summary>
-        static Vector3 At(CamPose c, float xFrac, float yFrac, float depth)
+        internal static Vector3 At(CamPose c, float xFrac, float yFrac, float depth)
         {
             float t = Mathf.Tan(c.fov * 0.5f * Mathf.Deg2Rad);
             var local = new Vector3((xFrac * 2f - 1f) * t * c.aspect * depth, (1f - yFrac * 2f) * t * depth, depth);
@@ -37,7 +37,7 @@ namespace BubbleWash.EditorTools
         }
 
         /// <summary>World size for something spanning <paramref name="widthFrac"/> of the screen width at that depth.</summary>
-        static float SizeAt(CamPose c, float widthFrac, float depth) =>
+        internal static float SizeAt(CamPose c, float widthFrac, float depth) =>
             widthFrac * 2f * depth * Mathf.Tan(c.fov * 0.5f * Mathf.Deg2Rad) * c.aspect;
 
         /// <summary>March along the view ray until it reaches <paramref name="radius"/> from the drum axis (wall-mounted props).</summary>
@@ -107,8 +107,10 @@ namespace BubbleWash.EditorTools
             HeroBubble(s4, quad, mats.bubble, At(c4, 0.62f, 0.41f, 9f), SizeAt(c4, 0.09f, 9f));
             HeroBubble(s4, quad, mats.bubble, At(c4, 0.36f, 0.36f, 10f), SizeAt(c4, 0.08f, 10f));
 
-            // ---------------- gameplay layout: coin trails, the other four socks and a gem, kept out of the
-            // Screen 4 view (camera z4-3.6 .. z4+12) so that framing stays as approved.
+            // ---------------- gameplay layout in the first drum: coin trails, socks 2 and 3 and a gem, kept
+            // out of the Screen 4 view (camera z4-3.6 .. z4+12) so that framing stays as approved. Socks 4
+            // and 5 are in the second drum (Screen 8) and the Bubble Kingdom (after Screen 11), placed by
+            // Level1Sections.
             var play = Group(root, "Gameplay_Collectibles");
             float z0 = l.tunnelStartZ, zAfter = Screen4Z(l) + 11f;
             for (int i = 0; i < 6; i++) Collect(play, "Coin", coinMesh, mats.coin, new Vector3(l.LaneX(1), 0.65f, z0 + 2.5f + i * 1.6f), CollectibleKind.Coin, 0.3f);
@@ -117,8 +119,12 @@ namespace BubbleWash.EditorTools
             Collect(play, "Gem", gemMesh, mats.gem, new Vector3(l.LaneX(1), 1.7f, l.tunnelEndZ - 1.5f), CollectibleKind.Gem, 0.3f);
             Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(0), 0.45f, z0 + 7f), 2);
             Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(2), 0.45f, z0 + 12.5f), 3);
-            Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(1), 0.45f, zAfter + 3f), 4);
-            Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(2), 0.45f, l.tunnelEndZ - 1.5f), 5);
+            if (l.drum2EndZ <= l.drum2StartZ)
+            {
+                // Opening-only build: keep all five socks in the first drum.
+                Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(1), 0.45f, zAfter + 3f), 4);
+                Sock(play, sockMesh, mats, sphere, new Vector3(l.LaneX(2), 0.45f, l.tunnelEndZ - 1.5f), 5);
+            }
         }
 
         static Transform Group(Transform parent, string name)
@@ -134,7 +140,7 @@ namespace BubbleWash.EditorTools
             return Quaternion.LookRotation(outward, Vector3.forward); // brush face (-Z) looks at the axis
         }
 
-        static void Brush(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, float radius, Quaternion rot, float spin)
+        internal static void Brush(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, float radius, Quaternion rot, float spin)
         {
             bool meshy = PropFactory.Has(PropSlot.SpinningBrush);
             var go = new GameObject(meshy ? name.Replace("PLACEHOLDER_", "") : name) { layer = EnvironmentLayer };
@@ -154,7 +160,7 @@ namespace BubbleWash.EditorTools
             s.speed = spin;
         }
 
-        static void HeroBubble(Transform parent, Mesh quad, Material mat, Vector3 pos, float size)
+        internal static void HeroBubble(Transform parent, Mesh quad, Material mat, Vector3 pos, float size)
         {
             var go = new GameObject("HeroBubble");
             go.transform.SetParent(parent, false);
@@ -171,7 +177,7 @@ namespace BubbleWash.EditorTools
             h.phase = pos.x * 1.3f + pos.z;
         }
 
-        static GameObject Collect(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, CollectibleKind kind, float radius)
+        internal static GameObject Collect(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, CollectibleKind kind, float radius)
         {
             var slot = kind == CollectibleKind.Coin ? PropSlot.Coin : kind == CollectibleKind.Gem ? PropSlot.Gem : PropSlot.RescueSock;
             bool meshy = PropFactory.Has(slot);
@@ -197,11 +203,11 @@ namespace BubbleWash.EditorTools
             return go;
         }
 
-        static void Sock(Transform parent, Mesh body, MaterialSet mats, Mesh sphere, Vector3 pos, int index)
+        internal static GameObject Sock(Transform parent, Mesh body, MaterialSet mats, Mesh sphere, Vector3 pos, int index)
         {
             var go = Collect(parent, $"PLACEHOLDER_LostSock_{index}", body, mats.sockFur, pos, CollectibleKind.Sock, 0.35f);
             go.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            if (PropFactory.Has(PropSlot.RescueSock)) return;
+            if (PropFactory.Has(PropSlot.RescueSock)) return go;
             go.transform.localScale = Vector3.one * 1.2f;
             foreach (float side in new[] { -1f, 1f })
             {
@@ -212,6 +218,7 @@ namespace BubbleWash.EditorTools
                 eye.AddComponent<MeshFilter>().sharedMesh = sphere;
                 eye.AddComponent<MeshRenderer>().sharedMaterial = mats.eye;
             }
+            return go;
         }
 
         static void Duck(Transform parent, MaterialSet mats, Mesh body, Mesh sphere, Vector3 pos, float size, Transform mascot)
@@ -235,7 +242,7 @@ namespace BubbleWash.EditorTools
             drift.mascot = mascot;
         }
 
-        static Transform Child(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, Vector3 scale)
+        internal static Transform Child(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, Vector3 scale)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -267,7 +274,7 @@ namespace BubbleWash.EditorTools
             }
         }
 
-        static Mesh QuadMesh()
+        internal static Mesh QuadMesh()
         {
             var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
             var mesh = q.GetComponent<MeshFilter>().sharedMesh;

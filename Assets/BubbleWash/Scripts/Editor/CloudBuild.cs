@@ -39,14 +39,9 @@ namespace BubbleWash.EditorTools
             AssetDatabase.Refresh();
             if (AssetDatabase.LoadAssetAtPath<GameObject>(Level1SceneBuilder.CastlePath) == null)
                 throw new Exception("[BubbleWash] The castle GLB did not import. Check that com.unity.cloud.gltfast is in Packages/manifest.json.");
-            if (!File.Exists(Level1SceneBuilder.ScenePath)) Level1SceneBuilder.Build();
-            else
-            {
-                // Make sure the scene is the first scene in the build.
-                var scenes = EditorBuildSettings.scenes.Where(s => s.path != Level1SceneBuilder.ScenePath).ToList();
-                scenes.Insert(0, new EditorBuildSettingsScene(Level1SceneBuilder.ScenePath, true));
-                EditorBuildSettings.scenes = scenes.ToArray();
-            }
+            if (Level1SceneBuilder.SceneIsOutdated()) Level1SceneBuilder.Build();
+            if (!File.Exists(MainMenuBuilder.ScenePath)) MainMenuBuilder.Build();
+            BuildSettingsUtil.Register(); // menu (Screens 1-2) first, then Level 1
             ConfigureWebGL();
             AssetDatabase.SaveAssets();
         }
@@ -74,7 +69,7 @@ namespace BubbleWash.EditorTools
                 Directory.CreateDirectory(output);
                 var options = new BuildPlayerOptions
                 {
-                    scenes = new[] { Level1SceneBuilder.ScenePath },
+                    scenes = EditorBuildSettings.scenes.Where(sc => sc.enabled).Select(sc => sc.path).ToArray(),
                     locationPathName = output,
                     target = BuildTarget.WebGL,
                     targetGroup = BuildTargetGroup.WebGL,

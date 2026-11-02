@@ -61,6 +61,7 @@ namespace BubbleWash
             WaveField.Slide = new Vector4(pathHalfWidth, -pathRaise, pathCrown, layout.tunnelStartZ);
             float spacing = layout.segmentLength - Mathf.Max(0.02f, layout.segmentLength * 0.005f);
             WaveField.Rings = new Vector4(layout.tunnelStartZ + 0.25f, spacing, layout.segmentCount + 1, 0f);
+            WaveField.Tunnel2 = new Vector4(layout.drum2StartZ, layout.drum2EndZ, 0f, 0f);
             WaveField.PushGlobals(playerPos, flowSpeed);
         }
 

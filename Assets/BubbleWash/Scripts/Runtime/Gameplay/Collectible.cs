@@ -13,6 +13,8 @@ namespace BubbleWash
     {
         public CollectibleKind kind = CollectibleKind.Coin;
         public int value = 1;
+        [Tooltip("The special gem of the Level 1 objective 'Find 1 special gem' (approved Screens 8 and 12).")]
+        public bool special;
         public float spinSpeed = 180f;
         public float bobAmplitude = 0.08f;
         public float bobFrequency = 1.2f;
@@ -65,7 +67,7 @@ namespace BubbleWash
             switch (kind)
             {
                 case CollectibleKind.Coin: session.AddCoins(value); break;
-                case CollectibleKind.Gem: session.AddGems(value); break;
+                case CollectibleKind.Gem: session.AddGems(value, special); break;
                 case CollectibleKind.Sock: session.RescueSock(); break;
             }
         }

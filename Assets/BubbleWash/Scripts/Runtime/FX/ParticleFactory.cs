@@ -77,6 +77,26 @@ namespace BubbleWash
             Renderer(ps, droplet);
         }
 
+        /// <summary>Spray and foam puffs where a waterfall lands.</summary>
+        public static void WaterfallSplash(ParticleSystem ps, Material droplet, float width)
+        {
+            Reset(ps);
+            var main = ps.main;
+            main.duration = 2f; main.loop = true; main.playOnAwake = true; main.prewarm = true;
+            main.startLifetime = Range(0.5f, 1.1f);
+            main.startSpeed = Range(0.8f, 2.6f);
+            main.startSize = Range(0.12f, 0.45f);
+            main.startColor = new ParticleSystem.MinMaxGradient(new Color(1f, 1f, 1f, 0.9f), new Color(0.8f, 0.93f, 1f, 0.8f));
+            main.gravityModifier = 0.9f;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = 70;
+            var em = ps.emission; em.rateOverTime = 32f;
+            var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Box; sh.scale = new Vector3(width, 0.1f, 0.4f);
+            sh.rotation = new Vector3(-90f, 0f, 0f);
+            var col = ps.colorOverLifetime; col.enabled = true; col.color = new ParticleSystem.MinMaxGradient(Fade(Color.white));
+            Renderer(ps, droplet);
+        }
+
         /// <summary>Floating iridescent soap bubbles in a box around the given centre.</summary>
         public static void Bubbles(ParticleSystem ps, Material bubble, Vector3 box, float rate, float minSize, float maxSize, int max)
         {

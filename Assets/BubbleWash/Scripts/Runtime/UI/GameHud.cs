@@ -12,6 +12,9 @@ namespace BubbleWash
     /// "Swipe Left or Right to Move / Tap to Start" panel.
     /// Running (Screen 4): counters, "Rescue 5 lost socks 0/5" mission panel, pause,
     /// Bubble Blast and Turbo Spin buttons with "3" badges.
+    /// Screens 5-11: the section banners (blue, or red with a warning icon), the pink hint arrow,
+    /// the centred mission panel of Screen 11, power-ups shown or hidden per screen
+    /// (see <see cref="ShowSection"/>). Screen 12: <see cref="LevelCompleteUI"/>.
     /// </summary>
     public class GameHud : MonoBehaviour
     {
@@ -29,10 +32,19 @@ namespace BubbleWash
         public Button pause, blast, turbo;
         public GameObject pausedOverlay;
 
+        [Header("Screens 5-12 (filled by Build)")]
+        public RectTransform banner, hintArrow, missionPanel;
+        public Image bannerImage, bannerIcon;
+        public Text bannerLine1, bannerLine2;
+        public GameObject powerUpGroup;
+        public LevelCompleteUI complete;
+
         static readonly Color Ink = new Color(0.08f, 0.16f, 0.48f, 1f);      // dark blue text outline
         static readonly Color Gold = new Color(1f, 0.86f, 0.3f, 1f);
 
         GameSession _session;
+        float _bannerShownAt = -1f, _bannerUntil = -1f, _arrowUntil = -1f;
+        CanvasGroup _bannerFade;
 
         void Start()
         {
@@ -55,7 +67,11 @@ namespace BubbleWash
             if (_session != null) { _session.Changed -= Refresh; _session.PhaseChanged -= OnPhase; }
         }
 
-        public void OnPhase(RunPhase phase) => ShowScreen(phase == RunPhase.Intro ? 3 : 4, phase == RunPhase.Paused);
+        public void OnPhase(RunPhase phase)
+        {
+            if (phase == RunPhase.Finished) return; // Level Complete is shown by the SectionDirector
+            ShowScreen(phase == RunPhase.Intro ? 3 : 4, phase == RunPhase.Paused);
+        }
 
         /// <summary>Show the Screen 3 (intro) or Screen 4 (running) HUD.</summary>
         public void ShowScreen(int screen, bool paused = false)
@@ -64,6 +80,162 @@ namespace BubbleWash
             if (gearButton) gearButton.SetActive(screen == 3);
             if (runningGroup) runningGroup.SetActive(screen != 3);
             if (pausedOverlay) pausedOverlay.SetActive(paused);
+            if (screen == 3)
+            {
+                HideBanner();
+                if (hintArrow) hintArrow.gameObject.SetActive(false);
+                if (complete) complete.Hide();
+                SetMission(MissionPlace.TopLeft);
+                SetPowerUpsVisible(true);
+                SetPauseTopRow(false);
+            }
+        }
+
+        void Update()
+        {
+            // Banner: pop in with a little overshoot, hold, then fade out.
+            if (banner != null && banner.gameObject.activeSelf)
+            {
+                float age = Time.unscaledTime - _bannerShownAt;
+                float k = Mathf.Clamp01(age / 0.28f);
+                float pop = 1f + Mathf.Sin(k * Mathf.PI) * 0.12f * (1f - k);
+                float scale = Mathf.Lerp(0.6f, 1f, 1f - (1f - k) * (1f - k)) * pop;
+                banner.localScale = new Vector3(scale, scale, 1f);
+                float alpha = 1f;
+                if (_bannerUntil > 0f) alpha = Mathf.Clamp01((_bannerUntil - Time.unscaledTime) / 0.3f);
+                if (_bannerFade != null) _bannerFade.alpha = alpha;
+                if (_bannerUntil > 0f && Time.unscaledTime >= _bannerUntil) banner.gameObject.SetActive(false);
+            }
+            if (hintArrow != null && hintArrow.gameObject.activeSelf && _arrowUntil > 0f && Time.unscaledTime >= _arrowUntil)
+                hintArrow.gameObject.SetActive(false);
+        }
+
+        // ------------------------------------------------------------------ Screens 5-12
+
+        /// <summary>Apply a level section's HUD: banner, hint arrow, power-ups, mission panel and pause position.</summary>
+        public void ShowSection(LevelSection s, float seconds)
+        {
+            if (s == null) return;
+            if (complete) complete.Hide();
+            if (!string.IsNullOrEmpty(s.line1))
+                ShowBanner(s.line1, s.line2, s.warning, s.bannerPlace, s.bannerAt, s.bannerSize, s.bannerTilt, seconds);
+            else HideBanner();
+            ShowHintArrow(s.hintArrow, s.arrowAt, s.arrowSize, s.arrowTilt, seconds);
+            SetPowerUpsVisible(s.showPowerUps);
+            SetMission(s.mission);
+            SetPauseTopRow(s.pauseInTopRow);
+        }
+
+        /// <summary>
+        /// Section banner as drawn on the approved screens: blue ("Jump to Side Paths!", "Collect Coins,
+        /// Gems &amp; Rescue Socks!", "Enter the Bubble Kingdom!") or red with a warning icon ("Watch out!
+        /// Spinning brushes!", "Avoid Enemies!"). Position/size in board px; seconds &lt;= 0 keeps it up.
+        /// </summary>
+        public void ShowBanner(string line1, string line2, bool warning, BannerPlace place, Vector2 at, Vector2 size, float tilt, float seconds)
+        {
+            if (banner == null) return;
+            bool two = !string.IsNullOrEmpty(line2);
+            bannerImage.sprite = warning && sprites.panelRed != null ? sprites.panelRed : sprites.panelBlue;
+            bannerIcon.gameObject.SetActive(warning);
+            Place(banner, place == BannerPlace.Top ? Anchor.TopCentre : Anchor.BottomCentre, at.x, at.y, size.x, size.y);
+            banner.pivot = new Vector2(0.5f, 0.5f);
+            banner.anchoredPosition += new Vector2(0f, place == BannerPlace.Top ? -size.y * 0.5f : size.y * 0.5f) * U;
+            banner.localRotation = Quaternion.Euler(0f, 0f, tilt);
+
+            float w = size.x, h = size.y;
+            float textLeft = warning ? h * 0.78f : 0f;          // leave room for the warning icon
+            float textW = w - textLeft - (warning ? h * 0.12f : 0f);
+            Place((RectTransform)bannerIcon.transform, Anchor.TopLeft, h * 0.16f, h * 0.14f, h * 0.68f, h * 0.68f);
+            if (two)
+            {
+                float big = warning ? 0.36f : 0.29f, small = warning ? 0.26f : 0.29f;
+                SetBannerLine(bannerLine1, line1, h * big, textLeft, h * 0.08f, textW, h * 0.46f);
+                SetBannerLine(bannerLine2, line2, h * small, textLeft, h * 0.5f, textW, h * 0.4f);
+            }
+            else
+            {
+                SetBannerLine(bannerLine1, line1, h * 0.36f, textLeft, 0f, textW, h * 0.94f);
+                bannerLine2.gameObject.SetActive(false);
+            }
+            banner.gameObject.SetActive(true);
+            if (_bannerFade == null) _bannerFade = banner.GetComponent<CanvasGroup>();
+            _bannerShownAt = Time.unscaledTime;
+            _bannerUntil = seconds > 0f ? Time.unscaledTime + seconds : -1f;
+            if (_bannerFade != null) _bannerFade.alpha = 1f;
+        }
+
+        void SetBannerLine(Text t, string text, float size, float x, float y, float w, float h)
+        {
+            t.gameObject.SetActive(true);
+            t.text = text;
+            t.fontSize = Mathf.RoundToInt(size * U);
+            t.alignment = TextAnchor.MiddleCenter;
+            Place((RectTransform)t.transform, Anchor.TopLeft, x, y, w, h);
+        }
+
+        public void HideBanner()
+        {
+            if (banner != null) banner.gameObject.SetActive(false);
+        }
+
+        /// <summary>The pink hint arrow of Screens 5 and 6 (centre in board px from the top centre).</summary>
+        public void ShowHintArrow(bool show, Vector2 at, Vector2 size, float tilt, float seconds)
+        {
+            if (hintArrow == null) return;
+            hintArrow.gameObject.SetActive(show);
+            if (!show) return;
+            hintArrow.anchorMin = hintArrow.anchorMax = new Vector2(0.5f, 1f);
+            hintArrow.pivot = new Vector2(0.5f, 0.5f);
+            hintArrow.anchoredPosition = new Vector2(at.x, -at.y) * U;
+            hintArrow.sizeDelta = size * U;
+            hintArrow.localRotation = Quaternion.Euler(0f, 0f, tilt);
+            _arrowUntil = seconds > 0f ? Time.unscaledTime + seconds : -1f;
+        }
+
+        public void SetPowerUpsVisible(bool visible)
+        {
+            if (powerUpGroup) powerUpGroup.SetActive(visible);
+        }
+
+        /// <summary>"Rescue 5 lost socks" panel: top-left on Screen 4, centred and larger on Screen 11, hidden on 5-10.</summary>
+        public void SetMission(MissionPlace place)
+        {
+            if (missionPanel == null) return;
+            missionPanel.gameObject.SetActive(place != MissionPlace.Hidden);
+            if (place == MissionPlace.TopLeft)
+            {
+                Place(missionPanel, Anchor.TopLeft, 15, 42, 173, 58);
+                missionPanel.localScale = Vector3.one;
+            }
+            else if (place == MissionPlace.TopCentre)
+            {
+                // Screen 11: 198 x 61 board px (scaled from the 468 px crop), centred 3 px left, 48 px down.
+                Place(missionPanel, Anchor.TopCentre, -3, 48, 173, 58);
+                float k = 198f / 173f;
+                missionPanel.localScale = new Vector3(k, k, 1f);
+            }
+        }
+
+        /// <summary>Pause sits below the counters on Screens 4-6 and on the counters row on Screens 7-12.</summary>
+        public void SetPauseTopRow(bool topRow)
+        {
+            if (pause == null) return;
+            Place((RectTransform)pause.transform, Anchor.TopRight, topRow ? 6 : 5, topRow ? 9 : 40, 36, 36);
+        }
+
+        /// <summary>Screen 12: Level Complete over the finish scene.</summary>
+        public void ShowComplete(RunResult result)
+        {
+            HideBanner();
+            if (hintArrow) hintArrow.gameObject.SetActive(false);
+            if (introGroup) introGroup.SetActive(false);
+            if (gearButton) gearButton.SetActive(false);
+            if (runningGroup) runningGroup.SetActive(true);
+            SetPowerUpsVisible(false);
+            SetMission(MissionPlace.Hidden);
+            SetPauseTopRow(true);
+            if (complete != null) complete.Show(result);
+            Refresh();
         }
 
         public void Refresh()
@@ -127,6 +299,7 @@ namespace BubbleWash
             // ---- Screen 4 (running)
             runningGroup = Group("Screen4_Running");
             var mission = Panel(runningGroup.transform, "RescueSocksPanel", sprites.panelBlue, Anchor.TopLeft, 15, 42, 173, 58);
+            missionPanel = mission;
             Icon(mission, sprites.sock, 6, 5, 40, 48);
             Label(mission, "Rescue 5 lost socks", 14, TextAnchor.MiddleLeft, 48, 6, 125, 20);
             var track = Panel(mission, "Progress", sprites.progressTrack, Anchor.TopLeft, 48, 31, 115, 16);
@@ -138,6 +311,8 @@ namespace BubbleWash
             pause.transform.SetParent(runningGroup.transform, true);
             pauseButton = pause.gameObject;
 
+            powerUpGroup = New("PowerUps", runningGroup.transform);
+            Stretch((RectTransform)powerUpGroup.transform);
             blast = PowerUp("BubbleBlast", sprites.bubbleBlast, "Bubble Blast", leftSide: true, out blastBadgeText);
             turbo = PowerUp("TurboSpin", sprites.turboSpin, "Turbo Spin", leftSide: false, out turboBadgeText);
 
@@ -148,6 +323,32 @@ namespace BubbleWash
             var pp = Panel(pausedOverlay.transform, "PausedPanel", sprites.panelBlue, Anchor.Centre, 0, 0, 170, 60);
             Label(pp, "Paused", 26, TextAnchor.MiddleCenter, 0, 0, 170, 60);
             pausedOverlay.SetActive(false);
+
+            // ---- Screens 5-11: section banner + hint arrow (positioned per section by ShowSection)
+            var bannerGo = New("SectionBanner", root);
+            banner = (RectTransform)bannerGo.transform;
+            bannerImage = bannerGo.AddComponent<Image>();
+            bannerImage.sprite = sprites.panelBlue; bannerImage.type = Image.Type.Sliced; bannerImage.raycastTarget = false;
+            _bannerFade = bannerGo.AddComponent<CanvasGroup>();
+            _bannerFade.blocksRaycasts = false; _bannerFade.interactable = false;
+            Place(banner, Anchor.TopCentre, 0, 48, 205, 64);
+            bannerIcon = Icon(banner, sprites.warning, 8, 8, 44, 44);
+            bannerLine1 = Label(banner, "Banner", 18, TextAnchor.MiddleCenter, 0, 6, 205, 28);
+            bannerLine2 = Label(banner, "Banner", 18, TextAnchor.MiddleCenter, 0, 32, 205, 26);
+            bannerGo.SetActive(false);
+
+            hintArrow = (RectTransform)New("HintArrow", root).transform;
+            var arrowImage = New("ArrowImage", hintArrow);
+            Stretch((RectTransform)arrowImage.transform);
+            var ai = arrowImage.AddComponent<Image>(); ai.sprite = sprites.arrowDownPink; ai.preserveAspect = true; ai.raycastTarget = false;
+            var bob = arrowImage.AddComponent<Hover>(); bob.amplitude = -4f * U; bob.frequency = 1.4f;
+            hintArrow.gameObject.SetActive(false);
+
+            // ---- Screen 12
+            var completeGo = New("Screen12_LevelComplete", root);
+            Stretch((RectTransform)completeGo.transform);
+            complete = completeGo.AddComponent<LevelCompleteUI>();
+            complete.Build(sprites);
 
             ShowScreen(3);
         }
@@ -250,7 +451,7 @@ namespace BubbleWash
 
         Button PowerUp(string name, Sprite icon, string caption, bool leftSide, out Text badgeText)
         {
-            var go = New(name, runningGroup.transform);
+            var go = New(name, powerUpGroup.transform);
             var img = go.AddComponent<Image>(); img.sprite = sprites.buttonSquare; img.type = Image.Type.Sliced;
             var rt = (RectTransform)go.transform;
             Place(rt, leftSide ? Anchor.BottomLeft : Anchor.BottomRight, 10, 7, 72, 78);
