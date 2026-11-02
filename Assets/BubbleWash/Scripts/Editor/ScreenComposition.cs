@@ -76,9 +76,11 @@ namespace BubbleWash.EditorTools
 
             // ---------------- Screen 3: "Let's go! Into the washing machine!"
             var s3 = Group(root, "Screen3_Composition");
-            var brush3 = At(c3, 0.07f, 0.53f, 9f);
-            Brush(s3, "PLACEHOLDER_SpinningBrush_Entrance_L", brushBluePink, mats.brushFur, brush3, SizeAt(c3, 0.26f, 9f) * 0.5f,
-                Quaternion.LookRotation(Quaternion.Euler(0f, -32f, 0f) * (brush3 - c3.pos).normalized), 90f);
+            var reachable = MascotVolume(l, mascot.GetComponent<BubbleRunner>());
+            // Entrance brush, measured on the approved crop including its fur: centre (0.03, 0.53), 0.42 of the width across.
+            var brush3 = At(c3, 0.03f, 0.53f, 9f);
+            Brush(s3, "PLACEHOLDER_SpinningBrush_Entrance_L", brushBluePink, mats.brushFur, mats, reachable, brush3, SizeAt(c3, 0.42f, 9f) * 0.5f,
+                Quaternion.LookRotation(Quaternion.Euler(0f, -32f, 0f) * (brush3 - c3.pos).normalized), 90f, 0f);
             HeroBubble(s3, quad, mats.bubble, At(c3, 0.87f, 0.47f, 7f), SizeAt(c3, 0.26f, 7f));
             HeroBubble(s3, quad, mats.bubble, At(c3, 0.95f, 0.66f, 6f), SizeAt(c3, 0.16f, 6f));
             HeroBubble(s3, quad, mats.bubble, At(c3, 0.05f, 0.71f, 6f), SizeAt(c3, 0.13f, 6f));
@@ -96,8 +98,8 @@ namespace BubbleWash.EditorTools
             float wallR = l.clearRadius + 0.12f;
             var bl = OnWall(c4, l, 0.08f, 0.30f, wallR);
             var br = OnWall(c4, l, 0.90f, 0.47f, wallR);
-            Brush(s4, "PLACEHOLDER_SpinningBrush_Drum_L", brushPink, mats.brushFur, bl, 1.1f, FaceAxis(l, bl), 140f);
-            Brush(s4, "PLACEHOLDER_SpinningBrush_Drum_R", brushBluePink, mats.brushFur, br, 1.1f, FaceAxis(l, br), -140f);
+            Brush(s4, "PLACEHOLDER_SpinningBrush_Drum_L", brushPink, mats.brushFur, mats, reachable, bl, 1.1f, FaceAxis(l, bl), 140f, 1.2f);
+            Brush(s4, "PLACEHOLDER_SpinningBrush_Drum_R", brushBluePink, mats.brushFur, mats, reachable, br, 1.1f, FaceAxis(l, br), -140f, 1.2f);
             Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.17f, 0.56f, 5.5f), CollectibleKind.Coin, 0.3f);
             Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.83f, 0.67f, 5.0f), CollectibleKind.Coin, 0.3f);
             Collect(s4, "Coin", coinMesh, mats.coin, At(c4, 0.13f, 0.42f, 9f), CollectibleKind.Coin, 0.3f);
@@ -137,14 +139,37 @@ namespace BubbleWash.EditorTools
             return Quaternion.LookRotation(outward, Vector3.forward); // brush face (-Z) looks at the axis
         }
 
-        static void Brush(Transform parent, string name, Mesh mesh, Material mat, Vector3 pos, float radius, Quaternion rot, float spin)
+        /// <summary>
+        /// Everywhere the mascot can be: every lane, from floating to the top of a jump, along the whole
+        /// run, grown by its body radius plus a 10 cm margin. Spinning brushes must stay out of it.
+        /// </summary>
+        internal static Bounds MascotVolume(LevelLayout l, BubbleRunner runner)
+        {
+            float floatH = runner != null ? runner.floatHeight : Level1SceneBuilder.MascotFloat;
+            float body = runner != null ? runner.bodyRadius : 0.5f * Level1SceneBuilder.MascotScale;
+            float apex = runner != null ? runner.jumpVelocity * runner.jumpVelocity / (2f * Mathf.Max(0.1f, runner.gravity)) : 1.2f;
+            apex = Mathf.Max(apex, 1.2f) + (runner != null ? runner.bobAmplitude : 0.05f);   // the validator checks lifts up to 1.2 m
+            float lane = Mathf.Max(Mathf.Abs(l.LaneX(0)), Mathf.Abs(l.LaneX(l.laneCount - 1)));
+            var b = new Bounds();
+            b.SetMinMax(new Vector3(-lane, l.waterLevel + floatH, l.startZ - 30f), new Vector3(lane, l.waterLevel + WaveField.Slide.z + floatH + apex, l.loopZ + 10f));
+            b.Expand(2f * (body + 0.1f));
+            return b;
+        }
+
+        static void Brush(Transform parent, string name, Mesh mesh, Material mat, MaterialSet mats, Bounds reachable, Vector3 pos, float radius, Quaternion rot, float spin, float reach)
         {
             bool meshy = PropFactory.Has(PropSlot.SpinningBrush);
             var go = new GameObject(meshy ? name.Replace("PLACEHOLDER_", "") : name) { layer = EnvironmentLayer };
             go.transform.SetParent(parent, false);
             go.transform.SetPositionAndRotation(pos, rot);
             go.transform.localScale = Vector3.one * radius;
-            if (meshy) PropFactory.Create(PropSlot.SpinningBrush, go.transform);
+            if (meshy)
+            {
+                var holder = PropFactory.Create(PropSlot.SpinningBrush, go.transform);
+                Level1SceneBuilder.ApplyMeshyLook(holder, mats.brush, go.name);
+                float placed = MountRoller(go.transform, holder.transform, radius, reach, reachable);
+                Level1SceneBuilder.Note($"- {go.name}: Meshy roller {2f * radius:F2} m across, reaching {placed:F2} m in front of its mount (wanted {reach:F2}) so it clears every lane and jump.");
+            }
             else
             {
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
@@ -155,6 +180,42 @@ namespace BubbleWash.EditorTools
             var s = go.AddComponent<Spinner>();
             s.localAxis = Vector3.forward;
             s.speed = spin;
+        }
+
+        /// <summary>
+        /// Mounts the Meshy washing roller on its brush. The slot turns the roller's long axis onto the
+        /// brush's local Z, which is its spin axis. The inner end (local -Z: toward the drum axis on the
+        /// walls, toward the camera at the entrance) is placed <paramref name="reach"/> metres in front of
+        /// the mount point. It is then pulled back in 5 cm steps until no roller vertex is inside the
+        /// mascot's reachable volume; the rest of the roller runs back into the wall. A capsule collider
+        /// along the axis makes it a solid obstacle for the runner (bump, blocked lane) without per-bristle
+        /// mesh collision. Returns the reach used.
+        /// </summary>
+        internal static float MountRoller(Transform brush, Transform holder, float radius, float reach, Bounds reachable)
+        {
+            var b = PropFactory.LocalBounds(holder);      // holder space = brush space (holder sits at its origin)
+            MeshSampler.Collect(holder.gameObject, out var v, out _);
+            Vector3 fwd = brush.forward;
+            // A vertex's world position is linear in the reach: a - fwd * reach.
+            var a = new Vector3[(v.Length + 3) / 4];
+            for (int i = 0, k = 0; i < v.Length; i += 4, k++)
+                a[k] = brush.TransformPoint(holder.localPosition + v[i]) - fwd * (b.min.z * radius);
+            float length = b.size.z * radius;
+            for (; reach > -length; reach -= 0.05f)
+            {
+                bool hit = false;
+                for (int k = 0; k < a.Length && !hit; k++) hit = reachable.Contains(a[k] - fwd * reach);
+                if (!hit) break;
+            }
+            float shift = -reach / radius - b.min.z;
+            holder.localPosition += Vector3.forward * shift;
+
+            var cap = brush.gameObject.AddComponent<CapsuleCollider>();
+            cap.direction = 2;
+            cap.center = new Vector3(b.center.x, b.center.y, b.center.z + shift);
+            cap.radius = Mathf.Max(b.extents.x, b.extents.y) * 0.9f;
+            cap.height = b.size.z;
+            return reach;
         }
 
         static void HeroBubble(Transform parent, Mesh quad, Material mat, Vector3 pos, float size)

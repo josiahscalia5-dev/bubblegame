@@ -56,7 +56,8 @@ namespace BubbleWash.EditorTools
             return null;
         }
 
-        static Bounds LocalBounds(Transform holder)
+        /// <summary>Bounds of every renderer below <paramref name="holder"/>, in the holder's local space.</summary>
+        public static Bounds LocalBounds(Transform holder)
         {
             var rends = holder.GetComponentsInChildren<Renderer>();
             var inv = holder.worldToLocalMatrix;

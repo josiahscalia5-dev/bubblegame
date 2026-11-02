@@ -53,6 +53,9 @@ namespace BubbleWash.EditorTools
 
         static readonly StringBuilder Log = new StringBuilder();
 
+        /// <summary>Add a line to the build report (Previews/Level1_build_report.md).</summary>
+        internal static void Note(string line) => Log.AppendLine(line);
+
         [MenuItem("Bubble Wash/1. Build Level 1 Scene (Screens 3-4)", priority = 1)]
         public static void BuildFromMenu()
         {
@@ -104,7 +107,7 @@ namespace BubbleWash.EditorTools
 
             // Live look tuning (water, foam, glow, bloom, fog) in one inspector.
             var look = envGo.AddComponent<BubbleWashLook>();
-            look.water = mats.water; look.waterfall = mats.waterfall; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
+            look.water = mats.water; look.waterfall = mats.waterfall; look.brush = mats.brush; look.castle = mats.castle; look.drum = mats.drum; look.glowRing = mats.glowRing;
             look.post = mats.postProfile; look.sun = sun;
             look.Apply();
 
@@ -158,7 +161,7 @@ namespace BubbleWash.EditorTools
         /// Render a Meshy model with BubbleWash/MeshyBaked using its own baked colour texture (the artwork
         /// is unchanged; only saturation, light response and glow of bright stripes are controlled).
         /// </summary>
-        static void ApplyMeshyLook(GameObject root, Material template, string label)
+        internal static void ApplyMeshyLook(GameObject root, Material template, string label)
         {
             int n = 0;
             foreach (var r in root.GetComponentsInChildren<Renderer>(true))

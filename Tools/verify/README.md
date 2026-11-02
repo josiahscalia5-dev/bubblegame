@@ -7,13 +7,14 @@ These scripts check the project where no Unity editor can be opened, for example
 | `setup.sh` | One-time setup, about 5 minutes. Streams the editor archive (4.5 GB) and keeps about 2 GB. Builds the package assemblies the project references. |
 | `compile_csharp.sh` | Compiles Runtime, Editor and EditMode tests in three configurations: Input System backend, legacy input backend, and the WebGL player (no editor code). |
 | `check_shaders.py` | Compiles every pass of every shader in `Assets/BubbleWash/Shaders`, in every `multi_compile` variant and both stages. Uses Unity 6.3's DXC against URP 17.3's shader library, with the D3D11 header and the Vulkan header with `SHADER_API_MOBILE`. Prints warnings that come from this project's code, not URP's. |
+| `check_brushes.py` | Runs the spinning-brush (Meshy washing roller) mounts for Screens 3 and 4 against the real GLBs, including the lane-clearance search. Prints each roller's reach and draws both views beside the approved screens. |
 | `check_waterfalls.py` | Runs the `TowerWaterfalls` placement maths against the real castle GLB. Prints where each spout and basin lands and draws a preview beside the approved Screen 3. |
 
 ```bash
 Tools/verify/setup.sh
 Tools/verify/compile_csharp.sh
 python3 -I Tools/verify/check_shaders.py
-pip install numpy pillow pygltflib && python3 -I Tools/verify/check_waterfalls.py
+pip install numpy pillow pygltflib && python3 -I Tools/verify/check_waterfalls.py && python3 -I Tools/verify/check_brushes.py
 ```
 
 The cache goes to `~/.cache/bubblewash-verify`. Set `BW_VERIFY_CACHE` to put it elsewhere.

@@ -11,7 +11,7 @@ namespace BubbleWash.EditorTools
         public Material water, waterfall, mascotFur, brushFur, sockFur, duck, eye, white, cheek;
         public Material glowRing, endGlow, bubble, droplet, sparkle, sky;
         public Material coin, gem, rail, placeholderDrum;
-        public Material castle, drum;
+        public Material castle, drum, brush;
         public VolumeProfile postProfile;
 
         const string Dir = Level1SceneBuilder.GeneratedDir + "/Materials/";
@@ -33,6 +33,12 @@ namespace BubbleWash.EditorTools
                 m.SetFloat("_LightInfluence", 0.3f); m.SetFloat("_GlowThreshold", 0.72f); m.SetFloat("_GlowStrength", 2.2f);
                 m.SetColor("_GlowTint", new Color(1f, 0.95f, 0.85f));
                 m.SetFloat("_Cull", 0f);
+            });
+            brush = Mat("Meshy_SpinningBrush", "BubbleWash/MeshyBaked", m =>
+            {
+                m.SetFloat("_Saturation", 1.2f); m.SetFloat("_Brightness", 1.05f); m.SetFloat("_LightInfluence", 0.45f);
+                m.SetFloat("_GlowThreshold", 0.9f); m.SetFloat("_GlowStrength", 0.5f);
+                m.SetFloat("_Cull", 0f); // Meshy exports are double-sided
             });
             mascotFur = Mat("PLACEHOLDER_MascotFur", "BubbleWash/FluffyToon", m =>
             {

@@ -97,7 +97,7 @@ namespace BubbleWash.EditorTools
                 foreach (var mf in Object.FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
                 {
                     bool isEnv = (env.castle != null && mf.transform.IsChildOf(env.castle)) || (env.tunnelRoot != null && mf.transform.IsChildOf(env.tunnelRoot))
-                                 || mf.name.StartsWith("PLACEHOLDER_SpinningBrush");
+                                 || IsSpinningBrush(mf.transform);
                     if (!isEnv || mf.sharedMesh == null) continue;
                     var go = new GameObject("__probe") { layer = ProbeLayer, hideFlags = HideFlags.HideAndDontSave };
                     go.transform.SetPositionAndRotation(mf.transform.position, mf.transform.rotation);
@@ -173,6 +173,14 @@ namespace BubbleWash.EditorTools
 
             Write(r, l);
             return r;
+        }
+
+        /// <summary>Placeholder or Meshy spinning brush (the Meshy roller's meshes sit below a "SpinningBrush_*" object).</summary>
+        static bool IsSpinningBrush(Transform t)
+        {
+            for (; t != null; t = t.parent)
+                if (t.name.StartsWith("PLACEHOLDER_SpinningBrush") || t.name.StartsWith("SpinningBrush_")) return true;
+            return false;
         }
 
         /// <summary>Distance by which a sphere at <paramref name="c"/> could grow before touching geometry (negative = already overlapping).</summary>

@@ -87,7 +87,7 @@ Each upcoming model has a drop folder:
 | Model | Folder | Replaces |
 |---|---|---|
 | Pink mascot | `Assets/BubbleWash/Models/Mascot/` | `PLACEHOLDER_PinkMascot` |
-| Spinning brush | `Assets/BubbleWash/Models/SpinningBrush/` | `PLACEHOLDER_SpinningBrush_*` |
+| Spinning brush | `Assets/BubbleWash/Models/SpinningBrush/` | **In:** the Meshy washing roller (`BubbleWash_WashingRoller_Claudia_Textured.glb`) replaces `PLACEHOLDER_SpinningBrush_*` |
 | Rescue sock | `Assets/BubbleWash/Models/RescueSock/` | `PLACEHOLDER_LostSock_*` |
 | Paw coin | `Assets/BubbleWash/Models/Coin/` | placeholder coins |
 | Gem | `Assets/BubbleWash/Models/Gem/` | placeholder gem |
@@ -112,6 +112,7 @@ Or send me the GLBs and I'll wire them in.
 | Follow camera fitted to Screen 3 and Screen 4 | `RunnerCameraRig.cs` |
 | Movement, animation, collisions, collectibles, power-ups | `BubbleRunner.cs`, `MascotAnimator.cs`, `Collectible.cs`, `GameSession.cs` |
 | HUD for Screens 3 and 4 | `GameHud.cs`. The sprites are generated stand-ins (`Tools/generate_ui_sprites.py`). |
+| Spinning brushes, Screens 3 and 4 | **Meshy** `Models/SpinningBrush/BubbleWash_WashingRoller_Claudia_Textured.glb`, rendered with `MeshyBaked.shader`. Each roller spins about its long axis and has a capsule collider. It reaches as far into the drum as it can without touching any lane or jump. |
 | Everything named `PLACEHOLDER_` | temporary until the Meshy model arrives |
 
 How the two Meshy models are measured, aligned and chained is explained in [`Design/MODEL_MEASUREMENTS.md`](Design/MODEL_MEASUREMENTS.md).
@@ -136,7 +137,7 @@ These checks can be re-run with [`Tools/verify/`](Tools/verify/README.md).
 - the capture tool;
 - frame rate on a phone.
 
-The Meshy castle (150k triangles) plus three drum segments (136k each) total about 560k triangles, which is heavy for mid-range phones. If the frame rate on the phone is short, lower-poly Meshy exports are the fix.
+The Meshy castle (150k triangles) plus three drum segments (136k each) total about 560k triangles. The three washing rollers add 133k each, about 960k in the whole scene, though not all of it is on screen at once. That is heavy for mid-range phones. If the frame rate on the phone is short, lower-poly Meshy exports are the fix, starting with the roller: a 20–30k-triangle version would look the same at these sizes.
 
 ## Project layout
 

@@ -19,6 +19,7 @@ namespace BubbleWash
         public Material waterfall;
         public Material castle;
         public Material drum;
+        public Material brush;
         public Material glowRing;
         public VolumeProfile post;
         public Light sun;
@@ -55,6 +56,12 @@ namespace BubbleWash
         [Range(0f, 1f)] public float drumSceneLight = 0.3f;
         [Range(0f, 1f)] public float drumGlowThreshold = 0.72f;
         [Range(0f, 6f)] public float drumGlow = 2.2f;
+
+        [Header("Meshy spinning brushes (washing roller)")]
+        [Range(0f, 2f)] public float brushSaturation = 1.2f;
+        [Range(0f, 2f)] public float brushBrightness = 1.05f;
+        [Range(0f, 1f)] public float brushSceneLight = 0.45f;
+        [Range(0f, 6f)] public float brushGlow = 0.5f;
 
         [Header("Glowing drum rings")]
         [Range(0f, 6f)] public float ringIntensity = 1.6f;
@@ -101,6 +108,7 @@ namespace BubbleWash
             }
             Meshy(castle, castleSaturation, castleBrightness, castleSceneLight, 0.85f, castleGlow);
             Meshy(drum, drumSaturation, drumBrightness, drumSceneLight, drumGlowThreshold, drumGlow);
+            Meshy(brush, brushSaturation, brushBrightness, brushSceneLight, 0.9f, brushGlow);
             if (glowRing != null) glowRing.SetFloat("_CoreBoost", ringIntensity);
 
             if (post != null)
