@@ -26,8 +26,13 @@ export const RIPPLES = 8;
 
 export const waterVertex = /* glsl */ `
 ${HEIGHT_GLSL}
-uniform vec4 uRipples[${RIPPLES}];   // x, z, start time, strength
-varying vec3 vWorld;
+uniform vec4 uRipples[${RIPPLES}];   // x, u, start time, strength (track coordinates)
+// Each vertex knows its track position (sideways x, along u) and the path frame there, so the sheet
+// follows the 3D path: it climbs, drops and banks with the bent drum (track.js).
+attribute vec2 aTrack;
+attribute vec3 aP, aR, aU, aT;
+varying vec2 vTrack;
+varying vec3 vWorld, vR, vU, vT;
 float rippleHeight(vec2 xz) {
   float h = 0.0;
   for (int i = 0; i < ${RIPPLES}; i++) {
@@ -40,10 +45,10 @@ float rippleHeight(vec2 xz) {
   return h;
 }
 void main() {
-  vec4 w = modelMatrix * vec4(position, 1.0);
-  w.y = bwHeight(w.xz, uTime) + rippleHeight(w.xz);
-  vWorld = w.xyz;
-  gl_Position = projectionMatrix * viewMatrix * w;
+  float h = bwHeight(aTrack, uTime) + rippleHeight(aTrack);
+  vec3 w = aP + aR * aTrack.x + aU * h;
+  vTrack = aTrack; vWorld = w; vR = aR; vU = aU; vT = aT;
+  gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
 }
 `;
 
@@ -51,12 +56,14 @@ export const waterFragment = /* glsl */ `
 ${HEIGHT_GLSL}
 ${NOISE}
 uniform vec4 uRipples[${RIPPLES}];
-uniform vec3 uPlayer;       // mascot x, water height under it, z
-uniform vec3 uPlayerMove;   // lateral velocity, speed 0..1, downhill 0..1
+uniform vec3 uPlayer;       // mascot track x, water height under it, u
+uniform vec3 uPlayerMove;   // sideways velocity, speed 0..1, downhill 0..1
 uniform float uFlow;        // current speed (m/s)
-uniform vec3 uDeep, uShallow, uGlow, uSky, uPink, uGold, uRingA, uRingB, uFog, uSunDir;
-uniform vec3 uRings;        // first ring z, spacing, count
-varying vec3 vWorld;
+uniform float uSlideHalf;   // half width of the raised slide
+uniform vec3 uDeep, uShallow, uTurq, uGlow, uSky, uPink, uGold, uRingA, uRingB, uFog, uSunDir;
+uniform vec3 uRings;        // first ring u, spacing, count
+varying vec2 vTrack;
+varying vec3 vWorld, vR, vU, vT;
 
 float ripples(vec2 xz) {
   float f = 0.0;
@@ -72,7 +79,7 @@ float ripples(vec2 xz) {
 
 void main() {
   float t = uTime;
-  vec2 xz = vWorld.xz;
+  vec2 xz = vTrack;
   float flowT = t * uFlow;
   const float e = 0.06;
   float hx = bwHeight(xz + vec2(e, 0.0), t) - bwHeight(xz - vec2(e, 0.0), t);
@@ -80,7 +87,8 @@ void main() {
   float n1 = bwNoise(xz * vec2(3.1, 1.4) - vec2(0.0, flowT * 0.35));
   float n2 = bwNoise(xz * vec2(5.7, 2.6) - vec2(0.0, flowT * 0.6) + 3.3);
   float rip = ripples(xz);
-  vec3 N = normalize(vec3(-hx * 1.4 + (n1 - 0.5) * 0.22, 2.0 * e, -hz * 1.4 + (n2 - 0.5) * 0.22 + rip * 0.08));
+  vec3 Nt = normalize(vec3(-hx * 1.4 + (n1 - 0.5) * 0.22, 2.0 * e, -hz * 1.4 + (n2 - 0.5) * 0.22 + rip * 0.08));
+  vec3 N = normalize(vR * Nt.x + vU * Nt.y + vT * Nt.z);   // track frame -> world
   vec3 V = normalize(cameraPosition - vWorld);
   float NdotV = clamp(dot(N, V), 0.0, 1.0);
   float fresnel = pow(1.0 - NdotV, 3.0);
@@ -88,38 +96,46 @@ void main() {
   float inDrum = clamp((xz.y - uTunnel.x) * 0.5, 0.0, 1.0) * clamp((uTunnel.y - xz.y) * 0.5, 0.0, 1.0);
   float onPath = clamp((uTunnel.x - xz.y) * 0.5, 0.0, 1.0);
   float ax = abs(xz.x);
-  float pathEdge = onPath * (1.0 - smoothstep(0.0, 0.45, abs(ax - ${'2.15'})));
-  float moat = onPath * smoothstep(2.2, 2.7, ax);
-  // Downhill drops of the slide (the water speeding down toward the portal) churn into white water.
+  float pathEdge = onPath * (1.0 - smoothstep(0.0, 0.22, abs(ax - (uSlideHalf + 0.2))));
+  float moat = onPath * smoothstep(uSlideHalf + 0.2, uSlideHalf + 0.7, ax);
+  // Downhill runs (the water speeding toward the portal) churn into streaks of white water.
   float slope = (bwBase(xz + vec2(0.0, 0.3)) - bwBase(xz - vec2(0.0, 0.3))) / 0.6;
   float steep = onPath * (1.0 - moat) * smoothstep(0.07, 0.18, -slope);
 
+  // Colour: rich electric blue, turquoise where the water is shallow over the slide bed and on the
+  // crests, a deeper blue in the spill beside the slide.
   float waveH = bwWaves(xz, t);
   float crest = clamp(waveH * 6.0 + 0.5, 0.0, 1.0);
-  float centre = 1.0 - clamp(ax / 2.5, 0.0, 1.0);
-  vec3 col = mix(uDeep, uShallow, clamp(0.3 + crest * 0.55 + centre * 0.25 - moat * 0.3, 0.0, 1.0));
-  col += uGlow * 0.4 * (0.35 + 0.65 * crest);
-  vec2 cv = bwVoronoi(xz * vec2(2.4, 1.3) - vec2(0.0, flowT * 0.42));
-  float caustic = pow(clamp(1.0 - (cv.y - cv.x) * 4.0, 0.0, 1.0), 3.0);
-  col += uGlow * caustic * 0.7 * (0.5 + 0.5 * crest);
+  float centre = 1.0 - clamp(ax / (uSlideHalf + 0.6), 0.0, 1.0);
+  vec3 col = mix(uDeep, uShallow, clamp(0.2 + crest * 0.45 + centre * 0.3 - moat * 0.45, 0.0, 1.0));
+  float turq = smoothstep(0.35, 0.85, bwNoise(xz * vec2(0.9, 0.45) - vec2(0.0, flowT * 0.22)) * 0.6 + crest * 0.5);
+  col = mix(col, uTurq, turq * 0.55 * (1.0 - moat));
+  col = mix(col, uDeep * vec3(0.35, 0.45, 0.75), moat * 0.7);      // the spill beside the raised slide sits deeper and darker
+  // The approved slide's crackle: a fine network of bright caustic lines flowing with the current.
+  vec2 cv = bwVoronoi(xz * vec2(2.3, 1.15) - vec2(0.0, flowT * 0.42));
+  vec2 cv2 = bwVoronoi(xz * vec2(4.6, 2.2) - vec2(0.0, flowT * 0.6) + 7.0);
+  float caustic = (1.0 - smoothstep(0.0, 0.075, cv.y - cv.x)) * 0.75 + (1.0 - smoothstep(0.0, 0.06, cv2.y - cv2.x)) * 0.35;
+  col += mix(uGlow, vec3(1.0), 0.45) * caustic * (0.55 + 0.45 * crest) * (1.0 - moat * 0.6);
 
-  // Foam: lace and streaks flowing with the current, masks for walls, slide edges, crests, steep
-  // drops, the mascot's wake (stronger when fast), the ring around it and splash ripples.
+  // Foam, kept to where water really churns: thin lace at the slide edges and drum walls, the
+  // mascot's V wake and bow ring (stronger when fast or dropping), steep drops and splash rings.
   vec2 fuv = xz * vec2(1.0, 0.45) * 1.6 - vec2(0.0, flowT * 0.3 * 1.6);
   vec2 lv = bwVoronoi(fuv * 1.7);
-  float lace = 1.0 - smoothstep(0.02, 0.11, lv.y - lv.x);
+  float lace = 1.0 - smoothstep(0.02, 0.09, lv.y - lv.x);
   float streak = bwFbm(fuv * vec2(2.2, 1.0));
   float halfW = sqrt(max(0.01, uTunnel.z * uTunnel.z - uTunnel.w * uTunnel.w));
-  float wall = inDrum * smoothstep(halfW - 0.85, halfW - 0.05, ax);
+  float wall = inDrum * smoothstep(halfW - 0.35, halfW - 0.02, ax) * 0.75;
   vec2 toP = xz - uPlayer.xz;
   float behind = clamp(-toP.y / (4.0 + 6.0 * uPlayerMove.y), 0.0, 1.0);
-  float spread = 0.2 + behind * (0.9 + 0.8 * uPlayerMove.y);
-  float wake = (1.0 - smoothstep(0.0, 0.5, abs(abs(toP.x - uPlayerMove.x * 0.15 * behind) - spread))) * step(toP.y, 0.4) * (1.0 - behind);
-  wake *= 0.32 + 0.45 * uPlayerMove.y + 0.5 * uPlayerMove.z;
-  float ring = (1.0 - smoothstep(0.3, 0.75, length(toP))) * (0.45 + 0.3 * uPlayerMove.y);
-  float mask = clamp(wall * 1.2 + pathEdge * 1.3 + crest * crest * 0.35 + wake + ring + steep * 0.55 + rip * 1.2, 0.0, 1.4);
-  float foam = smoothstep(0.45, 0.72, streak + mask * 0.6 - 0.22);
-  foam = clamp(foam + lace * (0.55 * (0.35 + 0.65 * min(mask, 1.0))) + smoothstep(0.64, 0.8, streak) * 0.2, 0.0, 1.0);
+  float spread = 0.22 + behind * (0.9 + 0.8 * uPlayerMove.y);
+  float wakeLine = 1.0 - smoothstep(0.0, 0.28, abs(abs(toP.x - uPlayerMove.x * 0.15 * behind) - spread));
+  float trail = (1.0 - smoothstep(0.0, 0.14 + 0.2 * behind, abs(toP.x))) * 0.32;
+  float wake = max(wakeLine, trail) * step(toP.y, 0.35) * (1.0 - behind);
+  wake *= 0.35 + 0.45 * uPlayerMove.y + 0.5 * uPlayerMove.z;
+  float ring = (1.0 - smoothstep(0.32, 0.62, length(toP))) * (0.35 + 0.3 * uPlayerMove.y);
+  float mask = clamp(wall * 0.8 + pathEdge * 1.25 + crest * crest * 0.12 + wake + ring + steep * 0.45 + rip * 1.0, 0.0, 1.3);
+  float foam = smoothstep(0.5, 0.78, streak + mask * 0.6 - 0.22);
+  foam = clamp(foam + lace * 0.5 * min(mask, 1.0), 0.0, 1.0) * 0.92;
 
   vec3 L = normalize(uSunDir);
   float NdotL = clamp(dot(N, L), 0.0, 1.0);
@@ -135,11 +151,11 @@ void main() {
   float ringBand = exp(-dRing * dRing * 1.8) * inDrum;
   vec3 ringCol = mod(idx, 2.0) < 0.5 ? uRingA : uRingB;
 
-  vec3 lit = col * (0.72 + 0.28 * NdotL);
-  lit += env * fresnel * 0.5 * (1.0 - inDrum * 0.6);
-  lit += ringCol * ringBand * 1.6 * (0.35 + fresnel);
+  vec3 lit = col * (0.8 + 0.3 * NdotL);
+  lit += env * fresnel * 0.28 * (1.0 - inDrum * 0.6);
+  lit += ringCol * ringBand * 1.3 * (0.35 + fresnel);
   lit += vec3(1.0) * (spec + glint * 4.0);
-  lit = mix(lit, vec3(1.0) * (0.95 + 0.2 * NdotL), foam);
+  lit = mix(lit, vec3(0.9, 0.97, 1.0) * (0.92 + 0.18 * NdotL), foam);
 
   float dist = length(cameraPosition - vWorld);
   lit = mix(lit, uFog, smoothstep(40.0, 160.0, dist));
@@ -258,12 +274,13 @@ void main() {
   vec2 p = gl_PointCoord * 2.0 - 1.0; float r = length(p);
   if (r > 1.0) discard;
   vec3 col; float a;
-  if (vKind < 0.5) {            // droplet: bright core with a highlight
-    a = 1.0 - smoothstep(0.55, 1.0, r);
-    col = mix(vec3(0.75, 0.9, 1.0), vec3(1.2), smoothstep(0.7, 0.0, length(p - vec2(-0.3, -0.35))));
-  } else if (vKind < 1.5) {     // foam puff: soft white
-    a = (1.0 - smoothstep(0.2, 1.0, r)) * 0.8;
-    col = vec3(1.05);
+  if (vKind < 0.5) {            // water droplet: clear cyan body, bright rim and a sparkle highlight
+    float hl = 1.0 - smoothstep(0.0, 0.35, length(p - vec2(-0.32, -0.32)));
+    a = (1.0 - smoothstep(0.8, 1.0, r)) * (0.42 + 0.45 * smoothstep(0.45, 0.9, r)) + hl * 0.5;
+    col = mix(vec3(0.55, 0.88, 1.0), vec3(1.25), clamp(hl + smoothstep(0.6, 0.95, r) * 0.45, 0.0, 1.0));
+  } else if (vKind < 1.5) {     // foam puff: soft, see-through white
+    a = (1.0 - smoothstep(0.15, 1.0, r)) * 0.55;
+    col = vec3(0.95, 0.98, 1.0);
   } else {                      // sparkle star
     float cross_ = max((1.0 - smoothstep(0.0, 0.14, abs(p.x))) * (1.0 - abs(p.y)), (1.0 - smoothstep(0.0, 0.14, abs(p.y))) * (1.0 - abs(p.x)));
     a = clamp(cross_ + (1.0 - smoothstep(0.0, 0.35, r)), 0.0, 1.0);
@@ -290,3 +307,50 @@ export const GradeShader = {
       gl_FragColor = max(c, 0.0);
     }`,
 };
+
+// ---- the Meshy pink mascot's fur
+// The Meshy model is a static, densely bristled mesh with one colour texture. Lighting blends the
+// bristles' own normals (strand detail) with the body's sphere (soft round volume), so it reads as a
+// fluffy ball from behind instead of a flat pink shape, while never darkening the fuchsia to black.
+export const furVertex = /* glsl */ `
+varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
+void main() {
+  vUv = uv;
+  vec4 w = modelMatrix * vec4(position, 1.0);
+  vWorld = w.xyz;
+  vN = normalize(mat3(modelMatrix) * normal);
+  gl_Position = projectionMatrix * viewMatrix * w;
+}
+`;
+export const furFragment = /* glsl */ `
+${NOISE}
+uniform sampler2D map;
+uniform vec3 uCentre, uUp, uKey, uSky, uGround, uRim, uTip;
+uniform float uRadius, uTime;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
+void main() {
+  vec3 base = texture2D(map, vUv).rgb;
+  vec3 V = normalize(cameraPosition - vWorld);
+  vec3 Nm = normalize(vN) * (gl_FrontFacing ? 1.0 : -1.0);
+  vec3 rel = vWorld - uCentre;
+  vec3 Ns = normalize(rel);
+  vec3 N = normalize(mix(Nm, Ns, 0.65));
+  float key = clamp((dot(N, uKey) + 0.5) / 1.5, 0.0, 1.0);          // soft wrapped key light
+  float strand = clamp(dot(Nm, uKey) * 0.5 + 0.5, 0.0, 1.0);         // each bristle's own light and shade
+  float up = dot(Ns, uUp) * 0.5 + 0.5;
+  float hgt = dot(rel, uUp) / uRadius;                               // -1 at the water .. +1 on top
+  vec3 amb = mix(uGround, uSky, up);
+  vec3 c = base * (amb * 0.52 + vec3(1.0, 0.94, 0.97) * key * 0.92);
+  c *= 0.58 + 0.56 * strand;
+  c *= 0.7 + 0.3 * smoothstep(-1.05, 0.35, hgt);                     // deeper magenta toward the water
+  float rim = pow(1.0 - clamp(dot(Ns, V), 0.0, 1.0), 2.4);
+  c += uRim * rim * (0.25 + 0.75 * up) * 0.85;                       // fur tips glowing around the silhouette
+  c += uTip * smoothstep(0.62, 1.0, strand) * smoothstep(0.3, 1.0, up) * 0.32;
+  // Water droplets caught in the fur twinkle in the light.
+  vec3 cell = floor(rel * 34.0);
+  float h = bwHash(cell.xy + cell.z * 17.13);
+  float tw = step(0.986, h) * (0.55 + 0.45 * sin(uTime * 5.0 + h * 40.0)) * smoothstep(0.25, 0.85, strand);
+  c += vec3(1.0, 0.96, 1.0) * tw * 1.1;
+  gl_FragColor = vec4(c, 1.0);
+}
+`;

@@ -16,6 +16,13 @@ This project recreates the 12 approved Bubble Wash Kingdom screens as real-time,
 
 The project builds as a **WebGL** browser game in the cloud, either with Unity Build Automation (no installs) or with GitHub Actions. You then open a link to play the real Unity game on a laptop or phone. Step-by-step setup: **[CLOUD_BUILD.md](CLOUD_BUILD.md)**.
 
+## Browser demo of Screen 3 (`WebDemo/`)
+
+A separate three.js version of approved Screen 3, built from the Meshy models and this project's layout, so the run can be played and checked without Unity. The Unity project is not changed by it.
+- The pink mascot rides a real 3D path. It goes down the slide, over its crest and into the portal. In the washing machine the tube climbs, crests, drops and banks through left and right turns.
+- It collects coins, gems and the Meshy lost socks.
+- Details, debug views and recordings: [`WebDemo/README.md`](WebDemo/README.md) and [`Previews/WebDemo/`](Previews/WebDemo).
+
 ## Open the project on Windows (optional, full Unity editor)
 
 1. **Install Unity 6.3.**
@@ -155,6 +162,7 @@ Assets/BubbleWash/
 Design/              approved screens, measurements, visual differences
 Previews/            build/validation reports, Unity captures
 Assets/WebGLTemplates/BubbleWash/   portrait browser page for the WebGL build
+WebDemo/             browser demo of Screen 3 (three.js), separate from the Unity project
 .github/workflows/webgl-build.yml   cloud WebGL build (GameCI)
 Tools/               HUD sprite generator; verify/ checks C# and shaders without the editor
 Open_BubbleWash_In_Unity.bat

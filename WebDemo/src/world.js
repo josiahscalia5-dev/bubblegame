@@ -4,6 +4,8 @@
 //
 // three.js is right-handed and Unity left-handed; the scenes look identical with Unity's X mirrored
 // (as glTFast does on import). +Z is the travel direction; screen-left is +X when looking along +Z.
+// Heights here are in track coordinates (x sideways, u along the run): track.js bends them onto the
+// 3D path. On the straight part in front of the castle, track coordinates are world x and z.
 
 export const WATER = 0;
 export const AXIS_H = 1.5;          // drum axis above the water
@@ -13,14 +15,18 @@ export const BODY_R = 0.4;
 export const CRUISE = 7;            // m/s
 export const JUMP_V = 6.2;
 export const GRAVITY = 17;
-export const SLIDE = { half: 2.0, moat: -0.6, crown: 0.12 };
+// The approved Screen 3 slide is narrow: about three lanes wide, with the brushes, gold machinery and
+// bubbles close beside it (the Unity layout's 2 m half-width left them off screen).
+export const SLIDE = { half: 1.45, moat: -0.6, crown: 0.12 };
 
-// The raised water slide in front of the castle rolls downhill, climbs a crest and drops into the
-// portal (approved Screen 3: "a raised water slide that rises into the portal").
+// The raised water slide in front of the castle runs downhill, climbs a crest and drops into the
+// portal (approved Screen 3: "a raised water slide that rises into the portal"). The crest stays
+// low enough that the slide is still seen all the way into the portal from the Tap to Start view.
 // Keyframes (z, height above the crown); smoothstep between them, flat at each key.
-export const HILLS = [[-16.7, 0], [-11.5, -0.32], [-5.5, 0.5], [-1.0, 0]];
-// Inside the drum the water rolls in standing swells, so the ride keeps going up and down.
-export const SWELL = { amp: 0.2, wavelength: 7.4 };
+export const HILLS = [[-16.7, 0], [-11.8, -0.5], [-5.6, 0.36], [-1.0, 0]];
+// Inside the drum the tube itself climbs, crests, drops and banks (track.js); the water on top of
+// that rolls in gentle standing swells.
+export const SWELL = { amp: 0.1, wavelength: 7.4 };
 
 export const clamp01 = (v) => Math.min(1, Math.max(0, v));
 export const smoothstep = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };

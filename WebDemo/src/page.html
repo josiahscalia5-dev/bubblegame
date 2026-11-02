@@ -1,4 +1,4 @@
-<title>Bubble Wash Kingdom</title>
+<title>Bubble Wash Kingdom Screen 3</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,6 +96,23 @@
     font-size: calc(var(--u) * 11); line-height: 1.35; opacity: 0; transition: opacity 0.4s ease;
   }
   #hint.show { opacity: 1; }
+  /* Approved Screen 4 objective panel: shown once the mascot is inside the washing machine. */
+  #sockPanel {
+    top: calc(var(--u) * 46); left: calc(var(--u) * 14); width: calc(var(--u) * 200); height: calc(var(--u) * 46);
+    border-radius: calc(var(--u) * 15); opacity: 0; transform: translateY(calc(var(--u) * -10));
+  }
+  body.inDrum #sockPanel { opacity: 1; transform: none; }
+  #sockPanel .icon { position: absolute; left: calc(var(--u) * 3); top: calc(var(--u) * 1); width: calc(var(--u) * 44); height: calc(var(--u) * 44); }
+  #sockPanel .title { position: absolute; left: calc(var(--u) * 50); top: calc(var(--u) * 5); font-size: calc(var(--u) * 14.5); line-height: calc(var(--u) * 18); white-space: nowrap; }
+  #sockPanel .track { position: absolute; left: calc(var(--u) * 52); top: calc(var(--u) * 28); width: calc(var(--u) * 106); height: calc(var(--u) * 9); border-radius: 999px; background: rgba(20, 28, 92, 0.55); box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255, 255, 255, 0.6); overflow: hidden; }
+  #sockBar { height: 100%; width: 0; background: linear-gradient(90deg, #ffe27a, #ff8fd8); transition: width 0.3s ease; }
+  #sockPanel .count { position: absolute; left: calc(var(--u) * 163); top: calc(var(--u) * 24); font-size: calc(var(--u) * 14); line-height: 1; }
+  #sockPanel.pop .icon { animation: pop 0.42s cubic-bezier(.2, 1.6, .4, 1); }
+  #overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  /* Side view (debug): full window, no game HUD. */
+  body.side { padding: 0; }
+  body.side #stage { aspect-ratio: auto; width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+  body.side .hud { display: none; }
   #flash { inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(220, 200, 255, 0.85)); opacity: 0; }
   #flash.go { animation: flash 0.7s ease-out; }
   @keyframes flash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
@@ -139,9 +156,16 @@
       <img src="ui/arrow_right.png" alt="" style="left:calc(var(--u)*188);top:calc(var(--u)*36);width:calc(var(--u)*32);height:calc(var(--u)*36)">
       <img id="hand" src="ui/hand.png" alt="" style="left:calc(var(--u)*103);top:calc(var(--u)*72);width:calc(var(--u)*32);height:calc(var(--u)*40)">
     </div>
+    <div class="panel t" id="sockPanel">
+      <img class="icon" src="ui/sock.png" alt="">
+      <div class="title">Rescue 5 lost socks</div>
+      <div class="track"><div id="sockBar"></div></div>
+      <div class="count" id="sockCount">0/5</div>
+    </div>
     <div class="t" id="hint">Swipe ← → to steer · ↑ to jump<br>Tap to spin</div>
     <div id="flash"></div>
   </div>
+  <canvas id="overlay" aria-hidden="true"></canvas>
   <div id="loading">
     <h1 class="t">Bubble Wash Kingdom</h1>
     <div class="bar"><div id="loadBar"></div></div>
