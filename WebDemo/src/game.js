@@ -57,7 +57,7 @@ scene.add(rimLight);
 // ------------------------------------------------------------------ loading
 const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
-  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', duck: 'models/duck.glb',
+  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', duck: 'models/duck.glb', machinery: 'models/machinery.glb',
 };
 const progress = {};
 function showProgress() {
@@ -445,11 +445,11 @@ function radialTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
-// Screen 3 washing brushes (the Meshy roller), placed in view beside the narrower slide as in the
-// approved screen: a big one close on the left, seen nearly end-on (blue hub, fluffy pink ring), and
-// more along both sides toward the castle. [track x, h, u], axis, diameter (m), spin (deg/s).
+// Screen 3 washing brushes (the Meshy roller), spinning beside the slide: one high on the left above the
+// Meshy side machinery (which holds the approved lower-left spot), seen nearly end-on, and one on the
+// right showing its pink fringe. [track x, h, u], axis, diameter (m), spin (deg/s).
 const SCREEN3_BRUSHES = [
-  { at: [2.75, 0.1, -7.0], axis: [-0.2, 0.08, -0.98], d: 3.0, spin: 110 },    // lower left, end-on: the approved big brush
+  { at: [2.55, 2.25, -3.4], axis: [-0.3, 0.05, -0.95], d: 1.8, spin: 110 },   // upper left, above the Meshy side machinery (which holds the lower-left spot)
   { at: [-2.45, 1.3, -5.0], axis: [0.3, 0.05, -0.95], d: 1.8, spin: -95 },   // right, above the gold wheel: pink fringe
 ];
 // The three Meshy drum segments, chained as in the Unity layout and then bent along the 3D path:
@@ -519,6 +519,46 @@ function buildRollers(gltf) {
     scene.add(g);
     rollers.push({ g, m0, centre, axis, speed: THREE.MathUtils.degToRad(b.spin), angle: Math.random() * 6 });
   }
+}
+
+// Your Meshy giant side washing machinery (Design/MeshyDeliveries/SideMachinery, the Medium copy
+// unchanged in models/machinery.glb; the Balanced copy showed thin gold cracks across the bristles): the big blue wheel with pink, white and blue bristles, gold
+// housing, pink star and piping, standing at the lower left of the slide as in the approved Screen 3.
+// Its bristle wheel (model +Z) faces the camera, turned a little toward the slide; the pump and pipe
+// (model -X) end up on the outer side. It is one combined mesh, so it stays still: the separate
+// Meshy washing roller is the brush that spins. It keeps its own PBR textures (colour, metal and
+// roughness, normals) with the scene's studio reflections, plus a little glow from its colours so the
+// bristles stay bright without glare on the gold.
+const SIDE_MACHINERY = { at: [2.7, 1.05, -8.0], yaw: 0.08, height: 2.8 };   // measured against the approved screen; nearest point to the lanes 1.18 m (the mascot reaches 1.10 m)
+function buildSideMachinery(gltf) {
+  const model = gltf.scene;
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const src = o.material;
+    o.material = new THREE.MeshStandardMaterial({ map: src.map, metalnessMap: src.metalnessMap, roughnessMap: src.roughnessMap, normalMap: src.normalMap,
+      metalness: 1, roughness: 1, envMap: mats.env, envMapIntensity: 1.05, emissive: 0xffffff, emissiveMap: src.map, emissiveIntensity: 0.2, side: THREE.DoubleSide });
+  });
+  const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3()), centre = box.getCenter(new THREE.Vector3());
+  mats.sideMachineryModel = { model, size, centre };
+  const g = new THREE.Group(); g.name = 'sideMachinery'; g.add(model);
+  scene.add(g);
+  mats.sideMachinery = g;
+  placeSideMachinery();
+}
+/** Place it from SIDE_MACHINERY, and measure how close it comes to the lanes (its nearest point to the slide's middle at ride height). */
+function placeSideMachinery() {
+  const { model, size, centre } = mats.sideMachineryModel, g = mats.sideMachinery;
+  const s = SIDE_MACHINERY.height / size.y;
+  model.scale.setScalar(s); model.position.copy(centre).multiplyScalar(-s);
+  g.position.set(...SIDE_MACHINERY.at); g.rotation.y = Math.PI + SIDE_MACHINERY.yaw;
+  g.updateMatrixWorld(true);
+  let inner = Infinity; const v = new THREE.Vector3();
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const p = o.geometry.attributes.position;
+    for (let i = 0; i < p.count; i += 7) { v.fromBufferAttribute(p, i).applyMatrix4(o.matrixWorld); if (v.y < 1.4) inner = Math.min(inner, Math.abs(v.x)); }
+  });
+  state.machineryInnerX = +inner.toFixed(2);   // the mascot's body reaches |x| = lane 0.70 + radius 0.40 = 1.10
 }
 
 function buildBubbles() {
@@ -1157,7 +1197,7 @@ function buildSideView() {
   const dots = new THREE.Points(tg, new THREE.PointsMaterial({ color: 0xff1f9e, size: 5, sizeAttenuation: false }));
   dots.frustumCulled = false; g.add(dots);
   // Only the run itself: the castle, drum, scenery and water sheet would hide the mascot from the side.
-  for (const o of [mats.castle, water, mats.machinery, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
+  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
   side = { cam, g, dots, tp, n: 0, N, yc: 1.0, width: 22, startY: mascot.root.position.y };
 }
 function sideTrail() {
@@ -1295,8 +1335,8 @@ async function main() {
     L = await layoutRes.json();
     TR = makeTrack(L);
     buildSky();
-    const [castle, drum, mascotG, roller, gem, sock, duckG, coinFace] = await Promise.all([
-      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'duck'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
+    const [castle, drum, mascotG, roller, gem, sock, duckG, machineryG, coinFace] = await Promise.all([
+      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'duck', 'machinery'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
@@ -1310,6 +1350,7 @@ async function main() {
     buildRollers(roller);
     scenery = buildScenery({ scene, mats, fallGeometry, fallMaterial: mats.fallMat, fx, track: { TR, L, W } });
     mats.machinery = scenery.root;
+    buildSideMachinery(machineryG);
     buildBubbles();
     buildCollectibles(gem, coinFace);
     buildSocks(sock);
@@ -1349,7 +1390,7 @@ window.__bw = {
     lane: mascot.lane, speed: +mascot.speed.toFixed(2), air: mascot.air, slope: +mascot.lastSlope.toFixed(3), pitchDeg: +THREE.MathUtils.radToDeg(mascot.pitch).toFixed(1),
     leanDeg: +THREE.MathUtils.radToDeg(mascot.lean).toFixed(1), coins: state.coins, gems: state.gems, socks: state.socks, collected: { ...state.collected }, laps: state.laps,
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
-    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, helperZ: helper ? +helper.z.toFixed(2) : null,
+    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, helperZ: helper ? +helper.z.toFixed(2) : null, machineryInnerX: state.machineryInnerX ?? null,
   }),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
@@ -1360,6 +1401,7 @@ window.__bw = {
   // Try a Tap to Start framing (camera offset and aim from the mascot, field of view) without a rebuild.
   // Try a helper placement (distance along the run, height in metres) without a rebuild.
   setHelper: (z, height) => { if (!helper) return; HELPER.z0 = z; helper.z = z; helper.root.scale.setScalar(height / HELPER.height); },
+  setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; },
   setFraming: (f) => { if (f.off) S3.off.set(...f.off); if (f.look) S3.look.set(...f.look); if (f.fov) S3.fov = f.fov; rig.snap = true; },
   debug: () => ({ scene, water, mascot: mascot.root, particles: fx.points }),
 };

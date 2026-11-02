@@ -129,22 +129,10 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, trac
     mesh(new THREE.TorusGeometry(0.3, 0.06, 10, 28), blueDeep, [0, 0, -0.35], g);
   }
 
-  // ---------------------------------------------------------------- blue-and-gold wheel (upper left)
+  // ---------------------------------------------------------------- upper left
+  // (The code-built blue-and-gold wheel that stood here was replaced by the user's Meshy side machinery
+  // below it and the Meshy washing roller, which now turns here.)
   {
-    const g = facing([2.75, 2.35, -3.6], [-0.35, -0.05, -0.94]);
-    const wheel = add(new THREE.Group(), g);
-    mesh(new THREE.CylinderGeometry(0.95, 0.95, 0.28, 48), blue, null, wheel).rotation.x = Math.PI / 2;
-    mesh(gearGeometry(1.22, 30, 0.2), goldWarm, [0, 0, -0.06], wheel);
-    mesh(new THREE.TorusGeometry(1.0, 0.13, 14, 60), gold, null, wheel);
-    mesh(new THREE.TorusGeometry(0.62, 0.07, 10, 48), goldWarm, [0, 0, 0.15], wheel);
-    for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2;
-      mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.12, 20), goldWarm, [Math.cos(a) * 0.8, Math.sin(a) * 0.8, 0.16], wheel).rotation.x = Math.PI / 2;
-    }
-    mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.2, 28), goldWarm, [0, 0, 0.16], wheel).rotation.x = Math.PI / 2;
-    mesh(new THREE.SphereGeometry(0.16, 20, 14), blue, [0, 0, 0.27], wheel);
-    ring(wheel, 1.0, 16, 0.045, bulb, 0.14);
-    spinners.push({ obj: wheel, axis: new THREE.Vector3(0, 0, 1), speed: 0.4 });
     gear([2.05, 3.15, -2.6], [-0.3, 0, -0.95], 0.55, navy, -0.7);
   }
 

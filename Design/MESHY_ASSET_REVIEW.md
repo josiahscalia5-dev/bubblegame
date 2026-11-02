@@ -1,6 +1,6 @@
 # Meshy asset review: approved Screen 3 against the browser demo (2 November 2026)
 
-**Update, late on 2 November:** the Meshy duck helper on its pink float has arrived and replaces the code-built helper (see `Design/MeshyDeliveries/DuckHelper/`).
+**Update, late on 2 November:** the Meshy giant side machinery has arrived and stands at the lower left of the slide (see `Design/MeshyDeliveries/SideMachinery/`). The Meshy duck helper on its pink float has arrived and replaces the code-built helper (see `Design/MeshyDeliveries/DuckHelper/`).
 
 **Earlier update:** the three models this review first listed as missing (the gold machinery tower, the gold gear and the golden figure) are now built in code in the browser demo. **No new Meshy model is required for Screen 3.** Section 3 below lists the optional upgrades.
 
@@ -18,6 +18,7 @@ The approved image is small (269 × 538 px, shown at 3×). Shapes smaller than a
 | Big fluffy brush on the left, and pink fluffy shapes on the right | Washing roller | **Done (recoloured in code):** blue tufts toward the hub, a white band and a pink fringe. A 3 m brush turns end-on at the lower left, and a second one shows its pink fringe on the right. No new brush is needed. |
 | Gems | Gemstone | Done. |
 | Socks (Screen 4, inside the tunnel) | Lost sock | Done. |
+| Big blue-and-gold washing wheel with pink, white and blue bristles at the lower left | Giant side machinery (delivered late on 2 November) | **In use** (Medium copy), placed and sized against the approved screen, clear of the lanes. It stands still because it is one mesh. |
 | Small yellow helper on a pink float, in front of the portal | Duck helper (delivered late on 2 November) | **In use.** Placed and sized against the approved screen, bobbing with gentle splashes; goggles softened. It leads the mascot into the tunnel. |
 
 ## 2. Built in code: no Meshy model needed

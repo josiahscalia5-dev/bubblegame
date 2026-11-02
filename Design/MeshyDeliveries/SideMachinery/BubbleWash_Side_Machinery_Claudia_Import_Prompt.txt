@@ -1,0 +1,20 @@
+Claudia Code, I am sending you a smaller, optimized GLB for the GIANT BLUE-AND-GOLD SIDE WASHING MACHINERY in my approved Bubble Wash Kingdom Screen 3.
+
+This is a new standalone decorative assembly, NOT a replacement for the existing fluffy cylindrical washing roller, castle, or tunnel. It contains the large circular blue mechanical wheel, pink/white/blue bristle surround, gold-and-blue housing, pink star center and attached plumbing.
+
+Please:
+1. Add this GLB to my EXISTING browser-playable Bubble Wash Kingdom Screen 3 in Claude Code. Do not start another project or require Unity setup.
+2. Place the machinery prominently in the LOWER-LEFT FOREGROUND alongside the raised water slide, using the approved screenshot as the visual target. It should frame the ride and be large enough to read at phone size, but must not cover the mascot, yellow helper, tutorial UI, or playable lanes. If appropriate, reuse a mirrored copy on the opposite side only if the approved composition supports it.
+3. Align the visible circular blue wheel toward the camera and angle the assembly to show the thick white/pink/blue bristles. Match the screenshot's perspective, depth, color and approximate on-screen size by direct side-by-side comparison.
+4. Preserve the texture colors and glossy gold/blue look. Check rendering and material exposure in the actual browser preview; do not overexpose the gold or flatten the blue. This model's preview in a basic renderer may look darker than it does in your game.
+5. Reuse/instance this asset rather than uploading duplicate geometry. This optimized GLB has one mesh/node; treat it as a static mounted decorative assembly unless you separate rotating parts properly. Do not spin the entire pipe and housing as if it were one roller. The existing standalone spinning roller is a separate model.
+6. Keep the real 3D uphill/downhill water movement, camera banking, flowing blue water, splashes, foam, swipe controls, coins, gems, and sock rescue system unchanged.
+7. Show a new actual browser-rendered starting frame at the SAME portrait view as my approved Screen 3, plus a short real moving preview. Do not overlay the original screenshot in place of a rendered 3D scene.
+8. If the smaller GLB shows holes or faceted bristles at game scale, say so and try the higher-detail version, or ask me for a revised Meshy model. Do not call it an exact match without my approval.
+
+Files provided:
+- BubbleWash_Side_Machinery_Claudia_Balanced.glb (~4.9 MB): first file to try
+- BubbleWash_Side_Machinery_Claudia_Medium.glb (~8.1 MB): higher-detail fallback
+- BubbleWash_Side_Machinery_Claudia_Small.glb (~1.9 MB): very small test fallback, more shape loss
+
+Keep my original GLB untouched. Do not merge/overwrite the existing project without asking me.

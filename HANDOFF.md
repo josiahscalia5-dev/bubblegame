@@ -37,6 +37,11 @@ The user wants Screen 3 to look and move right before the remaining screens. The
   - **Duck helper:** the user's Meshy duck on its pink float (`Design/MeshyDeliveries/DuckHelper/`, Balanced copy in `WebDemo/models/duck.glb`). It replaced the code-built helper. `WebDemo/src/helper.js` places it ahead of the mascot, facing it, with gentle splashes and softened goggles. It leads the way into the washing machine.
   - **Brushes:** a 3 m Meshy brush turns end-on at the lower left; a second one shows its pink fringe on the right.
   - **Water:** a soft, wavy caustic shimmer and twinkling sparkles instead of the polygon grid. Foam only where water churns, including a foam collar around the mascot. Fewer droplets.
+- **Giant side machinery (Meshy):** the user's model (`Design/MeshyDeliveries/SideMachinery/`, Medium copy in `WebDemo/models/machinery.glb`) stands at the lower left of the slide, matched to the approved screen.
+  - It stays 1.18 m from the slide's middle, so it never blocks the lanes.
+  - It is one combined mesh, so it stands still. Turning only its bristle wheel would need the wheel delivered as a separate mesh centred on its axle.
+  - The Balanced copy showed thin gold cracks across the bristles at game size; the Medium copy mostly closes them.
+  - It replaced the code-built blue-and-gold wheel on the upper left, and the Meshy roller moved up there.
 - **Fix:** every baked Meshy material shared one compiled shader (three.js caches by the `onBeforeCompile` source), so materials could render with another's settings. The duck first showed all pink from the brushes' recolour. Each now has its own `customProgramCacheKey`. This also corrected the left brush's gold-and-blue hub.
 - **Visual-fidelity round (after the user's review of the side-by-side):**
   - glossier lighting: studio reflections, a rim light, and shading on the Meshy models
