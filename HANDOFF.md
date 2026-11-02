@@ -37,6 +37,14 @@ The user wants Screen 3 to look and move right before the remaining screens. The
   - **Golden helper** (`WebDemo/src/helper.js`): the duck-like friend on a pink float, in front of the portal, facing the mascot. It leads the way into the washing machine.
   - **Brushes:** a 3 m Meshy brush turns end-on at the lower left; a second one shows its pink fringe on the right.
   - **Water:** a soft, wavy caustic shimmer and twinkling sparkles instead of the polygon grid. Foam only where water churns, including a foam collar around the mascot. Fewer droplets.
+- **Visual-fidelity round (after the user's review of the side-by-side):**
+  - glossier lighting: studio reflections, a rim light, and shading on the Meshy models
+  - raised water mound and V ridges around the mascot (visual only), deeper troughs, clear bow spray
+  - tunnel rings in gold, pink, cyan and lavender with bulbs, and turning wall gears
+  - a broader helper with a wider pink float, placed nearer the mascot
+  - glossy jelly tutorial panels
+  - sharper fur tips
+  - framing checked at an exact 1:2 stage (40° lens)
 - **Earlier this evening:** castle colour grade (lavender, white and gold), brush recolour, lighter tunnel with a light at its end, camera follow over the crest, coins gold from the first frame.
 - **Done in the afternoon session:** the real 3D path (climb, crest, drop, banked turns), electric-blue water with caustics and foam, the fur shader, the Meshy lost socks with the "Rescue 5 lost socks" panel, the touch overlay (`?touches`) and the side view (`?side`).
 - **Evidence:** [`Previews/WebDemo/`](Previews/WebDemo): this evening's gameplay and side-view recordings, the height chart, the start frame beside the approved screen, and the per-frame game state. Recorded in headless Chromium with software WebGL. **Not tried on a real phone.**

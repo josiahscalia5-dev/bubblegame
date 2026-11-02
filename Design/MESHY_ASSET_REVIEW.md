@@ -25,7 +25,7 @@ The approved image is small (269 × 538 px, shown at 3×). Shapes smaller than a
 - **Tower waterfalls** and their gold spouts and basins.
 - **Iridescent bubbles.**
 - **Paw coins**, including the gold discs around the portal mouth. Most of those are coins.
-- **Tunnel decorations:** glowing gold ring lights, sparkles, and coins and gems inside the tunnel. The stars and panels are already in the tunnel texture.
+- **Tunnel decorations:** glowing rings in gold, pink, cyan and lavender with bulbs, turning gold wall gears, sparkles, and coins and gems inside the tunnel. The stars and panels are already in the tunnel texture.
 - **Curved gold pipes**, banded in blue.
 - **Washing machinery** (`WebDemo/src/scenery.js`): the huge gold washing wheel on the lower right with pink fluffy trim and glowing bulbs, the blue-and-gold wheel high on the left, the cream-and-gold housing under the left brush, six gold gears with teal and navy hubs at the portal mouth, and a gold machinery tower on each side of the castle (glass tube of rushing water, gear-toothed collars, glass dome, waterfall). Wheels, gears and collars turn.
 - **The slide flume**: lavender walls, thick gold rails and chunky gold segments with blue gem studs.

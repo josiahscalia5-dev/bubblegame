@@ -1,8 +1,8 @@
 # Browser demo recordings and checks
 
-Recorded on the evening of 2 November 2026 from `WebDemo/` in headless Chromium with `WebDemo/tools/record.cjs`. WebGL is rendered in software and the game is stepped at exactly 30 frames per game-second, so the videos play at true game speed.
+Recorded late on 2 November 2026 from `WebDemo/` in headless Chromium with `WebDemo/tools/record.cjs`. WebGL is rendered in software and the game is stepped at exactly 30 frames per game-second, so the videos play at true game speed. The player's view is recorded at an exact 1:2 portrait stage (538 × 1076), the same shape as the approved screens.
 
-This version adds the lavender, white and gold castle, the blue, white and pink brushes, chunky gold rails, the lighter tunnel, the light at the tunnel's end, and a camera that keeps the mascot in the lower middle of the screen over the crest and drop. The ride itself is the same as in the afternoon recording, and so are its heights.
+This version adds the washing machinery built in code (gold washing wheel, blue-and-gold wheel, machinery towers with waterfalls, gears, pipes), the golden helper on its pink float, the approved framing and narrow flume slide, glossier lighting, the raised water around the mascot, the coloured glowing rings in the tunnel and the glossy tutorial panels. The ride itself is unchanged: it climbs, crests, drops and banks over the same heights.
 
 Every input is a real pointer gesture on the game stage (press, drag, release), the same events a finger makes on a phone. Both views use the same script, and their runs match: the mascot's height ranges over the same values, they visit the same lanes and both rescue 3 socks. Neither logged console errors.
 
@@ -14,6 +14,7 @@ Every input is a real pointer gesture on the game stage (press, drag, release), 
 | `height_trace.png` | The mascot's and the camera's world height every frame, with each gesture marked, plus the tube's pitch and bank and the lane. From `gameplay_track.json`. |
 | `gameplay_frames.png`, `side_view_frames.png` | Frames from both videos. |
 | `screen3_start_vs_approved.png` | Approved Screen 3 beside the recorded Tap to Start frame. |
+| `screen3_start_vs_approved_overlay.png` | Approved Screen 3, the browser's Tap to Start frame and the two blended, all at 538 × 1076. |
 | `gameplay_track.json` | The game state for every recorded frame: track and world position, lane, speed, path pitch and bank, camera, and coins, gems and socks. |
 | `published_page_check.png` | The published page (`artifact.html`) served locally the way it is published: models only as base64 JSON, no `.glb` files. It played through with no console errors. |
 
@@ -39,7 +40,7 @@ Every input is a real pointer gesture on the game stage (press, drag, release), 
 node tools/record.cjs "$PWD" <g> 13 game
 node tools/record.cjs "$PWD" <s> 13 side
 python3 -I tools/evidence_images.py <g> <s> ../Design/ApprovedScreens/x3_03_Lets_Go_Washer_Entry.png <out>
-ffmpeg -framerate 30 -i <g>/f%04d.jpg -c:v libx264 -pix_fmt yuv420p -crf 21 -movflags +faststart bubblewash_screen3_gameplay.mp4
+ffmpeg -framerate 30 -i <g>/f%04d.jpg -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -pix_fmt yuv420p -crf 22 -movflags +faststart bubblewash_screen3_gameplay.mp4
 ffmpeg -framerate 30 -i <s>/f%04d.jpg -c:v libx264 -pix_fmt yuv420p -crf 20 -movflags +faststart bubblewash_screen3_side_view_debug.mp4
 ffmpeg -i bubblewash_screen3_gameplay.mp4 -i bubblewash_screen3_side_view_debug.mp4 \
   -filter_complex "[0:v]scale=-2:540[a];[1:v]scale=-2:540[b];[a][b]hstack=inputs=2" \
