@@ -16,11 +16,14 @@ import sys
 src, out = sys.argv[1], sys.argv[2]
 title = sys.argv[3] if len(sys.argv) > 3 else "Chat history"
 REMINDER = re.compile(r"<system-reminder>.*?</system-reminder>", re.S)
+# Automatic size notes after Claude views a large screenshot ("[Image: original WxH, displayed at ...]").
+IMAGE_NOTE = re.compile(r"\[Image: original \d+x\d+, displayed at [^\]]*\]")
 UPLOAD = re.compile(r'@"/root/\.claude/uploads/[^"]*?/[0-9a-f]{8}-([^"]+)"')
 
 
 def clean_user(text):
     text = REMINDER.sub("", text)
+    text = IMAGE_NOTE.sub("", text)
     text = UPLOAD.sub(lambda m: f"[attached file: {m.group(1)}]", text)
     return text.strip()
 
