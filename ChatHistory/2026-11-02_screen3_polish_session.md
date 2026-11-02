@@ -320,3 +320,71 @@ Both recordings are done: 390 frames each, identical rides, no console errors. N
 
 That entry is an automatic repository check, not something you wrote. I'll have the exporter label it as an automatic check.
 
+Everything is pushed and the working tree is clean. Sending you the start-screen comparison and the new gameplay recordings:
+
+_[Sent you files: Previews/WebDemo/screen3_start_vs_approved_overlay.png, Previews/WebDemo/bubblewash_screen3_gameplay.mp4, Previews/WebDemo/bubblewash_screen3_gameplay_and_side_view.mp4, Previews/WebDemo/gameplay_frames.png]_
+
+I've built the missing Screen 3 scenery in code, without new Meshy models, and then worked through your six fidelity points. The browser start screen is now the closest match to your approved Screen 3 so far. I compared them at the same 538 × 1076 portrait size, and a new 13-second gameplay video is recorded in that same shape. Your playable game, models, controls and the uphill and downhill ride are unchanged, and nothing needs Unity.
+
+**Play it:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (same link, updated). It's private until you share it from its Share menu.
+
+**What I built and changed:**
+- **Side machinery:**
+  - A huge gold washing wheel on the lower right with pink fluffy trim and glowing bulbs.
+  - A blue-and-gold wheel on the upper left.
+  - A cream-and-gold housing under the left brush.
+  - A gold machinery tower on each side of the castle, with water rushing up a glass tube and a waterfall pouring out.
+  - Six gold gears at the portal mouth and curved gold pipes.
+  - The wheels, gears and tower rings all turn.
+- **Brushes:** your Meshy roller, now in blue, white and pink, turns large and end-on at the lower left, and a second one shows its pink fringe on the right. Both spin during play, and they're now shaded so they look rounded.
+- **Yellow helper:** a golden duck-like friend on a pink float, facing your mascot from in front of the portal. It has closed happy eyes, a purple mouth, pink cheeks, a white tuft and waving wings. When the run starts, it rides ahead into the washing machine.
+- **Water:** deeper electric blue, with the water raised in a mound around the mascot and a V-shaped wake behind it. Clear splashes and bubbles replace the grid pattern and the heavy white spray.
+- **Tunnel:** glowing rings all the way down in gold, pink, cyan and lavender, with bulbs, plus gold gears turning on the walls.
+- **Lighting:** gold and blue surfaces now catch highlights and outline glow, so the scene no longer looks flat.
+- **Framing, panels and fur:** the slide is narrower and the portal larger, as in your screenshot, with the mascot's size and position matched. The tutorial panels are glossier, and the fur has sharper light pink tips.
+
+**What I ran:**
+- The video was recorded in a headless browser on this machine, with every swipe a real touch gesture. It hasn't been tried on a phone.
+- The ride is unchanged: the mascot's height goes from −0.59 m to +1.94 m, and it rescues 3 socks.
+- There were no console errors in the game view, the side view, or the published page.
+
+**Still different from your approved Screen 3:**
+- Inside the portal, your swirl is a dense, bright pattern of white, pink and blue. Ours is simpler: coloured rings over a misty glow.
+- Your left brush overlaps the slide's edge. Ours stays clear of the left lane, so the mascot never rides through it.
+- The machinery and helper are built from simple shapes, so they have less fine detail than your painted artwork.
+- In this round, the brushes and machinery got better lighting but no new parts.
+
+**Meshy:** no new model is required for Screen 3. If you want the two biggest code-built pieces to look richer, these are optional (the prompts are in `Design/MESHY_ASSET_REVIEW.md`):
+1. `BubbleWash_Golden_Helper_Duck`, a golden duckling on a pink swim ring. It sits in the centre of the screen, so it would make the biggest difference.
+2. `BubbleWash_Gold_Machinery_Tower`. This one matters less, because the screen edges mostly cut the towers off.
+
+Everything is pushed to branch `ccr-052e5531-zna8s3`, including this chat in `ChatHistory/`. PR #1 is still an open draft, unmerged, and doesn't include this work yet. My two questions about it still stand: move these commits onto its branch, and resolve its conflicts with the Screens 1–12 work?
+
+---
+
+### You · 2026-11-02 22:01 UTC
+
+[attached file: BubbleWash_Duck_Helper_Claudia_Package_2.zip]
+
+---
+
+### Claude · 2026-11-02 22:01 UTC
+
+You've sent a Meshy helper duck package. I'll unpack it into its own folder and look at what's inside before using it.
+
+The duck shows up all pink. Its yellow body and orange beak are missing, so the baked colours aren't arriving as intended. I'll check what the browser actually reads from the model.
+
+At z = −10 the slide dips, so the duck sinks behind the mascot's head. That's too low. I'll add a small test hook and try a few placements in one run instead of rebuilding for each.
+
+The duck rides ahead through the whole run: down the slide, into the portal, and along the climbing, banking tunnel. Now I'll record the new gameplay video and commit the code while it runs.
+
+Next I'll commit the duck integration, the shader fix and the docs while the video records.
+
+Pushed. Now I'll update the playable page with the new bundle and the duck model.
+
+_[Published the page WebDemo/artifact.html]_
+
+The published version loads the duck and plays through without errors. I'll wait for the gameplay recording to finish.
+
+In the blended view the duck sits where the approved helper sits, at about the same head size. While the side view finishes, I'll add the new close-up to the recordings README.
+
