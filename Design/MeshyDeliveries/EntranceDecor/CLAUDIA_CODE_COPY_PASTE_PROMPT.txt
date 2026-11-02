@@ -1,0 +1,21 @@
+CLAUDIA CODE — BUBBLE WASH KINGDOM / SCREEN 3 — FOUR MODULAR DECOR GLBS
+
+I am providing four NEW optimized 3D Meshy models for my existing browser-playable Bubble Wash Kingdom opening Screen 3. Use the original approved BLUE Screen 3 screenshot as the visual target. Please improve my current existing game, not start over.
+
+NEW MODELS IN THIS PACKAGE:
+1. Glowing_Water_Tower_Claudia_Balanced.glb — tall pink-and-gold tower with blue glowing fluid chamber. Position/decorate around the washer entrance; duplicate on left and right only if it matches the reference and doesn't hide the scene. The blue fluid glow is primarily a textured appearance; create actual animation with browser lighting/particle effects as needed.
+2. Blue_Gold_Gear_Wheel_Claudia_Balanced.glb — royal-blue and gold gear. Place beside the tunnel opening, matching the original screenshot. If spinning it, rotate this whole wheel about its centered gear axis; don't falsely claim its internal parts rotate independently.
+3. Curved_Golden_Pipe_Claudia_Balanced.glb — hollow-looking golden elbow with glossy pink coupling and blue fasteners. Add as modular connected side pipework. Hide/open ends against valid connectors, mounts, or other scenery.
+4. Crown_Curved_Trim_Claudia_Balanced.glb — pink-and-gold curved crown panel with blue gems; use as entrance trim/decor, not a replacement for the existing castle or full portal.
+
+IMPORTANT:
+- Each model is its own GLB. Use the Balanced files for appearance; Small versions are fallback if upload size/performance demands it.
+- Preserve existing castle, cylindrical washing tunnel, main pink furry mascot, yellow helper, existing large washer roller, giant side machinery, water slide, swipe/jump controls, gems, coins, rescue socks, HUD, camera, and all working gameplay.
+- Do not duplicate an asset already present without checking. These are small modular props, not replacement models for the existing full castle/tunnel/brush.
+- Place assets outside all reachable character lanes/jump clearance. Prefer reuse/instancing instead of duplicating mesh bytes.
+- Match perspective and scale of the approved Screen 3: rich saturated electric-blue water, pink-white-blue fluffy brushes, bright gold machinery, foreground depth and bubbles.
+- Handle flowing water, reflections, foam, glowing fluid, camera motion and splashes via the existing browser game code. GLBs are static art, not ready-made animations.
+- Test the real browser-playable scene. Capture the OPENING FRAME next to the approved Screen 3 at the same portrait dimensions, and provide a moving gameplay recording. Report any differences instead of claiming a perfect match.
+- I am working in CLAUDE CODE. Do not require that I install or open Unity, do not recreate my project, do not merge the draft PR without authorization.
+
+Please integrate these four models and show me a visual comparison and a working browser demo. If one looks wrong, tell me WHICH model, placement/material issue and suggested fix before asking me to regenerate anything in Meshy.

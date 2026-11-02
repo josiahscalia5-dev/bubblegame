@@ -1,0 +1,98 @@
+[
+  {
+    "asset": "Glowing Water Tower",
+    "version": "Balanced",
+    "file": "Glowing_Water_Tower_Claudia_Balanced.glb",
+    "MB": 6.74,
+    "triangles": 95000,
+    "texture": [
+      1024,
+      1024
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Glowing Water Tower",
+    "version": "Small",
+    "file": "Glowing_Water_Tower_Claudia_Small.glb",
+    "MB": 2.01,
+    "triangles": 25000,
+    "texture": [
+      512,
+      512
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Blue-and-Gold Gear Wheel",
+    "version": "Balanced",
+    "file": "Blue_Gold_Gear_Wheel_Claudia_Balanced.glb",
+    "MB": 6.24,
+    "triangles": 74999,
+    "texture": [
+      1024,
+      1024
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Blue-and-Gold Gear Wheel",
+    "version": "Small",
+    "file": "Blue_Gold_Gear_Wheel_Claudia_Small.glb",
+    "MB": 1.99,
+    "triangles": 22966,
+    "texture": [
+      512,
+      512
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Curved Golden Pipe",
+    "version": "Balanced",
+    "file": "Curved_Golden_Pipe_Claudia_Balanced.glb",
+    "MB": 5.88,
+    "triangles": 80000,
+    "texture": [
+      1024,
+      1024
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Curved Golden Pipe",
+    "version": "Small",
+    "file": "Curved_Golden_Pipe_Claudia_Small.glb",
+    "MB": 1.86,
+    "triangles": 24138,
+    "texture": [
+      512,
+      512
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Crown & Curved Trim",
+    "version": "Balanced",
+    "file": "Crown_Curved_Trim_Claudia_Balanced.glb",
+    "MB": 5.46,
+    "triangles": 65000,
+    "texture": [
+      1024,
+      1024
+    ],
+    "valid": true
+  },
+  {
+    "asset": "Crown & Curved Trim",
+    "version": "Small",
+    "file": "Crown_Curved_Trim_Claudia_Small.glb",
+    "MB": 1.55,
+    "triangles": 14000,
+    "texture": [
+      512,
+      512
+    ],
+    "valid": true
+  }
+]

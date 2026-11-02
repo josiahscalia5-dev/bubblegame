@@ -14,6 +14,7 @@ import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
 import { buildHelper } from './helper.js';
+import { buildDecor, DECOR } from './decor.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -58,6 +59,7 @@ scene.add(rimLight);
 const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
   mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', duck: 'models/duck.glb', machinery: 'models/machinery.glb',
+  tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb',
 };
 const progress = {};
 function showProgress() {
@@ -153,7 +155,7 @@ function bakedMaterial(src, opts = {}) {
 }
 
 // ------------------------------------------------------------------ world
-let water, waterU, mascot, rig, fx, scenery, helper;
+let water, waterU, mascot, rig, fx, scenery, helper, decor;
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -357,7 +359,7 @@ function buildWaterfalls() {
   const falls = new THREE.Group(); scene.add(falls); mats.falls = falls;
   const mat = new THREE.ShaderMaterial({ vertexShader: SH.fallVertex, fragmentShader: SH.fallFragment, uniforms: u,
     transparent: true, depthWrite: false, side: THREE.DoubleSide });
-  mats.fallMat = mat;   // shared with the machinery towers' waterfalls (scenery.js)
+  mats.fallMat = mat;   // shared with the water pouring from the Meshy towers' pipe elbows (decor.js)
   const addFall = (from, to, w0, w1) => {
     const flat = to.clone().sub(from); const drop = from.y - to.y; flat.y = 0;
     const mesh = new THREE.Mesh(fallGeometry(Math.max(0.02, flat.length()), Math.max(0.05, drop), w0, w1), mat);
@@ -1197,7 +1199,7 @@ function buildSideView() {
   const dots = new THREE.Points(tg, new THREE.PointsMaterial({ color: 0xff1f9e, size: 5, sizeAttenuation: false }));
   dots.frustumCulled = false; g.add(dots);
   // Only the run itself: the castle, drum, scenery and water sheet would hide the mascot from the side.
-  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
+  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, decor && decor.root, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
   side = { cam, g, dots, tp, n: 0, N, yc: 1.0, width: 22, startY: mascot.root.position.y };
 }
 function sideTrail() {
@@ -1294,6 +1296,7 @@ function step(dt) {
     r.g.matrix.multiplyMatrices(tmpM, r.m0);
   }
   scenery.update(dt, state.time);
+  decor.update(dt, state.time);
   for (const ring of mats.rings) ring.material.color.copy(ring.userData.base).multiplyScalar(0.8 + 0.25 * Math.sin(state.time * 2.4 + ring.userData.pulse));
   fx.update(dt);
   updateCamera(dt);
@@ -1335,8 +1338,8 @@ async function main() {
     L = await layoutRes.json();
     TR = makeTrack(L);
     buildSky();
-    const [castle, drum, mascotG, roller, gem, sock, duckG, machineryG, coinFace] = await Promise.all([
-      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'duck', 'machinery'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
+    const [castle, drum, mascotG, roller, gem, sock, duckG, machineryG, towerG, gearG, pipeG, crownG, coinFace] = await Promise.all([
+      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'duck', 'machinery', 'tower', 'gear', 'pipe', 'crown'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
@@ -1348,9 +1351,13 @@ async function main() {
     buildWaterfalls();
     buildDrumLights();
     buildRollers(roller);
-    scenery = buildScenery({ scene, mats, fallGeometry, fallMaterial: mats.fallMat, fx, track: { TR, L, W } });
+    scenery = buildScenery({ scene, mats, track: { TR, L, W } });
     mats.machinery = scenery.root;
     buildSideMachinery(machineryG);
+    // The user's four Meshy entrance decorations: water towers, gear wheels, golden pipes, crown trim (decor.js).
+    decor = buildDecor({ scene, models: { tower: towerG, gear: gearG, pipe: pipeG, crown: crownG }, env: mats.env, gold: mats.gold, glowTexture: radialTexture(),
+      fallGeometry, fallMaterial: mats.fallMat, fx });
+    state.decorClear = decor.clear;
     buildBubbles();
     buildCollectibles(gem, coinFace);
     buildSocks(sock);
@@ -1390,7 +1397,7 @@ window.__bw = {
     lane: mascot.lane, speed: +mascot.speed.toFixed(2), air: mascot.air, slope: +mascot.lastSlope.toFixed(3), pitchDeg: +THREE.MathUtils.radToDeg(mascot.pitch).toFixed(1),
     leanDeg: +THREE.MathUtils.radToDeg(mascot.lean).toFixed(1), coins: state.coins, gems: state.gems, socks: state.socks, collected: { ...state.collected }, laps: state.laps,
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
-    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, helperZ: helper ? +helper.z.toFixed(2) : null, machineryInnerX: state.machineryInnerX ?? null,
+    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, helperZ: helper ? +helper.z.toFixed(2) : null, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null,
   }),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
@@ -1402,6 +1409,18 @@ window.__bw = {
   // Try a helper placement (distance along the run, height in metres) without a rebuild.
   setHelper: (z, height) => { if (!helper) return; HELPER.z0 = z; helper.z = z; helper.root.scale.setScalar(height / HELPER.height); },
   setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; },
+  // Try placements of the Meshy entrance decor without a rebuild: kind is towers, gears, pipes or crowns.
+  // Returns each kind's nearest distance to the slide's middle (decor.js LANE_CLEAR).
+  setDecor: (kind, i, props) => { if (props === null) DECOR[kind].splice(i, 1); else DECOR[kind][i] = Object.assign(DECOR[kind][i] || {}, props); state.decorClear = decor.place(); return state.decorClear; },
+  getDecor: () => JSON.parse(JSON.stringify(DECOR)),
+  // The world point under a stage pixel (for measuring where the approved scene's parts sit).
+  pick: (px, py) => {
+    const r = stage.getBoundingClientRect(), ray = new THREE.Raycaster();
+    ray.setFromCamera(new THREE.Vector2((px / r.width) * 2 - 1, -(py / r.height) * 2 + 1), camera);
+    const hit = ray.intersectObjects([mats.castle, decor.root, mats.sideMachinery].filter(Boolean), true)[0];
+    return hit ? { p: hit.point.toArray().map((v) => +v.toFixed(2)), obj: hit.object.name || hit.object.parent?.name || '' } : null;
+  },
+  project: (p) => { const v = new THREE.Vector3(...p).project(camera), r = stage.getBoundingClientRect(); return [+((v.x + 1) / 2 * r.width).toFixed(1), +((1 - v.y) / 2 * r.height).toFixed(1)]; },
   setFraming: (f) => { if (f.off) S3.off.set(...f.off); if (f.look) S3.look.set(...f.look); if (f.fov) S3.fov = f.fov; rig.snap = true; },
   debug: () => ({ scene, water, mascot: mascot.root, particles: fx.points }),
 };

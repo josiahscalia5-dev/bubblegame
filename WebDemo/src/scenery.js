@@ -1,17 +1,18 @@
-// The washing-machine works around the approved Screen 3 entrance, built in code (no extra models):
-// a huge gold washing wheel on the lower right seen almost edge-on, a blue-and-gold wheel high on the
-// left, a cream-and-gold housing under the left brush, tall gold machinery towers with flowing blue
-// water tubes and waterfalls on both sides of the castle, chunky gold gears with teal and navy hubs at
-// the portal mouth, curved gold pipes, pink fluffy trim and glowing bulbs.
+// The washing-machine works around the approved Screen 3 entrance that are built in code: a huge gold
+// washing wheel on the lower right seen almost edge-on, a cream-and-gold housing under the left brush,
+// curved gold pipes along the lower sides, pink fluffy trim and glowing bulbs, and the glowing rings and
+// gears inside the tunnel.
+// The water towers, the gears at the portal mouth and high on the left, the pipe elbows and the crown
+// over the portal are the user's Meshy models (decor.js); the code-built towers and gears that stood in
+// for them were removed when those models arrived.
 //
 // Positions were worked out from the approved screen for the Tap to Start camera (game.js S3): each
 // piece sits where the approved image shows it. In front of the castle the run is the straight +Z
 // line, so these are plain world coordinates (+X is screen-left).
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import * as SH from './shaders.js';
 
-export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, track }) {
+export function buildScenery({ scene, mats, track }) {
   const root = new THREE.Group();
   root.name = 'scenery';
   scene.add(root);
@@ -24,15 +25,10 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, trac
   const blue = new THREE.MeshStandardMaterial({ color: 0x2457ff, metalness: 0.35, roughness: 0.26, envMap: env, envMapIntensity: 1.2 });
   const blueDeep = new THREE.MeshStandardMaterial({ color: 0x1736b8, metalness: 0.3, roughness: 0.3, envMap: env, envMapIntensity: 1.0 });
   const teal = new THREE.MeshStandardMaterial({ color: 0x14808c, metalness: 0.3, roughness: 0.25, envMap: env, envMapIntensity: 1.0 });
-  const navy = new THREE.MeshStandardMaterial({ color: 0x1a2a78, metalness: 0.3, roughness: 0.3, envMap: env, envMapIntensity: 1.0 });
   const cream = new THREE.MeshStandardMaterial({ color: 0xf6dcb4, metalness: 0.25, roughness: 0.35, envMap: env, envMapIntensity: 0.9 });
-  const glass = new THREE.MeshStandardMaterial({ color: 0x9fe2ff, metalness: 0.1, roughness: 0.04, envMap: env, envMapIntensity: 1.8,
-    transparent: true, opacity: 0.22, depthWrite: false, emissive: 0x2a6fd0, emissiveIntensity: 0.2 });
   const fluff = fluffMaterial(0xff6fc8);
   const fluffWhite = fluffMaterial(0xfff0fa);
   const bulb = new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 2.05, 1.35) });   // above 1: blooms
-  const tubeWaterU = { uTime: { value: 0 } };
-  const tubeWater = new THREE.ShaderMaterial({ vertexShader: SH.tubeWaterVertex, fragmentShader: SH.tubeWaterFragment, uniforms: tubeWaterU });
 
   const add = (obj, parent = root) => { parent.add(obj); return obj; };
   const mesh = (geo, mat, pos, parent) => { const m = new THREE.Mesh(geo, mat); if (pos) m.position.set(...pos); return add(m, parent); };
@@ -81,17 +77,6 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, trac
     gearGeoCache.set(key, g);
     return g;
   }
-  function gear(pos, dir, r, hubMat, speed, opts = {}) {
-    const teeth = opts.teeth || Math.max(9, Math.round(r * 26));
-    const g = facing(pos, dir);
-    const wheel = mesh(gearGeometry(r, teeth, r * 0.32), opts.mat || gold, null, g);
-    mesh(new THREE.TorusGeometry(r * 0.43, r * 0.08, 10, 36), goldWarm, null, wheel);
-    const hub = mesh(new THREE.CylinderGeometry(r * 0.4, r * 0.4, r * 0.3, 32), hubMat, null, wheel); hub.rotation.x = Math.PI / 2;
-    mesh(new THREE.SphereGeometry(r * 0.16, 16, 12), gold, [0, 0, r * 0.18], wheel);
-    ring(wheel, r * 0.6, 6, r * 0.055, goldWarm, r * 0.2);
-    spinners.push({ obj: wheel, axis: new THREE.Vector3(0, 0, 1), speed });
-    return g;
-  }
 
   // ---------------------------------------------------------------- the huge gold washing wheel (lower right)
   // Seen almost edge-on from the slide, as in the approved screen: a thick gold tyre with a toothed
@@ -129,13 +114,6 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, trac
     mesh(new THREE.TorusGeometry(0.3, 0.06, 10, 28), blueDeep, [0, 0, -0.35], g);
   }
 
-  // ---------------------------------------------------------------- upper left
-  // (The code-built blue-and-gold wheel that stood here was replaced by the user's Meshy side machinery
-  // below it and the Meshy washing roller, which now turns here.)
-  {
-    gear([2.05, 3.15, -2.6], [-0.3, 0, -0.95], 0.55, navy, -0.7);
-  }
-
   // ---------------------------------------------------------------- cream-and-gold housing (under the left brush)
   {
     const g = add(new THREE.Group()); g.position.set(2.05, -0.55, -12.0); g.rotation.y = 0.3;
@@ -148,63 +126,6 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, trac
     fluffRing(top, 0.45, 9, 0.2, fluff);
     fluffRing(top, 0.15, 4, 0.18, fluffWhite);
   }
-
-  // ---------------------------------------------------------------- gold machinery towers (both sides of the castle)
-  // A gold base, a blue glass tube with water rushing up through it, gear-toothed gold collars with
-  // glowing bulbs, a blue glass dome, and a spout pouring a waterfall outward.
-  const towers = [];
-  for (const side of [1, -1]) {
-    const x = side * 3.05, z = -0.6;
-    const g = add(new THREE.Group()); g.position.set(x, 0, z);
-    mesh(new THREE.CylinderGeometry(0.85, 0.95, 0.9, 40), goldWarm, [0, -0.45, 0], g);
-    mesh(new THREE.TorusGeometry(0.9, 0.09, 12, 48), gold, [0, 0.0, 0], g).rotation.x = Math.PI / 2;
-    const h0 = 0.05, h1 = 5.9;
-    const water = mesh(new THREE.CylinderGeometry(0.4, 0.4, h1 - h0, 32, 1, true), tubeWater, [0, (h0 + h1) / 2, 0], g);
-    water.renderOrder = 1;
-    const shell = mesh(new THREE.CylinderGeometry(0.5, 0.5, h1 - h0, 40, 1, true), glass, [0, (h0 + h1) / 2, 0], g);
-    shell.renderOrder = 4;
-    for (const y of [0.9, 2.4, 3.9, 5.4]) {
-      const collar = add(new THREE.Group(), g); collar.position.y = y; collar.rotation.x = Math.PI / 2;
-      mesh(gearGeometry(0.72, 18, 0.22), gold, null, collar);
-      mesh(new THREE.TorusGeometry(0.55, 0.08, 10, 40), goldWarm, null, collar);
-      ring(collar, 0.62, 12, 0.045, bulb, -0.16);
-      spinners.push({ obj: collar, axis: new THREE.Vector3(0, 0, 1), speed: side * (y > 3 ? 0.35 : -0.35) });
-    }
-    mesh(new THREE.SphereGeometry(0.58, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), glass, [0, h1 + 0.05, 0], g).renderOrder = 4;
-    mesh(new THREE.TorusGeometry(0.58, 0.09, 12, 48), gold, [0, h1 + 0.05, 0], g).rotation.x = Math.PI / 2;
-    mesh(new THREE.ConeGeometry(0.12, 0.5, 16), gold, [0, h1 + 0.85, 0], g);
-    mesh(new THREE.SphereGeometry(0.1, 14, 10), gold, [0, h1 + 1.12, 0], g);
-    // spout and waterfall pouring outward (away from the slide)
-    const spoutY = 3.15;
-    const spout = mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.7, 20), gold, [side * 0.55, spoutY, -0.05], g);
-    spout.rotation.z = Math.PI / 2;
-    mesh(new THREE.TorusGeometry(0.17, 0.05, 8, 24), goldWarm, [side * 0.9, spoutY, -0.05], g).rotation.y = Math.PI / 2;
-    if (fallGeometry && fallMaterial) {
-      const fall = new THREE.Mesh(fallGeometry(0.9, spoutY + 0.6, 0.3, 0.42), fallMaterial);
-      fall.position.set(x + side * 0.92, spoutY, z - 0.05);
-      fall.lookAt(fall.position.clone().add(new THREE.Vector3(side, 0, 0)));
-      fall.renderOrder = 2;
-      add(fall);
-      if (fx) fx.addSource({ pos: new THREE.Vector3(x + side * 1.8, -0.6, z), rate: 14, kind: 1, spread: 0.25, up: 1.2, size: 0.32 });
-    }
-    // a curved gold pipe from the tower into the castle wall, banded in blue
-    const pipe = new THREE.CatmullRomCurve3([new THREE.Vector3(x - side * 0.45, 1.6, z), new THREE.Vector3(x - side * 0.9, 1.75, z + 0.4), new THREE.Vector3(x - side * 1.05, 2.4, z + 1.3)]);
-    mesh(new THREE.TubeGeometry(pipe, 24, 0.12, 14), gold, null, root);
-    for (const t of [0.2, 0.55, 0.85]) {
-      const p = pipe.getPoint(t), d = pipe.getTangent(t);
-      const band = mesh(new THREE.TorusGeometry(0.14, 0.05, 8, 20), blue, [p.x, p.y, p.z]);
-      band.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), d);
-    }
-    towers.push(g);
-  }
-
-  // ---------------------------------------------------------------- gears at the portal mouth
-  gear([1.5, 1.05, -1.7], [-0.2, 0.05, -0.98], 0.36, teal, 0.9);
-  gear([1.95, 0.45, -2.4], [-0.25, 0.1, -0.96], 0.42, navy, -0.75);
-  gear([1.25, 0.25, -3.1], [-0.1, 0.1, -0.99], 0.26, teal, 1.2);
-  gear([-1.35, 1.0, -1.7], [0.2, 0.05, -0.98], 0.34, navy, -0.9);
-  gear([-1.9, 0.5, -2.5], [0.25, 0.1, -0.96], 0.44, teal, 0.7);
-  gear([-1.2, 0.22, -3.2], [0.1, 0.1, -0.99], 0.25, navy, -1.2);
 
   // ---------------------------------------------------------------- curved gold pipes along the lower sides
   for (const side of [1, -1]) {
@@ -273,10 +194,9 @@ export function buildScenery({ scene, mats, fallGeometry, fallMaterial, fx, trac
   }
 
   return {
-    root, towers, tunnel,
+    root, tunnel,
     update(dt, t) {
       for (const g of glowRings) g.mat.color.copy(g.base).multiplyScalar(0.75 + 0.3 * Math.sin(t * 2.2 + g.phase));
-      tubeWaterU.uTime.value = t;
       for (const s of spinners) s.obj.rotateOnAxis(s.axis, s.speed * dt);
     },
   };

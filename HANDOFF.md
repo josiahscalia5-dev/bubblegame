@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (2 November 2026, late evening)
+# Hand-off: where Bubble Wash Kingdom stands (2 November 2026, night)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,8 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-052e5531-zna8s3` | **Latest work.** Everything below, plus this evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera). |
+  | `ccr-590365bd-e5p8xt` | **Latest work.** Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim). |
+  | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
   | `ccr-ce4e9217-j1l0vl` | The afternoon session's work (3D path, water, fur, socks, recordings, Meshy asset review). The branch above builds on it. |
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
   | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
@@ -25,7 +26,17 @@ Read this first when you continue in a new Claude conversation.
 The user wants Screen 3 to look and move right before the remaining screens. The approved Screen 3 is the target.
 
 - **Play:** https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening's version, from the account that ran it). The afternoon version is at https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC on the other account. Both are private until shared from their Share menu. Locally: `cd WebDemo && python3 -m http.server`.
-- **Latest round (Screen 3 completion), all in code, no new Meshy models:**
+- **Latest round (night of 2 November): the four Meshy entrance decorations** (`Design/MeshyDeliveries/EntranceDecor/`, placed and animated by `WebDemo/src/decor.js`):
+  - **Glowing water towers:** one on each side of the castle, where the approved image has its tall gold-and-blue columns. Each stands on a gold plinth.
+    - The fluid glows and swirls in the shader (`TOWER_FLUID`), with bubbles rising and a pulsing light.
+    - They replace the code-built machinery towers.
+  - **Blue-and-gold gear wheels:** six at the portal mouth and one high on the left, each turning about its axle. They replace the seven code-built gears there.
+  - **Golden pipe elbows:** water spouts on the towers' own pipe stubs, pouring into the moat.
+  - **Crown and curved trim:** the keystone on the portal arch. The "Let's go!" banner covers it at Tap to Start, and it shows during the run.
+  - Every decoration stays at least 1.25 m from the slide's middle up to the highest jump (the mascot reaches 1.10 m).
+  - Web copies come from the Balanced files, simplified within a small error, with their metal/roughness and normal maps kept. The Small files have stray sliver triangles and are not used.
+  - **Tried and dropped:** extra elbows at the lower corners. On the left they would only cover the side machinery; on the right the bubbles and gold wheel hid them.
+- **Previous round (Screen 3 completion), all in code, no new Meshy models:**
   - **Framing:** measured against the approved image. A 36° lens from further back keeps the mascot's size and place, and the portal arch now fills the approved 64 % of the width.
   - **Slide:** narrower, as in the approved image (2.2 m, lanes 0.70 m apart). It is a flume with lavender walls, thick gold rails and chunky gold segments.
   - **Machinery** (`WebDemo/src/scenery.js`):
@@ -76,7 +87,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 
 ## Open requests from the user
 
-1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens.
+1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens. The four entrance decorations are in. The user asked to be told which model looks wrong, and why, before regenerating anything in Meshy.
 2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). The three models it first listed as missing are now built in code. No new Meshy model is required. The duck helper has been delivered and is in use, and one optional upgrade (the machinery tower) is listed there.
 3. Keep PR #1 as a draft. Do not merge it.
 4. Not yet asked: whether to move this evening's commits onto PR #1's branch, and how to resolve PR #1's conflicts with its base.

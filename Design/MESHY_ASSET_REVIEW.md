@@ -1,5 +1,7 @@
 # Meshy asset review: approved Screen 3 against the browser demo (2 November 2026)
 
+**Latest update, 2 November (night):** four Meshy entrance decorations have arrived (`Design/MeshyDeliveries/EntranceDecor/`): a glowing water tower, a blue-and-gold gear wheel, a curved golden pipe and a crown with curved trim. They are in the browser demo. The water tower is the "ornate gold machinery tower" upgrade in section 3, and the towers and gears built in code have been replaced by the Meshy models.
+
 **Update, late on 2 November:** the Meshy giant side machinery has arrived and stands at the lower left of the slide (see `Design/MeshyDeliveries/SideMachinery/`). The Meshy duck helper on its pink float has arrived and replaces the code-built helper (see `Design/MeshyDeliveries/DuckHelper/`).
 
 **Earlier update:** the three models this review first listed as missing (the gold machinery tower, the gold gear and the golden figure) are now built in code in the browser demo. **No new Meshy model is required for Screen 3.** Section 3 below lists the optional upgrades.
@@ -31,13 +33,13 @@ The approved image is small (269 × 538 px, shown at 3×). Shapes smaller than a
 - **Paw coins**, including the gold discs around the portal mouth. Most of those are coins.
 - **Tunnel decorations:** glowing rings in gold, pink, cyan and lavender with bulbs, turning gold wall gears, sparkles, and coins and gems inside the tunnel. The stars and panels are already in the tunnel texture.
 - **Curved gold pipes**, banded in blue.
-- **Washing machinery** (`WebDemo/src/scenery.js`): the huge gold washing wheel on the lower right with pink fluffy trim and glowing bulbs, the blue-and-gold wheel high on the left, the cream-and-gold housing under the left brush, six gold gears with teal and navy hubs at the portal mouth, and a gold machinery tower on each side of the castle (glass tube of rushing water, gear-toothed collars, glass dome, waterfall). Wheels, gears and collars turn.
+- **Washing machinery** (`WebDemo/src/scenery.js`): the huge gold washing wheel on the lower right with pink fluffy trim and glowing bulbs, the blue-and-gold wheel high on the left, the cream-and-gold housing under the left brush, six gold gears with teal and navy hubs at the portal mouth, and a gold machinery tower on each side of the castle (glass tube of rushing water, gear-toothed collars, glass dome, waterfall). Wheels, gears and collars turn. (Since the night of 2 November the towers and the gears at the portal mouth and upper left are the Meshy entrance decor instead.)
 - **The slide flume**: lavender walls, thick gold rails and chunky gold segments with blue gem studs.
 - **The HUD and panels.**
 
 ## 3. Optional Meshy upgrades (only if the code-built versions are not close enough)
 
-Nothing is required. The duck helper has been delivered and is in use. This one could still look richer as a sculpted model than as shapes built in code:
+Nothing is required. The duck helper has been delivered and is in use. **The tower below has now been delivered** (the glowing water tower, in use since the night of 2 November). It is kept here for the record:
 
 1. **Ornate gold machinery tower.** Name it `BubbleWash_Gold_Machinery_Tower`. Prompt idea: "tall ornate cartoon gold machinery tower, blue glass water tube in the middle, gear-toothed gold collars, glass dome cap with gold finial, glossy, washing-machine fairy-tale style".
    - The towers are mostly cut off by the screen edges at Tap to Start, so this matters less.

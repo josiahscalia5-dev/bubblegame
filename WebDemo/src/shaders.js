@@ -3,7 +3,7 @@
 // post-processing output pass converts to sRGB.
 import { HEIGHT_GLSL } from './world.js';
 
-const NOISE = /* glsl */ `
+export const NOISE = /* glsl */ `
 float bwHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float bwNoise(vec2 p) {
   vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -88,6 +88,38 @@ export const DUCK_GOGGLES_SOFTEN = /* glsl */ `
   hsv.y *= 1.0 - 0.45 * goggle;
   hsv.z = mix(hsv.z, min(1.0, hsv.z * 0.9 + 0.12), goggle);
   diffuseColor.rgb = bwHsv2rgb(hsv); }
+`;
+
+// The Meshy glowing water tower's fluid chambers: the texture paints them cyan glass full of bubbles.
+// This finds those texels (cyan, glossy, not the royal-blue gems: measured on the texture, the fluid is
+// hue 180-200 deg with roughness about 0.12, the gems 210-220 deg with roughness about 0.31) and makes
+// them glow, with bright bands swirling upward and bubbles rising, in the tower's own (model) space.
+// Runs after the material's maps (linear colour) at the emissive step; needs vFluidP and uFluidTime.
+export const TOWER_FLUID = /* glsl */ `
+{
+  vec3 c = diffuseColor.rgb;
+  float gb = c.g / max(c.b, 1e-3);
+  float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
+  float sat = (mx - mn) / max(mx, 1e-3);
+  float fluid = smoothstep(0.2, 0.34, gb) * (1.0 - smoothstep(1.15, 1.5, gb)) * smoothstep(0.35, 0.6, sat)
+              * (1.0 - smoothstep(0.18, 0.28, roughnessFactor)) * smoothstep(0.08, 0.2, c.b);
+  float t = uFluidTime, a = atan(vFluidP.x, vFluidP.z), y = vFluidP.y;
+  // deeper, saturated electric blue under the glass (the lighting below uses this colour; kept dark enough
+  // that the tone mapping does not wash it out to pale blue), with softer reflections on the glass
+  diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.0, 0.13, 0.48) + diffuseColor.rgb * vec3(0.02, 0.2, 0.18), fluid * 0.85);
+  roughnessFactor = mix(roughnessFactor, 0.38, fluid * 0.7);
+  // bright currents swirling upward
+  float swirl = sin(y * 26.0 - t * 4.2 + a * 2.0) * 0.5 + 0.5;
+  float n = bwNoise(vec2(a * 2.6 + t * 0.4, y * 16.0 - t * 2.4));
+  float band = smoothstep(0.5, 0.92, swirl * 0.55 + n * 0.6);
+  // round bubbles rising through it
+  vec2 cell = vec2(a * 7.0, y * 34.0 - t * 5.5);
+  vec2 id = floor(cell), f = fract(cell) - 0.5 + (vec2(bwHash(id + 3.1), bwHash(id + 7.7)) - 0.5) * 0.3;
+  float bubble = step(0.82, bwHash(id)) * smoothstep(0.3, 0.16, length(f));
+  float pulse = 0.8 + 0.2 * sin(t * 2.3);
+  totalEmissiveRadiance = mix(totalEmissiveRadiance, vec3(0.0), fluid * 0.8);
+  totalEmissiveRadiance += fluid * (vec3(0.0, 0.32, 0.85) * 0.5 * pulse + vec3(0.2, 0.95, 1.35) * band * 1.0 + vec3(0.8, 0.97, 1.2) * bubble * 0.8);
+}
 `;
 
 export const RIPPLES = 8;

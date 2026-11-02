@@ -15,9 +15,15 @@ A separate, playable browser version of approved Screen 3, built from the Meshy 
 
 ## What it is
 
-- **Models:** `models/` holds web-sized copies of the Meshy GLBs (castle, drum, mascot, washing roller, gem, lost sock, duck helper, side machinery), made by `tools/optimize.mjs`. They keep the colour texture as JPEG and quantised geometry. The roller, gem and sock are simplified because they are small on screen.
+- **Models:** `models/` holds web-sized copies of the Meshy GLBs (castle, drum, mascot, washing roller, gem, lost sock, duck helper, side machinery, and the four entrance decorations: water tower, gear wheel, golden pipe, crown trim), made by `tools/optimize.mjs`.
+  - Most keep only the colour texture as JPEG, with quantised geometry.
+  - The four entrance decorations also keep their metal/roughness and normal maps (`pbr` mode).
+  - The roller, gem, sock and decorations are simplified, within a small error, because they are small on screen.
 - **Layout:** `models/layout.json` comes from the Unity Level 1 layout via `tools/export_layout.py`, so the castle, drum, rollers, waterfalls and approved-screen props sit where the Unity scene puts them.
-- **Code:** `src/` holds three.js code ported from the Unity project: water heights, foam and wake, lanes, jump, the Screen 3 and Screen 4 camera framings, and the HUD layout. `src/scenery.js` builds the washing machinery around the entrance from simple shapes in code, and `src/helper.js` places and animates the Meshy duck helper.
+- **Code:** `src/` holds three.js code ported from the Unity project: water heights, foam and wake, lanes, jump, the Screen 3 and Screen 4 camera framings, and the HUD layout.
+  - `src/decor.js` places and animates the four Meshy entrance decorations.
+  - `src/scenery.js` builds the rest of the washing machinery from simple shapes in code.
+  - `src/helper.js` places and animates the Meshy duck helper.
 
 ## The ride: a real 3D path (`src/track.js`)
 
@@ -41,13 +47,21 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
   - Its nearest point to the lanes is 1.18 m from the slide's middle, and the mascot's body reaches 1.10 m, so it never blocks the ride.
   - It keeps its own colour, metal, roughness and normal maps, reflects the scene's studio lighting, and gets a little glow from its colours so the bristles stay bright without glare on the gold.
   - It is one combined mesh, so it stands still. The spinning brush is the separate Meshy roller.
+- **Meshy entrance decor** (`src/decor.js`, your four models from `Design/MeshyDeliveries/EntranceDecor/`, web copies of the Balanced GLBs). Each model is loaded once, and every copy shares its geometry, textures and material. All of them keep their own colour, metal/roughness and normal maps under the scene's studio reflections.
+  - **Glowing water towers:** one on each side of the castle, where the approved image has its tall gold-and-blue columns.
+    - Their domes are near the top of the screen, their glass chambers beside the "Let's go!" banner, and their pumps behind the brushes.
+    - Both portholes face the camera and the pipe stubs face the slide.
+    - Each stands on a gold plinth rising from the water, so it never floats as the camera moves.
+    - The fluid is animated in the shader (`TOWER_FLUID`): the cyan glass texels glow electric blue, with brighter currents swirling upward and bubbles rising. A soft light pulses in each chamber.
+  - **Golden pipe elbows:** one on each tower's pipe stub, raised on a short gold riser so it clears the collar. They are turned 45° outward, so each shows in three-quarter view. Water pours from each into the moat, with foam where it lands.
+  - **Blue-and-gold gear wheels:** six at the portal mouth beside the slide and a larger one high on the left. Each whole wheel turns about its own centred axle.
+  - **Crown and curved trim:** the keystone on the gold band at the top of the portal arch. It sits on the arch face (measured at z = 2.3), so it stays attached as the camera moves in. At Tap to Start the "Let's go!" banner covers it, and it shows once the run starts.
+  - **Clear of the lanes:** the nearest point of any decoration, up to the mascot's highest jump, is 1.25 m from the slide's middle (the gears). The mascot's body reaches 1.10 m. `window.__bw.state().decorClear` reports this per kind.
 - **Washing machinery** (`src/scenery.js`, built in code, no model files):
   - A huge gold washing wheel on the lower right, seen almost edge-on: a thick gold tyre with a toothed band, blue drum face and gold spokes, glowing bulbs and pink fluffy trim. It turns.
-  - A navy-hubbed gear high on the left. It turns. (The code-built blue-and-gold wheel there was removed when the Meshy side machinery arrived.)
   - A cream-and-gold housing with a blue porthole and pink fluff under the left brush.
-  - A gold machinery tower on each side of the castle: a gold base, a glass tube with water rushing up it, four gear-toothed gold collars with glowing bulbs (they turn), a glass dome and gold finial, and a spout pouring a waterfall outward.
-  - Six chunky gold gears with teal and navy hubs around the portal mouth, turning.
-  - Curved gold pipes banded in blue along both lower sides, and from each tower into the castle wall.
+  - Curved gold pipes banded in blue along both lower sides, running into the base of each tower.
+  - The code-built machinery towers, the six portal gears and the navy gear high on the left were removed when your Meshy towers and gears arrived.
 - **Duck helper** (`src/helper.js`): your Meshy duck in its pink float (`models/duck.glb`, the Balanced ColorSafe copy, unchanged). It waits just ahead of the mascot in front of the portal, facing it, sized and placed against the approved screen. It bobs and rocks on the water, with a thin foam ring, a few droplets and slow ripples around the float. When the run starts it rides ahead into the washing machine, leading the way. Its purple and blue goggles are softened in the shader (`DUCK_GOGGLES_SOFTEN`), because the approved helper is small and has none.
 - **Washing brushes:** the Meshy roller, recoloured in code (`brushGrade`) as on approved Screens 3 and 4: round blue tufts in rings toward the hub, then a white band, then a pink fringe. One (1.8 m) turns end-on high on the left, above the Meshy side machinery, which now holds the approved lower-left spot. A second one shows its pink fringe on the right, above the gold wheel. Both spin during play.
 - **Castle colours:** the Meshy castle's texture is orange and hot pink. A shader grade (`CASTLE_GRADE` in `src/shaders.js`) turns its orange to warm gold and its soft pinks to lavender, and leaves strong pink accents (the crest banner) and the blue glass alone. A light lavender haze softens it with distance, and the sky behind it is pale lavender.
@@ -77,6 +91,7 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
   - `tools/start_frame.cjs` renders the Tap to Start frame.
   - `tools/beats.cjs` plays the recording's input script and screenshots chosen moments, much faster than a full recording.
   - `tools/try_settings.cjs` tries camera framings, helper placements or machinery placements without a rebuild. For the machinery it prints its distance to the lanes.
+  - In the page, `window.__bw.setDecor(kind, i, props)` moves a Meshy decoration (`towers`, `gears`, `pipes` or `crowns`, fields as in `DECOR` in `src/decor.js`) and returns each kind's distance to the lanes. `window.__bw.pick(x, y)` gives the world point under a stage pixel, and `window.__bw.project([x, y, z])` gives the stage pixel of a world point.
   - `python3 -I tools/compare_approved.py` puts the approved screen beside your frames, and `tools/overlay_approved.py` adds a 50 % blend.
 - Chromium here has no GPU, so WebGL is rendered in software and the game is stepped at 30 frames per game-second.
 
