@@ -125,7 +125,7 @@ I picked up from the hand-off note and kept polishing Screen 3 in the browser de
 
 ---
 
-### You · 2026-11-02 21:09 UTC
+### Automatic check · 2026-11-02 21:09 UTC
 
 Stop hook feedback:
 [~/.claude/stop-hook-git-check.sh]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
@@ -317,4 +317,6 @@ The side view is done: the ride matches the earlier one (−0.59 m to +1.94 m, 3
 Both recordings are done: 390 frames each, identical rides, no console errors. Now the videos and evidence images.
 
 `artifact.html` and `index.html` were left out of that commit. Both are built from `page.html`, which now carries the new panel styles. I'll commit them with this session's chat history.
+
+That entry is an automatic repository check, not something you wrote. I'll have the exporter label it as an automatic check.
 

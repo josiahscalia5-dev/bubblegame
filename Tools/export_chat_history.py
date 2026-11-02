@@ -53,7 +53,9 @@ with open(src) as f:
         if t == "user" and not e.get("isSidechain"):
             c = e.get("message", {}).get("content")
             if isinstance(c, str):
-                add("You", clean_user(c), ts)
+                text = clean_user(c)
+                # Automatic checks that run when Claude stops are not messages from you.
+                add("Automatic check" if text.startswith("Stop hook feedback:") else "You", text, ts)
             elif isinstance(c, list):
                 for x in c:
                     if x.get("type") == "text" and "[Request interrupted by user]" in x.get("text", ""):
