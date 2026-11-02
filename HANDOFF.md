@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (2 November 2026, evening)
+# Hand-off: where Bubble Wash Kingdom stands (2 November 2026, late evening)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -14,7 +14,8 @@ Read this first when you continue in a new Claude conversation.
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
   | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
 
-- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
+- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`. The latest is `2026-11-02_screen3_polish_session.md` (this evening's whole conversation: castle colours, machinery, the duck helper and the side machinery).
+- **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
 - **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
@@ -63,6 +64,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
   - Build: `cd WebDemo && npm install && node build.mjs`.
   - Play-test: `node tools/playtest.cjs "$PWD" <out> quick`.
   - Record: `node tools/record.cjs "$PWD" <out> 13 game|side|dry`, then `python3 -I tools/evidence_images.py <game dir> <side dir> ../Design/ApprovedScreens/x3_03_Lets_Go_Washer_Entry.png <out dir>`. The ffmpeg commands are in `Previews/WebDemo/README.md`.
+  - Compare with the approved screen at the same 1:2 size: `tools/start_frame.cjs`, `tools/beats.cjs`, `tools/try_settings.cjs`, `tools/compare_approved.py`, `tools/overlay_approved.py` (see `WebDemo/README.md`).
   - Republish the page: `artifact.html` with `game.bundle.js`, `models/layout.json`, `artifact-models/*.glb.json` (published as `models/*.glb.json`) and `ui/*.png`. From a different account, publish it as a new page.
 
 ## Unity project (unchanged since the afternoon)

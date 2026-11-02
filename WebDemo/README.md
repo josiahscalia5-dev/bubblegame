@@ -73,6 +73,11 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
   - Every input is a real pointer gesture on the game stage (press, drag, release).
   - The same script can be recorded in the player's view (`game`, with the touch overlay) or the side view (`side`). `dry` prints the state at each input.
 - `tools/playtest.cjs` takes screenshots at fixed beats.
+- Comparing with the approved Screen 3, all at an exact 1:2 portrait stage (538 × 1076):
+  - `tools/start_frame.cjs` renders the Tap to Start frame.
+  - `tools/beats.cjs` plays the recording's input script and screenshots chosen moments, much faster than a full recording.
+  - `tools/try_settings.cjs` tries camera framings, helper placements or machinery placements without a rebuild. For the machinery it prints its distance to the lanes.
+  - `python3 -I tools/compare_approved.py` puts the approved screen beside your frames, and `tools/overlay_approved.py` adds a 50 % blend.
 - Chromium here has no GPU, so WebGL is rendered in software and the game is stepped at 30 frames per game-second.
 
 Not tested: real phones and their frame rate. The page lowers its own quality if the frame rate stays low.
