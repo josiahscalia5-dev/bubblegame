@@ -26,6 +26,12 @@ export const S3 = Object.fromEntries(['castle', 'entrance', 'machinery', 'brush'
 S3.edges = LIST.includes('edges');
 // ?s3=...,cine (test): an opening-only camera that matches the approved Screen 3's perspective (setupCine below).
 S3.cine = LIST.includes('cine');
+// ?s3=paint (test): the approved painting itself as the opening's scenery, placed in 3D at several depths (castle and
+// door at the door's depth, brush, machinery and towers at theirs, side water and foam on the ground), with the pink
+// mascot, slide, water under it, foam and coins live in front. It brings the Number 4 castle (seen through the banner
+// area once the banner fades, and after the hand-over) and the icy slide edges. See paintScenery below.
+S3.paint = LIST.includes('paint');
+if (S3.paint) { S3.castle = true; S3.edges = true; }
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };
 
@@ -67,11 +73,15 @@ export const EDGES = { brush: { scale: 1.51, at: [2.62, 0.23, -4.9] }, film: 1.4
 // It is the gameplay camera's own pose plus this small offset: 0.10 m up, 0.82 m forward, 0.30 degrees more downward,
 // a 3.7 % wider view. After Tap to Start the offset blends to nothing over 0.9 s of game time, then the gameplay
 // camera is drawn again, unchanged.
+// Painted scenery: depths of its parts (world z of the plane each sits on; +Z is the run toward the door at z 2.7),
+// how far under the slide's surface the side water and foam lie (following its climbs and dips), and the hand-over to the 3D door as the camera nears it.
+export const PAINT = { far: 2.35, towers: -1.5, brush: -4.9, machinery: -6.5, groundBelow: 0.35, tear: 1.35, cutZ: -14, fadeFrom: -12, fadeTo: -6 };
 export const CINE = { up: 0.099, forward: 0.818, pitch: 0.30, fov: 1.0375, blend: 0.9 };
 const TUNE = (typeof window !== 'undefined' && window.__BW_S3_TUNE__) || {};
 for (const k of Object.keys(TUNE)) if (S3_LAYOUT[k]) S3_LAYOUT[k] = { ...S3_LAYOUT[k], ...TUNE[k] };
 if (TUNE.edges) Object.assign(EDGES, TUNE.edges);
 if (TUNE.cine) Object.assign(CINE, TUNE.cine);
+if (TUNE.paint) Object.assign(PAINT, TUNE.paint);
 if (S3.edges) S3_LAYOUT.brush = { ...S3_LAYOUT.brush, ...EDGES.brush };
 
 // Fetched as soon as the page starts (only the switched-on models), parsed once the opening layer is built.
@@ -90,7 +100,7 @@ async function fetchModel(url) {
   }
 }
 
-export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass }) {
+export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass, rollers, grade, bloomPass, outputPass, waterSheets }) {
   const report = {};
   const loader = new GLTFLoader();
   const parse = async (k) => { const b = await bytes[k]; return b ? loader.parseAsync(b, '') : null; };
@@ -176,6 +186,7 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
   if (view) report.cine = { ...CINE };
   if (S3.bubbles && staticBubbles) report.bubbles = soapBubbles({ scene, staticBubbles, camera: view || camera, updaters, mascot });
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
+  if (S3.paint && grade && outputPass) report.paint = await paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.
   if (S3.edges && camera) {
@@ -453,3 +464,140 @@ function setupCine({ camera, renderPass, updaters }) {
   });
   return cine;
 }
+
+// ---------------------------------------------------------------- ?s3=paint: the approved painting as 3D scenery
+// The painting (ui/s3_paint_backdrop.png: the approved Screen 3 with its door centre open) is projected from the Tap
+// to Start camera onto simple stand-in depths, so at Tap to Start it lines up exactly with the approved screen and as
+// the camera moves each part moves as something at that distance would. It is depth-tested: the live slide, water under
+// the mascot, rails, coins and the mascot itself are nearer and stay in front; the tunnel shows through the door centre.
+// Its pixels are drawn past the game's colour grade and tone mapping (they carry a mark in the alpha channel that the
+// grade and output passes read, only with this switch), so the painting keeps its own colours exactly; the live 3D
+// parts are graded as before. Bloom is off while it is shown, so the mark is not disturbed.
+async function paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W }) {
+  const P = PAINT;
+  const tex = await new THREE.TextureLoader().loadAsync('ui/s3_paint_backdrop.png');
+  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  // the painted scenery replaces the 3D scenery in front of the castle (the castle stays behind it)
+  const hidden = [scene.getObjectByName('entranceDecor'), scene.getObjectByName('scenery'), sideMachinery, staticBubbles,
+    ...(rollers || []).filter((r) => r.centre.z < tunnelStart).map((r) => r.g)].filter(Boolean);
+  for (const o of hidden) o.visible = false;
+  // a grid over the screen (stage coordinates, with a margin), placed once on the first Tap to Start frame
+  const NX = 48, NY = 96, X0 = -40, X1 = 578, Y0 = -80, Y1 = 1156;
+  const n = (NX + 1) * (NY + 1), pos = new Float32Array(n * 3), st = new Float32Array(n * 2), idx = [];
+  for (let j = 0; j <= NY; j++) for (let i = 0; i <= NX; i++) { const k = j * (NX + 1) + i; st[k * 2] = X0 + (X1 - X0) * i / NX; st[k * 2 + 1] = Y0 + (Y1 - Y0) * j / NY; }
+  for (let j = 0; j < NY; j++) for (let i = 0; i < NX; i++) { const a = j * (NX + 1) + i, b = a + NX + 1; idx.push(a, b, a + 1, a + 1, b, b + 1); }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('stage', new THREE.BufferAttribute(st, 2)); geo.setIndex(idx);
+  const u = { map: { value: tex }, uFade: { value: 1 }, uBanner: { value: 0 }, uPanel: { value: 0 } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: PAINT_VERTEX, fragmentShader: PAINT_FRAGMENT, transparent: true, depthWrite: true, depthTest: true,
+    blending: THREE.CustomBlending, blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor });
+  const mesh = new THREE.Mesh(geo, mat); mesh.name = 's3Paint'; mesh.frustumCulled = false; mesh.renderOrder = -1; mesh.visible = false;
+  scene.add(mesh);
+  // the grade and output passes keep marked pixels as they are (only with this switch)
+  grade.uniforms.uS3Paint = { value: 0 };
+  grade.material.fragmentShader = grade.material.fragmentShader.replace('uniform sampler2D tDiffuse;', 'uniform sampler2D tDiffuse; uniform float uS3Paint;')
+    .replace('gl_FragColor = max(c, 0.0);', '{ vec4 s3o = texture2D(tDiffuse, vUv); c.rgb = mix(c.rgb, s3o.rgb, clamp(1.0 - s3o.a, 0.0, 1.0) * uS3Paint); c.a = s3o.a; }\n      gl_FragColor = max(c, 0.0);');
+  grade.material.needsUpdate = true;
+  outputPass.uniforms.uS3Paint = { value: 0 };
+  outputPass.material.fragmentShader = outputPass.material.fragmentShader.replace('uniform sampler2D tDiffuse;', 'uniform sampler2D tDiffuse;\n\t\tuniform float uS3Paint;')
+    .replace('gl_FragColor = texture2D( tDiffuse, vUv );', 'vec4 s3o = texture2D( tDiffuse, vUv ); gl_FragColor = s3o;')
+    .replace('// color space', 'gl_FragColor.rgb = mix( gl_FragColor.rgb, s3o.rgb, clamp( 1.0 - s3o.a, 0.0, 1.0 ) * uS3Paint ); gl_FragColor.a = 1.0;\n\t\t\t// color space');
+  outputPass.material.needsUpdate = true;
+  // The slide's water sheet gets its own copy of the water shader that leaves out the moat beyond the gold rails in the
+  // far part of the slide while the painting shows, so the painted side water, foam and the brush's and machinery's
+  // bases show there instead (the live water under the slide, beside it up to the rails, and the near moat under the
+  // Tap to Start panel stay). The tunnel's water sheet keeps its shader.
+  const cut = { uPaintCut: { value: 0 }, uPaintZ: { value: P.cutZ } };
+  const sheet = (waterSheets || []).find((m) => { m.geometry.computeBoundingBox(); return m.geometry.boundingBox.min.z < tunnelStart - 5; });
+  let moatCut = false;
+  if (sheet && sheet.material.fragmentShader.includes('  vec2 xz = vTrack;')) {
+    const src = sheet.material, m = src.clone();
+    m.uniforms = { ...src.uniforms, ...cut };
+    m.fragmentShader = 'uniform float uPaintCut; uniform float uPaintZ;\n' + src.fragmentShader.replace('  vec2 xz = vTrack;',
+      '  vec2 xz = vTrack;\n  if (uPaintCut > 0.5 && abs(xz.x) > uSlideHalf + 0.62 && xz.y > uPaintZ && xz.y < uTunnel.x) discard;');
+    sheet.material = m; moatCut = true;
+  }
+  const patched = grade.material.fragmentShader.includes('uS3Paint') && outputPass.material.fragmentShader.includes('s3o.rgb');
+  const ref = new THREE.PerspectiveCamera(40, 0.5, 0.1, 200), dir = new THREE.Vector3(), V = new THREE.Vector3();
+  const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  // where a ray first goes below the slide's surface (minus P.groundBelow), following the slide's climbs and dips
+  const groundHit = (C, D, dMax) => {
+    const below = (dd) => { const y = C.y + D.y * dd, z = C.z + D.z * dd; return y < W.baseHeight(L, 0, Math.min(z, tunnelStart - 0.5)) - P.groundBelow; };
+    let a = 0.3, b = null;
+    for (let dd = 0.3; dd <= dMax; dd += 0.25) { if (below(dd)) { b = dd; break; } a = dd; }
+    if (b === null) return dMax;
+    for (let i = 0; i < 20; i++) { const m = (a + b) / 2; if (below(m)) b = m; else a = m; }
+    return b;
+  };
+  const dist = new Float32Array(n); let torn = 0;
+  let placed = false, t0 = null, bloomWas = null;
+  updaters.push((dt, t, phase) => {
+    if (!placed && phase === 'intro') {
+      placed = true;
+      ref.fov = camera.aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect / 0.5));
+      ref.position.copy(camera.position); ref.quaternion.copy(camera.quaternion); ref.updateProjectionMatrix(); ref.updateMatrixWorld(true);
+      const C = ref.position, tz = (z) => (z - C.z) / Math.max(dir.z, 1e-4);
+      for (let k = 0; k < n; k++) {
+        const sx = st[k * 2], sy = st[k * 2 + 1];
+        dir.set((sx / 538) * 2 - 1, 1 - (sy / 1076) * 2, 0.5).unproject(ref).sub(C).normalize();
+        // which part of the painting this is (soft weights), and the depth of the plane it sits on
+        const wB = 1 - sm(0.8, 1.3, ((sx - 52) / 120) ** 2 + ((sy - 582) / 135) ** 2);
+        const wM = sm(368, 410, sx) * sm(395, 430, sy) * (1 - sm(780, 820, sy));
+        const wT = Math.min(1, (1 - sm(60, 95, sx)) + sm(445, 480, sx)) * sm(50, 80, sy) * (1 - sm(430, 470, sy)) * (1 - Math.max(wB, wM));
+        const wF = Math.max(0.05, 1 - Math.max(wB, wM, wT));
+        const inv = (wB / tz(P.brush) + wM / tz(P.machinery) + wT / tz(P.towers) + wF / tz(P.far)) / (wB + wM + wT + wF);
+        let d = 1 / inv;
+        // nothing of the castle or the side water lies below the water's surface (it lies on it); the brush, machinery and
+        // towers stay upright on their planes (laid on the ground they smeared across it as the camera moved)
+        const wUp = Math.max(wB, wM, wT);
+        if (dir.y < -1e-4) d = d * wUp + Math.min(d, groundHit(C, dir, d)) * (1 - wUp);
+        V.copy(C).addScaledVector(dir, d); dist[k] = d;
+        pos[k * 3] = V.x; pos[k * 3 + 1] = V.y; pos[k * 3 + 2] = V.z;
+      }
+      // Where neighbouring points of the painting land at very different distances (over the slide's crest, at the edge of
+      // the upright parts) the sheet between them would stretch into a wall the camera drives through: those cells are
+      // left out instead (from the Tap to Start view the gap is edge-on and invisible).
+      const keep = [];
+      for (let j = 0; j < NY; j++) for (let i = 0; i < NX; i++) {
+        const a = j * (NX + 1) + i, b = a + NX + 1, q = [a, a + 1, b, b + 1].map((k) => dist[k]);
+        if (Math.max(...q) / Math.min(...q) < P.tear) keep.push(a, b, a + 1, a + 1, b, b + 1);
+      }
+      geo.setIndex(keep); torn = idx.length / 6 - keep.length / 6;
+      geo.attributes.position.needsUpdate = true; geo.computeBoundingSphere();
+      mesh.visible = true;
+    }
+    if (phase === 'running' && t0 === null) t0 = t;
+    const since = t0 === null ? -1 : t - t0, k = since < 0 ? 0 : sm(0, 0.45, since);
+    u.uBanner.value = k; u.uPanel.value = k;   // with the game's own banner and Tap to Start panel
+    u.uFade.value = 1 - sm(P.fadeFrom, P.fadeTo, camera.position.z);
+    const on = placed && u.uFade.value > 0.001 && camera.position.z < tunnelStart;
+    mesh.visible = on;
+    mat.depthWrite = u.uFade.value > 0.999;
+    grade.uniforms.uS3Paint.value = outputPass.uniforms.uS3Paint.value = on ? 1 : 0;
+    cut.uPaintCut.value = on ? 1 : 0;
+    if (bloomPass) { if (on) { if (bloomWas === null) { bloomWas = bloomPass.enabled; bloomPass.enabled = false; } } else if (bloomWas !== null) { bloomPass.enabled = bloomWas; bloomWas = null; } }
+  });
+  return { grid: [NX, NY], hidden: hidden.length, passesPatched: patched, moatCut, depths: { ...P }, get tornCells() { return torn; } };
+}
+
+const PAINT_VERTEX = /* glsl */ `
+attribute vec2 stage;
+varying vec2 vStage;
+void main() { vStage = stage; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+`;
+const PAINT_FRAGMENT = /* glsl */ `
+uniform sampler2D map; uniform float uFade, uBanner, uPanel;
+varying vec2 vStage;
+// 1 inside a rounded rectangle (centre c, half size h, corner radius r), softened over 6 px
+float rrect(vec2 p, vec2 c, vec2 h, float r) { vec2 q = abs(p - c) - h + r; float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; return 1.0 - smoothstep(-3.0, 3.0, d); }
+void main() {
+  vec2 uv = vec2((vStage.x - 1.0) / 536.0, vStage.y / 1076.0);
+  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) discard;
+  vec4 t = texture2D(map, vec2(uv.x, 1.0 - uv.y));
+  float a = t.a * uFade;
+  a *= 1.0 - uBanner * rrect(vStage, vec2(269.0, 233.0), vec2(208.0, 74.0), 30.0);   // the painted "Let's go!" banner
+  a *= 1.0 - uPanel * rrect(vStage, vec2(269.0, 890.0), vec2(244.0, 124.0), 32.0);   // the painted Tap to Start panel
+  if (a < 0.01) discard;
+  gl_FragColor = vec4(t.rgb, a);   // linear colour; the alpha channel's mark keeps it past the grade and tone mapping
+}
+`;

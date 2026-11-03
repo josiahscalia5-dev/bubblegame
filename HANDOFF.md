@@ -31,7 +31,18 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, end of the second session): where things stand
+## Latest (3 November, night): the approved painting as the real game's scenery, `?s3=paint` (test, not approved)
+
+- **The user wants the opening's scenery to look exactly like the approved screen while the character heads into the washing machine.**
+- **`?s3=paint` does that with the painting itself**, projected into 3D at several depths (castle and door, brush, machinery, towers, side water on the ground under the slide's hills). The pink character, slide, water under it, foam, coins and icy edges are live in front, and the door's centre shows the real tunnel.
+  - Painting pixels skip the game's grade and tone mapping (an alpha mark read by patched grade and output passes, only with this switch), so their colours are exact.
+  - The banner and panel areas fade with the HTML ones. The painting hands over to the code-built washer door and the Number 4 castle at camera z −12 → −6. Stretched cells over the slide's crest are torn instead of stretched.
+- **Evidence:** `Previews/WebDemo/screen3_paint_test/` (comparison, first two seconds, through the door, video, region measurements).
+  - About 9/10 at Tap to Start, about 8 in the first two seconds.
+  - Average structural similarity 0.56, against 0.09 for the 3D version.
+- **Checks:** controls, collectibles and the 13 s seeded run identical; tunnel unchanged; normal game pixel-identical to `591db28`.
+
+## Earlier (3 November, end of the second session): where things stood
 
 - **The game is as it was at `2e11011`.** The normal game, with no switches, is the approved-artwork opening of `591db28`.
   - What it looks like now: `Previews/WebDemo/bubblewash_game_now.png` and `bubblewash_game_now.mp4` (9 s of real gameplay).
