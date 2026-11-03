@@ -1,7 +1,9 @@
 # Meshy asset review: approved Screen 3 against the browser demo (2 November 2026)
 
 **Latest update, 2–3 November (night):**
-- The Meshy washer tunnel interior liner has arrived (`Design/MeshyDeliveries/TunnelInterior/`). It lines the drum in the browser demo, with its light bands made to glow.
+- The Meshy washer tunnel interior liner has arrived (`Design/MeshyDeliveries/TunnelInterior/`).
+  - It was tried, then disabled at the user's request: the delivered model has cracks between its 4,426 pieces (see its README).
+  - The previous tunnel is back, with cyan rings and pink panels built in code.
 - The duck helper was removed at the user's request.
 
 **Earlier that night:** four Meshy entrance decorations have arrived (`Design/MeshyDeliveries/EntranceDecor/`): a glowing water tower, a blue-and-gold gear wheel, a curved golden pipe and a crown with curved trim. They are in the browser demo. The water tower is the "ornate gold machinery tower" upgrade in section 3, and the towers and gears built in code have been replaced by the Meshy models.

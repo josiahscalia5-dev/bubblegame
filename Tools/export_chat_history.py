@@ -54,8 +54,15 @@ with open(src) as f:
             c = e.get("message", {}).get("content")
             if isinstance(c, str):
                 text = clean_user(c)
-                # Automatic checks that run when Claude stops are not messages from you.
-                add("Automatic check" if text.startswith("Stop hook feedback:") else "You", text, ts)
+                # Automatic checks that run when Claude stops, and notices that one of Claude's own
+                # background jobs finished, are not messages from you.
+                if text.startswith("Stop hook feedback:"):
+                    add("Automatic check", text, ts)
+                elif text.startswith("<task-notification>"):
+                    m = re.search(r"<summary>(.*?)</summary>", text, re.S)
+                    add("Automatic notice", f"_{m.group(1).strip() if m else 'A background job finished.'}_", ts)
+                else:
+                    add("You", text, ts)
             elif isinstance(c, list):
                 for x in c:
                     if x.get("type") == "text" and "[Request interrupted by user]" in x.get("text", ""):
@@ -73,7 +80,8 @@ with open(src) as f:
                     files = ", ".join(p.split("/bubblegame/")[-1] for p in x["input"].get("files", []))
                     add("Claude", f"_[Sent you files: {files}]_", ts)
                 elif x.get("type") == "tool_use" and x.get("name") == "Artifact" and x["input"].get("action", "publish") == "publish" and x["input"].get("file_path"):
-                    add("Claude", f"_[Published the page {x['input']['file_path'].split('/bubblegame/')[-1]}]_", ts)
+                    fp = x['input']['file_path']
+                    add("Claude", f"_[Published the page {fp.split('/bubblegame/')[-1]}]_" if '/bubblegame/' in fp else "_[Published the playable page]_", ts)
 
 with open(out, "w") as f:
     f.write(f"# {title}\n\n")

@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, early morning)
+# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, early morning, after the tunnel restore)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,13 +9,13 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-590365bd-e5p8xt` | **Latest work.** Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the Meshy tunnel interior liner with glowing lights, and the duck helper removed. |
+  | `ccr-590365bd-e5p8xt` | **Latest work.** Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
   | `ccr-ce4e9217-j1l0vl` | The afternoon session's work (3D path, water, fur, socks, recordings, Meshy asset review). The branch above builds on it. |
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
   | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
 
-- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`. The latest is `2026-11-02_screen3_polish_session.md` (this evening: castle colours, machinery, the duck helper and the side machinery). Tonight's entrance-decor session is not exported: exporting its log into this public repository was blocked by a permission check, so it needs the user's go-ahead.
+- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`. The latest is `2026-11-02_decor_and_tunnel_session.md` (2–3 November: the entrance decorations, the tunnel liner and its diagnosis, the restored tunnel). Before it, `2026-11-02_screen3_polish_session.md` (castle colours, machinery, the duck helper and the side machinery).
 - **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
 - **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
@@ -29,7 +29,16 @@ The user wants Screen 3 to look and move right before the remaining screens. The
   - Older versions: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening) and https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (afternoon).
   - All are private until shared from their Share menu.
   - Locally: `cd WebDemo && python3 -m http.server`.
-- **Latest round (night of 2–3 November): the Meshy tunnel interior liner, and no helper**
+- **Latest round (3 November): the previous tunnel restored, with cyan rings and pink panels**
+  - At the user's request the Meshy tunnel liner is disabled. Its files stay. The tunnel is the Meshy drum over its full length again, with its light rings and gold wall gears (as in `d44d687`).
+  - **Added in code** (`WebDemo/src/scenery.js`):
+    - Glowing rings in electric cyan, two tones, with bulbs and soft halos.
+    - 98 glowing pink light panels in gold frames on the upper walls, clear of the water and the gears.
+    - A slow wave of light running down the tunnel.
+  - **Kept:** no helper; the start panels fade after the tap; the four entrance decorations.
+  - **The ride is unchanged.** Played with the same seed on this build and on `d44d687`, every frame's position, height, lane, speed, jumps and camera are identical. Only which coins get picked up varies: three.js uses the random-number generator for object IDs, so adding or removing objects shifts the coins' random bobbing.
+  - **Clearance:** the mascot's body reaches 1.98 m from the axis at most, even jumping in every lane. The drum's ribs are at 2.1 m, the panels at 2.3 m.
+- **The round before (night of 2–3 November): the Meshy tunnel interior liner (since disabled), and no helper**
   - **The liner:** four copies of the Recommended liner (`Design/MeshyDeliveries/TunnelInterior/`, `WebDemo/src/liner.js`) line the drum, bent along the ride's path. The castle, portal and the drum's mouth are unchanged. That folder's README explains the radius remap.
   - **The old drum:** not drawn behind the liner (`trimDrum`). Its ribs and walls cut through the liner and caused the dark, broken-looking patches.
   - **Cracks:** the Meshy model has cracks of its own. A deep-blue backing shows through them.

@@ -17,6 +17,6 @@ Every model package delivered for Bubble Wash Kingdom, kept as delivered. This f
   - the crown keystone on the portal arch
 
   They replace the code-built towers and gears. The Small copies have stray sliver triangles and are not used. |
-| `TunnelInterior/` (washer tunnel interior liner: Balanced, Recommended and Small GLBs, four-view preview, README, import prompt; see its README) | Not yet. | A web copy of the Recommended GLB (`WebDemo/models/liner.glb`): four copies line the washer drum, bent along the ride's path, with their cyan bands and pink panels glowing and extra emissive rings added in code. |
+| `TunnelInterior/` (washer tunnel interior liner: Balanced, Recommended and Small GLBs, four-view preview, README, import prompt; see its README) | Not yet. | **Not used.** It was tried on 2–3 November, then disabled at the user's request because of the cracks in the delivered model (see its README). The previous tunnel was restored, with cyan rings and pink panels built in code. The web copy (`WebDemo/models/liner.glb`), `WebDemo/src/liner.js` and the repair tool are kept, and commit `46c034c` has the liner in place. |
 
 The castle and washer tunnel GLBs were delivered earlier and live in `Assets/BubbleWash/Models/CastlePortal/` and `Assets/BubbleWash/Models/WasherTunnel/`.
