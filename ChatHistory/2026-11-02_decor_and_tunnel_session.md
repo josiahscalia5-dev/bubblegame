@@ -454,3 +454,33 @@ There's no email or private path in it. A few "You" entries at 23:35–23:38 don
 
 One internal scratch path remains, in the note about publishing the page. It isn't private, but it's noise, so I'll shorten it.
 
+Recording is at frame 26 of 291. Meanwhile I'll update the notes to match the restored tunnel, starting with the demo README.
+
+The liner notes still say "How the browser demo uses it" further down. I'll make that past tense, then update the hand-off and the asset review.
+
+I'll save these notes and the chat history now, so they're on GitHub even before the recording finishes.
+
+Saved and pushed (`2f78259`). The recording is at frame 59 of 291. Meanwhile I'll stage the playable page for publishing, without the unused liner model.
+
+The bundle loads exactly those 11 models, with no liner and no duck. I'll wait for the recording to finish.
+
+The recording is still running, and I'll be notified when it's done. Then I'll make the side-by-side with your approved Screen 3 and the video, and save and publish everything.
+
+---
+
+### Automatic notice · 2026-11-03 00:38 UTC
+
+_Background command "Record one continuous run into the restored tunnel" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-03 00:39 UTC
+
+The staged page loads cleanly with no console errors. Now I'll update the playable page at its existing link, removing the old helper model and leaving out the unused liner.
+
+_[Published the playable page]_
+
+Page updated (version 3, same link). Now the recordings README, the final chat export, and the last save to GitHub.
+
+Now the final chat export, so it includes this whole conversation up to now, then the commit and push.
+

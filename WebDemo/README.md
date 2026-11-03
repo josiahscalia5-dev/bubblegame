@@ -103,6 +103,8 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
   - `tools/try_settings.cjs` tries camera framings or machinery placements without a rebuild. For the machinery it prints its distance to the lanes.
   - In the page, `window.__bw.setDecor(kind, i, props)` moves a Meshy decoration (`towers`, `gears`, `pipes` or `crowns`, fields as in `DECOR` in `src/decor.js`) and returns each kind's distance to the lanes. `window.__bw.pick(x, y)` gives the world point under a stage pixel, and `window.__bw.project([x, y, z])` gives the stage pixel of a world point.
   - `python3 -I tools/compare_approved.py` puts the approved screen beside your frames, and `tools/overlay_approved.py` adds a 50 % blend.
+- `tools/journey_frames.py` puts the approved screen beside a recording's opening frame and makes a sheet of twelve labelled frames from Tap to Start into the tunnel.
+- `tools/mesh_check.mjs <file.glb>` checks a model's geometry before it is used: holes, non-manifold edges, winding and separate pieces. The Meshy gear has 63 open edges; the tunnel liner as delivered had 91,501.
 - `tools/seeded_run.cjs <demo-dir> <seed>` plays the recording's input script with `Math.random` seeded, and prints where the run ends and what it collected. Run it on two builds with the same seed to prove a visual change did not alter gameplay. Unseeded runs can differ by a coin, because coins bob with a random phase.
 - Chromium here has no GPU, so WebGL is rendered in software and the game is stepped at 30 frames per game-second.
 

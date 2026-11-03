@@ -25,7 +25,7 @@ Read this first when you continue in a new Claude conversation.
 
 The user wants Screen 3 to look and move right before the remaining screens. The approved Screen 3 is the target.
 
-- **Play:** https://claude.ai/artifact/1zbgcsX6AF7HTNJMesKmiX (tonight's version with the Meshy entrance decor). It was published from the account that ran tonight's session, as an update of that account's earlier Bubble Wash Kingdom page, so the link stayed the same.
+- **Play:** https://claude.ai/artifact/1zbgcsX6AF7HTNJMesKmiX (version 3, 3 November: the restored tunnel with cyan rings and pink panels, no helper, the Meshy entrance decor). It was published from the account that ran tonight's session, as an update of that account's earlier Bubble Wash Kingdom page, so the link stayed the same.
   - Older versions: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening) and https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (afternoon).
   - All are private until shared from their Share menu.
   - Locally: `cd WebDemo && python3 -m http.server`.
