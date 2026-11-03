@@ -32,6 +32,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { PHASE_A, applyPhaseA } from './phase_a.js';
+import { S3_ON, loadScreen3Models } from './screen3_models.js';
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -440,6 +441,8 @@ export function buildOpening(ctx) {
 
   // ---------------------------------------------------------------- 6. roller candidate (test only, ?roller=1|2)
   async function loadExtras() {
+    // the user's new Screen 3 models (test only, ?s3=castle,entrance): loaded and placed only when switched on
+    if (S3_ON) window.__bwS3 = await loadScreen3Models({ scene, env, axisY: AXIS, tunnelStart: TS, oldCastle: ctx.castle });
     if (!rollerBytes) return;
     const bytes = await rollerBytes;
     if (!bytes) { ctx.rollerCandidate = { file: ROLLER_FILES[ROLLER_TEST], error: 'not found' }; return; }
