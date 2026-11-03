@@ -10,5 +10,6 @@ All from the running browser game (headless Chromium, software WebGL) or from th
 | `04_spin_test.png` | What spinning would do: No. 1's welded bracket plate and No. 2's gold bars turn with the drum. Neither is spun in the test. |
 | `05_left_slot_trial.png` | No. 1 tried in place of the Meshy side machinery: too small and pink beside the approved blue-faced brush. |
 | `roller1_gameplay.mp4` | 13 s of real gameplay with No. 1 in the opening: Tap to Start, swipes, into the same tunnel, socks and coins collected, loop. |
+| `roller1_journey.png` | Twelve frames from that recording, Tap to Start to inside the tunnel. |
 
 Re-create with `?roller=1` or `?roller=2` on the page (also the last argument of `tools/start_frame.cjs`), or `ROLLER=1` before `tools/record.cjs`, `tools/trace.cjs` or `tools/seeded_shots.cjs`.
