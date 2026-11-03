@@ -1414,6 +1414,8 @@ window.__bw = {
   setDecor: (kind, i, props) => { if (props === null) DECOR[kind].splice(i, 1); else DECOR[kind][i] = Object.assign(DECOR[kind][i] || {}, props); state.decorClear = decor.place(); return state.decorClear; },
   getDecor: () => JSON.parse(JSON.stringify(DECOR)),
   // Rebuild the tunnel liner with other settings (fields of LINER in src/liner.js); returns its clearance.
+  // Load another liner model (a .glb URL) and rebuild the liner with it: for comparing model files in place.
+  useLinerModel: async (url) => { linerG = await gltfLoader.loadAsync(url); return window.__bw.setLiner({}); },
   setLiner: (props) => { scene.remove(liner.root); Object.assign(LINER, props); liner = buildLiner({ scene, gltf: linerG, TR, L, W, env: mats.env }); state.linerClear = liner.clearance; liner.update(state.time, camera.position); return liner.clearance; },
   // The world point under a stage pixel (for measuring where the approved scene's parts sit).
   pick: (px, py) => {

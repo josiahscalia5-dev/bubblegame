@@ -38,6 +38,20 @@ export const LINER = {
   env: 0.85,         // strength of the studio reflections on the gold and glossy panels
 };
 
+/** Area-weighted vertex normals, averaged over vertices that share a weld id. */
+function smoothNormals(g, weld) {
+  const p = g.attributes.position.array, ix = g.index.array, n = p.length / 3;
+  const acc = new Float32Array((Math.max(...weld) + 1) * 3), out = new Float32Array(n * 3);
+  for (let t = 0; t < ix.length; t += 3) {
+    const a = ix[t] * 3, b = ix[t + 1] * 3, c = ix[t + 2] * 3;
+    const ux = p[b] - p[a], uy = p[b + 1] - p[a + 1], uz = p[b + 2] - p[a + 2], vx = p[c] - p[a], vy = p[c + 1] - p[a + 1], vz = p[c + 2] - p[a + 2];
+    const fx = uy * vz - uz * vy, fy = uz * vx - ux * vz, fz = ux * vy - uy * vx;
+    for (const i of [ix[t], ix[t + 1], ix[t + 2]]) { const w = weld[i] * 3; acc[w] += fx; acc[w + 1] += fy; acc[w + 2] += fz; }
+  }
+  for (let i = 0; i < n; i++) { const w = weld[i] * 3, l = Math.hypot(acc[w], acc[w + 1], acc[w + 2]) || 1; out[i * 3] = acc[w] / l; out[i * 3 + 1] = acc[w + 1] / l; out[i * 3 + 2] = acc[w + 2] / l; }
+  g.setAttribute('normal', new THREE.BufferAttribute(out, 3));
+}
+
 export function buildLiner({ scene, gltf, TR, L, W, env }) {
   const root = new THREE.Group(); root.name = 'tunnelLiner'; scene.add(root);
   const time = { value: 0 };
@@ -90,6 +104,10 @@ export function buildLiner({ scene, gltf, TR, L, W, env }) {
     if (Math.max(depth[a], depth[b], depth[c]) <= LINER.shellCut) kept.push(a, b, c);
   }
   const index = new THREE.BufferAttribute(n > 65535 ? new Uint32Array(kept) : new Uint16Array(kept), 1);
+  // Vertices at (almost) the same place share one smoothed normal, so the shading runs on across the seams
+  // between the model's pieces instead of breaking at each one.
+  const weld = new Int32Array(n);
+  { const m = new Map(); for (let i = 0; i < n; i++) { const k = `${Math.round(P[i * 3] / 0.002)},${Math.round(P[i * 3 + 1] / 0.002)},${Math.round(P[i * 3 + 2] / 0.002)}`; if (!m.has(k)) m.set(k, m.size); weld[i] = m.get(k); } }
   let minR = Infinity, maxR = 0;
   const meshes = [];
   const out = new THREE.Vector3();
@@ -101,7 +119,8 @@ export function buildLiner({ scene, gltf, TR, L, W, env }) {
       const R = Math.min(LINER.maxR, Math.max(LINER.minR, LINER.radius + depth[i] * LINER.relief));
       if (depth[i] <= LINER.shellCut) { minR = Math.min(minR, R); maxR = Math.max(maxR, R); }
       const u = u0 + s * segLen + ((zMax - z) / (zMax - zMin)) * segLen;   // the +Z end first, facing the rider
-      TR.map(Math.cos(a) * R, axisH + Math.sin(a) * R, u, out);
+      // -x as well as -z: a half turn, not a mirror (a mirror turns every triangle inside out)
+      TR.map(-Math.cos(a) * R, axisH + Math.sin(a) * R, u, out);
       p[i * 3] = out.x; p[i * 3 + 1] = out.y; p[i * 3 + 2] = out.z; au[i] = u;
     }
     const g = new THREE.BufferGeometry();
@@ -109,7 +128,7 @@ export function buildLiner({ scene, gltf, TR, L, W, env }) {
     g.setAttribute('uv', g0.attributes.uv);
     g.setAttribute('aU', new THREE.BufferAttribute(au, 1));
     g.setIndex(index);
-    g.computeVertexNormals();
+    smoothNormals(g, weld);
     g.computeBoundingSphere();
     const mesh = new THREE.Mesh(g, mat);
     root.add(mesh); meshes.push(mesh);
