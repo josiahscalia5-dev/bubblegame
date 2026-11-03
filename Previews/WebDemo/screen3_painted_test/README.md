@@ -108,7 +108,10 @@ What the numbers say:
 **Gameplay.** Same seed and inputs as the earlier tests.
 - At every shot the game state is identical with and without the test: position, lane, speed, coins, gems, socks and the gameplay camera.
 - At 9.0 s every version is at z 29.895, lane 2, 1,292 coins, 37 gems, 3 socks.
-- Per-frame traces: see `trace results` below.
+- **Per-frame traces** (13 s, 390 frames, seed 7, `tools/trace.cjs` with `tools/trace_diff.py`):
+  - `?s3=paint` and `?s3=paint,vortex` match your normal game in every frame: position, height, lane, speed, jumps, laps, gameplay camera and pickups.
+  - All end with 12 coins, 2 gems and 3 socks collected, after 1 lap.
+  - Your normal game's trace is byte-identical before and after this change, and the `?s3=all,edges,cine` checkpoint's matches in every frame too.
 
 **Pixels** (more than 2/255 counts as different):
 
