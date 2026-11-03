@@ -27,7 +27,21 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, evening): the five Screen 3 assets in the real 3D opening behind `?s3` (saved, not approved)
+## Latest (3 November, night): slide-edge restyle behind `?s3=all,edges` (test, not approved)
+
+- **The user approved `ad518e3` (`?s3=all`, the five assets) as a saved experimental checkpoint only.** It is not the final Screen 3, and nothing is merged.
+- **`edges`** (not part of `all`):
+  - the tall pale slide walls and the gold tube rail become low icy rims with foam spilling over;
+  - the brush stands at the approved size and place (scale 1.51 at z −4.9);
+  - the bubble film is stronger;
+  - the opening-only scenery is hidden inside the tunnel.
+- **Not adopted:** `?phaseA` measured worse in the slide region.
+- **Evidence:** `Previews/WebDemo/screen3_edges_test/` (region-by-region colour and structure, scores, checks, tools).
+- **Honest score:** the whole opening is about 6.5/10, against 6 for the five-asset version.
+  - Blocked from about 8 by the protected camera and narrow slide, the tunnel's curve, and the castle's narrow arch and the entrance's small opening.
+  - A castle variant (arch about 0.75 of the tower spacing) and an entrance variant (opening at least 70 % of the frame) would give about 7–7.5. Beyond that, the opening camera would have to change, which needs the user's explicit decision.
+
+## Earlier (3 November, evening): the five Screen 3 assets in the real 3D opening behind `?s3` (saved, not approved)
 
 - **Code:** `WebDemo/src/screen3_models.js`, called from `opening.js` loadExtras.
   - Switches: `?s3=castle,entrance,machinery,brush,bubbles`, or `?s3=all`.

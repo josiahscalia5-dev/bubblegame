@@ -21,6 +21,9 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S3 = Object.fromEntries(['castle', 'entrance', 'machinery', 'brush', 'bubbles'].map((k) => [k, LIST.includes(k) || LIST.includes('all')]));
+// ?s3=...,edges (test, separate from the five-asset version): the slide's tall pale walls restyled as low icy edges,
+// and the brush and big bubble refined now that the walls no longer hide them (see restyleEdges and EDGES below).
+S3.edges = LIST.includes('edges');
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };
 
@@ -51,8 +54,16 @@ export const S3_LAYOUT = {
   // [screen x, y on the 538 x 1076 portrait screen, distance from the Tap to Start camera (m), radius (px), rise, sway].
   bubbles: { extra: [[475, 526, 14, 79, 0, 0.02], [428, 478, 13, 15, 0.06, 0.03], [522, 612, 11, 20, 0, 0.02]], centreAlpha: 0.035 },
 };
+// With ?s3=...,edges only. Brush: the approved brush's centre (56, 576 on the 538 x 1076 screen) and outer fluffy radius
+// (~117 px), solved through the gameplay camera with its inner edge on the 1.18 m clearance line: a little larger and
+// further back. Bubbles: a stronger pearly film toward the rim (the centre stays at the same opacity).
+// Edges: low icy rims along the slide (top 0.13 m above the edge's water instead of the walls' 0.2 m), translucent.
+export const EDGES = { brush: { scale: 1.51, at: [2.62, 0.23, -4.9] }, film: 1.4,
+  edge: { profile: [[-0.08, -0.05], [0.0, 0.07], [0.1, 0.13], [0.22, 0.1], [0.3, -0.02], [0.33, -0.8]], alpha: 0.45, foam: 1.0 } };
 const TUNE = (typeof window !== 'undefined' && window.__BW_S3_TUNE__) || {};
 for (const k of Object.keys(TUNE)) if (S3_LAYOUT[k]) S3_LAYOUT[k] = { ...S3_LAYOUT[k], ...TUNE[k] };
+if (TUNE.edges) Object.assign(EDGES, TUNE.edges);
+if (S3.edges) S3_LAYOUT.brush = { ...S3_LAYOUT.brush, ...EDGES.brush };
 
 // Fetched as soon as the page starts (only the switched-on models), parsed once the opening layer is built.
 const bytes = {};
@@ -70,7 +81,7 @@ async function fetchModel(url) {
   }
 }
 
-export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot }) {
+export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W }) {
   const report = {};
   const loader = new GLTFLoader();
   const parse = async (k) => { const b = await bytes[k]; return b ? loader.parseAsync(b, '') : null; };
@@ -153,6 +164,19 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
     }
   }
   if (S3.bubbles && staticBubbles) report.bubbles = soapBubbles({ scene, staticBubbles, camera, updaters, mascot });
+  if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
+  // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
+  // behind the drum's walls there), and is drawn again when the ride loops back to the slide.
+  if (S3.edges && camera) {
+    const opening = [];
+    scene.traverse((o) => { if (/^s3(Castle|Entrance|Machinery|Brush|IcyEdge|Bubbles)/.test(o.name)) opening.push(o); });
+    let inside = false;
+    updaters.push(() => {
+      const z = camera.position.z, now = inside ? z > tunnelStart : z > tunnelStart + 1.5;
+      if (now !== inside) { inside = now; for (const o of opening) o.visible = !inside; }
+    });
+    report.hiddenInTunnel = opening.length;
+  }
   return report;
 }
 
@@ -175,7 +199,7 @@ function laneClearance(holder, tunnelStart) {
 function soapBubbles({ scene, staticBubbles, camera, updaters, mascot }) {
   const P = S3_LAYOUT.bubbles;
   const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const u = { uTime: { value: 0 }, uMotion: { value: reduce ? 0 : 1 }, uAvoid: { value: new THREE.Vector3(0, -99, 0) }, uCentreAlpha: { value: P.centreAlpha } };
+  const u = { uTime: { value: 0 }, uMotion: { value: reduce ? 0 : 1 }, uAvoid: { value: new THREE.Vector3(0, -99, 0) }, uCentreAlpha: { value: P.centreAlpha }, uFilm: { value: S3.edges ? EDGES.film : 1 } };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: SOAP_VERTEX, fragmentShader: SOAP_FRAGMENT,
     transparent: true, depthWrite: false, depthTest: true, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor });
   const sphere = new THREE.SphereGeometry(1, 40, 24);
@@ -184,7 +208,7 @@ function soapBubbles({ scene, staticBubbles, camera, updaters, mascot }) {
     g.index = sphere.index; g.setAttribute('position', sphere.attributes.position); g.setAttribute('normal', sphere.attributes.normal);
     g.setAttribute('inst', inst); g.setAttribute('motion', motion); return g;
   };
-  const mk = (geo) => { const m = new THREE.Mesh(geo, mat); m.frustumCulled = false; m.renderOrder = 5; scene.add(m); return m; };
+  const mk = (geo) => { const m = new THREE.Mesh(geo, mat); m.frustumCulled = false; m.renderOrder = 5; m.name = 's3Bubbles'; scene.add(m); return m; };
   // the opening's own bubbles (same positions, sizes and motion, read from its instance data), now as soap-film spheres
   const sg = staticBubbles.geometry, same = mk(geoFrom(sg.attributes.inst, sg.attributes.motion));
   // the approved screen's big bubble on the right and two small ones, placed through the Tap to Start camera
@@ -234,7 +258,7 @@ void main() {
 }
 `;
 const SOAP_FRAGMENT = /* glsl */ `
-uniform float uTime, uCentreAlpha;
+uniform float uTime, uCentreAlpha, uFilm;
 varying vec3 vN; varying vec3 vW; varying float vPhase; varying float vFade;
 void main() {
   if (vFade <= 0.0) discard;
@@ -254,7 +278,7 @@ void main() {
   float s1 = pow(max(dot(N, normalize(L1 + V)), 0.0), 90.0), s2 = pow(max(dot(N, normalize(L2 + V)), 0.0), 40.0) * 0.35;
   col += vec3(1.0, 0.98, 1.0) * (s1 * 1.1 + s2);
   float rim = smoothstep(0.82, 0.97, 1.0 - ndv) * (1.0 - smoothstep(0.985, 1.0, 1.0 - ndv)) * 0.25;
-  float a = clamp(uCentreAlpha + fres * 0.85 + rim * 1.6 + refl * 0.9 + s1 * 0.8 + s2 * 0.6, 0.0, 0.92) * vFade;
+  float a = clamp(uCentreAlpha + (fres * 0.85 + rim * 1.6 + refl * 0.9) * uFilm + s1 * 0.8 + s2 * 0.6, 0.0, 0.92) * vFade;
   gl_FragColor = vec4(col * a, a);
 }
 `;
@@ -316,4 +340,81 @@ vec3 s3Rgb2hsv(vec3 c) {
   return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + 1e-10)), d / (q.x + 1e-10), q.x);
 }
 vec3 s3Hsv2rgb(vec3 c) { vec3 p = abs(fract(c.xxx + vec3(1.0, 2.0 / 3.0, 1.0 / 3.0)) * 6.0 - 3.0); return c.z * mix(vec3(1.0), clamp(p - 1.0, 0.0, 1.0), c.y); }
+`;
+
+// ---------------------------------------------------------------- ?s3=...,edges: the slide's walls as low icy edges
+// The slide's walls, gold tube rail, gold blocks and studs are built by game.js buildRails purely for looks: the mascot
+// moves between fixed lanes (W.laneX) and nothing collides with them, and the water surface it rides on (W.baseHeight)
+// is not touched here. This hides the tall pale walls and the tube rail on top of them, and draws low icy rims along
+// the same path instead: translucent cyan, a white foam crest flowing toward the portal, and sparkles, so the brush and
+// machinery behind show through. The chunky gold blocks along the outside stay (the approved screen's gold block rail).
+function restyleEdges({ scene, L, W, env, updaters }) {
+  const report = { wallsHidden: 0, railsHidden: 0 };
+  const z0 = L.startZ - 24, z1 = -0.6;
+  scene.traverse((o) => {
+    if (!o.isMesh || o.isInstancedMesh || !o.material || !o.material.color) return;
+    const hex = o.material.color.getHex(), g = o.geometry;
+    if (!g.boundingBox) g.computeBoundingBox();
+    const b = g.boundingBox, longRun = b.max.z - b.min.z > 20 && b.min.z < z0 + 1 && Math.abs((b.min.x + b.max.x) / 2) < 1.8;
+    if (!longRun) return;
+    if (hex === 0xe6d8ff || hex === 0x8fd2ff) { o.visible = false; report.wallsHidden++; }            // pearl walls (glassy aqua with the opening's slide finish)
+    else if (g.type === 'TubeGeometry') { o.visible = false; report.railsHidden++; }                     // the gold tube rail on top
+  });
+  const u = { uTime: { value: 0 }, uAlpha: { value: EDGES.edge.alpha }, uFoam: { value: EDGES.edge.foam } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: EDGE_VERTEX, fragmentShader: EDGE_FRAGMENT,
+    transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor });
+  const prof = EDGES.edge.profile, n = prof.length;
+  for (const side of [-1, 1]) {
+    const pos = [], across = [], idx = [];
+    let rows = 0;
+    for (let z = z0; z <= z1 + 1e-6; z += 0.25, rows++) {
+      const y = W.baseHeight(L, side * W.SLIDE.half, z);
+      prof.forEach(([dx, dy], c) => { pos.push(side * (W.SLIDE.half + dx), y + dy, z); across.push(c / (n - 1)); });
+    }
+    for (let r = 0; r < rows - 1; r++) for (let c = 0; c < n - 1; c++) { const a = r * n + c, b = a + n; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('across', new THREE.Float32BufferAttribute(across, 1));
+    g.setIndex(idx); g.computeVertexNormals();
+    const m = new THREE.Mesh(g, mat); m.renderOrder = 2; m.name = 's3IcyEdge'; scene.add(m);
+  }
+  updaters.push((dt, t) => { u.uTime.value = t; });
+  report.icyEdges = 2;
+  return report;
+}
+
+const EDGE_VERTEX = /* glsl */ `
+attribute float across;
+varying vec3 vW; varying vec3 vN; varying float vAcross;
+void main() { vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(mat3(modelMatrix) * normal); vAcross = across;
+  gl_Position = projectionMatrix * viewMatrix * w; }
+`;
+const EDGE_FRAGMENT = /* glsl */ `
+uniform float uTime, uAlpha, uFoam;
+varying vec3 vW; varying vec3 vN; varying float vAcross;
+float eh(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float en(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(eh(i), eh(i + vec2(1, 0)), f.x), mix(eh(i + vec2(0, 1)), eh(i + vec2(1, 1)), f.x), f.y); }
+void main() {
+  vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
+  float fres = pow(1.0 - abs(dot(N, V)), 2.0);
+  // icy crystal: pale cyan, deeper toward the outside, brighter facing away from the camera
+  vec3 ice = mix(vec3(0.62, 0.92, 1.0), vec3(0.2, 0.62, 1.0), smoothstep(0.35, 1.0, vAcross));
+  ice += vec3(0.6, 0.85, 1.0) * fres * 0.5;
+  // a white foam crest along the top of the rim, broken into lumps that flow toward the portal
+  float crest = exp(-pow((vAcross - 0.4) / 0.16, 2.0));
+  float lumps = en(vec2(vW.z * 2.2 - uTime * 2.4, vAcross * 6.0)) * 0.6 + en(vec2(vW.z * 5.0 - uTime * 3.1, vAcross * 11.0)) * 0.4;
+  float foam = smoothstep(0.35, 0.7, crest * (0.55 + 0.75 * lumps)) * uFoam;
+  vec3 col = mix(ice, vec3(0.96, 0.99, 1.0), foam);
+  // sparkles
+  vec2 sp = vec2(vW.z * 9.0, vAcross * 14.0); vec2 sc = floor(sp);
+  float tw = step(0.94, eh(sc)) * (1.0 - smoothstep(0.0, 0.22, length(fract(sp) - 0.5))) * pow(max(0.0, sin(uTime * (3.0 + eh(sc + 3.1) * 4.0) + eh(sc) * 40.0)), 6.0);
+  col += vec3(1.0) * tw * 1.4;
+  // the outer face: white-cyan foam spilling down over the edge into the water beside the slide (the approved slide's
+  // edges foam over; without this the deep water beside the slide showed as a dark strip once the tall walls were gone)
+  float outer = smoothstep(0.62, 0.86, vAcross);
+  float spill = en(vec2(vW.z * 3.0 - uTime * 1.5, vW.y * 4.0 + uTime * 2.2)) * 0.6 + en(vec2(vW.z * 7.0, vW.y * 9.0 + uTime * 3.0)) * 0.4;
+  col = mix(col, mix(vec3(0.55, 0.85, 1.0), vec3(0.97, 0.99, 1.0), smoothstep(0.3, 0.75, spill)), outer);
+  float a = clamp(uAlpha * (0.7 + 0.6 * fres) + foam * 0.85 + tw + outer * (0.35 + 0.45 * spill), 0.0, 0.95);
+  gl_FragColor = vec4(col * a, a);
+}
 `;
