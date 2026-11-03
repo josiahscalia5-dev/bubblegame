@@ -19,7 +19,11 @@ Read this first when you continue in a new Claude conversation.
 
 - **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
 - **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
-  - Newest: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
+  - Newest: `2026-11-03_screen3_models_and_scenery_session.md` (3 November, second session):
+    - the approved-artwork opening and Phase A;
+    - the five Screen 3 models, the slide edges and the cinematic camera;
+    - the A2 tunnel inspection and the painted-layer start.
+  - Before it: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
   - The exporter now also keeps messages sent with pictures attached, which it used to skip.
   - Before it, `2026-11-02_decor_and_tunnel_session.md` (2–3 November: the entrance decorations, the tunnel liner and its diagnosis, the restored tunnel). Before it, `2026-11-02_screen3_polish_session.md` (castle colours, machinery, the duck helper and the side machinery).
 - **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
@@ -27,7 +31,23 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, late night): opening-only cinematic camera behind `?s3=all,edges,cine` (test, not approved)
+## Latest (3 November, end of the second session): where things stand
+
+- **The game is as it was at `2e11011`.** The normal game, with no switches, is the approved-artwork opening of `591db28`.
+  - What it looks like now: `Previews/WebDemo/bubblewash_game_now.png` and `bubblewash_game_now.mp4` (9 s of real gameplay).
+- **Saved test switches, none approved as final:** `?s3=all` (`ad518e3`), `?s3=all,edges` (`4711680`), `?s3=all,edges,cine` (`2e11011`). The user approved the first two as checkpoints only.
+- **A2 tunnel (Tripo):** received, then the request was withdrawn. The models are kept in `Design/TripoDeliveries/A2Tunnel/` with the inspection notes; they are forced-perspective and not traversable as delivered.
+- **The user asked whether the exact approved screen can be built.**
+  - The answer given: a live 3D game cannot match a painting exactly, and this session cannot generate 3D models or images.
+  - The recommendation: painted far layers (castle, towers, door) in the 3D scene, with the near scenery staying real 3D. The user said yes.
+- **Painted-layer test (`?s3=paint`): started, not finished, not in the game.**
+  - Done so far: the backdrop texture `WebDemo/ui/s3_paint_backdrop.png`, made by `WebDemo/tools/screen3/make_paint_backdrop.py` from the approved image (the original untouched). The texture fills the spots behind the 3D brush, machinery and big bubble, opens the door's centre, and clears under the HUD.
+  - **Problem:** the colour pre-inversion for the game's grade and tone mapping is wrong for some bright and saturated pixels (99th percentile error about 105 levels). Fix it before use, for example by inverting the grade in the shader instead.
+  - **Plan:** a camera-projected grid at the door's depth (z ≈ 2.35), depth-tested, behind the 3D slide, water and mascot; the banner area fades with the HTML banner; the painting fades out as the camera nears the door (camera z −12 → −6), revealing the code-built washer door and the Number 4 castle; the brush, machinery and bubbles stay 3D.
+- **Test tools:** `WebDemo/tools/screen3/` (see its README).
+- **Chat history:** `ChatHistory/2026-11-03_screen3_models_and_scenery_session.md`.
+
+## Earlier (3 November, late night): opening-only cinematic camera behind `?s3=all,edges,cine` (test, not approved)
 
 - **The user approved `4711680` (`?s3=all,edges`, 6.5/10) as a saved experimental checkpoint only.** No new Meshy models yet.
 - **`cine`:** a separate render camera fitted to the approved perspective, the gameplay pose plus 0.10 m up, 0.82 m forward, 0.3° down and a 41.5° view. It blends back to the untouched gameplay camera over 0.9 s after the tap.
