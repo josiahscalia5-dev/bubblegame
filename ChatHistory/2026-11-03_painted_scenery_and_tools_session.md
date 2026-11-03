@@ -290,3 +290,13 @@ The script has this session's link written into its commit messages. A future se
 
 Everything is saved and pushed (`2056073`), and the working tree is clean. Now starting the 5-minute autosave in the background, detached so it keeps running between our messages:
 
+Everything is saved to GitHub, including this session's chat history, and an automatic save now runs every 5 minutes.
+
+- **Saved now:** all the painted-scenery work, the updated hand-off notes, the screenshots of the conversation that wasn't saved, and this session's chat history (`ChatHistory/2026-11-03_painted_scenery_and_tools_session.md`). It's all on your branch `ccr-00ffba88-l1mwa0`, and GitHub matches it exactly.
+- **Every 5 minutes:** a small script (`Tools/autosave.sh`) re-exports this chat, commits anything new and pushes it. It only commits when something has changed, and it leaves out any file too big for GitHub. Its first round ran at 22:40 UTC and pushed, so it's working. It runs on its own, so it doesn't use any of your Claude usage.
+
+**Limits:**
+- **It stops when this session's machine stops,** after a period of inactivity. In a new session, just say "start the autosave" and I'll restart it; the command is in the script and the hand-off notes.
+- **It only saves to this session's branch.** Nothing gets merged anywhere.
+- **It can't reach your other account's unsaved conversation** with the A2 models. That still has to be pushed from that session.
+
