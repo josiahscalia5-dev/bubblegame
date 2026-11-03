@@ -284,3 +284,9 @@ Save everything to my GitHub resporitory  and chat history and everything. Do it
 
 I'll save this session's chat history now, then set up an automatic save every 5 minutes. First, how the existing chat exporter works:
 
+All six of your messages are captured. Checking that the tools question, which you sent as an interruption, made it in:
+
+The script has this session's link written into its commit messages. A future session would run it too, so I'll pass the link in when starting it instead:
+
+Everything is saved and pushed (`2056073`), and the working tree is clean. Now starting the 5-minute autosave in the background, detached so it keeps running between our messages:
+
