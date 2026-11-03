@@ -1,0 +1,26 @@
+Claudia, here is the new Meshy Magical Washing-Machine Tunnel Interior Liner GLB for my Bubble Wash Kingdom approved Screen 3.
+
+Please work only on my EXISTING browser-playable Screen 3, the beginning where my pink fluffy mascot rides the water and enters the washing machine. Do not start a new project, redesign anything, or ask me to use Unity right now.
+
+WHAT I AM SENDING:
+- BubbleWash_Washer_Tunnel_Interior_Claudia_Balanced.glb (~4.05 MiB; first version to try)
+- BubbleWash_Washer_Tunnel_Interior_Claudia_Recommended.glb (~6.54 MiB; better visual detail if upload and performance allow)
+- BubbleWash_Washer_Tunnel_Interior_Claudia_Small.glb (~1.32 MiB; emergency upload/low-end test only)
+
+IMPORTANT: This is an INTERIOR LINER, not a replacement for my existing castle portal or washing-machine tunnel. Import one of the files and fit it within the current tunnel. Check its scale, local axis (the model's tube is along its local Z axis), opening clearance, winding path, collision geometry, camera frustum, and frame-rate. Do not block any part of the mascot's actual path, even while climbing, dropping, steering or jumping.
+
+The GLB has one combined mesh and a shared PBR material. The blue/cyan and pink ring accents are textured details, NOT actual working lights, and the model contains no animations. Please do not claim the rings glow automatically. Add separate efficient cyan/white emissive circular rings and pink accent light panels in code, or assign precise emissive effects to the required regions if you can separate meshes reliably. Use selective bloom and limited dynamic lights. Do not make the entire tube emissive or overexpose the water to white. Make the lighting recede through the tunnel to show rich magical depth, just like the APPROVED Screen 3 image. Keep the center visually open and maintain the deep blue interior and glossy gold elements.
+
+Remove the yellow helper character by the pink mascot, as I already requested. Do not reintroduce the helper or a replacement.
+
+Preserve the current real continuous gameplay: Tap to Start, swipe steering, jump, forward movement, actual uphill/downhill slide geometry, physically traveling through the entrance and INTO the illuminated tube, camera pitch/banking, animated blue water splashes, and the collectibles. No teleporting, screen cut, fake moving screenshot or slideshow.
+
+Keep my approved Screen 3 starting composition: the pink mascot alone in the foreground; rich blue water; castle/washer entrance; enormous brushes and blue/gold side machinery; 'Let's go! Into the washing machine!' header; top HUD and bottom control panel. Keep the scene bright and magical but with non-blown highlights. Keep the existing Meshy rollers, castle, water towers, gear wheels, gold pipes and other decorations; integrate this only where it adds the missing interior rings.
+
+TEST AND SHOW ME:
+1. A real browser screenshot of the updated starting frame side-by-side with my approved Screen 3 at the same portrait framing.
+2. A continuous playable/browser-recorded sequence from Tap to Start, up the blue water slope, across the threshold into the washer tunnel, and deeper past the cyan and pink glowing rings.
+3. Proof the central passage is not obstructed and the model is not rendering inside-out or clipping the camera/player.
+4. A clear report of whether the interior rings have working emissive glow and whether the GLB performance is acceptable in the browser. If the reduced geometry is too rough, try the 6.54 MiB variant; if it runs too slowly, try the 1.32 MiB fallback or simplify further while retaining the ring silhouettes.
+
+Preserve all existing project files and working gameplay. Keep the GitHub draft pull request unmerged unless I authorize merging it.

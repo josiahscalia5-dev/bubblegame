@@ -1,6 +1,6 @@
 // Try several settings at Tap to Start without rebuilding, one screenshot each (1:2 stage).
 //   node tools/try_settings.cjs <demo-dir> <out-dir> '<json list>'
-// Each entry is one of: {"off":[x,y,z],"look":[x,y,z],"fov":40} (camera framing), {"helper":[z, height]} (duck helper),
+// Each entry is one of: {"off":[x,y,z],"look":[x,y,z],"fov":40} (camera framing),
 // {"mach":{"at":[x,y,z],"yaw":0.08,"height":2.8}} (Meshy side machinery; prints its nearest distance to the lanes).
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -21,7 +21,7 @@ const server = http.createServer((req, res) => {
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   const list = JSON.parse(LIST);
   for (let i = 0; i < list.length; i++) {
-    const inner = await page.evaluate((f) => { if (f.mach) return window.__bw.setSideMachinery(f.mach); if (f.helper) window.__bw.setHelper(...f.helper); else window.__bw.setFraming(f); }, list[i]); if (inner !== undefined) console.log('machinery inner |x|', inner);
+    const inner = await page.evaluate((f) => { if (f.mach) return window.__bw.setSideMachinery(f.mach); window.__bw.setFraming(f); }, list[i]); if (inner !== undefined) console.log('machinery inner |x|', inner);
     const s = await page.evaluate(() => window.__bw.advance(0.4));
     await page.screenshot({ path: path.join(OUT, `f${i}.png`), clip: await page.locator('#stage').boundingBox() });
     console.log(i, JSON.stringify(list[i]), 'camera', s.camera, 'pitch', s.cameraPitchDeg);

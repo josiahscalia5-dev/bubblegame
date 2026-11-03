@@ -1,6 +1,10 @@
 # Meshy asset review: approved Screen 3 against the browser demo (2 November 2026)
 
-**Latest update, 2 November (night):** four Meshy entrance decorations have arrived (`Design/MeshyDeliveries/EntranceDecor/`): a glowing water tower, a blue-and-gold gear wheel, a curved golden pipe and a crown with curved trim. They are in the browser demo. The water tower is the "ornate gold machinery tower" upgrade in section 3, and the towers and gears built in code have been replaced by the Meshy models.
+**Latest update, 2–3 November (night):**
+- The Meshy washer tunnel interior liner has arrived (`Design/MeshyDeliveries/TunnelInterior/`). It lines the drum in the browser demo, with its light bands made to glow.
+- The duck helper was removed at the user's request.
+
+**Earlier that night:** four Meshy entrance decorations have arrived (`Design/MeshyDeliveries/EntranceDecor/`): a glowing water tower, a blue-and-gold gear wheel, a curved golden pipe and a crown with curved trim. They are in the browser demo. The water tower is the "ornate gold machinery tower" upgrade in section 3, and the towers and gears built in code have been replaced by the Meshy models.
 
 **Update, late on 2 November:** the Meshy giant side machinery has arrived and stands at the lower left of the slide (see `Design/MeshyDeliveries/SideMachinery/`). The Meshy duck helper on its pink float has arrived and replaces the code-built helper (see `Design/MeshyDeliveries/DuckHelper/`).
 
@@ -21,7 +25,7 @@ The approved image is small (269 × 538 px, shown at 3×). Shapes smaller than a
 | Gems | Gemstone | Done. |
 | Socks (Screen 4, inside the tunnel) | Lost sock | Done. |
 | Big blue-and-gold washing wheel with pink, white and blue bristles at the lower left | Giant side machinery (delivered late on 2 November) | **In use** (Medium copy), placed and sized against the approved screen, clear of the lanes. It stands still because it is one mesh. |
-| Small yellow helper on a pink float, in front of the portal | Duck helper (delivered late on 2 November) | **In use.** Placed and sized against the approved screen, bobbing with gentle splashes; goggles softened. It leads the mascot into the tunnel. |
+| Small yellow helper on a pink float, in front of the portal | Duck helper (delivered late on 2 November) | **Removed at the user's request** (night of 2 November); the mascot rides alone. Before that: Placed and sized against the approved screen, bobbing with gentle splashes; goggles softened. It leads the mascot into the tunnel. |
 
 ## 2. Built in code: no Meshy model needed
 

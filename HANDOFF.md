@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (2 November 2026, night)
+# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, early morning)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,7 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-590365bd-e5p8xt` | **Latest work.** Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim). |
+  | `ccr-590365bd-e5p8xt` | **Latest work.** Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the Meshy tunnel interior liner with glowing lights, and the duck helper removed. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
   | `ccr-ce4e9217-j1l0vl` | The afternoon session's work (3D path, water, fur, socks, recordings, Meshy asset review). The branch above builds on it. |
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
@@ -29,7 +29,17 @@ The user wants Screen 3 to look and move right before the remaining screens. The
   - Older versions: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening) and https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (afternoon).
   - All are private until shared from their Share menu.
   - Locally: `cd WebDemo && python3 -m http.server`.
-- **Latest round (night of 2 November): the four Meshy entrance decorations** (`Design/MeshyDeliveries/EntranceDecor/`, placed and animated by `WebDemo/src/decor.js`):
+- **Latest round (night of 2–3 November): the Meshy tunnel interior liner, and no helper**
+  - **The liner:** four copies of the Recommended liner (`Design/MeshyDeliveries/TunnelInterior/`, `WebDemo/src/liner.js`) line the drum, bent along the ride's path. The castle, portal and the drum's mouth are unchanged. That folder's README explains the radius remap.
+  - **The old drum:** not drawn behind the liner (`trimDrum`). Its ribs and walls cut through the liner and caused the dark, broken-looking patches.
+  - **Cracks:** the Meshy model has cracks of its own. A deep-blue backing shows through them.
+  - **Lights:** the liner's painted cyan bands and pink panels really glow (`LINER_GLOW`), plus emissive cyan and white rings every 2 m, fading into deep blue with distance. The walls are dimmer than outdoors, so the blue and gold are not washed out.
+  - **Clearance:** the nearest liner surface is 2.06 m from the axis. The mascot's body reaches 1.98 m at most, even jumping in every lane (`window.__bw.clearanceTrace`).
+  - **Load:** fewer triangles and draw calls than before. At Tap to Start, 1.82 M triangles and 219 draw calls, against 1.92 M and 287.
+  - **Duck helper:** removed at the user's request (model, code, splashes, foam ring, goggles shader). Do not bring it back.
+  - **Start panels:** the "Let's go!" banner and Tap to Start panel fade out over 0.45 s of game time after the tap.
+  - **The ride is unchanged.** With the same random seed, the old and new builds end in the same place and collect the same coins, gems and socks.
+- **Earlier that night: the four Meshy entrance decorations** (`Design/MeshyDeliveries/EntranceDecor/`, placed and animated by `WebDemo/src/decor.js`):
   - **Glowing water towers:** one on each side of the castle, where the approved image has its tall gold-and-blue columns. Each stands on a gold plinth.
     - The fluid glows and swirls in the shader (`TOWER_FLUID`), with bubbles rising and a pulsing light.
     - They replace the code-built machinery towers.
@@ -46,7 +56,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
     - The crown keystone is hidden by the "Let's go!" banner at Tap to Start. The approved arch top has no crown; it was added because the user asked for it.
     - The approved portal-mouth gears are chunkier and sit right at the water's edge. Ours are a little smaller and further out, to stay clear of the lanes, and partly behind the side machinery and the right brush.
     - Pipe elbows appear only as the two tower spouts.
-- **Previous round (Screen 3 completion), all in code, no new Meshy models:**
+- **Before that (Screen 3 completion), all in code, no new Meshy models:**
   - **Framing:** measured against the approved image. A 36° lens from further back keeps the mascot's size and place, and the portal arch now fills the approved 64 % of the width.
   - **Slide:** narrower, as in the approved image (2.2 m, lanes 0.70 m apart). It is a flume with lavender walls, thick gold rails and chunky gold segments.
   - **Machinery** (`WebDemo/src/scenery.js`):
@@ -56,7 +66,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
     - six gold gears with teal and navy hubs at the portal mouth
     - curved gold pipes, pink fluffy trim and glowing bulbs
     - Wheels, gears and collars turn.
-  - **Duck helper:** the user's Meshy duck on its pink float (`Design/MeshyDeliveries/DuckHelper/`, Balanced copy in `WebDemo/models/duck.glb`). It replaced the code-built helper. `WebDemo/src/helper.js` places it ahead of the mascot, facing it, with gentle splashes and softened goggles. It leads the way into the washing machine.
+  - **Duck helper (removed since, at the user's request):** the user's Meshy duck on its pink float (`Design/MeshyDeliveries/DuckHelper/`, Balanced copy in `WebDemo/models/duck.glb`). It replaced the code-built helper. `WebDemo/src/helper.js` places it ahead of the mascot, facing it, with gentle splashes and softened goggles. It leads the way into the washing machine.
   - **Brushes:** a 3 m Meshy brush turns end-on at the lower left; a second one shows its pink fringe on the right.
   - **Water:** a soft, wavy caustic shimmer and twinkling sparkles instead of the polygon grid. Foam only where water churns, including a foam collar around the mascot. Fewer droplets.
 - **Giant side machinery (Meshy):** the user's model (`Design/MeshyDeliveries/SideMachinery/`, Medium copy in `WebDemo/models/machinery.glb`) stands at the lower left of the slide, matched to the approved screen.
@@ -79,7 +89,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 - **Known differences from the approved Screen 3:**
   - The approved vortex inside the portal is whiter and pinker than ours.
   - In the approved image the left brush overlaps the slide's edge. Ours stays just clear of the left lane, so it sits a little further left and is cut by the screen edge.
-  - The Meshy duck has big open eyes and goggles; the approved helper's eyes are closed and it has no goggles (the goggles are softened). Its float is about 15 % wider than the approved one.
+  - The approved image shows a small yellow helper in front of the mascot; at the user's request the game has none.
   - The code-built machinery is simpler than hand-sculpted models. `Design/MESHY_ASSET_REVIEW.md` lists the one optional Meshy upgrade left (the machinery tower).
 - **Build and record:**
   - Build: `cd WebDemo && npm install && node build.mjs`.

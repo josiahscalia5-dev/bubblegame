@@ -97,7 +97,9 @@
   #startPanel img { position: absolute; }
   #hand { animation: hover 1.1s ease-in-out infinite; }
   @keyframes hover { 50% { transform: translateY(calc(var(--u) * -3)); } }
-  body.running #banner, body.running #startPanel { opacity: 0; transform: translateX(-50%) translateY(calc(var(--u) * 12)); }
+  /* The "Let's go!" banner and the Tap to Start panel fade out over the first 0.45 s of the run, timed by
+     the game itself (game.js fadeStartPanels), so they are gone however the frames are stepped. */
+  #banner, #startPanel { transition: none; }
   #hint {
     left: 50%; bottom: calc(var(--u) * 26); transform: translateX(-50%); width: max-content; max-width: 88%; text-align: center;
     padding: calc(var(--u) * 5) calc(var(--u) * 12); border-radius: calc(var(--u) * 12); background: var(--pill);

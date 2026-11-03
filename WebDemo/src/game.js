@@ -13,8 +13,8 @@ import * as W from './world.js';
 import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
-import { buildHelper } from './helper.js';
 import { buildDecor, DECOR } from './decor.js';
+import { buildLiner, LINER } from './liner.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -50,7 +50,7 @@ const sun = new THREE.DirectionalLight(0xfff2e6, 1.7);
 sun.position.set(-3, 6, -4);
 scene.add(sun);
 const SUN_DIR = sun.position.clone().normalize();
-// A cool rim light from behind and above: bright edges on the machinery, wheels and helper.
+// A cool rim light from behind and above: bright edges on the machinery and wheels.
 const rimLight = new THREE.DirectionalLight(0xcfe8ff, 1.3);
 rimLight.position.set(2, 7, 12);
 scene.add(rimLight);
@@ -58,8 +58,8 @@ scene.add(rimLight);
 // ------------------------------------------------------------------ loading
 const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
-  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', duck: 'models/duck.glb', machinery: 'models/machinery.glb',
-  tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb',
+  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', machinery: 'models/machinery.glb',
+  tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb', liner: 'models/liner.glb',
 };
 const progress = {};
 function showProgress() {
@@ -148,14 +148,14 @@ function bakedMaterial(src, opts = {}) {
   };
   // three.js caches compiled shaders by the onBeforeCompile source text, which is the same for every
   // baked material; without its own key, a material could reuse another's shader and its settings
-  // (the duck once rendered with the brushes' recolour). The key holds everything the code above bakes in.
+  // (a model once rendered with the brushes' recolour). The key holds everything the code above bakes in.
   const key = 'baked:' + JSON.stringify([sat, bright, glow, opts.lift ?? 0, haze || 0, shade || 0, opts.grade || '', opts.afterColor || '']);
   m.customProgramCacheKey = () => key;
   return m;
 }
 
 // ------------------------------------------------------------------ world
-let water, waterU, mascot, rig, fx, scenery, helper, decor;
+let water, waterU, mascot, rig, fx, scenery, decor, liner, linerG;
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -262,7 +262,6 @@ function buildWater() {
     uRipples: { value: ripples }, uPlayer: { value: new THREE.Vector3() }, uPlayerMove: { value: new THREE.Vector3() },
     uFlow: { value: 9 }, uSlideHalf: { value: W.SLIDE.half },
     uDeep: { value: C(0x0636d8) }, uShallow: { value: C(0x1f9bff) }, uTurq: { value: C(0x3eeaf8) }, uGlow: { value: C(0x9af2ff) },
-    uHelper: { value: new THREE.Vector3(0, 0.4, -99) },   // helper track x, float radius, u (its foam ring)
     uSky: { value: C(0xa9c4ff) }, uPink: { value: C(0xff9be0) }, uGold: { value: C(0xffcc5a) },
     uRingA: { value: C(0xffd873) }, uRingB: { value: C(0x8ce6ff) }, uFog: { value: C(0xccccff) }, uSunDir: { value: SUN_DIR },
     uRings: { value: new THREE.Vector3(L.tunnelStart + 0.25, L.segmentLength - Math.max(0.02, L.segmentLength * 0.005), 4) },
@@ -395,9 +394,8 @@ function buildWaterfalls() {
 function buildDrumLights() {
   const ring = new THREE.TorusGeometry(L.tunnelRadius * 0.965, 0.075, 8, 72);
   const zs = [];
-  const step = L.segmentLength - Math.max(0.02, L.segmentLength * 0.005);
-  for (let i = 0; i < 3; i++) zs.push(L.tunnelStart + i * step + 0.25);
-  zs.push(L.tunnelEnd - 0.25);
+  // The drum's mouth and end; the rings that stood at its inner joints would be inside the liner's wall.
+  zs.push(L.tunnelStart + 0.25, L.tunnelEnd - 0.25);
   zs.forEach((z, i) => {
     const m = new THREE.Mesh(ring, new THREE.MeshBasicMaterial({ color: i % 2 === 0 ? new THREE.Color(2.6, 2.0, 0.95) : new THREE.Color(1.4, 2.2, 2.9) }));
     m.matrixAutoUpdate = false;
@@ -466,7 +464,7 @@ function buildDrum(gltf) {
   gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
   const seg = new THREE.Matrix4(), full = new THREE.Matrix4(), v = new THREE.Vector3(), out = new THREE.Vector3();
   mats.drumMeshes = [];
-  for (const arr of L.drumSegments) {
+  for (const [segment, arr] of L.drumSegments.entries()) {
     seg.fromArray(arr);
     for (const mesh of meshes) {
       full.multiplyMatrices(seg, mesh.matrixWorld);
@@ -484,8 +482,24 @@ function buildDrum(gltf) {
       g.computeBoundingSphere();
       const m = new THREE.Mesh(g, mesh.material);
       scene.add(m);
+      m.userData.segment = segment;
       mats.drumMeshes.push(m);
     }
+  }
+}
+
+// The liner lines the drum from just inside its mouth (liner.js). The drum's own ribs reach in to 2.1 m
+// from its axis, inside the liner's bore, and its walls would cut through the liner's recesses, so beyond
+// the liner's start the drum is not drawn: its first segment is cut just past that point (its mouth and entrance stay exactly as they are) and the other two
+// are hidden. The drum is otherwise unchanged.
+function trimDrum() {
+  const u = L.tunnelStart + LINER.startIn + 0.15;
+  TR.frame(u, F);
+  const keepBefore = new THREE.Plane().setFromNormalAndCoplanarPoint(F.T.clone().negate(), F.P.clone());
+  renderer.localClippingEnabled = true;
+  for (const m of mats.drumMeshes) {
+    if (m.userData.segment === 0) m.material.clippingPlanes = [keepBefore];
+    else m.visible = false;
   }
 }
 
@@ -792,35 +806,8 @@ function buildMascot(gltf) {
   };
 }
 
-// The Meshy duck helper on its pink float waits on the slide in front of the portal (where the
-// approved Screen 3 shows it), facing the mascot, bobbing with small splashes and ripples. Once the
-// run starts it rides ahead into the washing machine, leading the way, into the light at the tunnel's end.
-const HELPER = { z0: -8.6, lead: 6.5, height: 0.7 };   // size and place measured against the approved screen
-function updateHelper(dt) {
-  if (!helper) return;
-  if (state.phase === 'running') helper.z = Math.max(helper.z, mascot.z + HELPER.lead);
-  const t = state.time, z = helper.z;
-  const surf = W.surface(L, 0, z, t), riding = state.phase === 'running';
-  TR.map(0, surf, z, helper.root.position);
-  TR.quaternion(z, helper.root.quaternion);   // its face (turned to local -Z) looks back up the run, at the mascot
-  helper.root.visible = z < L.tunnelEnd + 0.5;
-  helper.animate(t, riding ? 1 : 0);
-  waterU.uHelper.value.set(0, helper.width * 0.5, z);
-  if (!helper.root.visible) return;
-  // Gentle splashes: a few clear droplets around the float (more while riding), and slow ripples
-  // spreading from it while it waits.
-  helper.splash = (helper.splash || 0) + dt * (riding ? 9 : 3.5);
-  for (; helper.splash >= 1; helper.splash--) {
-    const a = Math.random() * Math.PI * 2, r = helper.width * 0.5;
-    fx.emitT(Math.cos(a) * r, surf + 0.03, z + Math.sin(a) * r * 0.8, Math.cos(a) * 0.35, 0.45 + Math.random() * 0.6, riding ? mascot.speed * 0.25 : 0,
-      0.03 + Math.random() * 0.04, 0.45 + Math.random() * 0.3, 0);
-  }
-  if (!riding) { helper.rip = (helper.rip ?? 0) - dt; if (helper.rip < 0) { addRipple(0, z, 0.45); helper.rip = 1.6; } }
-}
-
 function resetRun() {
   const m = mascot;
-  if (helper) helper.z = HELPER.z0;
   Object.assign(m, { lane: 1, x: 0, xv: 0, z: L.startZ, speed: 0, air: false, vy: 0, pitch: 0, lean: 0, yaw: 0, flip: 0, spin: 0, spinV: 0, sq: 0, sqV: 0 });
   m.yAbs = W.surface(L, 0, L.startZ, state.time) + W.FLOAT_H;
   for (const c of [...coins, ...gems, ...socks]) { c.live = true; c.pop = -1; c.obj.visible = true; c.obj.scale.setScalar(1); c.obj.position.copy(c.home); }
@@ -1080,10 +1067,23 @@ function popHud(id) { const el = $(id); el.classList.remove('pop'); void el.offs
 function startRun() {
   if (state.phase !== 'intro') return;
   state.phase = 'running';
+  state.startedAt = state.time;
   document.body.classList.add('running');
   unlockAudio();
-  setTimeout(() => $('hint').classList.add('show'), 300);
-  setTimeout(() => $('hint').classList.remove('show'), 3800);
+}
+// After Tap to Start, the "Let's go!" banner and the Tap to Start panel slide down a little and fade out
+// over 0.45 s, and the steering hint shows from 0.3 s to 3.8 s. Timed in game seconds (not the wall
+// clock), so every frame shows the right state, also when frames are stepped for a recording.
+const startPanels = ['banner', 'startPanel'].map((id) => $(id));
+function fadeStartPanels() {
+  const since = state.phase === 'running' ? state.time - state.startedAt : -1;
+  const k = since < 0 ? 0 : THREE.MathUtils.smoothstep(since, 0, 0.45);
+  for (const el of startPanels) {
+    el.style.opacity = (1 - k).toFixed(3);
+    el.style.transform = `translateX(-50%) translateY(calc(var(--u) * ${(12 * k).toFixed(2)}))`;
+    el.style.visibility = k >= 1 ? 'hidden' : '';
+  }
+  $('hint').classList.toggle('show', since >= 0.3 && since < 3.8 && state.laps === 0);
 }
 
 // ------------------------------------------------------------------ sound (generated, no files)
@@ -1199,7 +1199,7 @@ function buildSideView() {
   const dots = new THREE.Points(tg, new THREE.PointsMaterial({ color: 0xff1f9e, size: 5, sizeAttenuation: false }));
   dots.frustumCulled = false; g.add(dots);
   // Only the run itself: the castle, drum, scenery and water sheet would hide the mascot from the side.
-  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, decor && decor.root, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
+  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, decor && decor.root, liner && liner.root, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
   side = { cam, g, dots, tp, n: 0, N, yc: 1.0, width: 22, startY: mascot.root.position.y };
 }
 function sideTrail() {
@@ -1287,7 +1287,6 @@ function step(dt) {
   for (const u of fallsU) u.uTime.value = state.time;
   mats.bubbleU.uTime.value = state.time;
   updateMascot(dt);
-  updateHelper(dt);
   updateCollectibles(dt);
   for (const r of rollers) {
     r.angle += r.speed * dt;
@@ -1300,6 +1299,8 @@ function step(dt) {
   for (const ring of mats.rings) ring.material.color.copy(ring.userData.base).multiplyScalar(0.8 + 0.25 * Math.sin(state.time * 2.4 + ring.userData.pulse));
   fx.update(dt);
   updateCamera(dt);
+  liner.update(state.time, camera.position);
+  fadeStartPanels();
 }
 
 let fpsAvg = 60, lowFor = 0;
@@ -1338,20 +1339,25 @@ async function main() {
     L = await layoutRes.json();
     TR = makeTrack(L);
     buildSky();
-    const [castle, drum, mascotG, roller, gem, sock, duckG, machineryG, towerG, gearG, pipeG, crownG, coinFace] = await Promise.all([
-      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'duck', 'machinery', 'tower', 'gear', 'pipe', 'crown'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
+    const [castle, drum, mascotG, roller, gem, sock, machineryG, towerG, gearG, pipeG, crownG, linerModel, coinFace] = await Promise.all([
+      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'machinery', 'tower', 'gear', 'pipe', 'crown', 'liner'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
     bake(castle.scene, { saturation: 1.0, brightness: 1.06, glow: 0.35, grade: SH.CASTLE_GRADE, haze: [0.3, 14, 45, [0.86, 0.79, 1.0]], shade: [0.86, 0.26, 0.35] });
     mats.castle = place(castle.scene, L.castle);
     buildDrum(drum);
+    // The user's Meshy tunnel interior liner inside the drum, with its glowing bands, panels and rings (liner.js).
+    linerG = linerModel;
+    liner = buildLiner({ scene, gltf: linerG, TR, L, W, env: mats.env });
+    state.linerClear = liner.clearance;
+    trimDrum();
     buildWater();
     buildRails();
     buildWaterfalls();
     buildDrumLights();
     buildRollers(roller);
-    scenery = buildScenery({ scene, mats, track: { TR, L, W } });
+    scenery = buildScenery({ scene, mats });
     mats.machinery = scenery.root;
     buildSideMachinery(machineryG);
     // The user's four Meshy entrance decorations: water towers, gear wheels, golden pipes, crown trim (decor.js).
@@ -1362,10 +1368,6 @@ async function main() {
     buildCollectibles(gem, coinFace);
     buildSocks(sock);
     buildMascot(mascotG);
-    repairNormals(duckG.scene);   // the ColorSafe export has no normals: rebuild them for the soft shading
-    helper = buildHelper(duckG, (o) => bakedMaterial(o.material, { vertexColors: !!o.geometry.attributes.color, shade: [0.84, 0.28, 0.4], afterColor: SH.DUCK_GOGGLES_SOFTEN }), HELPER.height);
-    helper.z = HELPER.z0;
-    scene.add(helper.root);
     if (SIDE) buildSideView();
     resize();
     resetRun();
@@ -1397,7 +1399,7 @@ window.__bw = {
     lane: mascot.lane, speed: +mascot.speed.toFixed(2), air: mascot.air, slope: +mascot.lastSlope.toFixed(3), pitchDeg: +THREE.MathUtils.radToDeg(mascot.pitch).toFixed(1),
     leanDeg: +THREE.MathUtils.radToDeg(mascot.lean).toFixed(1), coins: state.coins, gems: state.gems, socks: state.socks, collected: { ...state.collected }, laps: state.laps,
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
-    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, helperZ: helper ? +helper.z.toFixed(2) : null, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null,
+    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null, linerClear: state.linerClear ?? null,
   }),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
@@ -1406,13 +1408,13 @@ window.__bw = {
   lookBack: (v) => { mascot.look = v; mascot.lookT = -0.5; },
   setBloom: (on) => { bloom.enabled = !!on; },
   // Try a Tap to Start framing (camera offset and aim from the mascot, field of view) without a rebuild.
-  // Try a helper placement (distance along the run, height in metres) without a rebuild.
-  setHelper: (z, height) => { if (!helper) return; HELPER.z0 = z; helper.z = z; helper.root.scale.setScalar(height / HELPER.height); },
   setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; },
   // Try placements of the Meshy entrance decor without a rebuild: kind is towers, gears, pipes or crowns.
   // Returns each kind's nearest distance to the slide's middle (decor.js LANE_CLEAR).
   setDecor: (kind, i, props) => { if (props === null) DECOR[kind].splice(i, 1); else DECOR[kind][i] = Object.assign(DECOR[kind][i] || {}, props); state.decorClear = decor.place(); return state.decorClear; },
   getDecor: () => JSON.parse(JSON.stringify(DECOR)),
+  // Rebuild the tunnel liner with other settings (fields of LINER in src/liner.js); returns its clearance.
+  setLiner: (props) => { scene.remove(liner.root); Object.assign(LINER, props); liner = buildLiner({ scene, gltf: linerG, TR, L, W, env: mats.env }); state.linerClear = liner.clearance; liner.update(state.time, camera.position); return liner.clearance; },
   // The world point under a stage pixel (for measuring where the approved scene's parts sit).
   pick: (px, py) => {
     const r = stage.getBoundingClientRect(), ray = new THREE.Raycaster();
@@ -1422,5 +1424,25 @@ window.__bw = {
   },
   project: (p) => { const v = new THREE.Vector3(...p).project(camera), r = stage.getBoundingClientRect(); return [+((v.x + 1) / 2 * r.width).toFixed(1), +((1 - v.y) / 2 * r.height).toFixed(1)]; },
   setFraming: (f) => { if (f.off) S3.off.set(...f.off); if (f.look) S3.look.set(...f.look); if (f.fov) S3.fov = f.fov; rig.snap = true; },
-  debug: () => ({ scene, water, mascot: mascot.root, particles: fx.points }),
+  // Step without drawing and report, every frame, how far the mascot's body and the camera reach from the
+  // tube's axis while they are inside the lined part of the tunnel (null outside it). The liner's nearest
+  // surface is state().linerClear.minR.
+  clearanceTrace: (seconds, fps = 30) => {
+    const out = [], c = state.linerClear, axisH = W.WATER + W.AXIS_H, rel = new THREE.Vector3();
+    const inLiner = (u) => u > c.start && u < c.end;
+    for (let i = 0, n = Math.round(seconds * fps); i < n; i++) {
+      step(1 / fps);
+      const m = mascot, body = inLiner(m.z) ? Math.hypot(m.x, m.yAbs - axisH) + W.BODY_R : null;
+      // the camera's place along the tube: where its offset from the path is square to the path
+      let best = null;
+      for (let u = m.z - 9; u <= m.z + 0.5; u += 0.05) {
+        TR.frame(u, F); rel.copy(camera.position).sub(F.P);
+        const along = Math.abs(rel.dot(F.T));
+        if (!best || along < best.along) best = { along, u, r: Math.hypot(rel.dot(F.R), rel.dot(F.U) - axisH) };
+      }
+      out.push({ t: +state.time.toFixed(3), z: +m.z.toFixed(2), body: body && +body.toFixed(3), camera: inLiner(best.u) ? +best.r.toFixed(3) : null });
+    }
+    return out;
+  },
+  debug: () => ({ scene, water, mascot: mascot.root, particles: fx.points, renderer, composer, camera, track: TR, layout: L, world: W, mascotState: mascot }),
 };

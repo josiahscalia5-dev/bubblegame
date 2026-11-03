@@ -77,19 +77,6 @@ export const brushGrade = (rMax) => /* glsl */ `
   diffuseColor.rgb = col * clamp(0.72 + l * 0.75, 0.72, 1.25); }
 `;
 
-// The Meshy duck helper wears purple and blue swim goggles; the approved Screen 3 helper is small and
-// has none, so they are softened (less saturated, a little lighter) to keep them from drawing the eye.
-// Only purple-to-blue colours on the upper head (model y above the eyes) change; the float, star,
-// beak, cheeks and eyes keep their colours. Runs after the vertex colours (vObj = model position).
-export const DUCK_GOGGLES_SOFTEN = /* glsl */ `
-{ vec3 hsv = bwRgb2hsv(diffuseColor.rgb);
-  float h = hsv.x * 360.0;
-  float goggle = smoothstep(0.15, 0.3, vObj.y) * smoothstep(195.0, 215.0, h) * (1.0 - smoothstep(325.0, 340.0, h)) * smoothstep(0.2, 0.35, hsv.y);
-  hsv.y *= 1.0 - 0.45 * goggle;
-  hsv.z = mix(hsv.z, min(1.0, hsv.z * 0.9 + 0.12), goggle);
-  diffuseColor.rgb = bwHsv2rgb(hsv); }
-`;
-
 // The Meshy glowing water tower's fluid chambers: the texture paints them cyan glass full of bubbles.
 // This finds those texels (cyan, glossy, not the royal-blue gems: measured on the texture, the fluid is
 // hue 180-200 deg with roughness about 0.12, the gems 210-220 deg with roughness about 0.31) and makes
@@ -120,6 +107,34 @@ export const TOWER_FLUID = /* glsl */ `
   totalEmissiveRadiance = mix(totalEmissiveRadiance, vec3(0.0), fluid * 0.8);
   totalEmissiveRadiance += fluid * (vec3(0.0, 0.32, 0.85) * 0.5 * pulse + vec3(0.2, 0.95, 1.35) * band * 1.0 + vec3(0.8, 0.97, 1.2) * bubble * 0.8);
 }
+`;
+
+// The Meshy tunnel liner's own light bands and panels glow (liner.js). Its texture paints them cyan and
+// pink; measured on the texture, cyan is hue 180-195 deg (bright, barely metallic), pink 285-315 deg,
+// the deep-blue walls 210 deg and the gold strongly metallic. In linear colour: cyan has green/blue
+// between about 0.42 and 1.2, the blue walls about 0.2; pink has strong red and blue and little green.
+// The walls are darkened (uLinerShade). Only those texels emit, with a slow light-chase down the tunnel (vLinerU, metres along the path), and
+// less with distance so the lights recede. Runs at the emissive step (after the maps).
+export const LINER_GLOW = /* glsl */ `
+{
+  vec3 c = diffuseColor.rgb;
+  float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
+  float sat = (mx - mn) / max(mx, 1e-3);
+  float gb = c.g / max(c.b, 1e-3);
+  float nonMetal = 1.0 - smoothstep(0.45, 0.7, metalnessFactor);
+  float cyan = smoothstep(0.42, 0.58, gb) * (1.0 - smoothstep(1.2, 1.6, gb)) * smoothstep(0.35, 0.55, c.b) * smoothstep(0.3, 0.5, sat) * nonMetal;
+  float pink = smoothstep(0.25, 0.45, c.r) * smoothstep(0.2, 0.4, c.b) * (1.0 - smoothstep(0.25, 0.45, c.g / max(min(c.r, c.b), 1e-3))) * smoothstep(0.35, 0.55, sat) * nonMetal;
+  float chase = 0.7 + 0.3 * sin(vLinerU * 0.85 - uLinerTime * 3.2);
+  float recede = 1.0 - 0.5 * smoothstep(6.0, 28.0, vLinerDepth);
+  // A tunnel is dimmer than outdoors: the walls take less of the scene's light (so the deep blue is not
+  // washed out to pale by the tone mapping), while the glowing bands keep their colour.
+  diffuseColor.rgb *= mix(uLinerShade, 1.0, clamp(max(cyan + pink, smoothstep(0.45, 0.75, metalnessFactor)), 0.0, 1.0));   // gold keeps its shine
+  totalEmissiveRadiance += (vec3(0.04, 0.95, 1.6) * cyan + vec3(1.55, 0.25, 1.15) * pink) * chase * recede * uLinerGlow;
+}
+`;
+// Depth in the liner: far walls sink into a deep, glowing blue (not white), so the tunnel reads as deep.
+export const LINER_DEPTH = /* glsl */ `
+gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(0.1, 0.2, 0.75), 0.5 * smoothstep(8.0, 34.0, vLinerDepth));
 `;
 
 export const RIPPLES = 8;
@@ -177,7 +192,6 @@ ${HEIGHT_GLSL}
 ${NOISE}
 ${BOW_GLSL}
 uniform vec4 uRipples[${RIPPLES}];
-uniform vec3 uHelper;       // the duck helper: track x, float radius, u
 uniform float uFlow;        // current speed (m/s)
 uniform float uSlideHalf;   // half width of the raised slide
 uniform vec3 uDeep, uShallow, uTurq, uGlow, uSky, uPink, uGold, uRingA, uRingB, uFog, uSunDir;
@@ -258,9 +272,7 @@ void main() {
   float wake = max(wakeLine, trail) * step(toP.y, 0.35) * (1.0 - behind);
   wake *= 0.18 + 0.22 * uPlayerMove.y + 0.3 * uPlayerMove.z;
   float ring = (1.0 - smoothstep(0.42, mix(1.0, 0.78, uPlayerMove.y), length(toP * vec2(1.0, 0.8)))) * mix(0.85, 0.4, uPlayerMove.y);   // full collar at rest, lighter while running   // the foam collar around the mascot (approved Screen 3)
-  vec2 toH = xz - uHelper.xz;   // a thin foam ring where the helper's float sits in the water
-  float helperRing = (1.0 - smoothstep(0.0, 0.16, abs(length(toH * vec2(1.0, 1.15)) - uHelper.y * 1.02))) * 0.75;
-  float mask = clamp(helperRing + wall * 0.35 + pathEdge * 0.85 + crest * crest * 0.08 + wake + ring + steep * 0.25 + rip * 0.5, 0.0, 1.2);
+  float mask = clamp(wall * 0.35 + pathEdge * 0.85 + crest * crest * 0.08 + wake + ring + steep * 0.25 + rip * 0.5, 0.0, 1.2);
   float foam = smoothstep(0.5, 0.78, streak * 0.6 + mask * 0.7 - 0.1);   // no foam unless the water churns (mask)
   foam = clamp(foam + lace * 0.5 * min(mask, 1.0), 0.0, 1.0) * 0.92;
 
