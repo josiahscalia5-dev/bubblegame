@@ -44,6 +44,29 @@ Compared with your close-up of the approved mascot: `Previews/WebDemo/opening_ma
   - The small round droplets in the lane-change frame are the game's own original lane-change spray, which I did not change.
 - **Cost:** two more instanced draws; no new models.
 
+## 2c. Your approved artwork as the Tap to Start screen (third round, 3 November)
+
+On branch `ccr-4e2b86d7-kqpei8`, which starts from this test version (`6116703`, tagged locally as `checkpoint/before-opening-artwork`). Evidence: [`Previews/WebDemo/opening_artwork/`](../Previews/WebDemo/opening_artwork).
+
+- **The picture:** `BWK_01_APPROVED_Screen3.png` (735 × 1476), the sharpest copy in the project. The `x3_` file is an enlargement of the 269 × 538 copy.
+  - It is copied unedited, byte for byte, to `WebDemo/ui/approved_screen3.png`.
+  - The duck is still in it: you declined the edited copies, so none is used.
+- **How it works:**
+  - The artwork lies over the 3D view at Tap to Start, with the live banner and panel hidden under it.
+  - Taps pass through it to the game.
+  - The settings button stays on top, clickable but see-through over the painted gear.
+  - After the tap it fades out with the existing 0.45 s start-panel fade, and the live game continues.
+- **Fit:**
+  - Shown whole, never cropped or stretched.
+  - Anchored at the top and scaled the way the HUD is, so the painted gear lies under the real button on every screen shape.
+  - On a phone taller than 1:2, a band in the artwork's border colour is left below it.
+- **Off:** with `?classic`, or with `window.__BW_OPENING_OFF__ = ['art']`.
+- **Code:**
+  - `src/page.html`: one image and its CSS.
+  - `src/game.js`: about ten lines in `fadeStartPanels`.
+  - `src/opening.js`: the `art` switch.
+- **Not changed:** the tunnel, gameplay, models and HUD.
+
 ## 3. The rollers (your questions)
 
 Your two new Meshy roller candidates were tested separately: see [`SCREEN3_ROLLER_CANDIDATES.md`](SCREEN3_ROLLER_CANDIDATES.md).

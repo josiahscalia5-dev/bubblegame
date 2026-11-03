@@ -560,7 +560,8 @@ export function buildOpening(ctx) {
 }
 
 // Which parts are on (all, unless the page is opened with ?classic).
-export const OPENING_PARTS = { portal: OPENING_ON, foam: OPENING_ON, bubbles: OPENING_ON, brushes: OPENING_ON, slide: OPENING_ON, mascot: OPENING_ON, light: OPENING_ON };
+// art: the approved Screen 3 artwork, unedited, as the Tap to Start screen (page.html #openingArt, faded by game.js).
+export const OPENING_PARTS = { portal: OPENING_ON, foam: OPENING_ON, bubbles: OPENING_ON, brushes: OPENING_ON, slide: OPENING_ON, mascot: OPENING_ON, light: OPENING_ON, art: OPENING_ON };
 // For checks: window.__BW_OPENING_OFF__ = ['mascot', ...] (set before the page loads) leaves those parts out.
 if (typeof window !== 'undefined' && Array.isArray(window.__BW_OPENING_OFF__)) for (const k of window.__BW_OPENING_OFF__) OPENING_PARTS[k] = false;
 // The mascot's presentation: [sideways, up, forward] stretch of the drawn model (not its collider or ride

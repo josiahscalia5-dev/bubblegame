@@ -9,6 +9,7 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
+  | `ccr-4e2b86d7-kqpei8` | **Test version for review (3 November, late morning):** the approved Screen 3 artwork as the Tap to Start screen, on top of `ccr-68cd26f5-4t8etp`. Not merged; see section 2c of `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
@@ -26,7 +27,22 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, morning): Screen 3 opening look, test version waiting for approval
+## Latest (3 November, late morning): the approved artwork as the opening screen, test version waiting for approval
+
+- **Branch `ccr-4e2b86d7-kqpei8`** (this session). It starts from the test version below (`6116703`), which stays on `ccr-68cd26f5-4t8etp` as the restore point.
+  - The tag `checkpoint/before-opening-artwork` is local only; GitHub refused tag pushes from this session.
+  - The working original (`ccr-590365bd-e5p8xt`) is untouched. Nothing is merged.
+- **What it is:** the approved Screen 3 (`BWK_01`, unedited, duck included) shown as the Tap to Start screen.
+  - It fades into the live 3D game with the existing 0.45 s fade.
+  - Taps pass through it, and the settings button stays clickable over the painted gear.
+  - `?classic` shows the original opening.
+- **Read:** section 2c of `Design/SCREEN3_OPENING_MATCH.md`. Evidence is in `Previews/WebDemo/opening_artwork/`.
+- **Duck:** you declined the patch-filled copies (blurry, patchy). Do not retry patch-based removal.
+- **Phones taller than 1:2:** the whole artwork shows from the top, with a band in its border colour below it.
+- **The published page:** not republished. `artifact.html` now references `ui/approved_screen3.png`, so a republish must include that file.
+- **Waiting on the user:** approval of this test before anything further.
+
+## Earlier (3 November, morning): Screen 3 opening look, test version waiting for approval
 
 - **Branch `ccr-68cd26f5-4t8etp`** (this session). It starts from `ccr-590365bd-e5p8xt` (`b75f88c`), which stays as the working original. Nothing is merged.
 - **What it is:** one cosmetic module, `WebDemo/src/opening.js`, plus small additive hooks in `game.js` and `shaders.js`.

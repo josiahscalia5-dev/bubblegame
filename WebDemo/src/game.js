@@ -14,7 +14,7 @@ import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
-import { buildOpening, OPENING_ON, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
+import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -1063,6 +1063,7 @@ function startRun() {
 // over 0.45 s, and the steering hint shows from 0.3 s to 3.8 s. Timed in game seconds (not the wall
 // clock), so every frame shows the right state, also when frames are stepped for a recording.
 const startPanels = ['banner', 'startPanel'].map((id) => $(id));
+const openingArt = $('openingArt');
 function fadeStartPanels() {
   const since = state.phase === 'running' ? state.time - state.startedAt : -1;
   const k = since < 0 ? 0 : THREE.MathUtils.smoothstep(since, 0, 0.45);
@@ -1072,6 +1073,16 @@ function fadeStartPanels() {
     el.style.visibility = k >= 1 ? 'hidden' : '';
   }
   $('hint').classList.toggle('show', since >= 0.3 && since < 3.8 && state.laps === 0);
+  // Test version: the approved Screen 3 artwork (page.html #openingArt) is the Tap to Start screen, once the game is
+  // ready and the picture has loaded. It fades out with the start panels while the settings button fades in over its
+  // painted twin. Off with ?classic, and on a page without the picture (the live banner and panel show as before).
+  if (openingArt) {
+    const on = OPENING_PARTS.art && k < 1 && openingArt.complete && openingArt.naturalWidth > 0 && document.body.classList.contains('ready');
+    document.body.classList.toggle('openingArt', on);
+    openingArt.style.visibility = on ? 'visible' : 'hidden';
+    openingArt.style.opacity = (1 - k).toFixed(3);
+    $('soundBtn').style.opacity = on ? k.toFixed(3) : '';
+  }
 }
 
 // ------------------------------------------------------------------ sound (generated, no files)
