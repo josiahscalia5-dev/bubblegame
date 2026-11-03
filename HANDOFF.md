@@ -16,7 +16,11 @@ Read this first when you continue in a new Claude conversation.
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
   | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
 
-- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`. The latest is `2026-11-02_decor_and_tunnel_session.md` (2–3 November: the entrance decorations, the tunnel liner and its diagnosis, the restored tunnel). Before it, `2026-11-02_screen3_polish_session.md` (castle colours, machinery, the duck helper and the side machinery).
+- **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
+- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
+  - Newest: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
+  - The exporter now also keeps messages sent with pictures attached, which it used to skip.
+  - Before it, `2026-11-02_decor_and_tunnel_session.md` (2–3 November: the entrance decorations, the tunnel liner and its diagnosis, the restored tunnel). Before it, `2026-11-02_screen3_polish_session.md` (castle colours, machinery, the duck helper and the side machinery).
 - **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
 - **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.

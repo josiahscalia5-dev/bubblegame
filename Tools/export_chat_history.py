@@ -30,6 +30,17 @@ def clean_user(text):
 
 blocks = []
 last_role = None
+seen_queued = set()   # a queued message can be logged more than once (for example after a restart)
+
+
+def from_parts(parts):
+    """The text of a message sent as a list of parts (text plus pasted images), with a note for the images."""
+    texts = [clean_user(x.get("text", "")) for x in parts if x.get("type") == "text"]
+    images = sum(1 for x in parts if x.get("type") == "image")
+    text = "\n\n".join(t for t in texts if t)
+    if images and text:
+        text += f"\n\n_[{images} image{'s' if images > 1 else ''} attached]_"
+    return text
 
 
 def add(role, text, ts):
@@ -64,14 +75,21 @@ with open(src) as f:
                 else:
                     add("You", text, ts)
             elif isinstance(c, list):
-                for x in c:
-                    if x.get("type") == "text" and "[Request interrupted by user]" in x.get("text", ""):
-                        add("Note", "_(You interrupted Claude here.)_", ts)
+                if any(x.get("type") == "text" and "[Request interrupted by user]" in x.get("text", "") for x in c):
+                    add("Note", "_(You interrupted Claude here.)_", ts)
+                # A message with pictures pasted in is a list of parts. Tool results are also logged as
+                # "user" entries with list content; only a person's own message is kept.
+                elif (e.get("origin") or {}).get("kind") == "human" and not any(x.get("type") == "tool_result" for x in c):
+                    add("You", from_parts(c), ts)
         elif t == "attachment":
             a = e.get("attachment") or {}
             # Background-job notices also arrive as queued commands; only keep what a person typed.
-            if a.get("type") == "queued_command" and isinstance(a.get("prompt"), str) and not a["prompt"].lstrip().startswith("<task-notification>"):
-                add("You (sent while Claude was working)", clean_user(a["prompt"]), ts)
+            if a.get("type") == "queued_command":
+                p = a.get("prompt")
+                text = clean_user(p) if isinstance(p, str) else from_parts(p) if isinstance(p, list) else ""
+                if text and not text.lstrip().startswith("<task-notification>") and text not in seen_queued:
+                    seen_queued.add(text)
+                    add("You (sent while Claude was working)", text, ts)
         elif t == "assistant" and not e.get("isSidechain"):
             for x in e.get("message", {}).get("content") or []:
                 if x.get("type") == "text":
