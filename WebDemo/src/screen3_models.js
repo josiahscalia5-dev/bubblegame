@@ -24,6 +24,8 @@ export const S3 = Object.fromEntries(['castle', 'entrance', 'machinery', 'brush'
 // ?s3=...,edges (test, separate from the five-asset version): the slide's tall pale walls restyled as low icy edges,
 // and the brush and big bubble refined now that the walls no longer hide them (see restyleEdges and EDGES below).
 S3.edges = LIST.includes('edges');
+// ?s3=...,cine (test): an opening-only camera that matches the approved Screen 3's perspective (setupCine below).
+S3.cine = LIST.includes('cine');
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };
 
@@ -60,9 +62,16 @@ export const S3_LAYOUT = {
 // Edges: low icy rims along the slide (top 0.13 m above the edge's water instead of the walls' 0.2 m), translucent.
 export const EDGES = { brush: { scale: 1.51, at: [2.62, 0.23, -4.9] }, film: 1.4,
   edge: { profile: [[-0.08, -0.05], [0.0, 0.07], [0.1, 0.13], [0.22, 0.1], [0.3, -0.02], [0.33, -0.8]], alpha: 0.45, foam: 1.0 } };
+// The cinematic opening camera, fitted to the approved Screen 3 through the same projection the game uses: the door's
+// centre (y 475) and outer radius (170 px) and the mascot's centre (y 730) and width (245 px on the 538 x 1076 screen).
+// It is the gameplay camera's own pose plus this small offset: 0.10 m up, 0.82 m forward, 0.30 degrees more downward,
+// a 3.7 % wider view. After Tap to Start the offset blends to nothing over 0.9 s of game time, then the gameplay
+// camera is drawn again, unchanged.
+export const CINE = { up: 0.099, forward: 0.818, pitch: 0.30, fov: 1.0375, blend: 0.9 };
 const TUNE = (typeof window !== 'undefined' && window.__BW_S3_TUNE__) || {};
 for (const k of Object.keys(TUNE)) if (S3_LAYOUT[k]) S3_LAYOUT[k] = { ...S3_LAYOUT[k], ...TUNE[k] };
 if (TUNE.edges) Object.assign(EDGES, TUNE.edges);
+if (TUNE.cine) Object.assign(CINE, TUNE.cine);
 if (S3.edges) S3_LAYOUT.brush = { ...S3_LAYOUT.brush, ...EDGES.brush };
 
 // Fetched as soon as the page starts (only the switched-on models), parsed once the opening layer is built.
@@ -81,7 +90,7 @@ async function fetchModel(url) {
   }
 }
 
-export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W }) {
+export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass }) {
   const report = {};
   const loader = new GLTFLoader();
   const parse = async (k) => { const b = await bytes[k]; return b ? loader.parseAsync(b, '') : null; };
@@ -163,7 +172,9 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
       report.brush = { scale: P.scale, at: r.at, nearestToLanes: r.lane, spins: false };
     }
   }
-  if (S3.bubbles && staticBubbles) report.bubbles = soapBubbles({ scene, staticBubbles, camera, updaters, mascot });
+  const view = S3.cine && renderPass ? setupCine({ camera, renderPass, updaters }) : null;   // before the bubbles, so they are placed through it
+  if (view) report.cine = { ...CINE };
+  if (S3.bubbles && staticBubbles) report.bubbles = soapBubbles({ scene, staticBubbles, camera: view || camera, updaters, mascot });
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.
@@ -418,3 +429,27 @@ void main() {
   gl_FragColor = vec4(col * a, a);
 }
 `;
+
+// ---------------------------------------------------------------- ?s3=...,cine: the opening-only camera
+// A separate camera that the render pass draws through during the opening. The gameplay camera keeps moving exactly as
+// before (its code and path are untouched); this one copies its pose every frame and adds the CINE offset, weighted 1
+// at Tap to Start and blending to 0 over CINE.blend seconds after the tap. At 0 the render pass is handed back the
+// gameplay camera itself.
+function setupCine({ camera, renderPass, updaters }) {
+  const cine = new THREE.PerspectiveCamera(camera.fov, camera.aspect, camera.near, camera.far);
+  const fwd = new THREE.Vector3(), tilt = new THREE.Quaternion(), X = new THREE.Vector3(1, 0, 0);
+  let t0 = null;
+  updaters.push((dt, t, phase) => {
+    if (phase === 'running' && t0 === null) t0 = t;
+    const since = t0 === null ? 0 : t - t0;
+    const w = phase === 'intro' ? 1 : t0 === null ? 0 : 1 - THREE.MathUtils.smoothstep(since, 0, CINE.blend);
+    if (w <= 0) { if (renderPass.camera !== camera) renderPass.camera = camera; return; }
+    camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize();
+    cine.position.copy(camera.position).addScaledVector(fwd, CINE.forward * w); cine.position.y += CINE.up * w;
+    cine.quaternion.copy(camera.quaternion).multiply(tilt.setFromAxisAngle(X, -THREE.MathUtils.degToRad(CINE.pitch) * w));
+    cine.fov = camera.fov * (1 + (CINE.fov - 1) * w); cine.aspect = camera.aspect; cine.near = camera.near; cine.far = camera.far;
+    cine.updateProjectionMatrix(); cine.updateMatrixWorld(true);
+    renderPass.camera = cine;
+  });
+  return cine;
+}

@@ -27,7 +27,17 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, night): slide-edge restyle behind `?s3=all,edges` (test, not approved)
+## Latest (3 November, late night): opening-only cinematic camera behind `?s3=all,edges,cine` (test, not approved)
+
+- **The user approved `4711680` (`?s3=all,edges`, 6.5/10) as a saved experimental checkpoint only.** No new Meshy models yet.
+- **`cine`:** a separate render camera fitted to the approved perspective, the gameplay pose plus 0.10 m up, 0.82 m forward, 0.3° down and a 41.5° view. It blends back to the untouched gameplay camera over 0.9 s after the tap.
+  - Code: `setupCine` in `screen3_models.js`. `game.js` passes its render pass to the opening layer.
+- **Result:** about 7/10, against 6.5. The mascot, slide and door now line up structurally (edge correlation in that region 0.115 → 0.295).
+- **Finding:** the camera was not the main barrier. The remaining gaps are the castle's narrow arch (towers off-screen), the entrance's small opening, its colours and the protected tunnel's curve, plus painted effects and the removed duck.
+- **Evidence:** `Previews/WebDemo/screen3_cine_test/`.
+- **Checks:** controls, collectibles and the 13 s seeded run identical; tunnel pixel-identical; `?s3=all,edges` unchanged.
+
+## Earlier (3 November, night): slide-edge restyle behind `?s3=all,edges` (test, not approved)
 
 - **The user approved `ad518e3` (`?s3=all`, the five assets) as a saved experimental checkpoint only.** It is not the final Screen 3, and nothing is merged.
 - **`edges`** (not part of `all`):
