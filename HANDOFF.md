@@ -33,7 +33,19 @@ Read this first when you continue in a new Claude conversation.
   - Glassy aqua flume walls, a slightly more upright mascot with crisper fur, and an opening-only grade.
 - **Proof:** a seeded run is frame-for-frame identical (position, lane, speed, jumps, camera, pickups). The tunnel renders pixel-identical with the mascot presentation off, and `?classic` is pixel-identical to the original.
 - **Read:** `Design/SCREEN3_OPENING_MATCH.md`, which has the checklist, the roller answers, the asset inventory, what could not be matched, and the tests. Evidence is in `Previews/WebDemo/opening_match/`.
-- **Waiting on the user:** approval or changes; whether to bring the duck helper back (still removed, as asked); whether to tint the coins; whether to order the optional left-brush Meshy model described in the write-up.
+- **Second round, same branch:**
+  - **Soap suds** against the mascot's lower body, matched to the user's approved close-up (section 2b of the write-up).
+  - **Two Meshy roller candidates** (`Design/MeshyDeliveries/CompactRollers/`), tested one at a time in the right-hand slot with `?roller=1` or `?roller=2`. They are off by default.
+    - Recommended: No. 1.
+    - Neither can spin safely as delivered (gold welded to the drum), so both stand still in the test.
+    - Before using No. 1: a 1024 px web copy, because it adds 42.7 MB of GPU texture memory.
+    - See `Design/SCREEN3_ROLLER_CANDIDATES.md`.
+- **Waiting on the user:**
+  - approval or changes;
+  - whether to use roller No. 1 still, or wait for the separated Meshy parts;
+  - whether to bring the duck helper back (still removed, as asked);
+  - whether to tint the coins;
+  - whether to order the optional left-brush Meshy model described in the write-up.
 
 ## Current focus: Screen 3, browser demo (`WebDemo/`)
 

@@ -10,8 +10,11 @@
 //              bubbles), curling side splashes and spray off the slide walls (own particle pool), and
 //              bubble-lace foam, edge whitewater, flow streaks and a brighter caustic web on the slide
 //              (water shader, slide only: uOpen x onPath, so the tunnel's water is computed as before).
+//              Soap suds: a staggered cluster of rounded translucent bubbles on the water against the
+//              mascot's lower body (as in the approved close-up), tinted blue, lavender and pink.
 //   - bubbles: glossy iridescent soap bubbles at three depths (big ones at the foreground edges, medium
-//              ones by the brushes, small ones drifting toward the entrance).
+//              ones by the brushes, small ones drifting toward the entrance); they part around the mascot.
+//   - roller candidates (test only, ?roller=1|2): one of the user's compact Meshy rollers in the right-hand slot.
 //   - brushes: the Meshy side machinery larger and lower at the left edge (still 1.22 m from the lanes),
 //              fibre detail on its bristles; of the two Screen 3 Meshy rollers, the extra one beside the
 //              portal is hidden and the right one turned to show its fluffy side, not its axle end
@@ -27,6 +30,7 @@
 // coins' bobbing phases come from the same sequence). Gameplay is therefore frame-for-frame identical.
 // Open the page with ?classic to turn the layer off and see the original opening.
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -35,11 +39,44 @@ export function makeRandom(seed) {
   let a = seed >>> 0;
   return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
+// ---- Roller candidates (test only, 3 November): the user's two compact Meshy rollers, tried one at a time in
+// the right-hand slot (replacing the Meshy roller copy there). Off unless the page is opened with ?roller=1 or
+// ?roller=2 (or window.__BW_ROLLER__ is set), so the reviewed opening is unchanged by default. The files are
+// web copies of the deliveries, byte for byte (Design/MeshyDeliveries/CompactRollers).
+export const ROLLER_FILES = { 1: 'models/roller_candidate_1.glb', 2: 'models/roller_candidate_2.glb' };
+const ROLLER_TEST = typeof window === 'undefined' ? null : String(window.__BW_ROLLER__ || (location.search.match(/[?&]roller=(\d)/) || [])[1] || '') || null;
+// Fetched as soon as the page starts (with the other models); parsed and placed after the game is built.
+const rollerBytes = OPENING_ON_EARLY() && ROLLER_FILES[ROLLER_TEST] ? fetchModel(ROLLER_FILES[ROLLER_TEST]) : null;
+function OPENING_ON_EARLY() { return !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search))); }
+async function fetchModel(url) {
+  try {
+    if (window.__BW_MODEL_FORMAT__ === 'json') throw new Error('json');
+    const r = await fetch(url); if (!r.ok) throw new Error(r.status); return await r.arrayBuffer();
+  } catch {
+    try {   // the published preview serves models as base64 JSON (build.mjs)
+      const j = await (await fetch(url + '.json')).json(), bin = atob(j.data), b = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i);
+      return b.buffer;
+    } catch { return null; }
+  }
+}
+// Where the candidate stands: the right-hand slot of the approved screen (behind the big bubble, beside the gold
+// wheel). at = the middle of its long axis (world; +X is screen-left), yaw = turn about the vertical (degrees; 0
+// points its long axis along the run, -Z end toward the camera), length in metres. Its feet stand in the water
+// channel beside the slide. Clear of the lanes: its nearest point is kept at least 1.18 m from the slide's middle.
+export const ROLLER_STAGING = { at: [-2.7, null, -6.4], yaw: -50, length: 2.7, spin: -1.4, feetY: 0.4 };
+
 /** Run fn with Math.random swapped for a private generator, then put the game's own one back. */
 export function withPrivateRandom(rand, fn) {
   const saved = Math.random;
   Math.random = rand;
   try { return fn(); } finally { Math.random = saved; }
+}
+/** The same around an async step. Only used while the game is still loading, when none of its own code runs. */
+export async function withPrivateRandomAsync(rand, fn) {
+  const saved = Math.random;
+  Math.random = rand;
+  try { return await fn(); } finally { Math.random = saved; }
 }
 
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -144,8 +181,10 @@ export function buildOpening(ctx) {
     // 48 in a thick collar hugging the body, 72 in the froth spreading behind and beside it across the
     // slide (the side the camera sees), as in the approved screen
     const outer = i >= 40;
-    const a = outer ? Math.PI + (rand() * 2 - 1) * Math.PI * 0.62 : (i / 40) * Math.PI * 2 + rand() * 0.12;
-    const r = outer ? 0.56 + Math.pow(rand(), 0.8) * 0.4 : 0.41 + rand() * 0.08;
+    let a = outer ? Math.PI + (rand() < 0.5 ? -1 : 1) * (0.55 + rand() * 1.15) : (i / 40) * Math.PI * 2 + rand() * 0.12;
+    // the back arc (toward the camera) belongs to the soap-suds domes; the white froth sits at the sides
+    if (!outer && Math.abs(((a - Math.PI + Math.PI * 3) % (Math.PI * 2)) - Math.PI) < 0.6) a = Math.PI + (rand() < 0.5 ? -1 : 1) * (0.6 + rand() * 0.7);
+    const r = outer ? 0.6 + Math.pow(rand(), 0.8) * 0.45 : 0.42 + rand() * 0.08;
     blobs.push({ a, r, s: outer ? 0.03 + rand() * 0.04 : 0.055 + rand() * 0.05, ph: rand() * 6.28, spin: rand() * 6.28, outer, drift: rand() });
   }
   const fq = new THREE.Quaternion(), fe = new THREE.Euler(), fs = new THREE.Vector3(), fp = new THREE.Vector3(), fm = new THREE.Matrix4();
@@ -153,6 +192,19 @@ export function buildOpening(ctx) {
   let lagX = mascot.x, carry = { side: 0, wall: 0, puff: 0, bow: 0 };
   /** How much of the opening look applies at the mascot: all of it on the slide, none in the drum. */
   const onSlide = (u) => 1 - smooth(TS - 3.5, TS - 0.8, u);
+  // The water's visible height: the game's surface plus the raised water the shader draws around the mascot
+  // (shaders.js BOW_GLSL, visual only; the mascot's ride height does not use it), so foam and suds sit on the
+  // water you see instead of sinking into its mound.
+  const bowAt = (x, u) => {
+    const m = mascot, dx = x - m.x, dy = u - m.z, mv = m.speed / W.CRUISE, dh = m.downhill || 0;
+    const r = Math.hypot(dx, dy * 0.85), front = smooth(-0.3, 0.5, dy);
+    const mound = Math.exp(-(((r - 0.6) / 0.17) ** 2)) * (0.06 + 0.06 * mv + 0.05 * dh) * (0.55 + 0.75 * front);
+    const hollow = -Math.exp(-r * r * 9) * 0.04;
+    const behind = Math.min(1, Math.max(0, -dy / (2.4 + 2.6 * mv))), spread = 0.6 + behind * (0.8 + 0.7 * mv);
+    const ridge = Math.exp(-(((Math.abs(dx - m.xv * 0.12 * behind) - spread) / 0.15) ** 2)) * (dy <= 0 ? 1 : 0) * (1 - behind) * (0.02 + 0.07 * mv);
+    return mound + hollow + ridge;
+  };
+  const visSurf = (x, u, t) => W.surface(L, x, u, t) + bowAt(x, u);
   updaters.push((dt, t, phase) => {
     const m = mascot, running = phase === 'running';
     const gate = OPENING_PARTS.foam ? onSlide(m.z) : 0;
@@ -168,7 +220,7 @@ export function buildOpening(ctx) {
       const back = flow * speed01 * (b.outer ? 0.9 : 0.5);
       const cx = b.outer ? lagX : m.x;
       const x = cx + Math.sin(b.a) * b.r * (1 + 0.25 * speed01 * flow), u = m.z + Math.cos(b.a) * b.r * 0.85 - back;
-      const surf = W.surface(L, x, u, t);
+      const surf = visSurf(x, u, t);
       const bob = Math.sin(t * 2.3 + b.ph) * 0.015;
       const life = running ? Math.sin(Math.PI * Math.min(1, flow * 1.05)) * 0.6 + 0.4 : 1;
       // while running the froth stays close to the body (the water shader draws the wake behind it)
@@ -212,7 +264,7 @@ export function buildOpening(ctx) {
   if (waterU) waterU.uOpen.value = OPENING_PARTS.foam ? 1 : 0;
 
   // ---------------------------------------------------------------- 3. soap bubbles
-  const bubbleU = { uTime: { value: 0 } };
+  const bubbleU = { uTime: { value: 0 }, uAvoid: { value: new THREE.Vector3(0, -99, 0) } };
   const bubbleMat = new THREE.ShaderMaterial({ vertexShader: BUBBLE_VERTEX, fragmentShader: BUBBLE_FRAGMENT, uniforms: bubbleU,
     transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor });
   const makeBubbleMesh = (n) => {
@@ -240,12 +292,25 @@ export function buildOpening(ctx) {
     staticBubbles = makeBubbleMesh(taken.length + BUBBLES_AT_START.length);
   }
   // Bubbles caught in the foam around the mascot (they ride with it).
-  const N_FB = 44;
+  const N_FB = 64;
   const foamBubbles = OPENING_PARTS.bubbles ? makeBubbleMesh(N_FB) : null;
   const fbs = [];
-  for (let i = 0; i < N_FB; i++) fbs.push({ a: Math.PI + (rand() - 0.5) * 3.4, r: 0.46 + Math.pow(rand(), 1.4) * 0.6, s: 0.025 + Math.pow(rand(), 2) * 0.075, ph: rand() * 6.28 });
+  for (let i = 0; i < N_FB; i++) fbs.push({ a: Math.PI + (rand() - 0.5) * 3.8, r: 0.5 + Math.pow(rand(), 1.3) * 0.7, s: 0.012 + Math.pow(rand(), 2.2) * 0.04, ph: rand() * 6.28 });
+  // Soap suds: a cluster of rounded translucent bubbles sitting against the mascot's lower edge, as in the approved
+  // close-up. Two staggered rows across the side the camera sees (not one straight row): nine bigger bubbles against
+  // the body at varied heights, overlapping, and eleven smaller ones further out. Each sits on the water you see.
+  // They follow the body, stream back a little when it runs, and part on a jump.
+  const N_SUDS = 20;
+  const suds = OPENING_PARTS.foam ? makeBubbleMesh(N_SUDS) : null;
+  const sd = [];
+  for (let i = 0; i < N_SUDS; i++) {
+    const inner = i < 9, n = inner ? 9 : 11, j = inner ? i : i - 9;
+    const span = inner ? 1.35 : 1.75, a = Math.PI + (((j + 0.5) / n) * 2 - 1) * span + (rand() - 0.5) * 0.15;
+    sd.push({ a, r: inner ? 0.47 + rand() * 0.05 : 0.6 + rand() * 0.08, s: inner ? 0.1 + rand() * 0.07 : 0.05 + rand() * 0.045,
+      lift: inner ? 0.22 + rand() * 0.3 : 0.25 + rand() * 0.2, ph: rand() * 6.28, drift: rand(), inner });
+  }
   updaters.push((dt, t, phase) => {
-    bubbleU.uTime.value = t;
+    bubbleU.uTime.value = t; bubbleU.uAvoid.value.copy(mascot.root.position);
     if (staticBubbles && !placed && phase === 'intro') {
       // Placed from the approved screen's layout, through the Tap to Start camera (a 1:2 portrait view).
       placed = true;
@@ -271,12 +336,32 @@ export function buildOpening(ctx) {
       for (let i = 0; i < N_FB; i++) {
         const b = fbs[i], flow = phase === 'running' ? ((t * 0.9 + b.ph) % 1) * (m.speed / W.CRUISE) : 0;
         const x = lagX + Math.sin(b.a) * b.r, u = m.z + Math.cos(b.a) * b.r * 0.85 - flow * 1.2;
-        const surf = W.surface(L, x, u, t);
+        const surf = visSurf(x, u, t);
         TR.frame(u, F);
         fp.copy(F.P).addScaledVector(F.R, x).addScaledVector(F.U, surf + b.s * 0.9);
-        inst.setXYZW(i, fp.x, fp.y, fp.z, b.s * k); mot.setXYZW(i, b.ph, 0, 0, 0);
+        inst.setXYZW(i, fp.x, fp.y, fp.z, b.s * k); mot.setXYZW(i, b.ph, 0, 0, -1);
       }
       foamBubbles.geometry.instanceCount = N_FB;
+      inst.needsUpdate = true; mot.needsUpdate = true;
+    }
+    if (suds) {
+      const m = mascot, running = phase === 'running', sp = Math.min(1.4, m.speed / W.CRUISE);
+      const up = Math.max(0, m.yAbs - (W.surface(L, m.x, m.z, t) + W.FLOAT_H));
+      const k = onSlide(m.z) * (1 - smooth(0.06, 0.35, up));
+      const inst = suds.geometry.attributes.inst, mot = suds.geometry.attributes.motion;
+      for (let i = 0; i < N_SUDS; i++) {
+        const b = sd[i];
+        const flow = running ? ((t * (0.7 + 0.6 * b.drift) + b.drift) % 1) : 0;   // stream back and re-form at the body
+        const back = flow * sp * (b.inner ? 0.35 : 0.6), life = running ? 0.55 + 0.45 * Math.sin(Math.PI * Math.min(1, flow * 1.1)) : 1;
+        const cx = b.inner ? m.x : lagX;
+        const wob = 1 + 0.06 * Math.sin(t * 2.1 + b.ph);
+        const x = cx + Math.sin(b.a) * b.r * (1 + 0.15 * sp * flow), u = m.z + Math.cos(b.a) * b.r * 0.85 - back;
+        const r = b.s * k * life * wob;
+        TR.frame(u, F);
+        fp.copy(F.P).addScaledVector(F.R, x).addScaledVector(F.U, visSurf(x, u, t) + r * b.lift);   // a dome on the water, some sitting higher than others
+        inst.setXYZW(i, fp.x, fp.y, fp.z, r); mot.setXYZW(i, b.ph, 0, 0, 1);
+      }
+      suds.geometry.instanceCount = N_SUDS; suds.renderOrder = 6;
       inst.needsUpdate = true; mot.needsUpdate = true;
     }
   });
@@ -298,7 +383,9 @@ export function buildOpening(ctx) {
     // own copies of the bristle material with fibre detail, so the tunnel's rollers keep theirs.
     const s3 = rollers.filter((r) => r.centre.z < TS);
     s3.forEach((r, i) => {
-      r.g.traverse((o) => { if (o.isMesh && /Bristles/.test(o.material.name)) o.material = fibreMaterial(o.material, 'roller' + i, 'roller', o.geometry); });
+      // the bristle mesh is the roller's largest one (the game's bake replaces the material names)
+      let bristle = null; r.g.traverse((o) => { if (o.isMesh && (!bristle || o.geometry.attributes.position.count > bristle.geometry.attributes.position.count)) bristle = o; });
+      if (bristle) bristle.material = fibreMaterial(bristle.material, 'roller' + i, 'roller', bristle.geometry);
       const p = BRUSH_PLACEMENT.rollers[i];
       if (p && p.hide) r.g.visible = false;
       else if (p) placeRoller(r, p);
@@ -350,8 +437,87 @@ export function buildOpening(ctx) {
     grade.uniforms.uOpen.value = OPENING_PARTS.light ? 1 - smooth(-6, 1.2, cz) : 0;
   });
 
+  // ---------------------------------------------------------------- 6. roller candidate (test only, ?roller=1|2)
+  async function loadExtras() {
+    if (!rollerBytes) return;
+    const bytes = await rollerBytes;
+    if (!bytes) { ctx.rollerCandidate = { file: ROLLER_FILES[ROLLER_TEST], error: 'not found' }; return; }
+    const gltf = await new GLTFLoader().parseAsync(bytes, '');
+    let src = null; gltf.scene.traverse((o) => { if (o.isMesh && !src) src = o; });
+    const geo = src.geometry, pos = geo.attributes.position, idx = geo.index.array, T = idx.length / 3;
+    // Separate pieces (vertices welded by position): the largest is the bristle drum, the rest are the end
+    // brackets. A drum that is one piece with its brackets cannot spin on its own (they would spin with it).
+    const key = (i) => `${Math.round(pos.getX(i) * 1e4)},${Math.round(pos.getY(i) * 1e4)},${Math.round(pos.getZ(i) * 1e4)}`;
+    const weld = new Map(), wv = new Int32Array(pos.count);
+    for (let i = 0; i < pos.count; i++) { const k = key(i); if (!weld.has(k)) weld.set(k, weld.size); wv[i] = weld.get(k); }
+    const par = new Int32Array(weld.size).map((_, i) => i), find = (a) => { while (par[a] !== a) a = par[a] = par[par[a]]; return a; };
+    for (let t = 0; t < T; t++) { const a = find(wv[idx[t * 3]]); par[find(wv[idx[t * 3 + 1]])] = a; par[find(wv[idx[t * 3 + 2]])] = a; }
+    const pieces = new Map();
+    for (let t = 0; t < T; t++) { const k = find(wv[idx[t * 3]]); if (!pieces.has(k)) pieces.set(k, []); pieces.get(k).push(idx[t * 3], idx[t * 3 + 1], idx[t * 3 + 2]); }
+    const sorted = [...pieces.values()].sort((a, b) => b.length - a.length);
+    // A drum can only spin on its own if no gold is welded onto it. In No. 1 the bracket's plate and arms on the
+    // -Z hub are part of the drum's piece (and the plate's texels mix metal and colour, so cutting it out along the
+    // metal map left gold fragments turning: tried and dropped). Count the drum piece's metal triangles on its end
+    // faces, beyond the bristles (read from the model's own metal map); any there and the model stays still.
+    const metalAt = (() => {
+      const tex = src.material.metalnessMap; if (!tex || !tex.image) return null;
+      const c = document.createElement('canvas'); c.width = tex.image.width; c.height = tex.image.height;
+      const g2 = c.getContext('2d'); g2.drawImage(tex.image, 0, 0); const d = g2.getImageData(0, 0, c.width, c.height).data;
+      const uv = geo.attributes.uv;
+      return (a, b, cc) => { const u = (uv.getX(a) + uv.getX(b) + uv.getX(cc)) / 3; let v = (uv.getY(a) + uv.getY(b) + uv.getY(cc)) / 3; if (tex.flipY) v = 1 - v;
+        const x = Math.min(c.width - 1, Math.max(0, Math.floor(u * c.width))), y = Math.min(c.height - 1, Math.max(0, Math.floor(v * c.height))); return d[(y * c.width + x) * 4 + 2] / 255; };
+    })();
+    let fusedGold = 0;
+    if (metalAt) {
+      const L0 = sorted[0], zt = (i) => (pos.getZ(L0[i]) + pos.getZ(L0[i + 1]) + pos.getZ(L0[i + 2])) / 3, zs = [];
+      for (let i = 0; i < L0.length; i += 3) if (metalAt(L0[i], L0[i + 1], L0[i + 2]) < 0.5) zs.push(zt(i));
+      zs.sort((a, b) => a - b); const z0 = zs[Math.floor(zs.length * 0.02)], z1 = zs[Math.floor(zs.length * 0.98)];
+      for (let i = 0; i < L0.length; i += 3) if (metalAt(L0[i], L0[i + 1], L0[i + 2]) > 0.5 && (zt(i) < z0 || zt(i) > z1)) fusedGold++;
+    }
+    const sub = (list) => { const g = new THREE.BufferGeometry(); for (const n of Object.keys(geo.attributes)) g.setAttribute(n, geo.attributes[n]); g.setIndex(list); g.computeBoundingBox(); g.computeBoundingSphere(); return g; };
+    const drumGeo = sub(sorted[0]), bracketGeo = sorted.length > 1 ? sub(sorted.slice(1).flat()) : null;
+    const spinnable = !!bracketGeo && fusedGold < 10;   // separate brackets, and no gold welded onto the drum
+    // the drum's own axis: the middle of its cross-section (the model's long axis is its local Z)
+    const db = drumGeo.boundingBox, axisC = new THREE.Vector3((db.min.x + db.max.x) / 2, (db.min.y + db.max.y) / 2, 0);
+    geo.computeBoundingBox();
+    const full = geo.boundingBox, size = full.getSize(new THREE.Vector3());
+    const m0 = src.material;
+    const mat = new THREE.MeshStandardMaterial({ map: m0.map, metalnessMap: m0.metalnessMap, roughnessMap: m0.roughnessMap, normalMap: m0.normalMap || null,
+      metalness: 1, roughness: 1, envMap: env, envMapIntensity: 1.15, emissive: 0xffffff, emissiveMap: m0.map, emissiveIntensity: 0.2, side: THREE.DoubleSide });
+    mat.customProgramCacheKey = () => 'opening:rollerCandidate';
+    const st = ROLLER_STAGING, sc = st.length / size.z;
+    const holder = new THREE.Group(); holder.name = 'rollerCandidate' + ROLLER_TEST;
+    const scaled = new THREE.Group(); scaled.scale.setScalar(sc); holder.add(scaled);
+    const spinG = new THREE.Group(); spinG.position.copy(axisC); scaled.add(spinG);   // turns about the drum's axis
+    const drum = new THREE.Mesh(drumGeo, mat); drum.position.copy(axisC).negate(); spinG.add(drum);
+    if (bracketGeo) { const br = new THREE.Mesh(bracketGeo, mat); scaled.add(br); }
+    root.add(holder);
+    const placeHolder = () => {
+      const k = st.length / size.z; scaled.scale.setScalar(k);
+      holder.position.set(st.at[0], st.feetY - full.min.y * k, st.at[2]);   // feet on the surface it stands on
+      holder.rotation.y = THREE.MathUtils.degToRad(st.yaw);
+    };
+    placeHolder();
+    // clear of the lanes: nearest point to the slide's middle, over the slide and up to the highest jump
+    const clear = () => {
+      holder.updateMatrixWorld(true); let inner = Infinity; const v = new THREE.Vector3();
+      holder.traverse((o) => { if (!o.isMesh) return; const p = o.geometry.attributes.position; for (let i = 0; i < p.count; i += 3) { v.fromBufferAttribute(p, i).applyMatrix4(o.matrixWorld); if (v.z < TS && v.y < 2.6) inner = Math.min(inner, Math.abs(v.x)); } });
+      return inner;
+    };
+    const settle = () => { let inner = clear(); for (let i = 0; i < 30 && inner < MACHINERY_CLEAR; i++) { holder.position.x += 0.04 * Math.sign(holder.position.x || -1); inner = clear(); } return inner; };
+    let inner = settle();
+    // for trying placements without a rebuild: window.__bwRoller({ at, yaw, length, feetY }) returns the clearance
+    window.__bwRoller = (props) => { Object.assign(st, props); placeHolder(); inner = settle(); ctx.rollerCandidate = { ...ctx.rollerCandidate, at: holder.position.toArray().map((v) => +v.toFixed(2)), nearestToLanes: +inner.toFixed(2) }; return ctx.rollerCandidate; };
+    // it takes over the right-hand slot from the game's Meshy roller copy there (hidden, not removed)
+    const s3 = rollers.filter((r) => r.centre.z < TS); if (s3[1]) s3[1].g.visible = false;
+    ctx.rollerCandidate = { file: ROLLER_FILES[ROLLER_TEST], pieces: pieces.size, drumTris: sorted[0].length / 3, bracketTris: bracketGeo ? bracketGeo.index.count / 3 : 0, fusedGoldTris: fusedGold,
+      spinnable, scale: +sc.toFixed(3), diameter: +(Math.max(size.x, size.y) * sc).toFixed(2), length: st.length, at: holder.position.toArray().map((v) => +v.toFixed(2)), nearestToLanes: +inner.toFixed(2) };
+    if (spinnable) updaters.push((dt) => { spinG.rotation.z += st.spin * dt; });
+  }
+
   return {
     root,
+    loadExtras,
     update(dt, t, phase) { for (const f of updaters) f(dt, t, phase); },
   };
 
@@ -441,14 +607,16 @@ float fibreNoise(vec3 x) {
 // window highlight. Small bubbles can rise and loop; all drift and wobble gently.
 const BUBBLE_VERTEX = /* glsl */ `
 attribute vec4 inst;     // centre xyz, radius
-attribute vec4 motion;   // phase, rise speed, sway
+attribute vec4 motion;   // phase, rise speed, sway, kind (0 floating in the air, 1 soap suds, -1 riding in the foam)
 uniform float uTime;
-varying vec2 vUv; varying float vPhase; varying float vFade;
+uniform vec3 uAvoid;     // the mascot's body centre: floating bubbles part around it instead of drifting across it
+varying vec2 vUv; varying float vPhase; varying float vFade; varying float vSuds;
 void main() {
-  float ph = motion.x, rise = motion.y, sway = motion.z;
+  float ph = motion.x, rise = motion.y, sway = motion.z; vSuds = motion.w;
   float lift = 0.0, fade = 1.0;
   if (rise > 0.0) { float k = fract(uTime * rise / 1.4 + ph * 0.159); lift = k * 1.4 - 0.4; fade = smoothstep(0.0, 0.15, k) * (1.0 - smoothstep(0.8, 1.0, k)); }
   vec3 centre = inst.xyz + vec3(sin(uTime * 0.55 + ph) * sway, lift + sin(uTime * 0.9 + ph * 1.3) * inst.w * 0.08, cos(uTime * 0.45 + ph) * sway * 0.6);
+  if (abs(motion.w) < 0.25) fade *= smoothstep(0.35, 0.85, length(centre - uAvoid) - inst.w * 0.6);
   float wob = 1.0 + 0.03 * sin(uTime * 2.3 + ph * 3.0);
   vec3 right = vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
   vec3 up = vec3(viewMatrix[0][1], viewMatrix[1][1], viewMatrix[2][1]);
@@ -459,7 +627,7 @@ void main() {
 `;
 const BUBBLE_FRAGMENT = /* glsl */ `
 uniform float uTime;
-varying vec2 vUv; varying float vPhase; varying float vFade;
+varying vec2 vUv; varying float vPhase; varying float vFade; varying float vSuds;
 void main() {
   vec2 p = vUv * 2.0 - 1.0; float r = length(p);
   if (r > 1.0 || vFade <= 0.0) discard;
@@ -479,6 +647,15 @@ void main() {
   float hl2 = exp(-pow(length(p - vec2(0.46, -0.48)) * 6.5, 2.0)) * 0.55;
   col += vec3(1.0, 0.98, 1.0) * (hl * 1.25 + hl2);
   float a = clamp(0.09 + fres * 0.66 + rim * 0.55 + hl * 0.75 + hl2 * 0.5, 0.0, 1.0) * vFade;
+  if (vSuds > 0.5) {
+    // soap suds on the water: a milky blue-lavender film (each bubble its own tint), a bright white rim and a
+    // window highlight, a little more body than an air bubble so the cluster reads against the pink fur
+    vec3 tint = mix(vec3(0.46, 0.7, 1.0), vec3(0.74, 0.66, 1.0), 0.5 + 0.5 * sin(vPhase * 2.7));
+    tint = mix(tint, vec3(0.95, 0.75, 1.0), 0.18 * (0.5 + 0.5 * sin(vPhase * 5.1)));
+    float milky = 0.55 + 0.45 * smoothstep(0.2, 0.95, r);   // milkier toward the edge, clearer in the middle
+    col = mix(col, tint * (0.7 + 0.6 * fres), 0.65) + vec3(1.0) * (rim * 0.75 + hl * 0.45);
+    a = clamp(a + 0.3 * milky + rim * 0.5 + fres * 0.2, 0.0, 1.0) * vFade;
+  }
   gl_FragColor = vec4(col * a, a);   // premultiplied
 }
 `;

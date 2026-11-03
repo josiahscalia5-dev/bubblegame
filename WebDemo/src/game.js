@@ -14,7 +14,7 @@ import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
-import { buildOpening, OPENING_ON, withPrivateRandom, makeRandom } from './opening.js';
+import { buildOpening, OPENING_ON, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -1356,7 +1356,8 @@ async function main() {
     if (OPENING_ON && !SIDE) {
       opening = withPrivateRandom(makeRandom(0x0be5), () => buildOpening({ scene, env: mats.env, TR, L, W, mascot, camera, Particles, fxScale: fx.u.uScale,
         waterU, grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
-        setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; } }));
+        setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; }, get rollerCandidate() { return state.rollerCandidate; }, set rollerCandidate(v) { state.rollerCandidate = v; } }));
+      await withPrivateRandomAsync(makeRandom(0x0be6), opening.loadExtras);   // a roller candidate, only with ?roller=1|2
     }
     if (SIDE) buildSideView();
     resize();
@@ -1390,6 +1391,7 @@ window.__bw = {
     leanDeg: +THREE.MathUtils.radToDeg(mascot.lean).toFixed(1), coins: state.coins, gems: state.gems, socks: state.socks, collected: { ...state.collected }, laps: state.laps,
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
     particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null,
+    rollerCandidate: state.rollerCandidate ?? null,
   }),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },

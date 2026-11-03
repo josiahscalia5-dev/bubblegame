@@ -315,7 +315,8 @@ void main() {
     // foam made of little round bubbles: thin bright cell rims (the blue water shows between them)
     vec2 bc = bwVoronoi(xz * vec2(9.0, 6.5) - vec2(0.0, flowT * 0.32));
     vec2 bc2 = bwVoronoi(xz * vec2(18.0, 12.5) - vec2(0.0, flowT * 0.36) + 4.0);
-    float rims = max(1.0 - smoothstep(0.02, 0.09, bc.y - bc.x), (1.0 - smoothstep(0.02, 0.07, bc2.y - bc2.x)) * 0.8);
+    float near = exp(-pow(max(0.0, rM - 0.45) / 0.9, 2.0));   // close to the mascot the bubble web is bolder
+    float rims = max(1.0 - smoothstep(0.02, 0.08 + 0.02 * near, bc.y - bc.x), (1.0 - smoothstep(0.02, 0.06 + 0.015 * near, bc2.y - bc2.x)) * 0.8);
     float hollow = smoothstep(0.12, 0.42, bc.x);   // the middle of each bubble cell
     // where the body meets the water: a solid white line of froth (a full ring at rest; at the bow and
     // sides when running, trailing back in a V)
@@ -326,12 +327,20 @@ void main() {
     float churnZone = exp(-pow(max(0.0, rM - 0.45) / 0.75, 2.0));
     // whitewater along both edges of the slide, streaming toward the portal
     float edgeBand = (1.0 - smoothstep(0.0, 0.26, abs(ax - (uSlideHalf - 0.06)))) * (1.0 - moat);
-    float lace = rims * clamp(churnZone * (0.55 + 0.6 * stream) + edgeBand * (0.35 + 0.65 * stream) + vTrail, 0.0, 1.0);
-    float solid = clamp(contact * (0.75 + 0.35 * stream) + edgeBand * smoothstep(0.5, 0.8, stream) * 0.8 + vTrail * 0.7, 0.0, 1.0) * (1.0 - hollow * 0.35);
+    // white foam sweeping out around both sides of the body, curling as it goes
+    float swirl = exp(-pow((abs(toM.x) - (0.72 + 0.22 * sin(toM.y * 3.2 + t * 1.4 + sign(toM.x) * 1.3))) / 0.13, 2.0)) * exp(-pow(toM.y / 0.95, 2.0));
+    float lace = rims * clamp(churnZone * (0.8 + 0.5 * stream) + edgeBand * (0.35 + 0.65 * stream) + vTrail, 0.0, 1.0);
+    float solid = clamp(contact * (0.75 + 0.35 * stream) + swirl * (0.45 + 0.6 * stream) + edgeBand * smoothstep(0.5, 0.8, stream) * 0.8 + vTrail * 0.7, 0.0, 1.0) * (1.0 - hollow * 0.35);
     foam = max(foam, clamp(max(lace * 0.92, smoothstep(0.25, 0.7, solid)), 0.0, 1.0) * openK);
     bubbleShade = hollow * smoothstep(0.2, 0.9, solid) * 0.42 * openK;
     // brighter, more turquoise water where it churns around the mascot (thin water lit through)
-    col = mix(col, uTurq * 1.05, churnZone * 0.4 * openK);
+    // around the mascot the water stays a saturated cyan-blue (not pale), glowing inside the bubble web
+    // (measured against the approved close-up: the same average brightness, but deeper cyan between brighter web lines)
+    col = mix(col, mix(uShallow, uTurq, 0.62) * 0.92, churnZone * 0.6 * openK);
+    col += uGlow * hollow * near * 0.14 * openK;
+    // the interconnected bubble web across the whole slide, bolder and whiter than the soft caustics alone
+    float web = 1.0 - smoothstep(0.0, 0.1, cv.y - cv.x);
+    col += vec3(0.85, 0.97, 1.0) * web * (0.38 + 0.3 * patchy) * (1.0 - moat) * openK;
     // thin bright flow streaks stretched along the current, and a whiter caustic web over the slide
     float lines = smoothstep(0.8, 0.97, bwNoise(vec2(xz.x * 12.0, xz.y * 0.5 - flowT * 0.5))) * (1.0 - moat);
     col += (vec3(0.55, 0.92, 1.0) * lines * 0.3 + vec3(0.75, 0.95, 1.0) * caustic * 0.3 * (1.0 - moat)) * openK;

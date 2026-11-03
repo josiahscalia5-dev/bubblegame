@@ -18,5 +18,6 @@ Every model package delivered for Bubble Wash Kingdom, kept as delivered. This f
 
   They replace the code-built towers and gears. The Small copies have stray sliver triangles and are not used. |
 | `TunnelInterior/` (washer tunnel interior liner: Balanced, Recommended and Small GLBs, four-view preview, README, import prompt; see its README) | Not yet. | **Not used.** It was tried on 2–3 November, then disabled at the user's request because of the cracks in the delivered model (see its README). The previous tunnel was restored, with cyan rings and pink panels built in code. The web copy (`WebDemo/models/liner.glb`), `WebDemo/src/liner.js` and the repair tool are kept, and commit `46c034c` has the liner in place. |
+| `CompactRollers/` (roller candidates No. 1 and No. 2, compact GLBs, import instructions; see its README) | Not yet. | **Test only, not shown by default.** Byte-identical copies (`WebDemo/models/roller_candidate_1.glb`, `roller_candidate_2.glb`) load only with `?roller=1` or `?roller=2`, in the right-hand slot of the opening. Comparison: `Design/SCREEN3_ROLLER_CANDIDATES.md`. |
 
 The castle and washer tunnel GLBs were delivered earlier and live in `Assets/BubbleWash/Models/CastlePortal/` and `Assets/BubbleWash/Models/WasherTunnel/`.

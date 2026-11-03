@@ -33,6 +33,10 @@ A separate cosmetic layer that brings the Tap to Start view closer to the approv
 - **Gameplay is untouched.** The layer is built with its own random-number generator, so the game's random numbers (coin bobbing, splashes) are drawn exactly as before. A seeded run is identical in every frame.
 - **The tunnel is untouched.** The layer fades out before the camera reaches the portal. With the mascot presentation off, tunnel frames are pixel-identical to the original.
 - `index.html?classic` shows the original opening. `window.__BW_OPENING_OFF__ = ['foam', ...]` (set before load) leaves out single parts.
+- `index.html?roller=1` or `?roller=2` tries one of the user's two compact Meshy roller candidates (`models/roller_candidate_*.glb`) in the right-hand slot, in place of the game's roller copy there. Off by default.
+  - Both stand still: their gold brackets are welded to the drum.
+  - `window.__bwRoller({ at, yaw, length, feetY })` moves the candidate and returns its distance to the lanes.
+  - See `Design/SCREEN3_ROLLER_CANDIDATES.md`.
 
 ## The ride: a real 3D path (`src/track.js`)
 

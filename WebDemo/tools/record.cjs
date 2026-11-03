@@ -3,7 +3,7 @@
 // WebGL in software. Every input is a real pointer gesture on the game stage (press, drag, release),
 // the same events a finger makes on a phone, so the recording also proves the swipe handling.
 //
-//   node tools/record.cjs <demo-dir> <out-dir> [seconds=13] [game|side|dry]
+//   [ROLLER=1|2] node tools/record.cjs <demo-dir> <out-dir> [seconds=13] [game|side|dry]   (ROLLER: a roller candidate, opening.js)
 //     game: the player's view, with each finger trail and the gesture it was read as (?touches)
 //     side: the same run seen from the side, camera fixed in height (?side), proving the real climbs
 //     dry:  no screenshots; prints the state at each scripted input (for tuning the script)
@@ -36,7 +36,7 @@ const SCRIPT = [ // [game second, action]
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${m.type()}] ${m.text()}`); });
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
-  await page.addInitScript((mode) => { window.__BW_TEST__ = true; window.__BW_TOUCHES__ = mode !== 'side'; window.__BW_SIDE__ = mode === 'side'; }, MODE);
+  await page.addInitScript(([mode, roller]) => { window.__BW_TEST__ = true; window.__BW_TOUCHES__ = mode !== 'side'; window.__BW_SIDE__ = mode === 'side'; if (roller) window.__BW_ROLLER__ = roller; }, [MODE, process.env.ROLLER || '']);
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   await page.evaluate(() => document.fonts.ready);

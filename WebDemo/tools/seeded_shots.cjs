@@ -1,4 +1,4 @@
-// node tools/seeded_shots.cjs <demo-dir> <out-dir> <seed> <parts to leave out: - | classic | mascot,foam,...> t1 t2 ...
+// [ROLLER=1|2] node tools/seeded_shots.cjs <demo-dir> <out-dir> <seed> <parts to leave out: - | classic | mascot,foam,...> t1 t2 ...
 // Plays the recording's script with Math.random seeded; screenshots the 1:2 stage at the given game seconds.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -19,8 +19,8 @@ const SCRIPT = [[0.5, 'look'], [1.5, 'unlook'], [2.0, 'tap'], [2.8, 'left'], [3.
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${m.type()}] ${m.text()}`); });
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
-  await page.addInitScript(([seed, off]) => { window.__BW_TEST__ = true; if (off === 'classic') window.__BW_CLASSIC__ = true; else if (off && off !== '-') window.__BW_OPENING_OFF__ = off.split(',');
-    let a = seed >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }, [+SEED, OFF]);
+  await page.addInitScript(([seed, off, roller]) => { window.__BW_TEST__ = true; if (roller) window.__BW_ROLLER__ = roller; if (off === 'classic') window.__BW_CLASSIC__ = true; else if (off && off !== '-') window.__BW_OPENING_OFF__ = off.split(',');
+    let a = seed >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }, [+SEED, OFF, process.env.ROLLER || '']);
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   await page.evaluate(() => document.fonts.ready);

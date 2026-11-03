@@ -24,7 +24,29 @@ Evidence (real screenshots and a recording from the running browser game, no moc
 | 8 | HUD, "Let's go!" banner, "Tap to Start" panel | Already matching | Unchanged. |
 | 9 | Camera framing | Measured: mascot size and place, ring size (178 px against 170 px), banner and panel already within a few percent | Unchanged, so the start transition into the gameplay camera is exactly the original. |
 
+## 2b. Soap suds around the mascot (second round, from your approved close-up)
+
+Compared with your close-up of the approved mascot: `Previews/WebDemo/opening_match/07_soap_suds_closeup.png`.
+
+- **Suds against the lower body:** 20 rounded, translucent bubbles sitting on the water at the mascot's lower edge.
+  - Two staggered rows, so not one straight line: nine bigger ones against the body at varied heights, overlapping, and eleven smaller ones further out.
+  - Each has its own soft blue, lavender or pink tint, a milky film toward the edge, a bright white rim and a window highlight.
+  - They follow the body, stream back a little and re-form when it runs, and part when it jumps.
+- **Tiny sparkle bubbles:** 64 small ones caught in the foam, out to both sides.
+- **White foam sweeping out around both sides**, curling as it goes. The side froth no longer covers the suds.
+- **The water around the mascot:** a bolder interconnected bubble web across the slide, glowing cyan inside the web near the mascot, and a deeper cyan-blue.
+  - Measured against the approved close-up: the water left of the mascot now averages hue 214° and brightness 0.97, against the approved 213° and 0.95. The original was 227°, more violet.
+- **Sitting on the water you see:** foam and suds sit on the visible water, including the raised water the shader draws around the mascot, so they never sink into it.
+- **The floating air bubbles part around the mascot** when it runs through them, instead of drifting across its body.
+- **Remaining differences:**
+  - The approved suds are a little bigger and more opaque.
+  - The approved white foam is sharper, splash-shaped lines, where ours is softer lumps.
+  - The small round droplets in the lane-change frame are the game's own original lane-change spray, which I did not change.
+- **Cost:** two more instanced draws; no new models.
+
 ## 3. The rollers (your questions)
+
+Your two new Meshy roller candidates were tested separately: see [`SCREEN3_ROLLER_CANDIDATES.md`](SCREEN3_ROLLER_CANDIDATES.md).
 
 - **Which roller faced the wrong way:** the one on the **right** of the slide (the second Screen 3 copy of the Meshy washing roller).
   - It stood with its long axis pointing at the camera, so you saw its end: the yellow axle stub, the blue cap and a ring of pink fringe.
