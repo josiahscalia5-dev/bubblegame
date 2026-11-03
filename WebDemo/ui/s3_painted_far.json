@@ -1,0 +1,25 @@
+{
+ "source": "ui/approved_screen3.png",
+ "frame": [
+  735,
+  1476
+ ],
+ "texture": [
+  1103,
+  1040
+ ],
+ "frameAt": [
+  184,
+  200
+ ],
+ "door": [
+  367.5,
+  651.6
+ ],
+ "doorHole": 176,
+ "doorFeather": 5,
+ "vortexFade": [
+  700,
+  738
+ ]
+}

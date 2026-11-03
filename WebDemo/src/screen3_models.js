@@ -17,6 +17,7 @@
 // For trying settings without a rebuild: window.__BW_S3_TUNE__ = { castle: {...}, entrance: {...} } before load.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { setupPaintedLayer } from './painted_layer.js';
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -26,6 +27,12 @@ export const S3 = Object.fromEntries(['castle', 'entrance', 'machinery', 'brush'
 S3.edges = LIST.includes('edges');
 // ?s3=...,cine (test): an opening-only camera that matches the approved Screen 3's perspective (setupCine below).
 S3.cine = LIST.includes('cine');
+// ?s3=paint (test): the approved painting's castle, towers and door ring as painted scenery in the 3D opening
+// (painted_layer.js), with the saved 3D setup in front of it: Numbers 2, 1 and 5 (machinery, brush, bubbles), the icy
+// edges and the opening camera. The castle and entrance models are not needed (the painting replaces them).
+S3.paint = LIST.includes('paint');
+S3.vortex = S3.paint && LIST.includes('vortex');   // ?s3=paint,vortex: the painted vortex in the door at Tap to Start
+if (S3.paint) for (const k of ['machinery', 'brush', 'bubbles', 'edges', 'cine']) S3[k] = true;
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };
 
@@ -90,7 +97,7 @@ async function fetchModel(url) {
   }
 }
 
-export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass }) {
+export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass, composer, falls }) {
   const report = {};
   const loader = new GLTFLoader();
   const parse = async (k) => { const b = await bytes[k]; return b ? loader.parseAsync(b, '') : null; };
@@ -187,6 +194,11 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
       if (now !== inside) { inside = now; for (const o of opening) o.visible = !inside; }
     });
     report.hiddenInTunnel = opening.length;
+  }
+  // With 'paint': the painted facade, laid in after everything above is placed (it is projected through the opening camera)
+  if (S3.paint && composer && renderPass) {
+    report.paint = await setupPaintedLayer({ scene, composer, renderPass, updaters, vortex: S3.vortex,
+      hide: { oldCastle, entranceDecor: scene.getObjectByName('entranceDecor'), waterfalls: falls } });
   }
   return report;
 }

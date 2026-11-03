@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, morning: Screen 3 opening test version)
+# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, late evening: painted-scenery test)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,8 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-4e2b86d7-kqpei8` | **Test version for review (3 November, late morning):** the approved Screen 3 artwork as the Tap to Start screen, on top of `ccr-68cd26f5-4t8etp`. Not merged; see section 2c of `Design/SCREEN3_OPENING_MATCH.md`. |
+  | `ccr-00ffba88-l1mwa0` | **This session (3 November, late evening):** the painted-scenery test (`?s3=paint`, `?s3=paint,vortex`) and the screenshots of the unsaved painted-layers conversation, on top of `ccr-4e2b86d7-kqpei8`. Not merged. |
+  | `ccr-4e2b86d7-kqpei8` | Up to `91dc94b`: everything from 3 November (the approved artwork as Tap to Start, Phase A, the five Screen 3 assets, `edges`, `cine`, and the "game as it is now" picture sheet). **Test version for review (3 November, late morning):** the approved Screen 3 artwork as the Tap to Start screen, on top of `ccr-68cd26f5-4t8etp`. Not merged; see section 2c of `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
@@ -19,7 +20,8 @@ Read this first when you continue in a new Claude conversation.
 
 - **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
 - **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
-  - Newest: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
+  - **Not saved:** the 3 November sessions after 03:06 UTC (Phase A, the five assets, `edges`, `cine`, the picture sheet) and the painted-layers conversation on the other account, which hit its usage limit while saving. That conversation's A2 tunnel models, two screenshots, gameplay video, test scripts and unfinished painted-scenery file never reached GitHub. Its end is recorded as phone screenshots in `2026-11-03_painted_layers_session_screenshots/`.
+  - Newest exported: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
   - The exporter now also keeps messages sent with pictures attached, which it used to skip.
   - Before it, `2026-11-02_decor_and_tunnel_session.md` (2–3 November: the entrance decorations, the tunnel liner and its diagnosis, the restored tunnel). Before it, `2026-11-02_screen3_polish_session.md` (castle colours, machinery, the duck helper and the side machinery).
 - **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
@@ -27,7 +29,34 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, late night): opening-only cinematic camera behind `?s3=all,edges,cine` (test, not approved)
+## Latest (3 November, late evening): painted scenery in the 3D opening behind `?s3=paint` (test, not approved)
+
+- **What the user asked:** whether painted layers or new Tripo/Meshy models are best. They agreed to the recommended mix: the approved painting for the far scenery, real 3D for everything near the camera, tested before ordering any models.
+- **What it is:**
+  - The approved Screen 3's castle, towers and gold door ring form a flat painted facade across the run at the door. It is projected from the Tap to Start camera and shown in its exact painted colours, laid in after tone mapping.
+  - The door's centre is open, so the mascot rides into the real tunnel.
+  - Everything nearer is unchanged 3D: mascot, slide, water, foam, brush, machinery, bubbles, coins. These cover the facade through the scene's depth.
+  - `?s3=paint,vortex` shows the painted vortex at Tap to Start, without the duck, and opens it into the real tunnel 0.1–0.7 s after the tap.
+  - Code: `WebDemo/src/painted_layer.js`. Painting: `WebDemo/ui/s3_painted_far.png`, made by `WebDemo/tools/paint_prep.py`.
+- **The painted interface:**
+  - The "Let's go!" banner is filled with the castle wall, the inner towers carried down, and the door ring's top rebuilt. That fill shows for about 1.5 s after the tap and is plainer and softer than the painting.
+  - The top bar and the phone frame are filled as well, but are never really seen.
+- **Measured at Tap to Start:**
+  - Castle colour difference 10–13 → 1.0–2.4, SSIM 0.11–0.31 → 0.53–0.88.
+  - Door 8.3 → 1.8 with the vortex.
+  - Honest score: 8 (door open) and 8.5 (vortex) against 7; about 7.5–8 while riding in.
+- **Checks:**
+  - Normal game and the `?s3=all,edges,cine` checkpoint: 3D view pixel-identical to before. The tunnel is identical with the test on.
+  - Gameplay state identical, no console errors.
+  - Evidence: `Previews/WebDemo/screen3_painted_test/`.
+- **What would raise it:** the approved Screen 3 without the interface (no banner or panels), ideally larger than 735 px wide. The near half (pale icy slide, white foam) is the main remaining gap.
+- **Tools in this session:**
+  - Playwright and Chromium come with the environment.
+  - Blender 5.2.3 was installed for headless GLB work (`/root/blender-venv`, `bpy`). It is lost with the container; the setup-script line is `python3 -m venv /root/blender-venv && /root/blender-venv/bin/pip install -q bpy==5.2.3`.
+  - Blender MCP and Playwright MCP are not installed: they don't fit a headless cloud machine, or add nothing here.
+  - **A1 and A2** (the user's Tripo models) are not in the repository; A2 was only in the unsaved conversation.
+
+## Earlier (3 November, late night): opening-only cinematic camera behind `?s3=all,edges,cine` (test, not approved)
 
 - **The user approved `4711680` (`?s3=all,edges`, 6.5/10) as a saved experimental checkpoint only.** No new Meshy models yet.
 - **`cine`:** a separate render camera fitted to the approved perspective, the gameplay pose plus 0.10 m up, 0.82 m forward, 0.3° down and a 41.5° view. It blends back to the untouched gameplay camera over 0.9 s after the tap.
@@ -214,6 +243,7 @@ The user wants Screen 3 to look and move right before the remaining screens. The
 
 ## Open requests from the user
 
+0. **Waiting on the user (painted-scenery test):** approval or changes; door open or vortex; a copy of the approved Screen 3 without the interface (and larger) if one exists; A1 and A2 uploaded (or pushed from the other account's session) before any Blender work on them.
 1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens. The four entrance decorations are in. The user asked to be told which model looks wrong, and why, before regenerating anything in Meshy.
 2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). The three models it first listed as missing are now built in code. No new Meshy model is required. The duck helper has been delivered and is in use, and one optional upgrade (the machinery tower) is listed there.
 3. Keep PR #1 as a draft. Do not merge it.

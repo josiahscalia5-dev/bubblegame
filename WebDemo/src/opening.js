@@ -32,7 +32,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { PHASE_A, applyPhaseA } from './phase_a.js';
-import { S3_ON, loadScreen3Models } from './screen3_models.js';
+import { S3, S3_ON, loadScreen3Models } from './screen3_models.js';
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -442,7 +442,7 @@ export function buildOpening(ctx) {
   // ---------------------------------------------------------------- 6. roller candidate (test only, ?roller=1|2)
   async function loadExtras() {
     // the user's new Screen 3 models (test only, ?s3=castle,entrance): loaded and placed only when switched on
-    if (S3_ON) window.__bwS3 = await loadScreen3Models({ scene, env, axisY: AXIS, tunnelStart: TS, oldCastle: ctx.castle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass: ctx.renderPass });
+    if (S3_ON) window.__bwS3 = await loadScreen3Models({ scene, env, axisY: AXIS, tunnelStart: TS, oldCastle: ctx.castle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass: ctx.renderPass, composer: ctx.composer, falls: ctx.falls });
     if (!rollerBytes) return;
     const bytes = await rollerBytes;
     if (!bytes) { ctx.rollerCandidate = { file: ROLLER_FILES[ROLLER_TEST], error: 'not found' }; return; }
@@ -571,6 +571,8 @@ export function buildOpening(ctx) {
 export const OPENING_PARTS = { portal: OPENING_ON, foam: OPENING_ON, bubbles: OPENING_ON, brushes: OPENING_ON, slide: OPENING_ON, mascot: OPENING_ON, light: OPENING_ON, art: OPENING_ON };
 // For checks: window.__BW_OPENING_OFF__ = ['mascot', ...] (set before the page loads) leaves those parts out.
 if (typeof window !== 'undefined' && Array.isArray(window.__BW_OPENING_OFF__)) for (const k of window.__BW_OPENING_OFF__) OPENING_PARTS[k] = false;
+// The painted-scenery test (?s3=paint) shows the live scene at Tap to Start, not the full-screen artwork.
+if (S3.paint) OPENING_PARTS.art = false;
 // The mascot's presentation: [sideways, up, forward] stretch of the drawn model (not its collider or ride
 // height), and how much crisper the strands and droplets are (0 = the original fur).
 export const MASCOT_PRESENTATION = { stretch: [0.95, 1.07, 0.95], spike: 1 };
