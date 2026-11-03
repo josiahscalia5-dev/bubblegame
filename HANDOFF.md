@@ -20,6 +20,8 @@ Read this first when you continue in a new Claude conversation.
 
 - **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
 - **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
+  - **Autosave:** the user asked for everything to be saved every 5 minutes. `Tools/autosave.sh` does it in the background (chat export, commit, push to the session's branch; no Claude usage). It stops when the session's container does, so start it again in each new session (its header has the command).
+  - This session: `2026-11-03_painted_scenery_and_tools_session.md` (the tool check, Blender, and the painted-scenery test).
   - **Not saved:** the 3 November sessions after 03:06 UTC (Phase A, the five assets, `edges`, `cine`, the picture sheet) and the painted-layers conversation on the other account, which hit its usage limit while saving. That conversation's A2 tunnel models, two screenshots, gameplay video, test scripts and unfinished painted-scenery file never reached GitHub. Its end is recorded as phone screenshots in `2026-11-03_painted_layers_session_screenshots/`.
   - Newest exported: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
   - The exporter now also keeps messages sent with pictures attached, which it used to skip.
