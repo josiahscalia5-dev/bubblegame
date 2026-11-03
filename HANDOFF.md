@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, early morning, after the tunnel restore)
+# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, morning: Screen 3 opening test version)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,8 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-590365bd-e5p8xt` | **Latest work.** Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
+  | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
+  | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
   | `ccr-ce4e9217-j1l0vl` | The afternoon session's work (3D path, water, fur, socks, recordings, Meshy asset review). The branch above builds on it. |
   | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
@@ -20,6 +21,19 @@ Read this first when you continue in a new Claude conversation.
 - **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
+
+## Latest (3 November, morning): Screen 3 opening look, test version waiting for approval
+
+- **Branch `ccr-68cd26f5-4t8etp`** (this session). It starts from `ccr-590365bd-e5p8xt` (`b75f88c`), which stays as the working original. Nothing is merged.
+- **What it is:** one cosmetic module, `WebDemo/src/opening.js`, plus small additive hooks in `game.js` and `shaders.js`.
+  - The gold washer-door rim, violet seal and cyan rings at the portal, with a lavender wall facing over the castle's pastel funnel.
+  - Bubbly foam, splashes and glossy bubbles around the mascot; bubble-lace foam and whitewater on the slide.
+  - Soap bubbles at three depths.
+  - Brushes: the extra roller beside the portal hidden, the right roller turned to show its fluffy side, the side machinery larger (1.22 m from the lanes).
+  - Glassy aqua flume walls, a slightly more upright mascot with crisper fur, and an opening-only grade.
+- **Proof:** a seeded run is frame-for-frame identical (position, lane, speed, jumps, camera, pickups). The tunnel renders pixel-identical with the mascot presentation off, and `?classic` is pixel-identical to the original.
+- **Read:** `Design/SCREEN3_OPENING_MATCH.md`, which has the checklist, the roller answers, the asset inventory, what could not be matched, and the tests. Evidence is in `Previews/WebDemo/opening_match/`.
+- **Waiting on the user:** approval or changes; whether to bring the duck helper back (still removed, as asked); whether to tint the coins; whether to order the optional left-brush Meshy model described in the write-up.
 
 ## Current focus: Screen 3, browser demo (`WebDemo/`)
 

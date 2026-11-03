@@ -14,6 +14,7 @@ import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
+import { buildOpening, OPENING_ON, withPrivateRandom, makeRandom } from './opening.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -41,7 +42,8 @@ composer.addPass(new RenderPass(scene, camera));
 // Soft glow over the bright parts of the scene, as in the approved artwork.
 const bloom = new UnrealBloomPass(new THREE.Vector2(256, 512), 0.32, 0.45, 0.97);
 composer.addPass(bloom);
-composer.addPass(new ShaderPass(SH.GradeShader));
+const gradePass = new ShaderPass(SH.GradeShader);
+composer.addPass(gradePass);
 composer.addPass(new OutputPass());
 
 scene.add(new THREE.HemisphereLight(0xffe9ff, 0x6ea8ff, 1.1));
@@ -154,7 +156,7 @@ function bakedMaterial(src, opts = {}) {
 }
 
 // ------------------------------------------------------------------ world
-let water, waterU, mascot, rig, fx, scenery, decor;
+let water, waterU, mascot, rig, fx, scenery, decor, opening = null;
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -264,6 +266,7 @@ function buildWater() {
     uSky: { value: C(0xa9c4ff) }, uPink: { value: C(0xff9be0) }, uGold: { value: C(0xffcc5a) },
     uRingA: { value: C(0xffd873) }, uRingB: { value: C(0x8ce6ff) }, uFog: { value: C(0xccccff) }, uSunDir: { value: SUN_DIR },
     uRings: { value: new THREE.Vector3(L.tunnelStart + 0.25, L.segmentLength - Math.max(0.02, L.segmentLength * 0.005), 4) },
+    uOpen: { value: 0 },   // the Screen 3 opening look on the slide (opening.js); 0 = the original water
   };
   const mat = new THREE.ShaderMaterial({ vertexShader: SH.waterVertex, fragmentShader: SH.waterFragment, uniforms: waterU });
   const drumXs = []; for (let i = 0; i <= 28; i++) drumXs.push(-2.1 + 4.2 * (i / 28));
@@ -772,6 +775,7 @@ function buildMascot(gltf) {
     uKey: { value: new THREE.Vector3(0.35, 0.85, -0.42).normalize() }, uTime: { value: 0 },
     uSky: { value: new THREE.Color(1.0, 0.86, 1.0) }, uGround: { value: new THREE.Color(0.55, 0.42, 0.95) },
     uRim: { value: new THREE.Color(1.0, 0.55, 0.88) }, uTip: { value: new THREE.Color(1.0, 0.8, 0.96) },
+    uSpike: { value: 0 },   // the Screen 3 presentation (opening.js); 0 = the original fur
   };
   model.traverse((o) => {
     if (!o.isMesh) return;
@@ -1284,6 +1288,7 @@ function step(dt) {
   fx.update(dt);
   updateCamera(dt);
   fadeStartPanels();
+  if (opening) opening.update(dt, state.time, state.phase);
 }
 
 let fpsAvg = 60, lowFor = 0;
@@ -1346,6 +1351,13 @@ async function main() {
     buildCollectibles(gem, coinFace);
     buildSocks(sock);
     buildMascot(mascotG);
+    // The Screen 3 opening look (opening.js): a separate cosmetic layer, built with its own random numbers
+    // so the game's own (coin bobbing, splashes) are drawn exactly as before. ?classic leaves it out.
+    if (OPENING_ON && !SIDE) {
+      opening = withPrivateRandom(makeRandom(0x0be5), () => buildOpening({ scene, env: mats.env, TR, L, W, mascot, camera, Particles, fxScale: fx.u.uScale,
+        waterU, grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
+        setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; } }));
+    }
     if (SIDE) buildSideView();
     resize();
     resetRun();

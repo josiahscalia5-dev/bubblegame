@@ -196,6 +196,7 @@ uniform float uFlow;        // current speed (m/s)
 uniform float uSlideHalf;   // half width of the raised slide
 uniform vec3 uDeep, uShallow, uTurq, uGlow, uSky, uPink, uGold, uRingA, uRingB, uFog, uSunDir;
 uniform vec3 uRings;        // first ring u, spacing, count
+uniform float uOpen;        // the Screen 3 opening look on the slide (opening.js); 0 = the original water
 varying vec2 vTrack;
 varying vec3 vWorld, vR, vU, vT;
 
@@ -301,11 +302,47 @@ void main() {
   col = mix(col, uDeep * 0.72, (1.0 - crest) * 0.22 * (1.0 - moat));
   col += uTurq * smoothstep(0.55, 0.95, crest) * 0.22 * (1.0 - moat);
   col += uTurq * clamp(bowWave(xz) * 5.0, 0.0, 1.0) * 0.3;
+  // The Screen 3 opening look (opening.js), on the slide in front of the castle only (onPath is 0 in the
+  // drum, so the tunnel's water is computed exactly as before): bubbly white foam wrapping the mascot,
+  // whitewater along both slide edges streaming toward the portal, thin flow streaks, a brighter caustic web.
+  float openK = uOpen * onPath;
+  float bubbleShade = 0.0;
+  if (openK > 0.0) {
+    vec2 toM = xz - uPlayer.xz;
+    float rM = length(toM * vec2(1.0, 0.85));
+    float run = uPlayerMove.y;
+    float stream = bwFbm(vec2(xz.x * 4.5, xz.y * 0.8 - flowT * 0.42));
+    // foam made of little round bubbles: thin bright cell rims (the blue water shows between them)
+    vec2 bc = bwVoronoi(xz * vec2(9.0, 6.5) - vec2(0.0, flowT * 0.32));
+    vec2 bc2 = bwVoronoi(xz * vec2(18.0, 12.5) - vec2(0.0, flowT * 0.36) + 4.0);
+    float rims = max(1.0 - smoothstep(0.02, 0.09, bc.y - bc.x), (1.0 - smoothstep(0.02, 0.07, bc2.y - bc2.x)) * 0.8);
+    float hollow = smoothstep(0.12, 0.42, bc.x);   // the middle of each bubble cell
+    // where the body meets the water: a solid white line of froth (a full ring at rest; at the bow and
+    // sides when running, trailing back in a V)
+    float contact = exp(-pow((rM - 0.5) / mix(0.12, 0.09, run), 2.0)) * mix(1.0, 0.85, run);
+    float behindM = clamp(-toM.y / (1.6 + 2.4 * run), 0.0, 1.0);
+    float vTrail = exp(-pow((abs(toM.x) - (0.45 + behindM * (0.5 + 0.6 * run))) / 0.14, 2.0)) * step(toM.y, 0.1) * (1.0 - behindM) * (0.3 + 0.7 * run);
+    // the churned zone around it: bubble lace on bright turquoise water, thinning with distance
+    float churnZone = exp(-pow(max(0.0, rM - 0.45) / 0.75, 2.0));
+    // whitewater along both edges of the slide, streaming toward the portal
+    float edgeBand = (1.0 - smoothstep(0.0, 0.26, abs(ax - (uSlideHalf - 0.06)))) * (1.0 - moat);
+    float lace = rims * clamp(churnZone * (0.55 + 0.6 * stream) + edgeBand * (0.35 + 0.65 * stream) + vTrail, 0.0, 1.0);
+    float solid = clamp(contact * (0.75 + 0.35 * stream) + edgeBand * smoothstep(0.5, 0.8, stream) * 0.8 + vTrail * 0.7, 0.0, 1.0) * (1.0 - hollow * 0.35);
+    foam = max(foam, clamp(max(lace * 0.92, smoothstep(0.25, 0.7, solid)), 0.0, 1.0) * openK);
+    bubbleShade = hollow * smoothstep(0.2, 0.9, solid) * 0.42 * openK;
+    // brighter, more turquoise water where it churns around the mascot (thin water lit through)
+    col = mix(col, uTurq * 1.05, churnZone * 0.4 * openK);
+    // thin bright flow streaks stretched along the current, and a whiter caustic web over the slide
+    float lines = smoothstep(0.8, 0.97, bwNoise(vec2(xz.x * 12.0, xz.y * 0.5 - flowT * 0.5))) * (1.0 - moat);
+    col += (vec3(0.55, 0.92, 1.0) * lines * 0.3 + vec3(0.75, 0.95, 1.0) * caustic * 0.3 * (1.0 - moat)) * openK;
+  }
   vec3 lit = col * (0.8 + 0.3 * NdotL);
   lit += env * fresnel * 0.28 * (1.0 - inDrum * 0.6);
   lit += ringCol * ringBand * 1.3 * (0.35 + fresnel);
   lit += vec3(1.0) * (spec + glint * 4.0);
-  lit = mix(lit, vec3(0.9, 0.97, 1.0) * (0.92 + 0.18 * NdotL), foam);
+  vec3 foamCol = vec3(0.9, 0.97, 1.0) * (0.92 + 0.18 * NdotL);
+  foamCol = mix(foamCol, vec3(0.52, 0.76, 1.0), bubbleShade);
+  lit = mix(lit, foamCol, foam);
 
   float dist = length(cameraPosition - vWorld);
   lit = mix(lit, uFog, smoothstep(40.0, 160.0, dist));
@@ -469,10 +506,13 @@ void main() {
 
 // ---- colour grade + vignette (Unity URP volume: saturation +25, contrast +12, vignette 0.18)
 export const GradeShader = {
-  uniforms: { tDiffuse: { value: null }, uSat: { value: 1.32 }, uContrast: { value: 1.12 }, uVignette: { value: 0.18 } },
+  uniforms: { tDiffuse: { value: null }, uSat: { value: 1.32 }, uContrast: { value: 1.12 }, uVignette: { value: 0.18 },
+    // The Screen 3 opening grade (opening.js): 0 = the original grade (always 0 in the tunnel).
+    uOpen: { value: 0 }, uOpenExposure: { value: 0.9 }, uOpenVibrance: { value: 0.35 }, uOpenDepth: { value: 0.16 } },
   vertexShader: /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
   fragmentShader: /* glsl */ `
     uniform sampler2D tDiffuse; uniform float uSat, uContrast, uVignette; varying vec2 vUv;
+    uniform float uOpen, uOpenExposure, uOpenVibrance, uOpenDepth;
     void main() {
       vec4 c = texture2D(tDiffuse, vUv);
       float l = dot(c.rgb, vec3(0.2126, 0.7152, 0.0722));
@@ -480,6 +520,19 @@ export const GradeShader = {
       c.rgb = (c.rgb - 0.18) * uContrast + 0.18;
       vec2 d = vUv - 0.5; d.x *= 0.6;
       c.rgb *= mix(vec3(1.0), vec3(0.7, 0.66, 0.92), smoothstep(0.4, 0.8, length(d)) * uVignette * 2.0);
+      if (uOpen > 0.0) {
+        // Richer and less washed out, without a colour filter: pale pastels gain colour (vibrance acts
+        // most on the least saturated colours), bright areas come down a little so the tone mapping keeps
+        // their detail, and mid-darks deepen for depth.
+        vec3 g = c.rgb;
+        float mx = max(g.r, max(g.g, g.b)), mn = min(g.r, min(g.g, g.b));
+        float sat = (mx - mn) / max(mx, 1e-4);
+        float lg = dot(g, vec3(0.2126, 0.7152, 0.0722));
+        g = max(mix(vec3(lg), g, 1.0 + uOpenVibrance * (1.0 - sat) * smoothstep(0.02, 0.2, lg)), 0.0);
+        g *= uOpenExposure;
+        g *= 1.0 - uOpenDepth * (1.0 - smoothstep(0.0, 0.55, lg)) * smoothstep(0.02, 0.18, lg);
+        c.rgb = mix(c.rgb, g, uOpen);
+      }
       gl_FragColor = max(c, 0.0);
     }`,
 };
@@ -503,6 +556,7 @@ ${NOISE}
 uniform sampler2D map;
 uniform vec3 uCentre, uUp, uKey, uSky, uGround, uRim, uTip;
 uniform float uRadius, uTime;
+uniform float uSpike;   // the Screen 3 presentation (opening.js): crisper strands and water droplets; 0 = the original fur
 varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
 void main() {
   vec3 base = texture2D(map, vUv).rgb;
@@ -517,7 +571,7 @@ void main() {
   float hgt = dot(rel, uUp) / uRadius;                               // -1 at the water .. +1 on top
   vec3 amb = mix(uGround, uSky, up);
   vec3 c = base * (amb * 0.52 + vec3(1.0, 0.94, 0.97) * key * 0.92);
-  c *= 0.5 + 0.72 * strand;                                          // each spike lit on one side, shaded on the other
+  c *= mix(0.5 + 0.72 * strand, 0.4 + 0.88 * strand, uSpike);       // each spike lit on one side, shaded on the other
   c *= 0.7 + 0.3 * smoothstep(-1.05, 0.35, hgt);                     // deeper magenta toward the water
   float rim = pow(1.0 - clamp(dot(Ns, V), 0.0, 1.0), 2.4);
   c += uRim * rim * (0.25 + 0.75 * up) * 0.85;                       // fur tips glowing around the silhouette
@@ -527,6 +581,9 @@ void main() {
   float h = bwHash(cell.xy + cell.z * 17.13);
   float tw = step(0.97, h) * (0.55 + 0.45 * sin(uTime * 5.0 + h * 40.0)) * smoothstep(0.25, 0.85, strand);
   c += vec3(1.0, 0.96, 1.0) * tw * 1.1;
+  // little water droplets resting on the fur tips, as in the approved Screen 3 (none unless uSpike > 0)
+  float drop = step(mix(1.01, 0.958, uSpike), bwHash(cell.yz * 1.7 + cell.x * 5.31)) * smoothstep(0.35, 0.9, strand);
+  c = mix(c, vec3(1.0, 0.9, 0.97), drop * 0.75 * uSpike);
   gl_FragColor = vec4(c, 1.0);
 }
 `;

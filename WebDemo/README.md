@@ -26,6 +26,14 @@ A separate, playable browser version of approved Screen 3, built from the Meshy 
   - `src/scenery.js` builds the rest of the washing machinery from simple shapes in code.
   - `src/liner.js` (not used at present) fitted the Meshy tunnel interior liner inside the drum.
 
+## Screen 3 opening look (test version, 3 November; `src/opening.js`)
+
+A separate cosmetic layer that brings the Tap to Start view closer to the approved Screen 3, waiting for the user's approval. Full write-up, checklist, asset inventory and test results: [`Design/SCREEN3_OPENING_MATCH.md`](../Design/SCREEN3_OPENING_MATCH.md); evidence in [`Previews/WebDemo/opening_match/`](../Previews/WebDemo/opening_match).
+- **Parts:** the gold washer-door rim, violet seal and cyan rings at the portal; foam, splashes and bubbles around the mascot and on the slide; glossy soap bubbles; brush staging (the extra roller beside the portal hidden, the right roller turned to show its fluffy side, the side machinery larger); glassy flume walls; the mascot's presentation; an opening-only grade.
+- **Gameplay is untouched.** The layer is built with its own random-number generator, so the game's random numbers (coin bobbing, splashes) are drawn exactly as before. A seeded run is identical in every frame.
+- **The tunnel is untouched.** The layer fades out before the camera reaches the portal. With the mascot presentation off, tunnel frames are pixel-identical to the original.
+- `index.html?classic` shows the original opening. `window.__BW_OPENING_OFF__ = ['foam', ...]` (set before load) leaves out single parts.
+
 ## The ride: a real 3D path (`src/track.js`)
 
 Everything on the run is placed in track coordinates and carried onto a 3D path by its moving frame. That covers the water, the Meshy drum, the mascot, the camera, coins, gems, socks, rollers and bubbles.
@@ -106,6 +114,11 @@ The mascot's height in the world changes by about 2.6 m over one run. The side-v
 - `tools/journey_frames.py` puts the approved screen beside a recording's opening frame and makes a sheet of twelve labelled frames from Tap to Start into the tunnel.
 - `tools/mesh_check.mjs <file.glb>` checks a model's geometry before it is used: holes, non-manifold edges, winding and separate pieces. The Meshy gear has 63 open edges; the tunnel liner as delivered had 91,501.
 - `tools/seeded_run.cjs <demo-dir> <seed>` plays the recording's input script with `Math.random` seeded, and prints where the run ends and what it collected. Run it on two builds with the same seed to prove a visual change did not alter gameplay. Unseeded runs can differ by a coin, because coins bob with a random phase.
+- Checking that a visual change left the game alone:
+  - `tools/trace.cjs <demo-dir> <out.json> [seed]` stores the state every frame of a seeded run; `python3 -I tools/trace_diff.py a.json b.json` compares two builds frame by frame.
+  - `tools/seeded_shots.cjs <demo-dir> <out-dir> <seed> <-|classic|parts> t...` takes seeded screenshots with the page's CSS animations frozen; `python3 -I tools/pxdiff.py dirA dirB t...` counts the pixels that differ.
+  - `tools/phone_check.cjs` renders Tap to Start at a phone viewport and prints the HUD boxes.
+  - `tools/opening_evidence.py` builds the comparison sheets in `Previews/WebDemo/opening_match/`.
 - Chromium here has no GPU, so WebGL is rendered in software and the game is stepped at 30 frames per game-second.
 
 Not tested: real phones and their frame rate. The page lowers its own quality if the frame rate stays low.
