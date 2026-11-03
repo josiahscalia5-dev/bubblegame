@@ -27,7 +27,25 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, midday): Phase A castle-and-water test behind `?phaseA` (saved, not approved, not merged)
+## Latest (3 November, evening): the five Screen 3 assets in the real 3D opening behind `?s3` (saved, not approved)
+
+- **Code:** `WebDemo/src/screen3_models.js`, called from `opening.js` loadExtras.
+  - Switches: `?s3=castle,entrance,machinery,brush,bubbles`, or `?s3=all`.
+  - Without them nothing is downloaded and the page is unchanged.
+  - Models: `WebDemo/models/s3_*.glb`, byte-identical to `Design/MeshyDeliveries/Screen3Models/`. The castle is the newest delivery.
+- **Evidence:**
+  - `Previews/WebDemo/screen3_five_assets/` (approved, previous and new, plus the first 2 s);
+  - `Previews/WebDemo/screen3_castle_test/` (stage 1).
+- **Honest score:** the whole opening is about 6/10, against 5/10 before.
+  - Limits: lane clearance on the narrow slide, the slide's tall walls, the protected tunnel's curve, and the castle's narrow arch and the entrance's small opening.
+  - The README lists what would raise it.
+- **Checks:**
+  - same seed and inputs as `591db28`: controls, swipes, jump, collectibles and the 13 s seeded run identical;
+  - tunnel 3D pixel-identical;
+  - no console errors.
+- **Waiting on the user:** approval, and whether to order the castle and entrance variants or restyle the slide's walls.
+
+## Earlier (3 November, midday): Phase A castle-and-water test behind `?phaseA` (saved, not approved, not merged)
 
 - **Code:** `WebDemo/src/phase_a.js`, called from `opening.js`. The game passes it the castle and the water sheets.
   - It runs only with `?phaseA`. Without it the page is pixel-identical to `591db28` (the approved-artwork opening).
