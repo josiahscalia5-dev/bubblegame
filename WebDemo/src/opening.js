@@ -31,6 +31,7 @@
 // Open the page with ?classic to turn the layer off and see the original opening.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { PHASE_A, applyPhaseA } from './phase_a.js';
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -514,6 +515,9 @@ export function buildOpening(ctx) {
       spinnable, scale: +sc.toFixed(3), diameter: +(Math.max(size.x, size.y) * sc).toFixed(2), length: st.length, at: holder.position.toArray().map((v) => +v.toFixed(2)), nearestToLanes: +inner.toFixed(2) };
     if (spinnable) updaters.push((dt) => { spinG.rotation.z += st.spin * dt; });
   }
+
+  // ---------------------------------------------------------------- 7. Phase A test (?phaseA only): castle colours and glow, slide water and foam
+  if (PHASE_A) window.__bwPhaseA = applyPhaseA({ scene, castle: ctx.castle, waterSheets: ctx.waterSheets, axisY: AXIS, tunnelStart: TS });
 
   return {
     root,

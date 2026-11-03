@@ -27,7 +27,17 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, late morning): the approved artwork as the opening screen, test version waiting for approval
+## Latest (3 November, midday): Phase A castle-and-water test behind `?phaseA` (saved, not approved, not merged)
+
+- **Code:** `WebDemo/src/phase_a.js`, called from `opening.js`. The game passes it the castle and the water sheets.
+  - It runs only with `?phaseA`. Without it the page is pixel-identical to `591db28` (the approved-artwork opening).
+- **Evidence:** see `Previews/WebDemo/phase_a_castle_water/README.md`.
+  - Castle colour difference to the approved image: 11.2 → 3.5.
+  - Water: white lines and foam 2 % → 27 % (approved 27 %).
+- **Paused and not built:** the `?polish` work (live water band below the artwork, door-opens reveal), saved as a git stash in that session. The user redirected to scene structure.
+- **Next, at the user's request:** rebuild the opening's scenery structure (rollers, machinery, door, castle, bubbles) with existing Meshy assets, in a separate test switch.
+
+## Earlier (3 November, late morning): the approved artwork as the opening screen, test version waiting for approval
 
 - **Branch `ccr-4e2b86d7-kqpei8`** (this session). It starts from the test version below (`6116703`), which stays on `ccr-68cd26f5-4t8etp` as the restore point.
   - The tag `checkpoint/before-opening-artwork` is local only; GitHub refused tag pushes from this session.

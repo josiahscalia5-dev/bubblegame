@@ -1366,7 +1366,7 @@ async function main() {
     // so the game's own (coin bobbing, splashes) are drawn exactly as before. ?classic leaves it out.
     if (OPENING_ON && !SIDE) {
       opening = withPrivateRandom(makeRandom(0x0be5), () => buildOpening({ scene, env: mats.env, TR, L, W, mascot, camera, Particles, fxScale: fx.u.uScale,
-        waterU, grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
+        waterU, castle: mats.castle, waterSheets: water.children, grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
         setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; }, get rollerCandidate() { return state.rollerCandidate; }, set rollerCandidate(v) { state.rollerCandidate = v; } }));
       await withPrivateRandomAsync(makeRandom(0x0be6), opening.loadExtras);   // a roller candidate, only with ?roller=1|2
     }
