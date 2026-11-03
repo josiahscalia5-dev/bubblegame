@@ -1,6 +1,7 @@
 // The washing-machine works around the approved Screen 3 entrance that are built in code: a huge gold
 // washing wheel on the lower right seen almost edge-on, a cream-and-gold housing under the left brush,
-// curved gold pipes along the lower sides, pink fluffy trim and glowing bulbs.
+// curved gold pipes along the lower sides, pink fluffy trim and glowing bulbs, and inside the tunnel its
+// glowing cyan rings, glowing pink panels in gold frames and turning gold gears.
 // The water towers, the gears at the portal mouth and high on the left, the pipe elbows and the crown
 // over the portal are the user's Meshy models (decor.js); the code-built towers and gears that stood in
 // for them were removed when those models arrived.
@@ -11,7 +12,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
-export function buildScenery({ scene, mats }) {
+export function buildScenery({ scene, mats, track }) {
   const root = new THREE.Group();
   root.name = 'scenery';
   scene.add(root);
@@ -56,6 +57,26 @@ export function buildScenery({ scene, mats }) {
     }
     return add(im, parent);
   };
+
+  // ---------------------------------------------------------------- shapes
+  /** Chunky cartoon gear (local XY plane, face +Z): rounded teeth, bevelled, with a coloured hub. */
+  const gearGeoCache = new Map();
+  function gearGeometry(r, teeth, depth) {
+    const key = `${r}|${teeth}|${depth}`;
+    if (gearGeoCache.has(key)) return gearGeoCache.get(key);
+    const sh = new THREE.Shape(), r0 = r * 0.8, step = (Math.PI * 2) / teeth;
+    for (let i = 0; i < teeth; i++) {
+      const a = i * step;
+      const pts = [[r0, a], [r * 0.97, a + step * 0.1], [r, a + step * 0.22], [r, a + step * 0.34], [r * 0.97, a + step * 0.46], [r0, a + step * 0.56]];
+      pts.forEach(([rr, aa], j) => { const x = Math.cos(aa) * rr, y = Math.sin(aa) * rr; if (i === 0 && j === 0) sh.moveTo(x, y); else sh.lineTo(x, y); });
+    }
+    sh.closePath();
+    const hole = new THREE.Path(); hole.absarc(0, 0, r * 0.42, 0, Math.PI * 2, true); sh.holes.push(hole);
+    const g = new THREE.ExtrudeGeometry(sh, { depth, bevelEnabled: true, bevelThickness: depth * 0.35, bevelSize: r * 0.05, bevelSegments: 3, curveSegments: 6 });
+    g.translate(0, 0, -depth / 2);
+    gearGeoCache.set(key, g);
+    return g;
+  }
 
   // ---------------------------------------------------------------- the huge gold washing wheel (lower right)
   // Seen almost edge-on from the slide, as in the approved screen: a thick gold tyre with a toothed
@@ -118,12 +139,128 @@ export function buildScenery({ scene, mats }) {
     }
   }
 
+  // ---------------------------------------------------------------- the illuminated tunnel
+  // Glowing cyan rings all the way down the drum (two tones, each set with bulbs, with a soft halo), glowing
+  // pink panels in gold frames around the upper walls between them, and gold gears with blue and teal hubs
+  // turning on the upper walls, all carried onto the bent 3D path so they climb, drop and bank with the
+  // tube. The rings and panels brighten in a slow wave that runs down the tunnel ahead of the rider. Only
+  // they are bright enough to bloom; the drum's walls keep their colour.
+  const tunnel = new THREE.Group(); tunnel.name = 'tunnelDecor'; scene.add(tunnel);
+  const glowRings = [];
+  let panels = null;
+  if (track) {
+    const { TR, L, W } = track;
+    const ringCols = [[0.0, 1.25, 2.1], [0.2, 1.6, 2.3]];   // electric cyan, two tones (above 1: they glow; low red keeps them cyan, not white)
+    const R = L.tunnelRadius * 0.955, step = 2.3;
+    const ringGeo = new THREE.TorusGeometry(R, 0.06, 8, 112);
+    const haloGeo = new THREE.TorusGeometry(R, 0.17, 8, 112);
+    const bulbGeo = new THREE.SphereGeometry(0.055, 8, 6);
+    let i = 0;
+    for (let u = L.tunnelStart + 1.4; u < L.tunnelEnd - 0.8; u += step, i++) {
+      const base = new THREE.Color(...ringCols[i % 2]);
+      const mat = new THREE.MeshBasicMaterial({ color: base.clone() });
+      const ringMesh = new THREE.Mesh(ringGeo, mat);
+      ringMesh.matrixAutoUpdate = false;
+      TR.mapMatrix(new THREE.Matrix4().makeTranslation(0, W.WATER + W.AXIS_H, u), ringMesh.matrix);
+      tunnel.add(ringMesh);
+      // a soft cyan halo around the ring (additive, so it only adds light)
+      const haloMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.0, 0.22, 0.42), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+      const halo = new THREE.Mesh(haloGeo, haloMat);
+      halo.matrixAutoUpdate = false; halo.matrix.copy(ringMesh.matrix); halo.renderOrder = 3;
+      tunnel.add(halo);
+      const bulbs = new THREE.InstancedMesh(bulbGeo, new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 2.8, 2.9) }), 28);
+      const m4 = new THREE.Matrix4(), local = new THREE.Matrix4();
+      for (let k = 0; k < 28; k++) {
+        const a = (k / 28) * Math.PI * 2;
+        local.makeTranslation(Math.cos(a) * R, W.WATER + W.AXIS_H + Math.sin(a) * R, u + 0.08);
+        TR.mapMatrix(local, m4); bulbs.setMatrixAt(k, m4);
+      }
+      bulbs.frustumCulled = false;
+      tunnel.add(bulbs);
+      glowRings.push({ mat, base, haloMat, haloBase: haloMat.color.clone(), u });
+    }
+    // glowing pink panels in gold frames, seven around the upper walls (clear of the water and the gears),
+    // half-way between the rings
+    const angles = [-10, 15, 65, 90, 115, 165, 190].map((d) => THREE.MathUtils.degToRad(d));
+    const stations = [];
+    for (let u = L.tunnelStart + 1.4 + step / 2; u < L.tunnelEnd - 1.5; u += step) stations.push(u);
+    const count = stations.length * angles.length, PR = L.tunnelRadius * 0.92;
+    const panelMat = new THREE.MeshBasicMaterial({ map: panelTexture(), color: 0xffffff, alphaTest: 0.5, side: THREE.DoubleSide });
+    const panelMesh = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.62, 0.34), panelMat, count);
+    const frameMesh = new THREE.InstancedMesh(new RoundedBoxGeometry(0.72, 0.44, 0.06, 2, 0.04), gold, count);
+    const basis = new THREE.Matrix4(), local = new THREE.Matrix4(), m4 = new THREE.Matrix4(), push = new THREE.Matrix4();
+    const ax = new THREE.Vector3(), ay = new THREE.Vector3(0, 0, 1), az = new THREE.Vector3();
+    const panelU = [];
+    let k = 0;
+    for (const u of stations) for (const a of angles) {
+      // the panel's face (its local +Z) looks at the tube's axis; its long side runs around the tube
+      ax.set(Math.sin(a), -Math.cos(a), 0); az.set(-Math.cos(a), -Math.sin(a), 0);
+      basis.makeBasis(ax, ay, az).setPosition(Math.cos(a) * PR, W.WATER + W.AXIS_H + Math.sin(a) * PR, u);
+      TR.mapMatrix(basis, m4); panelMesh.setMatrixAt(k, m4);
+      local.multiplyMatrices(basis, push.makeTranslation(0, 0, -0.04));   // the frame just behind the panel
+      TR.mapMatrix(local, m4); frameMesh.setMatrixAt(k, m4);
+      panelMesh.setColorAt(k, new THREE.Color(1, 1, 1));
+      panelU.push(u); k++;
+    }
+    panelMesh.frustumCulled = frameMesh.frustumCulled = false;
+    tunnel.add(frameMesh, panelMesh);
+    panels = { mesh: panelMesh, u: panelU, c: new THREE.Color() };
+    // gold gears on the upper walls, both sides, every few metres
+    let j = 0;
+    for (let u = L.tunnelStart + 3.0; u < L.tunnelEnd - 2; u += 4.6, j++) {
+      for (const side of [1, -1]) {
+        const a = side * (0.62 + 0.12 * (j % 2));   // angle up from the side wall
+        const x = side * Math.cos(a * side) * (L.tunnelRadius - 0.12), h = W.WATER + W.AXIS_H + Math.sin(Math.abs(a)) * (L.tunnelRadius - 0.12);
+        const holder = new THREE.Group(); holder.matrixAutoUpdate = false;
+        // face the gear toward the tube's axis
+        const inward = new THREE.Vector3(-x, W.WATER + W.AXIS_H - h, 0).normalize();
+        const local = new THREE.Matrix4().compose(new THREE.Vector3(x, h, u), new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), inward), new THREE.Vector3(1, 1, 1));
+        TR.mapMatrix(local, holder.matrix);
+        tunnel.add(holder);
+        const r = 0.34 + 0.08 * ((j + (side > 0 ? 1 : 0)) % 2);
+        const g = new THREE.Group(); holder.add(g);
+        const wheel = mesh(gearGeometry(r, Math.round(r * 26), r * 0.3), gold, null, g);
+        const hub = mesh(new THREE.CylinderGeometry(r * 0.4, r * 0.4, r * 0.3, 24), (j + side) % 2 ? teal : blue, null, wheel); hub.rotation.x = Math.PI / 2;
+        mesh(new THREE.SphereGeometry(r * 0.15, 14, 10), gold, [0, 0, r * 0.18], wheel);
+        ring(wheel, r * 0.62, 6, r * 0.06, bulb, r * 0.18);
+        spinners.push({ obj: wheel, axis: new THREE.Vector3(0, 0, 1), speed: side * (0.8 + 0.2 * (j % 3)) });
+      }
+    }
+  }
+
   return {
-    root,
+    root, tunnel,
     update(dt, t) {
+      for (const g of glowRings) {
+        const k = chase(g.u, t);
+        g.mat.color.copy(g.base).multiplyScalar(0.75 + 0.4 * k);
+        g.haloMat.color.copy(g.haloBase).multiplyScalar(0.6 + 0.8 * k);
+      }
+      if (panels) {
+        for (let i = 0; i < panels.u.length; i++) panels.mesh.setColorAt(i, panels.c.setScalar(1.15 + 0.6 * chase(panels.u[i] + 1.15, t)));
+        panels.mesh.instanceColor.needsUpdate = true;
+      }
       for (const s of spinners) s.obj.rotateOnAxis(s.axis, s.speed * dt);
     },
   };
+}
+
+/** A slow wave of light running down the tunnel (0..1), at u metres along the path, time t. */
+function chase(u, t) { const s = 0.5 + 0.5 * Math.sin(u * 0.55 - t * 2.6); return s * s; }
+
+// A glowing pink light panel: a rounded rectangle, deep pink at the edge and brighter inside, with pale
+// light bars across it (transparent corners, cut out with alphaTest).
+function panelTexture() {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 140;
+  const g = c.getContext('2d');
+  const rr = (x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
+  rr(4, 4, 248, 132, 26); g.fillStyle = '#d61c9a'; g.fill();
+  const grd = g.createLinearGradient(0, 14, 0, 126); grd.addColorStop(0, '#ff9be2'); grd.addColorStop(0.5, '#ff5cc8'); grd.addColorStop(1, '#f23cb4');
+  rr(14, 14, 228, 112, 18); g.fillStyle = grd; g.fill();
+  g.fillStyle = 'rgba(255, 236, 250, 0.92)';
+  for (let i = 0; i < 7; i++) { rr(36 + i * 28, 34, 12, 72, 6); g.fill(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+  return t;
 }
 
 // Pink fluff: a soft, slightly lumpy ball lit with a bright rim, so it reads as fluffy trim.

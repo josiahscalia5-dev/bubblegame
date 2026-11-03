@@ -14,7 +14,6 @@ import * as SH from './shaders.js';
 import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
-import { buildLiner, LINER } from './liner.js';
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -59,7 +58,7 @@ scene.add(rimLight);
 const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
   mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', machinery: 'models/machinery.glb',
-  tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb', liner: 'models/liner.glb',
+  tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb',
 };
 const progress = {};
 function showProgress() {
@@ -155,7 +154,7 @@ function bakedMaterial(src, opts = {}) {
 }
 
 // ------------------------------------------------------------------ world
-let water, waterU, mascot, rig, fx, scenery, decor, liner, linerG;
+let water, waterU, mascot, rig, fx, scenery, decor;
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -394,8 +393,9 @@ function buildWaterfalls() {
 function buildDrumLights() {
   const ring = new THREE.TorusGeometry(L.tunnelRadius * 0.965, 0.075, 8, 72);
   const zs = [];
-  // The drum's mouth and end; the rings that stood at its inner joints would be inside the liner's wall.
-  zs.push(L.tunnelStart + 0.25, L.tunnelEnd - 0.25);
+  const step = L.segmentLength - Math.max(0.02, L.segmentLength * 0.005);
+  for (let i = 0; i < 3; i++) zs.push(L.tunnelStart + i * step + 0.25);
+  zs.push(L.tunnelEnd - 0.25);
   zs.forEach((z, i) => {
     const m = new THREE.Mesh(ring, new THREE.MeshBasicMaterial({ color: i % 2 === 0 ? new THREE.Color(2.6, 2.0, 0.95) : new THREE.Color(1.4, 2.2, 2.9) }));
     m.matrixAutoUpdate = false;
@@ -464,7 +464,7 @@ function buildDrum(gltf) {
   gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
   const seg = new THREE.Matrix4(), full = new THREE.Matrix4(), v = new THREE.Vector3(), out = new THREE.Vector3();
   mats.drumMeshes = [];
-  for (const [segment, arr] of L.drumSegments.entries()) {
+  for (const arr of L.drumSegments) {
     seg.fromArray(arr);
     for (const mesh of meshes) {
       full.multiplyMatrices(seg, mesh.matrixWorld);
@@ -482,24 +482,8 @@ function buildDrum(gltf) {
       g.computeBoundingSphere();
       const m = new THREE.Mesh(g, mesh.material);
       scene.add(m);
-      m.userData.segment = segment;
       mats.drumMeshes.push(m);
     }
-  }
-}
-
-// The liner lines the drum from just inside its mouth (liner.js). The drum's own ribs reach in to 2.1 m
-// from its axis, inside the liner's bore, and its walls would cut through the liner's recesses, so beyond
-// the liner's start the drum is not drawn: its first segment is cut just past that point (its mouth and entrance stay exactly as they are) and the other two
-// are hidden. The drum is otherwise unchanged.
-function trimDrum() {
-  const u = L.tunnelStart + LINER.startIn + 0.15;
-  TR.frame(u, F);
-  const keepBefore = new THREE.Plane().setFromNormalAndCoplanarPoint(F.T.clone().negate(), F.P.clone());
-  renderer.localClippingEnabled = true;
-  for (const m of mats.drumMeshes) {
-    if (m.userData.segment === 0) m.material.clippingPlanes = [keepBefore];
-    else m.visible = false;
   }
 }
 
@@ -1199,7 +1183,7 @@ function buildSideView() {
   const dots = new THREE.Points(tg, new THREE.PointsMaterial({ color: 0xff1f9e, size: 5, sizeAttenuation: false }));
   dots.frustumCulled = false; g.add(dots);
   // Only the run itself: the castle, drum, scenery and water sheet would hide the mascot from the side.
-  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, decor && decor.root, liner && liner.root, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
+  for (const o of [mats.castle, water, mats.machinery, mats.sideMachinery, decor && decor.root, scenery && scenery.tunnel, mats.falls, mats.bubbles, ...(mats.drumMeshes || []), ...(mats.exitLight || []), ...rollers.map((r) => r.g)]) if (o) o.visible = false;
   side = { cam, g, dots, tp, n: 0, N, yc: 1.0, width: 22, startY: mascot.root.position.y };
 }
 function sideTrail() {
@@ -1299,7 +1283,6 @@ function step(dt) {
   for (const ring of mats.rings) ring.material.color.copy(ring.userData.base).multiplyScalar(0.8 + 0.25 * Math.sin(state.time * 2.4 + ring.userData.pulse));
   fx.update(dt);
   updateCamera(dt);
-  liner.update(state.time, camera.position);
   fadeStartPanels();
 }
 
@@ -1339,25 +1322,20 @@ async function main() {
     L = await layoutRes.json();
     TR = makeTrack(L);
     buildSky();
-    const [castle, drum, mascotG, roller, gem, sock, machineryG, towerG, gearG, pipeG, crownG, linerModel, coinFace] = await Promise.all([
-      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'machinery', 'tower', 'gear', 'pipe', 'crown', 'liner'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
+    const [castle, drum, mascotG, roller, gem, sock, machineryG, towerG, gearG, pipeG, crownG, coinFace] = await Promise.all([
+      ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'machinery', 'tower', 'gear', 'pipe', 'crown'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
     fx = new Particles(1400);
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
     bake(castle.scene, { saturation: 1.0, brightness: 1.06, glow: 0.35, grade: SH.CASTLE_GRADE, haze: [0.3, 14, 45, [0.86, 0.79, 1.0]], shade: [0.86, 0.26, 0.35] });
     mats.castle = place(castle.scene, L.castle);
     buildDrum(drum);
-    // The user's Meshy tunnel interior liner inside the drum, with its glowing bands, panels and rings (liner.js).
-    linerG = linerModel;
-    liner = buildLiner({ scene, gltf: linerG, TR, L, W, env: mats.env });
-    state.linerClear = liner.clearance;
-    trimDrum();
     buildWater();
     buildRails();
     buildWaterfalls();
     buildDrumLights();
     buildRollers(roller);
-    scenery = buildScenery({ scene, mats });
+    scenery = buildScenery({ scene, mats, track: { TR, L, W } });
     mats.machinery = scenery.root;
     buildSideMachinery(machineryG);
     // The user's four Meshy entrance decorations: water towers, gear wheels, golden pipes, crown trim (decor.js).
@@ -1399,7 +1377,7 @@ window.__bw = {
     lane: mascot.lane, speed: +mascot.speed.toFixed(2), air: mascot.air, slope: +mascot.lastSlope.toFixed(3), pitchDeg: +THREE.MathUtils.radToDeg(mascot.pitch).toFixed(1),
     leanDeg: +THREE.MathUtils.radToDeg(mascot.lean).toFixed(1), coins: state.coins, gems: state.gems, socks: state.socks, collected: { ...state.collected }, laps: state.laps,
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
-    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null, linerClear: state.linerClear ?? null,
+    particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null,
   }),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
@@ -1413,10 +1391,6 @@ window.__bw = {
   // Returns each kind's nearest distance to the slide's middle (decor.js LANE_CLEAR).
   setDecor: (kind, i, props) => { if (props === null) DECOR[kind].splice(i, 1); else DECOR[kind][i] = Object.assign(DECOR[kind][i] || {}, props); state.decorClear = decor.place(); return state.decorClear; },
   getDecor: () => JSON.parse(JSON.stringify(DECOR)),
-  // Rebuild the tunnel liner with other settings (fields of LINER in src/liner.js); returns its clearance.
-  // Load another liner model (a .glb URL) and rebuild the liner with it: for comparing model files in place.
-  useLinerModel: async (url) => { linerG = await gltfLoader.loadAsync(url); return window.__bw.setLiner({}); },
-  setLiner: (props) => { scene.remove(liner.root); Object.assign(LINER, props); liner = buildLiner({ scene, gltf: linerG, TR, L, W, env: mats.env }); state.linerClear = liner.clearance; liner.update(state.time, camera.position); return liner.clearance; },
   // The world point under a stage pixel (for measuring where the approved scene's parts sit).
   pick: (px, py) => {
     const r = stage.getBoundingClientRect(), ray = new THREE.Raycaster();
@@ -1427,14 +1401,14 @@ window.__bw = {
   project: (p) => { const v = new THREE.Vector3(...p).project(camera), r = stage.getBoundingClientRect(); return [+((v.x + 1) / 2 * r.width).toFixed(1), +((1 - v.y) / 2 * r.height).toFixed(1)]; },
   setFraming: (f) => { if (f.off) S3.off.set(...f.off); if (f.look) S3.look.set(...f.look); if (f.fov) S3.fov = f.fov; rig.snap = true; },
   // Step without drawing and report, every frame, how far the mascot's body and the camera reach from the
-  // tube's axis while they are inside the lined part of the tunnel (null outside it). The liner's nearest
-  // surface is state().linerClear.minR.
+  // tube's axis while they are inside the washer tunnel (null outside it). The drum's nearest surface
+  // (its ribs) is 2.1 m from the axis; the glowing rings and panels sit further out.
   clearanceTrace: (seconds, fps = 30) => {
-    const out = [], c = state.linerClear, axisH = W.WATER + W.AXIS_H, rel = new THREE.Vector3();
-    const inLiner = (u) => u > c.start && u < c.end;
+    const out = [], axisH = W.WATER + W.AXIS_H, rel = new THREE.Vector3();
+    const inTube = (u) => u > L.tunnelStart + 0.5 && u < L.tunnelEnd - 0.5;
     for (let i = 0, n = Math.round(seconds * fps); i < n; i++) {
       step(1 / fps);
-      const m = mascot, body = inLiner(m.z) ? Math.hypot(m.x, m.yAbs - axisH) + W.BODY_R : null;
+      const m = mascot, body = inTube(m.z) ? Math.hypot(m.x, m.yAbs - axisH) + W.BODY_R : null;
       // the camera's place along the tube: where its offset from the path is square to the path
       let best = null;
       for (let u = m.z - 9; u <= m.z + 0.5; u += 0.05) {
@@ -1442,7 +1416,7 @@ window.__bw = {
         const along = Math.abs(rel.dot(F.T));
         if (!best || along < best.along) best = { along, u, r: Math.hypot(rel.dot(F.R), rel.dot(F.U) - axisH) };
       }
-      out.push({ t: +state.time.toFixed(3), z: +m.z.toFixed(2), body: body && +body.toFixed(3), camera: inLiner(best.u) ? +best.r.toFixed(3) : null });
+      out.push({ t: +state.time.toFixed(3), z: +m.z.toFixed(2), body: body && +body.toFixed(3), camera: inTube(best.u) ? +best.r.toFixed(3) : null });
     }
     return out;
   },
