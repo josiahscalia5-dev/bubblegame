@@ -661,3 +661,7 @@ I'll make the exporter redact every known key format before it writes anything, 
 
 The rules check is still running. Adding a warning to the Tripo sign-in notes, then restarting the autosave, now safe because the exporter redacts keys:
 
+Saved: **commit `3a7f66b`**, push verified. Double-checking that GitHub's copy really doesn't contain the key anywhere in the branch history:
+
+Confirmed: **0 commits on GitHub contain the key**, and the saved chat shows "[REDACTED]". Restarting the 5-minute autosave with the redacting exporter:
+
