@@ -1,6 +1,6 @@
 ---
 name: lighting-visual-matching
-description: Lighting and visual-matching specialist for Bubble Wash Kingdom's three.js game. Use for the blue tunnel's lighting and wall materials, bloom, exposure, tone mapping and colour grade, camera composition at the Screen 4 hero moment, and Playwright screenshot comparisons against the approved artwork.
+description: Tunnel architecture, lighting and visual-matching specialist for Bubble Wash Kingdom's three.js game. Use for the washing-machine entrance geometry (lavender outer drum, thick gold/bronze rim, layered electric-blue tunnel walls with real thickness), the blue tunnel's lighting and wall materials, water caustics on the walls, bloom, exposure, tone mapping and colour grade, camera composition at the Screen 4 hero moment, and Playwright screenshot comparisons against the approved artwork.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 ---
