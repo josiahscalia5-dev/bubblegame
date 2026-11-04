@@ -2042,3 +2042,5 @@ While the video records, I'm updating the handoff notes with this round:
 
 The README draft is written; the measured results go in once the video and checks finish. Waiting for the recording.
 
+The frames look right. Checking two at full size: the brush's pink danger glow, and the moment just after Bubble Blast:
+

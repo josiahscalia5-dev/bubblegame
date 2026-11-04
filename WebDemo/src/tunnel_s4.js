@@ -428,9 +428,11 @@ const WATER_R2 = `  if (inDrum > 0.0) {   // Screen 4 tunnel, round 2 (?s3=round
       float du = h.x - xz.y;
       float along = (1.0 - smoothstep(uS4Warn.y, uS4Warn.x, du)) * smoothstep(-1.0, -0.2, du);
       float across = exp(-pow((xz.x - h.y) / 0.34, 2.0));
-      float stripes = 0.65 + 0.35 * smoothstep(0.3, 0.6, fract(du * 1.4 + t * 1.6));
+      float stripes = 0.45 + 0.55 * smoothstep(0.25, 0.55, fract(du * 1.2 + t * 1.6)) * (1.0 - smoothstep(0.75, 0.95, fract(du * 1.2 + t * 1.6)));
       haz = max(haz, along * across * h.z * stripes);
     }
-    col = mix(col, vec3(1.0, 0.26, 0.62), haz * (0.42 + 0.12 * sin(t * 7.0)) * inDrum);
+    float hz = haz * (0.72 + 0.12 * sin(t * 7.0)) * inDrum;
+    col = mix(col, vec3(1.0, 0.12, 0.5), hz);
+    foam *= 1.0 - 0.7 * hz;   // the warning stays clear of foam
   }
 ` + '  vec3 lit = col * (0.8 + 0.3 * NdotL);';
