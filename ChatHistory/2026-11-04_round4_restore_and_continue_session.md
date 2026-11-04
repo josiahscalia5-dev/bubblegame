@@ -214,3 +214,17 @@ Now exporting this session's chat history and making the first save, verified ag
 
 First save verified on GitHub (`7944508`). Starting the 5-minute autosave in the background:
 
+Now I'll capture the current Round 4 in real gameplay (seed 7, 538×1076), following the skill's loop. First, a quick look at the capture script's options:
+
+Capture works (21 s, no console errors). Let me look at the 3.6 s and 4.2 s frames next to the approved screen:
+
+Before changing anything, a close look at the character's splash area, current vs approved, at full resolution:
+
+Now the new foam shader (Round 4 only; Round 3's shader string stays byte-identical):
+
+Round 4 bubble settings (more and slightly larger bubbles, like the approved foreground), still leaving Round 3 as recorded:
+
+Now the Round 4 settings for the foam and bubbles, a more turquoise water middle, and a splash crown that breaks into white fingers and streaks instead of a filmy veil:
+
+Build, capture the same seeded moments, and measure:
+

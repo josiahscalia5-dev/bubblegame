@@ -278,7 +278,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
-  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: !!R4 });
+  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: R4 || false });
   if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env, mascot,
     hide: [scene.getObjectByName('s4Rings'), scene.getObjectByName('r3Swirl'), ...(drumMeshes || [])] });
   return report;
@@ -308,14 +308,24 @@ function r4PomPom(left, wheelScale) {
     m.onBeforeCompile = (sh) => {
       // fine strands along each clump (darker grooves between them) and a soft pale sheen round its edge: fluff, not plastic
       sh.vertexShader = 'varying vec3 vTuft;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vTuft = position;');
-      sh.fragmentShader = 'varying vec3 vTuft;\n' + sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
+      // fine fibres (a hash per thin strand round the clump's long axis, lighter toward the tips), a hairy outline (near
+      // the clump's silhouette the strands between fibres are cut away, showing the clumps behind) and whites lifted
+      sh.fragmentShader = 'varying vec3 vTuft;\nfloat tfH(float n) { return fract(sin(n * 91.345) * 47453.5453); }\n' + sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
+  float tfFib;
   { float ang = atan(vTuft.z, vTuft.x);
     float strand = 0.5 + 0.5 * sin(ang * 14.0 + vTuft.y * 3.0) * sin(ang * 23.0 - vTuft.y * 5.0 + 1.3);
-    diffuseColor.rgb *= 1.0 - ${B.strands.toFixed(3)} * (1.0 - strand) * smoothstep(-0.6, 0.6, vTuft.y); }`)
+    float fa = ang * 30.0 / 6.2832 + vTuft.y * 0.6, fi = floor(fa);
+    tfFib = mix(tfH(fi), tfH(fi + 1.0), smoothstep(0.3, 0.7, fract(fa))) * (0.7 + 0.3 * tfH(floor(fa * 2.7) + 17.0));
+    float tip = smoothstep(-0.2, 1.0, vTuft.y);
+    diffuseColor.rgb *= (1.0 - ${B.strands.toFixed(3)} * 0.5 * (1.0 - strand) * smoothstep(-0.6, 0.6, vTuft.y))
+      * (1.0 - ${B.fibres.toFixed(3)} * (1.0 - tfFib) * (1.0 - 0.5 * tip)) * (0.88 + 0.24 * tip); }`)
         .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
-  totalEmissiveRadiance += diffuseColor.rgb * ${B.glow.toFixed(3)} + vec3(1.0, 0.92, 0.98) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.0) * ${B.sheen.toFixed(3)};`);
+  { float edge = 1.0 - abs(dot(normalize(normal), normalize(vViewPosition)));
+    if (edge > 1.0 - ${B.fuzz.toFixed(3)} && tfFib < smoothstep(1.0 - ${B.fuzz.toFixed(3)}, 1.0, edge) * 1.25) discard;
+    float whiteness = smoothstep(0.55, 0.85, min(diffuseColor.r, min(diffuseColor.g, diffuseColor.b)));
+    totalEmissiveRadiance += diffuseColor.rgb * (${B.glow.toFixed(3)} + ${B.whiteLift.toFixed(3)} * whiteness) + vec3(1.0, 0.92, 0.98) * pow(edge, 2.0) * ${B.sheen.toFixed(3)}; }`);
     };
-    m.customProgramCacheKey = () => 's4:tuft4b';
+    m.customProgramCacheKey = () => 's4:tuft4c';
     tuftMats[key] = m;
   }
   const n = B.count + B.rim;

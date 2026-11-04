@@ -56,22 +56,26 @@ export const ROUND3 = {
   if (tune) merge(ROUND3, tune);
 }
 
+// round4: false, or ROUND4's settings (tunnel_r4.js), which change only round4's foam, bubbles and swirl; round3 is as recorded
 export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4 = false }) {
   const TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   const rnd = mulberry(0x3e3a);
   const report = {};
   // how far inside the drum the mascot is (0 outside, 1 a little way in): everything here fades in with it
   const inside = () => THREE.MathUtils.smoothstep(mascot.z, TS - 0.9, TS + 0.4);
-  report.foam = foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big: round4 ? 1.3 : 1 });
+  report.foam = foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big: round4 ? 1.3 : 1, look4: round4 ? round4 : null });
   report.swirl = swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot });
-  if (soap) report.bubbles = streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH });
+  if (soap) report.bubbles = streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH, look4: round4 || null });
   if (round4) report.whirl = whirlpool({ scene, TR, TE, axisH, mascot, updaters, time, inside });   // ?s3=round4 only (round3 is kept as recorded)
   return report;
 }
 
 // ---------------------------------------------------------------- foam heaps around the mascot
-function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big = 1 }) {   // big: round4's larger heaps beside the mascot
-  const P = ROUND3.foam, n = P.count;
+function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big = 1, look4 = null }) {   // big: round4's larger heaps beside the mascot
+  // look4 (round4 only): more, smaller heaps of white-rimmed bubbles over saturated blue, instead of round3's smooth lavender mounds
+  const F4 = look4 && look4.foam;
+  const P = F4 ? { ...ROUND3.foam, count: F4.count, cells: F4.cells, bright: F4.bright } : ROUND3.foam, n = P.count;
+  const shrink = F4 ? F4.size : 1;
   const base = new THREE.IcosahedronGeometry(1, 4);
   const g = new THREE.InstancedBufferGeometry();
   g.setAttribute('position', base.attributes.position); g.setAttribute('normal', base.attributes.normal);
@@ -80,7 +84,8 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big =
   g.setAttribute('aBlob', blobA); g.setAttribute('aSeed', seedA);
   g.instanceCount = n;
   const u = { uTime: time, uBright: { value: P.bright }, uCells: { value: P.cells }, uKey: { value: new THREE.Vector3(0.35, 0.85, -0.42).normalize() } };
-  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: FOAM_VERTEX, fragmentShader: FOAM_FRAGMENT });
+  if (F4) Object.assign(u, { uWhite: { value: F4.white }, uDeep: { value: new THREE.Color(...F4.deep) }, uAqua: { value: new THREE.Color(...F4.aqua) } });
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: FOAM_VERTEX, fragmentShader: F4 ? FOAM_FRAGMENT_R4 : FOAM_FRAGMENT });
   const mesh = new THREE.Mesh(g, mat); mesh.frustumCulled = false; mesh.name = 'r3Foam'; mesh.visible = false; mesh.renderOrder = 2;
   scene.add(mesh);
   const tot = P.zones.reduce((s, z) => s + z.w, 0);
@@ -89,7 +94,7 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big =
   const spawn = (b, stagger) => {
     let x = rnd() * tot, z = P.zones[0];
     for (const zz of P.zones) { if (x < zz.w) { z = zz; break; } x -= zz.w; }
-    b.z = z; b.r = R(z.r) * (z.side ? big : 1); b.life = R(P.life); b.age = stagger ? rnd() * b.life : 0;
+    b.z = z; b.r = R(z.r) * (z.side ? big : 1) * shrink; b.life = R(P.life); b.age = stagger ? rnd() * b.life : 0;
     if (z.ring) { const a = THREE.MathUtils.degToRad(-200 + rnd() * 220), rr = R(z.ring); b.dx = Math.cos(a) * rr; b.du = Math.sin(a) * rr * 0.8; }
     else if (z.side) { b.dx = (rnd() < 0.5 ? -1 : 1) * R(z.side); b.du = R(z.du); }
     else { b.dx = R(z.dx); b.du = R(z.du); }
@@ -161,6 +166,39 @@ void main() {
   gl_FragColor = vec4(col * uBright, 1.0);
 }
 `;
+// round4: the approved foreground foam is clusters of soap bubbles: each bubble a bright white rim round saturated
+// azure-to-aqua water, a white glint up and to the left, white piling up on the lit tops, deep blue underneath. The
+// transitions are kept narrow so the colours stay white or rich blue, not the pale lavender of round3's mounds (which the
+// comparison counted as "pale milky blue"); a few twinkling sparkles.
+const FOAM_FRAGMENT_R4 = /* glsl */ `
+${NOISE}
+uniform float uTime, uBright, uCells, uWhite; uniform vec3 uKey, uDeep, uAqua;
+varying vec3 vN; varying vec3 vW; varying vec3 vL; varying float vSeed;
+void main() {
+  vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
+  float ndv = clamp(dot(N, V), 0.0, 1.0);
+  vec2 sp = (vL.xy * 1.6 + vec2(vL.z * 1.2, -vL.z * 0.7)) * uCells + vSeed * 13.0 + vec2(0.0, uTime * 0.2);
+  vec2 c = bwVoronoi(sp);
+  float cell = c.x / max(c.y, 1e-3);                                 // 0 at a bubble's middle, 1 at its rim
+  vec2 c2 = bwVoronoi(sp * 2.3 + 5.0);                               // smaller bubbles between the big ones
+  float cell2 = c2.x / max(c2.y, 1e-3);
+  float diff = clamp(dot(N, uKey), 0.0, 1.0), up = clamp(N.y * 0.5 + 0.5, 0.0, 1.0);
+  float lit = clamp(0.2 + 0.65 * diff + 0.35 * up, 0.0, 1.0);
+  vec3 water = mix(uDeep, uAqua, clamp(lit * 0.9 + 0.25 * cell, 0.0, 1.0));   // saturated: azure in shade, aqua in light
+  float rim = smoothstep(0.68, 0.86, cell) + smoothstep(0.74, 0.9, cell2) * 0.7;
+  float top = smoothstep(0.45, 0.62, lit + 0.25 * bwNoise(vL.xz * 5.0 + vSeed * 9.0 + uTime * 0.3));   // white piled on the lit tops
+  float white = clamp(max(rim, top * (0.55 + 0.45 * smoothstep(0.3, 0.7, cell))) * uWhite, 0.0, 1.0);
+  vec3 col = mix(water, vec3(1.0), white);
+  float glint = 1.0 - smoothstep(0.0, 0.12, length(vec2(cell - 0.35, 0.0)) + length(vec2(N.x + 0.35, N.y - 0.55)) * 0.3);
+  col += vec3(1.0) * glint * 0.6 * lit;
+  col = mix(col, uDeep * 0.8, (1.0 - up) * (1.0 - white) * 0.5);             // deep blue underneath
+  vec2 g = vL.xy * 14.0 + vSeed * 31.0, gc = floor(g);
+  float hs = fract(sin(dot(gc, vec2(12.9898, 78.233))) * 43758.5453);
+  col += vec3(1.0) * step(0.93, hs) * (1.0 - smoothstep(0.0, 0.25, length(fract(g) - 0.5))) * (0.5 + 0.5 * sin(uTime * 6.0 + hs * 50.0)) * lit;
+  col = mix(col, uAqua, pow(1.0 - ndv, 3.0) * 0.35);                         // a thin wet edge
+  gl_FragColor = vec4(col * uBright, 1.0);
+}
+`;
 
 // ---------------------------------------------------------------- the swirling water light round the drum's walls
 function swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot }) {
@@ -229,8 +267,8 @@ void main() {
 `;
 
 // ---------------------------------------------------------------- soap bubbles streaming past both sides of the view
-function streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH }) {
-  const P = ROUND3.bubbles, n = P.count;
+function streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH, look4 = null }) {
+  const P = look4 && look4.bubbles ? { ...ROUND3.bubbles, ...look4.bubbles } : ROUND3.bubbles, n = P.count;
   const sphere = new THREE.SphereGeometry(1, 26, 16);
   const g = new THREE.InstancedBufferGeometry();
   g.index = sphere.index; g.setAttribute('position', sphere.attributes.position); g.setAttribute('normal', sphere.attributes.normal);

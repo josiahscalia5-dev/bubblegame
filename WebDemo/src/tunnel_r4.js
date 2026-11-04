@@ -23,11 +23,22 @@ export const ROUND4 = {
   gold: { radius: 1.97, tube: 0.085, every: 3, color: [1.0, 0.72, 0.28] },
   grade: { contrast: 1.2, saturation: 1.15, exposure: 0.84, pivot: 0.5 },
   // the splash crown: curving sheets of water rising round the mascot, curling outward and falling back
-  crown: { petals: 32, radius: [0.44, 0.72], height: [0.55, 1.05], width: [0.3, 0.5], life: [0.5, 0.95], flare: 0.55, curl: 0.35, alpha: 1.6 },
-  water: { middle: [0.03, 0.5, 0.82], side: [0.015, 0.15, 0.55], mix: 0.75, crest: 0.3, froth: 0.9, churn: 0.95 },
+  // (4 November, second pass: the sheets break into white fingers and droplets at the top, so they read as splash, not a veil)
+  crown: { petals: 32, radius: [0.44, 0.72], height: [0.55, 1.05], width: [0.3, 0.5], life: [0.5, 0.95], flare: 0.55, curl: 0.35, alpha: 1.6,
+    fingers: 7, veil: 0.1 },
+  // water: turquoise in the middle (hue about 193°; it was azure, 204°), deep blue at the sides, white froth on the crests
+  water: { middle: [0.0, 0.66, 0.84], side: [0.015, 0.15, 0.55], mix: 0.75, crest: 0.3, froth: 0.9, churn: 0.95 },
+  // foam round the mascot (tunnel_r3.js foamHeaps with FOAM_FRAGMENT_R4): more, smaller heaps of white-rimmed bubbles over
+  // saturated blue, instead of round3's smooth lavender mounds (measured as pale milky blue, not white)
+  foam: { count: 150, size: 0.72, cells: 4.0, bright: 1.05, white: 1.0, deep: [0.02, 0.22, 0.85], aqua: [0.15, 0.72, 1.0] },
+  // soap bubbles streaming past (tunnel_r3.js streamBubbles): more, and a few bigger near the camera, as in the approved picture
+  bubbles: { count: 44, r: [0.05, 0.32] },
   // pom-pom brushes (wheel units, rim 0.95): clumps over a flattened dome facing the rider (cap: its angle from the middle,
   // depth: how far it bulges), a rim of bigger clumps; colour bands from the middle outward ([up to share of cap, colours])
+  // fibres: fine strands along each clump; fuzz: how far in from a clump's outline the strands break it up (a hairy edge,
+  // not a smooth petal); whiteLift: extra self-light on the white clumps so they stay white in the drum's dim light
   pompom: { count: 320, rim: 48, radius: 0.92, depth: 0.5, cap: 80, size: 0.115, long: 1.25, glow: 0.28, sheen: 0.32, strands: 0.35,
+    fibres: 0.45, fuzz: 0.5, whiteLift: 0.35,
     // bands from the middle out: the right-hand brushes royal blue in the middle, a white ring, then a pink and white fringe
     right: [[0.42, [[0.1, 0.2, 0.86], [0.13, 0.25, 0.95]]], [0.58, [[1.0, 0.95, 0.98]]], [0.78, [[1.0, 0.5, 0.8], [1.0, 0.42, 0.76]]], [9, [[1.0, 0.95, 0.98], [1.0, 0.86, 0.94]]]],
     left: [[0.4, [[1.0, 0.36, 0.74]]], [0.62, [[1.0, 0.95, 0.98], [1.0, 0.86, 0.94]]], [9, [[1.0, 0.4, 0.76], [1.0, 0.32, 0.7]]]] },
@@ -157,7 +168,8 @@ function splashCrown({ scene, TR, L, W, mascot, updaters, time, TS }) {
   const state = new THREE.InstancedBufferAttribute(new Float32Array(n * 2), 2).setUsage(THREE.DynamicDrawUsage);   // age 0..1, seed
   g.setAttribute('aPetal', petal); g.setAttribute('aState', state); g.instanceCount = n;
   const u = { uTime: time, uCentre: { value: new THREE.Vector3() }, uR: { value: new THREE.Vector3(1, 0, 0) }, uU: { value: new THREE.Vector3(0, 1, 0) },
-    uT: { value: new THREE.Vector3(0, 0, 1) }, uFlare: { value: P.flare }, uCurl: { value: P.curl }, uFade: { value: 0 }, uAlpha: { value: P.alpha } };
+    uT: { value: new THREE.Vector3(0, 0, 1) }, uFlare: { value: P.flare }, uCurl: { value: P.curl }, uFade: { value: 0 }, uAlpha: { value: P.alpha },
+    uFingers: { value: P.fingers }, uVeil: { value: P.veil } };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: CROWN_VERTEX, fragmentShader: CROWN_FRAGMENT, transparent: true, depthWrite: false,
     side: THREE.DoubleSide, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor });
   const mesh = new THREE.Mesh(g, mat); mesh.name = 'r4SplashCrown'; mesh.frustumCulled = false; mesh.renderOrder = 6; mesh.visible = false;
@@ -208,7 +220,7 @@ void main() {
 `;
 const CROWN_FRAGMENT = /* glsl */ `
 ${NOISE}
-uniform float uTime, uFade, uAlpha; varying vec2 vUv; varying float vAge; varying float vSeed;
+uniform float uTime, uFade, uAlpha, uFingers, uVeil; varying vec2 vUv; varying float vAge; varying float vSeed;
 void main() {
   float x = vUv.x, y = vUv.y;
   float ragged = bwNoise(vec2(x * 9.0 + vSeed * 17.0, uTime * 2.0 + vSeed * 5.0));
@@ -216,13 +228,19 @@ void main() {
   float sides = smoothstep(0.0, 0.38, x) * smoothstep(0.0, 0.38, 1.0 - x);
   float froth = bwNoise(vec2(x * 11.0 + vSeed * 7.0, y * 7.0 - uTime * 2.5));
   float holes = smoothstep(0.25, 0.55, bwNoise(vec2(x * 18.0 - vSeed * 3.0, y * 12.0 + uTime * 1.7)));   // the sheet breaks into froth
-  float body = top * sides * mix(0.35, 1.0, holes);
+  // above its base the sheet splits into fingers of white water, each ending in a droplet: splash, not a veil
+  float fx = x * uFingers + vSeed * 3.0 + 0.6 * bwNoise(vec2(y * 3.0, vSeed * 11.0));
+  float finger = 1.0 - smoothstep(0.18, 0.34, abs(fract(fx) - 0.5));
+  float split = smoothstep(0.25, 0.6, y);
+  float drop = 1.0 - smoothstep(0.0, 0.16, length(vec2((fract(fx) - 0.5) * 0.9, y - 0.86 - 0.08 * fract(vSeed * 7.0 + floor(fx) * 0.37))));
+  float body = max(top * sides * mix(1.0, finger, split) * mix(uVeil + 0.25, 1.0, holes), drop * sides * 1.2);
   if (body < 0.02) discard;
   float rim = smoothstep(0.55, 0.9, y) * top + (1.0 - smoothstep(0.0, 0.35, min(x, 1.0 - x))) * 0.5;
   float streak = smoothstep(0.55, 0.85, bwNoise(vec2(x * 14.0, y * 3.0 - uTime * 3.0 + vSeed * 9.0)));
-  vec3 water = vec3(0.35, 0.85, 1.0), white = vec3(1.0, 1.0, 1.04);
-  vec3 col = mix(water, white, clamp(rim * 0.95 + streak * 0.5 + froth * 0.35 + y * 0.3, 0.0, 1.0));
-  float a = clamp(body * (0.32 + 0.55 * rim + 0.2 * streak) * uAlpha, 0.0, 0.95) * (1.0 - smoothstep(0.75, 1.0, vAge)) * uFade;
+  vec3 water = vec3(0.12, 0.62, 1.0), white = vec3(1.0, 1.0, 1.04);
+  float wh = clamp(rim * 0.95 + streak * 0.5 + froth * 0.35 + finger * split * 0.8 + drop + y * 0.3, 0.0, 1.0);
+  vec3 col = mix(water, white, smoothstep(0.3, 0.6, wh));               // white or clear blue water, little in between
+  float a = clamp(body * (0.3 + 0.6 * rim + 0.25 * streak + 0.5 * finger * split + drop) * uAlpha, 0.0, 0.97) * (1.0 - smoothstep(0.75, 1.0, vAge)) * uFade;
   gl_FragColor = vec4(col * a, a);
 }
 `;
