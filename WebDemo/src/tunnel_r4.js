@@ -38,6 +38,10 @@ export const ROUND4 = {
   // heap, white-rimmed with blue-lavender centres and a glint; per: bubbles per heap, at: how far out on the heap (share of
   // its radius), size: bubble radius (share of the heap's)
   foamBubbles: { per: 7, at: [0.8, 1.05], size: [0.22, 0.46], inner: [0.42, 0.55, 1.0], deep: [0.06, 0.2, 0.86], bright: 1.08 },
+  // the drum camera's aim (game.js S4.look.y; round3 1.1): measured against the approved Screen 4, 1.3 puts the mascot's top at
+  // about 62% of the height (approved 63%) and brings the tunnel's centre down toward the middle (centre colour difference
+  // 14.9 -> 11.4); 1.5 hid the mascot behind the bottom buttons
+  camera: { lookY: 1.3 },
   // white spray thrown up round the mascot (game.js stepRound3): round3's 110 a second, bigger here
   spray: { rate: 400, size: [0.1, 0.26] },
   // pom-pom brushes (wheel units, rim 0.95): clumps over a flattened dome facing the rider (cap: its angle from the middle,

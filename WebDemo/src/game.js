@@ -1135,6 +1135,7 @@ function loopRun() {
 const S3 = { off: new THREE.Vector3(0, 1.0, -6.4), look: new THREE.Vector3(0, 0.5, 5.97), fov: 40 };
 const S4 = { off: new THREE.Vector3(0, 1.03, -3.58), look: new THREE.Vector3(0, 0.89, 6.42), fov: 60 };
 if (R3) S4.look.y = ROUND3.camera.lookY;   // round3: tilted up a little inside the drum, so the mascot sits lower (Tap to Start unchanged)
+if (R4) S4.look.y = ROUND4.camera.lookY;   // round4: a little higher still: the mascot and the tunnel's centre sit as in the approved Screen 4
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
   const m = mascot;

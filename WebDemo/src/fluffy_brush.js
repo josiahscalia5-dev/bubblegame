@@ -21,7 +21,7 @@ export const FLUFFY = {
   light: [0.35, 0.85, 0.6], ambient: 0.72, diffuse: 0.5, sheen: 0.32, tip: 0.8, ao: 0.55, glow: 0.14,
   // bands from the middle out, on the face's radial position (0 centre, 1 face edge, beyond 1 the rolled-back rim)
   right: { edges: [0.5, 0.78], bands: [['#2a48d8', '#3a5ef0', '#1f38bd', '#4566ff'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ec4aa9', '#ff7cc8', '#ff63b8']] },
-  left: { edges: [0.3, 0.66], bands: [['#ff5fb6', '#f04aa8', '#ff74c2', '#f55ab4'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ff7cc8', '#ec4aa9', '#ff63b8']] },
+  left: { edges: [0.22, 0.72], bands: [['#ff5fb6', '#f04aa8', '#ff74c2', '#f55ab4'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ff7cc8', '#ec4aa9', '#ff63b8']] },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.fluffy;
