@@ -48,7 +48,10 @@ S3.round3 = LIST.includes('round3');
 // tunnel lining with 3D cyan and gold rings, a straighter start, flowing turquoise water with a splash crown, pom-pom brushes.
 // ?s3=round5 (test): round4 plus the major visual reconstruction (tunnel_r5.js): a swirling water-vortex tunnel with a luminous
 // heart, a soft glow, floating droplets, many more bubbles and a soft fur halo on the pink character. Round 4 is unchanged.
-S3.round5 = LIST.includes('round5');
+// ?s3=round6 (test): round5 plus the washing machine's architecture rebuilt as geometry (tunnel_r6.js): a porthole entrance
+// (lavender drum face, thick gold bezel, bronze step, blue seal, rivets), layered flanges in the tunnel, the camera re-aimed.
+S3.round6 = LIST.includes('round6');
+S3.round5 = LIST.includes('round5') || S3.round6;
 S3.round4 = LIST.includes('round4') || S3.round5;
 // ?s3=round4,fluffy: the first trial switch for the fluffy shell-fur brushes (fluffy_brush.js). The user asked for them in
 // Round 4 itself, so round4 now always uses them and `fluffy` changes nothing; kept so old links still open.

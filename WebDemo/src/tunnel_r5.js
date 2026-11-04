@@ -10,6 +10,7 @@
 // Gameplay (lanes, brushes, collectibles, rules, controls, mission) is round4's.
 import * as THREE from 'three';
 import { NOISE } from './shaders.js';
+import { ROUND6, R6_ON } from './tunnel_r6.js';
 
 export const ROUND5 = {
   // far: the depth range where the walls turn into the luminous heart. It began at 9 units, so most of the visible tube glowed
@@ -76,6 +77,7 @@ export const ROUND5 = {
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round5;
   const merge = (dst, src) => { for (const k of Object.keys(src)) { if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k]) && dst[k]) merge(dst[k], src[k]); else dst[k] = src[k]; } };
+  if (R6_ON) merge(ROUND5, ROUND6.round5);   // ?s3=round6 only: its overrides, before the shaders below are written
   if (tune) merge(ROUND5, tune);
 }
 

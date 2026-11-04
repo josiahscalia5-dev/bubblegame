@@ -20,6 +20,7 @@ import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
 import { ROUND3, mulberry } from './tunnel_r3.js';
 import { ROUND4 } from './tunnel_r4.js';
 import { ROUND5 } from './tunnel_r5.js';
+import { ROUND6, R6_ON } from './tunnel_r6.js';
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -1160,7 +1161,7 @@ if (R5 && ROUND5.camera) { const C = ROUND5.camera; S4.off.set(...C.off); S4.loo
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
   const m = mascot;
-  const k = THREE.MathUtils.smoothstep(m.z, -4, L.tunnelStart + 3);
+  const k = THREE.MathUtils.smoothstep(m.z, -4, L.tunnelStart + (R6_ON ? ROUND6.camBlendEnd : 3));   // round6: the drum framing is set before the mouth
   const off = S3.off.clone().lerp(S4.off, k), lk = S3.look.clone().lerp(S4.look, k);
   const fovV = THREE.MathUtils.lerp(S3.fov, S4.fov, k);
   // Follow: 55 % of lane moves, the ride height fully (smoothed), 35 % of jumps and bobbing.
