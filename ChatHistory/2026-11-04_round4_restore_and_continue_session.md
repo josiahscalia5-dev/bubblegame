@@ -404,3 +404,70 @@ The build's last line was Node's version banner, which Node prints after an erro
 
 The backtick in my GLSL comment closed the JavaScript template string. Fixing it, rebuilding, and recapturing:
 
+While that runs, let me check the autosave log and confirm its pushes reached GitHub:
+
+Removing leftovers from the failed render runs, plus the 1024 px maps the extractor built from your painting's pixels (the measured palettes stay in the logs), then writing the conclusion:
+
+---
+
+### Note · 2026-11-04 13:11 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 13:11 UTC
+
+CLAUDIA — PRIORITY: MAKE SCREEN 4 LOOK LIKE MY APPROVED SCREEN
+Claudia, I want you to prioritize the BIGGEST visual differences between my approved Screen 4 and my current playable game.
+My goal is approximately 90% visual similarity. I want obvious improvements to the actual gameplay scenery, not small technical adjustments.
+Please use my approved Screen 4 image as the visual target and make these changes in this order:
+1. WATER AND WHITE SPLASHES — FIRST PRIORITY
+Rebuild the foreground water so it resembles my approved screen. I want rich turquoise water, large thick white foamy splashes surrounding my pink character, curved splash shapes, and animated spray.
+The current pale, streaky water is not close enough. This change should make a dramatic visual difference.
+2. WASHING BRUSHES — SECOND PRIORITY
+Finish integrating the new fluffy pink, white, and blue brushes into the actual Round 4 gameplay.
+Match their size, softness, color arrangement, and placement to my approved image. They should frame the tunnel without blocking the character or scenery.
+3. TUNNEL AND OVERALL COMPOSITION — THIRD PRIORITY
+Match the approved screen's deep-blue glowing tunnel, perspective, ring depth, and overall arrangement.
+Keep the pink character at approximately the same size and position as the reference. Arrange the golden paw coins, purple gem, sock characters, and floating bubbles to resemble the approved composition while remaining interactive.
+IMPORTANT WORK RULES
+
+* Continue from the existing Round 4 game. Do not rebuild from scratch.
+* Keep my pink character, controls, HUD, original opening, and Rescue 5 Lost Socks gameplay unchanged.
+* Use the existing Blender, Three.js, and Playwright tools. Do not install more plugins.
+* Do not replace the moving 3D scenery with a static image.
+* Work in the existing separate test version until improvements are verified.
+* Avoid lengthy experiments, tiny color tweaks, and unnecessary technical reports.
+* Fix only technical problems that block the visual improvements or gameplay.
+* Use quick Playwright screenshots to check the results, then run gameplay tests before approving the version.
+
+WHAT I WANT TO SEE NEXT
+Show me ONE side-by-side comparison containing:
+
+1. My original approved Screen 4.
+2. The previous playable version.
+3. Your newly improved playable version.
+
+Match the mobile viewport, camera position, and gameplay moment as closely as possible.
+Then show a short actual gameplay recording demonstrating the moving water, rotating brushes, floating bubbles, coins, and character movement.
+Do not call the work complete unless the new gameplay visibly resembles the approved screen more closely.
+Save verified improvements to my existing GitHub repository and report the commit hash.
+Please focus on implementing these three major priorities now. My goal is to look at the next gameplay screenshot and immediately recognize the scenery from my approved artwork.Claudia, I'm attaching my original approved Screen 4 and the latest gameplay comparison.
+
+The ORIGINAL approved screen is exactly what I want the real playable game to resemble. The other screenshots show what still needs fixing.
+
+Please prioritize the biggest visual differences: the turquoise water and enormous white splashes, fluffy washing brushes, deep-blue tunnel, bubbles, and golden paw coins.
+
+My target is approximately 90% visual similarity, without replacing the actual 3D gameplay with a static image.
+
+Please focus on those major scenery improvements before small details.
+
+_[2 images attached]_
+
+---
+
+### Claude · 2026-11-04 13:13 UTC
+
+Leftover junk line in my probe; removing it:
+
