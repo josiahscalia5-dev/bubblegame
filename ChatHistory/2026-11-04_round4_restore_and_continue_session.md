@@ -386,3 +386,9 @@ Please preserve the working game and save verified improvements to GitHub.
 
 I want to see a substantial visual improvement before starting another large reconstruction experiment.
 
+---
+
+### Claude · 2026-11-04 12:57 UTC
+
+One bug to fix before rendering: left and right brushes would share the fringe-card geometry and overwrite each other's per-card data. Giving each side its own:
+
