@@ -19,6 +19,7 @@ import * as THREE from 'three';
 import { ROUND3, buildRound3 } from './tunnel_r3.js';
 import { ROUND4, buildRound4 } from './tunnel_r4.js';
 import { makeFluffyBrush } from './fluffy_brush.js';
+import { ROUND5, buildRound5 } from './tunnel_r5.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -48,6 +49,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   const R2 = round2 ? ROUND2 : null, hooks = (round2 && round2.hooks) || {};
   const R3 = round2 && round2.round3 ? ROUND3 : null;   // ?s3=round3 (tunnel_r3.js): its colours replace round2's below
   const R4 = round2 && round2.round4 ? ROUND4 : null;   // ?s3=round4 (tunnel_r4.js): the reconstruction, on top of round3
+  const R5 = R4 && round2.round5 ? ROUND5 : null;   // ?s3=round5 (tunnel_r5.js): the major reconstruction, on top of round4
   const FLUFFY_ON = !!R4;   // round4's brushes are the fluffy shell-fur brushes (fluffy_brush.js; first tried as ?s3=round4,fluffy)
   const report = { rings: 0, brushes: 0, bubbles: 0, panelsHidden: 0, waterCopy: false };
   const P = TUNNEL, TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
@@ -284,9 +286,10 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
-  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: R4 || false });
+  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: R5 ? { ...R4, bubbles: R5.bubbles } : (R4 || false) });
   if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env, mascot,
     hide: [scene.getObjectByName('s4Rings'), scene.getObjectByName('r3Swirl'), ...(drumMeshes || [])] });
+  if (R5) report.round5 = buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass: round2.bloomPass });   // after round4 (it restyles its lining)
   return report;
 }
 

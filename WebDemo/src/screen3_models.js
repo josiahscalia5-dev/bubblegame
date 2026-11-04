@@ -46,7 +46,10 @@ S3.round2 = LIST.includes('round2');
 S3.round3 = LIST.includes('round3');
 // ?s3=round4 (test): round3 plus the reconstruction of the approved Screen 4's scenery (tunnel_r4.js): a new deep electric-blue
 // tunnel lining with 3D cyan and gold rings, a straighter start, flowing turquoise water with a splash crown, pom-pom brushes.
-S3.round4 = LIST.includes('round4');
+// ?s3=round5 (test): round4 plus the major visual reconstruction (tunnel_r5.js): a swirling water-vortex tunnel with a luminous
+// heart, a soft glow, floating droplets, many more bubbles and a soft fur halo on the pink character. Round 4 is unchanged.
+S3.round5 = LIST.includes('round5');
+S3.round4 = LIST.includes('round4') || S3.round5;
 // ?s3=round4,fluffy: the first trial switch for the fluffy shell-fur brushes (fluffy_brush.js). The user asked for them in
 // Round 4 itself, so round4 now always uses them and `fluffy` changes nothing; kept so old links still open.
 S3.fluffy = S3.round4 && LIST.includes('fluffy');
@@ -214,7 +217,7 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
   if (S3.tunnel && TR && bumpMascot) report.tunnel = await buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump: bumpMascot, brushBytes: await bytes.brushT,
     waterSheets, soap: { vertex: SOAP_VERTEX, fragment: SOAP_FRAGMENT }, loaderParse: (b) => loader.parseAsync(b.slice(0), ''), drumMeshes,
-    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2, round3: S3.round3, round4: S3.round4, fluffy: S3.fluffy, env } : null });
+    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2, round3: S3.round3, round4: S3.round4, round5: S3.round5, fluffy: S3.fluffy, env } : null });
   if (S3.paint && grade && outputPass) report.paint = await paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.

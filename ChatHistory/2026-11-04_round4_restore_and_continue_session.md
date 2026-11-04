@@ -872,3 +872,62 @@ Safe: the export shows "[REDACTED]", and the key isn't in the repository or on G
 
 The new 12-second video of the final build is still recording. I'll send it to you and save it once it finishes.
 
+---
+
+### You · 2026-11-04 14:13 UTC
+
+Claudia, I want to change our approach to matching my approved Bubble Wash Kingdom Screen 4.
+
+I appreciate the progress, but the latest real gameplay screenshots still look noticeably different from my approved artwork. I expected a more significant visual improvement by this stage.
+
+I want you to focus on a major visual reconstruction, not another series of small color adjustments.
+
+Please carefully study my original approved Screen 4 and identify the major differences in the actual rendering, artwork, scenery, lighting, and composition.
+
+My priorities are:
+
+1. Recreate the beautiful saturated turquoise water, thick white splashes, and natural-looking foam.
+2. Make the washing-machine tunnel feel deep, luminous, richly detailed, and magical like the approved screen.
+3. Improve the softness, roundness, and appearance of my existing pink character and washing brushes.
+4. Match the approved placement, proportions, and visual quality of the coins, bubbles, socks, and surrounding scenery.
+5. Improve the materials, textures, lighting, glow, and overall rendering so the actual 3D gameplay resembles the polished, image-like quality of the approved artwork.
+
+Please use proper 3D assets, high-quality textures, animated materials, lighting, and effects rather than relying only on color adjustments or simple geometry.
+
+You can use Blender and our existing tools. Tripo AI is now connected with 1,000 API credits, so if an important 3D asset is genuinely missing, identify it and ask before generating it.
+
+IMPORTANT: I do not want a static background image pretending to be a game. I want the actual playable 3D environment to look like the approved screen, including when everything moves.
+
+Keep my existing gameplay, controls, mission, and previous approved versions intact. Work in a separate visual test version.
+
+First focus on making one actual gameplay frame significantly closer to my approved artwork. Then verify the same quality during movement.
+
+Show me a full-resolution, side-by-side comparison and a short gameplay recording so I can judge the visual difference myself.
+
+My target is approximately 90% visual similarity, but please be accurate about what has and hasn't been achieved.
+
+I want a noticeable improvement in the overall artwork and rendering, not just better numerical color measurements.
+
+---
+
+### Claude · 2026-11-04 14:14 UTC
+
+Understood: a major reconstruction in a new, separate test version (`?s3=round5`), built on Round 4. The normal game and Rounds 2–4 stay exactly as they are. I'll get one gameplay frame much closer first, then check it in motion.
+
+First, the bigger differences against your approved screen, beyond colour:
+
+- **Tunnel:** the approved tunnel is a swirling water vortex, bands of deep blue and white-cyan water spiralling into a bright, glowing centre. Ours is a set of hard cyan tubes and gold rings, and its centre isn't luminous.
+- **Rendering:** the approved artwork glows. Highlights bloom softly, there's a luminous haze, and white water droplets and sparkles float everywhere. Ours is crisp, hard-edged CG.
+- **Bubbles:** the approved screen has many iridescent bubbles of all sizes, including big ones near the camera. Ours has a few.
+- **Character:** the approved pink character has a soft halo of fur round its outline. Ours has a smoother, harder silhouette.
+
+I'll start by reading how the game's glow (bloom) and drum colour grade are set up:
+
+The Round 4 video of the final build has finished recording. I'll encode it and save it as Round 4's evidence first. It becomes the "previous version" in your new comparison:
+
+Round 4's final video is saved: commit `21c054c`, push verified. Now Round 5. Tracking the reconstruction steps:
+
+Now the hooks: the `round5` switch (which includes Round 4), passing it to the tunnel builder, Round 5's bubble settings, and building Round 5 after Round 4:
+
+Round 4 already hides Round 3's swirl layer, so Round 5's vortex is the only wall shader. Building Round 5 right after Round 4, so its glow setting runs last each frame:
+
