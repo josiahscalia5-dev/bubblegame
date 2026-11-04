@@ -330,3 +330,15 @@ _Background command "Wait for the last comparison render" was stopped after reac
 
 That was the second leftover wait loop, also stopped at its time limit. It doesn't need restarting: the comparison it was waiting for finished long ago and its results are saved. Round 2 is complete on GitHub at `4c7d6cc`.
 
+---
+
+### Automatic notice · 2026-11-04 04:13 UTC
+
+_Background command "Wait for the functional checks to finish" was stopped after reaching its background time limit_
+
+---
+
+### Claude · 2026-11-04 04:13 UTC
+
+One more leftover wait loop of mine was stopped at its time limit. It had been waiting for the functional checks, which finished long ago, all passing, with the results saved. I found and stopped the last remaining loop too, so these notices should end here. Only the 5-minute auto-save is still running in the background.
+
