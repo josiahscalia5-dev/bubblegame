@@ -21,7 +21,7 @@ for ((i = 1; i <= ROUNDS; i++)); do
     git commit -q -m "Auto-save $(date -u '+%Y-%m-%d %H:%M') UTC: latest work in progress and chat history" \
       -m "Automatic save at the user's request (every ${MINUTES} minutes). Test branch only; nothing is merged." \
       -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01SVUGRGfFMnfN4cKHbac5AG" || true
+Claude-Session: https://claude.ai/code/session_01DwoMMncWPi1nBppjwzDyVt" || true
     echo "$(date -u +%H:%M) round $i: committed $(git rev-parse --short HEAD)"
   fi
   # push whenever GitHub is behind (also catches commits made by hand between rounds)
