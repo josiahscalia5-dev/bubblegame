@@ -404,7 +404,8 @@ void main() {
 // round2 water in the drum: saturated cyan-blue water with thin bubble lace around the mascot (a white contact line and a V
 // trail, the water showing between the bubbles) instead of a solid white blanket; faint flowing lane guides between the
 // three lanes; and a soft pulsing pink glow down the lane of each brush ahead (gone once Bubble Blast has cleared it).
-const WATER_R2 = `  if (inDrum > 0.0) {   // Screen 4 tunnel, round 2 (?s3=round2)
+const WATER_R2 = `  float s4Haz = 0.0;
+  if (inDrum > 0.0) {   // Screen 4 tunnel, round 2 (?s3=round2)
     vec2 toM = xz - uPlayer.xz; float rM = length(toM * vec2(1.0, 0.85));
     float run = uPlayerMove.y;
     foam *= mix(1.0, 0.4, inDrum);
@@ -427,12 +428,11 @@ const WATER_R2 = `  if (inDrum > 0.0) {   // Screen 4 tunnel, round 2 (?s3=round
       vec4 h = uS4Haz[i];
       float du = h.x - xz.y;
       float along = (1.0 - smoothstep(uS4Warn.y, uS4Warn.x, du)) * smoothstep(-1.0, -0.2, du);
-      float across = exp(-pow((xz.x - h.y) / 0.34, 2.0));
+      float across = exp(-pow((xz.x - h.y) / 0.4, 2.0));
       float stripes = 0.45 + 0.55 * smoothstep(0.25, 0.55, fract(du * 1.2 + t * 1.6)) * (1.0 - smoothstep(0.75, 0.95, fract(du * 1.2 + t * 1.6)));
       haz = max(haz, along * across * h.z * stripes);
     }
-    float hz = haz * (0.72 + 0.12 * sin(t * 7.0)) * inDrum;
-    col = mix(col, vec3(1.0, 0.12, 0.5), hz);
-    foam *= 1.0 - 0.7 * hz;   // the warning stays clear of foam
+    s4Haz = haz * (0.8 + 0.2 * sin(t * 7.0)) * inDrum;
+    foam *= 1.0 - 0.8 * s4Haz;   // the warning stays clear of foam
   }
-` + '  vec3 lit = col * (0.8 + 0.3 * NdotL);';
+` + '  vec3 lit = col * (0.8 + 0.3 * NdotL);\n  lit = mix(lit, vec3(1.0, 0.16, 0.56) * (0.85 + 0.3 * NdotL), s4Haz * 0.62);   // after the light, so reflections do not wash it out\n';

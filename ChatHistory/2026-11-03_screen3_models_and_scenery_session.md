@@ -2044,3 +2044,23 @@ The README draft is written; the measured results go in once the video and check
 
 The frames look right. Checking two at full size: the brush's pink danger glow, and the moment just after Bubble Blast:
 
+Still no pink glow in front of the right-hand brush, so this is a bug, not just weak colour. Inspecting the water material inside the running game:
+
+The glow code and its settings are loaded in the drum water, with all 6 brushes active. So it should be drawing; I'm forcing it very large to see whether it renders at all:
+
+Still not showing, so something about where the warning is placed is off. I'm testing it in the middle lane under the mascot, with the range forced on:
+
+The painted-scenery code only copies the slide's water, not the drum's, so that's not it. Next test: whether any change to the drum water material shows up at all, by turning one of its colours red:
+
+---
+
+### Note · 2026-11-04 01:52 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 01:52 UTC
+
+Save everything to my GitHub resporitory and chat history etc everything
+

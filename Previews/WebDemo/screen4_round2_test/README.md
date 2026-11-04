@@ -13,8 +13,8 @@ These are seeded Playwright screenshots and a recording of the running game, mad
 | `02_tunnel_views.png` | From the recording: the entrance, mid tunnel, brushes, coins and socks |
 | `03_controls.png` | From the recording: a brush taking a heart, pause, Bubble Blast clearing the brushes, Turbo Spin |
 | `04_exit_before_after.png` | The tunnel's exit, last round (white light) and now (a coloured vortex) |
-| `bubblewash_round2_tunnel.mp4` | VIDEO_LINE |
-| `frames/` | The frames used in the sheets, at full size |
+| `bubblewash_round2_tunnel_wip.mp4` | 11.5 s of real gameplay (work in progress, recorded just before the stronger brush warning was added). It shows: Tap to Start; the portal; the middle coin line through the first brush gate and the first sock; the left coin line and the second sock; **pause and resume**; the gem; a **knock that takes a heart** (5 → 4); the right lane and the third sock; **Bubble Blast** pushing the next pair of brushes to the walls, then riding safely past the cleared right brush; the fourth sock; **Turbo Spin**; the fifth sock and the last gem (**5/5 socks**); the exit vortex; and the loop back to the slide. |
+| `frames/` | Key frames of the video at full size, and `video_track.json` (the game state in every frame) |
 
 ## Your two questions
 
@@ -84,4 +84,17 @@ These are seeded Playwright screenshots and a recording of the running game, mad
   - A coin, sock or gem you pass in another lane now shrinks away, instead of sweeping past close to the camera.
   - A collected item rises and shrinks instead of swelling over the mascot.
 
-CHECKS_AND_SCORE
+## Checks so far (seeded Playwright runs)
+
+- **Hearts:** five knocks take the hearts 5 → 4 → 3 → 2 → 1 → 0, and the HUD shows each one. At 0, the game goes back to Tap to Start 1.4 s later with "5 Full".
+- **Pause:** game time stands still while paused, it runs on after Resume, and the P key does the same.
+- **Bubble Blast:** clears the brush pair ahead (passing a cleared brush in its lane: no knock). The badge counts 3 → 0, and the button is disabled at 0.
+- **Turbo Spin:** speed rises from 6.1 to 7.9 m/s, and riding into a brush's lane: no knock.
+- **No console errors.**
+- **The normal game (no switch):** the same seeded run as before (12 coins, 2 gems, 3 socks, ends at z 3.525). The 3D picture is pixel-identical. The only pixel differences are the browser's smoothing of the four small HUD icon pictures (heart, plus, coin, gem), by at most 10 brightness levels out of 255.
+- **Last round's `?s3=paint,tunnel`:** the same seeded run as before (18 coins, 1 gem, 3 socks, ends at z 0.869).
+- **Still to finish:**
+  - the stronger brush warning on the water (being fixed: it did not show);
+  - the final video and the comparison sheets;
+  - the frame cost;
+  - the honest score.
