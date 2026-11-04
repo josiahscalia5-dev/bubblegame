@@ -2032,3 +2032,5 @@ The measurement tool needs the round2 frame at the same moment (3.5 s), which I'
 
 Still a tiny difference in the normal game, even with the template, so the hidden markup wasn't the cause. Looking at exactly which pixels differ:
 
+That stop was intentional. Now the colour adjustments:
+

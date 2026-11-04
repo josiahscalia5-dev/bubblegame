@@ -668,9 +668,6 @@ function buildCollectibles(gemGltf, face) {
     inner.scale.setScalar(gs);
     inner.position.copy(centre).multiplyScalar(-gs);
     holder.add(inner);
-    if (R2) withPrivateRandom(makeRandom(0x6e40 + gems.length), () => {   // a soft magenta glow, unlike the socks' and coins'
-      const h = haloSprite('gem', 0.7); TR.frame(u0, F); h.position.copy(F.T).multiplyScalar(0.3); holder.add(h);
-    });
     holder.position.copy(p);
     scene.add(holder);
     gems.push({ obj: holder, home: p.clone(), kind: 'gem', live: true, pop: -1, phase: Math.random() * 6, spin: Math.random() * 6, compose, u: u0 });
@@ -682,8 +679,8 @@ function buildCollectibles(gemGltf, face) {
   addGem(onWater(W.laneX(1), 0.7, z0 + 12));
   addGem(onWater(W.laneX(2), 0.7, zAfter + 1.5));
 }
-// round2: a soft glow behind a collectible, a little further down the tunnel than it (so it shows around it, not over it).
-// Socks: warm white-pink with a gold edge; gems: magenta. Coins have their own gold glow (paw_coin.js).
+// round2: a soft glow behind each rescue sock, a little further down the tunnel than it (so it shows around it, not over it):
+// warm white-pink with a gold edge. Coins have their own gold glow (paw_coin.js); gems are a bigger, clear magenta.
 const haloTextures = {};
 function haloSprite(kind, size) {
   if (!haloTextures[kind]) {

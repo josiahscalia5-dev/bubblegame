@@ -29,12 +29,14 @@ export const TUNNEL = {
 };
 // ?s3=round2: the second round of polish (all on top of the above; without round2 nothing here changes)
 export const ROUND2 = {
-  ringColours: [[0.62, 0.42, 1.0], [1.0, 0.36, 0.8], [0.16, 0.88, 1.0], [1.0, 0.74, 0.26]],   // lavender, pink, cyan, gold
+  ringColours: [[1.0, 0.36, 0.8], [0.62, 0.42, 1.0], [0.16, 0.88, 1.0], [0.95, 0.45, 0.95], [1.0, 0.74, 0.26]],   // pink, lavender, cyan, orchid, gold
   sparkle: 0.955,            // fewer ring sparkles (0.9 before)
   bubbles: 22, bubbleAngle: [28, 152], bubbleR: [1.5, 1.95], bubbleMax: 0.3,   // fewer soap bubbles, kept up on the walls
   clearOut: 1.15,            // Bubble Blast pushes a brush this far back toward the wall
   hazardWarn: [4.2, 1.6],    // the water glows pink in a brush's lane from this far before it, full from here
-  grade: { vibrance: 0.45, knee: 0.62, roll: 1.6 }, bloom: 0.22,
+  grade: { vibrance: 0.25, knee: 0.62, roll: 1.6 }, bloom: 0.22,
+  wallDeep: [[0.1, 0.08, 0.46], [0.58, 0.38, 0.98]],   // the drum's walls a little more violet and magenta, as the approved upper tunnel
+  brushBlue: [0.62, 0.66, 1.0], brushBlueMix: 0.45, brushPink: [1.0, 0.5, 0.82],   // lighter, softer brushes (still pink and blue)
 };
 
 export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump, brushBytes, waterSheets, soap, loaderParse, drumMeshes, round2 }) {
@@ -91,10 +93,10 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
         prev.call(src, sh, r);
         sh.fragmentShader = sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
           { float l = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-            vec3 deep = mix(vec3(0.06, 0.08, 0.42), vec3(0.42, 0.36, 0.95), smoothstep(0.05, 0.75, l));
+            vec3 deep = mix(vec3(${(R2 ? R2.wallDeep[0] : [0.06, 0.08, 0.42]).map((v) => v.toFixed(3)).join(', ')}), vec3(${(R2 ? R2.wallDeep[1] : [0.42, 0.36, 0.95]).map((v) => v.toFixed(3)).join(', ')}), smoothstep(0.05, 0.75, l));
             diffuseColor.rgb = mix(diffuseColor.rgb * vec3(0.5, 0.55, 0.95), deep, 0.55); }`);
       };
-      m.customProgramCacheKey = () => prevKey() + '|s4-deep';
+      m.customProgramCacheKey = () => prevKey() + '|s4-deep' + (R2 ? '2' : '');
       tinted.set(src, m);
     }
     mesh.material = tinted.get(src);
@@ -129,7 +131,9 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     // round2: a soft pale sheen around the rim of each brush (fresnel), so the shape stays clean against the walls
     const glowLine = R2 ? '\n  totalEmissiveRadiance += vec3(1.0, 0.88, 0.97) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.5) * 0.4;' : '';
     if (R2) mat.roughness = 0.85;
-    mat.onBeforeCompile = (s) => { s.fragmentShader = s.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine); };
+    const lightBlue = R2 ? `{ vec3 c = diffuseColor.rgb; float blue = smoothstep(0.03, 0.2, c.b - max(c.r, c.g));
+        diffuseColor.rgb = mix(c, vec3(${R2.brushBlue.join(', ')}) * (0.6 + 0.6 * dot(c, vec3(0.333))), blue * ${R2.brushBlueMix}); }` : '';
+    mat.onBeforeCompile = (s) => { s.fragmentShader = s.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n' + lightBlue).replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine); };
     mat.customProgramCacheKey = () => 's4:brush' + (R2 ? '2' : '');
     const hubMat = new THREE.MeshStandardMaterial({ color: 0xffc552, metalness: 1, roughness: 0.2, emissive: 0x4a2a00, emissiveIntensity: 0.5 });
     // the left-hand brushes pink all over, as the approved screen's left brush (its blue face turned pink)
@@ -137,7 +141,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     matPink.onBeforeCompile = (sh) => {
       sh.fragmentShader = sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
         { vec3 c = diffuseColor.rgb; float blue = smoothstep(0.03, 0.2, c.b - max(c.r, c.g));
-          diffuseColor.rgb = mix(c, vec3(1.0, 0.42, 0.78) * (0.5 + 0.7 * dot(c, vec3(0.333))), blue * 0.92); }`)
+          diffuseColor.rgb = mix(c, vec3(${R2 ? R2.brushPink.join(', ') : '1.0, 0.42, 0.78'}) * (${R2 ? '0.62 + 0.6' : '0.5 + 0.7'} * dot(c, vec3(0.333))), blue * 0.92); }`)
         .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine);
     };
     matPink.customProgramCacheKey = () => 's4:brushPink' + (R2 ? '2' : '');

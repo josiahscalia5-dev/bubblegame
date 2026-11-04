@@ -168,7 +168,7 @@
   .power:disabled .badge { background: #8d92b4; }
   .power.pop { animation: press 0.4s cubic-bezier(.2, 1.6, .4, 1); }
   @keyframes press { 30% { transform: scale(0.88); } 100% { transform: none; } }
-  body.r2 #hint { bottom: calc(var(--u) * 98); }
+  body.r2 #hint { bottom: calc(var(--u) * 14); max-width: calc(var(--u) * 92); font-size: calc(var(--u) * 10); padding: calc(var(--u) * 4) calc(var(--u) * 6); }   /* between the two buttons, clear of the mascot */
   body.r2 #flash { background: radial-gradient(circle, rgba(225, 248, 255, 0.92), rgba(160, 130, 255, 0.85)); }
   #r2Hurt { inset: 0; box-shadow: inset 0 0 calc(var(--u) * 40) calc(var(--u) * 14) rgba(255, 40, 110, 0.75); opacity: 0; }
   #r2Hurt.go { animation: flash 0.6s ease-out; }
