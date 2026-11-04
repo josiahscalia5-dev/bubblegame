@@ -650,3 +650,9 @@ Also restoring a more vivid grade (saturation 1.35), since the board's blues are
 
 Pass 3 pushed (`94e0bba`). The power-up check has been running a long time; checking on it:
 
+Meanwhile, the final full-resolution comparisons and measurements against both references:
+
+Saved and verified on GitHub (`dafb38b`). Sending the comparison now — the video follows when the recording finishes:
+
+_[Sent you files: Previews/WebDemo/screen4_round6_reconstruction/target_vs_approved_vs_all_versions_full.png, Previews/WebDemo/screen4_round6_reconstruction/round6_pass3_in_motion.jpg]_
+
