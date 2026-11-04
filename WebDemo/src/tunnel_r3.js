@@ -39,7 +39,7 @@ export const ROUND3 = {
   bubbles: { count: 32, du: [-2.6, 13], x: [0.38, 1.55], h: [0.35, 2.5], r: [0.05, 0.28], flow: 1.6, film: 1.7 },
   sparkles: { rate: 34, du: [3, 15], r: [0.2, 1.7] },
   // brushes: pink and white tufts outside, royal blue inside (right), pink and white all over (left)
-  brush: { pink: [1.0, 0.34, 0.72], white: [1.0, 0.92, 0.98], royal: [0.1, 0.2, 0.9], deep: [0.05, 0.1, 0.55], tufts: 26 },
+  brush: { pink: [1.0, 0.34, 0.72], white: [1.0, 0.92, 0.98], royal: [0.1, 0.2, 0.9], deep: [0.05, 0.1, 0.55], tufts: 26, core: 0.45 },   // core: the blue face's radius (wheel units, rim 0.95)
   gem: { color: [0.7, 0.45, 1.0], emissive: [0.62, 0.36, 1.0] },   // the approved gem is purple (the Meshy gem is pink)
 };
 

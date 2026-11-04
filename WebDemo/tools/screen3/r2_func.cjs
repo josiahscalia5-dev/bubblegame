@@ -1,5 +1,5 @@
 // Functional checks for the ?s3=round2 test (hearts, Bubble Blast, Turbo Spin, pause), through the game's test hooks with
-// Math.random seeded. Prints one JSON report.   node tools/screen3/r2_func.cjs <demo-dir>
+// Math.random seeded. Prints one JSON report.   [S3=round3] node tools/screen3/r2_func.cjs <demo-dir>   (default round2)
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const ROOT = process.argv[2];
@@ -16,10 +16,10 @@ const server = http.createServer((req, res) => {
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.text().slice(0, 300)); });
   page.on('pageerror', (e) => logs.push(e.message));
-  await page.addInitScript(() => {
-    window.__BW_TEST__ = true; window.__BW_S3__ = ['round2'];
+  await page.addInitScript((s3) => {
+    window.__BW_TEST__ = true; window.__BW_S3__ = s3;
     let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  });
+  }, (process.env.S3 || 'round2').split(','));
   const url = `http://localhost:${server.address().port}/index.html`;
   const fresh = async () => { await page.goto(url, { timeout: 300000, waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 }); };
   const out = {};
