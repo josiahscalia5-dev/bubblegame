@@ -44,7 +44,8 @@ installed them (the user's setup script puts them in `~/.bubblewash-tools/`; the
 - `PATH` and `NODE_PATH`: glTF Transform, the Khronos validator, Playwright (so `require('playwright')` works from
   `WebDemo/`) and `tripo`.
 
-If the tools are missing entirely, `bash Tools/dev_tools_setup.sh` installs them in the older layout. ImageMagick
+If the tools are missing entirely, `bash Tools/cloud_env_setup.sh` installs them (Blender 5.2.3, the Python visual
+tools, the node tools and Vite) in about a minute; `Tools/DEV_TOOLS.md` has the details. ImageMagick
 (`convert`, `montage`) and ffmpeg are system packages. Do not run `playwright install`. Before the first build in a new
 session, run `cd WebDemo && npm install` (three and esbuild, pinned).
 
