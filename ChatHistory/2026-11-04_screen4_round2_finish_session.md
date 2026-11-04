@@ -14,3 +14,5 @@ Continue where we left off
 
 Still on the pink warning glow: the shader code looks right on paper, so I'm reproducing it in the browser to find out why it doesn't draw.
 
+The drum water has the warning code and its settings are loaded, yet nothing pink shows ahead of the brushes. Next I'm swapping in debug colours to see which step drops it.
+
