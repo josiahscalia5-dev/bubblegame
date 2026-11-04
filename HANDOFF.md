@@ -14,6 +14,10 @@ Read this first when you continue in a new Claude conversation.
   the camera is further back, and the foam is white over turquoise. Evidence, honest numbers and what is still different:
   `Previews/WebDemo/screen4_round5_reconstruction/README.md`. Round 4 and the normal game are pixel-identical to `21c054c`.
 - **Pass 2 (evening):** Tripo P2 paw coin in the game (120 credits; balance 880), water rebuilt around blue, splash crests.
+- **Passes 3 to A (night, saved at 18:20 UTC at the user's request):** wet contact and soap bubbles, rushing turquoise water,
+  the structured drum wall, the washing-machine entrance (lavender shell, champagne-gold rim) and a closer camera; new hero
+  moment 3.3 s. Passes 4 to A are **not yet re-tested** (the check run was stopped): run Round 4/normal pixel regression,
+  controls, mechanics and a recording first. Subagents: `.claude/agents/`. Chat: `ChatHistory/2026-11-04_new_account_tools_tripo_round5_session.md`.
 - **Next:** stage the hero moment (coins, gem, sock, brushes) as in the approved picture, more splashes and sparkles in the
   tunnel, and the pink character's soft fur edge.
 

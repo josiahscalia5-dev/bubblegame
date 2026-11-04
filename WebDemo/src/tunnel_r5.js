@@ -17,22 +17,27 @@ export const ROUND5 = {
   // bands and twist: more, flatter bands read as the approved concentric rings of water rather than broad spiral strokes;
   // deep: the dark-blue troughs between them (measured against the approved Screen 4: deep blue 0.9% of the play area with
   // lighter troughs, 4.8% with these; approved 6.2%)
-  vortex: { bands: 1.15, twist: 0.1, flow: 0.55, deep: [0.0, 0.05, 0.4], body: [0.05, 0.3, 0.95], cyan: [0.45, 0.92, 1.0],
-    foam: 0.95, streaks: 0.35, far: [14, 34], farGlow: 1.25, farMix: 0.8, rainbow: 0.35, rainbowAt: 13 },
+  // pass 4 (the tunnel filled with rushing water): faster flow toward the rider, a brighter turquoise body, near-white cyan
+  // crests, more white streaks and froth, tighter and flatter bands (the approved concentric rings of water), more pastel glints
+  vortex: { bands: 1.6, twist: 0.05, flow: 1.3, deep: [0.0, 0.05, 0.4], body: [0.0, 0.45, 1.0], cyan: [0.55, 1.0, 1.0],
+    foam: 0.4, streaks: 0.2, far: [18, 40], farGlow: 1.0, farMix: 0.55, rainbow: 0.8, rainbowAt: 13, warp: 0.35, crestLine: 1.5,
+    // pass 5, the structured drum wall under the water (fixed in place; the water bands flow over it): raised ribs (a lit lip,
+    // a shadowed trough), now and then a violet glow band or a warm gold metallic band, and animated water caustics
+    ribs: 0.45, lip: 0.55, violet: 0.75, gold: 0.8, caustic: 0.35 },
   // the drum camera (game.js S4): further back and a little wider than round4's (off z -3.58, fov 60), so the mascot and the
   // brushes take the approved share of the screen and more of the tunnel's rings show round its bright centre
-  camera: { off: [0, 1.15, -4.3], lookY: 1.3, fov: 64 },
+  camera: { off: [0, 1.0, -2.7], lookY: 1.5, fov: 64 },   // pass A: closer again (the approved character is about half the frame wide)
   // the foreground foam (tunnel_r3.js foamHeaps and foam bubbles, round4's settings overridden here): white froth over
   // turquoise and aqua, as in the approved picture and the tunnel sheet, instead of round4's deep-blue and lavender balls
   // The approved foreground is a saturated blue base with crisp white detail (translucent blue bubbles with white rims, white
   // flecks everywhere); round4's foam was the reverse, a white base (white on every lit side) with pale-blue detail.
   foam: { white: 0.6, deep: [0.01, 0.2, 0.88], aqua: [0.12, 0.58, 1.0] },
-  foamBubbles: { per: 5, inner: [0.35, 0.62, 1.0], deep: [0.04, 0.24, 0.9], bright: 1.05 },
+  foamBubbles: { per: 2, inner: [0.35, 0.62, 1.0], deep: [0.04, 0.24, 0.9], bright: 1.05 },
   // round4's foam heaps (rounded mounds under the bubbles) hidden: tested at the hero moment, the bubble clusters with the
   // turquoise water and white crests between them are closer to the approved foreground than the mounds
   hideFoamHeaps: true,
   // spray round the mascot (game.js stepRound3): many small crisp white flecks, not round4's big soft blobs (they read as mist)
-  spray: { rate: 650, size: [0.03, 0.09] },
+  spray: { rate: 450, size: [0.03, 0.09] },
   // the drum's colour grade (tunnel_s4.js round2Light, round4's overridden): the approved picture's strong blue-white contrast
   grade: { contrast: 1.32, saturation: 1.4 },
   // the drum's path (track.js opts.curve): the climb, drop and turns kept but gentler, so the far tunnel's bright heart
@@ -40,7 +45,10 @@ export const ROUND5 = {
   path: { curve: 0.3 },
   // the luminous heart far down the tube (approved Screen 4 and the tunnel sheet): a glowing white core, warm gold and soft pink
   // halo and slow rays, on the path's axis this far ahead; depth-tested, so the sock, coins and brushes pass in front of it
-  heart: { ahead: 20, radius: 5, core: 2.2, halo: 1.1, rays: 0.45 },   // large enough that its glow shows round the coins in front of it
+  heart: { ahead: 20, radius: 3.5, core: 1.3, halo: 0.9, rays: 0.45 },   // pass 5: bright, not blown out   // large enough that its glow shows round the coins in front of it
+  // pass A, the washing-machine entrance at the drum's mouth (the approved picture's upper frame): the shell up to the mouth
+  // is lavender brushed metal, a warm gold rim and a thinner bronze ring frame the opening, a violet band just inside
+  entrance: { rim: 1.88, rimTube: 0.11, inner: 1.7, innerTube: 0.05, violet: 0.35, lavender: [0.62, 0.55, 0.92] },
   hideRings: false,   // the approved tunnel keeps its ring frames round the water
   // bloom inside the drum (outside it is the game's own): strength, radius, threshold. Threshold above 1, so only the luminous
   // heart, the foam crests and glints bloom, not the whole lining
@@ -53,16 +61,17 @@ export const ROUND5 = {
   // spots: [sideways, height above the water, ahead (+) or behind (-), size], in metres from the mascot
   // (nothing tall between the camera and the mascot: in front of it only low crests that hide its base, as in the approved picture)
   crests: { spots: [[-1.0, 0.0, 0.2, 1.1], [1.0, 0.0, 0.2, 1.1], [-1.45, 0.05, 1.1, 1.3], [1.45, 0.05, 1.1, 1.3],
-    [-0.5, -0.3, -0.5, 0.55], [0.5, -0.3, -0.5, 0.55], [-0.85, -0.2, -0.9, 0.7], [0.85, -0.2, -0.9, 0.7]],
+    [-0.38, -0.18, -0.42, 0.75], [0.4, -0.18, -0.4, 0.75], [-0.85, -0.2, -0.9, 0.7], [0.85, -0.2, -0.9, 0.7]],   // pass 5: front crests over the character's lower body
     bob: 0.05, breathe: 0.08, opacity: 0.95 },
   // the drum's water (tunnel_s4.js waterR4, round4's overridden): saturated turquoise down the middle, electric blue at the
   // sides, stronger rolling crests and froth streaks (the approved picture's bright, rushing turquoise water)
-  water: { middle: [0.0, 0.62, 0.95], side: [0.0, 0.18, 0.78], mix: 0.85, crest: 0.45, froth: 1.0 },
+  water: { middle: [0.0, 0.75, 0.9], side: [0.0, 0.18, 0.78], mix: 0.85, crest: 0.7, froth: 1.0 },
   // wet contact round the mascot: a churning foam collar at the waterline (its front overlaps the mascot's base, so it sits in
   // the water rather than above it) and a foam disc on the surface round it. radius and height in metres
-  contact: { radius: 0.44, height: 0.3, disc: 1.15 },
+  // wake: the surface churn stretched into a trail behind the mascot, toward the camera (length factor, how far back it reaches)
+  contact: { radius: 0.42, height: 0.5, disc: 1.15, wake: 2.2, wakeBack: 1.1 },   // pass 5: a taller collar hugging the body
   // soap bubbles round the mascot, in front and behind (translucent: rim, rainbow film, glint), drifting up and back
-  softBubbles: { count: 28, box: [[-1.5, 1.5], [0.0, 1.3], [-1.3, 2.8]], size: [0.05, 0.3], big: 4, rise: 0.25, drift: 0.9 },
+  softBubbles: { count: 40, box: [[-1.2, 1.2], [0.0, 1.3], [-1.0, 2.2]], size: [0.05, 0.3], big: 7, rise: 0.25, drift: 0.9 },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round5;
@@ -74,7 +83,9 @@ export function buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass
   const TS = L.tunnelStart, axisH = W.WATER + W.AXIS_H, report = {};
   const inside = () => THREE.MathUtils.smoothstep(mascot.z, TS - 0.5, TS + 2.5);
   report.vortex = vortexLining(scene, time, TS);
+  report.entrance = entranceRims({ scene, TR, TS, axisH });
   if (ROUND5.hideRings) for (const n of ['r4GlowRings', 'r4GoldRings']) { const o = scene.getObjectByName(n); if (o) o.visible = false; }
+  { const o = scene.getObjectByName('r4GoldRings'); if (o) o.visible = false; }   // pass A: the entrance rim is the gold accent
   report.droplets = droplets({ scene, TR, mascot, updaters, time, inside, axisH });
   report.heart = heart({ scene, TR, L, mascot, updaters, time, inside, axisH });
   report.crests = splashCrests({ scene, TR, W, mascot, updaters, time, inside });
@@ -118,17 +129,34 @@ varying vec2 vAU; varying float vDepth;
 void main() {
   float a = vAU.x, u = vAU.y;
   float sw = bwFbm(vec2(a * 1.6 + u * 0.25 - uTime * 0.6, u * 0.5 - uTime * 0.3));
-  float ph = (u - uStart) * ${ROUND5.vortex.bands.toFixed(3)} + a * ${ROUND5.vortex.twist.toFixed(3)} + sw * 0.9 - uTime * ${ROUND5.vortex.flow.toFixed(3)};
+  float ph = (u - uStart) * ${ROUND5.vortex.bands.toFixed(3)} + a * ${ROUND5.vortex.twist.toFixed(3)} + sw * ${ROUND5.vortex.warp.toFixed(3)} - uTime * ${ROUND5.vortex.flow.toFixed(3)};
   float band = 0.5 + 0.5 * sin(ph * 6.2832);
   vec3 col = mix(uDeep, uBody, smoothstep(0.1, 0.6, band));                       // deep blue troughs, electric-blue bodies
   col = mix(col, uCyan, smoothstep(0.62, 0.86, band));                            // cyan crests
+  col += uCyan * smoothstep(0.9, 0.97, band) * ${ROUND5.vortex.crestLine.toFixed(3)};   // a thin glowing cyan line on each crest
+  // the drum's own wall, fixed in place under the flowing water: ribs and occasional violet and gold bands
+  float phS = (u - uStart) * ${ROUND5.vortex.bands.toFixed(3)} + a * ${ROUND5.vortex.twist.toFixed(3)}, fiS = floor(phS), frS = fract(phS);
+  float lip = smoothstep(0.0, 0.07, frS) * (1.0 - smoothstep(0.07, 0.2, frS)), trough = smoothstep(0.55, 0.95, frS);
+  col = col * (1.0 - ${ROUND5.vortex.ribs.toFixed(3)} * trough) + uCyan * lip * ${ROUND5.vortex.lip.toFixed(3)};
+  float hv = fract(sin(fiS * 12.9898) * 43758.5453), hg = fract(sin(fiS * 78.233) * 12543.1);
+  float vio = step(0.82, hv), gld = step(0.88, hg) * (1.0 - vio), bandM = smoothstep(0.15, 0.3, frS) * (1.0 - smoothstep(0.62, 0.78, frS));
+  col = mix(col, vec3(0.55, 0.25, 1.0) * (0.8 + 0.6 * band), vio * bandM * ${ROUND5.vortex.violet.toFixed(3)});
+  col = mix(col, vec3(1.0, 0.72, 0.3) * (0.75 + 0.9 * pow(abs(sin(a * 2.0 + uTime * 0.7)), 8.0)), gld * bandM * ${ROUND5.vortex.gold.toFixed(3)});
   float foam = smoothstep(0.84, 0.97, band) * smoothstep(0.35, 0.7, bwFbm(vec2(a * 7.0 - uTime * 0.8, u * 3.0 + uTime * 0.5)));
   float streak = smoothstep(0.7, 0.9, bwFbm(vec2(a * 14.0 + u * 1.5 - uTime * 1.5, u * 0.8)));
   col = mix(col, vec3(1.0), clamp(foam * ${ROUND5.vortex.foam.toFixed(3)} + streak * ${ROUND5.vortex.streaks.toFixed(3)} * band, 0.0, 1.0));
   vec2 g = vec2(a * 26.0, u * 3.5 - uTime * 0.7), c = floor(g);                   // twinkling glints in the water
   vec3 p3 = fract(vec3(c.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); float hs = fract((p3.x + p3.y) * p3.z);
   col += vec3(1.0) * step(0.93, hs) * (1.0 - smoothstep(0.0, 0.22, length(fract(g) - 0.5))) * (0.6 + 0.4 * sin(uTime * 5.0 + hs * 40.0));
+  { float door = 1.0 - smoothstep(uStart - 0.06, uStart + 0.06, u);           // pass A: the lavender metal shell up to the mouth
+    float brushed = 0.82 + 0.18 * bwNoise(vec2(a * 40.0, u * 2.0)), sheen = pow(max(0.0, sin(a)), 6.0);
+    vec3 lav = vec3(${ROUND5.entrance.lavender.join(', ')}) * brushed + vec3(0.35, 0.3, 0.45) * sheen + vec3(0.2, 0.12, 0.3) * smoothstep(0.4, 0.0, u - uStart + 0.4);
+    float vband = smoothstep(uStart, uStart + 0.05, u) * (1.0 - smoothstep(uStart + ${ROUND5.entrance.violet.toFixed(2)} - 0.05, uStart + ${ROUND5.entrance.violet.toFixed(2)}, u));
+    col = mix(col, vec3(0.5, 0.28, 1.0) * (0.85 + 0.4 * band), vband * 0.85);
+    col = mix(col, lav, door); }
   float far = smoothstep(${ROUND5.vortex.far[0].toFixed(1)}, ${ROUND5.vortex.far[1].toFixed(1)}, vDepth);   // the luminous heart
+  vec2 cv = bwVoronoi(vec2(a * 5.0, u * 2.2 - uTime * 0.9));                      // water caustics playing over the wall
+  col += vec3(0.35, 0.85, 1.0) * (1.0 - smoothstep(0.0, 0.08, cv.y - cv.x)) * ${ROUND5.vortex.caustic.toFixed(3)} * (1.0 - far);
   col = mix(col, mix(vec3(0.55, 0.85, 1.0), vec3(1.0, 0.97, 1.0), band) * ${ROUND5.vortex.farGlow.toFixed(3)}, far * ${ROUND5.vortex.farMix.toFixed(3)});
   float rb = exp(-pow((vDepth - ${ROUND5.vortex.rainbowAt.toFixed(1)}) / 2.0, 2.0)) * ${ROUND5.vortex.rainbow.toFixed(3)};
   col += (0.5 + 0.5 * cos(6.2832 * (a / 6.2832 * 2.0 + vec3(0.0, 0.33, 0.67) + uTime * 0.1))) * rb * band;   // a pastel rainbow ring
@@ -291,6 +319,7 @@ function wetContact({ scene, TR, W, mascot, updaters, time, inside }) {
   collar.renderOrder = 6; disc.renderOrder = 4; collar.frustumCulled = disc.frustumCulled = false;
   const g = new THREE.Group(); g.name = 'r5Contact'; g.add(disc, collar); g.visible = false; scene.add(g);
   collar.position.y = P.height * 0.32; disc.position.y = 0.01;
+  disc.scale.set(1, 1, P.wake); disc.position.z = -P.wakeBack;   // local z is the path's forward: the wake trails back toward the camera
   const m4 = new THREE.Matrix4(), v = new THREE.Vector3();
   updaters.push(() => {
     const k = inside(); g.visible = k > 0.01; u.uFade.value = k; if (!g.visible) return;
@@ -363,6 +392,22 @@ function softBubbles({ scene, TR, W, mascot, updaters, time, inside }) {
     last = t;
   });
   return { count: bs.length };
+}
+
+// ---------------------------------------------------------------- pass A: gold rim and bronze ring round the drum's mouth
+function entranceRims({ scene, TR, TS, axisH }) {
+  const P = ROUND5.entrance, F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
+  TR.frame(TS, F);
+  const g = new THREE.Group(); g.name = 'r5Entrance';
+  const gold = new THREE.MeshStandardMaterial({ color: 0xf2c46b, metalness: 0.8, roughness: 0.32, emissive: 0x7a4a14, emissiveIntensity: 0.8 });   // champagne gold
+  const bronze = new THREE.MeshStandardMaterial({ color: 0xd99a55, metalness: 0.8, roughness: 0.35, emissive: 0x5a3010, emissiveIntensity: 0.7 });
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(P.rim, P.rimTube, 20, 128), gold);
+  const inner = new THREE.Mesh(new THREE.TorusGeometry(P.inner, P.innerTube, 12, 128), bronze); inner.position.z = 0.12;
+  g.add(rim, inner);
+  g.position.copy(F.P).addScaledVector(F.U, axisH);
+  g.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(F.R, F.U, F.T));
+  scene.add(g);
+  return { at: TS };
 }
 
 function mulberry5(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

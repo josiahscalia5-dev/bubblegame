@@ -115,3 +115,21 @@ Primary reference from now on: `Design/ReferencePacks/2026-11-04_Tripo_Reference
 Evidence: `pass3_original_vs_pass2_vs_pass3_t3.6.jpg` and `..._t4.2.jpg`, `bubblewash_round5_pass3.mp4`.
 Checks: Round 4 and normal game pixel-identical; controls, pause, Bubble Blast and Turbo Spin pass; recording visits all three
 lanes, collects 4 socks, no console errors. Tunnel frame cost: 171 draw calls, 1.11 M triangles.
+
+## Pass 4, 5 and A (4 November, late evening): rushing water, structured wall, entrance and camera (work in progress)
+
+- **Pass 4:** faster, brighter turquoise water bands with tighter rings (candidate B), a wake behind the character.
+- **Pass 5:** the drum wall's own structure under the flowing water (ribs, occasional violet and gold bands, water caustics);
+  a softer glowing centre; fewer opaque bubble balls; a taller foam collar and front crests over the character's lower body.
+- **Pass A (Art Director's fixes):** the washing-machine entrance at the drum's mouth (lavender brushed-metal shell, a champagne
+  gold rim torus and a bronze ring, a violet band just inside; the repeated orange gold rings hidden), the camera closer
+  (off [0, 1.0, -2.7], lookY 1.5, fov 64) so the character is about half the frame wide as in the approved picture, cleaner
+  concentric wall bands with a thin cyan crest line, more turquoise water and big clear bubbles. New hero moment: 3.3 s.
+- Measured at 3.3 s against `00_ORIGINAL_APPROVED_SCREEN_4.jpg` (`passA_measurements.md`): pink placement match 0.44 (pass 4:
+  0.18); pale blue 12.5% (approved 11.8%), turquoise 1.4% (1.9%), white 22.6% (20.6%); centre colour difference 5.0 (pass 4:
+  10.4), right 7.9 (11.7), left 11.4 (13.0); worse: upper tunnel 22.5 (13.1), lower 11.9 (7.0); deep blue still 1.0% (6.2%).
+- Evidence: `passA_original_vs_pass4_vs_passA.jpg`, `passA_moments_2.6_to_4.2.png`.
+- **Not yet verified for passes 4 to A:** the regression, controls and recording run was stopped before it finished (saved at
+  the user's request). All changes are gated on `?s3=round5`; run the checks before building on this.
+- Project subagents saved in `.claude/agents/` (game-art-director, water-vfx-engineer, lighting-visual-matching); they load
+  by name in new sessions.
