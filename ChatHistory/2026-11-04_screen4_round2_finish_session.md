@@ -318,3 +318,15 @@ _Background command "Wait for the pixel comparison to finish" was stopped after 
 
 A leftover wait loop of mine was stopped when it hit its time limit; it never ended on its own because it kept finding itself in the process list. It doesn't need restarting: the pixel comparison it was waiting for had already finished, and its results are saved: the normal game and `?s3=paint,tunnel` are pixel-identical before and after the fix. One more leftover loop like it may report the same way, and it can be ignored too.
 
+---
+
+### Automatic notice · 2026-11-04 04:08 UTC
+
+_Background command "Wait for the last comparison render" was stopped after reaching its background time limit_
+
+---
+
+### Claude · 2026-11-04 04:08 UTC
+
+That was the second leftover wait loop, also stopped at its time limit. It doesn't need restarting: the comparison it was waiting for finished long ago and its results are saved. Round 2 is complete on GitHub at `4c7d6cc`.
+
