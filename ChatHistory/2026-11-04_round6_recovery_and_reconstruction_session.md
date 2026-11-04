@@ -598,3 +598,27 @@ It's 19:20; the next autosave fires at about 19:21. While the checks and recordi
 
 The pass 2 evidence images were made from the pre-fix build, so I'll regenerate them from the final build once the two running jobs free up the CPU. Waiting for the Round 6 gameplay checks:
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 19:27 UTC
+
+Claude, thank you for the progress and for saving everything to GitHub.
+I reviewed the new Round 6 images carefully. It is improved, but it is still not close enough to my approved Screen 4 yet.
+My goal is not just approximate color similarity. I need the overall visual result to look much closer to my approved screen as a real playable game screen.
+The main problems still are:
+the tunnel still looks like a ring tunnel instead of a glowing watery vortex,
+the water still feels too low and too separate from the tunnel interior,
+the pink character is too large and dominant in the frame,
+the composition of coins, sock, bubbles, and tunnel depth still does not match the approved screen closely enough,
+the lighting is still too dark and not magical enough.
+Please focus next on matching the approved screen visually, especially:
+exact camera framing,
+smaller hero placement,
+brighter glowing blue-cyan tunnel depth,
+more water integrated through the tunnel,
+stronger white splashes and turquoise flow around the hero,
+collectible placement and scene layering closer to the approved artwork.
+Please show me the next approved-vs-gameplay comparison and explain clearly which version is visually closest.
+
+_[1 image attached]_
+
