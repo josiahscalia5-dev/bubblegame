@@ -32,5 +32,7 @@ Claude-Session: https://claude.ai/code/session_01DwoMMncWPi1nBppjwzDyVt" || true
     done
     [ "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$(git rev-parse HEAD)" ] && echo "$(date -u +%H:%M) round $i: pushed, GitHub has $(git rev-parse --short HEAD)" || echo "$(date -u +%H:%M) round $i: push FAILED"
   fi
-  [ "$i" -lt "$ROUNDS" ] && sleep $((MINUTES * 60))
+  if [ "$i" -lt "$ROUNDS" ]; then sleep $((MINUTES * 60)); fi
 done
+echo "$(date -u +%H:%M) finished all $ROUNDS rounds"
+exit 0
