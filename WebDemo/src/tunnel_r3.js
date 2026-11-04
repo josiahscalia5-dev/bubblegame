@@ -35,12 +35,25 @@ export const ROUND3 = {
     ],
     life: [0.6, 1.25],
   },
-  spray: { rate: 110, size: [0.07, 0.15] },                 // white spray droplets thrown up round the mascot (game.js)
+  spray: { rate: 110, size: [0.07, 0.15] },
+  // the tunnel's heart: a whirlpool of white and cyan water on the tube's axis, always this far ahead (metres), fading out
+  // as the exit's own vortex comes into view
+  whirl: { ahead: 14, radius: 1.85, strength: 1.0, exitFade: [7, 2] },                 // white spray droplets thrown up round the mascot (game.js)
   camera: { lookY: 1.1 },                                  // the drum camera's aim, higher than round2's 0.89 (game.js)
   bubbles: { count: 32, du: [-2.6, 13], x: [0.38, 1.55], h: [0.35, 2.5], r: [0.05, 0.28], flow: 1.6, film: 1.7 },
   sparkles: { rate: 34, du: [3, 15], r: [0.2, 1.7] },
   // brushes: pink and white tufts outside, royal blue inside (right), pink and white all over (left)
-  brush: { pink: [1.0, 0.34, 0.72], white: [1.0, 0.92, 0.98], royal: [0.1, 0.2, 0.9], deep: [0.05, 0.1, 0.55], tufts: 26, core: 0.45 },   // core: the blue face's radius (wheel units, rim 0.95)
+  brush: {
+    pink: [1.0, 0.34, 0.72], white: [1.0, 0.92, 0.98], royal: [0.1, 0.2, 0.9], deep: [0.05, 0.1, 0.55], tufts: 26, core: 0.45,   // core: the blue face's radius (wheel units, rim 0.95)
+    // pom-pom tufts in rings (wheel units): r radius, n tufts, s size, long stretch outward, z toward the rider, tilt forward
+    pompom: {
+      glow: 0.32, sheen: 0.35,
+      rings: [{ r: 0.98, n: 34, s: 0.17, long: 1.5, z: 0.04, tilt: 0.35 }, { r: 0.8, n: 28, s: 0.16, long: 1.35, z: 0.12, tilt: 0.6 },
+        { r: 0.6, n: 21, s: 0.15, long: 1.2, z: 0.2, tilt: 0.9 }, { r: 0.38, n: 13, s: 0.14, long: 1.1, z: 0.26, tilt: 1.3 }],
+      right: [[[1.0, 0.94, 0.98], [1.0, 0.94, 0.98], [1.0, 0.5, 0.8]], [[1.0, 0.45, 0.78], [1.0, 0.85, 0.94]], [[0.12, 0.24, 0.92], [0.18, 0.32, 1.0]], [[0.08, 0.15, 0.75]]],
+      left: [[[1.0, 0.36, 0.74], [1.0, 0.45, 0.8]], [[1.0, 0.92, 0.97], [1.0, 0.8, 0.92]], [[1.0, 0.38, 0.75]], [[1.0, 0.85, 0.95]]],
+    },
+  },
   gem: { color: [0.7, 0.45, 1.0], emissive: [0.62, 0.36, 1.0] },   // the approved gem is purple (the Meshy gem is pink)
 };
 
@@ -60,6 +73,7 @@ export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap }) {
   report.foam = foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside });
   report.swirl = swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot });
   if (soap) report.bubbles = streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH });
+  report.whirl = whirlpool({ scene, TR, TE, axisH, mascot, updaters, time, inside });
   return report;
 }
 
@@ -267,5 +281,56 @@ function streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, ins
   });
   return { count: n };
 }
+
+// ---------------------------------------------------------------- the whirlpool at the tunnel's heart
+function whirlpool({ scene, TR, TE, axisH, mascot, updaters, time, inside }) {
+  const P = ROUND3.whirl;
+  const u = { uTime: time, uFade: { value: 0 }, uStrength: { value: P.strength } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: WHIRL_VERTEX, fragmentShader: WHIRL_FRAGMENT, transparent: true, depthWrite: false,
+    blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, side: THREE.DoubleSide });
+  const mesh = new THREE.Mesh(new THREE.CircleGeometry(1, 96), mat);
+  mesh.name = 'r3Whirlpool'; mesh.renderOrder = 1; mesh.visible = false; mesh.frustumCulled = false;
+  scene.add(mesh);
+  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, m4 = new THREE.Matrix4();
+  updaters.push(() => {
+    const at = mascot.z + P.ahead;
+    const k = inside() * (1 - THREE.MathUtils.smoothstep(at, TE - P.exitFade[0], TE - P.exitFade[1]));
+    mesh.visible = k > 0.001; u.uFade.value = k;
+    if (!mesh.visible) return;
+    TR.frame(Math.min(at, TE - 0.5), F);
+    mesh.position.copy(F.P).addScaledVector(F.U, axisH);
+    m4.makeBasis(F.R, F.U, F.T.clone().negate());   // its face looks back down the tube, toward the rider
+    mesh.quaternion.setFromRotationMatrix(m4);
+    mesh.scale.setScalar(P.radius);
+  });
+  return { ahead: P.ahead, radius: P.radius };
+}
+const WHIRL_VERTEX = /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+// spiral arms of white water turning in to a bright white-cyan heart, rings rippling outward, a pastel rainbow band and
+// twinkling sparkles (premultiplied alpha: the arms and the heart cover what is behind, the glow adds to it)
+const WHIRL_FRAGMENT = /* glsl */ `
+uniform float uTime, uFade, uStrength; varying vec2 vUv;
+float h21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+void main() {
+  vec2 p = (vUv - 0.5) * 2.0; float r = length(p);
+  if (r > 1.0) discard;
+  float a = atan(p.y, p.x), lr = log(max(r, 0.02));
+  float arms = smoothstep(0.45, 0.95, 0.5 + 0.5 * sin(a * 4.0 + lr * 6.0 - uTime * 2.4));
+  float arms2 = smoothstep(0.62, 1.0, 0.5 + 0.5 * sin(a * 7.0 + lr * 10.0 - uTime * 3.3 + 1.7));
+  float ripples = smoothstep(0.74, 0.97, 0.5 + 0.5 * sin(lr * 13.0 - uTime * 4.0));
+  float heart = 1.0 - smoothstep(0.0, 0.32, r);
+  float edge = 1.0 - smoothstep(0.7, 1.0, r);
+  vec3 white = vec3(0.94, 0.98, 1.0), cyan = vec3(0.3, 0.82, 1.0);
+  float waterW = clamp(arms * 0.75 + arms2 * 0.4 + ripples * 0.35, 0.0, 1.0) * (0.35 + 0.65 * (1.0 - r));
+  float band = exp(-pow((r - 0.6) / 0.07, 2.0));
+  vec3 rainbow = 0.55 + 0.45 * cos(6.2832 * (a / 6.2832 + vec3(0.0, 0.33, 0.67)) + uTime * 0.6);
+  vec2 g = vec2(a * 12.0, lr * 8.0 - uTime), c = floor(g);
+  float sparkle = step(0.9, h21(c)) * (1.0 - smoothstep(0.0, 0.25, length(fract(g) - 0.5))) * (0.5 + 0.5 * sin(uTime * 6.0 + h21(c + 4.0) * 30.0));
+  float cover = clamp(waterW * 0.85 + heart, 0.0, 1.0) * edge;
+  vec3 col = white * cover + cyan * (1.0 - r) * 0.45 * edge + rainbow * band * 0.3 + white * sparkle * 1.2 * edge;
+  float k = uFade * uStrength;
+  gl_FragColor = vec4(col * k, cover * 0.9 * k);
+}
+`;
 
 export function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

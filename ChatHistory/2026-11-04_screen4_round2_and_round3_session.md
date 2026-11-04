@@ -1108,3 +1108,173 @@ Make sure your save everything to my GitHub resporitory like I asked u before
 
 I'll make sure everything is saved continuously, then keep correcting the largest differences. First the saving: the 5-minute auto-save from this morning has finished its two-hour run, so I'm restarting it for 8 hours, under a chat-history name that covers today's round 3 work.
 
+---
+
+### Note · 2026-11-04 11:54 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 11:56 UTC
+
+[attached file: 11162.mp4] [attached file: Bubble_Wash_Claude_Screen4_Quick_Pack.zip] CLAUDIA — CRITICAL: RECONSTRUCT MY APPROVED SCREEN 4 SCENERY
+
+Claudia, I've reviewed the latest actual gameplay video and compared it against my approved Screen 4.
+
+I need you to understand that the scenery STILL DOES NOT look sufficiently similar to my approved screen.
+
+I appreciate that the game works and that you've improved the tunnel, but I am not satisfied with the visual recreation.
+
+My goal is to make my real playable 3D game look nearly identical in artistic appearance to my approved screenshot.
+
+I understand the reference is a static image. I DO NOT want the game to become a static image.
+
+I want the appearance, scenery, shapes, lighting, colors, textures, water, brushes, bubbles, and composition recreated as actual moving 3D gameplay.
+
+1. STOP MAKING ONLY SMALL ADJUSTMENTS
+
+Please don't focus on simply changing tunnel ring brightness, adding a few bubbles, or making minor color adjustments.
+
+Those changes aren't enough.
+
+The actual environment needs to be reconstructed more faithfully.
+
+2. REBUILD THE TUNNEL TO MATCH THE APPROVED ARTWORK
+
+Study my approved Screen 4 very carefully.
+
+The approved tunnel has a distinct deep electric-blue appearance, glowing cyan rings, gold trim, magical depth, and a rich, layered fantasy look.
+
+The current game is much lighter, more pastel, and has different tunnel proportions.
+
+Rework the actual 3D tunnel geometry, lighting, ring placement, depth, materials, and textures to reproduce the approved environment.
+
+Preserve a real traversable tunnel with proper gameplay.
+
+3. RECONSTRUCT THE WATER AND WHITE SPLASHES
+
+This is extremely important.
+
+The approved screen has a dramatic, thick, beautiful white water splash surrounding the pink character.
+
+The current water looks more like a patterned blue floor with foam effects.
+
+Please develop much richer animated turquoise water with:
+
+- Large white splash masses around the character
+- Layered foam and frothy water
+- Water spray and animated droplets
+- Curving splash shapes
+- Bright white highlights
+- Natural-looking dynamic movement
+- A visually rich foreground matching the approved screen
+
+Use Blender geometry, Three.js shaders, animated particles, and mobile-compatible VFX.
+
+The effects must move naturally during gameplay.
+
+4. RECREATE THE EXACT WASHING BRUSH APPEARANCE
+
+The approved screen contains huge, colorful, soft-looking fluffy washing brushes.
+
+The current brushes look too much like separate circular mechanical wheels.
+
+Rebuild their silhouettes, fluffiness, colors, proportions, and placement.
+
+The brushes should have big pink, blue, and white fluffy sections and should extend into the visible frame from both sides like the approved screenshot.
+
+They must rotate or move as real gameplay obstacles.
+
+5. MATCH THE COINS, GEMS, BUBBLES, AND SCENERY
+
+Study where the large golden paw coins appear in the approved image.
+
+Recreate their approximate sizes, visual depth, distribution, and movement.
+
+Keep collectibles interactive.
+
+Recreate the purple gem and floating rainbow bubbles at approximately the same visual prominence as the approved reference.
+
+Please don't make the scenery too clean, empty, or simplified. I want the same visually rich fantasy atmosphere.
+
+6. MATCH THE APPROVED CAMERA
+
+This is critical.
+
+The position, field of view, perspective, scale of the pink character, and distance into the tunnel should resemble my approved screen.
+
+Establish a reproducible reference camera and gameplay moment that match the approved scene.
+
+Use this comparison to build accurate 3D geometry and positioning.
+
+Then test other moments to ensure the game continues looking beautiful and consistent as the player moves.
+
+Don't just make one screenshot look correct.
+
+7. USE ALL AVAILABLE TOOLS
+
+Use Blender, Three.js, Playwright, OpenCV, ImageMagick, Tripo3D, Meshy, and our approved-screen matching skill where useful.
+
+Reuse existing high-quality models whenever possible.
+
+If an essential 3D asset cannot be recreated from our existing models, tell me exactly what is missing before spending any generation credits.
+
+Do not install more tools unnecessarily.
+
+8. SHOW REAL VISUAL PROGRESS
+
+I want you to create a new visual reconstruction version on a separate test branch or development switch.
+
+Capture actual gameplay using Playwright.
+
+Show me:
+
+- My original approved Screen 4
+- The existing playable Screen 4
+- The newly reconstructed playable Screen 4
+
+Use the same mobile resolution and matched camera composition.
+
+Also record a gameplay video showing the pink character traveling through the environment, interacting with brushes, collecting coins, and rescuing socks.
+
+9. DO NOT CHANGE MY GAME'S IDENTITY
+
+Preserve my existing pink fluffy main character, gameplay mechanics, controls, HUD, original Screen 3 opening, and mission to rescue five lost socks.
+
+Do not replace the world with a static background or simply paste the reference artwork behind the character.
+
+I want the actual playable scenery recreated.
+
+10. MY TARGET
+
+I am aiming for 90–95% visual resemblance to the approved artwork wherever technically achievable.
+
+Please don't claim that you've reached that percentage without convincing actual gameplay comparisons.
+
+I would rather you reconstruct the major scenery elements properly than make another dozen minor changes.
+
+Start with the tunnel geometry, water, splash effects, brushes, and camera composition.
+
+Once you have a significantly closer visual version, show me the comparison and save the completed work to GitHub.
+
+The approved screenshot is the visual specification, not just inspiration.Claudia, I'm attaching my original approved Screen 4, a comparison with the current gameplay, my latest gameplay recording, and additional detail references.
+
+Please carefully study these images before making further changes.
+
+My approved Screen 4 is the exact visual target. The gameplay recording shows what I currently have, NOT what I want the final scenery to look like.
+
+I want you to recreate the approved scenery as closely as technically possible using real animated 3D elements.
+
+Pay particular attention to the deep-blue tunnel, enormous fluffy washing brushes, dramatic white water splashes, turquoise water, golden paw coins, purple gem, bubbles, and the overall camera composition.
+
+Please do not make another generic-looking tunnel or just adjust the lighting.
+
+Keep my existing pink character and working gameplay.
+
+I want my real playable mobile game to resemble my approved screen throughout movement, not just in one static image.
+
+Please use these references to make substantial visual improvements, then show me a new gameplay video and a side-by-side comparison before asking for approval.
+
+_[2 images attached]_
+

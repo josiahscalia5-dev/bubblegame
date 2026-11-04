@@ -165,6 +165,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       holder.quaternion.setFromRotationMatrix(basis);
       const wheel = new THREE.Mesh(wheelGeo, side > 0 ? matPink : mat); wheel.scale.setScalar(P.brushR / 0.95);
       const spinner = new THREE.Group(); spinner.add(wheel); holder.add(spinner);
+      if (R3) spinner.add(r3Tufts(side > 0, wheel.scale.x));   // round3: fluffy pom-pom tufts on the wheel, turning with it
       // a gold axle and arm back to the wall where the bracket was
       const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 1.1, 16), hubMat); arm.rotation.x = Math.PI / 2; arm.position.z = -0.75; holder.add(arm);
       holder.name = 's4Brush'; scene.add(holder);
@@ -281,6 +282,46 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
  *  right-hand brushes (round2 made it a pale periwinkle) or pink and white on the left-hand ones. Worked out on the wheel's own colours and shape (angle and distance from its axle), so the
  *  model's light and shade are kept. Its colours are uniforms (window.__bwR3.brushU) so they can be tried live in tests. */
 const r3BrushU = { uR3Pink: { value: new THREE.Color() }, uR3White: { value: new THREE.Color() }, uR3Royal: { value: new THREE.Color() }, uR3Deep: { value: new THREE.Color() }, uR3Tufts: { value: 26 }, uR3Core: { value: 0.45 } };
+/** round3: the approved Screen 4's brushes are round pom-poms of fluffy tufts. Rings of soft tufts (instanced, 80 triangles
+ *  each) are laid over the user's brush wheel and spin with it: on the right-hand brushes white and pink outside and royal
+ *  blue inside; on the left-hand ones pink and white. The wheel and its hazard are unchanged. */
+let tuftGeo = null; const tuftMats = {};
+function r3Tufts(left, wheelScale) {
+  const B = ROUND3.brush.pompom;
+  if (!tuftGeo) tuftGeo = new THREE.IcosahedronGeometry(1, 1);
+  const key = left ? 'L' : 'R';
+  if (!tuftMats[key]) {
+    const m = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9, metalness: 0 });
+    m.onBeforeCompile = (sh) => {
+      sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+  totalEmissiveRadiance += diffuseColor.rgb * ${B.glow.toFixed(3)} + vec3(1.0, 0.92, 0.98) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.2) * ${B.sheen.toFixed(3)};`);
+    };
+    m.customProgramCacheKey = () => 's4:tuft';
+    tuftMats[key] = m;
+  }
+  const rings = B.rings, n = rings.reduce((t, r) => t + r.n, 0);
+  const mesh = new THREE.InstancedMesh(tuftGeo, tuftMats[key], n);
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3(), col = new THREE.Color();
+  const pal = left ? B.left : B.right, rnd = mulberry(left ? 0x7a1 : 0x7a2);
+  let i = 0;
+  rings.forEach((ring, k) => {
+    for (let j = 0; j < ring.n; j++, i++) {
+      const a = (j + (k % 2) * 0.5) / ring.n * Math.PI * 2 + (rnd() - 0.5) * 0.12, r = ring.r * (0.97 + rnd() * 0.06);
+      pos.set(Math.cos(a) * r, Math.sin(a) * r, ring.z);
+      // long axis pointing outward from the axle and a little toward the rider, so each tuft reads as a soft clump
+      const out = new THREE.Vector3(Math.cos(a), Math.sin(a), ring.tilt).normalize();
+      q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), out);
+      const s0 = ring.s * (0.85 + rnd() * 0.3);
+      sc.set(s0 * 0.8, s0 * ring.long, s0 * 0.8);
+      m4.compose(pos, q, sc); mesh.setMatrixAt(i, m4);
+      const c = pal[k][j % pal[k].length];
+      col.setRGB(...c).multiplyScalar(0.92 + rnd() * 0.16); mesh.setColorAt(i, col);
+    }
+  });
+  mesh.scale.setScalar(wheelScale); mesh.name = 'r3Tufts'; mesh.frustumCulled = false;
+  return mesh;
+}
+
 const R3_NOISE = `float r3h(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float r3n(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
   return mix(mix(r3h(i), r3h(i + vec2(1, 0)), f.x), mix(r3h(i + vec2(0, 1)), r3h(i + vec2(1, 1)), f.x), f.y); }
