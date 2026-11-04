@@ -49,7 +49,7 @@ opening. The camera is round 3's.
   - The settings button, Tap to Start and the keyboard start work.
   - Swipes work: left, right twice, and up to jump.
   - Coins and socks are collected in the tunnel.
-- **Hearts, pause, Bubble Blast, Turbo Spin** (`checks/rules_round4.json`): RULES_PENDING
+- **Hearts, pause, Bubble Blast, Turbo Spin** (`checks/rules_round4.json`): all pass, with no console errors. Hearts go to 0 and back to Tap to Start with 5; pause works from the button and the keys; Bubble Blast clears the brushes ahead and counts down to a disabled button; Turbo Spin raises the speed from 6.7 to 8.0 m/s with no knocks.
 - **Video** (`frames/video_track.json`): in one run, the character visits all three lanes, jumps, pauses and resumes,
   uses Bubble Blast and Turbo Spin, rescues all 5 socks and rides through the whole tunnel, with no console errors.
 - **Frame cost** (one frame, draw calls and triangles):
