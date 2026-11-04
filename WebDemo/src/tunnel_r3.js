@@ -45,14 +45,6 @@ export const ROUND3 = {
   // brushes: pink and white tufts outside, royal blue inside (right), pink and white all over (left)
   brush: {
     pink: [1.0, 0.34, 0.72], white: [1.0, 0.92, 0.98], royal: [0.1, 0.2, 0.9], deep: [0.05, 0.1, 0.55], tufts: 26, core: 0.45,   // core: the blue face's radius (wheel units, rim 0.95)
-    // pom-pom tufts in rings (wheel units): r radius, n tufts, s size, long stretch outward, z toward the rider, tilt forward
-    pompom: {
-      glow: 0.32, sheen: 0.35,
-      rings: [{ r: 0.98, n: 34, s: 0.17, long: 1.5, z: 0.04, tilt: 0.35 }, { r: 0.8, n: 28, s: 0.16, long: 1.35, z: 0.12, tilt: 0.6 },
-        { r: 0.6, n: 21, s: 0.15, long: 1.2, z: 0.2, tilt: 0.9 }, { r: 0.38, n: 13, s: 0.14, long: 1.1, z: 0.26, tilt: 1.3 }],
-      right: [[[1.0, 0.94, 0.98], [1.0, 0.94, 0.98], [1.0, 0.5, 0.8]], [[1.0, 0.45, 0.78], [1.0, 0.85, 0.94]], [[0.12, 0.24, 0.92], [0.18, 0.32, 1.0]], [[0.08, 0.15, 0.75]]],
-      left: [[[1.0, 0.36, 0.74], [1.0, 0.45, 0.8]], [[1.0, 0.92, 0.97], [1.0, 0.8, 0.92]], [[1.0, 0.38, 0.75]], [[1.0, 0.85, 0.95]]],
-    },
   },
   gem: { color: [0.7, 0.45, 1.0], emissive: [0.62, 0.36, 1.0] },   // the approved gem is purple (the Meshy gem is pink)
 };
@@ -64,7 +56,7 @@ export const ROUND3 = {
   if (tune) merge(ROUND3, tune);
 }
 
-export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap }) {
+export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4 = false }) {
   const TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   const rnd = mulberry(0x3e3a);
   const report = {};
@@ -73,7 +65,7 @@ export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap }) {
   report.foam = foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside });
   report.swirl = swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot });
   if (soap) report.bubbles = streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH });
-  report.whirl = whirlpool({ scene, TR, TE, axisH, mascot, updaters, time, inside });
+  if (round4) report.whirl = whirlpool({ scene, TR, TE, axisH, mascot, updaters, time, inside });   // ?s3=round4 only (round3 is kept as recorded)
   return report;
 }
 

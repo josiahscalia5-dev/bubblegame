@@ -18,6 +18,7 @@ import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivate
 import { S3 as S3_SWITCHES } from './screen3_models.js';
 import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
 import { ROUND3, mulberry } from './tunnel_r3.js';
+import { ROUND4 } from './tunnel_r4.js';
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -41,6 +42,7 @@ const r2Hooks = {};   // filled in by tunnel_s4.js (clearBrushes, hazards); pop 
 // (every coin is within reach while riding: 1.1 m at most); a purple gem; white spray and sparkles; and the drum camera
 // tilted a little up, so the mascot sits lower in the picture as in the approved screen. Brushes, lanes and rules as round2.
 const R3 = !!S3_SWITCHES.round3;
+const R4 = !!S3_SWITCHES.round4;   // ?s3=round4 (tunnel_r4.js): the reconstruction of the approved Screen 4, on top of round3
 if (R3) Object.assign(R2_RULES, {
   // [lane, first u, count, step, height at the ends, extra height in the middle of the line]
   coinLines: [[1, 4.0, 3, 1.0, 0.7, 0], [2, 10.1, 1, 1.0, 0.55, 0], [0, 11.2, 3, 1.4, 0.92, 0.18], [1, 15.0, 3, 1.0, 0.72, 0], [2, 18.4, 3, 1.0, 0.7, 0], [1, 23.4, 5, 1.0, 0.7, 0], [0, 29.8, 3, 1.0, 0.7, 0]],
@@ -1573,7 +1575,7 @@ async function main() {
   try {
     const layoutRes = await fetch(files.layout);
     L = await layoutRes.json();
-    TR = makeTrack(L);
+    TR = makeTrack(L, R4 ? { straight: ROUND4.straight } : {});   // round4: a longer straight start in the drum
     buildSky();
     const [castle, drum, mascotG, roller, gem, sock, machineryG, towerG, gearG, pipeG, crownG, coinFace] = await Promise.all([
       ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'machinery', 'tower', 'gear', 'pipe', 'crown'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);

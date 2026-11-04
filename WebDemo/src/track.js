@@ -13,8 +13,10 @@ import * as W from './world.js';
 
 const bump = (u, a, b, c, d) => W.smoothstep(a, b, u) * (1 - W.smoothstep(c, d, u));
 
-export function makeTrack(L) {
-  const ts = L.tunnelStart;
+// opts.straight (metres, ?s3=round4 only): the climb, crest, drop and turns start this much later, so the first part of the
+// drum is straight and the view looks straight down its rings, as in the approved Screen 4 (default 0: unchanged).
+export function makeTrack(L, opts = {}) {
+  const ts = L.tunnelStart + (opts.straight || 0);
   // Pitch of the tube (radians, + climbs) and turn rate (radians per metre, + turns to screen-left).
   const pitch = (u) => 0.27 * bump(u, ts + 5, ts + 8, ts + 11, ts + 13.5) - 0.34 * bump(u, ts + 14.5, ts + 17.5, ts + 21, ts + 24);
   const turn = (u) => 0.055 * bump(u, ts + 6, ts + 9, ts + 12, ts + 15) - 0.06 * bump(u, ts + 18, ts + 21, ts + 26, ts + 29);

@@ -17,6 +17,7 @@
 // tunnel's path are unchanged. Brush positions avoid every coin, gem and sock in their lane.
 import * as THREE from 'three';
 import { ROUND3, buildRound3 } from './tunnel_r3.js';
+import { ROUND4, buildRound4 } from './tunnel_r4.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -45,6 +46,7 @@ export const ROUND2 = {
 export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump, brushBytes, waterSheets, soap, loaderParse, drumMeshes, round2 }) {
   const R2 = round2 ? ROUND2 : null, hooks = (round2 && round2.hooks) || {};
   const R3 = round2 && round2.round3 ? ROUND3 : null;   // ?s3=round3 (tunnel_r3.js): its colours replace round2's below
+  const R4 = round2 && round2.round4 ? ROUND4 : null;   // ?s3=round4 (tunnel_r4.js): the reconstruction, on top of round3
   const report = { rings: 0, brushes: 0, bubbles: 0, panelsHidden: 0, waterCopy: false };
   const P = TUNNEL, TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   const time = { value: 0 };
@@ -165,7 +167,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       holder.quaternion.setFromRotationMatrix(basis);
       const wheel = new THREE.Mesh(wheelGeo, side > 0 ? matPink : mat); wheel.scale.setScalar(P.brushR / 0.95);
       const spinner = new THREE.Group(); spinner.add(wheel); holder.add(spinner);
-      if (R3) spinner.add(r3Tufts(side > 0, wheel.scale.x));   // round3: fluffy pom-pom tufts on the wheel, turning with it
+      if (R4) { spinner.add(r4PomPom(side > 0, wheel.scale.x)); wheel.visible = false; }   // round4: a fluffy pom-pom instead of the wheel, turning as it did
       // a gold axle and arm back to the wall where the bracket was
       const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 1.1, 16), hubMat); arm.rotation.x = Math.PI / 2; arm.position.z = -0.75; holder.add(arm);
       holder.name = 's4Brush'; scene.add(holder);
@@ -273,7 +275,9 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
-  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap });
+  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: !!R4 });
+  if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env,
+    hide: [scene.getObjectByName('s4Rings'), scene.getObjectByName('r3Swirl'), ...(drumMeshes || [])] });
   return report;
 }
 
@@ -282,43 +286,47 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
  *  right-hand brushes (round2 made it a pale periwinkle) or pink and white on the left-hand ones. Worked out on the wheel's own colours and shape (angle and distance from its axle), so the
  *  model's light and shade are kept. Its colours are uniforms (window.__bwR3.brushU) so they can be tried live in tests. */
 const r3BrushU = { uR3Pink: { value: new THREE.Color() }, uR3White: { value: new THREE.Color() }, uR3Royal: { value: new THREE.Color() }, uR3Deep: { value: new THREE.Color() }, uR3Tufts: { value: 26 }, uR3Core: { value: 0.45 } };
-/** round3: the approved Screen 4's brushes are round pom-poms of fluffy tufts. Rings of soft tufts (instanced, 80 triangles
- *  each) are laid over the user's brush wheel and spin with it: on the right-hand brushes white and pink outside and royal
- *  blue inside; on the left-hand ones pink and white. The wheel and its hazard are unchanged. */
+/** round4: the approved Screen 4's brushes are big round pom-poms made of fluffy clumps, pink and white outside and royal blue
+ *  in the middle (pink and white all over on the left). Here: a dome of soft clumps (instanced, 80 triangles each) spread
+ *  evenly over a flattened half-sphere facing the rider, plus a fluffy rim round its back edge, on the brush's own spinning
+ *  axle. The user's brush wheel underneath is hidden; the hazard (where it stands, what it knocks) is unchanged. */
 let tuftGeo = null; const tuftMats = {};
-function r3Tufts(left, wheelScale) {
-  const B = ROUND3.brush.pompom;
-  if (!tuftGeo) tuftGeo = new THREE.IcosahedronGeometry(1, 1);
+function r4PomPom(left, wheelScale) {
+  const B = ROUND4.pompom;
+  if (!tuftGeo) {
+    tuftGeo = new THREE.IcosahedronGeometry(1, 1);
+    const p = tuftGeo.attributes.position, v = new THREE.Vector3();
+    for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); const n = 1 + 0.16 * Math.sin(v.x * 7.1 + v.y * 3.3) * Math.sin(v.z * 5.7 - v.y * 4.1); v.multiplyScalar(n); p.setXYZ(i, v.x, v.y, v.z); }
+    tuftGeo.computeVertexNormals();
+  }
   const key = left ? 'L' : 'R';
   if (!tuftMats[key]) {
-    const m = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9, metalness: 0 });
+    const m = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, metalness: 0 });
     m.onBeforeCompile = (sh) => {
       sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
-  totalEmissiveRadiance += diffuseColor.rgb * ${B.glow.toFixed(3)} + vec3(1.0, 0.92, 0.98) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.2) * ${B.sheen.toFixed(3)};`);
+  totalEmissiveRadiance += diffuseColor.rgb * ${B.glow.toFixed(3)} + vec3(1.0, 0.92, 0.98) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.0) * ${B.sheen.toFixed(3)};`);
     };
-    m.customProgramCacheKey = () => 's4:tuft';
+    m.customProgramCacheKey = () => 's4:tuft4';
     tuftMats[key] = m;
   }
-  const rings = B.rings, n = rings.reduce((t, r) => t + r.n, 0);
+  const n = B.count + B.rim;
   const mesh = new THREE.InstancedMesh(tuftGeo, tuftMats[key], n);
-  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3(), col = new THREE.Color();
-  const pal = left ? B.left : B.right, rnd = mulberry(left ? 0x7a1 : 0x7a2);
-  let i = 0;
-  rings.forEach((ring, k) => {
-    for (let j = 0; j < ring.n; j++, i++) {
-      const a = (j + (k % 2) * 0.5) / ring.n * Math.PI * 2 + (rnd() - 0.5) * 0.12, r = ring.r * (0.97 + rnd() * 0.06);
-      pos.set(Math.cos(a) * r, Math.sin(a) * r, ring.z);
-      // long axis pointing outward from the axle and a little toward the rider, so each tuft reads as a soft clump
-      const out = new THREE.Vector3(Math.cos(a), Math.sin(a), ring.tilt).normalize();
-      q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), out);
-      const s0 = ring.s * (0.85 + rnd() * 0.3);
-      sc.set(s0 * 0.8, s0 * ring.long, s0 * 0.8);
-      m4.compose(pos, q, sc); mesh.setMatrixAt(i, m4);
-      const c = pal[k][j % pal[k].length];
-      col.setRGB(...c).multiplyScalar(0.92 + rnd() * 0.16); mesh.setColorAt(i, col);
-    }
-  });
-  mesh.scale.setScalar(wheelScale); mesh.name = 'r3Tufts'; mesh.frustumCulled = false;
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3(), col = new THREE.Color(), nrm = new THREE.Vector3();
+  const rnd = mulberry(left ? 0x7a1 : 0x7a2), golden = Math.PI * (3 - Math.sqrt(5));
+  const pick = (t) => { const bands = left ? B.left : B.right; for (const b of bands) if (t <= b[0]) return b[1][Math.floor(rnd() * b[1].length)]; return bands[bands.length - 1][1][0]; };
+  for (let i = 0; i < n; i++) {
+    let th, ph;
+    if (i < B.count) { const f = (i + 0.5) / B.count; th = Math.acos(1 - f * (1 - Math.cos(THREE.MathUtils.degToRad(B.cap)))); ph = i * golden; }   // even over the dome
+    else { th = THREE.MathUtils.degToRad(B.cap + 4 + rnd() * 10); ph = (i - B.count) / B.rim * Math.PI * 2 + rnd() * 0.2; }                          // the rim
+    nrm.set(Math.sin(th) * Math.cos(ph), Math.sin(th) * Math.sin(ph), Math.cos(th));
+    pos.set(nrm.x * B.radius, nrm.y * B.radius, nrm.z * B.radius * B.depth - B.radius * B.depth * 0.35);
+    q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), nrm);
+    const s0 = B.size * (0.8 + rnd() * 0.4) * (i < B.count ? 1 : 1.15);
+    sc.set(s0, s0 * B.long, s0);
+    m4.compose(pos, q, sc); mesh.setMatrixAt(i, m4);
+    col.setRGB(...pick(th / THREE.MathUtils.degToRad(B.cap))).multiplyScalar(0.9 + rnd() * 0.18); mesh.setColorAt(i, col);
+  }
+  mesh.scale.setScalar(wheelScale); mesh.name = 'r4PomPom'; mesh.frustumCulled = false;
   return mesh;
 }
 
@@ -460,7 +468,12 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
         float l2 = dot(g, vec3(0.2126, 0.7152, 0.0722));
         float kn = l2 > ${G.knee.toFixed(3)} ? ${G.knee.toFixed(3)} + (l2 - ${G.knee.toFixed(3)}) / (1.0 + (l2 - ${G.knee.toFixed(3)}) * ${G.roll.toFixed(3)}) : l2;
         g *= kn / max(l2, 1e-4);
-        c.rgb = mix(c.rgb, g, uS4Grade);
+        c.rgb = mix(c.rgb, g, uS4Grade);${round2.round4 ? `
+        { vec3 h = c.rgb * ${ROUND4.grade.exposure.toFixed(3)};   // ?s3=round4: richer and less pastel inside the drum
+          float lh = dot(h, vec3(0.2126, 0.7152, 0.0722));
+          h = mix(vec3(lh), h, ${ROUND4.grade.saturation.toFixed(3)});
+          h = (h - 0.45) * ${ROUND4.grade.contrast.toFixed(3)} + 0.45;
+          c.rgb = mix(c.rgb, max(h, 0.0), uS4Grade); }` : ''}
       }
       if (uOpen > 0.0) {`);
     grade.material.needsUpdate = true;
