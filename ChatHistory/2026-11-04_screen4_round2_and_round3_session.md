@@ -1314,3 +1314,49 @@ Can you save everything to my GitHub respiratory  Like I said, and, you know, th
 
 Saving everything to GitHub now, including the latest chat history. Then I'll restart the 5-minute auto-save, which was stopped again when your message came in.
 
+_[Sent you files: Previews/WebDemo/screen4_round4_reconstruction/bubblewash_round4_gameplay.mp4, Previews/WebDemo/screen4_round4_reconstruction/01_approved_vs_existing_vs_reconstructed.png, Previews/WebDemo/screen4_round4_reconstruction/02_during_movement.png]_
+
+Everything is saved to your GitHub repository on branch `ccr-b6199007-gvhqim`; GitHub and this session both show `0b038b4`, with nothing unsaved. That includes:
+
+- all the game code;
+- the round 4 video, sheets, frames, measurements and checks;
+- the tools and the screen-matcher skill;
+- this conversation's chat history, in `ChatHistory/2026-11-04_screen4_round2_and_round3_session.md`.
+
+The 5-minute auto-save is running again. The cloud environment stops background jobs after 2 hours or when a new message interrupts them, and I restart it each time.
+
+Round 4 (`?s3=round4`) rebuilds the scenery instead of adjusting colours. It's a separate switch, so round 3 stays as in your video and the normal game is unchanged.
+
+- **Tunnel:** a new deep electric-blue lining with real 3D glowing cyan rings and gold trim rings. The first stretch of the drum is 4 m straighter, so you look straight down the rings as in your picture. The climb, drop and turns are kept, just later.
+- **Brushes:** your mechanical-looking wheels are replaced by big banded pom-poms of fluffy tufts. They have a royal-blue core, a white ring and a pink-and-white fringe. They still spin and knock in the same places, and they slide out of the walls as you approach, so the far tunnel stays open.
+- **Water and splashes:** the tiled-floor pattern is gone. The water is turquoise with rolling crests and white froth. A crown of curving water sheets rises and breaks around your character, with bigger foam heaps beside it.
+- **Colour:** a richer, less pastel grade inside the drum.
+
+**Checks:** it's fully playable, with no console errors:
+- all lanes and weaving runs ride through the whole tunnel;
+- controls, hearts, pause, Bubble Blast and Turbo Spin all pass;
+- in the video your character visits all three lanes, jumps, pauses, uses both power-ups and rescues all 5 socks;
+- it's lighter to draw than round 3.
+
+**Honest result:** it's clearly closer in look, but not 90–95%.
+- The upper tunnel's colour difference from your picture dropped from 7.9 to 2.2 (lower is closer).
+- White foam and pink are near your picture's amounts at the matched moment.
+- Whole-picture similarity hasn't improved: the per-pixel difference is about 24–25 against round 3's 23–24. The centre is now dark blue rings where your picture has a bright white whirlpool.
+
+**The biggest remaining differences:**
+1. **The tunnel's bright white centre.** Next I'll make a bigger, brighter whirlpool there.
+2. **Foam hidden under the Bubble Blast and Turbo Spin buttons.**
+3. **The splash is too pale and smooth.** Next I'll add bubbles and denser spray.
+4. **Brush tufts read as scales**, not long silky fluff.
+
+**Your decisions:**
+- **Buttons:** can I move them lower, so the foam shows where your picture has it?
+- **Normal game's Tap to Start:** should I remove your Screen 3 picture from it?
+- **Pom-pom brush model:** should I make one with Meshy or Tripo? That spends your credits, and Tripo still needs you to sign in; the earlier code has expired, so ask me for a fresh one.
+
+Files are in `Previews/WebDemo/screen4_round4_reconstruction/`:
+- `bubblewash_round4_gameplay.mp4`
+- `01_approved_vs_existing_vs_reconstructed.png`
+- `02_during_movement.png`
+- `README.md`
+

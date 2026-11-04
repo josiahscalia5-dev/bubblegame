@@ -39,4 +39,65 @@ opening. The camera is round 3's.
 - `checks/`: controls, rules, ride-through and frame cost.
 - `frames/`: the frames the sheets use.
 
-RESULTS_PLACEHOLDER
+## Checks (all on the real game in headless Chromium, seed 7)
+
+- **The tunnel can still be ridden through** (`checks/ride_through_round4.json`): a run in each lane jumping every 0.8 s,
+  and one weaving across all lanes, all reach the drum's end. Nothing gets stuck or goes backwards, and there are no
+  errors. The new rings sit 1.885 m from the axis at their nearest; the body reaches 1.90 m at most, at the water line,
+  below the rings' lowest point at the sides.
+- **Controls** (`checks/controls_round4.json`): all pass, with no console errors.
+  - The settings button, Tap to Start and the keyboard start work.
+  - Swipes work: left, right twice, and up to jump.
+  - Coins and socks are collected in the tunnel.
+- **Hearts, pause, Bubble Blast, Turbo Spin** (`checks/rules_round4.json`): all pass, with no console errors. Hearts go to 0 and back to Tap to Start with 5; pause works from the button and the keys; Bubble Blast clears the brushes ahead and counts down to a disabled button; Turbo Spin raises the speed from 6.7 to 8.0 m/s with no knocks.
+- **Video** (`frames/video_track.json`): in one run, the character visits all three lanes, jumps, pauses and resumes,
+  uses Bubble Blast and Turbo Spin, rescues all 5 socks and rides through the whole tunnel, with no console errors.
+- **Frame cost** (one frame, draw calls and triangles):
+  - Tap to Start: 225 calls, 1.33 M triangles. That is lighter than round 3 (1.63 M); the Meshy drum is not drawn.
+  - In the tunnel: 125 calls, 0.90 M triangles (round 3: 126, 1.15 M).
+- **Unchanged:**
+  - The normal game, `?s3=round2` and `?s3=round3` are untouched.
+  - Round 3's whirlpool and tufts were moved behind the round 4 switch, so round 3 is as in your recording.
+
+## Measured against the approved Screen 4 (`measures.md`, the same frames as the sheets)
+
+Each cell is a share of the play area (the area between the HUD bands). In brackets: how well its place matches the
+approved picture.
+
+| Feature | Approved | Existing 3.6 s | **Round 4 3.6 s** | Existing 4.2 s | **Round 4 4.2 s** | Existing 6.0 s | **Round 4 6.0 s** |
+|---|---|---|---|---|---|---|---|
+| White foam and splash | 20.8% | 18.7% | **21.3%** | 14.1% | **16.1%** | 18.7% | 13.7% |
+| Pink | 13.9% | 24.1% | **18.1%** | 21.4% | 22.4% | 20.7% | **15.0%** |
+| Gold coins | 8.0% | 5.9% | **8.4%** | 10.7% | 12.9% | 3.9% | 5.8% |
+| Deep blue tunnel | 6.2% | 1.3% | **2.9%** | 4.0% | 3.1% | 11.0% | **7.0%** |
+| Pale milky blue (too much) | 11.5% | 19.4% | **17.3%** | 18.5% | **15.1%** | 20.1% | 19.2% |
+| Upper tunnel colour, ΔE2000 (lower is closer) | | 13.0 | **9.5** | 7.9 | **2.2** | 7.3 | **6.3** |
+| Centre colour, ΔE2000 | | 12.1 | 12.3 | 8.5 | 13.0 | 8.1 | 18.0 |
+| Mean ΔE2000 per pixel | | 24.0 | 25.9 | 22.7 | 24.6 | 23.8 | 24.8 |
+
+## Honest assessment
+
+- **Closer where you asked first.**
+  - The tunnel now reads like the approved one: deep electric blue, concentric cyan rings and gold trims, receding
+    straight ahead. The upper tunnel's colour difference dropped to ΔE 2.2 at the matched moment, from 7.9.
+  - The brushes are round, banded pom-poms that frame the sides.
+  - The foreground has big white foam masses with a splash crown; white and pink are near the approved amounts at 3.6 s.
+  - The water no longer looks like a tiled floor.
+- **Not 90–95%, and the numbers do not claim it.**
+  - The whole-picture colour difference per pixel stays about 24–25, slightly worse than round 3's 23–24.
+  - Pieces are still not in exactly the painting's places, and the centre is now dark blue rings where the approved
+    picture has a bright white whirlpool.
+  - Matching a single painting pixel by pixel while the scene moves is not a realistic target. The aim is that every
+    moment of the ride reads like the approved art.
+- **The largest remaining differences, biggest first:**
+  1. **The tunnel's heart.** The approved centre is a bright white and cyan whirlpool. Ours is darker rings; the
+     whirlpool disc is there but too small and faint behind the rings. Next: a bigger, brighter vortex, with the far rings
+     fading into it.
+  2. **Foreground foam under the HUD.** The approved foam crest is where the Bubble Blast and Turbo Spin buttons are.
+     Moving the buttons is your decision.
+  3. **The splash is too pale and smooth.** The approved splash is blue-white with many visible bubbles and spray
+     droplets. Next: bubble-textured splash sheets and denser droplets.
+  4. **Brush fluff.** The pom-poms are banded correctly but read as scales; the approved tufts are longer and silkier.
+     Next: longer tufts with fur shells. A Meshy or Tripo pom-pom model is an option, but it spends your credits, so only
+     with your yes.
+  5. **Coins and gem placement** varies by moment; the approved arrangement holds for one moment only.
