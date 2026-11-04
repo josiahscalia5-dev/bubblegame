@@ -148,3 +148,22 @@ I'll send it as soon as it's done. It's at frame 110 of 345, about 15 more minut
 
 save everything to my GitHub and chat history
 
+---
+
+### Claude · 2026-11-04 03:01 UTC
+
+Everything is saved on GitHub: branch `ccr-b6199007-gvhqim` is at commit `30ed42a`, I checked that GitHub has the same commit, and nothing is left unsaved.
+
+**In this save:**
+- **Chat history:** this whole session up to your last message, in `ChatHistory/2026-11-04_screen4_round2_finish_session.md`. Earlier sessions' histories are still in the same folder.
+- **The brush warning fix**, in `WebDemo/src/tunnel_s4.js`, plus the rebuilt game.
+- **The before/after image of the pink warning** I sent you, in `Previews/WebDemo/screen4_round2_test/05_brush_warning_before_after.jpg`.
+- **Three new test tools** in `WebDemo/tools/screen3/`:
+  - `s4_regions.py` compares a tunnel frame with the approved Screen 4;
+  - `r2_perf.cjs` measures performance;
+  - `r2_render_probe.cjs` is the debug renderer that found the warning bug.
+
+The 5-minute auto-save is still running, so newer chat history keeps going to GitHub too.
+
+**Not saved yet:** the final gameplay video is still recording. It goes to GitHub as soon as it's encoded, and I'll send it to you then.
+
