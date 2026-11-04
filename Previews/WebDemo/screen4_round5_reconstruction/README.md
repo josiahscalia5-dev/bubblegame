@@ -129,7 +129,14 @@ lanes, collects 4 socks, no console errors. Tunnel frame cost: 171 draw calls, 1
   0.18); pale blue 12.5% (approved 11.8%), turquoise 1.4% (1.9%), white 22.6% (20.6%); centre colour difference 5.0 (pass 4:
   10.4), right 7.9 (11.7), left 11.4 (13.0); worse: upper tunnel 22.5 (13.1), lower 11.9 (7.0); deep blue still 1.0% (6.2%).
 - Evidence: `passA_original_vs_pass4_vs_passA.jpg`, `passA_moments_2.6_to_4.2.png`.
-- **Not yet verified for passes 4 to A:** the regression, controls and recording run was stopped before it finished (saved at
-  the user's request). All changes are gated on `?s3=round5`; run the checks before building on this.
+- **Verified (pass A, 4 November night):** Round 4 and the normal game pixel-identical to `21c054c` (0 differing pixels);
+  Round 5 controls (lanes, jump, keyboard start, coins and socks collected), pause, Bubble Blast and Turbo Spin pass; 12 s
+  recording visits all three lanes and collects 4 socks; no console errors. Tunnel frame cost: 177 draw calls, 1.06 M triangles.
+  Evidence: `passA_verified_original_vs_pass3_vs_passA_page.jpg` (full page, HUD included), `bubblewash_round5_passA.mp4`,
+  `round5_pass3_vs_passA.mp4`.
+- **Still different (by eye):** the tunnel is lighter cyan than the approved deep royal blue (deep blue 1.0% of the play
+  area against 6.2%); the water right under the character is pale white streaks instead of white crests over blue; the
+  collectibles are not staged yet (a big coin sits right in front of the character); the lavender wall shows only at the
+  top-left corner.
 - Project subagents saved in `.claude/agents/` (game-art-director, water-vfx-engineer, lighting-visual-matching); they load
   by name in new sessions.

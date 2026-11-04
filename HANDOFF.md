@@ -16,8 +16,8 @@ Read this first when you continue in a new Claude conversation.
 - **Pass 2 (evening):** Tripo P2 paw coin in the game (120 credits; balance 880), water rebuilt around blue, splash crests.
 - **Passes 3 to A (night, saved at 18:20 UTC at the user's request):** wet contact and soap bubbles, rushing turquoise water,
   the structured drum wall, the washing-machine entrance (lavender shell, champagne-gold rim) and a closer camera; new hero
-  moment 3.3 s. Passes 4 to A are **not yet re-tested** (the check run was stopped): run Round 4/normal pixel regression,
-  controls, mechanics and a recording first. Subagents: `.claude/agents/`. Chat: `ChatHistory/2026-11-04_new_account_tools_tripo_round5_session.md`.
+  moment 3.3 s. Pass A is **tested**: Round 4 and the normal game pixel-identical, controls, mechanics and a 12 s
+  recording pass with no console errors. Subagents: `.claude/agents/`. Chat: `ChatHistory/2026-11-04_new_account_tools_tripo_round5_session.md`.
 - **Next:** stage the hero moment (coins, gem, sock, brushes) as in the approved picture, more splashes and sparkles in the
   tunnel, and the pink character's soft fur edge.
 
