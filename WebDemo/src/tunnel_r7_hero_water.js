@@ -2,25 +2,27 @@
 // specialist (.claude/agents/water-vfx-engineer.md); called last-but-one by buildHero (tunnel_r7_hero.js). Nothing here runs
 // without the switch.
 //
-// Target (the ORIGINAL APPROVED Screen 4, and the user's correction of 4 November 2026: "the pink character is swimming
-// through BRIGHT BLUE / TURQUOISE WATER ... not sitting on a white blanket of foam"): the character's lower body sits inside a
-// raised body of saturated, glossy blue water whose top edge runs at about 79-86% of the screen height (higher at the sides,
-// lowest under the character, which it cuts at about 83%), in 6-7 rounded mounds across; white only as accents on top of the
-// water (broken crests, flecks, splashes and spray), brightest in the splash right of the character.
+// Target (the ORIGINAL APPROVED Screen 4, the user's correction of 4 November 2026: "the pink character is swimming through
+// BRIGHT BLUE / TURQUOISE WATER ... not sitting on a white blanket of foam", and the lead's: the water visibly round and under
+// the character, climbing its sides): the character's lower body sits inside a raised body of saturated, glossy blue water
+// that climbs both sides of the body to about 73% of the screen height and dips to about 81% in front of it, in rounded
+// mounds; white only as accents on top of the water (broken crests, flecks, splashes and spray), the brightest splash just
+// right of the character.
 //
-//   1. heroSwell: one mesh (one draw call), a horseshoe-shaped swell of water round the front and sides of the character,
-//      built in the character's frame (it rides with it). Its crest heights were solved from the hero camera at the hero
-//      moment (2.85 s; tools: the probe in this file's notes) so the silhouette lands on the approved line; then rounded
-//      mounds on top. Shaded as water: lit-through turquoise near the crest, azure down the face, electric blue in the
-//      ripples and toward the foot, a glossy reflection of the whirlpool's light, pale flow lines, white flecks, and a white
-//      crest broken into short pieces. It reacts to movement: the side the character swerves to piles up, the far ends drag
-//      behind, it slumps while the character is in the air and is thrown up and out on landing.
-//   2. heroSplash: white splash crowns and droplets thrown up from the crest either side of the character (one instanced
-//      draw call), biggest just right of it (the approved picture's brightest spot), bigger on swerves and landings.
+//   1. heroSwell: one mesh (one draw call, 13.4k triangles), a horseshoe-shaped swell of water round the front and sides of
+//      the character, built in the character's frame (it rides with it, bobs and dips with it). Its crest heights were solved
+//      from the hero camera at the hero moment (2.85 s) so the silhouette lands where wanted; then rounded mounds on top.
+//      Shaded as water: lit-through turquoise near the crest (a little see-through, so the body below reads as under water),
+//      azure down the face, electric blue in the ripples and the shaded sides, a cyan sheen, glossy highlights and sky
+//      reflections, pale streaks, bubbles caught in the water, white flecks and a white crest broken into short pieces. It
+//      reacts to movement: the side the character swerves to piles up, the far ends drag behind, it slumps while the
+//      character is high in a jump and is thrown up and out on landing.
+//   2. heroSplash: white droplets, streaks and soft puffs of spray thrown up from the crest either side of the character (one
+//      instanced draw call), most just right of it, more on the side it swerves to and on landings, fewer in the air.
 //   3. the water floor round the character (injected into the slide's and the drum's water sheets, after the hero floor):
 //      turquoise and azure water with flow streaks and flecks, instead of the pale whirlpool rings, near the character only.
-//   4. round7's white foam lumps (r7FoamBank) and the Screen 3 opening's foam round the mascot (mascotFoam), the "white
-//      blanket", are hidden while the swell is up.
+//   4. round7's white foam lumps (r7FoamBank), the Screen 3 opening's foam round the mascot (mascotFoam) - the "white
+//      blanket" - and round7's white specks (r7Spray, replaced by heroSplash) are hidden while the swell is up.
 // Colours are written as sRGB hex (as seen on screen) and converted to the renderer's linear light by THREE.Color.
 // Private random numbers only (the game's seeded Math.random is untouched).
 import * as THREE from 'three';
