@@ -859,3 +859,54 @@ Keep secrets and credentials out of the repository.
 Do not overwrite existing working assets without maintaining a recoverable version.
 Please start by reviewing the existing GitHub project and confirming which development tools are available. Then continue improving Screen 4 toward my approved visual target.
 
+---
+
+### Claude · 2026-11-04 10:57 UTC
+
+The recording rehearsal is still running. Meanwhile I'm creating your project skill, "Bubble Wash Exact Screen Matcher", plus a setup script, so a session from any account can get the same tools.
+
+---
+
+### Note · 2026-11-04 10:58 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 10:58 UTC
+
+Claudia, I want to complete the installation and configuration of the additional tools for my Bubble Wash Kingdom project.
+I've been instructed to install these:
+
+1. Skill Creator
+2. TypeScript LSP
+3. Claude Code Setup
+4. Tripo CLI
+5. Meshy MCP
+
+Please check which ones are already installed and which ones are available in this cloud coding environment.
+For Tripo CLI, use the official documentation:
+https://developers.tripo3d.ai/en/docs/cli
+For Meshy MCP, use the official documentation:
+https://www.meshy.ai/mcp
+Please install and configure the supported tools, verify that they work, and explain any authentication steps I need to complete myself.
+Keep API credentials out of GitHub, setup scripts, and chat messages. Do not spend generation credits without my approval.
+Make sure these tools can work alongside Blender, Playwright, GitHub, OpenCV, ImageMagick, and my existing Three.js game.
+Once everything is verified, use the available tools to improve my real playable Bubble Wash Kingdom game.
+My highest priority is recreating my approved Screen 3 and Screen 4 as closely as possible in a genuine moving 3D environment.
+I especially want the large white water splashes, fluffy washing brushes, golden paw coins, rich blue tunnel, bubbles, and magical lighting to match the approved screen.
+Please preserve my current pink character, original opening, gameplay controls, and working game.
+Save your completed configuration and code changes to GitHub.
+
+---
+
+### Claude · 2026-11-04 10:58 UTC
+
+I'll check all five, install what this environment supports, and explain the sign-in steps that only you can do. First, the official docs:
+
+The Meshy MCP server works: it starts and serves its 28 tools, including `meshy_check_balance`, before any key is set. Next, the three Claude Code plugins:
+
+GitHub returned a server error on that push. I'm retrying with increasing waits between attempts.
+
+Saved to GitHub (`6f299d3`); a repeat secret scan found no keys in the repository. Now the far-ring change:
+

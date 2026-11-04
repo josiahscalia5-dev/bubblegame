@@ -17,7 +17,8 @@ import { NOISE } from './shaders.js';
 export const ROUND3 = {
   // the approved rings: glowing cyan, blue, pink and lavender (round2: pink, lavender, cyan, orchid, gold)
   ringColours: [[0.16, 0.8, 1.0], [0.25, 0.45, 1.0], [1.0, 0.45, 0.85], [0.72, 0.56, 1.0], [0.75, 0.95, 1.0]],   // cyan, blue, pink, lavender, white-cyan
-  ringGlow: 0.6,                                         // the rings' light (round2: 1.0), so the deep blue between them shows
+  ringGlow: 0.6,
+  ringFar: { from: 5, to: 16, white: 0.6, bright: 0.9, keep: 1.0 },   // far rings whiter (the tunnel's bright heart); keep 1: not dimmed with distance                                         // the rings' light (round2: 1.0), so the deep blue between them shows
   wallDeep: [[0.01, 0.035, 0.26], [0.1, 0.26, 0.8]],    // the drum's walls deep royal blue (round2: violet; measured: too pale)
   // white water running round the drum in rings (the approved tunnel's concentric white-water bands)
   swirl: { radius: 1.93, rowStep: 0.3, around: 72, from: 4, to: 176, strength: 1.3, white: 1.0, blue: 0.3, bands: 1.7, twist: 0.35, far: 1.0 },

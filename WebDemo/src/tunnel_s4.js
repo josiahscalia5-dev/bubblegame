@@ -54,7 +54,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   {
     const us = []; for (let u = TS + 0.6; u < TE - 0.6 + (R2 ? 4.4 : 0); u += P.ringStep) us.push(u);   // (round2: on into the exit's light)
     const geo = new THREE.RingGeometry(P.ringIn, P.ringOut, 112, 1);
-    const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uIn: { value: P.ringIn }, uOut: { value: P.ringOut }, uSpark: { value: R2 ? R2.sparkle : 0.9 } }, vertexShader: RING_VERTEX, fragmentShader: R3 ? RING_FRAGMENT.replace('gl_FragColor = vec4(col, 1.0);', `gl_FragColor = vec4(col * ${R3.ringGlow.toFixed(3)}, 1.0);`) : RING_FRAGMENT,
+    const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uIn: { value: P.ringIn }, uOut: { value: P.ringOut }, uSpark: { value: R2 ? R2.sparkle : 0.9 } }, vertexShader: RING_VERTEX, fragmentShader: R3 ? r3Rings(R3) : RING_FRAGMENT,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
     const rings = new THREE.InstancedMesh(geo, mat, us.length);
     const cols = R2 ? (R3 || R2).ringColours.map((c) => new THREE.Color(...c)) : [new THREE.Color(0.5, 0.22, 1.0), new THREE.Color(1.0, 0.3, 0.78), new THREE.Color(0.12, 0.85, 1.0), new THREE.Color(0.45, 0.65, 1.0)];
@@ -366,6 +366,16 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }
 `;
+
+/** round3: the rings' light scaled down near the camera (so the deep blue between them shows) and, further down the tube,
+ *  whiter and undimmed, so they gather into the bright white-cyan heart of the approved Screen 4's tunnel. */
+function r3Rings(R3) {
+  const F = R3.ringFar;
+  return RING_FRAGMENT.replace('float fade = 1.0 - 0.45 * smoothstep(6.0, 26.0, vDepth);', `float fade = 1.0 - ${(0.45 * (1 - F.keep)).toFixed(3)} * smoothstep(6.0, 26.0, vDepth);`)
+    .replace('gl_FragColor = vec4(col, 1.0);', `float far = smoothstep(${F.from.toFixed(2)}, ${F.to.toFixed(2)}, vDepth);
+  col = mix(col * ${R3.ringGlow.toFixed(3)}, vec3(0.85, 0.95, 1.0) * (core + glow) * wave * ${F.bright.toFixed(3)}, far * ${F.white.toFixed(3)});
+  gl_FragColor = vec4(col, 1.0);`);
+}
 
 /** round2: neighbouring vertices' colours averaged `iters` times (mixed by `k`), so speckled bristle colours read as soft areas. */
 function smoothColours(g, iters, k) {
