@@ -54,7 +54,11 @@ Read this first when you continue in a new Claude conversation.
   - Turbo Spin (3): 2.5 s at ×1.45 speed, spinning, and brushes cannot knock the mascot.
   - Pause button, or the P or Escape key. B is Bubble Blast and T is Turbo Spin.
 - **The end of a run** still loops back to the slide (`loopRun`), because Screens 5 onward are not built. It is not a test reset.
-- **Evidence:** `Previews/WebDemo/screen4_round2_test/`.
+- **Evidence:** `Previews/WebDemo/screen4_round2_test/` (final video, sheets 01–05, checks, frame cost, score).
+- **Finished on 4 November, night (branch `ccr-b6199007-gvhqim`):**
+  - **The brush warning now shows.** It had three faults: it was full only where the brush hides it, it was mixed in under the reflections and foam (it came out lavender), and the slide's water sheet covered the drum's over the first brushes. The fix starts it 7.5 m before a brush (full from 3 m), lays the pink on last, and gives the drum's water a polygon offset. Details in that folder's README.
+  - **Final video** `bubblewash_round2_tunnel_final.mp4` and **sheets** 01–05 from its real frames.
+  - **Functional checks** all pass (`checks_functional.txt`); no console errors.
 - **Missing assets for the intro:** `Design/LAUNDRY_TOSS_INTRO_ASSETS.md`. The intro reference pictures were never uploaded to this session; ask for them.
 - **Auto-save:** `Tools/autosave.sh` (started at the user's request) exports the chat history and commits and pushes every 5 minutes while a session is running.
 

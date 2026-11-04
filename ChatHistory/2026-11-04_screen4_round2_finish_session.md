@@ -222,3 +222,15 @@ The hand-off notes are committed and pushed. GitHub is at `13b8d89`, the same as
 
 The functional checks and the pixel comparison for the normal game and `?s3=paint,tunnel` are still running in the background. When they report back I'll measure performance, write the honest score and the README, and save again.
 
+---
+
+### Automatic notice · 2026-11-04 03:17 UTC
+
+_Background command "Run the round 2 functional checks" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-04 03:17 UTC
+
+While the comparison finishes, I'm writing the final README for the round 2 evidence folder:
+

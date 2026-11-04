@@ -9,11 +9,15 @@ These are seeded Playwright screenshots and a recording of the running game, mad
 
 | File | What it shows |
 |---|---|
-| `01_tunnel_vs_approved.png` | Approved Screen 4, last round and this round, at the same moment just inside the drum |
-| `02_tunnel_views.png` | From the recording: the entrance, mid tunnel, brushes, coins and socks |
-| `03_controls.png` | From the recording: a brush taking a heart, pause, Bubble Blast clearing the brushes, Turbo Spin |
+| `bubblewash_round2_tunnel_final.mp4` | **The final video:** 11.5 s of real gameplay, with the brush warning fixed. It shows: Tap to Start; the portal; the middle coin line through the first brush gate (both outer lanes glowing pink) and the first sock; the left coin line and the second sock, with the right lane glowing ahead; **pause and resume**; the gem; the pink warning in the left lane, then a **knock that takes a heart** (5 → 4); the right lane and the third sock; **Bubble Blast** pushing the next pair of brushes to the walls (their warning goes out), then riding safely past the cleared right brush; the fourth sock; **Turbo Spin**; the fifth sock and the last gem (**5/5 socks**); the exit vortex; and the loop back to the slide. No console errors. |
+| `01_tunnel_vs_approved.png` | Approved Screen 4, last round and this round, at the same moment just inside the drum (3.5 s after the tap, seed 7, middle lane) |
+| `02_tunnel_views.png` | From the final video: the entrance, the brushes with their pink warning, coins, socks, mid tunnel and the exit |
+| `03_controls.png` | From the final video: pause, a brush taking a heart, Bubble Blast clearing the brushes, riding past a cleared brush, Turbo Spin |
 | `04_exit_before_after.png` | The tunnel's exit, last round (white light) and now (a coloured vortex) |
-| `bubblewash_round2_tunnel_wip.mp4` | 11.5 s of real gameplay (work in progress, recorded just before the stronger brush warning was added). It shows: Tap to Start; the portal; the middle coin line through the first brush gate and the first sock; the left coin line and the second sock; **pause and resume**; the gem; a **knock that takes a heart** (5 → 4); the right lane and the third sock; **Bubble Blast** pushing the next pair of brushes to the walls, then riding safely past the cleared right brush; the fourth sock; **Turbo Spin**; the fifth sock and the last gem (**5/5 socks**); the exit vortex; and the loop back to the slide. |
+| `05_brush_warning_before_after.jpg` | The brush warning before and after the fix (real renders of the game at the same moments) |
+| `checks_functional.txt` | The functional checks (`r2_func.cjs`): hearts, pause, Bubble Blast, Turbo Spin |
+| `frames/` | The video frames used in the sheets at full size, `round2_t3.5.png` (the seeded frame in sheet 01) and `final_video_track.json` (the game state in every frame of the video) |
+| `bubblewash_round2_tunnel_wip.mp4`, `frames/wip_video/` | The earlier work-in-progress video and its frames, recorded before the warning was fixed (kept for comparison) |
 | `frames/` | Key frames of the video at full size, and `video_track.json` (the game state in every frame) |
 
 ## Your two questions
@@ -75,7 +79,23 @@ These are seeded Playwright screenshots and a recording of the running game, mad
 - **Brushes:**
   - Smoother colours (the speckled bristle colours are evened out) and a soft pale sheen around the rim.
   - The right-hand ones are a lighter periwinkle blue with their pink fringe, and the left-hand ones a softer pink.
-  - **Danger is marked:** the water glows pink, with soft stripes, in a brush's lane for the last few metres before it.
+  - **Danger is marked:** the water glows pink, with soft moving stripes, in a brush's lane from 7.5 m before it (full from 3 m). It goes out when Bubble Blast clears the brush. See `05_brush_warning_before_after.jpg`.
+
+## The brush warning: why it did not show, and the fix
+
+The warning was being computed (a debug render showed it in the right places), but it never showed in the game, for three reasons:
+
+1. **Too short:** it only reached full strength in the last 1.6 m before a brush, and from the camera that stretch of water is hidden behind the brush itself.
+2. **Washed out:** the pink was mixed in before the water's reflections, ring light, glints and foam were added on top. Measured on screen, the strongest part came out as RGB 179, 167, 243, a pale lavender, against 88, 191, 245 for plain water.
+3. **Covered:** the slide's water sheet runs 2.5 m into the drum (to 6.4 m), over the drum's own water, and the two fought for depth in streaks. The slide's sheet has no warning, so it covered about half of the first brush pair's warning.
+
+The fix (`WebDemo/src/tunnel_s4.js`, only with `?s3=round2`):
+
+1. The warning starts 7.5 m before a brush and is full from 3 m (`ROUND2.hazardWarn`).
+2. The pink is laid on last, just before the fog, and reaches full colour at 60 % warning strength, so the stripes and pulse vary it without fading it to lavender (`WATER_R2_LATE`).
+3. The drum's water now always wins where the two sheets overlap (a small polygon offset).
+
+The tool used to find it is `WebDemo/tools/screen3/r2_render_probe.cjs`: it renders the water with debug colours at chosen points along the tunnel.
 - **Less clutter:**
   - 22 soap bubbles instead of 46, kept up on the walls.
   - The ambient bubbles in the drum moved up to the walls and made smaller (no more big rainbow bubble over the mascot).
