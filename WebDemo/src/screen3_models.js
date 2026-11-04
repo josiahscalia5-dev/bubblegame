@@ -17,6 +17,7 @@
 // For trying settings without a rebuild: window.__BW_S3_TUNE__ = { castle: {...}, entrance: {...} } before load.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { buildTunnelS4 } from './tunnel_s4.js';
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -30,6 +31,9 @@ S3.cine = LIST.includes('cine');
 // door at the door's depth, brush, machinery and towers at theirs, side water and foam on the ground), with the pink
 // mascot, slide, water under it, foam and coins live in front. It brings the Number 4 castle (seen through the banner
 // area once the banner fades, and after the hand-over) and the icy slide edges. See paintScenery below.
+// ?s3=tunnel (test): the inside of the washing machine rebuilt toward the approved Screen 4 (tunnel_s4.js): a ring vortex,
+// large spinning brushes on the sides (the low ones knock a mascot in their lane back to the middle), soap bubbles, foam.
+S3.tunnel = LIST.includes('tunnel');
 S3.paint = LIST.includes('paint');
 if (S3.paint) { S3.castle = true; S3.edges = true; }
 export const S3_ON = Object.values(S3).some(Boolean);
@@ -87,6 +91,7 @@ if (S3.edges) S3_LAYOUT.brush = { ...S3_LAYOUT.brush, ...EDGES.brush };
 // Fetched as soon as the page starts (only the switched-on models), parsed once the opening layer is built.
 const bytes = {};
 for (const k of Object.keys(S3_FILES)) if (S3[k]) bytes[k] = fetchModel(S3_FILES[k]);
+if (S3.tunnel) bytes.brushT = bytes.brush || fetchModel(S3_FILES.brush);
 async function fetchModel(url) {
   try {
     if (window.__BW_MODEL_FORMAT__ === 'json') throw new Error('json');
@@ -100,7 +105,7 @@ async function fetchModel(url) {
   }
 }
 
-export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass, rollers, grade, bloomPass, outputPass, waterSheets }) {
+export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass, rollers, grade, bloomPass, outputPass, waterSheets, TR, bumpMascot, drumMeshes }) {
   const report = {};
   const loader = new GLTFLoader();
   const parse = async (k) => { const b = await bytes[k]; return b ? loader.parseAsync(b, '') : null; };
@@ -186,6 +191,8 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
   if (view) report.cine = { ...CINE };
   if (S3.bubbles && staticBubbles) report.bubbles = soapBubbles({ scene, staticBubbles, camera: view || camera, updaters, mascot });
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
+  if (S3.tunnel && TR && bumpMascot) report.tunnel = await buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump: bumpMascot, brushBytes: await bytes.brushT,
+    waterSheets, soap: { vertex: SOAP_VERTEX, fragment: SOAP_FRAGMENT }, loaderParse: (b) => loader.parseAsync(b.slice(0), ''), drumMeshes });
   if (S3.paint && grade && outputPass) report.paint = await paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.

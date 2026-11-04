@@ -442,7 +442,7 @@ export function buildOpening(ctx) {
   // ---------------------------------------------------------------- 6. roller candidate (test only, ?roller=1|2)
   async function loadExtras() {
     // the user's new Screen 3 models (test only, ?s3=castle,entrance): loaded and placed only when switched on
-    if (S3_ON) window.__bwS3 = await loadScreen3Models({ scene, env, axisY: AXIS, tunnelStart: TS, oldCastle: ctx.castle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass: ctx.renderPass, rollers, grade, bloomPass: ctx.bloomPass, outputPass: ctx.outputPass, waterSheets: ctx.waterSheets });
+    if (S3_ON) window.__bwS3 = await loadScreen3Models({ scene, env, axisY: AXIS, tunnelStart: TS, oldCastle: ctx.castle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass: ctx.renderPass, rollers, grade, bloomPass: ctx.bloomPass, outputPass: ctx.outputPass, waterSheets: ctx.waterSheets, TR, bumpMascot: ctx.bumpMascot, drumMeshes: ctx.drumMeshes });
     if (!rollerBytes) return;
     const bytes = await rollerBytes;
     if (!bytes) { ctx.rollerCandidate = { file: ROLLER_FILES[ROLLER_TEST], error: 'not found' }; return; }

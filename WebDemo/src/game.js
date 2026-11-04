@@ -825,6 +825,19 @@ function jump() {
   sfx('splash');
 }
 function spin() { if (state.phase === 'running') { mascot.spinV = Math.PI * 2 / 0.5; mascot.spinLeft = Math.PI * 2; sfx('swish'); } }
+// A knock from a spinning brush (only the ?s3=tunnel test calls this; screen3_models.js / tunnel_s4.js): the mascot is
+// bounced toward the middle lane, slowed (its speed comes back over about a second), squashed and splashed.
+function bumpMascot(side) {
+  if (state.phase !== 'running') return false;
+  const m = mascot;
+  m.lane = 1; m.speed *= 0.55; m.sqV -= 12;
+  const surf = W.surface(L, m.x, m.z, state.time);
+  fx.burstT(m.x, surf + 0.1, m.z, 40, 1.6, { dir: -side, vz: m.speed * 0.3 });
+  fx.burstT(m.x, surf + 0.05, m.z, 8, 0.9, { kind: 1, size: 0.24, grav: 0.15, up: 0.6 });
+  addRipple(m.x, m.z, 1.6); sfx('splash');
+  state.bumps = (state.bumps || 0) + 1;
+  return true;
+}
 
 function updateMascot(dt) {
   const m = mascot, t = state.time;
@@ -1366,7 +1379,7 @@ async function main() {
     // so the game's own (coin bobbing, splashes) are drawn exactly as before. ?classic leaves it out.
     if (OPENING_ON && !SIDE) {
       opening = withPrivateRandom(makeRandom(0x0be5), () => buildOpening({ scene, env: mats.env, TR, L, W, mascot, camera, Particles, fxScale: fx.u.uScale,
-        waterU, castle: mats.castle, waterSheets: water.children, renderPass: composer.passes[0], bloomPass: bloom, outputPass: composer.passes[composer.passes.length - 1], grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
+        waterU, castle: mats.castle, waterSheets: water.children, renderPass: composer.passes[0], bumpMascot, drumMeshes: mats.drumMeshes, bloomPass: bloom, outputPass: composer.passes[composer.passes.length - 1], grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
         setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; }, get rollerCandidate() { return state.rollerCandidate; }, set rollerCandidate(v) { state.rollerCandidate = v; } }));
       await withPrivateRandomAsync(makeRandom(0x0be6), opening.loadExtras);   // a roller candidate, only with ?roller=1|2
     }

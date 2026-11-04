@@ -31,7 +31,18 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (3 November, night): the approved painting as the real game's scenery, `?s3=paint` (test, not approved)
+## Latest (4 November): the inside tunnel rebuilt toward the approved Screen 4, `?s3=tunnel` (test, not approved)
+
+- **The user likes the painted opening (`?s3=paint`)** but wants the inside tunnel matched to Screen 4 before anything becomes permanent. Nothing is merged.
+- **`?s3=tunnel` (`WebDemo/src/tunnel_s4.js`)**; combine as `?s3=paint,tunnel` for the full run.
+  - **Scenery:** a ring vortex (38 glowing rings), deep blue and violet drum walls, the pink panels and frames hidden, 46 soap-film bubbles, and foam around the mascot in the drum.
+  - **Brushes:** nine spinning brushes from the Number 1 brush model. The bracket is left out, the mesh is simplified to 51.5 k triangles, the left ones are pink, and each is drawn only near the mascot.
+  - **Hazard:** the six low brushes knock a mascot in their outer lane back to the middle (`game.js` `bumpMascot`, used only by this switch).
+- **Evidence:** `Previews/WebDemo/screen4_tunnel_test/` (comparisons with Screen 3 and Screen 4, through the portal, 11 s video, measurements).
+  - Honest score about 6.5–7 against Screen 4 (protected tunnel about 5).
+- **Checks:** before the tunnel identical; in the tunnel, knocks change the route as designed; normal game pixel-identical to `591db28`; no console errors; tunnel 1.12 M triangles and 142 calls.
+
+## Earlier (3 November, night): the approved painting as the real game's scenery, `?s3=paint` (test, not approved)
 
 - **The user wants the opening's scenery to look exactly like the approved screen while the character heads into the washing machine.**
 - **`?s3=paint` does that with the painting itself**, projected into 3D at several depths (castle and door, brush, machinery, towers, side water on the ground under the slide's hills). The pink character, slide, water under it, foam, coins and icy edges are live in front, and the door's centre shows the real tunnel.
