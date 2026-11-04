@@ -99,7 +99,11 @@ go through `Tools/bw_tools_env.sh`.
 On 4 November (13:51) Tripo was signed in on this session's machine with a key the user pasted into the chat. Nothing
 was pushed: the autosave was stopped first, and the key was checked absent from every file, commit and GitHub. The
 key still appears in this session's own transcript, so regenerate it on Tripo's site when convenient. The API account
-showed **0 credits**.
+showed **0 credits**. At 14:00 a second key (ending …SFj0) replaced it: same result, 0 API credits.
+
+**Where API credits live:** `https://developers.tripo3d.ai/billing` (given by `tripo topup --no-open`). API credits are
+reported to be a separate balance from the credits on Tripo's main website (Studio); Tripo's own billing page does not
+say either way. Check that page's balance, then `tripo balance` here.
 
 **Meshy: not used any more (your decision, 4 November).** Do not call Meshy tools, ask for a Meshy key or spend Meshy
 credits. To remove the saved key: the cloud environment menu in the session's title bar, Edit, Network secrets, then
