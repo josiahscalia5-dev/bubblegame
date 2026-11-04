@@ -2,6 +2,35 @@
 
 Read this first when you continue in a new Claude conversation.
 
+## Newest (4 November, 18:30 UTC onward): third Claude account, branch `ccr-3876cb6e-qwegol`, Round 6
+
+- **Recovered from:** `5586dc6` ("Save everything: Round 5 passes 4, 5 and A ..."), the newest saved work (also on
+  `ccr-4bb5eb4c-md7eyt`, left untouched). Rebuilding from source gives a bundle identical to the committed one, so Pass A's
+  code is complete. Merged in (documentation only, no code): Round 4's results and checks from `ccr-b6199007-gvhqim`, the
+  last chat-history autosave from `ccr-8ca1fe92-d6t2bm`. Nothing from the previous session was found missing.
+- **Round 6 (`?s3=round6`, test, not approved):** `Previews/WebDemo/screen4_round6_reconstruction/README.md`. The porthole
+  entrance as geometry (lavender drum face with panels and a light panel, thick riveted gold bezel, bronze step, blue seal),
+  layered flanges instead of thin neon rings, a turquoise bow wave wrapping the character, pale bubble clusters and foam
+  cards removed, saturated blue light with controlled bloom, and the camera re-aimed. **Hero moment 3.1 s.** Round 5, Round 4
+  and the normal game are pixel-identical to `8e4aa53`.
+- **Construction guide** from the user (the approved Screen 4 stays the authority):
+  `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/`.
+- **Agents:** four project agents in `.claude/agents/`: `game-art-director` (read-only reviewer), `water-vfx-engineer`,
+  `lighting-visual-matching` (now also owns the tunnel architecture), and the new `gameplay-visual-testing`.
+- **Plugins in this cloud session** (what this session could actually see): Playwright MCP (working), GitHub MCP (working),
+  Frontend Design (skill working), Claude Code Setup (skill working), TypeScript LSP (synced, but no LSP tool surfaced);
+  Skill Creator, Code Review, Security Review and Simplify are available as built-in skills. Not present in this session:
+  Context7, Superpowers, Chrome DevTools, CLAUDE.md Management, Security Guidance (plugin), Commit Commands, Feature Dev,
+  Pyright LSP, Code Simplifier (plugin). Account-level installs could not be inspected from here.
+- **Tools:** all present (`source Tools/bw_tools_env.sh`): Node 22, npm 10, Python 3.13, OpenCV 5.0, scikit-image 0.26,
+  Blender 5.2.3 (bpy), glTF Transform 4.5.1, glTF Validator, Playwright 1.64 with Chromium, Tripo CLI 0.11.2, FFmpeg 6.1,
+  ImageMagick 6.9, Git LFS 3.4. Vite is not installed in this environment; the game builds with esbuild (`node build.mjs`).
+- **Tripo:** signed in on this machine (key in `~/.tripo`, outside the repository); balance **760 credits**, nothing spent.
+  The key was pasted into this chat: the chat exporter redacts it, but creating a new key on Tripo's site and deleting that
+  one is safer, since the repository is public.
+- **Next:** the water at the hero moment (the slide's last metres still show pale cyan cell-pattern water), more white
+  splash (10 to 13% against the approved 21%), and a more painterly whirlpool in the tunnel (white streaks and sparkles).
+
 ## Newest (4 November, 15:00 UTC onward): the new Claude account, branch `ccr-4bb5eb4c-md7eyt`
 
 - **Starts from** the earlier account's last save, `1199d7b` on `ccr-8ca1fe92-d6t2bm` (merged in; that session stopped at

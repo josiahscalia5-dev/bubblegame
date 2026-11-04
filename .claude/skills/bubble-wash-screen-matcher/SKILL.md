@@ -21,7 +21,16 @@ overlay. Keep these as they are unless the user says otherwise:
 - The game: `WebDemo/`.
   - Source is in `src/`. Build with `cd WebDemo && node build.mjs`; the bundle `game.bundle.js` is committed.
 - Test switches (URL `?s3=...` or `window.__BW_S3__`):
-  - `round4` is the current visual pass: the reconstruction of the scenery (`src/tunnel_r4.js`, `ROUND4`).
+  - `round6` is the current visual pass (4 November, third account): round5 plus the washing machine's architecture as
+    geometry (`src/tunnel_r6.js`, `ROUND6`): porthole entrance (lavender drum face, thick gold bezel with rivets, bronze
+    step, blue seal), layered flanges in the tunnel, a bow wave of turquoise water round the character, and the re-aimed
+    camera. Hero moment **3.1 s**. `ROUND6.round5` overrides round5's settings only when round6 is on (applied in
+    `tunnel_r5.js` before its shaders are written), so `?s3=round5` is unchanged. Tune with `__BW_S3_TUNE__ = { round6: {...} }`.
+    Construction guide: `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/` (the approved Screen 4 stays the authority).
+  - `round5` (`src/tunnel_r5.js`, `ROUND5`) includes round4; `round4` is the reconstruction of the scenery (`src/tunnel_r4.js`, `ROUND4`).
+  - Camera lesson (Round 6): the drum camera blends from the Tap to Start framing until `ROUND6.camBlendEnd`; at the entry a
+    half-blended camera made paper estimates wrong. Sweep `round6.round5.camera` in real captures instead (two browsers at
+    a time at most: three software-rendered browsers at once once gave a blank lavender canvas).
   - `round4` includes `round3` (`src/tunnel_r3.js`, `ROUND3`), and that includes `round2`: the Screen 4 controls and
     tunnel polish.
   - Without a switch, the normal game is the protected original.
@@ -114,7 +123,9 @@ commit, whether GitHub really has it, and the files saved.
 - **Tripo only** (the user's decision, 4 November). **Never call Meshy tools, ask for a Meshy key or spend Meshy credits.**
 - Use Tripo only when a 3D asset is truly missing. Tunnel, water, splashes, bubbles, brushes, lighting and composition
   are built with Blender, three.js and the existing assets.
-- **Tripo CLI** (`tripo`): the key lives in `~/.tripo` after `tripo login --region ov --no-wait` (browser sign-in).
+- **Tripo CLI** (`tripo`): the key lives in `~/.tripo` (outside the repository) after `tripo login --region ov --no-wait`
+  (browser sign-in) or `tripo login --region ov --key ...`. A key pasted in chat must never be written to a repository file;
+  `Tools/export_chat_history.py` redacts `tsk_` keys from exported chat. Balance on 4 November (third account): 760.
 - Before any generation:
   - check `tripo balance` (free);
   - get the cost from `tripo make "<prompt>" --model <m> --dry-run --json` (free: P2 110 credits, v3.1 20 credits a model);

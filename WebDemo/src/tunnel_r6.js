@@ -28,12 +28,23 @@ export const ROUND6 = {
     step: { inner: 1.9, outer: 2.04, z: 0.22, depth: 0.14 },                       // a bronze step ring just inside it
     seal: { radius: 1.99, tube: 0.075, z: 0.36 },                                   // the royal-blue rubber door seal
     face: { inner: 2.42, outer: 9.0, z: -0.2, dish: 0.35 },                          // the lavender drum face
-    rivets: { count: 20, radius: 2.82, size: 0.07 },
+    rivets: { count: 16, radius: 2.82, size: 0.07 },
+    rimRivets: { count: 24, size: 0.055 },   // the construction guide: rivets round the gold rim's front face
+    panels: 12,                              // panel seams on the lavender wall, and a glowing light panel at the top
     lavender: [0.68, 0.6, 0.98], lilac: [0.88, 0.8, 1.0], shade: [0.34, 0.26, 0.62],
   },
   // layered flanges standing out of the tunnel wall (replace round4's thin glow rings)
   flanges: { every: 2.3, from: 1.0, wall: 2.03, lip: 1.8, depth: 0.16, goldEvery: 3, arc: [-56, 236],
     face: [0.03, 0.1, 0.62], deep: [0.01, 0.03, 0.26], cyan: [0.45, 1.0, 1.25], gold: [1.0, 0.74, 0.32] },
+  // the bow wave: curved sheets of water wrapping both sides of the character, from just in front of it round to behind it
+  // (toward the camera), turquoise and translucent low down, a white foam crest broken into fingers along the top. Their
+  // front parts sit behind the character and their back parts in front of it, so the character is in the water, not on it.
+  // reach: angle from straight ahead [start, end] in degrees; radius [at start, at end]; height: crest height (m);
+  // swerve: extra height per m/s of sideways speed; lean: how far the sheet leans outward at its top (m)
+  bowWave: { reach: [25, 150], radius: [0.38, 1.05], height: 0.5, swerve: 0.12, lean: 0.22, flow: 1.6, rows: 14, cols: 64,
+    body: [0.0, 0.52, 0.88], deep: [0.0, 0.22, 0.8], alpha: 0.85 },
+  hideFoamBubbles: true,   // round4's rounded blue bubble clusters on the water (the user: "too many rounded blue bubble clusters")
+  hideCrestCards: true,    // round5's painted foam-lump cards: in the drum they merged into a pale white mass; the bow wave replaces them
   // round5's own settings, overridden for round6 (merged in tunnel_r5.js before its shaders are written)
   round5: {
     // the camera: level with the tube's axis and aimed straight down it, so the bright centre sits just below the middle of
@@ -46,7 +57,18 @@ export const ROUND6 = {
     camera: { off: [0, 0.45, -2.7], lookY: 2.2, fov: 72 },
     // the water vortex on the walls: round5's evenly spaced glowing crest lines read as a striped pipe and hid the flanges;
     // fewer, softer bands with more swirl, deeper troughs, more white water, so the flanges carry the structure
-    vortex: { bands: 1.0, twist: 0.12, warp: 0.6, crestLine: 0.45, lip: 0.2, ribs: 0.3, foam: 0.55, streaks: 0.35, deep: [0.0, 0.03, 0.32] },
+    // checkpoint C: rich saturated electric blue with cyan highlights, not pastel: the rainbow ring and the far white glow
+    // were the pale stripes down the tube
+    vortex: { bands: 1.0, twist: 0.12, warp: 0.6, crestLine: 0.45, lip: 0.2, ribs: 0.3, foam: 0.4, streaks: 0.28, deep: [0.0, 0.02, 0.3],
+      body: [0.0, 0.3, 1.0], cyan: [0.3, 0.9, 1.0], rainbow: 0.18, farMix: 0.45, violet: 0.5 },
+    // the drum water: deeper, more saturated turquoise, less blanket froth (white stays on crests and round the character)
+    // churn: the white churned water round the character (round4 0.95) made a pale mass over its base; the bow wave carries it
+    water: { middle: [0.0, 0.7, 0.95], side: [0.0, 0.2, 0.85], mix: 0.92, crest: 0.8, froth: 0.55, churn: 0.4 },
+    // controlled glow: only the brightest highlights bloom (round5's bloom lifted the whole deep tunnel to pale)
+    bloom: { strength: 0.3, radius: 0.45, threshold: 1.1 },
+    heart: { core: 1.0, halo: 0.6 },
+    // soap bubbles round the character: fewer and fewer big ones over it (they covered the character in rainbow rings)
+    softBubbles: { count: 22, big: 4 },
   },
 };
 {
@@ -60,8 +82,92 @@ export function buildRound6({ scene, TR, L, W, mascot, updaters, time, env }) {
   for (const n of ['r5Entrance', 'r4GlowRings']) { const o = scene.getObjectByName(n); if (o) o.visible = false; }
   report.porthole = porthole({ scene, TR, TS, axisH, env, time });
   report.flanges = flanges({ scene, TR, TS, TE, axisH, env, time });
+  report.bowWave = bowWave({ scene, TR, L, W, mascot, updaters, time });
+  if (ROUND6.hideFoamBubbles) { const o = scene.getObjectByName('r4FoamBubbles'); if (o) updaters.push(() => { o.visible = false; }); report.foamBubblesHidden = !!o; }
+  if (ROUND6.hideCrestCards) { const o = scene.getObjectByName('r5Crests'); if (o) updaters.push(() => { o.visible = false; }); report.crestCardsHidden = !!o; }
   return report;
 }
+
+// ---------------------------------------------------------------- the bow wave round the character
+function bowWave({ scene, TR, L, W, mascot, updaters, time }) {
+  const P = ROUND6.bowWave, R = P.rows, C = P.cols;
+  // one sheet per side: (t along the wave from in front of the character round to behind it) x (v up the sheet)
+  const pos = [], uv = [], side = [], idx = [];
+  for (const s of [-1, 1]) {
+    const base = pos.length / 3;
+    for (let j = 0; j <= R; j++) for (let i = 0; i <= C; i++) { pos.push(0, 0, 0); uv.push(i / C, j / R); side.push(s); }
+    for (let j = 0; j < R; j++) for (let i = 0; i < C; i++) { const q = base + j * (C + 1) + i; idx.push(q, q + 1, q + C + 1, q + 1, q + C + 2, q + C + 1); }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute('aSide', new THREE.Float32BufferAttribute(side, 1)); g.setIndex(idx);
+  const u = { uTime: time, uFade: { value: 0 }, uAmp: { value: 1 }, uReach: { value: new THREE.Vector2(...P.reach).multiplyScalar(Math.PI / 180) },
+    uRad: { value: new THREE.Vector2(...P.radius) }, uH: { value: P.height }, uLean: { value: P.lean }, uFlow: { value: P.flow }, uLat: { value: 0 },
+    uBody: { value: new THREE.Color(...P.body) }, uDeep: { value: new THREE.Color(...P.deep) }, uAlpha: { value: P.alpha } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: BOW_VERTEX, fragmentShader: BOW_FRAGMENT, transparent: true, depthWrite: false, side: THREE.DoubleSide });
+  const mesh = new THREE.Mesh(g, mat); mesh.name = 'r6BowWave'; mesh.frustumCulled = false; mesh.renderOrder = 6; mesh.visible = false;
+  scene.add(mesh);
+  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, v = new THREE.Vector3(), m4 = new THREE.Matrix4();
+  let lat = 0, landing = 0, wasAir = false;
+  updaters.push((dt) => {
+    const k = THREE.MathUtils.smoothstep(mascot.z, L.tunnelStart - 7, L.tunnelStart - 4);   // already up on the slide's last metres (the hero moment)
+    mesh.visible = k > 0.01; if (!mesh.visible) return;
+    const ride = (W.baseHeight ? W.baseHeight(L, mascot.x, mascot.z) : W.WATER);
+    const lift = Math.max(0, mascot.yAbs - ride - W.FLOAT_H);                      // how high the character is above its float height
+    if (wasAir && !mascot.air) landing = 1;                                         // a big splash on landing
+    wasAir = mascot.air; landing = Math.max(0, landing - (dt || 0) * 2.2);
+    lat += ((mascot.xv || 0) - lat) * (1 - Math.exp(-(dt || 0) / 0.12));            // sideways speed, smoothed
+    u.uLat.value = lat;
+    u.uAmp.value = (1 + Math.abs(lat) * P.swerve * 4 + landing * 0.9) * (1 - THREE.MathUtils.smoothstep(lift, 0.05, 0.45));
+    u.uFade.value = k;
+    TR.frame(mascot.z, F); TR.map(mascot.x, ride, mascot.z, v);
+    mesh.position.copy(v); m4.makeBasis(F.R, F.U, F.T); mesh.quaternion.setFromRotationMatrix(m4);
+  });
+  return { rows: R, cols: C, triangles: idx.length / 3 };
+}
+const BOW_VERTEX = /* glsl */ `
+${NOISE}
+attribute float aSide; uniform float uTime, uAmp, uH, uLean, uFlow, uLat; uniform vec2 uReach, uRad;
+varying vec2 vUv; varying float vSide; varying vec3 vW; varying vec3 vN;
+void main() {
+  float t = uv.x, v = uv.y;
+  float phi = aSide * mix(uReach.x, uReach.y, t);                      // from just in front of the character round its side to behind it
+  float r = mix(uRad.x, uRad.y, t);
+  // the crest rises fast from the bow, peaks beside the character and trails off behind; the swerve side throws a taller sheet
+  float swerve = 1.0 + clamp(aSide * uLat * 0.35, -0.4, 0.8);
+  float h = uH * uAmp * swerve * pow(sin(3.14159 * pow(t, 0.55)), 1.2) * (0.8 + 0.35 * bwNoise(vec2(t * 6.0 - uTime * uFlow, aSide * 3.0 + uTime * 0.7)));
+  float lean = uLean * v * v * (0.6 + 0.4 * t);                         // the top curls outward
+  float rr = r + lean;
+  vec3 p = vec3(sin(phi) * rr, h * v, cos(phi) * rr);
+  vUv = uv; vSide = aSide;
+  vec3 tang = vec3(cos(phi), 0.0, -sin(phi)) * aSide, up = vec3(sin(phi) * uLean * 2.0 * v, max(h, 0.01), cos(phi) * uLean * 2.0 * v);
+  vN = normalize(mat3(modelMatrix) * cross(tang, up));
+  vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz;
+  gl_Position = projectionMatrix * viewMatrix * w;
+}
+`;
+const BOW_FRAGMENT = /* glsl */ `
+${NOISE}
+uniform float uTime, uFade, uFlow, uAlpha; uniform vec3 uBody, uDeep;
+varying vec2 vUv; varying float vSide; varying vec3 vW; varying vec3 vN;
+void main() {
+  float t = vUv.x, v = vUv.y;
+  vec2 q = vec2(t * 9.0 - uTime * uFlow * 1.3, v * 2.5 + vSide * 4.0);
+  float n = bwFbm(q), n2 = bwFbm(q * 2.7 + vec2(uTime * 0.9, 0.0));
+  float edge = 0.62 + 0.3 * n;                                          // the ragged top edge: foam fingers, not a clean line
+  if (v > edge + 0.12 * n2) discard;
+  float foam = smoothstep(edge - 0.17, edge - 0.03, v + 0.12 * n2);     // white foam crest along the top only; clear water below
+  float streak = smoothstep(0.62, 0.8, bwFbm(vec2(t * 22.0 - uTime * uFlow * 2.2, v * 3.0)));   // white streaks running back
+  vec3 V = normalize(cameraPosition - vW), N = normalize(vN); if (!gl_FrontFacing) N = -N;
+  float fres = pow(1.0 - abs(dot(N, V)), 2.0);
+  // clear turquoise, a little lit at grazing angles (the sheets are mostly seen edge-on, so a strong rim light turned them white)
+  vec3 water = mix(uDeep, uBody, 0.35 + 0.65 * v) + vec3(0.3, 0.85, 1.0) * fres * 0.15;
+  vec3 col = mix(water, vec3(1.0), clamp(foam + streak * 0.45 * (1.0 - foam), 0.0, 1.0));
+  float fadeEnds = smoothstep(0.0, 0.08, t) * (1.0 - smoothstep(0.82, 1.0, t)) * smoothstep(0.0, 0.12, v + 0.06);
+  float a = mix(0.62 + 0.3 * fres, 0.97, foam) * uAlpha * fadeEnds * uFade;
+  gl_FragColor = vec4(col, a);
+}
+`;
 
 // ---------------------------------------------------------------- geometry helpers
 // A ring swept from a closed or open (r, z) profile round the local Z axis, between two angles (degrees; 0 = +X, 90 = up).
@@ -126,7 +232,14 @@ function porthole({ scene, TR, TS, axisH, env, time }) {
     m4.compose(new THREE.Vector3(Math.cos(a) * rr, Math.sin(a) * rr, z - 0.02), new THREE.Quaternion(), new THREE.Vector3(R.size, R.size, R.size * 0.55));
     rivet.setMatrixAt(i, m4);
   }
-  g.add(face, bezel, step, seal, rivet);
+  // rivets round the gold rim's front face (the construction guide)
+  const RR = P.rimRivets, rimRivet = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 16, 10), gold, RR.count), rm = (B.inner + B.outer) / 2;
+  for (let i = 0; i < RR.count; i++) {
+    const a = (i + 0.5) / RR.count * Math.PI * 2;
+    m4.compose(new THREE.Vector3(Math.cos(a) * rm, Math.sin(a) * rm, B.front + 0.02), new THREE.Quaternion(), new THREE.Vector3(RR.size, RR.size, RR.size * 0.7));
+    rimRivet.setMatrixAt(i, m4);
+  }
+  g.add(face, bezel, step, seal, rivet, rimRivet);
   g.applyMatrix4(frameAt(TR, TS, axisH));
   for (const o of g.children) o.frustumCulled = false;
   scene.add(g);
@@ -151,6 +264,11 @@ void main() {
   col += vec3(0.25, 0.7, 1.0) * bounce * (0.45 + 0.15 * sin(a * 6.0 + uTime * 2.0));
   float groove = exp(-pow((r - (uIn + 0.95)) / 0.05, 2.0)) + exp(-pow((r - (uIn + 1.9)) / 0.07, 2.0));   // pressed rings
   col = mix(col, uShade * 0.8, groove * 0.5); col += uLilac * 0.25 * exp(-pow((r - (uIn + 1.0)) / 0.04, 2.0));
+  float pa = a / 6.2832 * ${ROUND6.porthole.panels.toFixed(1)} + 0.5;                     // panel seams (the construction guide)
+  float seam = exp(-pow((fract(pa) - 0.5) * r * 6.2832 / ${ROUND6.porthole.panels.toFixed(1)} / 0.025, 2.0)) * step(uIn + 0.95, r);
+  col = mix(col, uShade * 0.7, seam * 0.6); col += uLilac * 0.18 * exp(-pow((fract(pa) - 0.47) * r * 6.2832 / ${ROUND6.porthole.panels.toFixed(1)} / 0.02, 2.0)) * step(uIn + 0.95, r);
+  float lightPanel = smoothstep(0.2, 0.17, abs(a - 1.5708)) * smoothstep(uIn + 0.42, uIn + 0.5, r) * (1.0 - smoothstep(uIn + 0.8, uIn + 0.88, r));
+  col = mix(col, vec3(0.75, 0.95, 1.0) * 1.35, lightPanel);                                 // a glowing light panel above the door
   float view = clamp(dot(normalize(vN), normalize(cameraPosition - vW)), 0.0, 1.0);
   col *= 0.75 + 0.35 * view;
   gl_FragColor = vec4(col, 1.0);
