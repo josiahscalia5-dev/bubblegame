@@ -179,3 +179,46 @@ Is it done yet
 
 Almost: it's at frame 298 of 345, so about 3–5 more minutes. Then I'll encode it to MP4, check that the frames look right, and send it to you here.
 
+---
+
+### Automatic notice · 2026-11-04 03:10 UTC
+
+_Background command "Record the final 11.5 s round 2 gameplay run" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-04 03:10 UTC
+
+The recording finished cleanly: 345 frames, all 5 socks rescued, one heart lost, Bubble Blast and Turbo Spin each used once, and no console errors. Encoding it now:
+
+The video is encoded (11.5 s, 9.6 MB). Checking frames from it before I send it:
+
+_[Sent you files: Previews/WebDemo/screen4_round2_test/bubblewash_round2_tunnel_final.mp4]_
+
+I'm building the screenshot sheets from the final video's frames, then I'll measure performance.
+
+Two of the frame labels overlap on the sheet, so I'm shortening them:
+
+_[Sent you files: Previews/WebDemo/screen4_round2_test/02_tunnel_views.png, Previews/WebDemo/screen4_round2_test/03_controls.png, Previews/WebDemo/screen4_round2_test/04_exit_before_after.png, Previews/WebDemo/screen4_round2_test/01_tunnel_vs_approved.png]_
+
+The sheets are done and sent. The functional checks are still running. Meanwhile I'm checking that the normal game and last round's `?s3=paint,tunnel` render exactly as before this session's change:
+
+While the checks run, I'm updating the hand-off notes for the next session:
+
+Still waiting on the functional checks and the "unchanged" pixel comparison. Both run in the background, and I'll continue as soon as they report back.
+
+---
+
+### Automatic check · 2026-11-04 03:13 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-04 03:13 UTC
+
+The hand-off notes are committed and pushed. GitHub is at `13b8d89`, the same as the local copy, and nothing is left unsaved.
+
+The functional checks and the pixel comparison for the normal game and `?s3=paint,tunnel` are still running in the background. When they report back I'll measure performance, write the honest score and the README, and save again.
+
