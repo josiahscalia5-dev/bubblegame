@@ -483,3 +483,7 @@ The foam is now visibly made of distinct bubbles with blue centres (bottom right
 
 **c2** (right) looks best as well. The tunnel reads deeper blue, and the right brush now shows the approved large blue core inside a white ring. Making c2 the default in the source:
 
+While those run, the side-by-side comparison. There's a sheet tool from the previous session; checking its usage:
+
+Both are still early (the video is at 3 frames). Meanwhile I'll save the measurements for the final build into the evidence folder:
+
