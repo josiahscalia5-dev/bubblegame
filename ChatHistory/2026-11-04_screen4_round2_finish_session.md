@@ -968,3 +968,9 @@ The gameplay video and the frame-cost measurement are still running in the slow 
 
 The machine is overloaded (load 10 on 4 cores). The Playwright plugin's browser is still running the game in real time from my check, so I'm closing it.
 
+The final hearts, pause and power-up check is still running; it reloads the game several times, which is slow here. Meanwhile I'm saving the video, sheets, measures and report to GitHub.
+
+Everything is already on GitHub at `0f60827`; the 5-minute auto-save committed and pushed it moments before me. Here are the real gameplay video and the approved-versus-game sheets:
+
+_[Sent you files: Previews/WebDemo/screen4_round3_test/bubblewash_round3_gameplay.mp4, Previews/WebDemo/screen4_round3_test/01_screen4_approved_vs_round2_vs_round3.png, Previews/WebDemo/screen4_round3_test/02_screen4_during_movement.png, Previews/WebDemo/screen4_round3_test/04_screen3_tap_to_start.png]_
+
