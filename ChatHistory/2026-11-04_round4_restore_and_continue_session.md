@@ -843,3 +843,32 @@ Saved: **commit `a46cc57`**, push verified. It holds the rules result and the up
 
 Every Round 4 gameplay check now passes: controls, rules, riding through every lane, and frame cost. The normal game and Round 3 are pixel-identical to your recovered version. The only thing still running is the re-recorded 12-second video of the final build. When I'm notified it's done, I'll encode it, check it, save it with a verified push, and send it to you.
 
+---
+
+### You · 2026-11-04 14:10 UTC
+
+Here is my API key for tripo  [REDACTED]
+
+---
+
+### Claude · 2026-11-04 14:10 UTC
+
+A third key. Same order as before: first confirm the exporter blanks it and it isn't in the repository or on GitHub, then sign in and read the balance, which is free:
+
+Safe: the export shows "[REDACTED]", and the key isn't in the repository or on GitHub. Signing in with it and checking the balance:
+
+**Tripo now works from here, with 1,000 credits available.** This third key verified, and its account is the one with the credits. Nothing has been generated or spent.
+
+**What a job would cost**, from Tripo's own free estimate:
+- **Tripo v3.1:** about **20 credits** per model.
+- **Tripo P2** (its newest default): about **110 credits** per model.
+- Adding textures as a follow-up step costs extra; Tripo's tool doesn't estimate that part.
+
+**Nothing needs generating right now.** The current Round 4 work (tunnel, water, splashes, bubbles, brushes, lighting, framing) is all built with Blender, three.js and your existing assets, as you asked. If a 3D asset turns out to be genuinely missing, I'll name it, show you the exact credit cost from a free dry run, and wait for your yes.
+
+**Your keys:** none of the three is in the repository or on GitHub, and the saved chat shows "[REDACTED]" in their place. Please delete the first two (ending …H0vq and …SFj0) on Tripo's site, since they're no longer used. The working key (ending …GAlL) is stored only on this session's machine, so a new session will need it again. A browser sign-in through Tripo avoids pasting it here.
+
+**Latest save:** branch `ccr-8ca1fe92-d6t2bm`, commit `2aac9d8`, push confirmed on GitHub. It saved the Tripo status in `Tools/DEV_TOOLS.md`.
+
+The new 12-second video of the final build is still recording. I'll send it to you and save it once it finishes.
+
