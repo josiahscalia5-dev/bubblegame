@@ -965,3 +965,5 @@ You've hit your 5-hour limit · resets 5:20pm (UTC)
 
 The session's worker restarted. I'll check what state everything is in before continuing: the time, the repository, and the fur-shell file I was making.
 
+That gives 31k triangles before the default error limit stops it. A fur halo proxy can tolerate a looser fit, so I'll allow 5% error to reach about 6k:
+
