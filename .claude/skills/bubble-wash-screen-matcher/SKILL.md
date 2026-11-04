@@ -15,13 +15,22 @@ overlay. Keep these as they are unless the user says otherwise:
 
 ## Where things are
 
-- Approved targets: `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/`
+- **Main reference for Screen 4, above every other image:** the user's ORIGINAL APPROVED Screen 4,
+  `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536, the
+  largest copy). Its close-ups are `09_APPROVED_CHARACTER_WATER_CONTACT.png` and `10_APPROVED_TUNNEL_LIGHT_AND_DEPTH.png`
+  in the same folder. The four design agents use the same file. Concept sheets, boards and the smaller copy below are
+  secondary and never override it. Measure against this file: pass it as `--approved` to `compare_s4.py` and as the
+  first image to `hero_shares.py`.
+- Other approved targets: `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/`
   - Screen 3 is `01_APPROVED_SCREEN_3_OPENING.jpg`; Screen 4 is `02_APPROVED_SCREEN_4_FULL.jpg`.
   - Close-up crops are in `03_SCREEN_4_CROPS/`. Read `00_READ_ME_FIRST.txt` first.
 - The game: `WebDemo/`.
   - Source is in `src/`. Build with `cd WebDemo && node build.mjs`; the bundle `game.bundle.js` is committed.
 - Test switches (URL `?s3=...` or `window.__BW_S3__`):
-  - `hero` is the newest Screen 4 version (5 November 2026): Round 7's dedicated hero scene, rebuilt from the approved
+  - `liquid` (Round 8, 5 November 2026, new account): `hero` plus a real animated water body through the tunnel
+    (`src/tunnel_r8_liquid.js`); `liquid,nofoam` shows the liquid without the foam layer. Evidence:
+    `Previews/WebDemo/screen4_round8_liquid/`.
+  - `hero` is the previous Screen 4 version (5 November 2026): Round 7's dedicated hero scene, rebuilt from the approved
     Screen 4 as a staged playable frame (`src/tunnel_r7_hero.js`, `src/tunnel_r7_hero_water.js`). Hero moment **2.85 s**.
     Stage objects with `tools/screen4/hero_probe.cjs` (PICKS) and measure with `tools/screen4/hero_shares.py`. Colours are
     sRGB hex through `new THREE.Color()` (linear light; screen values written straight into shaders come out pastel).

@@ -1,6 +1,27 @@
 # Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 4 reconstruction, `?s3=round4`)
 
-Read this first when you continue in a new Claude conversation.
+Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
+
+## Newest (4–5 November, 23:30 UTC onward): fourth Claude account, branch `ccr-aeee6378-mv5kot`, Round 8 LIQUID
+
+- **Recovered from:** `06b9805`, the tip of `claude/screen-4-art-rebuild-69gb2p` and the newest Screen 4 work.
+  `ccr-aeee6378-mv5kot` starts exactly there.
+  - Every other branch is either contained in it or holds only older work: chat autosaves (`ccr-3876cb6e`,
+    `ccr-8ca1fe92`), Round 5 evidence (`ccr-4bb5eb4c`), or the separate early Unity line (`claude/new-session-oth0dd`).
+  - No branch was changed or force-pushed.
+- **Environment:** this account's environment started empty. `bash Tools/cloud_env_setup.sh` installed every tool.
+  Versions, plugins and the Tripo state are in `Tools/DEV_TOOLS.md` ("Newest check").
+  - The rebuilt bundle is byte-identical to `06b9805`.
+  - No plugins are enabled on this account yet; the list to enable is in `Tools/DEV_TOOLS.md`.
+  - Tripo is not signed in, so it has no balance reading yet.
+- **`CLAUDE.md` (new):** the standing rules, loaded automatically by every session.
+  - Screen 4 only; the original approved Screen 4 is the authority.
+  - Blue water first, foam only as an accent.
+  - Real three.js only; never restart the game.
+  - Pixel-identical older switches; no keys in the repository; ask before spending Tripo credits.
+- **Round 8, `?s3=liquid` (in progress):** the real animated water body the user asked for, in
+  `WebDemo/src/tunnel_r8_liquid.js`. `?s3=liquid,nofoam` shows the liquid alone. `?s3=hero` and everything older stay
+  pixel-identical. Evidence: `Previews/WebDemo/screen4_round8_liquid/`.
 
 ## Newest (4–5 November, 22:00 UTC onward): original account, branch `claude/screen-4-art-rebuild-69gb2p`, Round 7 HERO SCENE
 

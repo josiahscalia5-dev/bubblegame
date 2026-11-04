@@ -1,4 +1,73 @@
-# Development tools for Bubble Wash Kingdom (checked 4 November 2026, 14:40 UTC, branch `ccr-4bb5eb4c-md7eyt`, on the Claude account set up that afternoon)
+# Development tools for Bubble Wash Kingdom
+
+## Newest check: 4 November 2026, 23:30 UTC, branch `ccr-aeee6378-mv5kot`, on the fourth Claude account
+
+This account's cloud environment started empty: no `~/.bubblewash-tools` and no Setup script.
+`bash Tools/cloud_env_setup.sh` installed everything in about 2 minutes, exit 0. To make it lasting, paste
+`Tools/cloud_env_setup.sh` into the environment's **Setup script** (cloud environment menu, then **Edit**, then
+**Setup script**). The **Environment variables** box only takes `KEY=value` lines, so no script goes there.
+
+**Tools** (all checked and run in this session):
+
+| Tool | Version |
+|---|---|
+| Blender (real binary, with the `bpy` API inside Blender) | 5.2.3 LTS |
+| Python | 3.13.18 |
+| OpenCV (in `$BW_PY`) | 5.0.0 |
+| scikit-image (in `$BW_PY`) | 0.26.0 |
+| Node.js | 22.23.4 |
+| npm | 10.9.9 |
+| three.js (pinned in `WebDemo`) | 0.170.0 |
+| esbuild | 0.24.0 |
+| Vite | 8.3.5 |
+| Playwright | 1.63.0 |
+| Chromium | 153 |
+| FFmpeg | 6.1.1 |
+| ImageMagick | 6.9.12 |
+| Git LFS | 3.4.1 |
+| glTF Transform | 4.5.1 |
+| glTF Validator | 2.0.0-dev.3.10 |
+| Tripo CLI | 0.11.2 |
+| `tsc` | on the machine |
+| `pyright` | on the machine |
+
+`node build.mjs` rebuilt `game.bundle.js` **byte-identical** to commit `06b9805`. A Tripo GLB
+(`Design/TripoDeliveries/A2Tunnel/..._1K.glb`) gave 0 errors in the validator, `gltf-transform inspect` read it, and
+Blender imported it.
+
+**Tripo:** the CLI is installed and `openapi.tripo3d.ai` is reachable (HTTP 401 without a key). The account is **not
+signed in**, so its balance cannot be read. Sign in with option B below (a network secret); never paste a key into the chat.
+
+**Claude Code plugins on this account: none enabled** (`ListPlugins` returned none). All of these are in the Anthropic
+Directory and can be enabled; a NEW session is needed after enabling them:
+
+| Plugin | Publisher |
+|---|---|
+| playwright | Microsoft |
+| github | GitHub |
+| context7 | Upstash |
+| Superpowers | obra, Jesse Vincent |
+| frontend-design | Anthropic |
+| code-simplifier | Anthropic |
+| claude-md-management | Anthropic |
+| claude-code-setup | Anthropic |
+| code-review | Anthropic |
+| commit-commands | Anthropic |
+| feature-dev | Anthropic |
+| Security Guidance | Anthropic |
+| skill-creator | Anthropic |
+
+No official TypeScript LSP, Pyright LSP or Chrome DevTools plugin was found in this account's catalog. Only community
+look-alikes exist, and they were not installed.
+
+**Built in and working without any plugin:**
+
+- the GitHub tools of the cloud session (branches listed through them, push works);
+- skills: Skill Creator (`anthropic-skills:skill-creator`), `code-review`, `security-review`, `simplify`, `init`;
+- Playwright through the `playwright` package, with the pre-installed Chromium;
+- the project's own skill and the four agents in `.claude/`.
+
+## Earlier check: 4 November 2026, 14:40 UTC, branch `ccr-4bb5eb4c-md7eyt`, on the Claude account set up that afternoon
 
 Four separate states, for each tool:
 
