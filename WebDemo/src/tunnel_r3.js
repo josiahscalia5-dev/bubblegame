@@ -18,17 +18,21 @@ export const ROUND3 = {
   // the approved rings are cyan, azure and white with a pastel pink band (round2: pink, lavender, cyan, orchid, gold)
   ringColours: [[0.18, 0.82, 1.0], [0.42, 0.6, 1.0], [0.8, 0.95, 1.0], [0.22, 0.7, 1.0], [1.0, 0.55, 0.88]],
   wallDeep: [[0.04, 0.12, 0.55], [0.32, 0.62, 1.0]],   // the drum's walls deep royal blue to azure (round2: violet)
-  swirl: { radius: 1.93, rowStep: 0.4, around: 72, from: -36, to: 216, strength: 0.55 },
+  swirl: { radius: 1.93, rowStep: 0.4, around: 72, from: 6, to: 174, strength: 0.42 },
   foam: {
-    count: 72, bright: 1.12,
-    // where the heaps rise, relative to the mascot (dx sideways, du along the path, metres), how big and how they drift
+    count: 96, bright: 1.12,
+    // where the heaps rise, relative to the mascot (dx sideways, du along the path, metres; the camera is 3.6 m behind it),
+    // how big they grow, how deep they sit in the water (a share of their size) and how they drift back and outward
     zones: [
-      { w: 0.42, dx: [-0.78, 0.78], du: [-1.05, -0.32], r: [0.13, 0.27], sink: 0.32, drift: 0.9, out: 0.35 },   // behind it, toward the camera
-      { w: 0.36, side: [0.5, 1.2], du: [-1.5, 0.45], r: [0.13, 0.28], sink: 0.3, drift: 1.1, out: 0.3 },      // beside it
-      { w: 0.22, ring: [0.44, 0.58], r: [0.09, 0.17], sink: 0.15, drift: 0.5, out: 0.2 },                      // hugging its body
+      { w: 0.34, dx: [-0.8, 0.8], du: [-0.75, -0.15], r: [0.18, 0.34], sink: 0.45, drift: 0.45, out: 0.25 },   // the crest in front of its lower body
+      { w: 0.26, side: [0.5, 1.15], du: [-1.3, 0.45], r: [0.16, 0.32], sink: 0.4, drift: 0.7, out: 0.3 },      // heaps beside it
+      { w: 0.2, dx: [-0.95, 0.95], du: [-1.45, -0.8], r: [0.15, 0.3], sink: 0.5, drift: 0.5, out: 0.2 },       // the foreground, nearest the camera
+      { w: 0.2, ring: [0.42, 0.56], r: [0.1, 0.2], sink: 0.2, drift: 0.3, out: 0.15 },                        // hugging its body
     ],
-    life: [0.55, 1.15],
+    life: [0.6, 1.25],
   },
+  spray: { rate: 70, size: [0.05, 0.11] },                 // white spray droplets thrown up round the mascot (game.js)
+  camera: { lookY: 1.7 },                                  // the drum camera's aim, higher than round2's 0.89 (game.js)
   bubbles: { count: 20, du: [-2.6, 13], x: [0.42, 1.55], h: [0.35, 2.5], r: [0.045, 0.24], flow: 1.6 },
   sparkles: { rate: 34, du: [3, 15], r: [0.2, 1.7] },
   // brushes: pink and white tufts outside, royal blue inside (right), pink and white all over (left)

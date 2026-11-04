@@ -276,11 +276,15 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   return report;
 }
 
-/** round3: the brushes recoloured as the approved Screen 4's: the pink bristles become fluffy tufts of hot pink and white,
- *  and the blue face a deep royal blue on the right-hand brushes (round2 made it a pale periwinkle) or pink and white tufts
- *  on the left-hand ones. Worked out on the wheel's own colours and shape (angle and distance from its axle), so the
+/** round3: the brushes recoloured as the approved Screen 4's: the bristles (and the gold rings on the wheel, which the
+ *  approved brushes do not show) become soft clumps of hot pink and white, and the blue face a deep royal blue on the
+ *  right-hand brushes (round2 made it a pale periwinkle) or pink and white on the left-hand ones. Worked out on the wheel's own colours and shape (angle and distance from its axle), so the
  *  model's light and shade are kept. Its colours are uniforms (window.__bwR3.brushU) so they can be tried live in tests. */
 const r3BrushU = { uR3Pink: { value: new THREE.Color() }, uR3White: { value: new THREE.Color() }, uR3Royal: { value: new THREE.Color() }, uR3Deep: { value: new THREE.Color() }, uR3Tufts: { value: 26 } };
+const R3_NOISE = `float r3h(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float r3n(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(r3h(i), r3h(i + vec2(1, 0)), f.x), mix(r3h(i + vec2(0, 1)), r3h(i + vec2(1, 1)), f.x), f.y); }
+`;
 function r3Brush(m, left, glowLine) {
   const B = ROUND3.brush;
   r3BrushU.uR3Pink.value.setRGB(...B.pink); r3BrushU.uR3White.value.setRGB(...B.white); r3BrushU.uR3Royal.value.setRGB(...B.royal); r3BrushU.uR3Deep.value.setRGB(...B.deep); r3BrushU.uR3Tufts.value = B.tufts;
@@ -288,20 +292,18 @@ function r3Brush(m, left, glowLine) {
   m.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, r3BrushU);
     sh.vertexShader = 'varying vec3 vR3Obj;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vR3Obj = position;');
-    sh.fragmentShader = 'varying vec3 vR3Obj; uniform vec3 uR3Pink, uR3White, uR3Royal, uR3Deep; uniform float uR3Tufts;\n' + sh.fragmentShader
+    sh.fragmentShader = 'varying vec3 vR3Obj; uniform vec3 uR3Pink, uR3White, uR3Royal, uR3Deep; uniform float uR3Tufts;\n' + R3_NOISE + sh.fragmentShader
       .replace('#include <color_fragment>', `#include <color_fragment>
         { vec3 c = diffuseColor.rgb; float l = dot(c, vec3(0.333));
           float blue = smoothstep(0.03, 0.2, c.b - max(c.r, c.g));
-          float gold = smoothstep(0.06, 0.2, c.r - c.b) * smoothstep(0.02, 0.12, c.g - c.b) * step(c.g, c.r) * (1.0 - smoothstep(0.25, 0.4, c.r - c.g));
-          float fluffy = (1.0 - blue) * (1.0 - gold);
-          float rr = length(vR3Obj.xy), ang = atan(vR3Obj.y, vR3Obj.x), row = floor(rr * 9.0);
-          float ta = ang * uR3Tufts / 6.2832 + row * 0.5;
-          float hsh = fract(sin(floor(ta) * 12.9898 + row * 78.233) * 43758.5453);
-          float tuft = 0.7 + 0.3 * sin(fract(ta) * 3.1416);
-          float shade = 0.7 + 0.55 * smoothstep(0.1, 0.8, l);
-          vec3 fluff = mix(uR3Pink, uR3White, step(0.55, hsh)) * tuft * shade;
-          vec3 face = ${left ? 'mix(uR3Pink, uR3White, step(0.62, hsh) * 0.85) * tuft * shade' : 'mix(uR3Royal, uR3Deep, hsh * 0.55) * (0.8 + 0.35 * tuft) * shade'};
-          diffuseColor.rgb = mix(mix(c, fluff, fluffy * 0.92), face, blue); }`)
+          float rr = length(vR3Obj.xy), ang = atan(vR3Obj.y, vR3Obj.x);
+          vec2 q = vec2(ang * uR3Tufts / 6.2832, rr * 8.0);   // tufts round the wheel and outward from the axle
+          float clump = r3n(vR3Obj.xy * 7.0) * 0.65 + r3n(vR3Obj.xy * 15.0 + 7.0) * 0.35;   // soft clumps (no seam round the wheel)
+          float tuft = 0.74 + 0.26 * r3n(q * vec2(3.0, 5.0) + 3.0);
+          float shade = 0.72 + 0.5 * smoothstep(0.1, 0.8, l);
+          vec3 fluff = mix(uR3Pink, uR3White, smoothstep(${left ? '0.55, 0.68' : '0.38, 0.52'}, clump)) * tuft * shade;
+          vec3 face = ${left ? 'fluff' : 'mix(uR3Royal, uR3Deep, smoothstep(0.35, 0.75, clump) * 0.7) * (0.85 + 0.3 * tuft) * shade'};
+          diffuseColor.rgb = mix(fluff, face, blue); }`)
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine);
   };
   m.customProgramCacheKey = () => 's4:brush3' + (left ? 'L' : 'R');

@@ -17,6 +17,7 @@ import { buildDecor, DECOR } from './decor.js';
 import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
 import { S3 as S3_SWITCHES } from './screen3_models.js';
 import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
+import { ROUND3, mulberry } from './tunnel_r3.js';
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -34,6 +35,19 @@ const R2_RULES = {
   gems: [[1, 15.6], [0, 34.2]],
 };
 const r2Hooks = {};   // filled in by tunnel_s4.js (clearBrushes, hazards); pop is set below
+// ?s3=round3 (test only, on top of round2): the third visual pass toward the approved Screen 4 (tunnel_r3.js). Here: the
+// collectibles arranged around the mascot as in the approved picture (big coins rising on both sides, a purple gem up on the
+// left, a sock on the right, the middle lane ahead left open to show the tunnel's depth), all still real and collectable
+// (every coin is within reach while riding: 1.1 m at most); a purple gem; white spray and sparkles; and the drum camera
+// tilted a little up, so the mascot sits lower in the picture as in the approved screen. Brushes, lanes and rules as round2.
+const R3 = !!S3_SWITCHES.round3;
+if (R3) Object.assign(R2_RULES, {
+  // [lane, first u, count, step, height at the ends, extra height in the middle of the line]
+  coinLines: [[1, 4.0, 3, 1.0, 0.7, 0], [2, 9.4, 2, 0.9, 0.55, 0], [0, 11.0, 3, 1.0, 0.92, 0.18], [1, 15.0, 3, 1.0, 0.72, 0], [2, 18.4, 3, 1.0, 0.7, 0], [1, 23.4, 5, 1.0, 0.7, 0], [0, 29.8, 3, 1.0, 0.7, 0]],
+  socks: [[1, 7.6], [2, 12.1], [2, 21.8], [1, 28.6], [0, 33.0]],
+  gems: [[0, 14.6], [0, 34.2]], gemH: 1.0,
+});
+const r3Rnd = R3 ? mulberry(0x3e3b) : null;   // round3's own random numbers (the game's own sequence is unchanged)
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -637,7 +651,10 @@ function buildCollectibles(gemGltf, face) {
   if (R2) {
     // round2: the two coins in front of the portal (part of the approved opening) stay; in the tunnel, clean lane lines.
     for (const p of L.coins3) if (p[2] < z0) addCoin(onLanes(p), true);
-    for (const [lane, u0, n] of R2_RULES.coinLines) for (let i = 0; i < n; i++) addCoin(onWater(W.laneX(lane), R2_RULES.coinH, u0 + i * R2_RULES.coinStep));
+    for (const [lane, u0, n, step, h0, arc] of R2_RULES.coinLines) for (let i = 0; i < n; i++) {
+      const h = R3 ? h0 + arc * Math.sin(Math.PI * i / Math.max(1, n - 1)) : R2_RULES.coinH;   // round3: each line its own height, some arching
+      addCoin(onWater(W.laneX(lane), h, u0 + i * (R3 ? step : R2_RULES.coinStep)));
+    }
   } else {
   for (const p of L.coins3) addCoin(onLanes(p), true);
   for (const p of L.coins4) addCoin(onLanes(p), true);
@@ -659,6 +676,7 @@ function buildCollectibles(gemGltf, face) {
   });
   mats.gemMaterials = [];
   gemSrc.traverse((o) => { if (o.isMesh) mats.gemMaterials.push(o.material); });
+  if (R3) for (const m of mats.gemMaterials) { m.color.setRGB(...ROUND3.gem.color); m.emissive.setRGB(...ROUND3.gem.emissive); }   // round3: the approved purple gem
   const addGem = (p, compose) => {
     const u0 = p.z;
     p = TR.map(p.x, p.y, p.z);
@@ -1036,6 +1054,31 @@ function stepRound2(dt) {
   }
   $('r2Shield').classList.toggle('on', state.blastT > 0 || state.turboT > 0);
 }
+// round3: white spray thrown up round the mascot as it ploughs through the drum's water, and sparkles twinkling down the
+// tunnel ahead (approved Screen 4), only inside the drum and with round3's own random numbers
+function stepRound3(dt) {
+  const m = mascot, R = r3Rnd;
+  if (state.phase !== 'running' || m.z < L.tunnelStart - 0.3) return;
+  const P = ROUND3.spray, surf = W.surface(L, m.x, m.z, state.time);
+  if (!m.air) {
+    m.r3Spray = (m.r3Spray || 0) + P.rate * dt;
+    for (; m.r3Spray >= 1; m.r3Spray--) {
+      const side = R() < 0.5 ? -1 : 1, a = R();
+      fx.emitT(m.x + side * (0.38 + R() * 0.3), surf + 0.05, m.z - 0.25 + a * 0.5,
+        side * (0.4 + R() * 1.4) - m.xv * 0.3, 1.6 + R() * 2.2, m.speed * (0.45 + R() * 0.35), P.size[0] + R() * (P.size[1] - P.size[0]), 0.45 + R() * 0.35, 3, 0.9);
+    }
+  }
+  const S = ROUND3.sparkles;
+  m.r3Spark = (m.r3Spark || 0) + S.rate * dt;
+  for (; m.r3Spark >= 1; m.r3Spark--) {
+    const a = R() * Math.PI * 2, r = S.r[0] + R() * (S.r[1] - S.r[0]), du = S.du[0] + R() * (S.du[1] - S.du[0]);
+    TR.frame(m.z + du, F);
+    const h = W.WATER + W.AXIS_H + Math.sin(a) * r;
+    if (h < 0.35) continue;
+    const p = F.P.clone().addScaledVector(F.R, Math.cos(a) * r).addScaledVector(F.U, h);
+    fx.emit(p.x, p.y, p.z, 0, 0.05, 0, 0.1 + R() * 0.14, 0.5 + R() * 0.5, 2, 0);
+  }
+}
 function useBlast() {
   if (!R2 || state.phase !== 'running' || state.paused || state.blasts <= 0 || state.blastT > 0 || state.outT >= 0) return false;
   state.blasts--; state.blastT = R2_RULES.blastTime;
@@ -1089,6 +1132,7 @@ function loopRun() {
 // height) while the portal arch grows to the approved size.
 const S3 = { off: new THREE.Vector3(0, 1.0, -6.4), look: new THREE.Vector3(0, 0.5, 5.97), fov: 40 };
 const S4 = { off: new THREE.Vector3(0, 1.03, -3.58), look: new THREE.Vector3(0, 0.89, 6.42), fov: 60 };
+if (R3) S4.look.y = ROUND3.camera.lookY;   // round3: tilted up a little inside the drum, so the mascot sits lower (Tap to Start unchanged)
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
   const m = mascot;
@@ -1474,6 +1518,7 @@ function step(dt) {
   if (R2 && state.paused) return;   // round2 pause: the game stands still (the picture stays as it was)
   state.time += dt;
   if (R2) stepRound2(dt);
+  if (R3) stepRound3(dt);
   waterU.uTime.value = state.time;
   for (const u of fallsU) u.uTime.value = state.time;
   mats.bubbleU.uTime.value = state.time;
@@ -1532,7 +1577,15 @@ async function main() {
     buildSky();
     const [castle, drum, mascotG, roller, gem, sock, machineryG, towerG, gearG, pipeG, crownG, coinFace] = await Promise.all([
       ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'machinery', 'tower', 'gear', 'pipe', 'crown'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
-    fx = new Particles(1400);
+    fx = new Particles(R3 ? 2200 : 1400);
+    if (R3) {   // round3: kind 3, a white spray droplet (bright white body, cyan edge)
+      fx.points.material.fragmentShader = fx.points.material.fragmentShader.replace('if (vKind < 0.5) {', `if (vKind > 2.5) {
+    float hl = 1.0 - smoothstep(0.0, 0.4, length(p - vec2(-0.3, -0.3)));
+    a = (1.0 - smoothstep(0.7, 1.0, r)) * 0.85 + hl * 0.15;
+    col = mix(vec3(0.8, 0.93, 1.0), vec3(1.25), clamp(hl + (1.0 - r) * 0.5, 0.0, 1.0));
+  } else if (vKind < 0.5) {`);
+      fx.points.material.needsUpdate = true;
+    }
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
     bake(castle.scene, { saturation: 1.0, brightness: 1.06, glow: 0.35, grade: SH.CASTLE_GRADE, haze: [0.3, 14, 45, [0.86, 0.79, 1.0]], shade: [0.86, 0.26, 0.35] });
