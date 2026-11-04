@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (3 November 2026, morning: Screen 3 opening test version)
+# Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 2 tunnel polish test, `?s3=round2`)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,7 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-4e2b86d7-kqpei8` | **Test version for review (3 November, late morning):** the approved Screen 3 artwork as the Tap to Start screen, on top of `ccr-68cd26f5-4t8etp`. Not merged; see section 2c of `Design/SCREEN3_OPENING_MATCH.md`. |
+  | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
@@ -31,7 +31,32 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (4 November): the inside tunnel rebuilt toward the approved Screen 4, `?s3=tunnel` (test, not approved)
+## Latest (4 November, night): round 2, the tunnel polished and the Screen 4 controls, `?s3=round2` (test, not approved)
+
+- **What the user asked:** keep the painted opening and the new tunnel as the foundation and polish the inside tunnel:
+  - colour and light that is never washed out;
+  - golden paw coins;
+  - Bubble Blast, Turbo Spin and pause;
+  - hearts that brushes take;
+  - neat, readable collectibles, clean brushes and less clutter.
+  - Then the Laundry Toss intro, but only after evidence and a list of missing assets. **The intro is not started.**
+- **`?s3=round2`** turns on the painted opening, the tunnel and this round. `?s3=paint,tunnel` is still exactly last round, and the normal game is unchanged.
+- **Code:**
+  - `tunnel_s4.js` (the `ROUND2` settings and `round2Light`): ring colours with gold, an exit vortex shader instead of the white rays, a tunnel-only grade (vibrance and highlight roll-off), lace foam and lane guides on the water, a pink warning glow down a brush's lane, brush colour smoothing and sheen, fewer bubbles, gold gears that glow.
+  - `game.js` (`R2`, `R2_RULES`, `stepRound2`, `useBlast`, `useTurbo`, `setPaused`, `restartRound2`): hearts, the power-ups, pause, the tidy collectible layout, halos on socks, collectibles shrinking once passed, the old drum rollers hidden.
+  - `paw_coin.js`: the 3D embossed paw coin.
+  - `page.html`: the `#r2Hud` template, added to the page only with the switch.
+- **Rules:**
+  - A knock takes one heart, with a 1 s guard. At 0 hearts the game shows "Out of hearts!" and returns to Tap to Start after 1.4 s, with 5 hearts and 3 of each power-up.
+  - Bubble Blast (3): for 3 s, brushes up to 13 m ahead are pushed back to the wall.
+  - Turbo Spin (3): 2.5 s at ×1.45 speed, spinning, and brushes cannot knock the mascot.
+  - Pause button, or the P or Escape key. B is Bubble Blast and T is Turbo Spin.
+- **The end of a run** still loops back to the slide (`loopRun`), because Screens 5 onward are not built. It is not a test reset.
+- **Evidence:** `Previews/WebDemo/screen4_round2_test/`.
+- **Missing assets for the intro:** `Design/LAUNDRY_TOSS_INTRO_ASSETS.md`. The intro reference pictures were never uploaded to this session; ask for them.
+- **Auto-save:** `Tools/autosave.sh` (started at the user's request) exports the chat history and commits and pushes every 5 minutes while a session is running.
+
+## Earlier (4 November): the inside tunnel rebuilt toward the approved Screen 4, `?s3=tunnel` (test, not approved)
 
 - **The user likes the painted opening (`?s3=paint`)** but wants the inside tunnel matched to Screen 4 before anything becomes permanent. Nothing is merged.
 - **`?s3=tunnel` (`WebDemo/src/tunnel_s4.js`)**; combine as `?s3=paint,tunnel` for the full run.

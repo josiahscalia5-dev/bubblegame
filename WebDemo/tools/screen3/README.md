@@ -18,5 +18,8 @@ These are the scripts behind the evidence in `Previews/WebDemo/opening_artwork`,
 | `cmp4.py`, `*_sheets.py` | The comparison sheets in `Previews/WebDemo/`. |
 | `make_paint_backdrop.py` | **Unfinished.** It makes `WebDemo/ui/s3_paint_backdrop.png` for the painted-layer test. Its colour inversion is still wrong for some bright and saturated pixels (99th percentile error about 105 levels), and no game code uses the file yet. |
 | `remove_duck.py` | The duck-removal fill. You declined its results; it is kept for reference only. |
+| `record_r2.cjs` | Records the `?s3=round2` test. It uses real swipes and real mouse clicks on the HUD buttons (pause, Bubble Blast, Turbo Spin), and each input fires when the mascot reaches a set point on the track. Use `dry` mode to print the game state at each input. |
+| `r2_func.cjs` | Functional checks for `?s3=round2`: hearts down to zero and back to Tap to Start, pause (button and keyboard), Bubble Blast clearing brushes and counting down to a disabled button, and Turbo Spin speed and protection. |
+| `r2_sheets.py` | The comparison sheets in `Previews/WebDemo/screen4_round2_test`. |
 
 Seeded copies of `tools/seeded_run.cjs` with a switch turned on were made with a one-line `sed`: insert `window.__BW_S3__ = ['all', 'edges'];` after `window.__BW_TEST__ = true;`.

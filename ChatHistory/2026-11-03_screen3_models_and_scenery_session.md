@@ -2036,3 +2036,9 @@ That stop was intentional. Now the colour adjustments:
 
 The second page load in the test timed out after 30 seconds, because loading the models with software rendering is slow. Raising the timeout and printing each result as it arrives:
 
+Every functional check passes. Viewing the start of the report:
+
+While the video records, I'm updating the handoff notes with this round:
+
+The README draft is written; the measured results go in once the video and checks finish. Waiting for the recording.
+
