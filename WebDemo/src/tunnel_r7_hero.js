@@ -42,9 +42,9 @@ export const HERO = {
     // the approved rim (the Art Director's fit): a big ring whose inner edge is a circle 0.86 of the screen width across the
     // top, centred low (left of and below the whirlpool's centre), thick at the right edge; built 2.1 m before the mouth (see
     // HERO.rim) with a lavender collar running back to the tube. Colours in linear light (the face shader's uniforms).
-    porthole: { bezel: { inner: 2.5, outer: 2.78, front: -0.2, back: 0.16, round: 0.45 }, step: { hide: true }, face: { inner: 2.74, outer: 14, z: 0.02, dish: 0.3 },
+    porthole: { bezel: { inner: 2.5, outer: 2.64, front: -0.12, back: 0.12, round: 0.5 }, step: { hide: true }, face: { inner: 2.6, outer: 14, z: 0.02, dish: 0.3 },
       rimRivets: { size: 0.0001 }, rivets: { radius: 3.3 },
-      lavender: [0.1746, 0.162, 0.5776], lilac: [0.3968, 0.3231, 0.7913], shade: [0.0782, 0.0976, 0.4793] },
+      lavender: [0.1095, 0.1221, 0.552], lilac: [0.2705, 0.2384, 0.6867], shade: [0.0423, 0.0612, 0.3813] },
     hideFoamBubbles: true, hideCrestCards: true,
     inside: [-6.5, -3.8],   // the drum's light and effects fully in by the hero moment (the character 3.3 m before the mouth)
     // the collectibles where the approved picture has them at the hero moment (solved from the hero camera with
@@ -84,6 +84,8 @@ export const HERO = {
     ],
     ridge: 0.85,      // the thin bright line on each crest
     splash: 1.0,      // irregular white splash strokes along the rings
+    caustic: 0.45,    // the cyan-white caustic web over the rings
+    droplets: 0.9,    // fine bright droplets
     streaks: 0.6,     // white water streaks along the rings (fixed in the world, rushing past)
     sparkle: 1.0,     // twinkling white sparkles
     rainbow: 0.85, rainbowAt: 0.235, rainbowW: 0.024,   // pastel ring 2's tint by angle: peach top, mint upper left, lilac left, ice-cyan upper right
@@ -93,7 +95,7 @@ export const HERO = {
   // the rim's place: metres along the path from the drum's mouth, and its centre in the cross-section (sideways, height)
   // (solved from the hero camera: the approved inner circle's centre and top); gold lit from the top right, muted mauve on
   // the left, as measured: lavender bevel outside, a peach-gold core with a cream highlight, a plum shadow inside
-  rim: { u: -2.1, centre: [0.14, 0.5], bevel: '#cbabea', gold: '#f0a050', goldHi: '#fff2b0', shadow: '#784463', mauve: '#b68fa0', mauveHi: '#baadd0' },
+  rim: { u: -2.1, centre: [0.14, 0.5], bevel: '#cbabea', gold: '#e9a878', goldHi: '#fff0c8', shadow: '#784463', mauve: '#b68fa0', mauveHi: '#baadd0' },
   // the collar: the drum's lavender front wall from the rim's inner edge back to the tube's mouth (radius 2, on the axis)
   collar: { wall: '#a49ce0', deep: '#7a70c8', lip: '#c4bcf6', edge: '#002ca9' },   // silvery lavender
   // the hero grade (see heroGrade): contrast round mid-grey on luminance, saturation, a soft vignette toward cobalt
@@ -106,7 +108,7 @@ export const HERO = {
   bubbles: [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1.35, 0.95, 2.76, 0.16], [-2.15, -1.29, 2.43, 0.15],
     [-3.2, 0.88, 0.62, 0.15], [-2.9, 0.72, 0.8, 0.1], [-3.0, 0.92, 2.91, 0.13], [0.6, 0.9, 2.2, 0.09], [1.2, -1.0, 2.5, 0.1], [-0.8, 1.2, 1.9, 0.08]],
   // the bright centre: a camera-facing glow this far ahead of the camera on the axis; size as a share of the screen width
-  glow: { ahead: 16, size: 0.2, core: 0.55, halo: 0.45, alpha: 0.85 },   // a soft pastel-white disc, no hot spot (as measured)
+  glow: { ahead: 16, size: 0.12, core: 0.45, halo: 0.12, alpha: 0.75 },   // a soft pastel-white disc, no hot spot (as measured)
   // round6/7 objects the hero scene replaces (hidden after their own updaters)
   hide: ['r6Flanges', 'r7Glow', 'r5Heart', 's4Rings'],
 };
@@ -169,6 +171,16 @@ ${rampCode(V.stops)}
   vec2 sq = fract(sg) - vec2(0.5, 0.25 + 0.5 * sh2);
   float streak = (1.0 - smoothstep(0.18, 0.46, abs(sq.x))) * (1.0 - smoothstep(0.04, 0.12, abs(sq.y))) * step(0.62, sh);
   col = mix(col, vec3(1.0), clamp(streak * (0.35 + 0.65 * body) * ${f3(V.streaks)} * smoothstep(0.06, 0.2, rw), 0.0, 1.0));
+  // water caustics: a web of cyan-white light playing over the rings (the approved rings read as water, not paint)
+  vec2 cv = bwVoronoi(vec2(ang * 5.0 + uHeroTime * 0.25, ringPh * 2.6));
+  float caus = (1.0 - smoothstep(0.0, 0.08, cv.y - cv.x)) * smoothstep(0.1, 0.2, rw) * (1.0 - smoothstep(0.44, 0.5, rw));
+  col = mix(col, ${v3('#c9f2ff')}, clamp(caus * ${f3(V.caustic)} * (0.25 + 0.75 * body), 0.0, 1.0));   // on the lit crests
+  // fine droplets: small bright points with a soft cyan glow, thickest above the centre
+  vec2 dg = vec2(ang * 40.0, ringPh * 16.0), dc = floor(dg);
+  float dh = heroH(dc + 71.0), dd = length(fract(dg) - 0.5);
+  float drop = step(0.86, dh) * (1.0 - smoothstep(0.08, 0.22, dd)) * smoothstep(0.08, 0.16, rw) * (1.0 - smoothstep(0.44, 0.5, rw));
+  col = mix(col, vec3(1.0), clamp(drop * ${f3(V.droplets)} * (0.7 + 0.6 * step(0.0, rel.y)), 0.0, 1.0));
+  col = mix(col, ${v3('#9fe6ff')}, clamp(step(0.86, dh) * (1.0 - smoothstep(0.2, 0.5, dd)) * 0.3 * ${f3(V.droplets)} * smoothstep(0.08, 0.16, rw), 0.0, 1.0));
   // twinkling sparkles
   vec2 pg = vec2(ang * 24.0, u * 4.0 + uHeroTime * 1.4), pc = floor(pg);
   float ph = heroH(pc + 41.0);

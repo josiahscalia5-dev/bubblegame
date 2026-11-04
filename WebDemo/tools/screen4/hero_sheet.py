@@ -4,8 +4,9 @@
 import sys
 from PIL import Image, ImageDraw, ImageFont
 
-out, items = sys.argv[1], [a.split('=', 1) for a in sys.argv[2:]]
-W, H, PAD, LAB = 538, 1076, 14, 46
+out, items = sys.argv[1], [a.rsplit('=', 1) for a in sys.argv[2:]]
+import os
+W, H, PAD, LAB = int(os.environ.get('SHEET_W', 538)), int(os.environ.get('SHEET_H', 1076)), 14, 46
 try:
     font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 22)
 except OSError:
