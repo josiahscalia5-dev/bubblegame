@@ -9,7 +9,8 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
+  | `ccr-b6199007-gvhqim` | **Newest (4 November, night):** `ccr-4e2b86d7-kqpei8` plus the finished round 2: the brush warning fix, the final video, the sheets, the checks, the frame cost and the score. Not merged. |
+  | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`, work in progress there), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
   | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
@@ -19,7 +20,8 @@ Read this first when you continue in a new Claude conversation.
 
 - **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
 - **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
-  - Newest: `2026-11-03_screen3_models_and_scenery_session.md` (3 November, second session):
+  - Newest: `2026-11-04_screen4_round2_finish_session.md` (4 November, night: finishing round 2, the brush warning fix, the final video and sheets).
+  - Before it: `2026-11-03_screen3_models_and_scenery_session.md` (3–4 November, second session, which also holds round 2's start):
     - the approved-artwork opening and Phase A;
     - the five Screen 3 models, the slide edges and the cinematic camera;
     - the A2 tunnel inspection and the painted-layer start.
