@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 3, `?s3=round3`)
+# Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 4 reconstruction, `?s3=round4`)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,7 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-b6199007-gvhqim` | **Newest (4 November):** `ccr-4e2b86d7-kqpei8` plus the finished round 2, and then **round 3** (`?s3=round3`), the tools (Blender, OpenCV, scikit-image, glTF Transform, validator, Tripo CLI, Meshy MCP config), the comparison workflow and the project skill. Not merged. |
+  | `ccr-b6199007-gvhqim` | **Newest (4 November):** `ccr-4e2b86d7-kqpei8` plus the finished round 2, and then **round 3** (`?s3=round3`) and **round 4** (`?s3=round4`, the scenery reconstruction), the tools (Blender, OpenCV, scikit-image, glTF Transform, validator, Tripo CLI, Meshy MCP config), the comparison workflow and the project skill. Not merged. |
   | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`, work in progress there), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
@@ -33,7 +33,31 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (4 November, day): round 3, toward the approved Screen 4 in the real 3D game, `?s3=round3` (test, not approved)
+## Latest (4 November, afternoon): round 4, the approved Screen 4's scenery reconstructed in 3D, `?s3=round4` (test, not approved)
+
+- **What the user asked,** after watching the round 3 video:
+  - small tweaks are not enough: rebuild the scenery toward the approved Screen 4 as real moving 3D, never a flat
+    picture;
+  - the tunnel geometry, light and depth;
+  - thick white splashes and rich turquoise water;
+  - big fluffy brushes framing the sides;
+  - the camera composition, and the coins, gem and bubbles;
+  - a separate switch, a video and comparisons with the existing version;
+  - save to GitHub very often, chat history included.
+- **Round 4** (`WebDemo/src/tunnel_r4.js`, on top of round 3, which is unchanged):
+  - a new deep electric-blue tunnel lining with real 3D cyan rings and gold trims, and a 4 m straighter start to the path
+    (`track.js` `opts.straight`);
+  - pom-pom brushes (`tunnel_s4.js` `r4PomPom`) that slide out of the walls as you approach;
+  - a splash crown of curving water sheets;
+  - rebuilt water (no tile pattern: turquoise, rolling crests, white froth);
+  - a whirlpool at the tunnel's heart and a richer drum grade.
+- Evidence and honest numbers: `Previews/WebDemo/screen4_round4_reconstruction/README.md`.
+- **Checks:** controls, rules, ride-through (all lanes reach the end) and frame cost all pass, and the tunnel costs less
+  than round 3.
+- **Saving:** `Tools/autosave.sh` exports the chat history (`ChatHistory/2026-11-04_screen4_round2_and_round3_session.md`)
+  and commits and pushes every 5 minutes. The cloud environment stops background jobs after 2 hours, so restart it then.
+
+## Earlier (4 November, day): round 3, toward the approved Screen 4 in the real 3D game, `?s3=round3` (test, not approved)
 
 - **What the user asked:**
   - match the approved Screen 4 (and Screen 3) as closely as possible in the real, playable 3D game, aiming at 90–95%

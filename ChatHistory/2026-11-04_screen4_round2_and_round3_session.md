@@ -1292,3 +1292,7 @@ Next, the splash crown: real animated water sheets that rise around your charact
 
 A shader failed to compile: I used `out` as a variable name, which is a reserved word in GLSL. Fixing it:
 
+While the video records, I'm writing the tool that builds the sheets of approved, existing and reconstructed frames at the same moments.
+
+The round 4 gameplay video is still recording. Meanwhile I've updated the handoff notes and the screen-matcher skill for round 4, and the auto-save keeps pushing to GitHub every 5 minutes.
+

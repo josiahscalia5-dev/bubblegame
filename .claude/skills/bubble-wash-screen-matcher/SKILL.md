@@ -21,13 +21,16 @@ overlay. Keep these as they are unless the user says otherwise:
 - The game: `WebDemo/`.
   - Source is in `src/`. Build with `cd WebDemo && node build.mjs`; the bundle `game.bundle.js` is committed.
 - Test switches (URL `?s3=...` or `window.__BW_S3__`):
-  - `round3` is the current visual pass. It includes round2: the Screen 4 controls and tunnel polish.
+  - `round4` is the current visual pass: the reconstruction of the scenery (`src/tunnel_r4.js`, `ROUND4`).
+  - `round4` includes `round3` (`src/tunnel_r3.js`, `ROUND3`), and that includes `round2`: the Screen 4 controls and
+    tunnel polish.
   - Without a switch, the normal game is the protected original.
   - New work goes behind a switch until the user approves it, and the normal game must stay pixel-identical.
 - Round 3 settings: `ROUND3` in `WebDemo/src/tunnel_r3.js`.
   - It covers foam heaps, white-water swirl, soap bubbles, ring colours, drum colours, brush colours, water, gem, spray
     and camera.
-  - Try values without rebuilding: `window.__BW_S3_TUNE__ = { round3: { ... } }`, or the third argument of `s3_shot.cjs`.
+  - Try values without rebuilding: `window.__BW_S3_TUNE__ = { round3: { ... }, round4: { ... } }`, or the third
+    argument of `s3_shot.cjs`.
 
 ## Tools in a cloud session
 
