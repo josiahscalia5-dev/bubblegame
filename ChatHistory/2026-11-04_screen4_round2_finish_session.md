@@ -16,3 +16,5 @@ Still on the pink warning glow: the shader code looks right on paper, so I'm rep
 
 The drum water has the warning code and its settings are loaded, yet nothing pink shows ahead of the brushes. Next I'm swapping in debug colours to see which step drops it.
 
+Still no visible pink after the change, so the warning value itself must be small where the camera can see it. I'm measuring its actual strength with threshold colours.
+
