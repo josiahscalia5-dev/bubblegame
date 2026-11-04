@@ -1,0 +1,2552 @@
+{
+ "screen4": {
+  "approved": "Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/02_APPROVED_SCREEN_4_FULL.jpg",
+  "play_area": [
+   0.18,
+   0.83
+  ],
+  "frames": {
+   "round2_3.6s": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/r2/t3.6.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 20.8,
+      "game_pct": 3.3,
+      "place_match": 0.063,
+      "approved_ninths": [
+       [
+        13.9,
+        2.9,
+        14.6
+       ],
+       [
+        22.8,
+        28.9,
+        24.4
+       ],
+       [
+        28.4,
+        19.6,
+        31.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        3.4,
+        2.5,
+        5.8
+       ],
+       [
+        2.2,
+        3.5,
+        4.7
+       ],
+       [
+        2.1,
+        0.7,
+        5.1
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.9,
+      "game_pct": 29.8,
+      "place_match": 0.4,
+      "approved_ninths": [
+       [
+        24.2,
+        0.3,
+        11.9
+       ],
+       [
+        3.9,
+        3.9,
+        14.6
+       ],
+       [
+        8.9,
+        52.6,
+        4.7
+       ]
+      ],
+      "game_ninths": [
+       [
+        25.4,
+        8.2,
+        0.9
+       ],
+       [
+        46.5,
+        9.9,
+        15.1
+       ],
+       [
+        45.5,
+        87.1,
+        29.3
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 8.0,
+      "game_pct": 6.6,
+      "place_match": 0.047,
+      "approved_ninths": [
+       [
+        0.0,
+        0.0,
+        1.8
+       ],
+       [
+        23.1,
+        7.3,
+        0.4
+       ],
+       [
+        10.5,
+        0.0,
+        29.5
+       ]
+      ],
+      "game_ninths": [
+       [
+        4.5,
+        4.7,
+        0.5
+       ],
+       [
+        6.2,
+        41.9,
+        0.0
+       ],
+       [
+        0.0,
+        1.5,
+        0.0
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 0.1,
+      "place_match": -0.018,
+      "approved_ninths": [
+       [
+        0.8,
+        0.8,
+        0.9
+       ],
+       [
+        0.1,
+        0.2,
+        2.3
+       ],
+       [
+        0.0,
+        0.1,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        0.1,
+        0.0
+       ],
+       [
+        0.5,
+        0.7,
+        0.1
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.9,
+      "game_pct": 3.0,
+      "place_match": -0.067,
+      "approved_ninths": [
+       [
+        1.3,
+        3.8,
+        0.2
+       ],
+       [
+        3.2,
+        3.4,
+        1.8
+       ],
+       [
+        0.4,
+        2.0,
+        1.4
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        2.3,
+        2.2
+       ],
+       [
+        4.0,
+        1.8,
+        1.7
+       ],
+       [
+        10.5,
+        0.4,
+        4.0
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.2,
+      "game_pct": 0.1,
+      "place_match": -0.027,
+      "approved_ninths": [
+       [
+        9.7,
+        22.5,
+        8.7
+       ],
+       [
+        2.5,
+        3.6,
+        5.0
+       ],
+       [
+        1.7,
+        0.2,
+        1.6
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.2,
+        0.0,
+        0.0
+       ],
+       [
+        0.0,
+        0.1,
+        0.1
+       ],
+       [
+        0.0,
+        0.0,
+        0.8
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.5,
+      "game_pct": 12.2,
+      "place_match": -0.0,
+      "approved_ninths": [
+       [
+        6.5,
+        10.4,
+        9.4
+       ],
+       [
+        10.8,
+        14.9,
+        8.1
+       ],
+       [
+        19.6,
+        11.6,
+        12.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        12.0,
+        20.7,
+        24.7
+       ],
+       [
+        8.9,
+        9.9,
+        10.4
+       ],
+       [
+        7.9,
+        1.0,
+        14.2
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 7.8,
+      "ssim": 0.1,
+      "edges": 0.035,
+      "approved_rgb": [
+       140,
+       139,
+       211
+      ],
+      "game_rgb": [
+       163,
+       166,
+       234
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 13.9,
+      "ssim": 0.081,
+      "edges": -0.076,
+      "approved_rgb": [
+       176,
+       183,
+       198
+      ],
+      "game_rgb": [
+       184,
+       155,
+       229
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 17.9,
+      "ssim": 0.125,
+      "edges": -0.069,
+      "approved_rgb": [
+       191,
+       178,
+       201
+      ],
+      "game_rgb": [
+       144,
+       152,
+       235
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 11.0,
+      "ssim": 0.1,
+      "edges": 0.025,
+      "approved_rgb": [
+       172,
+       183,
+       220
+      ],
+      "game_rgb": [
+       185,
+       170,
+       191
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 9.1,
+      "ssim": 0.11,
+      "edges": 0.064,
+      "approved_rgb": [
+       206,
+       169,
+       214
+      ],
+      "game_rgb": [
+       208,
+       132,
+       194
+      ]
+     }
+    },
+    "mean_dE2000_play": 23.6,
+    "differences": [
+     "white foam and splash: less than approved (3.3% of the play area against 20.8%)",
+     "pink (hero, brushes): more than approved (29.8% of the play area against 13.9%)",
+     "deep blue tunnel: less than approved (0.1% of the play area against 6.2%)"
+    ]
+   },
+   "round3_3.6s": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/r3/t3.6.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 20.8,
+      "game_pct": 18.7,
+      "place_match": 0.195,
+      "approved_ninths": [
+       [
+        13.9,
+        2.9,
+        14.6
+       ],
+       [
+        22.8,
+        28.9,
+        24.4
+       ],
+       [
+        28.4,
+        19.6,
+        31.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        7.1,
+        9.0,
+        5.3
+       ],
+       [
+        16.1,
+        14.9,
+        18.8
+       ],
+       [
+        40.3,
+        3.4,
+        52.8
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.9,
+      "game_pct": 24.1,
+      "place_match": 0.382,
+      "approved_ninths": [
+       [
+        24.2,
+        0.3,
+        11.9
+       ],
+       [
+        3.9,
+        3.9,
+        14.6
+       ],
+       [
+        8.9,
+        52.6,
+        4.7
+       ]
+      ],
+      "game_ninths": [
+       [
+        25.0,
+        8.5,
+        0.0
+       ],
+       [
+        39.5,
+        9.4,
+        12.6
+       ],
+       [
+        27.8,
+        77.7,
+        17.0
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 8.0,
+      "game_pct": 5.9,
+      "place_match": 0.007,
+      "approved_ninths": [
+       [
+        0.0,
+        0.0,
+        1.8
+       ],
+       [
+        23.1,
+        7.3,
+        0.4
+       ],
+       [
+        10.5,
+        0.0,
+        29.5
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        0.8,
+        0.8
+       ],
+       [
+        5.8,
+        34.2,
+        2.5
+       ],
+       [
+        0.0,
+        7.4,
+        1.7
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 0.3,
+      "place_match": -0.024,
+      "approved_ninths": [
+       [
+        0.8,
+        0.8,
+        0.9
+       ],
+       [
+        0.1,
+        0.2,
+        2.3
+       ],
+       [
+        0.0,
+        0.1,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        0.0,
+        0.0
+       ],
+       [
+        0.0,
+        2.7,
+        0.1
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.9,
+      "game_pct": 0.6,
+      "place_match": -0.034,
+      "approved_ninths": [
+       [
+        1.3,
+        3.8,
+        0.2
+       ],
+       [
+        3.2,
+        3.4,
+        1.8
+       ],
+       [
+        0.4,
+        2.0,
+        1.4
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.4,
+        1.2,
+        2.0
+       ],
+       [
+        1.1,
+        0.1,
+        0.5
+       ],
+       [
+        0.1,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.2,
+      "game_pct": 1.3,
+      "place_match": 0.014,
+      "approved_ninths": [
+       [
+        9.7,
+        22.5,
+        8.7
+       ],
+       [
+        2.5,
+        3.6,
+        5.0
+       ],
+       [
+        1.7,
+        0.2,
+        1.6
+       ]
+      ],
+      "game_ninths": [
+       [
+        4.7,
+        0.1,
+        3.0
+       ],
+       [
+        0.4,
+        0.0,
+        2.7
+       ],
+       [
+        0.0,
+        0.0,
+        1.1
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.5,
+      "game_pct": 19.4,
+      "place_match": -0.083,
+      "approved_ninths": [
+       [
+        6.5,
+        10.4,
+        9.4
+       ],
+       [
+        10.8,
+        14.9,
+        8.1
+       ],
+       [
+        19.6,
+        11.6,
+        12.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        28.1,
+        31.3,
+        36.7
+       ],
+       [
+        16.9,
+        17.0,
+        15.0
+       ],
+       [
+        13.7,
+        1.8,
+        14.0
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 13.0,
+      "ssim": 0.11,
+      "edges": 0.051,
+      "approved_rgb": [
+       140,
+       139,
+       211
+      ],
+      "game_rgb": [
+       144,
+       177,
+       239
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 10.2,
+      "ssim": 0.1,
+      "edges": -0.002,
+      "approved_rgb": [
+       176,
+       183,
+       198
+      ],
+      "game_rgb": [
+       199,
+       173,
+       228
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 12.7,
+      "ssim": 0.08,
+      "edges": 0.042,
+      "approved_rgb": [
+       191,
+       178,
+       201
+      ],
+      "game_rgb": [
+       161,
+       171,
+       231
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 12.1,
+      "ssim": 0.047,
+      "edges": -0.093,
+      "approved_rgb": [
+       172,
+       183,
+       220
+      ],
+      "game_rgb": [
+       200,
+       174,
+       196
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 6.3,
+      "ssim": 0.104,
+      "edges": 0.007,
+      "approved_rgb": [
+       206,
+       169,
+       214
+      ],
+      "game_rgb": [
+       215,
+       151,
+       197
+      ]
+     }
+    },
+    "mean_dE2000_play": 24.0,
+    "differences": [
+     "pink (hero, brushes): more than approved (24.1% of the play area against 13.9%)",
+     "pale milky blue: more than approved (19.4% of the play area against 11.5%)",
+     "deep blue tunnel: less than approved (1.3% of the play area against 6.2%)",
+     "white foam and splash: less than approved (18.7% of the play area against 20.8%)",
+     "gold (paw coins): less than approved (5.9% of the play area against 8.0%)"
+    ]
+   },
+   "round2_4.2s": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/r2/t4.2.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 20.8,
+      "game_pct": 6.2,
+      "place_match": 0.152,
+      "approved_ninths": [
+       [
+        13.9,
+        2.9,
+        14.6
+       ],
+       [
+        22.8,
+        28.9,
+        24.4
+       ],
+       [
+        28.4,
+        19.6,
+        31.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        1.6,
+        3.0,
+        0.6
+       ],
+       [
+        8.8,
+        21.2,
+        3.4
+       ],
+       [
+        9.2,
+        0.9,
+        6.8
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.9,
+      "game_pct": 22.6,
+      "place_match": 0.55,
+      "approved_ninths": [
+       [
+        24.2,
+        0.3,
+        11.9
+       ],
+       [
+        3.9,
+        3.9,
+        14.6
+       ],
+       [
+        8.9,
+        52.6,
+        4.7
+       ]
+      ],
+      "game_ninths": [
+       [
+        35.7,
+        5.7,
+        2.9
+       ],
+       [
+        14.3,
+        16.8,
+        10.4
+       ],
+       [
+        9.5,
+        88.0,
+        20.2
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 8.0,
+      "game_pct": 8.1,
+      "place_match": 0.43,
+      "approved_ninths": [
+       [
+        0.0,
+        0.0,
+        1.8
+       ],
+       [
+        23.1,
+        7.3,
+        0.4
+       ],
+       [
+        10.5,
+        0.0,
+        29.5
+       ]
+      ],
+      "game_ninths": [
+       [
+        3.2,
+        6.2,
+        0.9
+       ],
+       [
+        34.0,
+        4.6,
+        0.0
+       ],
+       [
+        24.6,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 1.7,
+      "place_match": -0.056,
+      "approved_ninths": [
+       [
+        0.8,
+        0.8,
+        0.9
+       ],
+       [
+        0.1,
+        0.2,
+        2.3
+       ],
+       [
+        0.0,
+        0.1,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.2,
+        0.0,
+        0.0
+       ],
+       [
+        4.1,
+        11.2,
+        0.0
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.9,
+      "game_pct": 10.2,
+      "place_match": -0.119,
+      "approved_ninths": [
+       [
+        1.3,
+        3.8,
+        0.2
+       ],
+       [
+        3.2,
+        3.4,
+        1.8
+       ],
+       [
+        0.4,
+        2.0,
+        1.4
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.8,
+        2.6,
+        0.9
+       ],
+       [
+        1.4,
+        0.3,
+        20.8
+       ],
+       [
+        42.7,
+        0.0,
+        21.4
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.2,
+      "game_pct": 0.6,
+      "place_match": 0.065,
+      "approved_ninths": [
+       [
+        9.7,
+        22.5,
+        8.7
+       ],
+       [
+        2.5,
+        3.6,
+        5.0
+       ],
+       [
+        1.7,
+        0.2,
+        1.6
+       ]
+      ],
+      "game_ninths": [
+       [
+        1.6,
+        1.6,
+        0.5
+       ],
+       [
+        0.0,
+        0.2,
+        1.1
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.5,
+      "game_pct": 12.2,
+      "place_match": 0.092,
+      "approved_ninths": [
+       [
+        6.5,
+        10.4,
+        9.4
+       ],
+       [
+        10.8,
+        14.9,
+        8.1
+       ],
+       [
+        19.6,
+        11.6,
+        12.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        8.2,
+        14.1,
+        20.3
+       ],
+       [
+        7.8,
+        19.6,
+        11.8
+       ],
+       [
+        7.7,
+        2.5,
+        17.8
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 3.7,
+      "ssim": 0.096,
+      "edges": 0.04,
+      "approved_rgb": [
+       140,
+       139,
+       211
+      ],
+      "game_rgb": [
+       146,
+       142,
+       229
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 4.7,
+      "ssim": 0.11,
+      "edges": -0.067,
+      "approved_rgb": [
+       176,
+       183,
+       198
+      ],
+      "game_rgb": [
+       174,
+       180,
+       187
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 21.6,
+      "ssim": 0.142,
+      "edges": 0.03,
+      "approved_rgb": [
+       191,
+       178,
+       201
+      ],
+      "game_rgb": [
+       128,
+       177,
+       240
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 8.2,
+      "ssim": 0.092,
+      "edges": -0.018,
+      "approved_rgb": [
+       172,
+       183,
+       220
+      ],
+      "game_rgb": [
+       190,
+       165,
+       228
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 11.2,
+      "ssim": 0.1,
+      "edges": 0.14,
+      "approved_rgb": [
+       206,
+       169,
+       214
+      ],
+      "game_rgb": [
+       223,
+       125,
+       198
+      ]
+     }
+    },
+    "mean_dE2000_play": 22.5,
+    "differences": [
+     "white foam and splash: less than approved (6.2% of the play area against 20.8%)",
+     "pink (hero, brushes): more than approved (22.6% of the play area against 13.9%)",
+     "turquoise water: more than approved (10.2% of the play area against 1.9%)",
+     "deep blue tunnel: less than approved (0.6% of the play area against 6.2%)"
+    ]
+   },
+   "round3_4.2s": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/r3/t4.2.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 20.8,
+      "game_pct": 14.1,
+      "place_match": 0.082,
+      "approved_ninths": [
+       [
+        13.9,
+        2.9,
+        14.6
+       ],
+       [
+        22.8,
+        28.9,
+        24.4
+       ],
+       [
+        28.4,
+        19.6,
+        31.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        10.6,
+        10.4,
+        5.0
+       ],
+       [
+        6.3,
+        12.3,
+        10.1
+       ],
+       [
+        31.3,
+        0.6,
+        40.1
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.9,
+      "game_pct": 21.4,
+      "place_match": 0.556,
+      "approved_ninths": [
+       [
+        24.2,
+        0.3,
+        11.9
+       ],
+       [
+        3.9,
+        3.9,
+        14.6
+       ],
+       [
+        8.9,
+        52.6,
+        4.7
+       ]
+      ],
+      "game_ninths": [
+       [
+        37.8,
+        7.6,
+        1.3
+       ],
+       [
+        22.6,
+        16.1,
+        8.8
+       ],
+       [
+        8.5,
+        82.1,
+        7.9
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 8.0,
+      "game_pct": 10.7,
+      "place_match": 0.341,
+      "approved_ninths": [
+       [
+        0.0,
+        0.0,
+        1.8
+       ],
+       [
+        23.1,
+        7.3,
+        0.4
+       ],
+       [
+        10.5,
+        0.0,
+        29.5
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        2.6,
+        0.0
+       ],
+       [
+        42.4,
+        10.3,
+        0.7
+       ],
+       [
+        0.1,
+        0.0,
+        40.5
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 1.3,
+      "place_match": -0.035,
+      "approved_ninths": [
+       [
+        0.8,
+        0.8,
+        0.9
+       ],
+       [
+        0.1,
+        0.2,
+        2.3
+       ],
+       [
+        0.0,
+        0.1,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        0.1,
+        0.0
+       ],
+       [
+        0.4,
+        7.2,
+        3.7
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.9,
+      "game_pct": 0.6,
+      "place_match": -0.05,
+      "approved_ninths": [
+       [
+        1.3,
+        3.8,
+        0.2
+       ],
+       [
+        3.2,
+        3.4,
+        1.8
+       ],
+       [
+        0.4,
+        2.0,
+        1.4
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.3,
+        1.5,
+        0.5
+       ],
+       [
+        0.2,
+        0.1,
+        2.9
+       ],
+       [
+        0.2,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.2,
+      "game_pct": 4.0,
+      "place_match": 0.422,
+      "approved_ninths": [
+       [
+        9.7,
+        22.5,
+        8.7
+       ],
+       [
+        2.5,
+        3.6,
+        5.0
+       ],
+       [
+        1.7,
+        0.2,
+        1.6
+       ]
+      ],
+      "game_ninths": [
+       [
+        9.3,
+        13.5,
+        7.2
+       ],
+       [
+        0.0,
+        0.1,
+        5.7
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.5,
+      "game_pct": 18.5,
+      "place_match": 0.06,
+      "approved_ninths": [
+       [
+        6.5,
+        10.4,
+        9.4
+       ],
+       [
+        10.8,
+        14.9,
+        8.1
+       ],
+       [
+        19.6,
+        11.6,
+        12.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        18.5,
+        30.1,
+        28.0
+       ],
+       [
+        10.9,
+        17.8,
+        12.4
+       ],
+       [
+        30.8,
+        5.4,
+        12.8
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 7.9,
+      "ssim": 0.057,
+      "edges": -0.016,
+      "approved_rgb": [
+       140,
+       139,
+       211
+      ],
+      "game_rgb": [
+       134,
+       158,
+       230
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 3.1,
+      "ssim": 0.117,
+      "edges": 0.036,
+      "approved_rgb": [
+       176,
+       183,
+       198
+      ],
+      "game_rgb": [
+       185,
+       178,
+       200
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 8.6,
+      "ssim": 0.128,
+      "edges": 0.002,
+      "approved_rgb": [
+       191,
+       178,
+       201
+      ],
+      "game_rgb": [
+       164,
+       181,
+       203
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 8.5,
+      "ssim": 0.066,
+      "edges": -0.021,
+      "approved_rgb": [
+       172,
+       183,
+       220
+      ],
+      "game_rgb": [
+       184,
+       164,
+       216
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 8.5,
+      "ssim": 0.126,
+      "edges": 0.121,
+      "approved_rgb": [
+       206,
+       169,
+       214
+      ],
+      "game_rgb": [
+       213,
+       138,
+       202
+      ]
+     }
+    },
+    "mean_dE2000_play": 22.7,
+    "differences": [
+     "pink (hero, brushes): more than approved (21.4% of the play area against 13.9%)",
+     "pale milky blue: more than approved (18.5% of the play area against 11.5%)",
+     "white foam and splash: less than approved (14.1% of the play area against 20.8%)",
+     "gold (paw coins): more than approved (10.7% of the play area against 8.0%)",
+     "deep blue tunnel: less than approved (4.0% of the play area against 6.2%)"
+    ]
+   }
+  }
+ },
+ "screen3": {
+  "approved": "Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/01_APPROVED_SCREEN_3_OPENING.jpg",
+  "play_area": [
+   0.18,
+   0.83
+  ],
+  "frames": {
+   "normal": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/normal/t0.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 23.4,
+      "game_pct": 11.2,
+      "place_match": 0.104,
+      "approved_ninths": [
+       [
+        20.3,
+        19.1,
+        18.5
+       ],
+       [
+        22.5,
+        38.2,
+        27.2
+       ],
+       [
+        26.7,
+        10.9,
+        26.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        5.7,
+        15.1,
+        6.0
+       ],
+       [
+        4.2,
+        4.2,
+        6.6
+       ],
+       [
+        21.9,
+        15.6,
+        21.3
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.3,
+      "game_pct": 12.3,
+      "place_match": 0.571,
+      "approved_ninths": [
+       [
+        12.1,
+        5.4,
+        10.5
+       ],
+       [
+        10.2,
+        4.9,
+        12.2
+       ],
+       [
+        7.4,
+        52.8,
+        4.8
+       ]
+      ],
+      "game_ninths": [
+       [
+        3.7,
+        1.3,
+        3.3
+       ],
+       [
+        21.8,
+        16.9,
+        12.5
+       ],
+       [
+        6.6,
+        40.4,
+        4.3
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 3.6,
+      "game_pct": 12.0,
+      "place_match": 0.341,
+      "approved_ninths": [
+       [
+        4.6,
+        1.7,
+        3.7
+       ],
+       [
+        3.9,
+        8.9,
+        6.8
+       ],
+       [
+        0.4,
+        0.0,
+        2.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        25.3,
+        7.0,
+        26.5
+       ],
+       [
+        15.4,
+        5.6,
+        27.0
+       ],
+       [
+        0.2,
+        0.0,
+        1.5
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 0.0,
+      "place_match": -0.02,
+      "approved_ninths": [
+       [
+        0.4,
+        3.5,
+        0.2
+       ],
+       [
+        0.8,
+        0.0,
+        0.3
+       ],
+       [
+        0.0,
+        0.5,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.1,
+        0.0,
+        0.0
+       ],
+       [
+        0.2,
+        0.1,
+        0.0
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.5,
+      "game_pct": 1.0,
+      "place_match": 0.019,
+      "approved_ninths": [
+       [
+        0.0,
+        0.1,
+        0.0
+       ],
+       [
+        0.2,
+        3.1,
+        0.8
+       ],
+       [
+        4.4,
+        0.7,
+        3.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.1,
+        0.4,
+        0.1
+       ],
+       [
+        0.3,
+        5.8,
+        0.5
+       ],
+       [
+        0.4,
+        1.0,
+        0.4
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.8,
+      "game_pct": 5.8,
+      "place_match": 0.426,
+      "approved_ninths": [
+       [
+        5.2,
+        16.8,
+        3.6
+       ],
+       [
+        15.8,
+        1.8,
+        2.8
+       ],
+       [
+        4.2,
+        8.8,
+        1.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        10.1,
+        20.6,
+        9.7
+       ],
+       [
+        3.3,
+        0.0,
+        1.1
+       ],
+       [
+        1.6,
+        4.5,
+        1.6
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.8,
+      "game_pct": 18.3,
+      "place_match": 0.433,
+      "approved_ninths": [
+       [
+        4.7,
+        8.9,
+        6.0
+       ],
+       [
+        9.7,
+        21.8,
+        13.2
+       ],
+       [
+        20.0,
+        6.6,
+        15.2
+       ]
+      ],
+      "game_ninths": [
+       [
+        10.9,
+        18.6,
+        12.4
+       ],
+       [
+        18.2,
+        14.3,
+        12.6
+       ],
+       [
+        33.2,
+        12.1,
+        32.8
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 3.8,
+      "ssim": 0.087,
+      "edges": 0.232,
+      "approved_rgb": [
+       157,
+       146,
+       191
+      ],
+      "game_rgb": [
+       141,
+       149,
+       181
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 4.9,
+      "ssim": 0.098,
+      "edges": 0.0,
+      "approved_rgb": [
+       167,
+       166,
+       213
+      ],
+      "game_rgb": [
+       189,
+       174,
+       215
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 3.5,
+      "ssim": 0.092,
+      "edges": 0.021,
+      "approved_rgb": [
+       189,
+       178,
+       203
+      ],
+      "game_rgb": [
+       195,
+       182,
+       198
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 19.8,
+      "ssim": 0.08,
+      "edges": -0.111,
+      "approved_rgb": [
+       196,
+       204,
+       202
+      ],
+      "game_rgb": [
+       134,
+       175,
+       228
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 3.7,
+      "ssim": 0.121,
+      "edges": 0.121,
+      "approved_rgb": [
+       180,
+       149,
+       217
+      ],
+      "game_rgb": [
+       188,
+       164,
+       223
+      ]
+     }
+    },
+    "mean_dE2000_play": 18.3,
+    "differences": [
+     "white foam and splash: less than approved (11.2% of the play area against 23.4%)",
+     "gold (paw coins): more than approved (12.0% of the play area against 3.6%)",
+     "pale milky blue: more than approved (18.3% of the play area against 11.8%)"
+    ]
+   },
+   "round2_painted": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/r2/t0.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 23.4,
+      "game_pct": 16.6,
+      "place_match": 0.442,
+      "approved_ninths": [
+       [
+        20.3,
+        19.1,
+        18.5
+       ],
+       [
+        22.5,
+        38.2,
+        27.2
+       ],
+       [
+        26.7,
+        10.9,
+        26.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        16.5,
+        15.3,
+        19.2
+       ],
+       [
+        17.2,
+        1.6,
+        24.3
+       ],
+       [
+        22.3,
+        13.7,
+        19.9
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.3,
+      "game_pct": 13.3,
+      "place_match": 0.769,
+      "approved_ninths": [
+       [
+        12.1,
+        5.4,
+        10.5
+       ],
+       [
+        10.2,
+        4.9,
+        12.2
+       ],
+       [
+        7.4,
+        52.8,
+        4.8
+       ]
+      ],
+      "game_ninths": [
+       [
+        12.4,
+        2.4,
+        8.9
+       ],
+       [
+        9.6,
+        19.3,
+        11.4
+       ],
+       [
+        6.0,
+        44.0,
+        5.3
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 3.6,
+      "game_pct": 4.6,
+      "place_match": 0.523,
+      "approved_ninths": [
+       [
+        4.6,
+        1.7,
+        3.7
+       ],
+       [
+        3.9,
+        8.9,
+        6.8
+       ],
+       [
+        0.4,
+        0.0,
+        2.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        5.0,
+        1.6,
+        3.4
+       ],
+       [
+        7.0,
+        6.7,
+        7.1
+       ],
+       [
+        4.6,
+        0.0,
+        6.0
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 0.7,
+      "place_match": 0.854,
+      "approved_ninths": [
+       [
+        0.4,
+        3.5,
+        0.2
+       ],
+       [
+        0.8,
+        0.0,
+        0.3
+       ],
+       [
+        0.0,
+        0.5,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.3,
+        2.5,
+        0.6
+       ],
+       [
+        1.7,
+        0.4,
+        0.4
+       ],
+       [
+        0.0,
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.5,
+      "game_pct": 1.4,
+      "place_match": 0.046,
+      "approved_ninths": [
+       [
+        0.0,
+        0.1,
+        0.0
+       ],
+       [
+        0.2,
+        3.1,
+        0.8
+       ],
+       [
+        4.4,
+        0.7,
+        3.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        0.1,
+        0.0
+       ],
+       [
+        0.1,
+        8.2,
+        0.6
+       ],
+       [
+        1.2,
+        1.6,
+        0.7
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.8,
+      "game_pct": 7.1,
+      "place_match": 0.676,
+      "approved_ninths": [
+       [
+        5.2,
+        16.8,
+        3.6
+       ],
+       [
+        15.8,
+        1.8,
+        2.8
+       ],
+       [
+        4.2,
+        8.8,
+        1.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        10.4,
+        18.8,
+        9.5
+       ],
+       [
+        14.6,
+        0.0,
+        2.5
+       ],
+       [
+        2.0,
+        4.5,
+        1.6
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.8,
+      "game_pct": 13.9,
+      "place_match": 0.61,
+      "approved_ninths": [
+       [
+        4.7,
+        8.9,
+        6.0
+       ],
+       [
+        9.7,
+        21.8,
+        13.2
+       ],
+       [
+        20.0,
+        6.6,
+        15.2
+       ]
+      ],
+      "game_ninths": [
+       [
+        6.8,
+        13.4,
+        7.5
+       ],
+       [
+        12.1,
+        12.7,
+        17.1
+       ],
+       [
+        23.1,
+        10.8,
+        21.8
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 2.0,
+      "ssim": 0.497,
+      "edges": 0.632,
+      "approved_rgb": [
+       157,
+       146,
+       191
+      ],
+      "game_rgb": [
+       151,
+       143,
+       191
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 1.9,
+      "ssim": 0.465,
+      "edges": 0.388,
+      "approved_rgb": [
+       167,
+       166,
+       213
+      ],
+      "game_rgb": [
+       164,
+       167,
+       207
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 1.2,
+      "ssim": 0.467,
+      "edges": 0.308,
+      "approved_rgb": [
+       189,
+       178,
+       203
+      ],
+      "game_rgb": [
+       187,
+       179,
+       203
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 22.1,
+      "ssim": 0.089,
+      "edges": 0.062,
+      "approved_rgb": [
+       196,
+       204,
+       202
+      ],
+      "game_rgb": [
+       126,
+       166,
+       228
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 2.1,
+      "ssim": 0.108,
+      "edges": 0.218,
+      "approved_rgb": [
+       180,
+       149,
+       217
+      ],
+      "game_rgb": [
+       181,
+       153,
+       216
+      ]
+     }
+    },
+    "mean_dE2000_play": 11.2,
+    "differences": [
+     "white foam and splash: less than approved (16.6% of the play area against 23.4%)",
+     "pale milky blue: more than approved (13.9% of the play area against 11.8%)"
+    ]
+   },
+   "round3_3D": {
+    "file": "/tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/final/r3/t0.png",
+    "features": {
+     "white foam and splash": {
+      "approved_pct": 23.4,
+      "game_pct": 11.0,
+      "place_match": 0.232,
+      "approved_ninths": [
+       [
+        20.3,
+        19.1,
+        18.5
+       ],
+       [
+        22.5,
+        38.2,
+        27.2
+       ],
+       [
+        26.7,
+        10.9,
+        26.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        6.1,
+        16.2,
+        5.8
+       ],
+       [
+        10.0,
+        2.3,
+        11.1
+       ],
+       [
+        22.0,
+        6.3,
+        19.3
+       ]
+      ]
+     },
+     "pink (hero, brushes)": {
+      "approved_pct": 13.3,
+      "game_pct": 12.1,
+      "place_match": 0.806,
+      "approved_ninths": [
+       [
+        12.1,
+        5.4,
+        10.5
+       ],
+       [
+        10.2,
+        4.9,
+        12.2
+       ],
+       [
+        7.4,
+        52.8,
+        4.8
+       ]
+      ],
+      "game_ninths": [
+       [
+        3.7,
+        0.1,
+        3.8
+       ],
+       [
+        12.0,
+        6.5,
+        7.8
+       ],
+       [
+        6.6,
+        61.0,
+        8.0
+       ]
+      ]
+     },
+     "gold (paw coins)": {
+      "approved_pct": 3.6,
+      "game_pct": 11.7,
+      "place_match": 0.301,
+      "approved_ninths": [
+       [
+        4.6,
+        1.7,
+        3.7
+       ],
+       [
+        3.9,
+        8.9,
+        6.8
+       ],
+       [
+        0.4,
+        0.0,
+        2.3
+       ]
+      ],
+      "game_ninths": [
+       [
+        24.5,
+        0.0,
+        24.5
+       ],
+       [
+        16.5,
+        7.2,
+        23.2
+       ],
+       [
+        2.8,
+        0.0,
+        6.8
+       ]
+      ]
+     },
+     "purple (gem)": {
+      "approved_pct": 0.6,
+      "game_pct": 0.7,
+      "place_match": -0.02,
+      "approved_ninths": [
+       [
+        0.4,
+        3.5,
+        0.2
+       ],
+       [
+        0.8,
+        0.0,
+        0.3
+       ],
+       [
+        0.0,
+        0.5,
+        0.0
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.2,
+        0.0,
+        0.0
+       ],
+       [
+        0.4,
+        0.2,
+        0.1
+       ],
+       [
+        5.4,
+        0.0,
+        0.2
+       ]
+      ]
+     },
+     "turquoise water": {
+      "approved_pct": 1.5,
+      "game_pct": 0.4,
+      "place_match": 0.022,
+      "approved_ninths": [
+       [
+        0.0,
+        0.1,
+        0.0
+       ],
+       [
+        0.2,
+        3.1,
+        0.8
+       ],
+       [
+        4.4,
+        0.7,
+        3.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        0.0,
+        0.0,
+        0.0
+       ],
+       [
+        0.0,
+        0.6,
+        0.4
+       ],
+       [
+        1.2,
+        0.9,
+        0.1
+       ]
+      ]
+     },
+     "deep blue tunnel": {
+      "approved_pct": 6.8,
+      "game_pct": 4.9,
+      "place_match": 0.391,
+      "approved_ninths": [
+       [
+        5.2,
+        16.8,
+        3.6
+       ],
+       [
+        15.8,
+        1.8,
+        2.8
+       ],
+       [
+        4.2,
+        8.8,
+        1.9
+       ]
+      ],
+      "game_ninths": [
+       [
+        9.1,
+        16.9,
+        8.7
+       ],
+       [
+        0.9,
+        0.0,
+        0.6
+       ],
+       [
+        1.6,
+        4.5,
+        1.6
+       ]
+      ]
+     },
+     "pale milky blue": {
+      "approved_pct": 11.8,
+      "game_pct": 17.1,
+      "place_match": 0.487,
+      "approved_ninths": [
+       [
+        4.7,
+        8.9,
+        6.0
+       ],
+       [
+        9.7,
+        21.8,
+        13.2
+       ],
+       [
+        20.0,
+        6.6,
+        15.2
+       ]
+      ],
+      "game_ninths": [
+       [
+        9.7,
+        19.1,
+        11.2
+       ],
+       [
+        13.0,
+        24.2,
+        23.3
+       ],
+       [
+        23.3,
+        4.8,
+        25.3
+       ]
+      ]
+     }
+    },
+    "regions": {
+     "upper tunnel": {
+      "colour_dE2000": 5.1,
+      "ssim": 0.072,
+      "edges": 0.24,
+      "approved_rgb": [
+       157,
+       146,
+       191
+      ],
+      "game_rgb": [
+       138,
+       149,
+       198
+      ]
+     },
+     "left side": {
+      "colour_dE2000": 2.6,
+      "ssim": 0.095,
+      "edges": 0.079,
+      "approved_rgb": [
+       167,
+       166,
+       213
+      ],
+      "game_rgb": [
+       178,
+       172,
+       216
+      ]
+     },
+     "right side": {
+      "colour_dE2000": 0.4,
+      "ssim": 0.094,
+      "edges": 0.158,
+      "approved_rgb": [
+       189,
+       178,
+       203
+      ],
+      "game_rgb": [
+       189,
+       179,
+       203
+      ]
+     },
+     "centre (depth)": {
+      "colour_dE2000": 18.8,
+      "ssim": 0.081,
+      "edges": 0.021,
+      "approved_rgb": [
+       196,
+       204,
+       202
+      ],
+      "game_rgb": [
+       147,
+       181,
+       232
+      ]
+     },
+     "lower (water, mascot)": {
+      "colour_dE2000": 1.2,
+      "ssim": 0.137,
+      "edges": 0.206,
+      "approved_rgb": [
+       180,
+       149,
+       217
+      ],
+      "game_rgb": [
+       185,
+       149,
+       215
+      ]
+     }
+    },
+    "mean_dE2000_play": 18.2,
+    "differences": [
+     "white foam and splash: less than approved (11.0% of the play area against 23.4%)",
+     "gold (paw coins): more than approved (11.7% of the play area against 3.6%)",
+     "pale milky blue: more than approved (17.1% of the play area against 11.8%)",
+     "deep blue tunnel: less than approved (4.9% of the play area against 6.8%)"
+    ]
+   }
+  }
+ }
+}

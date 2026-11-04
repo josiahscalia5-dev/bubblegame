@@ -36,7 +36,7 @@ Round 3 runs on top of round 2 (its controls, hearts, Bubble Blast, Turbo Spin, 
   - `02_screen4_during_movement.png` (five moments of one run)
   - `03_screen4_round2_during_movement.png`
   - `04_screen3_tap_to_start.png`
-  - `05_feature_comparison.png` (the comparison tool's masks and heat map)
+  - `05_feature_comparison.jpg` (Screen 4) and `06_screen3_feature_comparison.jpg` (Screen 3) (the comparison tool's masks and heat map)
 - `measures.md` and `measures.json`: the comparison tool's numbers.
 - `model_checks/`: validator report before and after the repair, Blender passage checks of A1 and A2, the drum scan, the
   traversal runs.
@@ -85,4 +85,68 @@ Round 3's heaviest frame is its Tap to Start, with the five 3D opening models in
 the normal game's Tap to Start. In the tunnel it adds 0.1–0.17 M triangles over round 2, for the foam, white-water bands
 and bubbles.
 
-MEASURES_PLACEHOLDER
+## Measured against the approved screens (`measures.md`, `WebDemo/tools/screen4/compare_s4.py`)
+
+The play area between the HUD bands is compared. Features are measured as the share of that area each ingredient covers,
+and, in brackets, how well its place matches the approved picture (1.0 = same places).
+
+**Screen 4** (the moment just inside the drum, 3.6 s, and with the coins, gem and sock, 4.2 s):
+
+| Feature | Approved | Round 2, 3.6 s | **Round 3, 3.6 s** | Round 2, 4.2 s | **Round 3, 4.2 s** |
+|---|---|---|---|---|---|
+| White foam and splash | 20.8% | 3.3% | **18.7%** | 6.2% | **14.1%** |
+| Deep blue tunnel | 6.2% | 0.1% | 1.3% | 0.6% | **4.0%** (place 0.42) |
+| Turquoise water (too much before) | 1.9% | 3.0% | 0.6% | 10.2% | 0.6% |
+| Pink (character, brushes) | 13.9% | 29.8% | 24.1% | 22.6% | 21.4% |
+| Gold paw coins | 8.0% | 6.6% | 5.9% | 8.1% | 10.7% |
+| Pale milky blue (too much) | 11.5% | 12.2% | 19.4% | 12.2% | 18.5% |
+| Region colour ΔE2000, left / right side | | 13.9 / 17.9 | **10.2 / 12.7** | 4.7 / 21.6 | **3.1 / 8.6** |
+| Mean ΔE2000 per pixel | | 23.6 | 24.0 | 22.5 | 22.7 |
+
+- The water around the character now has the approved colour. Measured on the water band at hue 104 (OpenCV scale), the
+  approved, round 3 and round 2 values are:
+  - hue 104, saturation 129, white 27% (approved);
+  - hue 104, saturation 128, white 24% (round 3);
+  - hue 99, saturation 183, white 5% (round 2).
+
+**Screen 3, Tap to Start:**
+
+| Feature | Approved | Normal game (3D) | Round 2 (the painting itself) | **Round 3 (live 3D)** |
+|---|---|---|---|---|
+| White foam and splash | 23.4% | 11.2% | 16.6% | 11.0% |
+| Pink, place match | 13.3% | 12.3% (0.57) | 13.3% (0.77) | 12.1% (**0.81**) |
+| Gold | 3.6% | 12.0% | 4.6% | 11.7% |
+| Mean ΔE2000 per pixel | | 18.3 | 11.2 | 18.2 |
+
+Round 2 scores best on Screen 3 only because it shows the approved painting itself. Round 3 replaces that with real 3D,
+and measures as close as the normal game overall, with the pink placed closest.
+
+## Honest score and what still separates the game from the approved art
+
+- **About 7.5 out of 10 by eye** (round 2: about 7). We are **not** at 90–95%, and the numbers do not claim it.
+  - The ingredients the user named are now there, measured, as live 3D: white foam round the character, the turquoise
+    water's colour, the deep blue tunnel, pink-white-blue brushes, gold coins, the purple gem and bubbles.
+  - Whole-picture similarity has hardly moved: the mean colour difference per pixel stays about 23, because the pieces
+    are not yet in exactly the painting's places.
+- **The largest remaining differences, biggest first:**
+  1. **The tunnel's heart.** The approved picture has a dense, sparkling white and cyan whirlpool in the middle. Ours shows
+     brushes, coins and a sock there at that moment, with blue rings behind (the centre region's colour is still ΔE
+     8–12 away). There is also too much pale blue: 19% against 11.5%.
+  2. **The foreground foam is under the HUD.**
+     - The approved picture's foam crest sits where the game's Bubble Blast and Turbo Spin buttons are. The approved image
+       seems cropped lower than a real screen, with its buttons cut off at the bottom.
+     - Our foam is there, but the buttons cover much of it.
+     - Moving the buttons would change the controls' layout, so it is the user's decision.
+  3. **Brush shape.** The approved brushes are round pom-poms of layered tufts. Ours are the user's Meshy brush wheel,
+     recoloured, so it still reads as a disc. A pom-pom brush would need a new model: a Blender rebuild, or Meshy or Tripo
+     (which spend credits, so the user must agree).
+  4. **Too much pink** (21–24% against 13.9%). The brushes are large and close at these moments. The approved brushes sit
+     further out at the edges.
+  5. **Painterly glow.** The approved art has a soft dreamy haze and sparkle everywhere. That is achievable with more
+     sparkle particles and bloom tuning, but risks washing out the deep blue that was just recovered.
+- **Next steps, if wanted:**
+  - a brighter whirlpool at the tunnel's heart (an animated vortex shader on the far rings);
+  - a pom-pom brush model;
+  - a looping crown splash made with Blender's fluid simulation and played as a flipbook or vertex animation (see
+    `HOUDINI_AND_SUBSTANCE_ASSESSMENT.md`);
+  - the user's decision on the bottom buttons' position.
