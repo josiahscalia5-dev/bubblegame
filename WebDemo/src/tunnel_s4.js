@@ -20,7 +20,7 @@ import { ROUND3, buildRound3 } from './tunnel_r3.js';
 import { ROUND4, buildRound4 } from './tunnel_r4.js';
 import { makeFluffyBrush } from './fluffy_brush.js';
 import { ROUND5, buildRound5 } from './tunnel_r5.js';
-import { R6_ON, buildRound6 } from './tunnel_r6.js';
+import { R6_ON, ROUND6, buildRound6 } from './tunnel_r6.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -532,8 +532,9 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
     out.grade = true;
   }
   const bloom0 = bloomPass ? bloomPass.strength : 0;
+  const IN = R6_ON ? ROUND6.inside : [-0.5, 2.5];   // round6 pass 3: the drum's light starts before the mouth (the hero moment)
   updaters.push(() => {
-    const k = THREE.MathUtils.smoothstep(mascot.z, TS - 0.5, TS + 2.5);
+    const k = THREE.MathUtils.smoothstep(mascot.z, TS + IN[0], TS + IN[1]);
     if (out.grade) grade.uniforms.uS4Grade.value = k;
     if (bloomPass) bloomPass.strength = bloom0 + (ROUND2.bloom - bloom0) * k;
   });

@@ -21,7 +21,10 @@ export const R6_ON = LIST.includes('round6');
 export const ROUND6 = {
   // where the camera has finished blending from the Tap to Start framing into the drum framing (metres from the drum's
   // mouth; round5 and older: 3 m inside it, so the entry was seen through a half-blended camera)
-  camBlendEnd: -2,
+  // pass 3: where the drum's light and effects (colour grade, glow, droplets, bubbles, splashes) ramp in, in metres from the
+  // mouth (round5 and older: -0.5 to 2.5); the hero moment is now 3.4 m before the mouth
+  inside: [-5, -2.5],
+  camBlendEnd: -4.3,   // pass 3: the drum framing is set by the earlier hero moment (2.8 s), with the whole porthole in view
   // the porthole at the drum's mouth (metres; z is along the path, negative toward the rider, from the drum's start)
   porthole: {
     bezel: { inner: 1.98, outer: 2.5, front: -0.34, back: 0.16, round: 0.55 },   // the thick gold bezel's cross-section
@@ -35,29 +38,37 @@ export const ROUND6 = {
   },
   // layered flanges standing out of the tunnel wall (replace round4's thin glow rings)
   flanges: { every: 2.3, from: 1.0, wall: 2.03, lip: 1.8, depth: 0.16, goldEvery: 3, arc: [-56, 236],
-    face: [0.03, 0.1, 0.62], deep: [0.01, 0.03, 0.26], cyan: [0.45, 1.0, 1.25], gold: [1.0, 0.74, 0.32] },
+    // pass 3: brighter glowing layers (the target's luminous layered rings); pass 1-2: face [0.03, 0.1, 0.62], deep [0.01, 0.03, 0.26]
+    face: [0.05, 0.35, 0.95], deep: [0.02, 0.14, 0.58], cyan: [0.6, 1.0, 1.2], gold: [1.0, 0.74, 0.32] },
   // the bow wave: curved sheets of water wrapping both sides of the character, from just in front of it round to behind it
   // (toward the camera), turquoise and translucent low down, a white foam crest broken into fingers along the top. Their
   // front parts sit behind the character and their back parts in front of it, so the character is in the water, not on it.
   // reach: angle from straight ahead [start, end] in degrees; radius [at start, at end]; height: crest height (m);
   // swerve: extra height per m/s of sideways speed; lean: how far the sheet leans outward at its top (m)
-  bowWave: { reach: [25, 150], radius: [0.38, 1.05], height: 0.5, swerve: 0.12, lean: 0.22, flow: 1.6, rows: 14, cols: 64,
+  bowWave: { reach: [25, 150], radius: [0.38, 1.05], height: 0.64, swerve: 0.12, lean: 0.22, flow: 1.6, rows: 14, cols: 64,
     body: [0.0, 0.52, 0.88], deep: [0.0, 0.22, 0.8], alpha: 0.85 },
   // pass 2 (the user's review of Round 6): the deeper walls as a washer drum's surface instead of uniform neon bands:
   // perforated drum metal (staggered dimples whose rims catch light), broad uneven light that drifts, deep blue shadow behind
   // each flange, turquoise water light playing over the lower walls, lavender bounce on the upper wall, sparse white streaks
   // (measured against the approved tunnel: pass 2's first walls were a little darker and more saturated than the approved and
   // had too little turquoise light, so the water light and white streaks were raised and the caustic cells made finer)
-  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.5, streaks: 0.55, glints: 0.7,
-    glowFrom: [5, 16], glowMix: 0.7 },
+  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.5, streaks: 0.55, glints: 0.9,
+    glowFrom: [3, 12], glowMix: 0.75,
+    // pass 3 (the user's exact target board: "glowing watery vortex", brighter, more magical): bright water walls
+    shade: [0.02, 0.16, 0.72], metal: 0.12, twist: 0.35, flow: 0.9, swirl: 0.55, ringStep: 1.15, rings: 0.55, foam: 0.8 },
   // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
-  flangeVary: { dim: 0.3, patch: 0.85 },
+  flangeVary: { dim: 0.5, patch: 0.85 },
   // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
   // the slide's last metres before the mouth (the hero moment); white crests stay white
   waterTint: { amount: 0.85, deep: [0.0, 0.3, 0.95], bright: [0.0, 0.8, 0.95], slideFrom: [-9, -4] },
   // the wake and waterline react to movement: the wake lengthens with speed and swings away from a swerve, the waterline foam
   // tilts toward the side the character moves to, squashes and spreads in a ring when it lands, and thins out in the air
   wake: { speedLen: 0.6, swing: 0.16, tilt: 0.1, land: 0.7 },
+  // pass 3: the collectibles at the drum's mouth arranged as in the exact target board at the hero moment: a coin left of the
+  // character's head and two in the middle just beyond it, the gem up and to the right, the first sock on the right. All
+  // still real and collectable (heights within reach while riding); the mission is still five socks. Positions are metres
+  // along the track (the drum's mouth is at 3.9). They replace round3's first coin line, first sock, and add one gem.
+  layout: { coinLines: [[0, 4.6, 1, 1.0, 0.75, 0], [1, 5.6, 2, 1.0, 0.8, 0]], firstSock: [2, 2.8], extraGem: [2, 5.0] },
   hideFoamBubbles: true,   // round4's rounded blue bubble clusters on the water (the user: "too many rounded blue bubble clusters")
   hideCrestCards: true,    // round5's painted foam-lump cards: in the drum they merged into a pale white mass; the bow wave replaces them
   // round5's own settings, overridden for round6 (merged in tunnel_r5.js before its shaders are written)
@@ -69,7 +80,9 @@ export const ROUND6 = {
     // in real captures (aim 0.6 to 2.7, height 0.45 to 0.9, distance 2.0 to 2.7): low and aimed high puts, at the hero moment
     // 3.1 s, the gold rim's arc at about 19% of the height with the lavender face in the top corners, the tunnel's centre at
     // about 48% (approved 52%) and the character at about 77% (approved 80%), about 40% of the screen wide.
-    camera: { off: [0, 0.45, -2.7], lookY: 2.2, fov: 72 },
+    // pass 3 (the exact target board): further back, so the character is smaller (about 40% of the width) and the whole
+    // porthole shows, slightly cut at the screen edges, with the tunnel's centre at about 52% and the character at about 70%
+    camera: { off: [0, 0.75, -3.0], lookY: 2.2, fov: 72 },
     // the water vortex on the walls: round5's evenly spaced glowing crest lines read as a striped pipe and hid the flanges;
     // fewer, softer bands with more swirl, deeper troughs, more white water, so the flanges carry the structure
     // checkpoint C: rich saturated electric blue with cyan highlights, not pastel: the rainbow ring and the far white glow
@@ -80,7 +93,12 @@ export const ROUND6 = {
     // churn: the white churned water round the character (round4 0.95) made a pale mass over its base; the bow wave carries it
     water: { middle: [0.0, 0.7, 0.95], side: [0.0, 0.2, 0.85], mix: 0.92, crest: 0.8, froth: 0.55, churn: 0.4 },
     // controlled glow: only the brightest highlights bloom (round5's bloom lifted the whole deep tunnel to pale)
-    bloom: { strength: 0.3, radius: 0.45, threshold: 1.1 },
+    // pass 3: brighter and more magical (soft glow on the bright layers), still thresholded so the blues stay saturated
+    bloom: { strength: 0.42, radius: 0.55, threshold: 0.95 },
+    grade: { contrast: 1.2, saturation: 1.35 },
+    // stronger white splashes and the character deeper in the water
+    contact: { radius: 0.45, height: 0.66 },
+    spray: { rate: 650, size: [0.03, 0.1] },
     heart: { core: 1.0, halo: 0.6 },
     // soap bubbles round the character: fewer, smaller, no big ones over it (they covered the character in rainbow rings)
     softBubbles: { count: 20, big: 0, size: [0.03, 0.11] },
@@ -189,19 +207,33 @@ void main() {
   float broad = bwFbm(vec2(a * 0.9 + 7.0, u * 0.22));
   float drift = bwFbm(vec2(a * 1.4 - uTime * 0.2, u * 0.33 - uTime * ${ROUND6.walls.drift.toFixed(2)}));
   float light = ${ROUND6.walls.light.toFixed(2)} * (0.45 + broad) + 0.4 * drift;
-  vec3 col = mix(vec3(0.0, 0.015, 0.16), vec3(0.02, 0.1, 0.58), clamp(light, 0.0, 1.0));     // deep blue shadow to royal blue
-  col = mix(col, vec3(0.0, 0.36, 1.0), smoothstep(0.7, 1.15, light) * 0.65);                // electric blue where it is lit
-  // layered panels between the flanges: lit toward the front of each, a deep contact shadow just behind each flange
+  // pass 3 (the exact target board): the walls are glowing water, not dark metal: royal blue in the deepest shade, electric
+  // blue, and bright turquoise where the light falls (pass 2's deep blue-black shadows made the tunnel too dark)
+  vec3 col = mix(vec3(${ROUND6.walls.shade.join(', ')}), vec3(0.0, 0.42, 1.0), clamp(light, 0.0, 1.0));
+  col = mix(col, vec3(0.1, 0.82, 1.0), smoothstep(0.75, 1.2, light) * 0.6);
+  // layered panels between the flanges: lit toward the front of each, a soft shadow just behind each flange
   float sec = fract((u - uStart - ${ROUND6.flanges.from.toFixed(2)}) / ${ROUND6.flanges.every.toFixed(2)});
-  col *= 0.72 + 0.4 * smoothstep(0.03, 0.3, sec) * (1.0 - smoothstep(0.6, 1.0, sec));
-  col *= 1.0 - 0.55 * exp(-pow((sec - 0.03) / 0.06, 2.0));
+  col *= 0.82 + 0.3 * smoothstep(0.03, 0.3, sec) * (1.0 - smoothstep(0.6, 1.0, sec));
+  col *= 1.0 - 0.3 * exp(-pow((sec - 0.03) / 0.06, 2.0));
+  // the water film over the walls: water swirling round the drum as it rushes toward the rider (a spiral), bright turquoise
+  // swirls, and soft glowing ring layers of uneven brightness (the target's layered rings, not identical neon hoops)
+  vec2 fp = vec2(a + u * ${ROUND6.walls.twist.toFixed(2)} - uTime * 0.35, u * 0.5 - uTime * ${ROUND6.walls.flow.toFixed(2)});
+  float w1 = bwFbm(fp * vec2(2.0, 1.4)), w2 = bwFbm(fp * vec2(4.5, 3.0) + 7.0);
+  col = mix(col, vec3(0.12, 0.85, 1.0), smoothstep(0.55, 0.85, w1 * 0.7 + w2 * 0.5) * ${ROUND6.walls.swirl.toFixed(2)});
+  float ringP = (u - uStart) / ${ROUND6.walls.ringStep.toFixed(2)} + 0.25 * w1, ringK = fract(ringP), ringI = floor(ringP);
+  float ringB = fract(sin(ringI * 41.31) * 9134.7);                                         // each ring layer its own brightness
+  float ringGlow = exp(-pow((ringK - 0.5) / 0.16, 2.0)) * (0.35 + 0.65 * ringB) * (0.6 + 0.6 * smoothstep(0.3, 0.7, bwNoise(vec2(a * 1.7 + ringI, uTime * 0.4))));
+  col += vec3(0.3, 0.85, 1.0) * ringGlow * ${ROUND6.walls.rings.toFixed(2)};
+  float ridge = 1.0 - abs(2.0 * bwFbm(fp * vec2(3.0, 2.2) + 3.0) - 1.0);                  // white foam filaments in the swirl
+  col = mix(col, vec3(0.93, 0.99, 1.0), clamp(smoothstep(0.86, 0.97, ridge) * 0.7 + smoothstep(0.7, 0.86, w2) * smoothstep(0.45, 0.7, w1) * 0.45, 0.0, 1.0) * ${ROUND6.walls.foam.toFixed(2)});
+  col = mix(col, vec3(1.0), exp(-pow((up + 0.72) / 0.09, 2.0)) * smoothstep(0.35, 0.65, w2) * 0.8);   // foam where the wall meets the water
   // perforated drum metal: staggered round dimples, dark inside, the rim facing the light catching it
   vec2 gp = vec2(s, u) / ${ROUND6.walls.hole.toFixed(3)}; gp.x += 0.5 * mod(floor(gp.y), 2.0);
   vec2 f = fract(gp) - 0.5; float d = length(f);
   float holeK = 1.0 - smoothstep(${ROUND6.walls.holeFade[0].toFixed(1)}, ${ROUND6.walls.holeFade[1].toFixed(1)}, vDepth);
   float hole = (1.0 - smoothstep(0.16, 0.21, d)) * holeK, rim = smoothstep(0.17, 0.21, d) * (1.0 - smoothstep(0.23, 0.3, d)) * smoothstep(0.0, -0.3, f.y) * holeK;
   float holeVar = 0.45 + 0.55 * smoothstep(0.3, 0.7, bwNoise(vec2(s * 0.7, u * 0.5)));   // worn in places, crisp in others
-  col = col * (1.0 - 0.35 * hole * holeVar) + vec3(0.2, 0.55, 1.0) * rim * 0.2 * holeVar * (0.4 + light);
+  col = col * (1.0 - ${ROUND6.walls.metal.toFixed(2)} * hole * holeVar) + vec3(0.2, 0.55, 1.0) * rim * 0.2 * holeVar * (0.4 + light);   // drum metal faint under the water
   // turquoise water light on the walls: a moving caustic web, strongest low down near the water, coming and going in patches
   vec2 cw = vec2(s * 1.5, u * 1.05 - uTime * 0.85) * ${ROUND6.walls.causticScale.toFixed(2)} + vec2(0.6 * bwNoise(vec2(u * 0.6, uTime * 0.35)), 0.0);
   vec2 cv = bwVoronoi(cw); float web = 1.0 - smoothstep(0.0, 0.07, cv.y - cv.x);
@@ -322,7 +354,7 @@ void main() {
   float n = bwFbm(q), n2 = bwFbm(q * 2.7 + vec2(uTime * 0.9, 0.0));
   float edge = 0.62 + 0.3 * n;                                          // the ragged top edge: foam fingers, not a clean line
   if (v > edge + 0.12 * n2) discard;
-  float foam = smoothstep(edge - 0.17, edge - 0.03, v + 0.12 * n2);     // white foam crest along the top only; clear water below
+  float foam = smoothstep(edge - 0.24, edge - 0.03, v + 0.12 * n2);     // a thick white foam crest along the top; clear water below
   float streak = smoothstep(0.62, 0.8, bwFbm(vec2(t * 22.0 - uTime * uFlow * 2.2, v * 3.0)));   // white streaks running back
   vec3 V = normalize(cameraPosition - vW), N = normalize(vN); if (!gl_FrontFacing) N = -N;
   float fres = pow(1.0 - abs(dot(N, V)), 2.0);

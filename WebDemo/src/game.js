@@ -52,6 +52,12 @@ if (R3) Object.assign(R2_RULES, {
   socks: [[1, 7.6], [2, 12.1], [2, 21.8], [1, 28.6], [0, 33.0]],
   gems: [[0, 14.6], [0, 34.2]], gemH: 1.0,
 });
+if (R3 && R6_ON) {   // ?s3=round6 pass 3: the collectibles at the drum's mouth as in the exact target board (tunnel_r6.js layout)
+  const Lt = ROUND6.layout;
+  R2_RULES.coinLines = [...Lt.coinLines, ...R2_RULES.coinLines.slice(1)];
+  R2_RULES.socks = [Lt.firstSock, ...R2_RULES.socks.slice(1)];
+  R2_RULES.gems = [Lt.extraGem, ...R2_RULES.gems];
+}
 const r3Rnd = R3 ? mulberry(0x3e3b) : null;   // round3's own random numbers (the game's own sequence is unchanged)
 
 const TEST = !!window.__BW_TEST__;

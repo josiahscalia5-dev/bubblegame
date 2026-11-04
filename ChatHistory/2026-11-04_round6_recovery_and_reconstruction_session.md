@@ -622,3 +622,29 @@ Please show me the next approved-vs-gameplay comparison and explain clearly whic
 
 _[1 image attached]_
 
+---
+
+### Claude · 2026-11-04 19:32 UTC
+
+Collectible positions are absolute distances along the track (the drum mouth is at 3.9 m), and the Round 3 rules can be extended for the test switch. Writing pass 3: the water-vortex walls first.
+
+---
+
+### You (sent while Claude was working) · 2026-11-04 19:31 UTC
+
+Look at the screenshot image I uploaded. I need those key 3D assets and the 3D scene layout. I want exactly like that. And the camera composition guide is on there, and the render layers built in 3.js. And the screen for exact target approved reference. I want you to make exactly like that image that I just uploaded, and those assets are all there, and also the shader and slash VFX setting target look.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-04 19:33 UTC
+
+Now the flanges (brighter glowing layers), camera, splashes, grade and bloom settings:
+
+Now the collectible layout for the test switch, defined in `ROUND6` and applied in `game.js` after the Round 3 rules:
+
+The recording is nearly done (320 of 361 frames), and the power-up check has already loaded its build, so I can rebuild safely. Building pass 3 and capturing the candidate hero moments:
+
+Also restoring a more vivid grade (saturation 1.35), since the board's blues are vivid. Then building and capturing:
+

@@ -83,7 +83,8 @@ export const ROUND5 = {
 
 export function buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass }) {
   const TS = L.tunnelStart, axisH = W.WATER + W.AXIS_H, report = {};
-  const inside = () => THREE.MathUtils.smoothstep(mascot.z, TS - 0.5, TS + 2.5);
+  const IN = R6_ON ? ROUND6.inside : [-0.5, 2.5];   // round6 pass 3: the drum's effects start before the mouth (the hero moment)
+  const inside = () => THREE.MathUtils.smoothstep(mascot.z, TS + IN[0], TS + IN[1]);
   report.vortex = vortexLining(scene, time, TS);
   report.entrance = entranceRims({ scene, TR, TS, axisH });
   if (ROUND5.hideRings) for (const n of ['r4GlowRings', 'r4GoldRings']) { const o = scene.getObjectByName(n); if (o) o.visible = false; }
