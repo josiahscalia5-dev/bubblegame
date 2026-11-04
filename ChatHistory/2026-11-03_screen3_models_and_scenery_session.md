@@ -2034,3 +2034,5 @@ Still a tiny difference in the normal game, even with the template, so the hidde
 
 That stop was intentional. Now the colour adjustments:
 
+The second page load in the test timed out after 30 seconds, because loading the models with software rendering is slow. Raising the timeout and printing each result as it arrives:
+

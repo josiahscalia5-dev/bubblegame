@@ -21,7 +21,7 @@ const server = http.createServer((req, res) => {
     let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   });
   const url = `http://localhost:${server.address().port}/index.html`;
-  const fresh = async () => { await page.goto(url); await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 }); };
+  const fresh = async () => { await page.goto(url, { timeout: 300000, waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 }); };
   const out = {};
   await fresh();
   out.atStart = await page.evaluate(() => {
@@ -44,6 +44,7 @@ const server = http.createServer((req, res) => {
     return { seq, outAt, back, knocks: bw.state().knocks };
   });
 
+  console.log('hearts', JSON.stringify(out.hearts));
   // 2. Pause: game time stands still while paused (also with the keyboard, P), and runs on after Resume.
   await fresh();
   out.pause = await page.evaluate(() => {
