@@ -35,14 +35,14 @@ export const HERO = {
       // measured from the approved picture by the Art Director: the character's dome 42% of the width (so 2.8 m ahead), its
       // top at 69% of the height (the camera at the drum's axis height), the vanishing point at (55.5%, 52%) (aimed 2.3
       // degrees left and 1.7 up), the tunnel's mouth 0.45 of the width round it (6.1 m ahead). Hero moment: 2.85 s.
-      camera: { off: [-0.11, 1.08, -2.8], lookY: 1.38, lookX: 0.26, fov: 72 },
+      camera: { off: [-0.11, 1.08, -2.6], lookY: 1.38, lookX: 0.26, fov: 72 },   // 2.6 m: the character's dome ~0.42 of the width
       bloom: { strength: 0.32, radius: 0.42, threshold: 1.0 },   // soft glow on the whites only (it was lifting the blues to lavender)
     },
     // the approved rim: one slim polished gold band (about 2.5% of the height), no step ring, the blue seal hidden
     // the approved rim (the Art Director's fit): a big ring whose inner edge is a circle 0.86 of the screen width across the
     // top, centred low (left of and below the whirlpool's centre), thick at the right edge; built 2.1 m before the mouth (see
     // HERO.rim) with a lavender collar running back to the tube. Colours in linear light (the face shader's uniforms).
-    porthole: { bezel: { inner: 2.5, outer: 2.93, front: -0.2, back: 0.16, round: 0.45 }, step: { hide: true }, face: { inner: 2.88, outer: 14, z: 0.02, dish: 0.3 },
+    porthole: { bezel: { inner: 2.5, outer: 2.78, front: -0.2, back: 0.16, round: 0.45 }, step: { hide: true }, face: { inner: 2.74, outer: 14, z: 0.02, dish: 0.3 },
       rimRivets: { size: 0.0001 }, rivets: { radius: 3.3 },
       lavender: [0.1746, 0.162, 0.5776], lilac: [0.3968, 0.3231, 0.7913], shade: [0.0782, 0.0976, 0.4793] },
     hideFoamBubbles: true, hideCrestCards: true,
@@ -52,13 +52,13 @@ export const HERO = {
     // left coin and the gem from the left lane (the gem with a jump), the small upper-left coin with a jump from the left
     // lane, the small centre coin in the middle lane, the big right coin and the sock from the right lane.
     // [lane, metres along the path (the drum's mouth is at 3.9), count, step, height, arc]; round7's last two lines kept
-    layout: { coinLines: [[-0.4, 1.95, 1, 1.0, 1.02, 0], [-1.03, 4.05, 1, 1.0, 1.75, 0], [0.81, 7.3, 1, 1.0, 0.99, 0], [2.37, 1.5, 1, 1.0, 0.39, 0],
+    layout: { coinLines: [[-0.4, 1.95, 1, 1.0, 1.02, 0], [-1.14, 4.05, 1, 1.0, 1.5, 0], [0.81, 7.3, 1, 1.0, 0.99, 0], [2.29, 1.5, 1, 1.0, 0.45, 0],
       [2, 13.0, 1, 1.0, 0.55, 0], [1, 12.0, 3, 1.0, 0.72, 0]], replace: 3,
-      firstSock: [1.97, 2.25, 0.97], extraGem: [-0.76, 5.7, 1.6] },
+      firstSock: [1.97, 2.25, 0.97], extraGem: [-0.76, 5.7, 1.45] },
     // the two framing brushes (decorative, not hazards): the left one on the washer's face in front of the rim, cut by the
     // left edge; the right one just inside the rim at the right edge, at mid height
     // [metres along the path, side (+1 screen-left), angle up from level, scale, radius from the axis]
-    r7: { deco: [[1.15, 1, 30, 0.52, 1.96], [2.6, -1, 4, 0.95, 1.96]] },
+    r7: { coin: { color: [1.0, 1.1, 0.28], glow: 0.62, lemon: 0.12 }, deco: [[1.15, 1, 31, 0.74, 1.86], [2.6, -1, 2, 1.05, 1.98]] },
   },
   // hazards moved further in (the first pair from 6.0 / 6.7) and brought out of the wall later, so the approved picture's
   // open middle shows at the hero moment; the other four are where they were
@@ -77,26 +77,27 @@ export const HERO = {
       [0.10, '#d6aef0', '#eccdf5', '#f6f2fb'],   // pastel ring 1, pink-white
       [0.14, '#4072e2', '#6696ed', '#bedbfc'],   // periwinkle blue
       [0.185, '#1a63d8', '#2f80e8', '#a6d6fb'],  // blue
-      [0.24, '#9d9ad4', '#e2d6ee', '#f6f9ea'],   // pastel ring 2 (tinted by angle below)
+      [0.24, '#7fa6ea', '#cfe2f6', '#f6f9ea'],   // pastel ring 2 (tinted by angle below)
       [0.29, '#2a80ee', '#39b4fb', '#c8f0ff'],   // sky-cyan
       [0.36, '#0955e2', '#1f78f0', '#5aa8f8'],   // the darkest electric blue
       [0.43, '#1c6fe8', '#2d87f4', '#4fb0fa'],   // electric blue
     ],
     ridge: 0.85,      // the thin bright line on each crest
-    streaks: 0.9,     // white water streaks along the rings (fixed in the world, rushing past)
+    splash: 1.0,      // irregular white splash strokes along the rings
+    streaks: 0.6,     // white water streaks along the rings (fixed in the world, rushing past)
     sparkle: 1.0,     // twinkling white sparkles
-    rainbow: 0.6, rainbowAt: 0.24, rainbowW: 0.022,   // pastel ring 2's tint by angle: peach top, mint upper left, lilac left, ice-cyan upper right
+    rainbow: 0.85, rainbowAt: 0.235, rainbowW: 0.024,   // pastel ring 2's tint by angle: peach top, mint upper left, lilac left, ice-cyan upper right
     below: 0.55,      // below the centre the rings flatten into brighter horizontal flow streaks (measured: white 33%, pale blue 30%)
     floor: 0.92,      // how much of the water floor takes the whirlpool (the rest keeps its own water, foam on top)
   },
   // the rim's place: metres along the path from the drum's mouth, and its centre in the cross-section (sideways, height)
   // (solved from the hero camera: the approved inner circle's centre and top); gold lit from the top right, muted mauve on
   // the left, as measured: lavender bevel outside, a peach-gold core with a cream highlight, a plum shadow inside
-  rim: { u: -2.1, centre: [0.14, 0.58], bevel: '#cbabea', gold: '#f2aa86', goldHi: '#fffabf', shadow: '#784463', mauve: '#b68fa0', mauveHi: '#baadd0' },
+  rim: { u: -2.1, centre: [0.14, 0.5], bevel: '#cbabea', gold: '#f0a050', goldHi: '#fff2b0', shadow: '#784463', mauve: '#b68fa0', mauveHi: '#baadd0' },
   // the collar: the drum's lavender front wall from the rim's inner edge back to the tube's mouth (radius 2, on the axis)
-  collar: { wall: '#8269d7', deep: '#5a52b8', lip: '#a499ff', edge: '#002ca9' },
+  collar: { wall: '#a49ce0', deep: '#7a70c8', lip: '#c4bcf6', edge: '#002ca9' },   // silvery lavender
   // the hero grade (see heroGrade): contrast round mid-grey on luminance, saturation, a soft vignette toward cobalt
-  grade: { contrast: 1.06, saturation: 1.06, exposure: 1.0, vignette: 0.28, vignetteCol: '#5a6fd8', in: [-12, -8] },
+  grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0, vignette: 0.28, vignetteCol: '#5a6fd8', in: [-12, -8] },
   // the approved picture's paw coins are bigger than the game's (0.21-0.24 of the width near the edges): the coin's look
   // is scaled up (the pick-up distance is unchanged)
   coinScale: 1.3,
@@ -105,7 +106,7 @@ export const HERO = {
   bubbles: [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1.35, 0.95, 2.76, 0.16], [-2.15, -1.29, 2.43, 0.15],
     [-3.2, 0.88, 0.62, 0.15], [-2.9, 0.72, 0.8, 0.1], [-3.0, 0.92, 2.91, 0.13], [0.6, 0.9, 2.2, 0.09], [1.2, -1.0, 2.5, 0.1], [-0.8, 1.2, 1.9, 0.08]],
   // the bright centre: a camera-facing glow this far ahead of the camera on the axis; size as a share of the screen width
-  glow: { ahead: 16, size: 0.16, core: 1.2, halo: 0.6, alpha: 1.0 },
+  glow: { ahead: 16, size: 0.2, core: 0.55, halo: 0.45, alpha: 0.85 },   // a soft pastel-white disc, no hot spot (as measured)
   // round6/7 objects the hero scene replaces (hidden after their own updaters)
   hide: ['r6Flanges', 'r7Glow', 'r5Heart', 's4Rings'],
 };
@@ -153,11 +154,20 @@ ${rampCode(V.stops)}
   col = mix(col, cr, body * (0.35 + 0.65 * arcs));
   float ridge = exp(-pow((k - 0.62) / 0.045, 2.0));
   col = mix(col, vec3(1.0), clamp(ridge * (0.2 + 0.8 * arcs) * ${f3(V.ridge)} * smoothstep(0.03, 0.12, rw), 0.0, 1.0));
+  // a crisp cyan line along each ring's crest (the approved rings' glossy edges)
+  col = mix(col, ${v3('#3fc4ff')}, exp(-pow((k - 0.78) / 0.025, 2.0)) * 0.7 * smoothstep(0.12, 0.25, rw));
+  // irregular white splash strokes along the rings (stretched round them, of all lengths), drawn inward with the rings
+  float ringPh = lr * ${f3(V.perLog)} - uHeroTime * ${f3(V.flow)} - uHeroTravel * ${f3(V.travel)};
+  float sp1 = bwFbm(vec2(ang * 3.2 + id * 3.1, ringPh * 11.0));            // long strokes round the rings, thin across them
+  float sp2 = bwNoise(vec2(ang * 9.0 - id * 1.7, ringPh * 3.0));
+  float splash = smoothstep(0.62, 0.74, sp1) * smoothstep(0.3, 0.65, sp2) * smoothstep(0.08, 0.16, rw) * (1.0 - smoothstep(0.44, 0.5, rw));
+  col = mix(col, ${v3('#bfe9ff')}, clamp(smoothstep(0.52, 0.66, sp1) * smoothstep(0.3, 0.65, sp2) * 0.35 * smoothstep(0.08, 0.16, rw), 0.0, 1.0));   // a soft glow round them
+  col = mix(col, vec3(1.0), clamp(splash * ${f3(V.splash)}, 0.0, 1.0));
   // white water streaks, fixed in the world and flowing toward the rider: short dashes round the rings
-  vec2 sg = vec2(ang * 9.0, u * 1.6 + uHeroTime * 2.2), sc = floor(sg);
-  float sh = heroH(sc + 3.0), sh2 = heroH(sc + 17.0);
+  vec2 sg = vec2(ang * 14.0, u * 1.6 + uHeroTime * 2.2), sc = floor(sg);
+  float sh = heroH(sc + 3.0) + 0.25 * smoothstep(0.1, 0.4, rw) * step(0.0, rel.y) * (1.0 - smoothstep(0.42, 0.5, rw)), sh2 = heroH(sc + 17.0);
   vec2 sq = fract(sg) - vec2(0.5, 0.25 + 0.5 * sh2);
-  float streak = (1.0 - smoothstep(0.18, 0.46, abs(sq.x))) * (1.0 - smoothstep(0.04, 0.12, abs(sq.y))) * step(0.55, sh);
+  float streak = (1.0 - smoothstep(0.18, 0.46, abs(sq.x))) * (1.0 - smoothstep(0.04, 0.12, abs(sq.y))) * step(0.62, sh);
   col = mix(col, vec3(1.0), clamp(streak * (0.35 + 0.65 * body) * ${f3(V.streaks)} * smoothstep(0.06, 0.2, rw), 0.0, 1.0));
   // twinkling sparkles
   vec2 pg = vec2(ang * 24.0, u * 4.0 + uHeroTime * 1.4), pc = floor(pg);
@@ -167,9 +177,10 @@ ${rampCode(V.stops)}
   // pastel ring 2, tinted by angle (ang: 0 = screen right in the camera's view, up positive): peach at the top, mint
   // upper left, lilac left, ice-cyan upper right
   float up = clamp(rel.y / max(length(rel), 1e-3), -1.0, 1.0), right = -rel.x / max(length(rel), 1e-3);
-  vec3 tint = mix(${v3('#c7a3f2')}, ${v3('#b0e6f4')}, smoothstep(-0.6, 0.6, right));
-  tint = mix(tint, ${v3('#f1d2b4')}, smoothstep(0.55, 0.95, up));
-  tint = mix(tint, ${v3('#e7f7ee')}, smoothstep(0.2, 0.7, up) * smoothstep(0.1, 0.7, -right) * 0.7);
+  vec3 tint = mix(${v3('#b98cf0')}, ${v3('#8fdcf6')}, smoothstep(-0.6, 0.6, right));
+  tint = mix(tint, ${v3('#ffc27a')}, smoothstep(0.5, 0.95, up));                                   // warm peach-gold at the top
+  tint = mix(tint, ${v3('#f59ad8')}, smoothstep(0.1, 0.6, up) * smoothstep(0.0, 0.6, -right) * 0.8);   // pink upper left
+  tint = mix(tint, vec3(1.0), 0.18);
   col = mix(col, tint, ${f3(V.rainbow)} * exp(-pow((rw - ${f3(V.rainbowAt)}) / ${f3(V.rainbowW)}, 2.0)));
   // below the centre: brighter, flatter horizontal flow streaks of white and pale blue water
   float low = smoothstep(0.1, 0.7, -up) * smoothstep(0.04, 0.12, rw);
@@ -318,10 +329,10 @@ void main() {
   float r = length(vL.xy), t = clamp((r - ${f3(B.inner)}) / ${f3(B.outer - B.inner)}, 0.0, 1.0);   // 0 inner edge, 1 outer
   vec2 d = vL.xy / max(r, 1e-3);           // local +x is screen-left: right = -d.x
   float right = -d.x, up = d.y;
-  float goldK = smoothstep(-0.05, 0.55, right) * smoothstep(-0.5, 0.2, up);   // gold lit from the top right, mauve elsewhere
+  float goldK = clamp(smoothstep(0.3, 0.8, up) + smoothstep(-0.05, 0.55, right) * smoothstep(-0.5, 0.2, up), 0.0, 1.0);   // gold across the top and the right, mauve low on the left
   vec3 core = mix(${v3(P.mauve)}, ${v3(P.gold)}, goldK);
   vec3 hi = mix(${v3(P.mauveHi)}, ${v3(P.goldHi)}, goldK);
-  vec3 col = mix(${v3(P.shadow)}, core, smoothstep(0.0, 0.32, t));                 // plum shadow on the inner edge
+  vec3 col = mix(${v3(P.shadow)}, core, smoothstep(0.0, 0.16, t));                 // a thin plum shadow on the inner edge
   col = mix(col, hi, exp(-pow((t - 0.5) / 0.1, 2.0)) * (0.35 + 0.65 * goldK));      // the polished highlight
   col = mix(col, ${v3(P.bevel)}, smoothstep(0.7, 0.95, t));                          // the lavender bevel outside
   float glint = pow(max(0.0, sin(atan(d.y, d.x) * 3.0 + uTime * 0.6)), 24.0) * goldK * exp(-pow((t - 0.5) / 0.12, 2.0));
