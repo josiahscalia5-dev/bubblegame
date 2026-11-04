@@ -78,3 +78,13 @@ pass on the combined build is next.
 
 Sheets: `approved_before_now_3.0s.jpg` (approved, session start, now at 3.0 and 3.1 s),
 `water_pass_before_approved_after.png`, `tunnel_pass_approved_before_after.png`.
+
+### Evidence saved (`evidence/`)
+
+- `art_director/`: the sheet the Art Director reviewed, and its centre and lower crops.
+- `session_start/`: Round 7 at the start of this session.
+- `water/`: the Water & VFX specialist's final frames, its jump-and-swerve strip and its measurements.
+- `tunnel/`: the Tunnel & Lighting specialist's final frames, its approach sheet and its measurements.
+- `compare_s4_combined_624b2a4.md`: measurements of the combined build.
+- The agents' own full reports: `ChatHistory/2026-11-04_design_agent_reports.md`.
+- This session's chat: `ChatHistory/2026-11-04_original_account_screen4_round7_agents_session.md` (Tripo key redacted).
