@@ -19,10 +19,10 @@ export const ROUND5 = {
   path: { curve: 0.3 },
   // the luminous heart far down the tube (approved Screen 4 and the tunnel sheet): a glowing white core, warm gold and soft pink
   // halo and slow rays, on the path's axis this far ahead; depth-tested, so the sock, coins and brushes pass in front of it
-  heart: { ahead: 16, radius: 2.4, core: 1.6, rays: 0.35 },
+  heart: { ahead: 20, radius: 5, core: 2.2, halo: 1.1, rays: 0.45 },   // large enough that its glow shows round the coins in front of it
   hideRings: true,
   // bloom inside the drum (outside it is the game's own): strength, radius, threshold
-  bloom: { strength: 0.75, radius: 0.85, threshold: 0.72 },
+  bloom: { strength: 0.4, radius: 0.55, threshold: 0.92 },   // measured: stronger washed the deep blue out
   droplets: { count: 700, near: 3, far: 22, radius: [0.35, 1.85], size: [0.02, 0.06], swirl: 0.35, flow: 2.2, scale: 420, maxPx: 14 },
   bubbles: { count: 64, du: [-1.4, 14], x: [0.3, 1.6], h: [0.2, 2.6], r: [0.04, 0.36], flow: 1.6, film: 1.7 },   // none right in front of the camera: their film fogged the view
   fur: { shells: 8, length: 0.05, density: 260, tip: 0.5, halo: 0.45 },
@@ -98,7 +98,7 @@ void main() {
 // ---------------------------------------------------------------- the luminous heart at the far end of the view
 function heart({ scene, TR, L, mascot, updaters, time, inside, axisH }) {
   const P = ROUND5.heart;
-  const u = { uTime: time, uFade: { value: 0 }, uCore: { value: P.core }, uRays: { value: P.rays } };
+  const u = { uTime: time, uFade: { value: 0 }, uCore: { value: P.core }, uHalo: { value: P.halo }, uRays: { value: P.rays } };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: HEART_VERTEX, fragmentShader: HEART_FRAGMENT, transparent: true, depthWrite: false,
     blending: THREE.AdditiveBlending, side: THREE.DoubleSide });   // its basis below is mirrored (as the whirlpool's), so both sides
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat); mesh.name = 'r5Heart'; mesh.frustumCulled = false; mesh.visible = false; mesh.renderOrder = 2;
@@ -117,13 +117,13 @@ function heart({ scene, TR, L, mascot, updaters, time, inside, axisH }) {
 }
 const HEART_VERTEX = /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
 const HEART_FRAGMENT = /* glsl */ `
-uniform float uTime, uFade, uCore, uRays; varying vec2 vUv;
+uniform float uTime, uFade, uCore, uHalo, uRays; varying vec2 vUv;
 void main() {
   vec2 p = (vUv - 0.5) * 2.0; float r = length(p), a = atan(p.y, p.x);
   float core = exp(-r * r / 0.012) * 1.6 + exp(-r * r / 0.06);                        // a brilliant white core
   float halo = exp(-r * r / 0.25);                                                    // its warm halo
   float rays = pow(0.5 + 0.5 * sin(a * 9.0 + uTime * 0.4) * sin(a * 5.0 - uTime * 0.3), 3.0) * exp(-r * 2.2);
-  vec3 col = vec3(1.0, 0.98, 0.94) * core * uCore + mix(vec3(1.0, 0.85, 0.55), vec3(1.0, 0.6, 0.85), smoothstep(0.1, 0.5, r)) * halo * 0.55
+  vec3 col = vec3(1.0, 0.98, 0.94) * core * uCore + mix(vec3(1.0, 0.85, 0.55), vec3(1.0, 0.6, 0.85), smoothstep(0.1, 0.5, r)) * halo * uHalo
            + vec3(1.0, 0.92, 0.85) * rays * uRays;
   col *= 1.0 - smoothstep(0.75, 1.0, r);
   gl_FragColor = vec4(col * uFade, 1.0);

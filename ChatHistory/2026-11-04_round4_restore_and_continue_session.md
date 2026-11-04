@@ -945,3 +945,9 @@ The build matches the source, the chat history is exported with keys redacted, a
 
 The heart doesn't show at either moment, so something is hiding or disabling it. I'll ask the running game directly where the heart is, whether it's visible, and where it lands on screen:
 
+`EVAL` runs before each canvas capture, so changes made in it show in the capture. Capturing the same moment twice: once normally, once with the heart forced on top of everything:
+
+Odd result: both captures look the same, yet about 352,000 pixels differ. Mapping where the differences are tells me whether the heart draws faintly somewhere unexpected:
+
+You've hit your 5-hour limit · resets 5:20pm (UTC)
+
