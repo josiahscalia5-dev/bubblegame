@@ -34,6 +34,11 @@ Read this first when you continue in a new Claude conversation.
   is now the target: camera further back with a smaller character, hero moment **3.0 s**, glowing water-vortex walls,
   hue matched to the board, collectibles at the mouth arranged as on the board, bigger splashes, and a NaN fix that had
   blanked whole frames to lavender). Closest to the board: pass 3 (see the README's "Which version is closest").
+- **Combined preview `?s3=round6,rich`** (the user's latest direction: the board's entrance, architecture, brush placement
+  and water composition + the original approved Screen 4's sparkling water, glowing light and bubbles). Pass 3 stays as
+  `?s3=round6`, unchanged to the pixel. The original's richness was measured as local contrast, sparkle and tonal range;
+  the preview raises all three (most deeper in the tunnel). Not yet: the character's soft fur halo
+  (`models/mascot_furshell.glb` exists, not wired). README section "Combined preview".
 - **Saving:** `Tools/autosave.sh` runs every 5 minutes (chat history exported with keys redacted, then commit, push and a
   GitHub check). Restart it in a new session: `bash Tools/autosave.sh ~/.claude/projects/<project>/<session>.jsonl
   ChatHistory/<file>.md "<title>" 5 23` (in the background).

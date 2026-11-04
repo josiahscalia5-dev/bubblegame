@@ -37,7 +37,7 @@ export const ROUND6 = {
     rivets: { count: 16, radius: 2.82, size: 0.07 },
     rimRivets: { count: 24, size: 0.055 },   // the construction guide: rivets round the gold rim's front face
     panels: 12,                              // panel seams on the lavender wall, and a glowing light panel at the top
-    lavender: [0.68, 0.6, 0.98], lilac: [0.88, 0.8, 1.0], shade: [0.34, 0.26, 0.62],
+    lavender: [0.68, 0.6, 0.98], lilac: [0.88, 0.8, 1.0], shade: [0.34, 0.26, 0.62], goldColor: 0xffcf6e, goldGlow: 0x8a5212,
   },
   // layered flanges standing out of the tunnel wall (replace round4's thin glow rings)
   flanges: { every: 2.3, from: 1.0, wall: 2.03, lip: 1.8, depth: 0.16, goldEvery: 3, arc: [-56, 236],
@@ -120,10 +120,12 @@ ROUND6.rich = {
   // sparkles are bigger, brighter and more numerous
   walls: { glintCut: 0.935, glints: 1.5, shade: [0.0, 0.1, 0.62], twist: 0.6, swirl: 0.7, rings: 0.7, foam: 1.0, lavender: 0.08, midRing: 0.8, farMix: 0.3, glowMix: 0.6 },
   waterTint: { amount: 0.95, bright: [0.0, 0.85, 1.0] },
+  porthole: { goldColor: 0xffe58f, goldGlow: 0x8a6a1a },   // a yellower gold, so the stronger grade does not turn it red-orange
   bowWave: { body: [0.0, 0.6, 0.95], deep: [0.0, 0.28, 0.9] },
   round5: {
-    grade: { contrast: 1.28, saturation: 1.5 },
-    bloom: { strength: 0.38, radius: 0.55, threshold: 1.0 },
+    // a wider tonal range (the whole frame sat near white, so sparkle could not show) and less bloom haze
+    grade: { contrast: 1.45, saturation: 1.35 },
+    bloom: { strength: 0.32, radius: 0.5, threshold: 1.15 },
     softBubbles: { count: 34, size: [0.04, 0.17] },
     bubbles: { count: 90, r: [0.035, 0.27], x: [0.7, 1.9] },
     droplets: { count: 1600, size: [0.025, 0.085], scale: 700, maxPx: 18 },
@@ -428,8 +430,8 @@ function porthole({ scene, TR, TS, axisH, env, time }) {
   const P = ROUND6.porthole, g = new THREE.Group(); g.name = 'r6Porthole';
   // thick gold bezel: champagne gold, mirror-like, warm self-light so it glows in the drum's blue light
   const B = P.bezel;
-  const gold = new THREE.MeshStandardMaterial({ color: 0xffcf6e, metalness: 1.0, roughness: 0.2, envMap: env || null, envMapIntensity: 1.6,
-    emissive: 0x8a5212, emissiveIntensity: 0.75 });
+  const gold = new THREE.MeshStandardMaterial({ color: P.goldColor, metalness: 1.0, roughness: 0.2, envMap: env || null, envMapIntensity: 1.6,
+    emissive: P.goldGlow, emissiveIntensity: 0.75 });
   const bezel = new THREE.Mesh(sweep(roundedSection(B.inner, B.outer, B.front, B.back, B.round), [0, 360], 192), gold);
   bezel.name = 'r6Bezel';
   // bronze step ring inside the bezel and the royal-blue rubber seal behind it

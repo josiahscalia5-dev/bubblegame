@@ -181,7 +181,46 @@ centre is a bright pastel whirlpool.
    turquoise 2.6% against 9.8%), and the bottom HUD bar covers part of that area.
 4. The mission card is not yet on screen at 3.0 s (the HUD brings it in a moment later).
 
+## Combined preview (`?s3=round6,rich`): the board's architecture with the original's richness
+
+The user likes pass 3 and keeps it: **`?s3=round6` is unchanged** (0 differing pixels after this work, checked at 3.0 and
+4.2 s). The combination is a separate preview switch, `?s3=round6,rich` (`ROUND6.rich`), for review before anything else
+changes. The normal game is untouched.
+
+- **Kept from the exact target board (pass 3):** the purple-and-gold washing-machine entrance, the tunnel architecture,
+  the brush placement, the water composition, the camera and the collectible layout.
+- **Taken from the ORIGINAL approved Screen 4:** first measured what makes it rich. It is not saturation (0.49, lower
+  than the game's 0.57); it is **local contrast** (0.041 against pass 3's 0.016), **sparkle** (1.4% of the tunnel area
+  against 0.05%) and **tonal range** (0.073 against 0.043): deep blue right beside white glints. The first attempt (more
+  saturation, swirl, bubbles) moved none of these, because the whole frame sat near white and sparkle could not show. What
+  worked: a wider tonal range in the drum grade (contrast 1.45) with less bloom haze, glowing depth that keeps its ring
+  contrast, a lighter far wash, more and bigger sparkles and droplets (1,600), more glassy bubbles at different depths
+  round the edges (34 round the character, 90 streaming), more spiral swirl and foam filaments in the water walls, and a
+  yellower gold on the porthole so the stronger grade keeps it gold, not red-orange.
+
+Measured (tunnel area), pass 3 -> combined:
+
+| | Original approved | 3.0 s | 4.2 s |
+|---|---|---|---|
+| tonal range (value std) | 0.073 | 0.043 -> 0.056 | 0.064 -> **0.080** |
+| local contrast | 0.041 | 0.016 -> 0.020 | 0.017 -> 0.024 |
+| sparkle | 1.36% | 0.05% -> 0.10% | 0.29% -> **0.67%** |
+
+**Honest reading.** Deeper in the tunnel (3.6 s on) the combined preview is visibly richer: more sparkle, deeper blues
+beside bright crests, more swirl. At the entry moment (3.0 s) the difference is small, because most of that frame is the
+entrance and the far rings. Sparkle is still about half of the original's at 4.2 s and a tenth at 3.0 s. The character's
+soft fibrous halo (the original's look) is not done yet: a fur-shell model exists (`models/mascot_furshell.glb`) but is
+not wired into the game.
+
+Evidence: `combined_preview_vs_both_references_full.png` (board, original, pass 3 and combined at 3.0 and 4.2 s, full
+resolution), `combined_preview_in_motion.jpg`, `combined_preview_gameplay_t3.0.png`, `combined_preview_gameplay_t4.2.png`,
+`bubblewash_round6_rich_preview.mp4` (real gameplay).
+
 ## Checks (Round 6)
+
+- Pass 3 recording (`bubblewash_round6_pass3.mp4`): 360 frames at true game speed, lanes 1, 0 and 2, one lap, no console
+  errors; 3 socks collected (the scripted route rides the middle lane where pass 3 moved the first sock to the right lane;
+  the sock is collectable, as the controls check shows).
 
 - Controls (`s3_func.cjs`): swipe left and right change lanes, swipe up jumps, keyboard start, the ride into the tunnel
   collects 9 coins and 1 sock; no console errors. Tunnel frame cost: 157 draw calls, 1.06 M triangles (Round 5 pass 3:
