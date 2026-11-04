@@ -47,9 +47,9 @@ export const HERO_WATER = {
     mounds: [[60, 0.025, 7], [35.4, 0.03, 8], [17, 0.03, 7], [-1.2, 0.035, 6], [-11, 0.025, 5], [-30.5, 0.03, 7], [-51.9, 0.03, 8]],
     wave: 0.016,        // small waves running out along the crest (m)
     flow: 1.0,          // how fast the water's pattern runs down the face and out along the bank
-    swerve: 0.07,       // the side it swerves to piles up by this much per m/s (clamped)
+    swerve: 0.05,       // the side it swerves to piles up by this much per m/s (clamped)
     air: 0.55,          // how much it slumps while the character is high in a jump
-    land: 0.35,         // how much it is thrown up on landing
+    land: 0.12,         // how much it is thrown up on landing
     clear: 0.86,
     azure: 0.42,        // how much of the face is azure rather than electric blue        // how opaque the water is at the crest (it is solid lower down)
   },
@@ -80,7 +80,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
   const half = Math.sqrt(Math.max(0.01, L.tunnelRadius * L.tunnelRadius - W.AXIS_H * W.AXIS_H));
   // the character's frame at the water under it and its movement, worked out once a frame (first) for everything below
   const S = { k: 0, F: { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, C: new THREE.Vector3(),
-    lagX: mascot.x || 0, lat: 0, air: 0, land: 0, speed: 0, xMax: 3, wasAir: false };
+    lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: 0, xMax: 3, wasAir: false };
   updaters.push((dt) => {
     dt = Math.min(dt || 0, 0.1);
     const z = mascot.z;
@@ -95,7 +95,11 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     S.air += (air - S.air) * e(0.08);
     if (S.wasAir && !mascot.air) S.land = 1;
     S.wasAir = !!mascot.air; S.land = Math.max(0, S.land - dt * 2.0);
-    TR.frame(z, S.F); TR.map(S.lagX, ride, z, S.C);
+    // the swell sits on the water under the character and sinks with it when it dips after a landing (so it never swallows
+    // it); in the air it stays on the water
+    const dip = mascot.air ? 0 : Math.min(0, mascot.yAbs - W.FLOAT_H - ride);
+    S.base += (ride + dip - S.base) * e(0.05);
+    TR.frame(z, S.F); TR.map(S.lagX, S.base, z, S.C);
     const inside = THREE.MathUtils.clamp((z - TS) * 0.5, 0, 1) * THREE.MathUtils.clamp((TE - z) * 0.5, 0, 1);
     S.xMax = 3 + (half - 0.22 - 3) * inside;   // inside the drum: off the walls
   });
@@ -181,7 +185,7 @@ void main() {
   // waves running out along the crest from the front, and a slower roll
   float run = 0.6 * sin(abs(s) * 7.0 - uTime * 4.0) + 0.4 * sin(s * 13.0 + uTime * 2.3 + 1.3);
   float side = p.x >= 0.0 ? 1.0 : -1.0;
-  float pile = 1.0 + clamp(side * uLat * ${f3(P.swerve)}, -0.35, 0.45) * smoothstep(0.1, 0.8, abs(p.x));
+  float pile = 1.0 + clamp(side * uLat * ${f3(P.swerve)}, -0.3, 0.3) * smoothstep(0.1, 0.8, abs(p.x));
   float lift = uFade * pile * (1.0 - uAir * ${f3(P.air)}) * (1.0 + uLand * ${f3(P.land)});
   if (p.y > 0.0) p.y = p.y * lift + run * ${f3(P.wave)} * top * uFade;
   // landing: thrown outward; swerving: the far ends drag behind
@@ -225,7 +229,7 @@ void main() {
   col = mix(col, uKturq, (1.0 - smoothstep(0.02, 0.14, d)) * 0.55);
   col = mix(col, uKdeep, smoothstep(0.45, 0.8, d) * (0.3 + 0.6 * (1.0 - rip)));
   // light through the thin crest (the whirlpool's glow behind it)
-  col += uKcrest * (1.0 - smoothstep(0.0, 0.1, d)) * 0.3 * pow(1.0 - ndv, 1.5);
+  col += uKcrest * (1.0 - smoothstep(0.0, 0.1, d)) * 0.14 * pow(1.0 - ndv, 1.5);
   // a cyan sheen on the lit side of every swell and ripple
   col += uKcrest * pow(key, 5.0) * 0.22;
   // soft brighter patches of light in the water
@@ -235,7 +239,7 @@ void main() {
   vec3 Rv = reflect(-V, Nr);
   float toGlow = clamp(dot(Rv, normalize(uT * 0.9 + uU * 0.45)), 0.0, 1.0);
   float fres = pow(1.0 - ndv, 4.0);
-  col = mix(col, uKsky, clamp(fres * 0.3 + smoothstep(0.9, 0.99, toGlow) * 0.3, 0.0, 0.6));
+  col = mix(col, uKsky, clamp(fres * mix(0.12, 0.3, smoothstep(0.04, 0.2, d)) + smoothstep(0.9, 0.99, toGlow) * 0.25, 0.0, 0.6));
   vec3 Hc = normalize(normalize(uU * 0.75 - uT * 0.35 + uR * 0.45) + V);
   float spec = pow(clamp(dot(Nr, Hc), 0.0, 1.0), 70.0) * smoothstep(0.35, 0.65, n2) * ${f3(Wt.gloss)} + pow(toGlow, 140.0) * smoothstep(0.4, 0.7, n2);
   // streaks of paler water swept out along the bank
@@ -334,7 +338,7 @@ void main() {
   float fly = aLife.x, cyc = fly + aLife.y, age = mod(uTime + aVel.w * cyc, cyc);
   float side = aBase.x >= 0.0 ? 1.0 : -1.0;
   // the swell's own lift (as its vertex shader), and more spray on the side it swerves to and on landing, less in the air
-  float pile = 1.0 + clamp(side * uLat * ${f3(SW.swerve)}, -0.35, 0.45);
+  float pile = 1.0 + clamp(side * uLat * ${f3(SW.swerve)}, -0.3, 0.3);
   float lift = uFade * pile * (1.0 - uAir * ${f3(SW.air)}) * (1.0 + uLand * ${f3(SW.land)});
   float boost = (1.0 + clamp(side * uLat * 0.12, -0.5, 0.8) + uLand * 0.9) * (1.0 - 0.6 * uAir);
   vec3 v = aVel.xyz * vec3(1.0 + uLand * 0.5, boost, 1.0);
