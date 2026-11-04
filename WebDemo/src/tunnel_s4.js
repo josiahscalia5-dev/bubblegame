@@ -265,7 +265,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
 ` + anchor);
     if (R2) m.fragmentShader = m.fragmentShader.replace(FOG_ANCHOR, WATER_R2_LATE + FOG_ANCHOR);
     drumSheet.material = m; report.waterCopy = true;
-    if (R2) report.warnShader = m.fragmentShader.includes('s4Haz * ' + R2.hazardMix.toFixed(2));
+    if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
   return report;
