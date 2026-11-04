@@ -52,12 +52,12 @@ export const ROUND6 = {
   // each flange, turquoise water light playing over the lower walls, lavender bounce on the upper wall, sparse white streaks
   // (measured against the approved tunnel: pass 2's first walls were a little darker and more saturated than the approved and
   // had too little turquoise light, so the water light and white streaks were raised and the caustic cells made finer)
-  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.5, streaks: 0.55, glints: 0.9,
+  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.1, streaks: 0.55, glints: 0.9,
     glowFrom: [3, 12], glowMix: 0.75,
     // pass 3 (the user's exact target board: "glowing watery vortex", brighter, more magical): bright water walls
     shade: [0.02, 0.16, 0.72], metal: 0.12, twist: 0.35, flow: 0.9, swirl: 0.55, ringStep: 1.15, rings: 0.55, foam: 0.8 },
   // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
-  flangeVary: { dim: 0.5, patch: 0.85 },
+  flangeVary: { dim: 0.5, patch: 0.85, lavender: 0.12 },   // pass 3: lavender reflections cut to a hint (measured: 14-23% violet in the tunnel against the target's 2%)
   // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
   // the slide's last metres before the mouth (the hero moment); white crests stay white
   waterTint: { amount: 0.85, deep: [0.0, 0.3, 0.95], bright: [0.0, 0.8, 0.95], slideFrom: [-9, -4] },
@@ -260,7 +260,7 @@ void main() {
   // glowing cyan-turquoise centre (measured: with the heart only beyond 18 m the middle distance stayed deep royal blue and
   // the centre's colour difference to the approved doubled), then to the white-cyan heart far away
   float mid = smoothstep(${ROUND6.walls.glowFrom[0].toFixed(1)}, ${ROUND6.walls.glowFrom[1].toFixed(1)}, vDepth);
-  col = mix(col, col * 0.5 + vec3(0.12, 0.62, 1.0) * (0.75 + 0.35 * drift) + vec3(0.3, 0.9, 1.0) * web * 0.4, mid * ${ROUND6.walls.glowMix.toFixed(2)});
+  col = mix(col, col * 0.5 + vec3(0.05, 0.72, 1.0) * (0.75 + 0.35 * drift) + vec3(0.3, 0.95, 1.0) * web * 0.4, mid * ${ROUND6.walls.glowMix.toFixed(2)});   // pass 3: toward cyan
   float far = smoothstep(16.0, 36.0, vDepth);
   col = mix(col, mix(vec3(0.45, 0.88, 1.0), vec3(1.0, 0.98, 1.0), 0.35 + 0.4 * broad), far * 0.55);
   gl_FragColor = vec4(col, 1.0);
@@ -333,7 +333,7 @@ void main() {
   float r = mix(uRad.x, uRad.y, t);
   // the crest rises fast from the bow, peaks beside the character and trails off behind; the swerve side throws a taller sheet
   float swerve = 1.0 + clamp(aSide * uLat * 0.35, -0.4, 0.8);
-  float h = uH * uAmp * swerve * pow(sin(3.14159 * pow(t, 0.55)), 1.2) * (0.8 + 0.35 * bwNoise(vec2(t * 6.0 - uTime * uFlow, aSide * 3.0 + uTime * 0.7)));
+  float h = uH * uAmp * swerve * pow(max(sin(3.14159 * pow(t, 0.55)), 0.0), 1.2) * (0.8 + 0.35 * bwNoise(vec2(t * 6.0 - uTime * uFlow, aSide * 3.0 + uTime * 0.7)));
   float lean = uLean * v * v * (0.6 + 0.4 * t);                         // the top curls outward
   float rr = r + lean;
   vec3 p = vec3(sin(phi) * rr, h * v, cos(phi) * rr);
@@ -514,7 +514,7 @@ void main() {
   vec3 col = mix(uDeep, uFace, (0.35 + 0.65 * facing) * mix(0.55, 1.0, front));
   col += uFace * 0.5 * smoothstep(uWall - 0.08, uWall, r) * front;                          // light catching the outer step
   float up = smoothstep(0.2, 1.0, sin(a));                                                  // lavender reflections on the upper wall
-  col = mix(col, col + vec3(0.18, 0.08, 0.32), up * 0.5);
+  col = mix(col, col + vec3(0.18, 0.08, 0.32), up * ${ROUND6.flangeVary.lavender.toFixed(2)});
   float wave = 0.75 + 0.25 * sin(vU * 0.9 - uTime * 3.0);                                   // the glow pulses down the tunnel
   float sheen = pow(1.0 - facing, 2.0);
   // pass 2: every flange different: its own brightness and tint (cyan, turquoise, or an unlit deep-blue lip), and patchy
