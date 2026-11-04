@@ -27,7 +27,10 @@ export const ROUND5 = {
   // The approved foreground is a saturated blue base with crisp white detail (translucent blue bubbles with white rims, white
   // flecks everywhere); round4's foam was the reverse, a white base (white on every lit side) with pale-blue detail.
   foam: { white: 0.6, deep: [0.01, 0.2, 0.88], aqua: [0.12, 0.58, 1.0] },
-  foamBubbles: { inner: [0.35, 0.62, 1.0], deep: [0.04, 0.24, 0.9], bright: 1.05 },
+  foamBubbles: { per: 5, inner: [0.35, 0.62, 1.0], deep: [0.04, 0.24, 0.9], bright: 1.05 },
+  // round4's foam heaps (rounded mounds under the bubbles) hidden: tested at the hero moment, the bubble clusters with the
+  // turquoise water and white crests between them are closer to the approved foreground than the mounds
+  hideFoamHeaps: true,
   // spray round the mascot (game.js stepRound3): many small crisp white flecks, not round4's big soft blobs (they read as mist)
   spray: { rate: 650, size: [0.03, 0.09] },
   // the drum's colour grade (tunnel_s4.js round2Light, round4's overridden): the approved picture's strong blue-white contrast
@@ -52,6 +55,14 @@ export const ROUND5 = {
   crests: { spots: [[-1.0, 0.0, 0.2, 1.1], [1.0, 0.0, 0.2, 1.1], [-1.45, 0.05, 1.1, 1.3], [1.45, 0.05, 1.1, 1.3],
     [-0.5, -0.3, -0.5, 0.55], [0.5, -0.3, -0.5, 0.55], [-0.85, -0.2, -0.9, 0.7], [0.85, -0.2, -0.9, 0.7]],
     bob: 0.05, breathe: 0.08, opacity: 0.95 },
+  // the drum's water (tunnel_s4.js waterR4, round4's overridden): saturated turquoise down the middle, electric blue at the
+  // sides, stronger rolling crests and froth streaks (the approved picture's bright, rushing turquoise water)
+  water: { middle: [0.0, 0.62, 0.95], side: [0.0, 0.18, 0.78], mix: 0.85, crest: 0.45, froth: 1.0 },
+  // wet contact round the mascot: a churning foam collar at the waterline (its front overlaps the mascot's base, so it sits in
+  // the water rather than above it) and a foam disc on the surface round it. radius and height in metres
+  contact: { radius: 0.44, height: 0.3, disc: 1.15 },
+  // soap bubbles round the mascot, in front and behind (translucent: rim, rainbow film, glint), drifting up and back
+  softBubbles: { count: 28, box: [[-1.5, 1.5], [0.0, 1.3], [-1.3, 2.8]], size: [0.05, 0.3], big: 4, rise: 0.25, drift: 0.9 },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round5;
@@ -67,6 +78,9 @@ export function buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass
   report.droplets = droplets({ scene, TR, mascot, updaters, time, inside, axisH });
   report.heart = heart({ scene, TR, L, mascot, updaters, time, inside, axisH });
   report.crests = splashCrests({ scene, TR, W, mascot, updaters, time, inside });
+  report.contact = wetContact({ scene, TR, W, mascot, updaters, time, inside });
+  if (ROUND5.hideFoamHeaps) { const fh = scene.getObjectByName('r3Foam'); if (fh) updaters.push(() => { fh.visible = false; }); }   // after round3's own updater
+  report.softBubbles = softBubbles({ scene, TR, W, mascot, updaters, time, inside });
   if (bloomPass) {   // runs after round2's own bloom updater, so it has the last word inside the drum
     const B = ROUND5.bloom, s0 = bloomPass.radius, t0 = bloomPass.threshold;
     let base = null;
@@ -264,6 +278,91 @@ function splashCrests({ scene, TR, W, mascot, updaters, time, inside }) {
     }
   });
   return { cards: cards.length };
+}
+
+// ---------------------------------------------------------------- wet contact: foam collar and surface churn round the mascot
+function wetContact({ scene, TR, W, mascot, updaters, time, inside }) {
+  const P = ROUND5.contact, F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
+  const u = { uTime: time, uFade: { value: 0 } };
+  const collar = new THREE.Mesh(new THREE.CylinderGeometry(P.radius, P.radius * 1.25, P.height, 64, 1, true),
+    new THREE.ShaderMaterial({ uniforms: u, vertexShader: CONTACT_VERTEX, fragmentShader: COLLAR_FRAGMENT, transparent: true, depthWrite: false, side: THREE.DoubleSide }));
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(P.disc, 64).rotateX(-Math.PI / 2),
+    new THREE.ShaderMaterial({ uniforms: { ...u, uR: { value: P.radius / P.disc } }, vertexShader: CONTACT_VERTEX, fragmentShader: DISC_FRAGMENT, transparent: true, depthWrite: false }));
+  collar.renderOrder = 6; disc.renderOrder = 4; collar.frustumCulled = disc.frustumCulled = false;
+  const g = new THREE.Group(); g.name = 'r5Contact'; g.add(disc, collar); g.visible = false; scene.add(g);
+  collar.position.y = P.height * 0.32; disc.position.y = 0.01;
+  const m4 = new THREE.Matrix4(), v = new THREE.Vector3();
+  updaters.push(() => {
+    const k = inside(); g.visible = k > 0.01; u.uFade.value = k; if (!g.visible) return;
+    TR.frame(mascot.z, F); TR.map(mascot.x, W.WATER, mascot.z, v);
+    g.position.copy(v); m4.makeBasis(F.R, F.U, F.T); g.quaternion.setFromRotationMatrix(m4);
+  });
+  return { radius: P.radius };
+}
+const CONTACT_VERTEX = /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+const COLLAR_FRAGMENT = /* glsl */ `
+${NOISE}
+uniform float uTime, uFade; varying vec2 vUv;
+void main() {
+  float a = vUv.x * 6.2832, h = vUv.y;   // h: 0 at the waterline, 1 at the collar's ragged top
+  float n = bwFbm(vec2(vUv.x * 18.0 + uTime * 0.6, h * 3.0 - uTime * 2.2)), n2 = bwFbm(vec2(vUv.x * 40.0 - uTime, h * 6.0 - uTime * 3.0));
+  float top = 0.45 + 0.5 * n;                                             // ragged, churning top edge
+  float body = 1.0 - smoothstep(top - 0.25, top, h);
+  float foam = smoothstep(0.35, 0.65, n2 + (1.0 - h) * 0.35);
+  vec3 col = mix(vec3(0.2, 0.55, 1.0), vec3(1.0), foam);                  // blue water under white churn
+  float a0 = body * (0.55 + 0.45 * foam) * uFade;
+  gl_FragColor = vec4(col, a0);
+}`;
+const DISC_FRAGMENT = /* glsl */ `
+${NOISE}
+uniform float uTime, uFade, uR; varying vec2 vUv;
+void main() {
+  vec2 p = (vUv - 0.5) * 2.0; float r = length(p);
+  float ring = smoothstep(uR * 0.7, uR, r) * (1.0 - smoothstep(0.55, 1.0, r));   // churn from the body outward, fading
+  float n = bwFbm(vec2(atan(p.y, p.x) * 3.0, r * 6.0 + uTime * 1.6)) + 0.4 * bwFbm(p * 9.0 - vec2(0.0, uTime * 2.0));
+  float foam = smoothstep(0.55, 0.95, n) * ring;
+  vec3 col = mix(vec3(0.0, 0.6, 1.0), vec3(1.0), smoothstep(0.3, 0.8, foam * 1.4));
+  gl_FragColor = vec4(col, clamp(foam * 1.3 + ring * 0.18, 0.0, 1.0) * uFade);
+}`;
+
+// ---------------------------------------------------------------- translucent soap bubbles round the mascot
+function bubbleTexture() {
+  const N = 128, cv = document.createElement('canvas'); cv.width = cv.height = N; const g = cv.getContext('2d'), c = N / 2;
+  const film = g.createRadialGradient(c, c, c * 0.55, c, c, c * 0.98);   // clear middle, coloured film toward the rim
+  film.addColorStop(0, 'rgba(180,220,255,0.04)'); film.addColorStop(0.6, 'rgba(160,140,255,0.16)'); film.addColorStop(0.85, 'rgba(120,230,255,0.35)'); film.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = film; g.beginPath(); g.arc(c, c, c * 0.98, 0, Math.PI * 2); g.fill();
+  const hue = g.createLinearGradient(0, 0, N, N);   // rainbow sheen on the rim
+  ['rgba(255,140,220,0.55)', 'rgba(140,200,255,0.55)', 'rgba(150,255,210,0.5)', 'rgba(255,240,150,0.5)'].forEach((s, i) => hue.addColorStop(i / 3, s));
+  g.strokeStyle = hue; g.lineWidth = N * 0.035; g.beginPath(); g.arc(c, c, c * 0.9, 0, Math.PI * 2); g.stroke();
+  g.strokeStyle = 'rgba(255,255,255,0.85)'; g.lineWidth = N * 0.015; g.beginPath(); g.arc(c, c, c * 0.94, 0, Math.PI * 2); g.stroke();
+  g.fillStyle = 'rgba(255,255,255,0.95)'; g.beginPath(); g.ellipse(c * 0.62, c * 0.55, c * 0.16, c * 0.09, -0.7, 0, Math.PI * 2); g.fill();
+  g.fillStyle = 'rgba(255,255,255,0.6)'; g.beginPath(); g.arc(c * 1.35, c * 1.38, c * 0.06, 0, Math.PI * 2); g.fill();
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function softBubbles({ scene, TR, W, mascot, updaters, time, inside }) {
+  const P = ROUND5.softBubbles, rnd = mulberry5(0xb0bb1e), tex = bubbleTexture(), g = new THREE.Group(); g.name = 'r5SoftBubbles'; g.visible = false; scene.add(g);
+  const R = (a) => a[0] + rnd() * (a[1] - a[0]);
+  const bs = [];
+  for (let i = 0; i < P.count; i++) {
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, fog: false }));
+    sp.renderOrder = 7; sp.frustumCulled = false; g.add(sp);
+    const big = i < P.big;   // a few big ones low in front, as in the approved picture's lower left
+    bs.push({ sp, x: big ? (i % 2 ? 0.9 : -1.0) + rnd() * 0.3 : R(P.box[0]), h: big ? 0.05 + rnd() * 0.25 : R(P.box[1]),
+      du: big ? -0.9 - rnd() * 0.3 : R(P.box[2]), s: big ? 0.28 + rnd() * 0.12 : R(P.size), w: rnd() * 6 });
+  }
+  const v = new THREE.Vector3(); let last = null;
+  updaters.push((dt) => {
+    const k = inside(); g.visible = k > 0.01; if (!g.visible) { last = null; return; }
+    const t = time.value;
+    for (const b of bs) {
+      if (last !== null) { b.h += P.rise * dt; b.du -= P.drift * dt * 0.3; }
+      if (b.h > P.box[1][1] + 0.3 || b.du < P.box[2][0] - 0.4) { b.h = R([0.0, 0.3]); b.du = R([0.5, P.box[2][1]]); b.x = R(P.box[0]); }
+      TR.map(mascot.x + b.x + Math.sin(t * 1.3 + b.w) * 0.05, W.WATER + b.h, mascot.z + b.du, v);
+      b.sp.position.copy(v); b.sp.scale.setScalar(b.s * 2); b.sp.material.opacity = k;
+    }
+    last = t;
+  });
+  return { count: bs.length };
 }
 
 function mulberry5(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

@@ -97,3 +97,21 @@ Evidence: `pass2_approved_vs_previous_vs_new_t3.6.jpg`, `..._t4.2.jpg` (full res
 Checks: Round 4 and normal game pixel-identical (0 differing pixels); controls pass (lanes, jump, keyboard start, coins and
 socks collected), pause, Bubble Blast and Turbo Spin pass; the 12 s recording visits all three lanes and collects 4 socks; no
 console errors. Tunnel frame cost: 142 draw calls, 1.21 M triangles.
+
+## Pass 3 (4 November, night): wet contact, soap bubbles at every depth, Tripo brush test
+
+Primary reference from now on: `Design/ReferencePacks/2026-11-04_Tripo_Reference_Kit/00_ORIGINAL_APPROVED_SCREEN_4.jpg`
+(767 x 1536, the user's original approved Screen 4 at its best resolution).
+
+- **Water contact round the character:** a churning foam collar at the waterline (its front overlaps the character's base)
+  and a foam disc of surface churn; **translucent soap bubbles** (rainbow film, bright rim, glint) in front of and behind the
+  character, a few big ones low in front as in the approved picture, drifting up and back.
+- **Turquoise water:** the drum water's middle more saturated turquoise, sides electric blue, stronger crests and froth.
+- **Rounded foam mounds removed** (round4's foam heaps hidden in Round 5; the bubble clusters kept, fewer of them): tested at
+  the hero moment, the clusters with water and crests between them are closer to the approved foreground.
+- **Tripo brush tested and not used** (`Design/TripoDeliveries/Round5/README.md`, switch `?s3=round5,tripobrush`): it lost the
+  colour rings and reads as hard, glossy scales; the shell-fur brushes stay. The user agreed; no more brush generations.
+
+Evidence: `pass3_original_vs_pass2_vs_pass3_t3.6.jpg` and `..._t4.2.jpg`, `bubblewash_round5_pass3.mp4`.
+Checks: Round 4 and normal game pixel-identical; controls, pause, Bubble Blast and Turbo Spin pass; recording visits all three
+lanes, collects 4 socks, no console errors. Tunnel frame cost: 171 draw calls, 1.11 M triangles.

@@ -8,7 +8,7 @@ Read this first when you continue in a new Claude conversation.
   its usage limit at about 14:33, partway through Round 5). The latest finished Round 4 is `21c054c`.
 - **Tools:** `Tools/cloud_env_setup.sh` installs everything (paste it into the environment's Setup script). Plugin and tool
   status, and Tripo: `Tools/DEV_TOOLS.md`.
-- **Tripo is connected** on this session's machine: region ov. One job so far (the paw coin, 120 credits); **balance 880**. Ask before generating.
+- **Tripo is connected** on this session's machine: region ov. Two jobs so far (paw coin used; brush tested, not used; 120 credits each); **balance 760**. Ask before generating.
 - **Round 5 (`?s3=round5`, test, not approved), first frame pass:** the washed-out look is fixed (its cause was the
   vortex glowing from 9 units ahead into the bloom), the tunnel's centre is luminous and centred with its ring frames back,
   the camera is further back, and the foam is white over turquoise. Evidence, honest numbers and what is still different:

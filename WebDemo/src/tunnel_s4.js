@@ -115,6 +115,27 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
 
   // ---------------------------------------------------------------- 2. the spinning brushes
   const brushes = [];
+  // ?s3=round5,tripobrush (test): the Tripo P2 brush (models/brush_p2.glb, radius 0.95 in wheel units). Tripo kept the tufts
+  // but lost the colour rings (its texture is 89% pink, no white), so the rings are repainted from the shape: royal blue in
+  // the middle of the face, a white ring, pink outside, the texture's brightness kept for each tuft's shading
+  let TB = null;
+  if (round2 && round2.tripoBrush) {
+    const g = await loaderParse(await (await fetch('models/brush_p2.glb')).arrayBuffer());
+    g.scene.traverse((o) => { if (o.isMesh && !TB) TB = o; });
+  }
+  const tripoBrushLook = (blueMiddle) => {
+    const mat = TB.material.clone();
+    mat.onBeforeCompile = (s) => {
+      s.vertexShader = s.vertexShader.replace('void main() {', 'varying vec3 vBrushP;\nvoid main() {\n  vBrushP = position;');
+      s.fragmentShader = s.fragmentShader.replace('void main() {', 'varying vec3 vBrushP;\nvoid main() {').replace('#include <map_fragment>', `#include <map_fragment>
+  { float lum = dot(diffuseColor.rgb, vec3(0.299, 0.587, 0.114)), c = normalize(vBrushP).z;
+    vec3 mid = ${blueMiddle ? 'vec3(0.06, 0.12, 0.85)' : 'vec3(1.0, 0.3, 0.68)'}, ring = vec3(1.0, 0.95, 0.98), outer = vec3(1.0, 0.32, 0.7);
+    vec3 band = c > 0.84 ? mid : (c > 0.55 ? ring : outer);
+    diffuseColor.rgb = band * clamp(0.35 + 0.95 * lum / 0.62, 0.0, 1.4); }`);
+    };
+    mat.customProgramCacheKey = () => 'tripoBrush' + blueMiddle;
+    return new THREE.Mesh(TB.geometry, mat);
+  };
   if (brushBytes) {
     const gltf = await loaderParse(brushBytes);
     let src = null; gltf.scene.traverse((o) => { if (o.isMesh && !src) src = o; });
@@ -172,7 +193,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       const wheel = new THREE.Mesh(wheelGeo, side > 0 ? matPink : mat); wheel.scale.setScalar(P.brushR / 0.95);
       const spinner = new THREE.Group(); spinner.add(wheel); holder.add(spinner);
       if (R4) {   // round4: a fluffy pom-pom instead of the wheel, turning as it did (with `fluffy`: the shell-fur brush)
-        const look = FLUFFY_ON ? makeFluffyBrush(side > 0, { balls: !!R5 }) : r4PomPom(side > 0, wheel.scale.x);   // round5: ball tufts
+        const look = TB ? tripoBrushLook(side < 0) : FLUFFY_ON ? makeFluffyBrush(side > 0, { balls: !!R5 }) : r4PomPom(side > 0, wheel.scale.x);   // round5: ball tufts; tripobrush: the Tripo brush
         if (FLUFFY_ON) look.scale.setScalar(wheel.scale.x);
         spinner.add(look); wheel.visible = false;
       }
@@ -271,7 +292,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       // streaks, so half of the first brushes' warning was covered by the slide's water. The drum's sheet now wins there.
       m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -4;
     }
-    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? (R3 ? WATER_R2.replace(anchor, waterR3() + (R4 ? waterR4() : '') + anchor) : WATER_R2) : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
+    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? (R3 ? WATER_R2.replace(anchor, waterR3() + (R4 ? waterR4(R5) : '') + anchor) : WATER_R2) : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
     vec2 toM = xz - uPlayer.xz; float rM = length(toM * vec2(1.0, 0.85));
     float collar = exp(-pow(max(0.0, rM - 0.42) / 0.42, 2.0));
     float behindM = clamp(-toM.y / 3.2, 0.0, 1.0);
@@ -582,7 +603,7 @@ const FOG_ANCHOR = '  float dist = length(cameraPosition - vWorld);';
 // round4: the drum's water rebuilt: the cell patterns (caustic web, bubble lace) that read as a tiled floor are taken out;
 // turquoise in the middle and deeper blue at the sides; rolling crests moving with the flow; flowing streaks of white froth,
 // thick and churned round the mascot
-const waterR4 = () => { const P = ROUND4.water; return `  if (inDrum > 0.0) {   // ?s3=round4
+const waterR4 = (R5x) => { const P = R5x && R5x.water ? { ...ROUND4.water, ...R5x.water } : ROUND4.water; return `  if (inDrum > 0.0) {   // ?s3=round4
     col -= mix(uGlow, vec3(1.0), 0.35) * caustic * (0.5 + 0.4 * crest) * (1.0 - moat * 0.6) * inDrum;
     vec2 toM4 = xz - uPlayer.xz; float rM4 = length(toM4 * vec2(1.0, 0.8));
     float centreW = 1.0 - smoothstep(0.25, 1.35, abs(xz.x));
