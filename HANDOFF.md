@@ -28,8 +28,18 @@ Read this first when you continue in a new Claude conversation.
 - **Tripo:** signed in on this machine (key in `~/.tripo`, outside the repository); balance **760 credits**, nothing spent.
   The key was pasted into this chat: the chat exporter redacts it, but creating a new key on Tripo's site and deleting that
   one is safer, since the repository is public.
-- **Next:** the water at the hero moment (the slide's last metres still show pale cyan cell-pattern water), more white
-  splash (10 to 13% against the approved 21%), and a more painterly whirlpool in the tunnel (white streaks and sparkles).
+- **Round 6 passes 2 and 3** (after the user's reviews; README sections "Pass 2" and "Pass 3"): pass 2 `7fddb79`
+  (washer-drum walls, turquoise water under the white, reactive wake and waterline, smaller bubbles); pass 3 `94e0bba`
+  (the user's **exact target board** `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/03_SCREEN4_EXACT_TARGET_BOARD.png`
+  is now the target: camera further back with a smaller character, hero moment **3.0 s**, glowing water-vortex walls,
+  hue matched to the board, collectibles at the mouth arranged as on the board, bigger splashes, and a NaN fix that had
+  blanked whole frames to lavender). Closest to the board: pass 3 (see the README's "Which version is closest").
+- **Saving:** `Tools/autosave.sh` runs every 5 minutes (chat history exported with keys redacted, then commit, push and a
+  GitHub check). Restart it in a new session: `bash Tools/autosave.sh ~/.claude/projects/<project>/<session>.jsonl
+  ChatHistory/<file>.md "<title>" 5 23` (in the background).
+- **Next:** toward the board: more vivid deep electric blue at the entry moment (saturation 0.57 against 0.70), bigger
+  turquoise water with tall white splash walls in the foreground (white 7% against 13%, turquoise 2.6% against 9.8%), and
+  bigger brushes and coins nearer the screen edges.
 
 ## Newest (4 November, 15:00 UTC onward): the new Claude account, branch `ccr-4bb5eb4c-md7eyt`
 

@@ -138,6 +138,49 @@ average colour, because the approved tunnel's centre is a bright cyan-white whir
 there than pass 1's bright cyan bands (the luminous-depth ramp recovered about a quarter of that). By eye pass 2 answers
 all three requests; the centre's brightness is the next thing to bring toward the approved picture.
 
+## Pass 3 (the user's exact target board): composition, glowing water vortex, vivid cyan-blue
+
+Target: the left panel of `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/03_SCREEN4_EXACT_TARGET_BOARD.png`
+(cropped to 1:2 as `exact_target_panel_538x1076.png`), which the user named the exact target. **Hero moment: 3.0 s.**
+
+- **Framing:** camera further back (`off [0, 0.75, -3.0]`), so the character is smaller (about a third of the width, centre
+  at about 74% of the height) and the porthole rings frame a tunnel centred at about 50%. The drum framing, its colour
+  grade, glow and effects ramp in before the mouth (`ROUND6.inside`, `camBlendEnd`), Round 6 only.
+- **Glowing water vortex:** the walls are glowing water (electric blue to turquoise swirl, soft layered ring glows of uneven
+  brightness, white foam filaments, foam where the walls meet the water, luminous cyan depth), not dark metal.
+- **Hue measured against the board:** lavender reflections cut and the glow moved toward cyan: inside the drum the tunnel is
+  now 12% cyan / 47% blue / 2% violet (board 14 / 47 / 2; pass 2 was 3% cyan, 14 to 23% violet).
+- **Collectibles at the mouth as on the board:** coins just beyond the character, the gem up and to the right, the first
+  sock on the right; all collectable, still five socks (`ROUND6.layout`).
+- **Splashes:** taller bow wave, thicker white crests, deeper waterline, more spray.
+- **Fixed:** a `pow()` of a negative number in the bow wave could produce NaN, which the bloom spread over the whole frame
+  (a flat lavender frame at some moments).
+
+Evidence: `target_vs_approved_vs_all_versions_full.png` (the board, the original approved Screen 4, recovered Round 5 and
+Round 6 passes 1, 2 and 3, full resolution), `round6_pass3_in_motion.jpg`, `round6_pass3_gameplay_t3.0.png`,
+`bubblewash_round6_pass3.mp4`, `round6_pass3_vs_exact_target.md`, `round6_pass3_vs_original_approved.md`.
+
+### Which version is closest
+
+**To the exact target board: pass 3.** Measured against the board (`compare_s4.py`): best placement of pink (0.77; others
+0.58 to 0.70), gold (0.44; others 0.06 to 0.30) and the gem (the only version with it in place); best colour difference in
+the centre (5.2; others 6.5 to 19.8), left side (3.4) and water/character region (1.9); overall average 24.1, level with
+pass 1 (23.9). Pass 1 is better only in the upper tunnel (4.0 against 7.9).
+
+**To the original approved Screen 4:** pass 3 is best in the upper tunnel (5.5) and the water/character region (8.8);
+pass 1 has the best overall average (23.9 against 25.3) and recovered Round 5 the best centre (4.6), because the original's
+centre is a bright pastel whirlpool.
+
+### Still different from the target (by eye)
+
+1. The board is vivid deep electric blue with glowing cyan rings; pass 3 is lighter and more pastel at the entry moment
+   (saturation 0.57 against 0.70), and the area round the porthole is more lavender.
+2. The board's brushes and coins are bigger and closer to the screen edges; in the game they stay where the level puts
+   them, further down the tunnel.
+3. The board's foreground is turquoise water with tall white splash walls; the game has less of both (white 7% against 13%,
+   turquoise 2.6% against 9.8%), and the bottom HUD bar covers part of that area.
+4. The mission card is not yet on screen at 3.0 s (the HUD brings it in a moment later).
+
 ## Checks (Round 6)
 
 - Controls (`s3_func.cjs`): swipe left and right change lanes, swipe up jumps, keyboard start, the ride into the tunnel
