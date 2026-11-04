@@ -1,0 +1,67 @@
+{
+ "model": "s3_entrance.glb",
+ "triangles": 46683,
+ "size": [
+  1.903,
+  0.69,
+  1.799
+ ],
+ "raysThrough": "267 of 576",
+ "openThroughShare": 0.464,
+ "stoppedAtDepth": {
+  "median": 0.286,
+  "deepest": 0.617
+ },
+ "slices": [
+  {
+   "depth": 0.05,
+   "clearRadius": 0.518,
+   "halfWidth": 0.867
+  },
+  {
+   "depth": 0.15,
+   "clearRadius": 0.46,
+   "halfWidth": 0.909
+  },
+  {
+   "depth": 0.25,
+   "clearRadius": 0.398,
+   "halfWidth": 0.943
+  },
+  {
+   "depth": 0.35,
+   "clearRadius": 0.275,
+   "halfWidth": 0.947
+  },
+  {
+   "depth": 0.45,
+   "clearRadius": 0.217,
+   "halfWidth": 0.926
+  },
+  {
+   "depth": 0.55,
+   "clearRadius": 0.218,
+   "halfWidth": 0.915
+  },
+  {
+   "depth": 0.65,
+   "clearRadius": 0.216,
+   "halfWidth": 0.884
+  },
+  {
+   "depth": 0.75,
+   "clearRadius": 0.239,
+   "halfWidth": 0.851
+  },
+  {
+   "depth": 0.85,
+   "clearRadius": 0.293,
+   "halfWidth": 0.766
+  },
+  {
+   "depth": 0.95,
+   "clearRadius": 0.583,
+   "halfWidth": 0.164
+  }
+ ]
+}

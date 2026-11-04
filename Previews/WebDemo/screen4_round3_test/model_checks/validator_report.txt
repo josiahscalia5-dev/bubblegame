@@ -1,0 +1,22 @@
+Khronos glTF Validator 2.0.0-dev.3.10, 4 November 2026
+
+BEFORE (as delivered / as they were in the game):
+A1_s3_entrance_before.glb: errors 48, warnings 1, infos 1 | 46683 triangles, 1 materials, 1 draws
+    WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-gene
+    ERR ACCESSOR_VECTOR3_NON_UNIT: Vector3 at accessor indices 0..2 is not of unit length: 1.0193649317437818.
+    ERR ACCESSOR_VECTOR3_NON_UNIT: Vector3 at accessor indices 12..14 is not of unit length: 1.0088559127161598.
+    ERR ACCESSOR_VECTOR3_NON_UNIT: Vector3 at accessor indices 33..35 is not of unit length: 1.0103057762943621.
+    ERR ACCESSOR_VECTOR3_NON_UNIT: Vector3 at accessor indices 45..47 is not of unit length: 1.0340526691398042.
+    ERR ACCESSOR_VECTOR3_NON_UNIT: Vector3 at accessor indices 48..50 is not of unit length: 1.0126644389143122.
+s3_brush_before.glb: errors 1, warnings 0, infos 0 | 120961 triangles, 1 materials, 1 draws
+    ERR MESH_PRIMITIVE_ACCESSOR_UNALIGNED: Vertex attribute data must be aligned to 4-byte boundaries.
+Bubble_Wash_A2_Tunnel_Claude_1K.glb: errors 0, warnings 1, infos 1 | 18169 triangles, 1 materials, 1 draws
+    WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-gene
+Bubble_Wash_A2_Tunnel_Claude_2K.glb: errors 0, warnings 1, infos 1 | 18169 triangles, 1 materials, 1 draws
+    WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-gene
+drum.glb: errors 0, warnings 0, infos 0 | 136387 triangles, 1 materials, 1 draws
+
+AFTER the repair (WebDemo/tools/models/repair_glb.mjs):
+s3_entrance.glb: errors 0, warnings 1, infos 0 | 46683 triangles, 1 materials, 1 draws
+    WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-gene
+s3_brush.glb: errors 0, warnings 0, infos 0 | 120961 triangles, 1 materials, 1 draws

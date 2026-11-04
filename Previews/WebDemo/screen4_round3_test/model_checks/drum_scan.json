@@ -1,0 +1,13 @@
+{
+ "what": "The drum (drum.glb, three copies bent along the ride's path) scanned in the running game (?s3=round3): every vertex, in 0.25 m slices along the tunnel, measured in the path's own frame. The ride envelope is the space the mascot's body can occupy: up to 1.1 m either side of the middle (side lanes 0.7 m plus the 0.4 m body) and from 0.333 m below the still water line (a wave trough, minus the bob and the body's radius) to 1.88 m above it (the top of a jump plus the body's radius).",
+ "tool": "WebDemo/tools/models/drum_scan.js run with tools/models/game_eval.cjs",
+ "vertices": 524418,
+ "tunnel_u": [3.9, 37.2],
+ "nearest_wall_above_the_water_from_the_axis_m": 1.983,
+ "at_u": 31.65,
+ "drum_vertices_inside_the_ride_envelope": 0,
+ "highest_drum_point_under_the_lanes_m": -0.362,
+ "lowest_point_the_body_reaches_m": -0.333,
+ "water_surface_range_in_the_drum_m": [-0.223, 0.224],
+ "verdict": "Traversable: nothing of the drum is inside the space the body can occupy in any lane, riding or jumping. The closest part is the drum's floor under the water, 3 cm below the lowest the body ever goes."
+}

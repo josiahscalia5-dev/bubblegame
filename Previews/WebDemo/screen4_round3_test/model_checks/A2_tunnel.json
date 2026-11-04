@@ -1,0 +1,67 @@
+{
+ "model": "Bubble_Wash_A2_Tunnel_Claude_2K.glb",
+ "triangles": 18169,
+ "size": [
+  0.916,
+  0.772,
+  0.981
+ ],
+ "raysThrough": "54 of 576",
+ "openThroughShare": 0.094,
+ "stoppedAtDepth": {
+  "median": 0.589,
+  "deepest": 0.927
+ },
+ "slices": [
+  {
+   "depth": 0.05,
+   "clearRadius": 0.39,
+   "halfWidth": 0.437
+  },
+  {
+   "depth": 0.15,
+   "clearRadius": 0.283,
+   "halfWidth": 0.446
+  },
+  {
+   "depth": 0.25,
+   "clearRadius": 0.225,
+   "halfWidth": 0.458
+  },
+  {
+   "depth": 0.35,
+   "clearRadius": 0.183,
+   "halfWidth": 0.444
+  },
+  {
+   "depth": 0.45,
+   "clearRadius": 0.157,
+   "halfWidth": 0.426
+  },
+  {
+   "depth": 0.55,
+   "clearRadius": 0.04,
+   "halfWidth": 0.407
+  },
+  {
+   "depth": 0.65,
+   "clearRadius": 0.001,
+   "halfWidth": 0.333
+  },
+  {
+   "depth": 0.75,
+   "clearRadius": 0.028,
+   "halfWidth": 0.286
+  },
+  {
+   "depth": 0.85,
+   "clearRadius": 0.096,
+   "halfWidth": 0.22
+  },
+  {
+   "depth": 0.95,
+   "clearRadius": 0.237,
+   "halfWidth": 0.143
+  }
+ ]
+}
