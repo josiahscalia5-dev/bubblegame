@@ -1,0 +1,250 @@
+{
+ "stage": [
+  490,
+  1076
+ ],
+ "canvasCss": "none / opacity 1",
+ "bodyClass": "r2 ready running r2Play inDrum",
+ "layers": [
+  {
+   "el": "div#stage",
+   "box": [
+    0,
+    0,
+    490,
+    1076
+   ],
+   "opacity": 1,
+   "bg": "rgb(203, 183, 255)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "div#heartPill.pill.t",
+   "box": [
+    22,
+    24,
+    128,
+    42
+   ],
+   "opacity": 1,
+   "bg": "rgba(20, 28, 92, 0.72)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "div.pill.t",
+   "box": [
+    168,
+    26,
+    122,
+    40
+   ],
+   "opacity": 1,
+   "bg": "rgba(20, 28, 92, 0.72)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "div#gemPill.pill.t",
+   "box": [
+    302,
+    26,
+    104,
+    40
+   ],
+   "opacity": 1,
+   "bg": "rgba(20, 28, 92, 0.72)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "div#sockPanel.panel.t",
+   "box": [
+    26,
+    84,
+    364,
+    84
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "linear-gradient(rgba(255, 255, 255, 0.42) 0%, rgba(255, 255,",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "div.track",
+   "box": [
+    120,
+    135,
+    193,
+    16
+   ],
+   "opacity": 1,
+   "bg": "rgba(20, 28, 92, 0.55)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "div#hint.t.show",
+   "box": [
+    150,
+    962,
+    189,
+    88
+   ],
+   "opacity": 1,
+   "bg": "rgba(20, 28, 92, 0.72)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "button#pauseBtn.jelly",
+   "box": [
+    404,
+    93,
+    66,
+    66
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "linear-gradient(rgba(255, 255, 255, 0.55) 0%, rgba(255, 255,",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "span",
+   "box": [
+    422,
+    110,
+    11,
+    31
+   ],
+   "opacity": 1,
+   "bg": "rgb(255, 255, 255)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "span",
+   "box": [
+    442,
+    110,
+    11,
+    31
+   ],
+   "opacity": 1,
+   "bg": "rgb(255, 255, 255)",
+   "img": "none",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "button#blastBtn.jelly.power",
+   "box": [
+    22,
+    916,
+    135,
+    142
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "linear-gradient(rgba(255, 255, 255, 0.55) 0%, rgba(255, 255,",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "svg",
+   "box": [
+    44,
+    927,
+    91,
+    91
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "none",
+   "filter": "drop-shadow(rgba(10, 30, 120, 0.45) 0px 3.6432px 2.7324px)",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "span#blastCount.badge.t",
+   "box": [
+    124,
+    903,
+    46,
+    46
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "radial-gradient(circle at 40% 30%, rgb(255, 131, 174), rgb(2",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "button#turboBtn.jelly.power",
+   "box": [
+    333,
+    916,
+    135,
+    142
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "linear-gradient(rgba(255, 255, 255, 0.55) 0%, rgba(255, 255,",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "svg",
+   "box": [
+    355,
+    927,
+    91,
+    91
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "none",
+   "filter": "drop-shadow(rgba(10, 30, 120, 0.45) 0px 3.6432px 2.7324px)",
+   "backdrop": "none",
+   "blend": "normal"
+  },
+  {
+   "el": "span#turboCount.badge.t",
+   "box": [
+    435,
+    903,
+    46,
+    46
+   ],
+   "opacity": 1,
+   "bg": "rgba(0, 0, 0, 0)",
+   "img": "radial-gradient(circle at 40% 30%, rgb(255, 131, 174), rgb(2",
+   "filter": "none",
+   "backdrop": "none",
+   "blend": "normal"
+  }
+ ]
+}
