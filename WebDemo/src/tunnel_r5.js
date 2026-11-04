@@ -12,17 +12,30 @@ import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 
 export const ROUND5 = {
-  vortex: { bands: 0.85, twist: 0.16, flow: 0.55, deep: [0.0, 0.03, 0.32], body: [0.02, 0.22, 0.95], cyan: [0.25, 0.85, 1.0],
-    foam: 0.95, streaks: 0.35, far: [9, 26], farGlow: 1.5, farMix: 0.85, rainbow: 0.35, rainbowAt: 13 },
+  // far: the depth range where the walls turn into the luminous heart. It began at 9 units, so most of the visible tube glowed
+  // white and the bloom spread it over the whole screen (the pale, washed-out frames). Now only the far core glows.
+  // bands and twist: more, flatter bands read as the approved concentric rings of water rather than broad spiral strokes;
+  // deep: the dark-blue troughs between them (measured against the approved Screen 4: deep blue 0.9% of the play area with
+  // lighter troughs, 4.8% with these; approved 6.2%)
+  vortex: { bands: 1.15, twist: 0.1, flow: 0.55, deep: [0.0, 0.05, 0.4], body: [0.05, 0.3, 0.95], cyan: [0.45, 0.92, 1.0],
+    foam: 0.95, streaks: 0.35, far: [14, 34], farGlow: 1.25, farMix: 0.8, rainbow: 0.35, rainbowAt: 13 },
+  // the drum camera (game.js S4): further back and a little wider than round4's (off z -3.58, fov 60), so the mascot and the
+  // brushes take the approved share of the screen and more of the tunnel's rings show round its bright centre
+  camera: { off: [0, 1.15, -4.3], lookY: 1.3, fov: 64 },
+  // the foreground foam (tunnel_r3.js foamHeaps and foam bubbles, round4's settings overridden here): white froth over
+  // turquoise and aqua, as in the approved picture and the tunnel sheet, instead of round4's deep-blue and lavender balls
+  foam: { white: 1.1, deep: [0.04, 0.3, 0.85], aqua: [0.15, 0.6, 1.0] },
+  foamBubbles: { inner: [0.55, 0.8, 1.0], deep: [0.08, 0.4, 0.95], bright: 1.12 },
   // the drum's path (track.js opts.curve): the climb, drop and turns kept but gentler, so the far tunnel's bright heart
   // stays near the middle of the view, as in the approved Screen 4 (Round 4 and the normal game keep the full path)
   path: { curve: 0.3 },
   // the luminous heart far down the tube (approved Screen 4 and the tunnel sheet): a glowing white core, warm gold and soft pink
   // halo and slow rays, on the path's axis this far ahead; depth-tested, so the sock, coins and brushes pass in front of it
   heart: { ahead: 20, radius: 5, core: 2.2, halo: 1.1, rays: 0.45 },   // large enough that its glow shows round the coins in front of it
-  hideRings: true,
-  // bloom inside the drum (outside it is the game's own): strength, radius, threshold
-  bloom: { strength: 0.4, radius: 0.55, threshold: 0.92 },   // measured: stronger washed the deep blue out
+  hideRings: false,   // the approved tunnel keeps its ring frames round the water
+  // bloom inside the drum (outside it is the game's own): strength, radius, threshold. Threshold above 1, so only the luminous
+  // heart, the foam crests and glints bloom, not the whole lining
+  bloom: { strength: 0.45, radius: 0.5, threshold: 1.05 },
   droplets: { count: 700, near: 3, far: 22, radius: [0.35, 1.85], size: [0.02, 0.06], swirl: 0.35, flow: 2.2, scale: 420, maxPx: 14 },
   bubbles: { count: 64, du: [-1.4, 14], x: [0.3, 1.6], h: [0.2, 2.6], r: [0.04, 0.36], flow: 1.6, film: 1.7 },   // none right in front of the camera: their film fogged the view
   fur: { shells: 8, length: 0.05, density: 260, tip: 0.5, halo: 0.45 },

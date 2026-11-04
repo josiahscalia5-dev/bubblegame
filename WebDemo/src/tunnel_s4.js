@@ -286,7 +286,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
-  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: R5 ? { ...R4, bubbles: R5.bubbles } : (R4 || false) });
+  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: R5 ? { ...R4, bubbles: R5.bubbles, foam: { ...R4.foam, ...R5.foam }, foamBubbles: { ...R4.foamBubbles, ...R5.foamBubbles } } : (R4 || false) });
   if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env, mascot,
     hide: [scene.getObjectByName('s4Rings'), scene.getObjectByName('r3Swirl'), ...(drumMeshes || [])] });
   if (R5) report.round5 = buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass: round2.bloomPass });   // after round4 (it restyles its lining)
