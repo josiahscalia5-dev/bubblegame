@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "status": "active",
   "profile": "generic",
-  "currentStep": "spec-authoring",
-  "currentPass": "",
+  "currentStep": "build-current-pass",
+  "currentPass": "blockout",
   "checklist": [
     {
       "id": "image-analysis",
@@ -76,32 +76,40 @@
     {
       "id": "spec-authoring",
       "scope": "setup",
-      "status": "pending",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        "object-sculpt-spec.json"
+      ],
       "reason": "",
       "command": "python3 forge/stage2_spec/new_sculpt_spec.py \"<name>\" --image {reference} --assessment assessment.json --augmentation spec-augmentation.json --domain generic --out object-sculpt-spec.json"
     },
     {
       "id": "material-evidence",
       "scope": "setup",
-      "status": "pending",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        "material-evidence/fibre-pink.log"
+      ],
       "reason": "",
       "command": "python3 forge/stage1_intake/material_region_analysis.py --manifest material-regions.json --out-dir material-evidence --out material-analysis.json (single-crop route: analyze_texture.py + extract_pbr_evidence.py per verified crop; otherwise skip with a reason)"
     },
     {
       "id": "material-spec-wiring",
       "scope": "setup",
-      "status": "pending",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        "object-sculpt-spec.json"
+      ],
       "reason": "",
       "command": "python3 forge/stage2_spec/apply_material_analysis.py {spec} material-analysis.json --in-place"
     },
     {
       "id": "strict-validation",
       "scope": "setup",
-      "status": "pending",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        "strict_validation.txt"
+      ],
       "reason": "",
       "command": "python3 forge/stage2_spec/validate_sculpt_spec.py {spec} --strict-quality"
     },

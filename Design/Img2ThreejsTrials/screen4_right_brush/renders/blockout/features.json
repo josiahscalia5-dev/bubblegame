@@ -1,0 +1,4 @@
+[{"id": "banded-fibre-rings", "score": 0.15, "notes": "only the dark hub face and blue dome show from the front; the white and pink rings are hidden behind a unit-size hub (transform.scale overrode dimensions)"},
+ {"id": "looped-tuft-fringe", "score": 0.0, "notes": "no tufts in the blockout pass"},
+ {"id": "matte-fibre-response", "score": 0.3, "notes": "blue reads; white and pink not visible from the front"},
+ {"id": "domed-face", "score": 0.5, "notes": "a dome is present"}]

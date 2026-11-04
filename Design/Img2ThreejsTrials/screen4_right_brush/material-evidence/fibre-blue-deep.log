@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "verdict": "pass",
+  "confidence": 0.808,
+  "estimatedFidelity": 0.808,
+  "targetThreshold": 0.7,
+  "materialId": "fibre-blue-deep",
+  "sourceImage": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/crops/blue_deep.png",
+  "outDir": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-blue-deep",
+  "palette": [
+    "#485DEE",
+    "#2E48DD",
+    "#6E72F1",
+    "#1627B6",
+    "#AC84E0"
+  ],
+  "maps": {
+    "albedo": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-blue-deep/fibre-blue-deep_albedo.png",
+      "url": "fibre-blue-deep_albedo.png",
+      "channel": "albedo",
+      "source": "reference-pixel-extraction"
+    },
+    "roughness": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-blue-deep/fibre-blue-deep_roughness.png",
+      "url": "fibre-blue-deep_roughness.png",
+      "channel": "roughness",
+      "source": "reference-pixel-extraction"
+    },
+    "height": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-blue-deep/fibre-blue-deep_height.png",
+      "url": "fibre-blue-deep_height.png",
+      "channel": "height",
+      "source": "reference-pixel-extraction"
+    },
+    "normal": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-blue-deep/fibre-blue-deep_normal.png",
+      "url": "fibre-blue-deep_normal.png",
+      "channel": "normal",
+      "source": "reference-pixel-extraction"
+    },
+    "ao": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-blue-deep/fibre-blue-deep_ao.png",
+      "url": "fibre-blue-deep_ao.png",
+      "channel": "ao",
+      "source": "reference-pixel-extraction"
+    }
+  },
+  "diagnostics": {
+    "sourceWidth": 22,
+    "sourceHeight": 80,
+    "mapSize": 1024,
+    "cropBBoxPixels": {
+      "x": 0,
+      "y": 0,
+      "width": 22,
+      "height": 80
+    },
+    "mask": {
+      "backgroundColor": "#AC82DF",
+      "backgroundNoise": 126.969,
+      "transparentPixelFraction": 0.0,
+      "foregroundCoverage": 1.0
+    },
+    "mapStats": {
+      "valueRange": 0.4351,
+      "heightP90Gradient": 0.01799,
+      "roughnessBase": 0.697,
+      "roughnessVariation": 0.05,
+      "normalStrength": 0.177,
+      "blurRadius": 21
+    },
+    "palette": [
+      "#485DEE",
+      "#2E48DD",
+      "#6E72F1",
+      "#1627B6",
+      "#AC84E0"
+    ]
+  },
+  "warnings": [
+    "image is not clearly isolated from background; using most pixels as material evidence",
+    "object/background separation is weak",
+    "single-image inverse rendering cannot prove true physical PBR; confidence is capped"
+  ],
+  "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review"
+}

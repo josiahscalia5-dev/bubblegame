@@ -304,3 +304,21 @@ The detail kinds are all hard-surface terms (bevel, fastener, scratch…), with 
 
 The colour evidence must come from the skill's own extractor run on crops of each fibre region. Let me view the reference with a grid to pick the crop boxes:
 
+Confirmed: the generated code loads those maps with `TextureLoader`, including the albedo made from your approved image's pixels. Let me see whether the generator has an option to turn that off:
+
+Strict validation **passes**. Recording the steps in the state gate and moving to the build:
+
+The skill wants up to eight locked build passes, each rendered and reviewed before the next unlocks. I'll start with the blockout:
+
+Python's isolated mode (`-I`), which I used as a precaution, blocks the skill's own imports between its files. My trial folder holds no `.py` files, so it's safe to run it normally:
+
+Generated: a 946-line TypeScript factory, `createBubbleWashRollerBrushModel()`. Checking its imports and whether this pass loads any textures:
+
+The spec, including the photo-texture paths, is baked into the generated file, so I can't switch it off at runtime. Checking the factory's options for a switch:
+
+I'll make the reference-framing image with ImageMagick in a separate step, so I'm correcting the harness's header to match:
+
+The tufts (micro level) first appear in the **form-refinement** pass, which is pass 3. Adding the unlit, texture-stripped render to the harness:
+
+Structural pass generated. My parts are all macro and meso, so it matches the reviewed blockout. Rendering it as evidence, recording it, and moving to form refinement, where the tufts come in:
+

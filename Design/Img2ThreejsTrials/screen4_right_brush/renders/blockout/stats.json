@@ -1,0 +1,16 @@
+{
+ "triangles": 5104,
+ "drawCalls": 5,
+ "size": [
+  1.206,
+  1.206,
+  1.16
+ ],
+ "centre": [
+  0,
+  0,
+  0.08
+ ],
+ "consoleErrors": [],
+ "imageRequests": []
+}

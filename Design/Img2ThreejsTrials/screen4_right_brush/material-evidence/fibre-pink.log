@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "verdict": "pass",
+  "confidence": 0.86,
+  "estimatedFidelity": 0.86,
+  "targetThreshold": 0.7,
+  "materialId": "fibre-pink",
+  "sourceImage": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/crops/pink.png",
+  "outDir": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-pink",
+  "palette": [
+    "#F27EDE",
+    "#F4B5F3",
+    "#E652B9",
+    "#D72290",
+    "#8485D4"
+  ],
+  "maps": {
+    "albedo": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-pink/fibre-pink_albedo.png",
+      "url": "fibre-pink_albedo.png",
+      "channel": "albedo",
+      "source": "reference-pixel-extraction"
+    },
+    "roughness": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-pink/fibre-pink_roughness.png",
+      "url": "fibre-pink_roughness.png",
+      "channel": "roughness",
+      "source": "reference-pixel-extraction"
+    },
+    "height": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-pink/fibre-pink_height.png",
+      "url": "fibre-pink_height.png",
+      "channel": "height",
+      "source": "reference-pixel-extraction"
+    },
+    "normal": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-pink/fibre-pink_normal.png",
+      "url": "fibre-pink_normal.png",
+      "channel": "normal",
+      "source": "reference-pixel-extraction"
+    },
+    "ao": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-pink/fibre-pink_ao.png",
+      "url": "fibre-pink_ao.png",
+      "channel": "ao",
+      "source": "reference-pixel-extraction"
+    }
+  },
+  "diagnostics": {
+    "sourceWidth": 26,
+    "sourceHeight": 90,
+    "mapSize": 1024,
+    "cropBBoxPixels": {
+      "x": 0,
+      "y": 0,
+      "width": 26,
+      "height": 90
+    },
+    "mask": {
+      "backgroundColor": "#EB4BDC",
+      "backgroundNoise": 103.165,
+      "transparentPixelFraction": 0.0,
+      "foregroundCoverage": 0.8457
+    },
+    "mapStats": {
+      "valueRange": 0.5514,
+      "heightP90Gradient": 0.02906,
+      "roughnessBase": 0.7,
+      "roughnessVariation": 0.053,
+      "normalStrength": 0.19,
+      "blurRadius": 21
+    },
+    "palette": [
+      "#F27EDE",
+      "#F4B5F3",
+      "#E652B9",
+      "#D72290",
+      "#8485D4"
+    ]
+  },
+  "warnings": [
+    "single-image inverse rendering cannot prove true physical PBR; confidence is capped"
+  ],
+  "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review"
+}

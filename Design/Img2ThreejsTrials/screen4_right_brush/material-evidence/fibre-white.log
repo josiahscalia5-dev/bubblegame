@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "verdict": "pass",
+  "confidence": 0.846,
+  "estimatedFidelity": 0.846,
+  "targetThreshold": 0.7,
+  "materialId": "fibre-white",
+  "sourceImage": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/crops/white.png",
+  "outDir": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-white",
+  "palette": [
+    "#FBCAE8",
+    "#F7BAD9",
+    "#ECA1CB",
+    "#EBA5DF",
+    "#C68CDA"
+  ],
+  "maps": {
+    "albedo": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-white/fibre-white_albedo.png",
+      "url": "fibre-white_albedo.png",
+      "channel": "albedo",
+      "source": "reference-pixel-extraction"
+    },
+    "roughness": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-white/fibre-white_roughness.png",
+      "url": "fibre-white_roughness.png",
+      "channel": "roughness",
+      "source": "reference-pixel-extraction"
+    },
+    "height": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-white/fibre-white_height.png",
+      "url": "fibre-white_height.png",
+      "channel": "height",
+      "source": "reference-pixel-extraction"
+    },
+    "normal": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-white/fibre-white_normal.png",
+      "url": "fibre-white_normal.png",
+      "channel": "normal",
+      "source": "reference-pixel-extraction"
+    },
+    "ao": {
+      "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/material-evidence/fibre-white/fibre-white_ao.png",
+      "url": "fibre-white_ao.png",
+      "channel": "ao",
+      "source": "reference-pixel-extraction"
+    }
+  },
+  "diagnostics": {
+    "sourceWidth": 16,
+    "sourceHeight": 70,
+    "mapSize": 1024,
+    "cropBBoxPixels": {
+      "x": 0,
+      "y": 0,
+      "width": 16,
+      "height": 70
+    },
+    "mask": {
+      "backgroundColor": "#F8DBF0",
+      "backgroundNoise": 27.368,
+      "transparentPixelFraction": 0.0,
+      "foregroundCoverage": 0.708
+    },
+    "mapStats": {
+      "valueRange": 0.2262,
+      "heightP90Gradient": 0.02303,
+      "roughnessBase": 0.698,
+      "roughnessVariation": 0.051,
+      "normalStrength": 0.183,
+      "blurRadius": 21
+    },
+    "palette": [
+      "#FBCAE8",
+      "#F7BAD9",
+      "#ECA1CB",
+      "#EBA5DF",
+      "#C68CDA"
+    ]
+  },
+  "warnings": [
+    "single-image inverse rendering cannot prove true physical PBR; confidence is capped",
+    "low value range weakens height/roughness inference"
+  ],
+  "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review"
+}
