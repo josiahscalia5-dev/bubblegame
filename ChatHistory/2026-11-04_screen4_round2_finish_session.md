@@ -389,3 +389,171 @@ Stop hook feedback:
 
 That commit was the auto-save's first round after the restart. It's now pushed, and GitHub matches the local copy at `6026486`, with nothing left to push.
 
+---
+
+### Automatic notice · 2026-11-04 06:18 UTC
+
+_Background command "Restart the 5-minute auto-save after the container restart" completed (exit code 0)_
+
+---
+
+### You · 2026-11-04 05:18 UTC
+
+This session is being continued from a previous conversation that ran out of context. The summary below covers the earlier portion of the conversation.
+
+
+Summary:
+1. Primary Request and Intent:
+   - "Continue where we left off": finish round 2 of the Bubble Wash Kingdom tunnel test (`?s3=round2`, web demo in `WebDemo/`). The previous session's not-done list:
+     - fix the pink warning glow on the water in front of brushes, which wasn't showing;
+     - then a final video, screenshot sheets (entrance, mid-tunnel, brushes, coins, socks, controls, exit), performance numbers and an honest score.
+   - Standing user wishes from earlier sessions:
+     - save everything (work and chat history) to GitHub, with an auto-save every 5 minutes;
+     - nothing merged until the user approves; test versions only;
+     - real gameplay recordings, not simulated, with honest reporting;
+     - use existing Meshy assets; the approved screens are the visual target;
+     - the Laundry Toss intro is not started (waiting on reference pictures).
+   - Mid-session requests:
+     - enable the Playwright plugin;
+     - show a screenshot of the pink character in the tunnel;
+     - show the new pink-warning screenshots, then continue;
+     - show the video when done (asked twice);
+     - save everything to GitHub and chat history;
+     - "Is it done yet".
+   - Git constraints: develop and push only on branch `ccr-b6199007-gvhqim`; no PR unless asked; commits end with:
+     `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` and `Claude-Session: https://claude.ai/code/session_01DwoMMncWPi1nBppjwzDyVt`.
+   - Repository is public (chat history included).
+
+2. Key Technical Concepts:
+   - three.js 0.170 ShaderMaterial patching by string replace of fragment shaders.
+     - Water shader in `shaders.js`: `vec2 xz = vTrack` (track coordinates: x lateral, y = u along the path), `inDrum`, foam, `lit`, fog.
+     - Uniform array `uS4Haz[6]` (vec4: u, lane x, active flag, 0).
+   - Z-fighting between overlapping water sheets, fixed with polygonOffset.
+   - Post-processing (grade pass with uS4Grade, bloom, tone mapping) changes perceived colour; apply effects after reflections and foam.
+   - Headless Chromium with SwiftShader: rendering is slow; `canvas.toDataURL` right after render is faster than `page.screenshot`; timing around renders is meaningless (async GPU queue).
+   - Seeded runs (Math.random seed 7) and the `window.__bw` test hooks: `advance`, `tap`, `swipe`, `state`, `debug`, `blast`, `turbo`, `pause`, `hazards`.
+   - Lanes: `laneX(lane) = (1-lane)*LANE`; lane 0 is +X (screen-left); hazard side +1 → lane 0.
+   - Hazards: `[[6.0,1],[6.7,-1],[16.6,-1],[18.8,1],[26.0,1],[26.7,-1]]`; tunnel u 3.9..37.2.
+   - ffmpeg encoding; PIL sheets; region metrics: ΔE (CIE76), SSIM, Sobel edge correlation.
+   - `pgrep -f <name>` inside an until-loop matches its own command line (a pitfall).
+
+3. Files and Code Sections:
+   - **`WebDemo/src/tunnel_s4.js`** (the main fix; R2-only paths):
+     - ROUND2 additions:
+       ```js
+       hazardWarn: [7.5, 3.0],    // the water glows pink in a brush's lane from this far before it, full from here (the last ~2 m are hidden behind the brush)
+       hazardWidth: 0.34,         // the glow's half-width across the lane (lanes are 0.7 m apart)
+       hazardMix: 0.8,            // how strongly the pink covers the water at full warning
+       ```
+     - In the drum water section:
+       ```js
+       if (R2) {
+         src.uniforms.uS4Haz = { value: hazU }; src.uniforms.uS4Warn = { value: new THREE.Vector3(...R2.hazardWarn, R2.hazardWidth) };
+         // The slide's water sheet runs on 2.5 m into the drum (to u 6.4) over the drum's sheet ...
+         m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -4;
+       }
+       m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? WATER_R2 : `...`);
+       ...
+       if (R2) m.fragmentShader = m.fragmentShader.replace(FOG_ANCHOR, WATER_R2_LATE + FOG_ANCHOR);
+       drumSheet.material = m; report.waterCopy = true;
+       if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
+       ```
+     - WATER_R2 loop now:
+       ```glsl
+       float dx = (xz.x - h.y) / uS4Warn.z;
+       float across = exp(-dx * dx);
+       float stripes = 0.55 + 0.45 * smoothstep(...)...;
+       s4Haz = haz * (0.82 + 0.18 * sin(t * 7.0)) * inDrum;
+       ```
+       It ends with only `'  vec3 lit = col * (0.8 + 0.3 * NdotL);\n'`.
+     - New constants:
+       ```js
+       const FOG_ANCHOR = '  float dist = length(cameraPosition - vWorld);';
+       const WATER_R2_LATE = `  lit = mix(lit, vec3(1.0, 0.12, 0.5) * (0.85 + 0.25 * NdotL), clamp(s4Haz * 1.7, 0.0, 1.0) * ${ROUND2.hazardMix.toFixed(2)});   // ?s3=round2: a brush's warning\n`;
+       ```
+   - **`WebDemo/game.bundle.js`**: rebuilt with `node build.mjs`.
+   - **`Tools/autosave.sh`**:
+     - Claude-Session line updated to `session_01DwoMMncWPi1nBppjwzDyVt`.
+     - The end changed to `if [ "$i" -lt "$ROUNDS" ]; then sleep $((MINUTES * 60)); fi` / `done` / `echo "... finished all $ROUNDS rounds"` / `exit 0`.
+     - Usage: `Tools/autosave.sh <jsonl> <chat.md> "<title>" 5 24`. It pushes the current branch.
+   - **New tools in `WebDemo/tools/screen3/`:**
+     - `s4_regions.py`: Screen 4 region comparison. Regions: upper (0,190,538,420), left (0,420,180,860), right (358,420,538,860), centre (180,420,358,600), lower (130,600,408,880). It execs region_compare.py's helpers.
+     - `r2_perf.cjs`: draw calls, triangles, geometries, textures and programs per config (`CONFIGS='normal;paint,tunnel;round2'`, `POINTS=5,11,20,30`, `OUT` env). Timing removed.
+     - `r2_render_probe.cjs`: debug renderer with S3/VARIANTS env and z list. A variant of null renders the shader as is; 'NONE' renders untouched.
+     - `r2_picks.json`: frames used for the sheets.
+     - `README.md`: rows added for all of the above.
+   - **`Previews/WebDemo/screen4_round2_test/`:**
+     - `bubblewash_round2_tunnel_final.mp4` (11.5 s, 538x1068)
+     - sheets: `01_tunnel_vs_approved.png`, `02_tunnel_views.png`, `03_controls.png`, `04_exit_before_after.png`, `05_brush_warning_before_after.jpg`
+     - `checks_functional.txt`, `frame_cost.json`
+     - `frames/`: video_f0112…f0298, `round2_t3.5.png`, `final_video_track.json`; `frames/wip_video/` holds the old WIP frames and `video_track.json`
+     - `README.md`: rewritten sections for the file table, the warning cause and fix, checks, frame cost table, Screen 4 measures, and the honest score (about 7).
+     - The WIP mp4 is kept.
+   - **`HANDOFF.md`:**
+     - The branch table gains `ccr-b6199007-gvhqim` as newest.
+     - The chat history list adds the new file.
+     - The "Finished on 4 November, night" bullets cover: the fix, video, sheets, checks, unchanged, frame cost, measures, score and possible next steps.
+   - **`ChatHistory/2026-11-04_screen4_round2_finish_session.md`**: this session's exported chat.
+
+4. Errors and fixes:
+   - **Warning glow invisible:** three causes (short range hidden by the brush, mixed under reflections and foam, slide-sheet z-fight). Fixed as above and verified with renders and the video.
+   - **`page.screenshot` timeout (30 s)** in the probe: switched to `canvas.toDataURL` after `__bw.render()`.
+   - **Unreliable timing in `r2_perf`** (1 ms to 8 s for the same scene; logic 153 ms): removed the timings and documented why.
+   - **Waiter loops using `pgrep -f X` matched themselves** and never ended (hit time limits): explained to the user; stopped them with TaskStop.
+   - **Auto-save exit code 1 after a complete run**: fixed the script's final line.
+   - **Overlapping labels in sheet 02**: shortened the labels in picks.
+   - **Container restart** stopped the auto-save: verified nothing was lost and restarted it.
+   - **Stop hooks about uncommitted, untracked or unpushed changes**: committed and pushed each time.
+
+5. Problem Solving:
+   - Round 2 is completed:
+     - functional checks all pass;
+     - normal and `?s3=paint,tunnel` are pixel-identical to the pre-fix build;
+     - frame cost: round2 190 calls / 1.04 M triangles at Tap to Start, at most 181 / 1.27 M in the tunnel (13–54 fewer calls than last round), below the normal game's Tap to Start of 322 / 1.91 M.
+   - Screen 4 measures, average ΔE/SSIM/edges:
+     - protected 20.2 / 0.078 / 0.067
+     - last round 17.2 / 0.075 / 0.103
+     - round2 18.8 / 0.087 / 0.125
+     - Rings are closer (11.7); the right brush is worse (26.8, lighter periwinkle against the approved royal blue).
+   - Honest score about 7/10.
+
+6. All user messages:
+   - "Continue where we left off"
+   - "can u please enable the plugin playwright one"
+   - "its enabled the playwright  app"
+   - "can u show me screenshot image of the pink character going through the tunnel"
+   - "show me the new screenshots with the pink warning and then after that continue"
+   - "show me the video when it's done" (sent twice)
+   - "save everything to my GitHub and chat history"
+   - "Is it done yet"
+   - (Stop hook feedback messages: commit/push uncommitted, untracked and unpushed changes.)
+
+7. Pending Tasks:
+   - None explicitly outstanding. Round 2 is complete and awaiting the user's review and approval. Nothing is merged.
+   - Keep the 5-minute auto-save running (restarted as task bp3lchjrk after the container restart; it lasts 2 hours and must be restarted after that or after another restart).
+   - Possible next steps offered but NOT requested:
+     - right brushes back toward royal blue;
+     - more foam spray and near bubbles;
+     - the Laundry Toss intro once reference pictures arrive.
+
+8. Current Work:
+   - Responding to stop-hook feedback: "There are 1 unpushed commit(s) on branch 'ccr-b6199007-gvhqim'." I pushed (likely an auto-save commit), and the result was `local 6026486 github 6026486`, with the branch in sync with its origin.
+   - The auto-save (bp3lchjrk) is running.
+   - The Playwright plugin tools (`mcp__plugin_playwright_playwright__*`) became available after the container restart.
+
+9. Optional Next Step:
+   - No new work is required. Tell the user the push is done (GitHub at `6026486`, in sync) and that round 2 is complete and awaiting their review.
+   - Keep the auto-save running.
+   - Wait for the user's direction before starting any of the offered next steps (royal-blue right brushes, foam spray and near bubbles, Laundry Toss intro).
+
+If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: /root/.claude/projects/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec.jsonl
+Continue the conversation from where it left off without asking the user any further questions. Resume directly — do not acknowledge the summary, do not recap what was happening, do not preface with "I'll continue" or similar. Pick up the last task as if the break never happened.
+
+The messages after this summary are the most recent messages from before compaction, kept verbatim. The summary was written without seeing them, so something it says has not happened yet may already have happened in them.
+
+---
+
+### Claude · 2026-11-04 06:19 UTC
+
+Its two hours ran out with everything saved, so I'm starting it again for another two hours, keeping your every-5-minutes save.
+
