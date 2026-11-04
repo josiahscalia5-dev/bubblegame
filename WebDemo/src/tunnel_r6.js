@@ -17,6 +17,9 @@ import { NOISE } from './shaders.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const R6_ON = LIST.includes('round6');
+// ?s3=round6,rich (preview): pass 3 (the board's architecture and composition, which the user likes and keeps as ?s3=round6)
+// plus the ORIGINAL approved Screen 4's richness (ROUND6.rich below)
+export const R6_RICH = R6_ON && LIST.includes('rich');
 
 export const ROUND6 = {
   // where the camera has finished blending from the Tap to Start framing into the drum framing (metres from the drum's
@@ -55,7 +58,7 @@ export const ROUND6 = {
   walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.1, streaks: 0.55, glints: 0.9,
     glowFrom: [3, 12], glowMix: 0.75,
     // pass 3 (the user's exact target board: "glowing watery vortex", brighter, more magical): bright water walls
-    shade: [0.02, 0.16, 0.72], metal: 0.12, twist: 0.35, flow: 0.9, swirl: 0.55, ringStep: 1.15, rings: 0.55, foam: 0.8 },
+    midRing: 0, farMix: 0.55, glintCut: 0.965, shade: [0.02, 0.16, 0.72], metal: 0.12, twist: 0.35, flow: 0.9, swirl: 0.55, ringStep: 1.15, rings: 0.55, foam: 0.8 },
   // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
   flangeVary: { dim: 0.5, patch: 0.85, lavender: 0.12 },   // pass 3: lavender reflections cut to a hint (measured: 14-23% violet in the tunnel against the target's 2%)
   // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
@@ -106,6 +109,27 @@ export const ROUND6 = {
     bubbles: { r: [0.03, 0.19], x: [0.75, 1.7] },
   },
 };
+// ?s3=round6,rich: the combination the user asked for. From the exact target board (kept from pass 3): the purple-and-gold
+// entrance, the tunnel architecture, the brush placement and the water composition. From the ORIGINAL approved Screen 4:
+// rich, sparkling, saturated blue water swirling round the drum (deeper troughs, more spiral, more white sparkle and foam
+// filaments, fewer ring glows), glowing light without the pale cyan wash (more saturation, a slightly higher bloom
+// threshold), and many glassy bubbles at different depths round the edges, plus more droplets and glints.
+ROUND6.rich = {
+  // measured: the original's richness is local contrast (0.041 against pass 3's 0.016) and sparkle (1.4% of the tunnel
+  // against 0.05%), not saturation: so the glowing depth keeps its ring contrast, the far wash is lighter, and the floating
+  // sparkles are bigger, brighter and more numerous
+  walls: { glintCut: 0.935, glints: 1.5, shade: [0.0, 0.1, 0.62], twist: 0.6, swirl: 0.7, rings: 0.7, foam: 1.0, lavender: 0.08, midRing: 0.8, farMix: 0.3, glowMix: 0.6 },
+  waterTint: { amount: 0.95, bright: [0.0, 0.85, 1.0] },
+  bowWave: { body: [0.0, 0.6, 0.95], deep: [0.0, 0.28, 0.9] },
+  round5: {
+    grade: { contrast: 1.28, saturation: 1.5 },
+    bloom: { strength: 0.38, radius: 0.55, threshold: 1.0 },
+    softBubbles: { count: 34, size: [0.04, 0.17] },
+    bubbles: { count: 90, r: [0.035, 0.27], x: [0.7, 1.9] },
+    droplets: { count: 1600, size: [0.025, 0.085], scale: 700, maxPx: 18 },
+  },
+};
+if (R6_RICH) mergeDeep(ROUND6, ROUND6.rich);
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round6;
   if (tune) mergeDeep(ROUND6, tune);
@@ -248,7 +272,7 @@ void main() {
   col = mix(col, vec3(0.86, 0.97, 1.0), st * ${ROUND6.walls.streaks.toFixed(2)});
   vec2 g2 = vec2(a * 22.0, u * 2.8 - uTime * 0.6), c2 = floor(g2); float hs = h21(c2);
   vec2 q2 = fract(g2) - 0.5; float star = (1.0 - smoothstep(0.0, 0.04, abs(q2.x))) * (1.0 - smoothstep(0.05, 0.4, abs(q2.y))) + (1.0 - smoothstep(0.0, 0.04, abs(q2.y))) * (1.0 - smoothstep(0.05, 0.4, abs(q2.x)));
-  col += vec3(0.9, 1.0, 1.0) * step(0.965, hs) * star * (0.55 + 0.45 * sin(uTime * 4.0 + hs * 50.0)) * ${ROUND6.walls.glints.toFixed(2)};
+  col += vec3(0.9, 1.0, 1.0) * step(${ROUND6.walls.glintCut.toFixed(3)}, hs) * star * (0.55 + 0.45 * sin(uTime * 4.0 + hs * 50.0)) * ${ROUND6.walls.glints.toFixed(2)};
   // the lavender metal shell up to the mouth and the violet band just inside it: exactly round5's (the approved entrance)
   { float door = 1.0 - smoothstep(uStart - 0.06, uStart + 0.06, u);
     float brushed = 0.82 + 0.18 * bwNoise(vec2(a * 40.0, u * 2.0)), sheen = pow(max(0.0, sin(a)), 6.0);
@@ -260,9 +284,10 @@ void main() {
   // glowing cyan-turquoise centre (measured: with the heart only beyond 18 m the middle distance stayed deep royal blue and
   // the centre's colour difference to the approved doubled), then to the white-cyan heart far away
   float mid = smoothstep(${ROUND6.walls.glowFrom[0].toFixed(1)}, ${ROUND6.walls.glowFrom[1].toFixed(1)}, vDepth);
-  col = mix(col, col * 0.5 + vec3(0.05, 0.72, 1.0) * (0.75 + 0.35 * drift) + vec3(0.3, 0.95, 1.0) * web * 0.4, mid * ${ROUND6.walls.glowMix.toFixed(2)});   // pass 3: toward cyan
+  float midRing = 1.0 - ${ROUND6.walls.midRing.toFixed(2)} + ${ROUND6.walls.midRing.toFixed(2)} * (0.35 + 1.7 * ringGlow + 0.6 * smoothstep(0.86, 0.97, ridge));   // rich: rings keep their contrast in the glow
+  col = mix(col, col * 0.5 + vec3(0.05, 0.72, 1.0) * (0.75 + 0.35 * drift) * midRing + vec3(0.3, 0.95, 1.0) * web * 0.4, mid * ${ROUND6.walls.glowMix.toFixed(2)});   // pass 3: toward cyan
   float far = smoothstep(16.0, 36.0, vDepth);
-  col = mix(col, mix(vec3(0.45, 0.88, 1.0), vec3(1.0, 0.98, 1.0), 0.35 + 0.4 * broad), far * 0.55);
+  col = mix(col, mix(vec3(0.45, 0.88, 1.0), vec3(1.0, 0.98, 1.0), 0.35 + 0.4 * broad), far * ${ROUND6.walls.farMix.toFixed(2)});
   gl_FragColor = vec4(col, 1.0);
 }
 `;

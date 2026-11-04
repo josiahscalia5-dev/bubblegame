@@ -656,3 +656,71 @@ Saved and verified on GitHub (`dafb38b`). Sending the comparison now — the vid
 
 _[Sent you files: Previews/WebDemo/screen4_round6_reconstruction/target_vs_approved_vs_all_versions_full.png, Previews/WebDemo/screen4_round6_reconstruction/round6_pass3_in_motion.jpg]_
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 19:49 UTC
+
+Claudia, I reviewed your latest six-panel comparison, including Round 6 Pass 3.
+
+I noticed something very important:
+
+The first panel labeled "EXACT TARGET (your board)" is supplementary concept artwork.
+
+The SECOND panel labeled "ORIGINAL APPROVED Screen 4" is my actual approved game screen and MUST be the primary visual reference.
+
+Please do not accidentally recreate the newer concept board instead of my original approved artwork.
+
+For the next improvement:
+
+1. Match the ORIGINAL approved tunnel's swirling blue water-vortex appearance, rather than making more evenly spaced neon rings.
+
+2. Make the pink character slightly smaller in the camera and surround its lower body with visibly rushing turquoise water.
+
+3. Recreate the strong blue-and-white water splashes, glassy bubbles, and sparkling reflections from my original reference.
+
+4. Match the original washer entrance's purple wall and curved gold trim, without making the gold portal excessively large.
+
+5. Improve the positions, scales, and depth of the gold paw coins, purple gems, sock characters, and fluffy brushes.
+
+6. Make the lighting rich and luminous without washing everything out into pale cyan.
+
+Before making more small adjustments, compare the actual game against my ORIGINAL approved image using matched camera framing and gameplay state.
+
+Please preserve Round 6's successful geometry and gameplay. Implement the largest remaining visual improvements and show me a new full-resolution gameplay comparison.
+
+Do not spend more Tripo credits or install more plugins.
+
+My goal is for the REAL PLAYABLE game screen to look as close as possible to my ORIGINAL APPROVED Screen 4.
+
+---
+
+### You (sent while Claude was working) · 2026-11-04 19:51 UTC
+
+Claudia, I actually LIKE the newer image labeled "EXACT TARGET (your board)." Please don't discard that design.
+
+I want to combine the best parts of both references.
+
+Use the newer EXACT TARGET for its beautiful purple-and-gold washing-machine entrance, strong 3D tunnel architecture, fluffy brush placement, and dramatic water composition.
+
+Use my ORIGINAL APPROVED Screen 4 for its rich, sparkling blue water, glowing magical lighting, detailed bubbles, character appearance, and overall visual richness.
+
+Please combine these into one beautiful, premium, fully playable 3D mobile game scene.
+
+Keep the existing gameplay and preserve all versions. Show me a real gameplay preview before changing the main game. cancel the other message I just sent and keep my new, keep the approved one, keep the approved one you just built. I like it.Claudia, I actually LIKE the newer image labeled "EXACT TARGET (your board)." Please don't discard that design.
+
+I want to combine the best parts of both references.
+
+Use the newer EXACT TARGET for its beautiful purple-and-gold washing-machine entrance, strong 3D tunnel architecture, fluffy brush placement, and dramatic water composition.
+
+Use my ORIGINAL APPROVED Screen 4 for its rich, sparkling blue water, glowing magical lighting, detailed bubbles, character appearance, and overall visual richness.
+
+Please combine these into one beautiful, premium, fully playable 3D mobile game scene.
+
+Keep the existing gameplay and preserve all versions. Show me a real gameplay preview before changing the main game.
+
+---
+
+### Claude · 2026-11-04 19:53 UTC
+
+`mergeDeep` is a hoisted function declaration, so the early call is safe. Building, then capturing the combined preview, plus a byte-identity check that plain `?s3=round6` (pass 3) is unchanged:
+
