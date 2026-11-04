@@ -788,3 +788,58 @@ continue what you're working on before. We'll go back to the tripo one for the A
 
 Continuing Round 4. First, the rules check that was still running:
 
+Still pixel-identical: 0 pixels differ in all 8 comparisons. Checking whether the rules check has finished:
+
+While it records, I'll refresh the comparison sheet and measurements from the final build's frames:
+
+Adding the camera change to the README's table of changes, and re-rendering the brush comparison, since the left brush's white ring is now wider:
+
+Now a named, verified save of the composition pass. The video and rules check get their own save when they finish:
+
+Saved: **commit `848869c`**, push verified. The source changes aren't in its file list, so I'll confirm an autosave round already pushed them:
+
+Confirmed: all three source changes are on GitHub, pushed by a verified autosave round, and the working tree is clean.
+
+Now waiting for the re-recorded video and the rules check to finish:
+
+Round 4 has had a third pass, on composition, and it's now closer to your approved Screen 4 than the previous version at every moment I measured.
+
+The Round 4 camera inside the drum now aims a little higher. The pink character sits where the approved screen has it (its top at about 62% of the screen height; approved 63%), and the tunnel's centre comes down toward the middle. The left brushes also have a wider white ring, which cuts some of the excess pink.
+
+| Moment | Previous | Now (lower is closer) |
+|---|---|---|
+| 3.6 s | 25.9 | 24.8 |
+| 4.2 s | 24.6 | 23.3 |
+| 5.0 s | 25.0 | 24.0 |
+| 6.0 s | 24.8 | 23.5 |
+
+These are average colour differences from the approved screen. At 4.2 s the centre of the tunnel improved from 13.0 to 11.4, and pink dropped from 22.4% to 20.1% of the play area. I'd still score it about 7.5/10, not 90%.
+
+One thing needs your decision. In the approved screen you look straight down a centred, bright vortex. In the game, the path climbs and bends left about 9 m into the tunnel, so the far end slides off-centre. Making more of it straight would move the climb, drop and turns you approved earlier, so I haven't touched the path. Tell me if you want me to try it.
+
+The normal game and Round 3 are still pixel-identical to your recovered version, checked again after the camera change. The earlier rules check on this Round 4 passed every rule (hearts, pause, Bubble Blast, Turbo Spin, no errors). A final rules check on the current build and a new 12-second gameplay video are still running; I'll save them and send you the video when they finish.
+
+**Latest save:** branch `ccr-8ca1fe92-d6t2bm`, commit `848869c`, push confirmed on GitHub. It holds the updated comparison, frames, measurements and brush sheet; the code changes went up in a confirmed autosave just before it. The 5-minute autosave is running, and neither Tripo key is anywhere in the repository.
+
+The updated comparison and notes are in `Previews/WebDemo/screen4_round4_water_brushes/`.
+
+---
+
+### Automatic notice · 2026-11-04 14:04 UTC
+
+_Background command "Run controls, ride-through, frame cost and rules checks" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-04 14:05 UTC
+
+Controls pass on the final build too, with identical gameplay: same position, 7 coins, 2 socks, no errors. Recording both results in the evidence folder:
+
+That's my own edit. Checking the re-recorded video's progress:
+
+59 of 360 frames. With the checks finished it should speed up, so about 20–25 more minutes. Saving the finished check results now:
+
+Saved: **commit `a46cc57`**, push verified. It holds the rules result and the updated checks summary. The controls report on the final build matched the earlier file byte for byte, so it didn't need a new copy.
+
+Every Round 4 gameplay check now passes: controls, rules, riding through every lane, and frame cost. The normal game and Round 3 are pixel-identical to your recovered version. The only thing still running is the re-recorded 12-second video of the final build. When I'm notified it's done, I'll encode it, check it, save it with a verified push, and send it to you.
+
