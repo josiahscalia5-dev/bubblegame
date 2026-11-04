@@ -7,6 +7,6 @@
 // 6-7 rounded mounds across, with azure water (#4bbbf7) below it and bright white splashes, bubbly spray and glossy motion.
 export const HERO_WATER = {};
 
-export function buildHeroWater(/* { scene, TR, L, W, mascot, updaters, time, U, heroVortexGLSL } */) {
+export function buildHeroWater(/* { scene, TR, L, W, mascot, updaters, time, U, heroVortexGLSL, waterSheets, drumSheet, fogAnchor } */) {
   return { todo: true };
 }

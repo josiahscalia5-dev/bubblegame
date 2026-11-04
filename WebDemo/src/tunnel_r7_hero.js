@@ -257,7 +257,7 @@ export function buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets
   report.bubbles = heroBubbles({ scene, TR, TS, mascot, updaters, time });
 
   // 6. the water and foam round the character (the Water & VFX specialist's file, tunnel_r7_hero_water.js)
-  report.water = buildHeroWater({ scene, TR, L, W, mascot, updaters, time, U, heroVortexGLSL });
+  report.water = buildHeroWater({ scene, TR, L, W, mascot, updaters, time, U, heroVortexGLSL, waterSheets, drumSheet, fogAnchor });
 
   // 7. what the hero scene replaces
   const hidden = HERO.hide.map((n) => scene.getObjectByName(n)).filter(Boolean);
