@@ -312,7 +312,8 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env, mascot,
     hide: [scene.getObjectByName('s4Rings'), scene.getObjectByName('r3Swirl'), ...(drumMeshes || [])] });
   if (R5) report.round5 = buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass: round2.bloomPass });   // after round4 (it restyles its lining)
-  if (R5 && R6_ON) report.round6 = buildRound6({ scene, TR, L, W, mascot, updaters, time, env: round2.env, bloomPass: round2.bloomPass });   // after round5
+  if (R5 && R6_ON) report.round6 = buildRound6({ scene, TR, L, W, mascot, updaters, time, env: round2.env, bloomPass: round2.bloomPass,
+    waterSheets, drumSheet, fogAnchor: FOG_ANCHOR });   // after round5
   return report;
 }
 

@@ -43,6 +43,18 @@ export const ROUND6 = {
   // swerve: extra height per m/s of sideways speed; lean: how far the sheet leans outward at its top (m)
   bowWave: { reach: [25, 150], radius: [0.38, 1.05], height: 0.5, swerve: 0.12, lean: 0.22, flow: 1.6, rows: 14, cols: 64,
     body: [0.0, 0.52, 0.88], deep: [0.0, 0.22, 0.8], alpha: 0.85 },
+  // pass 2 (the user's review of Round 6): the deeper walls as a washer drum's surface instead of uniform neon bands:
+  // perforated drum metal (staggered dimples whose rims catch light), broad uneven light that drifts, deep blue shadow behind
+  // each flange, turquoise water light playing over the lower walls, lavender bounce on the upper wall, sparse white streaks
+  walls: { hole: 0.2, holeFade: [5, 13], light: 0.55, drift: 0.35, caustic: 0.6, lowGlow: 0.35, lavender: 0.5, streaks: 0.4, glints: 0.6 },
+  // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
+  flangeVary: { dim: 0.3, patch: 0.85 },
+  // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
+  // the slide's last metres before the mouth (the hero moment); white crests stay white
+  waterTint: { amount: 0.85, deep: [0.0, 0.3, 0.95], bright: [0.0, 0.8, 0.95], slideFrom: [-9, -4] },
+  // the wake and waterline react to movement: the wake lengthens with speed and swings away from a swerve, the waterline foam
+  // tilts toward the side the character moves to, squashes and spreads in a ring when it lands, and thins out in the air
+  wake: { speedLen: 0.6, swing: 0.16, tilt: 0.1, land: 0.7 },
   hideFoamBubbles: true,   // round4's rounded blue bubble clusters on the water (the user: "too many rounded blue bubble clusters")
   hideCrestCards: true,    // round5's painted foam-lump cards: in the drum they merged into a pale white mass; the bow wave replaces them
   // round5's own settings, overridden for round6 (merged in tunnel_r5.js before its shaders are written)
@@ -67,8 +79,10 @@ export const ROUND6 = {
     // controlled glow: only the brightest highlights bloom (round5's bloom lifted the whole deep tunnel to pale)
     bloom: { strength: 0.3, radius: 0.45, threshold: 1.1 },
     heart: { core: 1.0, halo: 0.6 },
-    // soap bubbles round the character: fewer and fewer big ones over it (they covered the character in rainbow rings)
-    softBubbles: { count: 22, big: 4 },
+    // soap bubbles round the character: fewer, smaller, no big ones over it (they covered the character in rainbow rings)
+    softBubbles: { count: 20, big: 0, size: [0.035, 0.16] },
+    // bubbles streaming past: smaller and kept off the middle of the view (big rings near the camera hid the scenery)
+    bubbles: { r: [0.03, 0.19], x: [0.75, 1.7] },
   },
 };
 {
@@ -77,19 +91,169 @@ export const ROUND6 = {
 }
 export function mergeDeep(dst, src) { for (const k of Object.keys(src)) { if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k]) && dst[k]) mergeDeep(dst[k], src[k]); else dst[k] = src[k]; } return dst; }
 
-export function buildRound6({ scene, TR, L, W, mascot, updaters, time, env }) {
+export function buildRound6({ scene, TR, L, W, mascot, updaters, time, env, waterSheets, drumSheet, fogAnchor }) {
   const TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H, report = {};
   for (const n of ['r5Entrance', 'r4GlowRings']) { const o = scene.getObjectByName(n); if (o) o.visible = false; }
   report.porthole = porthole({ scene, TR, TS, axisH, env, time });
   report.flanges = flanges({ scene, TR, TS, TE, axisH, env, time });
-  report.bowWave = bowWave({ scene, TR, L, W, mascot, updaters, time });
+  report.walls = drumWalls({ scene, time, TS });
+  report.waterTint = waterTint({ waterSheets, drumSheet, fogAnchor, TS });
+  const motion = trackMotion({ L, W, mascot, updaters });
+  report.bowWave = bowWave({ scene, TR, L, W, mascot, updaters, time, motion });
+  report.wake = reactiveWake({ scene, mascot, updaters, motion });
   if (ROUND6.hideFoamBubbles) { const o = scene.getObjectByName('r4FoamBubbles'); if (o) updaters.push(() => { o.visible = false; }); report.foamBubblesHidden = !!o; }
   if (ROUND6.hideCrestCards) { const o = scene.getObjectByName('r5Crests'); if (o) updaters.push(() => { o.visible = false; }); report.crestCardsHidden = !!o; }
   return report;
 }
 
 // ---------------------------------------------------------------- the bow wave round the character
-function bowWave({ scene, TR, L, W, mascot, updaters, time }) {
+// the character's movement, measured once a frame for the bow wave and the wake: sideways speed (smoothed), forward speed,
+// height above its float height, and a landing pulse that decays
+function trackMotion({ L, W, mascot, updaters }) {
+  const M = { lat: 0, speed: 0, lift: 0, landing: 0, ride: 0 };
+  let wasAir = false;
+  updaters.push((dt) => {
+    dt = dt || 0;
+    M.ride = W.baseHeight ? W.baseHeight(L, mascot.x, mascot.z) : W.WATER;
+    M.lift = Math.max(0, mascot.yAbs - M.ride - W.FLOAT_H);
+    if (wasAir && !mascot.air) M.landing = 1;
+    wasAir = mascot.air; M.landing = Math.max(0, M.landing - dt * 2.2);
+    M.lat += ((mascot.xv || 0) - M.lat) * (1 - Math.exp(-dt / 0.12));
+    M.speed += ((mascot.speed || 0) - M.speed) * (1 - Math.exp(-dt / 0.3));
+  });
+  return M;
+}
+
+// ---------------------------------------------------------------- the wake and waterline react to movement (round5's r5Contact)
+function reactiveWake({ scene, mascot, updaters, motion }) {
+  const P = ROUND6.wake, g = scene.getObjectByName('r5Contact');
+  if (!g || g.children.length < 2) return null;
+  const [disc, collar] = g.children, W0 = ROUND5_CONTACT_DEFAULTS(disc, collar), u = collar.material.uniforms;
+  // the waterline: round5's collar was white from the waterline up (a pale mass round the character's base); round6 makes it
+  // clear turquoise water climbing the body with a ragged white crest only along its top
+  collar.material = new THREE.ShaderMaterial({ uniforms: u, vertexShader: collar.material.vertexShader, fragmentShader: COLLAR_R6,
+    transparent: true, depthWrite: false, side: THREE.DoubleSide });
+  updaters.push(() => {
+    if (!g.visible) return;
+    const M = motion, sp = THREE.MathUtils.clamp(M.speed / 7, 0, 1.6);
+    // wake: longer with speed, swung away from the swerve (it trails behind, so it bends the other way)
+    const swing = THREE.MathUtils.clamp(-M.lat * P.swing, -0.5, 0.5);
+    disc.scale.set(W0.discS.x * (1 + M.landing * P.land), 1, W0.discS.z * (0.75 + P.speedLen * sp));
+    disc.rotation.y = swing; disc.position.set(Math.sin(swing) * W0.discP.z, W0.discP.y, W0.discP.z * Math.cos(swing));
+    // waterline: tilts toward the side it moves to, squashes and spreads in a ring on landing, thins out in the air
+    collar.rotation.z = THREE.MathUtils.clamp(-M.lat * P.tilt, -0.3, 0.3);
+    const ring = 1 + M.landing * P.land;
+    collar.scale.set(ring, Math.max(0.35, 1 - M.landing * 0.4), ring);
+    u.uFade.value *= 1 - THREE.MathUtils.smoothstep(M.lift, 0.1, 0.6) * 0.85;
+  });
+  return { speedLen: P.speedLen, swing: P.swing };
+}
+const COLLAR_R6 = /* glsl */ `
+${NOISE}
+uniform float uTime, uFade; varying vec2 vUv;
+void main() {
+  float h = vUv.y;                                                          // 0 at the waterline, 1 at the collar's top
+  float n = bwFbm(vec2(vUv.x * 18.0 + uTime * 0.6, h * 3.0 - uTime * 2.2)), n2 = bwFbm(vec2(vUv.x * 40.0 - uTime, h * 6.0 - uTime * 3.0));
+  float top = 0.5 + 0.45 * n;                                               // ragged, churning top edge
+  if (h > top) discard;
+  float crest = smoothstep(top - 0.2, top - 0.03, h + 0.1 * n2);            // white only along the top
+  float streak = smoothstep(0.66, 0.85, n2) * (1.0 - crest);
+  vec3 water = mix(vec3(0.0, 0.3, 0.92), vec3(0.0, 0.78, 0.95), smoothstep(0.0, 0.7, h) * (0.6 + 0.4 * n));
+  vec3 col = mix(water, vec3(1.0), clamp(crest + streak * 0.35, 0.0, 1.0));
+  float a = mix(0.62, 0.95, crest) * smoothstep(0.0, 0.08, h + 0.02) * uFade;
+  gl_FragColor = vec4(col, a);
+}`;
+function ROUND5_CONTACT_DEFAULTS(disc, collar) { return { discS: disc.scale.clone(), discP: disc.position.clone(), collarS: collar.scale.clone() }; }
+
+// ---------------------------------------------------------------- the drum's walls as a washer drum's surface (pass 2)
+function drumWalls({ scene, time, TS }) {
+  const mesh = scene.getObjectByName('r5Vortex');
+  if (!mesh) return null;
+  mesh.material = new THREE.ShaderMaterial({ uniforms: { uTime: time, uStart: { value: TS } }, vertexShader: mesh.material.vertexShader,
+    fragmentShader: WALL_FRAGMENT, side: THREE.DoubleSide });
+  mesh.name = 'r6Walls';
+  return { replaced: 'r5Vortex' };
+}
+const WALL_FRAGMENT = /* glsl */ `
+${NOISE}
+uniform float uTime, uStart;
+varying vec2 vAU; varying float vDepth;
+float h21(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
+void main() {
+  float a = vAU.x, u = vAU.y, s = a * 2.0;                       // s: metres round the wall (radius 2)
+  float up = sin(a);                                              // 1 at the top, about -0.75 at the water's edge
+  // broad, uneven light: big still patches, and slower brighter light drifting down the tube (no repeating bands)
+  float broad = bwFbm(vec2(a * 0.9 + 7.0, u * 0.22));
+  float drift = bwFbm(vec2(a * 1.4 - uTime * 0.2, u * 0.33 - uTime * ${ROUND6.walls.drift.toFixed(2)}));
+  float light = ${ROUND6.walls.light.toFixed(2)} * (0.45 + broad) + 0.4 * drift;
+  vec3 col = mix(vec3(0.0, 0.015, 0.16), vec3(0.02, 0.1, 0.58), clamp(light, 0.0, 1.0));     // deep blue shadow to royal blue
+  col = mix(col, vec3(0.0, 0.36, 1.0), smoothstep(0.7, 1.15, light) * 0.65);                // electric blue where it is lit
+  // layered panels between the flanges: lit toward the front of each, a deep contact shadow just behind each flange
+  float sec = fract((u - uStart - ${ROUND6.flanges.from.toFixed(2)}) / ${ROUND6.flanges.every.toFixed(2)});
+  col *= 0.72 + 0.4 * smoothstep(0.03, 0.3, sec) * (1.0 - smoothstep(0.6, 1.0, sec));
+  col *= 1.0 - 0.55 * exp(-pow((sec - 0.03) / 0.06, 2.0));
+  // perforated drum metal: staggered round dimples, dark inside, the rim facing the light catching it
+  vec2 gp = vec2(s, u) / ${ROUND6.walls.hole.toFixed(3)}; gp.x += 0.5 * mod(floor(gp.y), 2.0);
+  vec2 f = fract(gp) - 0.5; float d = length(f);
+  float holeK = 1.0 - smoothstep(${ROUND6.walls.holeFade[0].toFixed(1)}, ${ROUND6.walls.holeFade[1].toFixed(1)}, vDepth);
+  float hole = (1.0 - smoothstep(0.16, 0.21, d)) * holeK, rim = smoothstep(0.17, 0.21, d) * (1.0 - smoothstep(0.23, 0.3, d)) * smoothstep(0.0, -0.3, f.y) * holeK;
+  float holeVar = 0.45 + 0.55 * smoothstep(0.3, 0.7, bwNoise(vec2(s * 0.7, u * 0.5)));   // worn in places, crisp in others
+  col = col * (1.0 - 0.35 * hole * holeVar) + vec3(0.2, 0.55, 1.0) * rim * 0.2 * holeVar * (0.4 + light);
+  // turquoise water light on the walls: a moving caustic web, strongest low down near the water, coming and going in patches
+  vec2 cw = vec2(s * 1.5, u * 1.05 - uTime * 0.85) + vec2(0.6 * bwNoise(vec2(u * 0.6, uTime * 0.35)), 0.0);
+  vec2 cv = bwVoronoi(cw); float web = 1.0 - smoothstep(0.0, 0.085, cv.y - cv.x);
+  float low = 1.0 - smoothstep(-0.6, 0.85, up);
+  float patchW = smoothstep(0.3, 0.75, bwFbm(vec2(a * 1.6 + uTime * 0.25, u * 0.45 - uTime * 0.7)));
+  col += vec3(0.05, 0.85, 0.95) * web * (0.25 + 0.9 * low) * (0.25 + 1.0 * patchW) * ${ROUND6.walls.caustic.toFixed(2)};
+  col += vec3(0.0, 0.42, 0.62) * low * ${ROUND6.walls.lowGlow.toFixed(2)} * (0.6 + 0.5 * drift);                 // light bouncing up off the water
+  col += vec3(0.24, 0.1, 0.42) * smoothstep(0.25, 1.0, up) * (0.35 + 0.65 * broad) * ${ROUND6.walls.lavender.toFixed(2)};   // lavender, up top
+  // sparse white streaks of water swirling round the drum, and twinkling star glints
+  // thin arcs round the drum (stretched round the circumference, narrow along the tube), as the approved swirling water lines
+  float st = smoothstep(0.72, 0.9, bwFbm(vec2(a * 1.1 + u * 0.15 - uTime * 0.9, u * 3.4 - uTime * 1.1))) * smoothstep(0.35, 0.65, bwNoise(vec2(a * 2.0, u * 0.4 - uTime * 0.3)));
+  col = mix(col, vec3(0.86, 0.97, 1.0), st * ${ROUND6.walls.streaks.toFixed(2)});
+  vec2 g2 = vec2(a * 22.0, u * 2.8 - uTime * 0.6), c2 = floor(g2); float hs = h21(c2);
+  vec2 q2 = fract(g2) - 0.5; float star = (1.0 - smoothstep(0.0, 0.04, abs(q2.x))) * (1.0 - smoothstep(0.05, 0.4, abs(q2.y))) + (1.0 - smoothstep(0.0, 0.04, abs(q2.y))) * (1.0 - smoothstep(0.05, 0.4, abs(q2.x)));
+  col += vec3(0.9, 1.0, 1.0) * step(0.965, hs) * star * (0.55 + 0.45 * sin(uTime * 4.0 + hs * 50.0)) * ${ROUND6.walls.glints.toFixed(2)};
+  // the lavender metal shell up to the mouth and the violet band just inside it: exactly round5's (the approved entrance)
+  { float door = 1.0 - smoothstep(uStart - 0.06, uStart + 0.06, u);
+    float brushed = 0.82 + 0.18 * bwNoise(vec2(a * 40.0, u * 2.0)), sheen = pow(max(0.0, sin(a)), 6.0);
+    vec3 lav = vec3(0.62, 0.55, 0.92) * brushed + vec3(0.35, 0.3, 0.45) * sheen + vec3(0.2, 0.12, 0.3) * smoothstep(0.4, 0.0, u - uStart + 0.4);
+    float vband = smoothstep(uStart, uStart + 0.05, u) * (1.0 - smoothstep(uStart + 0.30, uStart + 0.35, u));
+    col = mix(col, vec3(0.5, 0.28, 1.0) * 0.95, vband * 0.85);
+    col = mix(col, lav, door); }
+  // the luminous heart far down the tube: bright, varied, not a flat white
+  float far = smoothstep(18.0, 40.0, vDepth);
+  col = mix(col, mix(vec3(0.4, 0.82, 1.0), vec3(1.0, 0.97, 1.0), 0.35 + 0.4 * broad), far * 0.45);
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+// ---------------------------------------------------------------- saturated turquoise water under the white (pass 2)
+function waterTint({ waterSheets, drumSheet, fogAnchor, TS }) {
+  const P = ROUND6.waterTint, done = [];
+  const code = (factor) => `  {   // ?s3=round6: saturated turquoise-blue water kept under the white wherever it is not foam
+    float r6Lum = dot(lit, vec3(0.299, 0.587, 0.114));
+    vec3 r6Water = mix(vec3(${P.deep.join(', ')}), vec3(${P.bright.join(', ')}), smoothstep(0.25, 0.85, r6Lum)) * (0.7 + 0.55 * r6Lum);
+    float r6Keep = (1.0 - smoothstep(0.3, 0.75, foam)) * (${factor}) * ${P.amount.toFixed(3)};
+    lit = mix(lit, r6Water, r6Keep);
+  }
+`;
+  const inject = (mesh, factor) => {
+    const m = mesh.material;
+    if (!m || !m.fragmentShader || !m.fragmentShader.includes(fogAnchor) || !m.fragmentShader.includes('vec3 lit')) return false;
+    m.fragmentShader = m.fragmentShader.replace(fogAnchor, code(factor) + fogAnchor); m.needsUpdate = true; return true;
+  };
+  if (drumSheet && inject(drumSheet, 'inDrum')) done.push('drum');
+  // the slide's sheet shares the normal game's material: round6 gives it its own copy (same uniforms) before changing it
+  const slide = (waterSheets || []).find((s) => s !== drumSheet);
+  if (slide && slide.material) {
+    const src = slide.material, m = src.clone(); m.uniforms = src.uniforms; slide.material = m;
+    if (inject(slide, `smoothstep(${(TS + P.slideFrom[0]).toFixed(2)}, ${(TS + P.slideFrom[1]).toFixed(2)}, xz.y)`)) done.push('slide');
+  }
+  return { sheets: done };
+}
+
+function bowWave({ scene, TR, L, W, mascot, updaters, time, motion }) {
   const P = ROUND6.bowWave, R = P.rows, C = P.cols;
   // one sheet per side: (t along the wave from in front of the character round to behind it) x (v up the sheet)
   const pos = [], uv = [], side = [], idx = [];
@@ -108,19 +272,14 @@ function bowWave({ scene, TR, L, W, mascot, updaters, time }) {
   const mesh = new THREE.Mesh(g, mat); mesh.name = 'r6BowWave'; mesh.frustumCulled = false; mesh.renderOrder = 6; mesh.visible = false;
   scene.add(mesh);
   const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, v = new THREE.Vector3(), m4 = new THREE.Matrix4();
-  let lat = 0, landing = 0, wasAir = false;
-  updaters.push((dt) => {
+  updaters.push(() => {
     const k = THREE.MathUtils.smoothstep(mascot.z, L.tunnelStart - 7, L.tunnelStart - 4);   // already up on the slide's last metres (the hero moment)
     mesh.visible = k > 0.01; if (!mesh.visible) return;
-    const ride = (W.baseHeight ? W.baseHeight(L, mascot.x, mascot.z) : W.WATER);
-    const lift = Math.max(0, mascot.yAbs - ride - W.FLOAT_H);                      // how high the character is above its float height
-    if (wasAir && !mascot.air) landing = 1;                                         // a big splash on landing
-    wasAir = mascot.air; landing = Math.max(0, landing - (dt || 0) * 2.2);
-    lat += ((mascot.xv || 0) - lat) * (1 - Math.exp(-(dt || 0) / 0.12));            // sideways speed, smoothed
-    u.uLat.value = lat;
-    u.uAmp.value = (1 + Math.abs(lat) * P.swerve * 4 + landing * 0.9) * (1 - THREE.MathUtils.smoothstep(lift, 0.05, 0.45));
+    const M = motion;   // sideways speed, height in the air and the landing pulse (trackMotion)
+    u.uLat.value = M.lat;
+    u.uAmp.value = (1 + Math.abs(M.lat) * P.swerve * 4 + M.landing * 0.9) * (1 - THREE.MathUtils.smoothstep(M.lift, 0.05, 0.45));
     u.uFade.value = k;
-    TR.frame(mascot.z, F); TR.map(mascot.x, ride, mascot.z, v);
+    TR.frame(mascot.z, F); TR.map(mascot.x, M.ride, mascot.z, v);
     mesh.position.copy(v); m4.makeBasis(F.R, F.U, F.T); mesh.quaternion.setFromRotationMatrix(m4);
   });
   return { rows: R, cols: C, triangles: idx.length / 3 };
@@ -304,6 +463,7 @@ void main() {
 }
 `;
 const FLANGE_FRAGMENT = /* glsl */ `
+${NOISE}
 uniform float uTime, uLip, uWall; uniform vec3 uFace, uDeep, uCyan, uGold;
 varying vec3 vL; varying vec3 vN; varying vec3 vW; varying float vU; varying float vGold;
 void main() {
@@ -318,7 +478,13 @@ void main() {
   col = mix(col, col + vec3(0.18, 0.08, 0.32), up * 0.5);
   float wave = 0.75 + 0.25 * sin(vU * 0.9 - uTime * 3.0);                                   // the glow pulses down the tunnel
   float sheen = pow(1.0 - facing, 2.0);
-  vec3 lipCol = mix(uCyan * (0.8 + 0.5 * sheen), uGold * (1.0 + 0.8 * pow(abs(sin(a * 3.0 + uTime * 0.6)), 6.0)), vGold);
+  // pass 2: every flange different: its own brightness and tint (cyan, turquoise, or an unlit deep-blue lip), and patchy
+  // light round it that drifts, so the rings are not a row of identical neon hoops
+  float hv = fract(sin(vU * 12.9898) * 43758.5453), ht = fract(sin(vU * 78.233) * 12543.1);
+  float patchL = mix(1.0, smoothstep(0.25, 0.8, bwFbm(vec2(a * 2.2 + vU * 3.1 + uTime * 0.25, vU * 0.7 - uTime * 0.4))) * 1.3, ${ROUND6.flangeVary.patch.toFixed(2)});
+  float bright = mix(${ROUND6.flangeVary.dim.toFixed(2)}, 1.0, hv) * patchL;
+  vec3 tint = mix(uCyan, vec3(0.05, 0.95, 0.85), step(0.5, ht)) * bright + uFace * 0.6 * (1.0 - bright);
+  vec3 lipCol = mix(tint * (0.8 + 0.5 * sheen), uGold * (1.0 + 0.8 * pow(abs(sin(a * 3.0 + uTime * 0.6)), 6.0)), vGold);
   col = mix(col, lipCol * wave, toLip);
   float caustic = pow(0.5 + 0.5 * sin(a * 14.0 + vU * 2.0 - uTime * 2.6) * sin(a * 9.0 - uTime * 1.7 + vU), 6.0);   // water light
   col += vec3(0.3, 0.8, 1.0) * caustic * 0.35 * front * (1.0 - toLip);
