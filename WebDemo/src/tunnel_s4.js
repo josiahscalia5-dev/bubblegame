@@ -35,7 +35,7 @@ export const ROUND2 = {
   clearOut: 1.15,            // Bubble Blast pushes a brush this far back toward the wall
   hazardWarn: [7.5, 3.0],    // the water glows pink in a brush's lane from this far before it, full from here (the last ~2 m are hidden behind the brush)
   hazardWidth: 0.34,         // the glow's half-width across the lane (lanes are 0.7 m apart)
-  hazardMix: 0.72,           // how strongly the pink covers the water at full warning
+  hazardMix: 0.8,            // how strongly the pink covers the water at full warning
   grade: { vibrance: 0.25, knee: 0.62, roll: 1.6 }, bloom: 0.22,
   wallDeep: [[0.1, 0.08, 0.46], [0.58, 0.38, 0.98]],   // the drum's walls a little more violet and magenta, as the approved upper tunnel
   brushBlue: [0.62, 0.66, 1.0], brushBlueMix: 0.45, brushPink: [1.0, 0.5, 0.82],   // lighter, softer brushes (still pink and blue)
@@ -449,4 +449,6 @@ const WATER_R2 = `  float s4Haz = 0.0;
 // ...and the pink is laid on last, after the reflections, ring light, glints and foam (just before the fog), so none of them
 // wash it out. Applied earlier, under the reflections, it read as pale cyan in the game.
 const FOG_ANCHOR = '  float dist = length(cameraPosition - vWorld);';
-const WATER_R2_LATE = `  lit = mix(lit, vec3(1.0, 0.2, 0.6) * (0.9 + 0.2 * NdotL), s4Haz * ${ROUND2.hazardMix.toFixed(2)});   // ?s3=round2: a brush's warning\n`;
+// The warning reaches full colour at s4Haz 0.6, so the soft stripes and pulse vary its strength without fading it to lavender
+// (measured: a plain mix of s4Haz * 0.72 came out as RGB 179, 167, 243 after the tunnel's grade, not pink).
+const WATER_R2_LATE = `  lit = mix(lit, vec3(1.0, 0.12, 0.5) * (0.85 + 0.25 * NdotL), clamp(s4Haz * 1.7, 0.0, 1.0) * ${ROUND2.hazardMix.toFixed(2)});   // ?s3=round2: a brush's warning\n`;

@@ -18,3 +18,11 @@ The drum water has the warning code and its settings are loaded, yet nothing pin
 
 Still no visible pink after the change, so the warning value itself must be small where the camera can see it. I'm measuring its actual strength with threshold colours.
 
+Brightness isn't the problem: the water is below 1.0 and a flat pink override shows clearly. So the real shader must be losing the late mix somewhere. Dumping the compiled source:
+
+---
+
+### You (sent while Claude was working) · 2026-11-04 02:49 UTC
+
+can u please enable the plugin playwright one
+
