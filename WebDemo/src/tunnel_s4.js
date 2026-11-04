@@ -18,6 +18,7 @@
 import * as THREE from 'three';
 import { ROUND3, buildRound3 } from './tunnel_r3.js';
 import { ROUND4, buildRound4 } from './tunnel_r4.js';
+import { makeFluffyBrush } from './fluffy_brush.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -47,6 +48,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   const R2 = round2 ? ROUND2 : null, hooks = (round2 && round2.hooks) || {};
   const R3 = round2 && round2.round3 ? ROUND3 : null;   // ?s3=round3 (tunnel_r3.js): its colours replace round2's below
   const R4 = round2 && round2.round4 ? ROUND4 : null;   // ?s3=round4 (tunnel_r4.js): the reconstruction, on top of round3
+  const FLUFFY_ON = !!(R4 && round2.fluffy);            // ?s3=round4,fluffy (fluffy_brush.js): shell-fur brushes, test only
   const report = { rings: 0, brushes: 0, bubbles: 0, panelsHidden: 0, waterCopy: false };
   const P = TUNNEL, TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   const time = { value: 0 };
@@ -167,7 +169,11 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       holder.quaternion.setFromRotationMatrix(basis);
       const wheel = new THREE.Mesh(wheelGeo, side > 0 ? matPink : mat); wheel.scale.setScalar(P.brushR / 0.95);
       const spinner = new THREE.Group(); spinner.add(wheel); holder.add(spinner);
-      if (R4) { spinner.add(r4PomPom(side > 0, wheel.scale.x)); wheel.visible = false; }   // round4: a fluffy pom-pom instead of the wheel, turning as it did
+      if (R4) {   // round4: a fluffy pom-pom instead of the wheel, turning as it did (with `fluffy`: the shell-fur brush)
+        const look = FLUFFY_ON ? makeFluffyBrush(side > 0) : r4PomPom(side > 0, wheel.scale.x);
+        if (FLUFFY_ON) look.scale.setScalar(wheel.scale.x);
+        spinner.add(look); wheel.visible = false;
+      }
       // a gold axle and arm back to the wall where the bracket was
       const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 1.1, 16), hubMat); arm.rotation.x = Math.PI / 2; arm.position.z = -0.75; holder.add(arm);
       holder.name = 's4Brush'; scene.add(holder);

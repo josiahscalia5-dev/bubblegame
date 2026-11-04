@@ -14,13 +14,13 @@ import * as THREE from 'three';
 
 export const FLUFFY = {
   radius: 0.9, depth: 0.5, roll: 118,      // the dome: face radius, how far it bulges toward the rider, profile angle (90 = face edge)
-  around: 96, along: 30,                   // dome mesh resolution
-  shells: 12, fur: 0.18, lean: 0.3,        // shell count, fibre length, outward lean of the tips
-  density: 36, clumpSize: 0.15, clump: 0.82, // strands per unit, clump spacing, how strongly tips gather into their clump (looped lobes)
+  around: 80, along: 24,                   // dome mesh resolution
+  shells: 20, fur: 0.22, lean: 0.2,        // shell count (fewer shows layer terracing), fibre length, outward lean of the tips
+  density: 30, clumpSize: 0.18, clump: 0.88, taper: 0.22, // strands per unit, clump spacing, how strongly tips gather into their clump (looped lobes), tip thickness (0.5: blunt, round lobes)
   fringe: { count: 120, rows: [[0.98, 0.02], [0.93, -0.16]], length: [0.15, 0.26], width: [0.1, 0.16], strands: 9 },
-  light: [0.35, 0.85, 0.6], ambient: 0.72, diffuse: 0.5, sheen: 0.32, tip: 0.55, ao: 0.55, glow: 0.14,
+  light: [0.35, 0.85, 0.6], ambient: 0.72, diffuse: 0.5, sheen: 0.32, tip: 0.65, ao: 0.55, glow: 0.14,
   // bands from the middle out, on the face's radial position (0 centre, 1 face edge, beyond 1 the rolled-back rim)
-  right: { edges: [0.43, 0.63], bands: [['#2a48d8', '#3a5ef0', '#1f38bd', '#4566ff'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ec4aa9', '#ff7cc8', '#ff63b8']] },
+  right: { edges: [0.4, 0.68], bands: [['#2a48d8', '#3a5ef0', '#1f38bd', '#4566ff'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ec4aa9', '#ff7cc8', '#ff63b8']] },
   left: { edges: [0.4, 0.6], bands: [['#ff5fb6', '#f04aa8', '#ff74c2', '#f55ab4'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ff7cc8', '#ec4aa9', '#ff63b8']] },
 };
 {
@@ -102,7 +102,7 @@ void main() {
 }
 `;
 const SHELL_FRAGMENT = /* glsl */ `
-uniform float uDensity, uClumpSize, uClump;
+uniform float uDensity, uClumpSize, uClump, uTaper;
 varying vec2 vFur; varying float vT; varying float vH; varying vec3 vN; varying vec3 vW;
 ${COMMON}
 void main() {
@@ -115,7 +115,7 @@ void main() {
   vec2 p = mix(vFur, bestC * uClumpSize, uClump * h);            // tips gather into their tuft
   vec2 sq = p * uDensity, si = floor(sq), sf = fract(sq) - 0.5 - (fbH2(si) - 0.5) * 0.45;
   float len = (0.6 + 0.4 * fbH(si + 7.0)) * (1.0 - 0.55 * smoothstep(0.3, 0.75, bd));   // shorter between the tufts
-  float thick = mix(0.5, 0.14, h / max(len, 0.05)) * (0.8 + 0.35 * fbH(si + 3.0));
+  float thick = mix(0.5, uTaper, h / max(len, 0.05)) * (0.8 + 0.35 * fbH(si + 3.0));
   if (h > 0.0 && (length(sf) > thick || h > len)) discard;
   vec3 base = fbBand(vT, bid) * (0.9 + 0.18 * fbH(si + 1.0));
   float ao = mix(uAo, 1.0, smoothstep(0.0, 0.85, h)) * mix(1.0, 0.82, smoothstep(0.45, 0.8, bd) * (1.0 - h));
@@ -164,7 +164,7 @@ export function makeFluffyBrush(left = false) {
   const uniforms = {
     uLight: { value: new THREE.Vector3(...P.light).normalize() }, uCol: { value: cols }, uEdges: { value: new THREE.Vector2(...look.edges) },
     uAmb: { value: P.ambient }, uDif: { value: P.diffuse }, uSheen: { value: P.sheen }, uTip: { value: P.tip }, uAo: { value: P.ao }, uGlow: { value: P.glow },
-    uFur: { value: P.fur }, uLean: { value: P.lean }, uDensity: { value: P.density }, uClumpSize: { value: P.clumpSize }, uClump: { value: P.clump },
+    uFur: { value: P.fur }, uLean: { value: P.lean }, uDensity: { value: P.density }, uClumpSize: { value: P.clumpSize }, uClump: { value: P.clump }, uTaper: { value: P.taper },
     uStrands: { value: P.fringe.strands },
   };
   const group = new THREE.Group(); group.name = 'fluffyBrush';

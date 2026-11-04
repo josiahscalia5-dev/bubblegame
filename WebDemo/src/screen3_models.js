@@ -47,6 +47,9 @@ S3.round3 = LIST.includes('round3');
 // ?s3=round4 (test): round3 plus the reconstruction of the approved Screen 4's scenery (tunnel_r4.js): a new deep electric-blue
 // tunnel lining with 3D cyan and gold rings, a straighter start, flowing turquoise water with a splash crown, pom-pom brushes.
 S3.round4 = LIST.includes('round4');
+// ?s3=round4,fluffy (test, separate from round4 until approved): round4 with the fluffy shell-fur brushes (fluffy_brush.js)
+// instead of round4's pom-poms of clumps. Only with round4; the brushes stand, turn and knock exactly as in round4.
+S3.fluffy = S3.round4 && LIST.includes('fluffy');
 if (S3.round4) S3.round3 = true;
 if (S3.round3) S3.round2 = true;
 if (S3.round2) { S3.paint = !S3.round3; S3.tunnel = true; }
@@ -211,7 +214,7 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
   if (S3.tunnel && TR && bumpMascot) report.tunnel = await buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump: bumpMascot, brushBytes: await bytes.brushT,
     waterSheets, soap: { vertex: SOAP_VERTEX, fragment: SOAP_FRAGMENT }, loaderParse: (b) => loader.parseAsync(b.slice(0), ''), drumMeshes,
-    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2, round3: S3.round3, round4: S3.round4, env } : null });
+    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2, round3: S3.round3, round4: S3.round4, fluffy: S3.fluffy, env } : null });
   if (S3.paint && grade && outputPass) report.paint = await paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.

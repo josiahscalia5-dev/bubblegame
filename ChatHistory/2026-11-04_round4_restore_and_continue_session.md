@@ -392,3 +392,15 @@ I want to see a substantial visual improvement before starting another large rec
 
 One bug to fix before rendering: left and right brushes would share the fringe-card geometry and overwrite each other's per-card data. Giving each side its own:
 
+Brushes are built in `tunnel_s4.js`, where Round 4 swaps the wheel for `r4PomPom`. Finding where the `?s3=` switches are parsed, so `fluffy` can be added the same way:
+
+I'll add `fluffy` next to the other switches. It only works together with `round4`, so the switch can't affect anything else. Checking for an import cycle before `tunnel_s4.js` reads it:
+
+`screen3_models.js` already imports `tunnel_s4.js`, so a direct import back would create a cycle. I'll pass the flag the same way `round4` reaches the tunnel:
+
+Now the three small edits: the switch, passing it into the tunnel, and using the fluffy brush when it's on:
+
+The build's last line was Node's version banner, which Node prints after an error. So the build probably failed and that capture used the old bundle. Checking:
+
+The backtick in my GLSL comment closed the JavaScript template string. Fixing it, rebuilding, and recapturing:
+

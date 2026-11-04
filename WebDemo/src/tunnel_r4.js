@@ -213,6 +213,7 @@ void main() {
   float spread = 1.0 + up * 0.7;
   vec2 p = d * (reach - pow(across * wid * spread, 2.0) * 1.1) + tg * across * wid * spread;   // wraps round the circle
   float h = up * hgt * rise - 0.04 - pow(up, 4.0) * uCurl * 0.5 * k;      // the lip droops as it falls
+  h *= mix(1.0, 0.32, smoothstep(0.15, 0.75, -d.y));   // low froth on the camera's side: tall sheets there veiled the pink mascot in stripes
   vec3 w = uCentre + uR * p.x + uT * (p.y * 0.85) + uU * h;
   vUv = vec2(across + 0.5, up); vAge = k; vSeed = aState.y;
   gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
