@@ -682,3 +682,66 @@ Now the comparison tool itself:
 
 The swirl settings made no visible difference between variants, so the spiral streaks must come from something else. I'm turning the parts on and off one at a time to find the source.
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 10:40 UTC
+
+Claudia, I want to clarify my ultimate goal for Bubble Wash Kingdom.
+
+I DO NOT want my approved screenshots turned into static backgrounds or flat pictures.
+
+I want to reproduce their appearance as closely as possible in my REAL, FULLY PLAYABLE 3D MOBILE GAME.
+
+My visual target is approximately 90–95% similarity to my approved screenshots, wherever technically achievable.
+
+The approved images are the exact artistic targets, not suggestions for a redesign.
+
+Please use a reference-matched, art-directed 3D reconstruction workflow.
+
+PRIORITY — APPROVED SCREEN 4
+
+Recreate the following as genuine animated game elements:
+
+1. Large, dramatic white water splashes surrounding my existing pink character.
+2. Giant fluffy pink, blue, and white rotating washing brushes positioned like the approved screen.
+3. Animated turquoise water with rolling waves, foam, spray, reflections, and splashes.
+4. Golden paw coins, purple gems, and other collectibles matching the approved arrangement.
+5. The deep magical washing-machine tunnel with glowing cyan, blue, pink, and lavender rings.
+6. Floating rainbow bubbles, sparkling particles, and detailed golden machinery.
+
+Use real 3D objects, animated shaders, particles, and high-quality textures wherever appropriate.
+
+Investigate whether Houdini-generated effects would materially improve the water splashes, and whether Substance 3D Painter would improve the materials. Do not purchase or install these until you've established a useful workflow for the existing Three.js game.
+
+VISUAL ACCURACY
+
+Match the approved camera framing, character scale, scenery placement, lighting, colors, proportions, and visual density.
+
+Use Blender to reconstruct missing geometry, and use Three.js for real-time effects.
+
+Use Playwright and image-comparison tools to evaluate screenshots from actual gameplay at multiple moments.
+
+Do not optimize away the important visual details merely to reduce file size. Use mobile-friendly techniques that preserve the appearance.
+
+PRESERVE MY EXISTING GAME
+
+Do not redesign the pink character, change the approved beginning, or remove gameplay features.
+
+Do not replace the real moving environment with a flat picture.
+
+The character must continue moving, dodging, collecting coins, rescuing socks, and traveling through the washing machine.
+
+DELIVERABLE
+
+Show me a real gameplay video with the water splashing, brushes rotating, bubbles moving, coins spinning, and character traveling through the tunnel.
+
+Show approved-versus-actual comparisons at multiple points during movement, not just the starting screen.
+
+Tell me what still prevents the game from matching the approved artwork and correct the largest differences.
+
+My goal is a beautiful, premium 3D Android game that LOOKS like my approved screenshots and PLAYS like a real game.
+
+Please implement this in my existing project and preserve all completed working changes on GitHub.
+
+_[2 images attached]_
+
