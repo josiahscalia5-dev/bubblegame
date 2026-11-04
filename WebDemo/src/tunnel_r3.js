@@ -16,29 +16,39 @@ import { NOISE } from './shaders.js';
 
 export const ROUND3 = {
   // the approved rings are cyan, azure and white with a pastel pink band (round2: pink, lavender, cyan, orchid, gold)
-  ringColours: [[0.18, 0.82, 1.0], [0.42, 0.6, 1.0], [0.8, 0.95, 1.0], [0.22, 0.7, 1.0], [1.0, 0.55, 0.88]],
-  wallDeep: [[0.04, 0.12, 0.55], [0.32, 0.62, 1.0]],   // the drum's walls deep royal blue to azure (round2: violet)
-  swirl: { radius: 1.93, rowStep: 0.4, around: 72, from: 6, to: 174, strength: 0.42 },
+  ringColours: [[0.22, 0.52, 1.0], [0.85, 0.95, 1.0], [0.16, 0.78, 1.0], [0.3, 0.42, 1.0], [1.0, 0.58, 0.9]],
+  ringGlow: 0.6,                                         // the rings' light (round2: 1.0), so the deep blue between them shows
+  wallDeep: [[0.01, 0.035, 0.26], [0.1, 0.26, 0.8]],    // the drum's walls deep royal blue (round2: violet; measured: too pale)
+  // white water running round the drum in rings (the approved tunnel's concentric white-water bands)
+  swirl: { radius: 1.93, rowStep: 0.3, around: 72, from: 4, to: 176, strength: 1.6, white: 1.0, blue: 0.3, bands: 1.7, twist: 0.35 },
+  water: { azure: [0.1, 0.4, 0.95], azureMix: 0.35, foam: 0.75 },   // the drum's water: azure, not turquoise, with white churn (tunnel_s4.js)
   foam: {
-    count: 96, bright: 1.12,
+    count: 96, bright: 1.12, cells: 2.2,   // cells: bubbles across a heap
     // where the heaps rise, relative to the mascot (dx sideways, du along the path, metres; the camera is 3.6 m behind it),
     // how big they grow, how deep they sit in the water (a share of their size) and how they drift back and outward
     zones: [
-      { w: 0.34, dx: [-0.8, 0.8], du: [-0.75, -0.15], r: [0.18, 0.34], sink: 0.45, drift: 0.45, out: 0.25 },   // the crest in front of its lower body
-      { w: 0.26, side: [0.5, 1.15], du: [-1.3, 0.45], r: [0.16, 0.32], sink: 0.4, drift: 0.7, out: 0.3 },      // heaps beside it
-      { w: 0.2, dx: [-0.95, 0.95], du: [-1.45, -0.8], r: [0.15, 0.3], sink: 0.5, drift: 0.5, out: 0.2 },       // the foreground, nearest the camera
-      { w: 0.2, ring: [0.42, 0.56], r: [0.1, 0.2], sink: 0.2, drift: 0.3, out: 0.15 },                        // hugging its body
+      { w: 0.3, dx: [-0.8, 0.8], du: [-0.7, -0.15], r: [0.2, 0.36], sink: 0.4, drift: 0.4, out: 0.25 },     // the crest in front of its lower body
+      { w: 0.34, side: [0.48, 1.05], du: [-0.6, 0.45], r: [0.24, 0.44], sink: 0.2, drift: 0.45, out: 0.3 },  // heaps rising beside it
+      { w: 0.16, dx: [-0.95, 0.95], du: [-1.45, -0.8], r: [0.15, 0.3], sink: 0.5, drift: 0.5, out: 0.2 },   // the foreground, nearest the camera
+      { w: 0.2, ring: [0.42, 0.56], r: [0.12, 0.22], sink: 0.2, drift: 0.3, out: 0.15 },                    // hugging its body
     ],
     life: [0.6, 1.25],
   },
   spray: { rate: 70, size: [0.05, 0.11] },                 // white spray droplets thrown up round the mascot (game.js)
-  camera: { lookY: 1.7 },                                  // the drum camera's aim, higher than round2's 0.89 (game.js)
+  camera: { lookY: 1.45 },                                  // the drum camera's aim, higher than round2's 0.89 (game.js)
   bubbles: { count: 20, du: [-2.6, 13], x: [0.42, 1.55], h: [0.35, 2.5], r: [0.045, 0.24], flow: 1.6 },
   sparkles: { rate: 34, du: [3, 15], r: [0.2, 1.7] },
   // brushes: pink and white tufts outside, royal blue inside (right), pink and white all over (left)
   brush: { pink: [1.0, 0.34, 0.72], white: [1.0, 0.92, 0.98], royal: [0.1, 0.2, 0.9], deep: [0.05, 0.1, 0.55], tufts: 26 },
   gem: { color: [0.7, 0.45, 1.0], emissive: [0.62, 0.36, 1.0] },   // the approved gem is purple (the Meshy gem is pink)
 };
+
+// For trying settings without a rebuild in tests: window.__BW_S3_TUNE__ = { round3: { foam: { bright: 1.2 }, ... } } before load.
+{
+  const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round3;
+  const merge = (dst, src) => { for (const k of Object.keys(src)) { if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k]) && dst[k]) merge(dst[k], src[k]); else dst[k] = src[k]; } };
+  if (tune) merge(ROUND3, tune);
+}
 
 export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap }) {
   const TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
@@ -62,7 +72,7 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside }) {
   const seedA = new THREE.InstancedBufferAttribute(new Float32Array(n), 1);
   g.setAttribute('aBlob', blobA); g.setAttribute('aSeed', seedA);
   g.instanceCount = n;
-  const u = { uTime: time, uBright: { value: P.bright }, uKey: { value: new THREE.Vector3(0.35, 0.85, -0.42).normalize() } };
+  const u = { uTime: time, uBright: { value: P.bright }, uCells: { value: P.cells }, uKey: { value: new THREE.Vector3(0.35, 0.85, -0.42).normalize() } };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: FOAM_VERTEX, fragmentShader: FOAM_FRAGMENT });
   const mesh = new THREE.Mesh(g, mat); mesh.frustumCulled = false; mesh.name = 'r3Foam'; mesh.visible = false; mesh.renderOrder = 2;
   scene.add(mesh);
@@ -122,22 +132,25 @@ void main() {
 // a few glints
 const FOAM_FRAGMENT = /* glsl */ `
 ${NOISE}
-uniform float uTime, uBright; uniform vec3 uKey;
+uniform float uTime, uBright, uCells; uniform vec3 uKey;
 varying vec3 vN; varying vec3 vW; varying vec3 vL; varying float vSeed;
 void main() {
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
   float ndv = clamp(dot(N, V), 0.0, 1.0);
-  vec2 sp = (vL.xy * 3.2 + vec2(vL.z * 2.3, -vL.z * 1.4)) * 2.0 + vSeed * 13.0 + vec2(0.0, uTime * 0.25);
+  // a heap of soap bubbles: each cell a bubble, lavender-blue inside, bright white round its rim, a white highlight up
+  // and to the left; blue shade underneath and at the edges (the approved foreground foam)
+  vec2 sp = (vL.xy * 1.6 + vec2(vL.z * 1.2, -vL.z * 0.7)) * uCells + vSeed * 13.0 + vec2(0.0, uTime * 0.15);
   vec2 c = bwVoronoi(sp);
-  float wall = 1.0 - smoothstep(0.03, 0.13, c.y - c.x);
-  float hollow = smoothstep(0.12, 0.5, c.x);
+  float cell = c.x / max(c.y, 1e-3);                               // 0 at a bubble's middle, 1 at its rim
+  float rim = smoothstep(0.62, 0.95, cell);
   float diff = clamp(dot(N, uKey), 0.0, 1.0), up = clamp(N.y * 0.5 + 0.5, 0.0, 1.0);
-  vec3 col = mix(vec3(0.5, 0.68, 1.0), vec3(1.0, 1.0, 1.03), clamp(0.3 + 0.55 * diff + 0.3 * up, 0.0, 1.0));
-  col = mix(col, col * vec3(0.8, 0.88, 1.0), hollow * 0.55);
-  col += vec3(0.25) * wall;
-  float h = bwHash(floor(sp) + 3.7);
-  col += vec3(1.0) * step(0.82, h) * (1.0 - smoothstep(0.0, 0.16, length(fract(sp) - vec2(0.35, 0.65)))) * 1.1;
-  col = mix(col, vec3(0.55, 0.82, 1.0), pow(1.0 - ndv, 2.5) * 0.5);
+  float lit = clamp(0.25 + 0.6 * diff + 0.35 * up, 0.0, 1.0);
+  vec3 inside = mix(vec3(0.6, 0.66, 1.0), vec3(0.86, 0.92, 1.0), lit);
+  vec3 col = mix(inside, vec3(1.05, 1.05, 1.08), rim * (0.55 + 0.45 * lit));
+  float hl = 1.0 - smoothstep(0.0, 0.25, abs(cell - 0.45) + length(vec2(N.x + 0.4, N.y - 0.5)) * 0.25);
+  col += vec3(1.0) * hl * 0.25 * lit;
+  col = mix(col, col * vec3(0.62, 0.72, 1.0), (1.0 - up) * 0.55);
+  col = mix(col, vec3(0.55, 0.78, 1.0), pow(1.0 - ndv, 2.5) * 0.45);
   gl_FragColor = vec4(col * uBright, 1.0);
 }
 `;
@@ -160,7 +173,7 @@ function swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aAU', new THREE.BufferAttribute(ua, 2)); g.setIndex(idx);
   g.computeBoundingSphere();
-  const u = { uTime: time, uStrength: { value: P.strength }, uEnds: { value: new THREE.Vector2(TS, TE + 4) }, uFade: { value: 0 } };
+  const u = { uTime: time, uStrength: { value: P.strength }, uEnds: { value: new THREE.Vector2(TS, TE + 4) }, uFade: { value: 0 }, uMix: { value: new THREE.Vector2(P.white, P.blue) }, uBands: { value: new THREE.Vector2(P.bands, P.twist) } };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: SWIRL_VERTEX, fragmentShader: SWIRL_FRAGMENT, transparent: true, depthWrite: false,
     blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(g, mat); mesh.name = 'r3Swirl'; mesh.renderOrder = 3; mesh.visible = false; mesh.frustumCulled = false;
@@ -182,16 +195,20 @@ void main() {
 // ahead, fading near the camera (so it never covers the view) and at the drum's ends
 const SWIRL_FRAGMENT = /* glsl */ `
 ${NOISE}
-uniform float uTime, uStrength, uFade; uniform vec2 uEnds;
+uniform float uTime, uStrength, uFade; uniform vec2 uEnds, uMix, uBands;
 varying vec2 vAU; varying float vDepth;
 void main() {
   float a = vAU.x, u = vAU.y;
-  float sw = a * 2.0 - u * 0.75 + uTime * 1.6;
-  float s1 = bwFbm(vec2(sw * 1.3, u * 0.35 - uTime * 0.5));
-  float s2 = bwFbm(vec2(sw * 2.6 + 5.0, u * 0.9 + uTime * 0.3));
-  float streak = smoothstep(0.52, 0.8, s1) * 0.8 + smoothstep(0.6, 0.85, s2) * 0.5;
-  float foamy = smoothstep(0.7, 0.9, s2) * smoothstep(0.55, 0.75, s1);
-  vec3 col = mix(vec3(0.1, 0.55, 1.0), vec3(0.55, 0.9, 1.0), smoothstep(0.55, 0.85, s1)) * streak + vec3(0.85, 0.97, 1.0) * foamy * 0.8;
+  // rings of churning white water round the drum (bands across the tube, so they read as circles down its length),
+  // wobbling and turning slowly, broken into foamy pieces; a faint blue glow along them
+  float wob = bwFbm(vec2(a * 1.4, u * 0.6 - uTime * 0.4)) - 0.5;
+  float ph = u * uBands.x + a * uBands.y + wob * 1.3 - uTime * 1.1;
+  float band = 0.5 + 0.5 * sin(ph * 6.2832 * 0.5);
+  float rough = bwFbm(vec2(a * 9.0, u * 3.0 + uTime * 0.7));
+  float line = smoothstep(0.78, 0.93, band) * smoothstep(0.38, 0.62, rough);       // the white water band, foamy
+  float flecks = smoothstep(0.72, 0.8, bwFbm(vec2(a * 18.0, u * 7.0 - uTime))) * smoothstep(0.5, 0.85, band);
+  float glow = smoothstep(0.45, 0.95, band);
+  vec3 col = vec3(0.15, 0.5, 1.0) * glow * 0.6 * uMix.y + vec3(0.9, 0.97, 1.0) * (line * 0.85 + flecks * 0.6) * uMix.x;
   vec2 g = vec2(a * 30.0, u * 4.0 - uTime * 0.6), c = floor(g);
   float hs = fract(sin(dot(c, vec2(12.9898, 78.233))) * 43758.5453);
   col += vec3(1.0) * step(0.93, hs) * (1.0 - smoothstep(0.0, 0.22, length(fract(g) - 0.5))) * (0.5 + 0.5 * sin(uTime * 4.0 + hs * 40.0));

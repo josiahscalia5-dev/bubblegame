@@ -54,7 +54,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   {
     const us = []; for (let u = TS + 0.6; u < TE - 0.6 + (R2 ? 4.4 : 0); u += P.ringStep) us.push(u);   // (round2: on into the exit's light)
     const geo = new THREE.RingGeometry(P.ringIn, P.ringOut, 112, 1);
-    const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uIn: { value: P.ringIn }, uOut: { value: P.ringOut }, uSpark: { value: R2 ? R2.sparkle : 0.9 } }, vertexShader: RING_VERTEX, fragmentShader: RING_FRAGMENT,
+    const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uIn: { value: P.ringIn }, uOut: { value: P.ringOut }, uSpark: { value: R2 ? R2.sparkle : 0.9 } }, vertexShader: RING_VERTEX, fragmentShader: R3 ? RING_FRAGMENT.replace('gl_FragColor = vec4(col, 1.0);', `gl_FragColor = vec4(col * ${R3.ringGlow.toFixed(3)}, 1.0);`) : RING_FRAGMENT,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
     const rings = new THREE.InstancedMesh(geo, mat, us.length);
     const cols = R2 ? (R3 || R2).ringColours.map((c) => new THREE.Color(...c)) : [new THREE.Color(0.5, 0.22, 1.0), new THREE.Color(1.0, 0.3, 0.78), new THREE.Color(0.12, 0.85, 1.0), new THREE.Color(0.45, 0.65, 1.0)];
@@ -257,7 +257,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       // streaks, so half of the first brushes' warning was covered by the slide's water. The drum's sheet now wins there.
       m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -4;
     }
-    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? WATER_R2 : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
+    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? (R3 ? WATER_R2.replace(anchor, waterR3() + anchor) : WATER_R2) : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
     vec2 toM = xz - uPlayer.xz; float rM = length(toM * vec2(1.0, 0.85));
     float collar = exp(-pow(max(0.0, rM - 0.42) / 0.42, 2.0));
     float behindM = clamp(-toM.y / 3.2, 0.0, 1.0);
@@ -487,6 +487,17 @@ const WATER_R2 = `  float s4Haz = 0.0;
 // ...and the pink is laid on last, after the reflections, ring light, glints and foam (just before the fog), so none of them
 // wash it out. Applied earlier, under the reflections, it read as pale cyan in the game.
 const FOG_ANCHOR = '  float dist = length(cameraPosition - vWorld);';
+// round3: the drum's water azure instead of turquoise, with white churned foam in patches across it, thicker near the
+// mascot (the approved Screen 4's water is white-flecked blue, its turquoise only in thin streaks)
+const waterR3 = () => { const P = ROUND3.water; return `  if (inDrum > 0.0) {   // ?s3=round3
+    col = mix(col, vec3(${P.azure.join(', ')}), ${P.azureMix.toFixed(3)} * inDrum);
+    vec2 b3 = bwVoronoi(xz * vec2(5.5, 3.8) - vec2(0.0, flowT * 0.42));
+    float patch3 = smoothstep(0.42, 0.72, bwFbm(xz * vec2(1.7, 0.75) - vec2(0.0, flowT * 0.35)));
+    float near3 = exp(-pow(max(0.0, length(xz - uPlayer.xz) - 0.5) / 1.8, 2.0));
+    float lace3 = 1.0 - smoothstep(0.02, 0.11, b3.y - b3.x);
+    foam = max(foam, clamp(lace3 * patch3 * (0.45 + 0.55 * near3) + smoothstep(0.62, 0.9, patch3) * near3 * 0.6, 0.0, 1.0) * ${P.foam.toFixed(3)} * inDrum * (1.0 - s4Haz));
+  }
+`; };
 // The warning reaches full colour at s4Haz 0.6, so the soft stripes and pulse vary its strength without fading it to lavender
 // (measured: a plain mix of s4Haz * 0.72 came out as RGB 179, 167, 243 after the tunnel's grade, not pink).
 const WATER_R2_LATE = `  lit = mix(lit, vec3(1.0, 0.12, 0.5) * (0.85 + 0.25 * NdotL), clamp(s4Haz * 1.7, 0.0, 1.0) * ${ROUND2.hazardMix.toFixed(2)});   // ?s3=round2: a brush's warning\n`;

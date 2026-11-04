@@ -680,3 +680,5 @@ My goal is the closest achievable match to the approved screens.
 
 Now the comparison tool itself:
 
+The swirl settings made no visible difference between variants, so the spiral streaks must come from something else. I'm turning the parts on and off one at a time to find the source.
+
