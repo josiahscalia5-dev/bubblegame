@@ -35,6 +35,11 @@ S3.cine = LIST.includes('cine');
 // large spinning brushes on the sides (the low ones knock a mascot in their lane back to the middle), soap bubbles, foam.
 S3.tunnel = LIST.includes('tunnel');
 S3.paint = LIST.includes('paint');
+// ?s3=round2 (test): the painted opening and the tunnel above, plus the second round of polish in the tunnel (richer, never
+// washed-out light, a coloured exit vortex, tidier collectibles and foam, clearer brushes) and the Screen 4 controls in game.js
+// (hearts that brushes take, Bubble Blast, Turbo Spin, pause, embossed gold paw coins). ?s3=paint,tunnel stays as it was.
+S3.round2 = LIST.includes('round2');
+if (S3.round2) { S3.paint = true; S3.tunnel = true; }
 if (S3.paint) { S3.castle = true; S3.edges = true; }
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };
@@ -105,7 +110,7 @@ async function fetchModel(url) {
   }
 }
 
-export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass, rollers, grade, bloomPass, outputPass, waterSheets, TR, bumpMascot, drumMeshes }) {
+export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCastle, sideMachinery, staticBubbles, camera, updaters, mascot, L, W, renderPass, rollers, grade, bloomPass, outputPass, waterSheets, TR, bumpMascot, drumMeshes, exitLight, r2 }) {
   const report = {};
   const loader = new GLTFLoader();
   const parse = async (k) => { const b = await bytes[k]; return b ? loader.parseAsync(b, '') : null; };
@@ -192,7 +197,8 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
   if (S3.bubbles && staticBubbles) report.bubbles = soapBubbles({ scene, staticBubbles, camera: view || camera, updaters, mascot });
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
   if (S3.tunnel && TR && bumpMascot) report.tunnel = await buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump: bumpMascot, brushBytes: await bytes.brushT,
-    waterSheets, soap: { vertex: SOAP_VERTEX, fragment: SOAP_FRAGMENT }, loaderParse: (b) => loader.parseAsync(b.slice(0), ''), drumMeshes });
+    waterSheets, soap: { vertex: SOAP_VERTEX, fragment: SOAP_FRAGMENT }, loaderParse: (b) => loader.parseAsync(b.slice(0), ''), drumMeshes,
+    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2 } : null });
   if (S3.paint && grade && outputPass) report.paint = await paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.

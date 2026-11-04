@@ -136,6 +136,56 @@
   body.side { padding: 0; }
   body.side #stage { aspect-ratio: auto; width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
   body.side .hud { display: none; }
+  /* ?s3=round2 test only: the approved Screen 4 controls (hidden, and so not drawn, in every other version) */
+  #heartPill.pop img, #heartPill.pop span { animation: hurt 0.5s ease-out; }
+  @keyframes hurt { 20% { transform: translateX(calc(var(--u) * -3)) scale(1.2); } 45% { transform: translateX(calc(var(--u) * 3)); } 70% { transform: translateX(calc(var(--u) * -2)); } 100% { transform: none; } }
+  .jelly {
+    pointer-events: auto; padding: 0; border: 0; cursor: pointer; color: var(--white); font-family: var(--display);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.14) 26%, rgba(255, 255, 255, 0) 42%),
+      radial-gradient(120% 100% at 50% 0%, #74d4ff 0%, #2f9bf5 50%, #1a5fd8 100%);
+    box-shadow:
+      inset 0 0 0 calc(var(--u) * 2.4) rgba(200, 240, 255, 0.95),
+      inset 0 calc(var(--u) * -6) calc(var(--u) * 10) rgba(8, 40, 140, 0.45),
+      0 0 calc(var(--u) * 7) rgba(150, 215, 255, 0.85),
+      0 calc(var(--u) * 4) calc(var(--u) * 10) rgba(20, 30, 120, 0.35);
+    transition: transform 0.12s ease;
+  }
+  .jelly:active { transform: scale(0.94); }
+  .jelly:focus-visible { outline: calc(var(--u) * 2) solid #ffe27a; outline-offset: calc(var(--u) * 2); }
+  #pauseBtn { top: calc(var(--u) * 51); left: calc(var(--u) * 222); width: calc(var(--u) * 36); height: calc(var(--u) * 36); border-radius: calc(var(--u) * 12);
+    display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 5); }
+  #pauseBtn span { width: calc(var(--u) * 6); height: calc(var(--u) * 17); border-radius: 999px; background: #fff; box-shadow: 0 calc(var(--u) * 1) 0 rgba(10, 40, 140, 0.45); }
+  .power { bottom: calc(var(--u) * 10); width: calc(var(--u) * 74); height: calc(var(--u) * 78); border-radius: calc(var(--u) * 20); }
+  #blastBtn { left: calc(var(--u) * 12); }
+  #turboBtn { right: calc(var(--u) * 12); }
+  .power svg { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6); width: calc(var(--u) * 50); height: calc(var(--u) * 50); filter: drop-shadow(0 calc(var(--u) * 2) calc(var(--u) * 1.5) rgba(10, 30, 120, 0.45)); }
+  .power .lbl { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 7); font-size: calc(var(--u) * 11.5); line-height: 1; white-space: nowrap; }
+  .power .badge { position: absolute; right: calc(var(--u) * -7); top: calc(var(--u) * -7); width: calc(var(--u) * 25); height: calc(var(--u) * 25); border-radius: 50%;
+    background: radial-gradient(circle at 40% 30%, #ff83ae, #e8175d); box-shadow: 0 0 0 calc(var(--u) * 2) #fff, 0 calc(var(--u) * 2) calc(var(--u) * 3) rgba(80, 0, 40, 0.4);
+    display: grid; place-items: center; font-size: calc(var(--u) * 15); line-height: 1; }
+  .power:disabled { filter: grayscale(0.8) brightness(0.82); cursor: default; }
+  .power:disabled .badge { background: #8d92b4; }
+  .power.pop { animation: press 0.4s cubic-bezier(.2, 1.6, .4, 1); }
+  @keyframes press { 30% { transform: scale(0.88); } 100% { transform: none; } }
+  body.r2 #hint { bottom: calc(var(--u) * 98); }
+  body.r2 #flash { background: radial-gradient(circle, rgba(225, 248, 255, 0.92), rgba(160, 130, 255, 0.85)); }
+  #r2Hurt { inset: 0; box-shadow: inset 0 0 calc(var(--u) * 40) calc(var(--u) * 14) rgba(255, 40, 110, 0.75); opacity: 0; }
+  #r2Hurt.go { animation: flash 0.6s ease-out; }
+  #r2Shield { inset: 0; box-shadow: inset 0 0 calc(var(--u) * 30) calc(var(--u) * 6) rgba(110, 230, 255, 0.55); opacity: 0; transition: opacity 0.25s ease; }
+  #r2Shield.on { opacity: 1; }
+  #r2Toast { top: calc(var(--u) * 190); width: calc(var(--u) * 205); height: calc(var(--u) * 70); opacity: 0; transition: opacity 0.3s ease; }
+  #r2Toast.show { opacity: 1; }
+  #r2Toast .big { position: absolute; left: 0; right: 0; top: calc(var(--u) * 8); font-size: calc(var(--u) * 25); line-height: calc(var(--u) * 30); }
+  #r2Toast .small { position: absolute; left: 0; right: 0; top: calc(var(--u) * 40); font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 20); font-weight: 600; }
+  #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
+  #pausePanel .card { position: absolute; top: calc(var(--u) * 160); width: calc(var(--u) * 190); padding: calc(var(--u) * 14) calc(var(--u) * 18) calc(var(--u) * 18); box-sizing: border-box;
+    display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
+  #pausePanel .big { font-size: calc(var(--u) * 28); line-height: calc(var(--u) * 34); }
+  .pbtn { height: calc(var(--u) * 34); border-radius: 999px; border: 0; cursor: pointer; font-family: var(--display); font-size: calc(var(--u) * 16);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 55%), #2a74f4; box-shadow: inset 0 0 0 calc(var(--u) * 2) rgba(200, 240, 255, 0.9); }
+  .pbtn.go { background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 55%), #ff5fb4; font-size: calc(var(--u) * 18); }
+  .pbtn:focus-visible { outline: calc(var(--u) * 2) solid #ffe27a; outline-offset: calc(var(--u) * 2); }
   #flash { inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(220, 200, 255, 0.85)); opacity: 0; }
   #flash.go { animation: flash 0.7s ease-out; }
   @keyframes flash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
@@ -155,9 +205,9 @@
   <canvas id="view" aria-label="Bubble Wash Kingdom: the pink mascot rides the water slide into the washing machine"></canvas>
   <div class="hud" aria-live="polite">
     <img id="openingArt" src="ui/approved_screen3.png" alt="" draggable="false">
-    <div class="pill t" style="--x:12;--y:13;--w:70;--h:23;--tx:28">
+    <div class="pill t" id="heartPill" style="--x:12;--y:13;--w:70;--h:23;--tx:28">
       <img src="ui/heart.png" alt="" style="left:calc(var(--u)*-4);top:calc(var(--u)*-2);width:calc(var(--u)*27);height:calc(var(--u)*26)">
-      <span>5 <small>Full</small></span>
+      <span id="hearts">5 <small>Full</small></span>
       <img src="ui/plus.png" alt="" style="left:calc(var(--u)*58);top:calc(var(--u)*5);width:calc(var(--u)*13);height:calc(var(--u)*13)">
     </div>
     <div class="pill t" style="--x:92;--y:14;--w:67;--h:22;--tx:25">
@@ -187,6 +237,53 @@
       <div class="count" id="sockCount">0/5</div>
     </div>
     <div class="t" id="hint">Swipe ← → to steer · ↑ to jump<br>Tap to spin</div>
+    <!-- ?s3=round2 test only (hidden otherwise): the approved Screen 4 controls -->
+    <div id="r2Hurt" hidden></div>
+    <div id="r2Shield" hidden></div>
+    <button class="jelly" id="pauseBtn" type="button" title="Pause" aria-label="Pause" hidden><span></span><span></span></button>
+    <button class="jelly power" id="blastBtn" type="button" title="Bubble Blast (B): clears the brushes ahead" hidden>
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="bbBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc2e4"/><stop offset=".5" stop-color="#ff63b8"/><stop offset="1" stop-color="#d4318f"/></linearGradient>
+          <linearGradient id="bbGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffec8a"/><stop offset="1" stop-color="#f2a516"/></linearGradient>
+          <radialGradient id="bbBub" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".45" stop-color="#dff8ff" stop-opacity=".3"/><stop offset="1" stop-color="#7fdcff" stop-opacity=".9"/></radialGradient>
+        </defs>
+        <g transform="rotate(-28 30 38)">
+          <path d="M19 41h10l-3 13a3 3 0 0 1-3 2.4h-5a2 2 0 0 1-2-2.6z" fill="url(#bbGold)" stroke="#b86a00" stroke-width="1.3"/>
+          <rect x="16" y="20" width="12" height="8" rx="3" fill="url(#bbGold)" stroke="#b86a00" stroke-width="1.3"/>
+          <path d="M22 18.5l2-4 2 4" fill="none" stroke="#f2a516" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="9" y="26" width="35" height="16" rx="8" fill="url(#bbBody)" stroke="#a8236f" stroke-width="1.4"/>
+          <rect x="40" y="23" width="8.5" height="22" rx="4.2" fill="#ffd6ee" stroke="#a8236f" stroke-width="1.4"/>
+          <rect x="13" y="28.6" width="23" height="4" rx="2" fill="#fff" opacity=".65"/>
+        </g>
+        <circle cx="51" cy="14" r="7.5" fill="url(#bbBub)" stroke="#58cdff" stroke-width="1.1"/>
+        <circle cx="58.5" cy="27" r="4.4" fill="url(#bbBub)" stroke="#58cdff" stroke-width=".9"/>
+        <circle cx="42.5" cy="5.5" r="3.6" fill="url(#bbBub)" stroke="#58cdff" stroke-width=".9"/>
+      </svg>
+      <span class="lbl t">Bubble Blast</span><span class="badge t" id="blastCount">3</span>
+    </button>
+    <button class="jelly power" id="turboBtn" type="button" title="Turbo Spin (T): faster, and brushes can't knock you" hidden>
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <radialGradient id="tsDisc" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#f0fcff"/><stop offset="1" stop-color="#8ad6ff"/></radialGradient>
+          <linearGradient id="tsBlade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff5a6"/><stop offset=".55" stop-color="#ffd43b"/><stop offset="1" stop-color="#f0a010"/></linearGradient>
+        </defs>
+        <circle cx="32" cy="32" r="27" fill="url(#tsDisc)" stroke="#fff" stroke-width="2" opacity=".92"/>
+        <g id="tsOne"><path d="M32 32C25.5 24.5 23.5 12.5 31.5 7c8.5-1 11.5 9.5 4.5 23z" fill="url(#tsBlade)" stroke="#c98200" stroke-width="1.3" stroke-linejoin="round"/></g>
+        <use href="#tsOne" transform="rotate(90 32 32)"/><use href="#tsOne" transform="rotate(180 32 32)"/><use href="#tsOne" transform="rotate(270 32 32)"/>
+        <circle cx="32" cy="32" r="5.6" fill="url(#tsBlade)" stroke="#c98200" stroke-width="1.3"/><circle cx="30.4" cy="30.4" r="1.8" fill="#fff" opacity=".85"/>
+      </svg>
+      <span class="lbl t">Turbo Spin</span><span class="badge t" id="turboCount">3</span>
+    </button>
+    <div class="panel t" id="r2Toast" hidden><div class="big">Out of hearts!</div><div class="small">Back to the start…</div></div>
+    <div id="pausePanel" role="dialog" aria-modal="true" aria-label="Paused" hidden>
+      <div class="panel card">
+        <div class="big t">Paused</div>
+        <button class="pbtn go t" id="resumeBtn" type="button">Resume</button>
+        <button class="pbtn t" id="pauseSound" type="button" aria-pressed="true">Sound: On</button>
+        <button class="pbtn t" id="restartBtn" type="button">Restart</button>
+      </div>
+    </div>
     <div id="flash"></div>
   </div>
   <canvas id="overlay" aria-hidden="true"></canvas>

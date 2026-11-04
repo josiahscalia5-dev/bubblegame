@@ -15,6 +15,25 @@ import { makeTrack } from './track.js';
 import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
 import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
+import { S3 as S3_SWITCHES } from './screen3_models.js';
+import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
+// ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
+// a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
+// Without the switch none of it runs and the game is drawn exactly as before.
+const R2 = !!S3_SWITCHES.round2;
+const R2_RULES = {
+  hearts: 5, hurtGuard: 1.0,            // a knock takes one heart; no second knock for this long
+  outOfHearts: 1.4,                     // with no hearts left, back to Tap to Start (5 hearts again) after this long
+  blasts: 3, blastTime: 3.0, blastReach: 13,   // Bubble Blast: brushes up to 13 m ahead are pushed back to the wall, for 3 s
+  turbos: 3, turboTime: 2.5, turboSpeed: 1.45, // Turbo Spin: faster, spinning, brushes cannot knock the mascot
+  // the tunnel's collectibles in clean lines (u: metres along the path; lane 0 left, 1 middle, 2 right). Coin trails lead
+  // through the safe lane past each brush and end at a sock; brushes stand at 6.0 L, 6.7 R, 16.6 R, 18.8 L, 26.0 L, 26.7 R.
+  coinH: 0.7, sockH: 0.88, gemH: 0.85,
+  coinLines: [[1, 4.4, 5], [0, 10.8, 3], [1, 16.8, 2], [2, 18.6, 3], [1, 23.4, 5], [0, 29.8, 3]], coinStep: 1.0,
+  socks: [[1, 9.6], [0, 14.0], [2, 21.8], [1, 28.6], [0, 33.0]],
+  gems: [[1, 15.6], [0, 34.2]],
+};
+const r2Hooks = {};   // filled in by tunnel_s4.js (clearBrushes, hazards); pop is set below
 
 const TEST = !!window.__BW_TEST__;
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
@@ -108,6 +127,7 @@ const state = {
   phase: 'loading', time: 0, coins: 1280, gems: 36, socks: 0, sound: true,
   collected: { coins: 0, gems: 0 }, laps: 0,
 };
+if (R2) Object.assign(state, { hearts: R2_RULES.hearts, blasts: R2_RULES.blasts, turbos: R2_RULES.turbos, paused: false, blastT: 0, turboT: 0, guardT: 0, outT: -1, knocks: 0, restarts: 0 });
 
 // ------------------------------------------------------------------ materials
 const mats = {};
@@ -576,8 +596,9 @@ function buildBubbles() {
   for (let i = 0; i < 30; i++) {   // ambient bubbles floating over the slide and in the drum (never right in front of the start camera)
     const z = L.startZ + 2 + Math.random() * (L.tunnelEnd - L.startZ - 2);
     const inside = z > L.tunnelStart;
-    const x = (Math.random() * 2 - 1) * (inside ? 1.6 : 4.5);
-    list.push(onPath(x, (inside ? 1.0 : 0.8) + Math.random() * 2.2, z, 0.06 + Math.random() * 0.2));
+    let x = (Math.random() * 2 - 1) * (inside ? 1.6 : 4.5), h = (inside ? 1.0 : 0.8) + Math.random() * 2.2, r = 0.06 + Math.random() * 0.2;
+    if (R2 && inside) { x = Math.sign(x || 1) * (1.35 + Math.abs(x) * 0.3); h = 2.1 + (h - 1.0) * 0.45; r *= 0.6; }   // round2: up on the walls, smaller, out of the lanes' view
+    list.push(onPath(x, h, z, r));
   }
   geo.setAttribute('inst', new THREE.InstancedBufferAttribute(new Float32Array(list.flat()), 4));
   geo.setAttribute('phase', new THREE.InstancedBufferAttribute(new Float32Array(list.map(() => Math.random() * 6.28)), 1));
@@ -598,20 +619,31 @@ function buildCollectibles(gemGltf, face) {
   const coinGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.08, 36);
   coinGeo.rotateX(Math.PI / 2);
   const coinMats = [coinRim, goldFace, goldFace];
+  // round2: embossed gold paw coins, a detailed one near the camera and a lighter one further away (made with private random
+  // numbers, so the game's own random sequence is unchanged)
+  const paw = R2 ? withPrivateRandom(makeRandom(0x9a3c), () => ({ hi: pawCoinGeometry('high'), lo: pawCoinGeometry('low'), mat: pawCoinMaterial(mats.env) })) : null;
   const addCoin = (p, compose) => {
+    const u0 = p.z;
     p = TR.map(p.x, p.y, p.z);   // straight layout -> 3D path
-    const m = new THREE.Mesh(coinGeo, coinMats);
+    const m = paw ? withPrivateRandom(makeRandom(0x9a3d + coins.length), () => { const lod = new THREE.LOD(); lod.addLevel(new THREE.Mesh(paw.hi, paw.mat), 0); lod.addLevel(new THREE.Mesh(paw.lo, paw.mat), 9); return lod; })
+      : new THREE.Mesh(coinGeo, coinMats);
     m.position.copy(p); scene.add(m);
-    coins.push({ obj: m, home: p.clone(), kind: 'coin', live: true, pop: -1, phase: Math.random() * 6, compose });
+    coins.push({ obj: m, home: p.clone(), kind: 'coin', live: true, pop: -1, phase: Math.random() * 6, compose, u: u0, q0: R2 ? TR.quaternion(u0, new THREE.Quaternion()) : null });
   };
   const onLanes = (p) => V3(p).multiply(new THREE.Vector3(W.LANE / W.LAYOUT_LANE, 1, 1));   // layout lanes -> this slide's lanes
-  for (const p of L.coins3) addCoin(onLanes(p), true);
-  for (const p of L.coins4) addCoin(onLanes(p), true);
   const z0 = L.tunnelStart, zAfter = L.screen4Z + 11;
   const onWater = (x, yAbove, z) => new THREE.Vector3(x, W.baseHeight(L, x, z) + yAbove, z);
+  if (R2) {
+    // round2: the two coins in front of the portal (part of the approved opening) stay; in the tunnel, clean lane lines.
+    for (const p of L.coins3) if (p[2] < z0) addCoin(onLanes(p), true);
+    for (const [lane, u0, n] of R2_RULES.coinLines) for (let i = 0; i < n; i++) addCoin(onWater(W.laneX(lane), R2_RULES.coinH, u0 + i * R2_RULES.coinStep));
+  } else {
+  for (const p of L.coins3) addCoin(onLanes(p), true);
+  for (const p of L.coins4) addCoin(onLanes(p), true);
   for (let i = 0; i < 6; i++) addCoin(onWater(W.laneX(1), 0.65, z0 + 2.5 + i * 1.6));
   for (let i = 0; i < 5; i++) addCoin(onWater(W.laneX(2), 0.65 + Math.sin((i / 4) * Math.PI) * 0.9, z0 + 4 + i * 1.5));
   for (let i = 0; i < 5; i++) addCoin(onWater(W.laneX(0), 0.65, zAfter + i * 1.3));
+  }
 
   // Meshy pink gemstones: one shared mesh and material, glossy crystal with the Meshy colours.
   const gemSrc = gemGltf.scene;
@@ -627,21 +659,43 @@ function buildCollectibles(gemGltf, face) {
   mats.gemMaterials = [];
   gemSrc.traverse((o) => { if (o.isMesh) mats.gemMaterials.push(o.material); });
   const addGem = (p, compose) => {
+    const u0 = p.z;
     p = TR.map(p.x, p.y, p.z);
     const holder = new THREE.Group();
     const inner = gemSrc.clone();
-    inner.scale.setScalar(gemScale);
-    inner.position.copy(centre).multiplyScalar(-gemScale);
+    const gs = gemScale * (R2 ? 1.2 : 1);
+    inner.scale.setScalar(gs);
+    inner.position.copy(centre).multiplyScalar(-gs);
     holder.add(inner);
+    if (R2) withPrivateRandom(makeRandom(0x6e40 + gems.length), () => {   // a soft magenta glow, unlike the socks' and coins'
+      const h = haloSprite('gem', 0.7); TR.frame(u0, F); h.position.copy(F.T).multiplyScalar(0.3); holder.add(h);
+    });
     holder.position.copy(p);
     scene.add(holder);
-    gems.push({ obj: holder, home: p.clone(), kind: 'gem', live: true, pop: -1, phase: Math.random() * 6, spin: Math.random() * 6, compose });
+    gems.push({ obj: holder, home: p.clone(), kind: 'gem', live: true, pop: -1, phase: Math.random() * 6, spin: Math.random() * 6, compose, u: u0 });
   };
+  if (R2) { for (const [lane, u] of R2_RULES.gems) addGem(onWater(W.laneX(lane), R2_RULES.gemH, u)); return; }
   addGem(onLanes(L.gem4), true);
   addGem(onWater(W.laneX(1), 1.7, L.tunnelEnd - 1.5));
   addGem(onWater(W.laneX(0), 1.35, z0 + 10.5));
   addGem(onWater(W.laneX(1), 0.7, z0 + 12));
   addGem(onWater(W.laneX(2), 0.7, zAfter + 1.5));
+}
+// round2: a soft glow behind a collectible, a little further down the tunnel than it (so it shows around it, not over it).
+// Socks: warm white-pink with a gold edge; gems: magenta. Coins have their own gold glow (paw_coin.js).
+const haloTextures = {};
+function haloSprite(kind, size) {
+  if (!haloTextures[kind]) {
+    const c = document.createElement('canvas'); c.width = c.height = 128;
+    const g = c.getContext('2d'), grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    if (kind === 'sock') { grd.addColorStop(0, 'rgba(255,248,236,0.95)'); grd.addColorStop(0.42, 'rgba(255,190,232,0.62)'); grd.addColorStop(0.7, 'rgba(255,214,120,0.42)'); grd.addColorStop(0.78, 'rgba(255,170,220,0.18)'); grd.addColorStop(1, 'rgba(255,160,220,0)'); }
+    else { grd.addColorStop(0, 'rgba(255,170,250,0.8)'); grd.addColorStop(0.5, 'rgba(210,90,255,0.35)'); grd.addColorStop(1, 'rgba(160,60,255,0)'); }
+    g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+    haloTextures[kind] = new THREE.CanvasTexture(c); haloTextures[kind].colorSpace = THREE.SRGBColorSpace;
+  }
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTextures[kind], transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: kind === 'sock' ? 0.7 : 0.6 }));
+  s.scale.setScalar(size); s.position.z = 0.32; s.renderOrder = 4; s.name = 'r2Halo';
+  return s;
 }
 
 // The Meshy lost socks of approved Screen 4 ("Rescue 5 lost socks"): five float along the drum,
@@ -654,8 +708,9 @@ function buildSocks(gltf) {
     o.material = new THREE.MeshLambertMaterial({ map: o.material.map, emissive: 0xffffff, emissiveMap: o.material.map, emissiveIntensity: 0.32 });
   });
   const box = new THREE.Box3().setFromObject(src), size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
-  const s = 0.62 / size.y, ts = L.tunnelStart;
-  const spots = [[1, 0.8, ts + 7.5], [0, 0.95, ts + 11.8], [2, 1.0, ts + 15.6], [1, 0.85, ts + 21.0], [0, 0.9, ts + 26.4]];
+  const s = (R2 ? 0.74 : 0.62) / size.y, ts = L.tunnelStart;
+  const spots = R2 ? R2_RULES.socks.map(([lane, u]) => [lane, R2_RULES.sockH, u]) : [[1, 0.8, ts + 7.5], [0, 0.95, ts + 11.8], [2, 1.0, ts + 15.6], [1, 0.85, ts + 21.0], [0, 0.9, ts + 26.4]];
+  if (R2) src.traverse((o) => { if (o.isMesh) o.material.emissiveIntensity = 0.42; });   // a cleaner, brighter white knit
   for (const [lane, above, u] of spots) {
     const x = W.laneX(lane);
     const holder = new THREE.Group(), turn = new THREE.Group(), inner = src.clone();
@@ -664,8 +719,9 @@ function buildSocks(gltf) {
     holder.add(turn);
     TR.map(x, W.baseHeight(L, x, u) + above, u, holder.position);
     TR.quaternion(u, holder.quaternion);
+    if (R2) withPrivateRandom(makeRandom(0x50c0 + socks.length), () => holder.add(haloSprite('sock', 1.25)));
     scene.add(holder);
-    socks.push({ obj: holder, turn, home: holder.position.clone(), kind: 'sock', live: true, pop: -1, phase: Math.random() * 6 });
+    socks.push({ obj: holder, turn, home: holder.position.clone(), kind: 'sock', live: true, pop: -1, phase: Math.random() * 6, u });
   }
 }
 
@@ -830,6 +886,17 @@ function spin() { if (state.phase === 'running') { mascot.spinV = Math.PI * 2 / 
 function bumpMascot(side) {
   if (state.phase !== 'running') return false;
   const m = mascot;
+  // round2: Turbo Spin and Bubble Blast protect the mascot (the brush is only knocked spinning, tunnel_s4.js), and so does
+  // the short guard after a knock and the moment after the last heart is lost. Otherwise a knock takes one heart.
+  if (R2) {
+    if (state.turboT > 0 || state.blastT > 0 || state.guardT > 0 || state.outT >= 0) {
+      fx.sparkle(m.root.position.clone().add(new THREE.Vector3(side * 0.5, 0.4, 0)), 14); sfx('swish');
+      return false;
+    }
+    state.hearts = Math.max(0, state.hearts - 1); state.knocks++; state.guardT = R2_RULES.hurtGuard;
+    refreshHud(); popHud('heartPill'); hurtFlash();
+    if (state.hearts === 0) { state.outT = 0; $('r2Toast').classList.add('show'); }
+  }
   m.lane = 1; m.speed *= 0.55; m.sqV -= 12;
   const surf = W.surface(L, m.x, m.z, state.time);
   fx.burstT(m.x, surf + 0.1, m.z, 40, 1.6, { dir: -side, vz: m.speed * 0.3 });
@@ -844,7 +911,7 @@ function updateMascot(dt) {
   const running = state.phase === 'running';
   const slope = W.slopeAt(L, m.x, m.z);                 // the slide's hills and swells (track space)
   const slopeAll = slope + Math.tan(TR.pitch(m.z));     // plus the climb or drop of the tube itself
-  const targetSpeed = running ? W.CRUISE * (1 + THREE.MathUtils.clamp(-slopeAll * 1.6, -0.22, 0.4)) : 0;
+  const targetSpeed = running ? W.CRUISE * (1 + THREE.MathUtils.clamp(-slopeAll * 1.6, -0.22, 0.4)) * (R2 && state.turboT > 0 ? R2_RULES.turboSpeed : 1) : 0;
   m.speed += (targetSpeed - m.speed) * Math.min(1, dt * (running ? 2.2 : 4));
   m.z += m.speed * dt;
   // Lane change: Unity's Mathf.SmoothDamp with the runner's 0.18 s lane-change time.
@@ -948,6 +1015,68 @@ function updateMascot(dt) {
   if (running && m.z > L.tunnelEnd - 2.0) loopRun();   // flash back to the slide just before the drum ends
 }
 
+// ------------------------------------------------------------------ round2 (?s3=round2): hearts, Bubble Blast, Turbo Spin, pause
+function stepRound2(dt) {
+  const m = mascot;
+  state.guardT = Math.max(0, state.guardT - dt);
+  if (state.blastT > 0) {
+    state.blastT = Math.max(0, state.blastT - dt);
+    if (r2Hooks.clearBrushes) r2Hooks.clearBrushes(m.z - 1, m.z + R2_RULES.blastReach);   // brushes coming into reach are cleared too
+  }
+  if (state.turboT > 0) {
+    state.turboT = Math.max(0, state.turboT - dt);
+    if (!m.spinLeft || m.spinLeft < 0.5) { m.spinV = Math.PI * 2 / 0.32; m.spinLeft = Math.PI * 2; }
+    m.turboCarry = (m.turboCarry || 0) + dt * 60;
+    for (; m.turboCarry >= 1; m.turboCarry--) {
+      const a = Math.random() * Math.PI * 2, surf = W.surface(L, m.x, m.z, state.time);
+      fx.emitT(m.x + Math.cos(a) * 0.5, surf + 0.1 + Math.random() * 0.4, m.z + Math.sin(a) * 0.3, Math.cos(a) * 2.2, 0.8 + Math.random(), m.speed * 0.4, 0.08 + Math.random() * 0.07, 0.4 + Math.random() * 0.3, 0);
+    }
+  }
+  if (state.outT >= 0) {
+    state.outT += dt;
+    if (state.outT >= R2_RULES.outOfHearts) restartRound2();
+  }
+  $('r2Shield').classList.toggle('on', state.blastT > 0 || state.turboT > 0);
+}
+function useBlast() {
+  if (!R2 || state.phase !== 'running' || state.paused || state.blasts <= 0 || state.blastT > 0 || state.outT >= 0) return false;
+  state.blasts--; state.blastT = R2_RULES.blastTime;
+  const m = mascot, surf = W.surface(L, m.x, m.z, state.time);
+  for (let k = 0; k < 46; k++) {   // a stream of bubbles thrown forward down the tunnel
+    const a = Math.random() * Math.PI * 2, r = Math.random() * 0.5;
+    fx.emitT(m.x + Math.cos(a) * r * 0.6, surf + 0.5 + Math.sin(a) * r * 0.5, m.z + 0.4, Math.cos(a) * 0.9, 0.4 + Math.random() * 0.8, m.speed + 4 + Math.random() * 5, 0.16 + Math.random() * 0.2, 0.9 + Math.random() * 0.6, 1, -0.05);
+  }
+  if (r2Hooks.clearBrushes) r2Hooks.clearBrushes(m.z - 1, m.z + R2_RULES.blastReach);
+  popHud('blastBtn'); sfx('gem'); refreshHud();
+  return true;
+}
+function useTurbo() {
+  if (!R2 || state.phase !== 'running' || state.paused || state.turbos <= 0 || state.turboT > 0 || state.outT >= 0) return false;
+  state.turbos--; state.turboT = R2_RULES.turboTime;
+  popHud('turboBtn'); sfx('swish'); refreshHud();
+  return true;
+}
+function setPaused(on) {
+  if (!R2 || state.phase !== 'running') on = false;
+  state.paused = !!on;
+  document.body.classList.toggle('paused', state.paused);
+  $('pausePanel').hidden = !state.paused;
+  if (actx) { if (state.paused) actx.suspend?.(); else actx.resume?.(); }
+  last = performance.now();
+  if (state.paused) $('resumeBtn').focus({ preventScroll: true });
+}
+function hurtFlash() { const el = $('r2Hurt'); el.classList.remove('go'); void el.offsetWidth; el.classList.add('go'); }
+// No hearts left: a moment later the run starts again from Tap to Start, with full hearts and power-ups.
+function restartRound2() {
+  state.outT = -1; state.restarts++;
+  $('r2Toast').classList.remove('show');
+  Object.assign(state, { hearts: R2_RULES.hearts, blasts: R2_RULES.blasts, turbos: R2_RULES.turbos, blastT: 0, turboT: 0, guardT: 0 });
+  resetRun();
+  state.phase = 'intro'; document.body.classList.remove('running', 'inDrum');
+  refreshHud();
+}
+if (R2) r2Hooks.pop = (p) => { fx.sparkle(p, 22); for (let k = 0; k < 14; k++) { const d = new THREE.Vector3().randomDirection(); fx.emit(p.x + d.x * 0.6, p.y + d.y * 0.6, p.z + d.z * 0.6, d.x, d.y + 0.5, d.z, 0.2 + Math.random() * 0.2, 0.7, 1, -0.05); } };
+
 function loopRun() {
   // Screens 5 onward are not built yet: the run loops back to the slide, as in the Unity project.
   state.laps++;
@@ -1017,7 +1146,10 @@ function updateCollectibles(dt) {
     if (!c.live && c.pop < 0) continue;
     if (c.pop >= 0) { popTowardMascot(c, dt); continue; }
     c.obj.position.y = c.home.y + Math.sin(t * 1.2 * 6.283 + c.phase) * 0.08;
-    c.obj.rotation.y += dt * THREE.MathUtils.degToRad(120);
+    // round2: the paw face kept toward the rider, rocking gently in a wave along each line (instead of turning edge-on)
+    if (c.q0) c.obj.quaternion.copy(c.q0).multiply(rockQ.setFromAxisAngle(UP_Y, Math.sin(t * 2.0 - c.u * 0.9) * 0.5));
+    else c.obj.rotation.y += dt * THREE.MathUtils.degToRad(120);
+    if (R2) passBy(c);
     if (state.phase === 'running' && near(c)) collect(c);
   }
   for (const g of gems) {
@@ -1026,6 +1158,7 @@ function updateCollectibles(dt) {
     g.spin += dt * THREE.MathUtils.degToRad(70);
     g.obj.position.y = g.home.y + Math.sin(t * 0.75 * 6.283 + g.phase) * 0.1;
     g.obj.rotation.set(Math.sin(t * 0.9 + g.phase) * 0.16, g.spin, Math.sin(t * 0.7 + g.phase * 1.3) * 0.12);
+    if (R2) passBy(g);
     if (state.phase === 'running' && near(g)) collect(g);
     if (Math.random() < dt * (1.2 + 10 * Math.max(0, 1 - g.obj.position.distanceTo(mp) / 6))) {
       const q = g.obj.position.clone().add(new THREE.Vector3().randomDirection().multiplyScalar(0.22));
@@ -1037,16 +1170,26 @@ function updateCollectibles(dt) {
     if (k.pop >= 0) { popTowardMascot(k, dt); continue; }
     k.obj.position.y = k.home.y + Math.sin(t * 0.9 * 6.283 + k.phase) * 0.09;
     k.turn.rotation.set(Math.sin(t * 1.3 + k.phase) * 0.12, Math.PI + Math.sin(t * 0.8 + k.phase) * 0.45, Math.sin(t * 1.1 + k.phase * 1.7) * 0.15);
+    if (R2) passBy(k);
     if (state.phase === 'running' && near(k)) collect(k);
   }
   const glowNear = gems.reduce((best, g) => g.live ? Math.max(best, 1 - Math.min(1, g.obj.position.distanceTo(mp) / 6)) : best, 0);
   for (const m of mats.gemMaterials || []) m.emissiveIntensity = 0.35 + 0.6 * glowNear;
 }
+const rockQ = new THREE.Quaternion(), UP_Y = new THREE.Vector3(0, 1, 0);
+// round2: a collectible the mascot has passed in another lane shrinks away over the next metre, instead of sweeping past
+// close to the camera (back to full size when the run loops)
+function passBy(c) {
+  const behind = mascot.z - c.u;
+  const k = THREE.MathUtils.clamp((behind - 0.6) / 1.0, 0, 1);
+  c.obj.scale.setScalar(1 - k + 1e-3); c.obj.visible = k < 1;
+}
 function popTowardMascot(c, dt) {
   c.pop += dt;
   const k = Math.min(1, c.pop / 0.35);
-  c.obj.position.lerp(mascot.root.position.clone().add(new THREE.Vector3(0, 0.6, 0)), k);
-  c.obj.scale.setScalar((1 + 0.6 * Math.sin(k * Math.PI)) * (1 - k) + 1e-3);
+  c.obj.position.lerp(mascot.root.position.clone().add(new THREE.Vector3(0, R2 ? 1.0 : 0.6, 0)), k);
+  // (round2: it rises over the mascot and shrinks, without first swelling over it)
+  c.obj.scale.setScalar((1 + (R2 ? 0.15 : 0.6) * Math.sin(k * Math.PI)) * (1 - k) + 1e-3);
   if (k >= 1) { c.pop = -1; c.obj.visible = false; }
 }
 function collect(c) {
@@ -1059,6 +1202,11 @@ function collect(c) {
 
 // ------------------------------------------------------------------ HUD
 function refreshHud() {
+  if (R2) {
+    $('hearts').innerHTML = state.hearts >= R2_RULES.hearts ? `${state.hearts} <small>Full</small>` : String(state.hearts);
+    $('blastCount').textContent = String(state.blasts); $('turboCount').textContent = String(state.turbos);
+    $('blastBtn').disabled = state.blasts <= 0; $('turboBtn').disabled = state.turbos <= 0;
+  }
   $('coins').textContent = state.coins.toLocaleString('en-US');
   $('gems').textContent = String(state.gems);
   $('sockCount').textContent = `${Math.min(5, state.socks)}/5`;
@@ -1095,6 +1243,16 @@ function fadeStartPanels() {
     openingArt.style.visibility = on ? 'visible' : 'hidden';
     openingArt.style.opacity = (1 - k).toFixed(3);
     $('soundBtn').style.opacity = on ? k.toFixed(3) : '';
+  }
+  // round2: once the run starts, the gameplay gear gives way to the pause button and the Bubble Blast and Turbo Spin buttons
+  // come up at the bottom (the Tap to Start screen keeps the approved gear).
+  if (R2) {
+    const g = since < 0 ? 0 : THREE.MathUtils.smoothstep(since, 0.1, 0.55);
+    document.body.classList.toggle('r2Play', g > 0);
+    const artOn = document.body.classList.contains('openingArt');
+    $('soundBtn').style.opacity = String(artOn ? k * (1 - g) : 1 - g);
+    $('soundBtn').style.visibility = g >= 1 ? 'hidden' : '';
+    for (const id of ['pauseBtn', 'blastBtn', 'turboBtn']) { const el = $(id); el.style.opacity = g.toFixed(3); el.style.visibility = g > 0 ? '' : 'hidden'; }
   }
 }
 
@@ -1148,7 +1306,7 @@ function noteTouch(e, down) {
   if (trail.length > 80) trail.shift();
 }
 function noteGesture(text) { if (SHOW_TOUCHES) gesture = { text, t: state.time }; }
-stage.addEventListener('pointerdown', (e) => { if (e.target.closest('button')) return; touch = { x: e.clientX, y: e.clientY, t: performance.now(), used: false }; stage.setPointerCapture?.(e.pointerId); noteTouch(e, true); });
+stage.addEventListener('pointerdown', (e) => { if (e.target.closest('button') || (R2 && state.paused)) return; touch = { x: e.clientX, y: e.clientY, t: performance.now(), used: false }; stage.setPointerCapture?.(e.pointerId); noteTouch(e, true); });
 stage.addEventListener('pointermove', (e) => {
   if (!touch) return;
   noteTouch(e, true);
@@ -1173,18 +1331,38 @@ stage.addEventListener('pointerup', (e) => {
 window.addEventListener('keydown', (e) => {
   if (state.phase === 'loading') return;
   const k = e.key;
+  if (R2 && state.phase === 'running') {   // round2: P or Escape pauses and resumes; B is Bubble Blast, T is Turbo Spin
+    if (k === 'p' || k === 'P' || k === 'Escape') { setPaused(!state.paused); e.preventDefault(); return; }
+    if (state.paused) return;
+    if (k === 'b' || k === 'B') { useBlast(); return; }
+    if (k === 't' || k === 'T') { useTurbo(); return; }
+  }
   if (state.phase === 'intro' && [' ', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'a', 'd', 'w'].includes(k)) { startRun(); if (k === ' ' || k === 'Enter') { e.preventDefault(); return; } }
   if (k === 'ArrowLeft' || k === 'a') changeLane(-1);
   else if (k === 'ArrowRight' || k === 'd') changeLane(1);
   else if (k === 'ArrowUp' || k === 'w') jump();
   else if (k === ' ') { e.preventDefault(); spin(); }
 });
-$('soundBtn').addEventListener('click', () => {
+function toggleSound() {
   state.sound = !state.sound;
   $('soundBtn').setAttribute('aria-pressed', String(!state.sound));
   $('soundBtn').title = state.sound ? 'Sound on' : 'Sound off';
   if (master) master.gain.value = state.sound ? 0.5 : 0;
-});
+  if (R2) { $('pauseSound').textContent = state.sound ? 'Sound: On' : 'Sound: Off'; $('pauseSound').setAttribute('aria-pressed', String(state.sound)); }
+}
+$('soundBtn').addEventListener('click', toggleSound);
+if (R2) {
+  document.body.classList.add('r2');
+  for (const id of ['pauseBtn', 'blastBtn', 'turboBtn', 'pausePanel', 'r2Toast', 'r2Hurt', 'r2Shield']) $(id).hidden = false;
+  $('pausePanel').hidden = true;
+  // (each button lets go of the keyboard focus after a click, so the space bar keeps meaning "spin")
+  $('blastBtn').addEventListener('click', (e) => { e.currentTarget.blur(); useBlast(); });
+  $('turboBtn').addEventListener('click', (e) => { e.currentTarget.blur(); useTurbo(); });
+  $('pauseBtn').addEventListener('click', (e) => { e.currentTarget.blur(); setPaused(true); });
+  $('resumeBtn').addEventListener('click', () => setPaused(false));
+  $('pauseSound').addEventListener('click', toggleSound);
+  $('restartBtn').addEventListener('click', () => { setPaused(false); restartRound2(); });
+}
 
 // ------------------------------------------------------------------ side view (debug, ?side)
 let side = null;
@@ -1294,7 +1472,9 @@ function resize() {
 new ResizeObserver(resize).observe(stage);
 
 function step(dt) {
+  if (R2 && state.paused) return;   // round2 pause: the game stands still (the picture stays as it was)
   state.time += dt;
+  if (R2) stepRound2(dt);
   waterU.uTime.value = state.time;
   for (const u of fallsU) u.uTime.value = state.time;
   mats.bubbleU.uTime.value = state.time;
@@ -1379,7 +1559,7 @@ async function main() {
     // so the game's own (coin bobbing, splashes) are drawn exactly as before. ?classic leaves it out.
     if (OPENING_ON && !SIDE) {
       opening = withPrivateRandom(makeRandom(0x0be5), () => buildOpening({ scene, env: mats.env, TR, L, W, mascot, camera, Particles, fxScale: fx.u.uScale,
-        waterU, castle: mats.castle, waterSheets: water.children, renderPass: composer.passes[0], bumpMascot, drumMeshes: mats.drumMeshes, bloomPass: bloom, outputPass: composer.passes[composer.passes.length - 1], grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
+        waterU, castle: mats.castle, waterSheets: water.children, renderPass: composer.passes[0], bumpMascot, drumMeshes: mats.drumMeshes, exitLight: mats.exitLight, r2: R2 ? r2Hooks : null, bloomPass: bloom, outputPass: composer.passes[composer.passes.length - 1], grade: gradePass, bubbles: mats.bubbles, rollers, sideMachinery: mats.sideMachinery, fur: mats.fur, mascotModel: mascot.squash.children[0],
         setSideMachinery: (m) => { Object.assign(SIDE_MACHINERY, m); placeSideMachinery(); return state.machineryInnerX; }, get rollerCandidate() { return state.rollerCandidate; }, set rollerCandidate(v) { state.rollerCandidate = v; } }));
       await withPrivateRandomAsync(makeRandom(0x0be6), opening.loadExtras);   // a roller candidate, only with ?roller=1|2
     }
@@ -1416,7 +1596,10 @@ window.__bw = {
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
     particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null,
     rollerCandidate: state.rollerCandidate ?? null,
+    ...(R2 ? { hearts: state.hearts, blasts: state.blasts, turbos: state.turbos, paused: state.paused, blastT: +state.blastT.toFixed(2), turboT: +state.turboT.toFixed(2), knocks: state.knocks, restarts: state.restarts, bumps: state.bumps || 0 } : {}),
   }),
+  blast: () => useBlast(), turbo: () => useTurbo(), pause: (v) => setPaused(v),
+  hazards: () => (r2Hooks.hazards ? r2Hooks.hazards() : null),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
   advance: (seconds, fps = 30) => { const n = Math.max(1, Math.round(seconds * fps)); for (let i = 0; i < n; i++) step(1 / fps); render(); return window.__bw.state(); },
