@@ -1,4 +1,4 @@
-# Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 2 tunnel polish test, `?s3=round2`)
+# Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 3, `?s3=round3`)
 
 Read this first when you continue in a new Claude conversation.
 
@@ -9,7 +9,7 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-b6199007-gvhqim` | **Newest (4 November, night):** `ccr-4e2b86d7-kqpei8` plus the finished round 2: the brush warning fix, the final video, the sheets, the checks, the frame cost and the score. Not merged. |
+  | `ccr-b6199007-gvhqim` | **Newest (4 November):** `ccr-4e2b86d7-kqpei8` plus the finished round 2, and then **round 3** (`?s3=round3`), the tools (Blender, OpenCV, scikit-image, glTF Transform, validator, Tripo CLI, Meshy MCP config), the comparison workflow and the project skill. Not merged. |
   | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`, work in progress there), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
@@ -33,7 +33,51 @@ Read this first when you continue in a new Claude conversation.
 - **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
 - **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
 
-## Latest (4 November, night): round 2, the tunnel polished and the Screen 4 controls, `?s3=round2` (test, not approved)
+## Latest (4 November, day): round 3, toward the approved Screen 4 in the real 3D game, `?s3=round3` (test, not approved)
+
+- **What the user asked:**
+  - match the approved Screen 4 (and Screen 3) as closely as possible in the real, playable 3D game, aiming at 90–95%
+    where achievable, with evidence;
+  - **never** use the approved pictures as flat backdrops;
+  - keep the pink character, controls, mission, opening and gameplay;
+  - set up and verify Blender, OpenCV, scikit-image, ImageMagick, glTF Transform, the Khronos validator, Tripo CLI and
+    Meshy MCP;
+  - check A1 and A2, and that the tunnel can really be ridden through;
+  - save a project skill;
+  - spend no credits without asking.
+- **The user's reference package** (approved targets, crops, current-game diagnosis, asset sheets):
+  `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/`. Read its `00_READ_ME_FIRST.txt`.
+- **Round 3** (on top of round 2):
+  - foam heaps and white spray round the character;
+  - white-water bands round a deep royal-blue drum;
+  - cyan, blue, pink and lavender rings;
+  - azure-turquoise foamy water;
+  - pink-white brushes with royal-blue centres;
+  - purple gem;
+  - coins, gem and sock arranged as in the approved picture;
+  - soap bubbles streaming past;
+  - the drum camera aimed a little higher;
+  - a live-3D opening (the five Meshy opening models, icy edges, cinematic camera) instead of round 2's painted picture.
+  - Settings: `ROUND3` in `WebDemo/src/tunnel_r3.js`.
+  - Evidence and measures: `Previews/WebDemo/screen4_round3_test/README.md`.
+- **Unchanged:** the normal game, `?s3=round2` and `?s3=paint,tunnel` render pixel-identical to the build before
+  round 3. This was checked on the 3D canvas, because page screenshots differ run to run in the HUD's CSS fades.
+- **Note for the user's decision:** the normal game on this test branch still shows the approved Screen 3 picture at Tap
+  to Start (`#openingArt`, from the 3 November test). Round 3 does not. Ask whether to remove it from the normal game too.
+- **Models:**
+  - A1 (`s3_entrance.glb`) had 48 validator errors (non-unit normals). It is repaired: 0 errors, same mesh.
+  - `s3_brush.glb` had one alignment error; it is repaired.
+  - A2 (Tripo) is valid but forced-perspective and closed at the back (9% of rays get through). It is not used.
+  - The drum is truly traversable: no geometry in the ride space, and all lanes and weaving runs reach the end.
+  - Everything is in `screen4_round3_test/model_checks/`.
+- **Tools:** status by account, session, signed in and working is in `Tools/DEV_TOOLS.md`. Install them in a fresh
+  session with `bash Tools/dev_tools_setup.sh`.
+  - Tripo is waiting for the user's browser sign-in.
+  - Meshy needs `MESHY_API_KEY` as an environment secret, then a new session.
+- **Skill:** `.claude/skills/bubble-wash-screen-matcher/SKILL.md` ("Bubble Wash Exact Screen Matcher") holds the whole
+  capture, measure, fix, check and evidence loop.
+
+## Earlier (4 November, night): round 2, the tunnel polished and the Screen 4 controls, `?s3=round2` (test, not approved)
 
 - **What the user asked:** keep the painted opening and the new tunnel as the foundation and polish the inside tunnel:
   - colour and light that is never washed out;

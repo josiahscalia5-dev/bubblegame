@@ -1,0 +1,152 @@
+{
+ "normal": {
+  "rows": [
+   {
+    "at": "Tap to Start",
+    "z": -16.7,
+    "drawCalls": 322,
+    "triangles": 1914051,
+    "geometries": 166,
+    "textures": 41,
+    "programs": 47
+   },
+   {
+    "at": "z 5",
+    "z": 5.216,
+    "drawCalls": 221,
+    "triangles": 1118101,
+    "geometries": 166,
+    "textures": 41,
+    "programs": 47
+   },
+   {
+    "at": "z 11",
+    "z": 11.155,
+    "drawCalls": 184,
+    "triangles": 1078169,
+    "geometries": 166,
+    "textures": 41,
+    "programs": 47
+   },
+   {
+    "at": "z 20",
+    "z": 20.186,
+    "drawCalls": 129,
+    "triangles": 847188,
+    "geometries": 166,
+    "textures": 41,
+    "programs": 47
+   },
+   {
+    "at": "z 30",
+    "z": 30.185,
+    "drawCalls": 87,
+    "triangles": 550647,
+    "geometries": 166,
+    "textures": 41,
+    "programs": 47
+   }
+  ],
+  "logs": []
+ },
+ "round2": {
+  "rows": [
+   {
+    "at": "Tap to Start",
+    "z": -16.7,
+    "drawCalls": 190,
+    "triangles": 1042709,
+    "geometries": 113,
+    "textures": 14,
+    "programs": 33
+   },
+   {
+    "at": "z 5",
+    "z": 5.216,
+    "drawCalls": 181,
+    "triangles": 1265018,
+    "geometries": 121,
+    "textures": 25,
+    "programs": 44
+   },
+   {
+    "at": "z 11",
+    "z": 11.155,
+    "drawCalls": 153,
+    "triangles": 1176442,
+    "geometries": 123,
+    "textures": 25,
+    "programs": 44
+   },
+   {
+    "at": "z 20",
+    "z": 20.186,
+    "drawCalls": 117,
+    "triangles": 1050980,
+    "geometries": 124,
+    "textures": 25,
+    "programs": 44
+   },
+   {
+    "at": "z 30",
+    "z": 30.185,
+    "drawCalls": 75,
+    "triangles": 625508,
+    "geometries": 124,
+    "textures": 25,
+    "programs": 44
+   }
+  ],
+  "logs": []
+ },
+ "round3": {
+  "rows": [
+   {
+    "at": "Tap to Start",
+    "z": -16.7,
+    "drawCalls": 226,
+    "triangles": 1626712,
+    "geometries": 133,
+    "textures": 38,
+    "programs": 47
+   },
+   {
+    "at": "z 5",
+    "z": 5.216,
+    "drawCalls": 178,
+    "triangles": 1444165,
+    "geometries": 144,
+    "textures": 38,
+    "programs": 52
+   },
+   {
+    "at": "z 11",
+    "z": 11.155,
+    "drawCalls": 156,
+    "triangles": 1276569,
+    "geometries": 146,
+    "textures": 38,
+    "programs": 52
+   },
+   {
+    "at": "z 20",
+    "z": 20.186,
+    "drawCalls": 120,
+    "triangles": 1141796,
+    "geometries": 147,
+    "textures": 38,
+    "programs": 52
+   },
+   {
+    "at": "z 30",
+    "z": 30.185,
+    "drawCalls": 78,
+    "triangles": 716324,
+    "geometries": 147,
+    "textures": 38,
+    "programs": 52
+   }
+  ],
+  "logs": []
+ }
+}
