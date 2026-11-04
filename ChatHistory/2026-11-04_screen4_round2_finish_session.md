@@ -557,3 +557,17 @@ The messages after this summary are the most recent messages from before compact
 
 Its two hours ran out with everything saved, so I'm starting it again for another two hours, keeping your every-5-minutes save.
 
+Everything is saved to GitHub. The 5-minute auto-save has restarted.
+
+- **First auto-save run:** it finished its two hours (24 rounds). It pushed two saves at the start, and the other 22 rounds found nothing new. GitHub matched the local copy at `652d695` when it stopped.
+- **New auto-save run:** it's going again for another two hours, on the test branch `ccr-b6199007-gvhqim` only. Its first round just saved the latest chat history as commit `e9eca92` and is pushing it now.
+- **Round 2 of the tunnel test (`?s3=round2`):** it's finished and waiting for your review. Nothing is merged.
+  - The pink warning glow in front of the brushes now shows.
+  - The final video, screenshot sheets, checks and frame-cost numbers are in `Previews/WebDemo/screen4_round2_test/`.
+  - I'd honestly score it about 7 out of 10. The weakest part is the right-hand brushes: they're a lighter blue than the royal blue on the approved screen.
+
+Possible next steps, if you want them:
+- move the right-hand brushes back toward royal blue;
+- add more foam spray and bubbles near the camera;
+- start the Laundry Toss intro once your reference pictures arrive.
+
