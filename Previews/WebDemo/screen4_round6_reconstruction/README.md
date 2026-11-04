@@ -218,6 +218,17 @@ resolution), `combined_preview_in_motion.jpg`, `combined_preview_gameplay_t3.0.p
 
 ## Checks (Round 6)
 
+Final checks, on the final build (`S3=round6` is pass 3; `S3=round6,rich` is the combined preview):
+
+- Controls (`s3_func.cjs`), both: swipe left and right change lanes, swipe up jumps, keyboard start, the ride into the tunnel
+  collects 10 coins and 1 sock (the moved first sock, in the right lane); no console errors. Tunnel frame cost: pass 3 155
+  draw calls / 1.06 M triangles; combined 169 / 1.08 M (more bubbles and droplets).
+- Hearts, pause and power-ups (`r2_func.cjs`), pass 3: 5 brush knocks take the hearts to 0, the run restarts at "5 Full";
+  pause shows its panel, time stops, play resumes, keyboard pause and resume work; Bubble Blast clears the brushes ahead
+  (0 knocks passing them) and its button disables at 0; Turbo Spin raises speed 6.68 -> 8.78 with no knocks; no errors.
+- Pixel regression: the normal game, Round 4 and Round 5 identical to `8e4aa53` (0 differing pixels at Tap to Start, 1,
+  3.1 and 4.2 s); pass 3 identical before and after the combined preview's code (0 differing pixels at 3.0 and 4.2 s).
+
 - Pass 3 recording (`bubblewash_round6_pass3.mp4`): 360 frames at true game speed, lanes 1, 0 and 2, one lap, no console
   errors; 3 socks collected (the scripted route rides the middle lane where pass 3 moved the first sock to the right lane;
   the sock is collectable, as the controls check shows).
