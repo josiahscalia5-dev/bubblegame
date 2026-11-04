@@ -1216,3 +1216,66 @@ The band above the gold rim should be your lavender washer wall, but it shows bl
 
 Save save everything to my GitHub repository and make sure in my GitHub repository you save, make sure you tell, save in the chat history, like, that I'm using these, the most recent design agent I'm just using right now, make sure you put that in the chat history. Save in my chat history. And save save the entire chat history too. Everything.
 
+---
+
+### Claude · 2026-11-04 20:28 UTC
+
+Yes to all three agent questions. The Art Director ran and finished, the Water & VFX specialist is working now, and everything is saved on GitHub (commit `e30d1bc`). Work is on Screen 4 only.
+
+**1. Is your 3D Game Art Director available?** Yes. Its definition is in `.claude/agents/game-art-director.md`, and this session lists all four of your agents as ones I can start.
+
+**2. Did I invoke it?** Yes, and it finished. It reviewed your three reference images against five real gameplay screenshots and ranked the six biggest differences:
+1. The tunnel was pale violet instead of deep cobalt, with no warm glow round the centre.
+2. The washer wall and gold rim at the top.
+3. The water and splash collar.
+4. The coins were copper instead of lemon gold.
+5. The brushes were too big.
+6. The bubbles and lighting.
+
+**3. Which specialists are working on Screen 4?**
+- **Art Director:** review done.
+- **Water & VFX specialist:** working right now in its own copy of the project, so it can't overwrite anyone else's files. I passed the Art Director's water notes to it.
+- **Tunnel & Lighting:** I'm doing these fixes myself, because they're in the same files I'm editing.
+- **Gameplay & Visual Testing:** the controls, hearts, pause and power-up checks are running now. The full checks run again once the water work is merged.
+
+Agents here can't start other agents, so I'm doing the coordinating the Art Director recommends.
+
+**4. What are they improving right now?**
+- **Done (new test version `?s3=round7`):**
+  - The tunnel is cobalt and cyan with far more sparkle and a warm glow at its centre.
+  - The coins and the gold rim are lemon gold.
+  - Smaller brushes frame the screen edges.
+  - The coins, gem and sock sit where they are in your original.
+  - The mission card is on screen at the hero moment.
+  - Round 7 is now the closest version yet to your original by two measures: the upper tunnel at 3.0 s and the overall average at 4.2 s.
+- **In progress (Water & VFX):** a full-width bubbly foam band with the character sunk deeper, thicker splashes, and glossier bubbles. White foam is the biggest gap left: about 7–13% of the screen, against 21% in your original.
+
+**Saving:**
+- The full chat history is saved, with your Tripo key blanked out.
+- A new design-agent log is saved, as you asked: `ChatHistory/2026-11-04_screen4_design_agents_log.md`. It records that you're using these agents, the Art Director's full findings, and who is doing what.
+- Automatic saves continue every 5 minutes.
+
+**One known difference I can't fix without touching Screen 3:** the strip just above the gold rim shows blue rings where your original has the lavender washer wall. It's the castle's portal tunnel from Screen 3, which the camera is still inside at that moment.
+
+When the water work arrives, I'll merge it, take new screenshots against your original, record a gameplay video, re-run all the checks, and send you the full-resolution comparison with the GitHub commit ID.
+
+---
+
+### Automatic check · 2026-11-04 20:28 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-04 20:28 UTC
+
+I've committed and pushed the Round 7 notes to `ccr-3876cb6e-qwegol`; GitHub confirms it's at commit `0999a56`. Nothing is left unsaved.
+
+Still running in the background:
+- the Water & VFX specialist's water and bubble work;
+- the gameplay checks on Round 7;
+- the save every 5 minutes.
+
+When the water work arrives, I'll merge it, take new screenshots against your original approved Screen 4, record a gameplay video and send you the comparison.
+
