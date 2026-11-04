@@ -21,6 +21,7 @@ import { ROUND4, buildRound4 } from './tunnel_r4.js';
 import { makeFluffyBrush } from './fluffy_brush.js';
 import { ROUND5, buildRound5 } from './tunnel_r5.js';
 import { R6_ON, R7_ON, ROUND6, buildRound6 } from './tunnel_r6.js';
+import { HERO_ON, HERO, heroGrade } from './tunnel_r7_hero.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -205,7 +206,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       brushes.push(b);
       return b;
     };
-    for (const [u, side] of P.hazards) place(u, side, 0, true);   // u: metres along the path from its start (the drum begins at 3.9)
+    for (const [u, side] of (HERO_ON ? HERO.hazards : P.hazards)) place(u, side, 0, true);   // ?s3=hero: the first pair further in   // u: metres along the path from its start (the drum begins at 3.9)
     for (const [u, side, a, sc, rr] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) { const b = place(u, side, a, false, rr); if (sc) b.holder.scale.setScalar(sc); }   // round7: two more framing the mouth, scaled
     report.brushes = brushes.length; report.hazards = P.hazards.length;
   }
@@ -227,7 +228,8 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       const tgt = b.cleared ? 1 : 0;
       // round4: brushes slide out of the tunnel's wall as the rider comes within reach (hidden behind the lining until then),
       // so the far tunnel stays open and its bright heart shows, as in the approved picture; where they stand is unchanged
-      const emerge = R4 ? THREE.MathUtils.smoothstep(ahead, R4.emerge[0], R4.emerge[1]) * R4.emerge[2] : 0;
+      const EM = HERO_ON ? HERO.emerge : R4 && R4.emerge;   // ?s3=hero: out of the wall later, so the hero frame's middle is open
+      const emerge = R4 ? THREE.MathUtils.smoothstep(ahead, EM[0], EM[1]) * EM[2] : 0;
       if (b.clear !== tgt || R4) {
         if (b.clear !== tgt) b.clear = b.holder.visible ? THREE.MathUtils.clamp(b.clear + Math.sign(tgt - b.clear) * dt / 0.35, 0, 1) : tgt;
         const e = b.clear * b.clear * (3 - 2 * b.clear);
@@ -314,6 +316,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   if (R5) report.round5 = buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass: round2.bloomPass });   // after round4 (it restyles its lining)
   if (R5 && R6_ON) report.round6 = buildRound6({ scene, TR, L, W, mascot, updaters, time, env: round2.env, bloomPass: round2.bloomPass,
     waterSheets, drumSheet, fogAnchor: FOG_ANCHOR });   // after round5
+  if (HERO_ON && round2) report.heroGrade = heroGrade({ grade: round2.grade, mascot, updaters, L });   // ?s3=hero: its own grade, last
   return report;
 }
 

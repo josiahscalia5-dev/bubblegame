@@ -21,6 +21,7 @@ import { ROUND3, mulberry } from './tunnel_r3.js';
 import { ROUND4 } from './tunnel_r4.js';
 import { ROUND5 } from './tunnel_r5.js';
 import { ROUND6, R6_ON, R7_ON, lemonGold } from './tunnel_r6.js';
+import { HERO_ON, HERO } from './tunnel_r7_hero.js';
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -670,7 +671,9 @@ function buildCollectibles(gemGltf, face, coinP2 = null) {
   const addCoin = (p, compose) => {
     const u0 = p.z;
     p = TR.map(p.x, p.y, p.z);   // straight layout -> 3D path
-    const m = paw ? withPrivateRandom(makeRandom(0x9a3d + coins.length), () => { const lod = new THREE.LOD(); lod.addLevel(new THREE.Mesh(paw.hi, paw.mat), 0); lod.addLevel(new THREE.Mesh(paw.lo, paw.mat), 9); return lod; })
+    const m = paw ? withPrivateRandom(makeRandom(0x9a3d + coins.length), () => { const lod = new THREE.LOD(); lod.addLevel(new THREE.Mesh(paw.hi, paw.mat), 0); lod.addLevel(new THREE.Mesh(paw.lo, paw.mat), 9);
+      if (HERO_ON) for (const lv of lod.levels) lv.object.scale.setScalar(HERO.coinScale);   // ?s3=hero: the approved picture's bigger coins
+      return lod; })
       : new THREE.Mesh(coinGeo, coinMats);
     m.position.copy(p); scene.add(m);
     coins.push({ obj: m, home: p.clone(), kind: 'coin', live: true, pop: -1, phase: Math.random() * 6, compose, u: u0, q0: R2 ? TR.quaternion(u0, new THREE.Quaternion()) : null });
@@ -720,7 +723,7 @@ function buildCollectibles(gemGltf, face, coinP2 = null) {
     scene.add(holder);
     gems.push({ obj: holder, home: p.clone(), kind: 'gem', live: true, pop: -1, phase: Math.random() * 6, spin: Math.random() * 6, compose, u: u0 });
   };
-  if (R2) { for (const [lane, u] of R2_RULES.gems) addGem(onWater(W.laneX(lane), R2_RULES.gemH, u)); return; }
+  if (R2) { for (const [lane, u, h] of R2_RULES.gems) addGem(onWater(W.laneX(lane), h ?? R2_RULES.gemH, u)); return; }   // h: ?s3=hero only (its own height)
   addGem(onLanes(L.gem4), true);
   addGem(onWater(W.laneX(1), 1.7, L.tunnelEnd - 1.5));
   addGem(onWater(W.laneX(0), 1.35, z0 + 10.5));
@@ -755,7 +758,8 @@ function buildSocks(gltf) {
   });
   const box = new THREE.Box3().setFromObject(src), size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
   const s = (R2 ? 0.74 : 0.62) / size.y, ts = L.tunnelStart;
-  const spots = R2 ? R2_RULES.socks.map(([lane, u]) => [lane, R2_RULES.sockH, u]) : [[1, 0.8, ts + 7.5], [0, 0.95, ts + 11.8], [2, 1.0, ts + 15.6], [1, 0.85, ts + 21.0], [0, 0.9, ts + 26.4]];
+  // h: ?s3=hero only (a sock's own height)
+  const spots = R2 ? R2_RULES.socks.map(([lane, u, h]) => [lane, h ?? R2_RULES.sockH, u]) : [[1, 0.8, ts + 7.5], [0, 0.95, ts + 11.8], [2, 1.0, ts + 15.6], [1, 0.85, ts + 21.0], [0, 0.9, ts + 26.4]];
   if (R2) src.traverse((o) => { if (o.isMesh) o.material.emissiveIntensity = 0.42; });   // a cleaner, brighter white knit
   for (const [lane, above, u] of spots) {
     const x = W.laneX(lane);
@@ -1164,7 +1168,7 @@ const S3 = { off: new THREE.Vector3(0, 1.0, -6.4), look: new THREE.Vector3(0, 0.
 const S4 = { off: new THREE.Vector3(0, 1.03, -3.58), look: new THREE.Vector3(0, 0.89, 6.42), fov: 60 };
 if (R3) S4.look.y = ROUND3.camera.lookY;   // round3: tilted up a little inside the drum, so the mascot sits lower (Tap to Start unchanged)
 if (R4) S4.look.y = ROUND4.camera.lookY;   // round4: a little higher still: the mascot and the tunnel's centre sit as in the approved Screen 4
-if (R5 && ROUND5.camera) { const C = ROUND5.camera; S4.off.set(...C.off); S4.look.y = C.lookY; S4.fov = C.fov; }   // round5: further back and wider (tunnel_r5.js)
+if (R5 && ROUND5.camera) { const C = ROUND5.camera; S4.off.set(...C.off); S4.look.y = C.lookY; S4.fov = C.fov; if (C.lookX != null) S4.look.x = C.lookX; }   // round5: further back and wider (tunnel_r5.js); lookX: ?s3=hero only
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
   const m = mascot;

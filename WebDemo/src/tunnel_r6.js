@@ -13,12 +13,13 @@
 import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 import { R7_WATER, buildR7Water } from './tunnel_r7_water.js';
+import { HERO_ON, HERO, buildHero } from './tunnel_r7_hero.js';
 
 // The switch is read here (not from screen3_models.js) so tunnel_r5.js can use it without an import cycle.
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 // ?s3=round7 (test): round6 + the rich preview + the Screen 4 pass that matches the ORIGINAL approved Screen 4 (ROUND6.r7)
-export const R7_ON = LIST.includes('round7');
+export const R7_ON = LIST.includes('round7') || LIST.includes('hero');   // ?s3=hero: round7's dedicated hero scene (tunnel_r7_hero.js)
 export const R6_ON = LIST.includes('round6') || R7_ON;
 // ?s3=round6,rich (preview): pass 3 (the board's architecture and composition, which the user likes and keeps as ?s3=round6)
 // plus the ORIGINAL approved Screen 4's richness (ROUND6.rich below)
@@ -205,6 +206,7 @@ ROUND6.r7 = {
   glow: { ahead: 11, radius: 3.2, lift: 0, core: 1.0, ring: 0.85, ringAt: 0.45, arms: 0.5, alpha: 0.9 },
 };
 if (R7_ON) { mergeDeep(ROUND6, ROUND6.r7); mergeDeep(ROUND6, R7_WATER.round6 || {}); }
+if (HERO_ON) mergeDeep(ROUND6, HERO.round6);   // ?s3=hero: after round7's own settings (round7 itself is unchanged)
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round6;
   if (tune) mergeDeep(ROUND6, tune);
@@ -225,6 +227,7 @@ export function buildRound6({ scene, TR, L, W, mascot, updaters, time, env, wate
   if (R7_ON && ROUND6.glow) report.r7glow = r7Glow({ scene, TR, L, mascot, updaters, time, axisH });
   if (ROUND6.hideFoamBubbles) { const o = scene.getObjectByName('r4FoamBubbles'); if (o) updaters.push(() => { o.visible = false; }); report.foamBubblesHidden = !!o; }
   if (ROUND6.hideCrestCards) { const o = scene.getObjectByName('r5Crests'); if (o) updaters.push(() => { o.visible = false; }); report.crestCardsHidden = !!o; }
+  if (HERO_ON) report.hero = buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets, drumSheet, fogAnchor });   // last: it restyles the walls and water
   return report;
 }
 
