@@ -487,3 +487,11 @@ While those run, the side-by-side comparison. There's a sheet tool from the prev
 
 Both are still early (the video is at 3 frames). Meanwhile I'll save the measurements for the final build into the evidence folder:
 
+The video is recording slowly, with 8 files so far. Let me measure the actual frame rate before deciding anything:
+
+The README cites a brush-beside-approved image, so I'll re-render the standalone brush with the final settings and save it there:
+
+Two code comments are now out of date, since Round 4 always uses the fluffy brushes. Correcting them:
+
+The controls check on the final build passed (exit 0). Comment edits don't change the shaders. Checking the controls report's details:
+
