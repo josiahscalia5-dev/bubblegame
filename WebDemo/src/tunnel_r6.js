@@ -40,7 +40,7 @@ export const ROUND6 = {
     rivets: { count: 16, radius: 2.82, size: 0.07 },
     rimRivets: { count: 24, size: 0.055 },   // the construction guide: rivets round the gold rim's front face
     panels: 12,                              // panel seams on the lavender wall, and a glowing light panel at the top
-    lavender: [0.68, 0.6, 0.98], lilac: [0.88, 0.8, 1.0], shade: [0.34, 0.26, 0.62], goldColor: 0xffcf6e, goldGlow: 0x8a5212, goldRough: 0.2, goldEnv: 1.6, faceGloss: 0.55,
+    lavender: [0.68, 0.6, 0.98], lilac: [0.88, 0.8, 1.0], shade: [0.34, 0.26, 0.62], goldColor: 0xffcf6e, goldGlow: 0x8a5212, goldRough: 0.2, goldEnv: 1.6, faceGloss: 0.55, lemon: 0,
   },
   // layered flanges standing out of the tunnel wall (replace round4's thin glow rings)
   flanges: { every: 2.3, from: 1.0, wall: 2.03, lip: 1.8, depth: 0.16, goldEvery: 3, arc: [-56, 236],
@@ -62,7 +62,7 @@ export const ROUND6 = {
     glowFrom: [3, 12], glowMix: 0.75,
     // pass 3 (the user's exact target board: "glowing watery vortex", brighter, more magical): bright water walls
     lit: [0.0, 0.42, 1.0], cyanLit: [0.1, 0.82, 1.0], swirlCol: [0.12, 0.85, 1.0], ringCol: [0.3, 0.85, 1.0], midCol: [0.05, 0.72, 1.0],
-    midRing: 0, farMix: 0.55, glintCut: 0.965, shade: [0.02, 0.16, 0.72], metal: 0.12, twist: 0.35, flow: 0.9, swirl: 0.55, ringStep: 1.15, rings: 0.55, foam: 0.8 },
+    vband: 0.85, warmRing: 0, warmAt: 14, midRing: 0, farMix: 0.55, glintCut: 0.965, shade: [0.02, 0.16, 0.72], metal: 0.12, twist: 0.35, flow: 0.9, swirl: 0.55, ringStep: 1.15, rings: 0.55, foam: 0.8 },
   // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
   flangeVary: { dim: 0.5, patch: 0.85, lavender: 0.12 },   // pass 3: lavender reflections cut to a hint (measured: 14-23% violet in the tunnel against the target's 2%)
   // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
@@ -141,20 +141,28 @@ ROUND6.r7 = {
   // the deep tunnel: rich saturated cobalt with cyan-turquoise light (the user's fix board: "brighter deep-blue tunnel
   // interior, richer more saturated cobalt", "more cyan/turquoise glow"), not periwinkle; ring glows kept below white so the
   // tone mapping does not bleach them; swirl and white foam filaments stronger (the whirlpool), almost no lavender inside
-  walls: { shade: [0.0, 0.05, 0.42], lit: [0.0, 0.3, 0.95], cyanLit: [0.0, 0.75, 1.0], swirlCol: [0.0, 0.7, 1.0], ringCol: [0.1, 0.65, 1.0],
-    midCol: [0.0, 0.5, 1.0], rings: 0.45, swirl: 0.75, twist: 0.8, foam: 1.1, lavender: 0.0, glowMix: 0.5, farMix: 0.35 },
-  flanges: { goldEvery: 99, face: [0.0, 0.18, 0.85], deep: [0.0, 0.06, 0.4], cyan: [0.3, 0.95, 1.1] },
+  // (first try [0.0, 0.18, 0.85]-style blues came out violet after the grade: the blues here lean toward cyan)
+  walls: { shade: [0.0, 0.09, 0.42], lit: [0.0, 0.42, 0.95], cyanLit: [0.0, 0.8, 1.0], swirlCol: [0.0, 0.78, 1.0], ringCol: [0.15, 0.75, 1.0],
+    midCol: [0.0, 0.6, 1.0], rings: 0.45, swirl: 0.75, twist: 0.8, foam: 1.1, lavender: 0.0, glowMix: 0.5, farMix: 0.35, vband: 0.1, warmRing: 0.45, warmAt: 13,
+    // the original's sparkle: many white glints and bright water streaks over the rings
+    glintCut: 0.9, glints: 2.2, streaks: 0.85 },
+  flanges: { goldEvery: 1, face: [0.0, 0.32, 0.85],   // goldEvery 1: no gold lips (i % 1 is never 1)
+    deep: [0.0, 0.1, 0.4], cyan: [0.3, 0.95, 1.1] },
   flangeVary: { lavender: 0.0 },
   // the entrance: a thicker, polished gold rim (smooth, mirror-bright) and glossier metallic lavender
-  porthole: { bezel: { outer: 2.64, front: -0.42 }, goldColor: 0xffd860, goldGlow: 0x9a6c12, goldRough: 0.1, goldEnv: 2.4, faceGloss: 0.85 },
+  // the original's washer wall is a soft silver-lilac metal, not vivid violet
+  porthole: { bezel: { outer: 2.64, front: -0.42 }, goldColor: 0xffd860, goldGlow: 0x9a6c12, goldRough: 0.1, goldEnv: 2.4, faceGloss: 0.85, lemon: 0.55,
+    lavender: [0.8, 0.76, 0.96], lilac: [0.97, 0.94, 1.0], shade: [0.55, 0.5, 0.76] },
   // the collectibles at the hero moment as in the original: a big coin near the camera on each side (right low, left higher),
   // the sock on the right behind the right coin, a small coin and the gem up and to the left, a small coin far in the middle
-  layout: { coinLines: [[2, 2.2, 1, 1.0, 0.5, 0], [0, 2.7, 1, 1.0, 1.0, 0], [0, 5.2, 1, 1.0, 1.3, 0], [1, 6.6, 1, 1.0, 0.85, 0]],
-    firstSock: [2, 3.1], extraGem: [0, 6.0] },
+  // (the right coin nearer the camera so it sits at the right edge; the gem out of the left brush at 6.0, where it was hidden)
+  layout: { coinLines: [[2, 1.9, 1, 1.0, 0.5, 0], [0, 2.7, 1, 1.0, 1.0, 0], [0, 5.2, 1, 1.0, 1.35, 0], [1, 7.4, 1, 1.0, 0.9, 0]],
+    firstSock: [2, 3.3], extraGem: [0, 4.4] },
   // two decorative fluffy brushes on the wall just inside the mouth, framing the view as in the original (left high, right at
   // mid height); not hazards: [metres along the track, side (+1 screen-left), angle up from level]
-  deco: [[4.3, 1, 42], [4.9, -1, 6]],
-  coin: { color: [1.0, 1.24, 0.42], glow: 0.75 },   // brighter, glowing yellow paw coins (the fix board)
+  deco: [[4.1, 1, 32, 0.62], [4.9, -1, 8, 0.85]],   // [.., scale]: smaller, at the frame edges (the Art Director's review)
+  coin: { color: [1.0, 1.24, 0.42], glow: 0.75, lemon: 0.6 },
+  round5: { droplets: { scale: 950, maxPx: 22 } },   // lemon: pull toward the original's lemon gold (the grade turned them copper)   // brighter, glowing yellow paw coins (the fix board)
   hudEarly: 4.6,   // the mission card is already on screen at the hero moment, as in the original
 };
 if (R7_ON) { mergeDeep(ROUND6, ROUND6.r7); mergeDeep(ROUND6, R7_WATER.round6 || {}); }
@@ -307,7 +315,7 @@ void main() {
     float brushed = 0.82 + 0.18 * bwNoise(vec2(a * 40.0, u * 2.0)), sheen = pow(max(0.0, sin(a)), 6.0);
     vec3 lav = vec3(0.62, 0.55, 0.92) * brushed + vec3(0.35, 0.3, 0.45) * sheen + vec3(0.2, 0.12, 0.3) * smoothstep(0.4, 0.0, u - uStart + 0.4);
     float vband = smoothstep(uStart, uStart + 0.05, u) * (1.0 - smoothstep(uStart + 0.30, uStart + 0.35, u));
-    col = mix(col, vec3(0.5, 0.28, 1.0) * 0.95, vband * 0.85);
+    col = mix(col, vec3(0.5, 0.28, 1.0) * 0.95, vband * ${ROUND6.walls.vband.toFixed(2)});
     col = mix(col, lav, door); }
   // luminous depth: the near walls keep their deep shadows, and down the tube the drum brightens into the approved picture's
   // glowing cyan-turquoise centre (measured: with the heart only beyond 18 m the middle distance stayed deep royal blue and
@@ -317,6 +325,8 @@ void main() {
   col = mix(col, col * 0.5 + vec3(${ROUND6.walls.midCol.join(', ')}) * (0.75 + 0.35 * drift) * midRing + vec3(0.3, 0.95, 1.0) * web * 0.4, mid * ${ROUND6.walls.glowMix.toFixed(2)});   // pass 3: toward cyan
   float far = smoothstep(16.0, 36.0, vDepth);
   col = mix(col, mix(vec3(0.45, 0.88, 1.0), vec3(1.0, 0.98, 1.0), 0.35 + 0.4 * broad), far * ${ROUND6.walls.farMix.toFixed(2)});
+  // a warm peach and pastel-rainbow glow ring round the bright centre (the original's whirlpool heart)
+  col += mix(vec3(1.0, 0.72, 0.55), 0.6 + 0.4 * cos(6.2832 * (a / 6.2832 + vec3(0.0, 0.33, 0.67) + uTime * 0.05)), 0.4) * exp(-pow((vDepth - ${ROUND6.walls.warmAt.toFixed(1)}) / 3.0, 2.0)) * ${ROUND6.walls.warmRing.toFixed(2)};
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -459,12 +469,14 @@ function porthole({ scene, TR, TS, axisH, env, time }) {
   const B = P.bezel;
   const gold = new THREE.MeshStandardMaterial({ color: P.goldColor, metalness: 1.0, roughness: P.goldRough, envMap: env || null, envMapIntensity: P.goldEnv,
     emissive: P.goldGlow, emissiveIntensity: 0.75 });
+  if (P.lemon > 0) lemonGold(gold, P.lemon, 'r6BezelLemon');
   const bezel = new THREE.Mesh(sweep(roundedSection(B.inner, B.outer, B.front, B.back, B.round), [0, 360], 192), gold);
   bezel.name = 'r6Bezel';
   // bronze step ring inside the bezel and the royal-blue rubber seal behind it
   const S = P.step;
   const bronze = new THREE.MeshStandardMaterial({ color: 0xd8904a, metalness: 1.0, roughness: 0.3, envMap: env || null, envMapIntensity: 1.3,
     emissive: 0x5a2a08, emissiveIntensity: 0.6 });
+  if (P.lemon > 0) lemonGold(bronze, P.lemon, 'r6BronzeLemon');   // round7: the step ring gold too (it read as a red line)
   const step = new THREE.Mesh(sweep(roundedSection(S.inner, S.outer, S.z - S.depth / 2, S.z + S.depth / 2, 0.4), [0, 360], 160), bronze);
   const seal = new THREE.Mesh(new THREE.TorusGeometry(P.seal.radius, P.seal.tube, 16, 160),
     new THREE.MeshStandardMaterial({ color: 0x1a2fb8, metalness: 0.2, roughness: 0.18, envMap: env || null, envMapIntensity: 1.2, emissive: 0x0a1460, emissiveIntensity: 0.6 }));
@@ -584,3 +596,17 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }
 `;
+
+// pulls a gold material's final colour toward a lemon gold, keeping its light and shade (the strong drum grade turned the gold
+// copper-orange); used by round7 for the porthole bezel and the paw coins
+export function lemonGold(mat, amount, key) {
+  const prev = mat.onBeforeCompile;
+  mat.onBeforeCompile = (sh, r) => {
+    if (prev) prev(sh, r);
+    sh.fragmentShader = sh.fragmentShader.replace('#include <tonemapping_fragment>', `{ float lgL = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0, 0.86, 0.26) * lgL * 1.45, ${amount.toFixed(3)}); }
+  #include <tonemapping_fragment>`);
+  };
+  mat.customProgramCacheKey = () => key;
+  mat.needsUpdate = true;
+}

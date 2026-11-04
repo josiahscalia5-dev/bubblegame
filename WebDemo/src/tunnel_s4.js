@@ -206,7 +206,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       return b;
     };
     for (const [u, side] of P.hazards) place(u, side, 0, true);   // u: metres along the path from its start (the drum begins at 3.9)
-    for (const [u, side, a] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) place(u, side, a, false);   // round7: two more framing the mouth
+    for (const [u, side, a, sc] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) { const b = place(u, side, a, false); if (sc) b.holder.scale.setScalar(sc); }   // round7: two more framing the mouth, scaled
     report.brushes = brushes.length; report.hazards = P.hazards.length;
   }
   const hits = [];
