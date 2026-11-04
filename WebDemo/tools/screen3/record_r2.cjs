@@ -22,15 +22,16 @@ const server = http.createServer((req, res) => {
 });
 // One continuous run: Tap to Start, steer down the slide and over its crest, into the portal, jump
 // on the climb, steer through the banked left turn at the top, drop and turn right, spin, loop back.
-const SCRIPT = JSON.parse(process.env.SCRIPT || 'null') || [ // [recording second, action]
+const SCRIPT = JSON.parse(process.env.SCRIPT || 'null') || [ // [trigger, action]
   [1.0, 'tap'],
-  [5.1, 'left'],                                   // after the first sock (middle), into the left lane: coins and the second sock
-  [5.9, 'click:pauseBtn'], [7.3, 'click:resumeBtn'],   // pause, and resume
-  [8.0, 'right'], [8.75, 'left'],                    // the gem in the middle, then back left into the next brush (a knock: one heart)
-  [9.6, 'right'],                                    // knocked to the middle; on to the right lane and the third sock
-  [10.6, 'click:blastBtn'],                          // Bubble Blast: the brush pair ahead is pushed back to the walls
-  [10.75, 'left'],                                   // the middle coin line through the cleared gate, the fourth sock
-  [12.6, 'click:turboBtn'], [12.7, 'left'],          // Turbo Spin, the left coin line, the fifth sock and the last gem
+  ['z9.7', 'left'],                                  // after the first sock (middle), into the left lane: coins and the second sock
+  ['z14.3', 'click:pauseBtn'], ['+1.4', 'click:resumeBtn'],   // pause, then resume
+  ['+0.05', 'right'],                                // the gem and two coins in the middle
+  ['z17.9', 'left'],                                 // back to the left, into the next brush: a knock costs one heart
+  ['z18.9', 'right'], ['+0.25', 'right'],            // on to the right lane: coins and the third sock
+  ['z22.4', 'click:blastBtn'],                       // Bubble Blast: the brush pair ahead is pushed back to the walls
+  ['z27.4', 'left'],                                 // safely past the cleared right brush, to the middle and the fourth sock
+  ['z29.0', 'click:turboBtn'], ['+0.1', 'left'],     // Turbo Spin, the left coin line, the fifth sock and the last gem
 ];
 (async () => {
   await new Promise((r) => server.listen(0, r));
@@ -59,12 +60,15 @@ const SCRIPT = JSON.parse(process.env.SCRIPT || 'null') || [ // [recording secon
     up: [['move', cx, cy + 60], ['down'], ['move', cx + 3, cy - 10], ['move', cx + 5, cy - 55], ['move', cx + 6, cy - 90], ['up']],
   };
   const frames = Math.round(parseFloat(SECONDS) * 30), track = [];
-  let next = 0, queue = [];
+  let next = 0, queue = [], lastS = null, firedAt = 0;
   const t0 = Date.now();
   for (let f = 0; f < frames; f++) {
     const t = f / 30;
-    while (next < SCRIPT.length && SCRIPT[next][0] <= t + 1e-6) {
-      const a = SCRIPT[next++][1];
+    // a trigger is a recording second (number), 'z<metres>' (when the mascot reaches that point on the first lap) or
+    // '+<seconds>' (that long after the action before it)
+    const due = (w) => typeof w === 'number' ? w <= t + 1e-6 : w[0] === 'z' ? (lastS && lastS.laps === 0 && lastS.z >= parseFloat(w.slice(1))) : t + 1e-6 >= firedAt + parseFloat(w.slice(1));
+    while (next < SCRIPT.length && due(SCRIPT[next][0])) {
+      const a = SCRIPT[next++][1]; firedAt = t;
       if (a === 'look' || a === 'unlook') await page.evaluate((v) => window.__bw.lookBack(v), a === 'look' ? 1 : 0);
       else if (a.startsWith('click:')) {
         const b = await page.locator('#' + a.slice(6)).boundingBox();
@@ -81,7 +85,7 @@ const SCRIPT = JSON.parse(process.env.SCRIPT || 'null') || [ // [recording secon
     while (queue.length && queue[0].now) await run(queue.shift().s);
     if (queue.length) await run(queue.shift().s);
     const s = await page.evaluate(() => window.__bw.advance(1 / 30, 30));
-    track.push(s);
+    track.push(s); lastS = s;
     if (MODE !== 'dry') await page.screenshot({ path: path.join(OUT, `f${String(f).padStart(4, '0')}.jpg`), type: 'jpeg', quality: 90, clip });
   }
   async function run(s) {
