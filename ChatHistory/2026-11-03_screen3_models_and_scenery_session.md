@@ -2016,3 +2016,9 @@ save everything to my GitHub repository, including the chat history, and then, y
 
 Saved: GitHub now has commit `a7649ec` with all the work so far and the latest chat history. Starting the 5-minute automatic save:
 
+While it records, I'm checking that the normal game (no switch) and the earlier `?s3=paint,tunnel` test are unchanged. Looking for the comparison script I used before:
+
+While those run, I'm looking for the Laundry Toss and Inside the Wash reference pictures you mentioned, so the missing-asset list matches them:
+
+Comparing the normal game (no switch) before and after this round, pixel by pixel:
+

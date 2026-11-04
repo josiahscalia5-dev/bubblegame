@@ -526,6 +526,7 @@ function buildRollers(gltf) {
     const g = new THREE.Group(); g.matrixAutoUpdate = false;
     g.add(src.clone());
     scene.add(g);
+    if (R2) g.visible = false;   // round2: the drum's old rollers would stand beside the new spinning brushes (tunnel_s4.js)
     const c = V3(r.centre);
     rollers.push({ g, m0: TR.mapMatrix(new THREE.Matrix4().fromArray(r.matrix)), centre: TR.map(c.x, c.y, c.z), axis: TR.dir(r.axis[0], r.axis[1], r.axis[2], c.z).normalize(), speed: THREE.MathUtils.degToRad(r.spin), angle: 0 });
   }

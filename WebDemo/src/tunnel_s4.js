@@ -46,7 +46,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
 
   // ---------------------------------------------------------------- 1. the ring vortex
   {
-    const us = []; for (let u = TS + 0.6; u < TE - 0.6; u += P.ringStep) us.push(u);
+    const us = []; for (let u = TS + 0.6; u < TE - 0.6 + (R2 ? 4.4 : 0); u += P.ringStep) us.push(u);   // (round2: on into the exit's light)
     const geo = new THREE.RingGeometry(P.ringIn, P.ringOut, 112, 1);
     const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uIn: { value: P.ringIn }, uOut: { value: P.ringOut }, uSpark: { value: R2 ? R2.sparkle : 0.9 } }, vertexShader: RING_VERTEX, fragmentShader: RING_FRAGMENT,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
@@ -342,7 +342,7 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
   const { exitLight, grade, bloomPass } = round2;
   if (exitLight && exitLight[0]) {
     exitLight[0].material = new THREE.ShaderMaterial({ uniforms: { uTime: time }, vertexShader: EXIT_VERTEX, fragmentShader: EXIT_FRAGMENT });
-    if (exitLight[1]) exitLight[1].material.color.setRGB(0.32, 0.42, 0.7);
+    if (exitLight[1]) exitLight[1].material.color.setRGB(0.12, 0.16, 0.3);
     out.exit = true;
   }
   const G = ROUND2.grade;
@@ -379,18 +379,21 @@ uniform float uTime; varying vec2 vUv;
 float h21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 void main() {
   vec2 p = (vUv - 0.5) * 16.0; float r = length(p), a = atan(p.y, p.x), lr = log(max(r, 0.05));
-  float arms = 0.5 + 0.5 * sin(a * 4.0 + lr * 5.0 - uTime * 2.2);
-  float arms2 = 0.5 + 0.5 * sin(a * 7.0 - lr * 7.0 + uTime * 1.3);
-  vec3 deep = vec3(0.10, 0.16, 0.62), lav = vec3(0.56, 0.42, 1.0), pink = vec3(1.0, 0.42, 0.82), cyan = vec3(0.3, 0.86, 1.0);
-  vec3 col = mix(lav, deep, smoothstep(1.6, 4.6, r));
-  col = mix(col, pink, arms * (1.0 - smoothstep(1.2, 4.2, r)) * smoothstep(0.4, 1.2, r) * 0.6);
-  col = mix(col, cyan, (1.0 - smoothstep(0.3, 1.7, r)) * 0.85);
-  col += cyan * arms2 * (1.0 - smoothstep(0.8, 3.8, r)) * 0.22;
-  col = mix(col, vec3(1.0), 1.0 - smoothstep(0.1, 0.6, r));
+  float sw = a * 3.0 + lr * 4.5 - uTime * 2.0;
+  float armP = smoothstep(0.55, 0.9, 0.5 + 0.5 * sin(sw));             // pink spiral arms
+  float armC = smoothstep(0.55, 0.9, 0.5 + 0.5 * sin(sw + 3.1416));    // cyan arms between them
+  float rings = smoothstep(0.8, 0.98, 0.5 + 0.5 * sin(lr * 10.0 - uTime * 3.0));
+  vec3 col = mix(vec3(0.3, 0.22, 0.8), vec3(0.07, 0.09, 0.42), smoothstep(0.8, 3.5, r));   // violet into deep blue
+  float band = smoothstep(0.35, 1.0, r) * (1.0 - smoothstep(3.0, 6.5, r));
+  col += vec3(1.0, 0.36, 0.78) * armP * band * 0.75;
+  col += vec3(0.2, 0.85, 1.0) * armC * band * 0.6;
+  col += vec3(0.75, 0.6, 1.0) * rings * band * 0.35;
+  col = mix(col, vec3(0.55, 0.92, 1.0), 1.0 - smoothstep(0.25, 1.2, r));   // a cyan glow round
+  col = mix(col, vec3(1.0), 1.0 - smoothstep(0.08, 0.45, r));               // a small white heart
   vec2 g = vec2(a * 10.0, lr * 6.0 - uTime * 0.8), c = floor(g);
   float sp = step(0.93, h21(c)) * (1.0 - smoothstep(0.05, 0.3, length(fract(g) - 0.5))) * (0.5 + 0.5 * sin(uTime * 5.0 + h21(c + 2.0) * 20.0));
-  col += vec3(1.0) * sp * 0.6 * smoothstep(0.6, 1.5, r);
-  gl_FragColor = vec4(col * 0.92, 1.0);
+  col += vec3(1.0) * sp * 0.7 * smoothstep(0.6, 1.5, r);
+  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
