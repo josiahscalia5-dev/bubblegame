@@ -142,28 +142,67 @@ ROUND6.r7 = {
   // interior, richer more saturated cobalt", "more cyan/turquoise glow"), not periwinkle; ring glows kept below white so the
   // tone mapping does not bleach them; swirl and white foam filaments stronger (the whirlpool), almost no lavender inside
   // (first try [0.0, 0.18, 0.85]-style blues came out violet after the grade: the blues here lean toward cyan)
-  walls: { shade: [0.0, 0.09, 0.42], lit: [0.0, 0.42, 0.95], cyanLit: [0.0, 0.8, 1.0], swirlCol: [0.0, 0.78, 1.0], ringCol: [0.15, 0.75, 1.0],
-    midCol: [0.0, 0.6, 1.0], rings: 0.45, swirl: 0.75, twist: 0.8, foam: 1.1, lavender: 0.0, glowMix: 0.5, farMix: 0.35, vband: 0.1, warmRing: 0.45, warmAt: 13,
+  // Art Director's review #2 (whirlpool): the even ring glows (rings, ringStep, midRing: they kept their contrast in the depth
+  // glow) read as a ribbed pipe, so they are nearly gone; the whirlpool's bands (whirl, below) carry the structure. The lit
+  // wall a truer electric blue (measured: the tunnel was 30% one cyan, 248 bright, against the original's mix of electric
+  // blue, cobalt, periwinkle and pale whites), more foam, glints and swirl, a stronger warm ring round the centre
+  walls: { shade: [0.0, 0.05, 0.5], lit: [0.0, 0.3, 0.95], cyanLit: [0.1, 0.65, 1.0], swirlCol: [0.0, 0.78, 1.0], ringCol: [0.15, 0.75, 1.0],
+    midCol: [0.3, 0.55, 1.0], rings: 0.15, ringStep: 3.2, midRing: 0.25, swirl: 0.85, twist: 1.2, foam: 1.6, lavender: 0.0, glowMix: 0.4, farMix: 0.35, vband: 0.1,
+    warmRing: 1.0, warmAt: 13,
     // the original's sparkle: many white glints and bright water streaks over the rings
-    glintCut: 0.9, glints: 2.2, streaks: 0.85 },
-  flanges: { goldEvery: 1, face: [0.0, 0.32, 0.85],   // goldEvery 1: no gold lips (i % 1 is never 1)
-    deep: [0.0, 0.1, 0.4], cyan: [0.3, 0.95, 1.1] },
-  flangeVary: { lavender: 0.0 },
+    glintCut: 0.85, glints: 2.2, streaks: 0.85 },
+  // fewer, uneven flanges (#2): every 4.6 m, each lip its own depth (1 +- jitter), dimmer and patchier light on the lips, and
+  // the faces a deep electric blue (they give the drum its cobalt depth) rather than violet navy
+  flanges: { goldEvery: 1, every: 4.6, jitter: 0.6, face: [0.0, 0.2, 0.6],   // goldEvery 1: no gold lips (i % 1 is never 1)
+    deep: [0.0, 0.1, 0.36], cyan: [0.4, 0.75, 1.05] },
+  flangeVary: { lavender: 0.0, dim: 0.25, patch: 1.0 },
   // the entrance: a thicker, polished gold rim (smooth, mirror-bright) and glossier metallic lavender
   // the original's washer wall is a soft silver-lilac metal, not vivid violet
-  porthole: { bezel: { outer: 2.64, front: -0.42 }, goldColor: 0xffd860, goldGlow: 0x9a6c12, goldRough: 0.1, goldEnv: 2.4, faceGloss: 0.85, lemon: 0.55,
+  // the Art Director's review #3: the original's rim is a slimmer peach-gold metal band (about 2.5% of the height, measured
+  // 5.5% here) with a white highlight, not flat lemon: thinner (outer 2.64 -> 2.47), a warmer gold, much less lemon pull;
+  // the bronze step ring inside it read as a separate orange line, so it is hidden (step.hide)
+  porthole: { bezel: { outer: 2.47, front: -0.42 }, step: { hide: true }, sealColor: 0x0a55d8, sealGlow: 0x062a70, goldColor: 0xffc870, goldGlow: 0x9a6c12, goldRough: 0.1, goldEnv: 2.4, faceGloss: 0.85, lemon: 0.25,
     lavender: [0.8, 0.76, 0.96], lilac: [0.97, 0.94, 1.0], shade: [0.55, 0.5, 0.76] },
   // the collectibles at the hero moment as in the original: a big coin near the camera on each side (right low, left higher),
   // the sock on the right behind the right coin, a small coin and the gem up and to the left, a small coin far in the middle
   // (the right coin nearer the camera so it sits at the right edge; the gem out of the left brush at 6.0, where it was hidden)
-  layout: { coinLines: [[2, 1.9, 1, 1.0, 0.5, 0], [0, 2.7, 1, 1.0, 1.0, 0], [0, 5.2, 1, 1.0, 1.35, 0], [1, 7.4, 1, 1.0, 0.9, 0]],
+  // The Art Director's review #7: the original shows one small coin in the middle and the gem clearly, up and to the left;
+  // the gem was hidden behind the left coin and a run of 3-4 small coins filled the middle. So the left coin is lower (the
+  // gem shows above it), and round3's next two lines (a lane-2 coin at 10.1, three lane-0 coins from 11.2) are replaced
+  // (replace: how many of round3's lines this list replaces) by the same coins a little further on (a lane-2 coin after the
+  // second sock, three in the middle lane leading into round3's 15.0 line), behind the glowing centre at the hero moment.
+  // Every coin is still collectable (heights within reach while riding); none is lost; the mission is still five socks.
+  layout: { coinLines: [[2, 1.9, 1, 1.0, 0.5, 0], [0, 2.7, 1, 1.0, 0.6, 0], [0, 5.2, 1, 1.0, 1.35, 0], [1, 7.4, 1, 1.0, 0.9, 0],
+    [2, 13.0, 1, 1.0, 0.55, 0], [1, 12.0, 3, 1.0, 0.72, 0]], replace: 3,
     firstSock: [2, 3.3], extraGem: [0, 4.4] },
-  // two decorative fluffy brushes on the wall just inside the mouth, framing the view as in the original (left high, right at
-  // mid height); not hazards: [metres along the track, side (+1 screen-left), angle up from level]
-  deco: [[4.1, 1, 32, 0.62], [4.9, -1, 8, 0.85]],   // [.., scale]: smaller, at the frame edges (the Art Director's review)
+  // two decorative fluffy brushes framing the view as in the original (left high, right at mid height); not hazards:
+  // [metres along the track, side (+1 screen-left), angle up from level, scale, radius from the axis (default 1.95, the wall)]
+  // The Art Director's review #4: the original's brushes are cut off by the frame edges, top left (0-20% of the width, 22-42%
+  // of the height) over the rim and right (80-100%, 38-62%): the left one sits on the washer's face just in front of the
+  // mouth, higher (45-50 degrees) and further out; the right one nearer, so it reaches the edge. The six hazards do not move.
+  deco: [[3.3, 1, 48, 0.66, 2.3], [4.4, -1, 14, 0.8]],
   coin: { color: [1.0, 1.24, 0.42], glow: 0.75, lemon: 0.6 },
-  round5: { droplets: { scale: 950, maxPx: 22 } },   // lemon: pull toward the original's lemon gold (the grade turned them copper)   // brighter, glowing yellow paw coins (the fix board)
+  round5: { droplets: { scale: 950, maxPx: 22 }, bloom: { strength: 0.45, radius: 0.5, threshold: 0.9 }, grade: { contrast: 1.4, saturation: 1.2 } },   // lemon: pull toward the original's lemon gold (the grade turned them copper)   // brighter, glowing yellow paw coins (the fix board)
+  // exposure and sparkle (the Art Director's review #6: the original is high-key, bright whites with warm accents; the game
+  // was contrasty blue-violet): more of the bright layers bloom, a little less saturation (measured: pale milky blue 7% of
+  // the play area against the original's 12%; the deep troughs of the whirlpool keep the depth), and a warm pink-peach
+  // light from the top right (tunnel_s4.js warmLightR7: at, in screen units with y up; radius; colour; amount)
+  warmLight: { at: [0.9, 0.8], radius: 0.3, color: [1.0, 0.7, 0.6], amount: 0.3 },
   hudEarly: 4.6,   // the mission card is already on screen at the hero moment, as in the original
+  // the whirlpool (the Art Director's review #2, measured against the original at the hero moment): a log spiral of bands
+  // (`perLog` bands per factor e of distance, so evenly spaced on screen as in the original, drawn inward at `flow`;
+  // `spiral` bands per turn round the drum, `wobble` how unevenly), each a bright crest broken into swirling arcs (`arcs` per
+  // radian) beside a deep cobalt trough (`troughFade`: how much shallower toward the pale centre); dense white flecks
+  // (`fleckCut`: the share of cells without one; fleckA / fleckU: cells per radian / per metre); milky pastel toward the
+  // centre from `paleFrom` metres (`pale` how much, `paleTint` how much lilac, pink and peach in it); `lip`: the original's
+  // deep cobalt ring just inside the gold rim (its shadow), fading over `lipLen` metres
+  whirl: { perLog: 2.4, flow: 0.25, spiral: 1.0, wobble: 0.5, arcs: 3.2, crestW: 0.14, troughW: 0.28, trough: 1.0, crest: 1.0,
+    troughCol: [0.0, 0.1, 0.28], crestCol: [0.75, 0.9, 1.0], lilacCol: [0.8, 0.68, 1.0],
+    flecks: 1.0, fleckCut: 0.5, fleckA: 14, fleckU: 8.0, fleckFar: [16, 30], pale: 0.65, paleFrom: [8, 18], paleTint: 0.4, troughFade: 0.4,
+    lip: 0.85, lipLen: 1.2 },
+  // the luminous centre: a camera-facing glow `ahead` metres in front of the character on the tube's axis (radius: half its
+  // size in metres; ringAt: where the pastel ring sits, as a share of the radius)
+  glow: { ahead: 11, radius: 3.2, lift: 0, core: 1.0, ring: 0.85, ringAt: 0.45, arms: 0.5, alpha: 0.9 },
 };
 if (R7_ON) { mergeDeep(ROUND6, ROUND6.r7); mergeDeep(ROUND6, R7_WATER.round6 || {}); }
 {
@@ -183,10 +222,55 @@ export function buildRound6({ scene, TR, L, W, mascot, updaters, time, env, wate
   report.bowWave = bowWave({ scene, TR, L, W, mascot, updaters, time, motion });
   report.wake = reactiveWake({ scene, mascot, updaters, motion });
   if (R7_ON) report.r7water = buildR7Water({ scene, TR, L, W, mascot, updaters, time, motion });
+  if (R7_ON && ROUND6.glow) report.r7glow = r7Glow({ scene, TR, L, mascot, updaters, time, axisH });
   if (ROUND6.hideFoamBubbles) { const o = scene.getObjectByName('r4FoamBubbles'); if (o) updaters.push(() => { o.visible = false; }); report.foamBubblesHidden = !!o; }
   if (ROUND6.hideCrestCards) { const o = scene.getObjectByName('r5Crests'); if (o) updaters.push(() => { o.visible = false; }); report.crestCardsHidden = !!o; }
   return report;
 }
+
+// ---------------------------------------------------------------- ?s3=round7: the whirlpool's luminous centre
+// A soft camera-facing glow on the tube's axis this far ahead of the character (the vanishing point at the hero moment): a
+// near-white warm centre, a pastel ring round it (peach, pink, lilac, cyan) and faint spiral arms of light, blended over
+// the walls (depth-tested, so the coins, sock and brushes pass in front of it). The Art Director's review #2.
+function r7Glow({ scene, TR, L, mascot, updaters, time, axisH }) {
+  const P = ROUND6.glow, TS = L.tunnelStart;
+  const u = { uTime: time, uFade: { value: 0 }, uCore: { value: P.core }, uRing: { value: P.ring }, uArms: { value: P.arms }, uRingAt: { value: P.ringAt },
+    uAlpha: { value: P.alpha } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: GLOW_VERTEX, fragmentShader: GLOW_FRAGMENT, transparent: true, depthWrite: false });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat); mesh.name = 'r7Glow'; mesh.frustumCulled = false; mesh.visible = false; mesh.renderOrder = 3;
+  mesh.onBeforeRender = (r, s, cam) => { mesh.quaternion.copy(cam.quaternion); mesh.updateMatrixWorld(); };
+  scene.add(mesh);
+  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
+  updaters.push(() => {
+    const at = Math.min(mascot.z + P.ahead, L.tunnelEnd - 1);
+    const k = THREE.MathUtils.smoothstep(mascot.z, TS + ROUND6.inside[0], TS + ROUND6.inside[1]) * (1 - THREE.MathUtils.smoothstep(mascot.z + P.ahead, L.tunnelEnd - 4, L.tunnelEnd + 2));
+    mesh.visible = k > 0.001; u.uFade.value = k;
+    if (!mesh.visible) return;
+    TR.frame(at, F);
+    mesh.position.copy(F.P).addScaledVector(F.U, axisH + P.lift);
+    mesh.scale.setScalar(P.radius);
+  });
+  return { ahead: P.ahead, radius: P.radius };
+}
+const GLOW_VERTEX = /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+const GLOW_FRAGMENT = /* glsl */ `
+uniform float uTime, uFade, uCore, uRing, uArms, uRingAt, uAlpha; varying vec2 vUv;
+float gh(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
+void main() {
+  vec2 p = (vUv - 0.5) * 2.0; float r = length(p), a = atan(p.y, p.x), lr = log(max(r, 0.02));
+  float core = exp(-r * r / 0.035);                                                        // the near-white warm centre
+  float ring = exp(-pow((r - uRingAt) / 0.17, 2.0));                                        // the pastel ring round it
+  vec3 pastel = 0.68 + 0.32 * cos(6.2832 * (a / 6.2832 + vec3(0.0, 0.33, 0.67) - uTime * 0.05));
+  pastel = mix(pastel, vec3(1.0, 0.8, 0.64), 0.35 * (0.5 + 0.5 * sin(a * 2.0 + uTime * 0.3)));   // peach drifting round it
+  float arm = smoothstep(0.45, 0.95, 0.5 + 0.5 * sin(a * 3.0 + lr * 5.5 - uTime * 1.6)) * exp(-r * 2.0) * smoothstep(0.08, 0.3, r);
+  vec2 g = vec2(a * 9.0, lr * 7.0 - uTime * 1.2), c = floor(g);
+  float fleck = step(0.7, gh(c)) * (1.0 - smoothstep(0.08, 0.3, length((fract(g) - 0.5) * vec2(0.6, 1.4)))) * smoothstep(0.1, 0.35, r);
+  vec3 col = vec3(1.0, 0.97, 0.93) * core * uCore + pastel * ring * uRing + vec3(0.88, 0.96, 1.0) * arm * uArms + vec3(1.0) * fleck;
+  float al = clamp(core * uCore + ring * uRing * 0.85 + arm * uArms * 0.7 + fleck * 0.9 + exp(-r * r / 0.2) * 0.35, 0.0, 1.0);
+  al *= (1.0 - smoothstep(0.7, 1.0, r)) * uFade * uAlpha;
+  gl_FragColor = vec4(col / max(max(col.r, max(col.g, col.b)), 1.0), al);
+}
+`;
 
 // ---------------------------------------------------------------- the bow wave round the character
 // the character's movement, measured once a frame for the bow wave and the wake: sideways speed (smoothed), forward speed,
@@ -255,6 +339,38 @@ function drumWalls({ scene, time, TS }) {
     fragmentShader: WALL_FRAGMENT, side: THREE.DoubleSide });
   mesh.name = 'r6Walls';
   return { replaced: 'r5Vortex' };
+}
+// ?s3=round7, the whirlpool (the Art Director's review #2: the drum's evenly spaced smooth hoops read as a ribbed pipe). Applied
+// last, over the glows, so they cannot wash it out: toward the bright centre the water turns milky pastel (pale blue-white with
+// lilac, pink and peach drifting round the drum); the wall's light is gathered into a few spiral bands (a log spiral in the
+// distance from the camera, so evenly spaced on screen as in the original, winding round the drum and drawn slowly inward;
+// with bands fixed along the tube they crowded into a ribbed pipe), each a bright streaky crest broken into arcs of water, with
+// a deep cobalt trough beside it (shallower toward the pale centre), some crests lilac; and dense short white flecks, thickest
+// on the crests. Not on the lavender shell before the mouth. W: ROUND6.whirl (round7 only; nothing is added without it).
+function r7Whirl(W) {
+  const v = (a) => a.map((x) => x.toFixed(3)).join(', '), f = (x) => x.toFixed(3);
+  return `  { // ?s3=round7: the whirlpool
+    float wIn = smoothstep(uStart + 0.05, uStart + 0.3, u);
+    float pk = smoothstep(${f(W.paleFrom[0])}, ${f(W.paleFrom[1])}, vDepth);
+    vec3 pastel = mix(vec3(0.8, 0.88, 1.0), 0.7 + 0.3 * cos(6.2832 * (a / 6.2832 * 2.0 + vec3(0.0, 0.33, 0.67) + uTime * 0.04)), ${f(W.paleTint)});
+    col = mix(col, pastel * (0.85 + 0.3 * w2), pk * ${f(W.pale)} * wIn);
+    float wsp = log(max(vDepth, 0.5)) * ${f(W.perLog)} + a / 6.2832 * ${f(W.spiral)} + ${f(W.wobble)} * (w1 - 0.5) - uTime * ${f(W.flow)};   // a log spiral: evenly spaced on screen, drawn inward
+    float wk = fract(wsp), wi = floor(wsp), wr = fract(sin(wi * 17.13 + 3.1) * 4375.85);
+    float arcs = smoothstep(0.32, 0.72, bwFbm(vec2(a * ${f(W.arcs)} + wi * 5.3 - uTime * 0.7, wsp * 2.3 + wi)));
+    float crest = exp(-pow((wk - 0.55) / ${f(W.crestW)}, 2.0)) * (0.6 + 0.4 * wr);
+    float trough = exp(-pow((wk - 0.12) / ${f(W.troughW)}, 2.0)) + exp(-pow((wk - 1.12) / ${f(W.troughW)}, 2.0));
+    col = mix(col, vec3(${v(W.troughCol)}) * (0.8 + 0.4 * w2), clamp(trough * ${f(W.trough)} * (1.0 - ${f(W.troughFade)} * pk), 0.0, 1.0) * wIn);
+    col = mix(col, vec3(${v(W.troughCol)}) * (0.85 + 0.3 * w2), ${f(W.lip)} * exp(-(u - uStart) / ${f(W.lipLen)}) * wIn);   // the cobalt shadow just inside the rim
+    vec3 crestC = mix(vec3(${v(W.crestCol)}), vec3(${v(W.lilacCol)}), step(0.62, wr));
+    col = mix(col, crestC, clamp(crest * (0.3 + 0.7 * arcs) * ${f(W.crest)}, 0.0, 1.0) * wIn);
+    vec2 fg = vec2(a * ${f(W.fleckA)}, (u - uStart) * ${f(W.fleckU)} - uTime * 1.3), fc = floor(fg);
+    float fh = h21(fc + 11.0), fh2 = h21(fc + 37.0), fh3 = h21(fc + 53.0);
+    vec2 fq = fract(fg) - vec2(0.3 + 0.4 * fh2, 0.3 + 0.4 * fh3);   // short dashes round the drum, scattered in their cells
+    float fleck = (1.0 - smoothstep(0.12, 0.3, abs(fq.x))) * (1.0 - smoothstep(0.05, 0.16, abs(fq.y)));
+    float fleckK = step(${f(W.fleckCut)}, fh) * (0.35 + 0.65 * max(crest, arcs * 0.6)) * (1.0 - smoothstep(${f(W.fleckFar[0])}, ${f(W.fleckFar[1])}, vDepth));
+    col = mix(col, vec3(1.0, 0.99, 1.0), clamp(fleck * fleckK * ${f(W.flecks)}, 0.0, 1.0) * wIn);
+  }
+`;
 }
 const WALL_FRAGMENT = /* glsl */ `
 ${NOISE}
@@ -327,7 +443,7 @@ void main() {
   col = mix(col, mix(vec3(0.45, 0.88, 1.0), vec3(1.0, 0.98, 1.0), 0.35 + 0.4 * broad), far * ${ROUND6.walls.farMix.toFixed(2)});
   // a warm peach and pastel-rainbow glow ring round the bright centre (the original's whirlpool heart)
   col += mix(vec3(1.0, 0.72, 0.55), 0.6 + 0.4 * cos(6.2832 * (a / 6.2832 + vec3(0.0, 0.33, 0.67) + uTime * 0.05)), 0.4) * exp(-pow((vDepth - ${ROUND6.walls.warmAt.toFixed(1)}) / 3.0, 2.0)) * ${ROUND6.walls.warmRing.toFixed(2)};
-  gl_FragColor = vec4(col, 1.0);
+${R7_ON && ROUND6.whirl ? r7Whirl(ROUND6.whirl) : ''}  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
@@ -478,8 +594,9 @@ function porthole({ scene, TR, TS, axisH, env, time }) {
     emissive: 0x5a2a08, emissiveIntensity: 0.6 });
   if (P.lemon > 0) lemonGold(bronze, P.lemon, 'r6BronzeLemon');   // round7: the step ring gold too (it read as a red line)
   const step = new THREE.Mesh(sweep(roundedSection(S.inner, S.outer, S.z - S.depth / 2, S.z + S.depth / 2, 0.4), [0, 360], 160), bronze);
+  if (R7_ON && S.hide) step.visible = false;   // round7: the step ring read as a separate orange line inside the gold rim (the Art Director's #3)
   const seal = new THREE.Mesh(new THREE.TorusGeometry(P.seal.radius, P.seal.tube, 16, 160),
-    new THREE.MeshStandardMaterial({ color: 0x1a2fb8, metalness: 0.2, roughness: 0.18, envMap: env || null, envMapIntensity: 1.2, emissive: 0x0a1460, emissiveIntensity: 0.6 }));
+    new THREE.MeshStandardMaterial({ color: (R7_ON && P.sealColor) || 0x1a2fb8, metalness: 0.2, roughness: 0.18, envMap: env || null, envMapIntensity: 1.2, emissive: (R7_ON && P.sealGlow) || 0x0a1460, emissiveIntensity: 0.6 }));
   seal.position.z = P.seal.z;
   // the lavender drum face: a shallow dish (it curves back toward the rim), shaded in its own shader so it never depends on
   // the scene's lights: brushed concentric grain, a lavender-lilac sheen up and to the left, cyan bounce light near the rim
@@ -550,9 +667,13 @@ function flanges({ scene, TR, TS, TE, axisH, env, time }) {
   const aU = new Float32Array(us.length), aGold = new Float32Array(us.length);
   us.forEach((u, i) => { aU[i] = u; aGold[i] = (i % P.goldEvery === 1) ? 1 : 0; });
   geo.setAttribute('aU', new THREE.InstancedBufferAttribute(aU, 1)); geo.setAttribute('aGold', new THREE.InstancedBufferAttribute(aGold, 1));
+  // ?s3=round7: uneven flanges (the Art Director's review #2): each stands its own depth out of the wall (1 +- jitter)
+  const jit = R7_ON ? (P.jitter || 0) : 0;
+  const rnd = (u) => { const x = Math.sin(u * 91.7) * 43758.5453; return x - Math.floor(x); };
+  if (jit) geo.setAttribute('aLipK', new THREE.InstancedBufferAttribute(Float32Array.from(us, (u) => 1 + jit * (2 * rnd(u) - 1)), 1));
   const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uFace: { value: new THREE.Color(...P.face) }, uDeep: { value: new THREE.Color(...P.deep) },
     uCyan: { value: new THREE.Color(...P.cyan) }, uGold: { value: new THREE.Color(...P.gold) }, uLip: { value: P.lip }, uWall: { value: P.wall } },
-    vertexShader: FLANGE_VERTEX, fragmentShader: FLANGE_FRAGMENT, side: THREE.DoubleSide });
+    vertexShader: jit ? FLANGE_VERTEX_R7 : FLANGE_VERTEX, fragmentShader: FLANGE_FRAGMENT, side: THREE.DoubleSide });
   const mesh = new THREE.InstancedMesh(geo, mat, us.length);
   us.forEach((u, i) => mesh.setMatrixAt(i, frameAt(TR, u, axisH)));
   mesh.name = 'r6Flanges'; mesh.frustumCulled = false; scene.add(mesh);
@@ -563,6 +684,18 @@ attribute float aU; attribute float aGold; varying vec3 vL; varying vec3 vN; var
 void main() {
   vL = position; vU = aU; vGold = aGold;
   vec4 w = modelMatrix * instanceMatrix * vec4(position, 1.0); vW = w.xyz;
+  vN = normalize(mat3(modelMatrix * instanceMatrix) * normal);
+  gl_Position = projectionMatrix * viewMatrix * w;
+}
+`;
+// ?s3=round7: the same, with each flange's inner lip moved toward or away from the wall (aLipK: 1 = as built); the fragment
+// shader still sees the built section (vL), so the lip glow stays on the lip
+const FLANGE_VERTEX_R7 = /* glsl */ `
+attribute float aU; attribute float aGold; attribute float aLipK; uniform float uWall; varying vec3 vL; varying vec3 vN; varying vec3 vW; varying float vU; varying float vGold;
+void main() {
+  vL = position; vU = aU; vGold = aGold;
+  vec3 p = position; float rr = length(p.xy); p.xy *= (uWall - (uWall - rr) * aLipK) / max(rr, 1e-3);
+  vec4 w = modelMatrix * instanceMatrix * vec4(p, 1.0); vW = w.xyz;
   vN = normalize(mat3(modelMatrix * instanceMatrix) * normal);
   gl_Position = projectionMatrix * viewMatrix * w;
 }
