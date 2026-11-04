@@ -63,8 +63,10 @@ Measured at 3.0 s with `compare_s4.py`, play area (approved / session start / co
 | white foam | 20.6% | 7.2% | 22.5% |
 | pale milky blue | 11.8% | 5.3% | 13.5% |
 | deep blue | 6.2% | 1.3% | 3.6% |
-| gold | 8.0% | 14.0% | (see report) |
+| gold | 8.0% | 14.0% | 7.6% |
 | pink | 13.9% | 18.1% | 16.2% |
+| turquoise | 1.9% | 4.3% | 1.0% |
+| purple (gem) | 0.6% | 1.5% | 1.1% |
 | centre region ΔE2000 | – | 19.5 | 3.3 |
 | mean ΔE2000 per pixel | – | 24.8 | 22.7 |
 
