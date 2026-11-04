@@ -490,3 +490,72 @@ Correction to my last message: your two water references were not on GitHub yet.
 
 The Water & VFX specialist and the Game Art Director are both still working. When they report back, I'll show you the water alone first (`?s3=liquid,nofoam`), then the same water with the foam back on (`?s3=liquid`). Both will be full-resolution gameplay at 2.85, 3.0 and 3.1 s beside your ORIGINAL approved Screen 4.
 
+---
+
+### Automatic notice · 2026-11-04 23:45 UTC
+
+_Agent "Art Director reviews Screen 4" finished_
+
+---
+
+### Claude · 2026-11-04 23:45 UTC
+
+The Game Art Director stopped without delivering its review, so I've asked it to send its findings. The Water & VFX specialist is still building the water. I'll report back once both have delivered.
+
+---
+
+### You · 2026-11-04 23:45 UTC
+
+Claudia, one very important clarification for the Water & VFX Specialist before the current water reconstruction is finished.
+
+My ORIGINAL APPROVED Screen 4 does NOT show just a shiny blue floor.
+
+The water must look like it is SWIRLING THROUGH THE ENTIRE WASHING-MACHINE TUNNEL.
+
+Please look closely at my original approved image and the two water reference images.
+
+I want:
+
+1. Deep electric-blue and turquoise water visually swirling along the tunnel's curved interior walls.
+2. Bright, glossy, moving water reflections and cyan highlights throughout the tunnel, including around the gold coins and socks.
+3. A clearly visible body of flowing turquoise water underneath and surrounding my pink character.
+4. The pink character partially immersed in water, with water moving and splashing around its lower body.
+5. White foam ONLY as a secondary layer on top of blue water, not replacing or hiding it.
+6. A convincing continuous watery vortex, not a dry circular pipe with a shiny blue floor.
+
+Please have the Water & VFX Specialist incorporate this clarification into the work already underway.
+
+Do not restart the current task or discard successful progress.
+
+When finished, show me actual full-resolution gameplay captures of "?s3=liquid,nofoam" and "?s3=liquid" at 2.85, 3.0, and 3.1 seconds, compared with my ORIGINAL APPROVED Screen 4.
+
+The goal is a real animated, water-filled washing-machine tunnel that looks as close as possible to my original artwork.
+
+Work ONLY on Screen 4 and preserve the existing gameplay.
+
+_[2 images attached]_
+
+---
+
+### Claude · 2026-11-04 23:46 UTC
+
+Before I relay the review, I'll check one of its evidence images myself:
+
+I've passed your clarification to the Water & VFX specialist without restarting its work. The Game Art Director has also finished its review of the current build, and its measured targets went to the specialist too. The specialist hasn't reported back yet, so there are no new captures to show you.
+
+**What the specialist is now building, from your clarification:**
+- **Walls:** under `?s3=liquid`, the curved tunnel walls are drawn as water, not painted rings. Deep electric-blue and turquoise spiral bands flow round and along the tube, with the same moving ripples, glossy reflections and cyan highlights as the floor. Walls and floor should read as one continuous swirling body of water.
+- **Reflections near the coins and socks:** moving cyan glints, plus warm gold reflections in the water near the coins.
+- **The character:** flowing turquoise water under and round your pink character, which sits partly immersed, with water moving and splashing round its lower body.
+- **Foam:** white only as a secondary layer on top, as broken splash strokes along the spirals (like your second picture) and spray round the character. `?s3=liquid,nofoam` removes all of it.
+
+**The Art Director's review confirms your diagnosis with numbers.** I checked its close-up comparison myself:
+- **The water round the character is wrong.** In your approved Screen 4 the water is see-through: the pink fur shows through it as violet, which is what makes the character look immersed. In the game it is an opaque, pale sky-blue mound with a white lip and a V-shaped cut round the fur. In that strip, white is 43–50% in the game vs 19% in your artwork, and violet fur showing through is 1–3% vs 49%. The waterline should also be level, just below the arms.
+- **The tunnel has no depth.** Deep cobalt covers 0.5–1% of the frame vs 5.1% in your artwork. Bright sparkle pinpoints are 0.57% vs about 4%. The walls' colour is far less saturated than in your water references (0.44 vs 0.76–0.85).
+- **The cyan reflections are in the wrong place.** Most of the game's cyan is on the mound by the character. In your artwork it's on the swirling walls.
+- **What already works:** the camera, the tunnel's centre and where everything is placed are within about 2% of your artwork. The remaining gap is the water's colour and material.
+
+The review, its evidence images and its measuring scripts are saved and pushed to GitHub, in `Previews/WebDemo/screen4_round8_art_director_baseline/`.
+
+When the specialist finishes, I'll check its frames myself first. Then I'll send you full-resolution captures of `?s3=liquid,nofoam` and `?s3=liquid` at 2.85, 3.0 and 3.1 s, side by side with your ORIGINAL approved Screen 4.
+
