@@ -46,7 +46,9 @@ export const ROUND6 = {
   // pass 2 (the user's review of Round 6): the deeper walls as a washer drum's surface instead of uniform neon bands:
   // perforated drum metal (staggered dimples whose rims catch light), broad uneven light that drifts, deep blue shadow behind
   // each flange, turquoise water light playing over the lower walls, lavender bounce on the upper wall, sparse white streaks
-  walls: { hole: 0.2, holeFade: [5, 13], light: 0.55, drift: 0.35, caustic: 0.6, lowGlow: 0.35, lavender: 0.5, streaks: 0.4, glints: 0.6 },
+  // (measured against the approved tunnel: pass 2's first walls were a little darker and more saturated than the approved and
+  // had too little turquoise light, so the water light and white streaks were raised and the caustic cells made finer)
+  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.5, streaks: 0.55, glints: 0.7 },
   // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
   flangeVary: { dim: 0.3, patch: 0.85 },
   // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
@@ -80,7 +82,7 @@ export const ROUND6 = {
     bloom: { strength: 0.3, radius: 0.45, threshold: 1.1 },
     heart: { core: 1.0, halo: 0.6 },
     // soap bubbles round the character: fewer, smaller, no big ones over it (they covered the character in rainbow rings)
-    softBubbles: { count: 20, big: 0, size: [0.035, 0.16] },
+    softBubbles: { count: 20, big: 0, size: [0.03, 0.11] },
     // bubbles streaming past: smaller and kept off the middle of the view (big rings near the camera hid the scenery)
     bubbles: { r: [0.03, 0.19], x: [0.75, 1.7] },
   },
@@ -200,8 +202,8 @@ void main() {
   float holeVar = 0.45 + 0.55 * smoothstep(0.3, 0.7, bwNoise(vec2(s * 0.7, u * 0.5)));   // worn in places, crisp in others
   col = col * (1.0 - 0.35 * hole * holeVar) + vec3(0.2, 0.55, 1.0) * rim * 0.2 * holeVar * (0.4 + light);
   // turquoise water light on the walls: a moving caustic web, strongest low down near the water, coming and going in patches
-  vec2 cw = vec2(s * 1.5, u * 1.05 - uTime * 0.85) + vec2(0.6 * bwNoise(vec2(u * 0.6, uTime * 0.35)), 0.0);
-  vec2 cv = bwVoronoi(cw); float web = 1.0 - smoothstep(0.0, 0.085, cv.y - cv.x);
+  vec2 cw = vec2(s * 1.5, u * 1.05 - uTime * 0.85) * ${ROUND6.walls.causticScale.toFixed(2)} + vec2(0.6 * bwNoise(vec2(u * 0.6, uTime * 0.35)), 0.0);
+  vec2 cv = bwVoronoi(cw); float web = 1.0 - smoothstep(0.0, 0.07, cv.y - cv.x);
   float low = 1.0 - smoothstep(-0.6, 0.85, up);
   float patchW = smoothstep(0.3, 0.75, bwFbm(vec2(a * 1.6 + uTime * 0.25, u * 0.45 - uTime * 0.7)));
   col += vec3(0.05, 0.85, 0.95) * web * (0.25 + 0.9 * low) * (0.25 + 1.0 * patchW) * ${ROUND6.walls.caustic.toFixed(2)};
