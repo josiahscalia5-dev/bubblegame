@@ -172,7 +172,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       const wheel = new THREE.Mesh(wheelGeo, side > 0 ? matPink : mat); wheel.scale.setScalar(P.brushR / 0.95);
       const spinner = new THREE.Group(); spinner.add(wheel); holder.add(spinner);
       if (R4) {   // round4: a fluffy pom-pom instead of the wheel, turning as it did (with `fluffy`: the shell-fur brush)
-        const look = FLUFFY_ON ? makeFluffyBrush(side > 0) : r4PomPom(side > 0, wheel.scale.x);
+        const look = FLUFFY_ON ? makeFluffyBrush(side > 0, { balls: !!R5 }) : r4PomPom(side > 0, wheel.scale.x);   // round5: ball tufts
         if (FLUFFY_ON) look.scale.setScalar(wheel.scale.x);
         spinner.add(look); wheel.visible = false;
       }

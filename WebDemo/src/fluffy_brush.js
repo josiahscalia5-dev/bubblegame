@@ -22,6 +22,10 @@ export const FLUFFY = {
   // bands from the middle out, on the face's radial position (0 centre, 1 face edge, beyond 1 the rolled-back rim)
   right: { edges: [0.5, 0.78], bands: [['#2a48d8', '#3a5ef0', '#1f38bd', '#4566ff'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ec4aa9', '#ff7cc8', '#ff63b8']] },
   left: { edges: [0.22, 0.72], bands: [['#ff5fb6', '#f04aa8', '#ff74c2', '#f55ab4'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ff7cc8', '#ec4aa9', '#ff63b8']] },
+  // ?s3=round5: the user's brush sheet (Design/ReferencePacks/2026-11-04_Round5_References/01_BRUSH_SHEET_ball_tufts.png): every
+  // tuft a round ball of fine fuzz, in rings: blue in the middle, then white, then pink. Round 4 keeps the strands above.
+  balls: { fur: 0.2, density: 80, clumpSize: 0.16, clump: 0.2, taper: 0.32, tip: 0.2, sheen: 0.15, glow: 0.08, ambient: 0.62, diffuse: 0.6,
+    edges: { right: [0.42, 0.7], left: [0.25, 0.62] } },   // vivid colours: light tips washed the blue to lavender
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.fluffy;
@@ -123,6 +127,14 @@ void main() {
   gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0);
 }
 `;
+// round5: each tuft a round ball of fuzz (a dome: strands tallest in its middle), lighter on top, darker in the gaps
+const SHELL_FRAGMENT_BALLS = SHELL_FRAGMENT
+  .replace('  float len = (0.6 + 0.4 * fbH(si + 7.0)) * (1.0 - 0.55 * smoothstep(0.3, 0.75, bd));   // shorter between the tufts',
+    '  float rb = clamp(bd / 0.66, 0.0, 1.0), domeH = sqrt(max(0.0, 1.0 - rb * rb));\n  float len = (0.18 + 0.82 * domeH) * (0.86 + 0.14 * fbH(si + 7.0));   // a round ball of fuzz')
+  .replace('  vec3 base = fbBand(vT, bid) * (0.9 + 0.18 * fbH(si + 1.0));',
+    '  vec3 base = fbBand(vT, bid) * (0.9 + 0.18 * fbH(si + 1.0)) * (0.82 + 0.3 * domeH * smoothstep(0.2, 1.0, h));')
+  .replace('  float ao = mix(uAo, 1.0, smoothstep(0.0, 0.85, h)) * mix(1.0, 0.82, smoothstep(0.45, 0.8, bd) * (1.0 - h));',
+    '  float ao = mix(uAo, 1.0, smoothstep(0.0, 0.85, h)) * mix(1.0, 0.68, smoothstep(0.7, 1.0, rb) * (1.0 - h));');
 // fringe cards: x across the card (-0.5..0.5), y from root (0) to tip (1); each card a little fan of tapered strands
 const CARD_VERTEX = /* glsl */ `
 attribute vec4 aCard; attribute float aCardT;   // aCard: id seed, length, width, unused
@@ -158,8 +170,10 @@ function cards(side) {   // one card geometry per side: its per-card attributes 
 }
 
 /** One fluffy brush (a THREE.Group facing +Z, in wheel units; the caller scales and spins it). left: the pink-and-white kind. */
-export function makeFluffyBrush(left = false) {
-  const P = FLUFFY, look = left ? P.left : P.right;
+export function makeFluffyBrush(left = false, opts = {}) {   // opts.balls: round5's round, fuzzy ball tufts
+  const B = opts.balls ? FLUFFY.balls : null;
+  const P = B ? { ...FLUFFY, ...B } : FLUFFY, look0 = left ? P.left : P.right;
+  const look = B ? { ...look0, edges: left ? B.edges.left : B.edges.right } : look0;
   const cols = []; for (const b of look.bands) for (const c of b) cols.push(new THREE.Color(c));
   const uniforms = {
     uLight: { value: new THREE.Vector3(...P.light).normalize() }, uCol: { value: cols }, uEdges: { value: new THREE.Vector2(...look.edges) },
@@ -168,7 +182,7 @@ export function makeFluffyBrush(left = false) {
     uStrands: { value: P.fringe.strands },
   };
   const group = new THREE.Group(); group.name = 'fluffyBrush';
-  const shellMat = new THREE.ShaderMaterial({ uniforms, vertexShader: SHELL_VERTEX, fragmentShader: SHELL_FRAGMENT, side: THREE.DoubleSide });
+  const shellMat = new THREE.ShaderMaterial({ uniforms, vertexShader: SHELL_VERTEX, fragmentShader: B ? SHELL_FRAGMENT_BALLS : SHELL_FRAGMENT, side: THREE.DoubleSide });
   const fur = new THREE.Mesh(shells(), shellMat); fur.name = 'fluffyShells'; fur.frustumCulled = false;
   group.add(fur);
   // fringe cards round the rolled-back rim: rooted in the dome, pointing outward (a little forward), in the brush's plane
