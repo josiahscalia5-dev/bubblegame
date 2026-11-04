@@ -1,0 +1,13 @@
+{
+  "path": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/reference_right_brush.jpg",
+  "type": "jpeg",
+  "bytes": 33111,
+  "width": 132,
+  "height": 391,
+  "aspectRatio": 0.3375959079283887,
+  "technicalSuitability": "conditional",
+  "warnings": [
+    "low resolution; small geometry/material details may be unreliable"
+  ],
+  "note": "This is only technical image probing. Semantic object suitability still requires visual inspection."
+}

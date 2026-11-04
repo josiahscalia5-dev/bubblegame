@@ -228,3 +228,79 @@ Now the Round 4 settings for the foam and bubbles, a more turquoise water middle
 
 Build, capture the same seeded moments, and measure:
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 12:41 UTC
+
+npx --yes img2threejs@latest install
+npx --yes img2threejs@latest doctor
+
+---
+
+### Note · 2026-11-04 12:41 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 12:41 UTC
+
+Claudia, I found a Claude Code skill called img2threejs that may help us reconstruct my approved Bubble Wash Kingdom scenery more accurately.
+
+Official GitHub:
+https://github.com/img2threejs/img2threejs
+
+Please inspect its installation instructions and determine whether it's compatible with our Claude Code cloud environment and existing Three.js game.
+
+If compatible, install it using the official installation method:
+
+npx --yes img2threejs@latest install
+
+Then verify:
+
+npx --yes img2threejs@latest doctor
+
+IMPORTANT: I do not want a new game. Work in a separate test branch using our existing bubblegame repository.
+
+Use my original approved Screen 4 image as the authoritative reference.
+
+First try the skill on one important scenery component, such as the glowing washing-machine tunnel structure or the fluffy rotating washing brushes.
+
+Reconstruct that component as real editable Three.js geometry.
+
+Compare the resulting gameplay render against the approved image using Playwright.
+
+If the skill produces a visibly closer result, integrate that improvement into the existing game.
+
+Then continue with the other important scenery elements.
+
+The white water splashes, foam, bubbles, coins, and glowing effects must remain animated and compatible with the real playable game.
+
+Do not alter my original pink character, existing opening, gameplay controls, HUD, or sock rescue mission.
+
+Please don't install experimental Material Maker MCP or image2blender unless you first establish that they provide a benefit.
+
+Show me the approved-versus-reconstructed visual comparison and save successful changes to GitHub.
+
+---
+
+### Claude · 2026-11-04 12:41 UTC
+
+Small package, no dependencies, one installer script. Reading it in full to see exactly what `install` and `doctor` do:
+
+The skill now shows up in this session as `img2threejs`. Before letting it steer anything, I'll check the one non-test script that runs commands, and the Python requirements:
+
+23 mandatory steps. I'll work through them efficiently. Step 1 is image analysis per its protocol:
+
+Verdict by its rubric: **conditional**. There is only one view and half is cropped, but the brush has rotational symmetry, and the fringe can be built procedurally. Continuing through the gate:
+
+The skill runs its local spec search inside the pre-spec assessment script, so I'll run that (complexity: moderate):
+
+I'll fill the assessment from the image analysis, then let `new_sculpt_spec.py` scaffold the spec. First, the quality contract's required fields:
+
+The spec is a large structured document. To author the brush's parts properly, I need the generator's supported primitives and how it emits repeated parts (the tuft rings):
+
+The detail kinds are all hard-surface terms (bevel, fastener, scratch…), with nothing for fibres, so I'll use the nearest (ridge, groove, contour). Checking how a detail links to a part:
+
+The colour evidence must come from the skill's own extractor run on crops of each fibre region. Let me view the reference with a grid to pick the crop boxes:
+

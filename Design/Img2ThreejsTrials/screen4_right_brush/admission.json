@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "reference",
+    "sourcePath": "/home/user/bubblegame/Design/Img2ThreejsTrials/screen4_right_brush/reference_right_brush.jpg",
+    "width": 132,
+    "height": 391,
+    "foregroundCoverage": 0.8051,
+    "largestComponentFraction": 0.9866,
+    "pHash": 15057136627831068000,
+    "duplicateOfHash": null
+  }
+}
