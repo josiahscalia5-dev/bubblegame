@@ -348,3 +348,25 @@ One more leftover wait loop of mine was stopped at its time limit. It had been w
 
 _Background command "Start the 5-minute auto-save of work and chat history" failed with exit code 1_
 
+---
+
+### Claude · 2026-11-04 04:20 UTC
+
+The auto-save is running again for another 2 hours (24 rounds, every 5 minutes), saving the newest chat history and all work to GitHub.
+
+The "failed" notice was a false alarm. The previous run finished all 24 rounds, every save reached GitHub, and nothing was lost. The script just reported an error code after its last round. That's fixed and pushed, so GitHub is at `3880f07`, the same as the local copy.
+
+The run can't last longer than 2 hours here, so after that, or if this session's computer restarts, it needs starting again.
+
+---
+
+### Automatic notice · 2026-11-04 04:23 UTC
+
+_The container running this session was restarted before background work reported back: "Restart the 5-minute auto-save for another 2 hours" (task bwoz5w7qs). That work is lost — no result or further notification will arrive for it. Re-create it if still needed (a long-running server or watcher that nothing is waiting on does not need restarting now), or tell the user what was lost._
+
+---
+
+### Claude · 2026-11-04 04:23 UTC
+
+Nothing was lost in the restart: everything is committed, and GitHub matches the local copy at `c97c20c`. Restarting the auto-save:
+
