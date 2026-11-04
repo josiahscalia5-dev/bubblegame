@@ -234,3 +234,15 @@ _Background command "Run the round 2 functional checks" completed (exit code 0)_
 
 While the comparison finishes, I'm writing the final README for the round 2 evidence folder:
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 03:21 UTC
+
+show me the video when it's done
+
+---
+
+### Claude · 2026-11-04 03:28 UTC
+
+_[Sent you files: Previews/WebDemo/screen4_round2_test/bubblewash_round2_tunnel_final.mp4]_
+
