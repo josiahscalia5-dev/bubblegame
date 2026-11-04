@@ -790,3 +790,393 @@ I also sent the pass 1 and pass 2 comparisons earlier in the session; they're in
 
 All are in `Previews/WebDemo/screen4_round6_reconstruction/`, with full notes in `README.md` there.
 
+---
+
+### You · 2026-11-04 20:13 UTC
+
+Claudia, I want to confirm our final visual direction for Bubble Wash Kingdom Screen 4.
+
+I like the NEWER design labeled "EXACT TARGET (your board)" for its overall 3D layout, large purple-and-gold washing-machine entrance, layered blue tunnel, and fluffy brush placement.
+
+I want you to keep building that layout.
+
+However, I want to combine it with the ORIGINAL APPROVED Screen 4's beautiful swirling turquoise water, thick white splashes around my pink character, rich magical blue lighting, transparent bubbles, and sparkling atmosphere.
+
+Please use the NEWER design as the main layout reference and the ORIGINAL approved screen as the main water, lighting, and atmosphere reference.
+
+Do not restart or discard Round 6. Continue improving the actual playable Three.js game using these two references together.
+
+Preserve gameplay, compare actual screenshots, and save the completed improvements to GitHub.
+
+_[5 images attached]_
+
+---
+
+### Note · 2026-11-04 20:13 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 20:14 UTC
+
+BUBBLE WASH KINGDOM — SCREEN 4 ONLY
+
+HIGH-PRIORITY 3D VISUAL RECONSTRUCTION
+
+Claudia, I am attaching important reference images for Bubble Wash Kingdom.
+
+PLEASE OPEN, ENLARGE, AND CAREFULLY STUDY EVERY ATTACHED IMAGE BEFORE MAKING ANY CHANGES.
+
+I am attaching:
+
+1. My ORIGINAL APPROVED SCREEN 4 — the exact classic screen I want.
+2. SCREEN 4 EXACT MATCH TARGET — an illustrated breakdown showing the gold entrance, lavender washing-machine wall, blue vortex, water, bubbles, brushes, coins, and lighting.
+3. SCREEN 4 — WHAT CLAUDIA MUST FIX — a comparison identifying the differences between my approved artwork and my current playable game.
+
+The original approved Screen 4 is the FINAL AUTHORITY. The two additional build guides explain what to reconstruct. Do not substitute their AI-generated designs for my original artwork.
+
+MOST IMPORTANT INSTRUCTION
+
+WORK ONLY ON SCREEN 4 RIGHT NOW.
+
+Do not work on:
+
+- Screen 1 or the title screen.
+- The cartoon girl throwing laundry.
+- Laundry Toss.
+- The opening cinematic.
+- The castle introduction.
+- Screen 3.
+- Other game levels.
+
+Those can be handled later.
+
+I want you to concentrate on making my EXISTING REAL PLAYABLE SCREEN 4 look almost exactly like my original approved Screen 4.
+
+My goal is approximately 90% visual similarity, with the closest possible result being the priority. I understand this is an ambitious target, not a guarantee.
+
+I do not want another static image, an AI-generated gameplay mockup, or a video pretending to be gameplay.
+
+I want the REAL THREE.JS MOBILE GAME to look like the reference while the character actually moves, collects coins, rescues socks, and interacts with the water.
+
+PHASE 1 — ANALYZE THE IMAGES AND EXISTING GAME
+
+Before editing:
+
+1. Open the ORIGINAL approved reference at full resolution.
+2. Examine the entire composition from top to bottom.
+3. Inspect both visual build-guide images.
+4. Load the latest existing Bubble Wash Kingdom game from GitHub.
+5. Locate the latest Round 6 implementation.
+6. Compare actual Round 6 gameplay screenshots with the original approved reference.
+7. Identify the current geometry, shaders, materials, camera, lighting, and particle systems.
+8. Preserve existing successful improvements.
+
+Use the reference images to establish precise camera framing, screen-space proportions, object positions, colors, and material appearance.
+
+Do not spend another session writing general plans. Perform the inspection, then implement the highest-impact corrections.
+
+PHASE 2 — RECREATE THE WASHING-MACHINE WALL AND GOLD RIM
+
+Look closely at the TOP of the original approved screen.
+
+It contains a beautiful magical washing-machine wall surrounding the tunnel.
+
+I want:
+
+- Glossy metallic lavender and purple outer wall surfaces.
+- A curved, polished gold/bronze entrance rim.
+- A bright gold reflection along the upper opening.
+- Real dimensional material depth.
+- Soft purple and blue illumination across the washer housing.
+- An entrance that appears physically connected to the washing-machine interior.
+
+The current game sometimes looks like a plain neon tunnel or an oversized circular portal.
+
+Correct the actual geometry, material finish, and camera placement.
+
+Use existing Three.js meshes and Blender assets where appropriate.
+
+Do not create excessive gold rings or enlarge the entrance so much that it hides the tunnel.
+
+Match the ORIGINAL approved image's proportions.
+
+PHASE 3 — RECREATE THE ELECTRIC-BLUE TUNNEL
+
+Study the approved blue tunnel carefully.
+
+The interior should look like a magical washing-machine water vortex.
+
+I want:
+
+- Rich royal-blue and electric-blue tunnel surfaces.
+- Brilliant cyan and turquoise glowing reflections.
+- Layers of curved blue depth leading into the distance.
+- Water-like spiral motion and distortion.
+- Irregular flowing light streaks.
+- Sparkling highlights throughout the tunnel.
+- A beautiful bright distant center with visible surrounding blue structure.
+- Depth and dimensionality instead of perfectly uniform neon rings.
+
+The existing game already has tunnel geometry.
+
+Improve it rather than replacing the playable level.
+
+Use animated shader effects, curved surface details, suitable textures, lighting, and material variations.
+
+Keep the current real gameplay path working.
+
+PHASE 4 — REBUILD THE RUSHING TURQUOISE WATER
+
+THIS IS ONE OF MY BIGGEST PRIORITIES.
+
+Look at the approved image showing the pink fluffy character.
+
+My character looks like it is moving through beautiful, rushing turquoise-blue water.
+
+The current game still has too much pale water, flat surfaces, and white foam in places.
+
+Please implement:
+
+1. Clearly visible, saturated turquoise water throughout the lower tunnel.
+2. Animated water flowing toward and around the character.
+3. A visible waterline partially covering the character's lower body.
+4. White splash crests rising around both sides of the character.
+5. Rich blue water remaining visible underneath the splashes.
+6. Natural-looking foam bubbles distributed around the waterline.
+7. Water droplets and spray responding to movement.
+8. An animated wake following the character.
+9. Correct depth layering and water occlusion.
+10. Dynamic effects that react to lane changes, jumps, and movement.
+
+The character must look IMMERSED IN WATER.
+
+Do not use giant opaque foam piles or a flat white collar that hides the character.
+
+Use the existing water shader and improve the underlying rendering and geometry rather than adding more decorative objects that obscure the scene.
+
+PHASE 5 — RECREATE THE ORIGINAL BUBBLES
+
+Look at the transparent bubbles in the approved reference.
+
+They are glossy, transparent, rainbow-reflective soap bubbles.
+
+They appear at different depths throughout the scene.
+
+Please create:
+
+- Small transparent bubbles near the water.
+- Medium bubbles floating through the tunnel.
+- A few larger iridescent bubbles near the sides.
+- Bubble reflections and delicate colorful highlights.
+- Bubbles both in front of and behind the character.
+- Animated bubble motion and natural variation.
+
+Do not fill the foreground with oversized opaque blue spheres.
+
+The bubbles should enhance the magical water atmosphere without obscuring the hero or collectibles.
+
+PHASE 6 — IMPROVE THE GOLD PAW COINS AND PURPLE GEM
+
+Look at the approved image.
+
+The paw coins are bright, glossy golden collectibles with luminous edges, strong dimensional highlights, and recognizable paw symbols.
+
+Please improve:
+
+- Metallic gold color and reflections.
+- Bright warm highlights and selective glow.
+- Paw-symbol readability.
+- Depth and thickness.
+- Coin size and screen-space placement.
+- Visual contrast against the blue tunnel.
+
+Also preserve the beautiful pink-purple gemstone.
+
+Coins and gems must remain REAL collectible game objects with working collisions and rewards.
+
+Do not replace them with a screenshot overlay.
+
+PHASE 7 — PRESERVE THE SOCKS AND FLUFFY BRUSHES
+
+Keep my friendly rescue-sock characters.
+
+They need to retain their cute facial expressions, purple-and-white coloring, and placement within the tunnel.
+
+Keep my existing fluffy washing-machine brushes.
+
+Do not generate another Tripo brush unless I explicitly authorize it.
+
+Match the approved brush placement and apparent size:
+
+- Pink, white, and blue tufts.
+- Soft, rounded fluff.
+- Large side framing.
+- Not blocking the main character.
+- Not covering the important tunnel lighting and collectibles.
+
+PHASE 8 — RECREATE THE ORIGINAL LIGHTING
+
+Look carefully at the brightness of the ORIGINAL approved Screen 4.
+
+I want the same luminous, magical atmosphere.
+
+Implement:
+
+- Bright electric-blue lighting inside the tunnel.
+- Cyan reflections on the tunnel walls.
+- Turquoise light reflecting from the water.
+- Soft lavender illumination across the washer wall.
+- Warm golden highlights on the entrance and coins.
+- Sparkling white reflections on bubbles and splashes.
+- Rich blue shadows that preserve contrast.
+- Controlled bloom and exposure.
+
+Do not simply raise overall brightness.
+
+The game must remain richly colored, not washed out or overly white.
+
+PHASE 9 — MATCH THE CAMERA AND COMPOSITION
+
+Use a fixed, reproducible gameplay moment for the first comparison.
+
+Match:
+
+- The upper lavender-and-gold washer entrance.
+- The tunnel's shape and perspective.
+- The location of the tunnel's bright center.
+- The pink character's apparent size and position.
+- The visible waterline around the character.
+- The placement of fluffy brushes.
+- Gold coins, purple gems, smiling socks, and bubbles.
+- The overall depth and sense of movement.
+
+The screenshot should resemble the original approved Screen 4 as closely as possible.
+
+Keep the real gameplay route and movement intact.
+
+If a camera adjustment improves one still frame but damages gameplay, revise the camera rather than sacrificing playability.
+
+PHASE 10 — PRESERVE MY EXISTING MOBILE GAME
+
+DO NOT CHANGE:
+
+- My pink fluffy main character's identity.
+- Lane controls and movement.
+- Rescue 5 lost socks mission.
+- Five-heart system.
+- Coins and gems.
+- Bubble Blast.
+- Turbo Spin.
+- Collectible collision and progression.
+- Existing approved screens outside Screen 4.
+
+Preserve the existing game and previous Round 6 work.
+
+Use a separate visual test mode or branch.
+
+Do not replace the working game with static artwork.
+
+PHASE 11 — USE AVAILABLE SPECIALIZED TOOLS
+
+Use the tools already available in my project:
+
+- Three.js rendering and shaders.
+- Blender for geometry and asset processing when needed.
+- Existing 3D models and textures.
+- Playwright for actual gameplay captures.
+- Chrome DevTools for shader and rendering diagnosis.
+- Existing visual-matching skill and specialized design agents, where available.
+
+Use these tools to implement substantial improvements.
+
+Please do not waste time installing more plugins, generating more brushes, or repeatedly performing setup verification.
+
+Only request a new tool when a specific missing capability is proven to block progress.
+
+PHASE 12 — IMPLEMENT, COMPARE, AND SAVE
+
+Work in these three visual milestones:
+
+A. Correct the lavender washer wall, gold rim, blue tunnel, and camera composition.
+
+B. Correct the turquoise flowing water, contact splashes, wake, and transparent bubbles.
+
+C. Correct collectible materials, lighting, overall color, and final visual integration.
+
+At each milestone:
+
+1. Capture a screenshot from the ACTUAL playable game.
+2. Compare it directly with the ORIGINAL approved Screen 4.
+3. Check the visible differences in geometry, colors, positions, water, and lighting.
+4. Keep changes that meaningfully improve the result.
+5. Reject changes that make it look less like the original.
+6. Check mobile frame rate and gameplay functionality.
+7. Commit and push completed work to GitHub.
+
+Provide the branch and verified commit ID.
+
+FINAL DELIVERABLES
+
+Please show me:
+
+- My ORIGINAL approved Screen 4.
+- The latest previous real gameplay screenshot.
+- The newly improved real gameplay screenshot.
+- A full-resolution side-by-side comparison.
+- A short video of the real playable Screen 4.
+- Confirmation that the mission, movement, coins, socks, and power-ups work.
+- The exact GitHub branch and pushed commit.
+
+Do not claim 90% similarity merely because color measurements improve.
+
+Evaluate the actual appearance and explain remaining differences.
+
+FINAL INSTRUCTION: I ONLY WANT TO WORK ON SCREEN 4 RIGHT NOW. Make its scenery, blue tunnel, purple wall, gold rim, glowing water, splashes, bubbles, coins, and lighting match my ORIGINAL APPROVED artwork as closely as the real playable 3D game allows. Start implementing the highest-impact corrections instead of creating another long plan.
+
+_[6 images attached]_
+
+---
+
+### Claude · 2026-11-04 20:16 UTC
+
+I'll treat your original approved Screen 4 as the final authority and the two guides as construction notes. Saving your new reference boards first, then checking the code for the coins, the mission card and the brushes.
+
+---
+
+### You (sent while Claude was working) · 2026-11-04 20:16 UTC
+
+Claudia, before continuing my Bubble Wash Kingdom Screen 4 reconstruction, please verify that my specialized 3D DESIGN AGENT is available and being used.
+
+Please check these four agents:
+
+1. 3D Game Art Director — Oversees matching my ORIGINAL APPROVED Screen 4.
+2. Tunnel & Lighting Specialist — Improves the purple washer wall, gold rim, glowing blue tunnel, and lighting.
+3. Water & VFX Specialist — Improves rushing turquoise water, white splashes, bubbles, and character immersion.
+4. Visual Testing Specialist — Compares actual gameplay screenshots against my approved artwork.
+
+Please:
+
+- Check ".claude/agents/" for their definitions.
+- Verify which agents can actually be invoked in this Claude Code session.
+- Activate or invoke the 3D Game Art Director using the supported agent tools.
+- Have the Art Director review the THREE Screen 4 reference images I attached.
+- Confirm whether the Art Director is actually running or has completed a review, not simply that its file exists.
+- Have the Art Director coordinate the other available specialists.
+
+If any agents are missing, create reusable project-level agents where supported. If agent execution isn't supported in this environment, explain that clearly.
+
+IMPORTANT: Work ONLY on Screen 4. Do not work on Screen 1, Laundry Toss, or the opening animation.
+
+Please tell me in simple language:
+
+1. Is my 3D Game Art Director available?
+2. Did you successfully invoke it?
+3. Which specialists are working on Screen 4?
+4. What visual improvement are they implementing right now?
+
+Then continue improving my REAL playable Screen 4 to match my ORIGINAL APPROVED image as closely as possible.
+
+Preserve my existing gameplay and GitHub progress.
+
