@@ -730,3 +730,63 @@ _[Sent you files: Previews/WebDemo/screen4_round6_reconstruction/combined_previe
 
 Waiting for the last three checks: the combined preview's controls check, Round 6's power-up check, and the combined preview recording.
 
+_[Sent you files: Previews/WebDemo/screen4_round6_reconstruction/bubblewash_round6_rich_preview.mp4]_
+
+Everything is saved on GitHub, and I've built the combined version you asked for as a separate preview. Your pass 3 version is preserved exactly as it was, and the normal game is unchanged.
+
+**Saved on GitHub:** branch `ccr-3876cb6e-qwegol`, latest commit **`2e55cc3`**, confirmed on GitHub after each save. Chat history is saved too, with your Tripo key blanked out. An automatic save runs every 5 minutes until about 21:10 UTC.
+
+## Your versions (open the game with these endings on the address)
+| Version | How to open | Status |
+|---|---|---|
+| Normal game | no ending | untouched |
+| Round 5 (recovered) | `?s3=round5` | untouched |
+| Round 6 pass 3, the one you like | `?s3=round6` | kept exactly as it was |
+| **Combined preview** | **`?s3=round6,rich`** | new, for your review |
+
+I checked with screenshot comparisons that the normal game, Round 4, Round 5 and pass 3 still look identical to the pixel.
+
+## What the combined preview does
+- **From your exact target board:** the purple-and-gold entrance, the tunnel structure, where the brushes sit, the water layout, the camera, and the coins, gem and sock at the drum's mouth.
+- **From your original approved Screen 4:** I measured what makes it look rich. It isn't stronger colour; it's deep blue sitting right next to bright white sparkles. The preview adds more of that, plus more glassy bubbles at different depths, more swirl and sparkle in the water, and a softer glow. I also made the gold more yellow, because the stronger lighting was turning it red-orange.
+
+## Which is closest
+- **To your exact target board:** pass 3. It scores best on where the character, coins and gem sit, and on the centre, left side and water areas.
+- **To the richness of your original:** the combined preview. Deeper in the tunnel (from 3.6 s) the sparkle more than doubles and the image gains depth. At the entrance moment (3.0 s) it looks almost the same as pass 3.
+- **I can't give you a percentage similarity.** These measurements don't prove one.
+
+## What still looks different
+- Sparkle is still only about half of your original's at 4.2 s, and a tenth at the entrance moment.
+- Your board's water and white splashes are taller and fuller than the game's.
+- The brushes and coins are smaller and further down the tunnel than on your board.
+- The character's soft fluffy edge isn't done yet. A model for it exists from an earlier session but was never connected to the game. That's my suggested next step.
+
+## Gameplay is fine
+- Steering, jumping and keyboard start work.
+- Coins and socks collect.
+- Hearts are lost to brushes, and the run restarts at "5 Full".
+- Pause, Bubble Blast and Turbo Spin work.
+- No errors appeared in any test.
+
+I fixed one real bug along the way: a calculation in the water-splash effect sometimes blanked whole frames to plain lavender.
+
+## Recovery and setup
+- **Recovery:** nothing was lost. I continued from your newest save, `5586dc6`, and merged in two older branches that only held notes.
+- **Plugins:**
+  - Working here: Playwright, GitHub, Frontend Design and Claude Code Setup.
+  - Available as built-in skills: Skill Creator, Code Review and the code simplifier.
+  - Not present in this cloud session: TypeScript LSP (installed, but its tool never appeared), Context7, Superpowers, Chrome DevTools, CLAUDE.md Management, Security Guidance, Commit Commands, Feature Dev and Pyright LSP.
+  - I couldn't check your account-level installs from here.
+- **Tools:** all present except Vite, which this game doesn't need.
+- **Agents and skill:** you now have all four specialist agents (I added the gameplay-testing one), and your screen-matching skill was there and is updated.
+- **Tripo:** signed in, **760 credits, nothing spent**. Because you pasted the key into this chat and the repository is public, I'd suggest creating a new key on Tripo's site and deleting that one.
+
+## Files I sent you
+I also sent the pass 1 and pass 2 comparisons earlier in the session; they're in the same folder.
+- combined_preview_vs_both_references_full.png
+- combined_preview_in_motion.jpg
+- bubblewash_round6_pass3.mp4
+- bubblewash_round6_rich_preview.mp4
+
+All are in `Previews/WebDemo/screen4_round6_reconstruction/`, with full notes in `README.md` there.
+
