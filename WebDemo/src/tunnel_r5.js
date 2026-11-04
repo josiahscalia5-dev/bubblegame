@@ -24,8 +24,14 @@ export const ROUND5 = {
   camera: { off: [0, 1.15, -4.3], lookY: 1.3, fov: 64 },
   // the foreground foam (tunnel_r3.js foamHeaps and foam bubbles, round4's settings overridden here): white froth over
   // turquoise and aqua, as in the approved picture and the tunnel sheet, instead of round4's deep-blue and lavender balls
-  foam: { white: 1.1, deep: [0.04, 0.3, 0.85], aqua: [0.15, 0.6, 1.0] },
-  foamBubbles: { inner: [0.55, 0.8, 1.0], deep: [0.08, 0.4, 0.95], bright: 1.12 },
+  // The approved foreground is a saturated blue base with crisp white detail (translucent blue bubbles with white rims, white
+  // flecks everywhere); round4's foam was the reverse, a white base (white on every lit side) with pale-blue detail.
+  foam: { white: 0.6, deep: [0.01, 0.2, 0.88], aqua: [0.12, 0.58, 1.0] },
+  foamBubbles: { inner: [0.35, 0.62, 1.0], deep: [0.04, 0.24, 0.9], bright: 1.05 },
+  // spray round the mascot (game.js stepRound3): many small crisp white flecks, not round4's big soft blobs (they read as mist)
+  spray: { rate: 650, size: [0.03, 0.09] },
+  // the drum's colour grade (tunnel_s4.js round2Light, round4's overridden): the approved picture's strong blue-white contrast
+  grade: { contrast: 1.32, saturation: 1.4 },
   // the drum's path (track.js opts.curve): the climb, drop and turns kept but gentler, so the far tunnel's bright heart
   // stays near the middle of the view, as in the approved Screen 4 (Round 4 and the normal game keep the full path)
   path: { curve: 0.3 },
@@ -39,6 +45,13 @@ export const ROUND5 = {
   droplets: { count: 700, near: 3, far: 22, radius: [0.35, 1.85], size: [0.02, 0.06], swirl: 0.35, flow: 2.2, scale: 420, maxPx: 14 },
   bubbles: { count: 64, du: [-1.4, 14], x: [0.3, 1.6], h: [0.2, 2.6], r: [0.04, 0.36], flow: 1.6, film: 1.7 },   // none right in front of the camera: their film fogged the view
   fur: { shells: 8, length: 0.05, density: 260, tip: 0.5, halo: 0.45 },
+  // thick white splash crests round the mascot (the approved picture's white foam masses either side of the hero and in front
+  // of it): camera-facing cards with a painted foam texture, riding the water with the mascot, bobbing and breathing.
+  // spots: [sideways, height above the water, ahead (+) or behind (-), size], in metres from the mascot
+  // (nothing tall between the camera and the mascot: in front of it only low crests that hide its base, as in the approved picture)
+  crests: { spots: [[-1.0, 0.0, 0.2, 1.1], [1.0, 0.0, 0.2, 1.1], [-1.45, 0.05, 1.1, 1.3], [1.45, 0.05, 1.1, 1.3],
+    [-0.5, -0.3, -0.5, 0.55], [0.5, -0.3, -0.5, 0.55], [-0.85, -0.2, -0.9, 0.7], [0.85, -0.2, -0.9, 0.7]],
+    bob: 0.05, breathe: 0.08, opacity: 0.95 },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round5;
@@ -53,6 +66,7 @@ export function buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass
   if (ROUND5.hideRings) for (const n of ['r4GlowRings', 'r4GoldRings']) { const o = scene.getObjectByName(n); if (o) o.visible = false; }
   report.droplets = droplets({ scene, TR, mascot, updaters, time, inside, axisH });
   report.heart = heart({ scene, TR, L, mascot, updaters, time, inside, axisH });
+  report.crests = splashCrests({ scene, TR, W, mascot, updaters, time, inside });
   if (bloomPass) {   // runs after round2's own bloom updater, so it has the last word inside the drum
     const B = ROUND5.bloom, s0 = bloomPass.radius, t0 = bloomPass.threshold;
     let base = null;
@@ -200,4 +214,56 @@ void main() {
   gl_FragColor = vec4(col * uFade, 1.0);
 }
 `;
+// ---------------------------------------------------------------- thick white splash crests round the mascot
+// The texture is painted once in code (no image file): a mound of overlapping foam lumps, white on top with soft blue shading
+// underneath and between them, small bubbles and glints, and a ragged, irregular outline. Private random numbers only.
+function crestTexture(seed) {
+  const N = 256, cv = document.createElement('canvas'); cv.width = cv.height = N;
+  const g = cv.getContext('2d'), rnd = mulberry5(seed);
+  const lump = (x, y, r, top, mid, edge) => {
+    const gr = g.createRadialGradient(x - r * 0.25, y - r * 0.35, r * 0.1, x, y, r);
+    gr.addColorStop(0, top); gr.addColorStop(0.55, mid); gr.addColorStop(1, edge);
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+  };
+  // back row bluer and lower, front row whiter and higher in the middle: a crest, not a ball
+  for (let pass = 0; pass < 2; pass++) for (let i = 0; i < 46; i++) {
+    const t = rnd(), x = 18 + t * (N - 36), arch = Math.sin(t * Math.PI);
+    const y = N * (0.78 - 0.42 * arch * (0.6 + 0.4 * rnd())) + (pass ? 10 : 0), r = 10 + rnd() * 26 * (0.5 + arch * 0.7);
+    if (pass === 0) lump(x, y, r * 1.1, 'rgba(225,240,255,0.95)', 'rgba(120,185,255,0.9)', 'rgba(40,110,235,0)');
+    else lump(x, y, r, 'rgba(255,255,255,1)', 'rgba(232,244,255,0.97)', 'rgba(150,200,255,0)');
+  }
+  for (let i = 0; i < 70; i++) {   // small bubbles: a blue-white ring with a glint
+    const x = 20 + rnd() * (N - 40), y = N * (0.35 + rnd() * 0.5), r = 2 + rnd() * 6;
+    g.strokeStyle = 'rgba(255,255,255,0.9)'; g.lineWidth = 1.2; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.stroke();
+    g.fillStyle = 'rgba(90,160,255,0.35)'; g.beginPath(); g.arc(x, y, r * 0.8, 0, Math.PI * 2); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.95)'; g.beginPath(); g.arc(x - r * 0.35, y - r * 0.35, r * 0.25, 0, Math.PI * 2); g.fill();
+  }
+  for (let i = 0; i < 40; i++) {   // flung droplets above the crest
+    const x = 20 + rnd() * (N - 40), y = N * (0.08 + rnd() * 0.35), r = 1 + rnd() * 3.5;
+    g.fillStyle = 'rgba(255,255,255,0.95)'; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+  }
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; return tex;
+}
+function splashCrests({ scene, TR, W, mascot, updaters, time, inside }) {
+  const P = ROUND5.crests, group = new THREE.Group(); group.name = 'r5Crests'; group.visible = false; scene.add(group);
+  const texs = [crestTexture(0xc1e5), crestTexture(0xc2e5), crestTexture(0xc3e5)];
+  const cards = P.spots.map(([dx, dh, du, s], i) => {
+    const m = new THREE.SpriteMaterial({ map: texs[i % 3], transparent: true, depthWrite: false, opacity: P.opacity, fog: false });
+    const sp = new THREE.Sprite(m); sp.center.set(0.5, 0.15); sp.renderOrder = 5; sp.frustumCulled = false; group.add(sp);
+    return { sp, dx, dh, du, s, ph: i * 1.7 };
+  });
+  const v = new THREE.Vector3();
+  updaters.push(() => {
+    const k = inside(); group.visible = k > 0.01; if (!group.visible) return;
+    const t = time.value;
+    for (const c of cards) {
+      TR.map(mascot.x + c.dx, W.WATER + c.dh + Math.sin(t * 2.3 + c.ph) * P.bob, mascot.z + c.du, v);
+      c.sp.position.copy(v);
+      const b = 1 + Math.sin(t * 3.1 + c.ph * 1.3) * P.breathe; c.sp.scale.set(c.s * b * 1.25, c.s * b, 1);
+      c.sp.material.opacity = P.opacity * k;
+    }
+  });
+  return { cards: cards.length };
+}
+
 function mulberry5(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

@@ -483,7 +483,7 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
     if (exitLight[1]) exitLight[1].material.color.setRGB(0.12, 0.16, 0.3);
     out.exit = true;
   }
-  const G = ROUND2.grade;
+  const G = ROUND2.grade, G4 = round2.round5 ? { ...ROUND4.grade, ...ROUND5.grade } : ROUND4.grade;   // round5: its own drum grade (tunnel_r5.js)
   if (grade && grade.material.fragmentShader.includes('if (uOpen > 0.0) {')) {
     grade.uniforms.uS4Grade = { value: 0 };
     grade.material.fragmentShader = grade.material.fragmentShader.replace('uniform sampler2D tDiffuse;', 'uniform sampler2D tDiffuse; uniform float uS4Grade;')
@@ -497,10 +497,10 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
         float kn = l2 > ${G.knee.toFixed(3)} ? ${G.knee.toFixed(3)} + (l2 - ${G.knee.toFixed(3)}) / (1.0 + (l2 - ${G.knee.toFixed(3)}) * ${G.roll.toFixed(3)}) : l2;
         g *= kn / max(l2, 1e-4);
         c.rgb = mix(c.rgb, g, uS4Grade);${round2.round4 ? `
-        { vec3 h = c.rgb * ${ROUND4.grade.exposure.toFixed(3)};   // ?s3=round4: richer and less pastel inside the drum
+        { vec3 h = c.rgb * ${G4.exposure.toFixed(3)};   // ?s3=round4: richer and less pastel inside the drum
           float lh = dot(h, vec3(0.2126, 0.7152, 0.0722));
-          h = mix(vec3(lh), h, ${ROUND4.grade.saturation.toFixed(3)});
-          h = (h - ${ROUND4.grade.pivot.toFixed(3)}) * ${ROUND4.grade.contrast.toFixed(3)} + ${ROUND4.grade.pivot.toFixed(3)};
+          h = mix(vec3(lh), h, ${G4.saturation.toFixed(3)});
+          h = (h - ${G4.pivot.toFixed(3)}) * ${G4.contrast.toFixed(3)} + ${G4.pivot.toFixed(3)};
           c.rgb = mix(c.rgb, max(h, 0.0), uS4Grade); }` : ''}
       }
       if (uOpen > 0.0) {`);

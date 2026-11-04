@@ -60,3 +60,40 @@ less often in the approved places. This is not yet 90%. The largest remaining di
   to Start, 1, 3.6, 4.2 and 6 s).
 - Round 5 controls (`s3_func.cjs`): tap, swipe left and right, jump, keyboard start, coins and socks collected; no console
   errors. Pause, Bubble Blast and Turbo Spin pass. Tunnel frame cost: 134 draw calls, 1.2 M triangles.
+
+## Pass 2 (4 November, evening): the Tripo coin, the water rebuilt around blue, splash crests
+
+**Hero moment:** 3.6 s, just inside the drum, where the brushes frame both sides of the tunnel as in the approved picture.
+
+What changed (still only with `?s3=round5`; Round 4 and the normal game are still pixel-identical to `21c054c`):
+
+- **Gold paw coin generated with Tripo P2** from the user's coin sheet (`Design/ReferencePacks/2026-11-04_Round5_References/03_COIN_GEM_SOCK_SHEET.png`,
+  the three-quarter view): one job, 120 credits (balance 1,000 -> 880). Tripo modelled the paw on one face only, so Blender
+  keeps that half and mirrors it (both faces embossed), centres it, turns its faces onto Z and scales it to the game coin's
+  radius 0.3 (collecting unchanged). `models/coin_p2.glb` (11,186 triangles, 1024 px WebP textures, 0.36 MB) near the camera,
+  `models/coin_p2_lo.glb` (1,500 triangles, 0.07 MB) further away; loaded only with `?s3=round5`. Warmed toward the approved
+  bright yellow gold and given the paw coin's self-glow.
+- **Water rebuilt around blue:** the approved foreground is a saturated blue base with crisp white detail; Round 4 and the
+  first Round 5 pass were the reverse (white on every lit side). Foam now azure and aqua with white only on bubble rims and
+  the brightest crests; foam bubbles translucent periwinkle; spray small crisp white flecks instead of big soft blobs (mist).
+- **Splash crests:** camera-facing cards with a foam texture painted in code (white lumps over blue shading, small bubbles,
+  flung droplets), flanking the character and low in front of it, bobbing and breathing with the water.
+- **Drum colour grade:** stronger saturation and contrast for the approved blue-white punch.
+
+Measured at 3.6 / 4.2 s (play area): gold 6.5% / 7.8% (approved 8.0%); white foam and splash 17.5% / 15.9% (approved 20.8%;
+previous pass 26.2% / 24.6%); deep blue 0.4% / 0.7% (approved 6.2%; previous pass 3.2% / 4.8%: the stronger grade pushed the
+dark blues out of the measured range); mean colour difference 26.3 / 24.9 (previous pass 25.8 / 24.7). So, numerically
+neutral: better coin gold and white amount, worse deep blue.
+
+By eye: the foreground reads as blue bubble foam with white crests instead of pale mist, and the coins are real embossed paw
+coins. **The largest remaining differences are composition, not colour:** the approved picture has big coins near the camera
+on both sides, the gem up and to the left and the sock on the right; the character lower and half sunk in foam; brushes at
+the edges, partly cut off; and a painterly tunnel of water rings with white streaks and a lavender glow up and to the left,
+where the game has bold ring stripes and a gold arc.
+
+Evidence: `pass2_approved_vs_previous_vs_new_t3.6.jpg`, `..._t4.2.jpg` (full resolution), `bubblewash_round5_pass2.mp4`,
+`round5_previous_vs_pass2.mp4`.
+
+Checks: Round 4 and normal game pixel-identical (0 differing pixels); controls pass (lanes, jump, keyboard start, coins and
+socks collected), pause, Bubble Blast and Turbo Spin pass; the 12 s recording visits all three lanes and collects 4 socks; no
+console errors. Tunnel frame cost: 142 draw calls, 1.21 M triangles.

@@ -98,6 +98,8 @@ const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
   mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', machinery: 'models/machinery.glb',
   tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb',
+  // ?s3=round5: the gold paw coin generated with Tripo P2 from the user's coin sheet (both faces embossed), and a light copy
+  coinP2: 'models/coin_p2.glb', coinP2Lo: 'models/coin_p2_lo.glb',
 };
 const progress = {};
 function showProgress() {
@@ -630,7 +632,22 @@ function buildBubbles() {
 }
 
 // ------------------------------------------------------------------ collectibles
-function buildCollectibles(gemGltf, face) {
+// ?s3=round5: the Tripo coin (its own PBR textures) with the round2 paw coin's warm self-glow and golden rim light, so it stays
+// bright gold when backlit in the drum. Same size and orientation as the paw coin (radius 0.3, faces along +Z and -Z).
+function tripoCoin([hiG, loG], env) {
+  const first = (g) => { let m = null; g.scene.traverse((o) => { if (o.isMesh && !m) m = o; }); return m; };
+  const hi = first(hiG), lo = first(loG), mat = hi.material;
+  mat.envMap = env; mat.envMapIntensity = 1.5;
+  mat.color.setRGB(1.0, 1.14, 0.72);   // Tripo's warm orange gold toward the approved bright yellow gold
+  mat.onBeforeCompile = (s) => {
+    s.fragmentShader = s.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+  totalEmissiveRadiance += diffuseColor.rgb * 0.5 + vec3(1.0, 0.92, 0.5) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 3.0) * 0.45;`);
+  };
+  mat.customProgramCacheKey = () => 'tripoCoin';
+  return { hi: hi.geometry, lo: lo.geometry, mat };
+}
+
+function buildCollectibles(gemGltf, face, coinP2 = null) {
   face.colorSpace = THREE.SRGBColorSpace;   // loaded before the first frame, so the portal coins never show dark
   // Coins glow gold even when backlit in the portal, as in the approved screens.
   const goldFace = new THREE.MeshStandardMaterial({ map: face, color: 0xffffff, metalness: 0.6, roughness: 0.3, envMap: mats.env, emissive: 0x8a5a00, emissiveMap: face, emissiveIntensity: 1.25 });
@@ -640,7 +657,8 @@ function buildCollectibles(gemGltf, face) {
   const coinMats = [coinRim, goldFace, goldFace];
   // round2: embossed gold paw coins, a detailed one near the camera and a lighter one further away (made with private random
   // numbers, so the game's own random sequence is unchanged)
-  const paw = R2 ? withPrivateRandom(makeRandom(0x9a3c), () => ({ hi: pawCoinGeometry('high'), lo: pawCoinGeometry('low'), mat: pawCoinMaterial(mats.env) })) : null;
+  const paw = R2 ? withPrivateRandom(makeRandom(0x9a3c), () => (coinP2 ? tripoCoin(coinP2, mats.env)   // round5: the Tripo coin
+    : { hi: pawCoinGeometry('high'), lo: pawCoinGeometry('low'), mat: pawCoinMaterial(mats.env) })) : null;
   const addCoin = (p, compose) => {
     const u0 = p.z;
     p = TR.map(p.x, p.y, p.z);   // straight layout -> 3D path
@@ -1063,7 +1081,7 @@ function stepRound2(dt) {
 function stepRound3(dt) {
   const m = mascot, R = r3Rnd;
   if (state.phase !== 'running' || m.z < L.tunnelStart - 0.3) return;
-  const P = R4 ? { ...ROUND3.spray, ...ROUND4.spray } : ROUND3.spray, surf = W.surface(L, m.x, m.z, state.time);   // round4: heavier spray
+  const P = R4 ? { ...ROUND3.spray, ...ROUND4.spray, ...(R5 ? ROUND5.spray : {}) } : ROUND3.spray, surf = W.surface(L, m.x, m.z, state.time);   // round4: heavier spray
   if (!m.air) {
     m.r3Spray = (m.r3Spray || 0) + P.rate * dt;
     for (; m.r3Spray >= 1; m.r3Spray--) {
@@ -1610,7 +1628,8 @@ async function main() {
       fallGeometry, fallMaterial: mats.fallMat, fx });
     state.decorClear = decor.clear;
     buildBubbles();
-    buildCollectibles(gem, coinFace);
+    const coinP2 = R5 ? await Promise.all([loadGltf('coinP2'), loadGltf('coinP2Lo')]) : null;   // round5 only: the Tripo coin
+    buildCollectibles(gem, coinFace, coinP2);
     buildSocks(sock);
     buildMascot(mascotG);
     // The Screen 3 opening look (opening.js): a separate cosmetic layer, built with its own random numbers
