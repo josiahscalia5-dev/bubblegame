@@ -246,3 +246,5 @@ show me the video when it's done
 
 _[Sent you files: Previews/WebDemo/screen4_round2_test/bubblewash_round2_tunnel_final.mp4]_
 
+The auto-save had already committed those changes, and GitHub is at `0379000`. Waiting for the performance measurement:
+
