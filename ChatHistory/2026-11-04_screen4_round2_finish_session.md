@@ -745,3 +745,117 @@ Please implement this in my existing project and preserve all completed working 
 
 _[2 images attached]_
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 10:53 UTC
+
+npm install -g tripo-cli
+
+---
+
+### Claude · 2026-11-04 10:53 UTC
+
+While the checks run, I'm writing up the Houdini and Substance 3D Painter assessment you asked for (nothing bought or installed) and preparing the video recording.
+
+The round 3 checks are still running. Meanwhile I've written the tool that builds the comparison sheets.
+
+---
+
+### You (sent while Claude was working) · 2026-11-04 10:54 UTC
+
+tripo login
+
+---
+
+### Claude · 2026-11-04 10:56 UTC
+
+I made a mistake in that command: the round 3 frames were saved to the wrong folder (`/r3`). I'm moving them to the right place now.
+
+---
+
+### You (sent while Claude was working) · 2026-11-04 10:56 UTC
+
+BUBBLE WASH KINGDOM — FULL PROJECT & DEVELOPMENT ENVIRONMENT HANDOFF
+Claudia, I am continuing my existing Bubble Wash Kingdom 3D mobile game project from another Claude Code account.
+IMPORTANT: Do not restart my project or redesign the game. I need you to continue from the latest working GitHub repository.
+PROJECT
+Bubble Wash Kingdom is a real, playable Three.js Android-style 3D adventure/runner featuring my existing pink fluffy main character.
+My approved Screen 3 shows the magical washing-machine castle entrance, turquoise water slide, golden washer portal, bubbles, and pink character.
+My approved Screen 4 shows the inside of the washing machine, with a gorgeous glowing blue tunnel, enormous fluffy pink/blue/white washing brushes, dramatic white water splashes, turquoise water, golden paw coins, purple gems, floating bubbles, and cute collectible socks.
+The mission is to rescue five lost socks.
+My priority is making the actual moving gameplay match my approved screens as closely as technically possible.
+I do not want static screenshots used as substitutes for a complete playable 3D scene.
+1. CONNECT MY EXISTING PROJECT
+Please connect to my existing Bubble Wash Kingdom GitHub repository.
+Inspect the latest working branch and project files before making any changes.
+Preserve the existing pink character, HUD, gameplay controls, water-slide opening, tunnel transition, and working mechanics.
+Do not replace my original game with a new project.
+2. CHECK CLAUDE CODE PLUGINS
+Please verify whether these plugins or their equivalent capabilities are available:
+
+* Skill Creator
+* TypeScript LSP
+* Claude Code Setup
+* Chrome DevTools
+* Context7
+* Superpowers
+* Playwright
+* GitHub
+
+Tell me which need to be added to this Claude account and whether each works in my cloud coding environment.
+3. CHECK DEVELOPMENT TOOLS
+Please verify and configure these tools where appropriate:
+
+* Blender and its Python API
+* OpenCV
+* scikit-image
+* ImageMagick
+* glTF Transform
+* Khronos glTF Validator
+* Playwright with Chromium
+* GitHub repository access
+
+Keep dependencies compatible with the existing Three.js game.
+4. OPTIONAL 3D INTEGRATIONS
+Please investigate and configure these only if they will genuinely help:
+Tripo CLI:
+https://developers.tripo3d.ai/en/docs/cli
+Meshy MCP:
+https://www.meshy.ai/mcp
+If account authentication is needed, explain how to complete it securely.
+Do not spend paid credits or purchase subscriptions without asking me.
+5. CREATE AN APPROVED-SCREEN MATCHING SKILL
+Create a project-level Claude Code skill named:
+Bubble Wash Exact Screen Matcher
+Save it inside my repository under:
+.claude/skills/bubble-wash-screen-matcher/SKILL.md
+The skill must compare my actual playable game against my approved images and identify the most important visual mismatches.
+Use Playwright for real gameplay captures, image-analysis tools for comparison, Blender for geometry improvements, and Three.js for animated scenery and effects.
+Please preserve this skill in GitHub so it is available when I use the same repository with another Claude account.
+6. VISUAL QUALITY TARGET
+I want to work toward approximately 90–95% visual similarity wherever technically achievable.
+Specifically improve:
+
+* White water splashes and foam surrounding my pink character.
+* Giant fluffy pink, blue, and white rotating washing brushes.
+* Deep magical electric-blue/cyan washing-machine tunnel.
+* Real animated water and reflections.
+* Golden paw coins and purple gems.
+* Floating bubbles and glowing particles.
+* Detailed scenery, lighting, proportions, and composition.
+
+Use actual 3D objects, animated shaders, particles, and suitable visual effects.
+Do not make a still picture that only resembles gameplay.
+The final game must remain interactive and playable.
+7. TESTING AND RESULTS
+Run the real game using Playwright.
+Capture screenshots at consistent camera positions, gameplay timestamps, and mobile viewport dimensions.
+Show the approved screen beside the current and improved gameplay.
+Check movement, interactions, collisions, tunnel traversal, and performance.
+Do not claim a 90–95% match without showing evidence. Identify the remaining differences and keep improving the largest ones.
+8. SAVE ALL WORK
+Save the project changes, approved visual reference files, reusable skills, configuration instructions, and working gameplay improvements to GitHub.
+Keep secrets and credentials out of the repository.
+Do not overwrite existing working assets without maintaining a recoverable version.
+Please start by reviewing the existing GitHub project and confirming which development tools are available. Then continue improving Screen 4 toward my approved visual target.
+

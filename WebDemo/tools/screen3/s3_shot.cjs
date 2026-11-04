@@ -1,5 +1,5 @@
 // Seeded frames of the real 3D opening (artwork layer off), with the ?s3 model switches (and optionally ?phaseA).
-//   S3=castle,entrance FLAGS=phaseA TIMES=0,0.5,1,1.5,2 node s3_shot.cjs <demo-dir> <out-dir> '<s3 tune json>'
+//   S3=castle,entrance FLAGS=phaseA TIMES=0,0.5,1,1.5,2 [SETTLE=800] node s3_shot.cjs <demo-dir> <out-dir> '<s3 tune json>'   (demo-dir: an absolute path)
 // TIMES: game seconds after the tap (0 = Tap to Start, before the tap). Math.random seeded with 7.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -27,7 +27,8 @@ const server = http.createServer((req, res) => {
   }, [FLAGS, TUNE, S3]);
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
-  const shot = async (f) => page.screenshot({ path: path.join(OUT, f), clip: await page.locator('#stage').boundingBox(), fullPage: true });
+  // SETTLE (ms): wait before each screenshot so the HUD's CSS fades (which run on real time, not game time) have finished
+  const shot = async (f) => { if (process.env.SETTLE) await page.waitForTimeout(+process.env.SETTLE); return page.screenshot({ path: path.join(OUT, f), clip: await page.locator('#stage').boundingBox(), fullPage: true }); };
   await page.evaluate(() => window.__bw.advance(0.5));
   const out = [];
   if (TIMES.includes(0)) { await shot('t0.png'); out.push(['tap', await page.evaluate(() => window.__bw.state().camera)]); }

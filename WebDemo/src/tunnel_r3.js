@@ -15,12 +15,12 @@ import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 
 export const ROUND3 = {
-  // the approved rings are cyan, azure and white with a pastel pink band (round2: pink, lavender, cyan, orchid, gold)
-  ringColours: [[0.22, 0.52, 1.0], [0.85, 0.95, 1.0], [0.16, 0.78, 1.0], [0.3, 0.42, 1.0], [1.0, 0.58, 0.9]],
+  // the approved rings: glowing cyan, blue, pink and lavender (round2: pink, lavender, cyan, orchid, gold)
+  ringColours: [[0.16, 0.8, 1.0], [0.25, 0.45, 1.0], [1.0, 0.45, 0.85], [0.72, 0.56, 1.0], [0.75, 0.95, 1.0]],   // cyan, blue, pink, lavender, white-cyan
   ringGlow: 0.6,                                         // the rings' light (round2: 1.0), so the deep blue between them shows
   wallDeep: [[0.01, 0.035, 0.26], [0.1, 0.26, 0.8]],    // the drum's walls deep royal blue (round2: violet; measured: too pale)
   // white water running round the drum in rings (the approved tunnel's concentric white-water bands)
-  swirl: { radius: 1.93, rowStep: 0.3, around: 72, from: 4, to: 176, strength: 1.0, white: 1.0, blue: 0.3, bands: 1.7, twist: 0.35 },
+  swirl: { radius: 1.93, rowStep: 0.3, around: 72, from: 4, to: 176, strength: 1.3, white: 1.0, blue: 0.3, bands: 1.7, twist: 0.35, far: 1.0 },
   water: { azure: [0.1, 0.4, 0.95], azureMix: 0.35, foam: 0.75 },   // the drum's water: azure, not turquoise, with white churn (tunnel_s4.js)
   foam: {
     count: 96, bright: 1.12, cells: 2.6,   // cells: bubbles across a heap
@@ -173,7 +173,7 @@ function swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aAU', new THREE.BufferAttribute(ua, 2)); g.setIndex(idx);
   g.computeBoundingSphere();
-  const u = { uTime: time, uStrength: { value: P.strength }, uEnds: { value: new THREE.Vector2(TS, TE + 4) }, uFade: { value: 0 }, uMix: { value: new THREE.Vector2(P.white, P.blue) }, uBands: { value: new THREE.Vector2(P.bands, P.twist) } };
+  const u = { uTime: time, uStrength: { value: P.strength }, uEnds: { value: new THREE.Vector2(TS, TE + 4) }, uFade: { value: 0 }, uMix: { value: new THREE.Vector2(P.white, P.blue) }, uBands: { value: new THREE.Vector2(P.bands, P.twist) }, uFar: { value: P.far } };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: SWIRL_VERTEX, fragmentShader: SWIRL_FRAGMENT, transparent: true, depthWrite: false,
     blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(g, mat); mesh.name = 'r3Swirl'; mesh.renderOrder = 3; mesh.visible = false; mesh.frustumCulled = false;
@@ -195,7 +195,7 @@ void main() {
 // ahead, fading near the camera (so it never covers the view) and at the drum's ends
 const SWIRL_FRAGMENT = /* glsl */ `
 ${NOISE}
-uniform float uTime, uStrength, uFade; uniform vec2 uEnds, uMix, uBands;
+uniform float uTime, uStrength, uFade, uFar; uniform vec2 uEnds, uMix, uBands;
 varying vec2 vAU; varying float vDepth;
 void main() {
   float a = vAU.x, u = vAU.y;
@@ -213,7 +213,7 @@ void main() {
   vec2 g = vec2(a * 30.0, u * 4.0 - uTime * 0.6), c = floor(g);
   float hs = fract(sin(dot(c, vec2(12.9898, 78.233))) * 43758.5453);
   float sparkle = step(0.93, hs) * (1.0 - smoothstep(0.0, 0.22, length(fract(g) - 0.5))) * (0.5 + 0.5 * sin(uTime * 4.0 + hs * 40.0));
-  float near = smoothstep(1.2, 3.5, vDepth) * (1.0 - 0.5 * smoothstep(10.0, 26.0, vDepth));
+  float near = smoothstep(1.2, 3.5, vDepth) * (1.0 - (1.0 - uFar) * smoothstep(10.0, 26.0, vDepth));   // uFar 1: as white far down the tube
   float ends = smoothstep(uEnds.x, uEnds.x + 1.5, u) * (1.0 - smoothstep(uEnds.y - 2.0, uEnds.y, u));
   float k = near * ends * uFade;
   float aW = clamp(white * uStrength * k, 0.0, 0.92);
