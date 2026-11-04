@@ -18,7 +18,7 @@ renderer.setSize(W, H); renderer.setPixelRatio(1); document.body.appendChild(ren
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 const scene = new THREE.Scene(); scene.background = new THREE.Color('#1d4fd0');
 const cam = new THREE.PerspectiveCamera(30, W / H, 0.05, 50);
-const brushes = { right: makeFluffyBrush(false), left: makeFluffyBrush(true) };
+const brushes = { right: makeFluffyBrush(false, ${process.env.BALLS ? '{ balls: true }' : '{}'}), left: makeFluffyBrush(true, ${process.env.BALLS ? '{ balls: true }' : '{}'}) };   // BALLS=1: round5's ball tufts
 window.__stats = brushes.right.userData.fluffy;
 window.__show = (which, spinDeg) => {
   for (const k in brushes) scene.remove(brushes[k]);

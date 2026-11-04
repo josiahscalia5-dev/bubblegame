@@ -17,6 +17,9 @@ export const ROUND5 = {
   // the drum's path (track.js opts.curve): the climb, drop and turns kept but gentler, so the far tunnel's bright heart
   // stays near the middle of the view, as in the approved Screen 4 (Round 4 and the normal game keep the full path)
   path: { curve: 0.3 },
+  // the luminous heart far down the tube (approved Screen 4 and the tunnel sheet): a glowing white core, warm gold and soft pink
+  // halo and slow rays, on the path's axis this far ahead; depth-tested, so the sock, coins and brushes pass in front of it
+  heart: { ahead: 16, radius: 2.4, core: 1.6, rays: 0.35 },
   hideRings: true,
   // bloom inside the drum (outside it is the game's own): strength, radius, threshold
   bloom: { strength: 0.75, radius: 0.85, threshold: 0.72 },
@@ -36,6 +39,7 @@ export function buildRound5({ scene, TR, L, W, mascot, updaters, time, bloomPass
   report.vortex = vortexLining(scene, time, TS);
   if (ROUND5.hideRings) for (const n of ['r4GlowRings', 'r4GoldRings']) { const o = scene.getObjectByName(n); if (o) o.visible = false; }
   report.droplets = droplets({ scene, TR, mascot, updaters, time, inside, axisH });
+  report.heart = heart({ scene, TR, L, mascot, updaters, time, inside, axisH });
   if (bloomPass) {   // runs after round2's own bloom updater, so it has the last word inside the drum
     const B = ROUND5.bloom, s0 = bloomPass.radius, t0 = bloomPass.threshold;
     let base = null;
@@ -88,6 +92,41 @@ void main() {
   float rb = exp(-pow((vDepth - ${ROUND5.vortex.rainbowAt.toFixed(1)}) / 2.0, 2.0)) * ${ROUND5.vortex.rainbow.toFixed(3)};
   col += (0.5 + 0.5 * cos(6.2832 * (a / 6.2832 * 2.0 + vec3(0.0, 0.33, 0.67) + uTime * 0.1))) * rb * band;   // a pastel rainbow ring
   gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+// ---------------------------------------------------------------- the luminous heart at the far end of the view
+function heart({ scene, TR, L, mascot, updaters, time, inside, axisH }) {
+  const P = ROUND5.heart;
+  const u = { uTime: time, uFade: { value: 0 }, uCore: { value: P.core }, uRays: { value: P.rays } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: HEART_VERTEX, fragmentShader: HEART_FRAGMENT, transparent: true, depthWrite: false,
+    blending: THREE.AdditiveBlending, side: THREE.DoubleSide });   // its basis below is mirrored (as the whirlpool's), so both sides
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat); mesh.name = 'r5Heart'; mesh.frustumCulled = false; mesh.visible = false; mesh.renderOrder = 2;
+  scene.add(mesh);
+  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, m4 = new THREE.Matrix4();
+  updaters.push(() => {
+    const at = Math.min(mascot.z + P.ahead, L.tunnelEnd - 1), k = inside() * (1 - THREE.MathUtils.smoothstep(mascot.z + P.ahead, L.tunnelEnd + 2, L.tunnelEnd + 8));
+    mesh.visible = k > 0.001; u.uFade.value = k;
+    if (!mesh.visible) return;
+    TR.frame(at, F);
+    mesh.position.copy(F.P).addScaledVector(F.U, axisH);
+    m4.makeBasis(F.R, F.U, F.T.clone().negate()); mesh.quaternion.setFromRotationMatrix(m4);
+    mesh.scale.setScalar(P.radius);
+  });
+  return { ahead: P.ahead };
+}
+const HEART_VERTEX = /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+const HEART_FRAGMENT = /* glsl */ `
+uniform float uTime, uFade, uCore, uRays; varying vec2 vUv;
+void main() {
+  vec2 p = (vUv - 0.5) * 2.0; float r = length(p), a = atan(p.y, p.x);
+  float core = exp(-r * r / 0.012) * 1.6 + exp(-r * r / 0.06);                        // a brilliant white core
+  float halo = exp(-r * r / 0.25);                                                    // its warm halo
+  float rays = pow(0.5 + 0.5 * sin(a * 9.0 + uTime * 0.4) * sin(a * 5.0 - uTime * 0.3), 3.0) * exp(-r * 2.2);
+  vec3 col = vec3(1.0, 0.98, 0.94) * core * uCore + mix(vec3(1.0, 0.85, 0.55), vec3(1.0, 0.6, 0.85), smoothstep(0.1, 0.5, r)) * halo * 0.55
+           + vec3(1.0, 0.92, 0.85) * rays * uRays;
+  col *= 1.0 - smoothstep(0.75, 1.0, r);
+  gl_FragColor = vec4(col * uFade, 1.0);
 }
 `;
 

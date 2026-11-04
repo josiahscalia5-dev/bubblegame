@@ -943,3 +943,5 @@ Save everything to my GitHub repository. Like I said, my chat history, everythin
 
 The build matches the source, the chat history is exported with keys redacted, and no key is in any project file. Saving everything and verifying the push on GitHub:
 
+The heart doesn't show at either moment, so something is hiding or disabling it. I'll ask the running game directly where the heart is, whether it's visible, and where it lands on screen:
+
