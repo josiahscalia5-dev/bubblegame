@@ -54,8 +54,11 @@ ImageMagick 6.9.12, Git LFS 3.4.1, glTF Transform 4.5.1, glTF Validator 2.0.0-de
 
 ## Tripo
 
-- Not signed in on this machine: `tripo doctor` reports "api key missing", so the balance cannot be read here. Nothing was
-  generated and no credits were spent. Last recorded balance: 760 (`Tools/DEV_TOOLS.md`).
+- At first not signed in on this machine (`tripo doctor`: "api key missing"). About 20:48 UTC the user pasted their key in
+  chat; Claude signed in with `tripo login --region ov --key ...` (saved in `~/.tripo/config.json`, mode 0600, outside the
+  repository; no project file contains it; the chat export redacts `tsk_` keys). `tripo doctor` now passes every check and
+  **`tripo balance`: 760 credits, 0 frozen**. Nothing was generated and no credits were spent.
+- The key has now been pasted in chat, so the user may want to make a new key on Tripo's site later and delete this one.
 - Lasting fix, once per account, no script: the cloud environment's settings (environment menu in the session title bar, Edit).
   - Under Network secrets, add the host `openapi.tripo3d.ai` with the Tripo key.
   - Under Environment variables, add `TRIPO_API_KEY=proxy-injected`.
