@@ -724,3 +724,9 @@ Keep the existing gameplay and preserve all versions. Show me a real gameplay pr
 
 `mergeDeep` is a hoisted function declaration, so the early call is safe. Building, then capturing the combined preview, plus a byte-identity check that plain `?s3=round6` (pass 3) is unchanged:
 
+Saved and verified on GitHub (`995c70d`). Sending the combined preview comparison and the pass 3 gameplay video:
+
+_[Sent you files: Previews/WebDemo/screen4_round6_reconstruction/combined_preview_vs_both_references_full.png, Previews/WebDemo/screen4_round6_reconstruction/combined_preview_in_motion.jpg, Previews/WebDemo/screen4_round6_reconstruction/bubblewash_round6_pass3.mp4]_
+
+Waiting for the last three checks: the combined preview's controls check, Round 6's power-up check, and the combined preview recording.
+
