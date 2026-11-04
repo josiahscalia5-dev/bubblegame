@@ -41,7 +41,7 @@ only from `/opt/bw-node-tools`; they now look in `BW_NODE_TOOLS`, `~/.bubblewash
 | Playwright 1.64.1 with Chromium 156 | yes | n/a | **yes** | Launched headless, WebGL 2 available, from any folder once `bw_tools_env.sh` is sourced |
 | Git LFS 3.4.1 | yes (system) | n/a | installed | Not used: the repository keeps its models and videos as normal git files (`.gitattributes` marks them binary) |
 | ffmpeg | yes (system) | n/a | yes | Encodes the gameplay videos |
-| Tripo CLI 0.11.1 (`tripo`) | yes | **yes** (13:51, key in `~/.tripo` on this session's machine only) | `tripo doctor` passes; API reachable (region ov). **Balance 0 credits**, so nothing can be generated until credits are added. Cost estimates (`tripo make ... --dry-run`, free): P2 (default) 110 credits a model, v3.1 20 credits | **The preferred and only external 3D generator.** See signing in below |
+| Tripo CLI 0.11.1 (`tripo`) | yes | **yes** (14:08, third key, ending …GAlL, in `~/.tripo` on this session's machine only) | `tripo doctor` passes; API reachable (region ov). **Balance 1,000 credits** (0 frozen); nothing generated or spent. Cost estimates (`tripo make ... --dry-run`, free): P2 (default) 110 credits a model, v3.1 20 credits | **The preferred and only external 3D generator.** See signing in below |
 | Meshy MCP server 0.6.7 | **not used, at your request (4 November, 13:50)**: removed from `.mcp.json` | key still saved as a network secret for `api.meshy.ai` on the Default environment (only you can remove it) | not called; no Meshy credits were ever spent (two free balance checks: 17 credits) | Tripo is the only external generator |
 | GitHub | yes | yes | **yes** | Branch listing, fetch, and push with `Tools/save_now.sh` (checked on GitHub with `git ls-remote`) |
 
@@ -99,7 +99,7 @@ go through `Tools/bw_tools_env.sh`.
 On 4 November (13:51) Tripo was signed in on this session's machine with a key the user pasted into the chat. Nothing
 was pushed: the autosave was stopped first, and the key was checked absent from every file, commit and GitHub. The
 key still appears in this session's own transcript, so regenerate it on Tripo's site when convenient. The API account
-showed **0 credits**. At 13:55 a second key (ending …SFj0) replaced it: same result, 0 API credits.
+showed **0 credits**. At 13:55 a second key (ending …SFj0) replaced it: same result, 0 API credits. At 14:08 a third key (ending …GAlL) replaced that one: **1,000 credits**, usable from this environment. Delete the first two keys on Tripo's site; they are no longer used.
 
 **Where API credits live:** `https://developers.tripo3d.ai/billing` (given by `tripo topup --no-open`). API credits are
 reported to be a separate balance from the credits on Tripo's main website (Studio); Tripo's own billing page does not
