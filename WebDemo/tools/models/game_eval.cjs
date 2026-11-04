@@ -1,4 +1,7 @@
 // Loads the game once (seed 7), taps, advances to each time in TIMES, and runs the JS in EVAL (an expression using d = __bw.debug()).
+// With SHOT=/path/name_%.png it also saves the 3D canvas itself (no HUD, so no CSS timing) at Tap to Start (%=tap) and at
+// each time: these are repeatable to the pixel, unlike page screenshots, whose HUD fades run on real time.
+//   S3=round3 TIMES=2,4.2 EVAL='d.mascotState.z' SHOT=/tmp/f_%.png node game_eval.cjs <demo-dir>
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const ROOT = process.argv[2];
@@ -18,12 +21,14 @@ const server = http.createServer((req, res) => {
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   await page.evaluate(() => window.__bw.advance(0.5));
+  const canvasShot = async (file) => { const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); }); fs.writeFileSync(file, Buffer.from(url.split(',')[1], 'base64')); };
+  if (process.env.SHOT) await canvasShot(process.env.SHOT.replace('%', 'tap'));   // Tap to Start (before the tap)
   await page.evaluate(() => window.__bw.tap());
   let since = 0;
   for (const T of (process.env.TIMES || '4.0').split(',').map(Number)) {
     await page.evaluate((d) => window.__bw.advance(d), T - since); since = T;
     console.log('T', T, JSON.stringify(await page.evaluate(new Function('return (() => { const d = window.__bw.debug(); return ' + process.env.EVAL + '; })()'))));
-    if (process.env.SHOT) { const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); }); fs.writeFileSync(process.env.SHOT.replace('%', T.toFixed(1)), Buffer.from(url.split(',')[1], 'base64')); }
+    if (process.env.SHOT) await canvasShot(process.env.SHOT.replace('%', T.toFixed(1)));
   }
   await browser.close(); server.close();
 })().catch((e) => { console.error(e); process.exit(1); });
