@@ -910,3 +910,61 @@ GitHub returned a server error on that push. I'm retrying with increasing waits 
 
 Saved to GitHub (`6f299d3`); a repeat secret scan found no keys in the repository. Now the far-ring change:
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 11:09 UTC
+
+Claudia, I want to clarify something important.
+
+I HAVE ALREADY INSTALLED the recommended Claude plugins on my Claude account.
+
+Please don't keep telling me to install plugins that are already installed.
+
+I want you to check which plugins are actually loaded and working in my current Claude Code cloud environment.
+
+Please check:
+
+1. Skill Creator
+2. TypeScript LSP
+3. Claude Code Setup
+4. Chrome DevTools
+5. Context7
+6. Superpowers
+7. Playwright
+8. GitHub
+
+Also check my separately configured tools:
+
+- Blender
+- OpenCV and scikit-image
+- ImageMagick
+- glTF Transform
+- Khronos glTF Validator
+- Tripo CLI
+- Meshy MCP
+
+If the plugins are installed on my account but not appearing in this session, please explain why and whether I need to start a new Claude Code session to load them.
+
+Please distinguish between:
+
+- Installed on my Claude account
+- Loaded in this cloud session
+- Connected and authenticated
+- Fully working
+
+Do not reinstall or duplicate tools unnecessarily.
+
+Once verified, please continue improving my actual playable Bubble Wash Kingdom game to match my approved Screen 3 and Screen 4.
+
+---
+
+### Claude · 2026-11-04 11:13 UTC
+
+I'll check what is actually present rather than recommend anything again. First, what your account reports right now:
+
+The first Tripo sign-in code expired before it was used, so a new one is waiting. I'll include it at the end. While the gameplay video records, I'm writing the round 3 report.
+
+The gameplay video and the frame-cost measurement are still running in the slow software browser. Meanwhile I've drafted the round 3 report and pushed the tools-status document (`365d0be`).
+
+The machine is overloaded (load 10 on 4 cores). The Playwright plugin's browser is still running the game in real time from my check, so I'm closing it.
+
