@@ -1,0 +1,217 @@
+{
+ "s3": [
+  "round4"
+ ],
+ "s3Report": {
+  "castle": {
+   "scale": 10,
+   "nearestToAxis": 2.64,
+   "frontZ": 2.75
+  },
+  "entrance": {
+   "scale": 3.942,
+   "nearestToAxis": 1.95,
+   "frontZ": 1.25
+  },
+  "machinery": {
+   "scale": 1.66,
+   "at": [
+    -2.73,
+    0.4,
+    -7
+   ],
+   "nearestToLanes": 1.25
+  },
+  "brush": {
+   "scale": 1.51,
+   "at": [
+    2.62,
+    0.23,
+    -4.9
+   ],
+   "nearestToLanes": 1.21,
+   "spins": false
+  },
+  "cine": {
+   "up": 0.099,
+   "forward": 0.818,
+   "pitch": 0.3,
+   "fov": 1.0375,
+   "blend": 0.9
+  },
+  "bubbles": {
+   "spheres": true,
+   "extra": 3,
+   "reducedMotion": false
+  },
+  "edges": {
+   "wallsHidden": 2,
+   "railsHidden": 2,
+   "icyEdges": 2
+  },
+  "tunnel": {
+   "rings": 43,
+   "brushes": 9,
+   "bubbles": 22,
+   "panelsHidden": 2,
+   "waterCopy": true,
+   "goldGlow": 28,
+   "drumMaterialsTinted": 1,
+   "brushTriangles": 51512,
+   "brushTrianglesDelivered": 120961,
+   "hazards": 6,
+   "hits": [],
+   "warnShader": true,
+   "round2": {
+    "exit": true,
+    "grade": true
+   },
+   "round3": {
+    "foam": {
+     "heaps": 150,
+     "trianglesEach": 500
+    },
+    "swirl": {
+     "triangles": 17856
+    },
+    "bubbles": {
+     "count": 44
+    },
+    "whirl": {
+     "ahead": 14,
+     "radius": 1.9
+    }
+   },
+   "round4": {
+    "hidden": 5,
+    "lining": {
+     "triangles": 28992,
+     "rows": 152,
+     "cols": 97
+    },
+    "rings": {
+     "glow": 32,
+     "gold": 11,
+     "trianglesEach": [
+      2048,
+      2560
+     ]
+    },
+    "crown": {
+     "petals": 32
+    }
+   }
+  },
+  "hiddenInTunnel": 8
+ },
+ "costAtTapToStart": {
+  "drawCalls": 225,
+  "triangles": 1330607
+ },
+ "afterSettingsClick": {
+  "phase": "intro",
+  "lane": 1,
+  "air": false,
+  "z": -16.7,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "true"
+ },
+ "afterTap": {
+  "phase": "running",
+  "lane": 1,
+  "air": false,
+  "z": -16.7,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "afterSwipeLeft": {
+  "from": 1,
+  "phase": "running",
+  "lane": 0,
+  "air": false,
+  "z": -11.789,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "afterTwoSwipesRight": {
+  "phase": "running",
+  "lane": 2,
+  "air": false,
+  "z": -6.653,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "afterSwipeUp": {
+  "phase": "running",
+  "lane": 2,
+  "air": true,
+  "z": -5.677,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "inTunnel": {
+  "phase": "running",
+  "lane": 1,
+  "air": false,
+  "z": 20.21,
+  "coins": 1287,
+  "gems": 36,
+  "collected": {
+   "coins": 7,
+   "gems": 0,
+   "socks": 2
+  },
+  "socks": 2,
+  "sound": "false"
+ },
+ "costInTunnel": {
+  "drawCalls": 132,
+  "triangles": 1185799
+ },
+ "logs": [],
+ "keyboardStart": {
+  "phase": "running",
+  "lane": 1,
+  "air": false,
+  "z": -16.7,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "logs2": []
+}

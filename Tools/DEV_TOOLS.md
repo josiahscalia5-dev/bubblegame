@@ -42,7 +42,7 @@ only from `/opt/bw-node-tools`; they now look in `BW_NODE_TOOLS`, `~/.bubblewash
 | Git LFS 3.4.1 | yes (system) | n/a | installed | Not used: the repository keeps its models and videos as normal git files (`.gitattributes` marks them binary) |
 | ffmpeg | yes (system) | n/a | yes | Encodes the gameplay videos |
 | Tripo CLI 0.11.1 (`tripo`) | yes | **no** | `tripo doctor`: everything passes except "api key missing" | See signing in below |
-| Meshy MCP server 0.6.7 | **yes, connected** (28 tools) | **no** | reaches Meshy; `meshy_check_balance` answers 401 (no key) | See signing in below |
+| Meshy MCP server 0.6.7 | **yes, connected** (28 tools) | **yes** (4 November, 13:30): your key is a network secret for `api.meshy.ai` on the Default environment | **balance check works: 17 credits** (through the proxy). The server this session started with still gets 401; `.mcp.json` now fixes that from the next session | See signing in below |
 | GitHub | yes | yes | **yes** | Branch listing, fetch, and push with `Tools/save_now.sh` (checked on GitHub with `git ls-remote`) |
 
 **Warning about Tripo:** its `--yes` (skip confirmations) is switched on automatically when it runs headless, as here.
@@ -93,14 +93,16 @@ go through `Tools/bw_tools_env.sh`.
    environment's settings (environment menu in the session's title bar, then Edit). The network proxy then adds it to
    every request, and no key is stored on the machine.
 
-**Meshy:**
+**Meshy (done on 4 November for the Default environment):**
 
-1. Create a key at meshy.ai (Settings, then API). Meshy's API needs a Pro plan or above.
-2. Save it through Claude's secure credential card (Claude asks for it with a form; it never appears in chat) or yourself
-   as a network secret for the host `api.meshy.ai` in the environment's settings. The proxy adds it to the Meshy server's
-   requests. Alternatively, an environment variable `MESHY_API_KEY`, which `.mcp.json` passes to the server in a new
-   session.
-3. Claude checks with `meshy_check_balance`, which is free.
+1. The key is saved as a network secret for the host `api.meshy.ai` (entered in the secure credential form, never in
+   chat). The network proxy adds it to every request to that host; no session sees it.
+2. Node's built-in `fetch` ignores the proxy unless `NODE_USE_ENV_PROXY=1`, so the Meshy MCP server went to Meshy without
+   the key (401). `.mcp.json` now sets `NODE_USE_ENV_PROXY=1` and a placeholder key (`proxy-injected`, overwritten by the
+   proxy; a real `MESHY_API_KEY` variable still wins if set). Tested by hand: the server returned the balance. The MCP
+   server loads at session start, so this works from the next session.
+3. Balance on 4 November: 17 credits (permanent). Claude checks with `meshy_check_balance` (free) and asks before any
+   generation.
 
 **Credits:** generating models with Tripo or Meshy spends credits. Claude checks the balance and asks you before any
 generation.

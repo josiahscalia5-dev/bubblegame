@@ -1,0 +1,78 @@
+{
+ "lane0": {
+  "reachedEnd": true,
+  "maxZ": 34.51,
+  "seconds": 7.9,
+  "bodyMaxFromAxis": 1.793,
+  "cameraMaxFromAxis": 0.376,
+  "stuckFrames": 0,
+  "wentBack": 0,
+  "hearts": 4,
+  "knocks": 1,
+  "coins": {
+   "coins": 17,
+   "gems": 1,
+   "socks": 5
+  },
+  "socks": 0,
+  "lane": 1,
+  "errors": []
+ },
+ "lane1": {
+  "reachedEnd": true,
+  "maxZ": 34.54,
+  "seconds": 7.7,
+  "bodyMaxFromAxis": 1.897,
+  "cameraMaxFromAxis": 0.344,
+  "stuckFrames": 0,
+  "wentBack": 0,
+  "hearts": 5,
+  "knocks": 0,
+  "coins": {
+   "coins": 17,
+   "gems": 1,
+   "socks": 2
+  },
+  "socks": 0,
+  "lane": 1,
+  "errors": []
+ },
+ "lane2": {
+  "reachedEnd": true,
+  "maxZ": 34.6,
+  "seconds": 7.9,
+  "bodyMaxFromAxis": 1.784,
+  "cameraMaxFromAxis": 0.37,
+  "stuckFrames": 0,
+  "wentBack": 0,
+  "hearts": 4,
+  "knocks": 1,
+  "coins": {
+   "coins": 15,
+   "gems": 1,
+   "socks": 5
+  },
+  "socks": 0,
+  "lane": 1,
+  "errors": []
+ },
+ "weave": {
+  "reachedEnd": true,
+  "maxZ": 34.84,
+  "seconds": 7.9,
+  "bodyMaxFromAxis": 1.875,
+  "cameraMaxFromAxis": 0.651,
+  "stuckFrames": 0,
+  "wentBack": 0,
+  "hearts": 4,
+  "knocks": 1,
+  "coins": {
+   "coins": 15,
+   "gems": 2,
+   "socks": 4
+  },
+  "socks": 0,
+  "lane": 1,
+  "errors": []
+ }
+}

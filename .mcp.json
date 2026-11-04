@@ -3,7 +3,7 @@
     "meshy": {
       "command": "npx",
       "args": ["-y", "@meshy-ai/meshy-mcp-server@0.6.7"],
-      "env": { "MESHY_API_KEY": "${MESHY_API_KEY}" }
+      "env": { "MESHY_API_KEY": "${MESHY_API_KEY:-proxy-injected}", "NODE_USE_ENV_PROXY": "1" }
     }
   }
 }

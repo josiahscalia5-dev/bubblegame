@@ -1,0 +1,17 @@
+{
+ "method": "3D canvas captures (tools/models/game_eval.cjs SHOT=), seed 7, this build vs fa4e2fc built in a git worktree; ImageMagick compare -metric AE",
+ "pixelsDiffering": {
+  "normal t=tap": 0,
+  "normal t=2.0": 0,
+  "normal t=4.2": 0,
+  "normal t=6.0": 0,
+  "round2 t=tap": 0,
+  "round2 t=2.0": 0,
+  "round2 t=4.2": 0,
+  "round2 t=6.0": 0,
+  "round3 t=tap": 0,
+  "round3 t=2.0": 0,
+  "round3 t=4.2": 0,
+  "round3 t=6.0": 0
+ }
+}
