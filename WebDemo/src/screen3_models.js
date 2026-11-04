@@ -47,8 +47,8 @@ S3.round3 = LIST.includes('round3');
 // ?s3=round4 (test): round3 plus the reconstruction of the approved Screen 4's scenery (tunnel_r4.js): a new deep electric-blue
 // tunnel lining with 3D cyan and gold rings, a straighter start, flowing turquoise water with a splash crown, pom-pom brushes.
 S3.round4 = LIST.includes('round4');
-// ?s3=round4,fluffy (test, separate from round4 until approved): round4 with the fluffy shell-fur brushes (fluffy_brush.js)
-// instead of round4's pom-poms of clumps. Only with round4; the brushes stand, turn and knock exactly as in round4.
+// ?s3=round4,fluffy: the first trial switch for the fluffy shell-fur brushes (fluffy_brush.js). The user asked for them in
+// Round 4 itself, so round4 now always uses them and `fluffy` changes nothing; kept so old links still open.
 S3.fluffy = S3.round4 && LIST.includes('fluffy');
 if (S3.round4) S3.round3 = true;
 if (S3.round3) S3.round2 = true;

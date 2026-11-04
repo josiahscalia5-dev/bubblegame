@@ -120,8 +120,24 @@ commit, whether GitHub really has it, and the files saved.
 
 ## What is known
 
-As of 4 November 2026, see `Previews/WebDemo/screen4_round3_test/README.md` for the latest measures. The largest
-remaining gaps:
+Latest (4 November 2026, Round 4 second pass): `Previews/WebDemo/screen4_round4_water_brushes/README.md`.
+
+- Water, foam, brushes and tunnel colour are now close in the measures: pale milky blue on target, deep blue 4.8% (approved 6.2%).
+- The largest remaining gap is composition. The approved picture looks straight into a centred bright vortex, with the
+  coins, gem and sock round it.
+- Too much pink.
+- The bottom HUD buttons cover the foreground foam.
+
+Useful tools added that day:
+
+- `WebDemo/tools/screen4/hide_probe.cjs` shows what each named object contributes to a frame (capture with it hidden,
+  against a same-path baseline `HIDE=nothing`).
+- `brush_view.cjs` renders the fluffy brush on its own.
+- `three_way_sheet.py` makes the approved, previous and new sheet.
+- Do not use sin()-based hashes over large cell indices in shaders: they smear into streaks.
+- Fibre coordinates must not be angle x radius, which shears the strand grid.
+
+Earlier (Round 3), see `Previews/WebDemo/screen4_round3_test/README.md`. The largest remaining gaps then:
 
 - white water across the middle of the tunnel;
 - the bright vortex at the tunnel's centre;

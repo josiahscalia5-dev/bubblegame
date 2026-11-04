@@ -8,7 +8,8 @@
 //              straight (track.js, opts.straight), so the view looks straight down the rings as in the approved picture.
 //   - water:   flowing turquoise with rolling crests and streaks of white froth, instead of the cell pattern that read as
 //              a tiled floor (tunnel_s4.js, waterR4); a crown of curving water sheets splashing round the pink character.
-//   - brushes: big round pom-poms of fluffy tufts (tunnel_s4.js, r4PomPom) instead of the wheel look.
+//   - brushes: fluffy shell-fur pom-poms (fluffy_brush.js; tunnel_s4.js r4PomPom was the first pass) instead of the wheel look.
+//   - foam:    real 3D soap bubbles riding on the foam heaps, heavier spray (second pass, 4 November).
 //   - colour:  a richer, higher-contrast grade inside the drum (less pastel).
 // Lanes, controls, brushes' knocks, collectibles and the mission are round2/round3's.
 import * as THREE from 'three';

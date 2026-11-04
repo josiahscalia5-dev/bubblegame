@@ -15,6 +15,20 @@ Read this first when you continue in a new Claude conversation.
 - **Saving:** `bash Tools/save_now.sh "<message>"` after each finished task; `Tools/autosave.sh` every 5 minutes in the
   background. Both print the branch, commit, whether GitHub really has it, and the files saved.
 - **This session's chat history:** `ChatHistory/2026-11-04_round4_restore_and_continue_session.md`.
+- **Round 4, second pass (`?s3=round4`, test, not approved):** your three priorities, in order.
+  - Water and splashes: real 3D soap bubbles on the foam heaps, thick irregular splash sheets, heavier spray, turquoise water.
+  - Brushes: Round 4's brushes are now the fluffy shell-fur brushes (`WebDemo/src/fluffy_brush.js`); same places, spin
+    and knocks. `?s3=round4,fluffy` was the first trial switch and is now the same as `?s3=round4`.
+  - Tunnel: a deeper blue lining and softer ring glow.
+  - Evidence, numbers and the honest score (about 7.5/10; the composition is the biggest remaining gap):
+    `Previews/WebDemo/screen4_round4_water_brushes/README.md`.
+  - The normal game, Round 2 and Round 3 are pixel-identical to `fa4e2fc`.
+- **img2threejs (a Claude Code skill) was tried on the brush and stopped:** it produced smooth rings. Why, and what replaced it:
+  `Design/Img2ThreejsTrials/README.md`. Reinstall in a new session only if wanted:
+  `npx --yes img2threejs@latest install`.
+- **Next, if you want it:** the composition. The approved picture looks straight into a centred bright vortex with the
+  coins, gem and sock round it; the game camera rides behind the character. Changing that means changing the Round 4
+  camera and the collectible layout, which needs your go-ahead.
 
 ## Where everything is
 
