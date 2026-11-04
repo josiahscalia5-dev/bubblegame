@@ -14,11 +14,14 @@ import { NOISE } from './shaders.js';
 export const ROUND5 = {
   vortex: { bands: 0.85, twist: 0.16, flow: 0.55, deep: [0.0, 0.03, 0.32], body: [0.02, 0.22, 0.95], cyan: [0.25, 0.85, 1.0],
     foam: 0.95, streaks: 0.35, far: [9, 26], farGlow: 1.5, farMix: 0.85, rainbow: 0.35, rainbowAt: 13 },
+  // the drum's path (track.js opts.curve): the climb, drop and turns kept but gentler, so the far tunnel's bright heart
+  // stays near the middle of the view, as in the approved Screen 4 (Round 4 and the normal game keep the full path)
+  path: { curve: 0.3 },
   hideRings: true,
   // bloom inside the drum (outside it is the game's own): strength, radius, threshold
   bloom: { strength: 0.75, radius: 0.85, threshold: 0.72 },
-  droplets: { count: 700, near: 1.5, far: 22, radius: [0.35, 1.85], size: [0.035, 0.11], swirl: 0.35, flow: 2.2 },
-  bubbles: { count: 90, du: [-2.4, 14], x: [0.3, 1.6], h: [0.2, 2.6], r: [0.04, 0.42], flow: 1.6, film: 1.9 },
+  droplets: { count: 700, near: 3, far: 22, radius: [0.35, 1.85], size: [0.02, 0.06], swirl: 0.35, flow: 2.2, scale: 420, maxPx: 14 },
+  bubbles: { count: 64, du: [-1.4, 14], x: [0.3, 1.6], h: [0.2, 2.6], r: [0.04, 0.36], flow: 1.6, film: 1.7 },   // none right in front of the camera: their film fogged the view
   fur: { shells: 8, length: 0.05, density: 260, tip: 0.5, halo: 0.45 },
 };
 {
@@ -95,7 +98,7 @@ function droplets({ scene, TR, mascot, updaters, time, inside, axisH }) {
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3).setUsage(THREE.DynamicDrawUsage));
   g.setAttribute('aSize', new THREE.BufferAttribute(size, 1)); g.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
-  const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uFade: { value: 0 }, uScale: { value: 900 } }, vertexShader: DROP_VERTEX, fragmentShader: DROP_FRAGMENT,
+  const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uFade: { value: 0 }, uScale: { value: P.scale }, uMaxPx: { value: P.maxPx } }, vertexShader: DROP_VERTEX, fragmentShader: DROP_FRAGMENT,
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
   const pts = new THREE.Points(g, mat); pts.name = 'r5Droplets'; pts.frustumCulled = false; pts.visible = false; pts.renderOrder = 8;
   scene.add(pts);
@@ -126,11 +129,11 @@ function droplets({ scene, TR, mascot, updaters, time, inside, axisH }) {
   return { count: n };
 }
 const DROP_VERTEX = /* glsl */ `
-attribute float aSize; attribute float aSeed; uniform float uTime, uScale; varying float vSeed; varying float vTw;
+attribute float aSize; attribute float aSeed; uniform float uTime, uScale, uMaxPx; varying float vSeed; varying float vTw;
 void main() {
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   vSeed = aSeed; vTw = 0.55 + 0.45 * sin(uTime * (3.0 + aSeed * 5.0) + aSeed * 30.0);
-  gl_PointSize = aSize * uScale / max(-mv.z, 0.2);
+  gl_PointSize = min(aSize * uScale / max(-mv.z, 0.2), uMaxPx);   // small, sharp glints (big soft ones fogged the view)
   gl_Position = projectionMatrix * mv;
 }
 `;
@@ -141,7 +144,7 @@ void main() {
   float core = 1.0 - smoothstep(0.0, 0.22, r), halo = 1.0 - smoothstep(0.1, 0.5, r);
   float star = (1.0 - smoothstep(0.0, 0.05, abs(p.x))) * (1.0 - smoothstep(0.1, 0.5, abs(p.y))) + (1.0 - smoothstep(0.0, 0.05, abs(p.y))) * (1.0 - smoothstep(0.1, 0.5, abs(p.x)));
   float glint = step(0.8, vSeed) * star * 0.8;
-  vec3 col = vec3(0.85, 0.97, 1.0) * (core * 0.9 + halo * 0.35 + glint) * vTw;
+  vec3 col = vec3(0.85, 0.97, 1.0) * (core * 0.9 + halo * 0.12 + glint) * vTw;
   gl_FragColor = vec4(col * uFade, 1.0);
 }
 `;

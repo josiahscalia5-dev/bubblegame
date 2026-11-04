@@ -15,11 +15,13 @@ const bump = (u, a, b, c, d) => W.smoothstep(a, b, u) * (1 - W.smoothstep(c, d, 
 
 // opts.straight (metres, ?s3=round4 only): the climb, crest, drop and turns start this much later, so the first part of the
 // drum is straight and the view looks straight down its rings, as in the approved Screen 4 (default 0: unchanged).
+// opts.curve (?s3=round5 only): the climb, drop and turns scaled by this (1, the default, leaves them exactly as they are),
+// so a gentler tube keeps the far tunnel's bright heart near the middle of the view, as in the approved Screen 4.
 export function makeTrack(L, opts = {}) {
-  const ts = L.tunnelStart + (opts.straight || 0);
+  const ts = L.tunnelStart + (opts.straight || 0), cv = opts.curve ?? 1;
   // Pitch of the tube (radians, + climbs) and turn rate (radians per metre, + turns to screen-left).
-  const pitch = (u) => 0.27 * bump(u, ts + 5, ts + 8, ts + 11, ts + 13.5) - 0.34 * bump(u, ts + 14.5, ts + 17.5, ts + 21, ts + 24);
-  const turn = (u) => 0.055 * bump(u, ts + 6, ts + 9, ts + 12, ts + 15) - 0.06 * bump(u, ts + 18, ts + 21, ts + 26, ts + 29);
+  const pitch = (u) => cv * (0.27 * bump(u, ts + 5, ts + 8, ts + 11, ts + 13.5) - 0.34 * bump(u, ts + 14.5, ts + 17.5, ts + 21, ts + 24));
+  const turn = (u) => cv * (0.055 * bump(u, ts + 6, ts + 9, ts + 12, ts + 15) - 0.06 * bump(u, ts + 18, ts + 21, ts + 26, ts + 29));
   // Bank: the water surface tilts so its outer edge is higher, by the angle a flowing current takes
   // in that turn at cruise speed (tan(bank) = v^2 * curvature / g).
   const bankOf = (u) => Math.atan((W.CRUISE * W.CRUISE * turn(u)) / 9.81);
