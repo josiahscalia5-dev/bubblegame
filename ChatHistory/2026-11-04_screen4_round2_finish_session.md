@@ -257,3 +257,52 @@ The performance measurement is running: it loads and plays the game three times 
 Stop hook feedback:
 [command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
 
+---
+
+### Claude · 2026-11-04 03:50 UTC
+
+Round 2 of the tunnel test (`?s3=round2`) is finished, with everything on the "not done yet" list done and saved to GitHub. Branch `ccr-b6199007-gvhqim` is at `4c7d6cc`, the same as the local copy, and nothing is merged.
+
+**1. The pink brush warning now shows.** It had three problems:
+- It only got strong in the last 1.6 m before a brush, which the brush itself hides.
+- It was mixed in under the reflections and foam, so on screen it came out pale lavender instead of pink.
+- Over the first two brushes, the slide's water overlapped the tunnel's water and covered about half of it.
+
+Now it starts 7.5 m before a brush as moving pink dashes in that lane, and goes out when Bubble Blast clears the brush.
+
+**2. Final video:** 11.5 s of real play, which I sent you (twice). The run rescues all 5 socks, and pause, a heart lost to a brush, Bubble Blast and Turbo Spin all happen in it. There were no console errors.
+
+**3. Screenshot sheets:** the approved Screen 4 beside last round and this round, the tunnel views, the controls, the exit before and after, and the warning before and after. I sent you all of them.
+
+**4. Checks:**
+- **Controls:** hearts, pause, Bubble Blast and Turbo Spin all work.
+- **Nothing else changed:** the normal game and last round's version are pixel-identical to before today's change.
+
+**5. Performance:**
+
+| | Draw calls | Triangles |
+|---|---|---|
+| Tap to Start | 190 | 1.04 M |
+| Busiest point in the tunnel | 181 | 1.27 M |
+
+- That's 13–54 fewer draw calls than last round.
+- It's still lighter than the normal game's Tap to Start, which draws 322 calls and 1.91 M triangles.
+- I couldn't measure frame times here, because the software rendering in this container makes them meaningless.
+- Nothing has been tried on a real phone.
+
+**6. Honest score: about 7/10 against the approved Screen 4.** Last round was about 6.5–7.
+- **Improvements:** the shapes line up more closely than in either earlier version, and the tunnel rings' colours are much closer.
+- **Worse:** the right-hand brushes are further off in colour. I made them a lighter periwinkle, and the approved brush is a deeper royal blue.
+- **Still missing from the painting:**
+  - the dense sparkly foam swirl;
+  - the big coin, spray and bubbles near the camera;
+  - the size and place of the big left mop brush;
+  - whiter, churned water around the character.
+
+Possible next steps, if you want them:
+- turning the right brushes back toward royal blue, which should recover most of that colour gap;
+- adding more foam spray and bubbles near the camera;
+- starting the Laundry Toss intro once you send its reference pictures.
+
+The chat history and hand-off notes are saved, and the auto-save is still running every 5 minutes.
+
