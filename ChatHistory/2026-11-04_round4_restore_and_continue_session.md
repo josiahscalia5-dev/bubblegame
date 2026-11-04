@@ -495,3 +495,5 @@ Two code comments are now out of date, since Round 4 always uses the fluffy brus
 
 The controls check on the final build passed (exit 0). Comment edits don't change the shaders. Checking the controls report's details:
 
+Saved. Retrying the free balance check, which spends nothing:
+
