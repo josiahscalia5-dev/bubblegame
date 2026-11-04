@@ -28,3 +28,51 @@ are unchanged. **Hero moment: 3.0 s** (the washer entrance at the top); 4.2 s sh
 - **Collectibles at the hero moment** as in the original: a big coin near each screen edge, the gem left of centre, the
   sock on the right, a small coin far in the middle. All are real and collectable.
 - **Mission card** on screen at the hero moment (it used to appear only inside the drum).
+
+## Second session (original account, 4 November evening): the design agents' passes
+
+Every agent below was actually started in this session and ran to completion. The Art Director reviewed first, then the
+two building specialists worked in parallel, each in its own git worktree on its own files. Their commits were merged:
+water `1ba9b89`, tunnel `4f56ec6`, combined in `624b2a4`. The last session's water work had been lost because it was never
+committed; this time each specialist committed before finishing.
+
+- **3D Game Art Director** (`game-art-director`) compared the three references with five real frames. It chose **3.0 s**
+  as the hero frame and ranked seven differences: foam and immersion; whirlpool depth; rim and wall; brushes; bubbles;
+  exposure; collectibles. It then wrote a dispatch plan with owners and acceptance checks.
+- **Water & VFX** (`water-vfx-engineer`, only `tunnel_r7_water.js`):
+  - foam bank `r7FoamBank`: about 660 glossy foam lumps in one draw call, hiding the lower body; it reacts to swerves
+    and landings and thins out in a jump;
+  - removed the navy disc (round 5's contact collar, hidden in round 7);
+  - one glossy bubble look: milky body, thick bright rim, highlight, soft rainbow film; three big hero bubbles;
+  - `r7Spray`: side spray specks and streaks;
+  - round 6's bow wave re-shaded turquoise.
+- **Tunnel & Lighting** (`lighting-visual-matching`; `ROUND6.r7` in `tunnel_r6.js`, round-7 lines in `tunnel_s4.js` and `game.js`):
+  - spiral whirlpool bands with cobalt troughs and flecks (`whirl`) and a glow sprite at the vanishing point (`r7Glow`);
+  - fewer flanges with uneven depths;
+  - slimmer peach-gold rim (bezel outer 2.47), the orange step ring hidden;
+  - high-key light with a warm pink-peach light;
+  - left framing brush raised onto the washer face;
+  - the centre coin run moved later, so one small coin and the gem show.
+- **Gameplay & Visual Testing** (`gameplay-visual-testing`): runs the gameplay, cost and pixel-regression checks on the
+  combined build.
+
+Measured at 3.0 s with `compare_s4.py`, play area (approved / session start / combined `624b2a4`):
+
+| | approved | start | combined |
+|---|---|---|---|
+| white foam | 20.6% | 7.2% | 22.5% |
+| pale milky blue | 11.8% | 5.3% | 13.5% |
+| deep blue | 6.2% | 1.3% | 3.6% |
+| gold | 8.0% | 14.0% | (see report) |
+| pink | 13.9% | 18.1% | 16.2% |
+| centre region ΔE2000 | – | 19.5 | 3.3 |
+| mean ΔE2000 per pixel | – | 24.8 | 22.7 |
+
+These are measurements of colour shares and regions, not a percentage of visual similarity.
+
+Visual judgement: the composition is closer, with the foam bank across the bottom, a whirlpool centre, a slimmer rim and
+the gem visible. Combined, though, the frame is too pale and lilac; the original is richer cobalt and cyan. A short tuning
+pass on the combined build is next.
+
+Sheets: `approved_before_now_3.0s.jpg` (approved, session start, now at 3.0 and 3.1 s),
+`water_pass_before_approved_after.png`, `tunnel_pass_approved_before_after.png`.

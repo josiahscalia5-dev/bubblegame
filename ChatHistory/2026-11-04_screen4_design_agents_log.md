@@ -73,3 +73,16 @@ normal game are preserved unchanged.
   Alone, the same moment renders correctly. This was not a game bug.
 - In three.js code, `void THREE` (using the whole namespace as a value) stops the bundler trimming three.js: the bundle
   grew from 885 to 1005 KB.
+
+## Second session, original account (about 20:30 to 21:30 UTC): every agent invoked and completed
+
+- **Art Director:** invoked and completed (hero frame 3.0 s; seven ranked differences; a dispatch plan with owners and
+  acceptance checks).
+- **Water & VFX:** invoked in its own worktree; completed and committed `1ba9b89` (foam bank, navy disc removed, glossy
+  bubbles, spray). Merged.
+- **Tunnel & Lighting:** this time invoked as its own agent in its own worktree (last session the lead did its tasks);
+  completed and committed `4f56ec6` (whirlpool, rim, light, brushes, gem). Merged together with the water pass in `624b2a4`.
+  Asked afterwards for a short tuning pass on the combined build (it was too pale and lilac).
+- **Gameplay & Visual Testing:** invoked on `624b2a4` for the gameplay, cost, pixel-regression and recording checks.
+- No two agents edited the same file. Browser runs were serialised with `flock /tmp/bw_browser.lock`.
+- Results and numbers: `Previews/WebDemo/screen4_round7/README.md`.
