@@ -803,7 +803,7 @@ export function createBubbleWashRollerBrushModel(options: ProceduralModelOptions
   // repetition system: blue-core-tufts (InstancedMesh, radial, count=12, level=micro)
   {
     const parent = nodes["ring-blue"] ?? root;
-    const geo = buildWatertightCapsule(0.35, 0.7, 8, 16, 1);
+    const geo = new THREE.SphereGeometry(0.5, 32, 20);
     const mat = materialMap["fibre-blue"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 });
     // Contract (PLAN_1.5 WS-E): instanceScale is ABSOLUTE, in the parent pivot's
     // local units -- it is never multiplied by the parent component's own declared
@@ -844,7 +844,7 @@ export function createBubbleWashRollerBrushModel(options: ProceduralModelOptions
   // repetition system: white-ring-tufts (InstancedMesh, radial, count=22, level=micro)
   {
     const parent = nodes["ring-white"] ?? root;
-    const geo = buildWatertightCapsule(0.35, 0.7, 8, 16, 1);
+    const geo = new THREE.SphereGeometry(0.5, 32, 20);
     const mat = materialMap["fibre-white"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 });
     // Contract (PLAN_1.5 WS-E): instanceScale is ABSOLUTE, in the parent pivot's
     // local units -- it is never multiplied by the parent component's own declared
@@ -885,7 +885,7 @@ export function createBubbleWashRollerBrushModel(options: ProceduralModelOptions
   // repetition system: pink-ring-tufts (InstancedMesh, radial, count=30, level=micro)
   {
     const parent = nodes["ring-pink"] ?? root;
-    const geo = buildWatertightCapsule(0.35, 0.7, 8, 16, 1);
+    const geo = new THREE.SphereGeometry(0.5, 32, 20);
     const mat = materialMap["fibre-pink"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 });
     // Contract (PLAN_1.5 WS-E): instanceScale is ABSOLUTE, in the parent pivot's
     // local units -- it is never multiplied by the parent component's own declared
@@ -926,7 +926,7 @@ export function createBubbleWashRollerBrushModel(options: ProceduralModelOptions
   // repetition system: pink-outer-loops (InstancedMesh, radial, count=34, level=micro)
   {
     const parent = nodes["ring-pink"] ?? root;
-    const geo = buildWatertightCapsule(0.35, 0.7, 8, 16, 1);
+    const geo = new THREE.SphereGeometry(0.5, 32, 20);
     const mat = materialMap["fibre-pink"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 });
     // Contract (PLAN_1.5 WS-E): instanceScale is ABSOLUTE, in the parent pivot's
     // local units -- it is never multiplied by the parent component's own declared
