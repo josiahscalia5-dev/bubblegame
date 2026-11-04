@@ -244,7 +244,9 @@
       <div class="count" id="sockCount">0/5</div>
     </div>
     <div class="t" id="hint">Swipe ← → to steer · ↑ to jump<br>Tap to spin</div>
-    <!-- ?s3=round2 test only (hidden otherwise): the approved Screen 4 controls -->
+    <!-- ?s3=round2 test only: the approved Screen 4 controls. A template is not part of the page; game.js adds a copy
+         of it to the HUD only with the switch, so every other version's page is exactly as before. -->
+    <template id="r2Hud">
     <div id="r2Hurt" hidden></div>
     <div id="r2Shield" hidden></div>
     <button class="jelly" id="pauseBtn" type="button" title="Pause" aria-label="Pause" hidden><span></span><span></span></button>
@@ -291,6 +293,7 @@
         <button class="pbtn t" id="restartBtn" type="button">Restart</button>
       </div>
     </div>
+    </template>
     <div id="flash"></div>
   </div>
   <canvas id="overlay" aria-hidden="true"></canvas>

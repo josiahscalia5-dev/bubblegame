@@ -1354,6 +1354,7 @@ function toggleSound() {
 $('soundBtn').addEventListener('click', toggleSound);
 if (R2) {
   document.body.classList.add('r2');
+  $('hint').after($('r2Hud').content.cloneNode(true));   // the round2 controls (page.html template)
   for (const id of ['pauseBtn', 'blastBtn', 'turboBtn', 'pausePanel', 'r2Toast', 'r2Hurt', 'r2Shield']) $(id).hidden = false;
   $('pausePanel').hidden = true;
   // (each button lets go of the keyboard focus after a click, so the space bar keeps meaning "spin")

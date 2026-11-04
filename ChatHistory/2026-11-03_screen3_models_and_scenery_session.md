@@ -2022,3 +2022,13 @@ While those run, I'm looking for the Laundry Toss and Inside the Wash reference 
 
 Comparing the normal game (no switch) before and after this round, pixel by pixel:
 
+The normal game differs only in the top HUD strip after the tap. Looking at what's different:
+
+While the recording runs, I'm writing the script that builds the comparison sheets from the real recorded frames:
+
+The recording is at frame 100 of 345, still on the slide before the portal. Checking one frame looks right:
+
+The measurement tool needs the round2 frame at the same moment (3.5 s), which I'll take once the recording frees the machine. Waiting for the recording and the pixel re-check to finish.
+
+Still a tiny difference in the normal game, even with the template, so the hidden markup wasn't the cause. Looking at exactly which pixels differ:
+
