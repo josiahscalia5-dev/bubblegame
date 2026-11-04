@@ -101,10 +101,28 @@ with open(src) as f:
                     fp = x['input']['file_path']
                     add("Claude", f"_[Published the page {fp.split('/bubblegame/')[-1]}]_" if '/bubblegame/' in fp else "_[Published the playable page]_", ts)
 
+# The repository is public: keys pasted into the chat must never reach it. Every exported text passes through this
+# redaction (Tripo tsk_, Meshy msy_, OpenAI/Anthropic sk-, GitHub tokens, AWS key ids, Google API keys, Slack tokens, bearer
+# headers, and anything after "api key"/"token"/"password"/"secret" that looks like a credential).
+SECRETS = [
+    re.compile(r"\b(tsk|msy|sk|rk|pk)[-_][A-Za-z0-9_\-]{16,}"),
+    re.compile(r"\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{20,}|\bgithub_pat_[A-Za-z0-9_]{20,}"),
+    re.compile(r"\bAKIA[0-9A-Z]{16}\b|\bAIza[0-9A-Za-z_\-]{30,}|\bxox[abprs]-[A-Za-z0-9\-]{10,}"),
+    re.compile(r"(?i)\bbearer\s+[A-Za-z0-9._\-]{16,}"),
+    re.compile(r"(?i)((?:api[\s_-]?key|token|password|passwd|secret)\b[^\n]{0,20}?[:=\s]\s*)([A-Za-z0-9._\-]{20,})"),
+]
+
+
+def redact(text):
+    for i, pat in enumerate(SECRETS):
+        text = pat.sub((lambda m: m.group(1) + "[REDACTED]") if i == len(SECRETS) - 1 else "[REDACTED]", text)
+    return text
+
+
 with open(out, "w") as f:
     f.write(f"# {title}\n\n")
-    f.write("Your messages and Claude's replies, exported from the session log. Tool calls, raw command output and screenshots are left out; the work itself is in the commits on this branch.\n\n")
+    f.write("Your messages and Claude's replies, exported from the session log. Tool calls, raw command output and screenshots are left out; the work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].\n\n")
     for role, texts, ts in blocks:
         f.write(f"---\n\n### {role}" + (f" · {ts} UTC" if ts else "") + "\n\n")
-        f.write("\n\n".join(texts) + "\n\n")
+        f.write(redact("\n\n".join(texts)) + "\n\n")
 print(f"wrote {out}: {len(blocks)} messages")

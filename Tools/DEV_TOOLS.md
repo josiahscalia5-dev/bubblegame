@@ -41,7 +41,7 @@ only from `/opt/bw-node-tools`; they now look in `BW_NODE_TOOLS`, `~/.bubblewash
 | Playwright 1.64.1 with Chromium 156 | yes | n/a | **yes** | Launched headless, WebGL 2 available, from any folder once `bw_tools_env.sh` is sourced |
 | Git LFS 3.4.1 | yes (system) | n/a | installed | Not used: the repository keeps its models and videos as normal git files (`.gitattributes` marks them binary) |
 | ffmpeg | yes (system) | n/a | yes | Encodes the gameplay videos |
-| Tripo CLI 0.11.1 (`tripo`) | yes | **no** (checked 13:50) | `tripo doctor`: everything passes except "api key missing". Cost estimates work without a key (`tripo make ... --dry-run`): P2 (default) 110 credits a model, v3.1 20 credits | **The preferred and only external 3D generator.** See signing in below |
+| Tripo CLI 0.11.1 (`tripo`) | yes | **yes** (13:51, key in `~/.tripo` on this session's machine only) | `tripo doctor` passes; API reachable (region ov). **Balance 0 credits**, so nothing can be generated until credits are added. Cost estimates (`tripo make ... --dry-run`, free): P2 (default) 110 credits a model, v3.1 20 credits | **The preferred and only external 3D generator.** See signing in below |
 | Meshy MCP server 0.6.7 | **not used, at your request (4 November, 13:50)**: removed from `.mcp.json` | key still saved as a network secret for `api.meshy.ai` on the Default environment (only you can remove it) | not called; no Meshy credits were ever spent (two free balance checks: 17 credits) | Tripo is the only external generator |
 | GitHub | yes | yes | **yes** | Branch listing, fetch, and push with `Tools/save_now.sh` (checked on GitHub with `git ls-remote`) |
 
@@ -92,6 +92,14 @@ go through `Tools/bw_tools_env.sh`.
 4. Lasting alternative: save a Tripo key once as a network secret for the host `openapi.tripo3d.ai` in the cloud
    environment's settings (environment menu in the session's title bar, then Edit). The network proxy then adds it to
    every request, and no key is stored on the machine.
+5. **Never paste a key into the chat.** The chat history is exported into this public repository. Since 4 November the
+   exporter (`Tools/export_chat_history.py`) replaces keys with `[REDACTED]`, but the safe ways are the browser sign-in
+   and the network secret above.
+
+On 4 November (13:51) Tripo was signed in on this session's machine with a key the user pasted into the chat. Nothing
+was pushed: the autosave was stopped first, and the key was checked absent from every file, commit and GitHub. The
+key still appears in this session's own transcript, so regenerate it on Tripo's site when convenient. The API account
+showed **0 credits**.
 
 **Meshy: not used any more (your decision, 4 November).** Do not call Meshy tools, ask for a Meshy key or spend Meshy
 credits. To remove the saved key: the cloud environment menu in the session's title bar, Edit, Network secrets, then
