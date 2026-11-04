@@ -21,6 +21,11 @@ overlay. Keep these as they are unless the user says otherwise:
 - The game: `WebDemo/`.
   - Source is in `src/`. Build with `cd WebDemo && node build.mjs`; the bundle `game.bundle.js` is committed.
 - Test switches (URL `?s3=...` or `window.__BW_S3__`):
+  - `hero` is the newest Screen 4 version (5 November 2026): Round 7's dedicated hero scene, rebuilt from the approved
+    Screen 4 as a staged playable frame (`src/tunnel_r7_hero.js`, `src/tunnel_r7_hero_water.js`). Hero moment **2.85 s**.
+    Stage objects with `tools/screen4/hero_probe.cjs` (PICKS) and measure with `tools/screen4/hero_shares.py`. Colours are
+    sRGB hex through `new THREE.Color()` (linear light; screen values written straight into shaders come out pastel).
+    Evidence: `Previews/WebDemo/screen4_round7_hero/`.
   - `round6` is the current visual pass (4 November, third account): round5 plus the washing machine's architecture as
     geometry (`src/tunnel_r6.js`, `ROUND6`): porthole entrance (lavender drum face, thick gold bezel with rivets, bronze
     step, blue seal), layered flanges in the tunnel, a bow wave of turquoise water round the character, and the re-aimed

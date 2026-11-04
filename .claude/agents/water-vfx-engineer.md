@@ -31,6 +31,21 @@ Verify with real gameplay, never isolated renders: `cd WebDemo && node build.mjs
 `WebDemo/tools/models/game_eval.cjs` (`S3=round5 TIMES=3.6 SHOT=/path/t%.png`) or the page with
 `WebDemo/tools/screen3/s3_shot.cjs`, and compare with the approved image side by side. Run `source Tools/bw_tools_env.sh` first.
 
+## Newest: the Round 7 HERO SCENE, `?s3=hero` (5 November 2026; this section overrides the Round 7 notes below)
+
+- The user rejected further tuning of the layered Round 7 tunnel and asked for a full art-match rebuild of Screen 4 as a
+  dedicated, playable hero scene. It is `?s3=hero` (it also turns round7 on): `WebDemo/src/tunnel_r7_hero.js` (camera,
+  whirlpool shader, rim and collar, hero grade, staging, bubbles) and `WebDemo/src/tunnel_r7_hero_water.js` (water and foam
+  round the character). `?s3=round7` and everything older stay pixel-identical. **Hero moment: 2.85 s** (the character
+  3.27 m before the drum's mouth, camera on the axis height 2.6 m behind it).
+- Colour lesson: the renderer works in linear light. Write colours as sRGB hex through `new THREE.Color('#rrggbb')` (it
+  converts), never as screen values straight into a shader (that is why earlier rounds came out pastel lilac). The drum's
+  old grade turned saturated blues violet (#045ee7 -> #645cf3); the hero scene has its own grade (`heroGrade`).
+- Tools: `S3=hero T=2.85 node WebDemo/tools/screen4/hero_probe.cjs "$PWD" <out>` (frame, camera, every object's screen
+  place and size; `PICKS='[[x,y,dist],...]'` solves where to put an object so it lands where the approved picture has it);
+  `$BW_PY WebDemo/tools/screen4/hero_shares.py approved.png:0.555,0.52 frame.png:0.54,0.50` (the Art Director's colour
+  classes). Evidence and the measured spec: `Previews/WebDemo/screen4_round7_hero/`.
+
 ## Current round: Round 7 (this section overrides any Round 5 instructions above)
 
 - Screen 4 only. Never work on Screen 1, Laundry Toss, Screen 3 or the opening animation.
