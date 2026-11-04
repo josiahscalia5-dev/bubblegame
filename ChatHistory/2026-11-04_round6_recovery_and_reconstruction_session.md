@@ -648,3 +648,5 @@ The recording is nearly done (320 of 361 frames), and the power-up check has alr
 
 Also restoring a more vivid grade (saturation 1.35), since the board's blues are vivid. Then building and capturing:
 
+Pass 3 pushed (`94e0bba`). The power-up check has been running a long time; checking on it:
+
