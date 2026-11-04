@@ -48,7 +48,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   const R2 = round2 ? ROUND2 : null, hooks = (round2 && round2.hooks) || {};
   const R3 = round2 && round2.round3 ? ROUND3 : null;   // ?s3=round3 (tunnel_r3.js): its colours replace round2's below
   const R4 = round2 && round2.round4 ? ROUND4 : null;   // ?s3=round4 (tunnel_r4.js): the reconstruction, on top of round3
-  const FLUFFY_ON = !!(R4 && round2.fluffy);            // ?s3=round4,fluffy (fluffy_brush.js): shell-fur brushes, test only
+  const FLUFFY_ON = !!R4;   // round4's brushes are the fluffy shell-fur brushes (fluffy_brush.js; first tried as ?s3=round4,fluffy)
   const report = { rings: 0, brushes: 0, bubbles: 0, panelsHidden: 0, waterCopy: false };
   const P = TUNNEL, TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   const time = { value: 0 };

@@ -18,10 +18,10 @@ export const FLUFFY = {
   shells: 20, fur: 0.22, lean: 0.2,        // shell count (fewer shows layer terracing), fibre length, outward lean of the tips
   density: 30, clumpSize: 0.18, clump: 0.88, taper: 0.22, // strands per unit, clump spacing, how strongly tips gather into their clump (looped lobes), tip thickness (0.5: blunt, round lobes)
   fringe: { count: 120, rows: [[0.98, 0.02], [0.93, -0.16]], length: [0.15, 0.26], width: [0.1, 0.16], strands: 9 },
-  light: [0.35, 0.85, 0.6], ambient: 0.72, diffuse: 0.5, sheen: 0.32, tip: 0.65, ao: 0.55, glow: 0.14,
+  light: [0.35, 0.85, 0.6], ambient: 0.72, diffuse: 0.5, sheen: 0.32, tip: 0.8, ao: 0.55, glow: 0.14,
   // bands from the middle out, on the face's radial position (0 centre, 1 face edge, beyond 1 the rolled-back rim)
-  right: { edges: [0.4, 0.68], bands: [['#2a48d8', '#3a5ef0', '#1f38bd', '#4566ff'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ec4aa9', '#ff7cc8', '#ff63b8']] },
-  left: { edges: [0.4, 0.6], bands: [['#ff5fb6', '#f04aa8', '#ff74c2', '#f55ab4'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ff7cc8', '#ec4aa9', '#ff63b8']] },
+  right: { edges: [0.5, 0.78], bands: [['#2a48d8', '#3a5ef0', '#1f38bd', '#4566ff'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ec4aa9', '#ff7cc8', '#ff63b8']] },
+  left: { edges: [0.3, 0.66], bands: [['#ff5fb6', '#f04aa8', '#ff74c2', '#f55ab4'], ['#fff7fc', '#f7e4f1', '#ffffff', '#fbeaf5'], ['#f55ab4', '#ff7cc8', '#ec4aa9', '#ff63b8']] },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.fluffy;

@@ -88,6 +88,31 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big =
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: FOAM_VERTEX, fragmentShader: F4 ? FOAM_FRAGMENT_R4 : FOAM_FRAGMENT });
   const mesh = new THREE.Mesh(g, mat); mesh.frustumCulled = false; mesh.name = 'r3Foam'; mesh.visible = false; mesh.renderOrder = 2;
   scene.add(mesh);
+  // round4: real 3D soap bubbles riding on every heap (the approved foreground foam is made of distinct bubbles), with their
+  // own random numbers so nothing else in the game shifts
+  const FB = look4 && look4.foamBubbles;
+  let bub = null, bubA = null, bubDir = null, bubAt = null, bubSz = null, bubU = null;
+  if (FB) {
+    const nb = n * FB.per, rb = mulberry(0xb0b5);
+    const sph = new THREE.IcosahedronGeometry(1, 1);
+    const bg = new THREE.InstancedBufferGeometry();
+    bg.setAttribute('position', sph.attributes.position); bg.setAttribute('normal', sph.attributes.normal);
+    bubA = new THREE.InstancedBufferAttribute(new Float32Array(nb * 4), 4).setUsage(THREE.DynamicDrawUsage);
+    const bS = new THREE.InstancedBufferAttribute(new Float32Array(nb), 1);
+    bg.setAttribute('aBlob', bubA); bg.setAttribute('aSeed', bS); bg.instanceCount = nb;
+    bubDir = new Float32Array(nb * 3); bubAt = new Float32Array(nb); bubSz = new Float32Array(nb);
+    for (let j = 0; j < nb; j++) {
+      // over the heap's upper side, leaning toward the camera (behind the mascot), where they show
+      let x = rb() * 2 - 1, y = 0.15 + rb() * 0.85, z = rb() * 2 - 1.35; const l = Math.hypot(x, y, z) || 1;
+      bubDir.set([x / l, y / l, z / l], j * 3);
+      bubAt[j] = FB.at[0] + rb() * (FB.at[1] - FB.at[0]); bubSz[j] = FB.size[0] + Math.pow(rb(), 1.5) * (FB.size[1] - FB.size[0]); bS.array[j] = rb();
+    }
+    bubU = { uTime: time, uKey: u.uKey, uUp: { value: new THREE.Vector3(0, 1, 0) }, uInner: { value: new THREE.Color(...FB.inner) }, uDeep: { value: new THREE.Color(...FB.deep) }, uBright: { value: FB.bright } };
+    bub = new THREE.Mesh(bg, new THREE.ShaderMaterial({ uniforms: bubU, vertexShader: FOAM_BUBBLE_VERTEX, fragmentShader: FOAM_BUBBLE_FRAGMENT }));
+    bub.name = 'r4FoamBubbles'; bub.frustumCulled = false; bub.visible = false; bub.renderOrder = 2;
+    scene.add(bub);
+  }
+  const Fr = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
   const tot = P.zones.reduce((s, z) => s + z.w, 0);
   const R = (a) => a[0] + rnd() * (a[1] - a[0]);
   const blobs = [];
@@ -106,10 +131,12 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big =
   updaters.push((dt, t) => {
     const k = inside();
     mesh.visible = k > 0;
+    if (bub) bub.visible = mesh.visible;
     if (!mesh.visible) { fx = null; return; }
     if (fx === null) fx = mascot.x;
     fx += (mascot.x - fx) * (1 - Math.exp(-dt / 0.12));
-    const A = blobA.array;
+    const A = blobA.array, B = bub ? bubA.array : null, per = FB ? FB.per : 0;
+    if (bub) { TR.frame(mascot.z, Fr); bubU.uUp.value.copy(Fr.U); }
     for (let i = 0; i < n; i++) {
       const b = blobs[i];
       b.age += dt;
@@ -119,8 +146,16 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big =
       const x = fx + b.dx, uu = mascot.z + b.du, r = b.r * s;
       TR.map(x, W.surface(L, x, uu, t) - b.z.sink * b.r + r * 0.25, uu, v);
       A[i * 4] = v.x; A[i * 4 + 1] = v.y; A[i * 4 + 2] = v.z; A[i * 4 + 3] = Math.max(r, 1e-4);
+      for (let j = i * per, e = j + per; j < e; j++) {   // round4: its bubbles, on the heap's surface (heap frame: path right, up, along)
+        const dx = bubDir[j * 3], dy = bubDir[j * 3 + 1], dz = bubDir[j * 3 + 2], d = r * bubAt[j];
+        B[j * 4] = v.x + (Fr.R.x * dx + Fr.U.x * dy * 0.8 + Fr.T.x * dz) * d;
+        B[j * 4 + 1] = v.y + (Fr.R.y * dx + Fr.U.y * dy * 0.8 + Fr.T.y * dz) * d;
+        B[j * 4 + 2] = v.z + (Fr.R.z * dx + Fr.U.z * dy * 0.8 + Fr.T.z * dz) * d;
+        B[j * 4 + 3] = Math.max(r * bubSz[j], 1e-4);
+      }
     }
     blobA.needsUpdate = true;
+    if (bub) bubA.needsUpdate = true;
   });
   return { heaps: n, trianglesEach: base.attributes.position.count / 3 };
 }
@@ -166,6 +201,31 @@ void main() {
   gl_FragColor = vec4(col * uBright, 1.0);
 }
 `;
+// round4: the foam heaps' own bubbles: real spheres (aBlob: centre and radius), a bright white soap-film rim, a
+// blue-lavender centre that lightens toward the top, a sharp white glint and a hint of iridescence on the rim
+const FOAM_BUBBLE_VERTEX = /* glsl */ `
+attribute vec4 aBlob; attribute float aSeed;
+varying vec3 vN; varying vec3 vW; varying float vSeed;
+void main() {
+  vec3 p = aBlob.xyz + normal * aBlob.w;
+  vN = normal; vW = p; vSeed = aSeed;
+  gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
+}
+`;
+const FOAM_BUBBLE_FRAGMENT = /* glsl */ `
+uniform vec3 uKey, uUp, uInner, uDeep; uniform float uBright;
+varying vec3 vN; varying vec3 vW; varying float vSeed;
+void main() {
+  vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
+  float ndv = clamp(dot(N, V), 0.0, 1.0), up = clamp(dot(N, uUp) * 0.5 + 0.5, 0.0, 1.0);
+  float rim = 1.0 - smoothstep(0.08, 0.6, ndv);
+  vec3 inside = mix(uDeep, uInner, 0.3 + 0.7 * up);
+  vec3 col = mix(inside, vec3(1.0), clamp(rim * 1.25 + 0.22 * up * up, 0.0, 1.0));
+  col += vec3(1.0) * pow(max(dot(N, normalize(normalize(uKey) + V)), 0.0), 36.0) * 1.4;
+  col += (0.5 + 0.5 * cos(6.2832 * (ndv * 1.6 + vSeed + vec3(0.0, 0.33, 0.67)))) * 0.14 * rim;
+  gl_FragColor = vec4(col * uBright, 1.0);
+}
+`;
 // round4: the approved foreground foam is clusters of soap bubbles: each bubble a bright white rim round saturated
 // azure-to-aqua water, a white glint up and to the left, white piling up on the lit tops, deep blue underneath. The
 // transitions are kept narrow so the colours stay white or rich blue, not the pale lavender of round3's mounds (which the
@@ -186,7 +246,7 @@ void main() {
   float lit = clamp(0.2 + 0.65 * diff + 0.35 * up, 0.0, 1.0);
   vec3 water = mix(uDeep, uAqua, clamp(lit * 0.9 + 0.25 * cell, 0.0, 1.0));   // saturated: azure in shade, aqua in light
   float rim = smoothstep(0.68, 0.86, cell) + smoothstep(0.74, 0.9, cell2) * 0.7;
-  float top = smoothstep(0.45, 0.62, lit + 0.25 * bwNoise(vL.xz * 5.0 + vSeed * 9.0 + uTime * 0.3));   // white piled on the lit tops
+  float top = smoothstep(0.62, 0.8, lit + 0.25 * bwNoise(vL.xz * 5.0 + vSeed * 9.0 + uTime * 0.3));   // white piled on the lit crests only
   float white = clamp(max(rim, top * (0.55 + 0.45 * smoothstep(0.3, 0.7, cell))) * uWhite, 0.0, 1.0);
   vec3 col = mix(water, vec3(1.0), white);
   float glint = 1.0 - smoothstep(0.0, 0.12, length(vec2(cell - 0.35, 0.0)) + length(vec2(N.x + 0.35, N.y - 0.55)) * 0.3);

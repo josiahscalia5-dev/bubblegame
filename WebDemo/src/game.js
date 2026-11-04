@@ -1061,7 +1061,7 @@ function stepRound2(dt) {
 function stepRound3(dt) {
   const m = mascot, R = r3Rnd;
   if (state.phase !== 'running' || m.z < L.tunnelStart - 0.3) return;
-  const P = ROUND3.spray, surf = W.surface(L, m.x, m.z, state.time);
+  const P = R4 ? { ...ROUND3.spray, ...ROUND4.spray } : ROUND3.spray, surf = W.surface(L, m.x, m.z, state.time);   // round4: heavier spray
   if (!m.air) {
     m.r3Spray = (m.r3Spray || 0) + P.rate * dt;
     for (; m.r3Spray >= 1; m.r3Spray--) {

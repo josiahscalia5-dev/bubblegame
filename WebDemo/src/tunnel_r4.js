@@ -18,8 +18,8 @@ export const ROUND4 = {
   straight: 4,   // metres of extra straight drum before the climb and turns (track.js)
   emerge: [7.5, 11, 1.6],   // brushes slide out of the wall between 11 and 7.5 m ahead (from 1.6 m inside it)
   lining: { radius: 2.0, from: -56, to: 236, rowStep: 0.25, around: 96,
-    deep: [0.005, 0.012, 0.14], mid: [0.02, 0.065, 0.46], cyan: [0.05, 0.48, 0.92], spacing: 1.15, streaks: 0.4, line: 0.7, far: 0.25 },
-  rings: { radius: 1.93, tube: 0.045, glow: [0.2, 0.75, 1.25], every: 1.15 },
+    deep: [0.005, 0.012, 0.14], mid: [0.015, 0.05, 0.42], cyan: [0.05, 0.48, 0.92], spacing: 1.15, streaks: 0.2, line: 0.7, far: 0.25 },
+  rings: { radius: 1.93, tube: 0.045, glow: [0.12, 0.55, 1.05], every: 1.15 },   // deeper glow (was 0.2, 0.75, 1.25): more deep blue shows
   gold: { radius: 1.97, tube: 0.085, every: 3, color: [1.0, 0.72, 0.28] },
   grade: { contrast: 1.2, saturation: 1.15, exposure: 0.84, pivot: 0.5 },
   // the splash crown: curving sheets of water rising round the mascot, curling outward and falling back
@@ -30,9 +30,15 @@ export const ROUND4 = {
   water: { middle: [0.0, 0.66, 0.84], side: [0.015, 0.15, 0.55], mix: 0.75, crest: 0.3, froth: 0.9, churn: 0.95 },
   // foam round the mascot (tunnel_r3.js foamHeaps with FOAM_FRAGMENT_R4): more, smaller heaps of white-rimmed bubbles over
   // saturated blue, instead of round3's smooth lavender mounds (measured as pale milky blue, not white)
-  foam: { count: 150, size: 0.72, cells: 4.0, bright: 1.05, white: 1.0, deep: [0.02, 0.22, 0.85], aqua: [0.15, 0.72, 1.0] },
+  foam: { count: 150, size: 0.72, cells: 4.0, bright: 1.05, white: 1.0, deep: [0.01, 0.16, 0.78], aqua: [0.05, 0.6, 1.0] },
   // soap bubbles streaming past (tunnel_r3.js streamBubbles): more, and a few bigger near the camera, as in the approved picture
   bubbles: { count: 44, r: [0.05, 0.32] },
+  // the approved foreground foam is made of distinct soap bubbles: real 3D bubbles (instanced spheres) riding on every foam
+  // heap, white-rimmed with blue-lavender centres and a glint; per: bubbles per heap, at: how far out on the heap (share of
+  // its radius), size: bubble radius (share of the heap's)
+  foamBubbles: { per: 7, at: [0.8, 1.05], size: [0.22, 0.46], inner: [0.42, 0.55, 1.0], deep: [0.06, 0.2, 0.86], bright: 1.08 },
+  // white spray thrown up round the mascot (game.js stepRound3): round3's 110 a second, bigger here
+  spray: { rate: 400, size: [0.1, 0.26] },
   // pom-pom brushes (wheel units, rim 0.95): clumps over a flattened dome facing the rider (cap: its angle from the middle,
   // depth: how far it bulges), a rim of bigger clumps; colour bands from the middle outward ([up to share of cap, colours])
   // fibres: fine strands along each clump; fuzz: how far in from a clump's outline the strands break it up (a hairy edge,
@@ -230,8 +236,11 @@ void main() {
   float froth = bwNoise(vec2(x * 11.0 + vSeed * 7.0, y * 7.0 - uTime * 2.5));
   float holes = smoothstep(0.25, 0.55, bwNoise(vec2(x * 18.0 - vSeed * 3.0, y * 12.0 + uTime * 1.7)));   // the sheet breaks into froth
   // above its base the sheet splits into fingers of white water, each ending in a droplet: splash, not a veil
-  float fx = x * uFingers + vSeed * 3.0 + 0.6 * bwNoise(vec2(y * 3.0, vSeed * 11.0));
-  float finger = 1.0 - smoothstep(0.18, 0.34, abs(fract(fx) - 0.5));
+  // each sheet its own number of fingers (2 to uFingers), wavy and of uneven width: thick, irregular splash, not a striped fan
+  float nf = floor(2.0 + vSeed * (uFingers - 1.0));
+  float fx = x * nf + vSeed * 3.0 + 0.45 * bwNoise(vec2(y * 2.5, vSeed * 11.0));
+  float wF = 0.3 + 0.12 * bwNoise(vec2(floor(fx) * 3.1, vSeed * 7.0));
+  float finger = 1.0 - smoothstep(wF, wF + 0.14, abs(fract(fx) - 0.5));
   float split = smoothstep(0.25, 0.6, y);
   float drop = 1.0 - smoothstep(0.0, 0.16, length(vec2((fract(fx) - 0.5) * 0.9, y - 0.86 - 0.08 * fract(vSeed * 7.0 + floor(fx) * 0.37))));
   float body = max(top * sides * mix(1.0, finger, split) * mix(uVeil + 0.25, 1.0, holes), drop * sides * 1.2);

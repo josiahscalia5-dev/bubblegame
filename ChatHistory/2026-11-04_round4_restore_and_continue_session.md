@@ -471,3 +471,15 @@ _[2 images attached]_
 
 Leftover junk line in my probe; removing it:
 
+I'll give Round 4 its own heavier spray. First, checking the particle pool size so more spray doesn't starve other effects:
+
+Now the bubble foam layer inside `foamHeaps` (Round 4 only). Re-reading the current function to place it precisely:
+
+Writing the bubble layer. It uses its own random numbers, so nothing else in the game shifts:
+
+Now the splash crown: random finger counts per sheet and wider, solid white fingers, so it reads as thick, irregular splash water rather than a regular striped fan:
+
+The foam is now visibly made of distinct bubbles with blue centres (bottom right and left), like the approved foreground. Let me compare the foreground up close before deciding the next step:
+
+**c2** (right) looks best as well. The tunnel reads deeper blue, and the right brush now shows the approved large blue core inside a white ring. Making c2 the default in the source:
+
