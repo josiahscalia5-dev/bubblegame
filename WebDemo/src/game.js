@@ -20,7 +20,7 @@ import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
 import { ROUND3, mulberry } from './tunnel_r3.js';
 import { ROUND4 } from './tunnel_r4.js';
 import { ROUND5 } from './tunnel_r5.js';
-import { ROUND6, R6_ON } from './tunnel_r6.js';
+import { ROUND6, R6_ON, R7_ON } from './tunnel_r6.js';
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -645,12 +645,12 @@ function tripoCoin([hiG, loG], env) {
   const first = (g) => { let m = null; g.scene.traverse((o) => { if (o.isMesh && !m) m = o; }); return m; };
   const hi = first(hiG), lo = first(loG), mat = hi.material;
   mat.envMap = env; mat.envMapIntensity = 1.5;
-  mat.color.setRGB(1.0, 1.14, 0.72);   // Tripo's warm orange gold toward the approved bright yellow gold
+  mat.color.setRGB(...(R7_ON ? ROUND6.r7.coin.color : [1.0, 1.14, 0.72]));   // Tripo's warm orange gold toward the approved bright yellow gold (round7: brighter yellow)
   mat.onBeforeCompile = (s) => {
     s.fragmentShader = s.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
-  totalEmissiveRadiance += diffuseColor.rgb * 0.5 + vec3(1.0, 0.92, 0.5) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 3.0) * 0.45;`);
+  totalEmissiveRadiance += diffuseColor.rgb * ${R7_ON ? ROUND6.r7.coin.glow.toFixed(2) : '0.5'} + vec3(1.0, 0.92, 0.5) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 3.0) * 0.45;`);
   };
-  mat.customProgramCacheKey = () => 'tripoCoin';
+  mat.customProgramCacheKey = () => (R7_ON ? 'tripoCoinR7' : 'tripoCoin');
   return { hi: hi.geometry, lo: lo.geometry, mat };
 }
 
@@ -1055,7 +1055,7 @@ function updateMascot(dt) {
   mats.fur.uCentre.value.copy(m.root.position);
   TR.frame(m.z, F); mats.fur.uUp.value.copy(F.U);
 
-  document.body.classList.toggle('inDrum', running && m.z > L.tunnelStart - 0.5);
+  document.body.classList.toggle('inDrum', running && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // round7: the mission card at the hero moment
   if (side) sideTrail();
   if (running && m.z > L.tunnelEnd - 2.0) loopRun();   // flash back to the slide just before the drum ends
 }

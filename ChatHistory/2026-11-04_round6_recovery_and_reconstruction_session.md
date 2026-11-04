@@ -1180,3 +1180,25 @@ Then continue improving my REAL playable Screen 4 to match my ORIGINAL APPROVED 
 
 Preserve my existing gameplay and GitHub progress.
 
+---
+
+### Claude · 2026-11-04 20:16 UTC
+
+Your agents are all available in this session (all four appear in my agent list). I'll start the Art Director's review now, in the background, while I prepare the code.
+
+The Art Director is now running. While it reviews, I'll set up a new test switch, `?s3=round7`, so Round 6 and its rich preview stay untouched. Checking the coin and mission-card code:
+
+There's already support for decorative (non-hazard) wall brushes, which I can use to frame the shot as in your original without changing the obstacles. Finding its settings:
+
+The bundle grew by 120 KB from a near-empty file, which doesn't add up. Checking before going further:
+
+Found it: my placeholder line referenced the whole three.js library as one object, which stops the bundler trimming unused parts. Fixing:
+
+Back to normal size. Committing the scaffolding so the water specialist's copy starts from it:
+
+Now starting the Water & VFX specialist in its own copy of the project:
+
+`inDrum` only controls the mission card, so showing it earlier is safe. Writing the Round 7 settings and hooks:
+
+Building and capturing Round 7 (one browser at a time, since the water specialist is also capturing):
+

@@ -20,7 +20,7 @@ import { ROUND3, buildRound3 } from './tunnel_r3.js';
 import { ROUND4, buildRound4 } from './tunnel_r4.js';
 import { makeFluffyBrush } from './fluffy_brush.js';
 import { ROUND5, buildRound5 } from './tunnel_r5.js';
-import { R6_ON, ROUND6, buildRound6 } from './tunnel_r6.js';
+import { R6_ON, R7_ON, ROUND6, buildRound6 } from './tunnel_r6.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -206,7 +206,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       return b;
     };
     for (const [u, side] of P.hazards) place(u, side, 0, true);   // u: metres along the path from its start (the drum begins at 3.9)
-    for (const [u, side, a] of P.deco) place(u, side, a, false);
+    for (const [u, side, a] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) place(u, side, a, false);   // round7: two more framing the mouth
     report.brushes = brushes.length; report.hazards = P.hazards.length;
   }
   const hits = [];
