@@ -248,3 +248,12 @@ _[Sent you files: Previews/WebDemo/screen4_round2_test/bubblewash_round2_tunnel_
 
 The auto-save had already committed those changes, and GitHub is at `0379000`. Waiting for the performance measurement:
 
+The performance measurement is running: it loads and plays the game three times (normal, last round, round 2) in software WebGL, which takes a while. When it finishes I'll write up the frame cost and the honest score, save to GitHub, and send you a summary.
+
+---
+
+### Automatic check · 2026-11-04 03:48 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+

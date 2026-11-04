@@ -104,17 +104,64 @@ The tool used to find it is `WebDemo/tools/screen3/r2_render_probe.cjs`: it rend
   - A coin, sock or gem you pass in another lane now shrinks away, instead of sweeping past close to the camera.
   - A collected item rises and shrinks instead of swelling over the mascot.
 
-## Checks so far (seeded Playwright runs)
+## Checks (seeded Playwright runs, after the warning fix)
 
 - **Hearts:** five knocks take the hearts 5 → 4 → 3 → 2 → 1 → 0, and the HUD shows each one. At 0, the game goes back to Tap to Start 1.4 s later with "5 Full".
 - **Pause:** game time stands still while paused, it runs on after Resume, and the P key does the same.
 - **Bubble Blast:** clears the brush pair ahead (passing a cleared brush in its lane: no knock). The badge counts 3 → 0, and the button is disabled at 0.
 - **Turbo Spin:** speed rises from 6.1 to 7.9 m/s, and riding into a brush's lane: no knock.
-- **No console errors.**
-- **The normal game (no switch):** the same seeded run as before (12 coins, 2 gems, 3 socks, ends at z 3.525). The 3D picture is pixel-identical. The only pixel differences are the browser's smoothing of the four small HUD icon pictures (heart, plus, coin, gem), by at most 10 brightness levels out of 255.
-- **Last round's `?s3=paint,tunnel`:** the same seeded run as before (18 coins, 1 gem, 3 socks, ends at z 0.869).
-- **Still to finish:**
-  - the stronger brush warning on the water (being fixed: it did not show);
-  - the final video and the comparison sheets;
-  - the frame cost;
-  - the honest score.
+- **The final video's run:** 17 coins, 2 gems and 5 socks; one knock (5 → 4 hearts); Bubble Blast and Turbo Spin each used once.
+- **No console errors** in the checks, the video or the measurements.
+- **The normal game (no switch) and last round's `?s3=paint,tunnel` are unchanged by the warning fix.** Rendered with the build before the fix (`ae059a5`) and after it, at 2, 11 and 20 m into the same seeded run, every pixel is identical.
+- **Earlier in this round** (before the fix, which touches only `?s3=round2`):
+  - The normal game played the same seeded run as before (12 coins, 2 gems, 3 socks, ends at z 3.525). Its 3D picture was pixel-identical; the only differences were the browser's smoothing of the four small HUD icons, by at most 10 brightness levels out of 255.
+  - `?s3=paint,tunnel` played the same seeded run as before (18 coins, 1 gem, 3 socks, ends at z 0.869).
+
+## Frame cost (`frame_cost.json`, `WebDemo/tools/screen3/r2_perf.cjs`)
+
+One frame, seed 7, middle lane. Draw calls and triangles are what carry over to a phone's GPU.
+
+| Where | Normal game | Last round (`?s3=paint,tunnel`) | **This round (`?s3=round2`)** |
+|---|---|---|---|
+| Tap to Start | 322 calls, 1.91 M triangles | 244, 1.12 M | **190, 1.04 M** |
+| 5 m (first brushes) | 221, 1.12 M | 231, 1.32 M | **181, 1.27 M** |
+| 11 m | 184, 1.08 M | 193, 1.25 M | **153, 1.18 M** |
+| 20 m | 129, 0.85 M | 137, 1.12 M | **117, 1.05 M** |
+| 30 m (near the exit) | 87, 0.55 M | 88, 0.62 M | **75, 0.63 M** |
+| Geometries, textures, shader programs | 166, 41, 47 | 125, 26, 46 | **124, 25, 44** |
+
+- This round draws **13–54 fewer draw calls** than last round at every point, and 4–7 % fewer triangles, except near the exit, where it is about the same (0.63 M against 0.62 M). That is most likely the clean-up: fewer soap bubbles, the old rollers hidden and fewer coins.
+- Its heaviest frame (1.27 M triangles, 181 calls) is still below the normal game's Tap to Start (1.91 M, 322).
+- **Not measured: frame times.** With software WebGL the drawing is queued and finished later, so a timer around one frame read anything from 1 ms to 8 s for the same scene. Nothing has been tried on a real phone.
+
+## Measured against the approved Screen 4 (3.5 s after the tap, sheet 01)
+
+Same measures as last round. Colour is ΔE, lower is closer. SSIM and edges measure structure: higher is closer, and 1.0 would be identical. The regions leave out the HUD and buttons (`WebDemo/tools/screen3/s4_regions.py`).
+
+| Region: colour / SSIM / edges | Protected tunnel | Last round | **This round** |
+|---|---|---|---|
+| Upper tunnel (rings) | 29.3 / 0.076 / 0.023 | 15.5 / 0.093 / 0.126 | **11.7** / **0.104** / 0.114 |
+| Left side (brush) | 29.1 / 0.074 / 0.005 | 31.7 / 0.079 / 0.068 | 31.8 / **0.100** / 0.028 |
+| Right side (brush) | 20.7 / 0.114 / 0.101 | 19.3 / 0.082 / 0.171 | 26.8 / 0.082 / 0.147 |
+| Centre (depth) | 9.3 / 0.038 / 0.051 | 8.3 / 0.028 / 0.008 | 12.2 / **0.057** / **0.091** |
+| Lower (water, mascot) | 12.7 / 0.090 / 0.156 | 11.1 / 0.090 / 0.144 | 11.7 / 0.090 / **0.244** |
+| **Average** | 20.2 / 0.078 / 0.067 | 17.2 / 0.075 / 0.103 | 18.8 / **0.087** / **0.125** |
+
+(Last round's README gave slightly different numbers for the same two frames, because these regions are drawn a little differently; both frames are re-measured here with the same regions.)
+
+What the numbers say:
+
+- **Structure is closer than ever:** the best SSIM and edge scores of the three, with the clearest gain around the mascot and water.
+- **The rings' colour is much closer** (ΔE 11.7, against 15.5).
+- **The right-hand brush is further off in colour** (26.8, against 19.3). This round made the right brushes a lighter periwinkle; the approved right brush is a deeper royal blue with white. Taking that back toward royal blue would recover most of it.
+- **The left side stays far off** (about 32): the approved left brush is a large, bright pink-and-white mop filling the corner, which ours does not match in size or place.
+
+## Honest score (out of 10, against the approved Screen 4)
+
+- **About 7.** Last round was about 6.5–7, and the protected tunnel about 5.
+- **Better than last round:** the Screen 4 controls are there and work (Bubble Blast, Turbo Spin, pause, hearts); the gold paw coins; neat coin lines ending at socks; no white wash-out at the exit; less clutter; and brush danger you can read on the water.
+- **What still separates it from the painting:**
+  - the approved vortex is a dense, sparkly swirl of foam and light, where ours is cleaner rings;
+  - the big near-camera coin, the foam spray and the large foreground bubbles that frame the approved picture;
+  - the left mop brush's size and place, and the right brush's deeper blue;
+  - the approved water is whiter and more churned around the mascot.

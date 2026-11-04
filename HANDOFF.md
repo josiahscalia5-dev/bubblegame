@@ -59,6 +59,11 @@ Read this first when you continue in a new Claude conversation.
   - **The brush warning now shows.** It had three faults: it was full only where the brush hides it, it was mixed in under the reflections and foam (it came out lavender), and the slide's water sheet covered the drum's over the first brushes. The fix starts it 7.5 m before a brush (full from 3 m), lays the pink on last, and gives the drum's water a polygon offset. Details in that folder's README.
   - **Final video** `bubblewash_round2_tunnel_final.mp4` and **sheets** 01–05 from its real frames.
   - **Functional checks** all pass (`checks_functional.txt`); no console errors.
+  - **Unchanged:** the normal game and `?s3=paint,tunnel` render pixel-identical to the build before the fix (at 2, 11 and 20 m).
+  - **Frame cost** (`frame_cost.json`): 190 draw calls and 1.04 M triangles at Tap to Start, at most 181 calls and 1.27 M in the tunnel. That is 13–54 fewer calls than last round, and still below the normal game's Tap to Start (322, 1.91 M). Frame times could not be measured with software WebGL.
+  - **Against the approved Screen 4:** structure is the closest yet (SSIM 0.087, edges 0.125, against 0.075 and 0.103 last round). The rings' colour is closer (ΔE 11.7 against 15.5); the right brush is further off (26.8 against 19.3), because it was made lighter periwinkle and the approved one is royal blue.
+  - **Honest score: about 7/10** (last round 6.5–7). Still missing against the painting: the dense sparkly foam swirl, the near-camera coin, spray and big bubbles, the left mop brush's size and place, and whiter churned water.
+  - **Possible next steps (not started, waiting on the user):** the right brushes back toward royal blue; more foam spray and near bubbles; then the Laundry Toss intro once its reference pictures arrive.
 - **Missing assets for the intro:** `Design/LAUNDRY_TOSS_INTRO_ASSETS.md`. The intro reference pictures were never uploaded to this session; ask for them.
 - **Auto-save:** `Tools/autosave.sh` (started at the user's request) exports the chat history and commits and pushes every 5 minutes while a session is running.
 

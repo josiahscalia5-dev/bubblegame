@@ -1,10 +1,9 @@
 // Frame cost of the game with and without the ?s3 switches: WebGL draw calls and triangles for one frame (counted by
-// wrapping the draw functions), three.js's count of geometries, textures and shader programs, and the time to render a frame
-// and to step the game logic. Math.random seeded with 7; the mascot runs down the middle lane.
+// wrapping the draw functions), and three.js's count of geometries, textures and shader programs. Math.random seeded with 7;
+// the mascot runs down the middle lane.
 //   CONFIGS='normal;paint,tunnel;round2' POINTS=5,11,20,30 node r2_perf.cjs <demo-dir>
-// The times are from headless Chromium with software WebGL (SwiftShader) on this machine: only the comparison between
-// switches means anything, not the milliseconds themselves. A phone's GPU draws far faster; draw calls and triangles are
-// the numbers that carry over.
+// No times: with software WebGL (SwiftShader) the drawing is queued and finished later, so a timer around a frame measured
+// anything from 1 ms to 8 s for the same scene. Draw calls and triangles are the numbers that carry over to a phone.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const [ROOT] = process.argv.slice(2);
@@ -37,29 +36,23 @@ const server = http.createServer((req, res) => {
       wrap('drawElementsInstanced', (a) => mode(a[0]) * a[1] / 3 * a[4]);
       wrap('drawArraysInstanced', (a) => mode(a[0]) * a[2] / 3 * a[3]);
     }, s3);
-    const t0 = Date.now();
     await page.goto(`http://localhost:${server.address().port}/index.html`);
     await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
-    const loadS = (Date.now() - t0) / 1000;
     const measure = (label) => page.evaluate((label) => {
       const d = window.__bw.debug(), info = d.renderer.info;
       window.__bw.render();   // warm-up (shaders compiled)
       window.__gl.calls = 0; window.__gl.tris = 0; window.__bw.render();
       const calls = window.__gl.calls, tris = Math.round(window.__gl.tris);
-      let t = performance.now(); for (let i = 0; i < 3; i++) window.__bw.render(); const renderMs = (performance.now() - t) / 3;
       const s = window.__bw.state();
-      return { at: label, z: s.z, drawCalls: calls, triangles: tris, renderMs: +renderMs.toFixed(0), geometries: info.memory.geometries, textures: info.memory.textures, programs: info.programs.length };
+      return { at: label, z: s.z, drawCalls: calls, triangles: tris, geometries: info.memory.geometries, textures: info.memory.textures, programs: info.programs.length };
     }, label);
     const rows = [await measure('Tap to Start')];
     await page.evaluate(() => window.__bw.tap());
-    // game-logic time: 60 steps with one render at the end, minus that render
-    let stepMs;
     for (const z of POINTS) {
       for (let i = 0; i < 600; i++) { const s = await page.evaluate(() => window.__bw.advance(1 / 30, 30)); if (s.z >= z || s.laps > 0) break; }
       rows.push(await measure('z ' + z));
     }
-    stepMs = await page.evaluate(() => { const r0 = performance.now(); window.__bw.render(); const r = performance.now() - r0; const t = performance.now(); window.__bw.advance(2, 30); return +(((performance.now() - t) - r) / 60).toFixed(2); });
-    out[cfg] = { loadSeconds: +loadS.toFixed(1), stepMsPerFrame: stepMs, rows, logs };
+    out[cfg] = { rows, logs };
     console.log(cfg, JSON.stringify(out[cfg]));
     await page.context().close();
   }

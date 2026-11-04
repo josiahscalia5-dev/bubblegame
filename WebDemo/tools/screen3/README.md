@@ -20,6 +20,9 @@ These are the scripts behind the evidence in `Previews/WebDemo/opening_artwork`,
 | `remove_duck.py` | The duck-removal fill. You declined its results; it is kept for reference only. |
 | `record_r2.cjs` | Records the `?s3=round2` test. It uses real swipes and real mouse clicks on the HUD buttons (pause, Bubble Blast, Turbo Spin), and each input fires when the mascot reaches a set point on the track. Use `dry` mode to print the game state at each input. |
 | `r2_func.cjs` | Functional checks for `?s3=round2`: hearts down to zero and back to Tap to Start, pause (button and keyboard), Bubble Blast clearing brushes and counting down to a disabled button, and Turbo Spin speed and protection. |
-| `r2_sheets.py` | The comparison sheets in `Previews/WebDemo/screen4_round2_test`. |
+| `r2_sheets.py` | The comparison sheets in `Previews/WebDemo/screen4_round2_test`. `r2_picks.json` lists the video frames it used. |
+| `r2_render_probe.cjs` | Renders the drum water at chosen points along the tunnel, as it is or with debug colours (GLSL appended after its `gl_FragColor`); reads the canvas directly, which is much faster than a screenshot. It found why the brush warning did not show. |
+| `r2_perf.cjs` | Frame cost of the normal game and the `?s3` switches: draw calls, triangles, geometries, textures and shader programs at Tap to Start and along the tunnel. It gives no times (software WebGL makes them meaningless). |
+| `s4_regions.py` | Region-by-region comparison against the approved Screen 4 (colour ΔE, SSIM, edges), the tunnel counterpart of `region_compare.py`. |
 
 Seeded copies of `tools/seeded_run.cjs` with a switch turned on were made with a one-line `sed`: insert `window.__BW_S3__ = ['all', 'edges'];` after `window.__BW_TEST__ = true;`.
