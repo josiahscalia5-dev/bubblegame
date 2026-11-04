@@ -110,3 +110,35 @@ Waiting on the last two pink-warning renders, the ones from the middle of the tu
 
 _[Sent you files: /tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/pink_warning_before_after.jpg]_
 
+The recording is at frame 33 of 345, so it'll take a while. Meanwhile I'm re-running the functional checks for hearts, pause, Bubble Blast and Turbo Spin on the fixed build.
+
+The video and the checks are both still running in the background. I'll pick up the screenshot sheets and the performance numbers as soon as they finish.
+
+So far this session:
+
+1. **Pink warning fixed** (sent you before/after screenshots): the water in a brush's lane now shows pink dashes as you approach it.
+2. **The final gameplay video is recording**, at frame 58 of 345 (about 20 more minutes in software rendering). It plays the same run as before, with real swipes and real button presses: pause, a heart lost, Bubble Blast, Turbo Spin and all 5 socks.
+3. **The functional checks are re-running** on the fixed build: hearts, pause, Bubble Blast and Turbo Spin.
+4. **Measurement tools are ready** for the comparison with the approved Screen 4 and for the frame cost.
+
+When the video finishes, I'll:
+- build the screenshot sheets (entrance, mid-tunnel, brushes, coins, socks, controls, exit);
+- measure performance;
+- check that the normal game and last round's `?s3=paint,tunnel` are unchanged;
+- write the honest score;
+- then save everything to GitHub and send you the video and sheets.
+
+Everything so far is pushed to `ccr-b6199007-gvhqim` (commit `b961e2e`), and the 5-minute auto-save is still running.
+
+---
+
+### You · 2026-11-04 02:59 UTC
+
+show me the video when it's done
+
+---
+
+### Claude · 2026-11-04 02:59 UTC
+
+I'll send it as soon as it's done. It's at frame 110 of 345, about 15 more minutes. When it finishes I'll encode it to MP4, check that the frames look right, and send it to you here.
+
