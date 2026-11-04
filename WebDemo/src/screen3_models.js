@@ -41,9 +41,12 @@ S3.paint = LIST.includes('paint');
 S3.round2 = LIST.includes('round2');
 // ?s3=round3 (test): round2 plus the third visual pass toward the approved Screen 4 (tunnel_r3.js): white foam and spray
 // around the mascot, a luminous blue swirling drum, pink-white-blue brushes, a purple gem, coins and bubbles framing the view.
+// It never shows the approved paintings themselves: no painted scenery (?s3=paint) and no picture at Tap to Start; the
+// opening is the live 3D scene with the user's Meshy castle and the icy slide edges (castle, edges).
 S3.round3 = LIST.includes('round3');
 if (S3.round3) S3.round2 = true;
-if (S3.round2) { S3.paint = true; S3.tunnel = true; }
+if (S3.round2) { S3.paint = !S3.round3; S3.tunnel = true; }
+if (S3.round3) { S3.castle = true; S3.edges = true; }
 if (S3.paint) { S3.castle = true; S3.edges = true; }
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };

@@ -32,7 +32,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { PHASE_A, applyPhaseA } from './phase_a.js';
-import { S3_ON, loadScreen3Models } from './screen3_models.js';
+import { S3, S3_ON, loadScreen3Models } from './screen3_models.js';
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -571,6 +571,8 @@ export function buildOpening(ctx) {
 export const OPENING_PARTS = { portal: OPENING_ON, foam: OPENING_ON, bubbles: OPENING_ON, brushes: OPENING_ON, slide: OPENING_ON, mascot: OPENING_ON, light: OPENING_ON, art: OPENING_ON };
 // For checks: window.__BW_OPENING_OFF__ = ['mascot', ...] (set before the page loads) leaves those parts out.
 if (typeof window !== 'undefined' && Array.isArray(window.__BW_OPENING_OFF__)) for (const k of window.__BW_OPENING_OFF__) OPENING_PARTS[k] = false;
+// ?s3=round3: no flat pictures. The approved artwork is a target, never shown in the game: Tap to Start is the live 3D scene.
+if (S3.round3) OPENING_PARTS.art = false;
 // The mascot's presentation: [sideways, up, forward] stretch of the drawn model (not its collider or ride
 // height), and how much crisper the strands and droplets are (0 = the original fur).
 export const MASCOT_PRESENTATION = { stretch: [0.95, 1.07, 0.95], spike: 1 };
