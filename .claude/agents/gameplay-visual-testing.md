@@ -26,10 +26,31 @@ Checks (set `S3=` to the switch under test, e.g. `round5`):
 Evidence:
 
 - Seeded frames (seed 7, 538 x 1076): `SETTLE=800 S3=round5 TIMES=0,2.6,3.0,3.3,3.6,4.2 node tools/screen3/s3_shot.cjs "$PWD" <out>`.
-- Measurements against `Design/ReferencePacks/2026-11-04_Tripo_Reference_Kit/00_ORIGINAL_APPROVED_SCREEN_4.jpg`:
+- Measurements against `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`:
   `"$BW_PY" tools/screen4/compare_s4.py --approved <that file> --out <dir> --name <n> label=<frame> ...`.
 - Recording: `S3=round5 node tools/screen3/record_r2.cjs "$PWD" <out> 12 game`, then ffmpeg at 30 fps.
 
 Reporting rules: give each check as PASS or FAIL with the command and the key output line. Report measurements separately
 from what you see; colour shares and SSIM do not prove a percentage of visual similarity, so never state one. If a check
 was not run or could not finish, say so plainly.
+
+## Current round: Round 7 (this section overrides any Round 5 instructions above)
+
+- Screen 4 only. Never work on Screen 1, Laundry Toss, Screen 3 or the opening animation.
+- The visual test version is now **Round 7** (`?s3=round7` = Round 6 + the rich preview + the Round 7 pass). New visual
+  changes go only there; `?s3=round6`, `?s3=round6,rich`, Round 5, Round 4, older switches and the normal game must stay
+  pixel-identical. Use `S3=round7` wherever the commands above say `S3=round5`.
+- The three Screen 4 references, all in `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/`:
+  `01_Original_Approved_Screen_4.jpg` (the authority), `05_SCREEN4_WHAT_CLAUDIA_MUST_FIX.png` and
+  `06_SCREEN4_EXACT_MATCH_TARGET_BREAKDOWN.png` (build guides; their drawn mock-ups never override the original).
+- Hero moment: about **3.0 s** after the tap (the washer entrance); 3.3 s and 4.2 s show the way in and the drum interior.
+- Who owns which file (so two specialists never edit the same file at once):
+  - Tunnel & Lighting: `WebDemo/src/tunnel_r6.js` (settings in `ROUND6.r7`, round7-gated code), and round7-gated lines in
+    `game.js` / `tunnel_s4.js`.
+  - Water & VFX: `WebDemo/src/tunnel_r7_water.js` only (`R7_WATER.round6` merges into `ROUND6` when round7 is on;
+    `buildR7Water(ctx)` builds its objects).
+  - Art Director and Visual Testing are read-only on game source.
+- Browsers: software-rendered browsers interfere with each other. Wrap every Playwright command in the shared lock:
+  `flock /tmp/bw_browser.lock <command>`. A blank lavender frame means two browsers ran at once: capture again.
+- If you work in a separate git worktree, link the packages first (`ln -s /home/user/bubblegame/WebDemo/node_modules
+  WebDemo/node_modules`) and **commit your work in that worktree before you finish**, or it is lost when the session ends.
