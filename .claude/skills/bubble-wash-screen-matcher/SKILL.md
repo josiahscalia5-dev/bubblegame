@@ -34,14 +34,22 @@ overlay. Keep these as they are unless the user says otherwise:
 
 ## Tools in a cloud session
 
-Run `bash Tools/dev_tools_setup.sh` first. It skips whatever is already installed and provides:
+Run `source Tools/bw_tools_env.sh` first, in every shell that uses the tools. It finds them wherever this environment
+installed them (the user's setup script puts them in `~/.bubblewash-tools/`; the older layout was `/opt/bw-venv`,
+`/opt/bw-node-tools` and `/usr/local/bin/blender`) and sets:
 
-- Blender 5.2.3 (`blender`);
-- `/opt/bw-venv` with OpenCV and scikit-image;
-- `/opt/bw-node-tools` with glTF Transform and the Khronos validator;
-- checks for ImageMagick and Playwright with Chromium.
+- `$BW_PY`: Python with OpenCV, scikit-image, NumPy and Pillow;
+- `blender`: a real Blender binary if there is one, otherwise `Tools/bin/blender`, which runs
+  `blender -b --python x.py -- args` through the bpy 5.2.3 module (`$BW_BPY`);
+- `PATH` and `NODE_PATH`: glTF Transform, the Khronos validator, Playwright (so `require('playwright')` works from
+  `WebDemo/`), `tripo` and `meshy-mcp-server`.
 
-Do not run `playwright install`.
+If the tools are missing entirely, `bash Tools/dev_tools_setup.sh` installs them in the older layout. ImageMagick
+(`convert`, `montage`) and ffmpeg are system packages. Do not run `playwright install`. Before the first build in a new
+session, run `cd WebDemo && npm install` (three and esbuild, pinned).
+
+Save after each finished step with `bash Tools/save_now.sh "<what was done>"`: it pushes and prints the branch, the
+commit, whether GitHub really has it, and the files saved.
 
 ## The loop
 
@@ -61,7 +69,7 @@ Do not run `playwright install`.
 2. **Measure against the approved screen:**
 
    ```bash
-   /opt/bw-venv/bin/python WebDemo/tools/screen4/compare_s4.py \
+   "$BW_PY" WebDemo/tools/screen4/compare_s4.py \
      --approved Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/02_APPROVED_SCREEN_4_FULL.jpg \
      --out /tmp/cmp --name now r2=/tmp/frames/r2/t4.2.png r3=/tmp/frames/r3/t4.2.png
    ```
@@ -105,6 +113,9 @@ Do not run `playwright install`.
 - **Tripo CLI** (`tripo`): the key lives in `~/.tripo` after `tripo login`.
 - **Meshy MCP** (`.mcp.json`): reads `MESHY_API_KEY` from the environment.
 - Both spend credits. Check `tripo balance` or `meshy_check_balance`, and get the user's yes before any generation.
+- **Tripo skips its own confirmations when it runs headless** (`--yes` is switched on automatically, as in a cloud
+  session), so `tripo make`, `tripo ai` and `tripo redo` spend credits at once. Run them only after the user's yes for
+  that exact job. `tripo doctor`, `tripo balance` and `tripo login` are free.
 - Never put keys in the repo, scripts or chat.
 
 ## What is known

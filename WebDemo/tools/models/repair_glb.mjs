@@ -1,12 +1,17 @@
-// Minimal glTF repairs with glTF Transform (the user's cloud tools; in a session without them:
-// npm install --prefix /opt/bw-node-tools @gltf-transform/cli gltf-validator).
+// Minimal glTF repairs with glTF Transform (the user's cloud tools: source Tools/bw_tools_env.sh, which sets
+// BW_NODE_TOOLS; found in ~/.bubblewash-tools/node or /opt/bw-node-tools otherwise).
 //   node repair_glb.mjs <in.glb> <out.glb>
 // - NORMAL vectors rescaled to unit length (the Khronos validator's ACCESSOR_VECTOR3_NON_UNIT errors);
 // - the file rewritten by glTF Transform, which lays every buffer view out on 4-byte boundaries
 //   (MESH_PRIMITIVE_ACCESSOR_UNALIGNED).
 // Nothing else changes: same meshes, vertices, triangles, materials and textures (the texture bytes are copied as they are).
 import { createRequire } from 'node:module';
-const require = createRequire('/opt/bw-node-tools/');
+import { existsSync } from 'node:fs';
+import { homedir } from 'node:os';
+const toolDirs = [process.env.BW_NODE_TOOLS, `${homedir()}/.bubblewash-tools/node`, '/opt/bw-node-tools'].filter(Boolean);
+const toolDir = toolDirs.find((d) => existsSync(`${d}/node_modules/@gltf-transform/core`));
+if (!toolDir) throw new Error(`glTF Transform not found in ${toolDirs.join(', ')} (source Tools/bw_tools_env.sh)`);
+const require = createRequire(`${toolDir}/`);
 const { NodeIO } = require('@gltf-transform/core');
 const [input, output] = process.argv.slice(2);
 const io = new NodeIO();

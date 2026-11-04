@@ -1,4 +1,4 @@
-# Development tools for Bubble Wash Kingdom (checked 4 November 2026, cloud session on branch `ccr-b6199007-gvhqim`)
+# Development tools for Bubble Wash Kingdom (checked 4 November 2026, 12:30 UTC, second Claude account, branch `ccr-8ca1fe92-d6t2bm`)
 
 Four separate states, for each tool:
 
@@ -9,62 +9,98 @@ Four separate states, for each tool:
 
 Keys and passwords never go in this repository, in scripts or in chat.
 
+## Where the tools are now
+
+The cloud environment's setup script (the user's, in the **Default** environment's settings) installs everything in
+`~/.bubblewash-tools/`:
+
+| Folder | What |
+|---|---|
+| `visual/` | Python 3.13 with OpenCV 5.0, scikit-image 0.26, NumPy, Pillow, SciPy |
+| `blender/` | Python 3.13 with **bpy 5.2.3**, Blender's Python API as a module. There is no Blender binary. |
+| `node/` | glTF Transform 4.5.1, Khronos glTF Validator 2.0.0-dev.3.10, Playwright 1.64.1, tripo-cli 0.11.1, Meshy MCP server 0.6.7 |
+| `bootstrap/` | pip and uv, used by the setup script |
+
+**In every shell: `source Tools/bw_tools_env.sh`.** It finds the tools in this layout or the first account's older one
+(`/opt/bw-venv`, `/opt/bw-node-tools`, `/usr/local/bin/blender`) and sets `BW_PY`, `BW_BPY`, `BW_NODE_TOOLS`, `PATH`
+and `NODE_PATH`. With no Blender binary, it puts `Tools/bin/blender` on the path, which runs
+`blender -b --python script.py -- args` through the bpy module, so the project's Blender scripts work unchanged.
+
+Fixed on 4 November for the new layout: `WebDemo/tools/models/validate.cjs` and `repair_glb.mjs` used to load the tools
+only from `/opt/bw-node-tools`; they now look in `BW_NODE_TOOLS`, `~/.bubblewash-tools/node` and `/opt/bw-node-tools`.
+
+## Tools on the machine (each tried for real on 4 November)
+
+| Tool | Session | Signed in | Working | What was run |
+|---|---|---|---|---|
+| Blender 5.2.3 Python API (bpy) | yes | n/a | **yes** | Imported `s3_brush.glb`, exported a glTF, rendered with Cycles on the CPU, and ran `WebDemo/tools/models/blender_passage_check.py` on `s3_entrance.glb` through `Tools/bin/blender` (267 of 576 rays through, as before) |
+| OpenCV 5.0 and scikit-image 0.26 | yes | n/a | **yes** | Read an approved screen, SSIM; `WebDemo/tools/screen4/compare_s4.py` |
+| ImageMagick 6.9.12 | yes (system) | n/a | **yes** | `convert`, `montage` |
+| glTF Transform 4.5.1 | yes | n/a | **yes** | `gltf-transform inspect`; `repair_glb.mjs` on `s3_brush.glb` (0 normals needed fixing) |
+| Khronos glTF Validator 2.0.0-dev.3.10 | yes | n/a | **yes** | `validate.cjs`: `s3_brush.glb` 0 errors, `s3_entrance.glb` 0 errors and 1 warning (tangents) |
+| Playwright 1.64.1 with Chromium 156 | yes | n/a | **yes** | Launched headless, WebGL 2 available, from any folder once `bw_tools_env.sh` is sourced |
+| Git LFS 3.4.1 | yes (system) | n/a | installed | Not used: the repository keeps its models and videos as normal git files (`.gitattributes` marks them binary) |
+| ffmpeg | yes (system) | n/a | yes | Encodes the gameplay videos |
+| Tripo CLI 0.11.1 (`tripo`) | yes | **no** | `tripo doctor`: everything passes except "api key missing" | See signing in below |
+| Meshy MCP server 0.6.7 | **yes, connected** (28 tools) | **no** | reaches Meshy; `meshy_check_balance` answers 401 (no key) | See signing in below |
+| GitHub | yes | yes | **yes** | Branch listing, fetch, and push with `Tools/save_now.sh` (checked on GitHub with `git ls-remote`) |
+
+**Warning about Tripo:** its `--yes` (skip confirmations) is switched on automatically when it runs headless, as here.
+`tripo make`, `tripo ai` and `tripo redo` would spend credits without asking. Claude runs them only after your yes for that
+exact job. `tripo doctor`, `tripo balance` and `tripo login` are free.
+
 ## Claude Code plugins
 
-Plugins are synced into a cloud session **when the session starts**. A plugin added to the account after that loads only in
-a **new** session. A session also belongs to the Claude account that started it, so plugins added on a different Claude
-account do not reach it.
+Plugins are synced into a cloud session **when the session starts**, from the Claude account that started it.
 
-| Plugin | Account (as this session sees it) | Session | Working here | Note |
-|---|---|---|---|---|
-| Playwright (Microsoft) | not listed now | **yes** (synced at start) | **yes** | Opened the game with `?s3=round3`, waited for ready, ran code in the page. The capture scripts also use the Playwright library 1.63 with Chromium 153. |
-| GitHub | not listed | no plugin; the cloud environment's own GitHub tools are loaded | **yes** | Branch listing through GitHub tools, and fetch and push with git, both work. |
-| Skill Creator | not listed | no plugin; a built-in Skill Creator skill is loaded | built-in: yes | The plugin version would add nothing that is missing here. |
-| TypeScript LSP | not listed | no | no | `typescript-language-server` 6.0.3 and `tsc` 6.0.2 are installed, ready for the plugin. The game is plain JavaScript. |
-| Claude Code Setup | not listed | no | no | |
-| Chrome DevTools | not listed (none in the directory; "hubcap" is a community one) | no | equivalent: yes | Playwright drives Chromium and reads its console, network and DevTools protocol. |
-| Context7 | not listed | no | no | Library docs can be read from the web meanwhile. |
-| Superpowers | not listed | no | no | |
+| Plugin | In this session (second account) | Instead, where missing |
+|---|---|---|
+| Playwright (Microsoft) | **yes** (synced; its browser tools are loaded) | |
+| TypeScript LSP | **yes** (synced) | `tsc` is on the machine. The game is plain JavaScript. |
+| Claude Code Setup | **yes** (synced: the automation recommender skill) | |
+| Frontend Design | **yes** (synced) | |
+| Skill Creator | not synced | The built-in Skill Creator skill is loaded and does the same job. Not duplicated. |
+| Chrome DevTools | not synced | Playwright drives Chromium and reads its console, network and DevTools protocol. |
+| Context7 | not synced | Library documentation can be read from the web. |
+| Superpowers | not synced | No equivalent needed for this project. |
 
-"Not listed" means the session's plugin listing for the account returned nothing on 4 November. If they are installed,
-start a **new** Claude Code session on this repository, from the same account they were installed on. Then
-`/plugin` (or asking Claude) shows them loaded.
+To get a missing plugin: add it on claude.ai to the account you use for this project, then start a **new** session.
 
-## Tools on the machine
+## Project skill
 
-They are not part of the game's own dependencies (`WebDemo/package.json` is unchanged).
+`.claude/skills/bubble-wash-screen-matcher/SKILL.md` ("Bubble Wash Exact Screen Matcher") loads in this session (it is
+listed among the session's skills and opens with the Skill tool). Every script it names exists, and its tool paths now
+go through `Tools/bw_tools_env.sh`.
 
-| Tool | Session | Signed in | Working | How |
-|---|---|---|---|---|
-| Blender 5.2.3 and its Python API | yes, `/usr/local/bin/blender` | n/a | **yes** | Imported, checked, rendered (Cycles, CPU) and exported the game's glTF models headless. See `WebDemo/tools/models/blender_passage_check.py`. |
-| OpenCV 5.0 and scikit-image 0.26 | yes, `/opt/bw-venv` | n/a | **yes** | `WebDemo/tools/screen4/compare_s4.py` |
-| ImageMagick 6.9.12 | yes (system) | n/a | **yes** | `convert`, `montage` |
-| glTF Transform 4.5.1 | yes, `/opt/bw-node-tools` | n/a | **yes** | Repaired the A1 portal's normals and the brush file's alignment (`WebDemo/tools/models/repair_glb.mjs`). |
-| Khronos glTF Validator 2.0.0-dev.3.10 | yes, `/opt/bw-node-tools` | n/a | **yes** | `WebDemo/tools/models/validate.cjs` |
-| Tripo CLI 0.11.1 (`tripo`) | yes (global) | **no**: sign-in waiting for you | installed and self-check passes, but no key yet | See below. |
-| Meshy MCP 0.6.7 | configured in `.mcp.json`; loads in a new session | **no**: needs `MESHY_API_KEY` | the server starts and offers its 28 tools, including `meshy_check_balance` | See below. |
+## Saving to GitHub
 
-In a session where the environment setup script has not installed these yet, run `bash Tools/dev_tools_setup.sh`. It
-skips anything already present.
+- `bash Tools/save_now.sh "<what was done>"`: commits everything on the current branch, pushes with retries, then asks
+  GitHub which commit the branch is at. It prints the branch, the commit hash, **VERIFIED** or **FAILED**, and the files
+  saved. It refuses to run on `main` or `master`.
+- `Tools/autosave.sh <session.jsonl> <ChatHistory/....md> "<title>" 5 23`: exports the chat history and runs
+  `save_now.sh` every 5 minutes. Claude runs it in the background. A cloud session stops background jobs after 2 hours,
+  so Claude starts it again then. It only runs while a session is open: nothing saves when no session is running.
 
 ## Signing in (only you can do these)
 
-**Tripo:**
+**Tripo** (the official browser sign-in):
 
-1. Claude starts a sign-in with `tripo login --region ov --no-wait` (the international site; use `cn` for the China
-   mainland site). It prints a link and a one-time code.
+1. Claude runs `tripo login --region ov --no-wait`, which prints a link and a one-time code.
 2. Open the link, sign in to Tripo, enter the code if asked, pick a key, and click **Authorize**. The code lasts 15 minutes.
-3. Claude finishes the sign-in by running the same command again. The key is saved in `~/.tripo` on the session's machine,
-   never in the repository.
-4. Alternative for every new session: add `TRIPO_API_KEY` (and `TRIPO_REGION=ov`) as environment secrets in the cloud
-   environment's settings (environment menu in the session's title bar, then Edit).
+3. Tell Claude it is done; Claude runs the same command again to finish. The key is saved in `~/.tripo` on this session's
+   machine only, never in the repository, so a new session needs a new sign-in.
+4. Lasting alternative: save a Tripo key once as a network secret for the host `openapi.tripo3d.ai` in the cloud
+   environment's settings (environment menu in the session's title bar, then Edit). The network proxy then adds it to
+   every request, and no key is stored on the machine.
 
 **Meshy:**
 
-1. Create a key at meshy.ai under Settings, then API. Meshy's API needs a Pro plan or above.
-2. Add it as an environment secret named `MESHY_API_KEY` in the cloud environment's settings.
-3. Start a new session. `.mcp.json` passes the key to the Meshy server through the environment, so it is never written in
-   the repository.
+1. Create a key at meshy.ai (Settings, then API). Meshy's API needs a Pro plan or above.
+2. Save it through Claude's secure credential card (Claude asks for it with a form; it never appears in chat) or yourself
+   as a network secret for the host `api.meshy.ai` in the environment's settings. The proxy adds it to the Meshy server's
+   requests. Alternatively, an environment variable `MESHY_API_KEY`, which `.mcp.json` passes to the server in a new
+   session.
+3. Claude checks with `meshy_check_balance`, which is free.
 
-**Credits:** generating models with Tripo or Meshy spends credits. Claude checks the balance (`tripo balance`,
-`meshy_check_balance`) and asks you before any generation.
+**Credits:** generating models with Tripo or Meshy spends credits. Claude checks the balance and asks you before any
+generation.

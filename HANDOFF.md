@@ -2,6 +2,20 @@
 
 Read this first when you continue in a new Claude conversation.
 
+## Newest (4 November, 12:30 UTC onward): restored on the second Claude account, branch `ccr-8ca1fe92-d6t2bm`
+
+- **Recovered:** `ccr-b6199007-gvhqim` at `fa4e2fc` ("Chat history: latest export (round 4 reconstruction session)"),
+  the newest work on GitHub. `ccr-8ca1fe92-d6t2bm` starts exactly there. `ccr-00ffba88-l1mwa0`, not listed below, is an
+  older parallel attempt from 3 November evening (a painted-layer test, `painted_layer.js`) that the `?s3=paint` work
+  replaced; nothing in it is newer.
+- **The rebuild matches the commit:** `cd WebDemo && npm install && node build.mjs` gives a `game.bundle.js` identical
+  to the committed one.
+- **Tools:** installed by the user's environment setup script in `~/.bubblewash-tools/`. Run
+  `source Tools/bw_tools_env.sh` first. Status of each tool, sign-ins and plugins: `Tools/DEV_TOOLS.md`.
+- **Saving:** `bash Tools/save_now.sh "<message>"` after each finished task; `Tools/autosave.sh` every 5 minutes in the
+  background. Both print the branch, commit, whether GitHub really has it, and the files saved.
+- **This session's chat history:** `ChatHistory/2026-11-04_round4_restore_and_continue_session.md`.
+
 ## Where everything is
 
 - **Repository:** `josiahscalia5-dev/bubblegame`. It is **public**: anyone can read it, including the chat history.
@@ -9,7 +23,8 @@ Read this first when you continue in a new Claude conversation.
 
   | Branch | What it holds |
   |---|---|
-  | `ccr-b6199007-gvhqim` | **Newest (4 November):** `ccr-4e2b86d7-kqpei8` plus the finished round 2, and then **round 3** (`?s3=round3`) and **round 4** (`?s3=round4`, the scenery reconstruction), the tools (Blender, OpenCV, scikit-image, glTF Transform, validator, Tripo CLI, Meshy MCP config), the comparison workflow and the project skill. Not merged. |
+  | `ccr-8ca1fe92-d6t2bm` | **Newest (4 November, second account):** `ccr-b6199007-gvhqim` plus the tool restore for this environment and the continued round 4. Not merged. |
+  | `ccr-b6199007-gvhqim` | **4 November (first account):** `ccr-4e2b86d7-kqpei8` plus the finished round 2, and then **round 3** (`?s3=round3`) and **round 4** (`?s3=round4`, the scenery reconstruction), the tools (Blender, OpenCV, scikit-image, glTF Transform, validator, Tripo CLI, Meshy MCP config), the comparison workflow and the project skill. Not merged. |
   | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`, work in progress there), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
   | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
   | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
