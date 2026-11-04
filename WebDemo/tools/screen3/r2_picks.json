@@ -1,0 +1,80 @@
+{
+ "views": [
+  [
+   112,
+   "Entrance: through the washer door"
+  ],
+  [
+   128,
+   "1st brushes: pink lane warnings"
+  ],
+  [
+   150,
+   "Sock 1 rescued (middle lane)"
+  ],
+  [
+   160,
+   "Coins left, warning in right lane"
+  ],
+  [
+   228,
+   "Mid tunnel: the ring vortex"
+  ],
+  [
+   236,
+   "Pink warning before left brush"
+  ],
+  [
+   254,
+   "Sock 3 (right lane)"
+  ],
+  [
+   279,
+   "Sock 4: coins in a clean line"
+  ],
+  [
+   294,
+   "Sock 5 of 5 and the last gem"
+  ],
+  [
+   298,
+   "The exit: a coloured vortex"
+  ]
+ ],
+ "controls": [
+  [
+   190,
+   "Pause: Resume, Sound, Restart"
+  ],
+  [
+   242,
+   "Knock: one heart lost (5 to 4)"
+  ],
+  [
+   262,
+   "Bubble Blast clears the brushes"
+  ],
+  [
+   266,
+   "Safe past a cleared brush"
+  ],
+  [
+   287,
+   "Turbo Spin: faster and protected"
+  ]
+ ],
+ "same_moment": [
+  "Previews/WebDemo/screen4_tunnel_test/frames/new_t3.5.png",
+  "Previews/WebDemo/screen4_round2_test/frames/round2_t3.5.png"
+ ],
+ "exit": [
+  [
+   297,
+   "BEFORE: last round, white light"
+  ],
+  [
+   298,
+   "NOW: the coloured exit vortex"
+  ]
+ ]
+}
