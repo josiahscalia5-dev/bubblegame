@@ -48,7 +48,8 @@ export const ROUND6 = {
   // each flange, turquoise water light playing over the lower walls, lavender bounce on the upper wall, sparse white streaks
   // (measured against the approved tunnel: pass 2's first walls were a little darker and more saturated than the approved and
   // had too little turquoise light, so the water light and white streaks were raised and the caustic cells made finer)
-  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.5, streaks: 0.55, glints: 0.7 },
+  walls: { hole: 0.2, holeFade: [5, 13], light: 0.62, drift: 0.35, caustic: 0.95, causticScale: 1.7, lowGlow: 0.5, lavender: 0.5, streaks: 0.55, glints: 0.7,
+    glowFrom: [5, 16], glowMix: 0.7 },
   // flanges: each one different (lit brightness, cyan / turquoise / unlit deep blue, patchy light round it), not identical neon
   flangeVary: { dim: 0.3, patch: 0.85 },
   // the water: saturated turquoise and electric blue kept under the white wherever it is not foam (amount), in the drum and on
@@ -223,9 +224,13 @@ void main() {
     float vband = smoothstep(uStart, uStart + 0.05, u) * (1.0 - smoothstep(uStart + 0.30, uStart + 0.35, u));
     col = mix(col, vec3(0.5, 0.28, 1.0) * 0.95, vband * 0.85);
     col = mix(col, lav, door); }
-  // the luminous heart far down the tube: bright, varied, not a flat white
-  float far = smoothstep(18.0, 40.0, vDepth);
-  col = mix(col, mix(vec3(0.4, 0.82, 1.0), vec3(1.0, 0.97, 1.0), 0.35 + 0.4 * broad), far * 0.45);
+  // luminous depth: the near walls keep their deep shadows, and down the tube the drum brightens into the approved picture's
+  // glowing cyan-turquoise centre (measured: with the heart only beyond 18 m the middle distance stayed deep royal blue and
+  // the centre's colour difference to the approved doubled), then to the white-cyan heart far away
+  float mid = smoothstep(${ROUND6.walls.glowFrom[0].toFixed(1)}, ${ROUND6.walls.glowFrom[1].toFixed(1)}, vDepth);
+  col = mix(col, col * 0.5 + vec3(0.12, 0.62, 1.0) * (0.75 + 0.35 * drift) + vec3(0.3, 0.9, 1.0) * web * 0.4, mid * ${ROUND6.walls.glowMix.toFixed(2)});
+  float far = smoothstep(16.0, 36.0, vDepth);
+  col = mix(col, mix(vec3(0.45, 0.88, 1.0), vec3(1.0, 0.98, 1.0), 0.35 + 0.4 * broad), far * 0.55);
   gl_FragColor = vec4(col, 1.0);
 }
 `;

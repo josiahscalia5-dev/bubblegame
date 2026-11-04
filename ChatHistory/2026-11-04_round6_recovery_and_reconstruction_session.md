@@ -582,3 +582,19 @@ Save everything to my GitHub repository. Make sure you save everything like chat
 
 Chat history exported with the Tripo key redacted. No file in the repository contains it. Saving everything now, then starting the 5-minute autosave:
 
+Saved and verified on GitHub (`1b6004f`). The autosave now exports the chat and pushes every 5 minutes for the next ~2 hours. Back to pass 2 — the bubble probe:
+
+Pass 2c is stable and matches 2b. Finalizing now. First, commit pass 2 as a verified-visual milestone:
+
+Pushed (`7fddb79`). Now the verification runs, two browsers at a time: the regression of older versions plus Round 6's gameplay checks in one job, and the 12 s Round 6 recording in the other.
+
+While those run, the measurements and deliverable images for pass 2 (CPU-light work):
+
+The recording is stopped (exit 144 is my kill, not a failure). The regression job keeps running; it only exercises the older versions, whose code paths don't change. Now the luminous-depth change:
+
+The change is subtle by eye (a brighter cyan glow down the tube) but measurably closer, so it stays. Restarting the 12 s recording on this final build, and checking the regression/check job:
+
+It's 19:20; the next autosave fires at about 19:21. While the checks and recording run, I'll add the pass 2 section to the Round 6 README:
+
+The pass 2 evidence images were made from the pre-fix build, so I'll regenerate them from the final build once the two running jobs free up the CPU. Waiting for the Round 6 gameplay checks:
+

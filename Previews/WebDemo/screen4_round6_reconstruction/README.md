@@ -92,6 +92,52 @@ at 3.1 s, the right side. These numbers do not measure "percent similarity", and
 4. **White splash is under the approved amount** (10 to 13% against 21%), and turquoise is over it.
 5. The mission card is not yet shown at 3.1 s (the HUD brings it in a moment later); the approved picture shows it.
 
+## Pass 2 (the user's review of Round 6): deeper walls, turquoise water under the white, reactive wake
+
+The user kept the gold-and-lavender entrance and the white splashes and asked for three things. The entrance is unchanged.
+
+1. **Deeper tunnel walls, richer and less uniform** (`drumWalls`, `WALL_FRAGMENT`; replaces Round 5's banded vortex lining
+   in Round 6 only):
+   - perforated washer-drum metal: staggered dimples whose upper rims catch the light, worn in places, fading with distance;
+   - broad uneven light (still patches plus slower light drifting down the tube) from deep blue shadow to electric blue,
+     and a deep contact shadow just behind each flange;
+   - turquoise water light: a moving caustic web strongest low down near the water, coming and going in patches, plus light
+     bouncing up off the water; lavender bounce up top; thin white arcs of water and twinkling star glints;
+   - **luminous depth**: the near walls keep their shadows, and down the tube the drum brightens into a glowing
+     cyan-turquoise centre and the white-cyan heart (without it the middle distance stayed royal blue and the centre's
+     colour difference to the approved doubled);
+   - every flange different: its own brightness, a cyan, turquoise or unlit deep-blue lip, and patchy drifting light.
+2. **Turquoise-blue water under the white** (`waterTint`, `COLLAR_R6`): wherever the water is not foam, its colour is pulled
+   to saturated turquoise and electric blue (keeping its light and shade), in the drum and on the slide's last metres. The
+   real cause of the "mostly pale-white foreground" was Round 5's waterline collar, an opaque white curtain round the
+   character's base (found by hiding objects one at a time); it is now clear turquoise water climbing the body with a
+   ragged white crest only along its top, so the pink character shows through the water.
+3. **Wake and waterline react to movement** (`trackMotion`, `reactiveWake`): the wake lengthens with speed and swings away
+   from a swerve; the waterline tilts toward the side the character moves to, squashes and spreads in a ring when it lands,
+   and thins out in the air; the bow wave rises on the swerve side and splashes on landing. **Bubbles:** soap bubbles round
+   the character smaller (no big ones), streaming bubbles smaller and kept off the middle of the view.
+
+Evidence: `approved_vs_round6_pass1_vs_pass2_full.png` (approved, pass 1 and pass 2 at 3.1 and 4.2 s, full resolution),
+`round6_pass2_in_motion.jpg` (2.6 to 6.0 s), `round6_pass2_gameplay_t3.1.png`, `round6_pass2_gameplay_t4.2.png`,
+`round6_pass2_measurements.md`, and `bubblewash_round6.mp4` (12 s of real pass 2 gameplay).
+
+Measured (`compare_s4.py`, play area), pass 1 -> pass 2:
+
+| | Approved | 3.1 s | 4.2 s |
+|---|---|---|---|
+| turquoise share | 1.9% | 8.7% -> **1.2%** | 10.7% -> **1.9%** |
+| deep blue share | 6.2% | 7.3% -> 7.8% | 3.2% -> 1.4% |
+| lower region (water, character): colour difference / SSIM | | 12.1 / 0.085 -> 12.3 / 0.084 | 10.0 / 0.100 -> **7.9 / 0.117** |
+| upper tunnel: colour difference / SSIM | | 6.1 / 0.101 -> **5.7 / 0.117** | 6.6 / 0.076 -> 9.8 / 0.096 |
+| centre: colour difference | | 11.4 -> 17.3 | 12.0 -> 15.9 |
+| mean colour difference per pixel | | 23.9 -> 25.1 | 25.3 -> 26.3 |
+
+**Honest reading.** Closer: the turquoise amount now matches the approved (pass 1's cyan neon walls inflated it), the water
+and character region at 4.2 s is the closest yet, and the upper tunnel's structure. Further: the centre and the overall
+average colour, because the approved tunnel's centre is a bright cyan-white whirlpool and pass 2's richer walls are darker
+there than pass 1's bright cyan bands (the luminous-depth ramp recovered about a quarter of that). By eye pass 2 answers
+all three requests; the centre's brightness is the next thing to bring toward the approved picture.
+
 ## Checks (Round 6)
 
 - Controls (`s3_func.cjs`): swipe left and right change lanes, swipe up jumps, keyboard start, the ride into the tunnel
