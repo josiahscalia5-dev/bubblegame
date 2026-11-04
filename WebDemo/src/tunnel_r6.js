@@ -12,14 +12,17 @@
 //               tunnel_r5.js before its shaders are written, so ?s3=round5 itself stays exactly as it was.
 import * as THREE from 'three';
 import { NOISE } from './shaders.js';
+import { R7_WATER, buildR7Water } from './tunnel_r7_water.js';
 
 // The switch is read here (not from screen3_models.js) so tunnel_r5.js can use it without an import cycle.
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const R6_ON = LIST.includes('round6');
+// ?s3=round7 (test): round6 + the rich preview + the Screen 4 pass that matches the ORIGINAL approved Screen 4 (ROUND6.r7)
+export const R7_ON = LIST.includes('round7');
+export const R6_ON = LIST.includes('round6') || R7_ON;
 // ?s3=round6,rich (preview): pass 3 (the board's architecture and composition, which the user likes and keeps as ?s3=round6)
 // plus the ORIGINAL approved Screen 4's richness (ROUND6.rich below)
-export const R6_RICH = R6_ON && LIST.includes('rich');
+export const R6_RICH = R6_ON && (LIST.includes('rich') || R7_ON);
 
 export const ROUND6 = {
   // where the camera has finished blending from the Tap to Start framing into the drum framing (metres from the drum's
@@ -132,6 +135,9 @@ ROUND6.rich = {
   },
 };
 if (R6_RICH) mergeDeep(ROUND6, ROUND6.rich);
+// ?s3=round7: the original approved Screen 4 is the authority (the guides explain how to build it); ROUND6.r7 is defined below
+ROUND6.r7 = {};
+if (R7_ON) { mergeDeep(ROUND6, ROUND6.r7); mergeDeep(ROUND6, R7_WATER.round6 || {}); }
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round6;
   if (tune) mergeDeep(ROUND6, tune);
@@ -148,6 +154,7 @@ export function buildRound6({ scene, TR, L, W, mascot, updaters, time, env, wate
   const motion = trackMotion({ L, W, mascot, updaters });
   report.bowWave = bowWave({ scene, TR, L, W, mascot, updaters, time, motion });
   report.wake = reactiveWake({ scene, mascot, updaters, motion });
+  if (R7_ON) report.r7water = buildR7Water({ scene, TR, L, W, mascot, updaters, time, motion });
   if (ROUND6.hideFoamBubbles) { const o = scene.getObjectByName('r4FoamBubbles'); if (o) updaters.push(() => { o.visible = false; }); report.foamBubblesHidden = !!o; }
   if (ROUND6.hideCrestCards) { const o = scene.getObjectByName('r5Crests'); if (o) updaters.push(() => { o.visible = false; }); report.crestCardsHidden = !!o; }
   return report;
