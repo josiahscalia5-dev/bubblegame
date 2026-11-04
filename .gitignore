@@ -52,3 +52,8 @@ Thumbs.db
 # Generated preview renders live here until reviewed (keep the folder, not every capture)
 /Previews/Captures/*
 !/Previews/Captures/.gitkeep
+
+# Local secrets and tool sign-ins (never commit keys)
+.env
+.env.*
+.tripo/
