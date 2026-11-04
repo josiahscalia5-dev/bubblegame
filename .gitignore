@@ -58,3 +58,6 @@ Thumbs.db
 .env.*
 .tripo/
 .playwright-mcp/
+
+# Claude Code agent worktrees (separate checkouts; their work is merged by commit, never added as folders)
+.claude/worktrees/
