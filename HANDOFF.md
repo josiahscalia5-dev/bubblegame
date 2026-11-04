@@ -2,6 +2,42 @@
 
 Read this first when you continue in a new Claude conversation.
 
+## Newest (4–5 November, 22:00 UTC onward): original account, branch `claude/screen-4-art-rebuild-69gb2p`, Round 7 HERO SCENE
+
+- **Recovered from** `33da0e2`, the newest saved work on `ccr-72e53d86-v6gks7`, left untouched. The other branches only
+  hold older chat autosaves and Round 5 evidence; no newer Screen 4 code was found.
+- **Hero scene:** `?s3=hero` (it also turns `round7` on).
+  - It is a dedicated, playable reconstruction of the ORIGINAL APPROVED Screen 4, staged from the Art Director's
+    measurements.
+  - Code: `WebDemo/src/tunnel_r7_hero.js` (camera, whirlpool shader on the walls and water, rim and lavender collar, hero
+    grade, staging, bubbles) and `WebDemo/src/tunnel_r7_hero_water.js` (the Water & VFX specialist's blue water swell
+    round the character, and splashes).
+  - **Hero moment: 2.85 s.**
+  - Evidence and README: `Previews/WebDemo/screen4_round7_hero/`.
+  - Everything older is pixel-identical to `33da0e2`: the normal game, round7, round6, round6,rich, round5 and round4, at
+    Tap to Start, 2.85, 4.2 and 6.0 s.
+- **Pale lavender haze, solved cause:** it is in the 3D render, not CSS (`WebDemo/tools/screen4/haze_check.cjs`).
+  - Shaders wrote sRGB colours into linear light.
+  - The drum grade turned saturated blues violet (#045ee7 to #645cf3).
+  - Bloom added more wash.
+  - The hero scene uses `THREE.Color('#hex')` colours and its own grade (`heroGrade`).
+- **New tools:**
+  - `WebDemo/tools/screen4/hero_probe.cjs`: hero frame, camera, object footprints, and `PICKS` to solve where an object
+    must stand to land on an approved spot.
+  - `hero_shares.py`: the Art Director's colour classes.
+  - `hero_sheet.py`: labelled side-by-sides.
+  - `haze_check.cjs`: raw canvas vs page screenshot, and the HTML layers.
+- **Tripo:** signed in on that session's machine (key in `~/.tripo`, outside the repo). Balance 760, nothing spent. The key
+  was pasted into the chat again: make a new key on Tripo's site and delete that one.
+- **In progress when saved:** the user asked for real animated water rendering through the tunnel. Planned approach:
+  - a custom `ShaderMaterial` ribbon along the track, with a generated tileable normal map scrolled along a flow field;
+  - fresnel reflection of the tunnel glow, cyan specular, depth colour, a wake, and caustics on the walls;
+  - foam as a separate layer that can be switched off, shown first with the foam off.
+
+  Not started in code yet. Why not Water.js / Water2.js: they are planar mirrors that render the scene once or twice more
+  per frame, and the tunnel's water curves. The gameplay tests, the Art Director's final review and a gameplay video were
+  running when this was saved.
+
 ## Newest (4 November, 18:30 UTC onward): third Claude account, branch `ccr-3876cb6e-qwegol`, Round 6
 
 - **Recovered from:** `5586dc6` ("Save everything: Round 5 passes 4, 5 and A ..."), the newest saved work (also on
