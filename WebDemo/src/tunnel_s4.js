@@ -33,7 +33,9 @@ export const ROUND2 = {
   sparkle: 0.955,            // fewer ring sparkles (0.9 before)
   bubbles: 22, bubbleAngle: [28, 152], bubbleR: [1.5, 1.95], bubbleMax: 0.3,   // fewer soap bubbles, kept up on the walls
   clearOut: 1.15,            // Bubble Blast pushes a brush this far back toward the wall
-  hazardWarn: [4.2, 1.6],    // the water glows pink in a brush's lane from this far before it, full from here
+  hazardWarn: [7.5, 3.0],    // the water glows pink in a brush's lane from this far before it, full from here (the last ~2 m are hidden behind the brush)
+  hazardWidth: 0.34,         // the glow's half-width across the lane (lanes are 0.7 m apart)
+  hazardMix: 0.72,           // how strongly the pink covers the water at full warning
   grade: { vibrance: 0.25, knee: 0.62, roll: 1.6 }, bloom: 0.22,
   wallDeep: [[0.1, 0.08, 0.46], [0.58, 0.38, 0.98]],   // the drum's walls a little more violet and magenta, as the approved upper tunnel
   brushBlue: [0.62, 0.66, 1.0], brushBlueMix: 0.45, brushPink: [1.0, 0.5, 0.82],   // lighter, softer brushes (still pink and blue)
@@ -245,8 +247,13 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   if (drumSheet && drumSheet.material.fragmentShader.includes(anchor)) {
     const src = drumSheet.material, m = src.clone();
     m.uniforms = src.uniforms;
-    if (R2) { src.uniforms.uS4Haz = { value: hazU }; src.uniforms.uS4Warn = { value: new THREE.Vector2(...R2.hazardWarn) }; }
-    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec2 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? WATER_R2 : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
+    if (R2) {
+      src.uniforms.uS4Haz = { value: hazU }; src.uniforms.uS4Warn = { value: new THREE.Vector3(...R2.hazardWarn, R2.hazardWidth) };
+      // The slide's water sheet runs on 2.5 m into the drum (to u 6.4) over the drum's sheet, and the two fought for depth in
+      // streaks, so half of the first brushes' warning was covered by the slide's water. The drum's sheet now wins there.
+      m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -4;
+    }
+    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? WATER_R2 : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
     vec2 toM = xz - uPlayer.xz; float rM = length(toM * vec2(1.0, 0.85));
     float collar = exp(-pow(max(0.0, rM - 0.42) / 0.42, 2.0));
     float behindM = clamp(-toM.y / 3.2, 0.0, 1.0);
@@ -256,7 +263,9 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     col = mix(col, mix(uShallow, uTurq, 0.55), 0.35 * inDrum);
   }
 ` + anchor);
+    if (R2) m.fragmentShader = m.fragmentShader.replace(FOG_ANCHOR, WATER_R2_LATE + FOG_ANCHOR);
     drumSheet.material = m; report.waterCopy = true;
+    if (R2) report.warnShader = m.fragmentShader.includes('s4Haz * ' + R2.hazardMix.toFixed(2));
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
   return report;
@@ -428,11 +437,16 @@ const WATER_R2 = `  float s4Haz = 0.0;
       vec4 h = uS4Haz[i];
       float du = h.x - xz.y;
       float along = (1.0 - smoothstep(uS4Warn.y, uS4Warn.x, du)) * smoothstep(-1.0, -0.2, du);
-      float across = exp(-pow((xz.x - h.y) / 0.4, 2.0));
-      float stripes = 0.45 + 0.55 * smoothstep(0.25, 0.55, fract(du * 1.2 + t * 1.6)) * (1.0 - smoothstep(0.75, 0.95, fract(du * 1.2 + t * 1.6)));
+      float dx = (xz.x - h.y) / uS4Warn.z;
+      float across = exp(-dx * dx);
+      float stripes = 0.55 + 0.45 * smoothstep(0.25, 0.55, fract(du * 1.2 + t * 1.6)) * (1.0 - smoothstep(0.75, 0.95, fract(du * 1.2 + t * 1.6)));
       haz = max(haz, along * across * h.z * stripes);
     }
-    s4Haz = haz * (0.8 + 0.2 * sin(t * 7.0)) * inDrum;
+    s4Haz = haz * (0.82 + 0.18 * sin(t * 7.0)) * inDrum;
     foam *= 1.0 - 0.8 * s4Haz;   // the warning stays clear of foam
   }
-` + '  vec3 lit = col * (0.8 + 0.3 * NdotL);\n  lit = mix(lit, vec3(1.0, 0.16, 0.56) * (0.85 + 0.3 * NdotL), s4Haz * 0.62);   // after the light, so reflections do not wash it out\n';
+` + '  vec3 lit = col * (0.8 + 0.3 * NdotL);\n';
+// ...and the pink is laid on last, after the reflections, ring light, glints and foam (just before the fog), so none of them
+// wash it out. Applied earlier, under the reflections, it read as pale cyan in the game.
+const FOG_ANCHOR = '  float dist = length(cameraPosition - vWorld);';
+const WATER_R2_LATE = `  lit = mix(lit, vec3(1.0, 0.2, 0.6) * (0.9 + 0.2 * NdotL), s4Haz * ${ROUND2.hazardMix.toFixed(2)});   // ?s3=round2: a brush's warning\n`;
