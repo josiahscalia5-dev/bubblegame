@@ -167,3 +167,15 @@ The 5-minute auto-save is still running, so newer chat history keeps going to Gi
 
 **Not saved yet:** the final gameplay video is still recording. It goes to GitHub as soon as it's encoded, and I'll send it to you then.
 
+---
+
+### You · 2026-11-04 03:08 UTC
+
+Is it done yet
+
+---
+
+### Claude · 2026-11-04 03:08 UTC
+
+Almost: it's at frame 298 of 345, so about 3–5 more minutes. Then I'll encode it to MP4, check that the frames look right, and send it to you here.
+
