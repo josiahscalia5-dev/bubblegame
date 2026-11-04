@@ -4738,7 +4738,7 @@ void main() {
   vec2 d = vec2(cos(ang), sin(ang)), tg = vec2(-d.y, d.x);
   float reach = rad + up * up * uFlare * (0.6 + k) + pow(up, 3.0) * uCurl; // flares and curls outward toward its lip
   float spread = 1.0 + up * 0.7;
-  vec2 p = d * reach + tg * across * wid * spread;
+  vec2 p = d * (reach - pow(across * wid * spread, 2.0) * 1.1) + tg * across * wid * spread;   // wraps round the circle
   float h = up * hgt * rise - 0.04 - pow(up, 4.0) * uCurl * 0.5 * k;      // the lip droops as it falls
   vec3 w = uCentre + uR * p.x + uT * (p.y * 0.85) + uU * h;
   vUv = vec2(across + 0.5, up); vAge = k; vSeed = aState.y;
@@ -4751,13 +4751,15 @@ void main() {
   float x = vUv.x, y = vUv.y;
   float ragged = bwNoise(vec2(x * 9.0 + vSeed * 17.0, uTime * 2.0 + vSeed * 5.0));
   float top = 1.0 - smoothstep(0.72 + 0.2 * ragged, 1.0, y);              // a broken, frothy lip
-  float sides = smoothstep(0.0, 0.22, x) * smoothstep(0.0, 0.22, 1.0 - x);
-  float body = top * sides;
-  if (body < 0.01) discard;
+  float sides = smoothstep(0.0, 0.38, x) * smoothstep(0.0, 0.38, 1.0 - x);
+  float froth = bwNoise(vec2(x * 11.0 + vSeed * 7.0, y * 7.0 - uTime * 2.5));
+  float holes = smoothstep(0.25, 0.55, bwNoise(vec2(x * 18.0 - vSeed * 3.0, y * 12.0 + uTime * 1.7)));   // the sheet breaks into froth
+  float body = top * sides * mix(0.35, 1.0, holes);
+  if (body < 0.02) discard;
   float rim = smoothstep(0.55, 0.9, y) * top + (1.0 - smoothstep(0.0, 0.35, min(x, 1.0 - x))) * 0.5;
   float streak = smoothstep(0.55, 0.85, bwNoise(vec2(x * 14.0, y * 3.0 - uTime * 3.0 + vSeed * 9.0)));
   vec3 water = vec3(0.35, 0.85, 1.0), white = vec3(1.0, 1.0, 1.04);
-  vec3 col = mix(water, white, clamp(rim * 0.9 + streak * 0.4 + y * 0.25, 0.0, 1.0));
+  vec3 col = mix(water, white, clamp(rim * 0.95 + streak * 0.5 + froth * 0.35 + y * 0.3, 0.0, 1.0));
   float a = clamp(body * (0.32 + 0.55 * rim + 0.2 * streak) * uAlpha, 0.0, 0.95) * (1.0 - smoothstep(0.75, 1.0, vAge)) * uFade;
   gl_FragColor = vec4(col * a, a);
 }
