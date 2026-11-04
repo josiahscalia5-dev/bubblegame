@@ -580,3 +580,5 @@ Save everything to my GitHub repository. Make sure you save everything like chat
 
 `save_now.sh` commits all changes on the work branch and verifies via `git ls-remote` that GitHub has the commit. Finding this session's log for the chat export:
 
+Chat history exported with the Tripo key redacted. No file in the repository contains it. Saving everything now, then starting the 5-minute autosave:
+
