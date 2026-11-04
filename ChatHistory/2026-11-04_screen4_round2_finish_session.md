@@ -623,3 +623,29 @@ The baseline is still loading in the software browser, which takes a few minutes
 
 The baseline failed because of my mistake: I passed the game folder as a relative path, so the test server refused to serve the page. I'm re-running it with the full path.
 
+---
+
+### Note · 2026-11-04 10:09 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 10:09 UTC
+
+Claudia, I've configured Blender 5.2.3 in my cloud environment setup script.
+
+Please verify that Blender works, that Playwright is available, and that GitHub is connected to my Bubble Wash Kingdom repository.
+
+Use these tools to continue improving my existing playable game so it matches my approved Screen 3 and Screen 4 as closely as possible.
+
+Preserve my pink character, gameplay, and original opening. Use Blender to repair my A1 and A2 models when needed, Playwright to compare actual gameplay screenshots, and GitHub to save the completed changes.
+
+Please report any setup errors and fix them before continuing.
+
+---
+
+### Claude · 2026-11-04 10:11 UTC
+
+Blender 5.2.3 is installed and its checksum matches blender.org's. It loads and saves your models (tested on the A2 tunnel). Now I'm checking that it can also render images without a screen.
+
