@@ -2070,3 +2070,41 @@ Save everything to my GitHub resporitory and chat history etc everything
 
 Saved: GitHub has commit `f49df66`, which matches the local copy. Restarting the 5-minute automatic save, since the restart stopped it:
 
+Everything is saved to GitHub. Your test branch `ccr-4e2b86d7-kqpei8` is at commit `f49df66`, and I checked that GitHub matches the local copy.
+
+**What's in the save:**
+- **The tunnel test, `?s3=round2`:** all the code so far, including:
+  - the coloured exit swirl instead of the white light;
+  - the 3D gold paw coins;
+  - the tidy coin lines, the socks with a soft glow behind them, and the softer brushes;
+  - hearts that brushes take;
+  - Bubble Blast, Turbo Spin and the pause button.
+- **A gameplay video so far:** 11.5 s of real play, recorded just before the latest brush-warning change, plus 10 full-size frames from it. It's in `Previews/WebDemo/screen4_round2_test/`. In the run:
+  - the game pauses and resumes;
+  - a brush takes a heart (5 → 4);
+  - Bubble Blast pushes the next two brushes back to the walls;
+  - Turbo Spin is used;
+  - all 5 socks are rescued.
+- **Test results so far:**
+  - Hearts go 5 → 0, then the game returns to Tap to Start with 5 hearts.
+  - Pause, Bubble Blast and Turbo Spin all work.
+  - The normal game and last round's `?s3=paint,tunnel` play exactly as before.
+- **The missing-asset list for the Laundry Toss intro:** in `Design/LAUNDRY_TOSS_INTRO_ASSETS.md`. The intro reference pictures were never uploaded to this session, so please send them again when you're ready.
+- **The latest chat history and updated handoff notes**, so work can continue from your other account.
+
+**Automatic saving is running again.** The container restart had stopped it, so I've restarted it: every 5 minutes it saves the newest chat history and pushes all the work. It only runs while this session's computer is on, so after another restart I'll need to start it again.
+
+**Not done yet in this round:**
+- **The pink warning glow on the water in front of a brush still doesn't show.** I tracked it partway: the drum water does respond to changes, so the fault is in the warning's own shader code.
+- **Still to do after that:** a final video, the screenshot sheets (entrance, mid-tunnel, brushes, coins, socks, controls, exit), the performance numbers and an honest score.
+
+Nothing is merged; it all stays in the test version until you approve it. Tell me to continue and I'll finish those steps.
+
+---
+
+### You · 2026-11-04 01:56 UTC
+
+Can you make sure you save it in the chat history? I don't want to use it. I just want to save it in chat history.Not done yet in this round:
+The pink warning glow on the water in front of a brush still doesn't show. I tracked it partway: the drum water does respond to changes, so the fault is in the warning's own shader code.
+Still to do after that: a final video, the screenshot sheets (entrance, mid-tunnel, brushes, coins, socks, controls, exit), the performance numbers and an honest score.
+
