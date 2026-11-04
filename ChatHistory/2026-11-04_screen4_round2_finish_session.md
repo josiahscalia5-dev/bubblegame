@@ -621,3 +621,5 @@ The baseline is still rendering. Once it's ready I'll measure it against your ap
 
 The baseline is still loading in the software browser, which takes a few minutes. Meanwhile I'm writing the round 3 code, starting with the white water splash and foam around your pink character.
 
+The baseline failed because of my mistake: I passed the game folder as a relative path, so the test server refused to serve the page. I'm re-running it with the full path.
+

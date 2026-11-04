@@ -39,6 +39,10 @@ S3.paint = LIST.includes('paint');
 // washed-out light, a coloured exit vortex, tidier collectibles and foam, clearer brushes) and the Screen 4 controls in game.js
 // (hearts that brushes take, Bubble Blast, Turbo Spin, pause, embossed gold paw coins). ?s3=paint,tunnel stays as it was.
 S3.round2 = LIST.includes('round2');
+// ?s3=round3 (test): round2 plus the third visual pass toward the approved Screen 4 (tunnel_r3.js): white foam and spray
+// around the mascot, a luminous blue swirling drum, pink-white-blue brushes, a purple gem, coins and bubbles framing the view.
+S3.round3 = LIST.includes('round3');
+if (S3.round3) S3.round2 = true;
 if (S3.round2) { S3.paint = true; S3.tunnel = true; }
 if (S3.paint) { S3.castle = true; S3.edges = true; }
 export const S3_ON = Object.values(S3).some(Boolean);
@@ -198,7 +202,7 @@ export async function loadScreen3Models({ scene, env, axisY, tunnelStart, oldCas
   if (S3.edges && L && W) report.edges = restyleEdges({ scene, L, W, env, updaters });
   if (S3.tunnel && TR && bumpMascot) report.tunnel = await buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump: bumpMascot, brushBytes: await bytes.brushT,
     waterSheets, soap: { vertex: SOAP_VERTEX, fragment: SOAP_FRAGMENT }, loaderParse: (b) => loader.parseAsync(b.slice(0), ''), drumMeshes,
-    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2 } : null });
+    round2: S3.round2 ? { exitLight, grade, bloomPass, hooks: r2, round3: S3.round3 } : null });
   if (S3.paint && grade && outputPass) report.paint = await paintScenery({ scene, camera, updaters, tunnelStart, sideMachinery, staticBubbles, rollers, grade, bloomPass, outputPass, waterSheets, L, W });
   // With 'edges': the opening-only scenery is not drawn once the camera is inside the drum (it is behind the camera or
   // behind the drum's walls there), and is drawn again when the ride loops back to the slide.

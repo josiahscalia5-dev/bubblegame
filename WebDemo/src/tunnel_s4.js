@@ -16,6 +16,7 @@
 // Visual changes only, except the brushes' knock, which is a new hazard. Lanes, controls, camera, collectibles and the
 // tunnel's path are unchanged. Brush positions avoid every coin, gem and sock in their lane.
 import * as THREE from 'three';
+import { ROUND3, buildRound3 } from './tunnel_r3.js';
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -43,6 +44,7 @@ export const ROUND2 = {
 
 export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot, bump, brushBytes, waterSheets, soap, loaderParse, drumMeshes, round2 }) {
   const R2 = round2 ? ROUND2 : null, hooks = (round2 && round2.hooks) || {};
+  const R3 = round2 && round2.round3 ? ROUND3 : null;   // ?s3=round3 (tunnel_r3.js): its colours replace round2's below
   const report = { rings: 0, brushes: 0, bubbles: 0, panelsHidden: 0, waterCopy: false };
   const P = TUNNEL, TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   const time = { value: 0 };
@@ -55,7 +57,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uIn: { value: P.ringIn }, uOut: { value: P.ringOut }, uSpark: { value: R2 ? R2.sparkle : 0.9 } }, vertexShader: RING_VERTEX, fragmentShader: RING_FRAGMENT,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
     const rings = new THREE.InstancedMesh(geo, mat, us.length);
-    const cols = R2 ? R2.ringColours.map((c) => new THREE.Color(...c)) : [new THREE.Color(0.5, 0.22, 1.0), new THREE.Color(1.0, 0.3, 0.78), new THREE.Color(0.12, 0.85, 1.0), new THREE.Color(0.45, 0.65, 1.0)];
+    const cols = R2 ? (R3 || R2).ringColours.map((c) => new THREE.Color(...c)) : [new THREE.Color(0.5, 0.22, 1.0), new THREE.Color(1.0, 0.3, 0.78), new THREE.Color(0.12, 0.85, 1.0), new THREE.Color(0.45, 0.65, 1.0)];
     const m4 = new THREE.Matrix4(), uAttr = new Float32Array(us.length);
     us.forEach((u, i) => { TR.mapMatrix(new THREE.Matrix4().makeTranslation(0, axisH, u), m4); rings.setMatrixAt(i, m4); rings.setColorAt(i, cols[i % cols.length]); uAttr[i] = u; });
     geo.setAttribute('aU', new THREE.InstancedBufferAttribute(uAttr, 1));
@@ -95,10 +97,10 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
         prev.call(src, sh, r);
         sh.fragmentShader = sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
           { float l = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-            vec3 deep = mix(vec3(${(R2 ? R2.wallDeep[0] : [0.06, 0.08, 0.42]).map((v) => v.toFixed(3)).join(', ')}), vec3(${(R2 ? R2.wallDeep[1] : [0.42, 0.36, 0.95]).map((v) => v.toFixed(3)).join(', ')}), smoothstep(0.05, 0.75, l));
+            vec3 deep = mix(vec3(${(R2 ? (R3 || R2).wallDeep[0] : [0.06, 0.08, 0.42]).map((v) => v.toFixed(3)).join(', ')}), vec3(${(R2 ? (R3 || R2).wallDeep[1] : [0.42, 0.36, 0.95]).map((v) => v.toFixed(3)).join(', ')}), smoothstep(0.05, 0.75, l));
             diffuseColor.rgb = mix(diffuseColor.rgb * vec3(0.5, 0.55, 0.95), deep, 0.55); }`);
       };
-      m.customProgramCacheKey = () => prevKey() + '|s4-deep' + (R2 ? '2' : '');
+      m.customProgramCacheKey = () => prevKey() + '|s4-deep' + (R3 ? '3' : R2 ? '2' : '');
       tinted.set(src, m);
     }
     mesh.material = tinted.get(src);
@@ -137,6 +139,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
         diffuseColor.rgb = mix(c, vec3(${R2.brushBlue.join(', ')}) * (0.6 + 0.6 * dot(c, vec3(0.333))), blue * ${R2.brushBlueMix}); }` : '';
     mat.onBeforeCompile = (s) => { s.fragmentShader = s.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n' + lightBlue).replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine); };
     mat.customProgramCacheKey = () => 's4:brush' + (R2 ? '2' : '');
+    if (R3) r3Brush(mat, false, glowLine);
     const hubMat = new THREE.MeshStandardMaterial({ color: 0xffc552, metalness: 1, roughness: 0.2, emissive: 0x4a2a00, emissiveIntensity: 0.5 });
     // the left-hand brushes pink all over, as the approved screen's left brush (its blue face turned pink)
     const matPink = mat.clone();
@@ -147,6 +150,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
         .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine);
     };
     matPink.customProgramCacheKey = () => 's4:brushPink' + (R2 ? '2' : '');
+    if (R3) r3Brush(matPink, true, glowLine);
     const place = (u, side, angleDeg, hazard) => {
       TR.frame(u, F);
       const holder = new THREE.Group();
@@ -268,7 +272,39 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     if (R2) report.warnShader = m.fragmentShader.includes("a brush's warning");
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
+  if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap });
   return report;
+}
+
+/** round3: the brushes recoloured as the approved Screen 4's: the pink bristles become fluffy tufts of hot pink and white,
+ *  and the blue face a deep royal blue on the right-hand brushes (round2 made it a pale periwinkle) or pink and white tufts
+ *  on the left-hand ones. Worked out on the wheel's own colours and shape (angle and distance from its axle), so the
+ *  model's light and shade are kept. Its colours are uniforms (window.__bwR3.brushU) so they can be tried live in tests. */
+const r3BrushU = { uR3Pink: { value: new THREE.Color() }, uR3White: { value: new THREE.Color() }, uR3Royal: { value: new THREE.Color() }, uR3Deep: { value: new THREE.Color() }, uR3Tufts: { value: 26 } };
+function r3Brush(m, left, glowLine) {
+  const B = ROUND3.brush;
+  r3BrushU.uR3Pink.value.setRGB(...B.pink); r3BrushU.uR3White.value.setRGB(...B.white); r3BrushU.uR3Royal.value.setRGB(...B.royal); r3BrushU.uR3Deep.value.setRGB(...B.deep); r3BrushU.uR3Tufts.value = B.tufts;
+  if (typeof window !== 'undefined') window.__bwR3 = Object.assign(window.__bwR3 || {}, { brushU: r3BrushU, ROUND3 });
+  m.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, r3BrushU);
+    sh.vertexShader = 'varying vec3 vR3Obj;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vR3Obj = position;');
+    sh.fragmentShader = 'varying vec3 vR3Obj; uniform vec3 uR3Pink, uR3White, uR3Royal, uR3Deep; uniform float uR3Tufts;\n' + sh.fragmentShader
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        { vec3 c = diffuseColor.rgb; float l = dot(c, vec3(0.333));
+          float blue = smoothstep(0.03, 0.2, c.b - max(c.r, c.g));
+          float gold = smoothstep(0.06, 0.2, c.r - c.b) * smoothstep(0.02, 0.12, c.g - c.b) * step(c.g, c.r) * (1.0 - smoothstep(0.25, 0.4, c.r - c.g));
+          float fluffy = (1.0 - blue) * (1.0 - gold);
+          float rr = length(vR3Obj.xy), ang = atan(vR3Obj.y, vR3Obj.x), row = floor(rr * 9.0);
+          float ta = ang * uR3Tufts / 6.2832 + row * 0.5;
+          float hsh = fract(sin(floor(ta) * 12.9898 + row * 78.233) * 43758.5453);
+          float tuft = 0.7 + 0.3 * sin(fract(ta) * 3.1416);
+          float shade = 0.7 + 0.55 * smoothstep(0.1, 0.8, l);
+          vec3 fluff = mix(uR3Pink, uR3White, step(0.55, hsh)) * tuft * shade;
+          vec3 face = ${left ? 'mix(uR3Pink, uR3White, step(0.62, hsh) * 0.85) * tuft * shade' : 'mix(uR3Royal, uR3Deep, hsh * 0.55) * (0.8 + 0.35 * tuft) * shade'};
+          diffuseColor.rgb = mix(mix(c, fluff, fluffy * 0.92), face, blue); }`)
+      .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += diffuseColor.rgb * 0.35;' + glowLine);
+  };
+  m.customProgramCacheKey = () => 's4:brush3' + (left ? 'L' : 'R');
 }
 
 /** Vertex clustering: points in the same cell of size `cell` become one (averaged position and colour); triangles that
