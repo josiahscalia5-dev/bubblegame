@@ -26,3 +26,87 @@ Brightness isn't the problem: the water is below 1.0 and a flat pink override sh
 
 can u please enable the plugin playwright one
 
+---
+
+### You (sent while Claude was working) · 2026-11-04 02:50 UTC
+
+its enabled the playwright  app
+
+---
+
+### Claude · 2026-11-04 02:50 UTC
+
+While that renders, I'm reading the sheet and check scripts from last round.
+
+Waiting on the pink-warning test render, about 4 minutes in software WebGL. Meanwhile I'm getting last round's comparison tools ready for the screenshot sheets.
+
+---
+
+### Note · 2026-11-04 02:51 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-04 02:51 UTC
+
+can u show me screenshot image of the pink character going through the tunnel
+
+---
+
+### Claude · 2026-11-04 02:51 UTC
+
+The new renders are still going, so here are real frames from the round 2 gameplay recording, put together as one image:
+
+_[Sent you files: /tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/pink_character_in_tunnel.jpg]_
+
+I've sent you an image of four real frames of the pink character going through the tunnel in the `?s3=round2` test version, taken from the round 2 gameplay recording:
+
+1. **Just inside the drum:** brushes on both sides, coins in the middle lane, a sock and a gem ahead.
+2. **First sock rescued (1/5):** riding past a paw coin, with the gem and the second sock coming up.
+3. **Middle of the tunnel (2/5):** the ring vortex overhead, a gem and coins ahead.
+4. **Near the exit (4/5):** the coloured swirl at the end of the tunnel. A brush has taken a heart (5 → 4), and Bubble Blast and Turbo Spin have each been used once (badges at 2).
+
+These frames come from before today's fix, so the pink warning on the water in front of a brush isn't in them. I found why it never showed:
+- The glow only reached full strength in the last 1.6 m before a brush, which the brush itself hides from the camera.
+- It was mixed in before the water's reflections and foam, so on screen it came out as a faint lavender instead of pink.
+- For the first pair of brushes, the slide's water overlaps the tunnel's water and covered about half the glow.
+
+I've changed all three:
+- The glow now starts 7.5 m before a brush.
+- The pink goes on last, after the reflections and foam.
+- The tunnel's water now always draws on top where the two overlap.
+
+New screenshots with the fix are rendering now (software rendering here is slow, a few minutes). I'll send them as soon as they're done, then continue with the final video, the screenshot sheets, the performance numbers and the honest score. Automatic saving to GitHub is running every 5 minutes on this session's branch, `ccr-b6199007-gvhqim`.
+
+---
+
+### Automatic check · 2026-11-04 02:51 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-04 02:51 UTC
+
+I've committed the brush warning fix and pushed it to GitHub. The branch `ccr-b6199007-gvhqim` is at commit `47a1b03`, GitHub has the same commit, and nothing is left uncommitted.
+
+The 5-minute automatic save is also running and has pushed six saves since this session started. The new screenshots of the pink warning are still rendering, and I'll send them when they're done.
+
+---
+
+### You · 2026-11-04 02:52 UTC
+
+show me the new screenshots with the pink warning and then after that continue
+
+---
+
+### Claude · 2026-11-04 02:52 UTC
+
+Two of the four are done, and I'm waiting for the other two (the middle of the tunnel). First, a look at the two finished ones:
+
+Waiting on the last two pink-warning renders, the ones from the middle of the tunnel. Meanwhile I'm writing the measurement tool that compares the tunnel with the approved Screen 4.
+
+_[Sent you files: /tmp/claude-0/-home-user-bubblegame/199c4722-410a-5471-9710-a6eba13f9dec/scratchpad/pink_warning_before_after.jpg]_
+
