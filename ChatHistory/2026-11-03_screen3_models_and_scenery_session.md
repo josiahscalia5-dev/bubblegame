@@ -2108,3 +2108,14 @@ Can you make sure you save it in the chat history? I don't want to use it. I jus
 The pink warning glow on the water in front of a brush still doesn't show. I tracked it partway: the drum water does respond to changes, so the fault is in the warning's own shader code.
 Still to do after that: a final video, the screenshot sheets (entrance, mid-tunnel, brushes, coins, socks, controls, exit), the performance numbers and an honest score.
 
+---
+
+### Claude · 2026-11-04 01:56 UTC
+
+The "not done yet" list is saved in the chat history on GitHub, as commit `f890fc8`. I checked the file and it holds both my list and your message repeating it:
+
+- The pink warning glow on the water in front of a brush still doesn't show. I tracked it partway: the drum water does respond to changes, so the fault is in the warning's own shader code.
+- Still to do after that: a final video, the screenshot sheets (entrance, mid-tunnel, brushes, coins, socks, controls, exit), the performance numbers and an honest score.
+
+It's in `ChatHistory/2026-11-03_screen3_models_and_scenery_session.md`. I only touched the chat history and changed no other files. Nothing will be worked on until you say so, and the 5-minute automatic save keeps that file up to date.
+
