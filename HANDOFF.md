@@ -23,6 +23,10 @@ Read this first when you continue in a new Claude conversation.
   - Evidence, numbers and the honest score (about 7.5/10; the composition is the biggest remaining gap):
     `Previews/WebDemo/screen4_round4_water_brushes/README.md`.
   - The normal game, Round 2 and Round 3 are pixel-identical to `fa4e2fc`.
+- **3D generators: Tripo only** (your decision, 4 November).
+  - Meshy is not used: removed from `.mcp.json`, never call its tools, never ask for its key. No Meshy credits were spent.
+  - Tripo is installed but not signed in yet; sign-in steps and dry-run cost estimates are in `Tools/DEV_TOOLS.md`.
+  - Ask before spending any credits.
 - **img2threejs (a Claude Code skill) was tried on the brush and stopped:** it produced smooth rings. Why, and what replaced it:
   `Design/Img2ThreejsTrials/README.md`. Reinstall in a new session only if wanted:
   `npx --yes img2threejs@latest install`.

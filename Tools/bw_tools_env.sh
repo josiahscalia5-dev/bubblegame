@@ -6,7 +6,7 @@
 #   BW_PY            Python with OpenCV, scikit-image, NumPy, Pillow (visual comparison scripts)
 #   BW_BPY           Python with Blender's own Python API (the bpy 5.2.3 module), or empty if only a blender binary exists
 #   BW_NODE_TOOLS    folder whose node_modules holds glTF Transform and the Khronos glTF Validator
-#   PATH             gains gltf-transform, tripo and meshy-mcp-server, plus Tools/bin (a `blender` command that runs
+#   PATH             gains gltf-transform and tripo (Meshy is not used), plus Tools/bin (a `blender` command that runs
 #                    `blender -b --python x.py -- args` through the bpy module when no Blender binary is installed)
 #   NODE_PATH        gains the tools' node_modules, so `require('playwright')` works from any folder
 #

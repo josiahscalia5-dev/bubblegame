@@ -18,7 +18,7 @@ The cloud environment's setup script (the user's, in the **Default** environment
 |---|---|
 | `visual/` | Python 3.13 with OpenCV 5.0, scikit-image 0.26, NumPy, Pillow, SciPy |
 | `blender/` | Python 3.13 with **bpy 5.2.3**, Blender's Python API as a module. There is no Blender binary. |
-| `node/` | glTF Transform 4.5.1, Khronos glTF Validator 2.0.0-dev.3.10, Playwright 1.64.1, tripo-cli 0.11.1, Meshy MCP server 0.6.7 |
+| `node/` | glTF Transform 4.5.1, Khronos glTF Validator 2.0.0-dev.3.10, Playwright 1.64.1, tripo-cli 0.11.1 (and the Meshy MCP server 0.6.7, not used) |
 | `bootstrap/` | pip and uv, used by the setup script |
 
 **In every shell: `source Tools/bw_tools_env.sh`.** It finds the tools in this layout or the first account's older one
@@ -41,8 +41,8 @@ only from `/opt/bw-node-tools`; they now look in `BW_NODE_TOOLS`, `~/.bubblewash
 | Playwright 1.64.1 with Chromium 156 | yes | n/a | **yes** | Launched headless, WebGL 2 available, from any folder once `bw_tools_env.sh` is sourced |
 | Git LFS 3.4.1 | yes (system) | n/a | installed | Not used: the repository keeps its models and videos as normal git files (`.gitattributes` marks them binary) |
 | ffmpeg | yes (system) | n/a | yes | Encodes the gameplay videos |
-| Tripo CLI 0.11.1 (`tripo`) | yes | **no** | `tripo doctor`: everything passes except "api key missing" | See signing in below |
-| Meshy MCP server 0.6.7 | **yes, connected** (28 tools) | **yes** (4 November, 13:30): your key is a network secret for `api.meshy.ai` on the Default environment | **balance check works: 17 credits** (through the proxy). The server this session started with still gets 401; `.mcp.json` now fixes that from the next session | See signing in below |
+| Tripo CLI 0.11.1 (`tripo`) | yes | **no** (checked 13:50) | `tripo doctor`: everything passes except "api key missing". Cost estimates work without a key (`tripo make ... --dry-run`): P2 (default) 110 credits a model, v3.1 20 credits | **The preferred and only external 3D generator.** See signing in below |
+| Meshy MCP server 0.6.7 | **not used, at your request (4 November, 13:50)**: removed from `.mcp.json` | key still saved as a network secret for `api.meshy.ai` on the Default environment (only you can remove it) | not called; no Meshy credits were ever spent (two free balance checks: 17 credits) | Tripo is the only external generator |
 | GitHub | yes | yes | **yes** | Branch listing, fetch, and push with `Tools/save_now.sh` (checked on GitHub with `git ls-remote`) |
 
 **Warning about Tripo:** its `--yes` (skip confirmations) is switched on automatically when it runs headless, as here.
@@ -93,7 +93,10 @@ go through `Tools/bw_tools_env.sh`.
    environment's settings (environment menu in the session's title bar, then Edit). The network proxy then adds it to
    every request, and no key is stored on the machine.
 
-**Meshy (done on 4 November for the Default environment):**
+**Meshy: not used any more (your decision, 4 November).** Do not call Meshy tools, ask for a Meshy key or spend Meshy
+credits. To remove the saved key: the cloud environment menu in the session's title bar, Edit, Network secrets, then
+delete the `api.meshy.ai` entry. To bring Meshy back one day, restore the `meshy` entry of `.mcp.json` from git history.
+What was done before that, for the record:
 
 1. The key is saved as a network secret for the host `api.meshy.ai` (entered in the secure credential form, never in
    chat). The network proxy adds it to every request to that host; no session sees it.
@@ -101,8 +104,7 @@ go through `Tools/bw_tools_env.sh`.
    the key (401). `.mcp.json` now sets `NODE_USE_ENV_PROXY=1` and a placeholder key (`proxy-injected`, overwritten by the
    proxy; a real `MESHY_API_KEY` variable still wins if set). Tested by hand: the server returned the balance. The MCP
    server loads at session start, so this works from the next session.
-3. Balance on 4 November: 17 credits (permanent). Claude checks with `meshy_check_balance` (free) and asks before any
-   generation.
+3. Balance on 4 November: 17 credits (permanent), read with two free checks; nothing was generated.
 
-**Credits:** generating models with Tripo or Meshy spends credits. Claude checks the balance and asks you before any
+**Credits:** generating models with Tripo spends credits. Claude checks the balance and the dry-run cost and asks you before any
 generation.

@@ -42,7 +42,7 @@ installed them (the user's setup script puts them in `~/.bubblewash-tools/`; the
 - `blender`: a real Blender binary if there is one, otherwise `Tools/bin/blender`, which runs
   `blender -b --python x.py -- args` through the bpy 5.2.3 module (`$BW_BPY`);
 - `PATH` and `NODE_PATH`: glTF Transform, the Khronos validator, Playwright (so `require('playwright')` works from
-  `WebDemo/`), `tripo` and `meshy-mcp-server`.
+  `WebDemo/`) and `tripo`.
 
 If the tools are missing entirely, `bash Tools/dev_tools_setup.sh` installs them in the older layout. ImageMagick
 (`convert`, `montage`) and ffmpeg are system packages. Do not run `playwright install`. Before the first build in a new
@@ -110,9 +110,14 @@ commit, whether GitHub really has it, and the files saved.
 
 ## Paid generators (ask first)
 
-- **Tripo CLI** (`tripo`): the key lives in `~/.tripo` after `tripo login`.
-- **Meshy MCP** (`.mcp.json`): reads `MESHY_API_KEY` from the environment.
-- Both spend credits. Check `tripo balance` or `meshy_check_balance`, and get the user's yes before any generation.
+- **Tripo only** (the user's decision, 4 November). **Never call Meshy tools, ask for a Meshy key or spend Meshy credits.**
+- Use Tripo only when a 3D asset is truly missing. Tunnel, water, splashes, bubbles, brushes, lighting and composition
+  are built with Blender, three.js and the existing assets.
+- **Tripo CLI** (`tripo`): the key lives in `~/.tripo` after `tripo login --region ov --no-wait` (browser sign-in).
+- Before any generation:
+  - check `tripo balance` (free);
+  - get the cost from `tripo make "<prompt>" --model <m> --dry-run --json` (free: P2 110 credits, v3.1 20 credits a model);
+  - tell the user both and get their yes for that exact job.
 - **Tripo skips its own confirmations when it runs headless** (`--yes` is switched on automatically, as in a cloud
   session), so `tripo make`, `tripo ai` and `tripo redo` spend credits at once. Run them only after the user's yes for
   that exact job. `tripo doctor`, `tripo balance` and `tripo login` are free.
