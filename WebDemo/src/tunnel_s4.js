@@ -179,12 +179,12 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
     };
     matPink.customProgramCacheKey = () => 's4:brushPink' + (R2 ? '2' : '');
     if (R3) r3Brush(matPink, true, glowLine);
-    const place = (u, side, angleDeg, hazard) => {
+    const place = (u, side, angleDeg, hazard, rr0) => {   // rr0: round7 only (a decorative brush further out than the wall)
       TR.frame(u, F);
       const holder = new THREE.Group();
       let x, y;
       if (hazard) { x = side * P.brushX; y = P.brushY; }
-      else { const a = THREE.MathUtils.degToRad(angleDeg), rr = 1.95; x = side * Math.cos(a) * rr; y = axisH + Math.sin(a) * rr; }
+      else { const a = THREE.MathUtils.degToRad(angleDeg), rr = rr0 || 1.95; x = side * Math.cos(a) * rr; y = axisH + Math.sin(a) * rr; }
       holder.position.copy(F.P).addScaledVector(F.R, x).addScaledVector(F.U, y);
       // its face looks back down the tunnel toward the coming rider, turned in toward the middle
       const back = F.T.clone().negate(), inward = F.R.clone().multiplyScalar(-side);
@@ -206,7 +206,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       return b;
     };
     for (const [u, side] of P.hazards) place(u, side, 0, true);   // u: metres along the path from its start (the drum begins at 3.9)
-    for (const [u, side, a, sc] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) { const b = place(u, side, a, false); if (sc) b.holder.scale.setScalar(sc); }   // round7: two more framing the mouth, scaled
+    for (const [u, side, a, sc, rr] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) { const b = place(u, side, a, false, rr); if (sc) b.holder.scale.setScalar(sc); }   // round7: two more framing the mouth, scaled
     report.brushes = brushes.length; report.hazards = P.hazards.length;
   }
   const hits = [];
@@ -525,7 +525,7 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
           float lh = dot(h, vec3(0.2126, 0.7152, 0.0722));
           h = mix(vec3(lh), h, ${G4.saturation.toFixed(3)});
           h = (h - ${G4.pivot.toFixed(3)}) * ${G4.contrast.toFixed(3)} + ${G4.pivot.toFixed(3)};
-          c.rgb = mix(c.rgb, max(h, 0.0), uS4Grade); }` : ''}
+          c.rgb = mix(c.rgb, max(h, 0.0), uS4Grade); }` : ''}${R7_ON && ROUND6.warmLight ? warmLightR7(ROUND6.warmLight) : ''}
       }
       if (uOpen > 0.0) {`);
     grade.material.needsUpdate = true;
@@ -539,6 +539,14 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
     if (bloomPass) bloomPass.strength = bloom0 + (ROUND2.bloom - bloom0) * k;
   });
   return out;
+}
+
+// ?s3=round7 (the Art Director's review #6): the original's warm pink-peach light falling in from the top right of the
+// washer's mouth, as a soft glow added in the drum's grade (W: ROUND6.warmLight; at: its centre in screen units, 0-1 with y up)
+function warmLightR7(W) {
+  return `
+        { vec2 wq = (vUv - vec2(${W.at.map((v) => v.toFixed(3)).join(', ')})) * vec2(0.5, 1.0);   // ?s3=round7: warm light, top right
+          c.rgb += vec3(${W.color.map((v) => v.toFixed(3)).join(', ')}) * exp(-dot(wq, wq) / ${(W.radius * W.radius).toFixed(4)}) * ${W.amount.toFixed(3)} * uS4Grade; }`;
 }
 
 const EXIT_VERTEX = /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;

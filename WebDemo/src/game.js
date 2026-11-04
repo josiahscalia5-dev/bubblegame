@@ -54,7 +54,7 @@ if (R3) Object.assign(R2_RULES, {
 });
 if (R3 && R6_ON) {   // ?s3=round6 pass 3: the collectibles at the drum's mouth as in the exact target board (tunnel_r6.js layout)
   const Lt = ROUND6.layout;
-  R2_RULES.coinLines = [...Lt.coinLines, ...R2_RULES.coinLines.slice(1)];
+  R2_RULES.coinLines = [...Lt.coinLines, ...R2_RULES.coinLines.slice((R7_ON && Lt.replace) || 1)];   // round7: replaces more of round3's lines (moved, none lost)
   R2_RULES.socks = [Lt.firstSock, ...R2_RULES.socks.slice(1)];
   R2_RULES.gems = [Lt.extraGem, ...R2_RULES.gems];
 }
