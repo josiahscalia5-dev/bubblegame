@@ -1,4 +1,4 @@
-# Bubble Wash Kingdom: 4 November, finishing round 2 of the tunnel test (?s3=round2)
+# Bubble Wash Kingdom: 4 November, round 2 finished, then round 3 (?s3=round3), tools, model checks and the screen-matcher skill
 
 Your messages and Claude's replies, exported from the session log. Tool calls, raw command output and screenshots are left out; the work itself is in the commits on this branch.
 
@@ -973,4 +973,138 @@ The final hearts, pause and power-up check is still running; it reloads the game
 Everything is already on GitHub at `0f60827`; the 5-minute auto-save committed and pushed it moments before me. Here are the real gameplay video and the approved-versus-game sheets:
 
 _[Sent you files: Previews/WebDemo/screen4_round3_test/bubblewash_round3_gameplay.mp4, Previews/WebDemo/screen4_round3_test/01_screen4_approved_vs_round2_vs_round3.png, Previews/WebDemo/screen4_round3_test/02_screen4_during_movement.png, Previews/WebDemo/screen4_round3_test/04_screen3_tap_to_start.png]_
+
+My waiting loop matched its own command line, the same pitfall as last session. The check had already finished. I'm stopping the stray waiters and reading the result.
+
+The tools are checked, round 3 is built and tested, and everything is on GitHub (`766e4b6`, branch `ccr-b6199007-gvhqim`, nothing merged). Your approved pictures are now only used for comparison; round 3 shows none of them in the game.
+
+**Why your plugins aren't here:** this session can't see them. Plugins load only when a session starts, and the plugin list this session gets from your account is empty. If you installed them after this session began, or from your other Claude account, start a new Claude Code session on this repository from the account that has them. Nothing needs reinstalling.
+
+| Plugin or tool | Installed on account | Loaded here | Signed in | Working |
+|---|---|---|---|---|
+| Playwright plugin | not visible from this session | yes | – | yes: it opened round 3 and ran code in the game |
+| GitHub | uses the environment's own GitHub access | yes | yes | yes: listing branches and pushing |
+| Skill Creator | not visible | a built-in copy | – | built-in copy yes |
+| TypeScript LSP, Claude Code Setup, Context7, Superpowers | not visible | no | – | no; needs a new session |
+| Chrome DevTools | not visible | no | – | Playwright does the same job |
+| Blender 5.2.3, OpenCV 5.0, scikit-image 0.26, ImageMagick, glTF Transform, glTF Validator | – | yes | – | yes, all used on real files today |
+| Tripo CLI 0.11.1 | – | yes | **no**, waiting for you | self-check passes |
+| Meshy MCP 0.6.7 | – | set up in `.mcp.json`, loads in a new session | **no**, needs your key | serves its 28 tools |
+
+I installed Blender, OpenCV, scikit-image, glTF Transform and the validator myself, because your setup script only runs in new sessions. `Tools/DEV_TOOLS.md` has the details.
+
+**Sign-in steps only you can do** (no keys in the repository or in chat; no credits spent):
+- **Tripo:** open https://developers.tripo3d.ai/en/cli-auth?code=5FC8-7AN8, enter code **5FC8-7AN8** if asked, and click Authorize within 15 minutes. Then tell me, and I'll finish the sign-in.
+- **Meshy:** add your Meshy key as an environment secret named `MESHY_API_KEY` in the cloud environment settings, then start a new session. Meshy's API needs a Pro plan.
+- **Houdini and Substance 3D Painter:** I only assessed them; nothing was bought or installed. A simulated splash is worth testing in Blender first. Substance isn't needed yet. Details are in `HOUDINI_AND_SUBSTANCE_ASSESSMENT.md`.
+
+**The game (`?s3=round3`):**
+- Foam heaps and white spray churn around your pink character.
+- The drum is deep royal blue, with cyan, blue, pink and lavender rings and bands of white water.
+- The water is turquoise with white churn, and now matches your picture's colour.
+- The brushes have pink-and-white bristles with royal-blue centres.
+- The gem is purple, and the coins, gem and socks are placed around your character as in your picture.
+- Soap bubbles stream past both sides of the view.
+- Tap to Start is live 3D, using your five Meshy opening models.
+- Your character, controls, mission and gameplay are unchanged.
+
+**Checks:**
+- **Controls and rules:** all pass, with no console errors.
+- **Tunnel:** truly ridden through in every lane, and no part of the drum is in your character's path.
+- **Frame cost:** round 3's heaviest frame is still below the normal game's Tap to Start.
+- **Normal game and round 2:** pixel-identical to before.
+- **Models:** A1 had 48 validator errors and now has 0. A2 is valid but can't be passed through (its back is closed), so it isn't used.
+- **Video:** 12 seconds of real play. Your character rescues all 5 socks, collects coins and gems, jumps, pauses and uses both power-ups.
+
+**Against your approved Screen 4:**
+- White foam is 14–19% of the play area, against your 21% (round 2 had 3–6%).
+- Deep blue is up to 4% against your 6% (round 2 had under 1%).
+
+**Honest score:** about 7.5 out of 10. That is not 90–95%. Whole-picture similarity has barely moved, because things aren't yet in exactly your painting's spots.
+
+**The biggest remaining differences:**
+- the sparkling white whirlpool in the tunnel's centre;
+- foam hidden under the Bubble Blast and Turbo Spin buttons;
+- the brushes still read as discs, where yours are round pom-poms;
+- too much pink and pale blue.
+
+**Two decisions for you:**
+- **Bottom buttons:** moving them lower would show the foam your picture has there, but it changes the control layout. Do you want that?
+- **Normal game's Tap to Start:** it still shows your approved Screen 3 picture (round 3 doesn't). Should I remove it from the normal game too?
+
+Files are in `Previews/WebDemo/screen4_round3_test/`:
+- `bubblewash_round3_gameplay.mp4`
+- `01_screen4_approved_vs_round2_vs_round3.png`
+- `02_screen4_during_movement.png`
+- `04_screen3_tap_to_start.png`
+- `README.md`
+
+---
+
+### You · 2026-11-04 11:51 UTC
+
+Save everything to my GitHub resporitory the chat history most recent  and everything you built me and make sure u do this very frequently to ensure everything is saved to my github resporitory 
+Claudia, I want to clarify my ultimate goal for Bubble Wash Kingdom.
+
+I DO NOT want my approved screenshots turned into static backgrounds or flat pictures.
+
+I want to reproduce their appearance as closely as possible in my REAL, FULLY PLAYABLE 3D MOBILE GAME.
+
+My visual target is approximately 90–95% similarity to my approved screenshots, wherever technically achievable.
+
+The approved images are the exact artistic targets, not suggestions for a redesign.
+
+Please use a reference-matched, art-directed 3D reconstruction workflow.
+
+PRIORITY — APPROVED SCREEN 4
+
+Recreate the following as genuine animated game elements:
+
+1. Large, dramatic white water splashes surrounding my existing pink character.
+2. Giant fluffy pink, blue, and white rotating washing brushes positioned like the approved screen.
+3. Animated turquoise water with rolling waves, foam, spray, reflections, and splashes.
+4. Golden paw coins, purple gems, and other collectibles matching the approved arrangement.
+5. The deep magical washing-machine tunnel with glowing cyan, blue, pink, and lavender rings.
+6. Floating rainbow bubbles, sparkling particles, and detailed golden machinery.
+
+Use real 3D objects, animated shaders, particles, and high-quality textures wherever appropriate.
+
+Investigate whether Houdini-generated effects would materially improve the water splashes, and whether Substance 3D Painter would improve the materials. Do not purchase or install these until you've established a useful workflow for the existing Three.js game.
+
+VISUAL ACCURACY
+
+Match the approved camera framing, character scale, scenery placement, lighting, colors, proportions, and visual density.
+
+Use Blender to reconstruct missing geometry, and use Three.js for real-time effects.
+
+Use Playwright and image-comparison tools to evaluate screenshots from actual gameplay at multiple moments.
+
+Do not optimize away the important visual details merely to reduce file size. Use mobile-friendly techniques that preserve the appearance.
+
+PRESERVE MY EXISTING GAME
+
+Do not redesign the pink character, change the approved beginning, or remove gameplay features.
+
+Do not replace the real moving environment with a flat picture.
+
+The character must continue moving, dodging, collecting coins, rescuing socks, and traveling through the washing machine.
+
+DELIVERABLE
+
+Show me a real gameplay video with the water splashing, brushes rotating, bubbles moving, coins spinning, and character traveling through the tunnel.
+
+Show approved-versus-actual comparisons at multiple points during movement, not just the starting screen.
+
+Tell me what still prevents the game from matching the approved artwork and correct the largest differences.
+
+My goal is a beautiful, premium 3D Android game that LOOKS like my approved screenshots and PLAYS like a real game.
+
+Please implement this in my existing project and preserve all completed working changes on GitHub.
+Make sure your save everything to my GitHub resporitory like I asked u before
+
+---
+
+### Claude · 2026-11-04 11:52 UTC
+
+I'll make sure everything is saved continuously, then keep correcting the largest differences. First the saving: the 5-minute auto-save from this morning has finished its two-hour run, so I'm restarting it for 8 hours, under a chat-history name that covers today's round 3 work.
 

@@ -20,7 +20,7 @@ Read this first when you continue in a new Claude conversation.
 
 - **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
 - **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
-  - Newest: `2026-11-04_screen4_round2_finish_session.md` (4 November, night: finishing round 2, the brush warning fix, the final video and sheets).
+  - Newest: `2026-11-04_screen4_round2_and_round3_session.md` (4 November: finishing round 2, then round 3, the tools, the model checks and the screen-matcher skill).
   - Before it: `2026-11-03_screen3_models_and_scenery_session.md` (3–4 November, second session, which also holds round 2's start):
     - the approved-artwork opening and Phase A;
     - the five Screen 3 models, the slide edges and the cinematic camera;
