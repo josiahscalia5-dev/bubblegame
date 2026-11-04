@@ -195,10 +195,13 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       b.holder.visible = mascot.z > TS - 14 && ahead < P.showAhead && ahead > -P.showBehind;
       if (b.cleared && mascot.z > b.u + P.showBehind) b.cleared = false;   // back in place, out of sight, for the next lap
       const tgt = b.cleared ? 1 : 0;
-      if (b.clear !== tgt) {
-        b.clear = b.holder.visible ? THREE.MathUtils.clamp(b.clear + Math.sign(tgt - b.clear) * dt / 0.35, 0, 1) : tgt;
+      // round4: brushes slide out of the tunnel's wall as the rider comes within reach (hidden behind the lining until then),
+      // so the far tunnel stays open and its bright heart shows, as in the approved picture; where they stand is unchanged
+      const emerge = R4 ? THREE.MathUtils.smoothstep(ahead, R4.emerge[0], R4.emerge[1]) * R4.emerge[2] : 0;
+      if (b.clear !== tgt || R4) {
+        if (b.clear !== tgt) b.clear = b.holder.visible ? THREE.MathUtils.clamp(b.clear + Math.sign(tgt - b.clear) * dt / 0.35, 0, 1) : tgt;
         const e = b.clear * b.clear * (3 - 2 * b.clear);
-        b.holder.position.copy(b.base).addScaledVector(b.out, e * (R2 ? R2.clearOut : 0));
+        b.holder.position.copy(b.base).addScaledVector(b.out, e * (R2 ? R2.clearOut : 0) + emerge);
       }
       b.bonk = Math.max(0, b.bonk - dt);
       if (b.holder.visible) b.spinner.rotation.z += P.spin * b.dir * dt * (1 - 0.7 * b.clear + 5 * b.bonk);
@@ -260,7 +263,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       // streaks, so half of the first brushes' warning was covered by the slide's water. The drum's sheet now wins there.
       m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -4;
     }
-    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? (R3 ? WATER_R2.replace(anchor, waterR3() + anchor) : WATER_R2) : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
+    m.fragmentShader = (R2 ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;\n' : '') + src.fragmentShader.replace(anchor, R2 ? (R3 ? WATER_R2.replace(anchor, waterR3() + (R4 ? waterR4() : '') + anchor) : WATER_R2) : `  if (inDrum > 0.0) {   // Screen 4 tunnel look (?s3=tunnel)
     vec2 toM = xz - uPlayer.xz; float rM = length(toM * vec2(1.0, 0.85));
     float collar = exp(-pow(max(0.0, rM - 0.42) / 0.42, 2.0));
     float behindM = clamp(-toM.y / 3.2, 0.0, 1.0);
@@ -276,7 +279,7 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
   }
   if (R2) report.round2 = round2Light({ scene, round2, mascot, updaters, time, TS });
   if (R3) report.round3 = buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, round4: !!R4 });
-  if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env,
+  if (R4) report.round4 = buildRound4({ scene, TR, L, W, updaters, time, env: round2.env, mascot,
     hide: [scene.getObjectByName('s4Rings'), scene.getObjectByName('r3Swirl'), ...(drumMeshes || [])] });
   return report;
 }
@@ -294,7 +297,7 @@ let tuftGeo = null; const tuftMats = {};
 function r4PomPom(left, wheelScale) {
   const B = ROUND4.pompom;
   if (!tuftGeo) {
-    tuftGeo = new THREE.IcosahedronGeometry(1, 1);
+    tuftGeo = new THREE.SphereGeometry(1, 10, 8);   // indexed, so the bumps below are smooth-shaded, not faceted
     const p = tuftGeo.attributes.position, v = new THREE.Vector3();
     for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); const n = 1 + 0.16 * Math.sin(v.x * 7.1 + v.y * 3.3) * Math.sin(v.z * 5.7 - v.y * 4.1); v.multiplyScalar(n); p.setXYZ(i, v.x, v.y, v.z); }
     tuftGeo.computeVertexNormals();
@@ -303,17 +306,23 @@ function r4PomPom(left, wheelScale) {
   if (!tuftMats[key]) {
     const m = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, metalness: 0 });
     m.onBeforeCompile = (sh) => {
-      sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      // fine strands along each clump (darker grooves between them) and a soft pale sheen round its edge: fluff, not plastic
+      sh.vertexShader = 'varying vec3 vTuft;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vTuft = position;');
+      sh.fragmentShader = 'varying vec3 vTuft;\n' + sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
+  { float ang = atan(vTuft.z, vTuft.x);
+    float strand = 0.5 + 0.5 * sin(ang * 14.0 + vTuft.y * 3.0) * sin(ang * 23.0 - vTuft.y * 5.0 + 1.3);
+    diffuseColor.rgb *= 1.0 - ${B.strands.toFixed(3)} * (1.0 - strand) * smoothstep(-0.6, 0.6, vTuft.y); }`)
+        .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
   totalEmissiveRadiance += diffuseColor.rgb * ${B.glow.toFixed(3)} + vec3(1.0, 0.92, 0.98) * pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.0) * ${B.sheen.toFixed(3)};`);
     };
-    m.customProgramCacheKey = () => 's4:tuft4';
+    m.customProgramCacheKey = () => 's4:tuft4b';
     tuftMats[key] = m;
   }
   const n = B.count + B.rim;
   const mesh = new THREE.InstancedMesh(tuftGeo, tuftMats[key], n);
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3(), col = new THREE.Color(), nrm = new THREE.Vector3();
   const rnd = mulberry(left ? 0x7a1 : 0x7a2), golden = Math.PI * (3 - Math.sqrt(5));
-  const pick = (t) => { const bands = left ? B.left : B.right; for (const b of bands) if (t <= b[0]) return b[1][Math.floor(rnd() * b[1].length)]; return bands[bands.length - 1][1][0]; };
+  const pick = (t) => { const bands = left ? B.left : B.right; t += (rnd() - 0.5) * 0.06; for (const b of bands) if (t <= b[0]) return b[1][Math.floor(rnd() * b[1].length)]; return bands[bands.length - 1][1][0]; };
   for (let i = 0; i < n; i++) {
     let th, ph;
     if (i < B.count) { const f = (i + 0.5) / B.count; th = Math.acos(1 - f * (1 - Math.cos(THREE.MathUtils.degToRad(B.cap)))); ph = i * golden; }   // even over the dome
@@ -472,7 +481,7 @@ function round2Light({ round2, mascot, updaters, time, TS }) {
         { vec3 h = c.rgb * ${ROUND4.grade.exposure.toFixed(3)};   // ?s3=round4: richer and less pastel inside the drum
           float lh = dot(h, vec3(0.2126, 0.7152, 0.0722));
           h = mix(vec3(lh), h, ${ROUND4.grade.saturation.toFixed(3)});
-          h = (h - 0.45) * ${ROUND4.grade.contrast.toFixed(3)} + 0.45;
+          h = (h - ${ROUND4.grade.pivot.toFixed(3)}) * ${ROUND4.grade.contrast.toFixed(3)} + ${ROUND4.grade.pivot.toFixed(3)};
           c.rgb = mix(c.rgb, max(h, 0.0), uS4Grade); }` : ''}
       }
       if (uOpen > 0.0) {`);
@@ -551,6 +560,26 @@ const WATER_R2 = `  float s4Haz = 0.0;
 // ...and the pink is laid on last, after the reflections, ring light, glints and foam (just before the fog), so none of them
 // wash it out. Applied earlier, under the reflections, it read as pale cyan in the game.
 const FOG_ANCHOR = '  float dist = length(cameraPosition - vWorld);';
+// round4: the drum's water rebuilt: the cell patterns (caustic web, bubble lace) that read as a tiled floor are taken out;
+// turquoise in the middle and deeper blue at the sides; rolling crests moving with the flow; flowing streaks of white froth,
+// thick and churned round the mascot
+const waterR4 = () => { const P = ROUND4.water; return `  if (inDrum > 0.0) {   // ?s3=round4
+    col -= mix(uGlow, vec3(1.0), 0.35) * caustic * (0.5 + 0.4 * crest) * (1.0 - moat * 0.6) * inDrum;
+    vec2 toM4 = xz - uPlayer.xz; float rM4 = length(toM4 * vec2(1.0, 0.8));
+    float centreW = 1.0 - smoothstep(0.25, 1.35, abs(xz.x));
+    col = mix(col, mix(vec3(${P.side.join(', ')}), vec3(${P.middle.join(', ')}), centreW), ${P.mix.toFixed(3)} * inDrum);
+    float roll = sin(xz.y * 2.4 - flowT * 1.15 + bwNoise(xz * vec2(1.5, 0.5)) * 3.0);
+    float crestR = smoothstep(0.55, 1.0, roll);
+    col += vec3(0.25, 0.8, 1.0) * crestR * ${P.crest.toFixed(3)} * inDrum;
+    float st1 = bwFbm(vec2(xz.x * 5.0, xz.y * 0.7 - flowT * 0.55));
+    float st2 = bwFbm(vec2(xz.x * 9.0 + 3.0, xz.y * 1.2 - flowT * 0.7));
+    float froth = smoothstep(0.58, 0.78, st1) * 0.7 + smoothstep(0.62, 0.8, st2) * 0.4;
+    float nearM = exp(-pow(max(0.0, rM4 - 0.4) / 1.5, 2.0));
+    float churn = smoothstep(0.32, 0.72, bwFbm(xz * vec2(3.0, 1.6) - vec2(0.0, flowT * 0.5))) * nearM;
+    float f4 = clamp(froth * (0.3 + 0.7 * crestR) * ${P.froth.toFixed(3)} + churn * ${P.churn.toFixed(3)}, 0.0, 1.0);
+    foam = mix(foam, max(f4, foam * 0.25), inDrum) * (1.0 - s4Haz);
+  }
+`; };
 // round3: the drum's water azure instead of turquoise, with white churned foam in patches across it, thicker near the
 // mascot (the approved Screen 4's water is white-flecked blue, its turquoise only in thin streaks)
 const waterR3 = () => { const P = ROUND3.water; return `  if (inDrum > 0.0) {   // ?s3=round3

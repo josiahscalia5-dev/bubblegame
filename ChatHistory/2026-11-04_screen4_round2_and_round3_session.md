@@ -1288,3 +1288,7 @@ Now the new tunnel module. It builds a deep electric-blue lining, with real 3D g
 
 Now hooking it into the tunnel builder for round 4, with the richer contrast grade inside the drum:
 
+Next, the splash crown: real animated water sheets that rise around your character, curl outward and fall, with bright white rims and translucent turquoise bodies.
+
+A shader failed to compile: I used `out` as a variable name, which is a reserved word in GLSL. Fixing it:
+

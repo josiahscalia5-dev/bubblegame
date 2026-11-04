@@ -38,7 +38,7 @@ export const ROUND3 = {
   spray: { rate: 110, size: [0.07, 0.15] },
   // the tunnel's heart: a whirlpool of white and cyan water on the tube's axis, always this far ahead (metres), fading out
   // as the exit's own vortex comes into view
-  whirl: { ahead: 14, radius: 1.85, strength: 1.0, exitFade: [7, 2] },                 // white spray droplets thrown up round the mascot (game.js)
+  whirl: { ahead: 14, radius: 1.9, strength: 1.25, exitFade: [7, 2] },                 // white spray droplets thrown up round the mascot (game.js)
   camera: { lookY: 1.1 },                                  // the drum camera's aim, higher than round2's 0.89 (game.js)
   bubbles: { count: 32, du: [-2.6, 13], x: [0.38, 1.55], h: [0.35, 2.5], r: [0.05, 0.28], flow: 1.6, film: 1.7 },
   sparkles: { rate: 34, du: [3, 15], r: [0.2, 1.7] },
@@ -62,7 +62,7 @@ export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, rou
   const report = {};
   // how far inside the drum the mascot is (0 outside, 1 a little way in): everything here fades in with it
   const inside = () => THREE.MathUtils.smoothstep(mascot.z, TS - 0.9, TS + 0.4);
-  report.foam = foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside });
+  report.foam = foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big: round4 ? 1.3 : 1 });
   report.swirl = swirlLayer({ scene, TR, TS, TE, axisH, updaters, time, inside, mascot });
   if (soap) report.bubbles = streamBubbles({ scene, TR, W, L, mascot, updaters, time, rnd, soap, inside, axisH });
   if (round4) report.whirl = whirlpool({ scene, TR, TE, axisH, mascot, updaters, time, inside });   // ?s3=round4 only (round3 is kept as recorded)
@@ -70,7 +70,7 @@ export function buildRound3({ scene, TR, L, W, mascot, updaters, time, soap, rou
 }
 
 // ---------------------------------------------------------------- foam heaps around the mascot
-function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside }) {
+function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside, big = 1 }) {   // big: round4's larger heaps beside the mascot
   const P = ROUND3.foam, n = P.count;
   const base = new THREE.IcosahedronGeometry(1, 4);
   const g = new THREE.InstancedBufferGeometry();
@@ -89,7 +89,7 @@ function foamHeaps({ scene, TR, L, W, mascot, updaters, time, rnd, inside }) {
   const spawn = (b, stagger) => {
     let x = rnd() * tot, z = P.zones[0];
     for (const zz of P.zones) { if (x < zz.w) { z = zz; break; } x -= zz.w; }
-    b.z = z; b.r = R(z.r); b.life = R(P.life); b.age = stagger ? rnd() * b.life : 0;
+    b.z = z; b.r = R(z.r) * (z.side ? big : 1); b.life = R(P.life); b.age = stagger ? rnd() * b.life : 0;
     if (z.ring) { const a = THREE.MathUtils.degToRad(-200 + rnd() * 220), rr = R(z.ring); b.dx = Math.cos(a) * rr; b.du = Math.sin(a) * rr * 0.8; }
     else if (z.side) { b.dx = (rnd() < 0.5 ? -1 : 1) * R(z.side); b.du = R(z.du); }
     else { b.dx = R(z.dx); b.du = R(z.du); }

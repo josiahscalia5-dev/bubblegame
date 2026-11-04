@@ -16,16 +16,21 @@ import { NOISE } from './shaders.js';
 
 export const ROUND4 = {
   straight: 4,   // metres of extra straight drum before the climb and turns (track.js)
+  emerge: [7.5, 11, 1.6],   // brushes slide out of the wall between 11 and 7.5 m ahead (from 1.6 m inside it)
   lining: { radius: 2.0, from: -56, to: 236, rowStep: 0.25, around: 96,
-    deep: [0.004, 0.018, 0.16], mid: [0.015, 0.09, 0.5], cyan: [0.06, 0.55, 0.9], spacing: 1.15, streaks: 0.4, line: 0.7, far: 0.25 },
-  rings: { radius: 1.93, tube: 0.045, glow: [0.25, 0.9, 1.25], every: 1.15 },
+    deep: [0.005, 0.012, 0.14], mid: [0.02, 0.065, 0.46], cyan: [0.05, 0.48, 0.92], spacing: 1.15, streaks: 0.4, line: 0.7, far: 0.25 },
+  rings: { radius: 1.93, tube: 0.045, glow: [0.2, 0.75, 1.25], every: 1.15 },
   gold: { radius: 1.97, tube: 0.085, every: 3, color: [1.0, 0.72, 0.28] },
-  grade: { contrast: 1.16, saturation: 1.18, exposure: 0.94 },
+  grade: { contrast: 1.2, saturation: 1.15, exposure: 0.84, pivot: 0.5 },
+  // the splash crown: curving sheets of water rising round the mascot, curling outward and falling back
+  crown: { petals: 32, radius: [0.44, 0.72], height: [0.55, 1.05], width: [0.3, 0.5], life: [0.5, 0.95], flare: 0.55, curl: 0.35, alpha: 1.6 },
+  water: { middle: [0.03, 0.5, 0.82], side: [0.015, 0.15, 0.55], mix: 0.75, crest: 0.3, froth: 0.9, churn: 0.95 },
   // pom-pom brushes (wheel units, rim 0.95): clumps over a flattened dome facing the rider (cap: its angle from the middle,
   // depth: how far it bulges), a rim of bigger clumps; colour bands from the middle outward ([up to share of cap, colours])
-  pompom: { count: 230, rim: 40, radius: 0.92, depth: 0.55, cap: 78, size: 0.13, long: 1.15, glow: 0.3, sheen: 0.3,
-    right: [[0.38, [[0.1, 0.2, 0.85], [0.14, 0.26, 0.95]]], [0.55, [[0.16, 0.3, 1.0], [1.0, 0.92, 0.98]]], [0.8, [[1.0, 0.94, 0.98], [1.0, 0.55, 0.82]]], [9, [[1.0, 0.95, 0.98], [1.0, 0.45, 0.78], [1.0, 0.95, 0.98]]]],
-    left: [[0.35, [[1.0, 0.4, 0.76], [1.0, 0.3, 0.7]]], [0.6, [[1.0, 0.93, 0.97], [1.0, 0.8, 0.92]]], [9, [[1.0, 0.36, 0.74], [1.0, 0.5, 0.82], [1.0, 0.9, 0.96]]]] },
+  pompom: { count: 320, rim: 48, radius: 0.92, depth: 0.5, cap: 80, size: 0.115, long: 1.25, glow: 0.28, sheen: 0.32, strands: 0.35,
+    // bands from the middle out: the right-hand brushes royal blue in the middle, a white ring, then a pink and white fringe
+    right: [[0.42, [[0.1, 0.2, 0.86], [0.13, 0.25, 0.95]]], [0.58, [[1.0, 0.95, 0.98]]], [0.78, [[1.0, 0.5, 0.8], [1.0, 0.42, 0.76]]], [9, [[1.0, 0.95, 0.98], [1.0, 0.86, 0.94]]]],
+    left: [[0.4, [[1.0, 0.36, 0.74]]], [0.62, [[1.0, 0.95, 0.98], [1.0, 0.86, 0.94]]], [9, [[1.0, 0.4, 0.76], [1.0, 0.32, 0.7]]]] },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.round4;
@@ -33,12 +38,13 @@ export const ROUND4 = {
   if (tune) merge(ROUND4, tune);
 }
 
-export function buildRound4({ scene, TR, L, W, updaters, time, env, hide = [] }) {
+export function buildRound4({ scene, TR, L, W, updaters, time, env, mascot, hide = [] }) {
   const TS = L.tunnelStart, TE = L.tunnelEnd, axisH = W.WATER + W.AXIS_H;
   for (const o of hide) if (o) o.visible = false;   // the Meshy drum's walls and round2's flat rings, behind the new lining
   const report = { hidden: hide.filter(Boolean).length };
   report.lining = lining({ scene, TR, TS, TE, axisH, time });
   report.rings = rings3d({ scene, TR, TS, TE, axisH, env, time });
+  if (mascot) report.crown = splashCrown({ scene, TR, L, W, mascot, updaters, time, TS });
   return report;
 }
 
@@ -138,5 +144,83 @@ void main() {
   float face = clamp(dot(normalize(vN), normalize(cameraPosition - vW)), 0.0, 1.0);
   vec3 col = mix(uGlow * 0.6, uGlow * 1.5 + vec3(0.2), pow(face, 3.0) * 0.6) * vWave;
   gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+// ---------------------------------------------------------------- the splash crown round the mascot
+function splashCrown({ scene, TR, L, W, mascot, updaters, time, TS }) {
+  const P = ROUND4.crown, n = P.petals, rnd = mulberry4(0x4c4);
+  const base = new THREE.PlaneGeometry(1, 1, 4, 10); base.translate(0, 0.5, 0);   // x across -0.5..0.5, y up 0..1
+  const g = new THREE.InstancedBufferGeometry();
+  g.index = base.index; g.setAttribute('position', base.attributes.position); g.setAttribute('uv', base.attributes.uv);
+  const petal = new THREE.InstancedBufferAttribute(new Float32Array(n * 4), 4).setUsage(THREE.DynamicDrawUsage);   // angle, radius, height, width
+  const state = new THREE.InstancedBufferAttribute(new Float32Array(n * 2), 2).setUsage(THREE.DynamicDrawUsage);   // age 0..1, seed
+  g.setAttribute('aPetal', petal); g.setAttribute('aState', state); g.instanceCount = n;
+  const u = { uTime: time, uCentre: { value: new THREE.Vector3() }, uR: { value: new THREE.Vector3(1, 0, 0) }, uU: { value: new THREE.Vector3(0, 1, 0) },
+    uT: { value: new THREE.Vector3(0, 0, 1) }, uFlare: { value: P.flare }, uCurl: { value: P.curl }, uFade: { value: 0 }, uAlpha: { value: P.alpha } };
+  const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: CROWN_VERTEX, fragmentShader: CROWN_FRAGMENT, transparent: true, depthWrite: false,
+    side: THREE.DoubleSide, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor });
+  const mesh = new THREE.Mesh(g, mat); mesh.name = 'r4SplashCrown'; mesh.frustumCulled = false; mesh.renderOrder = 6; mesh.visible = false;
+  scene.add(mesh);
+  const R = (a) => a[0] + rnd() * (a[1] - a[0]);
+  const life = new Float32Array(n), age = new Float32Array(n);
+  const spawn = (i, stagger) => {
+    petal.array.set([rnd() * Math.PI * 2, R(P.radius), R(P.height), R(P.width)], i * 4);
+    life[i] = R(P.life); age[i] = stagger ? rnd() * life[i] : 0; state.array[i * 2 + 1] = rnd();
+  };
+  for (let i = 0; i < n; i++) spawn(i, true);
+  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
+  updaters.push((dt, t) => {
+    const k = THREE.MathUtils.smoothstep(mascot.z, TS - 0.9, TS + 0.4) * (mascot.air ? 0.25 : 1);
+    mesh.visible = k > 0.01; u.uFade.value = k;
+    if (!mesh.visible) return;
+    TR.frame(mascot.z, F);
+    const surf = W.surface(L, mascot.x, mascot.z, t);
+    u.uCentre.value.copy(F.P).addScaledVector(F.R, mascot.x).addScaledVector(F.U, surf);
+    u.uR.value.copy(F.R); u.uU.value.copy(F.U); u.uT.value.copy(F.T);
+    for (let i = 0; i < n; i++) {
+      age[i] += dt * (0.8 + 0.4 * Math.min(1.5, mascot.speed / W.CRUISE));
+      if (age[i] >= life[i]) spawn(i, false);
+      state.array[i * 2] = age[i] / life[i];
+    }
+    state.needsUpdate = true; petal.needsUpdate = true;
+  });
+  return { petals: n };
+}
+function mulberry4(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const CROWN_VERTEX = /* glsl */ `
+attribute vec4 aPetal; attribute vec2 aState;
+uniform vec3 uCentre, uR, uU, uT; uniform float uFlare, uCurl;
+varying vec2 vUv; varying float vAge; varying float vSeed;
+void main() {
+  float ang = aPetal.x, rad = aPetal.y, hgt = aPetal.z, wid = aPetal.w, k = aState.x;
+  float up = position.y, across = position.x;
+  float rise = pow(sin(3.14159 * min(1.0, k * 1.15)), 0.7);             // shoots up, then falls back
+  vec2 d = vec2(cos(ang), sin(ang)), tg = vec2(-d.y, d.x);
+  float reach = rad + up * up * uFlare * (0.6 + k) + pow(up, 3.0) * uCurl; // flares and curls outward toward its lip
+  float spread = 1.0 + up * 0.7;
+  vec2 p = d * reach + tg * across * wid * spread;
+  float h = up * hgt * rise - 0.04 - pow(up, 4.0) * uCurl * 0.5 * k;      // the lip droops as it falls
+  vec3 w = uCentre + uR * p.x + uT * (p.y * 0.85) + uU * h;
+  vUv = vec2(across + 0.5, up); vAge = k; vSeed = aState.y;
+  gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
+}
+`;
+const CROWN_FRAGMENT = /* glsl */ `
+${NOISE}
+uniform float uTime, uFade, uAlpha; varying vec2 vUv; varying float vAge; varying float vSeed;
+void main() {
+  float x = vUv.x, y = vUv.y;
+  float ragged = bwNoise(vec2(x * 9.0 + vSeed * 17.0, uTime * 2.0 + vSeed * 5.0));
+  float top = 1.0 - smoothstep(0.72 + 0.2 * ragged, 1.0, y);              // a broken, frothy lip
+  float sides = smoothstep(0.0, 0.22, x) * smoothstep(0.0, 0.22, 1.0 - x);
+  float body = top * sides;
+  if (body < 0.01) discard;
+  float rim = smoothstep(0.55, 0.9, y) * top + (1.0 - smoothstep(0.0, 0.35, min(x, 1.0 - x))) * 0.5;
+  float streak = smoothstep(0.55, 0.85, bwNoise(vec2(x * 14.0, y * 3.0 - uTime * 3.0 + vSeed * 9.0)));
+  vec3 water = vec3(0.35, 0.85, 1.0), white = vec3(1.0, 1.0, 1.04);
+  vec3 col = mix(water, white, clamp(rim * 0.9 + streak * 0.4 + y * 0.25, 0.0, 1.0));
+  float a = clamp(body * (0.32 + 0.55 * rim + 0.2 * streak) * uAlpha, 0.0, 0.95) * (1.0 - smoothstep(0.75, 1.0, vAge)) * uFade;
+  gl_FragColor = vec4(col * a, a);
 }
 `;
