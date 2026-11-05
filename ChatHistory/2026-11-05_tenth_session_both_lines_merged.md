@@ -1,4 +1,4 @@
-# Eighth session: Round 9 focused pass merged and checked
+# Tenth session: both evening lines merged (match and focus) and the design agents
 
 Your messages and Claude's replies, exported from the session log. Tool calls, raw command output and screenshots are left out; the work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
@@ -83,4 +83,24 @@ Writing the restore module (generated table plus a small apply function):
 Now the edits in `tunnel_r9_match.js`, starting with the import and where `focus`'s settings are applied:
 
 Now the water file: the froth band, the bubble outline width and the fleck shapes.
+
+I have every spot. Applying all edits with one script, each replacement required to match exactly once:
+
+A backtick in a shader comment broke the template string. Fixing:
+
+Syntax is clean. Now the settings check: merged `match` must equal this branch's `match`, and merged `focus` must equal line B's `focus`, key for key.
+
+Settings are equal key for key in all three modes. Building the merged game and line B's game for the pixel proof:
+
+Line B's game rebuilds byte-identical to its committed build (`f131fa46`). Running the pixel proof in two parallel chains: the 11 older versions, and `match` / `focus` with and without foam.
+
+While the proof runs (about 15 minutes), I'm reading line B's `CLAUDE.md` and design-agent updates, which come in with the merge:
+
+Updating `CLAUDE.md`'s switch list for the merged state:
+
+The build is minified, so comment edits don't change the game file; I'll confirm its checksum stays `e9412484` after rebuilding. Checking the proof runs:
+
+Same checksum (`e9412484`), so the game is unchanged by the comment edits. Waiting for the pixel proof to finish:
+
+While that runs, drafting the hand-off section for the merged state:
 
