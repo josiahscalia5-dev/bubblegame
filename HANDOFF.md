@@ -1,8 +1,35 @@
-# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9 art match, `?s3=match`, branch `ccr-1f9da4c9-e0yrsc`)
+# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9, `?s3=match` and `?s3=focus` both merged, branch `ccr-9f8e2c8d-0zg3mc`)
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (5 November, 21:45 UTC onward): tenth session, branch `ccr-9f8e2c8d-0zg3mc`, focused pass merged
+## Newest (5 November, about 22:10 UTC): tenth session, branch `ccr-9f8e2c8d-0zg3mc`, BOTH evening lines merged
+
+- **Two lines of work ran in parallel this evening from `9a95c06` (16:29 UTC):**
+  - `?s3=match`: the seventh session (`ccr-1f9da4c9-e0yrsc`) and its focused pass from the 15:55 brief. Merged here first as
+    `68c8c40` (see the next section).
+  - `?s3=focus`: the eighth and ninth sessions (`ccr-3d8a1ae9-hhgml1`, then `ccr-de8d9670-2ohd5t`, final `b2a5b6e`), with
+    the user's later corrections (17:15 UTC blue water round her, no foam cushion; 17:45 the vortex kit; 18:26 the
+    Tunnel Correction ESSENTIAL kit), the Art Director's review and both specialists' focus passes.
+- **The user asked (about 22:00 UTC)** that the design agents they were chatting with on that branch be here and working,
+  so `ccr-de8d9670-2ohd5t` is merged into this branch (no branch was changed or force-pushed). Both switches stay exactly
+  as tested on their own branches:
+  - `focus` is built on `match` as it was at `9a95c06`. Under `FOCUS_ON`, `WebDemo/src/tunnel_r9_focus_base.js` (generated)
+    puts back the 46 changed, 80 added and 33 removed `MATCH` / `MATCH_WATER` settings. The seventh session's `match`-only
+    code is gated `!FOCUS_ON` in `tunnel_r9_match.js`, `tunnel_r9_match_water.js` and `tunnel_r8_splash.js`.
+  - **Proof** (`Previews/WebDemo/screen4_round9_match/21_lines_merged/`):
+    - settings key by key: merged `match` equals `68c8c40`'s, merged `focus` equals line B's;
+    - pixels, 49 raw-canvas frames, all 0 differing:
+      - the normal game and 10 older switches against `68c8c40`;
+      - `match` and `match,nofoam` against `68c8c40`;
+      - `focus` and `focus,nofoam` against `b2a5b6e`.
+    - Merged bundle md5 `e9412484...`.
+  - **Design agents:** the four agent files are line B's (its "ninth session" and "focused correction pass" sections) plus
+    a new "tenth session, both lines merged" section; `CLAUDE.md` has line B's corrections and the two switches.
+- **Which look continues is the user's choice:** `focus` follows their latest corrections; `match`'s froth bank predates them.
+- **Session naming:** this is the TENTH session (chat `ChatHistory/2026-11-05_tenth_session_both_lines_merged.md`, agents
+  `..._tenth_session_design_agent_transcripts.md`); the eighth and ninth are line B's.
+
+## Earlier (5 November, 21:45 UTC onward): tenth session, `match`'s focused pass restored and merged
 
 - **Recovered from:** `6b96449`, the seventh session's last autosave (the same commit on `ccr-1f9da4c9-e0yrsc`, left
   untouched). Both specialists had FINISHED their focused-pass work at about 21:06 UTC and stopped at the usage limit
@@ -19,7 +46,62 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   `..._tenth_session_design_agent_transcripts.md` ("tenth": branches `ccr-3d8a1ae9-hhgml1` and `ccr-de8d9670-2ohd5t`
   already call themselves the eighth and ninth sessions).
 
-## Newest (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
+## Earlier (5 November, 19:00 UTC onward): ninth session, branch `ccr-de8d9670-2ohd5t`, the focused pass CONTINUED
+
+- **Repository and branch:** `josiahscalia5-dev/bubblegame`, branch `ccr-de8d9670-2ohd5t`. It started exactly at the eighth
+  session's last autosave `182ad19` (`ccr-3d8a1ae9-hhgml1`, left untouched). Rebuilt bundle byte-identical (md5 `94c50cad...`).
+  `bash Tools/cloud_env_setup.sh` installed every tool.
+- **Why:** both specialists stopped at 18:57 UTC on a rate limit. Their 18:58 snapshots are in
+  `Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/` (`lighting-visual-matching_ae554668`,
+  `water-vfx-engineer_a29b1562`).
+- **Commits:**
+  - `0ff0d0b`: Tunnel & Lighting's four tested commits restored (the focus camera at the original's size with the rim
+    restaged; the user's problem A, the lower-left lavender-grey wedge, drawn as wall water; the left-wall seam removed).
+    The focus 3.0 s frame is identical to its last tested frame; `?s3=match` identical to `182ad19`.
+  - `71f7fa7`: all four agent files name this repository and branch (section "Newest: ninth session").
+- **Running (from 19:06 UTC), each in its own worktree from `71f7fa7`:**
+  - Tunnel & Lighting: objects onto the original's spots, then the kit's problem B (broader, softly blended cobalt and
+    turquoise bands), the wall streaks, the warm centre, the left wall. Evidence: `17_tunnel_lighting_focus/`.
+  - Water & VFX: its uncommitted work restored from the snapshot patch, then the water round her, the floor ahead, the
+    flying streaks, the bubbles near the centre. Evidence: `18_water_vfx_focus/`.
+- **Autosave** every 5 minutes (chat `ChatHistory/2026-11-05_ninth_session_focus_continued.md`, agents
+  `..._ninth_session_design_agent_transcripts.md`, WIP snapshots in `15_focus_pass/wip_snapshots_design_agents/`).
+- **Both finished and merged (20:20 UTC):** Water & VFX as `5462f30`, Tunnel & Lighting as `a78a143` (bundle rebuilt after
+  the merge). Checks all pass on the merged build: `?s3=match` identical, `s3_func`, `r2_func`, Pixel 7 at two framings.
+  Evidence, the kit's checklist and what still differs: `Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/README.md`.
+- **Next, if the user wants another pass:** blue saturation in the rings (0.71 against 0.83), fewer small streaks and
+  bubbles over the rings, the left wall's crisp cyan sparkle instead of a milky smoothness, the floor behind her 4 L*
+  brighter, her base 0.20 W.
+
+## Earlier (5 November, 16:50 UTC onward): eighth session, branch `ccr-3d8a1ae9-hhgml1`, the FOCUSED CORRECTION PASS
+
+- **Recovered from:** `9a95c06` (the seventh session's last autosave; both specialists had stopped on a rate limit at 16:00
+  without saving game code, so the pass was redone directly). Rebuilt bundle byte-identical (md5 `811c6977...`).
+- **New switch `?s3=focus`** = `match` + this pass. Settings: `WebDemo/src/tunnel_r9_focus.js`; code gated on `FOCUS_ON` in
+  `tunnel_r9_match.js` (`focusRibbonsGLSL`, `focusFlecksGLSL`, the sock pose) and `tunnel_r9_match_water.js`
+  (`focusLumpGLSL`, `swellFront`, `focusSparkleGLSL`). `match` and all older switches stay pixel-identical.
+- **The user's corrections during the pass (they supersede the earlier foam requests; see `CLAUDE.md`):**
+  - about 17:15 UTC: sparkling BLUE water round the character, not a white foam cushion;
+  - about 17:45 UTC: the vortex kit (`Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/`), the tunnel water as
+    twisting broken cobalt ribbons.
+  - Also: commit and push each tested step, with the hash.
+- **Commits:** `9bbcfa8`, `492fb7a`, `b03d160`, `6f6bbb0`, `56d76d2`, `229eecb`, `5170d12`, then this hand-off.
+- **Evidence and checklist:** `Previews/WebDemo/screen4_round9_match/15_focus_pass/README.md` (`final/` has the 3.0 s
+  sheets).
+- **Open, by the numbers:**
+  - The tunnel's deep blue is now above the original's (7.0% against 3.9%), and pastel below it (24.5% against 29.2%).
+  - The per-pixel tunnel difference rose (51.1 against match's 46.6).
+  - The character is drawn slightly larger than the original (pink 4.94% against 4.16%).
+  - The original has more white splash texture at her base.
+  - The original's white streaks are chunkier.
+- **Tools added:**
+  - `WebDemo/tools/screen4/cam_sweep.cjs` (camera candidates from one load);
+  - `r2_func.cjs` takes `VW`/`VH` (a smaller viewport: at full size the `match`/`focus` hearts loop outlasts 20 minutes in
+    software rendering);
+  - `15_focus_pass/scripts/` (`pink.py`, `tunnel_palette.py`, `final_sheets.py`, `identity_shots.sh`, which includes
+    `match`).
+
+## Earlier (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
 
 - **Recovered from:** `36c8676`, the sixth session's last autosave (on both `ccr-4aef2c77-0cdeu2` and this branch; left
   untouched). The rebuilt bundle matched it byte for byte (md5 `ba0c7f6c...`). `bash Tools/cloud_env_setup.sh` installed

@@ -1,0 +1,3 @@
+L* of #1a60e1 (original cobalt) 44, #2b62ce (focus cobalt) 44, #528be8 (focus royal) 58
+orig   counted as deep (v<0.85)  3.9%   cobalt with L*<55 but v>=0.85 (missed) 14.8%   all saturated blue with L*<55 18.2%
+focus  counted as deep (v<0.85)  7.0%   cobalt with L*<55 but v>=0.85 (missed)  6.3%   all saturated blue with L*<55 13.2%

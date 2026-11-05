@@ -57,7 +57,79 @@ Rules: Round 5 (`?s3=round5`) is the only place visual changes go. The normal ga
 pixel-identical. Controls, lanes, the tunnel route, the five-heart system, the sock mission and power-ups must not change. The
 fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and ranked.
 
-## Newest: Round 9 ART MATCH, `?s3=match` (5 November 2026, fifth and sixth sessions; this section overrides the notes below)
+## Newest: tenth session, BOTH evening lines merged (5 November 2026, from 21:45 UTC; this section overrides the notes below)
+
+- **Repository:** `josiahscalia5-dev/bubblegame`. **Branch:** `ccr-9f8e2c8d-0zg3mc` (the tenth session's). The lead merges every
+  agent's work into it and pushes; never push another branch, never force-push. `HANDOFF.md` names the merge commit.
+- **Two lines of work split at `9a95c06` (16:29 UTC) and are now both on this branch, each exactly as tested on its own branch:**
+  - `?s3=focus` (eighth and ninth sessions, `ccr-3d8a1ae9-hhgml1` then `ccr-de8d9670-2ohd5t`, final `b2a5b6e`): the line that
+    follows the user's LATEST corrections in `CLAUDE.md` (17:15 UTC: sparkling BLUE water round her, no white foam cushion;
+    17:45 UTC: the vortex kit; 18:26 UTC: the Tunnel Correction ESSENTIAL kit). Its sections below ("ninth session",
+    "the FOCUSED CORRECTION PASS") still hold; only the branch name changed.
+  - `?s3=match` (seventh session, `ccr-1f9da4c9-e0yrsc`): its own focused pass from the 15:55 UTC brief (the camera `MATCH_CAM`,
+    the character 1.2 times larger; the sock's pose; wall turbulence and streaks; an aqua-white FROTH bank; tunnel flecks and
+    bubbles). Its froth bank predates, and conflicts with, the user's 17:15 correction. Evidence:
+    `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/`, `14_focused_pass_water_vfx/`, `20_focused_pass_merged/`.
+  - Work on the switch the lead names. If none is named, ask the lead; do not merge the two looks on your own.
+- **How the two coexist (keep it so):** `focus` is built on `match` as it was at `9a95c06`. Under `FOCUS_ON`,
+  `WebDemo/src/tunnel_r9_focus_base.js` puts back every `MATCH` / `MATCH_WATER` setting the seventh session changed (a
+  generated list) before `FOCUS`'s own settings merge, and the seventh session's `match`-only code is gated `!FOCUS_ON`
+  (in `tunnel_r9_match.js`, `tunnel_r9_match_water.js`, `tunnel_r8_splash.js`). So:
+  - a change for `focus`: `FOCUS` settings (`tunnel_r9_focus.js`) or code gated on `FOCUS_ON`;
+  - a change for `match`: code gated `!FOCUS_ON` (or settings `focus` overrides), so `focus` stays pixel-identical.
+- **The merge's proof:** `Previews/WebDemo/screen4_round9_match/21_lines_merged/` (settings compared key by key, and frames:
+  `match` and every older switch against `68c8c40`, `focus` against `b2a5b6e`).
+- **Your part:** review whichever switch the lead names against the ORIGINAL only; say which switch your numbers are for.
+
+## Earlier: ninth session, where the work is saved (5 November 2026, from 19:00 UTC; this section overrides the notes below)
+
+- **Repository:** `josiahscalia5-dev/bubblegame` (the user's GitHub repository). **Branch:** `ccr-de8d9670-2ohd5t`, the ninth
+  session's branch; it continues `ccr-3d8a1ae9-hhgml1` exactly (both were at `182ad19`). Every agent's work is merged
+  into this branch and pushed there by the lead; never push another branch, never force-push.
+- **Tunnel & Lighting's focus work so far is on the branch** (`0ff0d0b`, restored from its 18:58 snapshot, identical frames):
+  - the focus camera at the original's size: `FOCUS.match.hero.round6.round5.camera = { off: [-0.162, 1.126, -3.1],
+    lookY: 1.655, lookX: 0.142, fov: 68 }`, with the gold rim restaged (`porthole.bezel`, `face.inner`, `rivets.radius`,
+    `hero.rim.centre`, `rimRho`). At 3.0 s: character width 0.473 W, top 0.695, base 0.850, centre (0.500, 0.780);
+  - the user's problem A (the lower-left lavender-grey wedge, `heroWalls` before the tube's mouth): drawn as the walls'
+    animated water (`focusMouthWaterGLSL`); the upper gold rim unchanged;
+  - the left-wall horizontal seam removed (`focusRibbonsGLSL` counts the angle from straight down).
+  - Notes and frames: `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md`.
+- **Water & VFX's unfinished focus work** (the water round her: crest cut, side crests, sparkle; not yet committed) is in
+  `Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/water-vfx-engineer_a29b1562/`
+  (`changes.patch` against `d6e836d`, which applies cleanly here) with its notes in `.../files/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md`.
+- **The user's newest kit (18:26 UTC):** `Design/ReferencePacks/2026-11-05_Tunnel_Correction_ESSENTIAL_Kit/`
+  (`CLAUDE_SEND_THIS.txt`): A, the lower-left exposed wall (done, above); B, broader, softly blended cobalt and turquoise
+  flows, softer brighter cyan accents, fewer hard white outlines and less bubble clutter, a modest warm centre. Its
+  `00_ORIGINAL_CLASSIC_MASTER.png` is the same original; the original stays the only target.
+- **The Art Director's ranked review of focus:** `Previews/WebDemo/screen4_round9_match/16_art_director_focus_review/`.
+- **Saving:** commit in your worktree after each tested step and keep a running `NOTES.md` in your evidence folder; the
+  lead's 5-minute autosave copies your unfinished work into the repository (the user's standing request).
+
+## Earlier: the FOCUSED CORRECTION PASS, `?s3=focus` (5 November 2026, eighth session; this section overrides the notes below)
+
+- **Switch:** `?s3=focus` = everything `match` does plus the user's focused correction pass. Settings: `WebDemo/src/tunnel_r9_focus.js`
+  (`FOCUS.match`, merged into `MATCH`; `FOCUS.water`, merged into `MATCH_WATER`). Code gated on `FOCUS_ON`:
+  - `tunnel_r9_match.js`: `focusRibbonsGLSL` (the walls' water as broken, twisting ribbons), `focusFlecksGLSL` (white
+    streaks and drops along the ribbons) and the sock pose;
+  - `tunnel_r9_match_water.js`: `focusLumpGLSL` (small blue splash crests), `swellFront` (the swell's crest lowered in front
+    of her) and `focusSparkleGLSL` (glints on the water round her).
+  `match` and every older switch must stay pixel-identical.
+- **The user's corrections (they supersede every earlier foam request):**
+  - round the character, sparkling BLUE water with small bubbles, splashes and blue-white highlights; NO thick white or
+    lavender foam cushion or clumps;
+  - in the tunnel, the water itself as twisting, irregular cobalt ribbons with turquoise currents, dark gaps and curved,
+    broken white streaks (`Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/`). Not smooth, even, wide pastel
+    rings or a big peach band. Bubbles are secondary.
+- **State and evidence:** `Previews/WebDemo/screen4_round9_match/15_focus_pass/README.md` (commits, numbers, checklist),
+  `final/` (the 3.0 s sheets).
+- **Capture:** `S3=focus TIMES=3.0 DPR=1.5 CANVAS=1 node tools/screen4/liquid_shots.cjs "$PWD" <out>`.
+  - Camera candidates: `tools/screen4/cam_sweep.cjs`.
+  - Measures: `15_focus_pass/scripts/` (`pink.py`, `tunnel_palette.py`, `final_sheets.py`).
+  - `r2_func.cjs` takes `VW=135 VH=270` (at full size its hearts loop outlasts 20 minutes in software rendering).
+- **The user's rule now:** commit and push each tested step and report its hash. Never call a fix done without the real 3.0 s
+  frame showing it.
+
+## Earlier: Round 9 ART MATCH, `?s3=match` (5 November 2026, fifth and sixth sessions; this section overrides the notes below)
 
 - **Branch:** `ccr-4aef2c77-0cdeu2` (sixth session), which continues `ccr-b41bbe83-3fbhkr` exactly (both at `a5be95c`).
   Round 9 so far is merged as `2a6ab30`.

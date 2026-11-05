@@ -1,0 +1,21 @@
+CLAUDE CODE — BUBBLE WASH KINGDOM SCREEN 4 — ORIGINAL CLASSIC MATCH
+
+Extract this supplied ZIP. Before editing, inspect ORIGINAL_APPROVED_SCREEN4.png, CURRENT_4WAY_BUILD.jpg, 00_Annotated_Overview.jpg and the seven numbered evidence crops. Treat the ORIGINAL as the sole approved visual target. The reference images are evidence, not replaceable static backgrounds. Work on the actual playable game, maintain all existing controls, UI, animations and GitHub progress. Create a new branch/checkpoint before changes. Do not spend time redesigning the pink fuzzy character mesh or art.
+
+IMPORTANT CORRECTION TO ALL PRIOR NOTES:
+The pink fuzzy character must sit ON TOP of the water/foam surface in the foreground, physically supported FROM BELOW by lively white-and-turquoise foam. It must NOT look submerged, sunk under water, or blocked by an opaque/translucent purple wall. Keep the upper character fully visible. The foamy contact at its base may touch/overlap slightly; do NOT increase water height in a way that swallows the character. Disregard earlier "submerge" instructions and incorrect labels in old ZIPs.
+
+SEVEN FIXES:
+1) TUNNEL BUBBLES: put many small and mid-sized translucent, lit bubbles at true varied depths throughout the tunnel vortex (foreground, midground, distant), not only huge near-camera circles. Their animated motion should suit the current/water flow. Verify background bubbles visually behind collectibles; balance density against legibility.
+2) WATER SURFACE SUPPORT: reposition/control the surface/foam relative to the pink fuzzy character so it visibly rests ON the surface, supported by frothy wave/foam underneath; remove the transparent purple curtain masking its lower body. Do NOT change character artwork.
+3) VORTEX: align perspective and visible rings with original's tighter, deeper, more layered cobalt/turquoise washing-machine spiral and warm center; avoid a smooth cylindrical tube and excess neon yellow/green.
+4) FRONT FOAM: recreate thick, rounded, white/cyan, glossy, varied-scale 3D foam lobes and active splashes near bottom; avoid a thin transparent row of purple blobs. Keep gameplay visible and playable.
+5) OBJECT COMPOSITION: compare size, screen-space position, and depth of socks, golden paw coins, purple gems to the original; correct noticeably oversized or misplaced items while keeping functional collectibles/collisions.
+6) TOP FRAME: remove excess blank purple wall above tunnel; adjust camera/crop/framing and ring position to more closely resemble the approved original without cropping HUD.
+7) WHITE PATCH: diagnose and remove the unnatural large white rectangular panel beneath the mission banner; do not conceal it with a screenshot overlay.
+
+ASSETS:
+Provided transparent bubbles and a starter 3D bubble GLB are OPTIONAL starter material. Inspect the actual rendering/game engine and only use assets if they enhance the live match and work with the codebase. If the project already has better bubble VFX, modify existing effects. Do not force incompatible tools or assets.
+
+QUALITY GATE:
+Capture actual playable Screen 4 at exactly 3.0 seconds at the same portrait viewport, with fixed device pixel ratio, seed and camera where possible. Provide an original vs updated comparison, seven updated evidence crops, and a checklist marking PASS / FAIL with screenshots and the remaining differences. Also test real gameplay (steering/jumping/spinning, HUD, collectibles and performance). Do not claim a perfect match based on code build success alone. Deliver all edits in the existing repository and identify commit/branch. Show user the final proof.

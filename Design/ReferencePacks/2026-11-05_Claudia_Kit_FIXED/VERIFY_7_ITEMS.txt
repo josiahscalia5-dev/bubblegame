@@ -1,0 +1,11 @@
+SCREEN 4 ACCEPTANCE CHECKLIST — ORIGINAL CLASSIC IS THE TARGET
+[ ] 1 Deep tunnel contains many correctly scaled animated bubbles at near/mid/far depth.
+[ ] 2 Pink character rests ON TOP of water/foam, supported underneath; NOT submerged and NOT behind purple transparent water curtain; character design unchanged.
+[ ] 3 Vortex has deep cobalt-turquoise layered spirals, correct perspective, warm center.
+[ ] 4 Foreground water has chunky opaque glossy cyan-white foam and lively splashes; no transparent purple barrier.
+[ ] 5 Coins/gems/socks match original in relative placement, scale and depth.
+[ ] 6 Upper blank purple gap is reduced to match original composition, without cropping HUD.
+[ ] 7 White rectangular shape under mission panel is removed at source.
+[ ] Same 3.0s moment and same viewport used for original-vs-live build comparisons.
+[ ] Real gameplay and controls remain functional. No static screenshot as game background.
+[ ] Evidence screenshots and remaining mismatches provided; do not mark items passed without visible proof.

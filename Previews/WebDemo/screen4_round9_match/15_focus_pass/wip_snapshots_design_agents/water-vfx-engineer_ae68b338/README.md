@@ -1,0 +1,59 @@
+# Work-in-progress snapshot: water-vfx-engineer (Water & VFX: splash round her, floor)
+
+- **Taken:** 2026-11-05 20:05 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Worktree branch:** `worktree-agent-ae68b33859f973010` (local only), started from `565eb07`.
+- **Its own commits so far:** 
+  - `b5fb9d3 Water & VFX focus item 4 (?s3=focus only): the tunnel's bubbles off its centre`
+  - `5dac0d8 Water & VFX focus item 3 (?s3=focus only): fewer, chunkier, turned white streaks among the bands`
+  - `eacb3f4 Water & VFX focus item 2 (?s3=focus only): the floor ahead as the original's pale blue-white water`
+  - `d903650 Water & VFX focus step 1c (?s3=focus only): fine spray and irregular broken crest arcs round her`
+  - `4ae6099 Water & VFX focus step 1b (?s3=focus only): the blue pillows beside her taken out`
+  - `d615259 Water & VFX focus step 1a (?s3=focus only): broken splash water round her`
+- **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
+
+## Files (44; full copies in `files/`)
+
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/focus_before_info.json`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/focus_before_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/focus_before_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/measure_before.txt`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before71/focus_71f7fa7_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before71/focus_71f7fa7_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_floor_ahead_orig_before_step2.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_ring_band_orig_step2_step3.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1a_1b.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1c.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_tunnel_orig_step3_step4.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_after.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_before.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1a.txt`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_info.json`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_info.json`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1a_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1a_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1b_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1b_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/hide_diff.py`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/lavmap.py`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/measure.py`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/tbcount.py`
+- `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/whitemap.py`
+- `WebDemo/src/tunnel_r9_focus.js`
+- `WebDemo/src/tunnel_r9_match_water.js`

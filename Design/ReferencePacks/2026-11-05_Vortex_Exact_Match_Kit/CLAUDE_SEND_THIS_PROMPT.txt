@@ -1,0 +1,32 @@
+CLAUDE CODE — BUBBLE WASH KINGDOM SCREEN 4 — APPROVED WATER VORTEX RECONSTRUCTION
+
+FIRST: inspect the attached files. Source-of-truth = 00_ORIGINAL_CLASSIC_APPROVED_FULL_SCREEN.png and 01_APPROVED_TUNNEL_WATER_RAW.png. 04_ANNOTATED_VORTEX_COMPARISON.png and 09/10 close-ups show the precise mismatch. 02_CLAUDE_TUNNEL_WATER_RAW.png is the CURRENT build, not a target.
+
+THE CRITICAL CHANGE
+The approved tunnel is NOT simply a clean cylindrical tube with evenly spaced concentric rings. Its water spirals with irregular, displaced cobalt-blue ribbons, turquoise currents, short curved white streaks, broken crests, bright highlights, scattered small bubbles, and real depth. The current renderer shows smoother broad pastel rings, a large warm peach band and much less natural turbulence.
+
+IMPLEMENTATION — do actual game-code edits; use the current project's rendering engine
+1. LOCK VIEW: capture the same 3.0-second deterministic gameplay frame; match aspect, camera, simulation seed, scene progress and resolution to the approved reference. Do not change pose or character models to compensate for bad camera framing.
+2. FIND SOURCE: locate actual tunnel mesh, materials/shaders, lighting, UV mapping, decals, wave animation and VFX. Describe which source files own each feature. Preserve working geometry/controls.
+3. FIX STRUCTURE: tune the tunnel's depth perspective and irregular ring widths. Introduce broken, offset spiral currents and fine waviness so bands twist and deform rather than forming evenly spaced circles. Keep distinct deep cobalt gaps; do not brighten the whole tunnel.
+4. FIX MATERIAL / MOTION: prefer a UV-flow approach on existing curved tunnel geometry using at least two differently scaled, moving water-normal/flow layers; time-varying curl/distortion and brightness; pale turquoise streaks and thin white spray accents at random arcs. Avoid uniform noise, broad smeared peach bands or evenly repeated rings.
+5. FIX LAYERS: foreground water motion, middle spiral ribbons, distant center, localized highlights and bubbles should have distinct depth, scale and speeds. Keep center warm but compact; do not wash away deep cobalt blue.
+6. BUBBLES: depth-distributed bubbles, varied sizes and opacity; avoid a fixed row of identical bubbles. These are secondary to getting WATER RIBBONS right.
+7. PRESERVE: no static photo backgrounds, no screenshot projection in shipping code, no redesigning the pink fuzzy character, no giant white or lavender foam cushion at its base. Character sits ON TOP of bright blue bubbly water with small splashes.
+8. CHECK: produce baseline / after screenshots captured at exactly the same deterministic gameplay moment and crop. Build a 50% opacity alignment overlay and a segmented difference view for TUNNEL ONLY. Pixel-level scores are advisory due to the approved screen being painterly; also report structure/color/depth match by eye. Do not hide mismatches with bloom.
+9. REPORT: list every changed file, what it changes, screenshot results, remaining differences, gameplay/regression tests and confirmed GitHub commit hash. Commit and push successful incremental work BEFORE running another long step.
+
+OPTIONAL ASSET: 11_OPTIONAL_PROCEDURAL_TANGENT_FLOWMAP_RGBA.png is a 512x512 engineering starter flow-direction map, NOT extracted from the original and NOT a finished approved water texture. R,G encode 2D direction as (0..255) around midpoint 128, alpha encodes local flow-strength falloff. Use only if it fits the project's actual UV geometry. Do NOT replace a working shader with this as-is, or render it directly as visible colors. 12_...PREVIEW displays its directional arrows. For higher fidelity, derive a new mesh-UV-aligned flow field from the existing scene instead.
+
+NOT RECOMMENDED: generating the entire tunnel from the busy screenshot with a generic image-to-3D tool. Fluid motion, camera match, materials and VFX would remain unsolved. A procedural/artist-authored water shader and flowmap, with the actual approved reference beside it, is a better use of credits.
+
+ACCEPTANCE
+[ ] Irregular, twisting cobalt water ribbons, not evenly repeated smooth rings
+[ ] Distinct dark blue depth between turquoise ribbons
+[ ] Curved broken white splash streaks (not random star glitter)
+[ ] Small bubbles dispersed among near, middle, distant tunnel layers
+[ ] Warm center localized, no oversized peach wash
+[ ] Same camera, items, UI and functioning gameplay
+[ ] Pink character on top of bright BLUE water, no opaque white foam cushion
+[ ] Full-res approved/current/corrected at 3.0s + 3 tunnel close-ups
+[ ] All useful changes saved and pushed to GitHub with commit hash

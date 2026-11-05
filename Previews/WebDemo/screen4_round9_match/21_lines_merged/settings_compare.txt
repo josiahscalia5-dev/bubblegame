@@ -1,0 +1,6 @@
+Settings compared key by key (scripts/dump_settings.mjs: MATCH and MATCH_WATER as the game builds them under each switch,
+Node with a stub window; arrays compared whole). this branch = 68c8c40 (the seventh session's focused pass merged);
+line B = ccr-de8d9670-2ohd5t (b2a5b6e's WebDemo); merged = this merge.
+merged ?s3=match  vs this branch ?s3=match: EQUAL
+merged ?s3=focus  vs line B ?s3=focus: EQUAL
+merged no switch  vs this branch no switch: EQUAL

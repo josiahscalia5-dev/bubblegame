@@ -1,0 +1,2366 @@
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+new file mode 100644
+index 0000000..5e13fd9
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+@@ -0,0 +1,87 @@
++**CAMERA DECIDED AND COMMITTED (`0dae738`):** `FOCUS.match.hero.round6.round5.camera = { off: [-0.162, 1.126, -3.1], lookY: 1.655,
++lookX: 0.142, fov: 68 }`, with the rim restaged (`porthole.bezel { inner: 2.506, outer: 2.641 }`, `face.inner 2.59`, `rivets.radius
++3.42`, `hero.rim.centre [-0.1155, 0.8415]`) and `rimRho { mouth: 0.864, perMetre: 0.0855 }`. At 3.0 s: character width 0.473 W, top
++0.695, base 0.850, centre (0.500, 0.780); water top 0.28; tube axis (0.497, 0.531); rim circle 0.931 W round (0.550, 0.672).
++
++# Tunnel & Lighting, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
++
++Worktree branch `worktree-agent-ae55466877e7d52cb`, started at `d6e836d`. Only target: the ORIGINAL APPROVED Screen 4
++(`Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`). Files: `WebDemo/src/tunnel_r9_match.js`
++and `FOCUS.match` in `WebDemo/src/tunnel_r9_focus.js`; everything gated on `FOCUS_ON`.
++
++Order (the lead, after the user's kit at about 18:26 UTC): 1 camera; 2 problem A (lower-left lavender-grey wedge); 3 objects;
++4 problem B (softer, broader water bands); 5 wall streaks, centre, left wall.
++
++## Tools (in `scripts/`)
++
++- `run_ad.py <name> <canvas> [page]`: runs the Art Director's script `16_art_director_focus_review/scripts/<name>.py` on a new frame.
++- `frame_fit.py <frames...> [--cands cands.json]`: the camera targets (character box by the AD's pink mask, water top by `rim_profile.py`'s rule).
++- `tune_cands.cjs`: one browser, a fresh seeded page per tune candidate, canvas at 3.0 s, the projected vanishing point and camera.
++- `hide_probe_tune.cjs`: `tools/screen4/hide_probe.cjs` with DPR and TUNE added.
++
++## Baseline
++
++`frames/focus_before_t3.00_canvas.png` is identical (max diff 0) to `15_focus_pass/final/focus_final_t3.00_canvas.png`.
++
++## 1. Camera (sweep at 3.0 s, real renders, `tune_cands.cjs`)
++
++Focus camera: `off [-0.11, 0.93, -2.25]`, `lookY 1.54`, `fov 73` (match's lookX 0.194). Pitch kept with lookY = y + 0.0704 (6.42 - z).
++
++| candidate | width | top | base | centre | water top | vp |
++|---|---|---|---|---|---|---|
++| original | 0.465 | 0.702 | 0.859 | (0.502, 0.778) | 0.28 | |
++| focus (base) | 0.600 | 0.687 | 0.894 | (0.521, 0.799) | 0.26 | (0.501, 0.535) |
++| z -2.9 y 1.08 fov 72 | 0.473 | 0.693 | 0.848 | (0.523, 0.777) | 0.31 | (0.500, 0.538) |
++| z -2.9 y 1.08 fov 67 | 0.520 | 0.711 | 0.882 | (0.525, 0.805) | 0.29 | (0.500, 0.542) |
++| z -3.1 y 1.08 fov 68 | 0.476 | 0.698 | 0.849 | (0.525, 0.780) | 0.30 | (0.499, 0.541) |
++| z -3.3 y 1.08 fov 65 | 0.477 | 0.698 | 0.847 | (0.527, 0.780) | 0.30 | (0.499, 0.543) |
++| z -3.5 y 1.08 fov 62 | 0.476 | 0.701 | 0.847 | (0.529, 0.781) | 0.29 | (0.498, 0.545) |
++
++Finding: moving the camera back shrinks the gold rim on screen (rim top about 0.27 instead of the original's 0.21) because
++the porthole stays 1.16 m in front of the character; it must be restaged with the camera (scaled up / recentred) and the
++rim ramp's on-screen constants (RIM_RHO) recomputed. Character centre x is 0.525: the camera moves about 0.05 m right
++(off x and lookX together) to bring her to 0.50 without moving the vanishing point.
++
++## 2. Problem A: the lower-left lavender-grey wedge
++
++Hide probe at 3.0 s (focus, before the camera change), zone x 0-0.15, y 0.55-0.85, share of pixels that change when hidden:
++heroWalls 0.50, heroSwell 0.10, heroBubbles 0.08, lqFloor 0.08, heroCollar 0.02, r6Face 0.00.
++
++Cause: the flat lavender band with the dark blue line along its top is drawn by **heroWalls** (round4's lining
++`r4Lining`, renamed `heroWalls`, shaded by `tunnel_r8_liquid.js` `wallFragment`). The lining extends before the tube's mouth
++(u < uStart), and there `wallFragment` paints it flat `#c4b8f0` ("the washer's lavender shell before the mouth") plus the
++navy mouth edge at uStart + 0.1. The rim's collar is centred low (h 0.755), so at the lower sides the collar's funnel is wider
++than the tube, and this pre-mouth part of the lining lies inside it, in front of the collar's water: the camera sees a
++flat lavender strip with a navy line at the lower left (and right). `matchMouthGLSL` (my file, inserted after those lines)
++only repaints the upper part (the rim ramp, upA > -0.15).
++
++Planned fix (focus only, in `matchMouthGLSL`): below the rim-ramp region, before the mouth, draw the walls' own animated water
++(lqWall / matchWall) instead of the lavender shell and the navy edge; the upper part (gold rim, bevel, ramp) unchanged.
++
++After the camera change (hide probe at DPR 1.5, `0dae738`): left x 0-0.12, y 0.5-0.85: heroWalls 0.63 changed (others <= 0.09);
++right: heroWalls 0.24, s4Brush 0.46. Same cause, more visible with the camera further back.
++
++**Done (`a61541c`):** `focusMouthWaterGLSL` in `tunnel_r9_match.js`, inserted by `matchMouthGLSL` into `wallFragment` (focus only):
++where (1 - smoothstep(-0.15, 0.3, upA)) * (1 - smoothstep(0.2, 0.32, u - uStart)) > 0 it draws `lqWall(...)` over the lavender shell
++and the navy edge. Lavender share (h 235-300, s 0.08-0.45, v > 0.6) in x 0-0.10, y 0.45-0.80: 11.2% -> 0.4%; x 0.90-1.0: 10.6% -> 1.1%.
++Pixels changed only in y 0.615-0.783; none above y 0.60. Pixel 7 412x839: no wedge (`frames/phone_412x839_focus_A_3.00s.png`).
++
++## 2b. The horizontal seam on the left wall (the lead, after `a61541c`)
++
++A hard straight line across the wall water at the vanishing point's height (canvas y 0.527, x 0-0.35), there before fix A too
++(not from the problem-A region: that changes only y 0.615-0.783). Cause: `focusRibbonsGLSL` keys its per-band picks (arc count,
++arc offsets, body colour, and so the flecks' phase fRq) on floor(rq), and the band phase bs = lr * perLog + tu * spiral steps by
++one band where tu wraps (screen-left, the horizontal through the camera in the cross-section, `mtPlace`). Every wall point at
++the camera's height projects onto the horizon line, so with the camera at the axis height (h 1.6) the step is a straight line.
++**Fixed (`2975aea`):** the ribbons count the angle from straight down (rTu = tu < -0.25 ? tu + 1 : tu; rq gets +spiral there), so
++the step falls on the tube's bottom, under the water floor. Largest row jump on the left wall (x 0.02-0.30, y 0.48-0.62): 28.2 ->
++14.0 (now the coin's edge; median 6). Page frame: the 0.531 jump (26.4) gone.
++
++## 3. Objects after the camera (next)
++
++Probe at 3.0 s (new camera): camera track (u -5.4, x -0.16, h 1.6). Picks (screen x, y, distance -> track u rel. tunnelStart, x, h):
++lower-right coin (0.893, 0.733): d 3.0 -> (-2.6, -0.81, 0.83); d 3.5 -> (-2.1, -0.92, 0.70); d 4.0 -> (-1.65, -1.02, 0.58).
++big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.98, 1.11).
++small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
++gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
++Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_info.json b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_info.json
+new file mode 100644
+index 0000000..b667314
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_info.json
+@@ -0,0 +1,463 @@
++{
++ "s3": [
++  "focus"
++ ],
++ "frames": [
++  {
++   "t": 3,
++   "state": {
++    "phase": "running",
++    "time": 3.517,
++    "z": 1.592,
++    "x": 0,
++    "y": 0.405,
++    "world": [
++     0,
++     0.405,
++     1.592
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.3,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.162,
++     1.599,
++     -1.508
++    ],
++    "cameraPitchDeg": 2.17,
++    "particles": 136,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   }
++  }
++ ],
++ "report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.506,
++      2.641
++     ],
++     "face": [
++      2.59,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.1155,
++       0.8415
++      ],
++      "inner": 2.506,
++      "outer": 2.641
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 120,
++       "drawCalls": 1,
++       "triangles": 240
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 20,
++        "drawCalls": 1,
++        "triangles": 5040
++       },
++       "bank": {
++        "curls": {
++         "count": 4,
++         "drawCalls": 1,
++         "triangles": 1344
++        },
++        "lumps": {
++         "count": 16,
++         "drawCalls": 1,
++         "triangles": 5120
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9488829988640666,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.55,
++       "glint": 1.3,
++       "deep": 0.85,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 280,
++       "flecks": 560,
++       "drawCalls": 1,
++       "triangles": 1680,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ }
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_t3.00.png
+new file mode 100644
+index 0000000..4e1eaf7
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_t3.00_canvas.png
+new file mode 100644
+index 0000000..6d628b2
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_A_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_info.json b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_info.json
+new file mode 100644
+index 0000000..34af49c
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_info.json
+@@ -0,0 +1,463 @@
++{
++ "s3": [
++  "focus"
++ ],
++ "frames": [
++  {
++   "t": 3,
++   "state": {
++    "phase": "running",
++    "time": 3.517,
++    "z": 1.592,
++    "x": 0,
++    "y": 0.405,
++    "world": [
++     0,
++     0.405,
++     1.592
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.3,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.11,
++     1.392,
++     -0.658
++    ],
++    "cameraPitchDeg": 2.99,
++    "particles": 136,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   }
++  }
++ ],
++ "report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.42,
++      2.55
++     ],
++     "face": [
++      2.5,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.097,
++       0.755
++      ],
++      "inner": 2.42,
++      "outer": 2.55
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 120,
++       "drawCalls": 1,
++       "triangles": 240
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 20,
++        "drawCalls": 1,
++        "triangles": 5040
++       },
++       "bank": {
++        "curls": {
++         "count": 4,
++         "drawCalls": 1,
++         "triangles": 1344
++        },
++        "lumps": {
++         "count": 16,
++         "drawCalls": 1,
++         "triangles": 5120
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9490196078431373,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.55,
++       "glint": 1.3,
++       "deep": 0.85,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 280,
++       "flecks": 560,
++       "drawCalls": 1,
++       "triangles": 1680,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ }
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_t3.00.png
+new file mode 100644
+index 0000000..cf7b0a5
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_t3.00_canvas.png
+new file mode 100644
+index 0000000..b9e2490
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_before_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_info.json b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_info.json
+new file mode 100644
+index 0000000..b667314
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_info.json
+@@ -0,0 +1,463 @@
++{
++ "s3": [
++  "focus"
++ ],
++ "frames": [
++  {
++   "t": 3,
++   "state": {
++    "phase": "running",
++    "time": 3.517,
++    "z": 1.592,
++    "x": 0,
++    "y": 0.405,
++    "world": [
++     0,
++     0.405,
++     1.592
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.3,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.162,
++     1.599,
++     -1.508
++    ],
++    "cameraPitchDeg": 2.17,
++    "particles": 136,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   }
++  }
++ ],
++ "report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.506,
++      2.641
++     ],
++     "face": [
++      2.59,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.1155,
++       0.8415
++      ],
++      "inner": 2.506,
++      "outer": 2.641
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 120,
++       "drawCalls": 1,
++       "triangles": 240
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 20,
++        "drawCalls": 1,
++        "triangles": 5040
++       },
++       "bank": {
++        "curls": {
++         "count": 4,
++         "drawCalls": 1,
++         "triangles": 1344
++        },
++        "lumps": {
++         "count": 16,
++         "drawCalls": 1,
++         "triangles": 5120
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9488829988640666,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.55,
++       "glint": 1.3,
++       "deep": 0.85,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 280,
++       "flecks": 560,
++       "drawCalls": 1,
++       "triangles": 1680,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ }
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_t3.00.png
+new file mode 100644
+index 0000000..8c555f4
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_t3.00_canvas.png
+new file mode 100644
+index 0000000..47240f6
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_cam_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_info.json b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_info.json
+new file mode 100644
+index 0000000..b667314
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_info.json
+@@ -0,0 +1,463 @@
++{
++ "s3": [
++  "focus"
++ ],
++ "frames": [
++  {
++   "t": 3,
++   "state": {
++    "phase": "running",
++    "time": 3.517,
++    "z": 1.592,
++    "x": 0,
++    "y": 0.405,
++    "world": [
++     0,
++     0.405,
++     1.592
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.3,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.162,
++     1.599,
++     -1.508
++    ],
++    "cameraPitchDeg": 2.17,
++    "particles": 136,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   }
++  }
++ ],
++ "report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.506,
++      2.641
++     ],
++     "face": [
++      2.59,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.1155,
++       0.8415
++      ],
++      "inner": 2.506,
++      "outer": 2.641
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 120,
++       "drawCalls": 1,
++       "triangles": 240
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 20,
++        "drawCalls": 1,
++        "triangles": 5040
++       },
++       "bank": {
++        "curls": {
++         "count": 4,
++         "drawCalls": 1,
++         "triangles": 1344
++        },
++        "lumps": {
++         "count": 16,
++         "drawCalls": 1,
++         "triangles": 5120
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9488829988640666,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.55,
++       "glint": 1.3,
++       "deep": 0.85,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 280,
++       "flecks": 560,
++       "drawCalls": 1,
++       "triangles": 1680,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ }
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_t3.00.png
+new file mode 100644
+index 0000000..7ed3d3f
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_t3.00_canvas.png
+new file mode 100644
+index 0000000..8e9ceda
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_seam_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_A_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_A_3.00s.png
+new file mode 100644
+index 0000000..7e36b4a
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_A_3.00s.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/frame_fit.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/frame_fit.py
+new file mode 100644
+index 0000000..bf921c1
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/frame_fit.py
+@@ -0,0 +1,29 @@
++# frame_fit.py: the camera's targets on any set of canvas frames, measured exactly as the Art Director's scripts do
++# (16_art_director_focus_review/scripts): the pink character (character_water.py's mask: share, box, centre, width) and the
++# top of the tunnel water (rim_profile.py's rule), with the original's values first. Optional cands.json (tune_cands.cjs)
++# adds the projected vanishing point.
++#   "$BW_PY" -I frame_fit.py <frame.png> [...] [--cands cands.json]
++import sys, json, os, numpy as np, cv2
++ORIG = '/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
++W, H = 767, 1536
++args = sys.argv[1:]; cands = {}
++if '--cands' in args:
++    i = args.index('--cands'); cands = {c['label']: c for c in json.load(open(args[i + 1]))}; del args[i:i + 2]
++def measure(p):
++    im = cv2.resize(cv2.imread(p)[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++    hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255; v = hsv[..., 2]/255
++    m = (((h >= 300) | (h <= 10)) & (s > 0.45) & (v > 0.5)).astype(np.uint8)
++    box = np.zeros_like(m); box[int(.58*H):int(.92*H), int(.12*W):int(.82*W)] = 1; m &= box
++    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
++    n, lab, st, cen = cv2.connectedComponentsWithStats(m); i = 1 + np.argmax(st[1:, cv2.CC_STAT_AREA])
++    x, y, w, hh, a = st[i]
++    blue = (h > 195) & (h < 240) & (s > 0.5); ys = np.arange(0.14, 0.40, 0.01)
++    bs = [blue[int(yy*H):int((yy+0.01)*H), int(0.40*W):int(0.50*W)].mean() for yy in ys]; top = None
++    for j, yy in enumerate(ys[:-1]):
++        if yy >= 0.245 and bs[j] >= 0.7 and bs[j+1] >= 0.7: top = yy; break
++    return dict(share=a/(H*W)*100, x0=x/W, x1=(x+w)/W, y0=y/H, y1=(y+hh)/H, cx=cen[i][0]/W, cy=cen[i][1]/H, w=w/W, top=top)
++print(f"{'frame':28s} share   width  top    base   centre          water-top  vp            cam (u, h, fov)")
++for p in [ORIG] + args:
++    r = measure(p); lab = os.path.splitext(os.path.basename(p))[0]; c = cands.get(lab)
++    extra = f"  ({c['vp'][0]:.3f}, {c['vp'][1]:.3f})  ({c['cam']['u']:.2f}, {c['cam']['h']:.2f}, {c['cam']['fov']:.1f})" if c else ''
++    print(f"{('original' if p == ORIG else lab)[:28]:28s} {r['share']:4.2f}%  {r['w']:.3f}  {r['y0']:.3f}  {r['y1']:.3f}  ({r['cx']:.3f}, {r['cy']:.3f})  {r['top'] if r['top'] is None else round(r['top'], 2)!s:9s}{extra}")
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/hide_probe_tune.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/hide_probe_tune.cjs
+new file mode 100644
+index 0000000..2875ca7
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/hide_probe_tune.cjs
+@@ -0,0 +1,53 @@
++// (17_tunnel_lighting_focus copy of tools/screen4/hide_probe.cjs, with DPR and TUNE='<tune json>' added.)
++// Which object draws a region? Seeded run (Math.random seed 7) to a moment, then the 3D canvas captured with each named
++// object hidden in turn, so a before/after pair shows exactly what that object contributes to the picture.
++//   S3=round4 AT=4.2 HIDE='r3Foam,r4SplashCrown' node hide_probe.cjs <demo-dir (absolute)> <out-dir>
++// Also writes objects.json: every visible mesh, points and line object at that moment (name, type, triangles if known).
++// HIDE entries match an object's name; 'particles' and 'water' hide the game's spray points and water mesh.
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'round4').split(',').filter(Boolean), AT = +(process.env.AT || 4.2);
++const HIDE = (process.env.HIDE || '').split(',').filter(Boolean);
++fs.mkdirSync(OUT, { recursive: true });
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: +(process.env.DPR || 1) })).newPage();
++  await page.addInitScript(([s3, tune]) => { window.__BW_S3_TUNE__ = JSON.parse(tune);
++    window.__BW_S3__ = s3; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [S3, process.env.TUNE || '{}']);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate((at) => { window.__bw.advance(0.5); window.__bw.tap(); window.__bw.advance(at); }, AT);
++  const objects = await page.evaluate(() => {
++    const { scene } = window.__bw.debug(), out = [];
++    scene.traverseVisible((o) => { if (o.isMesh || o.isPoints || o.isLine) out.push({ name: o.name || '(unnamed)', parent: o.parent && o.parent.name, type: o.type, tris: o.geometry && o.geometry.index ? o.geometry.index.count / 3 : null, inst: o.count || o.geometry.instanceCount || null }); });
++    return out;
++  });
++  fs.writeFileSync(path.join(OUT, 'objects.json'), JSON.stringify(objects, null, 1));
++  const canvas = page.locator('#stage canvas').first();
++  const shot = (f) => canvas.screenshot({ path: path.join(OUT, f) });
++  await shot('all.png');
++  for (const h of HIDE) {
++    await page.evaluate((name) => {
++      const d = window.__bw.debug(), hidden = [];
++      const targets = name === 'particles' ? [d.particles] : name === 'water' ? [d.water] : [];
++      if (!targets.length) d.scene.traverse((o) => { if (o.name === name) targets.push(o); });
++      for (const o of targets) if (o) { hidden.push(o); o.userData.__probeVis = o.visible; o.visible = false; o.onBeforeRender = () => { o.visible = false; }; }
++      window.__probeHidden = hidden;
++      d.renderer.render(d.scene, d.camera); d.composer ? d.composer.render() : null;
++    }, h);
++    await shot(`hide_${h}.png`);
++    await page.evaluate(() => { for (const o of window.__probeHidden) { o.visible = o.userData.__probeVis; o.onBeforeRender = () => {}; } window.__bw.render(); });
++  }
++  console.log(`${objects.length} visible objects at ${AT} s; wrote ${HIDE.length + 1} canvas captures to ${OUT}`);
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/phone_shot_s3.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/phone_shot_s3.cjs
+new file mode 100644
+index 0000000..1c38b90
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/phone_shot_s3.cjs
+@@ -0,0 +1,34 @@
++// (17_tunnel_lighting_focus copy of 10_phone_fix/scripts/phone_shot.cjs with S3=<list> added; default match.)
++// phone_shot.cjs <demo dir> <out.png> [WxH] : the real game on an emulated Pixel 7 (Playwright's device profile; WxH overrides
++// the viewport, e.g. 412x915 for the full-screen app), ?s3=match,
++// seed 7, Tap to Start then 3.0 s of game time, whole phone screen with the HUD.
++const { chromium, devices } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT, VIEW] = process.argv.slice(2);
++const DEV = { ...devices['Pixel 7'] };
++if (VIEW) { const [w, h] = VIEW.split('x').map(Number); DEV.viewport = { width: w, height: h }; }
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext(DEV)).newPage();
++  const logs = []; page.on('pageerror', (e) => logs.push(e.message)); page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text().slice(0, 300)); });
++  await page.addInitScript((s3) => { window.__BW_S3__ = s3; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }, (process.env.S3 || 'match').split(','));
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate(() => window.__bw.advance(3.0));
++  await page.waitForTimeout(800);
++  const st = await page.evaluate(() => { const s = document.getElementById('stage').getBoundingClientRect(); return { x: s.x, y: s.y, w: s.width, h: s.height, vw: innerWidth, vh: innerHeight, fov: +window.__bw?.camera?.fov || null }; });
++  await page.screenshot({ path: OUT });
++  console.log('stage', JSON.stringify(st));
++  console.log(OUT, logs.join(' | ') || 'no console errors');
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/run_ad.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/run_ad.py
+new file mode 100644
+index 0000000..cf2a499
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/run_ad.py
+@@ -0,0 +1,20 @@
++# run_ad.py: runs one of the Art Director's measuring scripts (../../16_art_director_focus_review/scripts/<name>.py) with
++# its 'focus' frame replaced by another capture, so a new frame is measured exactly as the review measured the old one.
++#   "$BW_PY" -I run_ad.py <name> <canvas.png> [<page.png>]
++# 'orig' (the ORIGINAL APPROVED Screen 4) and 'match' (15_focus_pass/final/match_before) stay as they were. Images the
++# script writes go to $OUT (default: a new temporary folder), never into the review's folder.
++import sys, os, tempfile
++HERE = os.path.dirname(os.path.abspath(__file__))
++AD = os.path.normpath(os.path.join(HERE, '..', '..', '16_art_director_focus_review', 'scripts'))
++name, canvas = sys.argv[1], os.path.abspath(sys.argv[2])
++page = os.path.abspath(sys.argv[3]) if len(sys.argv) > 3 else None
++src = open(os.path.join(AD, name + '.py')).read()
++old = 'Previews/WebDemo/screen4_round9_match/15_focus_pass/final/focus_final_t3.00_canvas.png'
++src = src.replace("R+'" + old + "'", repr(canvas)).replace("'/home/user/bubblegame/" + old + "'", repr(canvas))
++if page:
++    src = src.replace("R+'Previews/WebDemo/screen4_round9_match/15_focus_pass/final/focus_final_t3.00.png'", repr(page))
++out = os.environ.get('OUT') or tempfile.mkdtemp()
++os.makedirs(out, exist_ok=True)
++os.chdir(out)
++sys.argv = [name]
++exec(compile(src, name + '.py', 'exec'), {'__name__': '__main__'})
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
+new file mode 100644
+index 0000000..49e99fd
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
+@@ -0,0 +1,94 @@
++// Screen 4: real captures of several setting candidates in one browser (one fresh, seeded page per candidate, exactly as the
++// game runs: Math.random seed 7, the 538 x 1076 game area, Tap to Start, then T seconds of game time). Each candidate is a
++// tune object deep-merged by the game at load (window.__BW_S3_TUNE__, e.g. {"match":{"hero":{"round6":{"round5":{"camera":
++// {...}}}}}}). Saves <out>/<label>.png (the raw 3D canvas) and cands.json with, per candidate, the camera (track frame), the
++// projected tube axis 30 m ahead (the vanishing point, stage fractions, y down) and the character's projected box.
++//   S3=focus T=3.0 DPR=1.5 CANDS='[{"label":"a","tune":{...}}]' node Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs <abs WebDemo> <out-dir>
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'focus').split(',').filter(Boolean), T = +(process.env.T || 3.0);
++const CANDS = JSON.parse(process.env.CANDS_FILE ? fs.readFileSync(process.env.CANDS_FILE, 'utf8') : process.env.CANDS || '[{"label":"base","tune":{}}]');
++fs.mkdirSync(OUT, { recursive: true });
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const out = [];
++  for (const c of CANDS) {
++    const ctx = await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: +(process.env.DPR || 1.5) });
++    const page = await ctx.newPage();
++    const logs = [];
++    page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text().slice(0, 300)); });
++    page.on('pageerror', (e) => logs.push(e.message));
++    await page.addInitScript(([tune, s3]) => {
++      window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = tune;
++      window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++      let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++    }, [c.tune || {}, S3]);
++    await page.goto(`http://localhost:${server.address().port}/index.html`);
++    await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++    await page.evaluate(() => window.__bw.advance(0.5));
++    await page.evaluate(() => window.__bw.tap());
++    await page.evaluate((t) => window.__bw.advance(t), T);
++    const info = await page.evaluate(() => {
++      const d = window.__bw.debug(), cam = d.camera, TR = d.track, L = d.layout, Wd = d.world, V = cam.position.constructor;
++      const F = { P: new V(), R: new V(), U: new V(), T: new V() };
++      // the camera's place along the path (nearest frame)
++      let best = null;
++      for (let u = L.tunnelStart - 20; u <= L.tunnelStart + 20; u += 0.02) { TR.frame(u, F); const rel = cam.position.clone().sub(F.P), al = Math.abs(rel.dot(F.T)); if (!best || al < best.al) best = { al, u, x: rel.dot(F.R), h: rel.dot(F.U) }; }
++      TR.frame(Math.min(best.u + 30, L.tunnelEnd - 2), F);
++      const vp = F.P.clone().addScaledVector(F.U, Wd.WATER + Wd.AXIS_H).project(cam);
++      const m = d.mascot; m.updateMatrixWorld(true);
++      const lo = [Infinity, Infinity], hi = [-Infinity, -Infinity];
++      m.traverse((q) => {
++        if (!q.isMesh || !q.geometry || q.isInstancedMesh) return;
++        if (!q.geometry.boundingBox) q.geometry.computeBoundingBox();
++        const b = q.geometry.boundingBox; if (!b || !isFinite(b.min.x)) return;
++        for (let i = 0; i < 8; i++) {
++          const p = new V(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).applyMatrix4(q.matrixWorld).project(cam);
++          lo[0] = Math.min(lo[0], (p.x + 1) / 2); lo[1] = Math.min(lo[1], (1 - p.y) / 2); hi[0] = Math.max(hi[0], (p.x + 1) / 2); hi[1] = Math.max(hi[1], (1 - p.y) / 2);
++        }
++      });
++      // the gold rim's outer edge on screen: a circle fitted (least squares) to its projected points, in widths of the 1:2
++      // frame (X = x, Y = 2 y, y down), and the rim ramp's rho (screen distance from that centre / its radius) of the tube's
++      // top edge at the mouth (u = tunnelStart, radius 2) and 1 m in
++      let rim = null;
++      const bez = d.scene.getObjectByName('r6Bezel');
++      if (bez && bez.geometry) {
++        if (!bez.geometry.boundingBox) bez.geometry.computeBoundingBox();
++        const bb = bez.geometry.boundingBox, Ro = Math.max(bb.max.x, bb.max.y), pts = [];
++        bez.updateMatrixWorld(true);
++        for (let i = 0; i < 180; i++) {
++          const a = i / 180 * Math.PI * 2, p = new V(Math.cos(a) * Ro, Math.sin(a) * Ro, 0).applyMatrix4(bez.matrixWorld).project(cam);
++          if (p.z < 1 && Math.abs(p.x) < 3 && Math.abs(p.y) < 3) pts.push([(p.x + 1) / 2, (1 - p.y)]);   // X in W, Y in W (1:2)
++        }
++        // algebraic circle fit: x^2 + y^2 + D x + E y + F = 0
++        let s = { xx: 0, xy: 0, yy: 0, x: 0, y: 0, n: 0, xz: 0, yz: 0, z: 0 };
++        for (const [x, y] of pts) { const z = x * x + y * y; s.xx += x * x; s.xy += x * y; s.yy += y * y; s.x += x; s.y += y; s.n++; s.xz += x * z; s.yz += y * z; s.z += z; }
++        const A = [[s.xx, s.xy, s.x], [s.xy, s.yy, s.y], [s.x, s.y, s.n]], b = [-s.xz, -s.yz, -s.z];
++        const det3 = (M) => M[0][0] * (M[1][1] * M[2][2] - M[1][2] * M[2][1]) - M[0][1] * (M[1][0] * M[2][2] - M[1][2] * M[2][0]) + M[0][2] * (M[1][0] * M[2][1] - M[1][1] * M[2][0]);
++        const dA = det3(A), sol = [0, 1, 2].map((k) => det3(A.map((row, r) => row.map((v, c) => (c === k ? b[r] : v)))) / dA);
++        const cx = -sol[0] / 2, cy = -sol[1] / 2, rr = Math.sqrt(cx * cx + cy * cy - sol[2]);
++        const rhoAt = (u, hh) => { TR.frame(u, F); const p = F.P.clone().addScaledVector(F.U, hh).project(cam); const X = (p.x + 1) / 2, Y = 1 - p.y; return Math.hypot(X - cx, Y - cy) / rr; };
++        const top = Wd.WATER + Wd.AXIS_H + 2.0;
++        rim = { centre: [+cx.toFixed(4), +(cy / 2).toFixed(4)], radiusW: +rr.toFixed(4), topY: +((cy - rr) / 2).toFixed(4), outer: +Ro.toFixed(3),
++          rhoMouth: +rhoAt(L.tunnelStart, top).toFixed(4), rho1m: +rhoAt(L.tunnelStart + 1, top).toFixed(4), rhoCollarEnd: +rhoAt(L.tunnelStart + 0.06, Wd.WATER + Wd.AXIS_H + 2.02).toFixed(4) };
++      }
++      return { cam: { u: +(best.u - L.tunnelStart).toFixed(3), x: +best.x.toFixed(3), h: +best.h.toFixed(3), fov: +cam.fov.toFixed(2) }, vp: [+((vp.x + 1) / 2).toFixed(4), +((1 - vp.y) / 2).toFixed(4)],
++        mascotBox: [...lo, ...hi].map((v) => +v.toFixed(3)), mascotZ: +(d.mascotState.z - L.tunnelStart).toFixed(3), rim };
++    });
++    const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); });
++    fs.writeFileSync(path.join(OUT, `${c.label}.png`), Buffer.from(url.split(',')[1], 'base64'));
++    out.push({ label: c.label, tune: c.tune, ...info, errors: logs });
++    console.log(JSON.stringify({ label: c.label, ...info, errors: logs.length }));
++    await ctx.close();
++  }
++  fs.writeFileSync(path.join(OUT, 'cands.json'), JSON.stringify(out, null, 1));
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
+index 2fa77f1..2f39f0e 100644
+--- a/WebDemo/src/tunnel_r9_focus.js
++++ b/WebDemo/src/tunnel_r9_focus.js
+@@ -34,14 +34,27 @@ export const FOCUS = {
+         //    and 1.98)
+         r7: { deco: [[1.15 + 0.95, 1, 34, 0.5, 1.45], [2.6 + 0.95, -1, 2, 0.8, 1.72]] },
+         round5: {
+-          // 3 / 5. The camera 0.35 m nearer the character and 0.15 m lower, aimed 0.08 m lower, the view 1 degree wider: she
+-          // is drawn about 1.15 times larger (the original draws her larger than match did: pink 4.16% of the frame against
+-          // 3.06%) and higher (her top at 0.68 of the height, as the original's), and the tunnel comes a little closer. Her
+-          // model and her size in the world are unchanged. (Swept in real renders: tools/screen4/cam_sweep.cjs.)
+-          camera: { off: [-0.11, 0.93, -2.25], lookY: 1.54, fov: 73 },
++          // 3 / 5. (Tunnel & Lighting, after the Art Director's review 16: at off [-0.11, 0.93, -2.25], fov 73 she was drawn
++          // too large and low: width 0.600 W against the original's 0.465, base 0.894 against 0.859.) The camera 0.85 m
++          // further back and 0.2 m higher, the view narrowed to 68 degrees, so she is the original's size and place at 3.0 s
++          // (measured: width 0.473 W, top 0.695, base 0.850, centre (0.500, 0.780); the original 0.465, 0.702, 0.859, (0.502,
++          // 0.778)); 0.05 m to the right with its aim (off x and lookX together), so she is centred without moving the
++          // vanishing point; pitched so the tube's axis lands at (0.497, 0.531) (the warm core, 0.028 W right of it, at the
++          // original's 0.53). Her model and her size in the world are unchanged. (Real renders of each candidate:
++          // Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs.)
++          camera: { off: [-0.162, 1.126, -3.1], lookY: 1.655, lookX: 0.142, fov: 68 },
+         },
++        // the gold rim with the camera further back: 1.036 times larger (outer 2.55 -> 2.641 m; the face's hole and its rivets
++        // with it), so its outer edge is the original's circle on screen again (measured at 3.0 s: radius 0.931 W round
++        // (0.550, 0.672 H), its top at 0.207 H; the original 0.936 W round (0.549, 0.676 H), top 0.208 H)
++        porthole: { bezel: { inner: 2.506, outer: 2.641 }, face: { inner: 2.59 }, rivets: { radius: 3.42 } },
+       },
++      // (its centre 0.087 m higher and 0.019 m to the right, for the higher camera)
++      rim: { centre: [-0.1155, 0.8415] },
+     },
++    // the rim ramp's places for this camera (see RIM_RHO in tunnel_r9_match.js): the tube's mouth at rho 0.864 of the rim's
++    // screen radius, its first metre 0.0855 further in (measured at 3.0 s; match's camera: 0.9015 and 0.0991)
++    rimRho: { mouth: 0.864, perMetre: 0.0855 },
+     // 4. the sock's pose inside its rocking group (radians, the sock's own axes: x tips it toward the camera, y turns it, z
+     //    rolls it as seen from the camera; + is counter-clockwise): the original's sock lies sideways, its toe low on the left,
+     //    the cuff up to the right
+diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
+index 9f989c7..83acc58 100644
+--- a/WebDemo/src/tunnel_r9_match.js
++++ b/WebDemo/src/tunnel_r9_match.js
+@@ -286,6 +286,9 @@ const RIM_RHO = { inner: 0.937, mouth: 0.9015, perMetre: 0.0991 };
+ // (the collar's top arc starts at the bezel's inner edge, rho = inner / outer radius: 0.937 at 2.39 / 2.55; gate fix F6 made
+ // the bezel thinner)
+ { const B = MATCH.hero.round6.porthole.bezel; RIM_RHO.inner = B.inner / B.outer; }
++// ?s3=focus: the camera further back (tunnel_r9_focus.js), so the collar's end (the tube's mouth) and the tube's first metre
++// sit at other places in the rim's screen circle: measured from the camera at 3.0 s (MATCH.rimRho: mouth, perMetre)
++if (FOCUS_ON && MATCH.rimRho) Object.assign(RIM_RHO, MATCH.rimRho);
+ // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
+ const BEZEL_SIDES = [0.912, 1.03];
+ // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
+@@ -369,10 +372,15 @@ function focusRibbonsGLSL(M) {
+       float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
+         + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
+         + (vr.g - 0.5) * ${f4(R.wobble)};
+-      float rq = bs + rTw, rbi = floor(rq);
++      // (the spiral's seam: tu wraps at the screen-left, on the horizontal through the camera, where bs steps by one band; the
++      // per-band picks below (arcs, offsets, colours) then jumped there: a hard horizontal line across the left wall at the
++      // vanishing point's height, plain once the camera sat at the axis height. The angle is counted from straight down
++      // instead, so that step falls on the tube's bottom, under the water floor, and the left wall is continuous)
++      float rTu = tu < -0.25 ? tu + 1.0 : tu;
++      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw, rbi = floor(rq);
+       float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
+       float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
+-      float rsa = (tu + 0.5) * rNs + rhb * 3.0;
++      float rsa = (rTu + 0.5) * rNs + rhb * 3.0;
+       float rsi = mod(floor(rsa), rNs);
+       float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
+       float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
+@@ -564,9 +572,26 @@ export function matchWallApply() {
+ // in the wall's main (tunnel_r8_liquid.js wallFragment), after its own mouth edge: on the tube's first metre, round the upper
+ // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
+ // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
++// ?s3=focus (the user's kit, 5 November about 18:26 UTC, problem A: "the exposed lavender-grey inner wall at the lower left"):
++// the lining (heroWalls) runs on before the tube's mouth, and there wallFragment paints it as the washer's flat lavender
++// shell (#c4b8f0) with the navy mouth edge at uStart + 0.1. The rim's collar is centred low, so round the lower sides its
++// opening is wider than the tube and that part of the lining shows through it, in front of the collar's water: a flat
++// lavender strip with a navy line at the lower left and right (found with hide probes at 3.0 s: it goes with heroWalls;
++// heroCollar, r6Face and the floor do not draw it). Below the rim ramp's reach (its complement in upA), on the lining before
++// the mouth and over the navy edge, the walls' own animated water is drawn instead (lqWall: the same material and the same
++// screen-space placement as the collar's water round it, so the two meet without a seam). The upper part, where the gold
++// rim, the bevel and the ramp are, is unchanged.
++function focusMouthWaterGLSL(radius, axisH) {
++  return /* glsl */ `  {   // ?s3=focus: the lining before the mouth, below the rim ramp, is the walls' water (tunnel_r9_match.js)
++    float fdu = u - uStart, fup = (cs.y - ${f4(axisH)}) / ${f4(radius)};
++    float fk = (1.0 - smoothstep(-0.15, 0.3, fup)) * (1.0 - smoothstep(0.2, 0.32, fdu)) * uMatchOn;
++    if (fk > 0.001) col = mix(col, lqWall(vW, normalize(vN), normalize(vT), cs, a, u, a * ${f4(radius)}), fk);
++  }
++`;
++}
+ export function matchMouthGLSL(HERO, axisH, radius) {
+   const C = HERO.rim.centre;
+-  return /* glsl */ `  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
++  return /* glsl */ `${FOCUS_ON ? focusMouthWaterGLSL(radius, axisH) : ''}  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
+     float du0 = u - uStart;
+     float rho = ${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.perMetre)} * du0;
+     float upA = (cs.y - ${f4(axisH)}) / ${f4(radius)};

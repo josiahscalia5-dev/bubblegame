@@ -1,0 +1,1155 @@
+# Ninth session: design agents, focused correction pass continued (?s3=focus)
+
+Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
+
+
+---
+
+## Tunnel & Lighting specialist: Tunnel & Lighting: objects, bands, centre (started 19:05 UTC)
+
+_Worked in its own worktree, branch `worktree-agent-a0bafb8338e8bc494`._
+
+**Lead → agent** (19:05 UTC):
+
+You are the Tunnel & Lighting specialist for Bubble Wash Kingdom Screen 4, resuming the focused correction pass on `?s3=focus` exactly where you stopped at 18:57 UTC (a rate limit, not a failure).
+
+WHERE THE WORK LIVES: the user's GitHub repository `josiahscalia5-dev/bubblegame`, lead branch `ccr-de8d9670-2ohd5t` (this ninth session's branch; it continues `ccr-3d8a1ae9-hhgml1` exactly). Your worktree starts at `71f7fa7` on that branch. The lead merges your worktree commits into `ccr-de8d9670-2ohd5t` and pushes them; you do not push.
+
+YOUR EARLIER WORK IS ALREADY IN YOUR WORKTREE (restored as `0ff0d0b`, frames identical): the camera (`FOCUS.match.hero.round6.round5.camera = { off: [-0.162, 1.126, -3.1], lookY: 1.655, lookX: 0.142, fov: 68 }`, rim restaged), problem A (the lower-left lavender-grey wedge drawn as wall water, `focusMouthWaterGLSL`), and the left-wall seam fix. Read first: your agent file's "Newest: ninth session" and "Earlier: the FOCUSED CORRECTION PASS" sections; your own notes `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md` (they hold your camera sweep, the wedge's cause and your object probe picks for the new camera); the Art Director's review `Previews/WebDemo/screen4_round9_match/16_art_director_focus_review/` (numbers in `*.txt`, scripts in `scripts/`, run with `source Tools/bw_tools_env.sh` then `"$BW_PY" -I scripts/<name>.py`, or your `17_.../scripts/run_ad.py`); and the user's newest kit `Design/ReferencePacks/2026-11-05_Tunnel_Correction_ESSENTIAL_Kit/CLAUDE_SEND_THIS.txt` with its images 04, 05, 06.
+
+The ONLY target is the user's ORIGINAL APPROVED Screen 4, `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`. Match it as closely as possible; never a new or "better" variation.
+
+Setup in your worktree: `cd WebDemo && npm install && node build.mjs`; `source Tools/bw_tools_env.sh` in every shell; if `require('playwright')` fails, set `NODE_PATH=$(npm root -g)`. Capture: `S3=focus TIMES=3.0 DPR=1.5 CANVAS=1 node tools/screen4/liquid_shots.cjs "$PWD" <out-dir> ['<tune json>']` (seed 7, 3.0 s after the tap). First capture a baseline and confirm it equals `17_tunnel_lighting_focus/frames/focus_seam_t3.00_canvas.png` (max difference 0). Run AT MOST ONE browser at a time (the Water & VFX specialist runs one in parallel). Use your own subfolder of the scratchpad for temporary files.
+
+YOUR FILES ONLY: `WebDemo/src/tunnel_r9_match.js` and the `FOCUS.match` part of `WebDemo/src/tunnel_r9_focus.js`. Do not touch `FOCUS.water` or `tunnel_r9_match_water.js` (Water & VFX owns them and is changing them now). Everything stays gated on `FOCUS_ON`: `?s3=match` and every older switch must stay pixel-identical. Gameplay must keep working (collectibles within reach: lane spacing 0.7 m, pick-up within 0.82 m of the body).
+
+Remaining items, in this order:
+1. Objects (AD item 8), with the new camera: re-place them onto the original's spots with `tools/screen4/hero_probe.cjs` PICKS (your notes list the candidate track positions): lower-right coin centre (0.893, 0.733), width about 0.22 W; big left coin (0.198, 0.602); small left coin (0.152, 0.471), which must no longer sit behind the left brush; gem (0.326, 0.511), height <= 0.037; total gold area 4.0-4.8%; the sock's top 0.55-0.56, cuff level within +-7 degrees, opening hidden, toe to the lower left (`FOCUS.match.sockPose`). The two decorative brushes stay where the original has them.
+2. The user's problem B (the kit) with AD item 3, the walls' water bands (`focusRibbonsGLSL`, `FOCUS.match.walls.ribbons`, `walls.bands.perLog`): broader, layered, irregular cobalt and turquoise flows that bend inward and blend SOFTLY into each other, not tight ribbons with hard outlines or even concentric circles; distinct dark-blue depth between them; brighter cyan/watery-white accents that are soft, not hard white ring outlines. AD measures (upper ring half, orig / focus before): dark bands per ray 6.3 / 7.7, lightness spread 14.9 / 10.5 L*, darker than L* 55 30.5 / 16.8% (`ring_dark.py`, y < 0.45), median L* 64 / 73, saturated blue hue 215 / 210, sat 0.83 / 0.69, turquoise 7.5 / 12.6%. Targets: 6.0-6.6 bands per ray, spread >= 14, median L* 62-66, darker than L* 55 27-32%, hue 213-217, sat >= 0.78, turquoise 6-9%. Keep the waves animated. The kit's `09_OPTIONAL_TANGENTIAL_FLOWMAP_RGBA.png` is optional, only if its mapping fits the engine's UVs.
+3. AD item 4, the wall streaks (`focusFlecksGLSL`, `FOCUS.match.walls.flecks`): fewer, chunkier, broken splash shapes, not thin dashes (`streaks.py` orig / before: thickness 3.5 / 1.9 px, median area 59 / 28, p90 1160 / 126, 3.2 / 12.7 pieces per 10k px; targets thickness >= 3, median >= 45, p90 >= 500, <= 5 per 10k px). The kit calls the current white pattern overcomplicated.
+4. AD item 5, the centre: a modest warm glow concentrated round the inner arcs and the centre, never flattening the tunnel into peach or lilac (`core.py`, within 0.12 W of the vanishing point, orig / before: pink-violet 8.6 / 0.9%, warm 13.0 / 7.8%, saturated blue 3.1 / 15.7%; targets pink-violet 6-10%, warm 10-14%, saturated blue <= 6%; warmth in the wider ring zone <= 5%).
+5. AD item 6, the left wall (x 0-0.30, y 0.44-0.79): the original glows pale (L* 78, white 28%); targets L* 74-80, white >= 20%, no lavender slivers at the edges. Never fix brightness with bloom, exposure or haze.
+
+Method: one change at a time, captured at 3.0 s, measured against the original AND looked at (a number can improve while the picture gets worse). After each tested item: rebuild `game.bundle.js`, COMMIT source and bundle together in your worktree with a clear message, and add the result to NOTES.md (the user wants each step saved; the lead's 5-minute autosave also copies your uncommitted work, so keep NOTES.md current). Check each step at the Pixel 7 framing too (`17_.../scripts/phone_shot_s3.cjs`, 412 x 839). At the end: prove `?s3=match` is pixel-identical to `71f7fa7` at 3.0 s (canvas frame, capture before and after), and run `S3=focus node tools/screen3/s3_func.cjs "$PWD"` (lanes, jump, 12 coins, 1 gem, 2 socks, no console errors). Evidence in `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/`: frames, an original / before / after 3.0 s sheet, enlarged crops of the lower-left corner and of the ring structure, numbers, and a README with a verified / partly / not table per item. Report: your commits (hashes) with a one-line summary each, the numbers before and after per item, the files changed, and what still differs from the original.
+
+**Agent** (19:05 UTC):
+
+I'll start by reading my notes, the agent file sections, and the current state of the worktree.
+
+- 19:05 `Bash`: Show recent commits, status, and evidence folders
+- 19:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:05 `Bash`: List agent file sections and read the kit text
+- 19:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/.claude/agents/lighting-visual-matching.md
+- 19:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:05 `Bash`: Check node_modules and list evidence folders
+- 19:05 `Bash`: Link node_modules and build the bundle
+- 19:05 `Bash`: Check node_modules link state
+- 19:05 `Bash`: Inspect main node_modules and package.json
+- 19:05 `Bash`: Link node_modules, build, and check status
+- 19:05 `Bash`: Link node_modules and build the bundle
+- 19:05 `Bash`: Check git status after build
+**Agent** (19:05 UTC):
+
+Bundle is identical after rebuild. Now the baseline capture.
+
+- 19:05 `Bash`: Set up tools env and read the capture tool
+- 19:05 `Bash`: Source tools env and print python path
+- 19:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Tools/bw_tools_env.sh
+- 19:05 `Bash`: Locate tool Python and node tools
+- 19:05 `Bash`: Check playwright availability
+- 19:05 `Bash`: Check playwright via global root; read capture tool
+- 19:05 `Bash`: Capture baseline focus frame at 3.0 s
+- 19:05 `Bash`: Create scratch folder
+- 19:05 `Bash`: Capture baseline focus frame at 3.0 s
+- 19:06 `Bash`: Compare baseline with saved seam frame
+**Agent** (19:06 UTC):
+
+Baseline matches `focus_seam_t3.00_canvas.png` exactly (max difference 0). Let me look at the original and the current frame.
+
+- 19:06 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
+- 19:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/base/base_t3.00_canvas.png
+**Agent** (19:06 UTC):
+
+Now item 1, the objects. Let me read the AD's object measurements and the probe tool.
+
+- 19:06 `Bash`: Read AD object numbers and run_ad helper
+- 19:06 `Bash`: Read AD objects script
+- 19:06 `Bash`: Measure objects on baseline frame
+- 19:06 `Bash`: Find layout and collectible code
+- 19:06 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:06 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:06 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:06 `Bash`: Read layout and collectible placement code in game.js
+- 19:06 `Bash`: Read hero_probe tool
+- 19:07 `Bash`: Find debug API and lane functions
+- 19:07 `Bash`: Read addCoin and tunnelStart definitions
+**Agent** (19:07 UTC):
+
+Let me crop the object regions of the original and current frame for a close look.
+
+- 19:07 `Bash`: Write crop helper and crop object region
+- 19:07 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/crops.py
+- 19:08 `Bash`: Crop object region of original and baseline
+- 19:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj_crop.png
+- 19:08 `Bash`: Probe the hero moment for picks and object footprints
+- 19:08 `Bash`: List nearby named objects from probe
+**Agent** (19:09 UTC):
+
+Let me measure the brushes' screen boxes (pink fur mask) in the original and the current frame.
+
+- 19:09 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/brushes.py
+- 19:09 `Bash`: Measure brush boxes in original, base and match
+**Agent** (19:09 UTC):
+
+The original's brushes are smaller and higher than ours (left: y 0.240-0.416 vs 0.268-0.501; right: y 0.394-0.610 vs 0.393-0.671). Let me check how the `deco` entries are applied.
+
+- 19:09 `Bash`: Find deco brush placement code
+- 19:09 `Bash`: Read brush place function
+- 19:10 `Bash`: Read collectible animation code
+**Agent** (19:10 UTC):
+
+Let me zoom into the sock and gem in both pictures.
+
+- 19:10 `Bash`: Crop the sock region
+- 19:10 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/sock_crop.png
+- 19:10 `Bash`: Read tune_cands and phone_shot script headers
+**Agent** (19:10 UTC):
+
+I'll get picks for the brushes' target centres (same camera, unchanged by object moves).
+
+- 19:11 `Bash`: Probe picks for brush target centres
+**Agent** (19:11 UTC):
+
+I'll write a one-load sweep tool: it advances to 3.0 s once, then applies each candidate's scene edit (e.g. the sock pose group's rotation), re-renders, and saves the canvas.
+
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/live_sweep.cjs
+**Agent** (19:12 UTC):
+
+Now the gem squash code (focus-gated, visual only) in `matchCollectibles`.
+
+- 19:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:12 `Bash`: Rebuild bundle
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj1_tune.json
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/sock_cands.json
+- 19:12 `Bash`: Run object tune with sock pose sweep
+- 19:14 `Bash`: Build sock pose contact sheet
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_sheet.png
+**Lead → agent** (19:14 UTC):
+
+[Image: original 4204x554, displayed at 2000x264. Multiply coordinates by 2.10 to map to original image.]
+
+- 19:14 `Bash`: Build two smaller sock sheets
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_a.png
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_b.png
+- 19:14 `Bash`: Look for AD sock measurements
+- 19:14 `Bash`: Check sock mentions in AD scripts
+- 19:14 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/sock.py
+- 19:14 `Bash`: Measure sock box and cuff tilt
+**Agent** (19:15 UTC):
+
+The colour-mask box is contaminated by white water. I'll measure the sock silhouette exactly by rendering only the first sock (everything else hidden) for the leading poses.
+
+- 19:15 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/sock_cands2.json
+- 19:15 `Bash`: Render sock poses with silhouette masks
+- 19:16 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/maskbox.py
+- 19:16 `Bash`: Measure sock mask boxes
+- 19:16 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj2/q4_mask.png
+- 19:16 `Bash`: Find hazard brush placements
+- 19:16 `Bash`: Sheet of sock poses q4, q8, q6
+- 19:17 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_c.png
+**Lead → agent** (19:17 UTC):
+
+[Image: original 2412x645, displayed at 2000x535. Multiply coordinates by 1.21 to map to original image.]
+
+- 19:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:17 `Bash`: Rebuild bundle
+- 19:17 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj3_tune.json
+- 19:17 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/mask_cands.json
+- 19:17 `Bash`: Render tuned objects: full, objects-only, first sock only
+- 19:18 `Bash`: Measure sock, coins, gem, brushes after tune
+**Agent** (19:19 UTC):
+
+Coins and gem now land on the original's spots (gem height 0.034). Total gold is 4.96%, above the 4.0-4.8% band, so the two big coins need trimming. Let me look at the frame.
+
+- 19:19 `Bash`: Side-by-side of original and tuned objects
+- 19:19 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj3_sheet.png
+- 19:19 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj4_tune.json
+- 19:19 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/mask_cands2.json
+- 19:19 `Bash`: Render second object tune and sock silhouette
+- 19:20 `Bash`: Measure sock silhouettes and coins; crop socks
+- 19:20 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_d.png
+**Lead → agent** (19:20 UTC):
+
+[Image: original 2412x690, displayed at 2000x572. Multiply coordinates by 1.21 to map to original image.]
+
+- 19:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:21 `Bash`: Rebuild and capture the objects step at 3.0 s
+- 19:21 `Bash`: Measure objects on the committed-settings frame
+**Agent** (19:21 UTC):
+
+The colour-mask sock box is contaminated by white water (unreliable), so I'll verify the sock with the silhouette render on the built settings.
+
+- 19:21 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/mask_sock.json
+- 19:21 `Bash`: Render and measure the first sock silhouette
+**Agent** (19:22 UTC):
+
+The sock silhouette matches pose B. Let me view the full 3.0 s frame, then do the Pixel 7 check.
+
+- 19:22 `Bash`: Original / before / after full-frame sheet
+- 19:22 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/objfinal_sheet.png
+**Agent** (19:22 UTC):
+
+The objects now sit in the original's arrangement. Pixel 7 framing check next.
+
+- 19:22 `Bash`: Capture Pixel 7 framing at 3.0 s
+- 19:22 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/objfinal/phone_412x839_obj.png
+**Lead → agent** (19:22 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+**Agent** (19:22 UTC):
+
+Everything stays in frame on the Pixel 7. Since collectibles moved, I'll run the functional test now, before committing this step.
+
+- 19:22 `Bash`: Read s3_func header
+- 19:23 `Bash`: Run focus functional test
+- 19:24 `Bash`: Save full functional test output and show start
+- 19:25 `Bash`: Show lanes and jump results
+**Agent** (19:25 UTC):
+
+Functional test passes on focus: lanes 0 and 2, jump, 12 coins, 1 gem, 2 socks, no console errors. I'll save the evidence, update NOTES.md, and commit step 1.
+
+- 19:25 `Bash`: Copy object-step evidence and tools into the repo
+- 19:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:25 `Bash`: Show changed files before commit
+- 19:25 `Bash`: Commit the objects step
+**Agent** (19:25 UTC):
+
+Step 1 committed as `82d568c`. Now item 2, the walls' water bands. Let me read the Art Director's ring measures.
+
+- 19:25 `Bash`: Read ring_dark and polar_rings scripts and numbers
+- 19:25 `Bash`: Read polar_rings and tonal numbers
+- 19:25 `Bash`: Find the turquoise measurement source
+- 19:25 `Bash`: Read zones numbers and script
+**Agent** (19:26 UTC):
+
+Let me write a small runner that applies the Art Director's ring measures (polar bands, `ring_dark` upper arc, zones `ring_upper`) to any frame, and measure the current frame.
+
+- 19:26 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/ring_metrics.py
+- 19:26 `Bash`: Measure ring metrics on the current frame
+- 19:26 `Bash`: Crop ring structure original vs current
+- 19:26 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_before.png
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+**Agent** (19:28 UTC):
+
+Now the noise helper (declared only under focus) and the new settings.
+
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:28 `Bash`: Locate the focus band density setting
+- 19:28 `Bash`: Rebuild bundle with new ribbons
+- 19:28 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rib_cands1.json
+- 19:28 `Bash`: Render ribbon candidates at 3.0 s
+- 19:29 `Bash`: Measure ring metrics on candidates
+**Agent** (19:30 UTC):
+
+Lowering `perLog` did not reduce the counted dark bands (7.3 to 7.8), so the extra minima come from something else (likely the white dashes, bubbles and thin lines). Let me look at candidate A.
+
+- 19:30 `Bash`: Crop ring structure for candidate A
+- 19:30 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_A.png
+- 19:30 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rib_cands2.json
+- 19:30 `Bash`: Render and measure candidates without flecks
+**Agent** (19:32 UTC):
+
+Band count barely moves with `perLog` or the flecks. I'll locate where along the radius the extra dark minima sit (histogram over log r, original vs ours).
+
+- 19:32 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/minima_hist.py
+- 19:33 `Bash`: Histogram of dark minima by radius
+- 19:33 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/nobub.json
+- 19:33 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/F_tune.json
+- 19:33 `Bash`: Compare minima with and without bubbles
+**Agent** (19:34 UTC):
+
+Without bubbles the walls alone give 6.1 dark bands per ray (in the 6.0-6.6 band). The bubbles (Water & VFX's layer) add about 1.2 per ray. Let me see the saturation and lightness of the walls alone.
+
+- 19:34 `Bash`: Measure walls without bubbles; crop F
+- 19:34 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_F.png
+- 19:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:35 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/G_tune.json
+- 19:35 `Bash`: Render and measure candidate G with and without bubbles
+**Agent** (19:36 UTC):
+
+Saturation did not move (0.71), so something downstream desaturates. Let me compare the colours of the original and ours by lightness bin in the upper ring zone.
+
+- 19:36 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/lbins.py
+- 19:36 `Bash`: Median colours per lightness bin
+- 19:36 `Bash`: Lightness-bin colours for F without boost
+- 19:37 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/H_tune.json
+- 19:37 `Bash`: Render and measure candidate H
+- 19:38 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/layers.json
+- 19:38 `Bash`: Render the walls alone and measure colours
+- 19:39 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/I_tune.json
+- 19:39 `Bash`: Render and measure candidate I
+- 19:40 `Bash`: Locate the wall fragment shader in the liquid file
+- 19:40 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r8_liquid.js
+- 19:41 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/bloom.json
+- 19:41 `Bash`: Find the save log line in live_sweep
+- 19:41 `Edit`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/live_sweep.cjs
+- 19:41 `Bash`: Measure wall colours with bloom halved and off
+- 19:42 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/cal_cands.json
+- 19:42 `Bash`: Calibration render with flat royal flows
+- 19:42 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/J_cands.json
+- 19:43 `Bash`: Render and measure candidates J and K
+- 19:44 `Bash`: Crop ring structure for J
+- 19:44 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_J.png
+- 19:45 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/L_cands.json
+- 19:45 `Bash`: Render and measure candidates L and M
+- 19:46 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_LM.png
+**Lead → agent** (19:46 UTC):
+
+[Image: original 2317x599, displayed at 2000x517. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:46 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/N_cands.json
+- 19:46 `Bash`: Render and measure candidate N
+- 19:48 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:48 `Bash`: Set focus band density to 3.4 and show context
+- 19:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:48 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:48 `Bash`: Rebuild and capture the ribbons step at 3.0 and 3.1 s
+- 19:49 `Bash`: Check the build equals the tuned candidate and the waves move
+**Agent** (19:49 UTC):
+
+The build reproduces candidate M exactly, and the ring zone changes between 3.0 and 3.1 s (animated). Let me look at the full frame and the Pixel 7 framing.
+
+- 19:49 `Bash`: Original / before / after sheet for ribbons
+- 19:49 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/ribfinal_sheet.png
+**Agent** (19:49 UTC):
+
+The walls are now deeper cobalt with soft, broad flows. Pixel 7 check, then commit.
+
+- 19:49 `Bash`: Pixel 7 capture after ribbons
+- 19:50 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/ribfinal/phone_412x839_rib.png
+**Lead → agent** (19:50 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+**Agent** (19:50 UTC):
+
+Pixel 7 is fine: no wedge, no holes. I'll save the evidence (frames, ring crop, numbers) and commit item 2.
+
+- 19:50 `Bash`: Copy ribbons evidence into repo
+- 19:50 `Bash`: Copy ribbons frames and scripts into repo
+- 19:50 `Bash`: Write ring crop sheet into evidence
+**Agent** (19:50 UTC):
+
+Now the notes for item 2, then the commit.
+
+- 19:50 `Bash`: Show NOTES tail
+- 19:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:50 `Bash`: Commit the ribbons step
+**Agent** (19:50 UTC):
+
+Item 2 committed as `24fd87e`. Item 3, the wall streaks: let me read the Art Director's `streaks.py`.
+
+- 19:50 `Bash`: Read the streaks script and numbers
+- 19:51 `Bash`: Streak measures now, without wall flecks, and without bubbles
+- 19:51 `Bash`: Measure my wall flecks with bubbles hidden
+- 19:51 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl0_crop.png
+- 19:52 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:52 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl_cands.json
+- 19:52 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/cands_nobub.cjs
+- 19:52 `Bash`: Rebuild and render fleck candidates with and without bubbles
+- 19:53 `Bash`: Measure streaks for fleck candidates; crop
+- 19:53 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl1_crop.png
+**Lead → agent** (19:53 UTC):
+
+[Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
+
+- 19:54 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:54 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl_cands2.json
+- 19:54 `Bash`: Render, measure and crop crisper fleck candidate
+- 19:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl2_crop.png
+**Lead → agent** (19:54 UTC):
+
+[Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
+
+- 19:55 `Bash`: Locate edge and fleck application lines
+- 19:55 `Bash`: Show the fleck application context
+- 19:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:55 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl_cands3.json
+- 19:55 `Bash`: Render, measure and crop late-drawn fleck candidate
+- 19:56 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl3_crop.png
+**Lead → agent** (19:56 UTC):
+
+[Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
+
+- 19:56 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/built.json
+- 19:56 `Bash`: Build final fleck settings, render and measure
+**Agent** (19:57 UTC):
+
+Walls alone, upper arc: thickness 3.9 px, median area 60, p90 331, 4.3 pieces per 10k px. Let me check the whole frame before committing.
+
+- 19:57 `Bash`: Sheet original / before / after flecks
+- 19:57 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl4_sheet.png
+**Agent** (19:57 UTC):
+
+Fewer, chunkier wall splashes; the rest of the frame is unchanged. Pixel 7 check, then commit.
+
+- 19:57 `Bash`: Pixel 7 capture and save fleck evidence
+- 19:58 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks
+**Lead → agent** (19:58 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+- 19:58 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:58 `Bash`: Commit the flecks step
+**Agent** (19:58 UTC):
+
+Item 3 committed as `340b117`. Item 4, the centre: let me read `core.py` and measure the current frame.
+
+- 19:58 `Bash`: Read core script and measure current frame
+**Agent** (19:58 UTC):
+
+Centre now: pink-violet 1.7% (target 6-10), warm 7.9% (10-14), saturated blue 19.0% (≤6). Let me look at the centre close up.
+
+- 19:59 `Bash`: Crop the centre of original, current, current without bubbles
+- 19:59 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_before.png
+- 19:59 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/core_detail.py
+- 19:59 `Bash`: Core classes by radius ring
+- 20:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:00 `Bash`: Find the core tint line
+- 20:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:00 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_cands.json
+- 20:00 `Bash`: Render and measure centre candidates
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core1_crop.png
+- 20:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:02 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:02 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_cands2.json
+- 20:02 `Bash`: Render and measure revised centre candidates
+- 20:03 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core2_crop.png
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:03 `Edit`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/core_detail.py
+**Agent** (20:03 UTC):
+
+Now I'll write C4 plus the twist into `FOCUS.match` and capture with the standard tool.
+
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 20:03 `Bash`: Build, capture and measure the centre step
+- 20:04 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/corefinal_crop.png
+- 20:04 `Bash`: Pixel 7 capture after centre change
+- 20:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3
+**Lead → agent** (20:05 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+- 20:05 `Bash`: Save centre evidence
+- 20:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 20:05 `Bash`: Commit the centre step
+**Agent** (20:06 UTC):
+
+Item 4 committed as `2db3d6b`. Item 5, the left wall (x 0-0.30, y 0.44-0.79). Let me measure that zone and look at it close up.
+
+- 20:06 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/left_wall.py
+- 20:06 `Bash`: Measure the left wall zone and crop it
+- 20:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left_before.png
+- 20:06 `Bash`: Check where matchWall is used
+- 20:06 `Bash`: Check if the floor calls matchWall
+- 20:07 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:07 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:07 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left_cands.json
+- 20:07 `Bash`: Render and measure left-wall candidates
+- 20:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left1_crop.png
+- 20:08 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:08 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left_cands2.json
+- 20:08 `Bash`: Render and measure revised left-wall candidates
+- 20:09 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left2_crop.png
+- 20:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 20:09 `Bash`: Build, capture final frames at 2.85/3.0/3.1 and verify
+- 20:11 `Bash`: Capture single-step 3.0 s final frame and compare
+**Agent** (20:11 UTC):
+
+Identical to L4. Pixel 7 check for the left wall.
+
+- 20:11 `Bash`: Pixel 7 capture of final focus
+- 20:12 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_final_
+**Lead → agent** (20:12 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+**Agent** (20:12 UTC):
+
+Pixel 7 is fine. Saving the evidence and committing item 5.
+
+- 20:12 `Bash`: Save final focus frames
+- 20:12 `Bash`: Left wall crop sheet into evidence
+- 20:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 20:12 `Bash`: Commit the left wall step
+- 20:12 `Bash`: Check WebDemo diffs and prepare old root
+**Agent** (20:12 UTC):
+
+No `WebDemo/` changes since `71f7fa7`. I'll set up a scratch web root with `71f7fa7`'s bundle and page, linking the unchanged assets.
+
+- 20:12 `Bash`: Extract the 71f7fa7 bundle and page; check assets unchanged
+- 20:12 `Bash`: Link unchanged asset folders into the old root
+- 20:12 `Bash`: List resources referenced by index.html
+**Agent** (20:12 UTC):
+
+Now `?s3=match` at 3.0 s from both builds (canvas and page).
+
+- 20:13 `Bash`: Capture match at 3.0 s from old and new builds
+- 20:14 `Bash`: Compare match frames old vs new
+**Agent** (20:14 UTC):
+
+The canvas is identical (same md5). The page shot differs in 105 pixels by at most 6. Let me see where they are, since the page includes the HUD with CSS animations.
+
+- 20:14 `Bash`: Locate page-shot differences
+- 20:14 `Bash`: Second page capture to show HUD noise
+**Agent** (20:14 UTC):
+
+Two captures of the new build are identical to each other, so this difference is repeatable, not noise. I need to know why the Turbo Spin button differs between builds when the 3D canvas does not.
+
+- 20:15 `Bash`: Look for Turbo Spin HUD animation in index.html
+- 20:15 `Bash`: Read HUD power button CSS
+**Agent** (20:15 UTC):
+
+The difference is repeatable and limited to the Turbo Spin button, while the canvas is identical. Let me look at both crops of that button.
+
+- 20:15 `Bash`: Crop and inspect the Turbo button differences
+- 20:15 `Bash`: Recapture the old build page and compare
+- 20:16 `Bash`: Run the focus functional test on the final build
+- 20:16 `Bash`: Show the in-tunnel result of the functional test
+- 20:16 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/sheet.py
+- 20:16 `Bash`: Write the full-frame comparison sheet
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/sheet_original_before_after_t3.00
+- 20:17 `Bash`: Write lower-left and ring crop sheets
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/crop_lower_left_original_before_a
+- 20:17 `Bash`: Rewrite lower-left crop sheet with the pre-pass frame
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/crop_rings_original_before_after_
+**Agent** (20:17 UTC):
+
+Now the identity proof and a final numbers file with every measure on the final 3.0 s frame.
+
+- 20:17 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/pixel_identity_match_vs_7
+- 20:17 `Bash`: Run all measures on the final frame
+- 20:18 `Bash`: Write the final numbers file and show the rest
+**Agent** (20:18 UTC):
+
+For a consistent "before" column in the README, I'll run the same measures on the `71f7fa7` frame.
+
+- 20:18 `Bash`: Measure the 71f7fa7 baseline frame
+**Agent** (20:18 UTC):
+
+Now the README the lead asked for, with a verified / partly / not table per item.
+
+- 20:18 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/README.md
+- 20:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 20:19 `Bash`: Commit evidence and README
+**Agent** (20:19 UTC):
+
+Last check: a rebuild must leave the committed bundle unchanged, and the tree must be clean.
+
+- 20:19 `Bash`: Rebuild and confirm clean tree
+- 20:19 `Bash`: Rebuild bundle
+- 20:19 `Bash`: Confirm clean tree and branch
+**Agent** (20:19 UTC):
+
+All five items are done and committed in my worktree (branch `worktree-agent-a0bafb8338e8bc494`, not pushed, ready for you to merge). The left wall, the centre, the objects and the band count now hit their targets. The ring colour and streak numbers are still off: most of that gap comes from Water & VFX's bubble and streak layer, which sits on top of the walls.
+
+The starting frame matched `focus_seam_t3.00_canvas.png` exactly. `?s3=match` at 3.0 s is unchanged: its 3D canvas is byte-identical to `71f7fa7`. Page screenshots are not a usable test here, because the same `71f7fa7` build captured twice differed in 1,736 HUD pixels. `S3=focus s3_func.cjs` passes: lanes, jump, 12 coins, 1 gem, 2 socks, no console errors. Each step was checked at the Pixel 7 framing.
+
+## Commits
+| commit | step |
+|---|---|
+| `82d568c` | Objects placed on the original's spots for the new camera. The two brushes were drawn too big and low after the camera change, so I moved them back onto the original's boxes; that also clears the small left coin. All collectibles stay within reach. |
+| `24fd87e` | Walls' water rebuilt as broad, softly blended flows with no outlines (kit problem B, AD item 3). |
+| `340b117` | Fewer, chunkier, broken white splashes on the walls, drawn crisp white (AD item 4). |
+| `2db3d6b` | Centre: pastel inner rings around a modest warm core (AD item 5). |
+| `956a7de` | Left wall glows pale like the original; dark tones stay vivid blue (AD item 6). |
+| `849217a` | Evidence: comparison sheets, crops, final numbers, identity proof, README. |
+
+## Numbers at 3.0 s (original / before / after)
+- **Objects:**
+  - Lower-right coin: (0.893, 0.733) / (0.751, 0.723) / (0.894, 0.736), width 0.214.
+  - Small left coin: now at (0.150, 0.472) and no longer behind the brush.
+  - Gem: (0.326, 0.511) / (0.310, 0.511) / (0.324, 0.514); height 0.033 / 0.045 / 0.033.
+  - Gold area: 4.35% / 4.82% / 4.67%.
+  - Sock: cuff tilt was -17° with its opening showing; now +0.4°, opening hidden, toe low on the left, box x 0.642-0.829, y 0.551-0.657 (original x 0.64-0.83, y 0.555-0.665).
+- **Walls' bands (upper ring):**
+  - Dark bands per ray: 6.3 / 7.3 / 6.5 (target met).
+  - Turquoise: 7.5 / 10.5 / 6.9% (target met).
+  - Median L*: 64 / 73 / 67 (one above the 62-66 target).
+  - Lightness spread: 14.9 / 10.8 / 12.8 (target ≥14).
+  - Darker than L* 55: 30.5 / 15.5 / 19.4% (target 27-32%).
+  - Blue hue / saturation: 215 / 0.83, 212 / 0.68, 219 / 0.71 (targets 213-217 and ≥0.78, both missed).
+- **Wall streaks (upper arc), full frame:** 9.8 pieces per 10k px (target ≤5), thickness 2.3 px (≥3), median area 50 (≥45), p90 318 (≥500). The walls' own splashes, with the bubble layer hidden: 4.3 per 10k px, 3.9 px, 60, 331.
+- **Centre:** pink-violet 8.6 / 1.1 / 7.3%, warm 13.0 / 8.1 / 10.9%, saturated blue 3.1 / 10.7 / 0.7% (all targets met). Warmth in the wider ring zone is 1.4% (target ≤5%).
+- **Left wall:** L* 76.9 / 69.1 / 77.3, white 24.8 / 6.5 / 22.3%, lavender at the edge 0.3% (all targets met).
+
+## What still differs from the original
+- **The bubble and streak layer** (`FOCUS.water.bubbles`, owned by Water & VFX) drives most of the remaining misses.
+  - With every object named *ubble* hidden, the walls alone give 6.1 bands per ray, a 14.8 spread and coherence 0.61, all close to the original.
+  - The thin white dashes in the streak measure are mostly its instanced streaks: 13.4 pieces per 10k px with them, 5.2 without.
+  - I rendered the flows in one flat royal blue to check the colour chain: it lands on screen exactly, yet a quarter of the ring zone under the translucent bubbles still reads lighter and greyer. That is why blue saturation stays near 0.71.
+  - Suggested to Water & VFX: fewer, chunkier streaks and fewer bubbles over the walls between 0.1 and 0.3 W from the centre.
+- **Colour and structure:** the flows run slightly more violet and lighter in the mid tones than the original. The original's bright cyan bands are more clearly layered than our soft flows, and its warm arc above the centre is still only faint here.
+- **Centre and left wall:** the inner rings are more regular and carry more pale blue (35% against 15%). The left wall lacks the original's lilac-pink tints. The original also shows a second blurred pink pom-pom at the left edge, which the game does not have.
+- **Sock:** the open eyes and violet toe come from the model; the original's sock has closed happy eyes and a blue toe.
+
+## Files changed
+- `WebDemo/src/tunnel_r9_match.js`
+- `WebDemo/src/tunnel_r9_focus.js` (the `FOCUS.match` part only)
+- `WebDemo/game.bundle.js`
+
+The evidence is in `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/`. Start with `README.md` (the verified / partly / not table per item); the sheets are `sheet_original_before_after_t3.00.png`, `crop_lower_left_original_before_after_t3.00.png` and `crop_rings_original_before_after_t3.00.png`. Also there: `NOTES.md`, the per-step frames, `numbers/`, and the measuring tools in `scripts/`.
+
+
+_291 tool steps._
+
+---
+
+## Water & VFX specialist: Water & VFX: splash round her, floor (started 19:05 UTC)
+
+_Worked in its own worktree, branch `worktree-agent-ae68b33859f973010`._
+
+**Lead → agent** (19:05 UTC):
+
+You are the Water & VFX specialist for Bubble Wash Kingdom Screen 4, resuming the focused correction pass on `?s3=focus` exactly where you stopped at 18:57 UTC (a rate limit, not a failure).
+
+WHERE THE WORK LIVES: the user's GitHub repository `josiahscalia5-dev/bubblegame`, lead branch `ccr-de8d9670-2ohd5t` (this ninth session's branch; it continues `ccr-3d8a1ae9-hhgml1` exactly). Your worktree starts at `71f7fa7` on that branch. The lead merges your worktree commits into `ccr-de8d9670-2ohd5t` and pushes them; you do not push.
+
+THE NEW CAMERA IS NOW IN THE CODE: Tunnel & Lighting's camera is committed in your base (`0ff0d0b`): `{ off: [-0.162, 1.126, -3.1], lookY: 1.655, lookX: 0.142, fov: 68 }`, character at the original's size (width 0.473 W, top 0.695, base 0.850, centre (0.500, 0.780)). A plain `S3=focus` capture uses it; you no longer need it in the tune JSON. The lower-left lavender wedge is fixed too (it was `heroWalls`, not yours).
+
+STEP 0, RESTORE YOUR UNFINISHED WORK (it was never committed): `git apply --include='WebDemo/src/*' Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/water-vfx-engineer_a29b1562/changes.patch` (checked: it applies cleanly on `71f7fa7`), then copy your evidence folder back: `cp -r Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/water-vfx-engineer_a29b1562/files/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus Previews/WebDemo/screen4_round9_match/` (do NOT copy that snapshot's `files/WebDemo/src/*.js` over your tree: they predate the camera). Read your notes `18_water_vfx_focus/NOTES.md`. Your last state at 18:56: the swell crest cut in the profile coordinate `t` with patterns by distance along the face, rounded lobes and smaller teeth, side mounds nearer the front, camera-tested crest defaults, and a ragged outline with a broken white cap on the side crests (`focusLumpGLSL`), just built and not yet captured. Build, capture, look, and commit it as your first step if it holds up; fix it if not.
+
+Read also: your agent file's "Newest: ninth session" and "Earlier: the FOCUSED CORRECTION PASS" sections; the Art Director's review `Previews/WebDemo/screen4_round9_match/16_art_director_focus_review/` (numbers in `*.txt`, scripts in `scripts/`, run with `source Tools/bw_tools_env.sh` then `"$BW_PY" -I scripts/<name>.py`; your `18_.../scripts/measure.py` runs them on any frame); the user's newest kit `Design/ReferencePacks/2026-11-05_Tunnel_Correction_ESSENTIAL_Kit/CLAUDE_SEND_THIS.txt` (it calls the current white/bubble pattern overcomplicated); and `Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/USER_WATER_CORRECTION_1715utc_approved_vs_build.png`.
+
+The ONLY target is the user's ORIGINAL APPROVED Screen 4, `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`. Match it as closely as possible; never a new or "better" variation.
+
+THE USER'S RULE FOR THE WATER ROUND THE CHARACTER (it supersedes every earlier foam request): she sits ON TOP of sparkling BLUE water with small bubbles, small irregular blue-water splashes, subtle white highlights and fine spray. NO large opaque white or lavender foam geometry, cushion or clumps round her, never a see-through water curtain over her, never sunk into the water. Do not redesign or recolour her. White is made of broken crests, spray and glints, never a mass.
+
+Setup in your worktree: `cd WebDemo && npm install && node build.mjs`; `source Tools/bw_tools_env.sh` in every shell; if `require('playwright')` fails, set `NODE_PATH=$(npm root -g)`. Capture: `S3=focus TIMES=3.0 DPR=1.5 CANVAS=1 node tools/screen4/liquid_shots.cjs "$PWD" <out-dir> ['<tune json>']` (seed 7). Tune without rebuilding through the third argument, e.g. `'{"matchWater":{"sparkle":{"share":0.7}}}'`. Find what draws a region with `tools/screen4/hide_probe.cjs`. Run AT MOST ONE browser at a time (Tunnel & Lighting runs one in parallel). Use your own subfolder of the scratchpad for temporary files.
+
+YOUR FILES ONLY: `WebDemo/src/tunnel_r9_match_water.js` and the `FOCUS.water` part of `WebDemo/src/tunnel_r9_focus.js`. Do not touch `FOCUS.match` or `tunnel_r9_match.js` (Tunnel & Lighting is changing them now). Everything stays gated on `FOCUS_ON`: `?s3=match` and every older switch must stay pixel-identical. Gameplay must keep working, and the water must keep reacting to a swerve, a jump and a landing.
+
+Your items, in this order (re-measure the "before" with the new camera first; the AD's numbers below were taken with the old one):
+1. (AD item 1, the most important) The water round her: sparkling, broken splash instead of a flat smooth light-blue sheet. `character_water.py` orig / old focus: white 27.7 / 4.8%, vivid blue 12.9 / 32.4%, lavender 16.9 / 3.6%, texture 5.47 / 4.53, largest white piece 10247 / 492 px. Targets: white 15-22% made of crests, spray and glints (at least half in pieces <= 400 px, none over about 2,500 px, never a cushion); vivid blue 15-22%; texture >= 5.2; L* 78-82 on both sides; lavender <= 5%; small spiky splash crests rimming her lower sides so her pink is <= 0.2 W wide 0.02 H above her lowest point; no smooth water edge longer than 0.1 W across her; no water above about y 0.82 in front of her centre.
+2. (AD item 5) The floor ahead, behind her (y 0.60-0.70, x 0.25-0.65): orig / old focus L* 83.5 / 71.1, white 26.9 / 6.3%, lavender 3.6 / 12.4%, median #aad7f4 / #80aee6. Targets: L* 80-84, white 20-27% as broken crests, lavender <= 5%, median near #aad7f4 (`matchFloorApply`, `FOCUS.water.floor`: `caustic` lower, `deep` toward 0.5). Never brighten with bloom, exposure or haze.
+3. (AD item 4, the flying part, and the kit's "overcomplicated white/bubble pattern") The flying white streaks among the bands (`FOCUS.water.bubbles.flecks`, the instanced streaks in `tunnelBubbles`): fewer and chunkier, count 560 -> about 220, some hooked or rotated (judge your part with `hide_probe` on `mwTunnelBubbles`; Tunnel & Lighting changes the wall flecks at the same time).
+4. (AD item 6, the bubble part) No more than about 10 visible bubbles within 0.2 W of the tunnel's centre (`FOCUS.water.bubbles.zones`), keeping bubbles at near, middle and far depth along the walls.
+
+Method: one change at a time, captured at 3.0 s, measured against the original AND looked at. After each tested item: rebuild `game.bundle.js`, COMMIT source and bundle together in your worktree with a clear message, and add the result to NOTES.md (the user wants each step saved; the lead's 5-minute autosave also copies your uncommitted work, so keep NOTES.md current). Check the water round her at the Pixel 7 framing too (412 x 839; Tunnel & Lighting's `17_tunnel_lighting_focus/scripts/phone_shot_s3.cjs` captures it). At the end: prove `?s3=match` is pixel-identical to `71f7fa7` at 3.0 s (canvas frame, before and after), and run `S3=focus node tools/screen3/s3_func.cjs "$PWD"`. Evidence in `Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/`: frames, an enlarged original / before / after crop of the water round her and of the floor ahead, numbers, and a README with a verified / partly / not table per item. Report: your commits (hashes) with a one-line summary each, the numbers before and after per item, the files changed, and what still differs from the original.
+
+**Agent** (19:05 UTC):
+
+I'll start by checking the worktree state and restoring the unfinished work.
+
+- 19:05 `Bash`: Show worktree branch state and snapshot folder
+- 19:05 `Bash`: Inspect the autosave commit on top of base
+- 19:05 `Bash`: Check the snapshot patch applies
+- 19:05 `Bash`: Apply the snapshot patch and restore evidence
+- 19:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:05 `Bash`: Read agent file ninth session section
+- 19:05 `Bash`: Show the restored source changes
+- 19:05 `Bash`: List AD review files and read the user's kit
+**Agent** (19:05 UTC):
+
+Now let me build and capture the restored state at 3.0 s.
+
+- 19:05 `Bash`: Check node_modules presence
+- 19:05 `Bash`: Link node_modules and build the bundle
+- 19:05 `Bash`: Link the main checkout's node_modules
+- 19:05 `Bash`: Read the tools env script
+- 19:06 `Bash`: Source tool env and build bundle
+- 19:06 `Bash`: Locate the visual Python and node tools
+- 19:06 `Bash`: Build bundle and find playwright
+- 19:06 `Bash`: Read the capture tool header
+- 19:06 `Bash`: Capture the restored focus state at 3.0 s
+- 19:06 `Bash`: Capture the restored focus state at 3.0 s
+- 19:06 `Bash`: Read before info and measure script
+- 19:06 `Bash`: Check WebDemo size and build script
+- 19:07 `Bash`: Set up a base-bundle serving folder in scratch
+- 19:07 `Bash`: Create symlinks for the base serving folder
+- 19:07 `Bash`: Extract the base commit's bundle into scratch
+- 19:07 `Bash`: Capture the base commit focus frame at 3.0 s
+- 19:07 `Bash`: Measure base and restored frames round her
+- 19:07 `Bash`: Read crop helper scripts
+- 19:07 `Bash`: Make side-by-side crop of the water round her
+- 19:07 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s0.png
+**Lead → agent** (19:07 UTC):
+
+[Image: original 2313x476, displayed at 2000x412. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:07 `Bash`: Make a closer crop of her base
+- 19:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s0b.png
+**Lead → agent** (19:08 UTC):
+
+[Image: original 2103x360, displayed at 2000x342. Multiply coordinates by 1.05 to map to original image.]
+
+- 19:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/s0/s0_t3.00.png
+- 19:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
+- 19:08 `Bash`: Read the rest of the character water measure
+- 19:08 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/whitemap.py
+- 19:08 `Bash`: Map white pieces by size in s0
+- 19:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/wm_s0.png
+- 19:08 `Bash`: Crop the right and left side crests enlarged
+- 19:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s0r.png
+- 19:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s0l.png
+- 19:08 `Bash`: Read focusLumpGLSL in full
+- 19:09 `Bash`: Find where the lump shader lives and its helpers
+**Agent** (19:09 UTC):
+
+Let me rewrite the side-crest cap as separate white pieces instead of a white sheet with holes.
+
+- 19:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:09 `Bash`: Build, capture and measure the cap fix
+- 19:10 `Bash`: Crop original, s0, s1 round her
+- 19:10 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s1b.png
+**Lead → agent** (19:10 UTC):
+
+[Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:10 `Bash`: Read FOCUS.water settings
+- 19:10 `Bash`: Zoom the front water under her
+- 19:10 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s1f.png
+**Agent** (19:11 UTC):
+
+Now I'll rework the swell face's white pattern: from uniform round dots to broken white crest arcs clustered in bands (the original's foam reads as curving white crest lines over blue).
+
+- 19:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:11 `Bash`: Build, capture and measure the crest arcs
+- 19:11 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s2f.png
+**Lead → agent** (19:11 UTC):
+
+[Image: original 2316x269, displayed at 2000x232. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:12 `Bash`: Zoom on s2 front water
+- 19:12 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s2z.png
+- 19:12 `Bash`: Capture with larger, thicker crest arcs via tune
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/t3.json
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/cap.sh
+- 19:12 `Bash`: Capture with larger crest arcs via a tune file
+- 19:13 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s3z.png
+- 19:13 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:13 `Bash`: Capture a debug render of the face coordinates
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_dbg2w.png
+- 19:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:15 `Bash`: Build and capture the neighbour-cell arcs
+- 19:15 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4z.png
+- 19:15 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4w.png
+- 19:16 `Bash`: Crop both side areas of s4
+- 19:16 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4r.png
+- 19:16 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4l.png
+- 19:16 `Bash`: Measure zones on s4 and find spray settings
+**Agent** (19:16 UTC):
+
+Clear progress over the base on every measure round her. I'll save the frames, update NOTES.md, and commit this as step 1a.
+
+- 19:16 `Bash`: Save before and step 1a frames with full measures
+- 19:16 `Bash`: Copy before and step 1a frames into evidence
+- 19:16 `Bash`: Run all measures on before and step 1a
+**Agent** (19:16 UTC):
+
+Now update NOTES.md and commit step 1a.
+
+- 19:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:16 `Bash`: Stage step 1a source, bundle and evidence
+- 19:16 `Bash`: Commit step 1a
+- 19:17 `Bash`: Inspect hero water spray settings and merge
+- 19:17 `Bash`: Read the spray settings chain and the droplet builder
+- 19:17 `Bash`: Check deepMerge array semantics
+- 19:17 `Bash`: Capture lighter side crests and no side crests
+- 19:18 `Bash`: Compare s4, v1, v2 crops
+- 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12.png
+**Lead → agent** (19:18 UTC):
+
+[Image: original 2626x235, displayed at 2000x179. Multiply coordinates by 1.31 to map to original image.]
+
+- 19:18 `Bash`: Crop right and left sides for the variants
+- 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12r.png
+- 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12l.png
+- 19:18 `Bash`: Capture two swell-front variants without side lumps
+- 19:19 `Bash`: Print her width profile for the variants
+**Agent** (19:20 UTC):
+
+Her pink ends in a flat bottom edge (width drops 0.30 to 0.11 W in 0.01 H) where the original tapers in a V. I'll try a deeper but narrower front dip.
+
+- 19:20 `Bash`: Capture two V-shaped water-line variants
+- 19:21 `Bash`: Compare her base for v2, v5, v6
+- 19:21 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v256.png
+**Lead → agent** (19:21 UTC):
+
+[Image: original 2006x221, displayed at 2000x220. Multiply coordinates by 1.00 to map to original image.]
+
+- 19:21 `Bash`: Read matchSwellGLSL and how s, vS are defined
+- 19:21 `Bash`: Find where the swell shader defines s, vS, as, d
+- 19:21 `Bash`: Read the liquid swell fragment and aSurf build
+- 19:22 `Bash`: Find how lumps are placed
+- 19:22 `Bash`: Read the lump placement loop
+- 19:22 `Bash`: Capture small splash crests at her lower sides
+- 19:24 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v78.png
+**Lead → agent** (19:24 UTC):
+
+[Image: original 2006x221, displayed at 2000x220. Multiply coordinates by 1.00 to map to original image.]
+
+**Agent** (19:24 UTC):
+
+The left blob floats on her fur (the visible water edge is below the crest because of the cut teeth). I'll seat them lower so they sit on the waterline.
+
+- 19:24 `Bash`: Capture lower-seated side splash crests
+- 19:25 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v9.png
+**Agent** (19:25 UTC):
+
+I'll try scalloped dome-shaped crests along the cut edge (the original's waterline across her is a row of rounded bubble domes with white outlines), as a new `face.teeth.dome` option.
+
+- 19:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:26 `Bash`: Build and capture the dome-shaped waterline
+- 19:26 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v10.png
+- 19:27 `Bash`: Zoom her base for v2 and v6
+- 19:27 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v26z.png
+**Lead → agent** (19:27 UTC):
+
+[Image: original 2316x246, displayed at 2000x212. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:27 `Bash`: Measure side zones for v2 and v6
+**Agent** (19:27 UTC):
+
+Removing the side lumps (v2) keeps L* in range on both sides (78.6 / 80.5) and reads as continuous water. I'll write those settings into `FOCUS.water` and verify with a plain capture.
+
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:27 `Bash`: Build and capture step 1b defaults
+- 19:28 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/s1b/s1b_t3.00.png
+**Agent** (19:28 UTC):
+
+Reads as continuous light-blue water round her, no pillows or white masses. Committing step 1b.
+
+- 19:28 `Bash`: Save step 1b frames and comparison crop
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:28 `Bash`: Commit step 1b
+**Agent** (19:28 UTC):
+
+Now step 1c: the spray as round droplets rather than vertical dashes, and more of the white in small pieces (the AD wants at least half in pieces of 400 px or less; 41% now).
+
+- 19:28 `Bash`: Capture rounder spray and smaller white pieces
+- 19:30 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v11.png
+**Lead → agent** (19:30 UTC):
+
+[Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:30 `Bash`: Read hide_probe usage
+- 19:30 `Bash`: Hide probe the spray-like layers at 3.0 s
+- 19:31 `Bash`: Make a hide-probe montage of the spray layers
+- 19:31 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/hp1_crop.png
+**Lead → agent** (19:31 UTC):
+
+[Image: original 2690x279, displayed at 2000x207. Multiply coordinates by 1.34 to map to original image.]
+
+- 19:31 `Bash`: Read the spray vertex and fragment shaders
+- 19:31 `Bash`: Zoom left-of-her spray for s1b and v11
+- 19:31 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v11l.png
+- 19:31 `Bash`: Capture finer spray droplets
+- 19:33 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12l.png
+**Agent** (19:33 UTC):
+
+Finer spray reads as droplets, not rain. White fell to 12.6%, so I'll add back some crest-arc and rim white.
+
+- 19:33 `Bash`: Capture with more crest arcs and a wider rim
+- 19:33 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/wm_v13.png
+- 19:34 `Bash`: Capture smaller, denser crest arcs
+- 19:34 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v14.png
+**Lead → agent** (19:34 UTC):
+
+[Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:35 `Bash`: Build and capture step 1c defaults
+- 19:35 `Bash`: Show the left-side zone for step 1c
+- 19:35 `Bash`: Crop original, before and step 1c
+- 19:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s1c.png
+**Lead → agent** (19:35 UTC):
+
+[Image: original 2082x360, displayed at 2000x346. Multiply coordinates by 1.04 to map to original image.]
+
+**Agent** (19:35 UTC):
+
+Much closer than before. The crest arcs are a bit too regular (uniform white commas), so I'll add a taper toward their ends and a wobble in their radius.
+
+- 19:36 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:36 `Bash`: Build and capture tapered, wobbly crest arcs
+- 19:36 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v15.png
+**Lead → agent** (19:36 UTC):
+
+[Image: original 2316x230, displayed at 2000x199. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:36 `Bash`: Capture thicker tapered crest arcs
+- 19:37 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v16.png
+**Lead → agent** (19:37 UTC):
+
+[Image: original 2316x230, displayed at 2000x199. Multiply coordinates by 1.16 to map to original image.]
+
+**Agent** (19:37 UTC):
+
+v16 balances it (white 14.6%, 47% in small pieces, irregular arcs). Writing it into the settings and capturing the committed defaults.
+
+- 19:37 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:37 `Bash`: Build and capture step 1c final defaults
+- 19:38 `Bash`: Save step 1c frames and crop
+- 19:38 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:38 `Bash`: Commit step 1c
+**Agent** (19:38 UTC):
+
+Item 2 next: the floor ahead behind her. Let me look at the region and the floor code.
+
+- 19:38 `Bash`: Read the floor water code
+- 19:39 `Bash`: Read floor settings and crop the floor ahead
+- 19:39 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_floor0.png
+- 19:39 `Bash`: Read MATCH_WATER.floor settings
+- 19:39 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:39 `Bash`: Capture floor with less deep tint and troughs
+**Agent** (19:40 UTC):
+
+Almost no change, so something else may draw that region. Hide-probing it.
+
+- 19:40 `Bash`: Hide probe floor-ahead candidates
+- 19:41 `Bash`: Check the floor shader's declaration order
+- 19:41 `Bash`: Read the floor fragment shader context
+- 19:41 `Bash`: Find all callers of matchFloor
+- 19:42 `Bash`: Find the colour helpers
+**Agent** (19:42 UTC):
+
+Now the focus-only floor piece.
+
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:42 `Bash`: Build and capture the focus floor piece
+- 19:43 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f2.png
+- 19:43 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/lavmap.py
+- 19:43 `Bash`: Locate lavender pixels on the floor ahead
+- 19:43 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/lav_f2.png
+- 19:43 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:43 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:44 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:44 `Bash`: Build and capture banded floor streaks
+- 19:44 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f3.png
+- 19:44 `Bash`: Diagnostic capture with the floor fully pale
+- 19:45 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/lav_f4.png
+**Agent** (19:45 UTC):
+
+With the floor forced fully pale the lavender stays in the same shapes, so it is an overlay on top of the floor (around the sock, and a blob left of centre). Let me identify it.
+
+- 19:45 `Bash`: List visible object names at 3.0 s
+- 19:45 `Bash`: Hide probe overlay candidates on the floor ahead
+- 19:47 `Bash`: Capture lighter floor with thicker streaks
+- 19:48 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f5.png
+- 19:48 `Bash`: Capture whiter floor with blue dashes
+- 19:49 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f6.png
+**Agent** (19:49 UTC):
+
+f6 lands near the targets: L* 79.4 (target 80-84), white 22.1% as streaks, median #a7cdf2 (original #aad7f4). Writing f6 into the settings and capturing the committed defaults.
+
+- 19:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:49 `Bash`: Build and capture item 2 defaults
+- 19:50 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/s2/s2_t3.00.png
+**Agent** (19:50 UTC):
+
+Coherent with the water round her and closer to the original's pale floor. Committing item 2.
+
+- 19:50 `Bash`: Save item 2 frames and floor crop
+- 19:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:50 `Bash`: Commit item 2
+**Agent** (19:51 UTC):
+
+Item 3: the flying white streaks among the bands (`mwTunnelBubbles` flecks). Let me read their code.
+
+- 19:51 `Bash`: Locate the tunnel bubbles and fleck code
+- 19:51 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (19:51 UTC):
+
+I'll add an optional random rotation for the flying streaks (gated: only when `flecks.rot` is set, so `match` compiles the same shader), then tune count, size and bend.
+
+- 19:51 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:51 `Bash`: Build and capture fewer, chunkier, rotated streaks
+- 19:52 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_b1.png
+- 19:52 `Bash`: Zoom on the left ring band
+- 19:52 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_b1z.png
+- 19:52 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:52 `Bash`: Build and capture item 3 defaults
+**Agent** (19:54 UTC):
+
+Committing item 3.
+
+- 19:54 `Bash`: Save item 3 frames and crop
+- 19:54 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:54 `Bash`: Commit item 3
+**Agent** (19:54 UTC):
+
+Item 4: bubbles near the tunnel's centre. First, how many of the detected circles are mine (hide-probe frames from earlier, same bubble placement).
+
+- 19:54 `Bash`: Count circles with each bubble layer hidden
+- 19:54 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tbcount.py
+- 19:54 `Bash`: Count my tunnel bubble pieces near the centre
+- 19:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp3.png
+- 19:55 `Bash`: Capture bubbles kept off the centre
+- 19:55 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_z1.png
+**Agent** (19:55 UTC):
+
+Visually the centre is still busy, but most of the detected circles there are not my bubbles (87 remain with mine hidden). I'll write z1 into the settings and hide-probe it to count mine.
+
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Bash`: Build z1 defaults and hide-probe my bubbles
+- 19:56 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp4.png
+- 19:57 `Bash`: Count my bubble pieces inside the centre discs
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:57 `Bash`: Build z2 and count my pieces near the centre
+- 19:58 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp5.png
+- 19:58 `Bash`: Capture and measure item 4 defaults
+**Agent** (19:58 UTC):
+
+The Hough count barely moves (110 to 105) because about 87 of its detections near the centre come from other layers (the hide probe). I'll report both measures. Committing item 4.
+
+- 19:59 `Bash`: Save item 4 frames, probe maps and scripts
+- 19:59 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:59 `Bash`: Commit item 4
+**Agent** (19:59 UTC):
+
+All four items committed. Now the final checks, starting with `?s3=match` pixel identity against `71f7fa7` at 3.0 s.
+
+- 19:59 `Bash`: Capture ?s3=match at base and now
+- 20:00 `Bash`: Compare match frames before and after
+**Agent** (20:00 UTC):
+
+`?s3=match` is byte-identical (canvas md5 equal, 0 differing pixels, page too). Now the normal game the same way, then `s3_func`.
+
+- 20:00 `Bash`: Capture the normal game at base and now
+**Agent** (20:02 UTC):
+
+Normal game identical too. Now `s3_func` on `focus`.
+
+- 20:02 `Bash`: Run the functional gameplay check on focus
+- 20:04 `Bash`: Rerun s3_func saving the full output
+- 20:05 `Bash`: Summarize s3_func results
+- 20:05 `Bash`: Find the Pixel 7 capture script
+- 20:05 `Bash`: Capture the Pixel 7 framing now and at base
+- 20:06 `Bash`: Pair the Pixel 7 lower halves before and after
+- 20:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/pixel7_pair.png
+**Lead → agent** (20:06 UTC):
+
+[Image: original 2172x837, displayed at 2000x771. Multiply coordinates by 1.09 to map to original image.]
+
+- 20:06 `Bash`: Read the movement capture tool usage
+- 20:06 `Bash`: Capture the swerve, jump and landing frames
+- 20:07 `Bash`: Make a strip of the three move frames
+- 20:07 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/moves/moves_strip.png
+- 20:07 `Bash`: Build final comparison sheets and measures
+- 20:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/final/round_her_zoom_orig_before_final.
+**Lead → agent** (20:07 UTC):
+
+[Image: original 3228x492, displayed at 2000x305. Multiply coordinates by 1.61 to map to original image.]
+
+**Agent** (20:07 UTC):
+
+Copying the check outputs into the evidence folder.
+
+- 20:07 `Bash`: Save checks: identity md5, s3_func, Pixel 7, moves
+- 20:08 `Write`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/README.md
+- 20:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/final/full_orig_before_final.png
+**Agent** (20:08 UTC):
+
+The final frame reads closer to the original's lower half. Committing the evidence.
+
+- 20:08 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 20:08 `Bash`: Commit the evidence and README
+**Agent** (20:08 UTC):
+
+Last, a check that the committed bundle matches the committed source.
+
+- 20:08 `Bash`: Rebuild and confirm the bundle is unchanged
+**Agent** (20:08 UTC):
+
+All four items are done and committed in my worktree. They are not pushed: you merge them into `ccr-de8d9670-2ohd5t`. The water round her is now broken, sparkling blue water with white crests, spray, glints and small bubbles, and she sits on top of it. Two of the Art Director's targets round her are still missed (below).
+
+Every number below is from the Art Director's scripts, unchanged, run on real 3.0 s gameplay frames (seed 7, DPR 1.5), in the order original / before / now. "Before" is `71f7fa7`'s own focus frame, captured again with the committed camera.
+
+**Commits**
+- `d615259` (step 1a): your 18:56 work restored. The side crests' white cap was making two white masses of 2,800 and 4,250 px, so I broke it into separate small pieces. The swell's face got broken white crest arcs instead of polka dots.
+- `4ae6099` (step 1b): took out the four lumps beside her. With the new camera they showed as smooth blue pillows.
+- `d903650` (step 1c): finer spray, so it no longer reads as falling rain, and more irregular crest arcs.
+- `eacb3f4` (item 2): the floor ahead is pale blue-white water with broken white streaks and blue dashes.
+- `5dac0d8` (item 3): flying streaks cut from 560 to 220, thicker, some hooked, some turned off the bands.
+- `b5fb9d3` (item 4): tunnel bubbles moved off the centre (280 to 220).
+- `60671c2`: evidence, checks and README.
+
+**Item 1, the water round her**
+- **Met:**
+  - white 27.7 / 6.0 / 16.8%;
+  - largest white piece 10,247 / 1,449 / 1,390 px;
+  - vivid blue 12.9 / 47.6 / 16.1%;
+  - texture 5.47 / 5.03 / 5.41;
+  - brightness (L*) left 79.3 / 71.9 / 79.5, right 82.6 / 74.8 / 80.7;
+  - lavender 16.9 / 0.2 / 0.2%;
+  - her base sits at y 0.849 (original 0.859).
+- **Missed:**
+  - Only 38% of the white is in pieces of 400 px or less (target at least half), because the crest arcs are 400–1,400 px each.
+  - Her pink is 0.25 W wide just above her lowest point (target 0.20, before 0.27). The tries that reached 0.18–0.21 either stuck blue blobs on her fur or made her sit deeper, so I rejected them.
+
+**Item 2, the floor ahead**
+- Brightness (L*) 83.5 / 71.8 / 79.4, just under the 80–84 target.
+- White 26.9 / 6.9 / 22.1%, now as broken streaks.
+- Median colour #aad7f4 / #7eb0e5 / #a7cdf2.
+- Lavender stays at 10.9% (target at most 5%), and it is not the water. It stays in the same lane-shaped patches even with the floor forced fully pale, and no bubble or glow object draws it. It matches the brushes' pink hazard warning drawn on the floor (`s4Haz`), which is gameplay, so I left it.
+
+**Item 3, the flying streaks**
+These measures include Tunnel & Lighting's wall streaks too.
+- Pieces per 10,000 px: 3.2 / 13.2 / 11.2.
+- Largest pieces (p90 area): 1,160 / 159 / 260 px.
+- Share following the rings: 28 / 74 / 56%.
+
+**Item 4, bubbles near the tunnel's centre**
+- With only my bubble layer isolated by hiding it, it now covers 12.3% of the area within 0.2 W of the centre (was 28.0%) and 2.4% within 0.12 W (was 20.6%). By eye about 8–10 small bubbles are left there.
+- Near, middle and far bubbles along the walls are kept.
+- The Art Director's circle count barely moves (116 to 105), because 87 of those circles remain with my bubbles hidden. They come from other layers.
+
+**Checks**
+- `?s3=match` at 3.0 s is byte-identical to `71f7fa7` (canvas and page), and so is the normal game.
+- `S3=focus s3_func`:
+  - controls: swipes change lanes, the jump works, the keyboard start works;
+  - the tunnel run collects 12 coins, 1 gem and 2 socks;
+  - no console errors; 136 draw calls and 1.07 M triangles in the tunnel.
+- The water still reacts to a swerve, a jump and a landing.
+- At the Pixel 7 framing the water round her looks the same, with her on top.
+
+**Files changed:** `WebDemo/src/tunnel_r9_match_water.js`, the `FOCUS.water` part of `WebDemo/src/tunnel_r9_focus.js`, and `WebDemo/game.bundle.js`.
+
+**What still differs from the original**
+- Round her, the original's water is a mass of bubble domes with thick white outlines and lavender insides. Under your rule against a white or lavender cushion, ours has less white, in smaller pieces, and no lavender.
+- Her pink is a little wider at the base (0.25 W against 0.20).
+- The floor ahead is about 4 points darker than the original's near-white water, and its streaks are more regular.
+- The spray shader draws every "round" droplet as a tall oval. It is in `tunnel_r7_hero_water.js`, which is not my file, so I only made the droplets small.
+- Most of the circle-like clutter at the centre comes from the walls (Tunnel & Lighting's), not my bubbles.
+
+Everything is in `/home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/`; open `README.md` first:
+- `README.md`: the verified / partly / not table;
+- `NOTES.md`: every try, including the rejected ones;
+- `final/`: the original / before / now comparisons;
+- `checks/`: identity, gameplay, Pixel 7 and movement checks.
+
+
+_239 tool steps._

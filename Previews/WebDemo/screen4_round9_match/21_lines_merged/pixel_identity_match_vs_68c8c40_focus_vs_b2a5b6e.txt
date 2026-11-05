@@ -1,0 +1,18 @@
+Pixel identity, merged build (bundle e94124846f2472829a817576d3e5aceb): match and match,nofoam against 68c8c40 (bundle e74ba8c9...); focus and focus,nofoam against line B's b2a5b6e (ccr-de8d9670-2ohd5t, bundle f131fa46ee4ac86d975b0639adb49e06, rebuilt from source byte-identical). Raw 3D canvas, game_eval.cjs SHOT, seed 7, 538 x 1076, Tap to Start, 2.85, 3.0 and 4.2 s (scripts/mf_shots.sh; '2.9' in the names is 2.85 s).
+focus+nofoam_2.9.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus+nofoam_3.0.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus+nofoam_4.2.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus+nofoam_tap.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_2.9.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_3.0.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_4.2.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_tap.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_2.9.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_3.0.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_4.2.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_tap.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_2.9.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_3.0.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_4.2.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_tap.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+ALL IDENTICAL

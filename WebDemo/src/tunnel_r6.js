@@ -19,12 +19,12 @@ import { HERO_ON, HERO, buildHero } from './tunnel_r7_hero.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 // ?s3=round7 (test): round6 + the rich preview + the Screen 4 pass that matches the ORIGINAL approved Screen 4 (ROUND6.r7)
-export const R7_ON = LIST.includes('round7') || LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash') || LIST.includes('match');   // ?s3=hero: round7's dedicated hero scene (tunnel_r7_hero.js)
+export const R7_ON = LIST.includes('round7') || LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash') || LIST.includes('match') || LIST.includes('focus');   // ?s3=hero: round7's dedicated hero scene (tunnel_r7_hero.js)
 export const R6_ON = LIST.includes('round6') || R7_ON;
 // ?s3=match (Round 9): the face has no light panel above the door. It came from the Round 6 construction guide, not the
 // original approved Screen 4, and on a phone it showed as a flat pale rectangle under the mission banner (the user's
 // checkpoint 07, 5 November). Every other version keeps it.
-const R9_MATCH = LIST.includes('match');
+const R9_MATCH = LIST.includes('match') || LIST.includes('focus');   // ?s3=focus: match plus the focused correction pass
 // ?s3=round6,rich (preview): pass 3 (the board's architecture and composition, which the user likes and keeps as ?s3=round6)
 // plus the ORIGINAL approved Screen 4's richness (ROUND6.rich below)
 export const R6_RICH = R6_ON && (LIST.includes('rich') || R7_ON);

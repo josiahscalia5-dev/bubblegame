@@ -1,5 +1,5 @@
 // Functional checks for the ?s3=round2 test (hearts, Bubble Blast, Turbo Spin, pause), through the game's test hooks with
-// Math.random seeded. Prints one JSON report.   [S3=round3] node tools/screen3/r2_func.cjs <demo-dir>   (default round2)
+// Math.random seeded. Prints one JSON report.   [S3=round3] [VW=135 VH=270] node tools/screen3/r2_func.cjs <demo-dir>   (default round2)
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const ROOT = process.argv[2];
@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
 (async () => {
   await new Promise((r) => server.listen(0, r));
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-  const page = await (await browser.newContext({ viewport: { width: 538, height: 1076 } })).newPage();
+  const page = await (await browser.newContext({ viewport: { width: +(process.env.VW || 538), height: +(process.env.VH || 1076) } })).newPage();   // VW/VH: a smaller viewport for heavy scenes in software rendering (same game logic)
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.text().slice(0, 300)); });
   page.on('pageerror', (e) => logs.push(e.message));

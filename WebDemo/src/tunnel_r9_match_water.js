@@ -31,6 +31,8 @@
 // where noted (lin3: sRGB to linear for the lobes, which go through the grade like the other splash layers).
 import * as THREE from 'three';
 import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge } from './tunnel_r9_match.js';
+import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
+import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -218,10 +220,21 @@ export const MATCH_WATER = {
       shapes: [0.45, 0.3, 0.25], edge: '#9adcff', maxPx: 19 },
   },
 };
-{
-  const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.matchWater;
-  if (tune) deepMerge(MATCH_WATER, tune);
-}
+const MW_TUNE = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.matchWater;
+if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
+  restoreSettings(MATCH_WATER, PRE_FOCUSED_PASS.MATCH_WATER);   // (`match`'s water as it was at 9a95c06, tunnel_r9_focus_base.js)
+  deepMerge(MATCH_WATER, FOCUS.water);
+  if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
+  // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
+  // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam. lift: the whole crest
+  // raised (m) by about the depth of the spiky teeth cut into it (focusSwellGLSL), so the teeth's tips stand above the old
+  // crest and their valleys below it
+  const Fd = MATCH_WATER.swellFront;
+  if (Fd) MATCH_WATER.swell.line = MATCH_WATER.swell.line.map((h, i) => {
+    const phi = -110 + 5 * i, t = Math.min(Math.max((Math.abs(phi) - Fd.full) / (Fd.to - Fd.full), 0), 1);
+    return +(h + (Fd.lift || 0) - Fd.dip * (1 - t * t * (3 - 2 * t))).toFixed(4);
+  });
+} else if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);
 // handed on before tunnel_r8_splash.js and tunnel_r8_liquid.js merge MATCH.splash / heroWater / liquid (tunnel_r8_splash.js
 // imports this file for that order); ?s3=match only
 if (MATCH_ON) {
@@ -242,7 +255,7 @@ export function matchFloorDecl() {
 // hDet its wave height (0 trough .. 1 crest), caus its caustic web; onWall: 1 where the water meets the walls (the walls' own look);
 // nearK: 1 round the character (the water there deeper, vivid electric blue as approved); soft: the map's blur instead of its
 // detail (on the swell, where the lower water's cell pattern read as cracked glass)
-vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft) {
+vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft${FOCUS_ON ? ', float fx' : ''}) {
   float rw, tu;
   mtPlace(cs, u, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
   float lr = log(max(rw, 1e-4));
@@ -283,7 +296,7 @@ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet,
   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
-  vec3 col = mtUndisplay(c);
+${FOCUS_ON ? focusFloorGLSL() : ''}  vec3 col = mtUndisplay(c);
   // glossy light: the derived relief's glints (as on the walls) and the liquid waves' glints toward the glow and the key light
   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
@@ -299,13 +312,46 @@ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet,
 }
 `.replace('M_SCREEN(c, vec3(0.62, 0.9, 1.0))', '(1.0 - (1.0 - c) * (1.0 - vec3(0.62, 0.9, 1.0)))');
 }
+// ?s3=focus only (the Art Director's review, item 5: the floor ahead, behind her, read as dark glassy cyan-and-lilac rings,
+// L* 71 against the original's 83.5; the original's is pale blue-white water with broken white crest streaks along the
+// whirlpool's circles): inside matchFloor, in screen colour, on the floor's own water only (fk: not where it meets the walls,
+// fading out toward the centre) and only for the floor itself (fx: the swell's lower water, which also calls matchFloor, keeps
+// its look): the map's lilac turned pale blue, the colour lifted toward the original's pale blue, and white crest streaks
+// (MATCH_WATER.floorFx, tunnel_r9_focus.js): cells round the centre (tu) and out from it (log radius, moving with the walls'
+// flow), one streak per cell, elongated along the circle, broken (a share of cells), thicker in the middle.
+function focusFloorGLSL() {
+  const P = MATCH_WATER.floorFx, S = P.streak, M = MATCH.walls;
+  return /* glsl */ `  {   // ?s3=focus: the floor ahead as the original's pale blue-white water (tunnel_r9_match_water.js focusFloorGLSL)
+    float ffK = fk * fx;
+    float ffLil = clamp((c.r - c.g) * 20.0, 0.0, 1.0) * clamp((c.b - c.r) * 20.0, 0.0, 1.0);
+    c.r = mix(c.r, c.g * 0.8, ffLil * ${f4(P.delilac)} * ffK);
+    c = mix(c, ${v3s(P.pale)}, ${f4(P.lift)} * ffK);
+    vec2 ffQ = vec2(tu * ${f4(S.along)}, (lr - ${f4(M.lnR0)} - fl) * ${f4(S.across)}), ffI = floor(ffQ);
+    ffQ.x += lqHash(vec2(ffI.y, 7.1)) * 0.5;   // (rows offset, so the streaks do not line up)
+    ffI = floor(ffQ);
+    vec2 ffO = fract(ffQ) - 0.5;
+    float ffH = lqHash(ffI + 3.3);
+    float ffL = mix(${f4(S.len[0])}, ${f4(S.len[1])}, lqHash(ffI + 5.7)) * 0.5;
+    float ffT = mix(${f4(S.thick[0])}, ${f4(S.thick[1])}, lqHash(ffI + 9.1)) * 0.5;
+    float ffAl = clamp(abs(ffO.x) / ffL, 0.0, 1.0);
+    float ffY = ffO.y - (lqHash(ffI + 11.9) - 0.5) * 0.3 - ${f4(S.bend)} * (ffAl * ffAl - 0.3) * (ffH > 0.5 ? 1.0 : -1.0);
+    float ffShape = (1.0 - smoothstep(0.8, 1.0, ffAl)) * (1.0 - smoothstep(ffT * (1.0 - 0.6 * ffAl * ffAl) * 0.6, ffT * (1.0 - 0.6 * ffAl * ffAl), abs(ffY)));
+    // clustered in irregular bands (white water) with blue dashes between (the original's floor ahead)
+    float ffB = smoothstep(${f4(S.band[0])}, ${f4(S.band[1])}, texture2D(uLqTex, vec2(tu * ${f4(S.band[2])}, (lr - ${f4(M.lnR0)} - fl) * ${f4(S.band[3])})).b);
+    float ffS = step(1.0 - ${f4(S.share)} * ffB, ffH) * ffShape;
+    float ffD = step(ffH, ${f4(S.blue.share)}) * ffShape;
+    c = mix(c, ${v3s(S.blue.col)}, ffD * ${f4(S.blue.amount)} * ffK);
+    c = mix(c, ${v3s(P.white)}, ffS * ${f4(S.amount)} * ffK);
+  }
+`;
+}
 // in the floor's main, after its own colour (tunnel_r8_liquid.js floorFragment): the derived water replaces it once the
 // textures are in (the Round 8 floor stays as the fallback)
 export function matchFloorApply() {
   const F = MATCH_WATER.floor;
   return /* glsl */ `  {   // ?s3=match: the walls' water continued onto the floor (tunnel_r9_match_water.js)
     float mwNear = exp(-rP * rP / ${f4(F.deepR * F.deepR)});
-    vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0);
+    vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0${FOCUS_ON ? ', 1.0' : ''});
     col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
   }
 `;
@@ -316,13 +362,101 @@ export function matchFloorApply() {
 // crest (the fur behind it shows violet), the floor's derived water lower down (one body of water), a glassy rim at grazing
 // angles, the key light's specular points, a white crest broken into bubbly pieces (foam layer only). Its place in the track
 // frame comes from the camera's frame (the hero stretch is straight there).
+// ?s3=focus only (the Art Director's review, 18:19 UTC, item 1: the water round her read as a flat, smooth light-blue sheet;
+// the original's is broken, sparkling splash water): on the swell's face, after its own colour (MATCH_WATER.face):
+//   1. the crest cut into irregular spiky teeth (valleys cut down between them; they travel out from the front, rise and
+//      fall), so no long smooth water edge runs across her;
+//   2. short broken white pieces along the cut edge, widest on the teeth's tips (white crests, never a rim);
+//   3. small irregular white splash pieces down the face, flowing down it, fewer and smaller further down (blue between);
+//   4. small clear bubble rings sitting on the water;
+//   5. round twinkling glints;
+//   6. the face's water broken into light-cyan, vivid-blue and deeper-blue currents running down it.
+// All in the surface's own coordinates (s: m along the crest; t: the profile over the crest, 0 outer foot .. 0.5 crest .. 1
+// inner foot; pd: about m down the outer face from the crest), so the pieces stay round on its steep face. (The cut uses t,
+// not d: near the crest d is nearly flat and clamped to 0 by the running waves, so any cut in d took the whole top away.)
+// Inside matchSwellGLSL (mwCol, mwA, mwFront, mwSpec, s, vS, fl, uTime).
+function focusSwellGLSL() {
+  const F = MATCH_WATER.face, T = F.teeth, R = F.rim, L = F.lace, B = F.rings, S = F.spark, Wt = F.water;
+  return /* glsl */ `    {   // ?s3=focus: broken, sparkling splash water at her base (tunnel_r9_match_water.js focusSwellGLSL)
+      // 1. the spiky crest: keep t below a jagged limit (tips at about the natural silhouette, valleys down the outer face)
+      float fsT = vS.y, fsPd = (0.5 - fsT) * 1.9;
+      float fsK = s * ${f4(T.per)} + fl * ${f4(T.speed)};
+      float fsI = floor(fsK), fsF = fract(fsK);
+      float fsH = lqHash(vec2(fsI, 3.7)), fsPk = 0.25 + 0.5 * lqHash(vec2(fsI, 8.1));
+      float fsTooth = pow(fsF < fsPk ? fsF / fsPk : (1.0 - fsF) / (1.0 - fsPk), ${f4(T.sharp)});
+      float fsTip = (0.35 + 0.65 * fsH) * (${f4(1 - T.bob)} + ${f4(T.bob)} * sin(uTime * 3.1 + fsH * 23.0));
+      float fsN = texture2D(uLqTex, vec2(s * 3.1 + fl * 0.25, 0.31 + uTime * 0.05)).b;
+      float fsCutT = ${f4(T.hi)} - (${f4(T.hi - T.lo)} * (1.0 - fsTooth * fsTip) + ${f4(T.fine)} * fsN) * mix(${f4(T.side)}, ${f4(T.front)}, mwFront);
+      fsCutT += ${f4(T.lobe)} * (0.6 * sin(s * 11.0 + 1.3 + fl * 0.4) + 0.4 * sin(s * 23.0 + 4.1 - fl * 0.7));   // rounder crests and troughs along it
+      float fsE = fsCutT - fsT;
+      float fsKeep = smoothstep(0.0, max(fwidth(fsT), 1e-5) * 1.5, fsE);
+      fsE *= 1.9;   // (m down the face from the cut edge)
+      // 2. broken white pieces along the cut edge
+      float fsRc = floor(s * ${f4(R.cell)} + fl * 0.8);
+      float fsRw = mix(${f4(R.w[0])}, ${f4(R.w[1])}, lqHash(vec2(fsRc, 5.3))) * (0.45 + 0.75 * fsTooth);
+      float fsRim = (1.0 - smoothstep(fsRw * 0.55, fsRw, fsE)) * step(${f4(1 - R.share)}, lqHash(vec2(fsRc, 1.9)));
+      // 3. broken white crest arcs down the face (the original's water there: curving white crest lines over blue, not
+      //    dots): per cell one arc of a circle, mostly its upper side, tilted a little, broken; clustered in bands that run
+      //    down the face (blue gaps between), fewer further down
+      //    (the 2 x 2 nearest cells, so an arc may reach past its own cell without being cut off square)
+      vec2 fsLq = vec2(s * ${f4(L.cell)} + fl * 0.3, fsPd * ${f4(L.cell)} - fl * ${f4(L.flow)}), fsLb = floor(fsLq - 0.5);
+      float fsReach = 1.0 - smoothstep(0.0, ${f4(L.reach)}, fsE);
+      float fsBand = smoothstep(${f4(L.band[0])}, ${f4(L.band[1])}, texture2D(uLqTex, vec2(s * ${f4(L.band[2])} + fl * 0.1, fsPd * ${f4(L.band[2] * 1.4)} - fl * 0.5)).b);
+      float fsLace = 0.0;
+      for (int j = 0; j < 4; j++) {
+        vec2 fsLi = fsLb + vec2(mod(float(j), 2.0), floor(float(j) * 0.5));
+        vec2 fsLo = fsLq - fsLi - 0.5 - (vec2(lqHash(fsLi + 4.0), lqHash(fsLi + 7.0)) - 0.5) * 0.4;
+        float fsLr = mix(${f4(L.r[0])}, ${f4(L.r[1])}, lqHash(fsLi + 2.0));
+        float fsLw = mix(${f4(L.w[0])}, ${f4(L.w[1])}, lqHash(fsLi + 3.0)) * (0.6 + 0.4 * fsReach);
+        float fsLa = atan(fsLo.x, -fsLo.y) - (lqHash(fsLi + 13.0) - 0.5) * ${f4(L.tilt)};
+        float fsLs = mix(${f4(L.span[0])}, ${f4(L.span[1])}, lqHash(fsLi + 9.0));
+        // (irregular, not a row of commas: the radius wobbles along the arc and the line tapers toward one end)
+        float fsLh = lqHash(fsLi + 17.0);
+        fsLr *= 1.0 + ${f4(L.wobble || 0)} * sin(fsLa * (2.0 + 2.0 * fsLh) + fsLh * 6.28);
+        fsLw *= 1.0 - ${f4(L.taper || 0)} * smoothstep(-fsLs, fsLs, fsLa * (fsLh > 0.5 ? 1.0 : -1.0));
+        float fsArc = (1.0 - smoothstep(fsLw * 0.55, fsLw, abs(length(fsLo) - fsLr))) * (1.0 - smoothstep(fsLs * 0.75, fsLs, abs(fsLa)));
+        fsLace = max(fsLace, step(1.0 - ${f4(L.share)} * fsReach * fsBand, lqHash(fsLi + 11.0)) * fsArc);
+      }
+      // 4. small clear bubble rings
+      vec2 fsBq = vec2(s * ${f4(B.cell)} + 0.15 * sin(uTime * 0.6), fsPd * ${f4(B.cell)} - fl * 0.35), fsBi = floor(fsBq);
+      float fsBr = mix(${f4(B.r[0])}, ${f4(B.r[1])}, lqHash(fsBi + 29.0));
+      vec2 fsBo = fract(fsBq) - 0.5 - (vec2(lqHash(fsBi + 31.0), lqHash(fsBi + 37.0)) - 0.5) * 0.3;
+      float fsBl = length(fsBo);
+      float fsRing = step(${f4(1 - B.share)}, lqHash(fsBi + 23.0)) * (1.0 - smoothstep(0.05, ${f4(B.reach)}, fsE));
+      float fsRingGl = fsRing * (1.0 - smoothstep(0.0, fsBr * 0.22, length(fsBo - vec2(-0.45, 0.45) * fsBr)));
+      fsRing *= smoothstep(fsBr - 0.08, fsBr - 0.03, fsBl) * (1.0 - smoothstep(fsBr, fsBr + 0.03, fsBl));
+      // 5. round twinkling glints
+      vec2 fsSq = vec2(s * ${f4(S.cell)}, fsPd * ${f4(S.cell)} - fl * 0.6), fsSi = floor(fsSq);
+      float fsSh = lqHash(fsSi + 41.0);
+      float fsSpark = step(${f4(1 - S.share)}, fsSh) * (1.0 - smoothstep(${f4(S.dot[0])}, ${f4(S.dot[1])}, length(fract(fsSq) - 0.5 - (vec2(lqHash(fsSi + 43.0), lqHash(fsSi + 47.0)) - 0.5) * 0.5)))
+        * (0.55 + 0.45 * sin(uTime * 6.0 + fsSh * 40.0)) * (1.0 - smoothstep(0.05, ${f4(S.reach)}, fsE));
+      // 6. light-cyan, vivid-blue and deeper-blue currents running down the face
+      float fsC = texture2D(uLqTex, vec2(s * ${f4(Wt.scale[0])} + fl * 0.08, fsPd * ${f4(Wt.scale[1])} - fl * 0.45)).b;
+      vec3 fsW = mix(${v3s(Wt.deep)}, ${v3s(Wt.mid)}, smoothstep(0.3, 0.55, fsC));
+      fsW = mix(fsW, ${v3s(Wt.light)}, smoothstep(0.55, 0.8, fsC));
+      mwCol = mix(mwCol, mtUndisplay(fsW), ${f4(Wt.amount)});
+      mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
+      mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
+      mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
+      mwA *= fsKeep;
+${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
+        mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
+      }
+` : F.debug ? `      {   // (debug: the crest's angle round her in 10-degree stripes, red / green, white at 0)
+        vec3 fsO = vW - uC; float fsPhi = degrees(atan(dot(fsO, uR) / 0.95, -dot(fsO, uT) / 0.55));
+        mwCol = mod(floor(fsPhi / 10.0), 2.0) < 0.5 ? vec3(1.0, 0.0, 0.0) : vec3(0.0, 1.0, 0.0);
+        if (abs(fsPhi) < 1.5) mwCol = vec3(1.0); mwA = fsKeep;
+      }
+` : ''}    }
+`;
+}
 export function matchSwellGLSL() {
   const K = MATCH_WATER.look;
   return /* glsl */ `  {   // ?s3=match: the swell as glossy see-through water (tunnel_r9_match_water.js)
     vec3 mwRc = vW - cameraPosition;
     vec2 mwCs = uHeroCam.xy + vec2(dot(mwRc, uLqSide), dot(mwRc, uLqUp));
     float mwU = uHeroCam.z + dot(mwRc, uLqFwd);
-    vec3 mwFloor = matchFloor(mwCs, mwU, vW, uU, uT, N, hDet, 0.0, 0.0, 1.0, ${f4(K.soft)});   // (no caustic web, softer map: they read as cracks)
+    vec3 mwFloor = matchFloor(mwCs, mwU, vW, uU, uT, N, hDet, 0.0, 0.0, 1.0, ${f4(K.soft)}${FOCUS_ON ? ', 0.0' : ''});   // (no caustic web, softer map: they read as cracks)
     float mwFront = 1.0 - smoothstep(0.4, 0.75, as);   // in front of the body: see-through; beside it more solid blue
     float mwTop = 1.0 - smoothstep(0.0, ${f4(K.top)}, d);
     float mwNdv = clamp(dot(N, V), 0.0, 1.0);
@@ -353,7 +487,7 @@ export function matchSwellGLSL() {
       mwCrest *= mix(1.0, ${f4(K.crestFront)}, mwFront);   // (in front of the body the lobes make the waterline: no white lip)
       mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
     }
-    {   // (focused pass) a band of opaque white-aqua froth along the top of the swell, in front of and beside the body, so she
+${FOCUS_ON ? '' : `    {   // (focused pass) a band of opaque white-aqua froth along the top of the swell, in front of and beside the body, so she
         // sits on froth (the original: white froth with bubbles right under her; the before: a flat pale-lilac glass plate)
       float mfN = texture2D(uLqTex, vec2(as * 1.7 - fl * 0.1, 0.23 + uTime * 0.04)).b;
       float mfD = mix(${f4(K.froth.depth[1])}, ${f4(K.froth.depth[0])}, mwFront) * (0.6 + 0.8 * mfN);   // m below the crest, ragged
@@ -374,8 +508,8 @@ export function matchSwellGLSL() {
       mfC = mix(mfC, ${v3s(K.froth.white)}, mfGl);
       mwCol = mix(mwCol, mtUndisplay(mfC), mfZ); mwA = max(mwA, mfZ);
     }
-#endif
-    col = mix(col, mwCol, uMatchOn);
+`}#endif
+${FOCUS_ON ? focusSwellGLSL() : ''}    col = mix(col, mwCol, uMatchOn);
     a = mix(a, mwA * smoothstep(-0.06, 0.06, hUp + 0.02), uMatchOn);
   }
 `;
@@ -424,7 +558,45 @@ export function matchLumpDecl() { return mwUndisplayGLSL(); }
 // pale blue, white on the tops), white froth patches of small bubbles, fine white droplets, a bubbly white crest along the top
 // of the outline and a ragged bubbly outline; written in screen colours (mwUndisp)
 const lin3 = (hex) => { const c = new THREE.Color(hex); return `vec3(${f4(c.r)}, ${f4(c.g)}, ${f4(c.b)})`; };   // sRGB -> linear
+// ?s3=focus only (the focused correction pass, the user's correction of about 17:15 UTC): what is left of the bank, a few
+// small low splash crests beside her and in the bottom corners, as glossy BLUE water (MATCH_WATER.crest, from
+// tunnel_r9_focus.js): cobalt low down to turquoise, light cyan where they face the light, a thin broken white edge along the
+// top of the outline, fine white spray dots on the upper half, a glint. Never lavender, never a white mass. Same inputs as
+// matchLumpGLSL.
+function focusLumpGLSL() {
+  const B = MATCH_WATER.crest;
+  return /* glsl */ `  {   // ?s3=focus: small blue water splash crests (tunnel_r9_match_water.js, tunnel_r9_focus.js)
+    float cUp = dot(N, uU), cF = 1.0 - ndv;
+    vec3 cc = mix(${lin3(B.low)}, ${lin3(B.mid)}, smoothstep(0.25, 0.6, d));
+    cc = mix(cc, ${lin3(B.hi)}, smoothstep(0.62, 0.92, d + max(cUp, 0.0) * 0.15));
+    vec3 cP = vO * 1.6 + vSeed * 5.0, cPi = floor(cP);
+    float cBr = step(0.3, fract(sin(dot(cPi, vec3(39.346, 11.135, 83.155))) * 24634.6345));
+    float cEdge = smoothstep(0.55, 0.72, cF) * smoothstep(0.0, 0.4, cUp) * cBr;
+    vec3 cQ = vO * ${f4(B.sprayCell)} + vSeed * 13.0, cQi = floor(cQ);
+    float cH = fract(sin(dot(cQi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
+    float cSpray = step(${f4(B.sprayShare)}, cH) * (1.0 - smoothstep(0.1, 0.18, length(fract(cQ) - 0.5))) * smoothstep(-0.1, 0.4, cUp);
+${B.rag ? `    // (item 1) a splash crest, not a smooth dome: its upper outline eaten into irregular points, and its top broken into
+    // separate small white pieces (blue water between them; a white cap with holes read as one white mass)
+    float cRn = texture2D(uLqTex, vO.xz * 0.9 + vO.y * vec2(0.37, -0.29) + vSeed * 3.0 + vec2(uTime * 0.04, 0.0)).b;
+    float cRn2 = fract(sin(dot(floor(vO * ${f4(B.rag[2])} + vSeed * 9.0), vec3(17.13, 53.71, 29.37))) * 43758.5453);
+    if (cUp > -0.15 && cF > ${f4(B.rag[0])} + ${f4(B.rag[1])} * (cRn * 0.7 + cRn2 * 0.3)) discard;
+    vec3 cCq = vO * ${f4(B.cap.cell)} + vSeed * 11.0, cCi = floor(cCq);
+    float cCh = fract(sin(dot(cCi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
+    float cUpK = smoothstep(${f4(B.cap.up[0])}, ${f4(B.cap.up[1])}, cUp + (cRn - 0.5) * 0.5);
+    float cCr = mix(${f4(B.cap.r[0])}, ${f4(B.cap.r[1])}, cUpK * fract(cCh * 17.3));
+    vec3 cCo = fract(cCq) - 0.5 - (fract(cCh * vec3(7.13, 3.71, 5.29)) - 0.5) * 0.2;
+    float cCap = step(${f4(1 - B.cap.share)}, cCh) * step(0.02, cUpK) * (1.0 - smoothstep(cCr - 0.05, cCr, length(cCo))) * ${f4(B.cap.amount)};
+    cEdge = max(cEdge * ${f4(B.cap.edge)}, cCap);
+` : ''}    cc = mix(cc, ${lin3(B.white)}, clamp(max(cEdge * ${f4(B.edge)}, cSpray * ${f4(B.spray)}), 0.0, 1.0));
+    float cRd = max(dot(reflect(-L, N), V), 0.0);
+    cc += vec3(1.0) * pow(cRd, 120.0) * ${f4(B.spec)} + ${lin3(B.hi)} * pow(cF, 3.0) * 0.25;
+    col = cc;
+    a = clamp(max(${f4(B.alpha)}, max(cEdge, cSpray)), 0.0, 1.0) * clamp(vK * 1.5, 0.0, 1.0);
+  }
+`;
+}
 export function matchLumpGLSL() {
+  if (FOCUS_ON) return focusLumpGLSL();   // ?s3=focus: small blue water splash crests (above)
   const B = MATCH_WATER.froth;
   return /* glsl */ `  {   // ?s3=match: thick bright aqua-white froth (tunnel_r9_match_water.js, focused pass)
     float fUp = dot(N, uU);
@@ -560,13 +732,18 @@ void main() {
     // a streak along the band (its ring round the axis), bent toward the axis
     vec2 dirT = (viewMatrix * vec4(aT, 0.0)).xy, dirI = (viewMatrix * vec4(aN, 0.0)).xy;
     dirT = dirT / max(length(dirT), 1e-4);
-    vec2 dirR = vec2(-dirT.y, dirT.x);
+${FL.rot ? `    {   // ?s3=focus: turned off the band by up to rot degrees (the original's white bits do not all follow the rings)
+      float ro = (fract(aB.y * 13.7) - 0.5) * ${f4(2 * FL.rot * Math.PI / 180)};
+      dirT = vec2(dirT.x * cos(ro) - dirT.y * sin(ro), dirT.x * sin(ro) + dirT.y * cos(ro));
+    }
+` : ''}    vec2 dirR = vec2(-dirT.y, dirT.x);
     dirR *= -sign(dot(dirR, dirI) + 1e-6);                     // across it, pointing away from the axis
-    float hw = max(fract(aB.w) * 0.1, 1.3 / pxPerM);          // half width (m), at least 1.3 px (bold)
+${FOCUS_ON ? `    float hw = max(fract(aB.w) * 0.1, 0.9 / pxPerM);          // half width (m), at least about a pixel
+` : `    float hw = max(fract(aB.w) * 0.1, 1.3 / pxPerM);          // half width (m), at least 1.3 px (bold)
     // (focused pass) on screen at most maxPx long (half), the width scaled with it: near the rim they were white moons
     float rs = min(r, ${f4(FL.maxPx)} * uRes.y / 1614.0 / pxPerM);
     hw *= max(rs / r, 0.6); r = rs;
-    mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);
+`}    mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);
     vRimW = hw / r;
     vBend = (floor(aB.w) - 50.0) / 10.0;
   }
@@ -578,7 +755,16 @@ uniform float uTime;
 varying vec2 vQ; varying float vA, vSeed, vKind, vRimW, vBend;
 void main() {
   if (vA < 0.003) discard;
-  if (vKind > 0.5) {   // a white splash fleck (x along the band -1..1, yq across it in half widths, -2.5..2.5)
+${FOCUS_ON ? `  if (vKind > 0.5) {   // a white streak: a tapered, slightly bent dash (y across it: 2.5 x its half width)
+    float x = vQ.x;
+    float y = vQ.y * 2.5 - vBend * (x * x - 0.35);
+    float body = exp(-y * y * 3.5) * (1.0 - smoothstep(0.5, 1.0, abs(x)));   // (crisp: the original's flecks are small sharp white bits)
+    float a = clamp(body * 1.7, 0.0, 1.0) * ${f4(FL.alpha)} * vA;
+    if (a < 0.004) discard;
+    gl_FragColor = vec4(vec3(0.93, 0.98, 1.0) * a, a);
+    return;
+  }
+` : `  if (vKind > 0.5) {   // a white splash fleck (x along the band -1..1, yq across it in half widths, -2.5..2.5)
     float x = vQ.x, yq = vQ.y * 2.5;
     float y = yq - vBend * (x * x - 0.35);
     float asp = max(vRimW, 0.02);                 // half width / half length
@@ -611,7 +797,7 @@ void main() {
     gl_FragColor = vec4(c * a, a);
     return;
   }
-  float rr = dot(vQ, vQ);
+`}  float rr = dot(vQ, vQ);
   if (rr > 1.0) discard;
   float rad = sqrt(rr);
   float f = 1.0 - sqrt(1.0 - rr);   // 0 at the middle .. 1 at the outline

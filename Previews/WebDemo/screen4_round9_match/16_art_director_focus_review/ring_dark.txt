@@ -1,0 +1,6 @@
+orig   ring zone        L* p10/25/50/75/90   48   57   73   88   95 | L*<50 12.8% <55 21.2% <60 29.7% | darkest20%: hue 220.8 sat 0.81 L* 48.2 | saturated blue: share 36.5% hue 215.2 L* 54.9 sat 0.78
+orig   upper arc y<.45  L* p10/25/50/75/90   45   53   64   80   92 | L*<50 18.9% <55 30.5% <60 41.6% | darkest20%: hue 220.8 sat 0.88 L* 45.5 | saturated blue: share 54.2% hue 215.2 L* 54.1 sat 0.83
+match  ring zone        L* p10/25/50/75/90   49   60   73   86   91 | L*<50 10.5% <55 15.1% <60 23.5% | darkest20%: hue 225.0 sat 0.75 L* 49.8 | saturated blue: share 40.1% hue 215.2 L* 59.6 sat 0.72
+match  upper arc y<.45  L* p10/25/50/75/90   47   58   69   83   89 | L*<50 13.1% <55 19.5% <60 31.2% | darkest20%: hue 225.0 sat 0.79 L* 46.7 | saturated blue: share 54.2% hue 216.6 L* 58.8 sat 0.72
+focus  ring zone        L* p10/25/50/75/90   48   60   73   86   92 | L*<50 11.9% <55 17.7% <60 24.9% | darkest20%: hue 223.6 sat 0.75 L* 48.2 | saturated blue: share 33.4% hue 216.6 L* 58.4 sat 0.69
+focus  upper arc y<.45  L* p10/25/50/75/90   50   61   73   84   91 | L*<50 10.3% <55 16.8% <60 23.5% | darkest20%: hue 222.2 sat 0.71 L* 49.8 | saturated blue: share 45.3% hue 209.5 L* 60.8 sat 0.69

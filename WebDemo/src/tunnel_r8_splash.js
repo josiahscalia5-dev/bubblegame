@@ -26,11 +26,12 @@
 import * as THREE from 'three';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9's settings
+import { FOCUS_ON } from './tunnel_r9_focus.js';   // ?s3=focus: the seventh session's froth lobes are `match` only
 import { matchLumpGLSL, matchLumpDecl } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (imported here so its settings reach MATCH before the merges below)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const SPLASH_ON = LIST.includes('splash') || LIST.includes('match');   // ?s3=match: Round 9 builds on this pass
+export const SPLASH_ON = LIST.includes('splash') || LIST.includes('match') || LIST.includes('focus');   // ?s3=match: Round 9 builds on this pass
 export const SPLASH_FOAM = SPLASH_ON && !LIST.includes('nofoam');
 
 export const SPLASH = {
@@ -246,7 +247,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);' : ''}
         list.push([c.x + c.nx * out, c.h + up, c.u + c.nu * out, r, rnd(), phi < 0 ? -1 : 1]);
       }
     }
-    const n = list.length, sphere = new THREE.IcosahedronGeometry(1, MATCH_ON ? SPLASH.lumpDetail : 3), g = new THREE.InstancedBufferGeometry();
+    const n = list.length, sphere = new THREE.IcosahedronGeometry(1, MATCH_ON && !FOCUS_ON ? SPLASH.lumpDetail : 3), g = new THREE.InstancedBufferGeometry();
     g.index = sphere.index; g.setAttribute('position', sphere.attributes.position); g.setAttribute('normal', sphere.attributes.normal);
     if (!g.index) {   // IcosahedronGeometry is not indexed: index it as a plain list
       const cnt = sphere.attributes.position.count, ix = new Uint32Array(cnt); for (let i = 0; i < cnt; i++) ix[i] = i; g.setIndex(new THREE.BufferAttribute(ix, 1));
@@ -266,7 +267,7 @@ void main() {
   vec3 q = position;
   // lumpy, and slowly boiling
   float bump = ${MATCH_ON ? f3(SPLASH.lumpBump) : '0.16'} * sin(q.x * 3.1 + seed * 11.0) * sin(q.y * 2.7 + seed * 5.0) * sin(q.z * 3.3 + seed * 7.0)
-    + 0.06 * sin(q.x * 7.0 + q.z * 5.0 + uTime * (3.0 + seed * 2.0) + seed * 20.0)${MATCH_ON ? `
+    + 0.06 * sin(q.x * 7.0 + q.z * 5.0 + uTime * (3.0 + seed * 2.0) + seed * 20.0)${MATCH_ON && !FOCUS_ON ? `
     + ${f3(SPLASH.lumpFroth)} * sin(q.x * 6.3 + seed * 17.0) * sin(q.y * 5.7 + seed * 3.0) * sin(q.z * 6.9 + seed * 13.0 + uTime * 0.6)   // ?s3=match: frothy bulges on the outline
    ` : ''};
   vec3 o = q * (1.0 + bump);
@@ -281,7 +282,7 @@ void main() {
       fragmentShader: /* glsl */ `
 uniform sampler2D uLqTex; uniform float uTime; uniform vec3 uR, uU, uT;
 varying vec3 vW, vN, vO; varying float vK, vSeed;
-${MATCH_ON ? matchLumpDecl() : ''}void main() {
+${MATCH_ON && !FOCUS_ON ? matchLumpDecl() : ''}void main() {
   if (vK <= 0.001) discard;
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
   float ndv = clamp(dot(N, V), 0.0, 1.0);
