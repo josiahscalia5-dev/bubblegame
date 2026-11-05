@@ -122,3 +122,7 @@ While the tests run, I'm re-measuring `match`'s merged frames at the new framing
 
 While the gameplay agent finishes, writing the README for the `match` merge folder with these numbers:
 
+Adding the two findings to the hand-off while the hearts / pause / power-up tests run:
+
+The `focus` hearts test has finished, and the `match` one is still running. Waiting for the gameplay agent's report:
+

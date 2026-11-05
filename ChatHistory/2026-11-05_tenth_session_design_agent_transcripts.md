@@ -40,8 +40,15 @@ Focus s3_func done. Now the same with `S3=match`.
 Both s3_func runs done. Now r2_func with `S3=focus` at VW=135 VH=270.
 
 - 22:06 `Bash`: Run r2_func hearts/pause/powers check with focus
+- 22:11 `Bash`: Show end of focus r2_func output
+- 22:11 `Bash`: Check r2_func's turbo and console-error handling
+**Agent** (22:11 UTC):
 
-_8 tool steps._
+Focus r2_func passed. Now r2_func with `S3=match`.
+
+- 22:11 `Bash`: Run r2_func with match and compare to focus
+
+_11 tool steps._
 
 ---
 
