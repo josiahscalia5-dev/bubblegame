@@ -417,3 +417,5 @@ While those run, collecting step 3's evidence: the ring-map sheet, the measuring
 
 Waiting for the two check jobs:
 
+`s3_func` passes on the step 3 build (lanes, jump, 12 coins, 1 gem, 2 socks, no console errors). `r2_func` is still running. Waiting for it:
+
