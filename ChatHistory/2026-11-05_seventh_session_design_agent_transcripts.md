@@ -823,5 +823,33 @@ Final capture set, then the identity, gameplay, moves and probe checks again on 
 - 15:29 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/final.sh
 - 15:29 `Bash`: Final frames and all checks on final bundle
 - 15:30 `Bash`: Wait for final run
+- 15:36 `Bash`: Copy final frames and probes, show results
+- 15:36 `Bash`: Check s3_func essentials
+**Agent** (15:36 UTC):
 
-_203 tool steps._
+Now the pixel comparison on the final bundle's frames (as a script file, since inline programs are refused).
+
+- 15:36 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/pixcmp.py
+- 15:37 `Bash`: Pixel identity on final bundle
+**Agent** (15:37 UTC):
+
+Identity holds on the final bundle. Now the sheets and `measured.txt` from the final frames.
+
+- 15:37 `Bash`: Regenerate sheets and final measurements
+**Agent** (15:37 UTC):
+
+Final 3.0 s numbers are in. One look at the final waterline close-up before writing up.
+
+- 15:37 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_02_waterline_character_on_
+**Lead → agent** (15:37 UTC):
+
+[Image: original 2412x560, displayed at 2000x464. Multiply coordinates by 1.21 to map to original image.]
+
+- 15:37 `Bash`: Write measured.txt
+**Agent** (15:37 UTC):
+
+I'll compose `measured.txt` directly from the outputs.
+
+- 15:37 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/meas_final.txt
+
+_211 tool steps._

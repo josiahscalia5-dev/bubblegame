@@ -1,13 +1,13 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: finish bank and bubbles)
 
-- **Taken:** 2026-11-05 15:32 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 15:37 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `5d742e0`.
 - **Its own commits so far:** 
   - `b2454f5 Round 9 Water & VFX gate fixes (WIP): the tunnel bubble field at every depth with white streaks, opaque aqua-white froth lobes`
   - `9bfd9f7 Round 9 Water & VFX gate fixes (restored WIP): the bank's lobes, the swell's front, fewer flecks and droplets, the first tunnel bubble field`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (189; full copies in `files/`)
+## Files (191; full copies in `files/`)
 
 - `.wvtmp/bank_i1.png (new)`
 - `.wvtmp/bank_i10.png (new)`
@@ -153,6 +153,7 @@
 - `.wvtmp/r0/match_info.json (new)`
 - `.wvtmp/r0/match_t3.00.png (new)`
 - `.wvtmp/r0/match_t3.00_canvas.png (new)`
+- `.wvtmp/specks_final.txt (new)`
 - `.wvtmp/streak_map.png (new)`
 - `.wvtmp/streak_zoom.png (new)`
 - `.wvtmp/t1.json (new)`
@@ -192,6 +193,7 @@
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles.py`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles_eye.py (new)`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/meas.py`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/pixcmp.py (new)`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sbs.py`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sheets.py (new)`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/specks.py`

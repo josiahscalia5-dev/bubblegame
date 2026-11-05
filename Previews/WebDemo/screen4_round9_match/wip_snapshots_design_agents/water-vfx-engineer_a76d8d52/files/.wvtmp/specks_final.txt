@@ -1,0 +1,4 @@
+frame                centre            mid          walls   (count / % of the zone covered; specks.py)
+approved         37 /  3.5%    140 /  4.0%    208 /  2.0%
+before           97 /  6.3%    225 /  4.3%    394 /  2.0%
+now             116 /  7.0%    436 /  6.4%    461 /  2.3%

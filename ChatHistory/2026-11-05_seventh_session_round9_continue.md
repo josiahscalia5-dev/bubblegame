@@ -286,3 +286,39 @@ Water & VFX is still working. When it finishes, I'll merge it and send you the s
 
 show me the side by side comparison
 
+---
+
+### Claude · 2026-11-05 15:32 UTC
+
+Water & VFX hasn't finished yet, so I'll show you the most current picture: your original beside the build you reviewed, the merged build now, and a preview with Water & VFX's latest committed work merged in. Checking what it has committed:
+
+The preview applies cleanly and builds. Capturing real gameplay at 3.0 s: the merged game and the preview at the 1:2 frame, and the preview on a Pixel 7:
+
+Before I describe it, close-ups of the tunnel interior and the water round the character, where the Water & VFX work shows:
+
+Aspect rounding differs slightly between the original and the captures; I'll fix the crop height:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/original_vs_saved_vs_merged_vs_preview_3.00s.jpg, Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/pixel7_original_vs_saved_vs_preview_3.00s.jpg, Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/closeup_tunnel_interior_3.00s.jpg, Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/closeup_character_and_water_3.00s.jpg]_
+
+I've sent you four images, all real gameplay at the same moment (3.0 s, same seed, same camera). The main sheet has four columns: your original, the saved build you reviewed, the merged build now, and a preview with Water & VFX's unfinished work added. Then the Pixel 7 view, and close-ups of the tunnel and the character.
+
+**What's fixed and merged (third column):**
+- **Tunnel:** the smeared swirl is now distinct nested cobalt rings leading to a warm centre. The lime-yellow patches and star sparkles are gone.
+- **Coins, gem, sock:** the two left coins are no longer a stacked pair. The big coin, the small coin, the gem, the sock and the lower-right coin sit at your original's positions, measured within about 1% of the frame.
+- **White rectangle and purple band (phone):** the rectangle is removed, and the gold rim sits under the mission banner as in your original.
+- **Gameplay and older versions:** all 33 test frames of the normal game and the ten older versions are pixel-identical to before, and controls, coins and socks still work.
+
+**Water & VFX's work in progress (fourth column, not finished or merged):**
+- small bubbles drifting among the middle rings;
+- a lumpier foam bank round her base, with her sitting on top of it as you asked.
+
+**Honestly, it's still clearly not your original:**
+1. **The tunnel is too clean.** Yours is packed with white splash flecks, streaks and bubbles at every depth. Ours has smooth rings in a lighter blue with a peach band, and the deep-tunnel bubbles are still few and faint.
+2. **The foam is the wrong material.** Yours is bright white-aqua froth with clear bubbles. Ours is glassy lavender-blue lumps, partly hidden by the Bubble Blast and Turbo Spin buttons, which sit higher than in your original.
+3. **The character looks smaller.** Hers spans about 0.58 of the width in your original, about 0.42 in the game. That's camera distance, not her design.
+4. **The sock stands upright;** yours lies on its side.
+
+**Next:** Water & VFX is finishing with your "on top of the water" correction; then I merge it and run the full checks. Points 1 and 2 need one more focused pass after that: much more white froth and splash in the tunnel and the bank, and many more deep bubbles.
+
+The sheets and close-ups are saved on GitHub (`1692d42`) in `Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/`.
+
