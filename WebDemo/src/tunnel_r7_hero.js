@@ -25,6 +25,7 @@ import { buildHeroWater } from './tunnel_r7_hero_water.js';
 import { LIQUID_ON, buildLiquid } from './tunnel_r8_liquid.js';   // ?s3=liquid: Round 8's real water (on top of the hero scene)
 import { MATCH_ON, MATCH, deepMerge, buildMatch } from './tunnel_r9_match.js';   // ?s3=match: Round 9's art-match pass
 import { buildMatchWater } from './tunnel_r9_match_water.js';
+import { phoneTanW } from './match_phone.js';   // ?s3=match only: the phone framing
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -242,7 +243,8 @@ export function buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets
     for (let i = 0; i < 2; i++) { TR.frame(u, F); rel.copy(cam.position).sub(F.P); u += rel.dot(F.T); }
     TR.frame(u, F); rel.copy(cam.position).sub(F.P);
     U.uHeroCam.value.set(rel.dot(F.R), rel.dot(F.U), u); camera.ok = true;
-    U.uHeroTanW.value = 2 * Math.tan(THREE.MathUtils.degToRad(cam.fov) / 2) * cam.aspect;
+    U.uHeroTanW.value = MATCH_ON ? phoneTanW(cam.fov, cam.aspect)   // ?s3=match: the 1:2 reference width on phones (match_phone.js)
+      : 2 * Math.tan(THREE.MathUtils.degToRad(cam.fov) / 2) * cam.aspect;
   };
   updaters.push(() => { U.uHeroTravel.value = mascot.z; });
 

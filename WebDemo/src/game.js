@@ -23,6 +23,7 @@ import { ROUND5 } from './tunnel_r5.js';
 import { ROUND6, R6_ON, R7_ON, lemonGold } from './tunnel_r6.js';
 import { HERO_ON, HERO } from './tunnel_r7_hero.js';
 import { MATCH_ON, MATCH, MATCH_READY, matchCollectibles } from './tunnel_r9_match.js';   // ?s3=match only (Round 9)
+import { phoneFov } from './match_phone.js';   // ?s3=match only: the phone framing (the original's vertical framing on taller screens)
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -1214,7 +1215,8 @@ function updateCamera(dt) {
   camera.lookAt(target);
   // Keep the approved horizontal coverage on narrow phones (FOV fitted at a 1:2 portrait screen).
   const aspect = camera.aspect;
-  camera.fov = aspect >= 0.5 ? fovV : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(fovV) / 2) * 0.5 / aspect));
+  camera.fov = MATCH_ON ? phoneFov(fovV, aspect)   // ?s3=match: keeps the original's vertical framing on phones (match_phone.js)
+    : aspect >= 0.5 ? fovV : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(fovV) / 2) * 0.5 / aspect));
   camera.updateProjectionMatrix();
 }
 

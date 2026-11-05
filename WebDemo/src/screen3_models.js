@@ -18,6 +18,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { buildTunnelS4 } from './tunnel_s4.js';
+import { MATCH_ON } from './tunnel_r9_match.js';
+import { phoneRefFov } from './match_phone.js';   // ?s3=match only: the 1:2 reference camera under the phone framing
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -283,7 +285,7 @@ function soapBubbles({ scene, staticBubbles, camera, updaters, mascot }) {
     same.geometry.instanceCount = sg.instanceCount;
     if (placed || phase !== 'intro') return;
     placed = true;
-    ref.fov = camera.aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect / 0.5));
+    ref.fov = MATCH_ON ? phoneRefFov(camera.fov, camera.aspect) : camera.aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect / 0.5));
     ref.position.copy(camera.position); ref.quaternion.copy(camera.quaternion); ref.updateProjectionMatrix(); ref.updateMatrixWorld(true);
     const fwd = ref.getWorldDirection(new THREE.Vector3()), dir = new THREE.Vector3();
     const inst = extraGeo.attributes.inst, mot = extraGeo.attributes.motion;
@@ -571,7 +573,7 @@ async function paintScenery({ scene, camera, updaters, tunnelStart, sideMachiner
   updaters.push((dt, t, phase) => {
     if (!placed && phase === 'intro') {
       placed = true;
-      ref.fov = camera.aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect / 0.5));
+      ref.fov = MATCH_ON ? phoneRefFov(camera.fov, camera.aspect) : camera.aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect / 0.5));
       ref.position.copy(camera.position); ref.quaternion.copy(camera.quaternion); ref.updateProjectionMatrix(); ref.updateMatrixWorld(true);
       const C = ref.position, tz = (z) => (z - C.z) / Math.max(dir.z, 1e-4);
       for (let k = 0; k < n; k++) {

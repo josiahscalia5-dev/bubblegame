@@ -33,6 +33,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { PHASE_A, applyPhaseA } from './phase_a.js';
 import { S3, S3_ON, loadScreen3Models } from './screen3_models.js';
+import { MATCH_ON } from './tunnel_r9_match.js';
+import { phoneRefFov } from './match_phone.js';   // ?s3=match only: the 1:2 reference camera under the phone framing
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -317,7 +319,7 @@ export function buildOpening(ctx) {
       // Placed from the approved screen's layout, through the Tap to Start camera (a 1:2 portrait view).
       placed = true;
       const aspect = camera.aspect;
-      ref.fov = aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * aspect / 0.5));
+      ref.fov = MATCH_ON ? phoneRefFov(camera.fov, aspect) : aspect >= 0.5 ? camera.fov : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * aspect / 0.5));
       ref.position.copy(camera.position); ref.quaternion.copy(camera.quaternion); ref.updateProjectionMatrix(); ref.updateMatrixWorld(true);
       const fwd = ref.getWorldDirection(new THREE.Vector3()), dir = new THREE.Vector3();
       const inst = staticBubbles.geometry.attributes.inst, mot = staticBubbles.geometry.attributes.motion;
