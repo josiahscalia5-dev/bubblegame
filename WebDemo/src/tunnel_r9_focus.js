@@ -34,7 +34,7 @@ export const FOCUS = {
     // 4. the sock's pose inside its rocking group (radians, the sock's own axes: x tips it toward the camera, y turns it, z
     //    rolls it as seen from the camera; + is counter-clockwise): the original's sock lies sideways, its toe low on the left,
     //    the cuff up to the right
-    sockPose: [0.25, -0.9, -0.55],
+    sockPose: [0.45, -0.8, -0.1],
     walls: {
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
@@ -57,8 +57,13 @@ export const FOCUS = {
     //    aqua-white on the sides, light aqua-blue only in the creases and where they meet the water; a dense bubbly texture
     //    (two sizes of round foam bubbles, each a white rim round a pale aqua inside, and a fine web), a few soap-film tints;
     //    nearly opaque
-    froth: { white: '#f7fcff', side: '#d4efff', shade: '#9ad3f6', crease: '#56aeee', water: '#2f96ee',
-      cells: [7.0, 15.0], bubble: 0.75, web: 0.35, film: 0.1, alpha: 0.97, rim: 0.9, spec: 1.2 },
+    froth: { white: '#f7fcff', side: '#b3e1fc', shade: '#64b4ef', crease: '#3d9cea', water: '#2f96ee',
+      cells: [6.0, 12.0], bubble: 1.0, inside: [0.62, 0.8, 0.95], web: 0.4, film: 0.12, alpha: 0.97, rim: 0.9, spec: 1.2, lit: [0.2, 0.6, 0.66, 0.95] },
+    // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque (no
+    //    see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac), and a full froth
+    //    rim at her base in front (match kept it at half there)
+    swellFront: { dip: 0.08, full: 22, to: 48 },
+    look: { clear: 1.0, sideClear: 1.0, crestFront: 1.0, crestW: [0.03, 0.06, 0.05, 0.05], frontRim: 0.3 },
     splash: {
       // lumpier and puffier (froth, not smooth domes), a wider spread of sizes
       lumpSquash: 0.78, lumpBump: 0.17, lumpMin: 0.35,
@@ -66,10 +71,12 @@ export const FOCUS = {
       // (phi -16 to 9, 37-62% across) lowered and pushed out, so her lower body shows and the foam meets her at her base; the
       // sides kept high (foam up her sides, higher on the left, as the original's); more, smaller lobes further out in front
       // and at the sides, so the bank is a full froth across the bottom
+      // (they ride the swell's crest, so the front ones follow it down: a low froth cushion at her base, phi -16 to 9)
       lumps: [
-        [34, 5, 0.22, 0.05, -0.06], [46, 4, 0.21, 0.07, -0.08], [22, 4, 0.16, 0.08, -0.12], [9, 3, 0.13, 0.2, -0.24], [-4, 3, 0.13, 0.22, -0.26],
-        [-16, 3, 0.13, 0.2, -0.3], [-28, 4, 0.18, 0.08, -0.2], [-42, 4, 0.2, 0.06, -0.09], [-56, 3, 0.17, 0.06, -0.09], [60, 3, 0.15, 0.06, -0.08],
-        [16, 3, 0.17, 0.42, -0.24], [-12, 3, 0.17, 0.45, -0.28], [40, 3, 0.18, 0.3, -0.12], [-36, 3, 0.18, 0.3, -0.16],
+        [34, 5, 0.22, 0.05, -0.06], [46, 4, 0.21, 0.07, -0.08], [22, 4, 0.16, 0.06, -0.08], [9, 3, 0.13, 0.03, -0.05], [-4, 3, 0.13, 0.03, -0.06],
+        [-16, 3, 0.13, 0.03, -0.07], [-28, 4, 0.18, 0.08, -0.16], [-42, 4, 0.2, 0.06, -0.09], [-56, 3, 0.17, 0.06, -0.09], [60, 3, 0.15, 0.06, -0.08],
+        [16, 4, 0.18, 0.3, -0.18], [-12, 4, 0.18, 0.32, -0.2], [3, 4, 0.17, 0.52, -0.26], [40, 3, 0.18, 0.3, -0.12], [-36, 3, 0.18, 0.3, -0.14],
+        [26, 3, 0.17, 0.55, -0.24], [-24, 3, 0.17, 0.55, -0.26],
       ],
       // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
       // side splashes kept

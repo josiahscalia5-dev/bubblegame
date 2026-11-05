@@ -175,7 +175,16 @@ export const MATCH_WATER = {
     flecks: { count: 200, size: [[0.035, 0.09], [0.01, 0.02]], rho: [0.82, 0.95], bend: [0.0, 2.0], alpha: 0.95, ahead: [6.5, 34], angles: [-44, 224] },
   },
 };
-if (FOCUS_ON) deepMerge(MATCH_WATER, FOCUS.water);   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
+if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
+  deepMerge(MATCH_WATER, FOCUS.water);
+  // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
+  // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam
+  const Fd = MATCH_WATER.swellFront;
+  if (Fd) MATCH_WATER.swell.line = MATCH_WATER.swell.line.map((h, i) => {
+    const phi = -110 + 5 * i, t = Math.min(Math.max((Math.abs(phi) - Fd.full) / (Fd.to - Fd.full), 0), 1);
+    return +(h - Fd.dip * (1 - t * t * (3 - 2 * t))).toFixed(4);
+  });
+}
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.matchWater;
   if (tune) deepMerge(MATCH_WATER, tune);
@@ -332,8 +341,8 @@ function focusLumpGLSL() {
   return /* glsl */ `  {   // ?s3=focus: thick aqua-white froth (tunnel_r9_match_water.js, tunnel_r9_focus.js)
     float fUp = dot(N, uU), fF = 1.0 - ndv;
     float fl = clamp(d * 0.85 + max(fUp, 0.0) * 0.4 - 0.05, 0.0, 1.0);
-    vec3 fc = mix(${lin3(B.shade)}, ${lin3(B.side)}, smoothstep(0.15, 0.55, fl));
-    fc = mix(fc, ${lin3(B.white)}, smoothstep(0.5, 0.85, fl));
+    vec3 fc = mix(${lin3(B.shade)}, ${lin3(B.side)}, smoothstep(${f4(B.lit[0])}, ${f4(B.lit[1])}, fl));
+    fc = mix(fc, ${lin3(B.white)}, smoothstep(${f4(B.lit[2])}, ${f4(B.lit[3])}, fl));
     fc = mix(fc, ${lin3(B.crease)}, smoothstep(0.6, 0.97, fF) * 0.55 * (1.0 - smoothstep(0.0, 0.45, fUp)));
     fc = mix(fc, ${lin3(B.water)}, (1.0 - smoothstep(-0.8, -0.4, fUp)) * 0.75);
     // the foam bubbles: round cells cut by the lobe's surface at two sizes, a pale aqua inside, a white rim, a glint
@@ -350,7 +359,7 @@ function focusLumpGLSL() {
     }
     vec2 fwq = vO.xz * 0.9 + vO.y * vec2(0.21, -0.17) + vSeed * 3.0 + vec2(uTime * 0.02, 0.0);
     float fWeb = clamp(texture2D(uLqTex, fwq).a * 0.7 + texture2D(uLqTex, fwq * 2.3 + 0.37).a * 0.5, 0.0, 1.0);
-    fc = mix(fc, fc * vec3(0.8, 0.9, 0.98), fIn * ${f4(B.bubble)});
+    fc = mix(fc, fc * vec3(${B.inside.map(f4)}), fIn * ${f4(B.bubble)});
     fc = mix(fc, ${lin3(B.white)}, clamp(fRing * 0.85 + fWeb * ${f4(B.web)} * smoothstep(0.2, 0.6, fl), 0.0, 1.0));
     vec3 fFilm = 0.62 + 0.38 * cos(6.2832 * (fF * 1.3 + fUp * 0.35 + vec3(0.0, 0.33, 0.67) + vSeed));
     fc = mix(fc, fFilm * ${lin3(B.side)}, pow(fF, 3.0) * ${f4(B.film)});
