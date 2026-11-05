@@ -4,6 +4,17 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
 
 ## Newest (5 November, 01:30 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 8 pass 2 SPLASH (`?s3=splash`)
 
+- **Android preview APK (5 November, ~02:50 UTC), at the user's request:**
+  - Source: `Tools/android_apk/` (a full-screen WebView that serves the game packed in `assets/www/`, plus a start page
+    with one button per version). Build it with `ANDROID_HOME=~/android-sdk bash Tools/android_apk/build_apk.sh`.
+  - It needs the Android SDK's `platforms;android-34` and `build-tools;34.0.0`. In this session they were installed in
+    `~/android-sdk` with the user's approval; a new session must install them again.
+  - The first build gave `BubbleWashKingdom_preview.apk` (65 MB, debug-signed v2 and v3, game bundle `1f045f85`). It was
+    sent to the user and is not committed (`*.apk` is ignored).
+  - The debug key lives in `~/.bubblewash-android/`, outside the repository.
+  - Not run on a real phone or emulator here.
+  - A live preview of the same game was also served on port 8080 while the session was open.
+
 - **Recovered from:** `eca999e`, the last autosave of `ccr-aeee6378-mv5kot`; `ccr-b41bbe83-3fbhkr` starts exactly there.
   - The previous session's splash pass and gameplay tests both stopped at the 5-hour usage limit (00:57 UTC) before
     saving anything, so this pass was rebuilt from the saved Round 8 water (`87aee11`).

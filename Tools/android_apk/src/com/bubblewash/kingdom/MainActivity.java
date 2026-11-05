@@ -1,23 +1,13 @@
 package com.bubblewash.kingdom;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Bubble Wash Kingdom preview app: a full-screen WebView playing the web game packed in the APK's assets/www/.
@@ -25,8 +15,7 @@ import java.util.Map;
  * so the game's ES module script and its fetch() of the 3D models work as they do from a web server.
  */
 public class MainActivity extends Activity {
-    private static final String HOST = "appassets.androidplatform.net";
-    private static final String START = "https://" + HOST + "/start.html";
+    private static final String START = "https://" + AssetClient.HOST + "/start.html";
     private WebView web;
 
     @Override
@@ -47,62 +36,11 @@ public class MainActivity extends Activity {
         s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
         web.setWebChromeClient(new WebChromeClient());
-        web.setWebViewClient(new WebViewClient() {
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest req) {
-                Uri u = req.getUrl();
-                if (!"https".equals(u.getScheme()) || !HOST.equals(u.getHost())) return null;   // e.g. the web font
-                String path = u.getPath();
-                if (path == null || path.equals("/") || path.isEmpty()) path = "/start.html";
-                if (path.contains("..")) return notFound();
-                try {
-                    InputStream in = getAssets().open("www" + path);
-                    String mime = mimeOf(path);
-                    WebResourceResponse res = new WebResourceResponse(mime, mime.startsWith("text/") || mime.endsWith("json") ? "utf-8" : null, in);
-                    Map<String, String> h = new HashMap<>();
-                    h.put("Access-Control-Allow-Origin", "*");
-                    h.put("Cache-Control", "no-cache");
-                    res.setResponseHeaders(h);
-                    return res;
-                } catch (Exception e) {
-                    return notFound();
-                }
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest req) {
-                Uri u = req.getUrl();
-                if (HOST.equals(u.getHost())) return false;   // the game's own pages stay in the app
-                try { startActivity(new Intent(Intent.ACTION_VIEW, u)); } catch (Exception ignored) { }
-                return true;
-            }
-        });
+        web.setWebViewClient(new AssetClient(this));
         setContentView(web);
         hideSystemBars();
         if (state != null) web.restoreState(state);
         else web.loadUrl(START);
-    }
-
-    private static WebResourceResponse notFound() {
-        return new WebResourceResponse("text/plain", "utf-8", 404, "Not Found", new HashMap<String, String>(), new ByteArrayInputStream(new byte[0]));
-    }
-
-    private static String mimeOf(String path) {
-        String p = path.toLowerCase();
-        if (p.endsWith(".html")) return "text/html";
-        if (p.endsWith(".js") || p.endsWith(".mjs")) return "text/javascript";
-        if (p.endsWith(".json")) return "application/json";
-        if (p.endsWith(".css")) return "text/css";
-        if (p.endsWith(".glb")) return "model/gltf-binary";
-        if (p.endsWith(".png")) return "image/png";
-        if (p.endsWith(".jpg") || p.endsWith(".jpeg")) return "image/jpeg";
-        if (p.endsWith(".webp")) return "image/webp";
-        if (p.endsWith(".svg")) return "image/svg+xml";
-        if (p.endsWith(".mp3")) return "audio/mpeg";
-        if (p.endsWith(".ogg")) return "audio/ogg";
-        if (p.endsWith(".wav")) return "audio/wav";
-        if (p.endsWith(".woff2")) return "font/woff2";
-        return "application/octet-stream";
     }
 
     private void hideSystemBars() {
