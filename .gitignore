@@ -61,3 +61,6 @@ Thumbs.db
 
 # Claude Code agent worktrees (separate checkouts; their work is merged by commit, never added as folders)
 .claude/worktrees/
+
+# Android preview build signing key (Tools/android_apk/build_apk.sh keeps it outside the repo anyway)
+*.keystore
