@@ -1,12 +1,12 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: framing, sock, walls)
 
-- **Taken:** 2026-11-05 20:10 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:15 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a1aff7a0d4ce10e34` (local only), started from `9a95c06`.
 - **Its own commits so far:** 
   - `4029424 Round 9 focused pass (checkpoint): framing, the pink character 1.2x larger through the hero camera`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (66; full copies in `files/`)
+## Files (89; full copies in `files/`)
 
 - `.tltmp/baseline.bundle.js (new)`
 - `.tltmp/before/before_info.json (new)`
@@ -34,7 +34,28 @@
 - `.tltmp/s3_func_t2.txt (new)`
 - `.tltmp/sbs_t1.png (new)`
 - `.tltmp/sbs_t2.png (new)`
+- `.tltmp/sock/sockA_info.json (new)`
+- `.tltmp/sock/sockA_t3.00.png (new)`
+- `.tltmp/sock/sockB_info.json (new)`
+- `.tltmp/sock/sockB_t3.00.png (new)`
+- `.tltmp/sock/sockC_info.json (new)`
+- `.tltmp/sock/sockC_t3.00.png (new)`
+- `.tltmp/sock/sockD_info.json (new)`
+- `.tltmp/sock/sockD_t3.00.png (new)`
+- `.tltmp/sock/sockE_info.json (new)`
+- `.tltmp/sock/sockE_t3.00.png (new)`
+- `.tltmp/sock/sockF_info.json (new)`
+- `.tltmp/sock/sockF_t3.00.png (new)`
 - `.tltmp/sock_t2.png (new)`
+- `.tltmp/sock_variants.json (new)`
+- `.tltmp/sock_variants.png (new)`
+- `.tltmp/sock_variants2.json (new)`
+- `.tltmp/sock_variants2.png (new)`
+- `.tltmp/sockmask/original_sock.png (new)`
+- `.tltmp/sockmask/sockD_t3.00.png_sock.png (new)`
+- `.tltmp/sockmask/sockF_t3.00.png_sock.png (new)`
+- `.tltmp/sockmask/t2_t3.00.png_sock.png (new)`
+- `.tltmp/sockmask_cmp.png (new)`
 - `.tltmp/stage_before.json (new)`
 - `.tltmp/stage_shift.json (new)`
 - `.tltmp/stage_t1.json (new)`
@@ -67,8 +88,10 @@
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rings.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rw_probe_corrected.cjs`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/sbs.py`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/sock_box.py (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/strips.py`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/variants.cjs (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/walls.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zones.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zoomgrid.py`

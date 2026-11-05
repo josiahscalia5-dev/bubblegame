@@ -179,6 +179,12 @@ export const MATCH = {
   splash: {},      // deep-merged into SPLASH (tunnel_r8_splash.js)
   heroWater: {},   // deep-merged into HERO_WATER (tunnel_r7_hero_water.js) after the splash pass's settings
   sockScale: 0.85, // the first sock's visual size
+  // the first sock's pose (the user's brief, 5 November about 15:55 UTC, item 4: in the original it lies tilted, more
+  // sideways, its cuff up-right, its toe down-left, its face toward the viewer; ours stood upright with its toe toward the
+  // camera): degrees round the sock's own centre, applied to the model inside the game's animated holder (its bob and gentle
+  // sway still play on top; at 2.85-3.1 s they move it by under 5 degrees). roll: round the line of sight (negative =
+  // clockwise on screen); yaw: round its upright axis (negative = toe toward screen-left); pitch: round its sideways axis
+  sockPose: { roll: -30, yaw: -30, pitch: 0 },
   // the coins' ramp (sRGB 0..1 as on screen): shade, yellow gold (hue 46), lemon; lum: the coin's lit linear brightness
   // mapped onto it; amount: how much of it replaces the coin's own colour
   coin: { shade: [0.839, 0.486, 0.008], mid: [0.973, 0.776, 0.11], lemon: [1.0, 0.945, 0.533], lum: [0.18, 0.95], amount: 0.85 },
@@ -596,6 +602,17 @@ export function matchCollectibles({ coins, gems, socks }) {
   // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
   // pick-up place, is unchanged)
   if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
+  // its pose (MATCH.sockPose): the model (the holder's turn group's child, centred on the turn's origin) turned round its own
+  // centre; no new object is made (a new object would draw a UUID from the game's seeded Math.random)
+  const sockModel = socks[0] && socks[0].turn && socks[0].turn.children[0];
+  if (sockModel && MATCH.sockPose) {
+    const P = MATCH.sockPose, D = Math.PI / 180, q = new THREE.Quaternion(), e = new THREE.Quaternion();
+    q.setFromAxisAngle(new THREE.Vector3(0, 0, 1), P.roll * D)
+      .multiply(e.setFromAxisAngle(new THREE.Vector3(0, 1, 0), P.yaw * D))
+      .multiply(e.setFromAxisAngle(new THREE.Vector3(1, 0, 0), P.pitch * D));
+    sockModel.quaternion.premultiply(q); sockModel.position.applyQuaternion(q);
+    report.sockPose = P;
+  }
   // the gem beside the big left coin at MATCH.gemScale of its size, round its own centre (its holder, the pick-up place and
   // the pop animation's scale are unchanged)
   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];

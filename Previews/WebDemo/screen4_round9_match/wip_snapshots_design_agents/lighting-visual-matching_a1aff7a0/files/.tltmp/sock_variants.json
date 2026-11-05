@@ -1,0 +1,5 @@
+{
+  "sockA": { "match": { "sockPose": { "roll": -30, "yaw": -30, "pitch": 0 } } },
+  "sockB": { "match": { "sockPose": { "roll": -45, "yaw": -20, "pitch": 0 } } },
+  "sockC": { "match": { "sockPose": { "roll": -35, "yaw": -50, "pitch": 0 } } }
+}

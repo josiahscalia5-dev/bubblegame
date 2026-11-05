@@ -1365,8 +1365,20 @@ All six pairs are pixel-identical (0 differing pixels). Next the gameplay check 
 
 - 20:10 `Bash`: Read usage of the gameplay and moves tools
 - 20:10 `Bash`: Run the gameplay functional check under match
+- 20:11 `Bash`: Check lanes and jump in the gameplay output vs the last pass
+**Agent** (20:11 UTC):
 
-_134 tool steps._
+Gameplay holds: lanes 1, 0, 2, the jump (in the air), 12 coins, 1 gem, 2 socks, no console errors. Now the moves capture.
+
+- 20:11 `Bash`: Capture the water reacting to swerve, jump and landing
+- 20:13 `Bash`: Inspect the moves timeout error
+**Agent** (20:13 UTC):
+
+A screenshot timed out on the third frame (software rendering is ~4 s per frame at DPR 1.5). Retrying once.
+
+- 20:13 `Bash`: Retry the moves capture
+
+_138 tool steps._
 
 ---
 
@@ -1578,5 +1590,29 @@ Gameplay holds: lanes 1/0/2, the jump, 12 coins, 1 gem and 2 socks collected in 
 - 20:09 `Bash`: Commit the framing checkpoint
 - 20:10 `Bash`: Sock close-ups original and 2.85/3.0/3.1 s
 - 20:10 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_t2.png
+- 20:10 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:10 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:10 `Bash`: Build and capture three sock pose variants
+- 20:11 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/variants.cjs
+- 20:11 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_variants.json
+- 20:11 `Bash`: Build and capture three sock pose variants
+- 20:12 `Bash`: Compose sock variant close-ups
+- 20:12 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_variants.png
+**Agent** (20:12 UTC):
 
-_106 tool steps._
+Variant A and C put the cuff up-right but the yaw swings the toe up-left once the roll is applied. Three more variants that pitch the toe down as well, plus a pure roll.
+
+- 20:12 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_variants2.json
+- 20:13 `Bash`: Capture three more sock variants and compose
+- 20:14 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_variants2.png
+- 20:15 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/sock_box.py
+- 20:15 `Bash`: Measure sock boxes and visualize masks
+**Agent** (20:15 UTC):
+
+The colour mask leaks into the white water. I'll measure the sock from its projected mesh in the probe instead (exact silhouette box).
+
+- 20:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+
+_122 tool steps._

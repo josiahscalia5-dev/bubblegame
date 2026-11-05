@@ -939,10 +939,10 @@ index 0000000..cafcd15
 +S.save(out)
 diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
 new file mode 100644
-index 0000000..5bc1700
+index 0000000..f93718e
 --- /dev/null
 +++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
-@@ -0,0 +1,75 @@
+@@ -0,0 +1,86 @@
 +// Focused pass (Tunnel & Lighting): the hero camera's re-staging probe. Loads the real game (seed 7, 538 x 1076, ?s3=match
 +// unless S3 is set), advances to T s after the tap and prints:
 +//   - the camera (world position, track u/x/h relative to the drum's mouth, quaternion, forward vector, fov, near plane);
@@ -1006,14 +1006,25 @@ index 0000000..5bc1700
 +      for (let i = 0; i < a.count; i++) { const sd = fr(a.getX(i) * 3.1 + a.getZ(i) * 7.7);
 +        const c = new V(a.getX(i) + Math.sin(t * 0.9 + sd * 6) * 0.04, a.getY(i) + fr(t * 0.12 + sd) * 0.3 - 0.15, a.getZ(i)), r = a.getW(i), p = c.clone().project(cam), q = c.clone().addScaledVector(right, r).project(cam);
 +        bubbles.push({ i, cx: +((p.x + 1) / 2).toFixed(3), cy: +((1 - p.y) / 2).toFixed(3), dW: +Math.abs(q.x - p.x).toFixed(3), dist: +c.distanceTo(cam.position).toFixed(2), r, seed: +sd.toFixed(3), inst: [a.getX(i), a.getY(i), a.getZ(i)].map((v) => +v.toFixed(3)) }); } }
++    // the socks (holders with a sock halo sprite): the screen box of their model's projected vertices, nearest first
++    const socks = [];
++    scene.traverse((o) => {
++      if (!o.isGroup || !o.children.some((c) => c.isSprite && c.name === 'r2Halo')) return;
++      let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; const v = new V();
++      o.traverse((q) => { if (!q.isMesh || !q.geometry || q.isSprite) return; const pos = q.geometry.attributes.position;
++        for (let i = 0; i < pos.count; i += 2) { v.fromBufferAttribute(pos, i).applyMatrix4(q.matrixWorld).project(cam); const x = (v.x + 1) / 2, y = (1 - v.y) / 2; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } });
++      if (x0 < 1e9) socks.push({ box: [x0, x1, y0, y1].map((t) => +t.toFixed(3)), w: +(x1 - x0).toFixed(3), hH: +(y1 - y0).toFixed(3), dist: +o.getWorldPosition(new V()).distanceTo(cam.position).toFixed(2), track: toTrack(o.getWorldPosition(new V())), visible: o.visible });
++    });
++    socks.sort((a, b) => a.dist - b.dist);
 +    const cr = cam.matrixWorld.elements;   // forward = -Z column
 +    return { state: window.__bw.state(), camera: { pos: r3(cam.position), track: toTrack(cam.position.clone()), quat: cam.quaternion.toArray().map((x) => +x.toFixed(5)), fwd: [-cr[8], -cr[9], -cr[10]].map((x) => +x.toFixed(5)), fov: cam.fov, aspect: cam.aspect, near: cam.near },
-+      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles };
++      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles, socks: socks.slice(0, 2) };
 +  }, [ITEMS, DELTA]);
 +  fs.writeFileSync(OUT, JSON.stringify(info, null, 1));
 +  console.log(JSON.stringify({ camera: info.camera, mascot: info.mascot, fuzz: info.fuzz }));
 +  if (!process.env.NOPATH) console.log(JSON.stringify(info.path));
-+  for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
++  if (!process.env.NOBUBBLES) for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
++  for (const s of info.socks) console.log('sock', JSON.stringify(s));
 +  for (const s of info.shifted) console.log(JSON.stringify(s));
 +  console.log(logs.join(' | ') || 'no console errors');
 +  await browser.close(); server.close();
@@ -1116,7 +1127,7 @@ index f8550f8..0adb7bb 100644
  function updateCamera(dt) {
    const m = mascot;
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index c31a8c4..22f2250 100644
+index c31a8c4..355f0e7 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -45,13 +45,49 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
@@ -1228,7 +1239,20 @@ index c31a8c4..22f2250 100644
    // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
    // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
    // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
-@@ -240,6 +286,7 @@ export const MATCH_UNIFORMS = {
+@@ -133,6 +179,12 @@ export const MATCH = {
+   splash: {},      // deep-merged into SPLASH (tunnel_r8_splash.js)
+   heroWater: {},   // deep-merged into HERO_WATER (tunnel_r7_hero_water.js) after the splash pass's settings
+   sockScale: 0.85, // the first sock's visual size
++  // the first sock's pose (the user's brief, 5 November about 15:55 UTC, item 4: in the original it lies tilted, more
++  // sideways, its cuff up-right, its toe down-left, its face toward the viewer; ours stood upright with its toe toward the
++  // camera): degrees round the sock's own centre, applied to the model inside the game's animated holder (its bob and gentle
++  // sway still play on top; at 2.85-3.1 s they move it by under 5 degrees). roll: round the line of sight (negative =
++  // clockwise on screen); yaw: round its upright axis (negative = toe toward screen-left); pitch: round its sideways axis
++  sockPose: { roll: -30, yaw: -30, pitch: 0 },
+   // the coins' ramp (sRGB 0..1 as on screen): shade, yellow gold (hue 46), lemon; lum: the coin's lit linear brightness
+   // mapped onto it; amount: how much of it replaces the coin's own colour
+   coin: { shade: [0.839, 0.486, 0.008], mid: [0.973, 0.776, 0.11], lemon: [1.0, 0.945, 0.533], lum: [0.18, 0.95], amount: 0.85 },
+@@ -240,6 +292,7 @@ export const MATCH_UNIFORMS = {
    // the centre's place on the screen (drawing-buffer fractions, y up) and the size in pixels of the target being drawn
    // (set before each picture by buildMatch; MATCH.centre)
    uMatchVP: { value: new THREE.Vector2(0.5, 0.5) }, uMatchRes: { value: new THREE.Vector2(0, 0) },
@@ -1236,7 +1260,7 @@ index c31a8c4..22f2250 100644
  };
  // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
  // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
-@@ -277,12 +324,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
+@@ -277,12 +330,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
  // the rim ramp (textures/screen4/rim_ramp.png): columns the angle 0..pi round the rim's centre (0 = screen right), rows rho =
  // r / the rim's outer radius from RAMP[0] (the housing just outside) to RAMP[1] (the blue inside the navy ring)
  const RAMP = [1.04, 0.80];
@@ -1254,7 +1278,7 @@ index c31a8c4..22f2250 100644
  // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
  const BEZEL_SIDES = [0.912, 1.03];
  // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
-@@ -350,8 +396,16 @@ export function matchWallGLSL() {
+@@ -350,8 +402,16 @@ export function matchWallGLSL() {
    return /* glsl */ `
  // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
  uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
@@ -1272,7 +1296,7 @@ index c31a8c4..22f2250 100644
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
-@@ -487,20 +541,21 @@ export function matchWallApply() {
+@@ -487,20 +547,21 @@ export function matchWallApply() {
  // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
  // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
  export function matchMouthGLSL(HERO, axisH, radius) {
@@ -1302,7 +1326,25 @@ index c31a8c4..22f2250 100644
  `;
  }
  // the gold rim (round6's bezel, moved by heroRim): the approved rim band by angle round its centre and across its width
-@@ -609,7 +664,8 @@ void main() {
+@@ -541,6 +602,17 @@ export function matchCollectibles({ coins, gems, socks }) {
+   // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
+   // pick-up place, is unchanged)
+   if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
++  // its pose (MATCH.sockPose): the model (the holder's turn group's child, centred on the turn's origin) turned round its own
++  // centre; no new object is made (a new object would draw a UUID from the game's seeded Math.random)
++  const sockModel = socks[0] && socks[0].turn && socks[0].turn.children[0];
++  if (sockModel && MATCH.sockPose) {
++    const P = MATCH.sockPose, D = Math.PI / 180, q = new THREE.Quaternion(), e = new THREE.Quaternion();
++    q.setFromAxisAngle(new THREE.Vector3(0, 0, 1), P.roll * D)
++      .multiply(e.setFromAxisAngle(new THREE.Vector3(0, 1, 0), P.yaw * D))
++      .multiply(e.setFromAxisAngle(new THREE.Vector3(1, 0, 0), P.pitch * D));
++    sockModel.quaternion.premultiply(q); sockModel.position.applyQuaternion(q);
++    report.sockPose = P;
++  }
+   // the gem beside the big left coin at MATCH.gemScale of its size, round its own centre (its holder, the pick-up place and
+   // the pop animation's scale are unchanged)
+   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
+@@ -609,7 +681,8 @@ void main() {
  
  // Called at the end of buildHero (tunnel_r7_hero.js), after the liquid and the splash bank are built.
  export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet }) {
