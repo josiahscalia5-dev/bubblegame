@@ -17,6 +17,7 @@
 // At 1:2 and wider, nothing changes. Every other version uses the old rule exactly (A0 = 0.5 gives the old formulas).
 import * as THREE from 'three';
 import { MATCH_ON } from './tunnel_r9_match.js';
+import { FOCUS_ON } from './tunnel_r9_focus.js';
 
 export const PHONE = { minAspect: 0.45 };
 const A0 = MATCH_ON ? PHONE.minAspect : 0.5;
@@ -39,3 +40,6 @@ export function phoneTanW(fov, aspect) {
 }
 
 if (MATCH_ON && typeof document !== 'undefined') document.body.classList.add('s3match');
+// ?s3=focus only (step 2 of the user's fidelity plan, 5 November 2026): the interface laid out as the original approved Screen 4
+// (page.html, body.s4focus)
+if (FOCUS_ON && typeof document !== 'undefined') document.body.classList.add('s4focus');

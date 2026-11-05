@@ -188,6 +188,39 @@
   #r2Toast.show { opacity: 1; }
   #r2Toast .big { position: absolute; left: 0; right: 0; top: calc(var(--u) * 8); font-size: calc(var(--u) * 25); line-height: calc(var(--u) * 30); }
   #r2Toast .small { position: absolute; left: 0; right: 0; top: calc(var(--u) * 40); font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 20); font-weight: 600; }
+  /* ?s3=focus only (step 2 of the user's fidelity plan, 5 November 2026): the interface at the ORIGINAL approved Screen 4's
+     places and sizes, measured on it in board units (1 u = 767 / 269 px there; scripts in
+     Previews/WebDemo/screen4_round9_match/23_step2_interface/). The original is a cropped picture: its gem counter, pause
+     button and power buttons run off its right and bottom edges. Here they stay whole and usable, as near its places as that
+     allows. Counters: scaled 1.15 round their top left (icons and numbers together) onto the original's boxes. */
+  body.s4focus .pill { top: calc(var(--u) * var(--y) + env(safe-area-inset-top, 0px)); transform: scale(1.15); transform-origin: 0 0; }
+  body.s4focus #heartPill { --x: 15.8 !important; --y: 17.5 !important; --w: 77.7 !important; --h: 22 !important; --tx: 30 !important; }
+  body.s4focus #heartPill img:last-of-type { left: calc(var(--u) * 64.5) !important; }
+  body.s4focus #coinPill { --x: 115.7 !important; --y: 17.5 !important; --w: 74.8 !important; --h: 22 !important; --tx: 29 !important; }
+  body.s4focus #gemPill { --x: 210.4 !important; --y: 17.5 !important; --w: 50 !important; --h: 22 !important; --tx: 31 !important; }
+  /* the mission banner: the original's x 20-234, y 50-113, ended at 226 so the whole pause button fits beside it; inside it
+     the larger sock, the title and the progress track with the count inside its right end, as in the original */
+  body.s4focus #sockPanel { top: calc(var(--u) * 50 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 20); width: calc(var(--u) * 206); height: calc(var(--u) * 63); border-radius: calc(var(--u) * 17); }
+  body.s4focus #sockPanel .icon { left: calc(var(--u) * 9); top: calc(var(--u) * 5); width: calc(var(--u) * 50); height: calc(var(--u) * 52); }
+  body.s4focus #sockPanel .title { left: calc(var(--u) * 61); top: calc(var(--u) * 9); font-size: calc(var(--u) * 16.2); line-height: calc(var(--u) * 20); }
+  body.s4focus #sockPanel .track { left: calc(var(--u) * 60); top: calc(var(--u) * 33); width: calc(var(--u) * 141); height: calc(var(--u) * 16.5); }
+  body.s4focus #sockPanel .count { left: calc(var(--u) * 168); top: calc(var(--u) * 34.5); font-size: calc(var(--u) * 14.5); }
+  body.s4focus #pauseBtn { top: calc(var(--u) * 47.5 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 230); width: calc(var(--u) * 37); height: calc(var(--u) * 38); }
+  body.s4focus #pauseBtn span { width: calc(var(--u) * 6.5); height: calc(var(--u) * 19); }
+  /* the power buttons: the original's start at y 489 and run off its bottom edge; whole here, so 56 u tall from y 478 (its
+     left one x 14-104, the right one mirrored 3 u from the edge); the badge on the top right corner as the original's */
+  body.s4focus .power { bottom: calc(var(--u) * 3 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 90); height: calc(var(--u) * 56); border-radius: calc(var(--u) * 18); }
+  body.s4focus #blastBtn { left: calc(var(--u) * 14); }
+  body.s4focus #turboBtn { right: calc(var(--u) * 3); }
+  body.s4focus .power svg { left: calc(var(--u) * 26); top: calc(var(--u) * 2); width: calc(var(--u) * 38); height: calc(var(--u) * 38); }
+  body.s4focus .power .lbl { bottom: calc(var(--u) * 5); font-size: calc(var(--u) * 11.5); }
+  body.s4focus .power .badge { right: 0; top: calc(var(--u) * -5.5); width: calc(var(--u) * 29); height: calc(var(--u) * 29); font-size: calc(var(--u) * 17); }
+  /* the steering hint: onboarding on the slide only, just above the power buttons; gone once she is in the drum (the original
+     shows none there) */
+  body.s4focus.r2 #hint { bottom: calc(var(--u) * 63 + env(safe-area-inset-bottom, 0px)); }
+  body.s4focus.inDrum #hint { visibility: hidden; }
+  /* the sound button on Tap to Start (hidden while running): under the gem counter, where the pause button shows in the run */
+  body.s4focus #soundBtn { top: calc(var(--u) * 52 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 236); width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
   #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
   #pausePanel .card { position: absolute; top: calc(var(--u) * 160); width: calc(var(--u) * 190); padding: calc(var(--u) * 14) calc(var(--u) * 18) calc(var(--u) * 18); box-sizing: border-box;
     display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
@@ -220,7 +253,7 @@
       <span id="hearts">5 <small>Full</small></span>
       <img src="ui/plus.png" alt="" style="left:calc(var(--u)*58);top:calc(var(--u)*5);width:calc(var(--u)*13);height:calc(var(--u)*13)">
     </div>
-    <div class="pill t" style="--x:92;--y:14;--w:67;--h:22;--tx:25">
+    <div class="pill t" id="coinPill" style="--x:92;--y:14;--w:67;--h:22;--tx:25">
       <img src="ui/coin.png" alt="Coins" style="left:calc(var(--u)*-1);top:calc(var(--u)*-2);width:calc(var(--u)*25);height:calc(var(--u)*25)">
       <span id="coins">1,280</span>
     </div>

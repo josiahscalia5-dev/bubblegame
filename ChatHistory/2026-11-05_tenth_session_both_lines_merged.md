@@ -376,3 +376,5 @@ The interface is HTML in `page.html`, sized in units of `--u`. Finding how `--u`
 
 The interface is laid out on a 269 × 537 "board" (`--u` = the screen size / that board). Reading the original's element boxes in those units from zoomed crops with a pixel grid:
 
+The coin counter has no id, so I'm giving it one (`coinPill`). An id on its own changes nothing on screen, and the pixel check will confirm that for every other version.
+
