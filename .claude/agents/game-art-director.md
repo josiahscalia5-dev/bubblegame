@@ -57,7 +57,61 @@ Rules: Round 5 (`?s3=round5`) is the only place visual changes go. The normal ga
 pixel-identical. Controls, lanes, the tunnel route, the five-heart system, the sock mission and power-ups must not change. The
 fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and ranked.
 
-## Newest: Round 8 pass 2 SPLASH, `?s3=splash` (5 November 2026, fifth session; this section overrides the notes below)
+## Newest: Round 9 ART MATCH, `?s3=match` (5 November 2026, fifth and sixth sessions; this section overrides the notes below)
+
+- **Branch:** `ccr-4aef2c77-0cdeu2` (sixth session), which continues `ccr-b41bbe83-3fbhkr` exactly (both at `a5be95c`).
+  Round 9 so far is merged as `2a6ab30`.
+- **Switches:** `?s3=match` is everything `?s3=splash` does plus Round 9. `match,bare` (diagnostic only) hides the
+  coins, socks, gem, framing brushes and hero bubbles. `match,nofoam` is `match` without the white.
+- **Code:**
+  - `WebDemo/src/tunnel_r9_match.js` (Tunnel & Lighting): settings `MATCH`, the Reference 5 wall material
+    (`matchWallGLSL()`, `matchWall(cs, u, W, N0, T0)`, uniforms `MATCH_UNIFORMS`, `mtUndisplay`), the rim ramp, the
+    camera (`MATCH.hero`), the staging (`STAGE`, +0.95 m), `matchCollectibles`, `bare`.
+  - `WebDemo/src/tunnel_r9_match_water.js` (Water & VFX): `MATCH_WATER`; the floor in the walls' water
+    (`matchFloorDecl`, `matchFloorApply`); the swell (`matchSwellGLSL`); the bank's water lobes (`matchLumpGLSL`).
+  - Every hook elsewhere is gated, `${MATCH_ON ? piece() : ''}`, in `tunnel_r8_liquid.js`, `tunnel_r8_splash.js` and
+    `game.js`.
+  - Textures: `WebDemo/textures/screen4/`, made by `WebDemo/tools/screen4/derive_ref5_water.py` (Reference 5 graded to
+    the original) and `derive_tunnel_textures.py` (the rim ramp). The APK build copies this folder.
+- **Capture and measure:** `WebDemo/tools/screen4/liquid_shots.cjs` (seed 7, DPR 1.5, HUD on). The hero moment is
+  **3.0 s**; check 2.85 and 3.1 s too. Measure with the Art Director's scripts in
+  `Previews/WebDemo/screen4_round9_match/01_art_director/scripts/` and `WebDemo/tools/screen4/liquid_shares.py`.
+  Overlays: `WebDemo/tools/screen4/match_overlay.py`. Hide probes: `hide_probe.cjs`.
+- **Pixel identity:** the normal game and every older switch (`splash`, `splash,nofoam`, `liquid`, `liquid,nofoam`,
+  `hero`, `round7`, `round6`, `round6,rich`, `round5`, `round4`) must stay identical. Create textures and draw random
+  numbers under `match` only: three.js draws every new texture's UUID from `Math.random`, and a texture made at load
+  once shifted the game's seeded sequence.
+- **Done:**
+  1. The Art Director's five largest mismatches (`01_art_director/`).
+  2. Tunnel & Lighting's wall-material checkpoint (`25a65ab`): Reference 5 water on the walls graded to the original,
+     the rim from the original, camera pitch +1.5 degrees, staging +0.95 m, objects resized (`02_tunnel_lighting/`).
+  3. The lead's fixes (`9b7527d`): the left brush as the original's round pom-pom, the star glints removed from the wall
+     texture, the relief maps repeating at Reference 5's period.
+  4. Water & VFX (`15acbc8`, merged as `2a6ab30`): one continuous water body (the floor in the walls' water), seven
+     irregular wave lobes, glossy see-through water lobes, curling splashes, the fur showing violet through the water,
+     less white spray (`03_water_vfx/`).
+- **Still open, measured at 3.0 s (approved / now):**
+  - **the centre:** lavender 11 / 46%, warm 47 / 18%. It is drawn by `heroWalls`, not the floor (hide probe). Likely
+    cause: the drum turns, so far wall points get a screen radius worked out in their own track frame, not where they
+    really appear. Likely fix: work out `rw` from the fragment's real screen position round the projected vanishing point;
+  - **the walls:** cyan 13.3 / 6.9%; deep cobalt 3.9 / 0.7%; band contrast 0.17-0.20 / 0.12-0.15;
+  - **the floor ahead:** lavender 3.0 / 18.9% (sock included); median #abd8f2 / #85baf0; white 27.1 / 10.5%;
+  - **round the character:** electric blue right of the body 14.6 / 8.1%; white blobs of 20 px or more beside the body
+    13 / 50; texture under the body 0.112 / 0.071; foam bank white 20.3 / 15.9%;
+  - **objects:** the gem about 0.02 H low and 12% too big; the sock and the lower-right coin;
+  - **housing:** less lavender round the opening and a more immersive opening; Reference 2's metallic finish not done.
+- **Next, in order:** the Art Director's six-area quality gate on the merged 3.0 s frame; one focused Tunnel & Lighting
+  pass on what it finds; then the final checks (pixel identity, `s3_func`, `r2_func`), the comparisons at 2.85, 3.0 and
+  3.1 s with a 50% blend, and a gameplay video.
+- **Evidence:** `Previews/WebDemo/screen4_round9_match/` (`01_art_director`, `02_tunnel_lighting`, `03_water_vfx`, then
+  `04_...` for each later step).
+- **The user's taste:** no generic star sparkles, no pale lavender, no white foam blanket. The target is about 90-95%
+  resemblance; never claim a percentage without saying which measurement produced it.
+- **Your Round 9 job:** the quality gate. Score six areas separately on the real 3.0 s frame (housing and framing, deep
+  blue tunnel, light and reflections, character immersion, foreground waves, object size and placement), using the
+  precision kit's zones, and give implementation-specific fixes, largest first, naming the file and setting. Read-only.
+
+## Earlier: Round 8 pass 2 SPLASH, `?s3=splash` (5 November 2026, fifth session; this section overrides the notes below)
 
 - **Switches:** `?s3=splash` is everything `?s3=liquid` does plus the visible translucent splashes round the character
   and a deeper swirl; `?s3=splash,nofoam` is the deeper swirl and warmer core with no white. Code:

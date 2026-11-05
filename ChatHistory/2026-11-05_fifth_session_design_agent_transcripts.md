@@ -821,7 +821,7 @@ _284 tool steps._
 
 ---
 
-## Water & VFX specialist: continuous water and Reference 3 waves (still working when saved)
+## Water & VFX specialist: continuous water and Reference 3 waves (finished 13:16 UTC, commit `15acbc8`)
 
 **Lead → agent** (12:22 UTC):
 
@@ -1040,3 +1040,10 @@ Now let me write the full water-round-the-character pass in my module.
 - 12:50 `Read`: /tmp/claude-0/-home-user-bubblegame/1fd3c534-544f-5e73-8e8e-b614bdcc3aad/scratchpad/cap/zoom_dbg2.png
 
 _141 tool steps._
+
+**Note added in the sixth session (5 November, 13:30 UTC):** this transcript was saved at 12:50 UTC while the
+specialist was still working. It finished at 13:16 UTC with commit `15acbc8`, which the lead merged as `2a6ab30`. Its
+steps after 12:50 lived only in the fifth session's container, which has since ended, so they could not be added. Its
+final report survives in full: the commit message of `15acbc8` and
+`Previews/WebDemo/screen4_round9_match/03_water_vfx/README.md` (five verdicts, measurements, what changed, checks, and what
+still differs). The summary is in `2026-11-05_fifth_session_design_agent_reports.md`, section 4.

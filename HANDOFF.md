@@ -1,8 +1,24 @@
-# Hand-off: where Bubble Wash Kingdom stands (4 November 2026: round 4 reconstruction, `?s3=round4`)
+# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9 art match, `?s3=match`, branch `ccr-4aef2c77-0cdeu2`)
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (5 November, 10:00 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 9 ART MATCH (`?s3=match`), in progress
+## Newest (5 November, 13:21 UTC onward): sixth session, branch `ccr-4aef2c77-0cdeu2`, Round 9 ART MATCH continued
+
+- **Recovered from:** `a5be95c`, the fifth session's last autosave of `ccr-b41bbe83-3fbhkr` (left untouched).
+  `ccr-4aef2c77-0cdeu2` starts exactly there. Every other branch holds only older work.
+- **Environment:** started empty; `bash Tools/cloud_env_setup.sh` installed every tool.
+- **The merge, checked:** the Water & VFX stage (`15acbc8`) merged as `2a6ab30`. Rebuilding from source gives a bundle
+  byte-identical to the committed one (md5 `ba0c7f6c...`). Merged frames at 2.85, 3.0 and 3.1 s and the comparison:
+  `Previews/WebDemo/screen4_round9_match/04_merged/`.
+- **Design agents updated for Round 9:** all four agent files have a "Newest: Round 9 ART MATCH" section (code,
+  textures, capture tools, what is done, what is open with numbers, and each agent's own next job). The Water & VFX
+  agent's description now names `?s3=match`. Its final results are in the fifth session's reports file, section 4; its
+  transcript after 12:50 UTC was lost with the old container, but its commit message and README hold its full report.
+- **Next:** the Art Director's six-area quality gate on the merged 3.0 s frame, one focused Tunnel & Lighting pass, then
+  the final checks, comparisons and video (the fifth session's "Next" list below).
+- **Chat:** `ChatHistory/2026-11-05_sixth_session_round9_continue.md`.
+
+## Earlier (5 November, 10:00 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 9 ART MATCH (`?s3=match`), in progress
 
 - **One reference everywhere:** the ORIGINAL CLASSIC APPROVED Screen 4 is the only target in `CLAUDE.md`, the
   screen-matcher skill, the four agent files and the sheet tools (`4df5860`).
