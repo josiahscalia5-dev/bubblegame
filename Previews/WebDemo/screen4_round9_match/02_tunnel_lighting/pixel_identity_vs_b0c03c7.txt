@@ -1,0 +1,7 @@
+Pixel identity: the raw 3D canvas (tools/models/game_eval.cjs SHOT, Math.random seed 7, 538 x 1076), the starting bundle (b0c03c7) against this commit's game.bundle.js
+normal  Tap to Start differing pixels      0  max channel diff   0  -> IDENTICAL
+normal  2.85 s       differing pixels      0  max channel diff   0  -> IDENTICAL
+splash  Tap to Start differing pixels      0  max channel diff   0  -> IDENTICAL
+splash  2.85 s       differing pixels      0  max channel diff   0  -> IDENTICAL
+liquid  Tap to Start differing pixels      0  max channel diff   0  -> IDENTICAL
+liquid  2.85 s       differing pixels      0  max channel diff   0  -> IDENTICAL

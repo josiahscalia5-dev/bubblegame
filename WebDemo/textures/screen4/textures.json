@@ -1,0 +1,122 @@
+{
+ "source": "Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg",
+ "vanishing_point": [
+  0.528,
+  0.532
+ ],
+ "r0_w": 0.025,
+ "r1_w": 0.85,
+ "ln_r0": -3.6888794541139363,
+ "ln_span": 3.526360524616161,
+ "detail_ln_span": 3.22675762848178,
+ "detail_rows": 937,
+ "band_ln": 0.26,
+ "bands_in_detail_period": 12.410606263391461,
+ "angle": "u = theta / 2pi, theta = atan2(up, right) round the vanishing point (0 = screen right, counter-clockwise)",
+ "v": "v = (ln(rw) - ln_r0) / ln_span (base, colour); detail / normal / var: v = (ln(rw) - ln_r0) / detail_ln_span, repeating",
+ "base_sigma": {
+  "ln_r": 0.3,
+  "degrees": 7.0
+ },
+ "overlap_ln": 0.3,
+ "rim": {
+  "centre_px": [
+   419.90535548436964,
+   1041.8696782949696
+  ],
+  "radius_px": 717.5600676072714,
+  "centre_frac": [
+   0.5474646094972224,
+   0.6783005718066208
+  ],
+  "radius_w": 0.9355411572454647,
+  "angle": "u = angle / pi round the rim centre (0 = screen right), clamped",
+  "rho": [
+   1.04,
+   0.8
+  ],
+  "clear_angles_deg": [
+   61.34765625,
+   109.51171875
+  ]
+ },
+ "masked_share": 0.5996537208557129,
+ "mouth_radius_w": {
+  "min": 0.35800000000000004,
+  "max": 0.6747804878048784
+ },
+ "original": {
+  "source": "Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg",
+  "vanishing_point": [
+   0.528,
+   0.532
+  ],
+  "r0_w": 0.025,
+  "r1_w": 0.85,
+  "ln_r0": -3.6888794541139363,
+  "ln_span": 3.526360524616161,
+  "detail_ln_span": 3.22675762848178,
+  "detail_rows": 937,
+  "band_ln": 0.26,
+  "bands_in_detail_period": 12.410606263391461,
+  "angle": "u = theta / 2pi, theta = atan2(up, right) round the vanishing point (0 = screen right, counter-clockwise)",
+  "v": "v = (ln(rw) - ln_r0) / ln_span (base, colour); detail / normal / var: v = (ln(rw) - ln_r0) / detail_ln_span, repeating",
+  "base_sigma": {
+   "ln_r": 0.3,
+   "degrees": 7.0
+  },
+  "overlap_ln": 0.3,
+  "masked_share": 0.5996537208557129,
+  "mouth_radius_w": {
+   "min": 0.35800000000000004,
+   "max": 0.6747804878048784
+  },
+  "walls_written": false
+ },
+ "walls": {
+  "source": "../../../Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/05_REF5_BLUE_WATER_VORTEX.png",
+  "graded_to": "Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg",
+  "ref5_vanishing_point": [
+   0.5125,
+   0.515
+  ],
+  "ref5_radius": "ln r5 = f(ln rw): slope 0.66 in the walls, easing to 1 inside rw 0.10 (logistic, 0.25 ln wide); rw 0.5 <-> r5 0.48 of its width",
+  "r5_at": {
+   "0.025": 0.04147402078768446,
+   "0.050": 0.08254905195225805,
+   "0.100": 0.1564560831472775,
+   "0.200": 0.26086864598394205,
+   "0.300": 0.34231594306952995,
+   "0.500": 0.47999999999999976,
+   "0.850": 0.6813801403306946
+  },
+  "game_layout": {
+   "r0_w": 0.025,
+   "r1_w": 0.85,
+   "ln_r0": -3.6888794541139363,
+   "ln_span": 3.526360524616161
+  },
+  "angle": "u = theta / 2 pi round the vanishing point, 0 = screen right, counter-clockwise (1:1 with Reference 5)",
+  "grade_zones_rw": [
+   [
+    0.0,
+    0.07
+   ],
+   [
+    0.07,
+    0.2
+   ],
+   [
+    0.2,
+    9.0
+   ]
+  ],
+  "grade_angles_deg": [
+   -20.0,
+   200.0
+  ],
+  "detail_ln_span": 2.99947267279344,
+  "detail_bands": 12,
+  "detail_band_ln": 0.25
+ }
+}
