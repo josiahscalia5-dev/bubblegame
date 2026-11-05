@@ -1,0 +1,12 @@
+BUBBLE WASH SCREEN 4 — VISUAL REVIEW
+
+Decision: Approve Step 2 as functional/UI layout progress. Keep Step 3 as a technical checkpoint, NOT final artwork approval. Continue with a focused water and layering correction. Do not spend credits generating new assets, do not change the pink character.
+
+1. WALL RINGS: Approved: broken, crisp cobalt/cyan streaks. Step 3: smoother painted bands.
+2. DISTANT CORE: Approved: blue depth with small warm glints. Step 3: larger pastel/lavender wash.
+3. FLOOR AHEAD: Approved: vivid blue and aqua. Step 3: pale turquoise/pink-violet.
+4. FRONT SPLASH: Approved: bright bubbly blue-white spray. Step 3: flatter, less detailed water.
+
+From Claude's own report: middle lavender 25% vs original 12%; floor ahead 22% vs original 3%. These figures were reported by the agent, not independently recomputed here.
+
+Required next test: disable or adjust the transparent floor and distant 3D overlays by layer; preserve validated ring map; capture identical 3.0s frames (seed 7, 767x1536, no steering) and a moving gameplay preview; retest coin/gem/sock collection, pause and boosts. Freeze finished Step 2 layout and make reversible commits.
