@@ -209,7 +209,7 @@ export function matchFloorDecl() {
 // hDet its wave height (0 trough .. 1 crest), caus its caustic web; onWall: 1 where the water meets the walls (the walls' own look);
 // nearK: 1 round the character (the water there deeper, vivid electric blue as approved); soft: the map's blur instead of its
 // detail (on the swell, where the lower water's cell pattern read as cracked glass)
-vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft) {
+vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft${FOCUS_ON ? ', float fx' : ''}) {
   float rw, tu;
   mtPlace(cs, u, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
   float lr = log(max(rw, 1e-4));
@@ -250,7 +250,7 @@ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet,
   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
-  vec3 col = mtUndisplay(c);
+${FOCUS_ON ? focusFloorGLSL() : ''}  vec3 col = mtUndisplay(c);
   // glossy light: the derived relief's glints (as on the walls) and the liquid waves' glints toward the glow and the key light
   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
@@ -266,13 +266,46 @@ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet,
 }
 `.replace('M_SCREEN(c, vec3(0.62, 0.9, 1.0))', '(1.0 - (1.0 - c) * (1.0 - vec3(0.62, 0.9, 1.0)))');
 }
+// ?s3=focus only (the Art Director's review, item 5: the floor ahead, behind her, read as dark glassy cyan-and-lilac rings,
+// L* 71 against the original's 83.5; the original's is pale blue-white water with broken white crest streaks along the
+// whirlpool's circles): inside matchFloor, in screen colour, on the floor's own water only (fk: not where it meets the walls,
+// fading out toward the centre) and only for the floor itself (fx: the swell's lower water, which also calls matchFloor, keeps
+// its look): the map's lilac turned pale blue, the colour lifted toward the original's pale blue, and white crest streaks
+// (MATCH_WATER.floorFx, tunnel_r9_focus.js): cells round the centre (tu) and out from it (log radius, moving with the walls'
+// flow), one streak per cell, elongated along the circle, broken (a share of cells), thicker in the middle.
+function focusFloorGLSL() {
+  const P = MATCH_WATER.floorFx, S = P.streak, M = MATCH.walls;
+  return /* glsl */ `  {   // ?s3=focus: the floor ahead as the original's pale blue-white water (tunnel_r9_match_water.js focusFloorGLSL)
+    float ffK = fk * fx;
+    float ffLil = clamp((c.r - c.g) * 20.0, 0.0, 1.0) * clamp((c.b - c.r) * 20.0, 0.0, 1.0);
+    c.r = mix(c.r, c.g * 0.8, ffLil * ${f4(P.delilac)} * ffK);
+    c = mix(c, ${v3s(P.pale)}, ${f4(P.lift)} * ffK);
+    vec2 ffQ = vec2(tu * ${f4(S.along)}, (lr - ${f4(M.lnR0)} - fl) * ${f4(S.across)}), ffI = floor(ffQ);
+    ffQ.x += lqHash(vec2(ffI.y, 7.1)) * 0.5;   // (rows offset, so the streaks do not line up)
+    ffI = floor(ffQ);
+    vec2 ffO = fract(ffQ) - 0.5;
+    float ffH = lqHash(ffI + 3.3);
+    float ffL = mix(${f4(S.len[0])}, ${f4(S.len[1])}, lqHash(ffI + 5.7)) * 0.5;
+    float ffT = mix(${f4(S.thick[0])}, ${f4(S.thick[1])}, lqHash(ffI + 9.1)) * 0.5;
+    float ffAl = clamp(abs(ffO.x) / ffL, 0.0, 1.0);
+    float ffY = ffO.y - (lqHash(ffI + 11.9) - 0.5) * 0.3 - ${f4(S.bend)} * (ffAl * ffAl - 0.3) * (ffH > 0.5 ? 1.0 : -1.0);
+    float ffShape = (1.0 - smoothstep(0.8, 1.0, ffAl)) * (1.0 - smoothstep(ffT * (1.0 - 0.6 * ffAl * ffAl) * 0.6, ffT * (1.0 - 0.6 * ffAl * ffAl), abs(ffY)));
+    // clustered in irregular bands (white water) with blue dashes between (the original's floor ahead)
+    float ffB = smoothstep(${f4(S.band[0])}, ${f4(S.band[1])}, texture2D(uLqTex, vec2(tu * ${f4(S.band[2])}, (lr - ${f4(M.lnR0)} - fl) * ${f4(S.band[3])})).b);
+    float ffS = step(1.0 - ${f4(S.share)} * ffB, ffH) * ffShape;
+    float ffD = step(ffH, ${f4(S.blue.share)}) * ffShape;
+    c = mix(c, ${v3s(S.blue.col)}, ffD * ${f4(S.blue.amount)} * ffK);
+    c = mix(c, ${v3s(P.white)}, ffS * ${f4(S.amount)} * ffK);
+  }
+`;
+}
 // in the floor's main, after its own colour (tunnel_r8_liquid.js floorFragment): the derived water replaces it once the
 // textures are in (the Round 8 floor stays as the fallback)
 export function matchFloorApply() {
   const F = MATCH_WATER.floor;
   return /* glsl */ `  {   // ?s3=match: the walls' water continued onto the floor (tunnel_r9_match_water.js)
     float mwNear = exp(-rP * rP / ${f4(F.deepR * F.deepR)});
-    vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0);
+    vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0${FOCUS_ON ? ', 1.0' : ''});
     col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
   }
 `;
@@ -377,7 +410,7 @@ export function matchSwellGLSL() {
     vec3 mwRc = vW - cameraPosition;
     vec2 mwCs = uHeroCam.xy + vec2(dot(mwRc, uLqSide), dot(mwRc, uLqUp));
     float mwU = uHeroCam.z + dot(mwRc, uLqFwd);
-    vec3 mwFloor = matchFloor(mwCs, mwU, vW, uU, uT, N, hDet, 0.0, 0.0, 1.0, ${f4(K.soft)});   // (no caustic web, softer map: they read as cracks)
+    vec3 mwFloor = matchFloor(mwCs, mwU, vW, uU, uT, N, hDet, 0.0, 0.0, 1.0, ${f4(K.soft)}${FOCUS_ON ? ', 0.0' : ''});   // (no caustic web, softer map: they read as cracks)
     float mwFront = 1.0 - smoothstep(0.4, 0.75, as);   // in front of the body: see-through; beside it more solid blue
     float mwTop = 1.0 - smoothstep(0.0, ${f4(K.top)}, d);
     float mwNdv = clamp(dot(N, V), 0.0, 1.0);

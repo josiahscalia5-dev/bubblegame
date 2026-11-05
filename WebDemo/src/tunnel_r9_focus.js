@@ -161,6 +161,17 @@ export const FOCUS = {
     },
     // the floor round her: more sparkle (luminous blue-white highlights on vivid blue water)
     floor: { caustic: 0.55, glint: 1.3, deep: 0.85 },
+    // (item 2, the AD's review item 5) the floor ahead, behind her, as the original's pale blue-white water (focusFloorGLSL in
+    // the water file; the floor's own water only, not where it meets the walls): the map's lilac turned pale blue (how much),
+    // the colour lifted toward the original's median there (#aad7f4; how much), and broken white crest streaks along the
+    // whirlpool's circles: cells round it (along) and per unit log radius (across), the share of cells with one, length and
+    // thickness [min, max] as shares of the cell, bend (a shallow arc), how white; band: the white clustered in irregular
+    // bands (noise from, to; scale round and out); blue: blue dashes in the other cells (colour, share of cells, how much)
+    // (tunes f2-f6: 0.35 toward #aad7f4 gave L* 76; 0.55 toward a paler #b6dcf6 with thicker streaks in wider bands and
+    // stronger blue dashes gives the original's white water with blue dashes)
+    floorFx: { delilac: 1.0, pale: '#b6dcf6', lift: 0.55, white: '#f6fbff',
+      streak: { along: 20.0, across: 9.0, share: 0.95, len: [0.6, 1.0], thick: [0.35, 0.75], bend: 0.12, amount: 0.95,
+        band: [0.2, 0.5, 3.0, 1.5], blue: { col: '#4f9ff0', share: 0.35, amount: 0.75 } } },
     splash: {
       // small splash crests, not domes: lumpier, a wide spread of sizes
       lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
