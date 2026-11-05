@@ -1,0 +1,23 @@
+CLAUDE CODE — SCREEN 4 FIDELITY: CONFIRMED USER DECISIONS AND EXECUTION GATE
+
+CURRENT AUDIT REFERENCE
+- Use the original approved image: 01_APPROVED_ORIGINAL_FULL.png.
+- Use the current target to correct: 02_CURRENT_FOCUS_FULL.png.
+- Use 03_LATEST_AUDIT_FOUR_WAY.jpg and 04_ANNOTATED_WATER_AND_TUNNEL_EVIDENCE.png to see the actual differences.
+- These are real screenshots from the user's material, not replacement concept art.
+- Your audit said the full-scene mean color error has improved, while structural similarity (0.05–0.22) and tunnel-ring correlation (~0) are still poor. Prioritize structural fidelity, not decorative FX volume.
+
+THREE DECISIONS
+1. YES — Continue from the current `?s3=focus` specialist line. Keep `?s3=match` immutable as a comparison/rollback baseline. Confirm actual branch and commit HEAD before modifying; do not revert to a stale branch.
+2. WHITE SPLASH — Target the ACTUAL original, not the wording 'foam'. The original shows saturated cyan/blue water with irregular luminous white-aqua splash crests, translucent glossy blue-white bubble domes in the foreground, and small specular highlights. The pink mascot sits visibly on top of the moving water. NO solid white foam pillow, large opaque white/lavender balls, or cushion surrounding/covering the mascot. Preserve the waterline. The 20.6% white reported in the original is mostly bright water highlights and translucent bubble/splash shapes, not a license to add opaque foam.
+3. YES — You may proceed with your interface/composition step 2 AND your tunnel-ring step 3. Commit/test after each one. Do NOT start another open-ended multi-agent redesign.
+
+EXECUTION ORDER / CONSTRAINTS
+A. First checkpoint the current tested build and take a clean same-frame screenshot. Make all comparisons at seed 7, same camera, no steering, 3.0 s after tap, matched 767x1536 reference size.
+B. Step 2 (interface/composition): Use the approved screenshot for position and apparent scale of HUD, tunnel opening, gold rim, mascot, controls, and foam/water view area. It is a CROPPED illustration. Match its art framing as closely as possible without actually cutting off pause or the playable power buttons. Hide or greatly reduce the persistent swipe-instruction panel after initial onboarding. Use responsive safe-area handling and test 1:2 canvas + Pixel 7 viewport. Keep the approved target alongside. Report offsets for each major element.
+C. Step 3 (tunnel rings): The top priority visually is the DISTINCT RING SHAPE. Replace the focus build's thick, twisting, individually outlined water ribbons and broad pale circular center with thinner near-circular deep-cobalt and luminous turquoise water bands consistent with the APPROVED actual ring radii/profile. Blend them with the source reference texture if the shader currently masks or replaces it. Keep a small warm core and thin broken white-blue flecks; reduce thick, opaque pale circular halos. The far-end around the small gold coin should still read chiefly BLUE, not solid WHITE. Fix the actual shader material or pass, not by piling extra particle effects on top.
+D. Water/splash subsequent focused pass (only after show-and-review of 2 and 3): Retain bright cyan-white splash and clear blue bubble domes near mascot; NO solid foam cushion. Make mascot sit ON water, not submerged. Keep bubble counts restrained where they obscure ring structure. No character remodel or paid Tripo work in this phase.
+E. Every step: render accurate original-vs-focus before/after full screen AND close-ups of tunnel center and mascot/waterline. Test controls, pause, coins/socks, and powerups, and keep the tested working checkpoint. State which source files and values were changed. No claims of pixel exactness without direct evidence.
+F. Once the visual target is acceptable, PROMOTE the approved focus experience to normal game (without URL switch) and rebuild/test the Android APK. Do not publish an old game by mistake.
+
+DO NOT: spend credits on paid models, redesign mascot or gameplay, increase foam opacity, change all water hues globally, or claim success simply because color averages improved. Stop and ask for visual acceptance after each substantial pass. The APPROVED original is the sole appearance authority.
