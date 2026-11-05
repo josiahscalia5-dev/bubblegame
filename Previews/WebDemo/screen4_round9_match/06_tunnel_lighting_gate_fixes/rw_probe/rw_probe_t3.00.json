@@ -1,0 +1,267 @@
+{
+ "T": 3.517,
+ "cam": {
+  "track": [
+   -0.11,
+   1.547,
+   -1.008
+  ],
+  "tanW": 0.7265,
+  "aspect": 0.5,
+  "fov": 72
+ },
+ "tunnel": [
+  3.9006939946349135,
+  37.20192241480899
+ ],
+ "vanishingPoint_trackDirection": [
+  0.546,
+  0.529
+ ],
+ "uMatchVP_screen": [
+  0.528,
+  0.531
+ ],
+ "axisOnScreen": [
+  {
+   "du": 0,
+   "x": -2.665,
+   "y": -14.648,
+   "T": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "du": 3,
+   "x": 0.496,
+   "y": 0.29,
+   "T": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "du": 5,
+   "x": 0.516,
+   "y": 0.385,
+   "T": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "du": 8,
+   "x": 0.527,
+   "y": 0.439,
+   "T": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "du": 12,
+   "x": 0.534,
+   "y": 0.469,
+   "T": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "du": 16,
+   "x": 0.531,
+   "y": 0.481,
+   "T": [
+    0.002,
+    0.063,
+    0.998
+   ]
+  },
+  {
+   "du": 20,
+   "x": 0.517,
+   "y": 0.48,
+   "T": [
+    0.059,
+    0.081,
+    0.995
+   ]
+  },
+  {
+   "du": 30,
+   "x": 0.505,
+   "y": 0.507,
+   "T": [
+    0.07,
+    -0.102,
+    0.992
+   ]
+  },
+  {
+   "du": 40,
+   "x": 0.51,
+   "y": 0.514,
+   "T": [
+    -0.045,
+    0,
+    0.999
+   ]
+  }
+ ],
+ "wallVertices": 14744,
+ "rings": [
+  {
+   "screenR": [
+    0,
+    0.035
+   ],
+   "cells": 0,
+   "shaderRw_p10_med_p90": [
+    null,
+    null,
+    null
+   ],
+   "du_med_m": null,
+   "du_p10_p90": [
+    null,
+    null
+   ],
+   "rwOverTrue_med": null,
+   "coreShare": null,
+   "correctedRw_med": null,
+   "correctedCoreShare": null
+  },
+  {
+   "screenR": [
+    0.035,
+    0.06
+   ],
+   "cells": 31,
+   "shaderRw_p10_med_p90": [
+    0.07,
+    0.076,
+    0.083
+   ],
+   "du_med_m": 34.509,
+   "du_p10_p90": [
+    31.259,
+    38.259
+   ],
+   "rwOverTrue_med": 1.441,
+   "coreShare": 0,
+   "correctedRw_med": 0.058,
+   "correctedCoreShare": 0.645
+  },
+  {
+   "screenR": [
+    0.06,
+    0.09
+   ],
+   "cells": 194,
+   "shaderRw_p10_med_p90": [
+    0.071,
+    0.087,
+    0.104
+   ],
+   "du_med_m": 30.509,
+   "du_p10_p90": [
+    25.259,
+    40.509
+   ],
+   "rwOverTrue_med": 1.14,
+   "coreShare": 0,
+   "correctedRw_med": 0.081,
+   "correctedCoreShare": 0
+  },
+  {
+   "screenR": [
+    0.09,
+    0.12
+   ],
+   "cells": 280,
+   "shaderRw_p10_med_p90": [
+    0.084,
+    0.101,
+    0.13
+   ],
+   "du_med_m": 26.009,
+   "du_p10_p90": [
+    21.009,
+    34.259
+   ],
+   "rwOverTrue_med": 0.959,
+   "coreShare": 0,
+   "correctedRw_med": 0.105,
+   "correctedCoreShare": 0
+  },
+  {
+   "screenR": [
+    0.12,
+    0.2
+   ],
+   "cells": 1118,
+   "shaderRw_p10_med_p90": [
+    0.117,
+    0.16,
+    0.198
+   ],
+   "du_med_m": 17.009,
+   "du_p10_p90": [
+    14.259,
+    23.009
+   ],
+   "rwOverTrue_med": 0.964,
+   "coreShare": 0,
+   "correctedRw_med": 0.16,
+   "correctedCoreShare": 0
+  },
+  {
+   "screenR": [
+    0.2,
+    0.3
+   ],
+   "cells": 1344,
+   "shaderRw_p10_med_p90": [
+    0.204,
+    0.247,
+    0.291
+   ],
+   "du_med_m": 11.009,
+   "du_p10_p90": [
+    9.509,
+    13.009
+   ],
+   "rwOverTrue_med": 0.983,
+   "coreShare": 0,
+   "correctedRw_med": 0.247,
+   "correctedCoreShare": 0
+  },
+  {
+   "screenR": [
+    0.3,
+    0.45
+   ],
+   "cells": 1196,
+   "shaderRw_p10_med_p90": [
+    0.305,
+    0.36,
+    0.43
+   ],
+   "du_med_m": 7.509,
+   "du_p10_p90": [
+    6.509,
+    8.759
+   ],
+   "rwOverTrue_med": 0.992,
+   "coreShare": 0,
+   "correctedRw_med": 0.36,
+   "correctedCoreShare": 0
+  }
+ ]
+}
