@@ -316,13 +316,19 @@ function focusSwellGLSL() {
       float fsRc = floor(s * ${f4(R.cell)} + fl * 0.8);
       float fsRw = mix(${f4(R.w[0])}, ${f4(R.w[1])}, lqHash(vec2(fsRc, 5.3))) * (0.45 + 0.75 * fsTooth);
       float fsRim = (1.0 - smoothstep(fsRw * 0.55, fsRw, fsE)) * step(${f4(1 - R.share)}, lqHash(vec2(fsRc, 1.9)));
-      // 3. small irregular white splash pieces down the face (two overlapping blobs per cell)
+      // 3. broken white crest arcs down the face (the original's water there: curving white crest lines over blue, not
+      //    dots): per cell one arc of a circle, mostly its upper side, tilted a little, broken; clustered in bands that run
+      //    down the face (blue gaps between), fewer further down
       vec2 fsLq = vec2(s * ${f4(L.cell)} + fl * 0.3, fsPd * ${f4(L.cell)} - fl * ${f4(L.flow)}), fsLi = floor(fsLq);
-      vec2 fsLo = fract(fsLq) - 0.5 - (vec2(lqHash(fsLi + 4.0), lqHash(fsLi + 7.0)) - 0.5) * 0.4;
-      vec2 fsLo2 = fsLo - (vec2(lqHash(fsLi + 5.0), lqHash(fsLi + 6.0)) - 0.5) * 0.45;
+      vec2 fsLo = fract(fsLq) - 0.5 - (vec2(lqHash(fsLi + 4.0), lqHash(fsLi + 7.0)) - 0.5) * 0.3;
       float fsReach = 1.0 - smoothstep(0.0, ${f4(L.reach)}, fsE);
-      float fsLr = mix(${f4(L.r[0])}, ${f4(L.r[1])}, lqHash(fsLi + 2.0)) * (0.55 + 0.45 * fsReach);
-      float fsLace = step(1.0 - ${f4(L.share)} * fsReach, lqHash(fsLi + 11.0)) * (1.0 - smoothstep(fsLr - 0.05, fsLr, min(length(fsLo), length(fsLo2) * 1.15)));
+      float fsLr = mix(${f4(L.r[0])}, ${f4(L.r[1])}, lqHash(fsLi + 2.0));
+      float fsLw = mix(${f4(L.w[0])}, ${f4(L.w[1])}, lqHash(fsLi + 3.0)) * (0.6 + 0.4 * fsReach);
+      float fsLa = atan(fsLo.x, -fsLo.y) - (lqHash(fsLi + 13.0) - 0.5) * ${f4(L.tilt)};
+      float fsLs = mix(${f4(L.span[0])}, ${f4(L.span[1])}, lqHash(fsLi + 9.0));
+      float fsArc = (1.0 - smoothstep(fsLw * 0.55, fsLw, abs(length(fsLo) - fsLr))) * (1.0 - smoothstep(fsLs * 0.75, fsLs, abs(fsLa)));
+      float fsBand = smoothstep(${f4(L.band[0])}, ${f4(L.band[1])}, texture2D(uLqTex, vec2(s * ${f4(L.band[2])} + fl * 0.1, fsPd * ${f4(L.band[2] * 1.4)} - fl * 0.5)).b);
+      float fsLace = step(1.0 - ${f4(L.share)} * fsReach * fsBand, lqHash(fsLi + 11.0)) * fsArc;
       // 4. small clear bubble rings
       vec2 fsBq = vec2(s * ${f4(B.cell)} + 0.15 * sin(uTime * 0.6), fsPd * ${f4(B.cell)} - fl * 0.35), fsBi = floor(fsBq);
       float fsBr = mix(${f4(B.r[0])}, ${f4(B.r[1])}, lqHash(fsBi + 29.0));
@@ -345,7 +351,10 @@ function focusSwellGLSL() {
       mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
       mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
       mwA *= fsKeep;
-${F.debug ? `      {   // (debug: the crest's angle round her in 10-degree stripes, red / green, white at 0)
+${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
+        mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
+      }
+` : F.debug ? `      {   // (debug: the crest's angle round her in 10-degree stripes, red / green, white at 0)
         vec3 fsO = vW - uC; float fsPhi = degrees(atan(dot(fsO, uR) / 0.95, -dot(fsO, uT) / 0.55));
         mwCol = mod(floor(fsPhi / 10.0), 2.0) < 0.5 ? vec3(1.0, 0.0, 0.0) : vec3(0.0, 1.0, 0.0);
         if (abs(fsPhi) < 1.5) mwCol = vec3(1.0); mwA = fsKeep;

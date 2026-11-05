@@ -136,15 +136,18 @@ export const FOCUS = {
     //          each tooth rises and falls; lobe: rounder crests and troughs along it (in t); the valleys' depth factor at her sides and
     //          in front of her;
     //   rim: short white pieces along the cut edge: width [min, max] (m), pieces per m, the share kept;
-    //   lace: small irregular white splash pieces down the face: cells per m, the share near the crest (fewer further down,
-    //         over `reach` m), radius [min, max] as a share of the cell, how fast they run down the face;
+    //   lace: broken white crest arcs down the face (the original's curving white crest lines over blue; round dots read as
+    //         a polka-dot print): cells per m, the share near the crest (fewer further down, over `reach` m), the arc's
+    //         radius and line width [min, max] as shares of the cell, its half-span [min, max] (radians from its top), random
+    //         tilt (radians), how fast they run down the face, band: the arcs clustered in bands [noise from, to, per m];
     //   rings: small clear bubble rings: cells per m, share, radius, how far down (m), colour;
     //   spark: round twinkling glints: cells per m, share, dot radius, how far down (m);
     //   water: the face's currents (light cyan, vivid blue, deeper blue), noise scale [along, down], how much
     face: {
       teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
       rim: { w: [0.02, 0.06], cell: 16.0, share: 0.78, amount: 1.0 },
-      lace: { cell: 28.0, share: 0.85, reach: 0.4, r: [0.22, 0.42], flow: 1.4, amount: 1.0 },
+      lace: { cell: 9.0, share: 0.9, reach: 0.4, r: [0.22, 0.42], w: [0.07, 0.13], span: [0.7, 1.5], tilt: 1.2, flow: 1.4,
+        band: [0.3, 0.6, 2.2], amount: 1.0 },
       rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
       spark: { cell: 34.0, share: 0.7, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
       water: { light: '#acdffc', mid: '#78c4f8', deep: '#3f8cf0', scale: [1.7, 2.4], amount: 0.8 },

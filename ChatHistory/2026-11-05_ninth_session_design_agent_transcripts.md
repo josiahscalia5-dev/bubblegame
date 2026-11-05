@@ -99,8 +99,51 @@ Let me measure the brushes' screen boxes (pink fur mask) in the original and the
 
 - 19:09 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/brushes.py
 - 19:09 `Bash`: Measure brush boxes in original, base and match
+**Agent** (19:09 UTC):
 
-_43 tool steps._
+The original's brushes are smaller and higher than ours (left: y 0.240-0.416 vs 0.268-0.501; right: y 0.394-0.610 vs 0.393-0.671). Let me check how the `deco` entries are applied.
+
+- 19:09 `Bash`: Find deco brush placement code
+- 19:09 `Bash`: Read brush place function
+- 19:10 `Bash`: Read collectible animation code
+**Agent** (19:10 UTC):
+
+Let me zoom into the sock and gem in both pictures.
+
+- 19:10 `Bash`: Crop the sock region
+- 19:10 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/sock_crop.png
+- 19:10 `Bash`: Read tune_cands and phone_shot script headers
+**Agent** (19:10 UTC):
+
+I'll get picks for the brushes' target centres (same camera, unchanged by object moves).
+
+- 19:11 `Bash`: Probe picks for brush target centres
+**Agent** (19:11 UTC):
+
+I'll write a one-load sweep tool: it advances to 3.0 s once, then applies each candidate's scene edit (e.g. the sock pose group's rotation), re-renders, and saves the canvas.
+
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/live_sweep.cjs
+**Agent** (19:12 UTC):
+
+Now the gem squash code (focus-gated, visual only) in `matchCollectibles`.
+
+- 19:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:12 `Bash`: Rebuild bundle
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj1_tune.json
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/sock_cands.json
+- 19:12 `Bash`: Run object tune with sock pose sweep
+- 19:14 `Bash`: Build sock pose contact sheet
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_sheet.png
+**Lead → agent** (19:14 UTC):
+
+[Image: original 4204x554, displayed at 2000x264. Multiply coordinates by 2.10 to map to original image.]
+
+- 19:14 `Bash`: Build two smaller sock sheets
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_a.png
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_b.png
+- 19:14 `Bash`: Look for AD sock measurements
+
+_62 tool steps._
 
 ---
 
@@ -200,5 +243,36 @@ Let me rewrite the side-crest cap as separate white pieces instead of a white sh
 - 19:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
 - 19:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
 - 19:09 `Bash`: Build, capture and measure the cap fix
+- 19:10 `Bash`: Crop original, s0, s1 round her
+- 19:10 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s1b.png
+**Lead → agent** (19:10 UTC):
 
-_44 tool steps._
+[Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:10 `Bash`: Read FOCUS.water settings
+- 19:10 `Bash`: Zoom the front water under her
+- 19:10 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s1f.png
+**Agent** (19:11 UTC):
+
+Now I'll rework the swell face's white pattern: from uniform round dots to broken white crest arcs clustered in bands (the original's foam reads as curving white crest lines over blue).
+
+- 19:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:11 `Bash`: Build, capture and measure the crest arcs
+- 19:11 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s2f.png
+**Lead → agent** (19:11 UTC):
+
+[Image: original 2316x269, displayed at 2000x232. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:12 `Bash`: Zoom on s2 front water
+- 19:12 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s2z.png
+- 19:12 `Bash`: Capture with larger, thicker crest arcs via tune
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/t3.json
+- 19:12 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/cap.sh
+- 19:12 `Bash`: Capture with larger crest arcs via a tune file
+- 19:13 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s3z.png
+- 19:13 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:13 `Bash`: Capture a debug render of the face coordinates
+
+_63 tool steps._
