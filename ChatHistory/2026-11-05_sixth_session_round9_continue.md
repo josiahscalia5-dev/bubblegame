@@ -421,3 +421,23 @@ Yes
 
 I'll prepare the phone fix now in a separate copy of the project, so it doesn't collide with the specialists' work, and merge it with theirs when they finish. First, how the game sizes its camera:
 
+I'll set up the separate worktree for this fix:
+
+The worktree is ready. Now the camera code that sets `fovV`, to place the hook correctly:
+
+Now the three edits: the CSS rule, the body class, and the camera framing.
+
+You've hit your 5-hour limit · resets 6:20pm (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 14:31 UTC
+
+_Agent "Tunnel &amp; Lighting focused pass" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 6:20pm (UTC) (error type rate_limit, HTTP 429, request id req_011CgjwffLCCVrveGHAhwG5w, model sent to the API: claude-opus-5-5)_
+
+---
+
+### Automatic notice · 2026-11-05 14:32 UTC
+
+_Agent "Water &amp; VFX bank and under-body" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 6:20pm (UTC) (error type rate_limit, HTTP 429, request id req_011Cgjwh2WBwVkqcfcbiM6zU, model sent to the API: claude-opus-5-5)_
+

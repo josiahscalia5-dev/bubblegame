@@ -1,0 +1,49 @@
+diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
+index 5d61108..17c9291 100644
+--- a/WebDemo/src/game.js
++++ b/WebDemo/src/game.js
+@@ -70,6 +70,7 @@ const TEST = !!window.__BW_TEST__;
+ const SIDE = !!window.__BW_SIDE__ || /[?&]side(=|&|$)/.test(location.search);
+ const SHOW_TOUCHES = !!window.__BW_TOUCHES__ || /[?&]touches(=|&|$)/.test(location.search);
+ if (SIDE) document.body.classList.add('side');
++if (MATCH_ON) document.body.classList.add('match');   // ?s3=match: the phone layout in page.html (edge to edge)
+ const $ = (id) => document.getElementById(id);
+ const V3 = (a) => new THREE.Vector3(a[0], a[1], a[2]);
+ const C = (hex) => new THREE.Color(hex);
+@@ -1215,9 +1216,23 @@ function updateCamera(dt) {
+   // Keep the approved horizontal coverage on narrow phones (FOV fitted at a 1:2 portrait screen).
+   const aspect = camera.aspect;
+   camera.fov = aspect >= 0.5 ? fovV : THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(fovV) / 2) * 0.5 / aspect));
++  if (MATCH_ON) matchPhoneFrame(fovV, k);   // ?s3=match: phones taller than 1:2 framed from the top, as the approved picture
+   camera.updateProjectionMatrix();
+ }
+ 
++// ?s3=match on screens taller than 1:2 (phones): the same width as the approved 1:2 picture, framed from its top edge, so
++// the rim, tunnel, character and objects sit under the HUD where the approved Screen 4 has them; the extra height falls
++// below, in the water at the bottom. A vertical lens shift (view offset) only: the direction of view and the horizontal
++// coverage are unchanged, and so are the hero shaders (they work in angles round the camera). k: 0 before the tunnel
++// (Screen 3 keeps its framing), 1 inside it. At 1:2 or wider nothing changes (the 538 x 1076 captures included).
++function matchPhoneFrame(fovV, k) {
++  const aspect = camera.aspect;
++  if (aspect >= 0.5 || k <= 0) { if (camera.view && camera.view.enabled) camera.clearViewOffset(); return; }
++  const t0 = Math.tan(THREE.MathUtils.degToRad(fovV) / 2), ty = (t0 * 0.5) / aspect;   // half-heights: approved 1:2, this screen
++  const H = 1000, Wd = H * aspect;
++  camera.setViewOffset(Wd, H, 0, (k * (ty - t0) / (2 * ty)) * H, Wd, H);
++}
++
+ // ------------------------------------------------------------------ collectibles update
+ function updateCollectibles(dt) {
+   const t = state.time, mp = mascot.root.position;
+diff --git a/WebDemo/src/page.html b/WebDemo/src/page.html
+index ecf6c27..37687eb 100644
+--- a/WebDemo/src/page.html
++++ b/WebDemo/src/page.html
+@@ -49,6 +49,8 @@
+     box-shadow: 0 0 0 calc(var(--u, 1px) * 2) rgba(255, 255, 255, 0.35), 0 calc(var(--u, 1px) * 10) calc(var(--u, 1px) * 40) rgba(0, 0, 0, 0.45);
+   }
+   @media (max-aspect-ratio: 3/5) { #stage { aspect-ratio: auto; width: 100%; height: 100%; border-radius: 0; box-shadow: none; } }
++  /* ?s3=match on phones: the game fills the screen edge to edge (only a notch's safe area is kept clear) */
++  @media (max-aspect-ratio: 3/5) { body.match { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); } }
+   #view { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+   .hud { position: absolute; inset: 0; pointer-events: none; font-size: calc(var(--u) * 15); }
+   .hud > * { position: absolute; }

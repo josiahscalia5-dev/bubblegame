@@ -137,7 +137,7 @@ export const MATCH_WATER = {
     count: 140,
     tube: 2.0,               // the hero lining's radius (m; the layout's tunnelRadius, 2.5, is the old drum's)
     // sizes: [share, world radius (m)]; far ones are drawn up to `far` times bigger (else they would be under a pixel)
-    sizes: [[0.64, [0.035, 0.075]], [0.28, [0.085, 0.16]], [0.08, [0.2, 0.28]]],
+    sizes: [[0.6, [0.05, 0.1]], [0.3, [0.11, 0.18]], [0.1, [0.2, 0.3]]],
     far: [6, 26, 1.0],       // from 6 m into the drum, +100% by 26 m
     // where round the tube: [share, angle (degrees from the side, 90 = the top), radius (share of the tube's), stretch they
     // loop over (m into the drum; a negative end counts from the drum's end)]: the upper wall and both side walls over the
@@ -148,7 +148,7 @@ export const MATCH_WATER = {
     drift: [0.12, 0.4],      // m/s toward the camera (the walls' water flows toward the viewer)
     swirl: [0.06, 0.12],     // rad/s round the tube (the walls turn 0.012 turns/s, 0.075 rad/s)
     avoid: 1.0,              // the collectibles' clear circle (x their size on screen): no bubble over a coin's, gem's or sock's face
-    rim: 0.9, film: 0.6, body: 0.06, glint: 1.0,
+    rim: 1.5, rimPow: 1.8, film: 0.6, body: 0.08, glint: 1.0,   // (bright, fairly wide rims: the original's small bubbles read as white rings)
   },
 };
 {
@@ -242,6 +242,20 @@ export function matchFloorApply() {
     float mwNear = exp(-rP * rP / ${f4(F.deepR * F.deepR)});
     vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0);
     col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
+#if LQ_FOAM
+    {   // (the user's fidelity brief: activity) white water streaks in the channel, running toward the camera with the water: two
+        // layers at different scales and speeds so the motion reads layered; thin broken lines, accents on the blue, not a wash
+      float mwSw = sin(xu.y * 0.31 + uTime * 0.37) * 0.22 + sin(xu.y * 0.83 - uTime * 0.61) * 0.07;
+      vec2 mwQ1 = vec2((xu.x + mwSw) * ${f4(S.scale1[0])}, xu.y * ${f4(S.scale1[1])} + uTime * ${f4(S.speed1)});
+      vec2 mwQ2 = vec2((xu.x - mwSw * 0.6) * ${f4(S.scale2[0])} + 0.37, xu.y * ${f4(S.scale2[1])} + uTime * ${f4(S.speed2)} + 0.21);
+      float mwR1 = 1.0 - abs(2.0 * texture2D(uLqTex, mwQ1).b - 1.0), mwR2 = 1.0 - abs(2.0 * texture2D(uLqTex, mwQ2).b - 1.0);
+      float mwBrk = smoothstep(0.35, 0.6, texture2D(uLqTex, vec2(xu.x * 0.21, xu.y * 0.05 + uTime * ${f4(S.speed1 * 0.5)}) + 0.5).b);   // broken into lengths
+      float mwSt = smoothstep(${f4(S.th)}, ${f4(S.th + 0.05)}, mwR1) * mwBrk + smoothstep(${f4(S.th + 0.02)}, ${f4(S.th + 0.06)}, mwR2) * ${f4(S.second)};
+      float mwAa = clamp(1.0 - (fwidth(mwR1) + fwidth(mwR2)) * 1.2, 0.0, 1.0);   // gone where the lines would alias (far away)
+      float mwMask = smoothstep(${f4(S.near[0])}, ${f4(S.near[1])}, rP) * (1.0 - smoothstep(${f4(S.far[0])}, ${f4(S.far[1])}, rP)) * (1.0 - side);
+      col = mix(col, vec3(0.88, 0.97, 1.0), clamp(mwSt * mwAa * mwMask, 0.0, 1.0) * ${f4(S.amount)} * uMatchOn);
+    }
+#endif
   }
 `;
 }
@@ -408,7 +422,7 @@ void main() {
   float rr = dot(vQ, vQ);
   if (rr > 1.0 || vA < 0.003) discard;
   float f = 1.0 - sqrt(1.0 - rr);   // 0 at the middle .. 1 at the outline
-  float rim = pow(f, 2.5), body = ${f4(B.body)} * (0.6 + 0.8 * pow(f, 1.5));
+  float rim = pow(f, ${f4(B.rimPow)}), body = ${f4(B.body)} * (0.6 + 0.8 * pow(f, 1.5));
   vec3 film = 0.6 + 0.4 * cos(6.2832 * (f * 1.3 + vQ.y * 0.4 + vec3(0.0, 0.33, 0.67) + uTime * 0.05 + vSeed));
   vec3 col = vec3(0.85, 0.95, 1.0) * body + mix(vec3(1.0), film, ${f4(B.film)}) * rim * ${f4(B.rim)};
   vec2 g1 = vQ - vec2(-0.42, 0.42), g2 = vQ - vec2(0.4, -0.38);

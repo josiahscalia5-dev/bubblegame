@@ -541,8 +541,20 @@ The band layer is too weak to read against the busy water texture. Retuning thro
 - 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
 - 14:29 `Bash`: Build, capture f5b, measure, sheet
 - 14:30 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/sheet_f5b.png
+- 14:30 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/game.js
+- 14:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:30 `Bash`: Tighten the coin fade distances
+- 14:31 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:31 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:31 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:31 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:31 UTC):
 
-_211 tool steps._
+You've hit your 5-hour limit · resets 6:20pm (UTC)
+
+
+_219 tool steps._
 
 ---
 
@@ -883,5 +895,26 @@ Only about 30 bubbles show, all round the centre. The wall ones are probably out
 - 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
 - 14:29 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t14.json
 - 14:30 `Bash`: Build, capture with bubbles and flank changes, measure
+- 14:30 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/full_i14_s.png
+- 14:30 `Bash`: Tunnel crop before vs after bubbles
+- 14:30 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tun_i14.png
+- 14:31 `Bash`: Brighter, wider bubble rims, bigger small bubbles
+**Agent** (14:31 UTC):
 
-_203 tool steps._
+Before rebuilding, let me judge the flank change (i14) on the body crop.
+
+- 14:31 `Bash`: Body crops original vs i12 vs i14
+- 14:31 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/body_i14.png
+**Lead → agent** (14:31 UTC):
+
+[Image: original 2093x322, displayed at 2000x308. Multiply coordinates by 1.05 to map to original image.]
+
+- 14:31 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_liquid.js
+- 14:31 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:32 `Bash`: Locate matchFloorApply header and floor settings
+**Agent** (14:32 UTC):
+
+You've hit your 5-hour limit · resets 6:20pm (UTC)
+
+
+_212 tool steps._

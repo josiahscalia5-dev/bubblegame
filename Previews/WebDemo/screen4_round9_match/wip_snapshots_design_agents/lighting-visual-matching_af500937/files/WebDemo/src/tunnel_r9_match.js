@@ -106,7 +106,7 @@ export const MATCH = {
   // the original has only the small centre coin and one far sock there): visual only, coins and gems shrink away between
   // these distances from the camera (m) and grow back in as the character comes on, socks further out (the nearest far
   // sock, 23 m ahead, stays as the original's). Their places, pick-up radii and the counts are unchanged
-  farFade: { coins: [17, 21], socks: [25, 28] },
+  farFade: { coins: [13, 16], socks: [25, 28] },
   gemScale: 0.89,   // the gem beside the big left coin (gems[0]): its visual size (the approved's is 0.103 W wide, ours 0.115)
   // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
   // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
@@ -146,7 +146,7 @@ export const MATCH = {
     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
     // an orange ball, white 17%)
     // white: on the walls (and the far end), the core zone's pale lilac turned warm white first (the floor takes tint only)
-    core: { r: [0.035, 0.085], tint: [1.0, 0.94, 0.92], amount: 0.35, white: 1.0 },
+    core: { r: [0.035, 0.085], tint: [1.0, 0.94, 0.92], amount: 0.25, white: 1.0 },
     // the glints tinted (the approved's brightest wall texels are #cae0ff, not pure white); `glint` is also the floor's
     // (tunnel_r9_match_water.js); the walls now take `glintWall`: bluer (ours read lilac-white #e6e0f9 S 0.14 against #cae0ff
     // S 0.27) and not on the warm patches (blue-tinting a bright yellow made it lime: the gate's 783 lime pixels)
@@ -172,11 +172,15 @@ export const MATCH = {
     // between bands (from: where in the band it deepens); rim: the broken cyan-white edge at each band's inner side
     // glow: the azure light on each band's inner part (to: where it fades); smooth: the water's cell pattern halved inside
     // the bands by this much; rim.broken: how much the relief breaks the rim line
-    // blueFrom: the gaps and the azure light only outside the warm core (rw)
-    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.6,
-      blueFrom: [0.075, 0.12],
-      gap: { col: '#2c4fd0', from: [0.62, 0.86], amount: 0.8 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35 },
-      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.4 } },
+    // blueFrom: the gaps and the azure light only outside the warm core and the pale mid vortex (rw); rim.white: the rims
+    // white (not cyan) inside this rw, as the approved's mid vortex (white 22%); flecks: the approved's small white splash
+    // flecks along the rims (round, pale cyan-white, never stars): cells round the tube (a whole number) and per band, the
+    // share of cells holding one (1 - thresh), their colour and strength
+    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.3, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.6,
+      blueFrom: [0.09, 0.18],
+      gap: { col: '#2c4fd0', from: [0.62, 0.86], amount: 0.8 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35, white: [0.14, 0.22] },
+      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.4 },
+      flecks: { n: 150, m: 7, thresh: 0.8, col: '#d4f1ff', amount: 0.9 } },
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
     rainbow: { r: 0.225, w: 0.03, amount: 0.62, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
@@ -388,7 +392,15 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float bl = dot(c, vec3(0.2126, 0.7152, 0.0722)), bkeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
     c = mix(c, ${hx(M.bands.glow.col)} * mix(0.9, 1.1, bl), glowK * ${f4(M.bands.glow.amount)} * bkeep);
     c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * bkeep);
-    c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
+    c = mix(c, mix(vec3(0.95, 0.975, 1.0), ${hx(M.bands.rim.col)}, smoothstep(${f4(M.bands.rim.white[0])}, ${f4(M.bands.rim.white[1])}, rw)), rimK * ${f4(M.bands.rim.amount)});
+    // the white splash flecks along the rims (cells periodic round the tube: no seam)
+    vec2 fq = vec2(tu * ${f4(M.bands.flecks.n)}, bs * ${f4(M.bands.flecks.m)}), fi = floor(fq);
+    fi.x = mod(fi.x, ${f4(M.bands.flecks.n)});
+    float fh = fract(sin(dot(fi, vec2(12.9898, 78.233))) * 43758.5453);
+    vec2 fo = fract(fq) - 0.5 - (vec2(fract(fh * 17.13), fract(fh * 31.7)) - 0.5) * 0.4;
+    float fleck = step(${f4(M.bands.flecks.thresh)}, fh) * (1.0 - smoothstep(0.14, 0.3, length(fo * vec2(1.0, 0.75)))) * (1.0 - smoothstep(0.18, 0.4, bk)) * bz
+      * (1.0 - smoothstep(0.25, 0.5, aw * ${f4(M.bands.flecks.m)}));
+    c = mix(c, ${hx(M.bands.flecks.col)}, fleck * ${f4(M.bands.flecks.amount)});
   }
   {   // the approved's pastel rainbow arc above the centre (pink at the left, peach and pale yellow over the top and right),
       // across the bands, on the upper half (MATCH.walls.rainbow)
@@ -568,8 +580,11 @@ export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, w
       // and pass animations act near the character, where this leaves the scale alone)
       for (const [list, R] of [[FAR.coins, MATCH.farFade.coins], [FAR.socks, MATCH.farFade.socks]]) for (const o of list) {
         const d = o.position.distanceTo(cam.position);
-        if (d > R[0]) { o.scale.setScalar(Math.max(1e-3, 1 - THREE.MathUtils.smoothstep(d, R[0], R[1]))); o.userData.mtFar = true; }
-        else if (o.userData.mtFar) { o.scale.setScalar(1); o.userData.mtFar = false; }
+        // (the game's passBy sets every scale each frame, and the renderer has already worked out the world matrices: they
+        // are brought up to date here)
+        // (far ahead, passBy's own scale is always 1)
+        if (d > R[0]) { o.scale.setScalar(Math.max(1e-3, 1 - THREE.MathUtils.smoothstep(d, R[0], R[1]))); o.updateMatrixWorld(true); o.userData.mtFar = true; }
+        else if (o.userData.mtFar) { o.updateMatrixWorld(true); o.userData.mtFar = false; }
       }
     };
     report.centre = C;
