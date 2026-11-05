@@ -1,0 +1,16 @@
+BUBBLE WASH KINGDOM — CLAUDE CODE EVIDENCE KIT (CORRECTED)
+
+INSTRUCTIONS: Upload this ZIP to Claudia/Claude Code. Ask it to extract the ZIP, read CLAUDE_PROMPT.txt and VERIFY_7_ITEMS.txt, and use ORIGINAL_APPROVED_SCREEN4.png as the ONLY target. If ZIP upload fails, upload ORIGINAL_APPROVED_SCREEN4.png, CURRENT_4WAY_BUILD.jpg, 00_Annotated_Overview.jpg, 01_Deep_Tunnel_Bubbles.jpg, 02_ON_TOP_of_Water_Foam.jpg and CLAUDE_PROMPT.txt separately.
+
+CRUCIAL CORRECTION TO PREVIOUS PACKAGE:
+The pink fuzzy character sits ON TOP of the water/foam, not submerged or sunken. Do not redesign the character. Disregard ANY older prompt or annotated image that says "submerge", "partially submerge", or "sink" the character. What needs changing is the foam SUPPORT underneath it, not the depth of the character.
+
+FILE GUIDE:
+ORIGINAL_APPROVED_SCREEN4.png — Sole visual target; real original from user.
+CURRENT_4WAY_BUILD.jpg — User's recent four-panel comparison.
+00_Annotated_Overview.jpg — Visual comparison and seven corrections (corrected #2).
+01...07...jpg — Seven annotated crops from user reference and build.
+Bubble_*.png — optional transparent sprites; these are not reference art.
+Starter_Transparent_Bubble_Cluster.glb — optional starter model; not production ready.
+CLAUDE_PROMPT.txt — implementation request.
+VERIFY_7_ITEMS.txt — acceptance checklist.

@@ -30,6 +30,13 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - Report with a side by side and a corrected / remaining checklist.
 - **First priority: a visibly blue/turquoise water body** through the tunnel, supporting the pink character, which rests on it.
   White foam is only an accent on top. Never a white foam blanket, and never bloom, haze or a pale wash as a substitute.
+- **The user's latest corrections (5 November, about 17:15 and 17:45 UTC), superseding every earlier foam request:**
+  - Round the character: sparkling BLUE water with small bubbles, small splashes and blue-white highlights. No thick white
+    (or lavender) foam cushion or clumps round it.
+  - The tunnel (the vortex kit, `Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/`): the water itself as twisting,
+    irregular cobalt ribbons with turquoise currents, dark-blue gaps and curved, broken white streaks. Not smooth, even,
+    wide pastel rings or a big peach band. Bubbles are secondary.
+  - Commit and push each tested step and give the hash.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
   scene. Never restart or rebuild the game from scratch.
 
@@ -43,6 +50,9 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - `liquid`: Round 8, real water; `liquid,nofoam` shows it without foam.
   - `splash`: Round 8 pass 2, visible translucent splashes and a deeper swirl on top of `liquid`; `splash,nofoam` without the
     white.
+  - `match`: Round 9 art match (`tunnel_r9_match.js`, `tunnel_r9_match_water.js`).
+  - `focus` (newest, 5 November evening): `match` plus the user's focused correction pass (settings in
+    `WebDemo/src/tunnel_r9_focus.js`, code gated on `FOCUS_ON`). Evidence: `Previews/WebDemo/screen4_round9_match/15_focus_pass/`.
   - Everything older must stay **pixel-identical**. Prove it with frame comparisons before saying so.
 - **Gameplay is preserved:** controls, lanes, jump, tap to spin, coins, the gem, socks, hearts, pause, Bubble Blast,
   Turbo Spin, the mission. Use private random generators; the game's seeded `Math.random` is never touched.

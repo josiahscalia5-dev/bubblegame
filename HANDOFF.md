@@ -1,6 +1,34 @@
-# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9 art match, `?s3=match`, branch `ccr-1f9da4c9-e0yrsc`)
+# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9 focused pass, `?s3=focus`, branch `ccr-3d8a1ae9-hhgml1`)
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
+
+## Newest (5 November, 16:50 UTC onward): eighth session, branch `ccr-3d8a1ae9-hhgml1`, the FOCUSED CORRECTION PASS
+
+- **Recovered from:** `9a95c06` (the seventh session's last autosave; both specialists had stopped on a rate limit at 16:00
+  without saving game code, so the pass was redone directly). Rebuilt bundle byte-identical (md5 `811c6977...`).
+- **New switch `?s3=focus`** = `match` + this pass. Settings: `WebDemo/src/tunnel_r9_focus.js`; code gated on `FOCUS_ON` in
+  `tunnel_r9_match.js` (`focusRibbonsGLSL`, `focusFlecksGLSL`, the sock pose) and `tunnel_r9_match_water.js`
+  (`focusLumpGLSL`, `swellFront`, `focusSparkleGLSL`). `match` and all older switches stay pixel-identical.
+- **The user's corrections during the pass (they supersede the earlier foam requests; see `CLAUDE.md`):**
+  - about 17:15 UTC: sparkling BLUE water round the character, not a white foam cushion;
+  - about 17:45 UTC: the vortex kit (`Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/`), the tunnel water as
+    twisting broken cobalt ribbons.
+  - Also: commit and push each tested step, with the hash.
+- **Commits:** `9bbcfa8`, `492fb7a`, `b03d160`, `6f6bbb0`, `56d76d2`, `229eecb`, `5170d12`, then this hand-off.
+- **Evidence and checklist:** `Previews/WebDemo/screen4_round9_match/15_focus_pass/README.md` (`final/` has the 3.0 s
+  sheets).
+- **Open, by the numbers:**
+  - The tunnel's deep blue is now above the original's (7.0% against 3.9%), and pastel below it (24.5% against 29.2%).
+  - The per-pixel tunnel difference rose (51.1 against match's 46.6).
+  - The character is drawn slightly larger than the original (pink 4.94% against 4.16%).
+  - The original has more white splash texture at her base.
+  - The original's white streaks are chunkier.
+- **Tools added:**
+  - `WebDemo/tools/screen4/cam_sweep.cjs` (camera candidates from one load);
+  - `r2_func.cjs` takes `VW`/`VH` (a smaller viewport: at full size the `match`/`focus` hearts loop outlasts 20 minutes in
+    software rendering);
+  - `15_focus_pass/scripts/` (`pink.py`, `tunnel_palette.py`, `final_sheets.py`, `identity_shots.sh`, which includes
+    `match`).
 
 ## Newest (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
 
