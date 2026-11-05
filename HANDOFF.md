@@ -22,8 +22,12 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
     flying streaks, the bubbles near the centre. Evidence: `18_water_vfx_focus/`.
 - **Autosave** every 5 minutes (chat `ChatHistory/2026-11-05_ninth_session_focus_continued.md`, agents
   `..._ninth_session_design_agent_transcripts.md`, WIP snapshots in `15_focus_pass/wip_snapshots_design_agents/`).
-- **Next:** merge both, rebuild the bundle after the merge, then pixel identity, `s3_func`, `r2_func` (with `VW`/`VH`), the
-  Pixel 7 check, and the kit's five outputs (full comparison, lower-left zoom, ring zoom, changed files, tests and hashes).
+- **Both finished and merged (20:20 UTC):** Water & VFX as `5462f30`, Tunnel & Lighting as `a78a143` (bundle rebuilt after
+  the merge). Checks all pass on the merged build: `?s3=match` identical, `s3_func`, `r2_func`, Pixel 7 at two framings.
+  Evidence, the kit's checklist and what still differs: `Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/README.md`.
+- **Next, if the user wants another pass:** blue saturation in the rings (0.71 against 0.83), fewer small streaks and
+  bubbles over the rings, the left wall's crisp cyan sparkle instead of a milky smoothness, the floor behind her 4 L*
+  brighter, her base 0.20 W.
 
 ## Newest (5 November, 16:50 UTC onward): eighth session, branch `ccr-3d8a1ae9-hhgml1`, the FOCUSED CORRECTION PASS
 
