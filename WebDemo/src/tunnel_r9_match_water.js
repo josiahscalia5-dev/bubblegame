@@ -283,6 +283,24 @@ export function matchFloorApply() {
 // crest (the fur behind it shows violet), the floor's derived water lower down (one body of water), a glassy rim at grazing
 // angles, the key light's specular points, a white crest broken into bubbly pieces (foam layer only). Its place in the track
 // frame comes from the camera's frame (the hero stretch is straight there).
+// ?s3=focus only (the user's correction, about 17:15 UTC: sparkling blue water at her base, luminous blue-white highlights):
+// on the swell's upper face, small round white glints that twinkle, and light turquoise where the face turns to the light
+// (MATCH_WATER.sparkle, tunnel_r9_focus.js). Inside matchSwellGLSL (mwCol, mwA, vW, N, d, uTime).
+function focusSparkleGLSL() {
+  const P = MATCH_WATER.sparkle;
+  return /* glsl */ `    {   // ?s3=focus: sparkle on the water at her base
+      vec2 spq = vW.xz * ${f4(P.cell)} + vec2(uTime * 0.3, -uTime * 0.2);
+      vec2 spi = floor(spq);
+      float sph = fract(sin(dot(spi, vec2(12.9898, 78.233))) * 43758.5453);
+      float spTw = 0.5 + 0.5 * sin(uTime * 6.0 + sph * 40.0);
+      float spK = step(${f4(1 - P.share)}, sph) * (1.0 - smoothstep(${f4(P.dot[0])}, ${f4(P.dot[1])}, length(fract(spq) - 0.5 - (fract(sph * vec2(7.3, 3.1)) - 0.5) * 0.5))) * (0.55 + 0.45 * spTw);
+      spK *= 1.0 - smoothstep(0.05, ${f4(P.reach)}, d);
+      float spUp = clamp(dot(N, normalize(uU * 0.8 + uR * 0.3 - uT * 0.4)), 0.0, 1.0);
+      mwCol = mix(mwCol, mtUndisplay(${v3s(P.light)}), (0.45 + 0.55 * smoothstep(0.3, 0.9, spUp)) * ${f4(P.lightAmount)} * (1.0 - smoothstep(0.0, ${f4(P.reach)}, d)));
+      mwCol = mix(mwCol, mtUndisplay(${v3s(P.white)}), spK * ${f4(P.amount)});
+    }
+`;
+}
 export function matchSwellGLSL() {
   const K = MATCH_WATER.look;
   return /* glsl */ `  {   // ?s3=match: the swell as glossy see-through water (tunnel_r9_match_water.js)
@@ -321,7 +339,7 @@ export function matchSwellGLSL() {
       mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
     }
 #endif
-    col = mix(col, mwCol, uMatchOn);
+${FOCUS_ON ? focusSparkleGLSL() : ''}    col = mix(col, mwCol, uMatchOn);
     a = mix(a, mwA * smoothstep(-0.06, 0.06, hUp + 0.02), uMatchOn);
   }
 `;

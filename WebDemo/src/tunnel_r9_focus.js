@@ -85,6 +85,9 @@ export const FOCUS = {
     //    broken highlights on vivid cobalt-turquoise water)
     look: { clear: 1.0, sideClear: 1.0, crest: 0.3, crestFront: 0.45, crestW: [0.025, 0.04, 0.03, 0.035], top: 0.05, rim: 0.12, frontRim: 0.5,
       sky: '#5ec8ff', glassHi: '#3fb4f8', glass: '#1f86ee', glassDeep: '#1450d0', spec: 2.2 },
+    // sparkle on the water's upper face round her base: twinkling white glints (cells per metre, the share of cells with one,
+    // the dot's radius as a share of the cell, how far down the face in m) and light turquoise, most where it turns to the light
+    sparkle: { cell: 24.0, share: 0.42, dot: [0.13, 0.22], reach: 0.3, amount: 0.95, white: '#f2fbff', light: '#6cd0ff', lightAmount: 0.4 },
     // the floor round her: more sparkle (luminous blue-white highlights on vivid blue water)
     floor: { caustic: 0.55, glint: 1.3, deep: 0.85 },
     splash: {
