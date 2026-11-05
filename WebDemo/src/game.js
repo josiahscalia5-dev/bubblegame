@@ -1173,6 +1173,7 @@ const S4 = { off: new THREE.Vector3(0, 1.03, -3.58), look: new THREE.Vector3(0, 
 if (R3) S4.look.y = ROUND3.camera.lookY;   // round3: tilted up a little inside the drum, so the mascot sits lower (Tap to Start unchanged)
 if (R4) S4.look.y = ROUND4.camera.lookY;   // round4: a little higher still: the mascot and the tunnel's centre sit as in the approved Screen 4
 if (R5 && ROUND5.camera) { const C = ROUND5.camera; S4.off.set(...C.off); S4.look.y = C.lookY; S4.fov = C.fov; if (C.lookX != null) S4.look.x = C.lookX; }   // round5: further back and wider (tunnel_r5.js); lookX: ?s3=hero only
+if (MATCH_ON && ROUND5.camera && ROUND5.camera.lookZ != null) S4.look.z = ROUND5.camera.lookZ;   // ?s3=match: the hero camera moved with its aim point (tunnel_r9_match.js MATCH_CAM)
 rig = { snap: true, x: 0, y: 0, tilt: 0, shake: 0 };
 function updateCamera(dt) {
   const m = mascot;

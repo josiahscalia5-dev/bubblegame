@@ -45,13 +45,49 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
 const STAGE = 0.95;
 const HERO_BUBBLES = [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1.35, 0.95, 2.76, 0.16], [-2.15, -1.29, 2.43, 0.15],
   [-3.2, 0.88, 0.62, 0.15], [-2.9, 0.72, 0.8, 0.1], [-3.0, 0.92, 2.91, 0.13], [0.6, 0.9, 2.2, 0.09], [1.2, -1.0, 2.5, 0.1], [-0.8, 1.2, 1.9, 0.08]];
+// The focused pass (the user's brief, 5 November about 15:55 UTC, item 3: the pink character "appears larger and more present"
+// in the original; the model and its scale are not changed). Measured at 3.0 s (scripts in Previews/WebDemo/
+// screen4_round9_match/13_focused_pass_tunnel_lighting/scripts): the original's dome is about 1.25 times as broad at the same
+// depth under its top (0.27 / 0.34 / 0.39 W at y 0.72 / 0.74 / 0.76 against our 0.20 / 0.27 / 0.32) with its top at the same
+// height (0.696 against 0.704) and its centre about 0.015 W further left; the side tufts span about the same (0.56 against 0.53).
+// So the hero camera comes MATCH_CAM nearer the character (track metres: dx sideways, + screen-left; dh up; du along the path):
+// the character draws about 1.2 times larger round its dome top, which stays where it was, and 0.015 W further left. Every
+// object staged for the camera (the rim, the housing and collar, the hero bubbles, the framing brushes, the collectibles near
+// the drum) moves with it, so they keep their screen places exactly (the path is straight from 6 m before the mouth to 9 m in);
+// only the world's own objects (the character and the water round it, the tube, the floor) change on screen. The far tunnel
+// keeps its vanishing point (the aim point moves with the camera). The camera stays inside the drum, 0.44 m nearer the mouth.
+export const MATCH_CAM = { dx: -0.006, dh: -0.10, du: 0.44 };
+const restage = ([u, x, h, ...rest]) => [u + MATCH_CAM.du, x + MATCH_CAM.dx, h + MATCH_CAM.dh, ...rest];
+// The near hero bubbles that were too big (Water & VFX's finding; the focused pass): {index: [dx, dh, radius]} after the
+// re-staging, from the probe at 3.0 s (with the shader's drift) against the original's own bubbles (diameter in widths at
+// its centre):
+//   2 mid-left    0.097 at (0.215, 0.352) -> original 0.09  at (0.275, 0.348)
+//   3 right edge  0.113 at (0.976, 0.377) -> original 0.076 at (0.96, 0.365)
+//   4 lower-left  0.158 at (0.034, 0.743) -> original 0.137 at (0.084, 0.751)
+//   5 lower-left  0.095 at (0.172, 0.692) -> original 0.08  at (0.197, 0.699)
+//   6 upper-left  0.123 at (0.067, 0.201) -> original 0.105 at (0.128, 0.23)
+const BUBBLE_FIX = { 2: [-0.198, 0.026, 0.148], 3: [0.042, 0.064, 0.101], 4: [-0.095, -0.03, 0.13], 5: [-0.053, -0.03, 0.084], 6: [-0.129, -0.122, 0.111] };
+const fixBubble = ([u, x, h, r], i) => { const f = BUBBLE_FIX[i]; return f ? [u, x + f[0], h + f[1], f[2]] : [u, x, h, r]; };
+// the bubbles' shader seeds each one's drift (up and sideways) from its world place, fract(3.1 x + 7.7 z) (tunnel_r7_hero.js):
+// a moved bubble would drift to another place by the hero moment, so its move along the path is trimmed (at most 0.065 m) to
+// keep the seed
+const keepSeed = (b0, b1) => { const k = 3.1 * (b1[1] - b0[1]) + 7.7 * (b1[0] - b0[0]); return [b1[0] - (k - Math.round(k)) / 7.7, ...b1.slice(1)]; };
+const heroBubble = (b0, i) => keepSeed(b0, fixBubble(restage(b0), i));
+// a framing brush [u, side (+1 screen-left), angle up from level (degrees), scale, radius from the drum's axis]: moved by
+// MATCH_CAM round the axis
+const restageDeco = ([u, side, a, sc, rr]) => {
+  const r = a * Math.PI / 180, x = Math.cos(r) * rr + side * MATCH_CAM.dx, y = Math.sin(r) * rr + MATCH_CAM.dh;
+  return [u + MATCH_CAM.du, side, Math.atan2(y, x) * 180 / Math.PI, sc, Math.hypot(x, y)];
+};
 export const MATCH = {
   // deep-merged into HERO (tunnel_r7_hero.js) at load, before anything is built
   hero: {
     round6: {
       round5: {
         // pitched up 1.5 degrees and turned 0.4 degrees right: the vanishing point from (0.540, 0.512) to the approved (0.53, 0.53)
-        camera: { lookY: 1.62, lookX: 0.194 },
+        // (the focused pass: the camera and its aim point both moved by MATCH_CAM, so the view's direction is unchanged; the
+        // hero scene's camera was off [-0.11, 1.08, -2.6], aim [0.194, 1.62, 6.42] from the character)
+        camera: { off: [-0.11 + MATCH_CAM.dx, 1.08 + MATCH_CAM.dh, -2.6 + MATCH_CAM.du], lookX: 0.194 + MATCH_CAM.dx, lookY: 1.62 + MATCH_CAM.dh, lookZ: 6.42 + MATCH_CAM.du },
         // the walls now carry the approved picture's own glow: the drum's bloom halved (a decrease; it was lifting their darks)
         bloom: { strength: 0.16 },
       },
@@ -78,19 +114,27 @@ export const MATCH = {
       // top (1.53 m; 0.73 m with the coin's bob), inside the 0.82 m pick-up reach; drawn smaller there (MATCH.coinScales) so it
       // is the original's 0.126 W.
       // The small lower-right coin by the centre coin 2 m further (the original's is smaller, at 0.589, 0.574))
-      layout: { coinLines: [[-0.231, 2.77, 1, 1.0, 1.14, 0], [-0.674, 3.4, 1, 1.0, 2.03, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.357, 2.3, 1, 1.0, 0.57, 0],
-        [2, 15.0, 1, 1.0, 0.5, 0], [1, 12.0, 3, 1.0, 0.9, 0]], replace: 3,
-        firstSock: [2.0, 3.2, 1.14], extraGem: [-0.414, 5.7, 1.67] },
+      // (the focused pass: every one re-solved for the camera moved by MATCH_CAM with the probe's water heights,
+      // scripts/stage_probe.cjs: the same place relative to the camera, so the same screen box; lanes 0.009 further right,
+      // heights 0.06-0.13 m lower, all still within reach. Before: [-0.231, 2.77, .., 1.14], [-0.674, 3.4, .., 2.03],
+      // [1.07, 7.3, .., 1.15], [2.357, 2.3, .., 0.57], [2, 15.0, .., 0.5], [1, 12.0, 3, .., 0.9]; sock [2.0, 3.2, 1.14]; gem
+      // [-0.414, 5.7, 1.67])
+      layout: { coinLines: [[-0.222, 3.21, 1, 1.0, 1.048, 0], [-0.665, 3.84, 1, 1.0, 1.924, 0], [1.079, 7.74, 1, 1.0, 1.087, 0], [2.366, 2.74, 1, 1.0, 0.476, 0],
+        [2.009, 15.44, 1, 1.0, 0.437, 0], [1.009, 12.44, 3, 1.0, 0.8, 0]], replace: 3,
+        firstSock: [2.009, 3.64, 1.053], extraGem: [-0.405, 6.14, 1.565] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
       // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
       // x 0.01-0.20, y 0.233-0.415, 2.0% of the frame; measured at 3.0 s: x 0.01-0.17, y 0.238-0.459, 2.1%)
-      r7: { deco: [[1.15 + STAGE, 1, 34, 0.48, 1.62], [2.6 + STAGE, -1, 2, 0.8, 1.98]] },
+      // (the focused pass: moved with the camera, MATCH_CAM)
+      r7: { deco: [restageDeco([1.15 + STAGE, 1, 34, 0.48, 1.62]), restageDeco([2.6 + STAGE, -1, 2, 0.8, 1.98])] },
     },
-    rim: { u: -2.1 + STAGE, centre: [-0.097, 0.755] },   // (x corrected after the probe: the centre was 0.023 W right of target)
+    // (x corrected after the probe: the centre was 0.023 W right of target; the focused pass: moved with the camera)
+    rim: { u: -2.1 + STAGE + MATCH_CAM.du, centre: [-0.097 + MATCH_CAM.dx, 0.755 + MATCH_CAM.dh] },
     coinScale: 1.02,   // visual only (pick-up distances unchanged)
     // the big bubble in front of the rim plane (the collar cut it into a "ghost dome"), at the approved box (0.65-0.86,
     // 0.285-0.36) from the probed camera; the others +0.95 m
-    bubbles: [[-1.7, -0.63, 2.52, 0.244], ...HERO_BUBBLES.slice(1).map(([u, x, h, r]) => [u + STAGE, x, h, r])],
+    // (the focused pass: all moved with the camera, MATCH_CAM, and the five too big ones resized and placed, BUBBLE_FIX)
+    bubbles: [[-1.7, -0.63, 2.52, 0.244], ...HERO_BUBBLES.slice(1).map(([u, x, h, r]) => [u + STAGE, x, h, r])].map(heroBubble),
     // round7's own bubbles duplicated the hero bubbles (a second big bubble, a column of small ones over the centre)
     hide: ['r6Flanges', 'r7Glow', 'r5Heart', 's4Rings', 'r7Bubbles'],
     vortex: { perLog: 4.5 },   // the procedural rings that remain (the floor's) as dense as the approved's 8-10 bands
@@ -105,10 +149,12 @@ export const MATCH = {
   // left, still within the pick-up reach (0.87 m) from the left lane (game.js applies it, gated)
   // (gate fix F7: it sat 0.088 W left of the centre, a second small gem beside the centre coin: now in the middle lane at
   // 0.82 m, on the line from the camera through the centre coin, so at the hero moment it is hidden behind it; in reach)
-  farGem: [1, 14.6, 0.82],
+  // (the focused pass: re-solved for the camera moved by MATCH_CAM; before [1, 14.6, 0.82])
+  farGem: [1.009, 15.04, 0.757],
   // the second sock (round3's, lane 2 at 12.1 m) stood right of the centre coin: 5.1 m nearer and 0.6 m further right, at
   // 0.61 m, behind the big first sock at the hero moment; within reach from the right lane without a jump (0.63 m)
-  secondSock: [2.85, 7.0, 0.61],
+  // (the focused pass: re-solved for the camera moved by MATCH_CAM; before [2.85, 7.0, 0.61])
+  secondSock: [2.859, 7.44, 0.545],
   // the far collectibles converge on the vanishing point (four coin lines and two socks 19-34 m ahead at the hero moment;
   // the original has only the small centre coin and one far sock there): visual only, coins and gems shrink away between
   // these distances from the camera (m) and grow back in as the character comes on, socks further out (the nearest far
@@ -117,7 +163,7 @@ export const MATCH = {
   gemScale: 0.89,   // the gem beside the big left coin (gems[0]): its visual size (the approved's is 0.103 W wide, ours 0.115)
   // single coins' visual size, [layout u, scale] (checkpoint 05): the upper-left coin, brought nearer to stay in reach, at the
   // original's 0.126 W; the big left coin toward the original's 0.216 W (ours 0.188). Pick-up places unchanged
-  coinScales: [[3.4, 0.69], [2.77, 1.1]],
+  coinScales: [[3.84, 0.69], [3.21, 1.1]],   // (the focused pass: the coins' new layout u)
   // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
   // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
   // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
@@ -240,6 +286,7 @@ export const MATCH_UNIFORMS = {
   // the centre's place on the screen (drawing-buffer fractions, y up) and the size in pixels of the target being drawn
   // (set before each picture by buildMatch; MATCH.centre)
   uMatchVP: { value: new THREE.Vector2(0.5, 0.5) }, uMatchRes: { value: new THREE.Vector2(0, 0) },
+  uMatchRimU: { value: 0 },   // the rim's plane, metres along the path (set by buildMatch; mtRimRho)
 };
 // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
 // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
@@ -277,12 +324,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
 // the rim ramp (textures/screen4/rim_ramp.png): columns the angle 0..pi round the rim's centre (0 = screen right), rows rho =
 // r / the rim's outer radius from RAMP[0] (the housing just outside) to RAMP[1] (the blue inside the navy ring)
 const RAMP = [1.04, 0.80];
-// the rim on the approved: its band from rho 0.937 to 1; inside it, at 3.0 s, the collar spans rho 0.937 .. 0.9015 and the
-// tube's first metre 0.9015 .. 0.80 (worked out from the camera: the tube's top edge at 1.95 m above the camera, 4.9 m ahead)
-const RIM_RHO = { inner: 0.937, mouth: 0.9015, perMetre: 0.0991 };
-// (the collar's top arc starts at the bezel's inner edge, rho = inner / outer radius: 0.937 at 2.39 / 2.55; gate fix F6 made
-// the bezel thinner)
-{ const B = MATCH.hero.round6.porthole.bezel; RIM_RHO.inner = B.inner / B.outer; }
+// the rim on the approved: its band from rho 0.937 to 1. Inside it the collar's top arc and the tube's top wall take the ramp
+// at the rho where they show on screen (mtRimRho: each point seen through the rim's plane from the camera). (Before the focused
+// pass this was two constants worked out for one camera, at 3.0 s: the collar rho 0.937 .. 0.9015, the tube's first metre
+// 0.9015 .. 0.80; with the camera nearer the mouth the tube's top edge shows at rho 0.99, behind the bezel, and the ramp's
+// bevel, lilac line and navy ring fall 0.35-1.7 m into the tube.)
 // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
 const BEZEL_SIDES = [0.912, 1.03];
 // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
@@ -350,8 +396,16 @@ export function matchWallGLSL() {
   return /* glsl */ `
 // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
 uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
-uniform vec2 uMatchVP, uMatchRes;
+uniform vec2 uMatchVP, uMatchRes; uniform float uMatchRimU;
 ${RIM_SAMPLE}
+// a point of the collar or the tube (cs in the cross-section, u along the path) seen from the camera through the rim's plane:
+// d, its place there relative to the rim's centre (x + screen-left, h up), and the return value rho = |d| / the rim's outer
+// radius, so the ramp's colour lands where the original has it on screen whatever the camera's distance (the focused pass)
+float mtRimRho(vec2 cs, float u, out vec2 d) {
+  float s = (uMatchRimU - uHeroCam.z) / max(u - uHeroCam.z, 0.25);
+  d = uHeroCam.xy + (cs - uHeroCam.xy) * s - vec2(${f4(MATCH.hero.rim.centre[0])}, ${f4(MATCH.hero.rim.centre[1])});
+  return length(d) / ${f4(MATCH.hero.round6.porthole.bezel.outer)};
+}
 ${undisplayGLSL()}
 ${matchPlaceGLSL()}
 // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
@@ -487,20 +541,21 @@ export function matchWallApply() {
 // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
 // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
 export function matchMouthGLSL(HERO, axisH, radius) {
-  const C = HERO.rim.centre;
+  // (the focused pass: the ramp at the screen rho, mtRimRho; it fades into the walls' own colours where the ramp reaches the
+  // blue inside the navy ring, rho 0.80-0.82, as the old first metre did between 0.82 and 1.0 m)
   return /* glsl */ `  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
     float du0 = u - uStart;
-    float rho = ${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.perMetre)} * du0;
+    vec2 rd; float rho = mtRimRho(cs, u, rd);
     float upA = (cs.y - ${f4(axisH)}) / ${f4(radius)};
-    float k = smoothstep(-0.06, 0.0, du0) * (1.0 - smoothstep(0.82, 1.0, du0)) * smoothstep(-0.15, 0.3, upA) * uMatchOn;
-    col = mix(col, mtUndisplay(mtRimS(cs - vec2(${f4(C[0])}, ${f4(C[1])}), rho)), k);
+    float k = smoothstep(-0.06, 0.0, du0) * smoothstep(0.802, 0.82, rho) * smoothstep(-0.15, 0.3, upA) * uMatchOn;
+    col = mix(col, mtUndisplay(mtRimS(rd, rho)), k);
   }
 `;
 }
-// the collar's top arc (tunnel_r8_liquid.js liquidCollar): the bevel's outer part instead of the flat pale lavender
-export function matchCollarGLSL(HERO) {
-  const C = HERO.rim.centre;
-  return /* glsl */ `  col = mix(col, mtUndisplay(mtRimS(vXHU.xy - vec2(${f4(C[0])}, ${f4(C[1])}), ${f4(RIM_RHO.inner)} + (${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.inner)}) * t)), uMatchOn);   // ?s3=match: the approved rim ramp (tunnel_r9_match.js)
+// the collar's top arc (tunnel_r8_liquid.js liquidCollar): the bevel's outer part instead of the flat pale lavender (at the
+// screen rho, mtRimRho, since the focused pass)
+export function matchCollarGLSL() {
+  return /* glsl */ `  { vec2 rd; float rho = mtRimRho(vXHU.xy, vXHU.z, rd); col = mix(col, mtUndisplay(mtRimS(rd, rho)), uMatchOn); }   // ?s3=match: the approved rim ramp (tunnel_r9_match.js)
 `;
 }
 // the gold rim (round6's bezel, moved by heroRim): the approved rim band by angle round its centre and across its width
@@ -609,7 +664,8 @@ void main() {
 
 // Called at the end of buildHero (tunnel_r7_hero.js), after the liquid and the splash bank are built.
 export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet }) {
-  const report = { textures: MATCH_UNIFORMS.uMatchOn.value === 1 };
+  const report = { textures: MATCH_UNIFORMS.uMatchOn.value === 1, camera: MATCH_CAM };
+  MATCH_UNIFORMS.uMatchRimU.value = L.tunnelStart + HERO.rim.u;   // the rim's plane (mtRimRho)
   // the centre's place on the screen (MATCH.centre, mtPlace), worked out just before each picture is drawn (after the hero's
   // camera frame): the tube's axis `ahead` metres in front of the camera, projected with this frame's camera; and the size of
   // the target being drawn (gl_FragCoord is in its pixels)
