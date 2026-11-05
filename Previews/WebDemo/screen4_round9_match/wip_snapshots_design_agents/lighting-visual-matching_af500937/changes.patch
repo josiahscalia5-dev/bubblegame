@@ -1,5 +1,5 @@
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index fbe063a..a67cbc0 100644
+index fbe063a..e703103 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -58,15 +58,21 @@ export const MATCH = {
@@ -40,7 +40,7 @@ index fbe063a..a67cbc0 100644
    // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
    // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
    // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
-@@ -124,13 +133,48 @@ export const MATCH = {
+@@ -124,13 +133,51 @@ export const MATCH = {
      // and less saturated than the approved at the same places (zero-flow test at 3.0 s: the drum's translucent layers and
      // texture filtering); undone before the transform
      lift: 0.08, sat: 1.2,
@@ -61,7 +61,7 @@ index fbe063a..a67cbc0 100644
 +    glintWall: { tint: [0.76, 0.86, 1.0], from: [0.88, 0.98], amount: 0.7 },
 +    // the gate fixes F3 / F4 on the walls (from rw zone[0], fully from zone[1]; the warm patches kept):
 +    // contrast: the colour map's own bands round its blur (the approved's crisper bands: band contrast 0.17-0.20, ours 0.13)
-+    contrast: 1.5,
++    contrast: 1.2,
 +    // the relief's troughs toward the approved's deep cobalt (#4a64d2, 3.9% of the upper wall; ours 1.2%) and its crests and
 +    // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
 +    // (narrow ranges: crisp band edges, as the approved's painted bands)
@@ -75,8 +75,11 @@ index fbe063a..a67cbc0 100644
 +    // turn (a whole number: seamless), warp the spacing's irregularity (bands) at warpF per ln, wobble from the variation map,
 +    // flow ln r per second outward and travel per metre ridden; r: [in, full, full to, out] in rw; gap: the dark cobalt
 +    // between bands (from: where in the band it deepens); rim: the broken cyan-white edge at each band's inner side
-+    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62],
-+      gap: { col: '#3550d0', from: [0.6, 0.86], amount: 0.6 }, rim: { col: '#c4f0ff', w: [0.0, 0.08], amount: 0.5 } },
++    // glow: the azure light on each band's inner part (to: where it fades); smooth: the water's cell pattern halved inside
++    // the bands by this much; rim.broken: how much the relief breaks the rim line
++    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.6,
++      gap: { col: '#2c4fd0', from: [0.5, 0.8], amount: 0.85 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35 },
++      glow: { col: '#39b8f6', to: [0.18, 0.45], amount: 0.45 } },
      white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
      grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
    },
@@ -92,7 +95,7 @@ index fbe063a..a67cbc0 100644
  };
  // a deep merge: objects merge key by key at every level, arrays and values replace
  export function deepMerge(target, over) {
-@@ -152,6 +196,9 @@ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tun
+@@ -152,6 +199,9 @@ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tun
  export const MATCH_UNIFORMS = {
    uMatchOn: { value: 0 },   // 1 once every texture has loaded (otherwise the walls keep the Round 8 look)
    uMatchCol: { value: null }, uMatchBase: { value: null }, uMatchDet: { value: null }, uMatchNrm: { value: null }, uMatchVar: { value: null }, uMatchRim: { value: null },
@@ -102,7 +105,7 @@ index fbe063a..a67cbc0 100644
  };
  // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
  // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
-@@ -185,12 +232,18 @@ if (MATCH_ON) privately(0x9a72, () => {
+@@ -185,12 +235,18 @@ if (MATCH_ON) privately(0x9a72, () => {
  
  // ---------------------------------------------------------------- the walls' GLSL (inserted into tunnel_r8_liquid.js's wallCode)
  const f4 = (x) => (+x).toFixed(5);
@@ -121,7 +124,7 @@ index fbe063a..a67cbc0 100644
  // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
  const RIM_SAMPLE = /* glsl */ `
  vec3 mtRimS(vec2 d, float rho) {
-@@ -224,6 +277,29 @@ vec3 mtUndisplay(vec3 c) {
+@@ -224,6 +280,29 @@ vec3 mtUndisplay(vec3 c) {
  }
  `;
  }
@@ -151,7 +154,7 @@ index fbe063a..a67cbc0 100644
  // declarations and the shading, placed just before lqWall (the liquid's uniforms uTime, uHeroTravel, uHeroTanW, uHeroCam,
  // uLqGlow and uLqKey are declared above it)
  export function matchWallGLSL() {
-@@ -231,15 +307,15 @@ export function matchWallGLSL() {
+@@ -231,15 +310,15 @@ export function matchWallGLSL() {
    return /* glsl */ `
  // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
  uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
@@ -171,7 +174,7 @@ index fbe063a..a67cbc0 100644
    float lr = log(max(rw, 1e-4));
    vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
    vec2 dx = dFdx(bv), dy = dFdy(bv);
-@@ -253,7 +329,9 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -253,7 +332,9 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    vec2 oA = vec2(-${f4(M.swirlAmp)} * (p0 - 0.5), -${f4(M.flowAmp / M.span)} * (p0 - 0.5));
    vec2 oB = vec2(-${f4(M.swirlAmp)} * (p1 - 0.5) + 0.0037, -${f4(M.flowAmp / M.span)} * (p1 - 0.5));
    vec3 cA = textureGrad(uMatchCol, bv + oA, dx, dy).rgb, cB = textureGrad(uMatchCol, bv + oB, dx, dy).rgb;
@@ -182,7 +185,7 @@ index fbe063a..a67cbc0 100644
    // the colourless maps (relief, streaks) scroll on continuously, without a seam (periodic)
    float fl = uTime * ${f4(M.flow)} + uHeroTravel * ${f4(M.travel)};
    vec2 dv = vec2(tu + uTime * ${f4(M.swirl)}, (lr - ${f4(M.lnR0)} - fl) / ${f4(M.detailSpan)});
-@@ -261,8 +339,39 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -261,8 +342,43 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    vec3 det = textureGrad(uMatchDet, dv, ddx, ddy).rgb - 0.5;
    vec4 vr = textureGrad(uMatchVar, dv, ddx, ddy);
    c = mix(c, vec3(1.0), vr.r * ${f4(M.shimmer)} * (0.5 + 0.5 * sin(uTime * 3.1 + vr.b * 25.0 + tu * 40.0)));
@@ -209,10 +212,14 @@ index fbe063a..a67cbc0 100644
 +    float bk = fract(bs);
 +    float aw = (abs(dx.y) + abs(dy.y)) * ${f4(M.span * M.bands.perLog)} + (abs(dx.x) + abs(dy.x)) * ${f4(M.bands.spiral)};
 +    float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
++    // (the water's cell pattern softened toward its blur inside the bands: it broke the rings up)
++    c = mix(c, clamp(base + (c - base) * 0.5, 0.0, 1.0), ${f4(M.bands.smooth)} * bz);
 +    float gapK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz;
-+    float rimK = (1.0 - smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk)) * smoothstep(-0.12, 0.04, dl) * bz;
-+    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722));
-+    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * (1.0 - smoothstep(0.0, 0.1, c.r - c.b) * 0.6));
++    float rimK = (1.0 - smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk)) * mix(1.0, smoothstep(-0.12, 0.04, dl), ${f4(M.bands.rim.broken)}) * bz;
++    float glowK = smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk) * (1.0 - smoothstep(${f4(M.bands.glow.to[0])}, ${f4(M.bands.glow.to[1])}, bk)) * bz;
++    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722)), bwarm = smoothstep(0.0, 0.1, c.r - c.b);
++    c = mix(c, ${hx(M.bands.glow.col)} * mix(0.9, 1.1, bl), glowK * ${f4(M.bands.glow.amount)} * (1.0 - bwarm * 0.7));
++    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * (1.0 - bwarm * 0.6));
 +    c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
 +  }
 +  // the core's pale lilac rows toward warm white (blue brought down to the larger of red and green)
@@ -223,7 +230,7 @@ index fbe063a..a67cbc0 100644
    c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
    c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
    float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
-@@ -312,14 +421,18 @@ function matchBezel(scene, HERO) {
+@@ -312,14 +428,18 @@ function matchBezel(scene, HERO) {
    if (!bezel) return null;
    const B = HERO.round6.porthole.bezel, rin = B.inner / B.outer;
    bezel.material = new THREE.ShaderMaterial({ uniforms: { uTime: { value: 0 }, ...MATCH_UNIFORMS }, side: THREE.DoubleSide,
@@ -246,7 +253,7 @@ index fbe063a..a67cbc0 100644
    // a slow polished glint running round the gold
    float ang = atan(vL.y, -vL.x);
    float warm = smoothstep(0.05, 0.25, c.r - c.b);
-@@ -338,6 +451,10 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -338,6 +458,10 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
    // pick-up place, is unchanged)
    if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
@@ -257,7 +264,7 @@ index fbe063a..a67cbc0 100644
    if (MATCH_BARE) { for (const it of [...coins, ...gems, ...socks]) hideFromCamera(it.obj); report.bare = coins.length + gems.length + socks.length; }
    // the paw coins' look (one shared material): the approved's yellow gold, shinier and more dimensional (the Art Director:
    // hue 46, brightness range 0.34-0.42, lemon highlights #fff188, shade #d67c02; ours hue 39-41, range 0.18-0.21). The coin's
-@@ -365,12 +482,65 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -365,12 +489,65 @@ export function matchCollectibles({ coins, gems, socks }) {
    return report;
  }
  

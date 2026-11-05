@@ -147,7 +147,7 @@ export const MATCH = {
     glintWall: { tint: [0.76, 0.86, 1.0], from: [0.88, 0.98], amount: 0.7 },
     // the gate fixes F3 / F4 on the walls (from rw zone[0], fully from zone[1]; the warm patches kept):
     // contrast: the colour map's own bands round its blur (the approved's crisper bands: band contrast 0.17-0.20, ours 0.13)
-    contrast: 1.5,
+    contrast: 1.2,
     // the relief's troughs toward the approved's deep cobalt (#4a64d2, 3.9% of the upper wall; ours 1.2%) and its crests and
     // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
     // (narrow ranges: crisp band edges, as the approved's painted bands)
@@ -161,8 +161,11 @@ export const MATCH = {
     // turn (a whole number: seamless), warp the spacing's irregularity (bands) at warpF per ln, wobble from the variation map,
     // flow ln r per second outward and travel per metre ridden; r: [in, full, full to, out] in rw; gap: the dark cobalt
     // between bands (from: where in the band it deepens); rim: the broken cyan-white edge at each band's inner side
-    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62],
-      gap: { col: '#3550d0', from: [0.6, 0.86], amount: 0.6 }, rim: { col: '#c4f0ff', w: [0.0, 0.08], amount: 0.5 } },
+    // glow: the azure light on each band's inner part (to: where it fades); smooth: the water's cell pattern halved inside
+    // the bands by this much; rim.broken: how much the relief breaks the rim line
+    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.6,
+      gap: { col: '#2c4fd0', from: [0.5, 0.8], amount: 0.85 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35 },
+      glow: { col: '#39b8f6', to: [0.18, 0.45], amount: 0.45 } },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -361,10 +364,14 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float bk = fract(bs);
     float aw = (abs(dx.y) + abs(dy.y)) * ${f4(M.span * M.bands.perLog)} + (abs(dx.x) + abs(dy.x)) * ${f4(M.bands.spiral)};
     float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
+    // (the water's cell pattern softened toward its blur inside the bands: it broke the rings up)
+    c = mix(c, clamp(base + (c - base) * 0.5, 0.0, 1.0), ${f4(M.bands.smooth)} * bz);
     float gapK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz;
-    float rimK = (1.0 - smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk)) * smoothstep(-0.12, 0.04, dl) * bz;
-    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722));
-    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * (1.0 - smoothstep(0.0, 0.1, c.r - c.b) * 0.6));
+    float rimK = (1.0 - smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk)) * mix(1.0, smoothstep(-0.12, 0.04, dl), ${f4(M.bands.rim.broken)}) * bz;
+    float glowK = smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk) * (1.0 - smoothstep(${f4(M.bands.glow.to[0])}, ${f4(M.bands.glow.to[1])}, bk)) * bz;
+    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722)), bwarm = smoothstep(0.0, 0.1, c.r - c.b);
+    c = mix(c, ${hx(M.bands.glow.col)} * mix(0.9, 1.1, bl), glowK * ${f4(M.bands.glow.amount)} * (1.0 - bwarm * 0.7));
+    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * (1.0 - bwarm * 0.6));
     c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
   }
   // the core's pale lilac rows toward warm white (blue brought down to the larger of red and green)

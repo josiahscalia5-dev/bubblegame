@@ -515,8 +515,15 @@ I'll read the user's brief first.
 The band layer is too weak to read against the busy water texture. Retuning through the tune file: wider, stronger cobalt gaps, stronger rims, less contrast in the map's own pale blotches.
 
 - 14:23 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tune_f4c.json
+- 14:23 `Bash`: Capture with stronger bands, measure, compare
+- 14:23 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/bands_cmp.png
+- 14:24 `Bash`: Zoom on the upper wall
+- 14:24 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/zoom_f4c.png
+- 14:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
 
-_185 tool steps._
+_192 tool steps._
 
 ---
 
@@ -819,5 +826,8 @@ The free bubbles are hard to separate from white specks at this zoom. I'll read 
 - 14:22 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/q4.png
 - 14:22 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/specks.py
 - 14:22 `Bash`: Count small bright shapes by zone
+- 14:24 `Bash`: Find buildMatchWater call and track API
+- 14:24 `Bash`: Read track frame/map and axis height
+- 14:24 `Bash`: Read swirl sign and tunnel radius
 
-_181 tool steps._
+_184 tool steps._
