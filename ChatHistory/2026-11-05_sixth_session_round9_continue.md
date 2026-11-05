@@ -32,3 +32,5 @@ Captured with no console errors. Let me look at the merged 3.0 s frame beside th
 
 Now the hand-off's new top section:
 
+Saved and verified on GitHub (`5fd3c39`). The previous session ran a 5-minute automatic save at your request, so I'm restarting it. First, a check that it won't sweep up agent worktrees:
+
