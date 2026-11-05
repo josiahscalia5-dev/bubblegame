@@ -1,0 +1,45 @@
+orig
+   gold centre (0.893, 0.733)  x 0.781-1.000  y 0.673-0.799  w 0.219 h 0.126  area 1.83%
+   gold centre (0.198, 0.602)  x 0.087-0.299  y 0.544-0.660  w 0.211 h 0.116  area 1.71%
+   gold centre (0.868, 0.972)  x 0.763-0.971  y 0.934-1.000  w 0.209 h 0.066  area 0.68%
+   gold centre (0.152, 0.471)  x 0.089-0.211  y 0.443-0.498  w 0.123 h 0.055  area 0.43%
+   gold centre (0.520, 0.554)  x 0.469-0.570  y 0.530-0.578  w 0.100 h 0.048  area 0.38%
+   gold centre (0.587, 0.576)  x 0.575-0.598  y 0.570-0.584  w 0.023 h 0.014  area 0.03%
+   gem  centre (0.326, 0.511)  x 0.272-0.372  y 0.494-0.527  w 0.099 h 0.033  area 0.17%
+match
+   gold centre (0.897, 0.727)  x 0.773-1.000  y 0.670-0.799  w 0.227 h 0.129  area 2.16%
+   gold centre (0.196, 0.603)  x 0.094-0.301  y 0.541-0.664  w 0.207 h 0.123  area 1.89%
+   gold centre (0.151, 0.467)  x 0.093-0.210  y 0.435-0.500  w 0.117 h 0.065  area 0.60%
+   gold centre (0.548, 0.566)  x 0.486-0.622  y 0.539-0.590  w 0.136 h 0.051  area 0.48%
+   gem  centre (0.320, 0.506)  x 0.270-0.373  y 0.486-0.532  w 0.103 h 0.046  area 0.25%
+focus
+   gold centre (0.894, 0.736)  x 0.786-1.000  y 0.682-0.791  w 0.214 h 0.109  area 1.84%
+   gold centre (0.195, 0.608)  x 0.096-0.297  y 0.548-0.667  w 0.201 h 0.119  area 1.80%
+   gold centre (0.150, 0.472)  x 0.095-0.210  y 0.439-0.505  w 0.115 h 0.066  area 0.60%
+   gold centre (0.533, 0.569)  x 0.478-0.608  y 0.543-0.594  w 0.129 h 0.051  area 0.43%
+   gem  centre (0.324, 0.514)  x 0.274-0.373  y 0.499-0.531  w 0.099 h 0.033  area 0.15%
+01_Original_Approved_Screen_4.jpg left: x 0.010-0.171 y 0.240-0.416 area 1.43% | right: x 0.789-0.984 y 0.394-0.610 area 0.90%
+focus_final_t3.00_canvas.png left: x 0.000-0.186 y 0.240-0.418 area 1.59% | right: x 0.793-1.000 y 0.393-0.606 area 1.75%
+== final
+  polar  orig   upper arc 15-165   rays 285  bands/ray  6.3 (3.8 per ln r)  amp  21.9 L*  L*<55 share 16.3%  coh(8deg) 0.60  L* mean  72.5  L* sd along ray 14.9
+  polar  focus  upper arc 15-165   rays 257  bands/ray  6.5 (3.9 per ln r)  amp  20.4 L*  L*<55 share  7.5%  coh(8deg) 0.63  L* mean  75.4  L* sd along ray 12.8
+  dark   orig   upper arc y<.45  L* p10/25/50/75/90   45   53   64   80   92 | L*<50 18.9% <55 30.5% <60 41.6% | darkest20%: hue 220.8 sat 0.88 L* 45.5 | saturated blue: share 54.2% hue 215.2 L* 54.1 sat 0.83
+  dark   focus  upper arc y<.45  L* p10/25/50/75/90   46   58   67   80   92 | L*<50 12.4% <55 19.4% <60 30.9% | darkest20%: hue 226.4 sat 0.72 L* 46.3 | saturated blue: share 54.1% hue 219.4 L* 58.8 sat 0.71
+  zone ring_upper orig   white   9.5 pale  20.5 lav  11.7 vivid  51.2 deep   2.1 turq   7.5 warm   3.5 | L*  64.9 chroma  50.4 texture 5.15 median #5b95ee kept  99%
+  zone ring_upper focus  white   9.9 pale  19.4 lav  11.5 vivid  50.4 deep   3.4 turq   6.9 warm   1.9 | L*  65.7 chroma  47.6 texture 5.21 median #639ef6 kept 100%
+  zone ring_left  orig   white  28.1 pale  33.4 lav  21.2 vivid  19.0 deep   0.1 turq   1.1 warm  10.3 | L*  78.0 chroma  29.8 texture 5.07 median #cac5ec kept  78%
+  zone ring_left  focus  white  18.3 pale  24.4 lav   2.0 vivid  33.4 deep   0.6 turq   0.0 warm   2.7 | L*  72.9 chroma  37.3 texture 5.23 median #8cb6f7 kept  75%
+  zone centre     orig   white  28.1 pale  48.0 lav  24.2 vivid   5.8 deep   0.3 turq   0.6 warm  12.3 | L*  81.1 chroma  27.3 texture 5.19 median #dfcdea kept  82%
+  zone centre     focus  white  32.8 pale  58.1 lav  18.2 vivid   0.6 deep   0.0 turq   0.4 warm   8.4 | L*  84.0 chroma  20.7 texture 3.14 median #d5cff3 kept  88%
+ring zone        orig   white 22.3%  pieces/10k px   3.2  area median    59 p90   1160  thickness median  3.5 px  elongation median  2.1  along-tangent  28%
+ring zone        match  white 18.8%  pieces/10k px   7.8  area median    21 p90    310  thickness median  1.9 px  elongation median  3.2  along-tangent  72%
+ring zone        focus  white 20.1%  pieces/10k px  12.0  area median    29 p90    222  thickness median  2.0 px  elongation median  3.6  along-tangent  71%
+upper arc y<.45  orig   white 12.0%  pieces/10k px   3.6  area median    44 p90    517  thickness median  3.2 px  elongation median  1.8  along-tangent  32%
+upper arc y<.45  match  white 12.5%  pieces/10k px   6.1  area median    24 p90    131  thickness median  1.8 px  elongation median  3.7  along-tangent  77%
+upper arc y<.45  focus  white 16.0%  pieces/10k px   9.8  area median    50 p90    318  thickness median  2.3 px  elongation median  3.6  along-tangent  75%
+orig   core r<0.12W: pinkviolet  8.6%  warm 13.0%  white 35.3%  paleblue 14.5%  satblue  3.1%  L* 83.4
+match  core r<0.12W: pinkviolet  2.0%  warm  8.2%  white 36.5%  paleblue 26.3%  satblue  6.8%  L* 82.4
+focus  core r<0.12W: pinkviolet  7.3%  warm 10.9%  white 34.4%  paleblue 35.2%  satblue  0.7%  L* 84.3
+01_Original_Approved_Scree all: L* 76.9 white 24.8 pale 30.1 lav 14.1 vivid 26.1 | upper: L* 78.0 white 28.1 pale 33.4 lav 21.2 vivid 19.0 | lower: L* 76.2 white 22.5 pale 27.9 lav  9.3 vivid 30.8 | edge: L* 71.0 white 30.9 pale 20.4 lav 17.8 vivid 13.9
+focus_seam_t3.00_canvas.pn all: L* 69.1 white  6.5 pale 16.0 lav  1.1 vivid 55.6 | upper: L* 64.9 white  5.7 pale 14.1 lav  2.5 vivid 57.4 | lower: L* 71.3 white  6.9 pale 17.0 lav  0.4 vivid 54.7 | edge: L* 65.2 white  2.0 pale  8.5 lav  0.5 vivid 73.8
+focus_final_t3.00_canvas.p all: L* 77.3 white 22.3 pale 25.7 lav  1.1 vivid 24.1 | upper: L* 72.9 white 18.3 pale 24.4 lav  2.0 vivid 33.4 | lower: L* 80.2 white 25.0 pale 26.6 lav  0.5 vivid 18.1 | edge: L* 76.4 white 25.7 pale 23.6 lav  0.3 vivid 18.9

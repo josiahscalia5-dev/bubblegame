@@ -207,4 +207,12 @@ colour, no bloom, exposure or haze. A first version mapped the darks to periwink
 | lavender (whole zone / outer 3% strip) | 14.1 / 17.8% | 1.2 / 0.4% | 1.1 / 0.3% |
 
 Frames: `frames/focus_final_t3.00*.png` (and 2.85, 3.1), crop `frames/crop_left_wall_original_before_after.png`, Pixel 7
-`frames/phone_412x839_focus_final_3.00s.png`.
+`frames/phone_412x839_focus_final_3.00s.png`. Committed `956a7de`.
+
+## 8. Final checks (after `956a7de`)
+
+- `?s3=match` at 3.0 s, 3D canvas: identical to `71f7fa7` (md5 e52d4ea32e519acaf868a87029894f03 both). Page screenshots are not
+  byte-stable run to run here (the same `71f7fa7` build twice: max 6, 1736 pixels, all HUD anti-aliasing): `numbers/pixel_identity_match_vs_71f7fa7.txt`.
+- `S3=focus s3_func.cjs`: lanes 0 / 2, jump, 12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_final.json`).
+- On the final frame the dark bands per ray came down to 6.5 (the centre and left-wall changes removed bubble-edge minima there).
+- Summary table and what still differs: `README.md`. All final numbers: `numbers/final_measures_t3.00.txt`.

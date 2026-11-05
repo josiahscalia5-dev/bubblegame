@@ -1,0 +1,19 @@
+?s3=match pixel identity, Tunnel & Lighting's worktree final (956a7de) against 71f7fa7 (the session's start), 5 November 2026.
+
+Capture: WebDemo/tools/screen4/liquid_shots.cjs, S3=match TIMES=3.0 DPR=1.5 CANVAS=1 (seed 7, Tap then 3.0 s).
+71f7fa7's build: its game.bundle.js and index.html (git show 71f7fa7:...; no WebDemo/ change between 71f7fa7 and the
+worktree's start 565eb07), with the unchanged models/, textures/, ui/ folders.
+
+3D canvas at 3.0 s (807 x 1614):
+  71f7fa7  md5 e52d4ea32e519acaf868a87029894f03
+  956a7de  md5 e52d4ea32e519acaf868a87029894f03
+  max difference 0, pixels differing 0  -> IDENTICAL
+
+Page screenshot (HUD on): not byte-stable from run to run in this environment, so not a valid identity test:
+  71f7fa7 run 1 vs 71f7fa7 run 2:   max 6, 1736 pixels (the same build twice)
+  71f7fa7 run 2 vs 956a7de:         max 1, 1631 pixels
+  956a7de run 1 vs 956a7de run 2:   max 0
+The differences are in the HUD's anti-aliasing (the Turbo Spin button and others), never in the 3D picture.
+
+Every change in this worktree is gated on FOCUS_ON (?s3=focus): the settings in FOCUS.match (merged into MATCH only under
+focus) and the GLSL pieces / collectible code in tunnel_r9_match.js inside `FOCUS_ON ? ... : ''` or `if (FOCUS_ON ...)`.
