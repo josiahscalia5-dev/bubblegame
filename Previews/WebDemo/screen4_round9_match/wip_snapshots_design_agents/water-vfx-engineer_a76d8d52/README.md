@@ -1,16 +1,30 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: finish bank and bubbles)
 
-- **Taken:** 2026-11-05 15:17 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 15:22 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `5d742e0`.
 - **Its own commits so far:** 
   - `b2454f5 Round 9 Water & VFX gate fixes (WIP): the tunnel bubble field at every depth with white streaks, opaque aqua-white froth lobes`
   - `9bfd9f7 Round 9 Water & VFX gate fixes (restored WIP): the bank's lobes, the swell's front, fewer flecks and droplets, the first tunnel bubble field`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (95; full copies in `files/`)
+## Files (119; full copies in `files/`)
 
 - `.wvtmp/bank_i1.png (new)`
 - `.wvtmp/bank_i2.png (new)`
+- `.wvtmp/basedemo/README.md (new)`
+- `.wvtmp/basedemo/artifact-models (deleted)`
+- `.wvtmp/basedemo/artifact.html (new)`
+- `.wvtmp/basedemo/build.mjs (new)`
+- `.wvtmp/basedemo/game.bundle.js (new)`
+- `.wvtmp/basedemo/index.html (new)`
+- `.wvtmp/basedemo/models (deleted)`
+- `.wvtmp/basedemo/node_modules (deleted)`
+- `.wvtmp/basedemo/package.json (new)`
+- `.wvtmp/basedemo/src (deleted)`
+- `.wvtmp/basedemo/textures (deleted)`
+- `.wvtmp/basedemo/tools (deleted)`
+- `.wvtmp/basedemo/ui (deleted)`
+- `.wvtmp/body_i9.png (new)`
 - `.wvtmp/bub/bubbles_approved.png (new)`
 - `.wvtmp/bub/bubbles_before.png (new)`
 - `.wvtmp/bub/bubbles_r0.png (new)`
@@ -35,6 +49,12 @@
 - `.wvtmp/dbg4_crop.png (new)`
 - `.wvtmp/dbg_cmp.png (new)`
 - `.wvtmp/dbg_inst.cjs (new)`
+- `.wvtmp/fin/match_t2.85.png (new)`
+- `.wvtmp/fin/match_t2.85_canvas.png (new)`
+- `.wvtmp/fin/match_t3.00.png (new)`
+- `.wvtmp/fin/match_t3.00_canvas.png (new)`
+- `.wvtmp/fin/match_t3.10.png (new)`
+- `.wvtmp/fin/match_t3.10_canvas.png (new)`
 - `.wvtmp/full_i1.png (new)`
 - `.wvtmp/full_i3.png (new)`
 - `.wvtmp/full_i7.png (new)`
@@ -59,12 +79,16 @@
 - `.wvtmp/i7/match_info.json (new)`
 - `.wvtmp/i7/match_t3.00.png (new)`
 - `.wvtmp/i7/match_t3.00_canvas.png (new)`
+- `.wvtmp/i8/match_info.json (new)`
 - `.wvtmp/i8/match_t2.85.png (new)`
 - `.wvtmp/i8/match_t2.85_canvas.png (new)`
 - `.wvtmp/i8/match_t3.00.png (new)`
 - `.wvtmp/i8/match_t3.00_canvas.png (new)`
 - `.wvtmp/i8/match_t3.10.png (new)`
 - `.wvtmp/i8/match_t3.10_canvas.png (new)`
+- `.wvtmp/i9/match_info.json (new)`
+- `.wvtmp/i9/match_t3.00.png (new)`
+- `.wvtmp/i9/match_t3.00_canvas.png (new)`
 - `.wvtmp/mid_i3.png (new)`
 - `.wvtmp/mid_i4.png (new)`
 - `.wvtmp/mid_i5.png (new)`

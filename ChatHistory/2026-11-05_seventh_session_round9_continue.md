@@ -228,3 +228,15 @@ Already fixed and merged (shown in my last message): the white rectangle, the pu
 
 When Water & VFX finishes, I'll merge it and check that gameplay and every older version are unchanged. Then you'll get the side-by-side with your original at 3.0 s (desktop 1:2 and Pixel 7), a close-up for each checkpoint, and an honest fixed / partly / not list.
 
+---
+
+### Automatic notice · 2026-11-05 15:18 UTC
+
+_Background command "Capture baseline frames of all older versions" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-05 15:18 UTC
+
+The identity check on the current merge is running in the background (about 6 minutes). Water & VFX is still working with your correction: the character sits on top of the water. I'll pick up again as soon as either finishes.
+

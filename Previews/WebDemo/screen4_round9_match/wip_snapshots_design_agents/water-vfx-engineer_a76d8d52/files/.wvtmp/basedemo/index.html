@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Bubble Wash Kingdom Screen 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
+<style>
+  /* Layout: one portrait game screen, the approved 1:2 Screen 3 proportion, centred; the HUD is laid out
+     in "board pixels" of the approved crop (1 px = screen height / 537), so it scales like the original. */
+  :root {
+    color-scheme: dark;
+    --night: #241a52;          /* the stage surround: deep violet of the drum at night */
+    --night-2: #3b2a86;
+    --pill: rgba(20, 28, 92, 0.72);
+    --panel-top: #4fb3ff;
+    --panel-bot: #1d63e6;
+    --panel-rim: rgba(255, 255, 255, 0.9);
+    --ink: #0f1f6b;            /* text outline */
+    --white: #ffffff;
+    --pink: #ff4fb8;
+    --display: "Fredoka", "Baloo 2", "Nunito", system-ui, sans-serif;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body {
+    background: radial-gradient(120% 80% at 50% 20%, var(--night-2), var(--night));
+    color: var(--white);
+    font-family: var(--display);
+    overflow: hidden;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #stage {
+    position: relative;
+    height: min(100%, 100dvh);
+    aspect-ratio: 1 / 2;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: calc(var(--u, 1px) * 14);
+    overflow: hidden;
+    touch-action: none;
+    background: #cbb7ff;
+    box-shadow: 0 0 0 calc(var(--u, 1px) * 2) rgba(255, 255, 255, 0.35), 0 calc(var(--u, 1px) * 10) calc(var(--u, 1px) * 40) rgba(0, 0, 0, 0.45);
+  }
+  @media (max-aspect-ratio: 3/5) { #stage { aspect-ratio: auto; width: 100%; height: 100%; border-radius: 0; box-shadow: none; } }
+  #view { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hud { position: absolute; inset: 0; pointer-events: none; font-size: calc(var(--u) * 15); }
+  .hud > * { position: absolute; }
+  .t { font-weight: 700; color: var(--white); text-shadow: 0 0 calc(var(--u) * 1.5) var(--ink), 0 calc(var(--u) * 1.3) 0 var(--ink), calc(var(--u) * 1.2) 0 0 var(--ink), calc(var(--u) * -1.2) 0 0 var(--ink), 0 calc(var(--u) * -1.1) 0 var(--ink), 0 calc(var(--u) * 2.4) calc(var(--u) * 1.5) rgba(8, 20, 90, 0.55); }
+  .pill {
+    top: calc(var(--u) * var(--y)); left: calc(var(--u) * var(--x)); width: calc(var(--u) * var(--w)); height: calc(var(--u) * var(--h));
+    border-radius: 999px; background: var(--pill); box-shadow: inset 0 0 0 calc(var(--u) * 1.2) rgba(140, 200, 255, 0.55);
+    display: flex; align-items: center;
+  }
+  .pill img { position: absolute; }
+  .pill span { position: absolute; left: calc(var(--u) * var(--tx)); line-height: 1; font-variant-numeric: tabular-nums; }
+  .pill small { font-size: calc(var(--u) * 11); }
+  #gemPill.pop img, #gemPill.pop span { animation: pop 0.42s cubic-bezier(.2, 1.6, .4, 1); }
+  @keyframes pop { 40% { transform: scale(1.4) rotate(-8deg); } 100% { transform: none; } }
+  .round {
+    pointer-events: auto; top: calc(var(--u) * 12); left: calc(var(--u) * 226); width: calc(var(--u) * 27); height: calc(var(--u) * 27);
+    border-radius: 50%; border: calc(var(--u) * 1.5) solid var(--panel-rim); padding: 0; cursor: pointer;
+    background: radial-gradient(circle at 40% 30%, var(--panel-top), var(--panel-bot));
+    display: grid; place-items: center;
+  }
+  .round img { width: 70%; height: 70%; }
+  .round[aria-pressed="true"] img { opacity: 0.45; }
+  .round:focus-visible { outline: calc(var(--u) * 2) solid #ffe27a; outline-offset: calc(var(--u) * 1); }
+  .panel {
+    left: 50%; transform: translateX(-50%);
+    border-radius: calc(var(--u) * 22);
+    /* Glossy jelly panel, as in the approved screens: deep royal blue, a bright sheen across the top,
+       a thick pale-cyan rim with a soft outer glow, and a darker inner edge at the bottom. */
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 22%, rgba(255, 255, 255, 0) 38%),
+      radial-gradient(120% 90% at 50% 0%, #4aa6ff 0%, #2a74f4 45%, #1446d2 100%);
+    box-shadow:
+      inset 0 0 0 calc(var(--u) * 2.6) rgba(190, 236, 255, 0.95),
+      inset 0 calc(var(--u) * -6) calc(var(--u) * 10) rgba(8, 22, 120, 0.45),
+      0 0 calc(var(--u) * 7) rgba(150, 215, 255, 0.85),
+      0 calc(var(--u) * 4) calc(var(--u) * 10) rgba(20, 30, 120, 0.35);
+    text-align: center;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  #banner { top: calc(var(--u) * 82); width: calc(var(--u) * 205); height: calc(var(--u) * 70); }
+  #banner .big { position: absolute; left: 0; right: 0; top: calc(var(--u) * 5); font-size: calc(var(--u) * 30); line-height: calc(var(--u) * 36); }
+  #banner .small { position: absolute; left: 0; right: 0; top: calc(var(--u) * 39); font-size: calc(var(--u) * 16); line-height: calc(var(--u) * 24); font-weight: 600; }
+  #startPanel { bottom: calc(var(--u) * 28); width: calc(var(--u) * 237); height: calc(var(--u) * 100); }
+  #startPanel .l { position: absolute; left: 0; right: 0; font-size: calc(var(--u) * 17.5); line-height: calc(var(--u) * 22); font-weight: 700; }
+  #startPanel .tap { font-size: calc(var(--u) * 19); line-height: calc(var(--u) * 26); font-weight: 700; }
+  #startPanel img { position: absolute; }
+  #hand { animation: hover 1.1s ease-in-out infinite; }
+  @keyframes hover { 50% { transform: translateY(calc(var(--u) * -3)); } }
+  /* The "Let's go!" banner and the Tap to Start panel fade out over the first 0.45 s of the run, timed by
+     the game itself (game.js fadeStartPanels), so they are gone however the frames are stepped. */
+  #banner, #startPanel { transition: none; }
+  /* Test version: the approved Screen 3 artwork, unedited, is the Tap to Start screen. It lies over the 3D view and
+     the HUD, so no control is drawn twice: the live banner and panel are hidden under it, and the settings button
+     stays on top, clickable but see-through over its painted twin (with a little extra reach around it). Taps pass
+     straight through it to the game. game.js fadeStartPanels shows it once the game is ready and fades it out with
+     the start panels after the tap. Shown whole, never stretched or cropped, from the top of the screen, scaled the
+     way the HUD is (by the screen's height, or by its width on a narrower phone), so the painted gear lies under the
+     real settings button on every screen shape. Any space left beside or below it takes the artwork's own border colour. */
+  #openingArt { inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 0; z-index: 1;
+    pointer-events: none; visibility: hidden; background: linear-gradient(#a3a7e6, #a0afde 85%, #91a3e2); user-select: none; -webkit-user-drag: none; }
+  body.openingArt #banner, body.openingArt #startPanel { visibility: hidden; }
+  body.openingArt #soundBtn { z-index: 2; }
+  body.openingArt #soundBtn::after { content: ""; position: absolute; inset: calc(var(--u) * -6); border-radius: 50%; }
+  body.openingArt #overlay { z-index: 3; }
+  #hint {
+    left: 50%; bottom: calc(var(--u) * 26); transform: translateX(-50%); width: max-content; max-width: 88%; text-align: center;
+    padding: calc(var(--u) * 5) calc(var(--u) * 12); border-radius: calc(var(--u) * 12); background: var(--pill);
+    font-size: calc(var(--u) * 11); line-height: 1.35; opacity: 0; transition: opacity 0.4s ease;
+  }
+  #hint.show { opacity: 1; }
+  /* Approved Screen 4 objective panel: shown once the mascot is inside the washing machine. */
+  #sockPanel {
+    top: calc(var(--u) * 46); left: calc(var(--u) * 14); width: calc(var(--u) * 200); height: calc(var(--u) * 46);
+    border-radius: calc(var(--u) * 15); opacity: 0; transform: translateY(calc(var(--u) * -10));
+  }
+  body.inDrum #sockPanel { opacity: 1; transform: none; }
+  #sockPanel .icon { position: absolute; left: calc(var(--u) * 3); top: calc(var(--u) * 1); width: calc(var(--u) * 44); height: calc(var(--u) * 44); }
+  #sockPanel .title { position: absolute; left: calc(var(--u) * 50); top: calc(var(--u) * 5); font-size: calc(var(--u) * 14.5); line-height: calc(var(--u) * 18); white-space: nowrap; }
+  #sockPanel .track { position: absolute; left: calc(var(--u) * 52); top: calc(var(--u) * 28); width: calc(var(--u) * 106); height: calc(var(--u) * 9); border-radius: 999px; background: rgba(20, 28, 92, 0.55); box-shadow: inset 0 0 0 calc(var(--u) * 1) rgba(255, 255, 255, 0.6); overflow: hidden; }
+  #sockBar { height: 100%; width: 0; background: linear-gradient(90deg, #ffe27a, #ff8fd8); transition: width 0.3s ease; }
+  #sockPanel .count { position: absolute; left: calc(var(--u) * 163); top: calc(var(--u) * 24); font-size: calc(var(--u) * 14); line-height: 1; }
+  #sockPanel.pop .icon { animation: pop 0.42s cubic-bezier(.2, 1.6, .4, 1); }
+  #overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  /* Side view (debug): full window, no game HUD. */
+  body.side { padding: 0; }
+  body.side #stage { aspect-ratio: auto; width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+  body.side .hud { display: none; }
+  /* ?s3=round2 test only: the approved Screen 4 controls (hidden, and so not drawn, in every other version) */
+  #heartPill.pop img, #heartPill.pop span { animation: hurt 0.5s ease-out; }
+  @keyframes hurt { 20% { transform: translateX(calc(var(--u) * -3)) scale(1.2); } 45% { transform: translateX(calc(var(--u) * 3)); } 70% { transform: translateX(calc(var(--u) * -2)); } 100% { transform: none; } }
+  .jelly {
+    pointer-events: auto; padding: 0; border: 0; cursor: pointer; color: var(--white); font-family: var(--display);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.14) 26%, rgba(255, 255, 255, 0) 42%),
+      radial-gradient(120% 100% at 50% 0%, #74d4ff 0%, #2f9bf5 50%, #1a5fd8 100%);
+    box-shadow:
+      inset 0 0 0 calc(var(--u) * 2.4) rgba(200, 240, 255, 0.95),
+      inset 0 calc(var(--u) * -6) calc(var(--u) * 10) rgba(8, 40, 140, 0.45),
+      0 0 calc(var(--u) * 7) rgba(150, 215, 255, 0.85),
+      0 calc(var(--u) * 4) calc(var(--u) * 10) rgba(20, 30, 120, 0.35);
+    transition: transform 0.12s ease;
+  }
+  .jelly:active { transform: scale(0.94); }
+  .jelly:focus-visible { outline: calc(var(--u) * 2) solid #ffe27a; outline-offset: calc(var(--u) * 2); }
+  #pauseBtn { top: calc(var(--u) * 51); left: calc(var(--u) * 222); width: calc(var(--u) * 36); height: calc(var(--u) * 36); border-radius: calc(var(--u) * 12);
+    display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 5); }
+  #pauseBtn span { width: calc(var(--u) * 6); height: calc(var(--u) * 17); border-radius: 999px; background: #fff; box-shadow: 0 calc(var(--u) * 1) 0 rgba(10, 40, 140, 0.45); }
+  .power { bottom: calc(var(--u) * 10); width: calc(var(--u) * 74); height: calc(var(--u) * 78); border-radius: calc(var(--u) * 20); }
+  #blastBtn { left: calc(var(--u) * 12); }
+  #turboBtn { right: calc(var(--u) * 12); }
+  .power svg { position: absolute; left: calc(var(--u) * 12); top: calc(var(--u) * 6); width: calc(var(--u) * 50); height: calc(var(--u) * 50); filter: drop-shadow(0 calc(var(--u) * 2) calc(var(--u) * 1.5) rgba(10, 30, 120, 0.45)); }
+  .power .lbl { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 7); font-size: calc(var(--u) * 11.5); line-height: 1; white-space: nowrap; }
+  .power .badge { position: absolute; right: calc(var(--u) * -7); top: calc(var(--u) * -7); width: calc(var(--u) * 25); height: calc(var(--u) * 25); border-radius: 50%;
+    background: radial-gradient(circle at 40% 30%, #ff83ae, #e8175d); box-shadow: 0 0 0 calc(var(--u) * 2) #fff, 0 calc(var(--u) * 2) calc(var(--u) * 3) rgba(80, 0, 40, 0.4);
+    display: grid; place-items: center; font-size: calc(var(--u) * 15); line-height: 1; }
+  .power:disabled { filter: grayscale(0.8) brightness(0.82); cursor: default; }
+  .power:disabled .badge { background: #8d92b4; }
+  .power.pop { animation: press 0.4s cubic-bezier(.2, 1.6, .4, 1); }
+  @keyframes press { 30% { transform: scale(0.88); } 100% { transform: none; } }
+  body.r2 #hint { bottom: calc(var(--u) * 14); max-width: calc(var(--u) * 92); font-size: calc(var(--u) * 10); padding: calc(var(--u) * 4) calc(var(--u) * 6); }   /* between the two buttons, clear of the mascot */
+  body.r2 #flash { background: radial-gradient(circle, rgba(225, 248, 255, 0.92), rgba(160, 130, 255, 0.85)); }
+  #r2Hurt { inset: 0; box-shadow: inset 0 0 calc(var(--u) * 40) calc(var(--u) * 14) rgba(255, 40, 110, 0.75); opacity: 0; }
+  #r2Hurt.go { animation: flash 0.6s ease-out; }
+  #r2Shield { inset: 0; box-shadow: inset 0 0 calc(var(--u) * 30) calc(var(--u) * 6) rgba(110, 230, 255, 0.55); opacity: 0; transition: opacity 0.25s ease; }
+  #r2Shield.on { opacity: 1; }
+  #r2Toast { top: calc(var(--u) * 190); width: calc(var(--u) * 205); height: calc(var(--u) * 70); opacity: 0; transition: opacity 0.3s ease; }
+  #r2Toast.show { opacity: 1; }
+  #r2Toast .big { position: absolute; left: 0; right: 0; top: calc(var(--u) * 8); font-size: calc(var(--u) * 25); line-height: calc(var(--u) * 30); }
+  #r2Toast .small { position: absolute; left: 0; right: 0; top: calc(var(--u) * 40); font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 20); font-weight: 600; }
+  #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
+  #pausePanel .card { position: absolute; top: calc(var(--u) * 160); width: calc(var(--u) * 190); padding: calc(var(--u) * 14) calc(var(--u) * 18) calc(var(--u) * 18); box-sizing: border-box;
+    display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
+  #pausePanel .big { font-size: calc(var(--u) * 28); line-height: calc(var(--u) * 34); }
+  .pbtn { height: calc(var(--u) * 34); border-radius: 999px; border: 0; cursor: pointer; font-family: var(--display); font-size: calc(var(--u) * 16);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 55%), #2a74f4; box-shadow: inset 0 0 0 calc(var(--u) * 2) rgba(200, 240, 255, 0.9); }
+  .pbtn.go { background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 55%), #ff5fb4; font-size: calc(var(--u) * 18); }
+  .pbtn:focus-visible { outline: calc(var(--u) * 2) solid #ffe27a; outline-offset: calc(var(--u) * 2); }
+  #flash { inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(220, 200, 255, 0.85)); opacity: 0; }
+  #flash.go { animation: flash 0.7s ease-out; }
+  @keyframes flash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
+  #loading {
+    position: absolute; inset: 0; display: grid; place-content: center; gap: calc(var(--u, 1px) * 10); text-align: center;
+    background: radial-gradient(circle at 50% 35%, #ffd6f3, #b9a3ff 55%, #6f8cff);
+    padding: calc(var(--u, 1px) * 20);
+  }
+  #loading h1 { margin: 0; font-size: calc(var(--u, 1px) * 26); text-wrap: balance; }
+  #loading p { margin: 0; font-size: calc(var(--u, 1px) * 12); font-weight: 500; max-width: 30ch; }
+  .bar { width: calc(var(--u, 1px) * 180); height: calc(var(--u, 1px) * 10); border-radius: 999px; background: rgba(20, 28, 92, 0.35); overflow: hidden; margin-inline: auto; }
+  #loadBar { height: 100%; width: 0; background: linear-gradient(90deg, #ffe27a, #ff8fd8); transition: width 0.2s ease; }
+  @media (prefers-reduced-motion: reduce) { #hand { animation: none; } .panel { transition: none; } }
+</style>
+
+<div id="stage">
+  <canvas id="view" aria-label="Bubble Wash Kingdom: the pink mascot rides the water slide into the washing machine"></canvas>
+  <div class="hud" aria-live="polite">
+    <img id="openingArt" src="ui/approved_screen3.png" alt="" draggable="false">
+    <div class="pill t" id="heartPill" style="--x:12;--y:13;--w:70;--h:23;--tx:28">
+      <img src="ui/heart.png" alt="" style="left:calc(var(--u)*-4);top:calc(var(--u)*-2);width:calc(var(--u)*27);height:calc(var(--u)*26)">
+      <span id="hearts">5 <small>Full</small></span>
+      <img src="ui/plus.png" alt="" style="left:calc(var(--u)*58);top:calc(var(--u)*5);width:calc(var(--u)*13);height:calc(var(--u)*13)">
+    </div>
+    <div class="pill t" style="--x:92;--y:14;--w:67;--h:22;--tx:25">
+      <img src="ui/coin.png" alt="Coins" style="left:calc(var(--u)*-1);top:calc(var(--u)*-2);width:calc(var(--u)*25);height:calc(var(--u)*25)">
+      <span id="coins">1,280</span>
+    </div>
+    <div class="pill t" id="gemPill" style="--x:166;--y:14;--w:57;--h:22;--tx:31">
+      <img src="ui/gem.png" alt="Gems" style="left:0;top:calc(var(--u)*-2);width:calc(var(--u)*27);height:calc(var(--u)*25)">
+      <span id="gems">36</span>
+    </div>
+    <button class="round" id="soundBtn" type="button" title="Sound on" aria-pressed="false" aria-label="Sound on or off">
+      <img src="ui/gear.png" alt="">
+    </button>
+    <div class="panel t" id="banner"><div class="big">Let's go!</div><div class="small">Into the washing machine!</div></div>
+    <div class="panel t" id="startPanel">
+      <div class="l" style="top:calc(var(--u)*9)">Swipe Left or Right</div>
+      <div class="l" style="top:calc(var(--u)*27)">to Move</div>
+      <div class="l tap" style="top:calc(var(--u)*50)">Tap to Start</div>
+      <img src="ui/arrow_left.png" alt="" style="left:calc(var(--u)*10);top:calc(var(--u)*31);width:calc(var(--u)*40);height:calc(var(--u)*45);filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*1.5) rgba(10,30,120,.5))">
+      <img src="ui/arrow_right.png" alt="" style="left:calc(var(--u)*187);top:calc(var(--u)*31);width:calc(var(--u)*40);height:calc(var(--u)*45);filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*1.5) rgba(10,30,120,.5))">
+      <img id="hand" src="ui/hand.png" alt="" style="left:calc(var(--u)*99);top:calc(var(--u)*66);width:calc(var(--u)*40);height:calc(var(--u)*50);filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*1.5) rgba(10,30,120,.5))">
+    </div>
+    <div class="panel t" id="sockPanel">
+      <img class="icon" src="ui/sock.png" alt="">
+      <div class="title">Rescue 5 lost socks</div>
+      <div class="track"><div id="sockBar"></div></div>
+      <div class="count" id="sockCount">0/5</div>
+    </div>
+    <div class="t" id="hint">Swipe ← → to steer · ↑ to jump<br>Tap to spin</div>
+    <!-- ?s3=round2 test only: the approved Screen 4 controls. A template is not part of the page; game.js adds a copy
+         of it to the HUD only with the switch, so every other version's page is exactly as before. -->
+    <template id="r2Hud">
+    <div id="r2Hurt" hidden></div>
+    <div id="r2Shield" hidden></div>
+    <button class="jelly" id="pauseBtn" type="button" title="Pause" aria-label="Pause" hidden><span></span><span></span></button>
+    <button class="jelly power" id="blastBtn" type="button" title="Bubble Blast (B): clears the brushes ahead" hidden>
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="bbBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc2e4"/><stop offset=".5" stop-color="#ff63b8"/><stop offset="1" stop-color="#d4318f"/></linearGradient>
+          <linearGradient id="bbGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffec8a"/><stop offset="1" stop-color="#f2a516"/></linearGradient>
+          <radialGradient id="bbBub" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".45" stop-color="#dff8ff" stop-opacity=".3"/><stop offset="1" stop-color="#7fdcff" stop-opacity=".9"/></radialGradient>
+        </defs>
+        <g transform="rotate(-28 30 38)">
+          <path d="M19 41h10l-3 13a3 3 0 0 1-3 2.4h-5a2 2 0 0 1-2-2.6z" fill="url(#bbGold)" stroke="#b86a00" stroke-width="1.3"/>
+          <rect x="16" y="20" width="12" height="8" rx="3" fill="url(#bbGold)" stroke="#b86a00" stroke-width="1.3"/>
+          <path d="M22 18.5l2-4 2 4" fill="none" stroke="#f2a516" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="9" y="26" width="35" height="16" rx="8" fill="url(#bbBody)" stroke="#a8236f" stroke-width="1.4"/>
+          <rect x="40" y="23" width="8.5" height="22" rx="4.2" fill="#ffd6ee" stroke="#a8236f" stroke-width="1.4"/>
+          <rect x="13" y="28.6" width="23" height="4" rx="2" fill="#fff" opacity=".65"/>
+        </g>
+        <circle cx="51" cy="14" r="7.5" fill="url(#bbBub)" stroke="#58cdff" stroke-width="1.1"/>
+        <circle cx="58.5" cy="27" r="4.4" fill="url(#bbBub)" stroke="#58cdff" stroke-width=".9"/>
+        <circle cx="42.5" cy="5.5" r="3.6" fill="url(#bbBub)" stroke="#58cdff" stroke-width=".9"/>
+      </svg>
+      <span class="lbl t">Bubble Blast</span><span class="badge t" id="blastCount">3</span>
+    </button>
+    <button class="jelly power" id="turboBtn" type="button" title="Turbo Spin (T): faster, and brushes can't knock you" hidden>
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <radialGradient id="tsDisc" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#f0fcff"/><stop offset="1" stop-color="#8ad6ff"/></radialGradient>
+          <linearGradient id="tsBlade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff5a6"/><stop offset=".55" stop-color="#ffd43b"/><stop offset="1" stop-color="#f0a010"/></linearGradient>
+        </defs>
+        <circle cx="32" cy="32" r="27" fill="url(#tsDisc)" stroke="#fff" stroke-width="2" opacity=".92"/>
+        <g id="tsOne"><path d="M32 32C25.5 24.5 23.5 12.5 31.5 7c8.5-1 11.5 9.5 4.5 23z" fill="url(#tsBlade)" stroke="#c98200" stroke-width="1.3" stroke-linejoin="round"/></g>
+        <use href="#tsOne" transform="rotate(90 32 32)"/><use href="#tsOne" transform="rotate(180 32 32)"/><use href="#tsOne" transform="rotate(270 32 32)"/>
+        <circle cx="32" cy="32" r="5.6" fill="url(#tsBlade)" stroke="#c98200" stroke-width="1.3"/><circle cx="30.4" cy="30.4" r="1.8" fill="#fff" opacity=".85"/>
+      </svg>
+      <span class="lbl t">Turbo Spin</span><span class="badge t" id="turboCount">3</span>
+    </button>
+    <div class="panel t" id="r2Toast" hidden><div class="big">Out of hearts!</div><div class="small">Back to the start…</div></div>
+    <div id="pausePanel" role="dialog" aria-modal="true" aria-label="Paused" hidden>
+      <div class="panel card">
+        <div class="big t">Paused</div>
+        <button class="pbtn go t" id="resumeBtn" type="button">Resume</button>
+        <button class="pbtn t" id="pauseSound" type="button" aria-pressed="true">Sound: On</button>
+        <button class="pbtn t" id="restartBtn" type="button">Restart</button>
+      </div>
+    </div>
+    </template>
+    <div id="flash"></div>
+  </div>
+  <canvas id="overlay" aria-hidden="true"></canvas>
+  <div id="loading">
+    <h1 class="t">Bubble Wash Kingdom</h1>
+    <div class="bar"><div id="loadBar"></div></div>
+    <p class="t" id="loadMsg">Filling the washing machine… <span id="loadPct">0%</span></p>
+  </div>
+</div>
+<script type="module" src="game.bundle.js"></script>
+
+</body>
+</html>

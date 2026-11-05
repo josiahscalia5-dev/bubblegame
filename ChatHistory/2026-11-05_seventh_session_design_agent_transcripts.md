@@ -729,5 +729,36 @@ The capture is still running; the bundle is already built, so I'll commit the cu
 
 - 15:15 `Bash`: Commit WIP before applying correction
 - 15:16 `Bash`: Wait for the capture output
+- 15:18 `Bash`: Show capture result and measure folded state
+- 15:18 `Bash`: Lower water and foam round the character, rebuild
+- 15:18 `Bash`: Capture, measure, body crop iteration 9
+**Agent** (15:19 UTC):
 
-_161 tool steps._
+Waterline 0.835 with sides 0.806 / 0.856 (original 0.836 / 0.809 / 0.860), contact strip pink 83.7% (target ≥80). Let me look.
+
+- 15:19 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/body_i9.png
+**Lead → agent** (15:19 UTC):
+
+[Image: original 2241x520, displayed at 2000x464. Multiply coordinates by 1.12 to map to original image.]
+
+- 15:19 `Bash`: Thinner base rim, final three-time capture with cost
+**Agent** (15:19 UTC):
+
+While that runs, I'll prepare the pixel-identity check: a copy of the demo folder served with the baseline bundle.
+
+- 15:19 `Bash`: Read game_eval usage
+- 15:19 `Bash`: Check whether index.html changes with builds
+**Agent** (15:19 UTC):
+
+`index.html` is unchanged and loads `game.bundle.js`, so a symlinked copy with the baseline bundle is enough.
+
+- 15:19 `Bash`: Create baseline demo folder with symlinks
+- 15:19 `Bash`: Symlink demo entries into baseline folder
+- 15:19 `Bash`: Write baseline bundle from starting commit
+**Agent** (15:19 UTC):
+
+Baseline bundle md5 matches (`ba0c7f6c…`). Let me check the final capture.
+
+- 15:19 `Bash`: Wait for final capture
+
+_172 tool steps._

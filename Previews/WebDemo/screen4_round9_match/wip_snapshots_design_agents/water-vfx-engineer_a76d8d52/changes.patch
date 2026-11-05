@@ -371,17 +371,20 @@ index a05d289..7b07bc3 100644
    vec3 o = q * (1.0 + bump);
    o.y *= ${f3(SPLASH.lumpSquash)};
 diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
-index a93a966..fc3e499 100644
+index a93a966..9bfb197 100644
 --- a/WebDemo/src/tunnel_r9_match_water.js
 +++ b/WebDemo/src/tunnel_r9_match_water.js
-@@ -52,41 +52,68 @@ export const MATCH_WATER = {
+@@ -52,41 +52,71 @@ export const MATCH_WATER = {
        0.385, 0.342, 0.296, 0.25, 0.202, 0.154, 0.105, 0.057],
      // [phi, height (m), half width (degrees)]: tops at 0.787 (left side), 0.80 (left front), 0.825 (front), 0.812 (right front),
      // 0.808 (right side), 0.805 and 0.82 (the far sides)
 -    mounds: [[32, 0.079, 10], [13, 0.091, 8], [-4, 0.039, 6], [-21, 0.058, 8], [-42, 0.057, 9], [55, 0.049, 9], [-62, 0.055, 9]],
 +    // (gate fixes, step 7: the front mounds at -4 and -21 lowered from 0.039 and 0.058 to 0.02 and -0.05: the original's waterline is 0.85-0.86 at 58-66%
 +    // across)
-+    mounds: [[32, 0.079, 10], [13, 0.091, 8], [-4, 0.02, 6], [-21, -0.05, 9], [-42, 0.057, 9], [55, 0.049, 9], [-62, 0.055, 9]],
++    // (the user's correction, 14:5x: she sits ON the water, supported by it and framed by foam, not sunk into it: the left
++    // front, front, right front and right side lowered, so the water meets her at her base as approved: waterline 0.836,
++    // her left side 0.809, her right side 0.860)
++    mounds: [[32, 0.079, 10], [13, 0.07, 8], [-4, 0.0, 6], [-21, -0.1, 9], [-42, 0.0, 9], [55, 0.049, 9], [-62, 0.055, 9]],
    },
    // the swell's look: sRGB (as on screen). Near the top it is thin and see-through (the fur behind it reads violet), lower
    // down it is the floor's derived water (one body of water)
@@ -398,8 +401,8 @@ index a93a966..fc3e499 100644
 +    frontRim: 0.12,   // its share in front of the body (gate fixes, step 7: the pale glass-bowl lip)
      spec: 1.4,        // the key light's specular points
      crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
-+    crestFront: 0.9,  // its share in front of the body (checkpoint 02: thick white froth along the body's lower edge, as approved)
-+    crestW: [0.03, 0.06, 0.03, 0.05],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
++    crestFront: 0.65, // its share in front of the body (a broken foam rim at her base, where she sits on the water; a full-strength rim read as a flat white plate)
++    crestW: [0.03, 0.06, 0.015, 0.035],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
    },
    // the lobes (spLumps reshaded): sRGB
    // alpha: in front of the body (see-through: the fur reads violet), sideAlpha: beside it (vivid blue); fres: the outline's
@@ -436,8 +439,8 @@ index a93a966..fc3e499 100644
      lumps: [
 -      [34, 3, 0.15, 0.04, -0.085], [19, 3, 0.14, 0.05, -0.07], [6, 2, 0.13, 0.04, -0.06], [-7, 2, 0.13, 0.04, -0.055], [-19, 3, 0.14, 0.05, -0.07],
 -      [-33, 2, 0.12, 0.04, -0.085], [-48, 3, 0.13, 0.05, -0.095], [52, 3, 0.14, 0.05, -0.095], [70, 2, 0.11, 0.06, -0.09], [-68, 2, 0.11, 0.06, -0.09],
-+      [34, 4, 0.22, 0.05, -0.08], [46, 3, 0.2, 0.06, -0.09], [22, 3, 0.16, 0.05, -0.07], [9, 2, 0.13, 0.04, -0.08], [-4, 2, 0.12, 0.04, -0.1],
-+      [-16, 2, 0.12, 0.05, -0.2], [-28, 3, 0.18, 0.05, -0.12], [-42, 3, 0.2, 0.05, -0.1], [-56, 2, 0.16, 0.06, -0.1], [60, 2, 0.14, 0.06, -0.09],
++      [34, 4, 0.22, 0.05, -0.08], [46, 3, 0.2, 0.06, -0.09], [22, 3, 0.16, 0.05, -0.07], [9, 2, 0.13, 0.04, -0.11], [-4, 2, 0.12, 0.04, -0.13],
++      [-16, 2, 0.12, 0.05, -0.28], [-28, 3, 0.18, 0.05, -0.22], [-42, 3, 0.2, 0.05, -0.1], [-56, 2, 0.16, 0.06, -0.1], [60, 2, 0.14, 0.06, -0.09],
      ],
      lumpSquash: 0.66,   // flatter: rolling wave lobes, not balls
 +    lumpBump: 0.08,     // smoother domes than splash's foam lumps (0.16), so the white rim follows the outline
@@ -447,11 +450,11 @@ index a93a966..fc3e499 100644
      // with a broken white lip, not tall glass fins
      curls: [
 -      [9, 0.2, 0.34, 1.35, 0.2, 0], [-13, 0.18, 0.32, 1.35, 0.2, 0],
-+      [9, 0.2, 0.34, 1.35, 0.2, 0], [-13, 0.1, 0.3, 1.35, 0.2, 0],   // (gate fixes, step 7: the right-front one lower, 0.1 not 0.18: the fur shows pink to 0.85 there)
++      [9, 0.16, 0.34, 1.35, 0.2, 0], [-13, 0.0, 0.28, 1.35, 0.2, 0],   // (the user's correction: lower at her base, the right one most)   // (gate fixes, step 7: the right-front one lower, 0.1 not 0.18: the fur shows pink to 0.85 there)
        [36, 0.27, 0.36, 1.45, 0.12, 0], [56, 0.24, 0.32, 1.4, 0.12, 0], [-36, 0.2, 0.32, 1.4, 0.12, 0], [-56, 0.17, 0.28, 1.4, 0.12, 0],
      ],
      curlAlpha: 0.66, curlLip: 0.95,   // (the lip crisp white, not a pale wash)
-@@ -95,15 +122,54 @@ export const MATCH_WATER = {
+@@ -95,15 +125,54 @@ export const MATCH_WATER = {
    },
    liquid: {
      // fewer flecks; fewer, bigger clusters of clear bubbles on the waterline
@@ -508,7 +511,7 @@ index a93a966..fc3e499 100644
  };
  {
    const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.matchWater;
-@@ -220,22 +286,26 @@ export function matchSwellGLSL() {
+@@ -220,22 +289,26 @@ export function matchSwellGLSL() {
      vec3 mwGlass = mix(mtUndisplay(${v3s(K.glassDeep)}), mtUndisplay(${v3s(K.glass)}), smoothstep(0.25, 0.7, mwKey));
      mwGlass = mix(mwGlass, mtUndisplay(${v3s(K.glassHi)}), clamp(smoothstep(0.7, 0.95, mwKey) * 0.7 + (1.0 - smoothstep(0.0, 0.04, d)) * 0.3, 0.0, 1.0));
      vec3 mwCol = mix(mwFloor, mwGlass, mwTop);
@@ -538,7 +541,7 @@ index a93a966..fc3e499 100644
        mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
      }
  #endif
-@@ -251,29 +321,51 @@ export function matchSwellGLSL() {
+@@ -251,29 +324,51 @@ export function matchSwellGLSL() {
  const lin3 = (hex) => { const c = new THREE.Color(hex); return `vec3(${f4(c.r)}, ${f4(c.g)}, ${f4(c.b)})`; };   // sRGB -> linear
  export function matchLumpGLSL() {
    const B = MATCH_WATER.lobe;
@@ -606,7 +609,7 @@ index a93a966..fc3e499 100644
      lbCol += vec3(1.0) * lbSpec;
      col = lbCol;
      a = clamp(max(mix(${f4(B.sideAlpha)}, ${f4(B.alpha)}, lbFront) + ${f4(B.fres)} * lbFr + lbSpec, lbWhite * 0.96), 0.0, 1.0) * clamp(vK * 1.5, 0.0, 1.0);
-@@ -287,5 +379,170 @@ export function buildMatchWater({ scene, TR, L, W, mascot, updaters, time, U, HE
+@@ -287,5 +382,170 @@ export function buildMatchWater({ scene, TR, L, W, mascot, updaters, time, U, HE
    if (!MATCH_ON) return report;
    report.lobes = !!scene.getObjectByName('spLumps');
    report.curls = !!scene.getObjectByName('spCurls');
