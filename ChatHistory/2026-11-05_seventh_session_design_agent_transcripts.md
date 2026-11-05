@@ -1125,5 +1125,141 @@ Resume: the usage limit has reset (19:37 UTC). Continue your focused pass exactl
 
 Address this before completing your current task.
 
+**Agent** (19:38 UTC):
 
-_34 tool steps._
+The before frames were already captured inside the worktree; let me check they survived and keep the baseline bundle inside the worktree too.
+
+- 19:38 `Bash`: Check before captures and scripts exist
+- 19:38 `Bash`: Create a private uncommitted temp folder in the worktree
+- 19:38 `Bash`: Save the baseline bundle in the worktree temp folder
+**Agent** (19:38 UTC):
+
+Baseline is safe. Now the display transform and the hero grade, to understand why the dome blues turn indigo.
+
+- 19:38 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match.js
+- 19:38 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r7_hero.js
+- 19:39 `Bash`: Crop the area under the character, original vs before
+- 19:39 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/under_before.png
+- 19:39 `Bash`: Read hide probe usage
+- 19:39 `Bash`: Hide probe of the water pieces round the character
+- 19:41 `Bash`: Which hidden objects changed pixels, and visible object names
+- 19:41 `Bash`: Sheet of the hide probe crops
+- 19:41 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/hide_sheet.png
+**Lead → agent** (19:41 UTC):
+
+[Image: original 2839x360, displayed at 2000x254. Multiply coordinates by 1.42 to map to original image.]
+
+**Agent** (19:42 UTC):
+
+The flat pale-lilac plate is the swell's front face (`heroSwell`): hiding it shows the fur. Let me read the swell shader to see its variables.
+
+- 19:42 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r8_liquid.js
+**Agent** (19:42 UTC):
+
+Now the tunnel interior: original vs before at the same crop.
+
+- 19:42 `Bash`: Crop of the tunnel interior, original vs before
+- 19:42 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/tunnel_before.png
+- 19:43 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/specks_size.py
+- 19:43 `Bash`: Measure fleck sizes, original vs before
+- 19:43 `Bash`: Find grade settings and exports in the match file
+**Agent** (19:44 UTC):
+
+The bloom threshold matters (whites capped at linear 0.93). Let me sample the original's foam palette so the new froth colours come from it.
+
+- 19:44 `Bash`: K-means palette of the original's foam areas
+
+_53 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: Tunnel & Lighting: framing, sock, walls (started 19:38 UTC)
+
+_Worked in its own worktree, branch `worktree-agent-a1aff7a0d4ce10e34`._
+
+**Lead → agent** (19:38 UTC):
+
+You are the Tunnel & Lighting specialist for Bubble Wash Kingdom (three.js r170, `WebDemo/`). This is a new FOCUSED correction pass the user asked for, on top of everything already merged. (A first attempt at this pass stopped at a usage limit before making any change; you start it now.) You work in your OWN git worktree (your current directory), starting at the branch's current commit: both specialists' gate fixes (your own `e490836`, Water & VFX's `97c5d58`), the lead's phone fix (`WebDemo/src/match_phone.js`) and the removal of the face's light panel are merged (`b91e952` and later). The Water & VFX specialist works IN PARALLEL in another worktree on the foam and the tunnel's bubbles and splash flecks; the lead merges both.
+
+## Setup
+1. Read `CLAUDE.md` (note the user's correction: the pink character sits ON TOP of the water, never submerged), your agent file's "THE ONE REFERENCE" and "Newest: Round 9" sections, and the user's brief `Design/ReferencePacks/2026-11-05_Screen4_Focused_Correction_Pass_Brief/README.md`.
+2. In every shell: `source /home/user/bubblegame/Tools/bw_tools_env.sh`. `ln -s /home/user/bubblegame/WebDemo/node_modules WebDemo/node_modules`. Copy `WebDemo/game.bundle.js` aside (the pixel-identity baseline). Build with `cd WebDemo && node build.mjs`.
+3. Your last pass's report, scripts and numbers: `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/` (README, measured.txt, scripts/). The 15:40 side by side the user saw: `Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/`. Keep your measuring scripts and captures INSIDE your worktree (your evidence folder, or an uncommitted `.tltmp/`): the shared scratchpad has lost agents' files before.
+
+## The one target
+The ORIGINAL APPROVED Screen 4, `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536). Close-ups: `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/`. Material references (look only): `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/`.
+
+## Your job, in this order (`?s3=match` only)
+1. **The pink character's framing (the user's priority 3 and 5; do this FIRST and commit it as a checkpoint).** The model is NOT changed and its scale in the world is NOT changed. In the original it appears larger and more present: the lead measured the saturated pink body at 4.1% of the frame against 2.2% now (about 1.37 times larger linearly), centred at x 0.49 against 0.56. Re-measure precisely yourself (body width, dome top, centre, base) against the original. Bring it to the original's size and place through the hero camera (`MATCH.hero`: distance, height, look point, field of view): e.g. move the camera closer to the character and widen the field of view so the far tunnel, the gold rim and the vanishing point stay where the original has them (a dolly-zoom balance), so the near subject grows while the tunnel framing holds. The rim's top edge must stay just under the mission banner (y about 0.21 at x 0.5 in the 1:2 frame), the vanishing point at about (0.528, 0.532). Keep the camera inside the drum and clear of near-clipping the foam. She must stay clearly ON TOP of the water: the camera change must not hide her base behind the bank. Then RE-SOLVE every collectible's place for the new camera with `tools/screen4/hero_probe.cjs` PICKS, so the coins, gem and sock land on the original's screen boxes again (your previous numbers: big left coin 0.085-0.301 x 0.544-0.660, upper-left coin 0.087-0.213 x 0.441-0.499, gem 0.271-0.374 x 0.489-0.529, right coin 0.778-0.996 x 0.671-0.800, sock 0.645-0.84 x 0.555-0.665), still collectable (lanes, jump reach). As soon as the framing and the re-solved collectibles are in and build cleanly, COMMIT ("Round 9 focused pass (checkpoint): framing ...") and tell the lead with SendMessage to "main", giving the commit hash, so the lead can pass it to Water & VFX, whose foam is placed round the character.
+2. **The sock's pose (priority 4):** in the original the sock lies tilted, more sideways (its toe down-left, its opening up-right, the face turned toward the viewer); ours stands upright. Rotate it under `match` only (visual pose in `matchCollectibles` or wherever its look is set, gated), keeping its screen box. Make sure its bob/spin animation does not undo the tilt at 2.85-3.1 s.
+3. **The tunnel walls (priority 1, your part):** "still too clean and too smooth": the original's walls are more energetic and irregular, with deeper saturated cobalt and electric blue between brighter bands, turbulent swirl, and a fuller, active washing-machine vortex. Make the wall material less smooth/perfect (irregular, broken band edges; turbulence in the swirl; deeper cobalt; less pastel peach band; keep the warm centre, peach-white not orange). The white splash flecks, streaks and the bubbles inside the tunnel are Water & VFX's (do not add your own); but the oversized near-camera bubbles set in YOUR file (the biggest about 0.10 of the width against the original's 0.07; Water & VFX flagged them) are yours: bring them to the original's sizes and places.
+4. **Composition (priority 5):** with 1-3 done, check the frame feels as full and close as the original: less empty space. Report which empty areas remain and why.
+
+## Rules
+- Visual changes only under `?s3=match`, gated on `MATCH_ON`, so the normal game and every older switch stay pixel-identical; textures and random numbers only under `match`; private random generators.
+- Do not edit Water & VFX's file (`tunnel_r9_match_water.js`) or `tunnel_r8_splash.js`; do not change `match_phone.js` (the phone framing works off the camera you set: check one Pixel 7 capture at the end with `Previews/WebDemo/screen4_round9_match/10_phone_fix/scripts/phone_shot.cjs <abs WebDemo> <out.png> 412x839`).
+- Gameplay preserved: `S3=match node tools/screen3/s3_func.cjs <abs WebDemo>`: lanes 1/0/2, the jump, 12 coins, 1 gem and 2 socks collected in the tunnel, no console errors. The camera change is visual only: never change lanes, speeds, collision or pick-up rules.
+- No new render passes, no Tripo, no plugins, no other screens. Do not change the character model.
+- Captures: `tools/screen4/liquid_shots.cjs` (S3=match TIMES=2.85,3.0,3.1 DPR=1.5; CANVAS=1). Absolute paths of YOUR worktree. ONE browser at a time (shared CPUs). BOUNDED: about 15 capture iterations.
+
+## Deliverable
+- Pixel identity of the normal game, `splash` and `liquid` (raw canvas, `tools/models/game_eval.cjs` SHOT, seed 7, Tap to Start and 2.85 s) against your baseline.
+- Evidence and README in `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/`: the 3.0 s frame; ORIGINAL | before (`b91e952`) | now at portrait height 1536; close-ups of the character's framing, the sock and the tunnel walls (original / before / now); a 50% blend over the original; `measured.txt` (character size/place, rim, vanishing point, every collectible's box, wall numbers: approved / before / now, naming the scripts); per item one line: fixed / partly / not. Be honest.
+- Final commit in your worktree (source + rebuilt `game.bundle.js` + evidence), message starting "Round 9 focused pass, Tunnel & Lighting:"; do not push, do not touch other branches. Reply with the commit hash, the worktree branch, the comparison path, the verdicts with numbers, and what still differs.
+
+**Agent** (19:40 UTC):
+
+I'll start by reading the brief and setting up the worktree.
+
+- 19:40 `Bash`: Show branch state and read the focused pass brief
+- 19:41 `Bash`: Read last pass README and measurements
+- 19:41 `Read`: /root/.claude/projects/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/tool-results/ba06r74t7.txt
+- 19:41 `Bash`: Link node_modules, save baseline bundle
+- 19:41 `Bash`: Link node_modules and save baseline bundle
+- 19:41 `Bash`: Check WebDemo changes since b91e952
+- 19:41 `Bash`: Build bundle and verify reproducibility
+- 19:41 `Read`: /home/user/bubblegame/Tools/bw_tools_env.sh
+- 19:41 `Bash`: Inspect tools environment
+- 19:41 `Bash`: Build bundle and verify reproducibility
+**Agent** (19:41 UTC):
+
+Build is reproducible. Now the Round 9 code.
+
+- 19:41 `Bash`: Size of files and hero camera references
+- 19:41 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:41 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+**Agent** (19:41 UTC):
+
+Now the hero camera code in `tunnel_r7_hero.js` and how `game.js` uses it.
+
+- 19:41 `Bash`: Find camera settings in hero scene
+- 19:42 `Bash`: Find where camera off/lookY/fov are applied
+- 19:42 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/game.js
+**Agent** (19:42 UTC):
+
+Let me look at the original and the 15:40 side by side.
+
+- 19:42 `Bash`: List side-by-side and merged evidence folders
+- 19:42 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/original_vs_saved_vs_merge
+**Lead → agent** (19:42 UTC):
+
+[Image: original 3131x1620, displayed at 2000x1035. Multiply coordinates by 1.57 to map to original image.]
+
+- 19:42 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
+- 19:43 `Bash`: Read capture tool
+- 19:43 `Bash`: Find how MATCH merges into HERO and ROUND5
+- 19:43 `Bash`: Read hero_probe tool
+- 19:43 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r7_hero.js
+- 19:43 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r7_hero.js
+- 19:43 `Bash`: Read side-by-side README and common.py
+- 19:43 `Bash`: Locate playwright and set up evidence folder
+- 19:43 `Bash`: Find playwright installation
+- 19:43 `Bash`: Check NODE_PATH and playwright resolution
+**Agent** (19:43 UTC):
+
+Playwright resolves. Capturing the "before" frames (current build, `b91e952` content).
+
+- 19:43 `Bash`: Capture before frames at 2.85, 3.0, 3.1 s
+- 19:44 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/before/before_t3.00.png
+
+_30 tool steps._

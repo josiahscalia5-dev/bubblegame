@@ -521,3 +521,33 @@ The session's worker restarted. Both specialists stopped at the 5-hour usage lim
 
 I hit my usage limit while you were working, but it has reset now. Please continue from where you left off.
 
+---
+
+### Claude · 2026-11-05 19:38 UTC
+
+The Tunnel & Lighting worktree was auto-removed because it held no changes, so that specialist will start fresh with the same brief. Water & VFX's worktree is intact, so it resumes. Autosave first:
+
+Now Tunnel & Lighting, restarted with the same brief:
+
+Both specialists are running again. Meanwhile, the hearts / pause / Bubble Blast / Turbo Spin check failed with exit code 1 before the limit. Finding out why:
+
+I've picked up where it stopped. Everything is saved: GitHub has `854a8ae`, and the 5-minute autosave is running again.
+
+Running now, your focused pass:
+- **Tunnel & Lighting** (restarted from the beginning, since nothing had changed yet):
+  1. moves the camera so the pink character appears about 1.37 times larger and slightly left, as in your original, without changing her model;
+  2. re-places the coins, gem and sock on your original's positions;
+  3. tilts the sock sideways;
+  4. makes the tunnel walls less smooth, with irregular turbulent bands and deeper cobalt;
+  5. shrinks the oversized near bubbles.
+  When the new framing is committed, I'll pass it to Water & VFX.
+- **Water & VFX** (resumed in its own copy): thick, bright aqua-white froth in place of the glassy lavender lumps, the character kept on top of the water, bolder white splash flecks and streaks, and more visible bubbles deep in the tunnel.
+
+One check to redo: the hearts / pause / Bubble Blast / Turbo Spin test. The hearts part passed, but my 15-minute time limit cut the test off while the CPUs were busy, so the rest never ran. That's a timing issue, not a game error. I'll re-run it without the limit on the final build.
+
+When both finish, you'll get:
+- the side-by-side with your original;
+- a close-up of the tunnel interior;
+- a close-up of the foam and water round the character;
+- the five-item checklist: tunnel energy and bubbles, foam, the character's framing on top of the water, the sock's tilt, and the overall composition.
+

@@ -1,0 +1,1668 @@
+[
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 960,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Points",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 21360,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": 130
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 168,
+  "inst": 130
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 624,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 624,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 512,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 624,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 624,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 512,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1152,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1152,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1152,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1152,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": null
+ },
+ {
+  "name": "BubbleWash_SideWashingRoller_UltraLite",
+  "parent": "WashingRoller_RotateAroundLocalY",
+  "type": "Mesh",
+  "tris": 35419,
+  "inst": null
+ },
+ {
+  "name": "BubbleWash_SideWashingRoller_UltraLite_1",
+  "parent": "WashingRoller_RotateAroundLocalY",
+  "type": "Mesh",
+  "tris": 567,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 1680,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 1680,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "scenery",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 1792,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "tunnelDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": 28
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 96,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 140,
+  "inst": 6
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 47479,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 128,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 800,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 800,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 47479,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 128,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 800,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 800,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 18748,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "entranceDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 39987,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "entranceDecor",
+  "type": "Mesh",
+  "tris": 624,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "entranceDecor",
+  "type": "Mesh",
+  "tris": 80,
+  "inst": null
+ },
+ {
+  "name": "geometry_0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 39987,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "entranceDecor",
+  "type": "Mesh",
+  "tris": 624,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": 47
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 11186,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 11186,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 11186,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 11186,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1500,
+  "inst": null
+ },
+ {
+  "name": "0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 14268,
+  "inst": null
+ },
+ {
+  "name": "0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 14268,
+  "inst": null
+ },
+ {
+  "name": "0",
+  "parent": "world",
+  "type": "Mesh",
+  "tris": 14268,
+  "inst": null
+ },
+ {
+  "name": "mesh_0",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 13719,
+  "inst": null
+ },
+ {
+  "name": "mesh_0",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 13719,
+  "inst": null
+ },
+ {
+  "name": "mesh_0",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 13719,
+  "inst": null
+ },
+ {
+  "name": "mesh_0",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 13719,
+  "inst": null
+ },
+ {
+  "name": "mesh_0",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 13719,
+  "inst": null
+ },
+ {
+  "name": "BubbleWash_PinkFuzzyMascot_Small",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 137111,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "openingLook",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": 64
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "openingLook",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": 20
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "",
+  "type": "Points",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "output_unwrapped",
+  "parent": "Scene",
+  "type": "Mesh",
+  "tris": 25348,
+  "inst": null
+ },
+ {
+  "name": "output_unwrapped",
+  "parent": "Scene",
+  "type": "Mesh",
+  "tris": 24820,
+  "inst": null
+ },
+ {
+  "name": "BubbleWashBrush",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 120961,
+  "inst": null
+ },
+ {
+  "name": "s3Bubbles",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1840,
+  "inst": 40
+ },
+ {
+  "name": "s3Bubbles",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1840,
+  "inst": 3
+ },
+ {
+  "name": "s3IcyEdge",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1600,
+  "inst": null
+ },
+ {
+  "name": "s3IcyEdge",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1600,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "fluffyShells",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 3840,
+  "inst": 20
+ },
+ {
+  "name": "fluffyFringe",
+  "parent": "fluffyBrush",
+  "type": "Mesh",
+  "tris": 8,
+  "inst": 240
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "s4Brush",
+  "type": "Mesh",
+  "tris": 64,
+  "inst": null
+ },
+ {
+  "name": "s4Bubbles",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 780,
+  "inst": 22
+ },
+ {
+  "name": "heroWalls",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 28992,
+  "inst": null
+ },
+ {
+  "name": "r5Droplets",
+  "parent": "",
+  "type": "Points",
+  "tris": null,
+  "inst": null
+ },
+ {
+  "name": "r6Face",
+  "parent": "r6Porthole",
+  "type": "Mesh",
+  "tris": 7680,
+  "inst": null
+ },
+ {
+  "name": "r6Bezel",
+  "parent": "r6Porthole",
+  "type": "Mesh",
+  "tris": 15360,
+  "inst": null
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "r6Porthole",
+  "type": "Mesh",
+  "tris": 288,
+  "inst": 16
+ },
+ {
+  "name": "(unnamed)",
+  "parent": "r6Porthole",
+  "type": "Mesh",
+  "tris": 288,
+  "inst": 24
+ },
+ {
+  "name": "heroCollar",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 6144,
+  "inst": null
+ },
+ {
+  "name": "heroGlow",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": null
+ },
+ {
+  "name": "heroBubbles",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 1216,
+  "inst": 10
+ },
+ {
+  "name": "heroSwell",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 13392,
+  "inst": null
+ },
+ {
+  "name": "heroSplash",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": 30
+ },
+ {
+  "name": "lqFloor",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 20592,
+  "inst": null
+ },
+ {
+  "name": "lqWaterlineBubbles",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 252,
+  "inst": 8
+ },
+ {
+  "name": "spCurls",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2016,
+  "inst": null
+ },
+ {
+  "name": "spLumps",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 320,
+  "inst": 26
+ },
+ {
+  "name": "mwTunnelBubbles",
+  "parent": "",
+  "type": "Mesh",
+  "tris": 2,
+  "inst": 360
+ }
+]
