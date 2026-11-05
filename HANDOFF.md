@@ -28,15 +28,20 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - **Switches:** `?s3=liquid,nofoam` shows the liquid alone.
   - **Why not three.js's own water:** `Water` and `Water2` were rejected. They render the scene again into mirror
     targets every frame and only work on flat planes.
-  - **Saved so far:**
+  - **Saved:**
     - Checkpoint 1, `f1fb2fc`: the user called it "a real improvement, preserve it".
-    - Checkpoint 2, `8ddca5e`: a stronger swirl, a deeper centre, the first foam-off and foam-on captures.
-  - **Still to do:** the user's last requests.
-    - Translucent white splashes round the character. They are not yet visible, so foam on looks almost the same as
-      foam off.
-    - A deeper, less pale tunnel centre.
-  - **Then:** the specialist's pixel-identity proof that `?s3=hero` and everything older are unchanged, and the
-    gameplay checks.
+    - Checkpoint 2, `8ddca5e`: a stronger swirl and a deeper centre.
+    - The final pass, `01cdcde`: merged as `0c52227`; the rebuilt bundle matches its source.
+  - **Pixel identity, PROVEN:** the normal game, `hero`, `round7`, `round6`, `round6,rich`, `round5` and `round4`,
+    each at Tap to Start, 2.85 s and 4.2 s, against `06b9805`. All 21 pairs have 0 differing pixels
+    (`Previews/WebDemo/screen4_round8_liquid/pixel_identity_vs_06b9805.txt`).
+  - **Still to do:**
+    - Make the translucent white splashes round the character visible. Foam on still looks almost the same as foam
+      off: the white beside the character is 5–19%, against about 35% approved.
+    - Add more cobalt between the bands (1–3% against 6%) and make the core warmer.
+    - Run the Gameplay & Visual Testing specialist's checks on `?s3=liquid`; not run yet.
+  - **Design agents' log:** `ChatHistory/2026-11-05_fourth_account_design_agent_reports.md`. The four agent files have
+    a Round 8 section.
   - **Evidence:** `Previews/WebDemo/screen4_round8_liquid/`.
 - **Art Director's baseline review**, with measured water targets: `Previews/WebDemo/screen4_round8_art_director_baseline/`.
 - **Water look references** sent by the user (secondary to the approved Screen 4):

@@ -764,3 +764,19 @@ Close, but not done. The Water & VFX specialist has committed its finished water
 3. Run the gameplay tests.
 4. Send you the final foam-off and foam-on captures at 2.85, 3.0 and 3.1 s beside your approved Screen 4.
 
+---
+
+### You · 2026-11-05 00:44 UTC
+
+save everything to my GitHub repository, chat history, and design agent. Make sure everything's saved to my GitHub repository.
+
+---
+
+### Claude · 2026-11-05 00:44 UTC
+
+Saving everything now: the specialist's finished water pass, the design agents' notes and reports, and the chat history.
+
+The water pass is merged and the game file matches its source. Next, a Round 8 section in all four design agent definitions, so they're current for future sessions:
+
+Next, a log of the design agents' work this session, and the hand-off updated to the merged result:
+

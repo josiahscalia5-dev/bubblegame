@@ -34,7 +34,33 @@ Reporting rules: give each check as PASS or FAIL with the command and the key ou
 from what you see; colour shares and SSIM do not prove a percentage of visual similarity, so never state one. If a check
 was not run or could not finish, say so plainly.
 
-## Newest: the Round 7 HERO SCENE, `?s3=hero` (5 November 2026; this section overrides the Round 7 notes below)
+## Newest: Round 8 LIQUID, `?s3=liquid` (5 November 2026, fourth account; this section overrides the hero notes below)
+
+- **Switches:**
+  - `?s3=liquid` is everything `?s3=hero` does plus real animated water: `WebDemo/src/tunnel_r8_liquid.js`, model
+    `lqShade`.
+  - `?s3=liquid,nofoam` is the liquid alone, with no white crests, flecks, strokes or splash particles.
+  - `?s3=hero` and everything older are pixel-identical to `06b9805`. The proof is
+    `Previews/WebDemo/screen4_round8_liquid/pixel_identity_vs_06b9805.txt`.
+- **The water model:** one custom ShaderMaterial for every water surface (floor ribbon, wall rings, collar, the
+  translucent swell round the character).
+  - A generated 256x256 wave `DataTexture`, flow-mapped with Water2's two-phase crossfade.
+  - Colour by depth, from cobalt troughs to an azure body, turquoise floor and lit cyan crests.
+  - An analytic glow reflection and a sun-glint path. No extra render pass: three.js Water and Water2 were rejected.
+- **Hero moment:** still 2.85 s. The user's acceptance window is 3.0–3.1 s.
+- **The user's open requests:**
+  - Translucent white splashes round the character that are clearly visible but never cover the blue. Foam on still
+    looked almost the same as foam off.
+  - A stronger, glossier swirl.
+  - A deeper, less pale centre with more cobalt between the bands (1–3% against the approved 6%).
+  - A warmer peach-gold core.
+- **References:**
+  - the Art Director's measured targets: `Previews/WebDemo/screen4_round8_art_director_baseline/README.md`;
+  - the user's water-look references, secondary to the approved Screen 4:
+    `Design/ReferencePacks/2026-11-05_Water_Look_References/`;
+  - capture tools: `WebDemo/tools/screen4/liquid_shots.cjs`, `liquid_moves.cjs`, `liquid_shares.py`.
+
+## Previous: the Round 7 HERO SCENE, `?s3=hero` (5 November 2026; this section overrides the Round 7 notes below)
 
 - The user rejected further tuning of the layered Round 7 tunnel and asked for a full art-match rebuild of Screen 4 as a
   dedicated, playable hero scene. It is `?s3=hero` (it also turns round7 on): `WebDemo/src/tunnel_r7_hero.js` (camera,
