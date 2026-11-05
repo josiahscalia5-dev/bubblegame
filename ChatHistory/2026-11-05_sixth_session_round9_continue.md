@@ -106,3 +106,71 @@ _Agent "Art Director six-area gate" finished_
 
 The Art Director has finished: two areas are far, four partly, none close yet. It confirmed the cause of the lilac centre, with two refinements. Saving its report first, then a look at its annotated comparison:
 
+Importing the chat exporter would run its top-level code with this script's arguments, so I'll copy the redaction patterns instead:
+
+The exporter works: three agents, with the Art Director's full brief, steps and final report, and no keys. Now this session's report summary:
+
+The Art Director has finished its quality gate, and two specialists are now fixing what it found, in parallel. Everything up to this point is saved to GitHub (`c853f1a`), and GitHub confirms it.
+
+**Art Director's six areas at 3.0 s, scored 0–10, merged version against your original:**
+
+| Area | Score | Verdict | What's wrong (measured) |
+|---|---|---|---|
+| Housing and framing | 7 | partly | The gold rim is 1.7× too thick; the left collar arc is too clean and dry |
+| Deep blue tunnel | 5 | partly | The centre is lilac (45% against 11%) instead of a warm glowing core; too little deep cobalt (1.2% against 3.9%) |
+| Light and reflections | 4 | far | Four-point star sparkles, lime-yellow patches instead of peach, too few cyan streaks (6.6% against 13.3%) |
+| Character immersion | 6 | partly | The waterline and the fur showing through the water are right, but she sits behind a smooth "glass bowl" lip, not bubbly foam |
+| Foreground waves | 4 | far | Your original's big foam bank is missing: a thin lip over flat water with too many tiny flecks |
+| Objects | 7 | partly | Most are close; the gem and the lower-right coin are too big and a little low, and the sock is a little low |
+
+The scores are its own visual judgement; each number names the script that measured it. No overall percentage is claimed.
+
+**The lilac centre, solved:** the wall shader works out how far each far-wall point is from the centre of the screen using the wrong position. The tunnel bends and ends 38 m ahead, so no wall point near the centre ever picks up the warm core colour. The fix is to measure from where each point actually lands on screen.
+
+It also found that reducing the lavender round the opening is the wrong lever, because there's already slightly less lavender there than in your original. The opening feels less immersive because of the thick rim, the clean collar arc and the lack of a glowing centre.
+
+**Running now:**
+- **Tunnel & Lighting:**
+  - the centre fix;
+  - deeper cobalt in the walls;
+  - peach light instead of lime, and more cyan streaks;
+  - removing the star sparkles;
+  - a thinner rim and a wet collar arc;
+  - the gem, the lower-right coin and the sock.
+- **Water & VFX:** the big sculpted foam bank across the bottom, and bubbly foam instead of the glass-bowl lip under her body.
+
+When they finish, I'll merge both and run the final checks, including the proof that every older version is unchanged. Then I'll send you the side-by-side with your original and a gameplay video.
+
+**Also saved:**
+- **The agents' step-by-step logs:** a new tool (`Tools/export_agent_transcripts.py`) saves each agent's brief, every step and its final report, with keys redacted. The last session lost the end of the Water & VFX specialist's log when its cloud machine ended; this prevents that.
+- **The automatic save** is pushing everything else every 5 minutes.
+
+---
+
+### You · 2026-11-05 13:47 UTC
+
+Ok
+
+---
+
+### Claude · 2026-11-05 13:47 UTC
+
+Both specialists are still working, about 30 steps in each. The automatic save's latest push (`6f24c01`) is confirmed on GitHub. I've just refreshed the agents' step-by-step logs, and the next automatic save will push them.
+
+When both finish, I'll merge them, run the checks and send you the comparison with your original and the gameplay video. You don't need to do anything in the meantime.
+
+---
+
+### Automatic check · 2026-11-05 13:47 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-05 13:47 UTC
+
+I've saved and pushed the refreshed agent transcripts as commit `465bf10`, and GitHub confirms it has that commit. Nothing is left unsaved.
+
+The two specialists are still working. I'll merge them and send you the comparison when they finish.
+
