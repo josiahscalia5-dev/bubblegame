@@ -45,13 +45,53 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
 const STAGE = 0.95;
 const HERO_BUBBLES = [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1.35, 0.95, 2.76, 0.16], [-2.15, -1.29, 2.43, 0.15],
   [-3.2, 0.88, 0.62, 0.15], [-2.9, 0.72, 0.8, 0.1], [-3.0, 0.92, 2.91, 0.13], [0.6, 0.9, 2.2, 0.09], [1.2, -1.0, 2.5, 0.1], [-0.8, 1.2, 1.9, 0.08]];
+// The focused pass (the user's brief, 5 November about 15:55 UTC, item 3: the pink character "appears larger and more present"
+// in the original; the model and its scale are not changed). Measured at 3.0 s (scripts in Previews/WebDemo/
+// screen4_round9_match/13_focused_pass_tunnel_lighting/scripts): the original's dome is about 1.25 times as broad at the same
+// depth under its top (0.27 / 0.34 / 0.39 W at y 0.72 / 0.74 / 0.76 against our 0.20 / 0.27 / 0.32) with its top at the same
+// height (0.696 against 0.704) and its centre about 0.015 W further left; the side tufts span about the same (0.56 against 0.53).
+// So the hero camera comes MATCH_CAM nearer the character (track metres: dx sideways, + screen-left; dh up; du along the path):
+// the character draws about 1.2 times larger round its dome top, which stays where it was, and 0.015 W further left. Every
+// object staged for the camera (the rim, the housing and collar, the hero bubbles, the framing brushes, the collectibles near
+// the drum) moves with it, so they keep their screen places exactly (the path is straight from 6 m before the mouth to 9 m in);
+// only the world's own objects (the character and the water round it, the tube, the floor) change on screen. The far tunnel
+// keeps its vanishing point (the aim point moves with the camera). The camera stays inside the drum, 0.44 m nearer the mouth.
+// (Scale k round the dome top: du = 2.66 (1 - 1/k), dh = -0.61 (1 - 1/k); 0.44 / -0.10 is k = 1.2. The rim, housing, bubbles
+// and brushes follow MATCH_CAM by themselves; the collectibles' layout below (and farGem, secondSock, coinScales' u) holds
+// numbers re-solved for this MATCH_CAM: if it changes, re-solve them with Previews/WebDemo/screen4_round9_match/
+// 13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs ITEMS / DELTA, which adds the water heights.)
+export const MATCH_CAM = { dx: -0.006, dh: -0.10, du: 0.44 };
+const restage = ([u, x, h, ...rest]) => [u + MATCH_CAM.du, x + MATCH_CAM.dx, h + MATCH_CAM.dh, ...rest];
+// The near hero bubbles that were too big (Water & VFX's finding; the focused pass): {index: [dx, dh, radius]} after the
+// re-staging, from the probe at 3.0 s (with the shader's drift) against the original's own bubbles (diameter in widths at
+// its centre):
+//   2 mid-left    0.097 at (0.215, 0.352) -> original 0.09  at (0.275, 0.348)
+//   3 right edge  0.113 at (0.976, 0.377) -> original 0.076 at (0.96, 0.365)
+//   4 lower-left  0.158 at (0.034, 0.743) -> original 0.137 at (0.084, 0.751)
+//   5 lower-left  0.095 at (0.172, 0.692) -> original 0.08  at (0.197, 0.699)
+//   6 upper-left  0.123 at (0.067, 0.201) -> original 0.105 at (0.128, 0.23)
+const BUBBLE_FIX = { 2: [-0.198, 0.026, 0.148], 3: [0.042, 0.064, 0.101], 4: [-0.095, -0.03, 0.13], 5: [-0.053, -0.03, 0.084], 6: [-0.129, -0.122, 0.111] };
+const fixBubble = ([u, x, h, r], i) => { const f = BUBBLE_FIX[i]; return f ? [u, x + f[0], h + f[1], f[2]] : [u, x, h, r]; };
+// the bubbles' shader seeds each one's drift (up and sideways) from its world place, fract(3.1 x + 7.7 z) (tunnel_r7_hero.js):
+// a moved bubble would drift to another place by the hero moment, so its move along the path is trimmed (at most 0.065 m) to
+// keep the seed
+const keepSeed = (b0, b1) => { const k = 3.1 * (b1[1] - b0[1]) + 7.7 * (b1[0] - b0[0]); return [b1[0] - (k - Math.round(k)) / 7.7, ...b1.slice(1)]; };
+const heroBubble = (b0, i) => keepSeed(b0, fixBubble(restage(b0), i));
+// a framing brush [u, side (+1 screen-left), angle up from level (degrees), scale, radius from the drum's axis]: moved by
+// MATCH_CAM round the axis
+const restageDeco = ([u, side, a, sc, rr]) => {
+  const r = a * Math.PI / 180, x = Math.cos(r) * rr + side * MATCH_CAM.dx, y = Math.sin(r) * rr + MATCH_CAM.dh;
+  return [u + MATCH_CAM.du, side, Math.atan2(y, x) * 180 / Math.PI, sc, Math.hypot(x, y)];
+};
 export const MATCH = {
   // deep-merged into HERO (tunnel_r7_hero.js) at load, before anything is built
   hero: {
     round6: {
       round5: {
         // pitched up 1.5 degrees and turned 0.4 degrees right: the vanishing point from (0.540, 0.512) to the approved (0.53, 0.53)
-        camera: { lookY: 1.62, lookX: 0.194 },
+        // (the focused pass: the camera and its aim point both moved by MATCH_CAM, so the view's direction is unchanged; the
+        // hero scene's camera was off [-0.11, 1.08, -2.6], aim [0.194, 1.62, 6.42] from the character)
+        camera: { off: [-0.11 + MATCH_CAM.dx, 1.08 + MATCH_CAM.dh, -2.6 + MATCH_CAM.du], lookX: 0.194 + MATCH_CAM.dx, lookY: 1.62 + MATCH_CAM.dh, lookZ: 6.42 + MATCH_CAM.du },
         // the walls now carry the approved picture's own glow: the drum's bloom halved (a decrease; it was lifting their darks)
         bloom: { strength: 0.16 },
       },
@@ -78,19 +118,28 @@ export const MATCH = {
       // top (1.53 m; 0.73 m with the coin's bob), inside the 0.82 m pick-up reach; drawn smaller there (MATCH.coinScales) so it
       // is the original's 0.126 W.
       // The small lower-right coin by the centre coin 2 m further (the original's is smaller, at 0.589, 0.574))
-      layout: { coinLines: [[-0.231, 2.77, 1, 1.0, 1.14, 0], [-0.674, 3.4, 1, 1.0, 2.03, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.357, 2.3, 1, 1.0, 0.57, 0],
-        [2, 15.0, 1, 1.0, 0.5, 0], [1, 12.0, 3, 1.0, 0.9, 0]], replace: 3,
-        firstSock: [2.0, 3.2, 1.14], extraGem: [-0.414, 5.7, 1.67] },
+      // (the focused pass: every one re-solved for the camera moved by MATCH_CAM with the probe's water heights,
+      // scripts/stage_probe.cjs: the same place relative to the camera, so the same screen box; lanes 0.009 further right,
+      // heights 0.06-0.13 m lower, all still within reach. Before: [-0.231, 2.77, .., 1.14], [-0.674, 3.4, .., 2.03],
+      // [1.07, 7.3, .., 1.15], [2.357, 2.3, .., 0.57], [2, 15.0, .., 0.5], [1, 12.0, 3, .., 0.9]; sock [2.0, 3.2, 1.14]; gem
+      // [-0.414, 5.7, 1.67])
+      layout: { coinLines: [[-0.222, 3.21, 1, 1.0, 1.048, 0], [-0.665, 3.84, 1, 1.0, 1.924, 0], [1.079, 7.74, 1, 1.0, 1.087, 0], [2.366, 2.74, 1, 1.0, 0.476, 0],
+        [2.009, 15.44, 1, 1.0, 0.437, 0], [1.009, 12.44, 3, 1.0, 0.8, 0]], replace: 3,
+        // (the first sock 0.037 m further right than the re-solve, lane 2.061, so the posed sock is centred on the original's box)
+        firstSock: [2.061, 3.64, 1.053], extraGem: [-0.405, 6.14, 1.565] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
       // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
       // x 0.01-0.20, y 0.233-0.415, 2.0% of the frame; measured at 3.0 s: x 0.01-0.17, y 0.238-0.459, 2.1%)
-      r7: { deco: [[1.15 + STAGE, 1, 34, 0.48, 1.62], [2.6 + STAGE, -1, 2, 0.8, 1.98]] },
+      // (the focused pass: moved with the camera, MATCH_CAM)
+      r7: { deco: [restageDeco([1.15 + STAGE, 1, 34, 0.48, 1.62]), restageDeco([2.6 + STAGE, -1, 2, 0.8, 1.98])] },
     },
-    rim: { u: -2.1 + STAGE, centre: [-0.097, 0.755] },   // (x corrected after the probe: the centre was 0.023 W right of target)
+    // (x corrected after the probe: the centre was 0.023 W right of target; the focused pass: moved with the camera)
+    rim: { u: -2.1 + STAGE + MATCH_CAM.du, centre: [-0.097 + MATCH_CAM.dx, 0.755 + MATCH_CAM.dh] },
     coinScale: 1.02,   // visual only (pick-up distances unchanged)
     // the big bubble in front of the rim plane (the collar cut it into a "ghost dome"), at the approved box (0.65-0.86,
     // 0.285-0.36) from the probed camera; the others +0.95 m
-    bubbles: [[-1.7, -0.63, 2.52, 0.244], ...HERO_BUBBLES.slice(1).map(([u, x, h, r]) => [u + STAGE, x, h, r])],
+    // (the focused pass: all moved with the camera, MATCH_CAM, and the five too big ones resized and placed, BUBBLE_FIX)
+    bubbles: [[-1.7, -0.63, 2.52, 0.244], ...HERO_BUBBLES.slice(1).map(([u, x, h, r]) => [u + STAGE, x, h, r])].map(heroBubble),
     // round7's own bubbles duplicated the hero bubbles (a second big bubble, a column of small ones over the centre)
     hide: ['r6Flanges', 'r7Glow', 'r5Heart', 's4Rings', 'r7Bubbles'],
     vortex: { perLog: 4.5 },   // the procedural rings that remain (the floor's) as dense as the approved's 8-10 bands
@@ -105,10 +154,14 @@ export const MATCH = {
   // left, still within the pick-up reach (0.87 m) from the left lane (game.js applies it, gated)
   // (gate fix F7: it sat 0.088 W left of the centre, a second small gem beside the centre coin: now in the middle lane at
   // 0.82 m, on the line from the camera through the centre coin, so at the hero moment it is hidden behind it; in reach)
-  farGem: [1, 14.6, 0.82],
+  // (the focused pass: re-solved for the camera moved by MATCH_CAM; before [1, 14.6, 0.82])
+  farGem: [1.009, 15.04, 0.757],
   // the second sock (round3's, lane 2 at 12.1 m) stood right of the centre coin: 5.1 m nearer and 0.6 m further right, at
   // 0.61 m, behind the big first sock at the hero moment; within reach from the right lane without a jump (0.63 m)
-  secondSock: [2.85, 7.0, 0.61],
+  // (the focused pass: re-solved for the camera moved by MATCH_CAM, before [2.85, 7.0, 0.61]; then 0.06 m further right and
+  // 0.1 m lower, so it stays hidden behind the first sock now that one lies tilted (it peeked out at its upper left): 0.67 m
+  // from the body riding in the right lane, inside the 0.82 m pick-up reach)
+  secondSock: [2.95, 7.44, 0.45],
   // the far collectibles converge on the vanishing point (four coin lines and two socks 19-34 m ahead at the hero moment;
   // the original has only the small centre coin and one far sock there): visual only, coins and gems shrink away between
   // these distances from the camera (m) and grow back in as the character comes on, socks further out (the nearest far
@@ -117,7 +170,7 @@ export const MATCH = {
   gemScale: 0.89,   // the gem beside the big left coin (gems[0]): its visual size (the approved's is 0.103 W wide, ours 0.115)
   // single coins' visual size, [layout u, scale] (checkpoint 05): the upper-left coin, brought nearer to stay in reach, at the
   // original's 0.126 W; the big left coin toward the original's 0.216 W (ours 0.188). Pick-up places unchanged
-  coinScales: [[3.4, 0.69], [2.77, 1.1]],
+  coinScales: [[3.84, 0.69], [3.21, 1.1]],   // (the focused pass: the coins' new layout u)
   // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
   // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
   // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
@@ -132,7 +185,17 @@ export const MATCH = {
   },
   splash: {},      // deep-merged into SPLASH (tunnel_r8_splash.js)
   heroWater: {},   // deep-merged into HERO_WATER (tunnel_r7_hero_water.js) after the splash pass's settings
-  sockScale: 0.85, // the first sock's visual size
+  // the first sock's visual size (the focused pass: 0.85 -> 0.74, so the posed sock keeps the original's box, x 0.65-0.84,
+  // y 0.552-0.66; posed at 0.85 its mesh spanned 0.621-0.846 x 0.546-0.666)
+  sockScale: 0.74,
+  // the first sock's pose (the user's brief, 5 November about 15:55 UTC, item 4: in the original it lies tilted, more
+  // sideways, its cuff up-right, its toe down-left, its face toward the viewer; ours stood upright with its toe toward the
+  // camera): degrees round the sock's own centre, applied to the model inside the game's animated holder (its bob and gentle
+  // sway still play on top; at 2.85-3.1 s they move it by under 5 degrees). roll: round the line of sight (negative =
+  // clockwise on screen); yaw: round its upright axis (negative = toe toward screen-left); pitch: round its sideways axis
+  // (six poses tried at 3.0 s; this one puts the cuff on top tilted clockwise, the face level toward the viewer and the toe out
+  // to the lower left, as the original's)
+  sockPose: { roll: -20, yaw: -40, pitch: 25 },
   // the coins' ramp (sRGB 0..1 as on screen): shade, yellow gold (hue 46), lemon; lum: the coin's lit linear brightness
   // mapped onto it; amount: how much of it replaces the coin's own colour
   coin: { shade: [0.839, 0.486, 0.008], mid: [0.973, 0.776, 0.11], lemon: [1.0, 0.945, 0.533], lum: [0.18, 0.95], amount: 0.85 },
@@ -151,7 +214,9 @@ export const MATCH = {
     // measured display compensation: drawn through the inverse display transform, the walls still showed about 4% lighter
     // and less saturated than the approved at the same places (zero-flow test at 3.0 s: the drum's translucent layers and
     // texture filtering); undone before the transform
-    lift: 0.08, sat: 1.2,
+    // (lift is also the floor's, tunnel_r9_match_water.js; the walls have their own since the focused pass: 0.12 was tried and
+    // only made the band contrast worse, so it stays 0.08)
+    lift: 0.08, liftWall: 0.08, sat: 1.2,
     // the warm centre (the approved: r < 0.06 W warm 47%, white 37%, median #f1d7db): a pink-peach tint on the core zone.
     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
     // an orange ball, white 17%)
@@ -171,7 +236,8 @@ export const MATCH = {
     // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
     // (narrow ranges: crisp band edges, as the approved's painted bands)
     trough: { col: '#3c56cf', amount: 0.3, from: [0.08, 0.12] },
-    crest: { col: '#2fb2f5', amount: 0.85, from: [0.02, 0.06], streak: 0.12 },
+    // (the focused pass: amount 0.85 -> 0.6, with the streaks the walls were too azure)
+    crest: { col: '#2fb2f5', amount: 0.6, from: [0.02, 0.06], streak: 0.12 },
     zone: [0.12, 0.18],
     // the mid vortex's pastel lilac (the map's rows rw 0.06-0.12: lavender 20-33%) toward pale blue and white (approved mid
     // vortex r 0.08-0.20: lavender 12%, white 22%, pale blue 18%); [in, full, full to, out] in rw
@@ -190,20 +256,54 @@ export const MATCH = {
     // the band's lit part (bk under `to`)
     bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.15, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.7,
       blueFrom: [0.075, 0.12],
-      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.85 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
-      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
+      // (the focused pass: gap 0.85 -> 0.92, glow #3fbcf7 / 0.5 -> #5ab8fa / 0.75: brighter band tops over deeper gaps, against
+      // the streaks' flattening; the band contrast up / left / right 0.147 / 0.211 / 0.159 at the checkpoint, the original's
+      // 0.184 / 0.167 / 0.201)
+      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.92 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
+      glow: { col: '#5ab8fa', to: [0.3, 0.6], amount: 0.75 },
       inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
       // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
       // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against
       // the approved's brightest #cae0ff; at 1.3 they turned white and broke into specks, at 1.05 the glints went lilac again)
       edge: { col: '#c2dcff', w: [0.02, 0.045], broken: [-0.13, -0.07], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.6, boost: 1.12 } },
-    royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
+    // the focused pass (the user's brief, 15:55 UTC, item 1: "still too clean and too smooth"; more energetic, irregular,
+    // turbulent): measured at 3.0 s the rings were smoother along their length than the original's (along-ring brightness
+    // std up / left / right 0.123 / 0.079 / 0.112 against 0.148 / 0.118 / 0.169, rings.py) and its walls paler (upper wall
+    // pale blue 20.6% against 11.2%, saturation 0.48 against 0.58, walls.py).
+    // turb: the band phase broken by a second, finer sampling of the relief (scale: [turns, log r], the turns a whole number
+    // so the angle stays seamless; amp in bands per unit of the relief's spread, 0.11) and a swirl wave round the ring
+    // (m waves per turn, k per unit of ln r, drifting at speed rad/s; amp in bands): jagged, broken band edges and curling
+    // turbulence
+    // (amp 0.16 / swirl 0.1 shattered the rings into shards at 3.0 s: the original's ring edges are smooth arcs; kept small)
+    turb: { scale: [3, 2.3], amp: 0.05, m: 9, k: 5.0, speed: 0.9, swirl: 0.05 },
+    // streaks: the original's busy rings are many thin concentric sub-stripes (cyan, electric blue, cobalt) broken into
+    // arcs, not wide smooth fills: the relief sampled `scale` [turns (a whole number), log r] finer, so its cells stretch along
+    // the rings, flowing round with the swirl; above +from (in the relief's spread, 0.11) toward the cyan, under -from toward
+    // the cobalt, by amount (bands only, outside the warm core; the whites and warm patches kept)
+    // (seven variants measured at 3.0 s, walls.py / rings.py: a cobalt dark streak made the upper wall's deep cobalt 8.7%
+    // against the original's 3.9% and flattened the bands; cyan light streaks made it azure 24% against 13%. The dark streak
+    // is electric blue, the light one a lighter electric blue)
+    streak: { scale: [2, 7.0], from: [0.7, 1.5], amount: 0.4, light: '#58acf8', dark: '#3a6ee8', speed: 0.02 },
+    // deepen: the walls' pale mid blues toward the original's saturated electric blue and azure (saturation times `amount`
+    // under luminance lum[0], fading out by lum[1] so the whites and splash stay; blue hues only, the warm patches kept)
+    // (screen luminance of the sRGB values: the original's pale blue #a3d1f6 is 0.79, its electric blue #337ced 0.46, white 0.95)
+    deepen: { amount: 1.7, lum: [0.84, 0.92] },
+    // (the focused pass: 0.6 / 0.37 -> 1.0 / 0.4, so the walls' light cyan turns the original's electric blue, median hue 215)
+    royal: { amount: 1.0, to: 0.4 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
-    rainbow: { r: 0.225, w: 0.036, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
+    // (the focused pass, "less pastel peach band": measured round the upper sector, the original's warm band is at rw
+    // 0.24-0.29, peak 0.26 (warm share 24 / 60 / 36% at 0.24 / 0.26 / 0.28); ours peaked at 0.22 (87%) over 0.18-0.27, so
+    // it sat in the original's saturated blue bands: moved out and narrowed, 0.225 / 0.036 -> 0.262 / 0.022)
+    rainbow: { r: 0.262, w: 0.022, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
+    // the original's pastel inner ring round the mid vortex (rw 0.10-0.13, sampled round the whole circle: pink and lilac at
+    // the sides #f18ef0 / #f2b0ea / #efd3f0, pink-white at the top #f2e2e9, cream below #faf4cd / #f6f0b9; ours was
+    // periwinkle #8791f7 there): radius and half width in rw, colours sides, top, bottom (the focused pass)
+    innerRing: { r: 0.117, w: 0.016, amount: 0.75, cols: ['#f2b4ee', '#f3e3ef', '#f9f2cc'] },
     // the mid vortex (the approved r 0.08-0.20 W: white 22%, pale blue 18%; ours white 8%, pale blue 32%): its brightest
     // pale blue whitened; r: [in, full, full to, out] in rw, from: the brightness where it starts and is full
-    midWhite: { r: [0.05, 0.08, 0.17, 0.24], from: [0.66, 0.82], amount: 0.9 },
+    // (the focused pass: only inside rw 0.155; from 0.14 out the original's bands are saturated blue, S 0.5-0.8)
+    midWhite: { r: [0.05, 0.08, 0.12, 0.155], from: [0.66, 0.82], amount: 0.9 },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -240,6 +340,7 @@ export const MATCH_UNIFORMS = {
   // the centre's place on the screen (drawing-buffer fractions, y up) and the size in pixels of the target being drawn
   // (set before each picture by buildMatch; MATCH.centre)
   uMatchVP: { value: new THREE.Vector2(0.5, 0.5) }, uMatchRes: { value: new THREE.Vector2(0, 0) },
+  uMatchRimU: { value: 0 },   // the rim's plane, metres along the path (set by buildMatch; mtRimRho)
 };
 // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
 // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
@@ -277,12 +378,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
 // the rim ramp (textures/screen4/rim_ramp.png): columns the angle 0..pi round the rim's centre (0 = screen right), rows rho =
 // r / the rim's outer radius from RAMP[0] (the housing just outside) to RAMP[1] (the blue inside the navy ring)
 const RAMP = [1.04, 0.80];
-// the rim on the approved: its band from rho 0.937 to 1; inside it, at 3.0 s, the collar spans rho 0.937 .. 0.9015 and the
-// tube's first metre 0.9015 .. 0.80 (worked out from the camera: the tube's top edge at 1.95 m above the camera, 4.9 m ahead)
-const RIM_RHO = { inner: 0.937, mouth: 0.9015, perMetre: 0.0991 };
-// (the collar's top arc starts at the bezel's inner edge, rho = inner / outer radius: 0.937 at 2.39 / 2.55; gate fix F6 made
-// the bezel thinner)
-{ const B = MATCH.hero.round6.porthole.bezel; RIM_RHO.inner = B.inner / B.outer; }
+// the rim on the approved: its band from rho 0.937 to 1. Inside it the collar's top arc and the tube's top wall take the ramp
+// at the rho where they show on screen (mtRimRho: each point seen through the rim's plane from the camera). (Before the focused
+// pass this was two constants worked out for one camera, at 3.0 s: the collar rho 0.937 .. 0.9015, the tube's first metre
+// 0.9015 .. 0.80; with the camera nearer the mouth the tube's top edge shows at rho 0.99, behind the bezel, and the ramp's
+// bevel, lilac line and navy ring fall 0.35-1.7 m into the tube.)
 // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
 const BEZEL_SIDES = [0.912, 1.03];
 // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
@@ -350,8 +450,16 @@ export function matchWallGLSL() {
   return /* glsl */ `
 // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
 uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
-uniform vec2 uMatchVP, uMatchRes;
+uniform vec2 uMatchVP, uMatchRes; uniform float uMatchRimU;
 ${RIM_SAMPLE}
+// a point of the collar or the tube (cs in the cross-section, u along the path) seen from the camera through the rim's plane:
+// d, its place there relative to the rim's centre (x + screen-left, h up), and the return value rho = |d| / the rim's outer
+// radius, so the ramp's colour lands where the original has it on screen whatever the camera's distance (the focused pass)
+float mtRimRho(vec2 cs, float u, out vec2 d) {
+  float s = (uMatchRimU - uHeroCam.z) / max(u - uHeroCam.z, 0.25);
+  d = uHeroCam.xy + (cs - uHeroCam.xy) * s - vec2(${f4(MATCH.hero.rim.centre[0])}, ${f4(MATCH.hero.rim.centre[1])});
+  return length(d) / ${f4(MATCH.hero.round6.porthole.bezel.outer)};
+}
 ${undisplayGLSL()}
 ${matchPlaceGLSL()}
 // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
@@ -399,9 +507,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
   // than the pixels (seam-free: from the wrap-corrected derivatives)
   float mtEdge = 0.0;
+  // (the focused pass, MATCH.walls.turb: the turbulence breaking the bands; a finer relief sample, flowing the other way)
+  vec2 tsc = vec2(${f4(M.turb.scale[0])}, ${f4(M.turb.scale[1])});
+  float dl2 = dot(textureGrad(uMatchDet, dv * tsc + vec2(0.37 - uTime * 0.013, 0.61 + uTime * 0.05), ddx * tsc, ddy * tsc).rgb - 0.5, vec3(0.2126, 0.7152, 0.0722));
+  float turbB = ${f4(M.turb.amp / 0.11)} * dl2 + ${f4(M.turb.swirl)} * sin(tu * ${f4(6.2831853 * M.turb.m)} + lr * ${f4(M.turb.k)} - uTime * ${f4(M.turb.speed)} + dl2 * 6.0);
   {
     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
-      - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
+      - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)} + turbB;
     float bk = fract(bs);
     float aw = (abs(dx.y) + abs(dy.y)) * ${f4(M.span * M.bands.perLog)} + (abs(dx.x) + abs(dy.x)) * ${f4(M.bands.spiral)};
     float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
@@ -419,6 +531,15 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     // peach and white, run right down to the centre coin)
     float ginK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz * (1.0 - bout);
     c = mix(c, ${hx(M.bands.inner.col)} * mix(0.9, 1.08, bl), ginK * ${f4(M.bands.inner.amount)});
+    // the thin streaks along the rings (MATCH.walls.streak; the focused pass), under the rim line and splash
+    {
+      vec2 ssc = vec2(${f4(M.streak.scale[0])}, ${f4(M.streak.scale[1])});
+      float sn = dot(textureGrad(uMatchDet, dv * ssc + vec2(0.53 + uTime * ${f4(M.streak.speed)}, 0.19), ddx * ssc, ddy * ssc).rgb - 0.5, vec3(0.2126, 0.7152, 0.0722)) / 0.11;
+      float sl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      float sk = bz * bout * ${f4(M.streak.amount)} * (1.0 - smoothstep(0.82, 0.92, sl)) * (1.0 - smoothstep(0.0, 0.08, c.r - c.b));
+      c = mix(c, ${hx(M.streak.light)} * mix(0.95, 1.1, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, sn) * sk);
+      c = mix(c, ${hx(M.streak.dark)} * mix(1.0, 1.12, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, -sn) * sk);
+    }
     c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
     // white water broken over each band's lit part where the relief crests (the approved's turbulent splash bits along the
     // rings; blobs of the relief's own cells, not star shapes)
@@ -440,6 +561,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     rc = mix(rc, ${hx(M.rainbow.cols[3])}, smoothstep(0.2, -0.6, cos(ra)) * 0.6);   // pinker on the left
     float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
     c = mix(c, rc * mix(0.85, 1.08, rl), rk);
+    // the pastel inner ring (MATCH.walls.innerRing; the focused pass): pink at the sides, pink-white at the top, cream below,
+    // broken by the turbulence like the bands
+    float ik = exp(-pow((rw - ${f4(M.innerRing.r)} + turbB * 0.006) / ${f4(M.innerRing.w)}, 2.0)) * ${f4(M.innerRing.amount)};
+    vec3 ic = mix(${hx(M.innerRing.cols[0])}, ${hx(M.innerRing.cols[1])}, smoothstep(0.4, 0.95, sin(ra)));
+    ic = mix(ic, ${hx(M.innerRing.cols[2])}, smoothstep(-0.3, -0.8, sin(ra)));
+    c = mix(c, ic * mix(0.92, 1.04, rl), ik);
   }
   {   // the mid vortex's bright pale blue toward the approved's white water (MATCH.walls.midWhite; the warm patches kept)
     float mz = smoothstep(${f4(M.midWhite.r[0])}, ${f4(M.midWhite.r[1])}, rw) * (1.0 - smoothstep(${f4(M.midWhite.r[2])}, ${f4(M.midWhite.r[3])}, rw));
@@ -459,7 +586,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
     c.g = mix(c.g, c.r + ${f4(M.royal.to)} * (c.b - c.r), rk);
   }
-  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
+  {   // the walls' pale mid blues toward saturated electric blue and azure (MATCH.walls.deepen; the focused pass): blue the
+      // largest channel, outside the warm core, under the whites' brightness (screen luminance)
+    float dlum = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    float dk = step(c.r, c.b) * step(c.g, c.b) * smoothstep(0.07, 0.11, rw) * (1.0 - smoothstep(${f4(M.deepen.lum[0])}, ${f4(M.deepen.lum[1])}, dlum));
+    c = clamp(dlum + (c - dlum) * mix(1.0, ${f4(M.deepen.amount)}, dk), 0.0, 1.0);
+  }
+  c = clamp((c - ${f4(M.liftWall)}) / ${f4(1 - M.liftWall)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
   vec3 col = mtUndisplay(c);
@@ -487,20 +620,21 @@ export function matchWallApply() {
 // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
 // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
 export function matchMouthGLSL(HERO, axisH, radius) {
-  const C = HERO.rim.centre;
+  // (the focused pass: the ramp at the screen rho, mtRimRho; it fades into the walls' own colours where the ramp reaches the
+  // blue inside the navy ring, rho 0.80-0.82, as the old first metre did between 0.82 and 1.0 m)
   return /* glsl */ `  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
     float du0 = u - uStart;
-    float rho = ${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.perMetre)} * du0;
+    vec2 rd; float rho = mtRimRho(cs, u, rd);
     float upA = (cs.y - ${f4(axisH)}) / ${f4(radius)};
-    float k = smoothstep(-0.06, 0.0, du0) * (1.0 - smoothstep(0.82, 1.0, du0)) * smoothstep(-0.15, 0.3, upA) * uMatchOn;
-    col = mix(col, mtUndisplay(mtRimS(cs - vec2(${f4(C[0])}, ${f4(C[1])}), rho)), k);
+    float k = smoothstep(-0.06, 0.0, du0) * smoothstep(0.802, 0.82, rho) * smoothstep(-0.15, 0.3, upA) * uMatchOn;
+    col = mix(col, mtUndisplay(mtRimS(rd, rho)), k);
   }
 `;
 }
-// the collar's top arc (tunnel_r8_liquid.js liquidCollar): the bevel's outer part instead of the flat pale lavender
-export function matchCollarGLSL(HERO) {
-  const C = HERO.rim.centre;
-  return /* glsl */ `  col = mix(col, mtUndisplay(mtRimS(vXHU.xy - vec2(${f4(C[0])}, ${f4(C[1])}), ${f4(RIM_RHO.inner)} + (${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.inner)}) * t)), uMatchOn);   // ?s3=match: the approved rim ramp (tunnel_r9_match.js)
+// the collar's top arc (tunnel_r8_liquid.js liquidCollar): the bevel's outer part instead of the flat pale lavender (at the
+// screen rho, mtRimRho, since the focused pass)
+export function matchCollarGLSL() {
+  return /* glsl */ `  { vec2 rd; float rho = mtRimRho(vXHU.xy, vXHU.z, rd); col = mix(col, mtUndisplay(mtRimS(rd, rho)), uMatchOn); }   // ?s3=match: the approved rim ramp (tunnel_r9_match.js)
 `;
 }
 // the gold rim (round6's bezel, moved by heroRim): the approved rim band by angle round its centre and across its width
@@ -541,6 +675,17 @@ export function matchCollectibles({ coins, gems, socks }) {
   // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
   // pick-up place, is unchanged)
   if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
+  // its pose (MATCH.sockPose): the model (the holder's turn group's child, centred on the turn's origin) turned round its own
+  // centre; no new object is made (a new object would draw a UUID from the game's seeded Math.random)
+  const sockModel = socks[0] && socks[0].turn && socks[0].turn.children[0];
+  if (sockModel && MATCH.sockPose) {
+    const P = MATCH.sockPose, D = Math.PI / 180, q = new THREE.Quaternion(), e = new THREE.Quaternion();
+    q.setFromAxisAngle(new THREE.Vector3(0, 0, 1), P.roll * D)
+      .multiply(e.setFromAxisAngle(new THREE.Vector3(0, 1, 0), P.yaw * D))
+      .multiply(e.setFromAxisAngle(new THREE.Vector3(1, 0, 0), P.pitch * D));
+    sockModel.quaternion.premultiply(q); sockModel.position.applyQuaternion(q);
+    report.sockPose = P;
+  }
   // the gem beside the big left coin at MATCH.gemScale of its size, round its own centre (its holder, the pick-up place and
   // the pop animation's scale are unchanged)
   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
@@ -609,7 +754,8 @@ void main() {
 
 // Called at the end of buildHero (tunnel_r7_hero.js), after the liquid and the splash bank are built.
 export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet }) {
-  const report = { textures: MATCH_UNIFORMS.uMatchOn.value === 1 };
+  const report = { textures: MATCH_UNIFORMS.uMatchOn.value === 1, camera: MATCH_CAM };
+  MATCH_UNIFORMS.uMatchRimU.value = L.tunnelStart + HERO.rim.u;   // the rim's plane (mtRimRho)
   // the centre's place on the screen (MATCH.centre, mtPlace), worked out just before each picture is drawn (after the hero's
   // camera frame): the tube's axis `ahead` metres in front of the camera, projected with this frame's camera; and the size of
   // the target being drawn (gl_FragCoord is in its pixels)
