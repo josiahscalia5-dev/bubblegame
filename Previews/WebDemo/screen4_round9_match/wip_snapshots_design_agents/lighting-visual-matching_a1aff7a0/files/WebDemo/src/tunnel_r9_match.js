@@ -210,9 +210,9 @@ export const MATCH = {
     // measured display compensation: drawn through the inverse display transform, the walls still showed about 4% lighter
     // and less saturated than the approved at the same places (zero-flow test at 3.0 s: the drum's translucent layers and
     // texture filtering); undone before the transform
-    // (lift is also the floor's, tunnel_r9_match_water.js; the focused pass gives the walls their own, 0.08 -> 0.12, a little
-    // darker between the bright bands)
-    lift: 0.08, liftWall: 0.12, sat: 1.2,
+    // (lift is also the floor's, tunnel_r9_match_water.js; the walls have their own since the focused pass: 0.12 was tried and
+    // only made the band contrast worse, so it stays 0.08)
+    lift: 0.08, liftWall: 0.08, sat: 1.2,
     // the warm centre (the approved: r < 0.06 W warm 47%, white 37%, median #f1d7db): a pink-peach tint on the core zone.
     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
     // an orange ball, white 17%)
@@ -252,10 +252,11 @@ export const MATCH = {
     // the band's lit part (bk under `to`)
     bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.15, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.7,
       blueFrom: [0.075, 0.12],
-      // (the focused pass: gap 0.85 -> 0.88, glow #3fbcf7 / 0.5 -> #5ab8fa / 0.7: brighter band tops over deeper gaps, the band
-      // contrast up / left / right 0.147 / 0.211 / 0.159 at the checkpoint against the original's 0.184 / 0.167 / 0.201)
-      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.88 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
-      glow: { col: '#5ab8fa', to: [0.3, 0.6], amount: 0.7 },
+      // (the focused pass: gap 0.85 -> 0.92, glow #3fbcf7 / 0.5 -> #5ab8fa / 0.75: brighter band tops over deeper gaps, against
+      // the streaks' flattening; the band contrast up / left / right 0.147 / 0.211 / 0.159 at the checkpoint, the original's
+      // 0.184 / 0.167 / 0.201)
+      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.92 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
+      glow: { col: '#5ab8fa', to: [0.3, 0.6], amount: 0.75 },
       inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
       // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
       // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against

@@ -1,12 +1,12 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: framing, sock, walls)
 
-- **Taken:** 2026-11-05 20:46 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:51 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a1aff7a0d4ce10e34` (local only), started from `9a95c06`.
 - **Its own commits so far:** 
   - `4029424 Round 9 focused pass (checkpoint): framing, the pink character 1.2x larger through the hero camera`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (199; full copies in `files/`)
+## Files (204; full copies in `files/`)
 
 - `.tltmp/base_root/README.md (new)`
 - `.tltmp/base_root/artifact-models (deleted)`
@@ -163,6 +163,10 @@
 - `.tltmp/wv/wE_t3.00.png (new)`
 - `.tltmp/wv/wF_info.json (new)`
 - `.tltmp/wv/wF_t3.00.png (new)`
+- `.tltmp/wv/wG_info.json (new)`
+- `.tltmp/wv/wG_t3.00.png (new)`
+- `.tltmp/wv/wH_info.json (new)`
+- `.tltmp/wv/wH_t3.00.png (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/before_b91e952_t3.00.png (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_character_original_before_now.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_sock_original_before_now.jpg (new)`
@@ -172,6 +176,7 @@
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_match.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_info.json (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t2.85.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t2.85_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t3.00.png (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t3.00_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t3.10.png (new)`

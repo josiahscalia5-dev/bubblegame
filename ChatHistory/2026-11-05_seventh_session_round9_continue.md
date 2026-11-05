@@ -595,3 +595,52 @@ I'll capture each on an emulated Pixel 7: the merged build now, plus each specia
 
 Both live sets apply cleanly and build. Capturing on an emulated Pixel 7 at 3.0 s: the merged branch and the combined preview.
 
+_[Sent you files: Previews/WebDemo/screen4_round9_match/15_phone_preview_2045utc/pixel7_original_vs_afternoon_vs_merged_vs_live_3.00s.jpg]_
+
+I've sent the preview: your game on an emulated Pixel 7 at 3.0 s, real gameplay, with no errors in any build. Left to right: your original, this afternoon's build, what's merged now, and a preview that adds both specialists' unfinished work.
+
+**Merged now, compared with this afternoon:**
+- **No white rectangle under the banner**, and the game fills the phone edge to edge.
+- **Tunnel:** much busier, with bold white splash flecks riding the rings and many more bubbles at different depths.
+- **Foam:** opaque aqua-white froth in place of the see-through purple, and she sits on top of it.
+- **Objects:** the two left coins are separated, and the gem, sock and right coin are in your original's places.
+
+**Live preview (not finished yet):**
+- **She's larger** (about 1.2× so far, aiming for your original's 1.37×) and slightly further left, like your original.
+- **The sock** is starting to tilt sideways.
+- **Under her,** the froth is less white, so the blue water shows through.
+
+**Still different from your original:**
+- The walls are paler and smoother.
+- The foam bank is less splashy.
+- The big left coin grew with the closer camera, so it needs re-sizing; the coins, gem and sock are re-placed for the new camera before Tunnel & Lighting finishes.
+
+The picture is saved on GitHub (`24ea223`). When both specialists finish, I'll merge, re-check the foam at the new framing, run the gameplay and older-version checks, and send the full side-by-side, the two close-ups and the five-item checklist.
+
+---
+
+### You · 2026-11-05 20:47 UTC
+
+Can you show me  preview what it looks like when he's going in through the tunnel? Or not tunnel, but watch the laundry machine, whatever.
+
+---
+
+### Claude · 2026-11-05 20:48 UTC
+
+You want to see it in motion: the character riding into the washing machine. I'll record a real gameplay video. Let me find the recording tool earlier rounds used:
+
+Recording now: 300 frames of real gameplay on the Pixel 7 screen, from Tap to Start, down the slide, into the washing machine and through the tunnel. The CPUs are shared with both specialists, so it'll take several minutes. I'll send you the video as soon as it's encoded.
+
+---
+
+### Automatic check · 2026-11-05 20:48 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-05 20:48 UTC
+
+The phone recorder script is committed and pushed (`0af3d3d`), and the working tree is clean. The video is still recording in the background; I'll send it as soon as it's encoded.
+

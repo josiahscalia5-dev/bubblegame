@@ -1586,8 +1586,9 @@ Halving the floor glints did not change the count (51 / 52), so those specks are
 [Image: original 2526x520, displayed at 2000x412. Multiply coordinates by 1.26 to map to original image.]
 
 - 20:46 `Bash`: Final follow-up tweak; build and capture the final set with cost
+- 20:50 `Bash`: Bubble probe on the follow-up build
 
-_195 tool steps._
+_196 tool steps._
 
 ---
 
@@ -1955,5 +1956,8 @@ Now the 50% blend over the original (with the measured vanishing points), and co
 - 20:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 20:45 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/wall_variants3.json
 - 20:46 `Bash`: Build and test two final wall variants
+- 20:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:47 `Bash`: Build final and capture final frames into evidence
 
-_206 tool steps._
+_209 tool steps._

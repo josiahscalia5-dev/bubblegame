@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: froth foam, tunnel flecks)
 
-- **Taken:** 2026-11-05 20:46 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:51 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a6a478aa3fef314d3` (local only), started from `b0e1f07`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (116; full copies in `files/`)
+## Files (123; full copies in `files/`)
 
 - `.wvtmp/base/game.bundle.js (new)`
 - `.wvtmp/basedemo/README.md (new)`
@@ -121,5 +121,12 @@
 - `.wvtmp/tune_nolayer.json (new)`
 - `.wvtmp/tunnel_before.png (new)`
 - `.wvtmp/under_before.png (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_info.json (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_t2.85.png (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_t2.85_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_t3.00.png (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_t3.00_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_t3.10.png (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/followup/followup_t3.10_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/classes_box.py (new)`
 - `WebDemo/src/tunnel_r9_match_water.js`
