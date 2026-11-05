@@ -26,6 +26,17 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - **Design agents:** the four agent files are line B's (its "ninth session" and "focused correction pass" sections) plus
     a new "tenth session, both lines merged" section; `CLAUDE.md` has line B's corrections and the two switches.
 - **Which look continues is the user's choice:** `focus` follows their latest corrections; `match`'s froth bank predates them.
+  - The Art Director (this session, eye judgement at 3.0 s) judges `focus` closer to the original's water round her; its
+    three largest remaining differences for `focus`:
+    - the walls: darker cobalt ribbons, a lilac-white centre;
+    - the water in front: paler periwinkle, meeting her in a straight line;
+    - the fur and the sock.
+  - `match` at the new framing (`20_focused_pass_merged/README.md`): her waterline is 0.867-0.873 against the original's
+    0.836 (the closer camera lowered her base), so its froth sits low.
+- **Design agents in a session load their files when the session STARTS.** This session's agents ran from the pre-merge
+  text (they reported "Round 9 ART MATCH" as their newest section) but worked correctly, with the repository, tools and
+  `CLAUDE.md`. A new session loads the merged files. Until then, tell each agent to read the "Newest: tenth session"
+  section of its own `.claude/agents/<name>.md` first.
 - **Session naming:** this is the TENTH session (chat `ChatHistory/2026-11-05_tenth_session_both_lines_merged.md`, agents
   `..._tenth_session_design_agent_transcripts.md`); the eighth and ninth are line B's.
 
