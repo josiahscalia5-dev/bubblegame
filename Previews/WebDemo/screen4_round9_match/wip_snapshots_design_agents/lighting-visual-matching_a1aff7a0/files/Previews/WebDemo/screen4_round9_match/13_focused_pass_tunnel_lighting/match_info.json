@@ -72,7 +72,7 @@
     "textures": 44,
     "geometries": 154,
     "programs": 64,
-    "msPerFrameSoftware": 4000
+    "msPerFrameSoftware": 8422.4
    }
   },
   {
@@ -144,7 +144,7 @@
     "textures": 44,
     "geometries": 155,
     "programs": 64,
-    "msPerFrameSoftware": 3982.3
+    "msPerFrameSoftware": 7881.6
    }
   },
   {
@@ -216,7 +216,7 @@
     "textures": 44,
     "geometries": 155,
     "programs": 64,
-    "msPerFrameSoftware": 3931.1
+    "msPerFrameSoftware": 8209.5
    }
   }
  ],

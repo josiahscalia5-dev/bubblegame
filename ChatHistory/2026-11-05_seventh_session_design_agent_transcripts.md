@@ -1959,5 +1959,10 @@ Now the 50% blend over the original (with the measured vanishing points), and co
 - 20:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 20:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 20:47 `Bash`: Build final and capture final frames into evidence
+**Agent** (20:56 UTC):
 
-_209 tool steps._
+Final frames captured (draw calls 206 / 205 / 201, as before). Now the identity proof against the final bundle, then gameplay and the phone frame.
+
+- 20:56 `Bash`: Final pixel-identity proof against the baseline bundle
+
+_210 tool steps._
