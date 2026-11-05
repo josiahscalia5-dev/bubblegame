@@ -87,3 +87,32 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
 small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
 gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
 Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
+
+### Done (ninth session, worktree `agent-a0bafb8338e8bc494`, from `71f7fa7`; baseline at 3.0 s identical to `frames/focus_seam_t3.00_canvas.png`, max diff 0)
+
+Tools added to `scripts/`: `live_sweep.cjs` (one seeded page at 3.0 s, then per candidate a JS edit of the scene, render, save; used
+for the sock poses and for object-only / sock-only silhouette renders), `maskbox.py` (silhouette box and cuff tilt),
+`brushes.py` (the pink fur boxes of the two framing brushes), `crops.py` (side-by-side crops). The probe's track u is relative
+to tunnelStart 3.9007 (layout u = probe u + 3.9).
+
+Changes (`FOCUS.match` in `tunnel_r9_focus.js`; `gemSquash` and `sockLift` read in `matchCollectibles`, focus only):
+coinLines (lower-right [2.586, 2.65, h 0.47]; small upper-left [-0.543, 3.1, h 2.025]), extraGem lane -0.314, firstSock lane 2.07,
+secondSock [2.726, 7.0, 0.61] (hidden behind the first again), r7.deco (left [2.07, 1, 42.5, 0.378, 1.60], right [3.55, -1, 9.6, 0.62,
+1.744]), coinScales [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]], gemSquash 0.78, sockPose [0, -0.65, 0.18], sockLift
+[0, 0.047, 0], sockScale 0.9.
+
+| at 3.0 s (objects.py, brushes.py, sock-only render) | original | before | after |
+|---|---|---|---|
+| lower-right coin centre, width | (0.893, 0.733), 0.219 | (0.751, 0.723), 0.241 | (0.894, 0.736), 0.214 |
+| big left coin | (0.198, 0.602), 0.211 | (0.195, 0.608), 0.198 | (0.195, 0.608), 0.202 |
+| small left coin | (0.152, 0.471), 0.123 | (0.158, 0.484), 0.112, behind the brush | (0.151, 0.472), 0.115, clear |
+| gem centre, height | (0.326, 0.511), 0.033 | (0.310, 0.511), 0.045 | (0.324, 0.514), 0.034 |
+| gold area (the four coin blobs) | 4.35% (+0.68% HUD coin) | 4.82% | 4.67% |
+| sock box | x 0.64-0.83, y 0.555-0.665 | opening showing, cuff -17 deg | x 0.642-0.829, y 0.551-0.657, cuff +0.4 deg |
+| left brush (pink) | x 0.010-0.171, y 0.240-0.416 | x 0-0.236, y 0.268-0.501 | x 0-0.186, y 0.240-0.418 |
+| right brush (pink) | x 0.789-0.984, y 0.394-0.610 | x 0.734-1.0, y 0.393-0.671 | x 0.795-1.0, y 0.393-0.606 |
+
+Reach: lower-right coin 0.42 m from the body in the right lane; small coin 0.62-0.69 m at the top of a jump from the left lane;
+gem 0.26-0.33 m with a jump; first sock 0.737 m (0.735 before); second sock 0.55 m. `S3=focus s3_func.cjs`: lanes 0 / 2, jump,
+12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_after_objects.json`). Pixel 7 412x839: every object in frame
+(`frames/phone_412x839_focus_obj_3.00s.png`). Frames: `frames/focus_obj_t3.00*.png`, `frames/focus_obj_sock_only_t3.00.png`.

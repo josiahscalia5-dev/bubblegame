@@ -652,6 +652,7 @@ export function matchCollectibles({ coins, gems, socks }) {
       if (!k.turn || !k.turn.children[0]) continue;
       const model = k.turn.children[0], pose = new THREE.Group();
       pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
+      if (MATCH.sockLift) pose.position.set(...MATCH.sockLift);   // (m, in the rocking group's frame: y up; visual only)
       k.turn.remove(model); pose.add(model); k.turn.add(pose);
     }
     report.sockPose = MATCH.sockPose;
@@ -660,6 +661,9 @@ export function matchCollectibles({ coins, gems, socks }) {
   // the pop animation's scale are unchanged)
   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
   if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }
+  // ?s3=focus: the original's gem is a wide, flat cut seen from the side (1.5 times as wide as tall on screen; ours 1.1): its
+  // height squashed round its own centre (MATCH.gemSquash, tunnel_r9_focus.js; it spins about this axis). Visual only
+  if (FOCUS_ON && gi && MATCH.gemSquash) { gi.scale.y *= MATCH.gemSquash; gi.position.y *= MATCH.gemSquash; report.gemSquash = MATCH.gemSquash; }
   // single coins' visual size (MATCH.coinScales; their LOD levels, so the game's own pop and pass scales still apply on top)
   report.coinScales = 0;
   for (const [u, s] of MATCH.coinScales || []) for (const c of coins) {
