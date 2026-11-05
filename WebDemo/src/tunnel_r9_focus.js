@@ -34,14 +34,27 @@ export const FOCUS = {
         //    and 1.98)
         r7: { deco: [[1.15 + 0.95, 1, 34, 0.5, 1.45], [2.6 + 0.95, -1, 2, 0.8, 1.72]] },
         round5: {
-          // 3 / 5. The camera 0.35 m nearer the character and 0.15 m lower, aimed 0.08 m lower, the view 1 degree wider: she
-          // is drawn about 1.15 times larger (the original draws her larger than match did: pink 4.16% of the frame against
-          // 3.06%) and higher (her top at 0.68 of the height, as the original's), and the tunnel comes a little closer. Her
-          // model and her size in the world are unchanged. (Swept in real renders: tools/screen4/cam_sweep.cjs.)
-          camera: { off: [-0.11, 0.93, -2.25], lookY: 1.54, fov: 73 },
+          // 3 / 5. (Tunnel & Lighting, after the Art Director's review 16: at off [-0.11, 0.93, -2.25], fov 73 she was drawn
+          // too large and low: width 0.600 W against the original's 0.465, base 0.894 against 0.859.) The camera 0.85 m
+          // further back and 0.2 m higher, the view narrowed to 68 degrees, so she is the original's size and place at 3.0 s
+          // (measured: width 0.473 W, top 0.695, base 0.850, centre (0.500, 0.780); the original 0.465, 0.702, 0.859, (0.502,
+          // 0.778)); 0.05 m to the right with its aim (off x and lookX together), so she is centred without moving the
+          // vanishing point; pitched so the tube's axis lands at (0.497, 0.531) (the warm core, 0.028 W right of it, at the
+          // original's 0.53). Her model and her size in the world are unchanged. (Real renders of each candidate:
+          // Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs.)
+          camera: { off: [-0.162, 1.126, -3.1], lookY: 1.655, lookX: 0.142, fov: 68 },
         },
+        // the gold rim with the camera further back: 1.036 times larger (outer 2.55 -> 2.641 m; the face's hole and its rivets
+        // with it), so its outer edge is the original's circle on screen again (measured at 3.0 s: radius 0.931 W round
+        // (0.550, 0.672 H), its top at 0.207 H; the original 0.936 W round (0.549, 0.676 H), top 0.208 H)
+        porthole: { bezel: { inner: 2.506, outer: 2.641 }, face: { inner: 2.59 }, rivets: { radius: 3.42 } },
       },
+      // (its centre 0.087 m higher and 0.019 m to the right, for the higher camera)
+      rim: { centre: [-0.1155, 0.8415] },
     },
+    // the rim ramp's places for this camera (see RIM_RHO in tunnel_r9_match.js): the tube's mouth at rho 0.864 of the rim's
+    // screen radius, its first metre 0.0855 further in (measured at 3.0 s; match's camera: 0.9015 and 0.0991)
+    rimRho: { mouth: 0.864, perMetre: 0.0855 },
     // 4. the sock's pose inside its rocking group (radians, the sock's own axes: x tips it toward the camera, y turns it, z
     //    rolls it as seen from the camera; + is counter-clockwise): the original's sock lies sideways, its toe low on the left,
     //    the cuff up to the right

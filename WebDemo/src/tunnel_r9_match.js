@@ -286,6 +286,9 @@ const RIM_RHO = { inner: 0.937, mouth: 0.9015, perMetre: 0.0991 };
 // (the collar's top arc starts at the bezel's inner edge, rho = inner / outer radius: 0.937 at 2.39 / 2.55; gate fix F6 made
 // the bezel thinner)
 { const B = MATCH.hero.round6.porthole.bezel; RIM_RHO.inner = B.inner / B.outer; }
+// ?s3=focus: the camera further back (tunnel_r9_focus.js), so the collar's end (the tube's mouth) and the tube's first metre
+// sit at other places in the rim's screen circle: measured from the camera at 3.0 s (MATCH.rimRho: mouth, perMetre)
+if (FOCUS_ON && MATCH.rimRho) Object.assign(RIM_RHO, MATCH.rimRho);
 // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
 const BEZEL_SIDES = [0.912, 1.03];
 // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
@@ -369,10 +372,15 @@ function focusRibbonsGLSL(M) {
       float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
         + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
         + (vr.g - 0.5) * ${f4(R.wobble)};
-      float rq = bs + rTw, rbi = floor(rq);
+      // (the spiral's seam: tu wraps at the screen-left, on the horizontal through the camera, where bs steps by one band; the
+      // per-band picks below (arcs, offsets, colours) then jumped there: a hard horizontal line across the left wall at the
+      // vanishing point's height, plain once the camera sat at the axis height. The angle is counted from straight down
+      // instead, so that step falls on the tube's bottom, under the water floor, and the left wall is continuous)
+      float rTu = tu < -0.25 ? tu + 1.0 : tu;
+      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw, rbi = floor(rq);
       float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
       float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
-      float rsa = (tu + 0.5) * rNs + rhb * 3.0;
+      float rsa = (rTu + 0.5) * rNs + rhb * 3.0;
       float rsi = mod(floor(rsa), rNs);
       float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
       float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
@@ -564,9 +572,26 @@ export function matchWallApply() {
 // in the wall's main (tunnel_r8_liquid.js wallFragment), after its own mouth edge: on the tube's first metre, round the upper
 // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
 // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
+// ?s3=focus (the user's kit, 5 November about 18:26 UTC, problem A: "the exposed lavender-grey inner wall at the lower left"):
+// the lining (heroWalls) runs on before the tube's mouth, and there wallFragment paints it as the washer's flat lavender
+// shell (#c4b8f0) with the navy mouth edge at uStart + 0.1. The rim's collar is centred low, so round the lower sides its
+// opening is wider than the tube and that part of the lining shows through it, in front of the collar's water: a flat
+// lavender strip with a navy line at the lower left and right (found with hide probes at 3.0 s: it goes with heroWalls;
+// heroCollar, r6Face and the floor do not draw it). Below the rim ramp's reach (its complement in upA), on the lining before
+// the mouth and over the navy edge, the walls' own animated water is drawn instead (lqWall: the same material and the same
+// screen-space placement as the collar's water round it, so the two meet without a seam). The upper part, where the gold
+// rim, the bevel and the ramp are, is unchanged.
+function focusMouthWaterGLSL(radius, axisH) {
+  return /* glsl */ `  {   // ?s3=focus: the lining before the mouth, below the rim ramp, is the walls' water (tunnel_r9_match.js)
+    float fdu = u - uStart, fup = (cs.y - ${f4(axisH)}) / ${f4(radius)};
+    float fk = (1.0 - smoothstep(-0.15, 0.3, fup)) * (1.0 - smoothstep(0.2, 0.32, fdu)) * uMatchOn;
+    if (fk > 0.001) col = mix(col, lqWall(vW, normalize(vN), normalize(vT), cs, a, u, a * ${f4(radius)}), fk);
+  }
+`;
+}
 export function matchMouthGLSL(HERO, axisH, radius) {
   const C = HERO.rim.centre;
-  return /* glsl */ `  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
+  return /* glsl */ `${FOCUS_ON ? focusMouthWaterGLSL(radius, axisH) : ''}  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
     float du0 = u - uStart;
     float rho = ${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.perMetre)} * du0;
     float upA = (cs.y - ${f4(axisH)}) / ${f4(radius)};
