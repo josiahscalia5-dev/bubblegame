@@ -2,6 +2,47 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
+## Newest (5 November, 10:00 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 9 ART MATCH (`?s3=match`), in progress
+
+- **One reference everywhere:** the ORIGINAL CLASSIC APPROVED Screen 4 is the only target in `CLAUDE.md`, the
+  screen-matcher skill, the four agent files and the sheet tools (`4df5860`).
+  - Detail close-ups: the verified crops of it, including the user's precision kit
+    `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/` (`6b81c38`).
+  - The user's five AI-generated supporting MATERIAL references (look and finish only; the original wins) and their
+    rendering requirements: `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (`5a47318`,
+    `31a5349`).
+- **`?s3=match`:** everything `splash` does, plus Round 9. `match,bare` (diagnostic) hides the collectibles, brushes and
+  bubbles.
+  - Files: `WebDemo/src/tunnel_r9_match.js` (Tunnel & Lighting) and `tunnel_r9_match_water.js` (Water & VFX).
+  - Hooks elsewhere are gated on `MATCH_ON`.
+  - Textures: `WebDemo/textures/screen4/`, made by `WebDemo/tools/screen4/derive_ref5_water.py`. The APK build script
+    copies this folder.
+- **Done:**
+  1. The Art Director's five largest mismatches at 3.0 s: `Previews/WebDemo/screen4_round9_match/01_art_director/`.
+  2. The Tunnel & Lighting wall-material checkpoint (`25a65ab`, merged as `f042ab5`): Reference 5 water on the walls,
+     graded to the original; the rim from the original; camera pitch +1.5 degrees; staging +0.95 m; objects resized.
+     Evidence: `02_tunnel_lighting/`. The user saw its 3.0 s comparison.
+  3. Lead fixes (`9b7527d`): the left brush made the original's round pom-pom; the star glints removed; the relief period
+     corrected.
+- **In progress when saved:** the Water & VFX stage, in the worktree `.claude/worktrees/agent-a60ed7c5dde43df5d`, based on
+  `f042ab5`.
+  - The brief: continuous water from the walls into the channel; Reference 3 waves round the hero; an irregular
+    waterline; the fur visible through the water.
+  - The WIP snapshot: `03_water_vfx_wip_snapshot/`.
+- **Next:**
+  1. Merge it, rebuilding the bundle after the merge because both sides change it.
+  2. The Art Director's six-area quality gate.
+  3. One focused Tunnel & Lighting pass: less lavender round the opening, a more immersive opening, cobalt contrast, the
+     sock and the lower-right coin.
+  4. Prove every older switch pixel-identical, including `splash`, against `9b7527d` or later; run `s3_func` and
+     `r2_func`.
+  5. Captures at 2.85, 3.0 and 3.1 s, the three-way comparison, a 50% blend, and a gameplay video.
+- **The user's target:** about 90-95% resemblance. Never claim a percentage without evidence.
+- **Android:** `Tools/android_apk/` builds the preview APK. It needs the Android SDK in `~/android-sdk`; the user approved
+  installing it.
+- **Agents' reports and transcripts:** `ChatHistory/2026-11-05_fifth_session_design_agent_reports.md` and
+  `..._transcripts.md`. Chat: `ChatHistory/2026-11-05_fifth_session_round8_splash_pass.md`.
+
 ## Newest (5 November, 01:30 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 8 pass 2 SPLASH (`?s3=splash`)
 
 - **Android preview APK (5 November, ~02:50 UTC), at the user's request:**
