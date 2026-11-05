@@ -395,3 +395,13 @@ Measuring the change three ways:
 - the existing overlay tool's wall-pattern correlation;
 - the upper-wall colour statistics.
 
+Now the step 2 evidence sheets and the offset table, made by a saved script so they can be reproduced:
+
+The phone capture shows the banner in its final place, so the 40.6 reading was taken mid-slide. Re-measuring the Pixel 7 boxes with a longer settle time, so the table is right:
+
+The Pixel 7 banner now measures 20–50–226–113, the same as at 1:2. Writing step 2's README and committing it as its own tested step:
+
+Step 2 is committed and pushed (`a715434`). The autosave had already swept the code changes in a few minutes earlier, so this commit adds the evidence. Showing it to you now:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/23_step2_interface/01_original_vs_before_vs_after_3.00s.jpg, Previews/WebDemo/screen4_round9_match/23_step2_interface/02_pixel7_original_vs_before_vs_after.jpg]_
+
