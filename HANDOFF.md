@@ -14,9 +14,33 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   textures, capture tools, what is done, what is open with numbers, and each agent's own next job). The Water & VFX
   agent's description now names `?s3=match`. Its final results are in the fifth session's reports file, section 4; its
   transcript after 12:50 UTC was lost with the old container, but its commit message and README hold its full report.
-- **Next:** the Art Director's six-area quality gate on the merged 3.0 s frame, one focused Tunnel & Lighting pass, then
-  the final checks, comparisons and video (the fifth session's "Next" list below).
-- **Chat:** `ChatHistory/2026-11-05_sixth_session_round9_continue.md`.
+- **The Art Director's six-area gate (done):** `Previews/WebDemo/screen4_round9_match/05_art_director_gate/`. Scores:
+  housing 7, deep blue tunnel 5, light 4, immersion 6, foreground waves 4, objects 7, with ten ranked fixes. The centre's
+  lilac is confirmed as `heroWalls`' track-frame screen radius.
+- **Running when last saved:** Tunnel & Lighting (fixes 1, 3-7, 10) and Water & VFX (fixes 2 and 8), in parallel, each in
+  its own worktree. Evidence will go to `06_tunnel_lighting_gate_fixes/` and `07_water_vfx_gate_fixes/`. A live snapshot at
+  13:57 UTC: `08_progress_snapshot_1357utc/`.
+- **Automatic save, the user's standing request (every 5 minutes, including the design agents and what they built):**
+
+  ```
+  CLAUDE_SESSION_URL=<session link> \
+  BW_AGENT_TRANSCRIPTS=ChatHistory/<date>_<session>_design_agent_transcripts.md \
+  BW_AGENT_TITLE="<title>" BW_WIP_DIR=Previews/WebDemo/<round folder>/wip_snapshots_design_agents \
+  bash Tools/autosave.sh ~/.claude/projects/<project>/<session-id>.jsonl ChatHistory/<chat>.md "<title>" 5 23
+  ```
+
+  Run it in the background. Each round saves:
+  - the chat;
+  - every agent's brief, steps and report (`Tools/export_agent_transcripts.py`);
+  - each agent worktree's unfinished work, a readable patch plus full copies of every file it changed or made
+    (`Tools/snapshot_agent_worktrees.py`; copying `files/` over the starting commit restores it).
+
+  `Tools/save_now.sh` now skips a round during a merge, so the autosave no longer has to be paused for merges. It stops
+  after 23 rounds (about 2 hours): start it again.
+- **Next:** merge both specialists, then the final checks (pixel identity against the `2a6ab30` baseline, `s3_func`,
+  `r2_func`), the comparisons at 2.85, 3.0 and 3.1 s with a 50% blend, and a gameplay video.
+- **Chat:** `ChatHistory/2026-11-05_sixth_session_round9_continue.md`; agents: `..._sixth_session_design_agent_reports.md`
+  and `..._transcripts.md`.
 
 ## Earlier (5 November, 10:00 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 9 ART MATCH (`?s3=match`), in progress
 
