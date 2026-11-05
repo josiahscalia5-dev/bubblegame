@@ -173,8 +173,50 @@ Coins and gem now land on the original's spots (gem height 0.034). Total gold is
 
 - 19:19 `Bash`: Side-by-side of original and tuned objects
 - 19:19 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj3_sheet.png
+- 19:19 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj4_tune.json
+- 19:19 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/mask_cands2.json
+- 19:19 `Bash`: Render second object tune and sock silhouette
+- 19:20 `Bash`: Measure sock silhouettes and coins; crop socks
+- 19:20 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_d.png
+**Lead → agent** (19:20 UTC):
 
-_81 tool steps._
+[Image: original 2412x690, displayed at 2000x572. Multiply coordinates by 1.21 to map to original image.]
+
+- 19:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:21 `Bash`: Rebuild and capture the objects step at 3.0 s
+- 19:21 `Bash`: Measure objects on the committed-settings frame
+**Agent** (19:21 UTC):
+
+The colour-mask sock box is contaminated by white water (unreliable), so I'll verify the sock with the silhouette render on the built settings.
+
+- 19:21 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/mask_sock.json
+- 19:21 `Bash`: Render and measure the first sock silhouette
+**Agent** (19:22 UTC):
+
+The sock silhouette matches pose B. Let me view the full 3.0 s frame, then do the Pixel 7 check.
+
+- 19:22 `Bash`: Original / before / after full-frame sheet
+- 19:22 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/objfinal_sheet.png
+**Agent** (19:22 UTC):
+
+The objects now sit in the original's arrangement. Pixel 7 framing check next.
+
+- 19:22 `Bash`: Capture Pixel 7 framing at 3.0 s
+- 19:22 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/objfinal/phone_412x839_obj.png
+**Lead → agent** (19:22 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+**Agent** (19:22 UTC):
+
+Everything stays in frame on the Pixel 7. Since collectibles moved, I'll run the functional test now, before committing this step.
+
+- 19:22 `Bash`: Read s3_func header
+- 19:23 `Bash`: Run focus functional test
+- 19:24 `Bash`: Save full functional test output and show start
+
+_99 tool steps._
 
 ---
 
@@ -343,5 +385,28 @@ Now update NOTES.md and commit step 1a.
 - 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12r.png
 - 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12l.png
 - 19:18 `Bash`: Capture two swell-front variants without side lumps
+- 19:19 `Bash`: Print her width profile for the variants
+**Agent** (19:20 UTC):
 
-_89 tool steps._
+Her pink ends in a flat bottom edge (width drops 0.30 to 0.11 W in 0.01 H) where the original tapers in a V. I'll try a deeper but narrower front dip.
+
+- 19:20 `Bash`: Capture two V-shaped water-line variants
+- 19:21 `Bash`: Compare her base for v2, v5, v6
+- 19:21 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v256.png
+**Lead → agent** (19:21 UTC):
+
+[Image: original 2006x221, displayed at 2000x220. Multiply coordinates by 1.00 to map to original image.]
+
+- 19:21 `Bash`: Read matchSwellGLSL and how s, vS are defined
+- 19:21 `Bash`: Find where the swell shader defines s, vS, as, d
+- 19:21 `Bash`: Read the liquid swell fragment and aSurf build
+- 19:22 `Bash`: Find how lumps are placed
+- 19:22 `Bash`: Read the lump placement loop
+- 19:22 `Bash`: Capture small splash crests at her lower sides
+- 19:24 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v78.png
+**Lead → agent** (19:24 UTC):
+
+[Image: original 2006x221, displayed at 2000x220. Multiply coordinates by 1.00 to map to original image.]
+
+
+_100 tool steps._
