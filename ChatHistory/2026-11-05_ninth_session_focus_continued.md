@@ -245,3 +245,5 @@ _The container running this session was restarted before background work reporte
 
 The container restarted, which stopped the autosave. Checking that nothing was lost, then restarting it.
 
+The autosave is running again and its first round is pushed (`63c46bd`). Moving the restart reminder to match the new run's end time:
+
