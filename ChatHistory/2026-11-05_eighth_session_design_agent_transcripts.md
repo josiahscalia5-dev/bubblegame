@@ -246,8 +246,30 @@ Now update NOTES.md with the camera decision as the first line.
 
 - 18:48 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
 - 18:48 `Bash`: Build, capture fix A, crop lower corners
+- 18:48 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/A1.png
+- 18:49 `Bash`: Check fix A changes only the lower corners
+- 18:49 `Bash`: Read phone_shot script header
+- 18:49 `Bash`: Read rest of phone_shot
+- 18:49 `Bash`: Make S3-capable phone_shot copy
+- 18:49 `Bash`: Pixel 7 capture of focus with fix A
+- 18:50 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_A_3.00
+**Lead → agent** (18:50 UTC):
 
-_99 tool steps._
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+- 18:50 `Bash`: Commit problem A fix
+- 18:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 18:50 `Bash`: Measure object positions after camera change
+- 18:51 `Bash`: Find lane width and body radius
+- 18:51 `Bash`: Find lane spacing and pickup radius
+- 18:51 `Bash`: Probe object places and picks for new camera
+- 18:52 `Bash`: Zoom on the left-wall seam region
+- 18:52 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/seam.png
+- 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/tasks/bmgwg74ug.output
+- 18:53 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 18:53 `Bash`: Build, capture, and check the seam
+
+_117 tool steps._
 
 ---
 
@@ -447,5 +469,27 @@ Rewrite the block to cut in the profile coordinate `t` and to use the distance a
 - 18:47 `Bash`: Full-width crop of trial 6
 - 18:47 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t6.png
 - 18:47 `Bash`: Capture trial 8 (more lace, lighter water, more spray)
+- 18:48 `Bash`: Crop and measure trial 8
+- 18:48 `Bash`: Show trial 8 water numbers
+- 18:48 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t8.png
+- 18:49 `Bash`: Capture trial 9 (mounds nearer the front)
+- 18:50 `Bash`: Crop and measure trial 9
+- 18:50 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t9.png
+- 18:50 `Bash`: Make trial 9 the defaults, rebuild and capture
+- 18:51 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/shot.sh
+- 18:51 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv_cam.cjs
+- 18:51 `Bash`: Check camera lookX support and branches
+- 18:51 `Bash`: Verify the default capture equals trial 9
+- 18:51 `Bash`: Prepare a before-demo folder with linked assets
+- 18:51 `Bash`: Extract the starting bundle for before captures
+- 18:51 `Bash`: Let the capture wrapper serve another demo folder
+**Agent** (18:51 UTC):
 
-_116 tool steps._
+Now capture before and after with the new camera.
+
+- 18:52 `Bash`: Capture before and step 1 with the new camera
+- 18:53 `Bash`: Compare before and step 1 with the new camera
+- 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_cam1.png
+- 18:53 `Bash`: Capture two crest settings with the new camera
+
+_134 tool steps._

@@ -751,3 +751,32 @@ That check-in was my own reminder. The 5-minute autosave now covers its snapshot
 
 Both specialists are still working. The autosave pushes everything every 5 minutes, and I'll merge, test and report their results with commit hashes when they finish.
 
+---
+
+### You · 2026-11-05 18:49 UTC
+
+Can I see preview of it
+
+---
+
+### Claude · 2026-11-05 18:50 UTC
+
+Yes. I'll start a live, playable preview of the current `?s3=focus` build, which opens straight into that version, and also show the latest frames, including the specialists' work in progress.
+
+_[Sent you files: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/preview_wip_full.png, /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/preview_wip_lowerleft.png]_
+
+Yes, there are two previews:
+
+1. **The live, playable game:** I started a preview server on port 8765. Its address opens straight into `?s3=focus`. It's the real game, so you can tap to start, swipe, jump and spin. It shows the build already pushed to GitHub. The specialists' changes appear once I merge them. The first load takes a while (about 60 MB of models), and phones vary in how smoothly they run it. If your app doesn't show a preview, use the image previews below.
+
+2. **Images at 3.0 s:** in the two images I just sent.
+   - The first shows your original, the pushed `focus` build, and Tunnel & Lighting's work in progress. Its new camera brings her back to the original's size and place. The tunnel and gold rim stay where they belong, and the corner fix is in.
+   - The second is the lower-left corner enlarged. The lavender-grey strip is gone and that corner now draws the walls' animated water.
+
+**Not finished in the work in progress:**
+- **A hard horizontal line** now shows across the lower-left water, just below the gem, where the fix meets the existing water. I've asked the specialist to blend it at both phone sizes.
+- **The small upper-left coin** now sits partly behind the left brush. Re-placing it, and the other coins, on the original's spots is the specialist's next step.
+- **The water round her and the tunnel ribbons** haven't changed yet: Water & VFX is still on the water round her, and Tunnel & Lighting does the softer ribbons after the coins.
+
+Everything is being saved every 5 minutes. I'll merge and push each tested step with its hash.
+

@@ -57,3 +57,16 @@ only repaints the upper part (the rim ramp, upA > -0.15).
 
 Planned fix (focus only, in `matchMouthGLSL`): below the rim-ramp region, before the mouth, draw the walls' own animated water
 (lqWall / matchWall) instead of the lavender shell and the navy edge; the upper part (gold rim, bevel, ramp) unchanged.
+
+After the camera change (hide probe at DPR 1.5, `0dae738`): left x 0-0.12, y 0.5-0.85: heroWalls 0.63 changed (others <= 0.09);
+right: heroWalls 0.24, s4Brush 0.46. Same cause, more visible with the camera further back.
+
+**Done (`a61541c`):** `focusMouthWaterGLSL` in `tunnel_r9_match.js`, inserted by `matchMouthGLSL` into `wallFragment` (focus only):
+where (1 - smoothstep(-0.15, 0.3, upA)) * (1 - smoothstep(0.2, 0.32, u - uStart)) > 0 it draws `lqWall(...)` over the lavender shell
+and the navy edge. Lavender share (h 235-300, s 0.08-0.45, v > 0.6) in x 0-0.10, y 0.45-0.80: 11.2% -> 0.4%; x 0.90-1.0: 10.6% -> 1.1%.
+Pixels changed only in y 0.615-0.783; none above y 0.60. Pixel 7 412x839: no wedge (`frames/phone_412x839_focus_A_3.00s.png`).
+
+Noticed (not yet looked into): a hard horizontal edge on the left wall at about y 0.48 (1:2) / 0.52 (Pixel 7), x 0-0.2,
+present before and after fix A.
+
+## 3. Objects after the camera (next)
