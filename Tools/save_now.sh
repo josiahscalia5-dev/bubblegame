@@ -14,6 +14,11 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 NOW="$(date -u '+%Y-%m-%d %H:%M UTC')"
 
 if [ -e .git/index.lock ]; then echo "$NOW save skipped: another git command is running (index.lock)"; exit 3; fi
+# Never commit halfway through a merge, rebase or cherry-pick (it would save conflict markers); the next round saves it.
+if [ -e .git/MERGE_HEAD ] || [ -e .git/CHERRY_PICK_HEAD ] || [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ] \
+   || [ -n "$(git diff --name-only --diff-filter=U 2>/dev/null)" ]; then
+  echo "$NOW save skipped: a merge, rebase or cherry-pick is in progress"; exit 5
+fi
 case "$BRANCH" in main|master|HEAD) echo "$NOW save refused: on '$BRANCH'; saves go to a ccr-* work branch only"; exit 4 ;; esac
 
 before_remote="$(git ls-remote origin "refs/heads/$BRANCH" 2>/dev/null | cut -f1)"

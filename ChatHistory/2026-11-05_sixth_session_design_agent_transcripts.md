@@ -266,8 +266,228 @@ Now the Art Director's probe script and measuring scripts.
 - 13:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r7_hero.js
 - 13:47 `Bash`: Find axis height constants
 - 13:47 `Bash`: Read hero_probe and constants
+- 13:48 `Bash`: Inspect texture metadata and stats
+- 13:48 `Bash`: Survey the Reference 5 derive script
+- 13:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+- 13:48 `Bash`: Read hide_probe and overlay tool headers
+**Agent** (13:49 UTC):
 
-_32 tool steps._
+Let me set up a measurement copy of the Art Director's scripts that takes frames from an environment variable.
+
+- 13:49 `Bash`: Copy measurement scripts and make frames configurable
+- 13:49 `Bash`: Copy the measurement scripts to the scratchpad
+- 13:49 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/scripts/common.py
+- 13:49 `Bash`: Verify walls.py reproduces the gate numbers
+**Agent** (13:49 UTC):
+
+Measurements reproduce. Now implementing F1: the screen-space placement helper.
+
+- 13:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (13:50 UTC):
+
+Now the floor's three lines (the only change allowed in Water & VFX's file).
+
+- 13:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match_water.js
+- 13:50 `Bash`: Build the bundle
+- 13:50 `Bash`: Capture match at 3.0 s after the F1 change
+- 13:50 `Bash`: Capture match at 3.0 s after the F1 change
+- 13:50 `Bash`: Measure walls and make centre crops
+- 13:51 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/centre_f1a.png
+- 13:51 `Bash`: Find all scene.onBeforeRender assignments
+- 13:51 `Bash`: Copy the rw probe for extension
+- 13:51 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/rw_probe2.cjs
+**Agent** (13:51 UTC):
+
+Let me extend the probe to evaluate the corrected placement the shader now uses.
+
+- 13:51 `Edit`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/rw_probe2.cjs
+- 13:51 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/rw_probe2.cjs
+- 13:51 `Bash`: Patch the probe for corrected rw and configurable centre
+- 13:51 `Bash`: Check the init script patch
+- 13:51 `Bash`: Run the extended rw probe at 3.0 s
+- 13:52 `Bash`: Summarise the probe JSON
+- 13:52 `Bash`: Read the rest of hide_probe and the earlier hide outputs
+- 13:52 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/Previews/WebDemo/screen4_round9_match/03_water_vfx/diagnostic/centre_hide_probe_all_noGlow_noWal
+**Lead → agent** (13:52 UTC):
+
+[Image: original 2770x700, displayed at 2000x505. Multiply coordinates by 1.39 to map to original image.]
+
+- 13:52 `Bash`: List object names in hero/liquid files
+- 13:52 `Bash`: Hide probe of walls, glow and floor at 3.0 s
+- 13:53 `Bash`: Compose hide probe crops
+- 13:53 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/hide1.png
+- 13:53 `Bash`: Diff the merged and F1 frames by ring
+- 13:53 `Bash`: Crop the diff around the centre
+- 13:53 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/diff_crop.png
+- 13:54 `Bash`: List the visible objects at 3.0 s
+- 13:54 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/pick_probe.cjs
+- 13:54 `Bash`: Ray-pick what is hit at centre points
+- 13:54 `Bash`: Read the tunnel-end objects code in game.js
+- 13:55 `Bash`: Find code that touches the exit light
+- 13:55 `Bash`: Read the exit portal shader in tunnel_s4.js
+- 13:55 `Grep`: EXIT_FRAGMENT|EXIT_VERTEX
+- 13:55 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_s4.js
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (13:56 UTC):
+
+Now the `matchExit` function itself, placed before `buildMatch`.
+
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 13:56 `Bash`: Build and capture with the exit material
+**Agent** (13:57 UTC):
+
+Let me make a reusable crop/measure script for the iterations.
+
+- 13:57 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/centre_sheet.py
+- 13:57 `Bash`: Make the centre sheet and measure walls
+- 13:57 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/sheet_f1b.png
+**Agent** (13:57 UTC):
+
+The centre now reads warm (63% warm, lavender 14.7%) but too orange and not white enough. Before tuning, let me look closely at the star sparkles (F5).
+
+- 13:57 `Bash`: Zoom the upper wall to inspect sparkles
+- 13:57 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_zoom.png
+- 13:57 `Bash`: Crop the colour map's upper-wall region
+- 13:57 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/colour_upper.png
+- 13:58 `Bash`: Re-run derive script to a scratch dir and compare
+- 13:58 `Bash`: Crop Reference 5 to see its stars
+- 13:58 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/ref5_crop.png
+- 13:59 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars.py
+- 13:59 `Bash`: Detect star cores in Reference 5
+- 13:59 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_mask.png
+- 13:59 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars.py
+- 13:59 `Bash`: Detect four-point stars with an arm filter
+- 13:59 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_mask.png
+**Agent** (14:00 UTC):
+
+Let me check the relief map's luminance distribution to set the trough and crest thresholds.
+
+- 14:00 `Bash`: Percentiles of detail and variation maps
+**Agent** (14:00 UTC):
+
+Now the wall-material changes for F3, F4 and F5 (shader side), plus the centre's tint and the mid vortex's de-lilac, all as settings.
+
+- 14:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:01 UTC):
+
+Now the derive step: four-point star removal and the lime-to-peach hue pull.
+
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+- 14:01 `Bash`: Derive textures with star removal and lime fix
+- 14:02 `Bash`: Compare the old and new colour maps
+- 14:02 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/colour_upper_new.png
+**Agent** (14:02 UTC):
+
+The star removal is too aggressive (it blurred the glossy detail into blobs) and still misses the big stars. Let me tune the detector on Reference 5 directly.
+
+- 14:02 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars2.py
+- 14:02 `Bash`: Run stricter star detection on Reference 5
+- 14:02 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_found.png
+- 14:03 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars3.py
+- 14:03 `Bash`: Detect round bright star cores
+- 14:03 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_found.png
+- 14:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+- 14:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/tools/screen4/derive_ref5_water.py
+**Agent** (14:03 UTC):
+
+Let me visualize the star removal on Reference 5 before regenerating.
+
+- 14:03 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars4.py
+- 14:03 `Bash`: Render star removal before and after
+- 14:04 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_before_after.png
+- 14:04 `Bash`: Widen star size limits and re-render
+- 14:04 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/stars_before_after.png
+**Agent** (14:04 UTC):
+
+Good enough: small stars become soft glints and the glossy streaks survive. Regenerating the textures in place (the old set is kept in the scratchpad).
+
+- 14:04 `Bash`: Regenerate textures, build and capture
+**Agent** (14:05 UTC):
+
+Let me write a single measurement runner for the key targets.
+
+- 14:05 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/run.sh
+- 14:05 `Bash`: Measure the new frame and make the sheet
+- 14:05 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/sheet_f2a.png
+**Agent** (14:05 UTC):
+
+The lime is gone (9 pixels against 783) and deep cobalt rose to 2.8%, but the centre's lavender went back up. Let me see which pixels are classed lavender in the centre and mid vortex.
+
+- 14:05 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/lavmask.py
+- 14:05 `Bash`: Paint lavender-class pixels in the centre
+- 14:05 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/lav_f2a.png
+- 14:06 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:06 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:06 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:06 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:06 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:06 UTC):
+
+Now F6 (thinner rim) and the object fixes need the hero probe. Building, then running the probe for object positions.
+
+- 14:06 `Bash`: Build and run the hero probe with picks
+- 14:07 `Bash`: List object footprints from the hero probe
+- 14:07 `Bash`: Find collectible placement and pickup rules
+- 14:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r7_hero.js
+- 14:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/game.js
+- 14:07 `Bash`: Check collectible scale animation and lane constants
+- 14:07 `Bash`: Find the pickup distance check
+- 14:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/game.js
+- 14:08 `Bash`: Read the gameplay test script
+**Agent** (14:09 UTC):
+
+Let me solve the new places for the right coin and the first sock with the probe's PICKS.
+
+- 14:09 `Bash`: Solve picks for the right coin and sock
+**Agent** (14:10 UTC):
+
+Placements solved: right coin to lane 2.357, u 2.3, h 0.57; first sock to lane 2.0, h 1.14. Before applying, let me look at the rim at the right side (F6), where the warm band is thickest.
+
+- 14:10 `Bash`: Crop the rim's right side on both frames
+- 14:10 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/rim_right.png
+- 14:11 `Bash`: Find how the rim and collar use the bezel size
+- 14:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r7_hero.js
+- 14:11 `Bash`: Print the rim ramp colours by rho
+- 14:11 `Bash`: Find where the bezel geometry is built
+- 14:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r6.js
+**Agent** (14:12 UTC):
+
+Applying F6 (thinner bezel; its inner and outer sides coloured as bevel and housing instead of gold), F7 and F10.
+
+- 14:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:12 UTC):
+
+Now the bezel's sides and the collar's start rho matching the new inner radius.
+
+- 14:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:13 `Bash`: Build, capture and measure iteration f3a
+**Agent** (14:14 UTC):
+
+Gem, right coin and rim thickness are now close to their targets. The walls overshoot deep cobalt (9.6%), and the centre and mid vortex still hold too much lavender. Let me look.
+
+- 14:14 `Bash`: Compare lavender masks: approved vs f3a
+- 14:14 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/lav_cmp.png
+- 14:14 `Bash`: Capture with tuned wall settings and measure
+- 14:14 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tune_f3b.json
+- 14:14 `Bash`: Capture with tuned wall settings and measure
+
+_164 tool steps._
 
 ---
 
@@ -350,5 +570,167 @@ Now the code.
 - 13:46 `Bash`: Find where playwright is installed
 - 13:47 `Bash`: Search for playwright package
 - 13:47 `Bash`: Capture baseline match frame at 3.0 s
+- 13:47 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/pdiff.py
+- 13:47 `Bash`: Check capture reproduces merged frame
+- 13:47 `Bash`: Read liquid_shares.py
+- 13:47 `Bash`: Copy AD measuring scripts to scratchpad
+- 13:48 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/common.py
+- 13:48 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/m.sh
+- 13:48 `Bash`: Run the measurement set on baseline
+- 13:48 `Bash`: Crop body region side by side
+- 13:48 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/body_cmp.png
+- 13:48 `Bash`: Crop left and right of body side by side
+- 13:49 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/left_cmp.png
+- 13:49 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/right_cmp.png
+- 13:49 `Bash`: Read hero_probe.cjs header
+- 13:49 `Bash`: Find the debug hook in game.js
+- 13:49 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/lobe_probe.cjs
+- 13:49 `Bash`: Probe lump screen positions at 3.0 s
+- 13:50 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/classmap.py
+- 13:50 `Bash`: Make class maps of bank zone
+- 13:50 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/cm_base.png
+- 13:50 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/classzoom.py
+- 13:50 `Bash`: Zoomed class map of under-body region
+- 13:50 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/cz_body.png
+- 13:51 `Bash`: Debug capture: swell depth and lump placement
+- 13:51 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tune_dbg.json
+- 13:51 `Bash`: Debug capture: swell depth and lump placement
+- 13:51 `Bash`: Crop debug canvas lower part
+- 13:51 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/dbg_crop.png
+- 13:52 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/sectors.py
+- 13:52 `Bash`: Sector class shares of the bank
+- 13:52 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/sectcol.py
+- 13:52 `Bash`: Median colours per class in bank sectors
+- 13:53 `Bash`: Read hide_probe.cjs usage
+- 13:53 `Bash`: Read rest of hide_probe.cjs
+- 13:53 `Bash`: Hide probe of the water layers at 3.0 s
+- 13:54 `Bash`: Make hide-probe comparison sheets
+- 13:54 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/hide_sheet1.png
+**Lead → agent** (13:54 UTC):
 
-_33 tool steps._
+[Image: original 2320x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:54 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/hide_sheet2.png
+**Lead → agent** (13:54 UTC):
+
+[Image: original 2320x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (13:56 UTC):
+
+Now the lobe shader itself.
+
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (13:56 UTC):
+
+Now gate the lump bump in the splash file's vertex shader (splash keeps its literal `0.16`).
+
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_splash.js
+**Agent** (13:56 UTC):
+
+Now the swell: cut the glassy fresnel lip in front of the body, which made the pale band.
+
+- 13:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 13:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 13:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 13:57 `Bash`: Build and capture iteration 1
+- 13:57 `Bash`: Side-by-side bank crop for iteration 1
+- 13:57 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/cmp_i1.png
+**Lead → agent** (13:57 UTC):
+
+[Image: original 2324x337, displayed at 2000x290. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:57 `Bash`: Zoom crop and measure iteration 1
+- 13:58 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/summ.py
+- 13:58 `Bash`: Summarize targets for base and iteration 1
+- 13:58 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/m2.sh
+- 13:58 `Bash`: Summarize targets for base and iteration 1
+- 13:58 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/z_i1.png
+- 13:58 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t2.json
+- 13:59 `Bash`: Capture and measure iteration 2
+- 13:59 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/z_i2.png
+- 14:00 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/blobs.py
+- 14:00 `Bash`: Visualize white blobs left of the body
+- 14:00 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/blobs_i2.png
+- 14:00 `Bash`: Zoom class map of under-body for iteration 2
+- 14:00 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/cz_i2.png
+- 14:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (14:00 UTC):
+
+Now the lobe foam: lower frequency, fewer holes, fewer rim breaks (fewer fragments), with the scales as settings.
+
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (14:01 UTC):
+
+Fold the i2 tune into the source (mounds, front lumps, droplets 45, front rim 0.12), then rebuild.
+
+- 14:01 `Bash`: Locate values to fold in
+- 14:01 `Bash`: Fold tuned values into source
+- 14:01 `Bash`: Build, capture and measure iteration 3
+- 14:01 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/z_i3.png
+- 14:02 `Bash`: Blob map for iteration 3
+- 14:02 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/blobs_i3.png
+- 14:02 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:02 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:02 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t4.json
+- 14:02 `Bash`: Build, capture and measure iteration 4
+- 14:03 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/z_i4.png
+- 14:03 `Bash`: Full-frame side by side, half size
+- 14:03 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/full_i4_s.png
+- 14:03 `Bash`: Locate lines to edit in lobe shader
+- 14:04 `Bash`: Add right cap foam and front glint settings
+- 14:04 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t5.json
+- 14:04 `Bash`: Build, capture and measure iteration 5
+- 14:04 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/z_i5.png
+- 14:05 `Bash`: Split left-region blobs by height band
+- 14:05 `Bash`: Blob map top half for iteration 5
+- 14:05 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/blobs_i5_top.png
+- 14:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:05 `Bash`: Rebuild, hide-probe, and count blobs per hidden layer
+**Agent** (14:06 UTC):
+
+No single layer dominates (curls -6, droplets -4, waterline bubbles -12, lumps +3; this probe runs at DPR 1, so relative only). Let me test the floor's own glints and caustics near the character.
+
+- 14:06 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t6.json
+- 14:06 `Bash`: Capture source defaults and a no-floor-glint variant
+**Agent** (14:08 UTC):
+
+Folding i5 into the source reproduces it exactly, and the floor glints add nothing to the specks. Let me measure each layer's speck share at the real DPR 1.5 with a page-screenshot hide variant.
+
+- 14:08 `Bash`: Read the rest of liquid_shots.cjs
+- 14:08 `Bash`: Copy capture tool for a hide variant
+- 14:08 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/hide_shots.cjs
+- 14:08 `Edit`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/hide_shots.cjs
+- 14:08 `Bash`: List candidate effect object names
+- 14:08 `Bash`: Per-layer blob counts at DPR 1.5
+- 14:10 `Bash`: Find how the hide list is applied
+- 14:10 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_liquid.js
+- 14:10 `Bash`: Find hide updater
+- 14:10 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t7.json
+- 14:10 `Bash`: Capture and measure iteration 7
+- 14:11 `Bash`: Blob map for iteration 7
+- 14:11 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/blobs_i7.png
+- 14:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_splash.js
+- 14:11 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (14:11 UTC):
+
+Fold t7 into the source too (side glints 0.9, hide spray sheets, left bubbles), then rebuild and capture.
+
+- 14:11 `Bash`: Fold t7, rebuild, capture and measure iteration 8
+- 14:12 `Bash`: Body crops: original, before, now
+- 14:12 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/body_i8.png
+- 14:12 `Bash`: Per-column waterline for iteration 8
+- 14:12 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t9.json
+- 14:12 `Bash`: Capture and measure iteration 9
+- 14:13 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/body_i9.png
+- 14:13 `Bash`: Fold t9 tune into source
+- 14:13 `Bash`: Rebuild, capture 2.85/3.0/3.1 with cost, measure
+
+_151 tool steps._

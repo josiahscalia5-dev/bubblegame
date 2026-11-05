@@ -1,0 +1,196 @@
+diff --git a/WebDemo/src/tunnel_r8_splash.js b/WebDemo/src/tunnel_r8_splash.js
+index a05d289..7b07bc3 100644
+--- a/WebDemo/src/tunnel_r8_splash.js
++++ b/WebDemo/src/tunnel_r8_splash.js
+@@ -241,7 +241,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);' : ''}
+     for (const [phi0, count, rMax, out0, h0] of SPLASH.lumps) {
+       for (let i = 0; i < count; i++) {
+         const big = i === 0, phi = phi0 + (big ? 0 : (rnd() - 0.5) * 14), c = crest(phi);
+-        const r = big ? rMax : rMax * (0.35 + 0.5 * rnd());
++        const r = big ? rMax : rMax * (MATCH_ON ? SPLASH.lumpMin + (0.85 - SPLASH.lumpMin) * rnd() : 0.35 + 0.5 * rnd());   // ?s3=match: no tiny lobes (their thin rims broke into specks)
+         const out = out0 + (big ? 0 : (rnd() - 0.3) * rMax * 1.2), up = h0 + (big ? 0 : (rnd() - 0.2) * rMax * 1.1);
+         list.push([c.x + c.nx * out, c.h + up, c.u + c.nu * out, r, rnd(), phi < 0 ? -1 : 1]);
+       }
+@@ -265,7 +265,7 @@ void main() {
+   float k = spBoost(side) * uFade;
+   vec3 q = position;
+   // lumpy, and slowly boiling
+-  float bump = 0.16 * sin(q.x * 3.1 + seed * 11.0) * sin(q.y * 2.7 + seed * 5.0) * sin(q.z * 3.3 + seed * 7.0)
++  float bump = ${MATCH_ON ? f3(SPLASH.lumpBump) : '0.16'} * sin(q.x * 3.1 + seed * 11.0) * sin(q.y * 2.7 + seed * 5.0) * sin(q.z * 3.3 + seed * 7.0)
+     + 0.06 * sin(q.x * 7.0 + q.z * 5.0 + uTime * (3.0 + seed * 2.0) + seed * 20.0);
+   vec3 o = q * (1.0 + bump);
+   o.y *= ${f3(SPLASH.lumpSquash)};
+diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
+index a93a966..e10b00a 100644
+--- a/WebDemo/src/tunnel_r9_match_water.js
++++ b/WebDemo/src/tunnel_r9_match_water.js
+@@ -52,7 +52,9 @@ export const MATCH_WATER = {
+       0.385, 0.342, 0.296, 0.25, 0.202, 0.154, 0.105, 0.057],
+     // [phi, height (m), half width (degrees)]: tops at 0.787 (left side), 0.80 (left front), 0.825 (front), 0.812 (right front),
+     // 0.808 (right side), 0.805 and 0.82 (the far sides)
+-    mounds: [[32, 0.079, 10], [13, 0.091, 8], [-4, 0.039, 6], [-21, 0.058, 8], [-42, 0.057, 9], [55, 0.049, 9], [-62, 0.055, 9]],
++    // (gate fixes, step 7: the front mounds at -4 and -21 lowered from 0.039 and 0.058 to 0.02 and -0.05: the original's waterline is 0.85-0.86 at 58-66%
++    // across)
++    mounds: [[32, 0.079, 10], [13, 0.091, 8], [-4, 0.02, 6], [-21, -0.05, 9], [-42, 0.057, 9], [55, 0.049, 9], [-62, 0.055, 9]],
+   },
+   // the swell's look: sRGB (as on screen). Near the top it is thin and see-through (the fur behind it reads violet), lower
+   // down it is the floor's derived water (one body of water)
+@@ -64,29 +66,48 @@ export const MATCH_WATER = {
+     solid: [0.05, 0.24],   // m below the crest over which it becomes solid
+     top: 0.18,        // m below the crest over which the see-through glass turns into the floor's water
+     rim: 0.38,        // the glassy rim at grazing angles (white-cyan)
++    frontRim: 0.12,   // its share in front of the body (gate fixes, step 7: the pale glass-bowl lip)
+     spec: 1.4,        // the key light's specular points
+     crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
++    crestFront: 0.3,  // its share in front of the body (gate fixes, step 7: the lobes' rims make the waterline there)
+   },
+   // the lobes (spLumps reshaded): sRGB
+   // alpha: in front of the body (see-through: the fur reads violet), sideAlpha: beside it (vivid blue); fres: the outline's
+   // opacity (kept low: overlapping outlines read as cracked glass)
+   // fleck: the hash threshold for white flecks (lower = more); cap: the broken white cap on top (from capFrom of the normal's up)
+-  lobe: { hi: '#62b2ff', mid: '#2f7cef', low: '#1f56d6', white: '#f6fcff', alpha: 0.3, sideAlpha: 0.62, fres: 0.12, film: 0.18, rim: 0.95, spec: 1.4, foam: 0.95,
+-    fleck: 0.72, cap: 0.95, capFrom: 0.72 },
++  // (gate fixes, step 7) the original's bank is glossy domes, each with a crisp white arc along its top, a soap-film violet
++  // body (the left ones lavender, the right ones electric blue), a few round white glints, and dense bubbly white foam (white
++  // with round blue holes) on the side lobes' tops and round their feet: violet: [front, left, right] soap tint; rimW: the
++  // rim's start (1 - n.v), rimBreak its share of breaks; capFoam / footFoam: the foam's reach on the tops and round the feet;
++  // frontFoam / frontFeet / capRight: their factors in front of the body and on the right (the original's right bank is
++  // whiter); foamScale: the foam patches' size (smaller = broader); cell / holeShare: the foam's round holes (cells per unit
++  // radius, the share of cells without one); fleckCell / fleck / frontFleck: the round glints (fewer, bigger beside the body:
++  // the Art Director's 105 small white shapes left of it against 13; more in front, where the original has white spots on
++  // the violet domes)
++  lobe: { hi: '#4f9cff', mid: '#2f7cef', low: '#1f56d6', white: '#f6fcff', violetCol: '#8f7cf2', violet: [0.4, 0.4, 0.08],
++    alpha: 0.42, sideAlpha: 0.72, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.52, rimBreak: 0.05, spec: 1.6, specPow: 220, sheen: 0.05,
++    foam: 0.95, foamScale: 0.32, capFoam: 0.3, capFrom: 0.25, footFoam: 0.42, frontFoam: 0.45, frontFeet: 1.3, capRight: 2.2, cell: 6.0, hole: 0.85,
++    holeShare: 0.6, fleck: 0.9, frontFleck: 0.6, fleckCell: 3.4 },
+   // settings handed to the splash pass and the liquid (merged into MATCH.splash, MATCH.liquid, MATCH.heroWater before those
+   // files merge them)
+   splash: {
+     // the bank: clusters of glossy lobes on the crest, [phi, how many, biggest radius (m), outward (m), height from the crest (m)]
++    // (gate fixes, step 7: the bank's mass) big clusters where the bank is on screen at 3.0 s (lobe probe: phi 46 lands at
++    // 3% across, 34 at 11%, 22 at 22%, 9 at 37%, -4 at 50%, -16 at 62%, -28 at 76%, -42 at 90%; phi beyond +-55 is off the
++    // frame), the front ones smaller and the right-front lower (the original's waterline: 0.81 at the left front, 0.85-0.86
++    // at the right front)
+     lumps: [
+-      [34, 3, 0.15, 0.04, -0.085], [19, 3, 0.14, 0.05, -0.07], [6, 2, 0.13, 0.04, -0.06], [-7, 2, 0.13, 0.04, -0.055], [-19, 3, 0.14, 0.05, -0.07],
+-      [-33, 2, 0.12, 0.04, -0.085], [-48, 3, 0.13, 0.05, -0.095], [52, 3, 0.14, 0.05, -0.095], [70, 2, 0.11, 0.06, -0.09], [-68, 2, 0.11, 0.06, -0.09],
++      [34, 4, 0.22, 0.05, -0.08], [46, 3, 0.2, 0.06, -0.09], [22, 3, 0.16, 0.05, -0.07], [9, 2, 0.13, 0.04, -0.08], [-4, 2, 0.12, 0.04, -0.1],
++      [-16, 2, 0.12, 0.05, -0.2], [-28, 3, 0.18, 0.05, -0.12], [-42, 3, 0.2, 0.05, -0.1], [-56, 2, 0.16, 0.06, -0.1], [60, 2, 0.14, 0.06, -0.09],
+     ],
+     lumpSquash: 0.66,   // flatter: rolling wave lobes, not balls
++    lumpBump: 0.08,     // smoother domes than splash's foam lumps (0.16), so the white rim follows the outline
++    lumpMin: 0.55,      // the smaller lobes of a cluster from this share of its biggest (splash: 0.35): no tiny lobes, whose thin rims broke into specks
+     // curling sheets: [phi, height, width, curl, lean, shift]: short curved splashes curling over, two in front toward the
+     // camera, and at both sides (low on the right: the approved right coin's face stays clear); saturated turquoise water
+     // with a broken white lip, not tall glass fins
+     curls: [
+-      [9, 0.2, 0.34, 1.35, 0.2, 0], [-13, 0.18, 0.32, 1.35, 0.2, 0],
++      [9, 0.2, 0.34, 1.35, 0.2, 0], [-13, 0.1, 0.3, 1.35, 0.2, 0],   // (gate fixes, step 7: the right-front one lower, 0.1 not 0.18: the fur shows pink to 0.85 there)
+       [36, 0.27, 0.36, 1.45, 0.12, 0], [56, 0.24, 0.32, 1.4, 0.12, 0], [-36, 0.2, 0.32, 1.4, 0.12, 0], [-56, 0.17, 0.28, 1.4, 0.12, 0],
+     ],
+     curlAlpha: 0.66, curlLip: 0.95,   // (the lip crisp white, not a pale wash)
+@@ -95,12 +116,16 @@ export const MATCH_WATER = {
+   },
+   liquid: {
+     // fewer flecks; fewer, bigger clusters of clear bubbles on the waterline
+-    foam: { flecks: 0.35, plumeAlpha: 0.05, bubbles: [[-60, 3], [-30, 2], [28, 2], [48, 3], [66, 2]], bubbleR: [0.035, 0.095] },
++    // (gate fixes, step 7: one on the left, not five: their thin rims over the new lobes broke into specks; the faint spray
++    // sheets hidden: at 5% only their white drops were left, more specks)
++    hide: ['r6BowWave', 'lqSpraySheets'],
++    foam: { flecks: 0.35, plumeAlpha: 0.05, bubbles: [[-60, 3], [-30, 2], [40, 1], [66, 2]], bubbleR: [0.035, 0.095] },
+   },
+   heroWater: {
+     // fewer, larger droplets (the Art Director: at most 30 white shapes of 20 px or more beside the body; splash had 900 small
+     // ones), more of them round, the right-hand ones lower (the approved right coin's face is clear)
+-    splash: { count: 180, flecks: 0.7,
++    // (gate fixes, step 7: 30, not 180: many of the small white shapes beside the body were these)
++    splash: { count: 30, flecks: 0.7,
+       zones: [[0.22, [-48, -16], [0.7, 1.6], [0.2, 0.6], [0.016, 0.034], 0.05], [0.4, [16, 50], [1.2, 2.8], [0.25, 0.8], [0.016, 0.036], 0.06],
+         [0.16, [-80, -24], [0.5, 1.3], [0.15, 0.5], [0.012, 0.026], 0.03], [0.22, [24, 80], [0.7, 2.0], [0.15, 0.6], [0.012, 0.026], 0.03]] },
+   },
+@@ -220,11 +245,14 @@ export function matchSwellGLSL() {
+     vec3 mwGlass = mix(mtUndisplay(${v3s(K.glassDeep)}), mtUndisplay(${v3s(K.glass)}), smoothstep(0.25, 0.7, mwKey));
+     mwGlass = mix(mwGlass, mtUndisplay(${v3s(K.glassHi)}), clamp(smoothstep(0.7, 0.95, mwKey) * 0.7 + (1.0 - smoothstep(0.0, 0.04, d)) * 0.3, 0.0, 1.0));
+     vec3 mwCol = mix(mwFloor, mwGlass, mwTop);
+-    mwCol = mix(mwCol, mtUndisplay(${v3s(K.sky)}), clamp(mwFr * ${f4(K.rim)}, 0.0, 1.0));
++    // (the glassy rim kept low in front of the body: there it read as a pale glass-bowl lip; the lobes' own rims and foam
++    // make the waterline there)
++    float mwRim = ${f4(K.rim)} * mix(1.0, ${f4(K.frontRim)}, mwFront);
++    mwCol = mix(mwCol, mtUndisplay(${v3s(K.sky)}), clamp(mwFr * mwRim, 0.0, 1.0));
+     float mwSpec = pow(max(dot(N, normalize(uLqKey + V)), 0.0), 140.0) * ${f4(K.spec)};
+     mwCol += vec3(1.0) * mwSpec;
+     float mwA = mix(mix(${f4(K.sideClear)}, ${f4(K.clear)}, mwFront), 1.0, smoothstep(${f4(K.solid[0])}, ${f4(K.solid[1])}, d));
+-    mwA = clamp(max(mwA, mwFr * ${f4(K.rim)} * 0.9 + mwSpec), 0.0, 1.0);
++    mwA = clamp(max(mwA, mwFr * mwRim * 0.9 + mwSpec), 0.0, 1.0);
+ #if LQ_FOAM
+     {   // white on the crest, broken into bubbly pieces (blue shows through the cells)
+       float mwN1 = texture2D(uLqTex, vec2(as * 1.3 - fl * 0.12, uTime * 0.05)).b, mwN2 = texture2D(uLqTex, vec2(as * 3.4 - fl * 0.2, 0.4 + uTime * 0.07)).b;
+@@ -236,6 +264,7 @@ export function matchSwellGLSL() {
+       float mwBh = lqHash(mwBi + 17.0), mwBl = length(fract(mwBq) - 0.5 - (vec2(lqHash(mwBi + 2.0), lqHash(mwBi + 9.0)) - 0.5) * 0.3);
+       mwCrest *= 1.0 - step(mwBl, 0.2) * step(0.5, mwBh);
+       mwCrest = max(mwCrest, step(mix(0.8, 0.9, mwFront) - 0.2 * (1.0 - smoothstep(0.0, 0.1, d)), mwBh) * (1.0 - smoothstep(0.18, 0.24, mwBl)) * (1.0 - smoothstep(0.08, 0.22, d)));
++      mwCrest *= mix(1.0, ${f4(K.crestFront)}, mwFront);   // (in front of the body the lobes make the waterline: no white lip)
+       mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
+     }
+ #endif
+@@ -251,28 +280,45 @@ export function matchSwellGLSL() {
+ const lin3 = (hex) => { const c = new THREE.Color(hex); return `vec3(${f4(c.r)}, ${f4(c.g)}, ${f4(c.b)})`; };   // sRGB -> linear
+ export function matchLumpGLSL() {
+   const B = MATCH_WATER.lobe;
+-  return /* glsl */ `  {   // ?s3=match: a glossy translucent water lobe (tunnel_r9_match_water.js)
++  return /* glsl */ `  {   // ?s3=match: a glossy translucent water dome with bubbly foam (tunnel_r9_match_water.js)
+     float lbUp = dot(N, uU);
+-    float lbFr = pow(1.0 - ndv, 2.2);
++    float lbF = 1.0 - ndv, lbFr = pow(lbF, 2.2);
+     // in front of the body (sideways within its half width of the camera, which rides behind it) see-through, so the fur
+-    // reads violet; beside it more solid, vivid blue water
+-    float lbFront = 1.0 - smoothstep(0.32, 0.62, abs(dot(vW - cameraPosition, uR)));
++    // reads violet; beside it more solid water: lavender domes on the left, vivid electric blue on the right (as approved)
++    float lbX = dot(vW - cameraPosition, uR);
++    float lbFront = 1.0 - smoothstep(0.32, 0.62, abs(lbX)), lbLeft = smoothstep(0.2, 0.6, lbX), lbRight = smoothstep(0.2, 0.6, -lbX);
+     vec3 lbCol = mix(${lin3(B.low)}, ${lin3(B.mid)}, smoothstep(0.2, 0.6, d));
+     lbCol = mix(lbCol, ${lin3(B.hi)}, smoothstep(0.6, 0.95, d) * mix(0.35, 0.8, lbFront));
++    float lbVi = mix(mix(${f4(B.violet[2])}, ${f4(B.violet[1])}, lbLeft), ${f4(B.violet[0])}, lbFront);
++    lbCol = mix(lbCol, ${lin3(B.violetCol)} * (0.75 + 0.35 * d), lbVi * (0.55 + 0.45 * smoothstep(0.1, 0.7, lbF)));
+     vec3 lbFilm = 0.62 + 0.38 * cos(6.2832 * (lbFr * 1.3 + lbUp * 0.35 + vec3(0.0, 0.33, 0.67) + vSeed + uTime * 0.04));
+     lbCol = mix(lbCol, lbFilm * ${lin3(B.hi)}, lbFr * ${f4(B.film)});
+-    float lbSpec = pow(max(dot(reflect(-L, N), V), 0.0), 60.0) * ${f4(B.spec)};
+-    // crisp white (opaque, so it reads white and not as a pale wash): the rim along the top of its outline broken into
+-    // pieces, a few pieces of cap on its top, and bubbly flecks of foam and spray caught on it (the blue showing between)
+-    vec3 lbP = vO * 2.8 + vSeed * 5.0, lbPi = floor(lbP);
+-    float lbPh = fract(sin(dot(lbPi, vec3(39.346, 11.135, 83.155))) * 24634.6345);
+-    float lbPiece = step(0.4, lbPh) * (1.0 - smoothstep(0.3, 0.42, length(fract(lbP) - 0.5)));
+-    float lbRim = smoothstep(0.55, 0.8, lbFr) * smoothstep(0.05, 0.45, lbUp) * lbPiece;
+-    float lbCap = smoothstep(${f4(B.capFrom)}, ${f4(B.capFrom + 0.1)}, lbUp) * lbPiece * step(0.7, lbPh);
+-    vec3 lbQ = vO * 6.0 + vSeed * 13.0 + vec3(0.0, uTime * 0.15, 0.0), lbQi = floor(lbQ);
++    // glossy: one sharp round glint from the key light, a soft sheen round it
++    float lbRd = max(dot(reflect(-L, N), V), 0.0);
++    float lbSpec = pow(lbRd, ${f4(B.specPow)}) * ${f4(B.spec)} + pow(lbRd, 18.0) * ${f4(B.sheen)};
++    // crisp white (opaque, so it reads white and not as a pale wash):
++    // 1. an arc along the top of the outline, nearly whole (a few breaks)
++    vec3 lbP = vO * 1.7 + vSeed * 5.0, lbPi = floor(lbP);
++    float lbBreak = step(${f4(B.rimBreak)}, fract(sin(dot(lbPi, vec3(39.346, 11.135, 83.155))) * 24634.6345));
++    float lbRim = smoothstep(${f4(B.rimW)}, ${f4(B.rimW + 0.12)}, lbF) * smoothstep(-0.3, 0.2, lbUp) * lbBreak;
++    // 2. dense bubbly foam, white with round holes where the water shows through: patches on the tops of the lobes beside
++    //    the body (less in front of it, where the fur shows violet) and round their feet; broad patches, not specks
++    vec2 lbNq = vO.xz * ${f4(B.foamScale)} + vO.y * vec2(0.27, -0.19) + vSeed * 4.0 + vec2(uTime * 0.015, 0.0);
++    float lbN = texture2D(uLqTex, lbNq).b * 0.8 + texture2D(uLqTex, lbNq * 2.4 + 0.31).b * 0.3;
++    float lbFk = ${f4(B.capFoam)} * smoothstep(${f4(B.capFrom)}, ${f4(B.capFrom + 0.3)}, lbUp) * mix(1.0, ${f4(B.frontFoam)}, lbFront) * mix(1.0, ${f4(B.capRight)}, lbRight)
++      + ${f4(B.footFoam)} * (1.0 - smoothstep(-0.5, 0.0, lbUp)) * mix(1.0, ${f4(B.frontFeet)}, lbFront);
++    float lbFoam = smoothstep(0.97, 1.05, lbN + lbFk);
++    vec3 lbBq = vO * ${f4(B.cell)} + vSeed * 11.0, lbBi = floor(lbBq);
++    float lbBh = fract(sin(dot(lbBi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
++    vec3 lbBo = fract(lbBq) - 0.5 - (fract(lbBh * vec3(7.13, 3.71, 5.29)) - 0.5) * 0.3;
++    float lbBr = 0.2 + 0.15 * fract(lbBh * 11.7);
++    float lbHole = step(${f4(B.holeShare)}, lbBh) * (1.0 - smoothstep(lbBr - 0.06, lbBr, length(lbBo)));
++    lbFoam *= 1.0 - lbHole * ${f4(B.hole)};
++    // 3. a few round glints on the dome (the original's white spots)
++    vec3 lbQ = vO * ${f4(B.fleckCell)} + vSeed * 13.0, lbQi = floor(lbQ);
+     float lbH = fract(sin(dot(lbQi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
+-    float lbFleck = step(${f4(B.fleck)} - 0.16 * smoothstep(0.4, 0.9, lbUp), lbH) * (1.0 - smoothstep(0.12, 0.24, length(fract(lbQ) - 0.5))) * smoothstep(-0.3, 0.4, lbUp);
+-    float lbWhite = clamp(max(max(lbRim * ${f4(B.rim)}, lbCap * ${f4(B.cap)}), lbFleck * ${f4(B.foam)}), 0.0, 1.0);
++    float lbFleck = step(mix(${f4(B.fleck)}, ${f4(B.frontFleck)}, lbFront), lbH) * (1.0 - smoothstep(0.13, 0.2, length(fract(lbQ) - 0.5))) * smoothstep(-0.2, 0.3, lbUp);
++    float lbWhite = clamp(max(max(lbRim * ${f4(B.rim)}, lbFoam * ${f4(B.foam)}), lbFleck * ${f4(B.foam)}), 0.0, 1.0);
+     lbCol = mix(lbCol, ${lin3(B.white)}, lbWhite);
+     lbCol += vec3(1.0) * lbSpec;
+     col = lbCol;

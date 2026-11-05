@@ -219,3 +219,23 @@ ok
 
 I'll carry on and send you the merged comparison and gameplay video when both specialists finish.
 
+---
+
+### You · 2026-11-05 14:13 UTC
+
+make sure everything is saved to my GitHub including the design agents, what they built, everything that, make sure you save everything. And make sure you save everything for every 5 minutes or so, including the design agents, what they built, and everything. So I make sure everything is saved to my GitHub repository.
+
+---
+
+### Claude · 2026-11-05 14:13 UTC
+
+I'll extend the automatic save so that every 5 minutes it saves the design agents' work too. Right now it saves the chat and everything in the main checkout. Two things are missing:
+1. The agents' step-by-step transcripts, which I've only been exporting by hand.
+2. What the agents are building: their unfinished work sits in their own worktrees, which are deliberately not part of the repository.
+
+The fix: each round, the save will also export the transcripts and snapshot each running agent's changes (a patch plus full copies of every file it changed or created) into the repository. Checking the worktrees first:
+
+Checking both scripts' syntax, then restarting the automatic save with the new steps on. Its first round runs immediately:
+
+The apostrophe in the default title trips up bash's parser inside `${...:-...}`. Replacing it:
+
