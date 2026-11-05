@@ -63,7 +63,7 @@ export const MATCH_WATER = {
   // down it is the floor's derived water (one body of water)
   look: {
     glassHi: '#5cb6ff', glass: '#3a8af2', glassDeep: '#2264dc', sky: '#c6ebff',
-    clear: 0.75,      // opacity at the very top in front of the body (checkpoint 02: real water over the lower body, not see-through glass)
+    clear: 0.9,       // opacity at the very top in front of the body (no see-through purple glass in front of her: the user, 14:43 and 15:0x)
     sideClear: 0.85,  // and beside it
     soft: 0.7,        // the floor's map on the swell's lower face: its blur (the lower water's cells read as cracked glass)
     solid: [0.05, 0.24],   // m below the crest over which it becomes solid
@@ -72,7 +72,7 @@ export const MATCH_WATER = {
     frontRim: 0.12,   // its share in front of the body (gate fixes, step 7: the pale glass-bowl lip)
     spec: 1.4,        // the key light's specular points
     crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
-    crestFront: 0.65, // its share in front of the body (a broken foam rim at her base, where she sits on the water; a full-strength rim read as a flat white plate)
+    crestFront: 0.5,  // its share in front of the body (a broken foam rim at her base, where she sits on the water; a full-strength rim read as a flat white plate)
     crestW: [0.03, 0.06, 0.015, 0.035],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
   },
   // the lobes (spLumps reshaded): sRGB
@@ -90,12 +90,12 @@ export const MATCH_WATER = {
   // the violet domes)
   // (the user's checkpoints 02 and 04, 14:43: the lower body "occluded by real-looking, foamy water and splashes on both
   // sides", "soft, chunky aqua-white foam dominates the bottom", not "a transparent pink/purple water curtain": the lobes are
-  // now mostly opaque (alpha 0.82 in front, 0.9 beside), lilac only as an opaque tint of the front domes, the froth dense
+  // now nearly opaque (alpha 0.93 in front, 0.95 beside: at 0.82 the fur still showed pink between them), lilac only as an opaque tint of the front domes, the froth dense
   // white with round holes (cell, holeShare) on aqua-white sides (foamSide), aqua-blue water between)
-  lobe: { hi: '#6cbcff', mid: '#3f8cf0', low: '#2f62da', white: '#f6fcff', violetCol: '#9a7ef0', violet: [0.9, 0.6, 0.06],
-    alpha: 0.82, sideAlpha: 0.9, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 2.0, specPow: 160, sheen: 0.12,
+  lobe: { hi: '#6cbcff', mid: '#2f86f5', low: '#2f62da', white: '#f6fcff', violetCol: '#9a7ef0', violet: [0.9, 0.6, 0.06],
+    alpha: 0.93, sideAlpha: 0.95, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 2.0, specPow: 160, sheen: 0.12,
     foam: 0.95, foamScale: 0.32, capFoam: 0.36, capFrom: 0.05, footFoam: 0.42, frontFoam: 0.8, frontFeet: 1.3, capRight: 2.2, cell: 8.0, hole: 0.95,
-    holeShare: 0.25, fleck: 0.9, frontFleck: 0.6, fleckCell: 3.4,
+    holeShare: 0.25, fleck: 0.95, frontFleck: 0.6, fleckCell: 3.4,
     foamSide: '#c4e6ff', foamUp: [0.45, 0.95] },   // the froth's colour on its sides (white where it faces up, from foamUp[0] to [1] of the normal's up)
   // settings handed to the splash pass and the liquid (merged into MATCH.splash, MATCH.liquid, MATCH.heroWater before those
   // files merge them)

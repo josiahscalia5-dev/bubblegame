@@ -796,5 +796,32 @@ While the checks run, the eye count of the original as a script (list read off t
 The eye-count overlay lines up with the original's visible free bubbles (13: walls 9, mid 3, front 1). Waiting for the remaining checks.
 
 - 15:25 `Bash`: Wait for all checks to finish
+- 15:28 `Bash`: Compare pixel identity frames
+- 15:28 `Bash`: Pixel identity results and s3_func output
+- 15:28 `Bash`: Check gameplay, moves and probe outputs
+- 15:28 `Bash`: Make moves sheet
+- 15:28 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/moves_sheet.jpg
+**Lead → agent** (15:28 UTC):
 
-_188 tool steps._
+[Image: original 2139x520, displayed at 2000x486. Multiply coordinates by 1.07 to map to original image.]
+
+- 15:28 `Bash`: Specks counts and copy probe results
+- 15:28 `Bash`: Count small white shapes final
+- 15:28 `Bash`: Copy probe results into evidence
+- 15:29 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t6.json
+- 15:29 `Bash`: Capture and measure iteration 10 tune
+- 15:29 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/bank_i10.png
+**Lead → agent** (15:29 UTC):
+
+[Image: original 3164x420, displayed at 2000x265. Multiply coordinates by 1.58 to map to original image.]
+
+- 15:29 `Bash`: Fold final settings and rebuild
+**Agent** (15:29 UTC):
+
+Final capture set, then the identity, gameplay, moves and probe checks again on this bundle, all in one background script.
+
+- 15:29 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/final.sh
+- 15:29 `Bash`: Final frames and all checks on final bundle
+- 15:30 `Bash`: Wait for final run
+
+_203 tool steps._
