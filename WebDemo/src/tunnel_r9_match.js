@@ -31,10 +31,12 @@
 // Colours are sRGB hex converted to linear light by THREE.Color. Private random numbers only (never the game's seeded
 // Math.random).
 import * as THREE from 'three';
+import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const MATCH_ON = LIST.includes('match');
+// ?s3=focus: everything `match` does plus the user's focused correction pass (tunnel_r9_focus.js); `match` itself unchanged
+export const MATCH_ON = LIST.includes('match') || FOCUS_ON;
 export const MATCH_FOAM = MATCH_ON && !LIST.includes('nofoam');
 // ?s3=match,bare (diagnostic only): the coins, socks, gem, the two framing brushes and the hero bubbles are not drawn (they
 // are moved to a camera layer the game does not render; gameplay is unchanged), so the tunnel's own look can be compared
@@ -226,6 +228,7 @@ export function deepMerge(target, over) {
   }
   return target;
 }
+if (FOCUS_ON) deepMerge(MATCH, FOCUS.match);   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.match;
   if (tune) deepMerge(MATCH, tune);
@@ -345,6 +348,37 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
 }
 // declarations and the shading, placed just before lqWall (the liquid's uniforms uTime, uHeroTravel, uHeroTanW, uHeroCam,
 // uLqGlow and uLqKey are declared above it)
+// ?s3=focus only (the focused correction pass, MATCH.walls.flecks from tunnel_r9_focus.js): white splash flecks and streaks
+// on the walls' water, inside matchWall's band block (it uses bs, bk, aw, bz, dl, rw, tu). Cells round each ring flowing
+// with the bands: in some a short white streak along the ring, slightly bent, in others a round drop. Hashes over small cell
+// indices only (the angle's index wrapped, so the seam at the left is invisible). Faded out where a cell would be under about
+// two pixels (aw: the band phase per pixel).
+function focusFlecksGLSL(M) {
+  const F = M.flecks, D = F.drops;
+  return /* glsl */ `    {   // ?s3=focus: the white splash flecks and streaks (tunnel_r9_focus.js)
+      float fz = smoothstep(${f4(F.r[0])}, ${f4(F.r[1])}, rw) * (1.0 - smoothstep(${f4(F.r[2])}, ${f4(F.r[3])}, rw)) * bz;
+      float flit = mix(1.0, 1.0 - smoothstep(0.45, 0.85, bk), ${f4(F.lit)});   // more on each band's lit part
+      float fa = tu + uTime * ${f4(M.swirl * 1.6)};
+      vec2 fq = vec2(fa * ${f4(F.cols)}, bs * ${f4(F.rows)});
+      vec2 fi = floor(fq); fi.x = mod(fi.x, ${f4(F.cols)});
+      float fh = fract(sin(dot(fi, vec2(12.9898, 78.233))) * 43758.5453);
+      float fh2 = fract(fh * 17.13), fh3 = fract(fh * 31.71);
+      vec2 fo = fract(fq) - 0.5 - (vec2(fh2, fh3) - 0.5) * vec2(0.35, 0.45);
+      fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
+      float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
+      float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
+      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
+      vec2 dq = vec2(fa * ${f4(D.cols)}, bs * ${f4(D.rows)} + 0.37);
+      vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
+      float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
+      vec2 dO = fract(dq) - 0.5 - (vec2(fract(dh * 13.7), fract(dh * 7.31)) - 0.5) * 0.4;
+      float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
+      float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
+      float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
+      c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});
+    }
+`;
+}
 export function matchWallGLSL() {
   const M = MATCH.walls;
   return /* glsl */ `
@@ -424,7 +458,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     // rings; blobs of the relief's own cells, not star shapes)
     float spK = smoothstep(${f4(M.bands.splash.from[0])}, ${f4(M.bands.splash.from[1])}, dl) * (1.0 - smoothstep(${f4(M.bands.splash.to[0])}, ${f4(M.bands.splash.to[1])}, bk)) * bz;
     c = mix(c, ${hx(M.bands.splash.col)}, spK * ${f4(M.bands.splash.amount)});
-    // the approved's brightest texels are a dense net of thin ice-blue (#cae0ff) ring lines across every band: a thin line
+${FOCUS_ON ? focusFlecksGLSL(M) : ''}    // the approved's brightest texels are a dense net of thin ice-blue (#cae0ff) ring lines across every band: a thin line
     // at each band's inner edge and a sparser one inside it, both broken into arcs by the relief (MATCH.walls.bands.edge)
     float eK = (1.0 - smoothstep(${f4(M.bands.edge.w[0])}, ${f4(M.bands.edge.w[1])}, bk)) * smoothstep(${f4(M.bands.edge.broken[0])}, ${f4(M.bands.edge.broken[1])}, dl) * bz;
     float e2 = (1.0 - smoothstep(${f4(M.bands.edge.second[1] * 0.5)}, ${f4(M.bands.edge.second[1])}, abs(bk - ${f4(M.bands.edge.second[0])}))) * smoothstep(0.0, 0.05, dl) * bz * bout;
@@ -541,6 +575,18 @@ export function matchCollectibles({ coins, gems, socks }) {
   // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
   // pick-up place, is unchanged)
   if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
+  // ?s3=focus: every sock lies sideways as the original's (MATCH.sockPose, tunnel_r9_focus.js): a fixed pose between its
+  // rocking group and the model, so the game's bob and rock still play on top. Visual only (its holder, the pick-up place,
+  // is unchanged)
+  if (FOCUS_ON && MATCH.sockPose) {
+    for (const k of socks) {
+      if (!k.turn || !k.turn.children[0]) continue;
+      const model = k.turn.children[0], pose = new THREE.Group();
+      pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
+      k.turn.remove(model); pose.add(model); k.turn.add(pose);
+    }
+    report.sockPose = MATCH.sockPose;
+  }
   // the gem beside the big left coin at MATCH.gemScale of its size, round its own centre (its holder, the pick-up place and
   // the pop animation's scale are unchanged)
   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];

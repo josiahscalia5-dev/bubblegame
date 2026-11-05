@@ -30,7 +30,7 @@ import { matchLumpGLSL } from './tunnel_r9_match_water.js';   // ?s3=match: Roun
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const SPLASH_ON = LIST.includes('splash') || LIST.includes('match');   // ?s3=match: Round 9 builds on this pass
+export const SPLASH_ON = LIST.includes('splash') || LIST.includes('match') || LIST.includes('focus');   // ?s3=match: Round 9 builds on this pass
 export const SPLASH_FOAM = SPLASH_ON && !LIST.includes('nofoam');
 
 export const SPLASH = {

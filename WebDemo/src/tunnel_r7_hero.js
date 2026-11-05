@@ -29,7 +29,7 @@ import { phoneTanW } from './match_phone.js';   // ?s3=match only: the phone fra
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const HERO_ON = LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash') || LIST.includes('match');   // ?s3=liquid: the hero scene plus Round 8's water
+export const HERO_ON = LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash') || LIST.includes('match') || LIST.includes('focus');   // ?s3=liquid: the hero scene plus Round 8's water
 
 export const HERO = {
   // merged into ROUND6 after round7's own settings (tunnel_r6.js), so round7 itself is unchanged
