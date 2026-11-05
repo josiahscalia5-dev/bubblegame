@@ -380,3 +380,7 @@ The coin counter has no id, so I'm giving it one (`coinPill`). An id on its own 
 
 Meanwhile, the ring map derived from your original:
 
+Built cleanly. Capturing `focus` at 3.0 s from the working copy and comparing it with your original and the step 2 build:
+
+While those run, here's step 3 iteration 2 (white flecks left out of the map), next to your original and iteration 1:
+

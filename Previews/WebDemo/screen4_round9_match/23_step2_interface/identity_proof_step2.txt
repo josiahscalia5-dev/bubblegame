@@ -1,0 +1,75 @@
+Step 2 identity proof. Before = the checkpoint d84aee5 (bundle e94124846f2472829a817576d3e5aceb); after = step 2 (bundle f49f62dd9f6b263568b312d801b1c2e7, the interface CSS under body.s4focus, ?s3=focus only).
+
+1. RAW 3D CANVAS (tools/models/game_eval.cjs SHOT, seed 7, 538 x 1076): the normal game and ten older switches at Tap to Start, 2.85 and 4.2 s; match, match,nofoam, focus, focus,nofoam at Tap to Start, 2.85, 3.0, 4.2 s. Step 2 changes no 3D pixel, focus included.
+hero_2.9.png                 538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero_4.2.png                 538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero_tap.png                 538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam_2.9.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam_4.2.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam_tap.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich_2.9.png          538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich_4.2.png          538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich_tap.png          538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash+nofoam_2.9.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash+nofoam_4.2.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash+nofoam_tap.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+ALL IDENTICAL
+focus+nofoam_2.9.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus+nofoam_3.0.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus+nofoam_4.2.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus+nofoam_tap.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_2.9.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_3.0.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_4.2.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_tap.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_2.9.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_3.0.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_4.2.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_tap.png         538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_2.9.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_3.0.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_4.2.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+match_tap.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+ALL IDENTICAL
+
+2. FULL PAGE WITH THE INTERFACE (scripts/page_shots_static.cjs = liquid_shots.cjs with the page's CSS animations and transitions frozen; DPR 1; Tap to Start and 3.0 s):
+focus_t3.00.png              538x1068  differing pixels 196935  max channel difference 255  DIFFERENT
+focus_tap.png                538x1068  differing pixels 30931  max channel difference 255  DIFFERENT
+hero_t3.00.png               538x1068  differing pixels 2916  max channel difference 9  DIFFERENT
+hero_tap.png                 538x1068  differing pixels 4148  max channel difference 9  DIFFERENT
+match+nofoam_t3.00.png       538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+match+nofoam_tap.png         538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+match_t3.00.png              538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+match_tap.png                538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+none_t3.00.png               538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+none_tap.png                 538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+round6_t3.00.png             538x1068  differing pixels 2922  max channel difference 10  DIFFERENT
+round6_tap.png               538x1068  differing pixels 4151  max channel difference 8  DIFFERENT
+splash_t3.00.png             538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+splash_tap.png               538x1068  differing pixels 0  max channel difference 0  IDENTICAL
+6 frames differ
+
+   focus differs: the step itself. hero and round6: the browser's own run-to-run variation in drawing the icon images (heart, coin, gem, plus, hand, arrows; at most 10 of 255): two runs of the UNCHANGED checkpoint differ there by the same 2916 / 4148 pixels (hero), and a second run of the step 2 build matches the checkpoint exactly:
+   step 2 run 2 vs checkpoint run 2: round6 3.0 s 0, round6 Tap 0, hero 3.0 s 0, hero Tap 0 differing pixels.
+   Without freezing, the wall-clock CSS animations (the bobbing hand, the pulsing arrows, the counters' pop) differ between ANY two runs of the same build.

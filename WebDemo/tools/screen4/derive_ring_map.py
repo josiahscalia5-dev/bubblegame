@@ -16,6 +16,7 @@ What it does (no randomness):
   2. masks everything that is not tunnel water (derive_tunnel_textures.py's object_mask: the HUD, coins, gem, sock, brushes,
      bubbles, the character and the foam bank, the far objects at the core) and, in the upper half, the rim, bevel and housing
      beyond the mouth (its mouth_radius);
+  2b. leaves the white splash flecks and crests out of each ring's colour (WHITE_OUT; the shader draws its own white flecks);
   3. fills and smooths the clear texels ALONG each ring only (a normalised blur, wrapping in angle; sigma ANGLE_SIGMA degrees
      round the ring, RADIAL_SIGMA rows across it, wider scales only where a hole is wider): every ring keeps the original's
      radius, width and colour (cobalt, turquoise, white crests, the pastel arc, the warm core), its small sector-to-sector
@@ -35,11 +36,19 @@ import derive_tunnel_textures as DT   # noqa: E402  (its unwrap, masks and norma
 ANGLE_SIGMA = 6.0     # degrees round the ring (keeps each sector's own band radii; the rings are near-circular)
 RADIAL_SIGMA = 1.2    # rows across the ring (1 row = 0.0034 in ln r: the rings stay thin)
 NU_OUT = 512          # columns written (the map is smooth along the angle)
+# the white splash flecks and crests left out of each ring's colour (saturation under [0], value over [1]), outside the warm
+# core (radius over [2] W): averaged round a ring they turned its cobalt and turquoise a pale grey-blue (the first try); the
+# shader's own white fleck layer draws them as separate white shapes
+WHITE_OUT = (0.22, 0.82, 0.05)
 
 
 def ring_map(im):
     H, W = im.shape[:2]
     mask = DT.object_mask(im)
+    h, s, v = DT.hsv(im)
+    yy, xx = np.mgrid[0:H, 0:W]
+    rr = np.hypot(xx - DT.VP[0] * W, yy - DT.VP[1] * H) / W
+    mask = mask | ((s < WHITE_OUT[0]) & (v > WHITE_OUT[1]) & (rr > WHITE_OUT[2]))
     lp, inside, th, lr = DT.unwrap(im, W, H)
     mlp, _, _, _ = DT.unwrap(mask.astype(np.float32), W, H, interp=cv2.INTER_NEAREST, border=1.0)
     valid = inside & (mlp < 0.5)
@@ -76,7 +85,7 @@ def main():
     Image.fromarray((np.clip(small, 0, 1) * 255 + 0.5).astype(np.uint8)).save(os.path.join(a.out, 'tunnel_rings_original.png'))
     meta = {'source': os.path.relpath(DT.APPROVED, DT.REPO), 'vanishing_point': DT.VP, 'r0_w': DT.R0, 'r1_w': DT.R1,
             'ln_r0': float(np.log(DT.R0)), 'ln_span': float(np.log(DT.R1 / DT.R0)), 'size': [NU_OUT, DT.NV],
-            'angle_sigma_deg': ANGLE_SIGMA, 'radial_sigma_rows': RADIAL_SIGMA, 'clear_share': float(valid.mean()),
+            'angle_sigma_deg': ANGLE_SIGMA, 'radial_sigma_rows': RADIAL_SIGMA, 'white_out': WHITE_OUT, 'clear_share': float(valid.mean()),
             'note': 'u = theta / 2pi (0 = screen right, counter-clockwise); v = (ln(rw) - ln_r0) / ln_span; sRGB'}
     json.dump(meta, open(os.path.join(a.out, 'tunnel_rings_original.json'), 'w'), indent=1)
     print('wrote', os.path.join(a.out, 'tunnel_rings_original.png'), small.shape, 'clear share %.3f' % valid.mean())
