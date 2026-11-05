@@ -41,7 +41,7 @@ export const MATCH_WATER = {
     trough: 0.35,     // the wave troughs toward deep cobalt
     cobalt: '#0e4fd0',
     caustic: 0.35,    // luminous caustic web (cyan-white, added)
-    glint: 0.9,       // the glow's glints on the waves (white, added)
+    glint: 0.9,       // the glow's glints on the waves (white, added) (follow-up: 0.5 tried: the separate white specks left of the body did not change, so kept)
     deep: 0.7, deepTint: [0.6, 0.8, 1.0], deepR: 2.4,   // round the character (radius m): toward vivid electric blue
     delilac: 0.85,    // the map's pastel lilac pulled toward pale blue on the floor (the approved floor ahead: lavender 3%, #aed7f3)
   },
@@ -89,7 +89,7 @@ export const MATCH_WATER = {
     // angle, cellD per metre down the face; a colour-marked diagnostic run showed the angle's cells were the narrow ones)
     // (follow-up: under the body 29% white against the original's 14%: patches along the crest with blue water between them
     // (gap: the share of the crest without froth, noise along the swell's angle), more and bigger holes)
-    froth: { amount: 1.0, depth: [0.026, 0.035], gap: 0.45, gapFront: 0.52, cell: 15.0, cellD: 110.0, holeShare: 0.25, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
+    froth: { amount: 1.0, depth: [0.026, 0.035], gap: 0.45, gapFront: 0.62, cell: 15.0, cellD: 110.0, holeShare: 0.25, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
   },
   // the bank's lobes (spLumps reshaded). (Gate fixes, step 7: glossy see-through domes with white caps, a violet soap tint
   // in front; replaced in the focused pass by the froth below)
@@ -107,15 +107,16 @@ export const MATCH_WATER = {
     shade: '#3270c8', mid: '#8ccaf4', light: '#c0e2fa', white: '#f2f8ff', side: '#c8e2fa', hole: '#4f94e6', low: '#3f88dc',
     // (follow-up, the lead: the colour one uniform sky blue: white tops, aqua-cyan mid-tones, pale periwinkle zones (per, of
     // perScale cells per unit radius), deeper blue shadows, a little periwinkle-lilac only on the froth bubbles' edges)
-    midPer: '#a4bef2', lightPer: '#cdd9f8', per: 1.0, perScale: 1.1, poreRim: '#a6a6f2', poreRimK: 0.7,
-    oct2: 0.2, halo: [0.4, 0.5],   // the froth noise's second octave (less: smoother patch edges); droplets only where the noise is in this halo round a patch
+    midPer: '#a0c0f2', lightPer: '#c9dcf8',   // (hue about 217: pale periwinkle-blue, not lavender)
+    per: 1.0, perScale: 1.1, poreRim: '#a6a6f2', poreRimK: 0.7,
+    oct2: 0.1, halo: [0.4, 0.5], holeGlint: '#b4d8f8',   // the froth noise's second octave (less: smoother patch edges); droplets only where the noise is in this halo round a patch
     // (iteration 2: iteration 1 was 72% white in the bank against the original's 20%: white cotton clouds) the light: [the key
     // light's N.L, the normal's up, base]: pale blue facing the camera, sky blue below, light on the tops
     // (iteration 4: 44% white in the bank, 67% under the body: chalky) darker base light, less cover, less in front of the body
     lit: [0.5, 0.45, 0.22],
-    cover: -0.02, upK: 0.3, scale: 1.5, coverFront: -0.25,   // (follow-up: scale 2.2 -> 1.5, broader patches; cover -0.1 -> -0.02: smoother noise, fewer exceedances)   // froth patches (value noise, mean 0.5): base, + the normal's up x upK; noise cells per unit radius; in front of the body (+)
+    cover: 0.02, upK: 0.3, scale: 1.5, coverFront: -0.25,   // (follow-up: scale 2.2 -> 1.5, broader patches; cover -0.1 -> -0.02: smoother noise, fewer exceedances)   // froth patches (value noise, mean 0.5): base, + the normal's up x upK; noise cells per unit radius; in front of the body (+)
     cell: 6.5, holeShare: 0.45, holeK: 0.9,   // (follow-up: holeShare 0.3 -> 0.45)       // its small bubbles: cells per unit radius, share without a hole, how blue the holes
-    speckCell: 11.0, speckShare: 0.85, speck: 0.95, speck2Cell: 21.0, speck2Share: 0.6,   // (follow-up: 80 separate white shapes left of the body against 13: droplets 0.45 -> 0.7 and only round the patches)   // (iteration 7: + a finer layer: the froth's texture was smoother than the original's, hp5 0.079 against 0.095)   // fine white droplets on the aqua body
+    speckCell: 11.0, speckShare: 0.92, speck: 0.95, speck2Cell: 21.0, speck2Share: 0.85,   // (follow-up: 80 separate white shapes left of the body against 13: droplets 0.45 -> 0.7 and only round the patches)   // (iteration 7: + a finer layer: the froth's texture was smoother than the original's, hp5 0.079 against 0.095)   // fine white droplets on the aqua body
     crest: 0.95, crestW: 0.56, crestCell: 5.0, crestBreak: 0.8,   // (follow-up: crestBreak 0.55 -> 0.8, fewer breaks: each break made a separate white piece)   // the bubbly white crest along the top of the outline (from 1 - n.v), its bubbles
     edgeCut: [0.62, 0.3],                        // the ragged bubbly outline: cut from 1 - n.v = [0] minus [1] x the cell's bump
     spec: 0.9, specPow: 60,   // (iteration 9: a little stronger, for dimension: the lobes read matte)
@@ -157,13 +158,15 @@ export const MATCH_WATER = {
     // (gate fixes, step 7: one on the left, not five: their thin rims over the new lobes broke into specks; the faint spray
     // sheets hidden: at 5% only their white drops were left, more specks)
     hide: ['r6BowWave', 'lqSpraySheets'],
-    foam: { flecks: 0.35, plumeAlpha: 0.05, bubbles: [[-60, 3], [-30, 2], [40, 1], [66, 2], [-3, 2], [15, 1]], bubbleR: [0.035, 0.095] },   // (focused pass: two small clusters at her front waterline, as the original's bubbles under her)
+    foam: { flecks: 0.12, plumeAlpha: 0.05,   // (follow-up: flecks 0.35 -> 0.12: separate white specks left of the body)
+      bubbles: [[-60, 3], [-30, 2], [40, 1], [66, 2], [-3, 2], [15, 1]], bubbleR: [0.035, 0.095] },   // (focused pass: two small clusters at her front waterline, as the original's bubbles under her)
   },
   heroWater: {
     // fewer, larger droplets (the Art Director: at most 30 white shapes of 20 px or more beside the body; splash had 900 small
     // ones), more of them round, the right-hand ones lower (the approved right coin's face is clear)
     // (gate fixes, step 7: 30, not 180: many of the small white shapes beside the body were these)
-    splash: { count: 30, flecks: 0.7,
+    splash: { count: 18, flecks: 0.7,   // (follow-up: 30 -> 18, the same reason)
+     
       zones: [[0.22, [-48, -16], [0.7, 1.6], [0.2, 0.6], [0.016, 0.034], 0.05], [0.4, [16, 50], [1.2, 2.8], [0.25, 0.8], [0.016, 0.036], 0.06],
         [0.16, [-80, -24], [0.5, 1.3], [0.15, 0.5], [0.012, 0.026], 0.03], [0.22, [24, 80], [0.7, 2.0], [0.15, 0.6], [0.012, 0.026], 0.03]] },
   },
@@ -455,7 +458,7 @@ export function matchLumpGLSL() {
     vec3 fWhite = mix(${v3s(B.side)}, ${v3s(B.white)}, smoothstep(-0.2, 0.5, fUp));
     vec3 fHoleC = mix(${v3s(B.hole)}, ${v3s(B.poreRim)}, smoothstep(fBr * 0.55, fBr * 0.95, fBl) * ${f4(B.poreRimK)});
     vec3 fFroth = mix(fWhite, fHoleC, fHole * ${f4(B.holeK)});
-    fFroth = mix(fFroth, ${v3s(B.white)}, fGl);
+    fFroth = mix(fFroth, ${v3s(B.holeGlint)}, fGl);   // (follow-up: a pale reflection, not white: each white glint was a separate white speck)
     fCol = mix(fCol, fFroth, fCover);
     // 3. white droplets only in a halo round the froth patches (they join them, not scattered over the water); blue pores
     //    in the froth

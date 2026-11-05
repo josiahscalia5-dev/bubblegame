@@ -1139,7 +1139,7 @@ index f8550f8..0adb7bb 100644
  function updateCamera(dt) {
    const m = mascot;
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index c31a8c4..d008eef 100644
+index c31a8c4..af46c3c 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -45,13 +45,49 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
@@ -1423,7 +1423,7 @@ index c31a8c4..d008eef 100644
 +      float sl = dot(c, vec3(0.2126, 0.7152, 0.0722));
 +      float sk = bz * bout * ${f4(M.streak.amount)} * (1.0 - smoothstep(0.82, 0.92, sl)) * (1.0 - smoothstep(0.0, 0.08, c.r - c.b));
 +      c = mix(c, ${hx(M.streak.light)} * mix(0.95, 1.1, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, sn) * sk);
-+      c = mix(c, ${hx(M.streak.dark)} * mix(0.9, 1.15, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, -sn) * sk);
++      c = mix(c, ${hx(M.streak.dark)} * mix(1.0, 1.12, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, -sn) * sk);
 +    }
      c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
      // white water broken over each band's lit part where the relief crests (the approved's turbulent splash bits along the

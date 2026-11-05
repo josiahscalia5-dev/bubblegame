@@ -1,12 +1,12 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: framing, sock, walls)
 
-- **Taken:** 2026-11-05 20:41 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:46 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a1aff7a0d4ce10e34` (local only), started from `9a95c06`.
 - **Its own commits so far:** 
   - `4029424 Round 9 focused pass (checkpoint): framing, the pink character 1.2x larger through the hero camera`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (171; full copies in `files/`)
+## Files (199; full copies in `files/`)
 
 - `.tltmp/base_root/README.md (new)`
 - `.tltmp/base_root/artifact-models (deleted)`
@@ -54,6 +54,11 @@
 - `.tltmp/masks/original_lead_mask.png (new)`
 - `.tltmp/orig_bubbles.png (new)`
 - `.tltmp/orig_sock_ticks.png (new)`
+- `.tltmp/original_over_before_blend50.png (new)`
+- `.tltmp/original_over_before_diff.png (new)`
+- `.tltmp/original_over_before_edges.png (new)`
+- `.tltmp/pixel7_before_3.00s.png (new)`
+- `.tltmp/pixel7_cmp.png (new)`
 - `.tltmp/probe_before/probe_t3.0.json (new)`
 - `.tltmp/probe_before/probe_t3.0.png (new)`
 - `.tltmp/rim_t1.png (new)`
@@ -138,6 +143,7 @@
 - `.tltmp/upper_grid.png (new)`
 - `.tltmp/wall_variants.json (new)`
 - `.tltmp/wall_variants2.json (new)`
+- `.tltmp/wall_variants3.json (new)`
 - `.tltmp/walls_cmp_t2.png (new)`
 - `.tltmp/walls_cmp_t3.png (new)`
 - `.tltmp/walls_cmp_t4.png (new)`
@@ -157,13 +163,35 @@
 - `.tltmp/wv/wE_t3.00.png (new)`
 - `.tltmp/wv/wF_info.json (new)`
 - `.tltmp/wv/wF_t3.00.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/before_b91e952_t3.00.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_character_original_before_now.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_sock_original_before_now.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_sock_original_now_2.85_3.00_3.10.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_tunnel_walls_original_before_now.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_checkpoint.txt`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_match.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_info.json (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t2.85.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t3.00.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t3.00_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/match_t3.10.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/measured.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/original_over_match_3.00s_blend50.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/original_over_match_3.00s_diff.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/original_over_match_3.00s_edges.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/original_vs_before_vs_now_3.00s_1536.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/pixel7_before_b91e952_3.00s.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/pixel7_match_3.00s.png (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/pixel7_original_vs_before_vs_now_3.00s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/probe_before_b91e952_t3.0.json (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/probe_now_t3.0.json (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/char_rows.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/character.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/coin_probe.cjs`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/common.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/identity.cjs (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/identity_compare.py (new)`
+- `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/measure_all.py (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/objects.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/palette.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rim.py`

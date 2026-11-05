@@ -533,7 +533,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
       float sl = dot(c, vec3(0.2126, 0.7152, 0.0722));
       float sk = bz * bout * ${f4(M.streak.amount)} * (1.0 - smoothstep(0.82, 0.92, sl)) * (1.0 - smoothstep(0.0, 0.08, c.r - c.b));
       c = mix(c, ${hx(M.streak.light)} * mix(0.95, 1.1, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, sn) * sk);
-      c = mix(c, ${hx(M.streak.dark)} * mix(0.9, 1.15, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, -sn) * sk);
+      c = mix(c, ${hx(M.streak.dark)} * mix(1.0, 1.12, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, -sn) * sk);
     }
     c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
     // white water broken over each band's lit part where the relief crests (the approved's turbulent splash bits along the

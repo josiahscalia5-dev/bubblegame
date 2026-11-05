@@ -1,0 +1,4 @@
+{
+  "wG": { "match": { "walls": { "liftWall": 0.1 } } },
+  "wH": { "match": { "walls": { "liftWall": 0.08, "bands": { "gap": { "amount": 0.92 }, "glow": { "amount": 0.75 } } } } }
+}

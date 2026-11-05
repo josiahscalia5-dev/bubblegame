@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: froth foam, tunnel flecks)
 
-- **Taken:** 2026-11-05 20:41 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:46 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a6a478aa3fef314d3` (local only), started from `b0e1f07`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (98; full copies in `files/`)
+## Files (116; full copies in `files/`)
 
 - `.wvtmp/base/game.bundle.js (new)`
 - `.wvtmp/basedemo/README.md (new)`
@@ -23,6 +23,9 @@
 - `.wvtmp/basedemo/ui (deleted)`
 - `.wvtmp/diag_close.png (new)`
 - `.wvtmp/f1_close.png (new)`
+- `.wvtmp/f2_close.png (new)`
+- `.wvtmp/f3_close.png (new)`
+- `.wvtmp/f5_close.png (new)`
 - `.wvtmp/hide/all.png (new)`
 - `.wvtmp/hide/hide_heroSwell.png (new)`
 - `.wvtmp/hide/hide_lqSwell.png (new)`
@@ -38,6 +41,18 @@
 - `.wvtmp/it/f1_info.json (new)`
 - `.wvtmp/it/f1_t3.00.png (new)`
 - `.wvtmp/it/f1_t3.00_canvas.png (new)`
+- `.wvtmp/it/f2_info.json (new)`
+- `.wvtmp/it/f2_t3.00.png (new)`
+- `.wvtmp/it/f2_t3.00_canvas.png (new)`
+- `.wvtmp/it/f3_info.json (new)`
+- `.wvtmp/it/f3_t3.00.png (new)`
+- `.wvtmp/it/f3_t3.00_canvas.png (new)`
+- `.wvtmp/it/f4_info.json (new)`
+- `.wvtmp/it/f4_t3.00.png (new)`
+- `.wvtmp/it/f4_t3.00_canvas.png (new)`
+- `.wvtmp/it/f5_info.json (new)`
+- `.wvtmp/it/f5_t3.00.png (new)`
+- `.wvtmp/it/f5_t3.00_canvas.png (new)`
 - `.wvtmp/it/it1_info.json (new)`
 - `.wvtmp/it/it1_t3.00.png (new)`
 - `.wvtmp/it/it1_t3.00_canvas.png (new)`
@@ -80,6 +95,9 @@
 - `.wvtmp/it8_full.png (new)`
 - `.wvtmp/it9_close.png (new)`
 - `.wvtmp/leftbox.png (new)`
+- `.wvtmp/leftbox_f2.png (new)`
+- `.wvtmp/leftbox_f3.png (new)`
+- `.wvtmp/leftbox_f4.png (new)`
 - `.wvtmp/meas_final.txt (new)`
 - `.wvtmp/pixid/liquid_base.log (new)`
 - `.wvtmp/pixid/liquid_base_2.9.png (new)`

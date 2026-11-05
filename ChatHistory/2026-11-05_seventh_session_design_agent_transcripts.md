@@ -1552,8 +1552,42 @@ Now the settings: the new palette, broader patches, fewer droplets and holes; th
 [Image: original 2878x440, displayed at 2000x306. Multiply coordinates by 1.44 to map to original image.]
 
 - 20:39 `Bash`: Follow-up iteration 2: build, capture, measure
+- 20:41 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/f2_close.png
+**Lead → agent** (20:41 UTC):
 
-_181 tool steps._
+[Image: original 2878x440, displayed at 2000x306. Multiply coordinates by 1.44 to map to original image.]
+
+- 20:42 `Bash`: Analyse the left-box white shapes in f2
+- 20:42 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/leftbox_f2.png
+- 20:42 `Bash`: Iteration f3 settings
+**Agent** (20:42 UTC):
+
+Before building: does the airborne droplet count change any draws from the game's seeded `Math.random`? Checking how `heroSplash` makes its droplets.
+
+- 20:42 `Bash`: Check the random source of the hero splash
+**Agent** (20:42 UTC):
+
+Private generator, so the count is safe. Building and capturing f3.
+
+- 20:42 `Bash`: Follow-up iteration 3: build, capture, measure
+- 20:43 `Bash`: Outline the left-box white shapes in f3, canvas and page
+- 20:43 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/leftbox_f3.png
+- 20:43 `Bash`: Follow-up iteration 4: build, capture, measure
+- 20:44 `Bash`: Split the left-box shapes into froth crumbs and water specks
+- 20:44 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/leftbox_f4.png
+- 20:45 `Bash`: Follow-up iteration 5: build, capture, measure
+**Agent** (20:46 UTC):
+
+Halving the floor glints did not change the count (51 / 52), so those specks are not the floor's glints. I'll restore the glint (keeping the water's sparkle) and look at the current state.
+
+- 20:46 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/f5_close.png
+**Lead → agent** (20:46 UTC):
+
+[Image: original 2526x520, displayed at 2000x412. Multiply coordinates by 1.26 to map to original image.]
+
+- 20:46 `Bash`: Final follow-up tweak; build and capture the final set with cost
+
+_195 tool steps._
 
 ---
 
@@ -1897,5 +1931,29 @@ The second sock stays hidden now. Final frames are in. Next the pixel-identity p
 - 20:38 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/identity.cjs
 - 20:39 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/identity_compare.p
 - 20:39 `Bash`: Run pixel-identity captures and compare
+**Agent** (20:41 UTC):
 
-_190 tool steps._
+Pixel identity holds: 0 differing pixels in all six frames (normal game, `splash`, `liquid`, at Tap to Start and 2.85 s). Now the final gameplay test and the Pixel 7 capture.
+
+- 20:41 `Bash`: Run final gameplay test and show tunnel results
+- 20:42 `Bash`: Check lanes sequence and phone_shot usage
+- 20:42 `Bash`: Pixel 7 captures for the new and baseline builds
+- 20:43 `Bash`: Compose Pixel 7 comparison
+- 20:43 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/pixel7_cmp.png
+- 20:43 `Bash`: Copy final frames into evidence and read sbs.py
+- 20:44 `Bash`: Build side-by-side and close-up evidence images
+- 20:44 `Bash`: Build side-by-side and close-up evidence images
+**Agent** (20:44 UTC):
+
+Now the 50% blend over the original (with the measured vanishing points), and converting the larger close-ups to JPEG to keep the repository lighter.
+
+- 20:44 `Bash`: Make 50% blends and convert close-ups to JPEG
+- 20:44 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/original_over_match_3.00s_
+- 20:44 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/measure_all.py
+- 20:44 `Bash`: Final probe of the new build and save probe JSONs
+- 20:45 `Bash`: Write measured.txt and show key lines
+- 20:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:45 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/wall_variants3.json
+- 20:46 `Bash`: Build and test two final wall variants
+
+_206 tool steps._

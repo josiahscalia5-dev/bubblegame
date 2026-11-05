@@ -581,3 +581,17 @@ Water & VFX's foam pass is merged and on GitHub (`edf84f5`). It's now doing a sh
 
 Tunnel & Lighting is still on the framing (the larger character), the sock's tilt and the turbulent walls. When it lands, I'll merge it and have the foam re-checked at the new camera. Then you'll get the side-by-side, the two close-ups and the five-item checklist.
 
+---
+
+### You · 2026-11-05 20:44 UTC
+
+Can I see a preview of them on my mobile app screen to see how it looks so far?
+
+---
+
+### Claude · 2026-11-05 20:44 UTC
+
+I'll capture each on an emulated Pixel 7: the merged build now, plus each specialist's live work in progress. First, what each specialist currently has built:
+
+Both live sets apply cleanly and build. Capturing on an emulated Pixel 7 at 3.0 s: the merged branch and the combined preview.
+
