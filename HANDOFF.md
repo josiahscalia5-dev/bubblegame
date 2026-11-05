@@ -2,7 +2,7 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (5 November, 21:45 UTC onward): eighth session, branch `ccr-9f8e2c8d-0zg3mc`, focused pass merged
+## Newest (5 November, 21:45 UTC onward): tenth session, branch `ccr-9f8e2c8d-0zg3mc`, focused pass merged
 
 - **Recovered from:** `6b96449`, the seventh session's last autosave (the same commit on `ccr-1f9da4c9-e0yrsc`, left
   untouched). Both specialists had FINISHED their focused-pass work at about 21:06 UTC and stopped at the usage limit
@@ -15,8 +15,9 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - Merged as `68c8c40` (different files, no conflict). Merged bundle md5 `e74ba8c9...`.
 - **The phone video** recorded at 21:11 UTC (`16_phone_video_into_the_machine/`) was sent to the user in this session.
 - **Checks and the merged comparison:** `Previews/WebDemo/screen4_round9_match/20_focused_pass_merged/` (README there).
-- **Autosave:** running, with `ChatHistory/2026-11-05_eighth_session_round9_merge.md` and
-  `..._eighth_session_design_agent_transcripts.md`.
+- **Autosave:** running, with `ChatHistory/2026-11-05_tenth_session_both_lines_merged.md` and
+  `..._tenth_session_design_agent_transcripts.md` ("tenth": branches `ccr-3d8a1ae9-hhgml1` and `ccr-de8d9670-2ohd5t`
+  already call themselves the eighth and ninth sessions).
 
 ## Newest (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
 
