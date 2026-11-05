@@ -73,9 +73,9 @@ Only private random numbers (`mulberrySp`) are used; the game's seeded `Math.ran
 | `splash_{2.85,3.00,3.10}s_fullres.png`, `splash_nofoam_{2.85,3.00,3.10}s_fullres.png` | the frames (807 x 1602) |
 | `measured_splash_shares.txt`, `measured_art_director_regions.txt` | the raw measurements below |
 | `pixel_identity_vs_87aee11.txt` | the pixel-identity proof |
-| `moves_*.png`, `moves_state.json` | the splashes reacting to a swerve, a jump and a landing |
-| `gameplay_checks.txt` | the gameplay checks (`s3_func.cjs`) for `hero`, `liquid`, `liquid,nofoam`, `splash`, `splash,nofoam` |
-| `splash_gameplay_9s.mp4` | 9 s of real gameplay at true game speed (`record_s3.cjs`) |
+| `moves_sheet.jpg`, `moves_*.png`, `moves_state.json` | the splashes reacting to a swerve, a jump and a landing |
+| `gameplay_checks.txt` | the gameplay checks: `s3_func.cjs` for `hero`, `liquid`, `liquid,nofoam`, `splash` and `splash,nofoam`; `r2_func.cjs` for `splash` |
+| `splash_gameplay_9s.mp4`, `splash_gameplay_frames_strip.jpg` | 9 s of real gameplay at true game speed (`record_s3.cjs`), and stills from it |
 
 Captured with `WebDemo/tools/screen4/liquid_shots.cjs`. Measured with `WebDemo/tools/screen4/liquid_shares.py` and the Art
 Director's `regions.py` (`Previews/WebDemo/screen4_round8_art_director_baseline/scripts/`).
@@ -139,11 +139,48 @@ and 4.2 s, and every pixel was compared:
 
 ## Gameplay
 
-GAMEPLAY
+- **Basic checks** (`WebDemo/tools/screen3/s3_func.cjs`, seed 7): the settings, Tap to Start, real pointer swipes (left,
+  then right twice: lanes 1, 0, 2), the jump, the ride into the tunnel and a keyboard start.
+  - `splash` and `splash,nofoam` give exactly the same states as `hero`, `liquid` and `liquid,nofoam` at every step: z
+    20.561 in the tunnel, 12 coins and 2 socks collected.
+  - There are no console errors or warnings in any of the five.
+- **Hearts, pause, Bubble Blast, Turbo Spin** (`WebDemo/tools/screen3/r2_func.cjs`): the full report for `splash` is
+  identical to the one for `liquid`.
+  - Each brush knock takes one heart; at none, the run goes back to Tap to Start with 5 hearts.
+  - Pause stops game time, by button and with the P key.
+  - Bubble Blast clears the brushes ahead and runs out after 3.
+  - Turbo Spin raises the speed from 6.68 to 8.78 with no knocks.
+- **Video:** `splash_gameplay_9s.mp4` (`record_s3.cjs`): 270 frames stepped at 30 per game second, with real pointer
+  swipes. It visits lanes 1, 0 and 2, collects 2 socks, and has no console errors. Stills:
+  `splash_gameplay_frames_strip.jpg`.
+- **Reacting to moves** (`liquid_moves.cjs`, `moves_sheet.jpg`):
+  - after a swerve to the left lane (3.38 s), the splash piles up on that side;
+  - in the air (3.85 s), the swell and the splashes shrink;
+  - just after landing (4.22 s), the splashes burst out.
+- Results in `gameplay_checks.txt`. Collision, lanes, collectibles and the seeded `Math.random` are untouched: the pass
+  only adds drawing.
 
 ## Performance
 
-PERFORMANCE
+One frame at the hero moment (2.85 s), counted with the WebGL draw-call and triangle counter (`liquid_shots.cjs COST=1`,
+DPR 1). Each was timed alone on an idle machine, one after another:
+
+| | `liquid` | `splash,nofoam` | `splash` |
+|---|---|---|---|
+| draw calls | 207 | 202 | 209 |
+| triangles | 1,375,496 | 1,368,820 | 1,398,032 |
+| shader programs | 64 | 60 | 66 |
+| textures | 41 | 41 | 41 |
+| software frame time (SwiftShader, relative only) | 1173 ms | 1119 ms | 1185 ms (+1%) |
+
+- **Added objects:**
+  - `spCurls`: 1 draw call, 2,688 triangles;
+  - `spLumps`: 1 draw call, 13,120 triangles;
+  - more waterline bubbles (+6,300 triangles) and droplets (+340 quads).
+- **Same as before:** no new textures and no extra render passes; the deeper swirl and core are a few shader lines on
+  existing materials.
+- In the tunnel (z 20.56): 136 draw calls for `splash` against 134 for `liquid`.
+- Not measured on a phone (software rendering here).
 
 ## What still differs from the approved picture
 

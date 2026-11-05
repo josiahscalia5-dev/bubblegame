@@ -1,0 +1,228 @@
+Gameplay checks: WebDemo/tools/screen3/s3_func.cjs on the final bundle (md5 1f045f85...), Math.random seeded with 7.
+Steps: settings click, Tap to Start, real pointer swipes (left, right twice, up = jump), the ride into the tunnel, keyboard start.
+Each line: lane, in the air, track position z, collected (coins, gems, socks). Console errors and warnings: logs / logs2.
+
+== ?s3=hero
+  costAtTapToStart     {"drawCalls": 230, "triangles": 1271947}
+  afterSettingsClick   phase intro    lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterTap             phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeLeft       phase running  lane 0 air False z -11.789  coins 1280 collected {"coins": 0, "gems": 0}
+  afterTwoSwipesRight  phase running  lane 2 air False z -6.653   coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeUp         phase running  lane 2 air True  z -5.677   coins 1280 collected {"coins": 0, "gems": 0}
+  inTunnel             phase running  lane 1 air False z 20.561   coins 1292 collected {"coins": 12, "gems": 0, "socks": 2}
+  costInTunnel         {"drawCalls": 133, "triangles": 1058591}
+  logs                 []
+  keyboardStart        phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  logs2                []
+
+== ?s3=liquid
+  costAtTapToStart     {"drawCalls": 230, "triangles": 1271947}
+  afterSettingsClick   phase intro    lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterTap             phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeLeft       phase running  lane 0 air False z -11.789  coins 1280 collected {"coins": 0, "gems": 0}
+  afterTwoSwipesRight  phase running  lane 2 air False z -6.653   coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeUp         phase running  lane 2 air True  z -5.677   coins 1280 collected {"coins": 0, "gems": 0}
+  inTunnel             phase running  lane 1 air False z 20.561   coins 1292 collected {"coins": 12, "gems": 0, "socks": 2}
+  costInTunnel         {"drawCalls": 134, "triangles": 1072195}
+  logs                 []
+  keyboardStart        phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  logs2                []
+
+== ?s3=liquid,nofoam
+  costAtTapToStart     {"drawCalls": 230, "triangles": 1271947}
+  afterSettingsClick   phase intro    lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterTap             phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeLeft       phase running  lane 0 air False z -11.789  coins 1280 collected {"coins": 0, "gems": 0}
+  afterTwoSwipesRight  phase running  lane 2 air False z -6.653   coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeUp         phase running  lane 2 air True  z -5.677   coins 1280 collected {"coins": 0, "gems": 0}
+  inTunnel             phase running  lane 1 air False z 20.561   coins 1292 collected {"coins": 12, "gems": 0, "socks": 2}
+  costInTunnel         {"drawCalls": 129, "triangles": 1065519}
+  logs                 []
+  keyboardStart        phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  logs2                []
+
+== ?s3=splash
+  costAtTapToStart     {"drawCalls": 230, "triangles": 1271947}
+  afterSettingsClick   phase intro    lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterTap             phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeLeft       phase running  lane 0 air False z -11.789  coins 1280 collected {"coins": 0, "gems": 0}
+  afterTwoSwipesRight  phase running  lane 2 air False z -6.653   coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeUp         phase running  lane 2 air True  z -5.677   coins 1280 collected {"coins": 0, "gems": 0}
+  inTunnel             phase running  lane 1 air False z 20.561   coins 1292 collected {"coins": 12, "gems": 0, "socks": 2}
+  costInTunnel         {"drawCalls": 136, "triangles": 1094731}
+  logs                 []
+  keyboardStart        phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  logs2                []
+
+== ?s3=splash,nofoam
+  costAtTapToStart     {"drawCalls": 230, "triangles": 1271947}
+  afterSettingsClick   phase intro    lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterTap             phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeLeft       phase running  lane 0 air False z -11.789  coins 1280 collected {"coins": 0, "gems": 0}
+  afterTwoSwipesRight  phase running  lane 2 air False z -6.653   coins 1280 collected {"coins": 0, "gems": 0}
+  afterSwipeUp         phase running  lane 2 air True  z -5.677   coins 1280 collected {"coins": 0, "gems": 0}
+  inTunnel             phase running  lane 1 air False z 20.561   coins 1292 collected {"coins": 12, "gems": 0, "socks": 2}
+  costInTunnel         {"drawCalls": 129, "triangles": 1065519}
+  logs                 []
+  keyboardStart        phase running  lane 1 air False z -16.7    coins 1280 collected {"coins": 0, "gems": 0}
+  logs2                []
+
+
+Hearts, pause, Bubble Blast and Turbo Spin: WebDemo/tools/screen3/r2_func.cjs on the final bundle, seed 7.
+The output for ?s3=liquid and ?s3=splash is IDENTICAL (diff of the two full reports: no differences). ?s3=splash:
+
+hearts {"seq":[{"t":3.95,"z":8.235,"lap":0,"hearts":4,"heartsText":"4"},{"t":5.483,"z":17.561,"lap":0,"hearts":3,"heartsText":"3"},{"t":6.817,"z":24.93,"lap":0,"hearts":2,"heartsText":"2"},{"t":12.317,"z":8.235,"lap":1,"hearts":1,"heartsText":"1"},{"t":13.85,"z":17.561,"lap":1,"hearts":0,"heartsText":"0"},{"t":15.25,"z":-16.7,"lap":1,"hearts":5,"heartsText":"5 Full"}],"outAt":{"t":13.85,"toast":"0"},"back":{"t":15.25,"after":1.4,"hearts":5,"restarts":1,"z":-16.7,"heartsText":"5 Full","pauseBtn":"hidden"},"knocks":5}
+{
+ "atStart": {
+  "hearts": 5,
+  "blasts": 3,
+  "turbos": 3,
+  "heartsText": "5 Full",
+  "gear": "visible",
+  "pause": "hidden",
+  "blastBtn": "hidden",
+  "turboBtn": "hidden",
+  "hazards": [
+   {
+    "u": 9.4,
+    "side": 1,
+    "cleared": false
+   },
+   {
+    "u": 10.1,
+    "side": -1,
+    "cleared": false
+   },
+   {
+    "u": 16.6,
+    "side": -1,
+    "cleared": false
+   },
+   {
+    "u": 18.8,
+    "side": 1,
+    "cleared": false
+   },
+   {
+    "u": 26,
+    "side": 1,
+    "cleared": false
+   },
+   {
+    "u": 26.7,
+    "side": -1,
+    "cleared": false
+   }
+  ]
+ },
+ "hearts": {
+  "seq": [
+   {
+    "t": 3.95,
+    "z": 8.235,
+    "lap": 0,
+    "hearts": 4,
+    "heartsText": "4"
+   },
+   {
+    "t": 5.483,
+    "z": 17.561,
+    "lap": 0,
+    "hearts": 3,
+    "heartsText": "3"
+   },
+   {
+    "t": 6.817,
+    "z": 24.93,
+    "lap": 0,
+    "hearts": 2,
+    "heartsText": "2"
+   },
+   {
+    "t": 12.317,
+    "z": 8.235,
+    "lap": 1,
+    "hearts": 1,
+    "heartsText": "1"
+   },
+   {
+    "t": 13.85,
+    "z": 17.561,
+    "lap": 1,
+    "hearts": 0,
+    "heartsText": "0"
+   },
+   {
+    "t": 15.25,
+    "z": -16.7,
+    "lap": 1,
+    "hearts": 5,
+    "heartsText": "5 Full"
+   }
+  ],
+  "outAt": {
+   "t": 13.85,
+   "toast": "0"
+  },
+  "back": {
+   "t": 15.25,
+   "after": 1.4,
+   "hearts": 5,
+   "restarts": 1,
+   "z": -16.7,
+   "heartsText": "5 Full",
+   "pauseBtn": "hidden"
+  },
+  "knocks": 5
+ },
+ "pause": {
+  "panelShown": true,
+  "timeWhilePaused": [
+   1.017,
+   1.017
+  ],
+  "runsAfterResume": true,
+  "keyboardPause": true,
+  "timeStillUnderKeyPause": true,
+  "keyboardResume": true
+ },
+ "blast": {
+  "used": true,
+  "blastsLeft": 2,
+  "badge": "2",
+  "clearedAhead": [
+   {
+    "u": 9.4,
+    "side": 1,
+    "cleared": true
+   },
+   {
+    "u": 10.1,
+    "side": -1,
+    "cleared": true
+   }
+  ],
+  "knocksPassingClearedBrush": 0,
+  "hearts": 5,
+  "lane": 0
+ },
+ "blastEmpty": {
+  "usedAgain": [
+   true,
+   true,
+   false
+  ],
+  "blasts": 0,
+  "buttonDisabled": true,
+  "badge": "0"
+ },
+ "turbo": {
+  "speedBefore": 6.68,
+  "speedDuring": 8.78,
+  "turbosLeft": 2,
+  "knocks": 0,
+  "hearts": 5,
+  "badge": "2"
+ },
+ "logs": "no console errors or warnings"
+}

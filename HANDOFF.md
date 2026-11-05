@@ -36,6 +36,19 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - **Evidence and README:** `Previews/WebDemo/screen4_round8_splash/`.
 - **Agents:** all four agent files have a "Round 8 pass 2 SPLASH" section. This pass was done in the main session, with no
   subagents.
+- **Gameplay, PASSED:**
+  - `s3_func.cjs`: the same states as `hero` for `splash` and `splash,nofoam` (lanes, jump, tunnel z 20.561, 12 coins,
+    2 socks), with no console errors.
+  - `r2_func.cjs`: hearts, pause, Bubble Blast and Turbo Spin give the same full report for `splash` as for `liquid`.
+  - Video: `splash_gameplay_9s.mp4`. Frame cost +1% over `liquid` (209 against 207 draw calls).
+- **Next pass, QUEUED by the user** (message "SCREEN 4 EXACT ART-MATCH RECONSTRUCTION"):
+  - the scope: match the approved tunnel lighting (deep cobalt shadows, brilliant cyan reflections, white sparkle, swirling
+    streaks, a warm and pink luminous centre), the gold rim and lavender housing, and the coins, gem, socks, brushes and
+    bubbles (size and position), while keeping the blue water;
+  - planned as a new switch `?s3=match` on top of `splash`, using the agents in order: Art Director, Tunnel & Lighting,
+    Water & VFX, Gameplay & Visual Testing;
+  - the user then asked to see the finished splash comparison and video before it starts, so the Art Director's first
+    run was stopped. Its partial probe output was not saved.
 
 ## Newest (4–5 November, 23:30 UTC onward): fourth Claude account, branch `ccr-aeee6378-mv5kot`, Round 8 LIQUID
 
