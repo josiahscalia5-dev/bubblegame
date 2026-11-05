@@ -1,8 +1,33 @@
-# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9 art match, `?s3=match`, branch `ccr-4aef2c77-0cdeu2`)
+# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9 art match, `?s3=match`, branch `ccr-1f9da4c9-e0yrsc`)
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (5 November, 13:21 UTC onward): sixth session, branch `ccr-4aef2c77-0cdeu2`, Round 9 ART MATCH continued
+## Newest (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
+
+- **Recovered from:** `36c8676`, the sixth session's last autosave (on both `ccr-4aef2c77-0cdeu2` and this branch; left
+  untouched). The rebuilt bundle matched it byte for byte (md5 `ba0c7f6c...`). `bash Tools/cloud_env_setup.sh` installed
+  every tool.
+- **The two specialists, resumed from their 14:30 WIP snapshots** (`wip_snapshots_design_agents/*_af500937`, `*_ada634b5`),
+  each in a new worktree, with their original gate briefs plus the user's fidelity brief:
+  - Tunnel & Lighting finished: `e490836`, merged as `648d47f`. Evidence: `06_tunnel_lighting_gate_fixes/`.
+  - Water & VFX: running when this was written; evidence will go to `07_water_vfx_gate_fixes/`.
+- **The phone fix** (approved by the user at 14:29), `833f471`, `?s3=match` only: `WebDemo/src/match_phone.js`. The
+  original's vertical framing on phones down to aspect 0.45 (sides trimmed, at most 5% each); `uHeroTanW` and the 1:2
+  reference cameras use the 1:2 width; the stage fills the phone edge to edge. Evidence: `10_phone_fix/`.
+- **The user's evidence kit (14:43 UTC):** `Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/`: seven
+  annotated checkpoints, `04_Instructions/PASTE_INTO_CLAUDE.txt` and `VERIFY_CHECKLIST.md` (the acceptance criteria;
+  verify at the Pixel 7 framing too), optional bubble sprites and a placeholder GLB. The original stays the only target.
+  - 01 deep tunnel bubbles, 02 waterline, 04 foam bank: Water & VFX.
+  - 03 vortex, 05 coins/gem/sock: Tunnel & Lighting.
+  - 06 upper frame and 07 white rectangle: the lead (`10_phone_fix/`). 07's cause was `r6Face`'s "light panel above the
+    door" (`tunnel_r6.js`, from the Round 6 guide), removed under `match`.
+- **Next:** merge Water & VFX; the pixel-identity proof against `36c8676` (`11_merged_final/scripts/identity_shots.sh`
+  and `identity_compare.py`; the baseline frames are in the session scratchpad and must be re-made in a new session);
+  `s3_func` and `r2_func`; the seven-checkpoint table with Pixel 7 and 1:2 close-ups in `11_merged_final/`; a video.
+- **Autosave:** running as described below, with `ChatHistory/2026-11-05_seventh_session_round9_continue.md` and
+  `..._seventh_session_design_agent_transcripts.md`.
+
+## Earlier (5 November, 13:21 UTC onward): sixth session, branch `ccr-4aef2c77-0cdeu2`, Round 9 ART MATCH continued
 
 - **Recovered from:** `a5be95c`, the fifth session's last autosave of `ccr-b41bbe83-3fbhkr` (left untouched).
   `ccr-4aef2c77-0cdeu2` starts exactly there. Every other branch holds only older work.
