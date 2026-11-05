@@ -24,3 +24,51 @@ Both restored passes rebuild byte-for-byte to the final bundles the specialists 
 
 Now pushing, starting the autosave, and launching the pixel-identity proof in the background:
 
+Merged and pushed (`68c8c40`). Now running the pixel-identity proof and capturing the merged frames in the background. Meanwhile, I'm preparing the measurement scripts.
+
+Still capturing (the pixel-identity proof covers 11 versions on two builds, so it takes a while). Meanwhile I'm writing the hand-off notes for this session.
+
+Still waiting on the frame captures and the pixel-identity run, both in the background; I'll be notified when the captures finish. Checking progress:
+
+Where things stand:
+
+- **Merged:** both specialists finished their focused-pass work just before the usage limit at 21:06 UTC, but neither got to commit it. I restored both from the 21:32 autosave copies. Each one, rebuilt on its own, gives exactly the game file its specialist reported, so nothing was lost. I merged them (`68c8c40`) and pushed to GitHub.
+  - **Tunnel & Lighting:** the camera is closer, so the pink character is about 1.2× larger and slightly left, like your original. The sock is tilted sideways, the tunnel walls are streakier and deeper blue, and the oversized near bubbles are now the original's sizes.
+  - **Water & VFX follow-up:** less white under her, so more blue water shows between the foam. The foam has more varied colour instead of one flat sky blue, and the far bubbles deep in the tunnel are back.
+- **Sent:** the Pixel 7 video of the ride into the washing machine. It finished recording after the limit hit, so you never got it. It shows the build from before this merge.
+- **Running now:**
+  - frames of the merged game at 2.85, 3.0 and 3.1 s;
+  - the check that the normal game and all 10 older test versions still look exactly the same as before;
+  - the 5-minute autosave.
+- **Still to do:**
+  - the gameplay tests;
+  - re-measuring the foam and waterline round her at the new camera, which nobody has done yet;
+  - the side-by-side with your original, the two close-ups and the five-item checklist.
+
+---
+
+### Automatic check · 2026-11-05 21:49 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-05 21:49 UTC
+
+I committed and pushed the updated hand-off notes and the frames captured so far (`0ee315c`), and GitHub confirms it has that commit. The rest is still running in the background: the merged-game captures, the check that all 10 older test versions are unchanged, and the 5-minute autosave. The autosave will commit more frames as they come in, so the folder will look changed again in between saves.
+
+---
+
+### You · 2026-11-05 21:49 UTC
+
+with the agent, the design agents,  make sure the design agents on the GitHub branch and the GitHub  resporitory where I just told you connected with on the session, make sure all design agents that I was chatting with on its branch of GitHub repository, make sure it's on here on this session, and make sure that it's working on here.
+
+---
+
+### Claude · 2026-11-05 21:50 UTC
+
+Two other branches from today, `ccr-3d8a1ae9-hhgml1` (18:58) and `ccr-de8d9670-2ohd5t` (21:01), have different design-agent files. Checking what's on them:
+
+Only 5 code conflicts. The real question is whether `?s3=focus` still looks exactly as tested on its own branch once our `match` changes sit underneath it. Looking at how `focus` is built:
+
