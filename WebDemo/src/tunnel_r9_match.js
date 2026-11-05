@@ -567,9 +567,26 @@ export function matchWallApply() {
 // in the wall's main (tunnel_r8_liquid.js wallFragment), after its own mouth edge: on the tube's first metre, round the upper
 // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
 // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
+// ?s3=focus (the user's kit, 5 November about 18:26 UTC, problem A: "the exposed lavender-grey inner wall at the lower left"):
+// the lining (heroWalls) runs on before the tube's mouth, and there wallFragment paints it as the washer's flat lavender
+// shell (#c4b8f0) with the navy mouth edge at uStart + 0.1. The rim's collar is centred low, so round the lower sides its
+// opening is wider than the tube and that part of the lining shows through it, in front of the collar's water: a flat
+// lavender strip with a navy line at the lower left and right (found with hide probes at 3.0 s: it goes with heroWalls;
+// heroCollar, r6Face and the floor do not draw it). Below the rim ramp's reach (its complement in upA), on the lining before
+// the mouth and over the navy edge, the walls' own animated water is drawn instead (lqWall: the same material and the same
+// screen-space placement as the collar's water round it, so the two meet without a seam). The upper part, where the gold
+// rim, the bevel and the ramp are, is unchanged.
+function focusMouthWaterGLSL(radius, axisH) {
+  return /* glsl */ `  {   // ?s3=focus: the lining before the mouth, below the rim ramp, is the walls' water (tunnel_r9_match.js)
+    float fdu = u - uStart, fup = (cs.y - ${f4(axisH)}) / ${f4(radius)};
+    float fk = (1.0 - smoothstep(-0.15, 0.3, fup)) * (1.0 - smoothstep(0.2, 0.32, fdu)) * uMatchOn;
+    if (fk > 0.001) col = mix(col, lqWall(vW, normalize(vN), normalize(vT), cs, a, u, a * ${f4(radius)}), fk);
+  }
+`;
+}
 export function matchMouthGLSL(HERO, axisH, radius) {
   const C = HERO.rim.centre;
-  return /* glsl */ `  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
+  return /* glsl */ `${FOCUS_ON ? focusMouthWaterGLSL(radius, axisH) : ''}  {   // ?s3=match: the bevel, lilac line and navy ring inside the rim (tunnel_r9_match.js)
     float du0 = u - uStart;
     float rho = ${f4(RIM_RHO.mouth)} - ${f4(RIM_RHO.perMetre)} * du0;
     float upA = (cs.y - ${f4(axisH)}) / ${f4(radius)};

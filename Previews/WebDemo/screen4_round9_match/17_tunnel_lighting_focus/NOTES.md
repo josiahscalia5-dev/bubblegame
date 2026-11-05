@@ -1,3 +1,8 @@
+**CAMERA DECIDED AND COMMITTED (`0dae738`):** `FOCUS.match.hero.round6.round5.camera = { off: [-0.162, 1.126, -3.1], lookY: 1.655,
+lookX: 0.142, fov: 68 }`, with the rim restaged (`porthole.bezel { inner: 2.506, outer: 2.641 }`, `face.inner 2.59`, `rivets.radius
+3.42`, `hero.rim.centre [-0.1155, 0.8415]`) and `rimRho { mouth: 0.864, perMetre: 0.0855 }`. At 3.0 s: character width 0.473 W, top
+0.695, base 0.850, centre (0.500, 0.780); water top 0.28; tube axis (0.497, 0.531); rim circle 0.931 W round (0.550, 0.672).
+
 # Tunnel & Lighting, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
 
 Worktree branch `worktree-agent-ae55466877e7d52cb`, started at `d6e836d`. Only target: the ORIGINAL APPROVED Screen 4
