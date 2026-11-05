@@ -56,25 +56,26 @@ export const LIQUID = {
   // the rings (the hero layout: tunnel_r7_hero.js HERO.vortex), each a band of water: [radius share of the width, trough,
   // body, crest] colours by screen radius round the vanishing point
   stops: [
-    [0.02, '#ffe6c4', '#fff3e2', '#ffffff'],   // a warm white-gold centre (the approved core is peach and gold)
-    [0.06, '#ffc98e', '#ffdcae', '#fff1d8'],   // peach-gold
-    [0.10, '#9fc4f4', '#cfe9fb', '#f4fbff'],   // pale cyan-white
-    [0.14, '#2466e0', '#3a92f2', '#9fe4ff'],
+    [0.015, '#ffd9a8', '#ffeccc', '#fffaf0'],  // a small warm white-gold core (the approved core is peach and gold)
+    [0.04, '#f6b46e', '#ffcf8f', '#ffe6bd'],   // peach-gold
+    [0.075, '#1a8fe8', '#22b6f4', '#8eeaff'],  // saturated cyan straight round the core (no pale haze)
+    [0.11, '#1650d4', '#2a8cf0', '#5fd2fb'],
+    [0.14, '#1747cc', '#2e95f1', '#79eefc'],
     [0.185, '#1747cc', '#2e95f1', '#5ec7f9'],
     [0.24, '#1d5fe0', '#4aa6f4', '#d4f3ff'],   // ring 2 (a thin pastel rainbow line on it, tinted by angle)
     [0.29, '#1747cc', '#18a8f4', '#79eefc'],   // turquoise-cyan
     [0.36, '#0b36b0', '#1f78f0', '#5ec7f9'],   // the darkest electric blue
     [0.43, '#1747cc', '#2e95f1', '#06cffd'],
   ],
-  ring: { spiral: 1.0, amp: 0.55, floor: 0.75, rainbow: 0.45, rainbowAt: 0.235, rainbowW: 0.02, own: [0.55, 0.35] },
+  ring: { spiral: 2.0, swirl: 0.22, amp: 1.1, floor: 0.75, rainbow: 0.35, rainbowAt: 0.235, rainbowW: 0.018, own: [0.6, 0.3], ownAt: [0.03, 0.06] },
   // the depth model (lqShade): depth = base + band * (1 - ring band) + det * (1 - wave height) - shallow * (thin water)
   // + deep * (extra) + far * (distance) - face * (facets toward the light); 0 lit cyan .. 0.5 body .. 1 trough .. 1.6 abyss
-  shade: { base: 0.12, band: 1.25, det: 0.45, shallow: 0.8, deep: 0.5, far: 0.35, face: 0.3 },
+  shade: { base: 0.05, band: 1.5, det: 0.6, shallow: 0.8, deep: 0.5, far: 0.35, face: 0.3 },
   // the detail waves: two flow-mapped layers of the generated texture [tile size (m) across, along, strength]
-  waves: { big: [1.6, 0.95, 0.55], small: [0.55, 0.38, 0.35], flow: 2.2, swirl: 0.35, cycle: 0.45 },
+  waves: { big: [1.5, 0.9, 0.85], small: [0.5, 0.34, 0.6], flow: 3.2, swirl: 0.45, cycle: 0.45, around: 0.55 },
   // light: the glowing centre `glowAhead` m ahead of the camera on the axis (the sun-glint path), a key light from behind
   // the camera, up and to the left (glints on the swell and near ripples)
-  light: { glowAhead: 16, glint: 3.2, path: 0.55, key: 2.2, sparkle: 1.0, fresnel: 0.42, wallFresnel: 0.22, caustic: 0.55 },
+  light: { glowAhead: 16, glint: 3.6, path: 0.6, key: 2.4, sparkle: 1.3, fresnel: 0.42, wallFresnel: 0.2, caustic: 0.6, wallGlint: 1.0 },
   // the collectibles reflected in the water (gold streaks and glints): how many, how far ahead (m)
   objects: { count: 6, reach: 16, gold: 1.0 },
   // the swell round the character (heroSwell, tunnel_r7_hero_water.js), reshaped: crest heights every 5 degrees from -110 to
@@ -86,15 +87,22 @@ export const LIQUID = {
     line: [0.19, 0.205, 0.224, 0.246, 0.269, 0.291, 0.313, 0.334, 0.355, 0.375, 0.394, 0.415, 0.439, 0.461, 0.482, 0.501, 0.517,
       0.529, 0.538, 0.544, 0.547, 0.548, 0.547, 0.545, 0.541, 0.535, 0.525, 0.513, 0.496, 0.477, 0.456, 0.433, 0.409, 0.384, 0.363,
       0.342, 0.321, 0.299, 0.277, 0.255, 0.232, 0.21, 0.19, 0.175, 0.161],
-    mounds: [[48, 0.035, 9], [24, 0.04, 8], [-6, 0.03, 7], [-30, 0.04, 8], [-52, 0.035, 9]], dip: 0.0, out: 0.34, clear: [0.55, 0.02, 0.09],
+    mounds: [[48, 0.035, 9], [24, 0.04, 8], [-6, 0.03, 7], [-30, 0.04, 8], [-52, 0.035, 9]], dip: 0.0, out: 0.34, clear: [0.6, 0.015, 0.075],
   },
   // the walls' moving water light near the waterline: caustics up to `caustic` m above the water
   walls: { caustic: 1.25 },
+  // the hero grade's vignette colour (sRGB) and the glowing centre's size (share of the width; the hero's is 0.12)
+  grade: { vignetteCol: '#2a5fe0', glowSize: 0.085 },
   // the foam layer (off with nofoam)
-  foam: { crests: 0.85, flecks: 0.7, wake: 0.8, strokes: 0.9, lace: 0.6, swellCrest: 0.9 },
+  foam: { crests: 0.85, flecks: 0.7, wake: 0.8, strokes: 0.9, lace: 0.6, swellCrest: 0.72, splash: 0.5,
+    // translucent spray sheets rising from the waterline either side of the character, the biggest just right of it (the
+    // approved splash at 71% across): [phi (degrees on the crest, - is screen right), height (m), lean outward (-1..1)]
+    plumes: [[-27, 0.42, 1], [-41, 0.4, 1], [-17, 0.26, 0.6], [28, 0.4, -1], [41, 0.3, -1], [-55, 0.3, 1]], plumeAlpha: 0.42,
+    // clusters of clear soap bubbles sitting on the waterline: [phi, how many]
+    bubbles: [[-52, 6], [-28, 5], [30, 5], [52, 6]], bubbleR: [0.022, 0.065] },
   // hidden while the liquid is up (replaced by it): round6's bow wave sheets; with nofoam also the splash particles
   hide: ['r6BowWave'], hideNoFoam: ['heroSplash', 'r5Droplets'],
-  debug: 0,
+  debug: 0,   // 1: the swell in flat green, 2: its depth and opacity, 3: green without the depth test, 4: the floor in flat red
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.liquid;
@@ -202,9 +210,10 @@ float lqRing(vec2 cs, float u, out float rw, out float ang, out float id, out fl
   rw = length(rel) / du / uHeroTanW;
   ang = atan(rel.y, rel.x);
   float lr = log(max(rw, 0.003));
-  vec2 cq = vec2(cos(ang), sin(ang));
+  float sa = ang + uTime * ${f3(Rg.swirl)};   // the swirl turns round the tube
+  vec2 cq = vec2(cos(sa), sin(sa));
   float wob = texture2D(uLqTex, cq * 0.31 + vec2(lr * 0.37 - uTime * 0.012, uTime * 0.02)).b;
-  float s = lr * ${f3(V.perLog)} + ang / 6.2832 * ${f3(Rg.spiral)} + (wob - 0.5) * ${f3(V.wobble)} - uTime * ${f3(V.flow)} - uHeroTravel * ${f3(V.travel)};
+  float s = lr * ${f3(V.perLog)} + sa / 6.2832 * ${f3(Rg.spiral)} + (wob - 0.5) * ${f3(V.wobble)} - uTime * ${f3(V.flow)} - uHeroTravel * ${f3(V.travel)};
   id = floor(s);
   spacing = du / ${f3(V.perLog)};   // metres along the path between rings here
   return fract(s);
@@ -229,8 +238,11 @@ vec3 lqEnv(vec3 R) {
 }
 // the collectibles in the water: a warm gold reflection streak under each coin (the reflected ray finds the coin, stretched
 // up and down by the ripples) and glints on the ripples round it (lilac-white for the socks and the gem)
-vec3 lqObjects(vec3 W, vec3 N, vec3 V, vec3 R) {
+vec3 lqObjects(vec3 W, vec3 N, vec3 V, vec3 R, float hDet, float onFloor) {
   vec3 acc = vec3(0.0);
+  // the water's place on the screen (the camera looks along the path): sideways and up, per metre ahead
+  vec3 cw = W - cameraPosition; float fw = max(dot(cw, uLqFwd), 0.1);
+  vec2 sw = vec2(dot(cw, uLqSide), dot(cw, uLqUp)) / fw;
   for (int i = 0; i < ${LIQUID.objects.count}; i++) {
     vec4 o = uLqObj[i];
     if (o.w == 0.0) continue;
@@ -238,11 +250,20 @@ vec3 lqObjects(vec3 W, vec3 N, vec3 V, vec3 R) {
     float rad = abs(o.w) / L, c = dot(R, d);
     vec3 e = R - d * c;
     float ev = dot(e, uLqUp), es = length(e - uLqUp * ev);
-    float streak = (1.0 - smoothstep(0.6, 1.3, length(vec2(es / (rad * 1.1), ev / (rad * 3.2))))) * step(0.0, c);
+    // the true reflection (the reflected ray finds the object), stretched up and down by the ripples
+    float refl = (1.0 - smoothstep(0.6, 1.3, length(vec2(es / (rad * 1.1), ev / (rad * 3.2))))) * step(0.0, c);
+    // and the painted kind: a broken streak of light on the water straight under the object on the screen
+    vec3 co = o.xyz - cameraPosition; float fo = max(dot(co, uLqFwd), 0.1);
+    vec2 so = vec2(dot(co, uLqSide), dot(co, uLqUp)) / fo;
+    float ro = abs(o.w) / fo;   // the object's radius on the screen (per metre ahead)
+    float below = so.y - ro * 0.6 - sw.y;
+    float under = (1.0 - smoothstep(ro * 0.35, ro * 0.95, abs(sw.x - so.x))) * smoothstep(-ro * 0.2, ro * 0.3, below) * (1.0 - smoothstep(ro * 1.2, ro * 3.6, below))
+      * step(dot(cw, uLqFwd), dot(co, uLqFwd) + 1.5) * onFloor;
+    float broken = smoothstep(0.42, 0.72, hDet);
     vec3 Hc = normalize(d + V);
     float g = pow(max(dot(N, Hc), 0.0), 260.0) * exp(-L * 0.3);
     vec3 col = o.w > 0.0 ? mix(${v3(K.goldDeep)}, ${v3(K.gold)}, 0.6) : ${v3(K.lilac)};
-    acc += col * (streak * ${f3(LIQUID.objects.gold * 0.85)} + g * 2.4);
+    acc += col * (refl * ${f3(LIQUID.objects.gold * 0.85)} + under * broken * ${f3(LIQUID.objects.gold * 0.9)} + g * 2.4);
   }
   return acc;
 }
@@ -251,7 +272,7 @@ vec3 lqObjects(vec3 W, vec3 N, vec3 V, vec3 R) {
 // scroll: the steady scroll (uv); band, tilt: the ring band's height (0 trough .. 1 crest) and its slope along TA;
 // shallow: how thin and lit-through (0 .. 1); deep: extra depth (0 .. 1); fres: how much it reflects; N: the final normal.
 vec3 lqShade(vec3 W, vec3 N0, vec3 TA, vec3 TB, vec2 uv, vec2 flow, vec2 scroll, float band, float tilt, float shallow, float deep,
-             float fres, float turqK, out vec3 N, out float hDet, out float caus) {
+             float fres, float turqK, float onFloor, out vec3 N, out float hDet, out float caus) {
   vec4 A = lqFlow(uv / vec2(${f3(Wv.big[0])}, ${f3(Wv.big[1])}) + scroll, flow, ${f3(1 / Wv.cycle / 2)}, uTime);
   vec4 B = lqFlow(uv / vec2(${f3(Wv.small[0])}, ${f3(Wv.small[1])}) + scroll * 1.7 + vec2(0.31, 0.17), flow * 1.4, ${f3(1 / Wv.cycle / 1.4)}, uTime + 0.23);
   vec2 nxy = (A.xy * 2.0 - 1.0) * ${f3(Wv.big[2])} + (B.xy * 2.0 - 1.0) * ${f3(Wv.small[2])};
@@ -299,7 +320,7 @@ vec3 lqShade(vec3 W, vec3 N0, vec3 TA, vec3 TB, vec2 uv, vec2 flow, vec2 scroll,
   float star = 1.0 - smoothstep(0.0, 0.16, length(fract(sp) - 0.5 - (vec2(lqHash(sc + 3.1), lqHash(sc + 8.3)) - 0.5) * 0.6));
   col += ${v3(K.glint)} * step(0.93, sh) * star * smoothstep(0.55, 0.85, hDet) * pow(max(0.0, sin(uTime * (3.0 + sh * 4.0) + sh * 40.0)), 4.0) * ${f3(Lt.sparkle)} * 2.0;
   // the coins, the socks and the gem reflected in the water
-  col += lqObjects(W, N, V, R);
+  col += lqObjects(W, N, V, R, hDet, onFloor);
   return col;
 }
 `;
@@ -325,6 +346,12 @@ export function buildLiquid({ scene, TR, L, W, mascot, updaters, time, U, HERO, 
   report.floor = floorInfo;
   report.swell = liquidSwell({ scene, GL, LU });
   report.glow = warmGlow({ scene });
+  // the hero grade's vignette pulled light cyan toward lavender round the edges: under liquid it is a cobalt that keeps the
+  // hue (heroGrade is built after this); the bright centre a little smaller (the approved core is small and warm)
+  if (HERO.grade) HERO.grade.vignetteCol = LIQUID.grade.vignetteCol;
+  if (HERO.glow) HERO.glow.size = LIQUID.grade.glowSize;
+  if (LIQUID_FOAM) report.splash = translucentSplash({ scene });
+  if (LIQUID_FOAM) report.waterlineFoam = waterlineFoam({ scene, updaters, time, tex });
   // the slide's water sheet is not drawn under the floor once the liquid is fully in; the drum's sheet is replaced
   const slide = (waterSheets || []).find((m) => m !== drumSheet);
   const cut = { value: 0 }, cutU = TS + LIQUID.ribbon.from + 2.5;
@@ -510,11 +537,11 @@ void main() {
   float sw = sin(xu.y * 0.45 - uTime * 0.5) * ${f3(Wv.swirl)} * (0.3 + 0.7 * inDrum);
   vec2 part = toP / max(rP, 0.3) * exp(-rP * rP / 1.2) * 0.5;
   vec2 flow = vec2(sw + part.x, 0.25 + part.y * 0.5);
-  vec2 scroll = vec2(0.0, -uTime * ${f3(Wv.flow)} / ${f3(Wv.big[1])});
+  vec2 scroll = vec2(0.0, uTime * ${f3(Wv.flow)} / ${f3(Wv.big[1])});   // toward the rider
   vec3 TA = normalize(vT - N0 * dot(vT, N0)), TB = normalize(cross(TA, N0));
   vec3 N; float hDet, caus;
   float near = exp(-rP * rP / 2.5);
-  vec3 col = lqShade(vW, N0, TA, TB, vec2(xu.x, xu.y), flow, scroll, band, tilt, near * 0.15, 0.0, ${f3(LIQUID.light.fresnel)}, 1.0 - side * 0.6, N, hDet, caus);
+  vec3 col = lqShade(vW, N0, TA, TB, vec2(xu.x, xu.y), flow, scroll, band, tilt, near * 0.15, 0.0, ${f3(LIQUID.light.fresnel)}, 1.0 - side * 0.4, 1.0, N, hDet, caus);
   // far away the floor joins the whirlpool's rings round the centre
   ${rampDecl()}
   col = mix(col, mix(bd, cr, lqBand(k) * 0.5), smoothstep(0.14, 0.04, rw) * 0.8);
@@ -546,10 +573,10 @@ ${haz ? `  if (inDrum > 0.0) {   // a brush's warning, as on the drum's own wate
     float wakeF = exp(-pow((abs(px) - arm) / 0.09, 2.0)) * exp(-behind / 3.0) * smoothstep(0.2, 0.8, behind) * smoothstep(0.45, 0.7, hDet + patchF * 0.3) * ${f3(Fm.wake)};
     float laceF = side * smoothstep(0.5, 0.75, hDet + caus * 0.5) * ${f3(Fm.lace)};
     float foam = clamp(max(max(crestF, fleck), max(wakeF, laceF)), 0.0, 1.0) * (1.0 - s4Haz);
-    col = mix(col, mix(${v3(K.foamShade)}, ${v3(K.foam)}, smoothstep(0.3, 0.8, hDet)), foam);
+    col = mix(col, mix(${v3(K.foamShade)}, ${v3(K.foam)}, smoothstep(0.3, 0.8, hDet)), foam * 0.78);   // translucent: blue shows through
   }
 #endif
-${haz ? `  col = mix(col, vec3(1.0, 0.12, 0.5) * 0.95, clamp(s4Haz * 1.7, 0.0, 1.0) * 0.8);\n` : ''}
+${haz ? `  col = mix(col, vec3(1.0, 0.12, 0.5) * 0.95, clamp(s4Haz * 1.7, 0.0, 1.0) * 0.35);   // softer than the drum sheet (0.8): a glow under the water\n` : ''}
   gl_FragColor = vec4(col, vA);
 ${LIQUID.debug === 4 ? '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);' : ''}
 }
@@ -596,17 +623,18 @@ vec3 lqWall(vec3 W, vec3 N0, vec3 T0, vec2 cs, float a, float u, float arc) {
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
   // the water swirls round the tube and along it
   vec2 uv = vec2(arc, u);
-  vec2 flow = vec2(0.5, 0.15);
-  vec2 scroll = vec2(uTime * 0.18, -uTime * ${f3(Wv.flow * 0.6)} / ${f3(Wv.big[1])});
+  vec2 flow = vec2(0.6, 0.2);
+  vec2 scroll = vec2(uTime * ${f3(Wv.around)}, uTime * ${f3(Wv.flow * 0.8)} / ${f3(Wv.big[1])});
   vec3 N; float hDet, caus;
   float hW = cs.y;   // height above the water
-  vec3 col = lqShade(W, N0, TA, TB, uv, flow, scroll, band, -tilt, 0.0, 0.0, ${f3(LIQUID.light.wallFresnel)}, 0.35 * (1.0 - smoothstep(0.1, 0.6, hW)), N, hDet, caus);
+  vec3 col = lqShade(W, N0, TA, TB, uv, flow, scroll, band, -tilt, 0.0, 0.0, ${f3(LIQUID.light.wallFresnel)}, 0.7 * (1.0 - smoothstep(0.0, 0.7, hW)), 1.0 - smoothstep(0.1, 0.5, hW), N, hDet, caus);
   // the ring's own colours by radius (the measured bands): trough, body and crest; the liquid's light on top
   vec3 ringCol = mix(bd, tr, clamp(1.0 - smoothstep(0.0, 0.25, k) + smoothstep(0.86, 1.0, k), 0.0, 1.0) * aa);
   ringCol = mix(ringCol, cr, smoothstep(0.45, 0.66, k) * (1.0 - smoothstep(0.7, 0.8, k)) * aa);
-  float own = 1.0 - smoothstep(0.12, 0.2, rw);   // the pale centre keeps its measured colours
+  float own = 1.0 - smoothstep(${f3(Rg.ownAt[0])}, ${f3(Rg.ownAt[1])}, rw);   // the small warm core keeps its own colours
   col = mix(col, ringCol, ${f3(Rg.own[1])} + ${f3(Rg.own[0])} * own);
-  col += (col * 0.6 + ${v3(K.cyanHi)} * 0.4) * (hDet - 0.5) * 0.25 * (1.0 - own);   // the waves' light and shade over the rings
+  col += (col * 0.6 + ${v3(K.cyanHi)} * 0.4) * (hDet - 0.5) * 0.5 * (1.0 - own);   // the waves' light and shade over the rings
+  col += ${v3(K.cyanHi)} * pow(band, 6.0) * smoothstep(0.55, 0.8, hDet) * 0.35 * (1.0 - own);   // the lit cyan crest of each band
   // the hero's pastel rainbow ring, tinted by angle
   float upA = clamp((cs.y - uHeroCam.y) / max(length(cs - uHeroCam.xy), 1e-3), -1.0, 1.0), rightA = -(cs.x - uHeroCam.x) / max(length(cs - uHeroCam.xy), 1e-3);
   vec3 tint = mix(${v3('#b98cf0')}, ${v3('#8fdcf6')}, smoothstep(-0.6, 0.6, rightA));
@@ -619,14 +647,22 @@ vec3 lqWall(vec3 W, vec3 N0, vec3 T0, vec2 cs, float a, float u, float arc) {
   float c1 = texture2D(uLqTex, cuv).a, c2 = texture2D(uLqTex, cuv * 1.37 + vec2(0.41, -uTime * 0.11)).a;
   col += ${v3(K.cyanHi)} * pow(c1 * c2, 1.4) * wl * 1.1 * smoothstep(0.05, 0.14, rw);
   col += ${v3(K.turqHi)} * wl * 0.12 * (0.6 + 0.4 * sin(u * 3.0 - uTime * 4.0 + arc * 2.0));
+  float c3 = texture2D(uLqTex, vec2(arc * 0.35 - uTime * 0.12, u * 0.22 + uTime * 0.3)).a, c4 = texture2D(uLqTex, vec2(arc * 0.47 + uTime * 0.09, u * 0.3 + uTime * 0.21) + 0.5).a;
+  col += ${v3(K.cyanHi)} * pow(c3 * c4, 1.6) * 0.55 * smoothstep(0.06, 0.16, rw) * (0.5 + 0.5 * band) * (1.0 - wl * 0.5);
+  // sharp white glints on the bands' crests, twinkling as the water moves
+  vec2 gq = vec2(arc * 2.2 + uTime * 0.9, u * 1.3 + uTime * 2.4), gc = floor(gq);
+  float gh = lqHash(gc + 13.7);
+  float gs = 1.0 - smoothstep(0.0, 0.14, length(fract(gq) - 0.5 - (vec2(lqHash(gc + 1.3), lqHash(gc + 6.1)) - 0.5) * 0.6));
+  col += vec3(1.0) * step(0.9, gh) * gs * smoothstep(0.5, 0.9, band) * smoothstep(0.5, 0.8, hDet) * smoothstep(0.08, 0.16, rw) * ${f3(LIQUID.light.wallGlint)} * 1.6;
 #if LQ_FOAM
   {   // white splash strokes along the spirals (broken, irregular) and droplets thrown off them
     float ringPh = log(max(rw, 0.003)) * ${f3(HERO.vortex.perLog)} - uTime * ${f3(HERO.vortex.flow)} - uHeroTravel * ${f3(HERO.vortex.travel)};
-    vec2 cq = vec2(cos(ang), sin(ang));
-    float s1 = texture2D(uLqTex, vec2(ang * 0.2 + id * 0.37, ringPh * 0.9)).b;
-    float s2 = texture2D(uLqTex, cq * 0.6 + vec2(id * 0.13, ringPh * 0.25)).b;
+    float sa = ang + uTime * ${f3(Rg.swirl)};
+    vec2 cq = vec2(cos(sa), sin(sa));
+    float s1 = texture2D(uLqTex, cq * 0.45 + vec2(id * 0.37, ringPh * 0.9)).b;
+    float s2 = texture2D(uLqTex, cq * 0.9 + vec2(id * 0.13, ringPh * 0.25)).b;
     float onCrest = smoothstep(0.4, 0.62, k) * (1.0 - smoothstep(0.7, 0.82, k));
-    float stroke = smoothstep(0.62, 0.72, s1 * 0.6 + s2 * 0.6 + hDet * 0.25) * onCrest * smoothstep(0.1, 0.17, rw) * (1.0 - smoothstep(0.45, 0.52, rw));
+    float stroke = smoothstep(0.8, 0.88, s1 * 0.6 + s2 * 0.6 + hDet * 0.25) * onCrest * smoothstep(0.1, 0.17, rw) * (1.0 - smoothstep(0.45, 0.52, rw));
     vec2 dg = vec2(ang * 40.0, ringPh * 16.0), dc = floor(dg);
     float drop = step(0.9, lqHash(dc + 71.0)) * (1.0 - smoothstep(0.08, 0.22, length(fract(dg) - 0.5))) * smoothstep(0.1, 0.16, rw) * (1.0 - smoothstep(0.44, 0.5, rw));
     col = mix(col, ${v3(K.foam)}, clamp(stroke * ${f3(Fm.strokes)} + drop * 0.8, 0.0, 1.0));
@@ -690,19 +726,20 @@ void main() {
   vec2 scroll = vec2(-fl * 0.3, -fl * 1.1);
   vec3 N; float hDet, caus;
   float thin = 1.0 - smoothstep(0.0, 0.05, d);
-  vec3 col = lqShade(vW, N0, down, along, uv, flow, scroll, 1.0 - 0.6 * smoothstep(0.0, 0.25, d), 0.0, thin, smoothstep(0.04, 0.3, d), ${f3(LIQUID.light.fresnel)}, 0.6, N, hDet, caus);
+  vec3 col = lqShade(vW, N0, down, along, uv, flow, scroll, 0.75 - 0.35 * smoothstep(0.0, 0.25, d), 0.0, thin * 0.35, smoothstep(0.04, 0.3, d), ${f3(LIQUID.light.fresnel)}, 0.35, 1.0, N, hDet, caus);
   // the height above the water round it: the foot fades into the floor's water (one surface)
   float hUp = dot(vW - uC, uU);
   float a = mix(${f3(C[0])}, 1.0, smoothstep(${f3(C[1])}, ${f3(C[2])}, d)) * smoothstep(-0.06, 0.06, hUp + 0.02);
 #if LQ_FOAM
   {   // a thin white crest broken into short pieces, and flecks of spray down the face
     float nc = texture2D(uLqTex, vec2(as * 0.9 - fl * 0.12, uTime * 0.05)).b, nc2 = texture2D(uLqTex, vec2(as * 2.3 - fl * 0.2, 0.5 + uTime * 0.07)).b;
-    float cw = 0.012 + 0.05 * nc * nc;
-    float crest = (1.0 - smoothstep(cw * 0.5, cw, d)) * smoothstep(0.45, 0.62, nc * 0.7 + nc2 * 0.5) * ${f3(Fm.swellCrest)};
+    float cw = 0.005 + 0.032 * nc * nc;
+    float crest = (1.0 - smoothstep(cw * 0.45, cw, d)) * smoothstep(0.5, 0.64, nc * 0.7 + nc2 * 0.5) * ${f3(Fm.swellCrest)};
+    crest *= 1.0 - 0.7 * smoothstep(0.35, 0.6, caus + (1.0 - hDet) * 0.4) * smoothstep(0.006, 0.02, d);   // lacy: blue shows through
     vec2 fc = vec2(as * 30.0 - fl * 1.5, d * 26.0 - fl * 3.5), fi = floor(fc);
-    float fleck = step(0.93, lqHash(fi + 5.3)) * (1.0 - smoothstep(0.1, 0.3, length(fract(fc) - 0.5))) * (1.0 - smoothstep(0.05, 0.3, d)) * ${f3(Fm.flecks)};
+    float fleck = step(0.965, lqHash(fi + 5.3)) * (1.0 - smoothstep(0.1, 0.3, length(fract(fc) - 0.5))) * (1.0 - smoothstep(0.05, 0.3, d)) * ${f3(Fm.flecks)};
     float white = clamp(crest + fleck, 0.0, 1.0);
-    col = mix(col, ${v3(K.foam)}, white); a = max(a, white);
+    col = mix(col, ${v3(K.foam)}, white * 0.8); a = max(a, white * 0.8);   // translucent: blue shows through
   }
 #endif
   gl_FragColor = vec4(col, a * step(0.001, uFade));
@@ -715,6 +752,129 @@ ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.
 }
 
 // ---------------------------------------------------------------- the glowing centre, warmer (the approved core is peach and gold)
+// the splash droplets round the character (heroSplash), translucent: the blue water shows through the spray
+// the waterline's foam round the character (foam layer only), riding with the swell (its own frame uniforms):
+//   - spray sheets: translucent fans of white rising from the crest either side, streaked, breaking into droplets at the
+//     top, leaning outward; bigger on the side it swerves to and on landing, smaller in the air (one instanced draw call);
+//   - clusters of clear soap bubbles sitting on the waterline (one instanced draw call)
+function waterlineFoam({ scene, updaters, time, tex }) {
+  const swell = scene.getObjectByName('heroSwell');
+  if (!swell) return null;
+  const SU = swell.material.uniforms, SW = HERO_WATER.swell, Fm = LIQUID.foam, D2R = Math.PI / 180, rnd = mulberryLq(0x5b1a5);
+  const crest = (phi) => {   // the crest's height and place (the hero water's crest line, as it builds it)
+    const i = THREE.MathUtils.clamp((phi + 110) / 5, 0, SW.line.length - 1.0001), i0 = Math.floor(i);
+    let h = SW.line[i0] + (SW.line[i0 + 1] - SW.line[i0]) * (i - i0) - (SW.dip || 0);
+    for (const [c, a, w] of SW.mounds) { const t = (phi - c) / w; if (Math.abs(t) < 1) h += a * (1 - t * t) ** 2; }
+    const a = phi * D2R; let nx = Math.sin(a) / SW.ax, nu = -Math.cos(a) / SW.au; const nl = Math.hypot(nx, nu);
+    return { x: SW.ax * Math.sin(a), u: -SW.au * Math.cos(a), h, nx: nx / nl, nu: nu / nl };
+  };
+  const frame = { uC: SU.uC, uR: SU.uR, uU: SU.uU, uT: SU.uT, uFade: SU.uFade, uLat: SU.uLat, uAir: SU.uAir, uLand: SU.uLand, uTime: time, uLqTex: { value: tex } };
+  const report = {};
+  {   // spray sheets
+    const n = Fm.plumes.length, quad = new THREE.PlaneGeometry(1, 1), g = new THREE.InstancedBufferGeometry();
+    g.index = quad.index; g.setAttribute('position', quad.attributes.position);
+    const a1 = new Float32Array(n * 4), a2 = new Float32Array(n * 4);
+    Fm.plumes.forEach(([phi, h, lean], i) => {
+      const c = crest(phi);
+      a1.set([c.x + c.nx * 0.05, c.h - 0.03, c.u + c.nu * 0.05, h], i * 4);
+      a2.set([lean, rnd(), phi < 0 ? -1 : 1, 0], i * 4);
+    });
+    g.setAttribute('aPl', new THREE.InstancedBufferAttribute(a1, 4)); g.setAttribute('aPl2', new THREE.InstancedBufferAttribute(a2, 4)); g.instanceCount = n;
+    const mat = new THREE.ShaderMaterial({ uniforms: frame, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+      blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+      vertexShader: /* glsl */ `
+attribute vec4 aPl, aPl2;   // place on the crest (x, h, u in the character's frame), height | lean, phase, side, -
+uniform vec3 uC, uR, uU, uT; uniform float uTime, uFade, uLat, uAir, uLand;
+varying vec2 vUv; varying float vA, vSeed;
+void main() {
+  float side = aPl2.z;
+  float pile = 1.0 + clamp(side * uLat * 0.12, -0.5, 0.8);
+  float k = uFade * pile * (1.0 - 0.7 * uAir) * (1.0 + uLand * 0.9);
+  float pulse = 0.82 + 0.22 * sin(uTime * 3.1 + aPl2.y * 6.28) + 0.1 * sin(uTime * 7.3 + aPl2.y * 17.0);
+  float H = aPl.w * k * pulse;
+  vec3 base = uC + uR * aPl.x + uU * aPl.y + uT * aPl.z;
+  vec3 camR = normalize(vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]));
+  float y = position.y + 0.5;
+  vec3 w = base + camR * (position.x * H * 0.85 * (0.4 + 0.6 * y) + aPl2.x * 0.4 * y * y * H) + uU * (y * H);
+  vUv = vec2(position.x * 2.0, y); vA = k; vSeed = aPl2.y;
+  gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
+}`,
+      fragmentShader: /* glsl */ `
+uniform sampler2D uLqTex; uniform float uTime;
+varying vec2 vUv; varying float vA, vSeed;
+void main() {
+  float x = vUv.x, y = vUv.y;
+  float ax = abs(x);
+  float body = 1.0 - smoothstep(0.45, 1.0, ax);
+  // streaks rising and fanning out, broken where the texture is low (blue shows through)
+  float st = texture2D(uLqTex, vec2(x / (y + 0.35) * 0.35 + vSeed * 3.7, y * 0.3 - uTime * 0.8)).b;
+  float st2 = texture2D(uLqTex, vec2(x / (y + 0.35) * 0.8 + vSeed * 1.3, y * 0.55 - uTime * 1.3) + 0.5).b;
+  float streak = smoothstep(0.42, 0.78, st * 0.6 + st2 * 0.6);
+  float top = 1.0 - smoothstep(0.4, 1.0, y);
+  float a = body * (0.15 + 0.85 * streak) * (0.25 + 0.75 * top) * smoothstep(0.0, 0.12, y);
+  // droplets breaking off the top
+  vec2 dq = vec2(x * 6.0 + vSeed * 9.0, y * 8.0 - uTime * 2.6), dc = floor(dq);
+  float dh = fract(sin(dot(dc, vec2(12.9898, 78.233))) * 43758.5453);
+  float drop = step(0.8, dh) * (1.0 - smoothstep(0.1, 0.28, length(fract(dq) - 0.5))) * smoothstep(0.3, 0.75, y) * (1.0 - smoothstep(0.75, 1.0, ax));
+  a = max(a * ${f3(Fm.plumeAlpha)}, drop * 0.7) * vA;
+  vec3 col = mix(vec3(0.74, 0.9, 1.0), vec3(1.0), clamp(streak * 0.75 + drop, 0.0, 1.0));
+  gl_FragColor = vec4(col * a, a);
+}` });
+    const mesh = new THREE.Mesh(g, mat); mesh.name = 'lqSpraySheets'; mesh.frustumCulled = false; mesh.renderOrder = 7;
+    scene.add(mesh);
+    report.sheets = { count: n, drawCalls: 1, triangles: n * 2 };
+  }
+  {   // clear bubbles on the waterline
+    const list = [];
+    for (const [phi0, count] of Fm.bubbles) for (let i = 0; i < count; i++) {
+      const phi = phi0 + (rnd() - 0.5) * 9, c = crest(phi), r = Fm.bubbleR[0] + (Fm.bubbleR[1] - Fm.bubbleR[0]) * rnd() ** 1.6;
+      const out = 0.02 + rnd() * 0.05;
+      list.push([c.x + c.nx * out, c.h - r * 0.35 + rnd() * 0.02, c.u + c.nu * out, r]);
+    }
+    const n = list.length, sphere = new THREE.SphereGeometry(1, 14, 10), g = new THREE.InstancedBufferGeometry();
+    g.index = sphere.index; g.setAttribute('position', sphere.attributes.position); g.setAttribute('normal', sphere.attributes.normal);
+    const inst = new Float32Array(n * 4); list.forEach((b, i) => inst.set(b, i * 4));
+    g.setAttribute('inst', new THREE.InstancedBufferAttribute(inst, 4)); g.instanceCount = n;
+    const mat = new THREE.ShaderMaterial({ uniforms: frame, transparent: true, depthWrite: false,
+      blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+      vertexShader: /* glsl */ `
+attribute vec4 inst; uniform vec3 uC, uR, uU, uT; uniform float uTime, uFade, uAir;
+varying vec3 vN, vV; varying float vSeed, vA;
+void main() {
+  vSeed = fract(inst.x * 7.1 + inst.z * 3.3);
+  vec3 c = uC + uR * inst.x + uU * (inst.y + 0.012 * sin(uTime * 4.0 + vSeed * 30.0)) + uT * inst.z;
+  vec3 w = c + (uR * position.x + uU * position.y + uT * position.z) * inst.w * (1.0 + 0.04 * sin(uTime * 6.0 + vSeed * 9.0));
+  vN = normalize(uR * normal.x + uU * normal.y + uT * normal.z); vV = normalize(cameraPosition - w);
+  vA = uFade * (1.0 - 0.6 * uAir);
+  gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
+}`,
+      fragmentShader: /* glsl */ `
+uniform float uTime; varying vec3 vN, vV; varying float vSeed, vA;
+void main() {
+  float f = 1.0 - abs(dot(normalize(vN), normalize(vV)));
+  float rim = pow(f, 2.5), body = 0.05 + 0.08 * pow(f, 1.5);
+  vec3 film = 0.6 + 0.4 * cos(6.2832 * (f * 1.3 + vN.y * 0.4 + vec3(0.0, 0.33, 0.67) + uTime * 0.05 + vSeed));
+  vec3 col = vec3(0.85, 0.95, 1.0) * body + mix(vec3(1.0), film, 0.5) * rim * 0.85;
+  float spec = pow(max(dot(reflect(-normalize(vec3(-0.45, 0.6, 0.65)), normalize(vN)), vV), 0.0), 40.0);
+  float a = clamp(body + rim * 0.75 + spec, 0.0, 1.0) * vA;
+  gl_FragColor = vec4((col + vec3(1.0) * spec) * vA, a);
+}` });
+    const mesh = new THREE.Mesh(g, mat); mesh.name = 'lqWaterlineBubbles'; mesh.frustumCulled = false; mesh.renderOrder = 7;
+    scene.add(mesh);
+    report.bubbles = { count: n, drawCalls: 1, triangles: n * sphere.index.count / 3 };
+  }
+  const meshes = ['lqSpraySheets', 'lqWaterlineBubbles'].map((nm) => scene.getObjectByName(nm));
+  updaters.push(() => { for (const m of meshes) m.visible = swell.visible; });   // with the swell
+  return report;
+}
+function translucentSplash({ scene }) {
+  const m = scene.getObjectByName('heroSplash');
+  if (!m || !m.material.fragmentShader.includes('gl_FragColor = vec4(col * a, a);')) return null;
+  m.material.fragmentShader = m.material.fragmentShader.replace('gl_FragColor = vec4(col * a, a);',
+    `a *= ${f3(LIQUID.foam.splash)}; col = mix(col, ${v3('#bfeeff')}, 0.25); gl_FragColor = vec4(col * a, a);   // ?s3=liquid: translucent spray`);
+  m.material.needsUpdate = true;
+  return { alpha: LIQUID.foam.splash };
+}
 function warmGlow({ scene }) {
   const g = scene.getObjectByName('heroGlow');
   if (!g || !g.material.fragmentShader.includes('vec3(1.0, 0.99, 0.96) * core * uCore')) return null;

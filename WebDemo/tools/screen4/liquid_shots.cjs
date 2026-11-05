@@ -55,8 +55,15 @@ const server = http.createServer((req, res) => {
     const f = { t: T, state: await page.evaluate(() => window.__bw.state()) };
     await page.screenshot({ path: path.join(OUT, `${LABEL}_t${T.toFixed(2)}.png`), clip: await page.locator('#stage').boundingBox() });
     if (process.env.CANVAS) await canvasShot(path.join(OUT, `${LABEL}_t${T.toFixed(2)}_canvas.png`));
+    // one frame's draw calls and triangles, and (software rendering, so only a relative measure) the time of 8 frames, each
+    // waited for with a one-pixel read
     if (process.env.COST) f.cost = await page.evaluate(() => { window.__gl.calls = 0; window.__gl.tris = 0; window.__bw.render(); const r = window.__bw.debug().renderer.info;
-      return { drawCalls: window.__gl.calls, triangles: Math.round(window.__gl.tris), textures: r.memory.textures, geometries: r.memory.geometries, programs: r.programs ? r.programs.length : null }; });
+      const out = { drawCalls: window.__gl.calls, triangles: Math.round(window.__gl.tris), textures: r.memory.textures, geometries: r.memory.geometries, programs: r.programs ? r.programs.length : null };
+      const gl = window.__bw.debug().renderer.getContext(), px = new Uint8Array(4);
+      window.__bw.render(); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+      const t0 = performance.now(); for (let i = 0; i < 8; i++) { window.__bw.render(); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); }
+      out.msPerFrameSoftware = +((performance.now() - t0) / 8).toFixed(1);
+      return out; });
     out.frames.push(f);
   }
   out.report = await page.evaluate(() => { const r = window.__bwS3; try { return JSON.parse(JSON.stringify(r)); } catch (e) { return String(e); } });
