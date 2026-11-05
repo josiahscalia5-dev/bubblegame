@@ -26,3 +26,28 @@ The user's priorities for using them:
 The user's warning: no stitched tunnel texture with visible patchwork seams, repeated rows of copied artwork, baked-in
 collectibles or pale blown-out lavender haze. Reference-derived textures must isolate the water material and be seamless
 before they go on curved geometry, and the mapping must be judged in real gameplay, not on a texture sheet.
+
+## The user's rendering requirements (5 November 2026, later message)
+
+- **The goal:** the playable game should LOOK like the original approved image brought to life, not merely contain
+  similar objects. The user aims for roughly 90-95% visual similarity, as a target. Never claim it without evidence.
+- **Approach:** a hybrid 2.5D/3D, reference-matched rendering is allowed where it improves fidelity: art-directed texture
+  layers on the real geometry, and layers that live in the 3D scene and move with it. Never a static screenshot over the
+  gameplay.
+- **Reference 5:** a perspective illustration, not a prepared UV texture. Inspect any unwrap on the game geometry for
+  stretching, repeats, seams and perspective errors. If needed, build seamless, art-directed flowing layers (tileable,
+  synthesised from its water character) with proper UV mapping and animated distortion.
+- **One continuous body of water:** on the curved walls AND in the channel under the character (deep cobalt shadows,
+  turquoise currents, cyan glints, luminous caustics, controlled highlights). Not painted rings with a separate flat
+  floor.
+- **Reference 3:** large glossy translucent turquoise waves round the character, irregular white bubbly crests, droplets,
+  spray and bubbles, the lower body visibly in blue liquid. The character model is unchanged, and foam is secondary.
+- **No passes spent only on brightness, bloom, particle counts or generic effects.** Prioritise what makes the approved
+  image recognisable.
+- **Checkpoints:**
+  1. After the wall-material stage, show a real 3.0 s gameplay frame of `?s3=match` at full size, beside the original and
+     the previous version.
+  2. Judge it on five failures: the cobalt/cyan distribution; the luminous swirling detail; the housing and camera depth;
+     opaque or flat water round the character; object positions and scale.
+  3. After the Water & VFX stage, show 2.85, 3.0 and 3.1 s comparisons and a short gameplay video.
+  4. Save verified checkpoints to GitHub before merging.
