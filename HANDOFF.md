@@ -21,7 +21,19 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - 03 vortex, 05 coins/gem/sock: Tunnel & Lighting.
   - 06 upper frame and 07 white rectangle: the lead (`10_phone_fix/`). 07's cause was `r6Face`'s "light panel above the
     door" (`tunnel_r6.js`, from the Round 6 guide), removed under `match`.
-- **Next:** merge Water & VFX; the pixel-identity proof against `36c8676` (`11_merged_final/scripts/identity_shots.sh`
+- **Later (15:40-16:00 UTC):** Water & VFX finished (`97c5d58`, merged as `b91e952`): 132 tunnel bubbles at three depths,
+  white streaks, opaque froth lobes, the character ON TOP of the water (waterline 0.835; the user's correction at about
+  15:20 UTC, now in `CLAUDE.md`). Pixel identity after the full merge: all 33 frames identical to `36c8676`
+  (`11_merged_final/pixel_identity_after_full_merge_b91e952.txt`); `s3_func` under match passed (lanes, jump, 12 coins,
+  1 gem, 2 socks, no errors). `r2_func` under match passed the hearts part, then was cut off by a 15-minute `timeout`
+  (CPU contention), not a game error: re-run it without a timeout.
+- **The user's focused pass (about 15:55 UTC):** `Design/ReferencePacks/2026-11-05_Screen4_Focused_Correction_Pass_Brief/`:
+  tunnel energy (flecks, streaks, bubbles, irregular walls), thick aqua-white froth (not glassy lavender), the character
+  larger in frame and on top of the water, the sock tilted sideways, a fuller composition. Both specialists stopped at the
+  5-hour usage limit (16:10 UTC, before any change); restarted at 19:40 UTC: Tunnel & Lighting (framing, sock, walls,
+  near bubbles) into `13_focused_pass_tunnel_lighting/`, Water & VFX (froth, flecks, bubbles) into
+  `14_focused_pass_water_vfx/`. The lead forwards Tunnel & Lighting's framing checkpoint to Water & VFX.
+- **Next (before the focused pass):** merge Water & VFX; the pixel-identity proof against `36c8676` (`11_merged_final/scripts/identity_shots.sh`
   and `identity_compare.py`; the baseline frames are in the session scratchpad and must be re-made in a new session);
   `s3_func` and `r2_func`; the seven-checkpoint table with Pixel 7 and 1:2 close-ups in `11_merged_final/`; a video.
 - **Autosave:** running as described below, with `ChatHistory/2026-11-05_seventh_session_round9_continue.md` and
