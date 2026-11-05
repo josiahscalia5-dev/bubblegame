@@ -1,10 +1,11 @@
-"""The evidence sheets of 07_water_vfx_gate_fixes: the full-resolution three-way comparison (portrait height 1536) and the
-close-ups (original / before / now, cropped at the same frame fractions), labelled.   python sheets.py"""
+"""The evidence sheets of 14_focused_pass_water_vfx: ORIGINAL | BEFORE (b91e952) | NOW at portrait height 1536 (3.0 s) and
+1076 (2.85 and 3.1 s), page frames with the HUD; and the close-ups (original / before / now, cropped at the same frame
+fractions, from the raw 3D canvas, so the HUD buttons do not cover the foam), labelled.   python sheets.py"""
 import os
 from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__)); E = os.path.dirname(HERE)
 APP = '/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
-M = os.path.join(E, '..', '04_merged')
+B = os.path.join(E, 'before')
 try: FONT = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 22)
 except Exception: FONT = ImageFont.load_default()
 
@@ -27,15 +28,12 @@ def sheet(name, box, H, items, quality=None):
     print(out, o.size)
 
 
-T = lambda t: os.path.join(E, f'match_t{t}.png')
-C = lambda t: os.path.join(E, f'match_t{t}_canvas.png')
-three = lambda t: [('ORIGINAL (approved)', APP), (f'BEFORE: merged {t} s', os.path.join(M, f'match_t{t}.png')), (f'NOW: match {t} s', T(t))]
+three = lambda t: [('ORIGINAL (approved)', APP), (f'BEFORE: b91e952, {t} s', os.path.join(B, f'before_t{t}.png')), (f'NOW: match {t} s', os.path.join(E, f'match_t{t}.png'))]
 sheet('original_vs_before_vs_now_3.00s_fullres.png', (0, 0, 1, 1), 1536, three('3.00'))
 sheet('original_vs_before_vs_now_2.85s.jpg', (0, 0, 1, 1), 1076, three('2.85'), 90)
 sheet('original_vs_before_vs_now_3.10s.jpg', (0, 0, 1, 1), 1076, three('3.10'), 90)
-# close-ups at 3.0 s (the canvas, no HUD, for the game frames: the HUD buttons cover the bank)
-cl = [('ORIGINAL', APP), ('BEFORE (merged)', os.path.join(M, 'match_t3.00_canvas.png')), ('NOW', C('3.00'))]
-sheet('closeup_01_tunnel_bubbles_and_streaks.jpg', (0.15, 0.25, 0.9, 0.62), 760, cl, 92)
-sheet('closeup_01b_mid_ring_zoom.jpg', (0.25, 0.30, 0.75, 0.50), 640, cl, 92)
-sheet('closeup_02_waterline_character_on_the_water.jpg', (0.1, 0.62, 0.9, 0.9), 560, cl, 92)
-sheet('closeup_04_foreground_foam_bank.jpg', (0.0, 0.72, 1.0, 0.92), 420, cl, 92)
+cl = [('ORIGINAL', APP), ('BEFORE (b91e952)', os.path.join(B, 'before_t3.00_canvas.png')), ('NOW', os.path.join(E, 'match_t3.00_canvas.png'))]
+sheet('closeup_01_tunnel_interior.jpg', (0.1, 0.24, 0.95, 0.66), 760, cl, 92)
+sheet('closeup_01b_mid_rings_zoom.jpg', (0.25, 0.28, 0.8, 0.5), 640, cl, 92)
+sheet('closeup_02_foam_and_water_round_the_character.jpg', (0.0, 0.70, 1.0, 0.93), 520, cl, 92)
+sheet('closeup_02b_her_base_zoom.jpg', (0.2, 0.74, 0.8, 0.88), 480, cl, 92)

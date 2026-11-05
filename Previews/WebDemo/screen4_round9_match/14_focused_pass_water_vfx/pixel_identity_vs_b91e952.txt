@@ -1,0 +1,7 @@
+Pixel identity, raw 3D canvas (tools/models/game_eval.cjs SHOT, seed 7, 538 x 1076, TIMES=2.85): baseline bundle md5 811c697764f610a4fc0f39534cfc3780 (b91e952, the branch's WebDemo at 3394dc0) against this pass, bundle md5 3e7fc194d2579bb78f0252e6b9c3de27.
+normal  Tap to Start  538x1076: differing pixels 0, max difference 0; pixel md5 baseline 54322373273fa5b453d47d6e131e4e95 now 54322373273fa5b453d47d6e131e4e95
+normal  2.85 s        538x1076: differing pixels 0, max difference 0; pixel md5 baseline 480e54357766367c14b3f2aa676070b9 now 480e54357766367c14b3f2aa676070b9
+splash  Tap to Start  538x1076: differing pixels 0, max difference 0; pixel md5 baseline 4426c0e8ab7abc9f5d990e21fa5a248e now 4426c0e8ab7abc9f5d990e21fa5a248e
+splash  2.85 s        538x1076: differing pixels 0, max difference 0; pixel md5 baseline 3260ba9b36e1dd50849957cb5d8a970e now 3260ba9b36e1dd50849957cb5d8a970e
+liquid  Tap to Start  538x1076: differing pixels 0, max difference 0; pixel md5 baseline 81734b055260697dc58adf272ce52e97 now 81734b055260697dc58adf272ce52e97
+liquid  2.85 s        538x1076: differing pixels 0, max difference 0; pixel md5 baseline 75aad81e5154eb39869562f5db02e269 now 75aad81e5154eb39869562f5db02e269

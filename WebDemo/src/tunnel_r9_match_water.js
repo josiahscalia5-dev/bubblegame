@@ -20,6 +20,13 @@
 //    foam lumps reshaded as glossy translucent water lobes with crisp white rim pieces, flecks and a specular point
 //    (matchLumpGLSL); short curved splashes curling over in front and at both sides; fewer, larger droplets. Everything keeps
 //    its reactions to a swerve, a jump and a landing.
+//    (Focused pass, 5 November ~16:00-20:30 UTC, the user: the foam "too transparent and too purple", wanted "thick, bright,
+//    blue-white / aqua-white, frothy and dimensional"; the character sits ON TOP of the water) the lobes are now opaque
+//    aqua-white FROTH in the original's own screen colours (MATCH_WATER.froth, matchLumpGLSL), the swell's top a band of white
+//    froth with blue holes where she sits (look.froth), the curling sheets aqua-white spray, two small soap-bubble clusters on
+//    her front waterline.
+// 3. THE TUNNEL'S ENERGY (tunnelBubbles): soap bubbles at near, mid and far depth on the walls' rings, and bold white splash
+//    flecks (torn streaks, droplet clusters, short wavy splashes) riding the bands with the swirl; one instanced draw call.
 // Colours are written as the screen's sRGB and passed through the inverse display transform (mtUndisplay, tunnel_r9_match.js)
 // where noted (lin3: sRGB to linear for the lobes, which go through the grade like the other splash layers).
 import * as THREE from 'three';
@@ -78,8 +85,9 @@ export const MATCH_WATER = {
     // (m, ragged by noise), its small bubbles (cells per unit of the swell's angle and per metre), the share without a hole
     // (iteration 2: 90% white under the body against the original's 14%: thinner, lacier; periwinkle-blue holes in front of
     // the body, where the original has lilac-blue bubbles under her)
-    // (iteration 5: its cells were 2.5x taller than wide on screen, a striped row of ovals: cellD per metre down the face)
-    froth: { amount: 1.0, depth: [0.03, 0.035], cell: 34.0, cellD: 85.0, holeShare: 0.4, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
+    // (iterations 5-10: its cells were 2.5x taller than wide on screen, a striped row of ovals: cell per unit of the swell's
+    // angle, cellD per metre down the face; a colour-marked diagnostic run showed the angle's cells were the narrow ones)
+    froth: { amount: 1.0, depth: [0.03, 0.035], cell: 15.0, cellD: 110.0, holeShare: 0.4, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
   },
   // the bank's lobes (spLumps reshaded). (Gate fixes, step 7: glossy see-through domes with white caps, a violet soap tint
   // in front; replaced in the focused pass by the froth below)
@@ -103,7 +111,7 @@ export const MATCH_WATER = {
     speckCell: 11.0, speckShare: 0.45, speck: 0.95, speck2Cell: 21.0, speck2Share: 0.5,   // (iteration 7: + a finer layer: the froth's texture was smoother than the original's, hp5 0.079 against 0.095)   // fine white droplets on the aqua body
     crest: 0.95, crestW: 0.56, crestCell: 5.0,   // the bubbly white crest along the top of the outline (from 1 - n.v), its bubbles
     edgeCut: [0.62, 0.3],                        // the ragged bubbly outline: cut from 1 - n.v = [0] minus [1] x the cell's bump
-    spec: 0.6, specPow: 90,
+    spec: 0.9, specPow: 60,   // (iteration 9: a little stronger, for dimension: the lobes read matte)
     alpha: 0.98,
     lowFrom: [-0.35, -0.75],                     // toward aqua below (the normal's up), as the original's lower froth
   },
@@ -162,7 +170,7 @@ export const MATCH_WATER = {
   // 0.07 W, the others 0.03-0.05 W, a cluster of small rings), 3 at the lower left, and hundreds of small white flecks,
   // crescents and tiny rings along the bands)
   bubbles: {
-    count: 170,              // (focused pass: 160 -> 170, more medium ones on the near and mid rings, fewer far specks round the centre)
+    count: 190,              // (focused pass: 160 -> 190, more medium ones on the near and mid rings, fewer far specks round the centre)
     tube: 2.0,               // the hero lining's radius (m; the layout's tunnelRadius, 2.5, is the old drum's)
     // sizes: [share, world radius (m)]; far ones are drawn up to `far` times bigger (else they would be under a pixel). On
     // screen (0.69 r / distance frame widths): small 2-6 px, medium 8-20 px, an occasional large one 25-40 px (at 767 wide)
@@ -177,7 +185,8 @@ export const MATCH_WATER = {
     // (focused pass: the centre was crowded with bubbles where the original has white squiggles: the walls' zones nearer,
     // the inner zone smaller and nearer, the far centre zone gone)
     zones: [[0.4, [20, 160], [0.66, 0.93], [5.3, 18]], [0.25, [160, 222], [0.66, 0.93], [5.3, 18]], [0.25, [-42, 20], [0.66, 0.93], [5.3, 18]],
-      [0.1, [-30, 210], [0.4, 0.66], [5.3, 10]]],
+      [0.1, [-30, 210], [0.4, 0.66], [5.3, 10]],
+      [0.12, [-40, 220], [0.7, 0.93], [18, 30]]],   // (final: a few far ones on the far walls' rings, so there are bubbles at every depth without crowding the centre)
     camAt: -4.9,             // the hero camera's place along the path at 3.0 s (m from the drum's mouth; hero probe)
     loop: 4.0,               // m each one loops over (faded at both ends)
     drift: [0.15, 0.45],     // m/s toward the camera (the walls' water flows toward the viewer)
