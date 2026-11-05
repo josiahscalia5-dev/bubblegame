@@ -292,8 +292,20 @@ Saturation did not move (0.71), so something downstream desaturates. Let me comp
 - 19:38 `Bash`: Render the walls alone and measure colours
 - 19:39 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/I_tune.json
 - 19:39 `Bash`: Render and measure candidate I
+- 19:40 `Bash`: Locate the wall fragment shader in the liquid file
+- 19:40 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r8_liquid.js
+- 19:41 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/bloom.json
+- 19:41 `Bash`: Find the save log line in live_sweep
+- 19:41 `Edit`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/live_sweep.cjs
+- 19:41 `Bash`: Measure wall colours with bloom halved and off
+- 19:42 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/cal_cands.json
+- 19:42 `Bash`: Calibration render with flat royal flows
+- 19:42 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/J_cands.json
+- 19:43 `Bash`: Render and measure candidates J and K
+- 19:44 `Bash`: Crop ring structure for J
+- 19:44 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_J.png
 
-_144 tool steps._
+_156 tool steps._
 
 ---
 
@@ -602,5 +614,35 @@ Item 2 next: the floor ahead behind her. Let me look at the region and the floor
 - 19:39 `Bash`: Read MATCH_WATER.floor settings
 - 19:39 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
 - 19:39 `Bash`: Capture floor with less deep tint and troughs
+**Agent** (19:40 UTC):
 
-_153 tool steps._
+Almost no change, so something else may draw that region. Hide-probing it.
+
+- 19:40 `Bash`: Hide probe floor-ahead candidates
+- 19:41 `Bash`: Check the floor shader's declaration order
+- 19:41 `Bash`: Read the floor fragment shader context
+- 19:41 `Bash`: Find all callers of matchFloor
+- 19:42 `Bash`: Find the colour helpers
+**Agent** (19:42 UTC):
+
+Now the focus-only floor piece.
+
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:42 `Bash`: Build and capture the focus floor piece
+- 19:43 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f2.png
+- 19:43 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/lavmap.py
+- 19:43 `Bash`: Locate lavender pixels on the floor ahead
+- 19:43 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/lav_f2.png
+- 19:43 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:43 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:44 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:44 `Bash`: Build and capture banded floor streaks
+- 19:44 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f3.png
+- 19:44 `Bash`: Diagnostic capture with the floor fully pale
+
+_175 tool steps._
