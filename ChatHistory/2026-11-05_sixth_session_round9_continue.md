@@ -94,3 +94,15 @@ The capture method is deterministic: re-rendering the normal game and `splash` g
 
 The Art Director's quality gate is still running. I'll report its six scores and ranked fixes when it finishes, then start the Tunnel & Lighting pass on them.
 
+---
+
+### Automatic notice · 2026-11-05 13:43 UTC
+
+_Agent "Art Director six-area gate" finished_
+
+---
+
+### Claude · 2026-11-05 13:43 UTC
+
+The Art Director has finished: two areas are far, four partly, none close yet. It confirmed the cause of the lilac centre, with two refinements. Saving its report first, then a look at its annotated comparison:
+
