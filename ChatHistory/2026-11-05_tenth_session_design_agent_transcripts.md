@@ -47,8 +47,53 @@ Both s3_func runs done. Now r2_func with `S3=focus` at VW=135 VH=270.
 Focus r2_func passed. Now r2_func with `S3=match`.
 
 - 22:11 `Bash`: Run r2_func with match and compare to focus
+**Agent** (22:15 UTC):
 
-_11 tool steps._
+All four runs exited 0. A final check that the bundle is untouched and only output files were added.
+
+- 22:15 `Bash`: Verify bundle md5 and list new output files
+**Agent** (22:15 UTC):
+
+Git shows `gameplay_r2_func_match.txt` as modified, so these files were already committed. I'll check what changed.
+
+- 22:15 `Bash`: Show diff against committed gameplay output
+- 22:15 `Bash`: Recheck git status and recent commits
+**Agent** (22:15 UTC):
+
+Section heading loaded: **"## Newest: Round 9 ART MATCH, `?s3=match` (5 November 2026, fifth and sixth sessions; this section overrides the notes below)"**
+
+All four gameplay checks pass on both `focus` and `match`. I ran them one browser at a time, each under `flock /tmp/bw_browser.lock`, with no `timeout` wrapper, on `game.bundle.js` md5 `e94124846f2472829a817576d3e5aceb`. I did not rebuild, edit game files or commit.
+
+| Check | focus | match |
+|---|---|---|
+| `s3_func` (exit 0) | PASS | PASS |
+| `r2_func` VW=135 VH=270 (exit 0) | PASS | PASS |
+
+**s3_func (both switches give the same results):**
+- **Lanes:** after the tap, lane 1; swipe left gives lane 0; two swipes right give lane 2. Swipe up gives `air: true` (the jump). Enter on the keyboard starts the run (`phase: running`, lane 1).
+- **Collected in the tunnel:** 12 coins, 1 gem, 2 socks. The counters go from 1280 to 1292 coins and 36 to 37 gems.
+- **Console errors:** none (`logs: []`, `logs2: []`).
+- **Cost:**
+  - focus: 230 draw calls and 1,226,144 triangles at Tap to Start; 136 draw calls and 1,067,375 triangles in the tunnel.
+  - match: 230 draw calls and 1,226,484 triangles at Tap to Start; 135 draw calls and 1,084,529 triangles in the tunnel.
+
+**r2_func (the focus and match outputs are byte-identical):**
+- **Hearts:** 5 knocks take the hearts 5 → 4 → 3 → 2 (lap 0) → 1 → 0 (lap 1). The heart count reached 0 at 13.85 s. The game was back at Tap to Start with "5 Full" 1.4 s later (restarts 1, pause button hidden).
+- **Pause:** the panel shows and game time stays at 1.017 while paused. It runs on after Resume. P on the keyboard pauses and resumes.
+- **Bubble Blast:** it cleared both brushes at u 9.4 and 10.1, with 0 knocks riding past them. 2 blasts were left and the badge showed "2". After the third use it was refused ([true, true, false]), the button was disabled and the badge showed "0".
+- **Turbo Spin:** speed went from 6.68 to 8.78, 0 knocks, 5 hearts, 2 turbos left, badge "2".
+- **Console:** "no console errors or warnings".
+
+**Saved outputs** (in `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/21_lines_merged/`):
+- `gameplay_s3_func_focus.txt`
+- `gameplay_s3_func_match.txt`
+- `gameplay_r2_func_focus.txt`
+- `gameplay_r2_func_match.txt`
+
+**Problems:** none in the game. One thing for you to know: these four files are already committed, but not by me. Auto-save `9c29267` at 22:06 picked up the ones finished by then. Then `dbdfaa0` and your `7414b62` committed the rest while my last run was going. The branch head is now `7414b62`, not `a276c38`, but the bundle md5 is unchanged, so the checks ran on the merged build you specified. After my last run the `r2_func_match` file showed as modified for a moment, then the tree was clean again. Since the focus and match `r2_func` outputs are byte-identical, the committed copy should be the same as my final output.
+
+
+_14 tool steps._
 
 ---
 

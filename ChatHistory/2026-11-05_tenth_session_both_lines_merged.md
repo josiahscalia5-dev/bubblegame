@@ -126,3 +126,86 @@ Adding the two findings to the hand-off while the hearts / pause / power-up test
 
 The `focus` hearts test has finished, and the `match` one is still running. Waiting for the gameplay agent's report:
 
+Both hearts / pause / Bubble Blast / Turbo Spin reports pass and match each other exactly, with no console errors. Waiting for the agent's final summary of the lane and collectible checks:
+
+Gameplay passes identically for both: lanes 1 → 0 → 2, the jump, 12 coins, 1 gem and 2 socks in the tunnel, and no console errors. Saving:
+
+The design agents from the branch you were chatting on, `ccr-de8d9670-2ohd5t`, are now on this session's branch, and all four ran a real task here and worked. Everything is pushed to GitHub, and it confirms the latest save, `7414b62`.
+
+**Why they weren't here before:** two lines of work ran in parallel this evening from the same starting point (16:29 UTC). This session had picked up the other line (this afternoon's `match` test version). Your design-agent chat was on the second line, the `focus` test version. That's also where you gave your 17:15 correction (blue water round her, no white foam cushion), the 17:45 vortex kit and the 18:26 tunnel correction kit.
+
+**What I did:**
+- **Merged that branch in here (`a276c38`).** It brought the four design agents' updated instructions, your corrections in the project rules, your kits, the `focus` version, and that line's evidence and chat history. No branch was overwritten.
+- **Both versions look exactly as they did on their own branches.** Your original next to both versions at 3.0 s is the side-by-side I just sent.
+- **Pixel check:** 49 frames with zero differing pixels.
+  - `focus`, with and without foam, against its own branch's tested build.
+  - `match`, with and without foam, against this branch.
+  - The normal game and all 10 older versions, against this branch.
+- **Gameplay passes on both:** lanes, the jump, 12 coins, 1 gem, 2 socks, hearts, pause, Bubble Blast and Turbo Spin, with no console errors.
+
+**The design agents:**
+- **Gameplay & Testing** ran those gameplay tests itself.
+- **Art Director** compared both versions with your original. It judged `focus` closer for the water round her, because `match` sits her on a white foam cushion, which your 17:15 correction ruled out.
+- **Tunnel & Lighting** and **Water & VFX** each found the right code for `focus` and quoted your latest corrections back correctly.
+- **One limitation:** agents read their instruction files when a session starts. In this session they still have the older instructions. I tell each one to read its new section first, and any new session loads the new files automatically.
+
+**Two more things from this afternoon's `match` line:**
+- **Restored work:** its two specialists had finished before the usage limit hit at 21:06 but hadn't committed. I recovered their work exactly from the autosave copies and merged it.
+- **Video sent:** I sent the phone video of the ride into the washing machine, which had finished recording after the limit.
+- **Problem found:** with its closer camera, her waterline sits lower than in your original (0.87 of the screen height against 0.836), so its foam sits too low.
+
+**Decision for you:** which look should the design agents continue from? I recommend `focus`, because it follows your latest corrections. `match` would need its foam rethought anyway.
+
+---
+
+### Automatic notice · 2026-11-05 22:15 UTC
+
+_Agent "Gameplay tests on merged build" finished_
+
+---
+
+### Claude · 2026-11-05 22:16 UTC
+
+The gameplay agent's final report matches what I told you: every check passes on both `focus` and `match`, with no console errors. Its four result files went to GitHub through the autosave and my last save while its final test was still running. I compared the saved copies with the finished files, and they are complete and identical, so nothing needs redoing.
+
+What it adds:
+- **Speed cost:** `focus` and `match` are almost the same (230 draw calls at Tap to Start; about 135 in the tunnel).
+- **Bubble Blast:** it cleared both brushes ahead, and the button greyed out after the last use.
+- **Turbo Spin:** it raised the speed from 6.68 to 8.78 without losing a heart.
+
+The branch is up to date on GitHub at `7414b62`. Which look should the agents continue from? I recommend `focus`, since it follows your latest corrections.
+
+---
+
+### You · 2026-11-05 22:16 UTC
+
+Claude, I need to change how we are approaching Bubble Wash Kingdom Screen 4.
+
+I have spent significant money and credits trying to match my ORIGINAL CLASSIC approved screen. The actual gameplay video still looks substantially different.
+
+Please pause new visual-generation work and do a proper verification audit first.
+
+1. Identify the exact GitHub branch and commit SHA powering the gameplay preview I am watching. Confirm whether both Tunnel & Lighting and Water & VFX specialists' latest changes are included.
+
+2. Capture the ACTUAL PLAYABLE Screen 4 at the same approved camera position, aspect ratio, seed and 3.0-second gameplay checkpoint. Do not substitute a different moment or a manually composed mockup.
+
+3. Place the approved original and current gameplay side by side at the same size.
+
+4. Use the existing overlay and screenshot comparison tools. Do not spend credits building another comparison framework.
+
+5. Identify the five largest remaining differences in overall composition, tunnel geometry, water appearance, character placement and interface. Explain the likely technical cause and which existing files control each difference.
+
+6. Tell me which differences can realistically be corrected using the existing game, and which might require replacement artwork or assets.
+
+7. Do not launch more specialist agents or start another large visual redesign until this audit is complete.
+
+I want one concrete, technically grounded plan to match the approved screen—not another series of small decorative changes.
+
+Preserve the current working game and all saved progress. Show me the evidence before spending more time implementing fixes.
+
+---
+
+### Claude · 2026-11-05 22:16 UTC
+
+I'll start with what you're actually watching, since that decides everything else. No agents and no visual changes; only captures and the existing comparison tools.
+
