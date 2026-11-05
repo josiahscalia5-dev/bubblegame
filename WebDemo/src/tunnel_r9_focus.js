@@ -50,11 +50,30 @@ export const FOCUS = {
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
       //    over each band's crest
-      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, rim: { broken: 0.8 }, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
+      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
         // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
         // match's bands wider on screen)
-        gap: { from: [0.6, 0.86], amount: 0.95 } },
+        gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
       trough: { amount: 0.42 },
+      // 1. (the user's vortex kit, about 17:45 UTC) the water as broken, twisting ribbons (focusRibbonsGLSL): curl: two slow
+      //    travelling twists of the band phase [amount (bands), waves round a turn, per ln r, speed (rad/s)]; wobble: from the
+      //    variation map; arcs: how many arcs a band is cut into (per turn, picked per band); offset: how far each arc steps
+      //    in or out (bands); colours: the original's ring zone measured (k-means at 3.0 s: azure #2396f1 13%, royal #1a60e1
+      //    12%, periwinkle #6173e0 12%, pale blue #a7d8f4 11%; and cyan splash water, hue under 205 degrees, 10.6%): edge (the
+      //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
+      //    periwinkle), deep, gap (from gapFrom across the ribbon); keep: how much of the derived water's own
+      //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
+      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.42,
+        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.76, 0.9],
+        turqShare: 0.45, periShare: 0.2, keep: 0.12, amount: 0.88 },
+      // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
+      royal: { amount: 0.1 },
+      // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
+      // does not wash the ribbons pale
+      midWhite: { r: [0.04, 0.07, 0.12, 0.17] },
+      // the old regular ring lines and rims mostly off (they drew perfect circles over the ribbons)
+      // and the pastel rainbow arc compact (the original's peach is a small arc: 5% of the ring zone; ours was 9%)
+      rainbow: { amount: 0.45, w: 0.028 },
       // 1. the white splash flecks and streaks on the walls' water (the original: hundreds of small white bits along the
       //    rings): cells round each ring, `cols` round a turn, `rows` per band, flowing with the bands; in each cell, with
       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;

@@ -348,6 +348,50 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
 }
 // declarations and the shading, placed just before lqWall (the liquid's uniforms uTime, uHeroTravel, uHeroTanW, uHeroCam,
 // uLqGlow and uLqKey are declared above it)
+// ?s3=focus only (the user's vortex kit, 5 November about 17:45 UTC: "deep twisting cobalt-blue water streams, irregular
+// turquoise swirling currents, broken white splash streaks, layered water motion", not smooth, wide, evenly circular bands):
+// the walls' water rebuilt as BROKEN, TWISTING RIBBONS inside matchWall's band block (it uses bs, aw, bz, bout, rw, tu, lr,
+// vr, c). The band phase is twisted by two slow travelling curls (angle x log r, moving with time) and the variation map;
+// each band is cut into arcs (a different count per band), each arc pushed in or out by its own offset, so the ribbons
+// break and step instead of closing into rings; across each ribbon a light cyan leading edge, a royal-blue or turquoise
+// body (the arc's own pick: the currents), deeper cobalt, then a dark gap; the derived water's own light and dark kept as
+// variation. Colours are the original's measured ring-zone colours, written through the inverse of the walls' display
+// compensation (lift, saturation) so they land as measured. Sets fRq, the ribbon phase the flecks follow.
+function focusRibbonsGLSL(M) {
+  const R = M.ribbons;
+  const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
+    const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+    const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
+    return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
+  };
+  return /* glsl */ `    float fRq = bs;
+    {   // ?s3=focus: broken, twisting cobalt ribbons (tunnel_r9_focus.js)
+      float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
+        + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
+        + (vr.g - 0.5) * ${f4(R.wobble)};
+      float rq = bs + rTw, rbi = floor(rq);
+      float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
+      float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
+      float rsa = (tu + 0.5) * rNs + rhb * 3.0;
+      float rsi = mod(floor(rsa), rNs);
+      float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
+      float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
+      float rk = fract(rqo);
+      fRq = rqo;
+      float rse = fract(rsa), rEnd = smoothstep(0.0, 0.05, rse) * (1.0 - smoothstep(0.95, 1.0, rse));
+      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, step(${f4(1 - R.turqShare)}, rsh));
+      rBody = mix(rBody, ${pre(R.peri)}, step(${f4(1 - R.periShare)}, fract(rsh * 7.7)) * 0.8);
+      vec3 rc = mix(${pre(R.edge)}, rBody, smoothstep(0.02, 0.15, rk));
+      rc = mix(rc, ${pre(R.deep)}, smoothstep(0.5, 0.82, rk));
+      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(0.985, 1.0, rk)));
+      rc = mix(${pre(R.deep)}, rc, rEnd);
+      float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
+      float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
+      c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
+    }
+`;
+}
 // ?s3=focus only (the focused correction pass, MATCH.walls.flecks from tunnel_r9_focus.js): white splash flecks and streaks
 // on the walls' water, inside matchWall's band block (it uses bs, bk, aw, bz, dl, rw, tu). Cells round each ring flowing
 // with the bands: in some a short white streak along the ring, slightly bent, in others a round drop. Hashes over small cell
@@ -357,9 +401,9 @@ function focusFlecksGLSL(M) {
   const F = M.flecks, D = F.drops;
   return /* glsl */ `    {   // ?s3=focus: the white splash flecks and streaks (tunnel_r9_focus.js)
       float fz = smoothstep(${f4(F.r[0])}, ${f4(F.r[1])}, rw) * (1.0 - smoothstep(${f4(F.r[2])}, ${f4(F.r[3])}, rw)) * bz;
-      float flit = mix(1.0, 1.0 - smoothstep(0.45, 0.85, bk), ${f4(F.lit)});   // more on each band's lit part
+      float flit = mix(1.0, 1.0 - smoothstep(0.35, 0.7, fract(fRq)), ${f4(F.lit)});   // more on each ribbon's lit edge
       float fa = tu + uTime * ${f4(M.swirl * 1.6)};
-      vec2 fq = vec2(fa * ${f4(F.cols)}, bs * ${f4(F.rows)});
+      vec2 fq = vec2(fa * ${f4(F.cols)}, fRq * ${f4(F.rows)});
       vec2 fi = floor(fq); fi.x = mod(fi.x, ${f4(F.cols)});
       float fh = fract(sin(dot(fi, vec2(12.9898, 78.233))) * 43758.5453);
       float fh2 = fract(fh * 17.13), fh3 = fract(fh * 31.71);
@@ -368,7 +412,7 @@ function focusFlecksGLSL(M) {
       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
       float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
-      vec2 dq = vec2(fa * ${f4(D.cols)}, bs * ${f4(D.rows)} + 0.37);
+      vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
       vec2 dO = fract(dq) - 0.5 - (vec2(fract(dh * 13.7), fract(dh * 7.31)) - 0.5) * 0.4;
@@ -458,7 +502,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     // rings; blobs of the relief's own cells, not star shapes)
     float spK = smoothstep(${f4(M.bands.splash.from[0])}, ${f4(M.bands.splash.from[1])}, dl) * (1.0 - smoothstep(${f4(M.bands.splash.to[0])}, ${f4(M.bands.splash.to[1])}, bk)) * bz;
     c = mix(c, ${hx(M.bands.splash.col)}, spK * ${f4(M.bands.splash.amount)});
-${FOCUS_ON ? focusFlecksGLSL(M) : ''}    // the approved's brightest texels are a dense net of thin ice-blue (#cae0ff) ring lines across every band: a thin line
+${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's brightest texels are a dense net of thin ice-blue (#cae0ff) ring lines across every band: a thin line
     // at each band's inner edge and a sparser one inside it, both broken into arcs by the relief (MATCH.walls.bands.edge)
     float eK = (1.0 - smoothstep(${f4(M.bands.edge.w[0])}, ${f4(M.bands.edge.w[1])}, bk)) * smoothstep(${f4(M.bands.edge.broken[0])}, ${f4(M.bands.edge.broken[1])}, dl) * bz;
     float e2 = (1.0 - smoothstep(${f4(M.bands.edge.second[1] * 0.5)}, ${f4(M.bands.edge.second[1])}, abs(bk - ${f4(M.bands.edge.second[0])}))) * smoothstep(0.0, 0.05, dl) * bz * bout;

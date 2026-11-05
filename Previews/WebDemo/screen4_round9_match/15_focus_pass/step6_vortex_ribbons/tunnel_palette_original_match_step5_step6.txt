@@ -1,0 +1,8 @@
+01_Original_Approved_Screen_4.jpg #f0e6f3:23% #2396f1:13% #6faeec:12% #6173e0:12% #dca3e4:12% #1a60e1:12% #a7d8f4:11% #f3deab:5%
+   deep-blue 3.9%  turquoise 10.6%  white 17.1%  pastel 29.2%  warm 4.5%
+base_t3.00_canvas.png #4d9cf5:27% #bbd6f2:18% #86b3f1:16% #e9e5ee:14% #2e5dea:12% #dca2cb:7% #f2daa1:4% #952fe1:2%
+   deep-blue 0.3%  turquoise 10.2%  white 14.6%  pastel 28.2%  warm 4.6%
+f10_t3.00_canvas.png #ebe7ee:22% #5190f2:20% #c1d6f3:20% #8cb1f1:15% #2751e4:9% #da9eca:6% #f3daa8:4% #8429dc:3%
+   deep-blue 0.5%  turquoise 5.4%  white 23.9%  pastel 29.0%  warm 4.3%
+r3_t3.00_canvas.png #5580e4:19% #e6e3ef:19% #275bcf:16% #b0ccf0:14% #72b4f1:13% #9e9adb:11% #edbcb4:6% #8322de:3%
+   deep-blue 8.2%  turquoise 6.3%  white 17.2%  pastel 24.2%  warm 2.9%
