@@ -1,0 +1,9 @@
+orig   upper arc 15-165   rays 285  bands/ray  6.3 (3.8 per ln r)  amp  21.9 L*  L*<55 share 16.3%  coh(8deg) 0.60  L* mean  72.5  L* sd along ray 14.9
+orig   upper-left 95-140  rays  91  bands/ray  6.3 (3.8 per ln r)  amp  21.6 L*  L*<55 share 14.7%  coh(8deg) 0.74  L* mean  74.1  L* sd along ray 15.4
+orig   upper-right 20-55  rays  70  bands/ray  6.4 (3.9 per ln r)  amp  21.9 L*  L*<55 share 16.9%  coh(8deg) 0.47  L* mean  71.0  L* sd along ray 13.7
+match  upper arc 15-165   rays 274  bands/ray  5.8 (3.5 per ln r)  amp  21.2 L*  L*<55 share  7.3%  coh(8deg) 0.70  L* mean  75.4  L* sd along ray 11.7
+match  upper-left 95-140  rays  91  bands/ray  6.2 (3.8 per ln r)  amp  19.7 L*  L*<55 share  6.9%  coh(8deg) 0.74  L* mean  75.4  L* sd along ray 11.6
+match  upper-right 20-55  rays  71  bands/ray  5.9 (3.5 per ln r)  amp  20.8 L*  L*<55 share 10.2%  coh(8deg) 0.77  L* mean  72.3  L* sd along ray 12.1
+focus  upper arc 15-165   rays 257  bands/ray  7.7 (4.6 per ln r)  amp  19.1 L*  L*<55 share  4.9%  coh(8deg) 0.44  L* mean  75.2  L* sd along ray 10.5
+focus  upper-left 95-140  rays  91  bands/ray  8.6 (5.2 per ln r)  amp  19.6 L*  L*<55 share  7.6%  coh(8deg) 0.44  L* mean  72.3  L* sd along ray 10.7
+focus  upper-right 20-55  rays  46  bands/ray  7.2 (4.3 per ln r)  amp  17.9 L*  L*<55 share  1.8%  coh(8deg) 0.48  L* mean  77.1  L* sd along ray 10.0

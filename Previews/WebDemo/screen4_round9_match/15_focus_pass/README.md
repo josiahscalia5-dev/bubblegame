@@ -100,5 +100,6 @@ Measured at 3.0 s (original / match / focus):
 | Character framing larger | PASS, overshoot | pink share 4.94% against 4.16% (match 3.02%) |
 | Sock tilted sideways, toe low left | PASS (partly) | `closeup_sock.png`; the original's lies a little flatter |
 | Composition: brushes, coins, gem, sock at the original's places | PASS (by eye) | `full_original_vs_now_3.00s.png` |
-| Older switches and `match` pixel-identical | see `pixel_identity.txt` | |
-| Gameplay | see `gameplay_*.txt` | |
+| Older switches and `match` pixel-identical | PASS | `pixel_identity.txt`: all 39 frames identical to `9a95c06` |
+| Gameplay: lanes, jump, coins, gem, socks, keyboard start | PASS | `gameplay_s3_func_focus.txt`: 12 coins, 1 gem, 2 socks collected, no console errors |
+| Gameplay: hearts, pause, Bubble Blast, Turbo Spin | PASS | `gameplay_r2_func_focus.txt`: 5 knocks to 0 then back to 5 Full, pause holds time, blast clears brushes, turbo 6.68 to 8.78, no console errors |
