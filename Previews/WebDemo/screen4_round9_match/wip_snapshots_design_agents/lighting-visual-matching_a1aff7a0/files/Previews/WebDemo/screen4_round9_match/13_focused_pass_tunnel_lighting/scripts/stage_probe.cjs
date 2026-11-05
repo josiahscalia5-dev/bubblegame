@@ -52,13 +52,19 @@ const server = http.createServer((req, res) => {
     const [dx, dh, du] = delta;
     const shifted = items.map(([lane, u, h0]) => { const x = W.laneX(lane), hT = W.baseHeight(L, x, u) + h0, x1 = x + dx, u1 = u + du, lane1 = 1 - x1 / W.LANE;
       return { from: [lane, u, h0], to: [+lane1.toFixed(3), +u1.toFixed(3), +(hT + dh - W.baseHeight(L, x1, u1)).toFixed(3)], water: [+W.baseHeight(L, x, u).toFixed(3), +W.baseHeight(L, x1, u1).toFixed(3)] }; });
+    // the hero bubbles (instanced, inst = world centre and radius; drift not included): screen centre and diameter in widths
+    const bubbles = []; let hb = null; scene.traverse((o) => { if (!hb && o.name === 'heroBubbles' && o.geometry && o.geometry.attributes.inst) hb = o; });
+    if (hb) { const a = hb.geometry.attributes.inst, right = new V().setFromMatrixColumn(cam.matrixWorld, 0);
+      for (let i = 0; i < a.count; i++) { const c = new V(a.getX(i), a.getY(i), a.getZ(i)), r = a.getW(i), p = c.clone().project(cam), q = c.clone().addScaledVector(right, r).project(cam);
+        bubbles.push({ i, cx: +((p.x + 1) / 2).toFixed(3), cy: +((1 - p.y) / 2).toFixed(3), dW: +Math.abs(q.x - p.x).toFixed(3), dist: +c.distanceTo(cam.position).toFixed(2), r }); } }
     const cr = cam.matrixWorld.elements;   // forward = -Z column
     return { state: window.__bw.state(), camera: { pos: r3(cam.position), track: toTrack(cam.position.clone()), quat: cam.quaternion.toArray().map((x) => +x.toFixed(5)), fwd: [-cr[8], -cr[9], -cr[10]].map((x) => +x.toFixed(5)), fov: cam.fov, aspect: cam.aspect, near: cam.near },
-      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted };
+      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles };
   }, [ITEMS, DELTA]);
   fs.writeFileSync(OUT, JSON.stringify(info, null, 1));
   console.log(JSON.stringify({ camera: info.camera, mascot: info.mascot, fuzz: info.fuzz }));
-  console.log(JSON.stringify(info.path));
+  if (!process.env.NOPATH) console.log(JSON.stringify(info.path));
+  for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
   for (const s of info.shifted) console.log(JSON.stringify(s));
   console.log(logs.join(' | ') || 'no console errors');
   await browser.close(); server.close();

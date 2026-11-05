@@ -1273,8 +1273,53 @@ Bank white is 44% (original 20%) and under the body 67% (original 14%); the purp
 - 19:54 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/tune_nolayer.json
 - 19:54 `Bash`: Capture with the tunnel bubble/fleck layer off
 - 19:54 `Bash`: Measure specks with and without the layer
+- 19:55 `Bash`: Tunnel crop iteration 4
+- 19:55 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it4_tunnel.png
+**Agent** (19:55 UTC):
 
-_98 tool steps._
+The tunnel now reads far more energetic (white splash bits riding the bands). The foam needs more saturated sky blue in its body and the swell band's cells must be made isotropic. Iteration 5.
+
+- 19:55 `Bash`: Iteration 5: bluer froth body, isotropic band cells; build and capture
+- 19:56 `Bash`: Bank comparison and measures for iteration 5
+- 19:56 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it5_under.png
+**Lead → agent** (19:56 UTC):
+
+[Image: original 2098x440, displayed at 2000x419. Multiply coordinates by 1.05 to map to original image.]
+
+- 19:56 `Bash`: Locate lines to tune for iteration 6
+- 19:56 `Bash`: Iteration 6 tuning, build and capture
+- 19:57 `Bash`: Bank comparison and measures, iteration 6
+- 19:57 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it6_under.png
+**Agent** (19:57 UTC):
+
+The bank now reads as aqua-white froth with white tops and droplets. Let me check the waterline and the Art Director's measures on this frame before going further.
+
+- 19:57 `Bash`: Run the Art Director measures on iteration 6
+- 19:57 `Bash`: Iteration 7 tuning, build and capture
+- 19:58 `Bash`: Measure iteration 7
+- 19:58 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it7_under.png
+- 19:58 `Bash`: Iteration 8: larger droplets; build, capture, measure
+- 19:59 `Bash`: Stage the checkpoint files
+- 19:59 `Bash`: Commit the checkpoint
+**Agent** (19:59 UTC):
+
+Checkpoint `0cf8193` committed. Let me look at the full frame against the original and the before.
+
+- 19:59 `Bash`: Full-frame side by side with the HUD
+- 19:59 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it8_full.png
+- 19:59 `Bash`: Read previous pixel identity method and game_eval usage
+**Agent** (20:00 UTC):
+
+I'll check the close-up of the foam round her base at iteration 8 before freezing the look.
+
+- 20:00 `Bash`: Close-up round her base, iteration 8
+- 20:00 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it8_close.png
+**Lead → agent** (20:00 UTC):
+
+[Image: original 2264x420, displayed at 2000x371. Multiply coordinates by 1.13 to map to original image.]
+
+
+_119 tool steps._
 
 ---
 
@@ -1402,5 +1447,35 @@ The shifted layout is computed. Before writing code, let me compare the near-cam
 
 - 19:54 `Bash`: Make a gridded crop of the upper frame
 - 19:55 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/upper_grid.png
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/game.js
+- 19:56 `Bash`: Confirm MATCH_ON import and wallCode composition
+**Agent** (19:56 UTC):
 
-_54 tool steps._
+Now the re-staging in `tunnel_r9_match.js`.
+
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:57 `Bash`: Check leftover references, wall uniforms, and build
+**Agent** (19:57 UTC):
+
+Build is clean. Let me extend the probe to report the hero bubbles' screen places and sizes, then probe the new camera.
+
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 19:57 `Bash`: Probe camera, character and bubbles with new staging
+- 19:58 `Bash`: Zoom on the original's bubble areas with ticks
+- 19:58 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/orig_bubbles.png
+- 19:59 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:59 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 19:59 `Bash`: Build and capture iteration 1
+
+_76 tool steps._

@@ -1,11 +1,12 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: froth foam, tunnel flecks)
 
-- **Taken:** 2026-11-05 19:55 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:00 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a6a478aa3fef314d3` (local only), started from `3394dc0`.
-- **Its own commits so far:** none yet
+- **Its own commits so far:** 
+  - `0cf8193 Round 9 focused pass, Water & VFX: checkpoint (froth bank, froth under the body, bold tunnel flecks)`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (50; full copies in `files/`)
+## Files (68; full copies in `files/`)
 
 - `.wvtmp/base/game.bundle.js (new)`
 - `.wvtmp/hide/all.png (new)`
@@ -28,32 +29,50 @@
 - `.wvtmp/it/it4_info.json (new)`
 - `.wvtmp/it/it4_t3.00.png (new)`
 - `.wvtmp/it/it4_t3.00_canvas.png (new)`
+- `.wvtmp/it/it5_info.json (new)`
+- `.wvtmp/it/it5_t3.00.png (new)`
+- `.wvtmp/it/it5_t3.00_canvas.png (new)`
+- `.wvtmp/it/it6_info.json (new)`
+- `.wvtmp/it/it6_t3.00.png (new)`
+- `.wvtmp/it/it6_t3.00_canvas.png (new)`
+- `.wvtmp/it/it7_info.json (new)`
+- `.wvtmp/it/it7_t3.00.png (new)`
+- `.wvtmp/it/it7_t3.00_canvas.png (new)`
+- `.wvtmp/it/it8_info.json (new)`
+- `.wvtmp/it/it8_t3.00.png (new)`
+- `.wvtmp/it/it8_t3.00_canvas.png (new)`
 - `.wvtmp/it/nolayer_info.json (new)`
 - `.wvtmp/it/nolayer_t3.00.png (new)`
 - `.wvtmp/it/nolayer_t3.00_canvas.png (new)`
 - `.wvtmp/it1_tunnel.png (new)`
 - `.wvtmp/it3_bank.png (new)`
 - `.wvtmp/it3_tunnel.png (new)`
+- `.wvtmp/it4_tunnel.png (new)`
 - `.wvtmp/it4_under.png (new)`
+- `.wvtmp/it5_under.png (new)`
+- `.wvtmp/it6_under.png (new)`
+- `.wvtmp/it7_under.png (new)`
+- `.wvtmp/it8_close.png (new)`
+- `.wvtmp/it8_full.png (new)`
 - `.wvtmp/tune_nolayer.json (new)`
 - `.wvtmp/tunnel_before.png (new)`
 - `.wvtmp/under_before.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_info.json (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t2.85.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t2.85_canvas.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.00.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.00_canvas.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.10.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.10_canvas.png (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/bubble_probe.cjs (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/bubbles.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/bubbles_eye.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/hues.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/meas.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/pixcmp.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/sbs.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/sheets.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/specks.py (new)`
-- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/specks_size.py (new)`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_info.json`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t2.85.png`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t2.85_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.10.png`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.10_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/bubble_probe.cjs`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/bubbles.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/bubbles_eye.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/hues.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/meas.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/pixcmp.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/sbs.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/sheets.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/specks.py`
+- `Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/specks_size.py`
 - `WebDemo/src/tunnel_r8_splash.js`
 - `WebDemo/src/tunnel_r9_match_water.js`
