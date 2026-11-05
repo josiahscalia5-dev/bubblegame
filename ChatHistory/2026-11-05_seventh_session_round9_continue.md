@@ -644,3 +644,9 @@ Stop hook feedback:
 
 The phone recorder script is committed and pushed (`0af3d3d`), and the working tree is clean. The video is still recording in the background; I'll send it as soon as it's encoded.
 
+---
+
+### You · 2026-11-05 20:58 UTC
+
+Save everything to my GitHub.
+

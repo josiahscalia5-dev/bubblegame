@@ -1,12 +1,12 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: framing, sock, walls)
 
-- **Taken:** 2026-11-05 20:56 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:58 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a1aff7a0d4ce10e34` (local only), started from `9a95c06`.
 - **Its own commits so far:** 
   - `4029424 Round 9 focused pass (checkpoint): framing, the pink character 1.2x larger through the hero camera`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (193; full copies in `files/`)
+## Files (197; full copies in `files/`)
 
 - `.tltmp/base_root/README.md (new)`
 - `.tltmp/base_root/artifact-models (deleted)`
@@ -31,6 +31,10 @@
 - `.tltmp/before/before_t3.10_canvas.png (new)`
 - `.tltmp/char_grid.png (new)`
 - `.tltmp/char_t1.png (new)`
+- `.tltmp/ident/normal_base_2.9.png (new)`
+- `.tltmp/ident/normal_base_tap.png (new)`
+- `.tltmp/ident/normal_new_2.9.png (new)`
+- `.tltmp/ident/normal_new_tap.png (new)`
 - `.tltmp/masks/before_t2.85_body_mask.png (new)`
 - `.tltmp/masks/before_t2.85_lead_mask.png (new)`
 - `.tltmp/masks/before_t3.00_body_mask.png (new)`

@@ -1587,8 +1587,13 @@ Halving the floor glints did not change the count (51 / 52), so those specks are
 
 - 20:46 `Bash`: Final follow-up tweak; build and capture the final set with cost
 - 20:50 `Bash`: Bubble probe on the follow-up build
+**Agent** (20:57 UTC):
 
-_196 tool steps._
+Far bubbles are back to 41 (target at least 29); the centre has 19 (32 at `b91e952`, 12 after the main pass). Now pixel identity, gameplay and moves on this exact bundle (`0f6f7d22`).
+
+- 20:57 `Bash`: Pixel identity for the follow-up bundle
+
+_197 tool steps._
 
 ---
 
