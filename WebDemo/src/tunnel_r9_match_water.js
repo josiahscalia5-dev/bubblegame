@@ -331,44 +331,28 @@ export function matchSwellGLSL() {
 // from above, a soap-film tint at the rim), a white rim along the top of its outline, a specular point, broken bubbly foam on
 // its top
 const lin3 = (hex) => { const c = new THREE.Color(hex); return `vec3(${f4(c.r)}, ${f4(c.g)}, ${f4(c.b)})`; };   // sRGB -> linear
-// ?s3=focus only (the focused correction pass): the bank's lobes as thick, bright aqua-white froth, not glassy lavender domes
-// (MATCH_WATER.froth, from tunnel_r9_focus.js). Lit froth from a light aqua-blue shade through aqua-white to white where the
-// light falls and where it faces up; light aqua blue in the creases (the silhouette's underside) and blue where it meets the
-// water; a dense bubbly texture: foam bubbles at two sizes, each a pale aqua inside with a white rim, and the fine web; a
-// white rim along the top of each lobe; a few soap-film tints at grazing angles; nearly opaque. Same inputs as matchLumpGLSL.
+// ?s3=focus only (the focused correction pass, the user's correction of about 17:15 UTC): what is left of the bank, a few
+// small low splash crests beside her and in the bottom corners, as glossy BLUE water (MATCH_WATER.crest, from
+// tunnel_r9_focus.js): cobalt low down to turquoise, light cyan where they face the light, a thin broken white edge along the
+// top of the outline, fine white spray dots on the upper half, a glint. Never lavender, never a white mass. Same inputs as
+// matchLumpGLSL.
 function focusLumpGLSL() {
-  const B = MATCH_WATER.froth;
-  return /* glsl */ `  {   // ?s3=focus: thick aqua-white froth (tunnel_r9_match_water.js, tunnel_r9_focus.js)
-    float fUp = dot(N, uU), fF = 1.0 - ndv;
-    float fl = clamp(d * 0.85 + max(fUp, 0.0) * 0.4 - 0.05, 0.0, 1.0);
-    vec3 fc = mix(${lin3(B.shade)}, ${lin3(B.side)}, smoothstep(${f4(B.lit[0])}, ${f4(B.lit[1])}, fl));
-    fc = mix(fc, ${lin3(B.white)}, smoothstep(${f4(B.lit[2])}, ${f4(B.lit[3])}, fl));
-    fc = mix(fc, ${lin3(B.crease)}, smoothstep(0.6, 0.97, fF) * 0.55 * (1.0 - smoothstep(0.0, 0.45, fUp)));
-    fc = mix(fc, ${lin3(B.water)}, (1.0 - smoothstep(-0.8, -0.4, fUp)) * 0.75);
-    // the foam bubbles: round cells cut by the lobe's surface at two sizes, a pale aqua inside, a white rim, a glint
-    float fIn = 0.0, fRing = 0.0, fGl = 0.0;
-    for (int i = 0; i < 2; i++) {
-      float sc = i == 0 ? ${f4(B.cells[0])} : ${f4(B.cells[1])};
-      vec3 q = vO * sc + vSeed * (7.0 + 6.0 * float(i)), qi = floor(q);
-      float h = fract(sin(dot(qi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
-      vec3 o = fract(q) - 0.5 - (fract(h * vec3(7.13, 3.71, 5.29)) - 0.5) * 0.3;
-      float r = 0.2 + 0.18 * fract(h * 11.7), dd = length(o), on = step(0.22, h);
-      fIn = max(fIn, on * (1.0 - smoothstep(r - 0.06, r, dd)) * (1.0 - 0.5 * smoothstep(0.0, r, dd)));
-      fRing = max(fRing, on * smoothstep(r - 0.1, r - 0.04, dd) * (1.0 - smoothstep(r - 0.01, r + 0.04, dd)));
-      fGl = max(fGl, on * (1.0 - smoothstep(0.03, 0.06, length(o.xy - vec2(-0.35, 0.35) * r))));
-    }
-    vec2 fwq = vO.xz * 0.9 + vO.y * vec2(0.21, -0.17) + vSeed * 3.0 + vec2(uTime * 0.02, 0.0);
-    float fWeb = clamp(texture2D(uLqTex, fwq).a * 0.7 + texture2D(uLqTex, fwq * 2.3 + 0.37).a * 0.5, 0.0, 1.0);
-    fc = mix(fc, fc * vec3(${B.inside.map(f4)}), fIn * ${f4(B.bubble)});
-    fc = mix(fc, ${lin3(B.white)}, clamp(fRing * 0.85 + fWeb * ${f4(B.web)} * smoothstep(0.2, 0.6, fl), 0.0, 1.0));
-    vec3 fFilm = 0.62 + 0.38 * cos(6.2832 * (fF * 1.3 + fUp * 0.35 + vec3(0.0, 0.33, 0.67) + vSeed));
-    fc = mix(fc, fFilm * ${lin3(B.side)}, pow(fF, 3.0) * ${f4(B.film)});
-    // a white rim along the top of each lobe's outline (the froth's crisp edge against the water behind)
-    fc = mix(fc, ${lin3(B.white)}, smoothstep(0.62, 0.8, fF) * smoothstep(-0.1, 0.35, fUp) * ${f4(B.rim)});
-    float fRd = max(dot(reflect(-L, N), V), 0.0);
-    fc += vec3(1.0) * (pow(fRd, 90.0) * ${f4(B.spec)} + fGl * 0.35 * smoothstep(0.3, 0.7, fl));
-    col = fc;
-    a = ${f4(B.alpha)} * clamp(vK * 1.5, 0.0, 1.0);
+  const B = MATCH_WATER.crest;
+  return /* glsl */ `  {   // ?s3=focus: small blue water splash crests (tunnel_r9_match_water.js, tunnel_r9_focus.js)
+    float cUp = dot(N, uU), cF = 1.0 - ndv;
+    vec3 cc = mix(${lin3(B.low)}, ${lin3(B.mid)}, smoothstep(0.25, 0.6, d));
+    cc = mix(cc, ${lin3(B.hi)}, smoothstep(0.62, 0.92, d + max(cUp, 0.0) * 0.15));
+    vec3 cP = vO * 1.6 + vSeed * 5.0, cPi = floor(cP);
+    float cBr = step(0.3, fract(sin(dot(cPi, vec3(39.346, 11.135, 83.155))) * 24634.6345));
+    float cEdge = smoothstep(0.55, 0.72, cF) * smoothstep(0.0, 0.4, cUp) * cBr;
+    vec3 cQ = vO * ${f4(B.sprayCell)} + vSeed * 13.0, cQi = floor(cQ);
+    float cH = fract(sin(dot(cQi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
+    float cSpray = step(${f4(B.sprayShare)}, cH) * (1.0 - smoothstep(0.1, 0.18, length(fract(cQ) - 0.5))) * smoothstep(-0.1, 0.4, cUp);
+    cc = mix(cc, ${lin3(B.white)}, clamp(max(cEdge * ${f4(B.edge)}, cSpray * ${f4(B.spray)}), 0.0, 1.0));
+    float cRd = max(dot(reflect(-L, N), V), 0.0);
+    cc += vec3(1.0) * pow(cRd, 120.0) * ${f4(B.spec)} + ${lin3(B.hi)} * pow(cF, 3.0) * 0.25;
+    col = cc;
+    a = clamp(max(${f4(B.alpha)}, max(cEdge, cSpray)), 0.0, 1.0) * clamp(vK * 1.5, 0.0, 1.0);
   }
 `;
 }

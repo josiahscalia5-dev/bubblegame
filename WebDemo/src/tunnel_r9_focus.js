@@ -7,9 +7,12 @@
 // The five items, in the user's order:
 //   1. the tunnel: more energetic, irregular swirling water, many more white splash flecks and streaks, more bubbles at
 //      every depth (the walls' band settings, a white fleck layer on the walls' water, more instanced streaks and bubbles);
-//   2. the foam: thick, bright, aqua-white froth, not glassy lavender domes (the bank's lobes reshaded as froth);
+//   2. the foam: no glassy lavender domes. The user's correction (about 17:15 UTC, superseding the thick-foam requests): she
+//      sits on sparkling BLUE water with small bubbles, splashes and blue-white highlights, not on a white foam cushion; so
+//      the big lobes round her are removed and the few left are small blue water splash crests;
 //   3. the pink character's framing: larger in the frame and clearly ON TOP of the water (the camera closer and lower; the
-//      foam and the curling sheets in front of her body lowered, so the water meets her at her base); her model unchanged;
+//      swell's crest and the curling sheets in front of her body lowered or removed, so the water meets her at her base);
+//      her model unchanged;
 //   4. the sock: lying sideways, its toe to the lower left, as in the original (a pose inside its rocking group);
 //   5. the composition: closer and fuller (the camera, and the fuller tunnel and foam).
 // Settings only (plain data); the code that reads the new keys is gated on FOCUS_ON in the files named. Colours are sRGB hex.
@@ -65,35 +68,42 @@ export const FOCUS = {
   // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after it is defined, before it hands its splash, liquid and
   // hero-water settings on
   water: {
-    // 2. the bank's lobes as thick froth (focusLumpGLSL): bright white where the light falls and where they face up,
-    //    aqua-white on the sides, light aqua-blue only in the creases and where they meet the water; a dense bubbly texture
-    //    (two sizes of round foam bubbles, each a white rim round a pale aqua inside, and a fine web), a few soap-film tints;
-    //    nearly opaque
-    froth: { white: '#f7fcff', side: '#b3e1fc', shade: '#64b4ef', crease: '#3d9cea', water: '#2f96ee',
-      cells: [6.0, 12.0], bubble: 1.0, inside: [0.62, 0.8, 0.95], web: 0.4, film: 0.12, alpha: 0.97, rim: 0.9, spec: 1.2, lit: [0.2, 0.6, 0.66, 0.95] },
-    // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque (no
-    //    see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac), and a full froth
-    //    rim at her base in front (match kept it at half there)
+    // 2 / 3. THE USER'S CORRECTION (5 November, about 17:15 UTC; it supersedes the thick-foam requests): in the original she
+    //    sits ON TOP of sparkling BLUE water: small bubbles, splashes and luminous blue-white highlights, NOT a thick white
+    //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
+    //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
+    //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
+    crest: { low: '#1a5fe0', mid: '#1f9af6', hi: '#8fe0ff', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
+      edge: 0.85, alpha: 0.9, spec: 1.6 },
+    // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque blue
+    //    water (no see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac); its white
+    //    crest only as a broken highlight at her base
     swellFront: { dip: 0.08, full: 22, to: 48 },
-    look: { clear: 1.0, sideClear: 1.0, crestFront: 1.0, crestW: [0.03, 0.06, 0.05, 0.05], frontRim: 0.3 },
+    //    (the grazing-angle rim low and bluer)
+    //    (the swell's upper face, between her body and its crest, is all "at the crest" for its white layer: at match's 0.95
+    //    that white washed the whole face pale lavender-white (found with a colour-coded diagnostic render); 0.3 leaves
+    //    broken highlights on vivid cobalt-turquoise water)
+    look: { clear: 1.0, sideClear: 1.0, crest: 0.3, crestFront: 0.45, crestW: [0.025, 0.04, 0.03, 0.035], top: 0.05, rim: 0.12, frontRim: 0.5,
+      sky: '#5ec8ff', glassHi: '#3fb4f8', glass: '#1f86ee', glassDeep: '#1450d0', spec: 2.2 },
+    // the floor round her: more sparkle (luminous blue-white highlights on vivid blue water)
+    floor: { caustic: 0.55, glint: 1.3, deep: 0.85 },
     splash: {
-      // lumpier and puffier (froth, not smooth domes), a wider spread of sizes
-      lumpSquash: 0.78, lumpBump: 0.17, lumpMin: 0.35,
-      // [phi, how many, biggest radius (m), outward (m), height from the crest (m)]: the lobes straight in front of her body
-      // (phi -16 to 9, 37-62% across) lowered and pushed out, so her lower body shows and the foam meets her at her base; the
-      // sides kept high (foam up her sides, higher on the left, as the original's); more, smaller lobes further out in front
-      // and at the sides, so the bank is a full froth across the bottom
-      // (they ride the swell's crest, so the front ones follow it down: a low froth cushion at her base, phi -16 to 9)
+      // small splash crests, not domes: lumpier, a wide spread of sizes
+      lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
+      // [phi, how many, biggest radius (m), outward (m), height from the crest (m)]: nothing in front of her body (phi -20 to
+      // 20 near the crest); a few small crests at her sides and low in the bottom corners (match: 30 lobes up to 0.22 m)
       lumps: [
-        [34, 5, 0.22, 0.05, -0.06], [46, 4, 0.21, 0.07, -0.08], [22, 4, 0.16, 0.06, -0.08], [9, 3, 0.13, 0.03, -0.05], [-4, 3, 0.13, 0.03, -0.06],
-        [-16, 3, 0.13, 0.03, -0.07], [-28, 4, 0.18, 0.08, -0.16], [-42, 4, 0.2, 0.06, -0.09], [-56, 3, 0.17, 0.06, -0.09], [60, 3, 0.15, 0.06, -0.08],
-        [16, 4, 0.18, 0.3, -0.18], [-12, 4, 0.18, 0.32, -0.2], [3, 4, 0.17, 0.52, -0.26], [40, 3, 0.18, 0.3, -0.12], [-36, 3, 0.18, 0.3, -0.14],
-        [26, 3, 0.17, 0.55, -0.24], [-24, 3, 0.17, 0.55, -0.26],
+        [40, 2, 0.11, 0.08, -0.1], [52, 2, 0.12, 0.08, -0.1], [-40, 2, 0.11, 0.08, -0.1], [-54, 2, 0.12, 0.08, -0.1],
+        [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
       ],
       // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
-      // side splashes kept
-      curls: [[36, 0.27, 0.36, 1.45, 0.12, 0], [56, 0.24, 0.32, 1.4, 0.12, 0], [-36, 0.2, 0.32, 1.4, 0.12, 0], [-56, 0.17, 0.28, 1.4, 0.12, 0]],
+      // side splashes kept, a little smaller, as the irregular blue splashes beside her
+      curls: [[36, 0.22, 0.3, 1.45, 0.12, 0], [56, 0.2, 0.28, 1.4, 0.12, 0], [-36, 0.17, 0.28, 1.4, 0.12, 0], [-56, 0.15, 0.26, 1.4, 0.12, 0]],
     },
+    // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
+    // droplets of spray (match: 30)
+    liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
+    heroWater: { splash: { count: 120 } },
     bubbles: {
       // 1. many more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only
       //    along the walls) and more mid-size ones; the camera's place at 3.0 s with the new framing
