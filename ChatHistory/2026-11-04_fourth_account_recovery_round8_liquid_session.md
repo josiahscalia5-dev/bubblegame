@@ -732,3 +732,35 @@ Your earlier versions are untouched and still on GitHub: `?s3=hero` at `06b9805`
 
 Two things are still outstanding. The specialist is adding the visible translucent splashes around your character, then running the check that your older versions are unchanged; that check hasn't been run yet. The autosave is still running every 5 minutes, but it only saves while this session is open.
 
+---
+
+### You · 2026-11-05 00:43 UTC
+
+Is it almost done?
+
+---
+
+### Claude · 2026-11-05 00:43 UTC
+
+The specialist has committed its finished water (`01cdcde`) and is writing up its report. I'll check its summary and the pixel-identity result:
+
+Close, but not done. The Water & VFX specialist has committed its finished water pass (`01cdcde`) and is writing its report. It hasn't handed back yet, so I haven't merged that commit, and it isn't on GitHub.
+
+**Finished:**
+- **Older versions unchanged:** the normal game, `?s3=hero`, Round 7, Round 6, Round 6 rich, Round 5 and Round 4 were each compared pixel by pixel against `06b9805`. At Tap to Start, 2.85 s and 4.2 s, all 21 comparisons had 0 differing pixels.
+- **The water:** walls, floor and the water around your character are now one water surface. It has flowing ripples, reflections of the tunnel's glow, cyan highlights, and cobalt in the troughs. It doesn't use Three.js Water or Water2: both redraw the whole scene every frame and only work on flat water.
+- **Performance:** the new water is cheaper to draw per pixel than the hero scene's old whirlpool shader.
+
+**Not finished: the foam-on version still looks almost the same as foam-off.** In its latest comparison at 3.0 s, the translucent white splashes around your character are barely visible. The specialist kept white very low (5–19%) so the blue would read first. Your approved Screen 4 has about 35% white right beside the character, as a clear bank of splash and bubbles over the blue. I won't call it complete until the splashes are visible.
+
+**Other gaps it reported honestly:**
+- The deep cobalt between the bands is still scarcer than in your artwork: 1–3% of the side walls vs 6%.
+- The bands are wider and fewer than your artwork's many narrow rings.
+- The warm peach-gold core is still smaller and cooler.
+
+**Next, once it reports back:**
+1. Merge its work and push it to GitHub.
+2. Have the visible translucent splashes added around your character: broken crests, spray, droplets and clear bubbles, with the blue still showing between them.
+3. Run the gameplay tests.
+4. Send you the final foam-off and foam-on captures at 2.85, 3.0 and 3.1 s beside your approved Screen 4.
+
