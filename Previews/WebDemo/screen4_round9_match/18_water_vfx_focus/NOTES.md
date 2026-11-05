@@ -163,3 +163,11 @@ to 3 read as crescent moons (tune b1). The ring zone's measure (`streaks.py`) al
 
 By eye (`item4_my_bubbles_after.png`) about 8-10 small bubbles of mine are left inside 0.2 W; the rest of the pieces there
 are the white streaks of item 3 and fragments of rings at the disc's edge.
+
+## Final checks (after `b5fb9d3`; `README.md`, `final/`, `checks/`)
+
+- `?s3=match` at 3.0 s against `71f7fa7`: canvas and page md5 identical; the normal game's canvas identical.
+- `S3=focus s3_func.cjs`: lanes, jump, the tunnel run (12 coins, 1 gem, 2 socks), keyboard start, no console errors; 136
+  draw calls, 1.07 M triangles in the tunnel.
+- `liquid_moves.cjs`: the water piles up on the swerve side, sprays under her in the air, splashes on landing.
+- Pixel 7 (412 x 839): the same water round her, her base on top.
