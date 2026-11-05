@@ -72,3 +72,15 @@ Two other branches from today, `ccr-3d8a1ae9-hhgml1` (18:58) and `ccr-de8d9670-2
 
 Only 5 code conflicts. The real question is whether `?s3=focus` still looks exactly as tested on its own branch once our `match` changes sit underneath it. Looking at how `focus` is built:
 
+The pixel-identity proof for this morning's merge passed: the normal game and all 10 older versions are unchanged (every frame 0 differing pixels). Saving it:
+
+Now a probe that reads the full settings of `match` and `focus` from each version, so the restore can be generated and checked exactly:
+
+The table has 67 entries; 16 of them delete settings that line A added. Now resolving the merge in the throwaway copy. Looking at the remaining spots that need `focus` switched back:
+
+Writing the restore module (generated table plus a small apply function):
+
+Now the edits in `tunnel_r9_match.js`, starting with the import and where `focus`'s settings are applied:
+
+Now the water file: the froth band, the bubble outline width and the fleck shapes.
+

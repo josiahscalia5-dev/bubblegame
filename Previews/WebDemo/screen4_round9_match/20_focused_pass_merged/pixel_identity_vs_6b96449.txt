@@ -1,0 +1,35 @@
+Pixel identity after merging the focused pass (68c8c40, bundle e74ba8c9...) against 6b96449 (bundle 3e7fc194...): raw 3D canvas, tools/models/game_eval.cjs SHOT, seed 7, 538 x 1076, Tap to Start, 2.85 s and 4.2 s; 11_merged_final/scripts/identity_shots.sh and identity_compare.py.
+hero_2.9.png                 538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero_4.2.png                 538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero_tap.png                 538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam_2.9.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam_4.2.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam_tap.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich_2.9.png          538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich_4.2.png          538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich_tap.png          538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash+nofoam_2.9.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash+nofoam_4.2.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash+nofoam_tap.png        538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+splash_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+ALL IDENTICAL

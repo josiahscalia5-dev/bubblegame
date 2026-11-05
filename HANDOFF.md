@@ -14,7 +14,7 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
     `0f6f7d22...`, the md5 in its identity file. Evidence: `14_focused_pass_water_vfx/followup/`.
   - Merged as `68c8c40` (different files, no conflict). Merged bundle md5 `e74ba8c9...`.
 - **The phone video** recorded at 21:11 UTC (`16_phone_video_into_the_machine/`) was sent to the user in this session.
-- **Checks and the merged comparison:** `Previews/WebDemo/screen4_round9_match/17_focused_pass_merged/` (README there).
+- **Checks and the merged comparison:** `Previews/WebDemo/screen4_round9_match/20_focused_pass_merged/` (README there).
 - **Autosave:** running, with `ChatHistory/2026-11-05_eighth_session_round9_merge.md` and
   `..._eighth_session_design_agent_transcripts.md`.
 
