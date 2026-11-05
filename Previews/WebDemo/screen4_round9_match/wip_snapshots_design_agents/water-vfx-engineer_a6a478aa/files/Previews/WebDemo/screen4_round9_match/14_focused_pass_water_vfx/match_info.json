@@ -68,11 +68,11 @@
    },
    "cost": {
     "drawCalls": 207,
-    "triangles": 1341051,
+    "triangles": 1341091,
     "textures": 44,
     "geometries": 154,
     "programs": 64,
-    "msPerFrameSoftware": 4017.3
+    "msPerFrameSoftware": 3845.9
    }
   },
   {
@@ -140,11 +140,11 @@
    },
    "cost": {
     "drawCalls": 209,
-    "triangles": 1428897,
+    "triangles": 1428937,
     "textures": 44,
     "geometries": 155,
     "programs": 64,
-    "msPerFrameSoftware": 3962.4
+    "msPerFrameSoftware": 3856.4
    }
   },
   {
@@ -212,11 +212,11 @@
    },
    "cost": {
     "drawCalls": 202,
-    "triangles": 1317250,
+    "triangles": 1317290,
     "textures": 44,
     "geometries": 155,
     "programs": 64,
-    "msPerFrameSoftware": 3901.1
+    "msPerFrameSoftware": 3701.8
    }
   }
  ],
@@ -581,10 +581,10 @@
       "lobes": true,
       "curls": true,
       "bubbles": {
-       "count": 170,
+       "count": 190,
        "flecks": 380,
        "drawCalls": 1,
-       "triangles": 1100,
+       "triangles": 1140,
        "avoiding": 29
       }
      },

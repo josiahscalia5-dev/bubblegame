@@ -1,0 +1,5 @@
+{
+  "wA": { "match": { "walls": { "streak": { "amount": 0.4, "dark": "#2d62e0" }, "bands": { "glow": { "amount": 0.65, "col": "#58c8fa" }, "gap": { "amount": 0.95 } } } } },
+  "wB": { "match": { "walls": { "streak": { "amount": 0.4, "dark": "#2d62e0", "from": [0.7, 1.5] }, "bands": { "glow": { "amount": 0.7, "col": "#62cffb" }, "gap": { "amount": 0.95, "from": [0.62, 0.84] } }, "lift": 0.06 } } },
+  "wC": { "match": { "walls": { "streak": { "amount": 0.3, "dark": "#3170e6" }, "bands": { "glow": { "amount": 0.6 }, "gap": { "amount": 0.92 }, "rim": { "w": [0.0, 0.14] } }, "deepen": { "amount": 1.6 } } } }
+}

@@ -254,13 +254,40 @@ export const MATCH = {
       // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against
       // the approved's brightest #cae0ff; at 1.3 they turned white and broke into specks, at 1.05 the glints went lilac again)
       edge: { col: '#c2dcff', w: [0.02, 0.045], broken: [-0.13, -0.07], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.6, boost: 1.12 } },
+    // the focused pass (the user's brief, 15:55 UTC, item 1: "still too clean and too smooth"; more energetic, irregular,
+    // turbulent): measured at 3.0 s the rings were smoother along their length than the original's (along-ring brightness
+    // std up / left / right 0.123 / 0.079 / 0.112 against 0.148 / 0.118 / 0.169, rings.py) and its walls paler (upper wall
+    // pale blue 20.6% against 11.2%, saturation 0.48 against 0.58, walls.py).
+    // turb: the band phase broken by a second, finer sampling of the relief (scale: [turns, log r], the turns a whole number
+    // so the angle stays seamless; amp in bands per unit of the relief's spread, 0.11) and a swirl wave round the ring
+    // (m waves per turn, k per unit of ln r, drifting at speed rad/s; amp in bands): jagged, broken band edges and curling
+    // turbulence
+    // (amp 0.16 / swirl 0.1 shattered the rings into shards at 3.0 s: the original's ring edges are smooth arcs; kept small)
+    turb: { scale: [3, 2.3], amp: 0.05, m: 9, k: 5.0, speed: 0.9, swirl: 0.05 },
+    // streaks: the original's busy rings are many thin concentric sub-stripes (cyan, electric blue, cobalt) broken into
+    // arcs, not wide smooth fills: the relief sampled `scale` [turns (a whole number), log r] finer, so its cells stretch along
+    // the rings, flowing round with the swirl; above +from (in the relief's spread, 0.11) toward the cyan, under -from toward
+    // the cobalt, by amount (bands only, outside the warm core; the whites and warm patches kept)
+    streak: { scale: [2, 7.0], from: [0.5, 1.3], amount: 0.55, light: '#45bdf8', dark: '#2549cb', speed: 0.02 },
+    // deepen: the walls' pale mid blues toward the original's saturated electric blue and azure (saturation times `amount`
+    // under luminance lum[0], fading out by lum[1] so the whites and splash stay; blue hues only, the warm patches kept)
+    // (screen luminance of the sRGB values: the original's pale blue #a3d1f6 is 0.79, its electric blue #337ced 0.46, white 0.95)
+    deepen: { amount: 1.45, lum: [0.84, 0.92] },
     royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
-    rainbow: { r: 0.225, w: 0.036, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
+    // (the focused pass, "less pastel peach band": measured round the upper sector, the original's warm band is at rw
+    // 0.24-0.29, peak 0.26 (warm share 24 / 60 / 36% at 0.24 / 0.26 / 0.28); ours peaked at 0.22 (87%) over 0.18-0.27, so
+    // it sat in the original's saturated blue bands: moved out and narrowed, 0.225 / 0.036 -> 0.262 / 0.022)
+    rainbow: { r: 0.262, w: 0.022, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
+    // the original's pastel inner ring round the mid vortex (rw 0.10-0.13, sampled round the whole circle: pink and lilac at
+    // the sides #f18ef0 / #f2b0ea / #efd3f0, pink-white at the top #f2e2e9, cream below #faf4cd / #f6f0b9; ours was
+    // periwinkle #8791f7 there): radius and half width in rw, colours sides, top, bottom (the focused pass)
+    innerRing: { r: 0.117, w: 0.016, amount: 0.75, cols: ['#f2b4ee', '#f3e3ef', '#f9f2cc'] },
     // the mid vortex (the approved r 0.08-0.20 W: white 22%, pale blue 18%; ours white 8%, pale blue 32%): its brightest
     // pale blue whitened; r: [in, full, full to, out] in rw, from: the brightness where it starts and is full
-    midWhite: { r: [0.05, 0.08, 0.17, 0.24], from: [0.66, 0.82], amount: 0.9 },
+    // (the focused pass: only inside rw 0.155; from 0.14 out the original's bands are saturated blue, S 0.5-0.8)
+    midWhite: { r: [0.05, 0.08, 0.12, 0.155], from: [0.66, 0.82], amount: 0.9 },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -464,9 +491,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
   // than the pixels (seam-free: from the wrap-corrected derivatives)
   float mtEdge = 0.0;
+  // (the focused pass, MATCH.walls.turb: the turbulence breaking the bands; a finer relief sample, flowing the other way)
+  vec2 tsc = vec2(${f4(M.turb.scale[0])}, ${f4(M.turb.scale[1])});
+  float dl2 = dot(textureGrad(uMatchDet, dv * tsc + vec2(0.37 - uTime * 0.013, 0.61 + uTime * 0.05), ddx * tsc, ddy * tsc).rgb - 0.5, vec3(0.2126, 0.7152, 0.0722));
+  float turbB = ${f4(M.turb.amp / 0.11)} * dl2 + ${f4(M.turb.swirl)} * sin(tu * ${f4(6.2831853 * M.turb.m)} + lr * ${f4(M.turb.k)} - uTime * ${f4(M.turb.speed)} + dl2 * 6.0);
   {
     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
-      - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
+      - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)} + turbB;
     float bk = fract(bs);
     float aw = (abs(dx.y) + abs(dy.y)) * ${f4(M.span * M.bands.perLog)} + (abs(dx.x) + abs(dy.x)) * ${f4(M.bands.spiral)};
     float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
@@ -484,6 +515,15 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     // peach and white, run right down to the centre coin)
     float ginK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz * (1.0 - bout);
     c = mix(c, ${hx(M.bands.inner.col)} * mix(0.9, 1.08, bl), ginK * ${f4(M.bands.inner.amount)});
+    // the thin streaks along the rings (MATCH.walls.streak; the focused pass), under the rim line and splash
+    {
+      vec2 ssc = vec2(${f4(M.streak.scale[0])}, ${f4(M.streak.scale[1])});
+      float sn = dot(textureGrad(uMatchDet, dv * ssc + vec2(0.53 + uTime * ${f4(M.streak.speed)}, 0.19), ddx * ssc, ddy * ssc).rgb - 0.5, vec3(0.2126, 0.7152, 0.0722)) / 0.11;
+      float sl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      float sk = bz * bout * ${f4(M.streak.amount)} * (1.0 - smoothstep(0.82, 0.92, sl)) * (1.0 - smoothstep(0.0, 0.08, c.r - c.b));
+      c = mix(c, ${hx(M.streak.light)} * mix(0.95, 1.1, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, sn) * sk);
+      c = mix(c, ${hx(M.streak.dark)} * mix(0.9, 1.15, sl), smoothstep(${f4(M.streak.from[0])}, ${f4(M.streak.from[1])}, -sn) * sk);
+    }
     c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
     // white water broken over each band's lit part where the relief crests (the approved's turbulent splash bits along the
     // rings; blobs of the relief's own cells, not star shapes)
@@ -505,6 +545,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     rc = mix(rc, ${hx(M.rainbow.cols[3])}, smoothstep(0.2, -0.6, cos(ra)) * 0.6);   // pinker on the left
     float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
     c = mix(c, rc * mix(0.85, 1.08, rl), rk);
+    // the pastel inner ring (MATCH.walls.innerRing; the focused pass): pink at the sides, pink-white at the top, cream below,
+    // broken by the turbulence like the bands
+    float ik = exp(-pow((rw - ${f4(M.innerRing.r)} + turbB * 0.006) / ${f4(M.innerRing.w)}, 2.0)) * ${f4(M.innerRing.amount)};
+    vec3 ic = mix(${hx(M.innerRing.cols[0])}, ${hx(M.innerRing.cols[1])}, smoothstep(0.4, 0.95, sin(ra)));
+    ic = mix(ic, ${hx(M.innerRing.cols[2])}, smoothstep(-0.3, -0.8, sin(ra)));
+    c = mix(c, ic * mix(0.92, 1.04, rl), ik);
   }
   {   // the mid vortex's bright pale blue toward the approved's white water (MATCH.walls.midWhite; the warm patches kept)
     float mz = smoothstep(${f4(M.midWhite.r[0])}, ${f4(M.midWhite.r[1])}, rw) * (1.0 - smoothstep(${f4(M.midWhite.r[2])}, ${f4(M.midWhite.r[3])}, rw));
@@ -523,6 +569,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
     float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
     c.g = mix(c.g, c.r + ${f4(M.royal.to)} * (c.b - c.r), rk);
+  }
+  {   // the walls' pale mid blues toward saturated electric blue and azure (MATCH.walls.deepen; the focused pass): blue the
+      // largest channel, outside the warm core, under the whites' brightness (screen luminance)
+    float dlum = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    float dk = step(c.r, c.b) * step(c.g, c.b) * smoothstep(0.07, 0.11, rw) * (1.0 - smoothstep(${f4(M.deepen.lum[0])}, ${f4(M.deepen.lum[1])}, dlum));
+    c = clamp(dlum + (c - dlum) * mix(1.0, ${f4(M.deepen.amount)}, dk), 0.0, 1.0);
   }
   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));

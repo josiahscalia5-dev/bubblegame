@@ -1399,8 +1399,14 @@ The water still reacts: piled on the swerve side, smaller in the air, bigger on 
 148 bubbles shown now (near 57, mid 74, far 17; centre 12, mid 106, walls 28). Re-running the final captures and the pixel-identity proof with this bundle.
 
 - 20:19 `Bash`: Final captures with cost, final bundle
+- 20:22 `Bash`: Pixel identity with the final bundle
+**Agent** (20:25 UTC):
 
-_148 tool steps._
+Pixel identity holds for the final bundle `3e7fc194`. Re-running the gameplay check and the moves with this exact bundle as well.
+
+- 20:25 `Bash`: Gameplay check and moves with the final bundle
+
+_150 tool steps._
 
 ---
 
@@ -1655,5 +1661,33 @@ The sock now spans 0.649-0.845 x 0.554-0.658 (original 0.65-0.84 x 0.552-0.66). 
 - 20:19 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_cmp_t2.png
 - 20:19 `Bash`: Wall and ring measurements for before and iteration 2
 - 20:20 `Bash`: Inspect the relief and variation textures' statistics
+- 20:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+**Agent** (20:21 UTC):
 
-_137 tool steps._
+Let me sample the original's rainbow arc colours (so the peach band can be made less pastel against measured values, not by eye).
+
+- 20:21 `Bash`: Sample rainbow arc colours in original and current
+- 20:21 `Bash`: Warm share by radius over the upper sector
+- 20:21 `Bash`: Sample the inner ring colours round the full circle
+- 20:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:22 `Bash`: Build, capture iteration 3, compose tunnel close-ups
+- 20:23 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_cmp_t3.png
+- 20:23 `Bash`: Upper-left wall zoom original, t2, t3
+- 20:23 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_zoom_t3.png
+- 20:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:24 `Bash`: Build, capture iteration 4 at 3.0 s, compose close-ups
+- 20:25 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_zoom_t4.png
+- 20:25 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_cmp_t4.png
+**Agent** (20:25 UTC):
+
+Streaks along the rings read much closer to the original's painted, busy rings, with deeper blue; the rainbow and the inner pastel ring now sit at the original's radii. Measuring.
+
+- 20:25 `Bash`: Wall and ring measurements for iteration 4
+- 20:25 `Bash`: Read rings.py metric definitions
+
+_157 tool steps._
