@@ -814,3 +814,53 @@ Shall I start the next pass on the visible translucent splashes and the deeper s
 
 Yes, start the splash pass and run the gameplay tests
 
+---
+
+### Claude · 2026-11-05 00:53 UTC
+
+Starting both now. The Water & VFX specialist continues from its own finished work, so nothing is rebuilt, and the gameplay tester checks the build that's saved on GitHub.
+
+Both are running now. Neither has reported results yet.
+
+**Splash pass (Water & VFX specialist):** it's building on its finished water as a new step, so the version saved on GitHub stays as it is. You asked for two things:
+1. **Visible translucent splashes around your pink character, foam-on version only:**
+   - broken white crests along the waterline;
+   - curling see-through spray on both sides, the biggest just to the right of the body, as in your artwork;
+   - droplets flying up, and clusters of clear bubbles at the waterline.
+   
+   The target is about 25–35% white beside the character, close to your artwork's 35%, with the blue water still the main thing you see. The splashes will react to movement: bigger on the side you swerve to, a burst when you land, smaller while you're in the air.
+2. **A deeper swirl:** more deep cobalt between the bright bands on the tunnel walls, and a slightly bigger, warmer peach-gold core. `?s3=liquid,nofoam` stays foam-free.
+
+It will check again that `?s3=hero`, the older versions and the normal game are pixel-identical to before. Gameplay itself won't change.
+
+**Gameplay tests (Gameplay & Visual Testing specialist):** it's testing the water version saved on GitHub, with the foam on and off, against `?s3=hero` for comparison. It checks:
+- steering, jump, tap to spin and the HUD;
+- hearts, pause, Bubble Blast and Turbo Spin;
+- riding every lane through the tunnel;
+- collecting the coins, gem and socks, and the brushes still knocking;
+- console and shader errors;
+- frame cost;
+- a short gameplay video with a swerve and a jump.
+
+It only reads the game and changes nothing.
+
+When both report back I'll check the frames myself, merge the splash pass and push everything to GitHub. Then I'll send you the new full-resolution comparisons at 2.85, 3.0 and 3.1 s beside your approved Screen 4, plus the test results and video. The autosave is still running every 5 minutes.
+
+---
+
+### Automatic notice · 2026-11-05 00:57 UTC
+
+_Agent "Gameplay tests for Round 8 liquid" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 4:30am (UTC) (error type rate_limit, HTTP 429, request id req_011CgisarxKye7N942CjacRh, model sent to the API: claude-opus-5-5)_
+
+---
+
+### Claude · 2026-11-05 00:57 UTC
+
+You've hit your 5-hour limit · resets 4:30am (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 00:57 UTC
+
+_Agent "Water specialist builds liquid body" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 4:30am (UTC) (error type rate_limit, HTTP 429, request id req_011CgiscT3TPBCXpDaEi5okr, model sent to the API: claude-opus-5-5)_
+
