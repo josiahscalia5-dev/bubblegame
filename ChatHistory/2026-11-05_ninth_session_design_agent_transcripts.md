@@ -445,8 +445,36 @@ Now I'll write C4 plus the twist into `FOCUS.match` and capture with the standar
 - 20:03 `Bash`: Build, capture and measure the centre step
 - 20:04 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/corefinal_crop.png
 - 20:04 `Bash`: Pixel 7 capture after centre change
+- 20:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3
+**Lead → agent** (20:05 UTC):
 
-_233 tool steps._
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+- 20:05 `Bash`: Save centre evidence
+- 20:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 20:05 `Bash`: Commit the centre step
+**Agent** (20:06 UTC):
+
+Item 4 committed as `2db3d6b`. Item 5, the left wall (x 0-0.30, y 0.44-0.79). Let me measure that zone and look at it close up.
+
+- 20:06 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/left_wall.py
+- 20:06 `Bash`: Measure the left wall zone and crop it
+- 20:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left_before.png
+- 20:06 `Bash`: Check where matchWall is used
+- 20:06 `Bash`: Check if the floor calls matchWall
+- 20:07 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:07 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:07 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left_cands.json
+- 20:07 `Bash`: Render and measure left-wall candidates
+- 20:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left1_crop.png
+- 20:08 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:08 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left_cands2.json
+- 20:08 `Bash`: Render and measure revised left-wall candidates
+- 20:09 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left2_crop.png
+- 20:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 20:09 `Bash`: Build, capture final frames at 2.85/3.0/3.1 and verify
+
+_253 tool steps._
 
 ---
 
@@ -883,5 +911,108 @@ Normal game identical too. Now `s3_func` on `focus`.
 - 20:05 `Bash`: Summarize s3_func results
 - 20:05 `Bash`: Find the Pixel 7 capture script
 - 20:05 `Bash`: Capture the Pixel 7 framing now and at base
+- 20:06 `Bash`: Pair the Pixel 7 lower halves before and after
+- 20:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/pixel7_pair.png
+**Lead → agent** (20:06 UTC):
 
-_225 tool steps._
+[Image: original 2172x837, displayed at 2000x771. Multiply coordinates by 1.09 to map to original image.]
+
+- 20:06 `Bash`: Read the movement capture tool usage
+- 20:06 `Bash`: Capture the swerve, jump and landing frames
+- 20:07 `Bash`: Make a strip of the three move frames
+- 20:07 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/moves/moves_strip.png
+- 20:07 `Bash`: Build final comparison sheets and measures
+- 20:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/final/round_her_zoom_orig_before_final.
+**Lead → agent** (20:07 UTC):
+
+[Image: original 3228x492, displayed at 2000x305. Multiply coordinates by 1.61 to map to original image.]
+
+**Agent** (20:07 UTC):
+
+Copying the check outputs into the evidence folder.
+
+- 20:07 `Bash`: Save checks: identity md5, s3_func, Pixel 7, moves
+- 20:08 `Write`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/README.md
+- 20:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/final/full_orig_before_final.png
+**Agent** (20:08 UTC):
+
+The final frame reads closer to the original's lower half. Committing the evidence.
+
+- 20:08 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 20:08 `Bash`: Commit the evidence and README
+**Agent** (20:08 UTC):
+
+Last, a check that the committed bundle matches the committed source.
+
+- 20:08 `Bash`: Rebuild and confirm the bundle is unchanged
+**Agent** (20:08 UTC):
+
+All four items are done and committed in my worktree. They are not pushed: you merge them into `ccr-de8d9670-2ohd5t`. The water round her is now broken, sparkling blue water with white crests, spray, glints and small bubbles, and she sits on top of it. Two of the Art Director's targets round her are still missed (below).
+
+Every number below is from the Art Director's scripts, unchanged, run on real 3.0 s gameplay frames (seed 7, DPR 1.5), in the order original / before / now. "Before" is `71f7fa7`'s own focus frame, captured again with the committed camera.
+
+**Commits**
+- `d615259` (step 1a): your 18:56 work restored. The side crests' white cap was making two white masses of 2,800 and 4,250 px, so I broke it into separate small pieces. The swell's face got broken white crest arcs instead of polka dots.
+- `4ae6099` (step 1b): took out the four lumps beside her. With the new camera they showed as smooth blue pillows.
+- `d903650` (step 1c): finer spray, so it no longer reads as falling rain, and more irregular crest arcs.
+- `eacb3f4` (item 2): the floor ahead is pale blue-white water with broken white streaks and blue dashes.
+- `5dac0d8` (item 3): flying streaks cut from 560 to 220, thicker, some hooked, some turned off the bands.
+- `b5fb9d3` (item 4): tunnel bubbles moved off the centre (280 to 220).
+- `60671c2`: evidence, checks and README.
+
+**Item 1, the water round her**
+- **Met:**
+  - white 27.7 / 6.0 / 16.8%;
+  - largest white piece 10,247 / 1,449 / 1,390 px;
+  - vivid blue 12.9 / 47.6 / 16.1%;
+  - texture 5.47 / 5.03 / 5.41;
+  - brightness (L*) left 79.3 / 71.9 / 79.5, right 82.6 / 74.8 / 80.7;
+  - lavender 16.9 / 0.2 / 0.2%;
+  - her base sits at y 0.849 (original 0.859).
+- **Missed:**
+  - Only 38% of the white is in pieces of 400 px or less (target at least half), because the crest arcs are 400–1,400 px each.
+  - Her pink is 0.25 W wide just above her lowest point (target 0.20, before 0.27). The tries that reached 0.18–0.21 either stuck blue blobs on her fur or made her sit deeper, so I rejected them.
+
+**Item 2, the floor ahead**
+- Brightness (L*) 83.5 / 71.8 / 79.4, just under the 80–84 target.
+- White 26.9 / 6.9 / 22.1%, now as broken streaks.
+- Median colour #aad7f4 / #7eb0e5 / #a7cdf2.
+- Lavender stays at 10.9% (target at most 5%), and it is not the water. It stays in the same lane-shaped patches even with the floor forced fully pale, and no bubble or glow object draws it. It matches the brushes' pink hazard warning drawn on the floor (`s4Haz`), which is gameplay, so I left it.
+
+**Item 3, the flying streaks**
+These measures include Tunnel & Lighting's wall streaks too.
+- Pieces per 10,000 px: 3.2 / 13.2 / 11.2.
+- Largest pieces (p90 area): 1,160 / 159 / 260 px.
+- Share following the rings: 28 / 74 / 56%.
+
+**Item 4, bubbles near the tunnel's centre**
+- With only my bubble layer isolated by hiding it, it now covers 12.3% of the area within 0.2 W of the centre (was 28.0%) and 2.4% within 0.12 W (was 20.6%). By eye about 8–10 small bubbles are left there.
+- Near, middle and far bubbles along the walls are kept.
+- The Art Director's circle count barely moves (116 to 105), because 87 of those circles remain with my bubbles hidden. They come from other layers.
+
+**Checks**
+- `?s3=match` at 3.0 s is byte-identical to `71f7fa7` (canvas and page), and so is the normal game.
+- `S3=focus s3_func`:
+  - controls: swipes change lanes, the jump works, the keyboard start works;
+  - the tunnel run collects 12 coins, 1 gem and 2 socks;
+  - no console errors; 136 draw calls and 1.07 M triangles in the tunnel.
+- The water still reacts to a swerve, a jump and a landing.
+- At the Pixel 7 framing the water round her looks the same, with her on top.
+
+**Files changed:** `WebDemo/src/tunnel_r9_match_water.js`, the `FOCUS.water` part of `WebDemo/src/tunnel_r9_focus.js`, and `WebDemo/game.bundle.js`.
+
+**What still differs from the original**
+- Round her, the original's water is a mass of bubble domes with thick white outlines and lavender insides. Under your rule against a white or lavender cushion, ours has less white, in smaller pieces, and no lavender.
+- Her pink is a little wider at the base (0.25 W against 0.20).
+- The floor ahead is about 4 points darker than the original's near-white water, and its streaks are more regular.
+- The spray shader draws every "round" droplet as a tall oval. It is in `tunnel_r7_hero_water.js`, which is not my file, so I only made the droplets small.
+- Most of the circle-like clutter at the centre comes from the walls (Tunnel & Lighting's), not my bubbles.
+
+Everything is in `/home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/`; open `README.md` first:
+- `README.md`: the verified / partly / not table;
+- `NOTES.md`: every try, including the rejected ones;
+- `final/`: the original / before / now comparisons;
+- `checks/`: identity, gameplay, Pixel 7 and movement checks.
+
+
+_239 tool steps._

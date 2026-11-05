@@ -124,6 +124,12 @@ export const FOCUS = {
       //  toward the core; colours sampled from the original by radius (pink-violet #e1adeb-#eea0f0, salmon-peach #edada0))
       innerRings: { r: [0.03, 0.045, 0.115, 0.135], white: '#f6f2fa', pale: '#9dbff5', pink: '#e4a2ec', peach: '#eeaf9e',
         whiteAt: [0.22, 0.4], pinkAt: [0.48, 0.8], soft: 0.05, peachTo: [0.07, 0.085], twist: 0.18, amount: 0.9 },
+      // (Tunnel & Lighting, the Art Director's item 6, the left wall x 0-0.30, y 0.44-0.79: the original glows pale there, L*
+      //  77, white 25%, vivid blue 26%; ours was saturated royal, L* 66.5, white 6.6%, vivid 63%. focusLeftGLSL: on the left
+      //  sector the water's middle tones go pale azure and its bright ones white, its darks stay vivid blue, so the flows keep
+      //  their shapes; measured L* 77.3, white 22.3%, vivid 24.1%, lavender at the frame's edge 0.3%. A uniformly pale palette
+      //  (darks to periwinkle) reached L* 78.5 but read as a flat lilac wash, so the darks are kept)
+      leftGlow: { centre: 195, cos: [0.45, 0.8], r: [0.2, 0.3], dark: null, mid: '#9ccaf8', white: '#f7f9fe', lum: [0.25, 0.5, 0.45, 0.66], amount: 0.9 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it

@@ -1,8 +1,8 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-index 54f942e..5659dd6 100644
+index 54f942e..75e1b6f 100644
 --- a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
 +++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-@@ -87,3 +87,82 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
+@@ -87,3 +87,105 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
  small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
  gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
  Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
@@ -85,10 +85,45 @@ index 54f942e..5659dd6 100644
 +| bubble layer hidden (the walls' own) | | 3.5 / 10 / 42 / 1.8 | 4.3 / 60 / 331 / 3.9 |
 +
 +Frames: `frames/focus_flecks_t3.00_canvas.png`, `..._bubble_layer_hidden.png`, `frames/phone_412x839_focus_flecks_3.00s.png`.
++Committed `340b117`.
++
++## 6. AD item 5: the centre (`core.py`, `scripts/core_detail.py` by radius)
++
++The original by radius round (0.53, 0.525): r < 0.04 W warm 45% / white 39%; 0.04-0.07 salmon-peach (#edada0) 21%; 0.07-0.12
++pink-violet rings (#e1adeb-#eea0f0) 8-13% between white; saturated blue under 3% inside 0.12. Ours had the royal flows down to
++0.075 W (saturated blue 12-41% at 0.07-0.12). Changed (focus only): `bands.blueFrom` [0.075, 0.12] -> [0.11, 0.14] (the flows and
++cobalt gaps start further out) and `focusInnerGLSL` (`walls.innerRings`): concentric pastel bands on the walls' band spacing,
++flowing with them and bent a little (twist): pale blue, a white ring, a pink-violet ring, salmon-peach toward the core; drawn
++after match's mid-vortex whitening and core tint. First tries: white rings only made a flat white disc (white 68-75%, L* 90);
++the pale-blue body fixed it.
++
++| core r < 0.12 W at 3.0 s | original | before (`340b117`) | after |
++|---|---|---|---|
++| pink-violet | 8.6% | 1.7% | 7.3% |
++| warm | 13.0% | 7.9% | 10.9% |
++| saturated blue | 3.1% | 19.0% | 0.7% |
++| white | 35.3% | 33.3% | 34.4% |
++| pale blue | 14.5% | 22.2% | 35.2% |
++| L* | 83.4 | 79.9 | 84.3 |
++| warm in the ring zone r 0.12-0.45 | 3.1% | 1.4% | 1.4% |
++
++Frames: `frames/focus_core_t3.00*.png`, crop `frames/crop_centre_original_before_after.png`, Pixel 7 `frames/phone_412x839_focus_core_3.00s.png`.
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png
+new file mode 100644
+index 0000000..3342855
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png
 new file mode 100644
 index 0000000..da03010
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00.png
+new file mode 100644
+index 0000000..489ae29
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00_canvas.png
+new file mode 100644
+index 0000000..0dab2ad
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00_canvas.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png
 new file mode 100644
 index 0000000..8069fcf
@@ -121,6 +156,10 @@ diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/fram
 new file mode 100644
 index 0000000..7d332d2
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.10_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3.00s.png
+new file mode 100644
+index 0000000..6b83b9a
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3.00s.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png
 new file mode 100644
 index 0000000..efbde5f
@@ -715,6 +754,29 @@ index 0000000..defc75a
 +  }
 +  await browser.close(); server.close();
 +})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/core_detail.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/core_detail.py
+new file mode 100644
+index 0000000..55e40f1
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/core_detail.py
+@@ -0,0 +1,17 @@
++# core_detail.py img...: core.py's classes (r < 0.12 W round (0.53, 0.525)) by radius ring (0-0.04, 0.04-0.07, 0.07-0.095,
++# 0.095-0.12 W): share of pink-violet / warm / white / saturated blue, and the median colour of the pink-violet and warm pixels
++import sys, numpy as np, cv2
++W, H = 767, 1536; cx, cy = 0.53*W, 0.525*H
++yy, xx = np.mgrid[0:H, 0:W]; r = np.hypot((xx-cx)/W, (yy-cy)/W)
++for p in sys.argv[1:]:
++    im = cv2.resize(cv2.imread(p)[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++    hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255; v = hsv[..., 2]/255
++    gold = cv2.dilate(((h > 30) & (h < 60) & (s > 0.5) & (v > 0.5)).astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
++    sockv = (h > 255) & (h < 285) & (s > 0.55)
++    pv = (h > 280) & (h < 335) & (s > .2) & (s < .75) & (v > .65); wa = ((h < 55) | (h > 335)) & (s > .15)
++    wh = (s < .15) & (v > .88); sb = (h > 190) & (h < 240) & (s >= .45)
++    print(p.split('/')[-1][:30])
++    for a, b in ((0, 0.04), (0.04, 0.07), (0.07, 0.095), (0.095, 0.12), (0.12, 0.45)):
++        z = (r >= a) & (r < b) & ~gold & ~sockv
++        med = lambda m: '#%02x%02x%02x' % tuple(np.median(im[m & z][:, ::-1], axis=0).astype(int)) if (m & z).sum() > 20 else '-'
++        print(f"   r {a:.3f}-{b:.3f}: pinkviolet {pv[z].mean()*100:4.1f}% {med(pv)}  warm {wa[z].mean()*100:4.1f}% {med(wa)}  white {wh[z].mean()*100:4.1f}%  satblue {sb[z].mean()*100:4.1f}%")
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py
 new file mode 100644
 index 0000000..e9897a0
@@ -887,7 +949,7 @@ index 0000000..6205d94
 +    if not l.startswith(' '): cur = l.split()[0]; continue
 +    if cur in ('ring_upper', 'ring_left', 'centre') and l.split()[0] in who: print(f'  zone {cur:10s}', l.strip())
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..ac9d83d 100644
+index 2f39f0e..bad388a 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -25,14 +25,28 @@ export const FOCUS = {
@@ -958,7 +1020,7 @@ index 2f39f0e..ac9d83d 100644
          // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
          // match's bands wider on screen)
          gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
-@@ -76,9 +106,24 @@ export const FOCUS = {
+@@ -76,9 +106,30 @@ export const FOCUS = {
        //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
        //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
        //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
@@ -983,10 +1045,16 @@ index 2f39f0e..ac9d83d 100644
 +      //  toward the core; colours sampled from the original by radius (pink-violet #e1adeb-#eea0f0, salmon-peach #edada0))
 +      innerRings: { r: [0.03, 0.045, 0.115, 0.135], white: '#f6f2fa', pale: '#9dbff5', pink: '#e4a2ec', peach: '#eeaf9e',
 +        whiteAt: [0.22, 0.4], pinkAt: [0.48, 0.8], soft: 0.05, peachTo: [0.07, 0.085], twist: 0.18, amount: 0.9 },
++      // (Tunnel & Lighting, the Art Director's item 6, the left wall x 0-0.30, y 0.44-0.79: the original glows pale there, L*
++      //  77, white 25%, vivid blue 26%; ours was saturated royal, L* 66.5, white 6.6%, vivid 63%. focusLeftGLSL: on the left
++      //  sector the water's middle tones go pale azure and its bright ones white, its darks stay vivid blue, so the flows keep
++      //  their shapes; measured L* 77.3, white 22.3%, vivid 24.1%, lavender at the frame's edge 0.3%. A uniformly pale palette
++      //  (darks to periwinkle) reached L* 78.5 but read as a flat lilac wash, so the darks are kept)
++      leftGlow: { centre: 195, cos: [0.45, 0.8], r: [0.2, 0.3], dark: null, mid: '#9ccaf8', white: '#f7f9fe', lum: [0.25, 0.5, 0.45, 0.66], amount: 0.9 },
        // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
        royal: { amount: 0.1 },
        // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
-@@ -92,9 +137,17 @@ export const FOCUS = {
+@@ -92,9 +143,17 @@ export const FOCUS = {
        //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
        //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
        //    band phase per pixel) over which they fade out where they would be under about two pixels
@@ -1008,10 +1076,10 @@ index 2f39f0e..ac9d83d 100644
    },
    // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after it is defined, before it hands its splash, liquid and
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..58df6f0 100644
+index 83acc58..282d9d6 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
-@@ -360,41 +360,78 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
+@@ -360,41 +360,95 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
  // body (the arc's own pick: the currents), deeper cobalt, then a dark gap; the derived water's own light and dark kept as
  // variation. Colours are the original's measured ring-zone colours, written through the inverse of the walls' display
  // compensation (lift, saturation) so they land as measured. Sets fRq, the ribbon phase the flecks follow.
@@ -1048,6 +1116,23 @@ index 83acc58..58df6f0 100644
 +    float iwk = smoothstep(${f4(I.whiteAt[0] - I.soft)}, ${f4(I.whiteAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.whiteAt[1] - I.soft)}, ${f4(I.whiteAt[1] + I.soft)}, ik));
 +    vec3 icol = mix(mix(${preLiftSat(M, I.pale)}, ${preLiftSat(M, I.white)}, iwk), iring, ipk);
 +    c = mix(c, icol, iz * ${f4(I.amount)});
++  }
++`;
++}
++// ?s3=focus only (the Art Director's item 6, the left wall: x 0-0.30, y 0.44-0.79 glows pale in the original, L* 77, white
++// 25%, pale 30%; ours was saturated royal, L* 66, white 7%): on the walls' left sector (an angle window round `centre`
++// degrees, counter-clockwise from screen-right; cos: [from, full] of the cosine to it) and beyond r (rw), the water's own
++// light and dark are mapped onto a pale luminous palette (dark -> periwinkle blue, middle -> pale blue, bright -> white;
++// lum: [dark to middle from, to; middle to white from, to]), so the bands and splashes keep their shapes. The material's
++// colour, not a post effect: no bloom, exposure or haze
++function focusLeftGLSL(M) {
++  const G = M.leftGlow, a = (G.centre * Math.PI) / 180;
++  return /* glsl */ `  {   // ?s3=focus: the left wall's pale glowing water (tunnel_r9_focus.js walls.leftGlow)
++    float lw = smoothstep(${f4(G.cos[0])}, ${f4(G.cos[1])}, cos(6.2831853 * tu - ${f4(a)})) * smoothstep(${f4(G.r[0])}, ${f4(G.r[1])}, rw);
++    float ll = dot(c, vec3(0.2126, 0.7152, 0.0722));
++    vec3 lpal = mix(${G.dark ? preLiftSat(M, G.dark) : 'c'}, ${preLiftSat(M, G.mid)}, smoothstep(${f4(G.lum[0])}, ${f4(G.lum[1])}, ll));   // (dark null: the darks kept vivid)
++    lpal = mix(lpal, ${preLiftSat(M, G.white)}, smoothstep(${f4(G.lum[2])}, ${f4(G.lum[3])}, ll));
++    c = mix(c, lpal, lw * ${f4(G.amount)});
 +  }
 +`;
 +}
@@ -1113,7 +1198,7 @@ index 83acc58..58df6f0 100644
        float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
        c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
      }
-@@ -419,7 +456,10 @@ function focusFlecksGLSL(M) {
+@@ -419,7 +473,10 @@ function focusFlecksGLSL(M) {
        fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
        float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
        float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
@@ -1125,7 +1210,7 @@ index 83acc58..58df6f0 100644
        vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
        vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
        float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
-@@ -427,7 +467,11 @@ function focusFlecksGLSL(M) {
+@@ -427,7 +484,11 @@ function focusFlecksGLSL(M) {
        float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
        float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
        float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
@@ -1138,7 +1223,7 @@ index 83acc58..58df6f0 100644
      }
  `;
  }
-@@ -440,6 +484,7 @@ uniform vec2 uMatchVP, uMatchRes;
+@@ -440,6 +501,7 @@ uniform vec2 uMatchVP, uMatchRes;
  ${RIM_SAMPLE}
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
@@ -1146,7 +1231,7 @@ index 83acc58..58df6f0 100644
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
  // normal (toward the axis), T0 the path's direction
  vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
-@@ -484,7 +529,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -484,7 +546,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
    // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
    // than the pixels (seam-free: from the wrap-corrected derivatives)
@@ -1155,16 +1240,16 @@ index 83acc58..58df6f0 100644
    {
      float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
        - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
-@@ -539,7 +584,7 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
+@@ -539,7 +601,7 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
    gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
    c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
    c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
 -  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
-+${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
++${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}${FOCUS_ON && M.leftGlow ? focusLeftGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
        // to about 218 by bringing green down; the cyan streaks (205 degrees and under) and the warm patches kept (MATCH.walls.royal)
      float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
      float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
-@@ -551,6 +596,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
+@@ -551,6 +613,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
    vec3 col = mtUndisplay(c);
    // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
    col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
@@ -1173,7 +1258,7 @@ index 83acc58..58df6f0 100644
    // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
    vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
    vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
-@@ -652,6 +699,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -652,6 +716,7 @@ export function matchCollectibles({ coins, gems, socks }) {
        if (!k.turn || !k.turn.children[0]) continue;
        const model = k.turn.children[0], pose = new THREE.Group();
        pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
@@ -1181,7 +1266,7 @@ index 83acc58..58df6f0 100644
        k.turn.remove(model); pose.add(model); k.turn.add(pose);
      }
      report.sockPose = MATCH.sockPose;
-@@ -660,6 +708,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -660,6 +725,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }

@@ -50,3 +50,38 @@ The two design-agent specialists are running again. Both work on your repository
 
 The specialists could hit the usage limit again. If they do, the autosave will have their work from the last 5 minutes, and I can pick it up the same way I did this time.
 
+---
+
+### Automatic notice · 2026-11-05 20:08 UTC
+
+_Agent "Water &amp; VFX: splash round her, floor" finished_
+
+---
+
+### Claude · 2026-11-05 20:08 UTC
+
+Water & VFX finished, with 7 tested commits. Merging its work into `ccr-de8d9670-2ohd5t` now, then rebuilding and checking before I push.
+
+Merged bundle rebuilds byte-identical to the specialist's. Pushing:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/final/full_orig_before_final.png, Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/final/round_her_zoom_orig_before_final.png]_
+
+Water & VFX has finished, and its work is merged into `ccr-de8d9670-2ohd5t` and pushed: **`5462f30`**. The rebuilt game file came out byte-identical to the specialist's, and GitHub confirms it has the commit.
+
+The two images I just sent compare your original with the game before and after, at 3.0 s. The second one enlarges the water round her. Tunnel & Lighting's changes aren't in these pictures yet.
+
+**What changed, `?s3=focus` only:**
+- **Round her:** the flat blue sheet is now broken, sparkling blue water with white crest arcs, fine spray, glints and small bubbles. She sits on top of it, with no cushion and no lavender. White round her went from 6.0% to 16.8% (original 27.7%), and the vivid blue from 47.6% to 16.1% (original 12.9%).
+- **The water behind her:** pale blue-white with broken white streaks. Its brightness went from 71.8 to 79.4 (original 83.5).
+- **The flying white streaks:** cut from 560 to 220, thicker, some hooked.
+- **The tunnel's centre:** cleared of most bubbles, about 8–10 left there by eye.
+- **Checks:** `?s3=match` and the normal game are unchanged. In the gameplay run, lanes and jump work and she collected 12 coins, 1 gem and 2 socks, with no errors. The water still reacts to a swerve, a jump and a landing. Her base looks the same at the Pixel 7 framing.
+
+**Still different from your original:**
+- Her pink is a little wider just above her lowest point: 0.25 of the screen width, against the original's 0.20. Tries that narrowed it either put blue blobs on her fur or sank her into the water, so they were rejected.
+- The water behind her is about 4 brightness points darker than the original's.
+- Some lavender patches behind her come from the brushes' pink warning marks on the track, which are part of gameplay, so they were left alone.
+- The original's splash at her base has thick white-outlined bubble domes. Ours keeps white to small pieces, because of your rule against a foam cushion.
+
+Tunnel & Lighting is still running. It has committed four tested steps so far: the objects on the original's spots, broad softly blended water bands, chunkier wall splashes, and the warm centre. The left wall is next. When it finishes I'll merge it, run the full checks (gameplay, pause, power-ups, 1:2 and Pixel 7), and send the full comparison with the lower-left and ring close-ups and the commit hashes. The 5-minute autosave keeps pushing everything in the meantime.
+
