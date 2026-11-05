@@ -54,13 +54,16 @@ export const MATCH_WATER = {
     // 0.808 (right side), 0.805 and 0.82 (the far sides)
     // (gate fixes, step 7: the front mounds at -4 and -21 lowered from 0.039 and 0.058 to 0.02 and -0.05: the original's waterline is 0.85-0.86 at 58-66%
     // across)
-    mounds: [[32, 0.079, 10], [13, 0.091, 8], [-4, 0.02, 6], [-21, -0.05, 9], [-42, 0.057, 9], [55, 0.049, 9], [-62, 0.055, 9]],
+    // (the user's correction after 14:43: she sits ON the water, supported by it and framed by foam, not sunk into it: the left
+    // front, front, right front and right side lowered, so the water meets her at her base as approved: waterline 0.836,
+    // her left side 0.809, her right side 0.860)
+    mounds: [[32, 0.079, 10], [13, 0.07, 8], [-4, 0.0, 6], [-21, -0.1, 9], [-42, 0.0, 9], [55, 0.049, 9], [-62, 0.055, 9]],
   },
   // the swell's look: sRGB (as on screen). Near the top it is thin and see-through (the fur behind it reads violet), lower
   // down it is the floor's derived water (one body of water)
   look: {
     glassHi: '#5cb6ff', glass: '#3a8af2', glassDeep: '#2264dc', sky: '#c6ebff',
-    clear: 0.75,      // opacity at the very top in front of the body (checkpoint 02: real water over the lower body, not see-through glass)
+    clear: 0.9,       // opacity at the very top in front of the body (no see-through purple glass in front of her: the user's checkpoint 02 and correction)
     sideClear: 0.85,  // and beside it
     soft: 0.7,        // the floor's map on the swell's lower face: its blur (the lower water's cells read as cracked glass)
     solid: [0.05, 0.24],   // m below the crest over which it becomes solid
@@ -69,8 +72,8 @@ export const MATCH_WATER = {
     frontRim: 0.12,   // its share in front of the body (gate fixes, step 7: the pale glass-bowl lip)
     spec: 1.4,        // the key light's specular points
     crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
-    crestFront: 0.9,  // its share in front of the body (checkpoint 02: thick white froth along the body's lower edge, as approved)
-    crestW: [0.03, 0.06, 0.03, 0.05],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
+    crestFront: 0.5,  // its share in front of the body (a broken foam rim at her base, where she sits on the water; a full-strength rim read as a flat white plate)
+    crestW: [0.03, 0.06, 0.015, 0.035],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
   },
   // the lobes (spLumps reshaded): sRGB
   // alpha: in front of the body (see-through: the fur reads violet), sideAlpha: beside it (vivid blue); fres: the outline's
@@ -87,12 +90,12 @@ export const MATCH_WATER = {
   // the violet domes)
   // (the user's checkpoints 02 and 04, 14:43: the lower body "occluded by real-looking, foamy water and splashes on both
   // sides", "soft, chunky aqua-white foam dominates the bottom", not "a transparent pink/purple water curtain": the lobes are
-  // now mostly opaque (alpha 0.82 in front, 0.9 beside), lilac only as an opaque tint of the front domes, the froth dense
+  // now nearly opaque (alpha 0.93 in front, 0.95 beside: at 0.82 the fur still showed pink between them), lilac only as an opaque tint of the front domes, the froth dense
   // white with round holes (cell, holeShare) on aqua-white sides (foamSide), aqua-blue water between)
-  lobe: { hi: '#6cbcff', mid: '#3f8cf0', low: '#2f62da', white: '#f6fcff', violetCol: '#9a7ef0', violet: [0.9, 0.6, 0.06],
-    alpha: 0.82, sideAlpha: 0.9, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 2.0, specPow: 160, sheen: 0.12,
+  lobe: { hi: '#6cbcff', mid: '#2f86f5', low: '#2f62da', white: '#f6fcff', violetCol: '#9a7ef0', violet: [0.9, 0.6, 0.06],
+    alpha: 0.93, sideAlpha: 0.95, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 2.0, specPow: 160, sheen: 0.12,
     foam: 0.95, foamScale: 0.32, capFoam: 0.36, capFrom: 0.05, footFoam: 0.42, frontFoam: 0.8, frontFeet: 1.3, capRight: 2.2, cell: 8.0, hole: 0.95,
-    holeShare: 0.25, fleck: 0.9, frontFleck: 0.6, fleckCell: 3.4,
+    holeShare: 0.25, fleck: 0.95, frontFleck: 0.6, fleckCell: 3.4,
     foamSide: '#c4e6ff', foamUp: [0.45, 0.95] },   // the froth's colour on its sides (white where it faces up, from foamUp[0] to [1] of the normal's up)
   // settings handed to the splash pass and the liquid (merged into MATCH.splash, MATCH.liquid, MATCH.heroWater before those
   // files merge them)
@@ -103,8 +106,8 @@ export const MATCH_WATER = {
     // frame), the front ones smaller and the right-front lower (the original's waterline: 0.81 at the left front, 0.85-0.86
     // at the right front)
     lumps: [
-      [34, 4, 0.22, 0.05, -0.08], [46, 3, 0.2, 0.06, -0.09], [22, 3, 0.16, 0.05, -0.07], [9, 2, 0.13, 0.04, -0.08], [-4, 2, 0.12, 0.04, -0.1],
-      [-16, 2, 0.12, 0.05, -0.2], [-28, 3, 0.18, 0.05, -0.12], [-42, 3, 0.2, 0.05, -0.1], [-56, 2, 0.16, 0.06, -0.1], [60, 2, 0.14, 0.06, -0.09],
+      [34, 4, 0.22, 0.05, -0.08], [46, 3, 0.2, 0.06, -0.09], [22, 3, 0.16, 0.05, -0.07], [9, 2, 0.13, 0.04, -0.11], [-4, 2, 0.12, 0.04, -0.13],
+      [-16, 2, 0.12, 0.05, -0.28], [-28, 3, 0.18, 0.05, -0.22], [-42, 3, 0.2, 0.05, -0.1], [-56, 2, 0.16, 0.06, -0.1], [60, 2, 0.14, 0.06, -0.09],
     ],
     lumpSquash: 0.66,   // flatter: rolling wave lobes, not balls
     lumpBump: 0.08,     // smoother domes than splash's foam lumps (0.16), so the white rim follows the outline
@@ -113,7 +116,7 @@ export const MATCH_WATER = {
     // camera, and at both sides (low on the right: the approved right coin's face stays clear); saturated turquoise water
     // with a broken white lip, not tall glass fins
     curls: [
-      [9, 0.2, 0.34, 1.35, 0.2, 0], [-13, 0.1, 0.3, 1.35, 0.2, 0],   // (gate fixes, step 7: the right-front one lower, 0.1 not 0.18: the fur shows pink to 0.85 there)
+      [9, 0.16, 0.34, 1.35, 0.2, 0], [-13, 0.0, 0.28, 1.35, 0.2, 0],   // (the user's correction: lower at her base, the right one most)   // (gate fixes, step 7: the right-front one lower, 0.1 not 0.18: the fur shows pink to 0.85 there)
       [36, 0.27, 0.36, 1.45, 0.12, 0], [56, 0.24, 0.32, 1.4, 0.12, 0], [-36, 0.2, 0.32, 1.4, 0.12, 0], [-56, 0.17, 0.28, 1.4, 0.12, 0],
     ],
     curlAlpha: 0.66, curlLip: 0.95,   // (the lip crisp white, not a pale wash)
