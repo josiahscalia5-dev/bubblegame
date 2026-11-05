@@ -276,8 +276,24 @@ Without bubbles the walls alone give 6.1 dark bands per ray (in the 6.0-6.6 band
 
 - 19:34 `Bash`: Measure walls without bubbles; crop F
 - 19:34 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_F.png
+- 19:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:35 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/G_tune.json
+- 19:35 `Bash`: Render and measure candidate G with and without bubbles
+**Agent** (19:36 UTC):
 
-_132 tool steps._
+Saturation did not move (0.71), so something downstream desaturates. Let me compare the colours of the original and ours by lightness bin in the upper ring zone.
+
+- 19:36 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/lbins.py
+- 19:36 `Bash`: Median colours per lightness bin
+- 19:36 `Bash`: Lightness-bin colours for F without boost
+- 19:37 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/H_tune.json
+- 19:37 `Bash`: Render and measure candidate H
+- 19:38 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/layers.json
+- 19:38 `Bash`: Render the walls alone and measure colours
+- 19:39 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/I_tune.json
+- 19:39 `Bash`: Render and measure candidate I
+
+_144 tool steps._
 
 ---
 
@@ -540,5 +556,51 @@ Finer spray reads as droplets, not rain. White fell to 12.6%, so I'll add back s
 
 [Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
 
+- 19:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:35 `Bash`: Build and capture step 1c defaults
+- 19:35 `Bash`: Show the left-side zone for step 1c
+- 19:35 `Bash`: Crop original, before and step 1c
+- 19:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s1c.png
+**Lead → agent** (19:35 UTC):
 
-_131 tool steps._
+[Image: original 2082x360, displayed at 2000x346. Multiply coordinates by 1.04 to map to original image.]
+
+**Agent** (19:35 UTC):
+
+Much closer than before. The crest arcs are a bit too regular (uniform white commas), so I'll add a taper toward their ends and a wobble in their radius.
+
+- 19:36 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:36 `Bash`: Build and capture tapered, wobbly crest arcs
+- 19:36 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v15.png
+**Lead → agent** (19:36 UTC):
+
+[Image: original 2316x230, displayed at 2000x199. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:36 `Bash`: Capture thicker tapered crest arcs
+- 19:37 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v16.png
+**Lead → agent** (19:37 UTC):
+
+[Image: original 2316x230, displayed at 2000x199. Multiply coordinates by 1.16 to map to original image.]
+
+**Agent** (19:37 UTC):
+
+v16 balances it (white 14.6%, 47% in small pieces, irregular arcs). Writing it into the settings and capturing the committed defaults.
+
+- 19:37 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:37 `Bash`: Build and capture step 1c final defaults
+- 19:38 `Bash`: Save step 1c frames and crop
+- 19:38 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:38 `Bash`: Commit step 1c
+**Agent** (19:38 UTC):
+
+Item 2 next: the floor ahead behind her. Let me look at the region and the floor code.
+
+- 19:38 `Bash`: Read the floor water code
+- 19:39 `Bash`: Read floor settings and crop the floor ahead
+- 19:39 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_floor0.png
+- 19:39 `Bash`: Read MATCH_WATER.floor settings
+- 19:39 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:39 `Bash`: Capture floor with less deep tint and troughs
+
+_153 tool steps._

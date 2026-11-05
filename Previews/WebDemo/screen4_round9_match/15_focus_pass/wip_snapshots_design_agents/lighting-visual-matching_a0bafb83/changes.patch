@@ -763,7 +763,7 @@ index 2f39f0e..e625507 100644
        royal: { amount: 0.1 },
        // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..14bbc38 100644
+index 83acc58..ed41618 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -360,6 +360,14 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
@@ -781,7 +781,7 @@ index 83acc58..14bbc38 100644
  function focusRibbonsGLSL(M) {
    const R = M.ribbons;
    const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
-@@ -367,32 +375,36 @@ function focusRibbonsGLSL(M) {
+@@ -367,34 +375,39 @@ function focusRibbonsGLSL(M) {
      const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
      return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
    };
@@ -835,8 +835,11 @@ index 83acc58..14bbc38 100644
 +      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(${f4(R.gapFrom[2])}, 1.0, rk)));
        float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
        rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
++      ${R.satBoost ? `{ float rs = dot(rc, vec3(0.2126, 0.7152, 0.0722)); rc = clamp(rs + (rc - rs) * ${f4(R.satBoost)}, 0.0, 1.0); }   // (measured: the flows showed less saturated than drawn)` : ''}
        float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
-@@ -440,6 +452,7 @@ uniform vec2 uMatchVP, uMatchRes;
+       c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
+     }
+@@ -440,6 +453,7 @@ uniform vec2 uMatchVP, uMatchRes;
  ${RIM_SAMPLE}
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
@@ -844,7 +847,7 @@ index 83acc58..14bbc38 100644
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
  // normal (toward the axis), T0 the path's direction
  vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
-@@ -652,6 +665,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -652,6 +666,7 @@ export function matchCollectibles({ coins, gems, socks }) {
        if (!k.turn || !k.turn.children[0]) continue;
        const model = k.turn.children[0], pose = new THREE.Group();
        pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
@@ -852,7 +855,7 @@ index 83acc58..14bbc38 100644
        k.turn.remove(model); pose.add(model); k.turn.add(pose);
      }
      report.sockPose = MATCH.sockPose;
-@@ -660,6 +674,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -660,6 +675,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }

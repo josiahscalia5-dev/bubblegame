@@ -1,9 +1,9 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
 new file mode 100644
-index 0000000..e21db35
+index 0000000..a9e6203
 --- /dev/null
 +++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
-@@ -0,0 +1,86 @@
+@@ -0,0 +1,107 @@
 +# Water & VFX, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
 +
 +Worktree branch `worktree-agent-a29b1562d2b9d7e06`, started at `d6e836d`. Files: `WebDemo/src/tunnel_r9_match_water.js` and
@@ -90,6 +90,27 @@ index 0000000..e21db35
 +| texture | 5.47 | 5.03 | 5.46 | 5.55 |
 +| pink width at the base | 0.20 W | 0.27 W | 0.23 W | 0.25 W |
 +| L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 77.7 / 79.7 | 78.6 / 80.5 |
++
++### Step 1c: fine spray, irregular crest arcs (tunes v11-v16, `frames/step1c_*`)
++
++- Hide probe (`heroSplash`, 7% of the zone): the white dashes beside her are the spray. Its "round" droplets are drawn on
++  a 2:1 quad (`tunnel_r7_hero_water.js`, SPLASH_VERTEX: `len = max(L, wN)` then `len + wN` tall, `wN` wide), so at
++  match's size (1.6-3.6 cm) every droplet is a tall oval and they read as rain. Not my file; within `FOCUS.water`:
++  300 droplets at half the size, 90% round: fine white specks (v12).
++- v13-v14: the crest arcs denser and smaller (8.5 per m, bands nearly everywhere), a wider rim, more glints.
++- v15-v16: each arc's radius wobbles along it and its line tapers toward one end (`lace.wobble`, `lace.taper`), thicker:
++  irregular broken crests instead of a row of white commas. **Kept (step 1c).**
++
++| round her | original | before (71f7fa7) | 1b | 1c |
++|---|---|---|---|---|
++| white | 27.7% | 6.0% | 15.2% | 14.6% |
++| white in pieces <= 400 px | 13% | 78% | 41% | 47% |
++| largest white piece (px) | 10,247 | 1,449 | 1,671 | 1,388 |
++| vivid blue | 12.9% | 47.6% | 20.8% | 22.7% |
++| lavender | 16.9% | 0.2% | 0.2% | 0.2% |
++| texture | 5.47 | 5.03 | 5.55 | 5.86 |
++| pink width at the base | 0.20 W | 0.27 W | 0.25 W | 0.25 W |
++| L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 78.6 / 80.5 | 77.7 / 79.8 |
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json
 new file mode 100644
 index 0000000..d1295fc
@@ -1092,6 +1113,10 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/cro
 new file mode 100644
 index 0000000..fce5085
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1a_1b.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1c.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1c.png
+new file mode 100644
+index 0000000..aa0f453
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1c.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1a.txt b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1a.txt
 new file mode 100644
 index 0000000..55c67a4
@@ -2108,6 +2133,14 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/ste
 new file mode 100644
 index 0000000..3e47a26
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1b_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00.png
+new file mode 100644
+index 0000000..83f4aaa
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00_canvas.png
+new file mode 100644
+index 0000000..acbf4e8
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00_canvas.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py
 new file mode 100644
 index 0000000..ca171b3
@@ -2270,10 +2303,10 @@ index 0000000..cb1ae08
 +        near = sum(1 for q in cs if np.hypot((q[0]+x0)/W - 0.53, (q[1]+y0 - 0.525*H)/W) < 0.2)
 +        print(f"   param2 {P2} {k:10s} circles {len(cs):3d}  in centre box {inbox:3d}  within 0.2 W of the centre {near:3d}")
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..1602623 100644
+index 2f39f0e..6981f78 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
-@@ -105,30 +105,69 @@ export const FOCUS = {
+@@ -105,30 +105,72 @@ export const FOCUS = {
      //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
      //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
      //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
@@ -2325,11 +2358,14 @@ index 2f39f0e..1602623 100644
 +    //   water: the face's currents (light cyan, vivid blue, deeper blue), noise scale [along, down], how much
 +    face: {
 +      teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
-+      rim: { w: [0.02, 0.06], cell: 16.0, share: 0.78, amount: 1.0 },
-+      lace: { cell: 6.0, share: 1.0, reach: 0.6, r: [0.26, 0.48], w: [0.11, 0.19], span: [0.8, 1.7], tilt: 1.2, flow: 1.4,
-+        band: [0.15, 0.5, 2.2], amount: 1.0 },
++      // (step 1c: smaller, denser arcs, 8.5 per m, so there are more of them in smaller pieces; a wider rim; more glints;
++      // wobble: the arc's radius wobbling along it (share), taper: the line thinning toward one end (share), so they read
++      // as irregular broken crests and not a row of white commas)
++      rim: { w: [0.03, 0.08], cell: 16.0, share: 0.78, amount: 1.0 },
++      lace: { cell: 8.5, share: 1.0, reach: 0.75, r: [0.26, 0.48], w: [0.17, 0.28], span: [0.8, 1.7], tilt: 1.2, flow: 1.4,
++        band: [0.05, 0.4, 2.2], wobble: 0.22, taper: 0.75, amount: 1.0 },
 +      rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
-+      spark: { cell: 34.0, share: 0.7, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
++      spark: { cell: 34.0, share: 0.85, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
 +      water: { light: '#acdffc', mid: '#78c4f8', deep: '#3f8cf0', scale: [1.7, 2.4], amount: 0.8 },
 +      white: '#f4fbff',
 +      debug: 0,
@@ -2351,18 +2387,22 @@ index 2f39f0e..1602623 100644
          [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
        ],
        // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
-@@ -138,7 +177,8 @@ export const FOCUS = {
+@@ -138,7 +180,12 @@ export const FOCUS = {
      // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
      // droplets of spray (match: 30)
      liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
 -    heroWater: { splash: { count: 120 } },
 +    // (item 1: fine spray thrown up round her lower sides; 120 -> 250, the zones match's: beside her, not in front of her)
-+    heroWater: { splash: { count: 250 } },
++    // (step 1c: 300 FINE droplets, half match's size, 90% of them round: at match's size the droplets are drawn 2:1 tall
++    // (tunnel_r7_hero_water.js) and read as falling rain beside her; the original's spray is fine white specks)
++    heroWater: { splash: { count: 300, flecks: 0.9,
++      zones: [[0.22, [-48, -16], [0.7, 1.6], [0.2, 0.6], [0.007, 0.016], 0.05], [0.4, [16, 50], [1.2, 2.8], [0.25, 0.8], [0.007, 0.017], 0.06],
++        [0.16, [-80, -24], [0.5, 1.3], [0.15, 0.5], [0.006, 0.013], 0.03], [0.22, [24, 80], [0.7, 2.0], [0.15, 0.6], [0.006, 0.013], 0.03]] } },
      bubbles: {
        // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
        //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
 diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
-index 4813c34..68d8b8e 100644
+index 4813c34..3b9f5bd 100644
 --- a/WebDemo/src/tunnel_r9_match_water.js
 +++ b/WebDemo/src/tunnel_r9_match_water.js
 @@ -175,20 +175,20 @@ export const MATCH_WATER = {
@@ -2393,7 +2433,7 @@ index 4813c34..68d8b8e 100644
  // handed on before tunnel_r8_splash.js and tunnel_r8_liquid.js merge MATCH.splash / heroWater / liquid (tunnel_r8_splash.js
  // imports this file for that order); ?s3=match only
  if (MATCH_ON) {
-@@ -283,22 +283,88 @@ export function matchFloorApply() {
+@@ -283,22 +283,92 @@ export function matchFloorApply() {
  // crest (the fur behind it shows violet), the floor's derived water lower down (one body of water), a glassy rim at grazing
  // angles, the key light's specular points, a white crest broken into bubbly pieces (foam layer only). Its place in the track
  // frame comes from the camera's frame (the hero stretch is straight there).
@@ -2461,6 +2501,10 @@ index 4813c34..68d8b8e 100644
 +        float fsLw = mix(${f4(L.w[0])}, ${f4(L.w[1])}, lqHash(fsLi + 3.0)) * (0.6 + 0.4 * fsReach);
 +        float fsLa = atan(fsLo.x, -fsLo.y) - (lqHash(fsLi + 13.0) - 0.5) * ${f4(L.tilt)};
 +        float fsLs = mix(${f4(L.span[0])}, ${f4(L.span[1])}, lqHash(fsLi + 9.0));
++        // (irregular, not a row of commas: the radius wobbles along the arc and the line tapers toward one end)
++        float fsLh = lqHash(fsLi + 17.0);
++        fsLr *= 1.0 + ${f4(L.wobble || 0)} * sin(fsLa * (2.0 + 2.0 * fsLh) + fsLh * 6.28);
++        fsLw *= 1.0 - ${f4(L.taper || 0)} * smoothstep(-fsLs, fsLs, fsLa * (fsLh > 0.5 ? 1.0 : -1.0));
 +        float fsArc = (1.0 - smoothstep(fsLw * 0.55, fsLw, abs(length(fsLo) - fsLr))) * (1.0 - smoothstep(fsLs * 0.75, fsLs, abs(fsLa)));
 +        fsLace = max(fsLace, step(1.0 - ${f4(L.share)} * fsReach * fsBand, lqHash(fsLi + 11.0)) * fsArc);
 +      }
@@ -2498,7 +2542,7 @@ index 4813c34..68d8b8e 100644
  `;
  }
  export function matchSwellGLSL() {
-@@ -339,7 +405,7 @@ export function matchSwellGLSL() {
+@@ -339,7 +409,7 @@ export function matchSwellGLSL() {
        mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
      }
  #endif
@@ -2507,7 +2551,7 @@ index 4813c34..68d8b8e 100644
      a = mix(a, mwA * smoothstep(-0.06, 0.06, hUp + 0.02), uMatchOn);
    }
  `;
-@@ -366,7 +432,19 @@ function focusLumpGLSL() {
+@@ -366,7 +436,19 @@ function focusLumpGLSL() {
      vec3 cQ = vO * ${f4(B.sprayCell)} + vSeed * 13.0, cQi = floor(cQ);
      float cH = fract(sin(dot(cQi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
      float cSpray = step(${f4(B.sprayShare)}, cH) * (1.0 - smoothstep(0.1, 0.18, length(fract(cQ) - 0.5))) * smoothstep(-0.1, 0.4, cUp);

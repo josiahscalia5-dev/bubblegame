@@ -331,6 +331,10 @@ function focusSwellGLSL() {
         float fsLw = mix(${f4(L.w[0])}, ${f4(L.w[1])}, lqHash(fsLi + 3.0)) * (0.6 + 0.4 * fsReach);
         float fsLa = atan(fsLo.x, -fsLo.y) - (lqHash(fsLi + 13.0) - 0.5) * ${f4(L.tilt)};
         float fsLs = mix(${f4(L.span[0])}, ${f4(L.span[1])}, lqHash(fsLi + 9.0));
+        // (irregular, not a row of commas: the radius wobbles along the arc and the line tapers toward one end)
+        float fsLh = lqHash(fsLi + 17.0);
+        fsLr *= 1.0 + ${f4(L.wobble || 0)} * sin(fsLa * (2.0 + 2.0 * fsLh) + fsLh * 6.28);
+        fsLw *= 1.0 - ${f4(L.taper || 0)} * smoothstep(-fsLs, fsLs, fsLa * (fsLh > 0.5 ? 1.0 : -1.0));
         float fsArc = (1.0 - smoothstep(fsLw * 0.55, fsLw, abs(length(fsLo) - fsLr))) * (1.0 - smoothstep(fsLs * 0.75, fsLs, abs(fsLa)));
         fsLace = max(fsLace, step(1.0 - ${f4(L.share)} * fsReach * fsBand, lqHash(fsLi + 11.0)) * fsArc);
       }

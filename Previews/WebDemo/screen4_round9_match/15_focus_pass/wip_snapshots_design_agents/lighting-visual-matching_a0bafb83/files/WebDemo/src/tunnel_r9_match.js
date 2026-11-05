@@ -407,6 +407,7 @@ function focusRibbonsGLSL(M) {
       rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(${f4(R.gapFrom[2])}, 1.0, rk)));
       float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
       rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
+      ${R.satBoost ? `{ float rs = dot(rc, vec3(0.2126, 0.7152, 0.0722)); rc = clamp(rs + (rc - rs) * ${f4(R.satBoost)}, 0.0, 1.0); }   // (measured: the flows showed less saturated than drawn)` : ''}
       float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
       c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
     }
