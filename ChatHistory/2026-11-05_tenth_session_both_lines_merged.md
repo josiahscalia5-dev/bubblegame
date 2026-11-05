@@ -378,3 +378,5 @@ The interface is laid out on a 269 × 537 "board" (`--u` = the screen size / tha
 
 The coin counter has no id, so I'm giving it one (`coinPill`). An id on its own changes nothing on screen, and the pixel check will confirm that for every other version.
 
+Meanwhile, the ring map derived from your original:
+
