@@ -1,9 +1,10 @@
 import numpy as np, cv2
 from PIL import Image
 APP='/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
-G='/home/user/bubblegame/Previews/WebDemo/screen4_round8_splash/splash_%ss_fullres.png'
+G='/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/04_merged/match_t%s.png'
 W0,H0=538,1076
-FR=[('approved',APP,(0.528,0.532)),('3.0s',G%'3.00',(0.540,0.512)),('2.85s',G%'2.85',(0.526,0.506)),('3.1s',G%'3.10',(0.555,0.500))]
+FR=[('approved',APP,(0.528,0.532)),('merged3.0',G%'3.00',(0.53,0.53)),('merged2.85',G%'2.85',(0.53,0.53)),('merged3.1',G%'3.10',(0.53,0.53))]
+# merged vanishing point: 0.53,0.53 (Tunnel & Lighting's hero_probe, the glow on the axis), as in 02/03 so the numbers compare; rw_probe gives the track direction at 0.546,0.529
 def load(p): return np.asarray(Image.open(p).convert('RGB').resize((W0,H0),Image.LANCZOS))
 def hsv(im):
     a=im.astype(np.float32)/255; mx,mn=a.max(-1),a.min(-1); v=mx; s=np.where(mx>0,(mx-mn)/np.maximum(mx,1e-6),0)

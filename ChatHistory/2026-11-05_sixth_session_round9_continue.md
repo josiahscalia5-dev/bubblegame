@@ -80,3 +80,17 @@ The untracked folder is the Art Director's report, still being written. I'll sav
 
 I've saved and pushed the Art Director's files to GitHub as commit `86f094a`, and GitHub confirms it has that commit. They're only its measuring scripts so far, because it's still running. The automatic save will push the rest of its report as it's written, every 5 minutes, and I'll save its full results when it finishes.
 
+---
+
+### Automatic notice · 2026-11-05 13:35 UTC
+
+_Background command "Capture pixel-identity baseline frames from bundle 2a6ab30" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-05 13:36 UTC
+
+The capture method is deterministic: re-rendering the normal game and `splash` gave 0 differing pixels in all 6 frames. So the baseline is a valid reference for proving that older versions stay unchanged after the Tunnel & Lighting pass.
+
+The Art Director's quality gate is still running. I'll report its six scores and ranked fixes when it finishes, then start the Tunnel & Lighting pass on them.
+
