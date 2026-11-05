@@ -8,7 +8,7 @@ F=lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold
 a=Image.open(A).convert('RGB'); g=Image.open(G).convert('RGB'); g=g.resize((round(g.size[0]*1536/g.size[1]),1536),Image.LANCZOS)
 ZONES=[('1',(0.013,0.213,0.986,0.304),(255,190,60)),('2',(0.081,0.307,0.919,0.667),(40,220,240)),('3',(0.086,0.684,0.924,0.914),(255,70,140)),
        ('4',(0.047,0.434,0.971,0.728),(255,200,80)),('5',(0.01,0.24,0.986,0.63),(170,120,255)),('6',(0.005,0.781,0.99,0.967),(60,230,200))]
-FIX=[('F1 centre: wall rw in screen space',('c',0.53,0.53,0.09)),('F2 foreground bank mass',('b',0.0,0.765,1.0,0.84)),
+FIX=[('F1 centre: screen-space rw',('c',0.53,0.53,0.09)),('F2 foreground bank mass',('b',0.0,0.765,1.0,0.84)),
      ('F3 wall bands, cobalt, cyan, no lime',('b',0.16,0.31,0.90,0.47)),('F4 housing bevel / rim',('b',0.0,0.235,1.0,0.31)),
      ('F4',('b',0.0,0.40,0.09,0.76)),('F5 star sparkles',('p',[(0.51,0.34),(0.57,0.27),(0.60,0.32),(0.86,0.37)])),
      ('F6 gem, coins',('b',0.08,0.43,0.40,0.57)),('F7 under-body water',('b',0.28,0.79,0.76,0.86))]
@@ -24,7 +24,7 @@ for k,(x0,im) in enumerate(zip(xs,(a,g))):
         for lab,sh in FIX:
             red=(255,40,40)
             if sh[0]=='c':
-                _,cx,cy,r=sh; R=r*w; d.ellipse((x0+cx*w-R,HDR+cy*h-R,x0+cx*w+R,HDR+cy*h+R),outline=red,width=5); tx,ty=x0+cx*w+R+4,HDR+cy*h-14
+                _,cx,cy,r=sh; R=r*w; d.ellipse((x0+cx*w-R,HDR+cy*h-R,x0+cx*w+R,HDR+cy*h+R),outline=red,width=5); tx,ty=x0+cx*w-130,HDR+cy*h+R+4
             elif sh[0]=='b':
                 _,X0,Y0,X1,Y1=sh; d.rectangle((x0+X0*w,HDR+Y0*h,x0+X1*w,HDR+Y1*h),outline=red,width=4); tx,ty=x0+X0*w+34,HDR+Y0*h+4
             else:
