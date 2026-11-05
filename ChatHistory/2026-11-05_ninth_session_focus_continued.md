@@ -233,3 +233,15 @@ That was my 20:56 UTC reminder to restart the autosave and merge the specialists
 
 The next reminder is at 22:52 UTC, to restart the autosave when this run ends.
 
+---
+
+### Automatic notice · 2026-11-05 22:41 UTC
+
+_The container running this session was restarted before background work reported back: "Restart the 5-minute autosave" (task bjrr90eir). That work is lost — no result or further notification will arrive for it. Re-create it if still needed (a long-running server or watcher that nothing is waiting on does not need restarting now), or tell the user what was lost._
+
+---
+
+### Claude · 2026-11-05 22:41 UTC
+
+The container restarted, which stopped the autosave. Checking that nothing was lost, then restarting it.
+
