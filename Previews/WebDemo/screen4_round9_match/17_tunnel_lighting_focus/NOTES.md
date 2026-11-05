@@ -166,3 +166,26 @@ fewer drops, and drawn late (`late`: after the display compensation; match's gli
 | bubble layer hidden (the walls' own) | | 3.5 / 10 / 42 / 1.8 | 4.3 / 60 / 331 / 3.9 |
 
 Frames: `frames/focus_flecks_t3.00_canvas.png`, `..._bubble_layer_hidden.png`, `frames/phone_412x839_focus_flecks_3.00s.png`.
+Committed `340b117`.
+
+## 6. AD item 5: the centre (`core.py`, `scripts/core_detail.py` by radius)
+
+The original by radius round (0.53, 0.525): r < 0.04 W warm 45% / white 39%; 0.04-0.07 salmon-peach (#edada0) 21%; 0.07-0.12
+pink-violet rings (#e1adeb-#eea0f0) 8-13% between white; saturated blue under 3% inside 0.12. Ours had the royal flows down to
+0.075 W (saturated blue 12-41% at 0.07-0.12). Changed (focus only): `bands.blueFrom` [0.075, 0.12] -> [0.11, 0.14] (the flows and
+cobalt gaps start further out) and `focusInnerGLSL` (`walls.innerRings`): concentric pastel bands on the walls' band spacing,
+flowing with them and bent a little (twist): pale blue, a white ring, a pink-violet ring, salmon-peach toward the core; drawn
+after match's mid-vortex whitening and core tint. First tries: white rings only made a flat white disc (white 68-75%, L* 90);
+the pale-blue body fixed it.
+
+| core r < 0.12 W at 3.0 s | original | before (`340b117`) | after |
+|---|---|---|---|
+| pink-violet | 8.6% | 1.7% | 7.3% |
+| warm | 13.0% | 7.9% | 10.9% |
+| saturated blue | 3.1% | 19.0% | 0.7% |
+| white | 35.3% | 33.3% | 34.4% |
+| pale blue | 14.5% | 22.2% | 35.2% |
+| L* | 83.4 | 79.9 | 84.3 |
+| warm in the ring zone r 0.12-0.45 | 3.1% | 1.4% | 1.4% |
+
+Frames: `frames/focus_core_t3.00*.png`, crop `frames/crop_centre_original_before_after.png`, Pixel 7 `frames/phone_412x839_focus_core_3.00s.png`.

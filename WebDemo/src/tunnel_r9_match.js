@@ -368,13 +368,37 @@ float fcNz(vec2 p, float s) {
   return mix(mix(fcH(i, s), fcH(i + vec2(1.0, 0.0), s), f.x), mix(fcH(i + vec2(0.0, 1.0), s), fcH(i + vec2(1.0, 1.0), s), f.x), f.y);
 }
 `;
+// the screen colour before matchWall's lift and saturation (both applied at its end): for colours drawn inside matchWall
+function preLiftSat(M, hex) {
+  const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+  const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
+  return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
+}
+// ?s3=focus only (the Art Director's item 5, the kit's "modest warm centre glow concentrated round the inner arcs"): the
+// original's tight pastel rings round its warm core, measured by radius round the centre (r < 0.12 W: salmon-peach #edada0
+// at 0.04-0.07 W, pink-violet #e1adeb-#eea0f0 at 0.07-0.12 W between white rings, almost no saturated blue inside 0.12 W;
+// ours had royal flows down to 0.075 W). Concentric bands on the walls' own band spacing, flowing outward with them; across
+// each band pale blue, a white ring (whiteAt), then a soft pink-violet ring (pinkAt: its place in the band, soft: the rings'
+// soft edges), salmon-peach instead of pink toward the core (peachTo: [full to, out] in rw); r: [in, full, full to, out] in
+// rw; after the mid vortex's whitening
+// and the core's tint (which would wash the pink out), before the hue pull, lift and saturation (colours pre-compensated)
+function focusInnerGLSL(M) {
+  const I = M.innerRings, B = M.bands;
+  return /* glsl */ `  {   // ?s3=focus: the original's pastel inner rings round the warm core (tunnel_r9_focus.js walls.innerRings)
+    float iz = smoothstep(${f4(I.r[0])}, ${f4(I.r[1])}, rw) * (1.0 - smoothstep(${f4(I.r[2])}, ${f4(I.r[3])}, rw));
+    float ik = fract(lr * ${f4(B.perLog)} + tu * ${f4(B.spiral)} + (vr.b - 0.5) * ${f4(B.wobble)} - uTime * ${f4(B.flow * B.perLog)} - uHeroTravel * ${f4(B.travel * B.perLog)}
+      + ${f4(I.twist || 0)} * sin(6.2831853 * tu * 2.0 + lr * 1.6 + uTime * 0.35));   // (bent a little, as the original's: not a target)
+    float ipk = smoothstep(${f4(I.pinkAt[0] - I.soft)}, ${f4(I.pinkAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.pinkAt[1] - I.soft)}, ${f4(I.pinkAt[1] + I.soft)}, ik));
+    vec3 iring = mix(${preLiftSat(M, I.pink)}, ${preLiftSat(M, I.peach)}, 1.0 - smoothstep(${f4(I.peachTo[0])}, ${f4(I.peachTo[1])}, rw));
+    float iwk = smoothstep(${f4(I.whiteAt[0] - I.soft)}, ${f4(I.whiteAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.whiteAt[1] - I.soft)}, ${f4(I.whiteAt[1] + I.soft)}, ik));
+    vec3 icol = mix(mix(${preLiftSat(M, I.pale)}, ${preLiftSat(M, I.white)}, iwk), iring, ipk);
+    c = mix(c, icol, iz * ${f4(I.amount)});
+  }
+`;
+}
 function focusRibbonsGLSL(M) {
   const R = M.ribbons;
-  const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
-    const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
-    const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
-    return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
-  };
+  const pre = (hex) => preLiftSat(M, hex);
   // (the user's kit, 18:26 UTC, problem B: "tighter hard-outline ribbons, more even concentric circles": the ribbons were a
   // sawtooth across each band (the dark gap jumped straight to the light cyan edge where the phase wrapped) and each arc was
   // pushed by a step offset keyed on its band's index (hard breaks at every arc end and band boundary, dark lines where the
@@ -560,7 +584,7 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
   gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
-  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
+${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
       // to about 218 by bringing green down; the cyan streaks (205 degrees and under) and the warm patches kept (MATCH.walls.royal)
     float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
     float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
