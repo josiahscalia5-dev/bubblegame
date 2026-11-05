@@ -2,6 +2,29 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
+## Newest (5 November, 19:00 UTC onward): ninth session, branch `ccr-de8d9670-2ohd5t`, the focused pass CONTINUED
+
+- **Repository and branch:** `josiahscalia5-dev/bubblegame`, branch `ccr-de8d9670-2ohd5t`. It started exactly at the eighth
+  session's last autosave `182ad19` (`ccr-3d8a1ae9-hhgml1`, left untouched). Rebuilt bundle byte-identical (md5 `94c50cad...`).
+  `bash Tools/cloud_env_setup.sh` installed every tool.
+- **Why:** both specialists stopped at 18:57 UTC on a rate limit. Their 18:58 snapshots are in
+  `Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/` (`lighting-visual-matching_ae554668`,
+  `water-vfx-engineer_a29b1562`).
+- **Commits:**
+  - `0ff0d0b`: Tunnel & Lighting's four tested commits restored (the focus camera at the original's size with the rim
+    restaged; the user's problem A, the lower-left lavender-grey wedge, drawn as wall water; the left-wall seam removed).
+    The focus 3.0 s frame is identical to its last tested frame; `?s3=match` identical to `182ad19`.
+  - `71f7fa7`: all four agent files name this repository and branch (section "Newest: ninth session").
+- **Running (from 19:06 UTC), each in its own worktree from `71f7fa7`:**
+  - Tunnel & Lighting: objects onto the original's spots, then the kit's problem B (broader, softly blended cobalt and
+    turquoise bands), the wall streaks, the warm centre, the left wall. Evidence: `17_tunnel_lighting_focus/`.
+  - Water & VFX: its uncommitted work restored from the snapshot patch, then the water round her, the floor ahead, the
+    flying streaks, the bubbles near the centre. Evidence: `18_water_vfx_focus/`.
+- **Autosave** every 5 minutes (chat `ChatHistory/2026-11-05_ninth_session_focus_continued.md`, agents
+  `..._ninth_session_design_agent_transcripts.md`, WIP snapshots in `15_focus_pass/wip_snapshots_design_agents/`).
+- **Next:** merge both, rebuild the bundle after the merge, then pixel identity, `s3_func`, `r2_func` (with `VW`/`VH`), the
+  Pixel 7 check, and the kit's five outputs (full comparison, lower-left zoom, ring zoom, changed files, tests and hashes).
+
 ## Newest (5 November, 16:50 UTC onward): eighth session, branch `ccr-3d8a1ae9-hhgml1`, the FOCUSED CORRECTION PASS
 
 - **Recovered from:** `9a95c06` (the seventh session's last autosave; both specialists had stopped on a rate limit at 16:00
