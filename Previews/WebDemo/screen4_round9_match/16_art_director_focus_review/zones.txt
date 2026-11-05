@@ -1,0 +1,40 @@
+housing_top     x.10-.90 y.215-.29
+   orig   white   5.1 pale  27.5 lav  25.6 vivid   2.2 deep   0.8 turq   0.0 warm  16.1 | L*  59.9 chroma  43.2 texture 2.70 median #8e7ccb kept  97%
+   match  white   1.9 pale  26.4 lav  29.6 vivid   6.3 deep   0.7 turq   0.0 warm  16.1 | L*  60.3 chroma  40.7 texture 2.93 median #878cc6 kept  99%
+   focus  white   2.1 pale  24.4 lav  26.0 vivid  12.4 deep   0.7 turq   0.8 warm  10.5 | L*  58.3 chroma  50.0 texture 3.47 median #7d7ad6 kept  95%
+ring_upper      x.20-.85 y.29-.44 
+   orig   white   9.5 pale  20.5 lav  11.7 vivid  51.2 deep   2.1 turq   7.5 warm   3.5 | L*  64.9 chroma  50.4 texture 5.15 median #5b95ee kept  99%
+   match  white   6.9 pale  25.7 lav  11.5 vivid  49.9 deep   0.6 turq   2.0 warm   4.3 | L*  66.5 chroma  47.3 texture 3.99 median #6a9cf4 kept 100%
+   focus  white   7.9 pale  21.2 lav   5.8 vivid  47.3 deep   2.6 turq  12.6 warm   1.4 | L*  69.6 chroma  40.0 texture 5.33 median #6bb2f2 kept 100%
+ring_left       x.00-.30 y.44-.58 
+   orig   white  28.1 pale  33.4 lav  21.2 vivid  19.0 deep   0.1 turq   1.1 warm  10.3 | L*  78.0 chroma  29.8 texture 5.07 median #cac5ec kept  78%
+   match  white   2.2 pale  16.8 lav   1.5 vivid  65.1 deep   1.0 turq   6.1 warm   3.4 | L*  65.3 chroma  51.7 texture 4.47 median #48a0f7 kept  71%
+   focus  white   4.7 pale  12.9 lav   1.6 vivid  56.4 deep   2.9 turq   7.6 warm   7.9 | L*  64.6 chroma  50.9 texture 6.13 median #5996ef kept  66%
+ring_right      x.62-.80 y.44-.56 
+   orig   white  15.6 pale  33.4 lav  16.0 vivid  34.9 deep   0.3 turq   5.6 warm   0.6 | L*  74.1 chroma  36.6 texture 5.96 median #98b7f2 kept 100%
+   match  white  20.1 pale  38.3 lav   6.2 vivid  17.1 deep   0.0 turq   1.4 warm   4.5 | L*  76.9 chroma  29.8 texture 4.48 median #aac7f1 kept 100%
+   focus  white  12.5 pale  53.4 lav  21.3 vivid  12.3 deep   0.4 turq   3.7 warm   2.1 | L*  74.2 chroma  32.8 texture 5.03 median #a4b4f0 kept  93%
+centre          x.42-.64 y.46-.58 
+   orig   white  28.1 pale  48.0 lav  24.2 vivid   5.8 deep   0.3 turq   0.6 warm  12.3 | L*  81.1 chroma  27.3 texture 5.19 median #dfcdea kept  82%
+   match  white  31.8 pale  43.7 lav  17.6 vivid   4.8 deep   0.0 turq   0.4 warm   7.5 | L*  80.9 chroma  23.6 texture 3.97 median #c9cbee kept  85%
+   focus  white  28.7 pale  40.3 lav  14.8 vivid  12.1 deep   0.2 turq   2.1 warm   8.1 | L*  80.4 chroma  24.5 texture 4.48 median #c3ccef kept  83%
+floor_ahead     x.25-.65 y.60-.69 
+   orig   white  26.9 pale  35.4 lav   3.6 vivid  15.5 deep   0.0 turq  10.6 warm   1.6 | L*  83.5 chroma  22.2 texture 4.32 median #aad7f4 kept  95%
+   match  white   6.9 pale  30.7 lav  12.0 vivid  28.2 deep   0.1 turq  21.7 warm   0.4 | L*  73.3 chroma  30.4 texture 4.03 median #85b5ec kept  94%
+   focus  white   6.3 pale  27.7 lav  12.4 vivid  29.4 deep   0.4 turq  19.0 warm   0.1 | L*  71.1 chroma  33.9 texture 4.40 median #80aee6 kept  96%
+left_low        x.00-.22 y.62-.79 
+   orig   white  21.8 pale  22.2 lav   6.9 vivid  40.2 deep   0.3 turq   1.0 warm   2.0 | L*  73.9 chroma  33.3 texture 5.74 median #81b2f4 kept  90%
+   match  white  12.9 pale  34.4 lav  13.2 vivid  40.9 deep   0.4 turq   9.0 warm   0.1 | L*  74.1 chroma  36.0 texture 4.32 median #88b9f5 kept  89%
+   focus  white   5.9 pale  28.5 lav  13.4 vivid  49.0 deep   1.5 turq   8.4 warm   0.2 | L*  67.9 chroma  43.4 texture 4.59 median #67acf2 kept  90%
+char_left       x.02-.25 y.76-.885
+   orig   white  27.9 pale  36.4 lav   9.4 vivid  18.9 deep   0.0 turq   0.1 warm   0.0 | L*  79.3 chroma  27.7 texture 5.18 median #b0c5f7 kept  99%
+   match  white  22.0 pale  28.0 lav   1.0 vivid  31.6 deep   0.0 turq   0.8 warm   0.0 | L*  73.4 chroma  36.8 texture 5.12 median #92b5f4 kept 100%
+   focus  white   3.8 pale  26.2 lav   1.5 vivid  33.9 deep   0.0 turq   5.3 warm   0.1 | L*  73.8 chroma  35.6 texture 3.37 median #76b9f4 kept  94%
+char_right      x.71-.98 y.79-.885
+   orig   white  31.2 pale  41.0 lav  12.8 vivid  10.7 deep   0.0 turq   1.3 warm   2.5 | L*  82.6 chroma  24.5 texture 4.20 median #c2cff7 kept  95%
+   match  white  23.9 pale  39.9 lav   3.4 vivid  16.1 deep   0.0 turq   1.6 warm   0.0 | L*  78.6 chroma  28.7 texture 3.77 median #b2d5f5 kept  93%
+   focus  white   7.1 pale  31.1 lav   0.7 vivid  26.9 deep   0.0 turq  11.9 warm   0.0 | L*  78.0 chroma  29.4 texture 3.65 median #7cc5f5 kept  79%
+scene_all       x.00-1. y.22-.885 
+   orig   white  20.3 pale  33.7 lav  17.0 vivid  21.5 deep   0.8 turq   3.4 warm   5.6 | L*  73.5 chroma  35.9 texture 4.85 median #b1b4ef kept  82%
+   match  white  13.6 pale  30.8 lav  12.7 vivid  28.2 deep   0.3 turq   4.8 warm   5.3 | L*  71.3 chroma  37.2 texture 4.02 median #92aff2 kept  80%
+   focus  white  12.0 pale  28.5 lav  12.4 vivid  29.1 deep   1.3 turq   7.4 warm   4.6 | L*  70.9 chroma  37.1 texture 4.53 median #88b2ef kept  73%
