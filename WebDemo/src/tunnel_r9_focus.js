@@ -201,11 +201,17 @@ export const FOCUS = {
       // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
       //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
       //    camera's place at 3.0 s with the new framing
-      count: 280,
+      // (item 4, the AD's review item 6: no more than about 10 bubbles within 0.2 W of the tunnel's centre; the original has
+      // 10 detected there. Spread with a 1 / d^2 density out to 34 m, about a third of the wall bubbles and most of the
+      // inner ones landed there, a dense cluster. Now: 220; the wall bubbles within 10 m (near and middle depth), the inner
+      // ones within 6.5 m, and a few at far depth along the walls (10-30 m) and round the far centre.)
+      count: 220,
       camAt: -4.55,
       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
-      zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
-        [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
+      //   (on screen a bubble is about 1.48 rho / d frame widths from the centre: inside 0.2 W beyond d = 7.4 rho. So the inner
+      //   ones at rho 0.84-1.24 m only to 5.5 m, the far ones few)
+      zones: [[0.3, [20, 160], [0.62, 0.93], [4.5, 10]], [0.2, [160, 222], [0.62, 0.93], [4.5, 10]], [0.2, [-42, 20], [0.62, 0.93], [4.5, 10]],
+        [0.24, [-30, 210], [0.42, 0.62], [4.5, 5.5]], [0.02, [20, 200], [0.75, 0.93], [10, 30]], [0.01, [0, 360], [0.08, 0.4], [16, 34]]],
       // more, bolder white streaks among the bands (match: 200)
       // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,
       // chunkier (half width 2-4 cm), some hooked (bend), turned off the band by up to rot degrees (the original's white bits

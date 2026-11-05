@@ -142,3 +142,24 @@ to 3 read as crescent moons (tune b1). The ring zone's measure (`streaks.py`) al
 | elongation | 2.1 | 3.4 | 2.7 |
 | along the tangent | 28% | 74% | 56% |
 | thickness median (px) | 3.5 | 1.9 | 2.0 |
+
+## Item 4: bubbles round the tunnel's centre (`frames/step4_*`, `item4_my_bubbles_before/after.png`)
+
+- The AD's Hough count (`bubbles.py`, param2 40) within 0.2 W of the centre: original 10, step 3 110. With
+  `mwTunnelBubbles` hidden it is still 87: most of those detections are other layers (the walls' drops and texture), not
+  my bubbles. So my layer is judged by a hide probe (`scripts/tbcount.py`: the pixels that change when it is hidden).
+- Cause: spread with a 1 / d^2 density out to 34 m, a third of the wall bubbles and most of the inner ones (rho 0.6-1.24
+  m to 20 m) land inside 0.2 W (on screen about 1.48 rho / d frame widths from the centre).
+- Now 220 (was 280): wall bubbles within 10 m (near and middle), inner ones at rho 0.84-1.24 m within 5.5 m, 2% along the
+  walls at 10-30 m and 1% round the far centre (far depth kept).
+
+| my bubbles and streaks (hide probe, DPR 1) | step 3 | step 4 |
+|---|---|---|
+| drawn share of the disc r < 0.2 W | 28.0% | 12.3% |
+| drawn share of the disc r < 0.12 W | 20.6% | 2.4% |
+| pieces inside r < 0.12 W | 37 | 15 |
+| pieces inside r < 0.2 W (bubbles, ring fragments and streaks) | 54 | 51 |
+| Hough circles within 0.2 W, whole frame (orig 10) | 110 | 105 |
+
+By eye (`item4_my_bubbles_after.png`) about 8-10 small bubbles of mine are left inside 0.2 W; the rest of the pieces there
+are the white streaks of item 3 and fragments of rings at the disc's edge.
