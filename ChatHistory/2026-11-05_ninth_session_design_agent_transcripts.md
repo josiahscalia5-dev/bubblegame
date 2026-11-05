@@ -253,8 +253,31 @@ Now the noise helper (declared only under focus) and the new settings.
 - 19:28 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rib_cands1.json
 - 19:28 `Bash`: Render ribbon candidates at 3.0 s
 - 19:29 `Bash`: Measure ring metrics on candidates
+**Agent** (19:30 UTC):
 
-_121 tool steps._
+Lowering `perLog` did not reduce the counted dark bands (7.3 to 7.8), so the extra minima come from something else (likely the white dashes, bubbles and thin lines). Let me look at candidate A.
+
+- 19:30 `Bash`: Crop ring structure for candidate A
+- 19:30 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_A.png
+- 19:30 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rib_cands2.json
+- 19:30 `Bash`: Render and measure candidates without flecks
+**Agent** (19:32 UTC):
+
+Band count barely moves with `perLog` or the flecks. I'll locate where along the radius the extra dark minima sit (histogram over log r, original vs ours).
+
+- 19:32 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/minima_hist.py
+- 19:33 `Bash`: Histogram of dark minima by radius
+- 19:33 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/nobub.json
+- 19:33 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/F_tune.json
+- 19:33 `Bash`: Compare minima with and without bubbles
+**Agent** (19:34 UTC):
+
+Without bubbles the walls alone give 6.1 dark bands per ray (in the 6.0-6.6 band). The bubbles (Water & VFX's layer) add about 1.2 per ray. Let me see the saturation and lightness of the walls alone.
+
+- 19:34 `Bash`: Measure walls without bubbles; crop F
+- 19:34 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_F.png
+
+_132 tool steps._
 
 ---
 
@@ -487,5 +510,35 @@ Reads as continuous light-blue water round her, no pillows or white masses. Comm
 Now step 1c: the spray as round droplets rather than vertical dashes, and more of the white in small pieces (the AD wants at least half in pieces of 400 px or less; 41% now).
 
 - 19:28 `Bash`: Capture rounder spray and smaller white pieces
+- 19:30 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v11.png
+**Lead → agent** (19:30 UTC):
 
-_117 tool steps._
+[Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:30 `Bash`: Read hide_probe usage
+- 19:30 `Bash`: Hide probe the spray-like layers at 3.0 s
+- 19:31 `Bash`: Make a hide-probe montage of the spray layers
+- 19:31 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/hp1_crop.png
+**Lead → agent** (19:31 UTC):
+
+[Image: original 2690x279, displayed at 2000x207. Multiply coordinates by 1.34 to map to original image.]
+
+- 19:31 `Bash`: Read the spray vertex and fragment shaders
+- 19:31 `Bash`: Zoom left-of-her spray for s1b and v11
+- 19:31 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v11l.png
+- 19:31 `Bash`: Capture finer spray droplets
+- 19:33 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12l.png
+**Agent** (19:33 UTC):
+
+Finer spray reads as droplets, not rain. White fell to 12.6%, so I'll add back some crest-arc and rim white.
+
+- 19:33 `Bash`: Capture with more crest arcs and a wider rim
+- 19:33 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/wm_v13.png
+- 19:34 `Bash`: Capture smaller, denser crest arcs
+- 19:34 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v14.png
+**Lead → agent** (19:34 UTC):
+
+[Image: original 2313x307, displayed at 2000x265. Multiply coordinates by 1.16 to map to original image.]
+
+
+_131 tool steps._
