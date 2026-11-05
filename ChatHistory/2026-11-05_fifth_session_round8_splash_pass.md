@@ -1125,3 +1125,25 @@ I'll save all of it: this whole conversation, everything the design agents have 
 
 Now updating the hand-off notes, so a new session knows exactly where Round 9 stands:
 
+Everything is saved to your GitHub repository, branch `ccr-b41bbe83-3fbhkr`, at commit `f926279`. GitHub confirms it has that commit.
+
+**What's saved:**
+- **The whole chat history** of this session: `ChatHistory/2026-11-05_fifth_session_round8_splash_pass.md`. Keys are redacted, and a scan found none.
+- **The design agents' work:**
+  - Reports: `ChatHistory/2026-11-05_fifth_session_design_agent_reports.md`, covering what each agent found and built, with verdicts and numbers.
+  - Step-by-step transcripts: `ChatHistory/2026-11-05_fifth_session_design_agent_transcripts.md`, for all four runs: the Art Director twice, the Tunnel & Lighting specialist and the Water & VFX specialist. Each has its brief, notes, every tool step and final report.
+  - Everything they built:
+    - the Art Director's measured report, annotated comparison and scripts;
+    - the Tunnel & Lighting specialist's merged code, the textures derived from Reference 5, the texture scripts and its evidence;
+    - my follow-up fixes (the left brush and the star glints).
+- **The Water & VFX specialist's most recent work in progress:** it's still running, so I saved a snapshot (a patch plus full copies of the three files it has changed) in `Previews/WebDemo/screen4_round9_match/03_water_vfx_wip_snapshot/`. It's kept out of the playable game until it's finished and checked, so it can't break anything.
+- **Everything else from this session:**
+  - the splash pass and its evidence, video and gameplay checks;
+  - the Android app source;
+  - the one-reference cleanup;
+  - your five supporting references;
+  - your precision kit (verified exact crops of your original);
+  - `CLAUDE.md`, the agent files, and the hand-off notes updated with where Round 9 stands.
+
+**From now on:** the automatic save is running. It exports this conversation and pushes everything to GitHub every 5 minutes, and checks each push. When the Water & VFX specialist finishes, I'll save its final work and refresh the agents' reports and transcripts too.
+
