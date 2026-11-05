@@ -386,3 +386,12 @@ While those run, here's step 3 iteration 2 (white flecks left out of the map), n
 
 The gloss only adds sparse, sharp glints, so it can't move the median much. Testing the bloom pass: strength set to 0 by override, on top of test 4 above:
 
+No grade changes under `focus`. But `match`'s settings carry a "small warm glow at the centre" in the grade pass, which is post-processing over the whole picture. Finding what that pass adds:
+
+Every shader that places walls or floor gets the function through `matchWallGLSL`, once each, so the fix goes in one place. Applying it in the working copy (under `focus` with the ring map only):
+
+Measuring the change three ways:
+- radial ring profiles per sector against your original itself;
+- the existing overlay tool's wall-pattern correlation;
+- the upper-wall colour statistics.
+
