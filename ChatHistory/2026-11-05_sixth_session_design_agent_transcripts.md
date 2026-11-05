@@ -252,8 +252,22 @@ I'll start by reading the project state and the Art Director's gate report.
 - 13:45 `Bash`: Check for playwright availability
 - 13:45 `Bash`: Read capture tool and locate playwright
 - 13:45 `Bash`: Check playwright resolves and flock exists
+- 13:45 `Bash`: Rebuild and confirm the bundle is reproduced
+**Agent** (13:45 UTC):
 
-_22 tool steps._
+Now the Art Director's probe script and measuring scripts.
+
+- 13:45 `Bash`: Read the probe and measurement scripts
+- 13:45 `Bash`: Read the other measurement scripts
+- 13:45 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/Previews/WebDemo/screen4_round9_match/05_art_director_gate/approved_vs_merged_3.00s_gate_annotat
+- 13:46 `Bash`: Crop centres of original and merged frame
+- 13:46 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/centre_before.png
+- 13:46 `Bash`: Show the rw probe JSON
+- 13:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r7_hero.js
+- 13:47 `Bash`: Find axis height constants
+- 13:47 `Bash`: Read hero_probe and constants
+
+_32 tool steps._
 
 ---
 
@@ -310,5 +324,31 @@ Now let me look at the original and the merged frame.
 - 13:45 `Bash`: Inspect tools env script and precision kit
 - 13:45 `Bash`: Locate the visual Python
 - 13:45 `Bash`: Make bank-zone side-by-side crop
+- 13:45 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/crop.py
+- 13:45 `Bash`: Make bank-zone side-by-side crop
+- 13:45 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/bank_cmp.png
+- 13:45 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/06_FOREGROUND_GLOSSY_SPLASHES_BUBBLES.jpg
+- 13:45 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/03_PINK_SWIMMER_BLUE_WATER_WAVES.jpg
+**Agent** (13:45 UTC):
 
-_11 tool steps._
+Now the code.
+
+- 13:46 `Bash`: Count lines of source files
+- 13:46 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 13:46 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_splash.js
+- 13:46 `Bash`: Find deepMerge and match hooks in liquid file
+- 13:46 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_liquid.js
+- 13:46 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r8_liquid.js
+- 13:46 `Bash`: Locate swell and splash code in hero water
+- 13:46 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r7_hero_water.js
+- 13:46 `Bash`: Crop left bank: original vs merged canvas
+- 13:46 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/app_bankL.png
+- 13:46 `Bash`: Read capture tool and merged info
+- 13:46 `Bash`: Build bundle and check it matches start
+- 13:46 `Bash`: Check working tree after build
+- 13:46 `Bash`: Capture baseline match frame at 3.0 s
+- 13:46 `Bash`: Find where playwright is installed
+- 13:47 `Bash`: Search for playwright package
+- 13:47 `Bash`: Capture baseline match frame at 3.0 s
+
+_33 tool steps._
