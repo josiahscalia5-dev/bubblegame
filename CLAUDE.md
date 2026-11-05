@@ -15,6 +15,13 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - The user's precision kit, exact crops of the original by zone (verified): `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/` (`01`-`07`; `10` the annotated zones).
   - Supporting MATERIAL references the user approved on 5 November, for look and finish only (never layout; the original
     wins): `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (see its README). REF5, the blue-water vortex, is the tunnel's water material.
+- **The fidelity brief (5 November, 14:16 UTC):** `Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/README.md`.
+  - Match the original as closely as possible; never a new or "better" variation.
+  - Lock the camera and compare at the same moment.
+  - Do not redesign the pink character: build the water and foam up round it, so it sits partly submerged.
+  - Many more bubbles inside the tunnel.
+  - Order: tunnel depth and rings, then water, foam and bubbles, then objects (no oversized collectibles), then colour.
+  - Report with a side by side and a corrected / remaining checklist.
 - **First priority: a visibly blue/turquoise water body** through the tunnel, wrapping the pink character's lower body.
   White foam is only an accent on top. Never a white foam blanket, and never bloom, haze or a pale wash as a substitute.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
