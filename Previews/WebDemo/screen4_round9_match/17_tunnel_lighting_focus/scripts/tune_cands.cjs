@@ -55,8 +55,33 @@ const server = http.createServer((req, res) => {
           lo[0] = Math.min(lo[0], (p.x + 1) / 2); lo[1] = Math.min(lo[1], (1 - p.y) / 2); hi[0] = Math.max(hi[0], (p.x + 1) / 2); hi[1] = Math.max(hi[1], (1 - p.y) / 2);
         }
       });
+      // the gold rim's outer edge on screen: a circle fitted (least squares) to its projected points, in widths of the 1:2
+      // frame (X = x, Y = 2 y, y down), and the rim ramp's rho (screen distance from that centre / its radius) of the tube's
+      // top edge at the mouth (u = tunnelStart, radius 2) and 1 m in
+      let rim = null;
+      const bez = d.scene.getObjectByName('r6Bezel');
+      if (bez && bez.geometry) {
+        if (!bez.geometry.boundingBox) bez.geometry.computeBoundingBox();
+        const bb = bez.geometry.boundingBox, Ro = Math.max(bb.max.x, bb.max.y), pts = [];
+        bez.updateMatrixWorld(true);
+        for (let i = 0; i < 180; i++) {
+          const a = i / 180 * Math.PI * 2, p = new V(Math.cos(a) * Ro, Math.sin(a) * Ro, 0).applyMatrix4(bez.matrixWorld).project(cam);
+          if (p.z < 1 && Math.abs(p.x) < 3 && Math.abs(p.y) < 3) pts.push([(p.x + 1) / 2, (1 - p.y)]);   // X in W, Y in W (1:2)
+        }
+        // algebraic circle fit: x^2 + y^2 + D x + E y + F = 0
+        let s = { xx: 0, xy: 0, yy: 0, x: 0, y: 0, n: 0, xz: 0, yz: 0, z: 0 };
+        for (const [x, y] of pts) { const z = x * x + y * y; s.xx += x * x; s.xy += x * y; s.yy += y * y; s.x += x; s.y += y; s.n++; s.xz += x * z; s.yz += y * z; s.z += z; }
+        const A = [[s.xx, s.xy, s.x], [s.xy, s.yy, s.y], [s.x, s.y, s.n]], b = [-s.xz, -s.yz, -s.z];
+        const det3 = (M) => M[0][0] * (M[1][1] * M[2][2] - M[1][2] * M[2][1]) - M[0][1] * (M[1][0] * M[2][2] - M[1][2] * M[2][0]) + M[0][2] * (M[1][0] * M[2][1] - M[1][1] * M[2][0]);
+        const dA = det3(A), sol = [0, 1, 2].map((k) => det3(A.map((row, r) => row.map((v, c) => (c === k ? b[r] : v)))) / dA);
+        const cx = -sol[0] / 2, cy = -sol[1] / 2, rr = Math.sqrt(cx * cx + cy * cy - sol[2]);
+        const rhoAt = (u, hh) => { TR.frame(u, F); const p = F.P.clone().addScaledVector(F.U, hh).project(cam); const X = (p.x + 1) / 2, Y = 1 - p.y; return Math.hypot(X - cx, Y - cy) / rr; };
+        const top = Wd.WATER + Wd.AXIS_H + 2.0;
+        rim = { centre: [+cx.toFixed(4), +(cy / 2).toFixed(4)], radiusW: +rr.toFixed(4), topY: +((cy - rr) / 2).toFixed(4), outer: +Ro.toFixed(3),
+          rhoMouth: +rhoAt(L.tunnelStart, top).toFixed(4), rho1m: +rhoAt(L.tunnelStart + 1, top).toFixed(4), rhoCollarEnd: +rhoAt(L.tunnelStart + 0.06, Wd.WATER + Wd.AXIS_H + 2.02).toFixed(4) };
+      }
       return { cam: { u: +(best.u - L.tunnelStart).toFixed(3), x: +best.x.toFixed(3), h: +best.h.toFixed(3), fov: +cam.fov.toFixed(2) }, vp: [+((vp.x + 1) / 2).toFixed(4), +((1 - vp.y) / 2).toFixed(4)],
-        mascotBox: [...lo, ...hi].map((v) => +v.toFixed(3)), mascotZ: +(d.mascotState.z - L.tunnelStart).toFixed(3) };
+        mascotBox: [...lo, ...hi].map((v) => +v.toFixed(3)), mascotZ: +(d.mascotState.z - L.tunnelStart).toFixed(3), rim };
     });
     const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); });
     fs.writeFileSync(path.join(OUT, `${c.label}.png`), Buffer.from(url.split(',')[1], 'base64'));

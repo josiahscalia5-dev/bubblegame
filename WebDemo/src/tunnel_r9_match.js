@@ -286,6 +286,9 @@ const RIM_RHO = { inner: 0.937, mouth: 0.9015, perMetre: 0.0991 };
 // (the collar's top arc starts at the bezel's inner edge, rho = inner / outer radius: 0.937 at 2.39 / 2.55; gate fix F6 made
 // the bezel thinner)
 { const B = MATCH.hero.round6.porthole.bezel; RIM_RHO.inner = B.inner / B.outer; }
+// ?s3=focus: the camera further back (tunnel_r9_focus.js), so the collar's end (the tube's mouth) and the tube's first metre
+// sit at other places in the rim's screen circle: measured from the camera at 3.0 s (MATCH.rimRho: mouth, perMetre)
+if (FOCUS_ON && MATCH.rimRho) Object.assign(RIM_RHO, MATCH.rimRho);
 // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
 const BEZEL_SIDES = [0.912, 1.03];
 // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
