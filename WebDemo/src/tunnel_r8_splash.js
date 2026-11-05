@@ -25,10 +25,11 @@
 // untouched).
 import * as THREE from 'three';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
+import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9's settings
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const SPLASH_ON = LIST.includes('splash');
+export const SPLASH_ON = LIST.includes('splash') || LIST.includes('match');   // ?s3=match: Round 9 builds on this pass
 export const SPLASH_FOAM = SPLASH_ON && !LIST.includes('nofoam');
 
 export const SPLASH = {
@@ -98,6 +99,7 @@ export function mergeSettings(target, over) {
 }
 // more spray (applied to the hero water's settings before buildHeroWater builds heroSplash; ?s3=liquid keeps its own)
 if (SPLASH_FOAM) mergeSettings(HERO_WATER, SPLASH.heroWater);
+if (MATCH_ON) { deepMerge(SPLASH, MATCH.splash); deepMerge(HERO_WATER, MATCH.heroWater); }   // ?s3=match (tunnel_r9_match.js)
 
 const f3 = (x) => (+x).toFixed(4);
 const v3 = (hex) => { const c = new THREE.Color(hex); return `vec3(${f3(c.r)}, ${f3(c.g)}, ${f3(c.b)})`; };

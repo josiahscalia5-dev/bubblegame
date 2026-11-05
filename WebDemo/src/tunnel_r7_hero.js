@@ -23,10 +23,12 @@ import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 import { buildHeroWater } from './tunnel_r7_hero_water.js';
 import { LIQUID_ON, buildLiquid } from './tunnel_r8_liquid.js';   // ?s3=liquid: Round 8's real water (on top of the hero scene)
+import { MATCH_ON, MATCH, deepMerge, buildMatch } from './tunnel_r9_match.js';   // ?s3=match: Round 9's art-match pass
+import { buildMatchWater } from './tunnel_r9_match_water.js';
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const HERO_ON = LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash');   // ?s3=liquid: the hero scene plus Round 8's water
+export const HERO_ON = LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash') || LIST.includes('match');   // ?s3=liquid: the hero scene plus Round 8's water
 
 export const HERO = {
   // merged into ROUND6 after round7's own settings (tunnel_r6.js), so round7 itself is unchanged
@@ -117,6 +119,7 @@ export const HERO = {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.hero;
   if (tune) for (const k of Object.keys(tune)) HERO[k] = (tune[k] && typeof tune[k] === 'object' && !Array.isArray(tune[k]) && HERO[k]) ? { ...HERO[k], ...tune[k] } : tune[k];
 }
+if (MATCH_ON) deepMerge(HERO, MATCH.hero);   // ?s3=match: Round 9's settings (tunnel_r9_match.js)
 
 // ---------------------------------------------------------------- the shared whirlpool shading (walls and water)
 const f3 = (x) => (+x).toFixed(4);
@@ -283,6 +286,10 @@ export function buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets
   // 6. the water and foam round the character (the Water & VFX specialist's file, tunnel_r7_hero_water.js)
   report.water = buildHeroWater({ scene, TR, L, W, mascot, updaters, time, U, heroVortexGLSL, waterSheets, drumSheet, fogAnchor });
   if (LIQUID_ON) report.liquid = buildLiquid({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet });   // ?s3=liquid (tunnel_r8_liquid.js)
+  if (MATCH_ON) {   // ?s3=match: Round 9 (tunnel_r9_match.js: Tunnel & Lighting; tunnel_r9_match_water.js: Water & VFX)
+    report.match = buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet });
+    report.matchWater = buildMatchWater({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet });
+  }
 
   // 7. what the hero scene replaces
   const hidden = HERO.hide.map((n) => scene.getObjectByName(n)).filter(Boolean);

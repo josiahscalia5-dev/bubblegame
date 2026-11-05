@@ -33,6 +33,7 @@ import { HEIGHT_GLSL, SLIDE } from './world.js';
 import { RIPPLES } from './shaders.js';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { SPLASH_ON, SPLASH_FOAM, SPLASH, mergeSettings, splashWallGLSL, splashFloorGLSL, splashSwellGLSL, buildSplashBank } from './tunnel_r8_splash.js';   // ?s3=splash: Round 8 pass 2
+import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -106,6 +107,7 @@ export const LIQUID = {
   debug: 0,   // 1: the swell in flat green, 2: its depth and opacity, 3: green without the depth test, 4: the floor in flat red
 };
 if (SPLASH_ON) mergeSettings(LIQUID, SPLASH.liquid);   // ?s3=splash: its settings, before the tune below
+if (MATCH_ON) deepMerge(LIQUID, MATCH.liquid);   // ?s3=match: Round 9's settings (tunnel_r9_match.js)
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.liquid;
   if (tune) for (const k of Object.keys(tune)) LIQUID[k] = (tune[k] && typeof tune[k] === 'object' && !Array.isArray(tune[k]) && LIQUID[k]) ? { ...LIQUID[k], ...tune[k] } : tune[k];
