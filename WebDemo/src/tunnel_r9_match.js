@@ -372,10 +372,15 @@ function focusRibbonsGLSL(M) {
       float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
         + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
         + (vr.g - 0.5) * ${f4(R.wobble)};
-      float rq = bs + rTw, rbi = floor(rq);
+      // (the spiral's seam: tu wraps at the screen-left, on the horizontal through the camera, where bs steps by one band; the
+      // per-band picks below (arcs, offsets, colours) then jumped there: a hard horizontal line across the left wall at the
+      // vanishing point's height, plain once the camera sat at the axis height. The angle is counted from straight down
+      // instead, so that step falls on the tube's bottom, under the water floor, and the left wall is continuous)
+      float rTu = tu < -0.25 ? tu + 1.0 : tu;
+      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw, rbi = floor(rq);
       float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
       float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
-      float rsa = (tu + 0.5) * rNs + rhb * 3.0;
+      float rsa = (rTu + 0.5) * rNs + rhb * 3.0;
       float rsi = mod(floor(rsa), rNs);
       float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
       float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
