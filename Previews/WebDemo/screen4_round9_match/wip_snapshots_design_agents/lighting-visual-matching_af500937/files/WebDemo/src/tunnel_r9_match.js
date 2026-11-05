@@ -68,10 +68,11 @@ export const MATCH = {
       // (gate fixes F7 / F10, solved with hero_probe PICKS at 3.0 s: the right coin 0.1 m further and 0.08 W further right,
       // its centre on the approved's (0.907, 0.736); the first sock 0.17 m up and 0.03 m right, on the approved's (0.742,
       // 0.61), within reach from the right lane without a jump (0.81 m); the gem up 0.22 m onto the approved's (0.323, 0.509),
-      // within reach from the left lane with a jump; the far three-coin line from the middle lane (straight behind the centre
-      // coin, the "totem") to just outside the left lane (0.14 m, within reach) 2.5 m nearer, 0.12 W from the centre coin)
+      // within reach from the left lane with a jump; the far three-coin line (it stood under the centre coin, the "totem";
+      // the original has only the small centre coin and one far sock at the vanishing point) raised 0.35 m onto the line from
+      // the camera through the centre coin, so at the hero moment it is hidden behind it; still in the middle lane, in reach)
       layout: { coinLines: [[-0.257, 2.75, 1, 1.0, 1.05, 0], [-1.14, 5.0, 1, 1.0, 1.5, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.357, 2.3, 1, 1.0, 0.57, 0],
-        [2, 13.0, 1, 1.0, 0.55, 0], [-0.2, 9.5, 3, 1.0, 0.55, 0]], replace: 3,
+        [2, 13.0, 1, 1.0, 0.55, 0], [1, 12.0, 3, 1.0, 0.9, 0]], replace: 3,
         firstSock: [2.0, 3.2, 1.14], extraGem: [-0.414, 5.7, 1.67] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
       // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
@@ -95,9 +96,17 @@ export const MATCH = {
   },
   // the far gem (round3's, 10.7 m past the mouth, lane 0) sat within 0.08 W of the vanishing point at 3.0 s: 0.25 m further
   // left, still within the pick-up reach (0.87 m) from the left lane (game.js applies it, gated)
-  // (gate fix F7: 0.45 m further left, off the centre coin: lane -0.35 put it 0.088 W from the centre; still within reach
-  // from the left lane without a jump, 0.82 m)
-  farGem: [-0.8, 14.6],
+  // (gate fix F7: it sat 0.088 W left of the centre, a second small gem beside the centre coin: now in the middle lane at
+  // 0.82 m, on the line from the camera through the centre coin, so at the hero moment it is hidden behind it; in reach)
+  farGem: [1, 14.6, 0.82],
+  // the second sock (round3's, lane 2 at 12.1 m) stood right of the centre coin: 5.1 m nearer and 0.6 m further right, at
+  // 0.61 m, behind the big first sock at the hero moment; within reach from the right lane without a jump (0.63 m)
+  secondSock: [2.85, 7.0, 0.61],
+  // the far collectibles converge on the vanishing point (four coin lines and two socks 19-34 m ahead at the hero moment;
+  // the original has only the small centre coin and one far sock there): visual only, coins and gems shrink away between
+  // these distances from the camera (m) and grow back in as the character comes on, socks further out (the nearest far
+  // sock, 23 m ahead, stays as the original's). Their places, pick-up radii and the counts are unchanged
+  farFade: { coins: [17, 21], socks: [25, 28] },
   gemScale: 0.89,   // the gem beside the big left coin (gems[0]): its visual size (the approved's is 0.103 W wide, ours 0.115)
   // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
   // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
@@ -163,9 +172,14 @@ export const MATCH = {
     // between bands (from: where in the band it deepens); rim: the broken cyan-white edge at each band's inner side
     // glow: the azure light on each band's inner part (to: where it fades); smooth: the water's cell pattern halved inside
     // the bands by this much; rim.broken: how much the relief breaks the rim line
+    // blueFrom: the gaps and the azure light only outside the warm core (rw)
     bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.6,
-      gap: { col: '#2c4fd0', from: [0.5, 0.8], amount: 0.85 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35 },
-      glow: { col: '#39b8f6', to: [0.18, 0.45], amount: 0.45 } },
+      blueFrom: [0.075, 0.12],
+      gap: { col: '#2c4fd0', from: [0.62, 0.86], amount: 0.8 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35 },
+      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.4 } },
+    // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
+    // middle, outer and the left side's pink
+    rainbow: { r: 0.225, w: 0.03, amount: 0.62, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -366,13 +380,26 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
     // (the water's cell pattern softened toward its blur inside the bands: it broke the rings up)
     c = mix(c, clamp(base + (c - base) * 0.5, 0.0, 1.0), ${f4(M.bands.smooth)} * bz);
-    float gapK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz;
+    // (the cobalt gaps and the azure light kept out of the warm core: the approved's inner rings are pink, peach and white)
+    float bout = smoothstep(${f4(M.bands.blueFrom[0])}, ${f4(M.bands.blueFrom[1])}, rw);
+    float gapK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz * bout;
     float rimK = (1.0 - smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk)) * mix(1.0, smoothstep(-0.12, 0.04, dl), ${f4(M.bands.rim.broken)}) * bz;
-    float glowK = smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk) * (1.0 - smoothstep(${f4(M.bands.glow.to[0])}, ${f4(M.bands.glow.to[1])}, bk)) * bz;
-    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722)), bwarm = smoothstep(0.0, 0.1, c.r - c.b);
-    c = mix(c, ${hx(M.bands.glow.col)} * mix(0.9, 1.1, bl), glowK * ${f4(M.bands.glow.amount)} * (1.0 - bwarm * 0.7));
-    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * (1.0 - bwarm * 0.6));
+    float glowK = smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk) * (1.0 - smoothstep(${f4(M.bands.glow.to[0])}, ${f4(M.bands.glow.to[1])}, bk)) * bz * bout;
+    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722)), bkeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
+    c = mix(c, ${hx(M.bands.glow.col)} * mix(0.9, 1.1, bl), glowK * ${f4(M.bands.glow.amount)} * bkeep);
+    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * bkeep);
     c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
+  }
+  {   // the approved's pastel rainbow arc above the centre (pink at the left, peach and pale yellow over the top and right),
+      // across the bands, on the upper half (MATCH.walls.rainbow)
+    float ra = tu * 6.2831853;                         // 0 = screen right, pi/2 = up
+    float rk = exp(-pow((rw - ${f4(M.rainbow.r)}) / ${f4(M.rainbow.w)}, 2.0)) * smoothstep(-0.15, 0.35, sin(ra)) * ${f4(M.rainbow.amount)};
+    float rq = clamp((rw - ${f4(M.rainbow.r)}) / ${f4(M.rainbow.w)} * 0.5 + 0.5, 0.0, 1.0);   // inner -> outer across the arc
+    vec3 rc = mix(${hx(M.rainbow.cols[0])}, ${hx(M.rainbow.cols[1])}, smoothstep(0.0, 0.5, rq));
+    rc = mix(rc, ${hx(M.rainbow.cols[2])}, smoothstep(0.5, 1.0, rq));
+    rc = mix(rc, ${hx(M.rainbow.cols[3])}, smoothstep(0.2, -0.6, cos(ra)) * 0.6);   // pinker on the left
+    float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    c = mix(c, rc * mix(0.85, 1.08, rl), rk);
   }
   // the core's pale lilac rows toward warm white (blue brought down to the larger of red and green)
   float coreK = 1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw);
@@ -453,8 +480,10 @@ void main() {
 // ?s3=match,bare: not drawn (camera layer 5). Visual only: positions, pick-up radii and the game's lists are untouched.
 const HIDDEN_LAYER = 5;
 const hideFromCamera = (o) => o.traverse((q) => q.layers.set(HIDDEN_LAYER));
+const FAR = { coins: [], socks: [] };   // the collectibles for the far fade (MATCH.farFade; applied in buildMatch's hook)
 export function matchCollectibles({ coins, gems, socks }) {
   const report = {};
+  FAR.coins = [...coins, ...gems].map((c) => c.obj).filter(Boolean); FAR.socks = socks.map((c) => c.obj).filter(Boolean);
   // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
   // pick-up place, is unchanged)
   if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
@@ -535,6 +564,13 @@ export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, w
       MATCH_UNIFORMS.uMatchVP.value.set((pv.x + 1) / 2 + C.offset[0], (pv.y + 1) / 2 - C.offset[1]);
       if (rt) MATCH_UNIFORMS.uMatchRes.value.set(rt.width, rt.height);
       else MATCH_UNIFORMS.uMatchRes.value.copy(renderer.getDrawingBufferSize(size));
+      // the far collectibles' fade (MATCH.farFade): only their visual scale, and only while they are far (the game's own pop
+      // and pass animations act near the character, where this leaves the scale alone)
+      for (const [list, R] of [[FAR.coins, MATCH.farFade.coins], [FAR.socks, MATCH.farFade.socks]]) for (const o of list) {
+        const d = o.position.distanceTo(cam.position);
+        if (d > R[0]) { o.scale.setScalar(Math.max(1e-3, 1 - THREE.MathUtils.smoothstep(d, R[0], R[1]))); o.userData.mtFar = true; }
+        else if (o.userData.mtFar) { o.scale.setScalar(1); o.userData.mtFar = false; }
+      }
     };
     report.centre = C;
   }

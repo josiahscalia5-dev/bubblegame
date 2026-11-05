@@ -129,6 +129,27 @@ export const MATCH_WATER = {
       zones: [[0.22, [-48, -16], [0.7, 1.6], [0.2, 0.6], [0.016, 0.034], 0.05], [0.4, [16, 50], [1.2, 2.8], [0.25, 0.8], [0.016, 0.036], 0.06],
         [0.16, [-80, -24], [0.5, 1.3], [0.15, 0.5], [0.012, 0.026], 0.03], [0.22, [24, 80], [0.7, 2.0], [0.15, 0.6], [0.012, 0.026], 0.03]] },
   },
+  // 3. (the user's fidelity brief, 5 November 14:16) soap bubbles THROUGHOUT the tunnel, at different sizes and depths, moving
+  //    with the water (swirling round the tube with the walls' flow and drifting toward the camera): small ones along the
+  //    walls and round the centre, mid-size ones, a few big ones. The original's are counted in
+  //    Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/ (bubbles.txt). One instanced draw call.
+  bubbles: {
+    count: 140,
+    tube: 2.0,               // the hero lining's radius (m; the layout's tunnelRadius, 2.5, is the old drum's)
+    // sizes: [share, world radius (m)]; far ones are drawn up to `far` times bigger (else they would be under a pixel)
+    sizes: [[0.64, [0.035, 0.075]], [0.28, [0.085, 0.16]], [0.08, [0.2, 0.28]]],
+    far: [6, 26, 1.0],       // from 6 m into the drum, +100% by 26 m
+    // where round the tube: [share, angle (degrees from the side, 90 = the top), radius (share of the tube's), stretch they
+    // loop over (m into the drum; a negative end counts from the drum's end)]: the upper wall and both side walls over the
+    // first 22 m (at the hero moment 6-27 m ahead, where the walls are on screen), and round the centre further in (near
+    // the axis, above it: off the lanes)
+    zones: [[0.36, [30, 150], [0.76, 0.94], [0.8, 22]], [0.17, [150, 205], [0.76, 0.94], [0.8, 22]], [0.17, [-25, 30], [0.76, 0.94], [0.8, 22]],
+      [0.3, [15, 165], [0.25, 0.6], [14, -1.5]]],
+    drift: [0.12, 0.4],      // m/s toward the camera (the walls' water flows toward the viewer)
+    swirl: [0.06, 0.12],     // rad/s round the tube (the walls turn 0.012 turns/s, 0.075 rad/s)
+    avoid: 1.0,              // the collectibles' clear circle (x their size on screen): no bubble over a coin's, gem's or sock's face
+    rim: 0.9, film: 0.6, body: 0.06, glint: 1.0,
+  },
 };
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.matchWater;
@@ -334,5 +355,110 @@ export function buildMatchWater({ scene, TR, L, W, mascot, updaters, time, U, HE
   if (!MATCH_ON) return report;
   report.lobes = !!scene.getObjectByName('spLumps');
   report.curls = !!scene.getObjectByName('spCurls');
+  report.bubbles = tunnelBubbles({ scene, TR, L, W, updaters, time });
   return report;
 }
+
+// ---------------------------------------------------------------- 3. soap bubbles throughout the tunnel (?s3=match only)
+// Each bubble has a place in the drum's own frame (u along the path, an angle round the axis, a radius from it). Every frame
+// it turns round the tube with the water and drifts toward the camera, looping over the drum's length, placed on the bent
+// path with the track's frame (CPU: under a hundred points). Drawn as camera-facing discs in one instanced draw call: a clear
+// body, a rainbow soap-film rim, a white glint up and to the left. Faded where it would cover a collectible's face (their
+// screen circles, set just before the draw with the real camera). Private random numbers; no textures.
+function tunnelBubbles({ scene, TR, L, W, updaters, time }) {
+  const B = MATCH_WATER.bubbles, rnd = mulberryMw(0x6b0b5), TS = L.tunnelStart, TE = L.tunnelEnd;
+  const axisH = W.WATER + W.AXIS_H, R0 = B.tube, D2R = Math.PI / 180;
+  const pick = (zs) => { const tot = zs.reduce((t, z) => t + z[0], 0); let p = rnd() * tot; for (const z of zs) { if (p < z[0]) return z; p -= z[0]; } return zs[zs.length - 1]; };
+  const R = (a) => a[0] + rnd() * (a[1] - a[0]);
+  const list = [];
+  for (let i = 0; i < B.count; i++) {
+    const [, ang, rad, [from, to]] = pick(B.zones), [, size] = pick(B.sizes);
+    const u0 = TS + from, u1 = to < 0 ? TE + to : TS + to;
+    list.push({ u0, u1, uB: R([u0, u1]), th: R(ang) * D2R, rho: R(rad) * R0, r: R(size), drift: R(B.drift), w: R(B.swirl), seed: rnd() });
+  }
+  const n = list.length, quad = new THREE.PlaneGeometry(1, 1), g = new THREE.InstancedBufferGeometry();
+  g.index = quad.index; g.setAttribute('position', quad.attributes.position);
+  const aC = new THREE.InstancedBufferAttribute(new Float32Array(n * 4), 4), aB = new THREE.InstancedBufferAttribute(new Float32Array(n * 4), 4);
+  aC.setUsage(THREE.DynamicDrawUsage); aB.setUsage(THREE.DynamicDrawUsage);
+  g.setAttribute('aC', aC); g.setAttribute('aB', aB); g.instanceCount = n;
+  const avoid = Array.from({ length: 10 }, () => new THREE.Vector4());
+  const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uAvoid: { value: avoid } }, transparent: true, depthWrite: false,
+    blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+    vertexShader: /* glsl */ `
+attribute vec4 aC, aB;   // centre (world), radius (m) | fade, seed, -, -
+uniform vec4 uAvoid[10];  // the collectibles on screen: NDC centre, radius (NDC y units), on
+varying vec2 vQ; varying float vA, vSeed;
+void main() {
+  vec4 mv = viewMatrix * vec4(aC.xyz, 1.0), cc = projectionMatrix * mv;
+  float k = step(0.05, cc.w) * aB.x;
+  vec2 ndc = cc.xy / max(cc.w, 1e-3), asp = vec2(projectionMatrix[1][1] / projectionMatrix[0][0], 1.0);
+  float rN = aC.w * projectionMatrix[1][1] / max(cc.w, 1e-3);
+  for (int i = 0; i < 10; i++) {
+    float dd = length((ndc - uAvoid[i].xy) * asp);
+    k *= mix(1.0, smoothstep(uAvoid[i].z * ${f4(B.avoid)} + rN * 0.5, uAvoid[i].z * ${f4(B.avoid)} + rN * 1.5 + 0.01, dd), uAvoid[i].w);
+  }
+  mv.xy += position.xy * 2.0 * aC.w;
+  gl_Position = projectionMatrix * mv;
+  vQ = position.xy * 2.0; vA = k; vSeed = aB.y;
+}`,
+    fragmentShader: /* glsl */ `
+uniform float uTime;
+varying vec2 vQ; varying float vA, vSeed;
+void main() {
+  float rr = dot(vQ, vQ);
+  if (rr > 1.0 || vA < 0.003) discard;
+  float f = 1.0 - sqrt(1.0 - rr);   // 0 at the middle .. 1 at the outline
+  float rim = pow(f, 2.5), body = ${f4(B.body)} * (0.6 + 0.8 * pow(f, 1.5));
+  vec3 film = 0.6 + 0.4 * cos(6.2832 * (f * 1.3 + vQ.y * 0.4 + vec3(0.0, 0.33, 0.67) + uTime * 0.05 + vSeed));
+  vec3 col = vec3(0.85, 0.95, 1.0) * body + mix(vec3(1.0), film, ${f4(B.film)}) * rim * ${f4(B.rim)};
+  vec2 g1 = vQ - vec2(-0.42, 0.42), g2 = vQ - vec2(0.4, -0.38);
+  float gl = (exp(-dot(g1, g1) / 0.018) + 0.45 * exp(-dot(g2, g2) / 0.008)) * ${f4(B.glint)};
+  float a = clamp(body + rim * 0.8 + gl, 0.0, 1.0) * vA;
+  gl_FragColor = vec4((col + vec3(1.0) * gl) * vA, a);
+}` });
+  const mesh = new THREE.Mesh(g, mat); mesh.name = 'mwTunnelBubbles'; mesh.frustumCulled = false; mesh.renderOrder = 4;
+  scene.add(mesh);
+  // the collectibles (as tunnel_r8_liquid.js finds them for their reflections): coins are LODs, the gem, socks and hearts are
+  // groups at the scene's root with a halo sprite
+  const objs = [];
+  scene.traverse((o) => { if (o.isLOD || (o.isGroup && o.parent === scene && o.children.some((c) => c.isSprite && c.name === 'r2Halo'))) objs.push(o); });
+  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
+  const sm = (x, a, b) => THREE.MathUtils.clamp((x - a) / (b - a), 0, 1);
+  updaters.push(() => {
+    const t = time.value, c = aC.array, b = aB.array;
+    for (let i = 0; i < n; i++) {
+      const q = list[i], span = q.u1 - q.u0;
+      const u = q.u0 + ((((q.uB - q.u0 - q.drift * t) % span) + span) % span);
+      const th = q.th + q.w * t, rho = q.rho * (1 + 0.03 * Math.sin(t * 1.3 + q.seed * 6.28));
+      TR.frame(u, F);
+      const x = rho * Math.cos(th), h = axisH + rho * Math.sin(th) + 0.04 * Math.sin(t * 0.9 + q.seed * 9.0);
+      c[i * 4] = F.P.x + F.R.x * x + F.U.x * h; c[i * 4 + 1] = F.P.y + F.R.y * x + F.U.y * h; c[i * 4 + 2] = F.P.z + F.R.z * x + F.U.z * h;
+      const din = u - TS;
+      c[i * 4 + 3] = q.r * (1 + B.far[2] * sm(din, B.far[0], B.far[1]));
+      // fade in and out at the ends of the loop, and never under the water
+      b[i * 4] = sm(u, q.u0, q.u0 + 1.2) * (1 - sm(u, q.u1 - 1.2, q.u1)) * sm(h - W.WATER, 0.15, 0.35); b[i * 4 + 1] = q.seed;
+    }
+    aC.needsUpdate = true; aB.needsUpdate = true;
+  });
+  const wp = new THREE.Vector3(), near = [];
+  mesh.onBeforeRender = (renderer, sc, cam) => {   // the collectibles' screen circles, with the camera actually drawing
+    near.length = 0;
+    const P11 = cam.projectionMatrix.elements[5];
+    for (const o of objs) {
+      if (!o.visible) continue;
+      o.getWorldPosition(wp);
+      const dz = wp.clone().applyMatrix4(cam.matrixWorldInverse).z;
+      if (dz > -0.3 || dz < -45) continue;
+      wp.project(cam);
+      if (Math.abs(wp.x) > 1.3 || Math.abs(wp.y) > 1.3) continue;
+      const s = (o.isLOD ? 0.62 : 0.55) * Math.max(o.scale.x, o.scale.y, o.scale.z);
+      near.push([wp.x, wp.y, s * P11 / -dz]);
+    }
+    near.sort((a, b2) => b2[2] - a[2]);
+    for (let i = 0; i < avoid.length; i++) { const a = near[i]; if (a) avoid[i].set(a[0], a[1], a[2], 1); else avoid[i].set(0, 0, 0, 0); }
+  };
+  return { count: n, drawCalls: 1, triangles: n * 2, avoiding: objs.length };
+}
+
+// a private random sequence (never the game's seeded Math.random)
+function mulberryMw(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

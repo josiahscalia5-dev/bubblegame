@@ -384,3 +384,40 @@ save everything to my github
 
 and how does it look now my mobile app screen preview
 
+---
+
+### Claude · 2026-11-05 14:25 UTC
+
+The side margins are a flat dark purple (#31236f), about 5.5% wide on each side. A quick check of where they come from: the page background around a narrowed game stage, or the 3D scene itself.
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/09_phone_preview_1425utc/phone_pixel7_original_vs_saved_vs_TL_live_vs_WV_live_3.00s.jpg]_
+
+I've sent you your game on an emulated Pixel 7 phone, 3 seconds into the tunnel. Beside your original are the saved version and each specialist's live work in progress, captured from their builds of a few minutes ago. All three loaded with no errors, and the pictures are saved to GitHub (`1b7fd9b`).
+
+**Progress on the phone:**
+- **Tunnel & Lighting:** the centre of the tunnel now glows warm instead of lilac, and the spiral bands are starting to show more structure.
+- **Water & VFX:** the biggest visible change. Large bubbly foam lobes now surround the pink character, and she sits further down into the water instead of on top of it. It isn't finished; the extra bubbles inside the tunnel come next.
+
+**Two phone-only differences that the earlier desktop-size captures didn't show:**
+1. **Thin dark margins down both sides:** the page keeps a 16-pixel gap round the game on phones, so about 6% of each side shows the dark background. It's the same for every version of the game.
+2. **The phone shows more height than your original:** a Pixel 7's screen is taller and narrower than your original's 1:2 shape. The game keeps the full width and shows extra height, so on a phone:
+   - the tunnel sits lower;
+   - more lavender housing shows above the gold rim;
+   - a pale strip shows under the "Rescue 5 lost socks" bar.
+
+   None of that is in your original's framing.
+
+The fix would apply only to the art-match version and wouldn't touch the controls or the HUD's design: the game would fill the phone's screen edge to edge, and the camera would be adjusted for taller screens so the tunnel, rim and objects sit where they do in your original. Should I add that after the specialists finish?
+
+---
+
+### You · 2026-11-05 14:29 UTC
+
+Yes
+
+---
+
+### Claude · 2026-11-05 14:30 UTC
+
+I'll prepare the phone fix now in a separate copy of the project, so it doesn't collide with the specialists' work, and merge it with theirs when they finish. First, how the game sizes its camera:
+

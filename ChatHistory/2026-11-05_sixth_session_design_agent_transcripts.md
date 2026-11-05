@@ -522,8 +522,27 @@ The band layer is too weak to read against the busy water texture. Retuning thro
 - 14:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
 - 14:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
 - 14:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:25 `Bash`: Find how socks are placed
+- 14:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:25 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/game.js
+- 14:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/game.js
+- 14:26 `Bash`: Build, capture f5a, measure and compare
+- 14:26 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/bands_cmp.png
+- 14:26 `Bash`: Make the centre close-up sheet
+- 14:27 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/sheet_f5a_top.png
+- 14:27 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/coin_probe.cjs
+- 14:27 `Bash`: Project all collectibles at 3.0 s
+- 14:28 `Read`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/game.js
+- 14:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:29 `Bash`: Build, capture f5b, measure, sheet
+- 14:30 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/sheet_f5b.png
 
-_192 tool steps._
+_211 tool steps._
 
 ---
 
@@ -829,5 +848,40 @@ The free bubbles are hard to separate from white specks at this zoom. I'll read 
 - 14:24 `Bash`: Find buildMatchWater call and track API
 - 14:24 `Bash`: Read track frame/map and axis height
 - 14:24 `Bash`: Read swirl sign and tunnel radius
+- 14:25 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (14:25 UTC):
 
-_184 tool steps._
+Now the builder at the end of the file.
+
+- 14:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:26 `Bash`: Fix water level, build, capture with bubbles
+- 14:27 `Bash`: Tunnel crops: original, before bubbles, with bubbles
+- 14:27 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tun_i13.png
+**Lead → agent** (14:27 UTC):
+
+[Image: original 2327x721, displayed at 2000x620. Multiply coordinates by 1.16 to map to original image.]
+
+**Agent** (14:27 UTC):
+
+The new bubbles barely show. Let me diff the two frames to see where they are drawn.
+
+- 14:27 `Bash`: Diff frames before and after bubbles
+- 14:27 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/diff13.png
+**Agent** (14:28 UTC):
+
+Only about 30 bubbles show, all round the centre. The wall ones are probably outside or behind the walls. Let me probe the bubbles' screen places and the tunnel's dimensions.
+
+- 14:28 `Bash`: Probe bubble screen positions and tunnel size
+- 14:28 `Bash`: Find hero walls radius
+- 14:28 `Bash`: Find lining radius value
+- 14:28 `Bash`: Read lining construction
+- 14:29 `Bash`: Locate bubble settings lines
+- 14:29 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:29 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ada634b5fcdf40e0f/WebDemo/src/tunnel_r9_match_water.js
+- 14:29 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t14.json
+- 14:30 `Bash`: Build, capture with bubbles and flank changes, measure
+
+_203 tool steps._
