@@ -220,8 +220,27 @@ Now a measuring script for the sweep frames (character box by the AD's pink mask
 - 18:35 `Bash`: Find porthole rivet settings
 - 18:35 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sw2/cands_in.json
 - 18:35 `Bash`: Render camera plus rim restaging candidates
+- 18:38 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sw3/cands_in.json
+- 18:38 `Bash`: Render and measure refined camera candidates
+- 18:40 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 18:40 `Bash`: Rebuild bundle
+- 18:40 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sw4/cands_in.json
+- 18:40 `Bash`: Render and measure candidate E
+- 18:41 `Bash`: Upper half comparison for candidate E
+- 18:41 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sbs4.png
+- 18:42 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 18:42 `Bash`: Build, capture camera step, and measure
+- 18:43 `Bash`: Full page comparison after camera step
+- 18:43 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sbs5.png
+- 18:43 `Bash`: Commit camera step
+**Agent** (18:43 UTC):
 
-_81 tool steps._
+Now update NOTES.md with the camera decision as the first line.
+
+- 18:43 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 18:43 `Bash`: Hide probe with new camera, lower corners
+
+_96 tool steps._
 
 ---
 
@@ -371,5 +390,39 @@ Now add a `lift` to swellFront and switch the face patterns to the signed coordi
 
 - 18:36 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/batch.sh
 - 18:36 `Bash`: Capture three debug renders of the crest
+- 18:38 `Bash`: Crop the three debug renders
+- 18:38 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_d.png
+**Lead → agent** (18:38 UTC):
 
-_90 tool steps._
+[Image: original 2899x346, displayed at 2000x239. Multiply coordinates by 1.45 to map to original image.]
+
+- 18:38 `Bash`: Crop debug renders closer
+- 18:39 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_d.png
+**Lead → agent** (18:39 UTC):
+
+[Image: original 2054x262, displayed at 2000x255. Multiply coordinates by 1.03 to map to original image.]
+
+- 18:39 `Bash`: Crop the hide probe at the base
+- 18:39 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_h0.png
+**Lead → agent** (18:39 UTC):
+
+[Image: original 2966x461, displayed at 2000x311. Multiply coordinates by 1.48 to map to original image.]
+
+- 18:40 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (18:40 UTC):
+
+Rewrite the block to cut in the profile coordinate `t` and to use the distance along the face for the patterns.
+
+- 18:40 `Bash`: Rewrite the crest cut in the profile coordinate
+- 18:40 `Bash`: Update teeth settings and rebuild
+- 18:40 `Bash`: Capture the new crest cut, normal and debug
+- 18:42 `Bash`: Crop and measure trial 3
+- 18:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t3.png
+**Lead → agent** (18:42 UTC):
+
+[Image: original 2350x307, displayed at 2000x261. Multiply coordinates by 1.18 to map to original image.]
+
+- 18:42 `Bash`: Add rounded lobes and smaller teeth, rebuild
+- 18:42 `Bash`: Capture trials 4 and 5 (more white; side mounds)
+
+_104 tool steps._

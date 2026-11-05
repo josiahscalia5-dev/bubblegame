@@ -106,9 +106,11 @@ export const FOCUS = {
       sky: '#5ec8ff', glassHi: '#3fb4f8', glass: '#1f86ee', glassDeep: '#1450d0', spec: 2.2 },
     // (the Art Director's review, 18:19 UTC, item 1) the swell's face as broken, sparkling splash water, not a flat light-blue
     // sheet (focusSwellGLSL in the water file; sizes in m on the surface, cells per m):
-    //   teeth: the crest cut into spiky teeth: per m along the crest, the valleys' depth (m), sharpness, fine notches (m), how
-    //          fast they travel out from the front (m/s of flow), how much each rises and falls, the depth's factor at her
-    //          sides and in front of her;
+    //   teeth: the crest cut into spiky teeth: per m along the crest; where the edge is on the profile over the crest (t: 0.5
+    //          the crest, the natural silhouette from the camera about 0.53; less is further down the outer face) at the tips
+    //          (hi) and in the valleys (lo); sharpness; fine notches (in t); drift along the crest (per m of flow); how much
+    //          each tooth rises and falls; lobe: rounder crests and troughs along it (in t); the valleys' depth factor at her sides and
+    //          in front of her;
     //   rim: short white pieces along the cut edge: width [min, max] (m), pieces per m, the share kept;
     //   lace: small irregular white splash pieces down the face: cells per m, the share near the crest (fewer further down,
     //         over `reach` m), radius [min, max] as a share of the cell, how fast they run down the face;
@@ -116,7 +118,7 @@ export const FOCUS = {
     //   spark: round twinkling glints: cells per m, share, dot radius, how far down (m);
     //   water: the face's currents (light cyan, vivid blue, deeper blue), noise scale [along, down], how much
     face: {
-      teeth: { per: 9.0, depth: 0.1, sharp: 1.7, fine: 0.025, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
+      teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
       rim: { w: [0.008, 0.03], cell: 16.0, share: 0.62, amount: 1.0 },
       lace: { cell: 28.0, share: 0.45, reach: 0.32, r: [0.16, 0.36], flow: 1.4, amount: 1.0 },
       rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
