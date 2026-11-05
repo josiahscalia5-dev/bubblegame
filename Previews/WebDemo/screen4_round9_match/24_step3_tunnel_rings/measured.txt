@@ -1,0 +1,58 @@
+# Step 3 measurements (focus, seed 7, the 538 x 1076 game frame; game centre (0.525, 0.531), the original's (0.528, 0.532)).
+# No overall similarity percentage is claimed: each line names its measure.
+
+== (1) radial ring profile, correlated with the original per sector (+1 = the same rings at the same radii; scripts/ringprof.py)
+checkpoint             up +0.61 (best +0.62 at x1.02) | left +0.26 (best +0.49 at x0.86) | right +0.24 (best +0.25 at x1.03)
+step2                  up +0.61 (best +0.62 at x1.02) | left +0.26 (best +0.49 at x0.86) | right +0.24 (best +0.25 at x1.03)
+step3_3.00             up +0.79 (best +0.79 at x1.00) | left +0.56 (best +0.56 at x1.00) | right +0.67 (best +0.67 at x1.00)
+step3_2.85             up +0.83 (best +0.83 at x1.00) | left +0.17 (best +0.21 at x1.19) | right +0.38 (best +0.42 at x0.95)
+step3_3.10             up +0.75 (best +0.78 at x1.17) | left +0.26 (best +0.38 at x1.19) | right +0.35 (best +0.35 at x0.99)
+
+== (2) the walls' band-luminance correlation with the original, upper half, objects excluded (tools/screen4/match_overlay.py)
+checkpoint   plain      -0.048  over 44197 px
+step2        plain      -0.048  over 44197 px
+step3_3.00   plain      +0.220  over 44197 px
+step3_2.85   plain      +0.153  over 44197 px
+step3_3.10   plain      +0.141  over 44197 px
+== (3) the bright band radii per sector (W) (Previews/WebDemo/screen4_round9_match/22_verification_audit/scripts/rings.py)
+approved  up 50-130     bright bands  8 at r 0.038, 0.065, 0.113, 0.175, 0.205, 0.240, 0.265, 0.443 | log-spacing mean 0.353 CV 0.54 | band contrast 0.184 | along-ring lum std 0.148 | radial-profile std 0.134
+approved  left 140-175  bright bands 10 at r 0.073, 0.105, 0.163, 0.205, 0.238, 0.263, 0.308, 0.370, 0.418, 0.440 | log-spacing mean 0.200 CV 0.60 | band contrast 0.167 | along-ring lum std 0.118 | radial-profile std 0.136
+approved  right 5-40    bright bands  7 at r 0.123, 0.208, 0.258, 0.303, 0.348, 0.380, 0.453 | log-spacing mean 0.218 CV 0.66 | band contrast 0.201 | along-ring lum std 0.169 | radial-profile std 0.126
+checkpoint up 50-130     bright bands  9 at r 0.050, 0.088, 0.143, 0.185, 0.230, 0.260, 0.300, 0.360, 0.433 | log-spacing mean 0.270 CV 0.57 | band contrast 0.115 | along-ring lum std 0.136 | radial-profile std 0.116
+checkpoint left 140-175  bright bands  9 at r 0.048, 0.063, 0.088, 0.108, 0.138, 0.250, 0.310, 0.375, 0.415 | log-spacing mean 0.271 CV 0.51 | band contrast 0.177 | along-ring lum std 0.086 | radial-profile std 0.136
+checkpoint right 5-40    bright bands 11 at r 0.048, 0.068, 0.098, 0.155, 0.188, 0.203, 0.245, 0.288, 0.358, 0.450, 0.493 | log-spacing mean 0.234 CV 0.50 | band contrast 0.142 | along-ring lum std 0.155 | radial-profile std 0.092
+step2     up 50-130     bright bands  9 at r 0.050, 0.088, 0.143, 0.185, 0.230, 0.260, 0.300, 0.360, 0.433 | log-spacing mean 0.270 CV 0.57 | band contrast 0.115 | along-ring lum std 0.136 | radial-profile std 0.116
+step2     left 140-175  bright bands  9 at r 0.048, 0.063, 0.088, 0.108, 0.138, 0.250, 0.310, 0.375, 0.415 | log-spacing mean 0.271 CV 0.51 | band contrast 0.177 | along-ring lum std 0.086 | radial-profile std 0.136
+step2     right 5-40    bright bands 11 at r 0.048, 0.068, 0.098, 0.155, 0.188, 0.203, 0.245, 0.288, 0.358, 0.450, 0.493 | log-spacing mean 0.234 CV 0.50 | band contrast 0.142 | along-ring lum std 0.155 | radial-profile std 0.092
+step3_3.00 up 50-130     bright bands  6 at r 0.043, 0.108, 0.183, 0.278, 0.340, 0.438 | log-spacing mean 0.466 CV 0.55 | band contrast 0.147 | along-ring lum std 0.103 | radial-profile std 0.135
+step3_3.00 left 140-175  bright bands 10 at r 0.078, 0.110, 0.153, 0.190, 0.208, 0.240, 0.363, 0.395, 0.410, 0.445 | log-spacing mean 0.194 CV 0.67 | band contrast 0.130 | along-ring lum std 0.070 | radial-profile std 0.141
+step3_3.00 right 5-40    bright bands 12 at r 0.040, 0.095, 0.110, 0.140, 0.203, 0.238, 0.255, 0.283, 0.328, 0.350, 0.450, 0.493 | log-spacing mean 0.228 CV 0.96 | band contrast 0.108 | along-ring lum std 0.123 | radial-profile std 0.088
+== (4) the zone colours (shares of each zone) (Previews/WebDemo/screen4_round9_match/22_verification_audit/scripts/walls.py)
+== approved
+  upper wall r.12-.45 a30-150      S 0.58 V 0.93 med #5b99ef | white  8.8 pale 11.2 azure 13.3 elect 43.0 deep  3.9 laven  8.7 oth 11.1 warm  6.4 | hi  7.0% sparkle 0.20% | hp1.5 0.030 hp5 0.094 | obj 4%
+  side walls r.15-.45 |a|<30|>150  S 0.34 V 0.94 med #d2c4ee | white 26.7 pale 11.4 azure  3.6 elect 15.8 deep  4.1 laven 18.0 oth 20.4 warm 13.6 | hi 23.3% sparkle 0.29% | hp1.5 0.029 hp5 0.100 | obj 31%
+  mid vortex r.08-.20              S 0.40 V 0.93 med #a7c2ee | white 22.3 pale 17.9 azure  9.0 elect 25.0 deep  2.1 laven 12.1 oth 11.6 warm  6.4 | hi 16.8% sparkle 0.38% | hp1.5 0.033 hp5 0.097 | obj 5%
+  centre r<.06                     S 0.23 V 0.95 med #f1d7db | white 36.7 pale 10.2 azure  0.0 elect  0.0 deep  0.0 laven 11.1 oth 42.0 warm 46.7 | hi 26.0% sparkle 0.81% | hp1.5 0.025 hp5 0.082 | obj 47%
+  floor ahead y.58-.68 x.3-.75     S 0.33 V 0.94 med #aed7f3 | white 30.5 pale 28.7 azure 15.9 elect 11.2 deep  3.6 laven  3.0 oth  7.0 warm  3.5 | hi 25.0% sparkle 0.38% | hp1.5 0.029 hp5 0.086 | obj 0%
+  play area y.21-.83               S 0.40 V 0.91 med #a6b3ed | white 21.0 pale 12.4 azure  6.9 elect 19.4 deep  4.1 laven 19.8 oth 16.3 warm  8.8 | hi 17.7% sparkle 0.18% | hp1.5 0.032 hp5 0.093 | obj 22%
+== checkpoint
+  upper wall r.12-.45 a30-150      S 0.49 V 0.94 med #6eaaf7 | white 13.3 pale 18.9 azure 10.7 elect 39.8 deep  6.8 laven  5.8 oth  4.7 warm  3.1 | hi 11.2% sparkle 0.73% | hp1.5 0.059 hp5 0.109 | obj 1%
+  side walls r.15-.45 |a|<30|>150  S 0.41 V 0.93 med #91abf6 | white 21.2 pale 17.5 azure  4.2 elect 27.0 deep  4.9 laven 16.9 oth  8.1 warm  1.8 | hi 14.8% sparkle 1.81% | hp1.5 0.064 hp5 0.118 | obj 33%
+  mid vortex r.08-.20              S 0.37 V 0.95 med #a8c1f6 | white 19.2 pale 33.7 azure  4.2 elect 20.4 deep  3.4 laven 15.7 oth  3.4 warm  1.9 | hi 16.9% sparkle 1.57% | hp1.5 0.060 hp5 0.104 | obj 5%
+  centre r<.06                     S 0.20 V 0.94 med #eed1d9 | white 42.5 pale  9.5 azure  0.0 elect  0.0 deep  0.0 laven 11.4 oth 36.5 warm 45.2 | hi 22.8% sparkle 3.83% | hp1.5 0.053 hp5 0.082 | obj 20%
+  floor ahead y.58-.68 x.3-.75     S 0.32 V 0.93 med #b2ccf3 | white 28.6 pale 34.7 azure  2.3 elect 11.5 deep  1.1 laven 20.8 oth  1.0 warm  2.4 | hi 21.8% sparkle 0.78% | hp1.5 0.057 hp5 0.099 | obj 2%
+  play area y.21-.83               S 0.40 V 0.92 med #95b5f4 | white 17.7 pale 23.2 azure  4.8 elect 23.9 deep  4.2 laven 18.3 oth  7.9 warm  4.8 | hi 14.1% sparkle 1.05% | hp1.5 0.049 hp5 0.091 | obj 21%
+== step2
+  upper wall r.12-.45 a30-150      S 0.49 V 0.94 med #6eaaf7 | white 13.3 pale 18.9 azure 10.7 elect 39.8 deep  6.8 laven  5.8 oth  4.7 warm  3.1 | hi 11.2% sparkle 0.73% | hp1.5 0.059 hp5 0.109 | obj 1%
+  side walls r.15-.45 |a|<30|>150  S 0.41 V 0.93 med #91abf6 | white 21.2 pale 17.5 azure  4.2 elect 27.0 deep  4.9 laven 16.9 oth  8.1 warm  1.8 | hi 14.8% sparkle 1.81% | hp1.5 0.064 hp5 0.118 | obj 33%
+  mid vortex r.08-.20              S 0.37 V 0.95 med #a8c1f6 | white 19.2 pale 33.7 azure  4.2 elect 20.4 deep  3.4 laven 15.7 oth  3.4 warm  1.9 | hi 16.9% sparkle 1.57% | hp1.5 0.060 hp5 0.104 | obj 5%
+  centre r<.06                     S 0.20 V 0.94 med #eed1d9 | white 42.5 pale  9.5 azure  0.0 elect  0.0 deep  0.0 laven 11.4 oth 36.5 warm 45.2 | hi 22.8% sparkle 3.83% | hp1.5 0.053 hp5 0.082 | obj 20%
+  floor ahead y.58-.68 x.3-.75     S 0.32 V 0.93 med #b2ccf3 | white 28.6 pale 34.7 azure  2.3 elect 11.5 deep  1.1 laven 20.8 oth  1.0 warm  2.4 | hi 21.8% sparkle 0.78% | hp1.5 0.057 hp5 0.099 | obj 2%
+  play area y.21-.83               S 0.40 V 0.92 med #95b5f4 | white 17.7 pale 23.2 azure  4.8 elect 23.9 deep  4.2 laven 18.3 oth  7.9 warm  4.8 | hi 14.1% sparkle 1.05% | hp1.5 0.049 hp5 0.091 | obj 21%
+== step3_3.00
+  upper wall r.12-.45 a30-150      S 0.49 V 0.93 med #7aa6ef | white 11.5 pale 18.3 azure  6.0 elect 44.5 deep  0.8 laven 10.5 oth  8.5 warm  4.5 | hi  6.2% sparkle 0.92% | hp1.5 0.040 hp5 0.071 | obj 1%
+  side walls r.15-.45 |a|<30|>150  S 0.36 V 0.92 med #a5b6ed | white 19.8 pale 24.3 azure  1.9 elect 20.9 deep  2.8 laven 19.5 oth 10.7 warm  4.0 | hi  9.2% sparkle 1.76% | hp1.5 0.054 hp5 0.099 | obj 33%
+  mid vortex r.08-.20              S 0.31 V 0.93 med #b8c2ee | white 16.3 pale 32.6 azure  4.0 elect 13.0 deep  0.0 laven 24.7 oth  9.4 warm  4.9 | hi  8.9% sparkle 1.84% | hp1.5 0.041 hp5 0.073 | obj 6%
+  centre r<.06                     S 0.18 V 0.94 med #f1dbda | white 47.4 pale  2.1 azure  0.0 elect  0.0 deep  0.0 laven 17.6 oth 33.0 warm 41.8 | hi 25.9% sparkle 3.30% | hp1.5 0.054 hp5 0.084 | obj 22%
+  floor ahead y.58-.68 x.3-.75     S 0.32 V 0.93 med #acc9ee | white 21.2 pale 41.0 azure  6.9 elect  7.4 deep  0.0 laven 22.0 oth  1.5 warm  2.9 | hi 13.1% sparkle 0.64% | hp1.5 0.053 hp5 0.082 | obj 2%
+  play area y.21-.83               S 0.39 V 0.91 med #9bb3ee | white 15.4 pale 25.3 azure  3.9 elect 23.3 deep  2.3 laven 20.5 oth  9.2 warm  5.6 | hi 10.3% sparkle 1.12% | hp1.5 0.042 hp5 0.076 | obj 22%
