@@ -171,7 +171,7 @@ export const MATCH = {
     // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
     // (narrow ranges: crisp band edges, as the approved's painted bands)
     trough: { col: '#3c56cf', amount: 0.3, from: [0.08, 0.12] },
-    crest: { col: '#2fb2f5', amount: 0.85, from: [0.04, 0.08], streak: 0.12 },
+    crest: { col: '#2fb2f5', amount: 0.85, from: [0.02, 0.06], streak: 0.12 },
     zone: [0.12, 0.18],
     // the mid vortex's pastel lilac (the map's rows rw 0.06-0.12: lavender 20-33%) toward pale blue and white (approved mid
     // vortex r 0.08-0.20: lavender 12%, white 22%, pale blue 18%); [in, full, full to, out] in rw
@@ -195,7 +195,7 @@ export const MATCH = {
       inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
       // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
       // [phase, half width] of the sparser inner line)
-      edge: { col: '#cae0ff', w: [0.02, 0.045], broken: [-0.08, -0.03], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.7 } },
+      edge: { col: '#c2dcff', w: [0.02, 0.045], broken: [-0.13, -0.07], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.6, boost: 1.12 } },
     royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
@@ -453,9 +453,9 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
   {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
-      // to about 218 by bringing green down; the cyan streaks (under 200 degrees) and the warm patches kept (MATCH.walls.royal)
+      // to about 218 by bringing green down; the cyan streaks (205 degrees and under) and the warm patches kept (MATCH.walls.royal)
     float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
-    float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.6, 0.7, tq)) * wz * ${f4(M.royal.amount)};
+    float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
     c.g = mix(c.g, c.r + ${f4(M.royal.to)} * (c.b - c.r), rk);
   }
   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);

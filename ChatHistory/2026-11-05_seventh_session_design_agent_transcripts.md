@@ -236,8 +236,37 @@ Now the royal-blue hue pull, placed just before the display compensation.
 - 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
 - 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
 - 14:57 `Bash`: Locate royal range and edge settings
+- 14:57 `Bash`: Apply boost and royal range, build, capture t8
+- 14:57 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_upper_t8.png
+- 14:57 `Bash`: Tune edge lines and crest, build, capture t9
+- 14:58 `Bash`: Map small sparkle blobs in original and t9
+- 14:58 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/spk_cmp.png
+- 14:59 `Bash`: Tame sparkles, build, capture t10
+**Agent** (14:59 UTC):
 
-_113 tool steps._
+t10 made it worse (sparkle 0.67%, glints back to lilac-white), so I'm reverting to the t9 settings, which were better on both.
+
+- 14:59 `Bash`: Revert to t9 settings and rebuild
+**Agent** (14:59 UTC):
+
+Committing this working state before the final checks.
+
+- 14:59 `Bash`: Commit checkpoint
+**Agent** (14:59 UTC):
+
+Now the gameplay test. Let me check the s3_func usage.
+
+- 14:59 `Bash`: Read gameplay test and eval tool headers
+- 14:59 `Bash`: Run the gameplay functional test under match
+- 15:00 `Bash`: Summarise the gameplay test results
+**Agent** (15:01 UTC):
+
+Gameplay holds under `?s3=match`: lanes 1/0/2, the jump, 12 coins, 1 gem, 2 socks, no console errors. Now the pixel-identity proof against the baseline bundle.
+
+- 15:01 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/ident.sh
+- 15:01 `Bash`: Capture identity shots with the new bundle
+
+_126 tool steps._
 
 ---
 
@@ -473,5 +502,33 @@ The bank is now far too white (49% against 20.3%) and the centre's bubbles clump
 - 14:56 `Bash`: Rebuild
 - 14:56 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t2.json
 - 14:56 `Bash`: Capture, measure and crop iteration 2
+- 14:57 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/bank_i2.png
+**Lead → agent** (14:57 UTC):
 
-_100 tool steps._
+[Image: original 2278x500, displayed at 2000x439. Multiply coordinates by 1.14 to map to original image.]
+
+- 14:57 `Bash`: Tunnel crop r0 vs i2
+- 14:57 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/tun_i2.png
+**Lead → agent** (14:57 UTC):
+
+[Image: original 2202x760, displayed at 2000x690. Multiply coordinates by 1.10 to map to original image.]
+
+- 14:57 `Bash`: Extend probe to split bubbles and streaks
+- 14:57 `Bash`: Probe bubbles and streaks for iteration 2
+- 14:58 `Bash`: Near-biased bubble placement with short loops
+**Agent** (14:59 UTC):
+
+One guard: the nearest stretches may not start more than 1 m before the drum's mouth.
+
+- 14:59 `Bash`: Clamp loops near the mouth and rebuild
+- 14:59 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t3.json
+- 14:59 `Bash`: Probe and capture iteration 3
+- 15:01 `Bash`: Measure and compare iteration 3
+- 15:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/full_i3.png
+- 15:01 `Bash`: Zoom crops of mid ring and under-body
+- 15:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/mid_i3.png
+- 15:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/under_i3.png
+- 15:01 `Bash`: Make swell crest width a setting and rebuild
+- 15:02 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t4.json
+
+_116 tool steps._

@@ -1,0 +1,8 @@
+{"matchWater": {
+ "lobe": {"hi": "#8fd0ff", "mid": "#5a9af2", "low": "#3f72e0", "violetCol": "#a898f6", "violet": [0.9, 0.6, 0.06],
+          "alpha": 0.82, "sideAlpha": 0.9, "capFoam": 0.36, "capFrom": 0.05, "footFoam": 0.42, "frontFoam": 0.8, "cell": 8.0, "holeShare": 0.25, "hole": 0.95,
+          "foamSide": "#bde5ff", "foamUp": [0.45, 0.95], "spec": 2.0, "sheen": 0.12},
+ "look": {"clear": 0.75, "sideClear": 0.85, "crestFront": 0.9, "crestW": [0.03, 0.06, 0.03, 0.05]},
+ "bubbles": {"count": 190, "sizes": [[0.72, [0.035, 0.075]], [0.25, [0.09, 0.16]], [0.03, [0.2, 0.28]]], "far": [5, 24, 1.0],
+   "flecks": {"count": 300, "size": [[0.12, 0.3], [0.04, 0.08]], "rho": [0.8, 0.92], "alpha": 0.95}}
+}}

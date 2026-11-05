@@ -70,6 +70,7 @@ export const MATCH_WATER = {
     spec: 1.4,        // the key light's specular points
     crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
     crestFront: 0.3,  // its share in front of the body (gate fixes, step 7: the lobes' rims make the waterline there)
+    crestW: [0.03, 0.06, 0.008, 0.02],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
   },
   // the lobes (spLumps reshaded): sRGB
   // alpha: in front of the body (see-through: the fur reads violet), sideAlpha: beside it (vivid blue); fres: the outline's
@@ -148,19 +149,22 @@ export const MATCH_WATER = {
     far: [5, 24, 1.4],       // from 5 m into the drum, +140% by 24 m
     minPx: 1.6,              // never drawn under this radius (px): far ones stay readable rings, not sub-pixel dust
     // where round the tube: [share, angle (degrees from the side, 90 = the top, -40 and 220 just above the water), radius
-    // (share of the tube's), stretch they loop over (m into the drum; a negative end counts from the drum's end)]: all round
-    // the walls near and mid way (at the hero moment 5-34 m ahead), inside the water's swirl further in, and a few round
-    // the far centre
-    zones: [[0.3, [20, 160], [0.62, 0.93], [0.6, 30]], [0.16, [160, 222], [0.62, 0.93], [0.6, 30]], [0.16, [-42, 20], [0.62, 0.93], [0.6, 30]],
-      [0.26, [-30, 210], [0.28, 0.62], [3, 32]], [0.12, [0, 360], [0.08, 0.4], [18, -1.5]]],
-    drift: [0.25, 0.7],      // m/s toward the camera (the walls' water flows toward the viewer)
+    // (share of the tube's), distance ahead of the hero camera (m; drawn with a density of 1 / distance^2, so the near and
+    // mid rings, which cover most of the screen, get most of them: spread evenly along the drum, perspective packed them into
+    // the middle of the screen, 147 of 248 within 0.12 W of the vanishing point)]: all round the walls, inside the water's
+    // swirl, and a few round the far centre. Each loops over its own `loop` metres, drifting toward the camera.
+    zones: [[0.3, [20, 160], [0.62, 0.93], [5.3, 34]], [0.17, [160, 222], [0.62, 0.93], [5.3, 34]], [0.17, [-42, 20], [0.62, 0.93], [5.3, 34]],
+      [0.3, [-30, 210], [0.28, 0.62], [5.3, 30]], [0.06, [0, 360], [0.08, 0.4], [20, 34]]],
+    camAt: -4.9,             // the hero camera's place along the path at 3.0 s (m from the drum's mouth; hero probe)
+    loop: 4.0,               // m each one loops over (faded at both ends)
+    drift: [0.15, 0.45],     // m/s toward the camera (the walls' water flows toward the viewer)
     swirl: [0.06, 0.14],     // rad/s round the tube (the walls turn 0.012 turns/s, 0.075 rad/s)
     rise: [0.03, 0.09],      // m/s buoyancy (up, wrapping round the loop)
     avoid: 0.9,              // the collectibles' clear circle (x their size on screen): no bubble IN FRONT of a coin's, gem's or sock's face (behind them the depth test hides them)
     rim: 1.0, film: 0.6, body: 0.07, glint: 1.0, rimPx: 1.1,   // rimPx: the outline's least width in pixels
     // the white water streaks among the bands (brief item 3): short white crescents and dashes on the walls' water, turning
     // with its swirl and flowing toward the camera. [count, length x width (m), share of the tube's radius, bend]
-    flecks: { count: 260, size: [[0.07, 0.2], [0.025, 0.05]], rho: [0.9, 0.985], bend: [0.0, 1.4], alpha: 0.85, from: [1.2, 30], angles: [-44, 224] },
+    flecks: { count: 260, size: [[0.07, 0.2], [0.025, 0.05]], rho: [0.9, 0.985], bend: [0.0, 1.4], alpha: 0.85, ahead: [5.6, 34], angles: [-44, 224] },
   },
 };
 {
@@ -290,7 +294,7 @@ export function matchSwellGLSL() {
     {   // white on the crest, broken into bubbly pieces (blue shows through the cells)
       float mwN1 = texture2D(uLqTex, vec2(as * 1.3 - fl * 0.12, uTime * 0.05)).b, mwN2 = texture2D(uLqTex, vec2(as * 3.4 - fl * 0.2, 0.4 + uTime * 0.07)).b;
       // (thin in front of the body, where the fur shows violet through the water; wider beside it; crisp, not a pale wash)
-      float mwCw = mix(0.03 + 0.06 * mwN1, 0.008 + 0.02 * mwN1, mwFront);
+      float mwCw = mix(${f4(K.crestW[0])} + ${f4(K.crestW[1])} * mwN1, ${f4(K.crestW[2])} + ${f4(K.crestW[3])} * mwN1, mwFront);
       float mwCrest = (1.0 - smoothstep(mwCw * 0.8, mwCw, d)) * smoothstep(0.5, 0.56, mwN1 * 0.6 + mwN2 * 0.55);
       // round bubbles of foam in it and below it down the face beside the body (the blue showing between them)
       vec2 mwBq = vec2(as * 22.0 - fl * 0.6, d * 22.0 - fl * 1.2), mwBi = floor(mwBq);
@@ -389,14 +393,16 @@ function tunnelBubbles({ scene, TR, L, W, updaters, time, U }) {
   const axisH = W.WATER + W.AXIS_H, R0 = B.tube, D2R = Math.PI / 180;
   const pick = (zs) => { const tot = zs.reduce((t, z) => t + z[0], 0); let p = rnd() * tot; for (const z of zs) { if (p < z[0]) return z; p -= z[0]; } return zs[zs.length - 1]; };
   const R = (a) => a[0] + rnd() * (a[1] - a[0]);
-  const span = (from, to) => [TS + from, to < 0 ? TE + to : TS + to];
+  // a distance ahead of the hero camera with a density of 1 / d^2 on [a, b], and the stretch of path it loops over there
+  const ahead = ([a, b]) => 1 / (1 / a - rnd() * (1 / a - 1 / b));
+  const span = (d) => { const uc = Math.max(Math.min(TS + B.camAt + d, TE - 1.5 - B.loop / 2), TS - 1.0 + B.loop / 2); return [uc - B.loop / 2, uc + B.loop / 2]; };
   const list = [];
   for (let i = 0; i < B.count; i++) {
-    const [, ang, rad, [from, to]] = pick(B.zones), [, size] = pick(B.sizes), [u0, u1] = span(from, to);
+    const [, ang, rad, dd] = pick(B.zones), [, size] = pick(B.sizes), [u0, u1] = span(ahead(dd));
     list.push({ kind: 0, u0, u1, uB: R([u0, u1]), th: R(ang) * D2R, rho: R(rad) * R0, r: R(size), w2: 0, bend: 0, drift: R(B.drift), w: R(B.swirl), rise: R(B.rise), seed: rnd() });
   }
   for (let i = 0; i < FL.count; i++) {
-    const [u0, u1] = span(FL.from[0], FL.from[1]);
+    const [u0, u1] = span(ahead(FL.ahead));
     list.push({ kind: 1, u0, u1, uB: R([u0, u1]), th: R(FL.angles) * D2R, rho: R(FL.rho) * R0, r: R(FL.size[0]), w2: R(FL.size[1]), bend: R(FL.bend) * (rnd() < 0.75 ? -1 : 1),
       drift: R(B.drift), w: 0.075 * (0.85 + 0.3 * rnd()), rise: 0, seed: rnd() });
   }
@@ -496,7 +502,7 @@ void main() {
       c[i * 4 + 3] = q.r * (1 + B.far[2] * sm(din, B.far[0], B.far[1]));
       // fade in and out at the ends of the loop and of the rise, and never under the water
       const fadeRise = q.rise ? sm(lift, 0, 0.08) * (1 - sm(lift, 0.5, 0.6)) : 1;
-      b[i * 4] = sm(u, q.u0, q.u0 + 1.2) * (1 - sm(u, q.u1 - 1.2, q.u1)) * sm(h - W.WATER, 0.15, 0.35) * fadeRise;
+      b[i * 4] = sm(u, q.u0, q.u0 + 0.7) * (1 - sm(u, q.u1 - 0.7, q.u1)) * sm(h - W.WATER, 0.15, 0.35) * fadeRise;
       b[i * 4 + 1] = q.seed; b[i * 4 + 2] = q.kind;
       b[i * 4 + 3] = q.kind ? Math.round(50 + q.bend * 10) + Math.min(q.w2 * (1 + B.far[2] * sm(din, B.far[0], B.far[1])) / 0.1, 0.999) : 0;   // bend, half width / 0.1 m
     }

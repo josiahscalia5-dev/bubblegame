@@ -43,15 +43,16 @@ const server = http.createServer((req, res) => {
       const grab = () => { window.__bw.render(); const c = document.createElement('canvas'); c.width = Wc; c.height = Hc; const x = c.getContext('2d'); x.drawImage(cv, 0, 0); return { c, d: x.getImageData(0, 0, Wc, Hc).data }; };
       const base = grab();
       const V = new (cam.position.constructor)();
-      const out = { W: Wc, H: Hc, meshes: {}, shown: [] };
+      const out = { W: Wc, H: Hc, meshes: {}, shown: [], streaks: [] };
       for (const name of MESHES) {
         const m = sc.getObjectByName(name);
         if (!m || !m.visible) { out.meshes[name] = 'absent or hidden'; continue; }
-        const g = m.geometry, A = g.attributes.aC || g.attributes.inst;
+        const g = m.geometry, A = g.attributes.aC || g.attributes.inst, KB = g.attributes.aB;
         m.visible = false; const off = grab(); m.visible = true;
         const n = g.instanceCount, P11 = cam.projectionMatrix.elements[5];
-        let shown = 0, inFrame = 0;
+        let shown = 0, inFrame = 0, streaks = 0;
         for (let i = 0; i < n; i++) {
+          const kind = KB ? KB.array[i * 4 + 2] : 0, fade = KB ? KB.array[i * 4] : 1;
           V.set(A.array[i * 4], A.array[i * 4 + 1], A.array[i * 4 + 2]);
           const r = A.array[i * 4 + 3];
           const dz = -V.clone().applyMatrix4(cam.matrixWorldInverse).z;
@@ -68,9 +69,9 @@ const server = http.createServer((req, res) => {
             const j = (py * Wc + px) * 4; tot++;
             if (Math.abs(base.d[j] - off.d[j]) + Math.abs(base.d[j + 1] - off.d[j + 1]) + Math.abs(base.d[j + 2] - off.d[j + 2]) > 18) hit++;
           }
-          if (tot && hit >= Math.max(1, tot * 0.12)) { shown++; out.shown.push({ mesh: name, x: sx, y: sy, r: rpx / Wc, dist: dz }); }
+          if (tot && hit >= Math.max(1, tot * 0.12) && fade > 0.05) { if (kind > 0.5) { streaks++; out.streaks.push({ x: sx, y: sy, dist: dz }); } else { shown++; out.shown.push({ mesh: name, x: sx, y: sy, r: rpx / Wc, dist: dz }); } }
         }
-        out.meshes[name] = { instances: n, inFrame, shown };
+        out.meshes[name] = { instances: n, inFrame, shown, streaks };
       }
       out.png = base.c.toDataURL('image/png');
       return out;
@@ -85,6 +86,9 @@ const server = http.createServer((req, res) => {
     fs.writeFileSync(file + '_frame.png', Buffer.from(res.png.split(',')[1], 'base64'));
     delete res.png;
     fs.writeFileSync(file + '_bubbles.json', JSON.stringify({ t: T, meshes: res.meshes, zones: Z, sizes: S, depth: D, shown: kept }, null, 1));
+    const ZS = { centre: 0, mid: 0, walls: 0, front: 0 }; for (const b of res.streaks.filter((b) => b.y > 0.2 && b.y < 0.835)) ZS[zone(b)]++;
+    fs.writeFileSync(file + '_streaks.json', JSON.stringify({ zones: ZS, streaks: res.streaks }, null, 1));
+    console.log(`  streaks shown by zone ${JSON.stringify(ZS)}`);
     console.log(`t ${T}: ${JSON.stringify(res.meshes)}\n  shown (HUD excluded) ${kept.length}: zones ${JSON.stringify(Z)} sizes ${JSON.stringify(S)} depth (m) ${JSON.stringify(D)}`);
   }
   if (logs.length) console.log('page errors:', logs.slice(0, 5));
