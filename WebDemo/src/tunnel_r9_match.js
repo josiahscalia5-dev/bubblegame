@@ -340,6 +340,9 @@ if (FOCUS_ON) { restoreSettings(MATCH, PRE_FOCUSED_PASS.MATCH); deepMerge(MATCH,
 // ---------------------------------------------------------------- the textures derived from the approved picture
 // (the walls draw the clean colour map, flowing; tunnel_base.png is its blur, the centre of the contrast-keeping blend)
 const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tunnel_detail.png', normal: 'tunnel_normal.png', variation: 'tunnel_var.png', rim: 'rim_ramp.png' };
+// ?s3=focus with MATCH.walls.ringMap (step 3): the original's own rings (tools/screen4/derive_ring_map.py)
+const FOCUS_RINGS = FOCUS_ON && !!MATCH.walls.ringMap;
+if (FOCUS_RINGS) TEX.rings = 'tunnel_rings_original.png';
 export const MATCH_UNIFORMS = {
   uMatchOn: { value: 0 },   // 1 once every texture has loaded (otherwise the walls keep the Round 8 look)
   uMatchCol: { value: null }, uMatchBase: { value: null }, uMatchDet: { value: null }, uMatchNrm: { value: null }, uMatchVar: { value: null }, uMatchRim: { value: null },
@@ -348,6 +351,10 @@ export const MATCH_UNIFORMS = {
   uMatchVP: { value: new THREE.Vector2(0.5, 0.5) }, uMatchRes: { value: new THREE.Vector2(0, 0) },
   uMatchRimU: { value: 0 },   // the rim's plane, metres along the path (set by buildMatch; mtRimRho)
 };
+if (FOCUS_RINGS) MATCH_UNIFORMS.uFocusRings = { value: null };   // ?s3=focus: the original's rings (tunnel_rings_original.png)
+// ?s3=focus with the ring map: where the path's own vanishing point is on the screen (drawing-buffer fractions, y up), so mtPlace
+// can centre the whole ring field on uMatchVP (set by buildMatch)
+if (FOCUS_RINGS) MATCH_UNIFORMS.uMatchPathVP = { value: new THREE.Vector2(0.5, 0.5) };
 // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
 // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
 // sequence, so the game's seeded Math.random is never touched
@@ -361,13 +368,14 @@ export const MATCH_READY = MATCH_ON && typeof window !== 'undefined' ? new Promi
     if (!failed) {
       MATCH_UNIFORMS.uMatchCol.value = got.colour; MATCH_UNIFORMS.uMatchBase.value = got.base; MATCH_UNIFORMS.uMatchDet.value = got.detail; MATCH_UNIFORMS.uMatchNrm.value = got.normal;
       MATCH_UNIFORMS.uMatchVar.value = got.variation; MATCH_UNIFORMS.uMatchRim.value = got.rim; MATCH_UNIFORMS.uMatchOn.value = 1;
+      if (FOCUS_RINGS) MATCH_UNIFORMS.uFocusRings.value = got.rings;
     }
     resolve(!failed);
   };
   for (const k of keys) loader.load(`textures/screen4/${TEX[k]}`, (t) => {
     // raw values (the shader combines them in the approved's own sRGB space and converts to linear itself)
     t.colorSpace = THREE.NoColorSpace; t.flipY = false; t.wrapS = k === 'rim' ? THREE.ClampToEdgeWrapping : THREE.RepeatWrapping;   // the rim ramp spans 0..pi only
-    t.wrapT = k === 'colour' || k === 'base' || k === 'rim' ? THREE.ClampToEdgeWrapping : THREE.RepeatWrapping;
+    t.wrapT = k === 'colour' || k === 'base' || k === 'rim' || k === 'rings' ? THREE.ClampToEdgeWrapping : THREE.RepeatWrapping;
     t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.anisotropy = 4;
     t.needsUpdate = true; got[k] = t; done();
   }, undefined, () => { failed = true; done(); });
@@ -376,6 +384,7 @@ export const MATCH_READY = MATCH_ON && typeof window !== 'undefined' ? new Promi
 if (MATCH_ON) privately(0x9a72, () => {
   const blank = new THREE.DataTexture(new Uint8Array([128, 128, 255, 255]), 1, 1); blank.needsUpdate = true;
   for (const k of ['uMatchCol', 'uMatchBase', 'uMatchDet', 'uMatchNrm', 'uMatchVar', 'uMatchRim']) if (!MATCH_UNIFORMS[k].value) MATCH_UNIFORMS[k].value = blank;
+  if (FOCUS_RINGS && !MATCH_UNIFORMS.uFocusRings.value) MATCH_UNIFORMS.uFocusRings.value = blank;
 });
 
 // ---------------------------------------------------------------- the walls' GLSL (inserted into tunnel_r8_liquid.js's wallCode)
@@ -441,13 +450,21 @@ vec3 mtUndisplay(vec3 c) {
 // angle is blended through unit vectors (no jump where it wraps)
 function matchPlaceGLSL() {
   const C = MATCH.centre;
-  return /* glsl */ `
+  return /* glsl */ `${FOCUS_RINGS ? 'uniform vec2 uMatchPathVP;\n' : ''}
 void mtPlace(vec2 cs, float u, out float rw, out float tu) {
   vec2 rel = cs - uHeroCam.xy;
   float du = max(u - uHeroCam.z, 0.25);
   rw = length(rel) / du / uHeroTanW;
   vec2 at = vec2(-rel.x, rel.y);
-  vec2 sd = gl_FragCoord.xy - uMatchVP * uMatchRes;
+${FOCUS_RINGS ? `  {   // ?s3=focus with the ring map (step 3): the whole ring field concentric round uMatchVP (where the original has its
+      // centre), not only the inner part: the walls' 3D offset from the path's own vanishing point (uMatchPathVP), less
+      // the offset of uMatchVP from it, in widths of the 1:2 reference frame (y up). Still on the 3D tube: as the camera moves
+      // the rings move with it
+    vec2 mtOff = (uMatchVP - uMatchPathVP) * uMatchRes / max(min(uMatchRes.x, 0.5 * uMatchRes.y), 1.0);
+    vec2 mtV = at / du / uHeroTanW - mtOff * step(1.0, uMatchRes.x);
+    rw = length(mtV); at = mtV;
+  }
+` : ''}  vec2 sd = gl_FragCoord.xy - uMatchVP * uMatchRes;
   // (in widths of the 1:2 reference frame: on screens narrower than 1:2 the camera keeps the original's vertical framing
   // and uHeroTanW carries the 1:2 width, so the reference width is half the height; identical at 1:2)
   float rs = length(sd) / max(min(uMatchRes.x, 0.5 * uMatchRes.y), 1.0);
@@ -523,6 +540,7 @@ function focusLeftGLSL(M) {
 `;
 }
 function focusRibbonsGLSL(M) {
+  if (M.ringMap) return '    float fRq = bs;   // (?s3=focus: the ring map replaces the ribbons; the flecks follow the band phase)\n';
   const R = M.ribbons;
   const pre = (hex) => preLiftSat(M, hex);
   // (the user's kit, 18:26 UTC, problem B: "tighter hard-outline ribbons, more even concentric circles": the ribbons were a
@@ -601,12 +619,30 @@ function focusFlecksGLSL(M) {
     }
 `;
 }
+// ?s3=focus with MATCH.walls.ringMap (step 3 of the user's fidelity plan): the ORIGINAL's own rings on the walls. Placed just
+// before the walls' lift and saturation, so it replaces what the bands, rainbow, mid-vortex whitening, core tint and hue pull
+// drew (by `amount`) and is pre-compensated for the lift and saturation that follow, so it shows as the original's colours.
+// The map (tunnel_rings_original.png) has the base map's rows and columns, so it is sampled at bv; the derived relief's own
+// light and dark (dl: the detail map, flowing outward and round) moves over it as the water's flow.
+function focusRingMapGLSL(M) {
+  const R = M.ringMap;
+  return /* glsl */ `  {   // ?s3=focus: the original's own rings (tunnel_rings_original.png, tools/screen4/derive_ring_map.py)
+    vec3 rmS = clamp(textureGrad(uFocusRings, bv, dx, dy).rgb + dl * ${f4(R.detail)}, 0.0, 1.0);
+${R.debugCol ? `    rmS = vec3(${R.debugCol.map(f4).join(', ')});   // (debug only: a constant colour, to test the display path)
+` : ''}    float rmL = dot(rmS, vec3(0.2126, 0.7152, 0.0722));
+    vec3 rmP = clamp((rmL + (rmS - rmL) / ${f4(M.sat)}) * ${f4(1 - M.lift)} + ${f4(M.lift)}, 0.0, 1.0);
+    float rmK = ${f4(R.amount)} * smoothstep(${f4(R.r[0])}, ${f4(R.r[1])}, rw) * (1.0 - smoothstep(${f4(R.r[2])}, ${f4(R.r[3])}, rw));
+    c = mix(c, rmP, rmK);
+    mtEdge *= 1.0 - rmK * ${f4(R.edgeOff)};
+  }
+`;
+}
 export function matchWallGLSL() {
   const M = MATCH.walls;
   return /* glsl */ `
 // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
 uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
-uniform vec2 uMatchVP, uMatchRes;${FOCUS_ON ? '' : ' uniform float uMatchRimU;'}
+uniform vec2 uMatchVP, uMatchRes;${FOCUS_ON ? '' : ' uniform float uMatchRimU;'}${FOCUS_RINGS ? ' uniform sampler2D uFocusRings;' : ''}
 ${RIM_SAMPLE}
 ${FOCUS_ON ? '' : `// a point of the collar or the tube (cs in the cross-section, u along the path) seen from the camera through the rim's plane:
 // d, its place there relative to the rim's centre (x + screen-left, h up), and the return value rho = |d| / the rim's outer
@@ -749,7 +785,7 @@ ${FOCUS_ON ? '' : `  {   // the walls' pale mid blues toward saturated electric 
     float dk = step(c.r, c.b) * step(c.g, c.b) * smoothstep(0.07, 0.11, rw) * (1.0 - smoothstep(${f4(M.deepen.lum[0])}, ${f4(M.deepen.lum[1])}, dlum));
     c = clamp(dlum + (c - dlum) * mix(1.0, ${f4(M.deepen.amount)}, dk), 0.0, 1.0);
   }
-`}  c = clamp((c - ${f4(FOCUS_ON ? M.lift : M.liftWall)}) / ${f4(1 - (FOCUS_ON ? M.lift : M.liftWall))}, 0.0, 1.0);   // (focus: match's one lift at 9a95c06)
+`}${FOCUS_RINGS ? focusRingMapGLSL(M) : ''}  c = clamp((c - ${f4(FOCUS_ON ? M.lift : M.liftWall)}) / ${f4(1 - (FOCUS_ON ? M.lift : M.liftWall))}, 0.0, 1.0);   // (focus: match's one lift at 9a95c06)
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
   vec3 col = mtUndisplay(c);
@@ -977,6 +1013,10 @@ export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, w
       TR.frame(Math.min(U.uHeroCam.value.z + C.ahead, L.tunnelEnd - C.end), Fc);
       pv.copy(Fc.P).addScaledVector(Fc.U, axisH).project(cam);
       MATCH_UNIFORMS.uMatchVP.value.set((pv.x + 1) / 2 + C.offset[0], (pv.y + 1) / 2 - C.offset[1]);
+      if (FOCUS_RINGS) {   // ?s3=focus with the ring map: the path's own vanishing point (straight ahead along the path, mtPlace)
+        TR.frame(U.uHeroCam.value.z, Fc); pv.copy(cam.position).addScaledVector(Fc.T, 1e4).project(cam);
+        MATCH_UNIFORMS.uMatchPathVP.value.set((pv.x + 1) / 2, (pv.y + 1) / 2);
+      }
       if (rt) MATCH_UNIFORMS.uMatchRes.value.set(rt.width, rt.height);
       else MATCH_UNIFORMS.uMatchRes.value.copy(renderer.getDrawingBufferSize(size));
       // the far collectibles' fade (MATCH.farFade): only their visual scale, and only while they are far (the game's own pop

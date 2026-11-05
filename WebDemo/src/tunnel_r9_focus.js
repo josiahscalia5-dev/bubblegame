@@ -88,6 +88,23 @@ export const FOCUS = {
     // it was 4.96%), the small far coin beside the centre coin half size, as the original's tiny one (0.023 W)
     coinScales: [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]],
     walls: {
+      // STEP 3 of the user's fidelity plan (5 November 2026, about 22:40 UTC: "use the approved reference's actual circular ring
+      // shapes, thin luminous cobalt / turquoise water bands, restrained warm centre, and water flow; remove the oversized
+      // pale-white circle at the distant end"; the verification audit had measured the walls' ring pattern uncorrelated with
+      // the original's, about 0): the walls draw the ORIGINAL's own rings, tunnel_rings_original.png
+      // (tools/screen4/derive_ring_map.py: the original unwrapped round its vanishing point, objects masked, smoothed only
+      // along each ring), at the radius and angle where the original has them (mtPlace), in place of the ribbons, the pastel
+      // inner rings and the left wall's glow below (they are off: `innerRings` and `leftGlow` null, the ribbons skipped).
+      // amount: how much of the walls' colour is the original's ring colour; detail: the derived relief's own light and dark
+      // moving over it (the water's flow), added in screen luminance; r: [in, full, full to, out] in rw (the walls' zone);
+      // edgeOff: the procedural ring lines (match's thin ice-blue circles, at their own spacing) taken off where the map is
+      // (measured at 3.0 s, scripts in Previews/WebDemo/screen4_round9_match/24_step3_tunnel_rings/: detail 0.6 and the
+      // full white layers on top took the walls' rings back out of the original's (radial profile correlation left +0.26);
+      // detail 0.25 with the restrained flecks and streaks below: +0.56)
+      // floor: the floor ahead (not the swell round her) takes the same map, the original's own floor water, inside rw
+      // r[0]..r[1] (faded out before her body); it replaces the pale lift there (floorFx), the pale disc round the far end
+      ringMap: { amount: 0.92, detail: 0.25, r: [0.0, 0.005, 0.46, 0.56], edgeOff: 1.0, floor: { amount: 0.88, r: [0.22, 0.32] } },
+      innerRings: null, leftGlow: null,
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
       //    over each band's crest
@@ -150,9 +167,11 @@ export const FOCUS = {
       //    them pale blue). Measured with the bubble layer hidden (upper ring at 3.0 s): thickness 1.8 -> 3.7 px (the original
       //    3.2), median area 10 -> 60 px (44), 3.5 -> 4.1 pieces per 10k px (3.6). The full frame's thin dashes are the
       //    instanced streaks of the water file (FOCUS.water.bubbles.flecks), not these)
-      flecks: { cols: 36, rows: 1.5, dens: 0.28, len: [0.2, 0.46], wid: [0.11, 0.22], bend: 2.2, amount: 1.0, col: '#f6fbff',
+      // (step 3: thin and sparser, dens 0.28 -> 0.12, wid [0.11, 0.22] -> [0.07, 0.14], drops 0.08 -> 0.04: the user, "thin
+      // broken white-blue flecks"; at full density they hid the original's rings, see ringMap)
+      flecks: { cols: 36, rows: 1.5, dens: 0.12, len: [0.2, 0.46], wid: [0.07, 0.14], bend: 2.2, amount: 1.0, col: '#f6fbff',
         breakup: [6, 3, 0.55], edge: [0.78, 0.9], late: true,
-        drops: { cols: 64, rows: 2, dens: 0.08, r: [0.16, 0.28] },
+        drops: { cols: 64, rows: 2, dens: 0.04, r: [0.16, 0.28] },
         r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.3 },
     },
   },
@@ -264,7 +283,8 @@ export const FOCUS = {
       // 10 detected there. Spread with a 1 / d^2 density out to 34 m, about a third of the wall bubbles and most of the
       // inner ones landed there, a dense cluster. Now: 220; the wall bubbles within 10 m (near and middle depth), the inner
       // ones within 6.5 m, and a few at far depth along the walls (10-30 m) and round the far centre.)
-      count: 220,
+      // (step 3: 220 -> 160, "keep bubble counts restrained where they obscure ring structure")
+      count: 160,
       camAt: -4.55,
       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
       //   (on screen a bubble is about 1.48 rho / d frame widths from the centre: inside 0.2 W beyond d = 7.4 rho. So the inner
@@ -275,7 +295,9 @@ export const FOCUS = {
       // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,
       // chunkier (half width 2-4 cm), some hooked (bend), turned off the band by up to rot degrees (the original's white bits
       // do not all follow the rings: along the tangent 28%, ours 74%))
-      flecks: { count: 220, size: [[0.05, 0.12], [0.02, 0.04]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
+      // (step 3: 220 -> 80 and thinner, [[0.05, 0.12], [0.02, 0.04]] -> [[0.04, 0.09], [0.012, 0.025]]: over the walls they
+      // took the rings back out of the original's)
+      flecks: { count: 80, size: [[0.04, 0.09], [0.012, 0.025]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
     },
   },
 };

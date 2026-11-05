@@ -413,3 +413,7 @@ The class names are minified, so my bloom switch matched nothing. The bloom pass
 
 The bloom isn't it either: switching it off changes the picture by only 0.5%. So the loss happens before post-processing. Comparing the map and the game picture by eye around the centre:
 
+While those run, collecting step 3's evidence: the ring-map sheet, the measuring and diagnostic scripts, and the iteration frames.
+
+Waiting for the two check jobs:
+
