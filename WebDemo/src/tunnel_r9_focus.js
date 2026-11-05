@@ -268,7 +268,14 @@ export const FOCUS = {
     },
     // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
     // droplets of spray (match: 30)
-    liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
+    liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] },
+      // (pass 4a, the user's review of step 3, 23:40 UTC: "the floor has excessive pale lavender ... correct the transparent
+      // floor and any overlapping 3D materials"). Measured at 3.0 s by switching layers off (24_step3 -> 25_pass4 scripts):
+      // the floor is opaque there; the lavender is the brushes' WARNING stripes, a pulsing magenta glow (1.0, 0.12, 0.5) down
+      // the 7.5 m of floor before each brush in a side lane (six on at 3.0 s, 8-25 m ahead): off, the floor ahead went from
+      // lavender 21.3% to 12.9% (the original 3.0%). The warning stays (gameplay), in the water's own colours: a bright
+      // aqua-white streak pulsing down the brush's lane (col sRGB, how much at full warning)
+      hazard: { col: '#c4f2ff', amount: 0.3 } },
     // (item 1: fine spray thrown up round her lower sides; 120 -> 250, the zones match's: beside her, not in front of her)
     // (step 1c: 300 FINE droplets, half match's size, 90% of them round: at match's size the droplets are drawn 2:1 tall
     // (tunnel_r7_hero_water.js) and read as falling rain beside her; the original's spray is fine white specks)

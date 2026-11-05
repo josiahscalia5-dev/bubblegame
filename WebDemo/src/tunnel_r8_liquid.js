@@ -582,7 +582,7 @@ ${haz ? `  if (inDrum > 0.0) {   // a brush's warning, as on the drum's own wate
     col = mix(col, mix(${v3(K.foamShade)}, ${v3(K.foam)}, smoothstep(0.3, 0.8, hDet)), foam * 0.78);   // translucent: blue shows through
   }
 ${SPLASH_FOAM ? splashFloorGLSL() : ''}#endif
-${haz ? `  col = mix(col, vec3(1.0, 0.12, 0.5) * 0.95, clamp(s4Haz * 1.7, 0.0, 1.0) * 0.35);   // softer than the drum sheet (0.8): a glow under the water\n` : ''}
+${haz ? `  col = mix(col, ${LIQUID.hazard ? v3(LIQUID.hazard.col) : 'vec3(1.0, 0.12, 0.5) * 0.95'}, clamp(s4Haz * 1.7, 0.0, 1.0) * ${LIQUID.hazard ? f3(LIQUID.hazard.amount) : '0.35'});   // softer than the drum sheet (0.8): a glow under the water${LIQUID.hazard ? ' (?s3=focus: in the water\'s colours, LIQUID.hazard)' : ''}\n` : ''}
   gl_FragColor = vec4(col, vA);
 ${LIQUID.debug === 4 ? '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);' : ''}
 }

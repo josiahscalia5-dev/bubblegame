@@ -42,13 +42,13 @@ NU_OUT = 512          # columns written (the map is smooth along the angle)
 WHITE_OUT = (0.22, 0.82, 0.05)
 
 
-def ring_map(im):
+def ring_map(im, angle_sigma=None, radial_sigma=None, white_out=True):
     H, W = im.shape[:2]
     mask = DT.object_mask(im)
     h, s, v = DT.hsv(im)
     yy, xx = np.mgrid[0:H, 0:W]
     rr = np.hypot(xx - DT.VP[0] * W, yy - DT.VP[1] * H) / W
-    mask = mask | ((s < WHITE_OUT[0]) & (v > WHITE_OUT[1]) & (rr > WHITE_OUT[2]))
+    if white_out: mask = mask | ((s < WHITE_OUT[0]) & (v > WHITE_OUT[1]) & (rr > WHITE_OUT[2]))
     lp, inside, th, lr = DT.unwrap(im, W, H)
     mlp, _, _, _ = DT.unwrap(mask.astype(np.float32), W, H, interp=cv2.INTER_NEAREST, border=1.0)
     valid = inside & (mlp < 0.5)
@@ -58,8 +58,8 @@ def ring_map(im):
     upper = (th > 0.05) & (th < np.pi - 0.05)
     beyond = upper[None, :] & ~np.isnan(mr)[None, :] & (r > np.nan_to_num(mr, nan=9.0)[None, :])
     valid &= ~beyond
-    sig_u = ANGLE_SIGMA / 360.0 * DT.NU
-    out = DT._lowfreq(lp.astype(np.float32), valid, RADIAL_SIGMA, sig_u)
+    sig_u = (angle_sigma or ANGLE_SIGMA) / 360.0 * DT.NU
+    out = DT._lowfreq(lp.astype(np.float32), valid, radial_sigma or RADIAL_SIGMA, sig_u)
     return np.clip(out, 0, 1), valid, lp
 
 
@@ -77,18 +77,26 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default=os.path.join(DT.REPO, 'WebDemo/textures/screen4'))
     ap.add_argument('--sheet', default='')
+    # (pass 4b, the user's review of step 3: "restore the stronger saturated blue bands, irregular water texture, and sparkling
+    # white-aqua flecks ... not smooth, uniform pastel circles": less smoothing round each ring keeps the original's own texture,
+    # and its white flecks kept at their own places; the defaults reproduce the step 3 map)
+    ap.add_argument('--angle', type=float, default=ANGLE_SIGMA, help='smoothing round each ring, degrees')
+    ap.add_argument('--radial', type=float, default=RADIAL_SIGMA, help='smoothing across the rings, rows')
+    ap.add_argument('--keep-white', action='store_true', help="keep the original's white flecks (not masked)")
+    ap.add_argument('--cols', type=int, default=NU_OUT, help='columns written')
+    ap.add_argument('--name', default='tunnel_rings_original')
     a = ap.parse_args()
     im = DT.load_approved(); H, W = im.shape[:2]
-    m, valid, lp = ring_map(im)
-    small = cv2.resize(m, (NU_OUT, DT.NV), interpolation=cv2.INTER_AREA)
+    m, valid, lp = ring_map(im, a.angle, a.radial, not a.keep_white)
+    small = m if a.cols == DT.NU else cv2.resize(m, (a.cols, DT.NV), interpolation=cv2.INTER_AREA)
     os.makedirs(a.out, exist_ok=True)
-    Image.fromarray((np.clip(small, 0, 1) * 255 + 0.5).astype(np.uint8)).save(os.path.join(a.out, 'tunnel_rings_original.png'))
+    Image.fromarray((np.clip(small, 0, 1) * 255 + 0.5).astype(np.uint8)).save(os.path.join(a.out, a.name + '.png'))
     meta = {'source': os.path.relpath(DT.APPROVED, DT.REPO), 'vanishing_point': DT.VP, 'r0_w': DT.R0, 'r1_w': DT.R1,
-            'ln_r0': float(np.log(DT.R0)), 'ln_span': float(np.log(DT.R1 / DT.R0)), 'size': [NU_OUT, DT.NV],
-            'angle_sigma_deg': ANGLE_SIGMA, 'radial_sigma_rows': RADIAL_SIGMA, 'white_out': WHITE_OUT, 'clear_share': float(valid.mean()),
+            'ln_r0': float(np.log(DT.R0)), 'ln_span': float(np.log(DT.R1 / DT.R0)), 'size': [a.cols, DT.NV],
+            'angle_sigma_deg': a.angle, 'radial_sigma_rows': a.radial, 'white_out': None if a.keep_white else WHITE_OUT, 'clear_share': float(valid.mean()),
             'note': 'u = theta / 2pi (0 = screen right, counter-clockwise); v = (ln(rw) - ln_r0) / ln_span; sRGB'}
-    json.dump(meta, open(os.path.join(a.out, 'tunnel_rings_original.json'), 'w'), indent=1)
-    print('wrote', os.path.join(a.out, 'tunnel_rings_original.png'), small.shape, 'clear share %.3f' % valid.mean())
+    json.dump(meta, open(os.path.join(a.out, a.name + '.json'), 'w'), indent=1)
+    print('wrote', os.path.join(a.out, a.name + '.png'), small.shape, 'clear share %.3f' % valid.mean())
     if a.sheet:
         os.makedirs(a.sheet, exist_ok=True)
         back = wrap_back(m, W, H)

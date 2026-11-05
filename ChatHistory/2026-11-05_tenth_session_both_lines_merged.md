@@ -504,3 +504,18 @@ Do not ask me to approve the final visual appearance until the water is substant
 
 _[3 images attached]_
 
+---
+
+### Claude · 2026-11-05 23:40 UTC
+
+You've approved step 2, accepted step 3 as a checkpoint (not as finished artwork), and given the next pass. I'll save your review pack first, then work in your order:
+1. Isolate and fix the lavender sources: the semi-transparent floor and the distant 3D layers.
+2. Restore the ring saturation, texture and flecks.
+3. The foreground water.
+
+The notes also ask for a moving gameplay preview at the end, and reversible commits with step 2's layout frozen. Setting up the pass:
+
+Built. Capturing `focus` at 3.0 s and measuring the floor ahead and the middle:
+
+The defaults reproduce the step 3 map byte for byte, so the change is safe. Measuring the two new variants, as maps wrapped back onto the screen, against your original before trying them in the game:
+
