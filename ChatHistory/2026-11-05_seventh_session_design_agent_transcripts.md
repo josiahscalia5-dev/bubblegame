@@ -201,8 +201,43 @@ Now fold the t1-t3 settings into the source and add the new parameters.
 - 14:51 `Bash`: Build and capture iteration t4 (folded settings)
 - 14:51 `Bash`: Crop mid tunnel for t3 and t4
 - 14:51 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_mid_t4.png
+- 14:52 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/t5.json
+- 14:52 `Bash`: Capture t5 and crop mid tunnel
+- 14:52 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_mid_t5.png
+- 14:53 `Bash`: Locate settings lines to fold
+- 14:53 `Bash`: Fold t5 settings and tweaks into source
+- 14:53 `Bash`: Build, capture t6 and crop
+- 14:53 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_mid_t6.png
+- 14:54 `Bash`: Read the zoom grid script
+- 14:54 `Bash`: Grid zoom of the sock, original vs t6
+- 14:54 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/zg_sock.png
+**Agent** (14:54 UTC):
 
-_90 tool steps._
+Sock box now 0.647-0.825 x 0.556-0.668 (original 0.647-0.84 x 0.555-0.668): matched. Next the left strip (F6: original white 21%, ours 3%). Let me look at it.
+
+- 14:54 `Bash`: Crop the left strip for comparison
+- 14:54 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_left_t6.png
+- 14:55 `Bash`: Map the brightest 2% wall pixels
+- 14:55 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/glint_cmp.png
+- 14:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:55 UTC):
+
+Now the royal-blue hue pull, placed just before the display compensation.
+
+- 14:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:56 `Bash`: Build, capture t7 and crop
+- 14:56 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_upper_t7.png
+**Lead → agent** (14:56 UTC):
+
+[Image: original 2109x640, displayed at 2000x607. Multiply coordinates by 1.05 to map to original image.]
+
+- 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:57 `Bash`: Locate royal range and edge settings
+
+_113 tool steps._
 
 ---
 
@@ -396,5 +431,47 @@ The strict version misses most real bubbles and takes the coin and sock for bubb
 - 14:51 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/specks.py
 - 14:51 `Bash`: Count small white shapes by zone
 - 14:51 `Bash`: Commit restored WIP checkpoint
+**Agent** (14:52 UTC):
 
-_78 tool steps._
+Checkpoint committed (`9bfd9f7`). Now the changes. A quick look at the geometry values the bubble field depends on (axis height, path frame cost).
+
+- 14:52 `Bash`: Find axis height and track frame
+- 14:52 `Bash`: Read track frame and world constants
+- 14:52 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (14:52 UTC):
+
+Now the builder itself.
+
+- 14:52 `Bash`: Locate bubble builder bounds
+- 14:53 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/bubbles_fn.js
+- 14:54 `Bash`: Fix packing and splice new bubble builder
+- 14:54 `Bash`: Check uHeroCam uniform presence in U
+- 14:54 `Bash`: Locate lobe and swell look settings
+**Agent** (14:54 UTC):
+
+I'll try the lobe and swell values through the tune hook first (no rebuild), then fold them into the source. Build the bubble change now.
+
+- 14:54 `Bash`: Build and write first tune file
+- 14:54 `Bash`: Build bundle
+- 14:54 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t1.json
+- 14:54 `Bash`: Capture iteration 1 at 3.0 s
+- 14:55 `Bash`: Measure and compare iteration 1
+- 14:55 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/full_i1.png
+**Agent** (14:55 UTC):
+
+The bank is now far too white (49% against 20.3%) and the centre's bubbles clump into a white blob. Let me look at the bank close up before adjusting.
+
+- 14:55 `Bash`: Bank close-up iteration 1
+- 14:55 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/bank_i1.png
+**Lead → agent** (14:55 UTC):
+
+[Image: original 2278x500, displayed at 2000x439. Multiply coordinates by 1.14 to map to original image.]
+
+- 14:56 `Bash`: Locate lobe white compositing lines
+- 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r9_match_water.js
+- 14:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r9_match_water.js
+- 14:56 `Bash`: Rebuild
+- 14:56 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t2.json
+- 14:56 `Bash`: Capture, measure and crop iteration 2
+
+_100 tool steps._

@@ -99,7 +99,7 @@ export const MATCH = {
     // the centre coin (8.3 m) stays in front of it
     // core / halo: a fuller warm-white core and peach halo (the approved centre, r < 0.06 W: warm 47%, median #f1d7db; the
     // hero's 0.45 / 0.12 gave a faint 0.02 W spot, so the floor's lilac showed through: centre lavender 59% at 3.0 s)
-    glow: { alpha: 0.8, ahead: 9, core: 0.85, halo: 0.5 },
+    glow: { alpha: 0.65, ahead: 9, core: 0.85, halo: 0.38 },   // (checkpoint 03: 0.8 / 0.5 washed the tight inner rings into a haze)
   },
   // the far gem (round3's, 10.7 m past the mouth, lane 0) sat within 0.08 W of the vanishing point at 3.0 s: 0.25 m further
   // left, still within the pick-up reach (0.87 m) from the left lane (game.js applies it, gated)
@@ -156,7 +156,7 @@ export const MATCH = {
     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
     // an orange ball, white 17%)
     // white: on the walls (and the far end), the core zone's pale lilac turned warm white first (the floor takes tint only)
-    core: { r: [0.035, 0.085], tint: [1.0, 0.94, 0.92], amount: 0.35, white: 1.0 },
+    core: { r: [0.035, 0.085], tint: [1.0, 0.94, 0.92], amount: 0.5, white: 1.0 },
     // the glints tinted (the approved's brightest wall texels are #cae0ff, not pure white); `glint` is also the floor's
     // (tunnel_r9_match_water.js); the walls now take `glintWall`: bluer (ours read lilac-white #e6e0f9 S 0.14 against #cae0ff
     // S 0.27) and not on the warm patches (blue-tinting a bright yellow made it lime: the gate's 783 lime pixels)
@@ -192,13 +192,17 @@ export const MATCH = {
       blueFrom: [0.075, 0.12],
       gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.85 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
       glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
-      inner: { col: '#e8a6d0', amount: 0.55 }, splash: { col: '#f2f8ff', from: [0.2, 0.25], to: [0.25, 0.5], amount: 0.85 } },
+      inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
+      // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
+      // [phase, half width] of the sparser inner line)
+      edge: { col: '#cae0ff', w: [0.02, 0.045], broken: [-0.08, -0.03], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.7 } },
+    royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
     rainbow: { r: 0.225, w: 0.036, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
     // the mid vortex (the approved r 0.08-0.20 W: white 22%, pale blue 18%; ours white 8%, pale blue 32%): its brightest
     // pale blue whitened; r: [in, full, full to, out] in rw, from: the brightness where it starts and is full
-    midWhite: { r: [0.05, 0.08, 0.17, 0.24], from: [0.7, 0.86], amount: 0.75 },
+    midWhite: { r: [0.05, 0.08, 0.17, 0.24], from: [0.66, 0.82], amount: 0.9 },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -393,6 +397,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
   // than the pixels (seam-free: from the wrap-corrected derivatives)
+  float mtEdge = 0.0;
   {
     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
       - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
@@ -418,6 +423,11 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     // rings; blobs of the relief's own cells, not star shapes)
     float spK = smoothstep(${f4(M.bands.splash.from[0])}, ${f4(M.bands.splash.from[1])}, dl) * (1.0 - smoothstep(${f4(M.bands.splash.to[0])}, ${f4(M.bands.splash.to[1])}, bk)) * bz;
     c = mix(c, ${hx(M.bands.splash.col)}, spK * ${f4(M.bands.splash.amount)});
+    // the approved's brightest texels are a dense net of thin ice-blue (#cae0ff) ring lines across every band: a thin line
+    // at each band's inner edge and a sparser one inside it, both broken into arcs by the relief (MATCH.walls.bands.edge)
+    float eK = (1.0 - smoothstep(${f4(M.bands.edge.w[0])}, ${f4(M.bands.edge.w[1])}, bk)) * smoothstep(${f4(M.bands.edge.broken[0])}, ${f4(M.bands.edge.broken[1])}, dl) * bz;
+    float e2 = (1.0 - smoothstep(${f4(M.bands.edge.second[1] * 0.5)}, ${f4(M.bands.edge.second[1])}, abs(bk - ${f4(M.bands.edge.second[0])}))) * smoothstep(0.0, 0.05, dl) * bz * bout;
+    mtEdge = max(eK, e2 * ${f4(M.bands.edge.secondAmount)}) * ${f4(M.bands.edge.amount)};   // (drawn after the display compensation, below)
   }
   {   // the approved's pastel rainbow arc above the centre (pink at the left, peach and pale yellow over the top and right),
       // across the bands, on the upper half (MATCH.walls.rainbow)
@@ -442,10 +452,18 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
+  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
+      // to about 218 by bringing green down; the cyan streaks (under 200 degrees) and the warm patches kept (MATCH.walls.royal)
+    float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
+    float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.6, 0.7, tq)) * wz * ${f4(M.royal.amount)};
+    c.g = mix(c.g, c.r + ${f4(M.royal.to)} * (c.b - c.r), rk);
+  }
   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
   vec3 col = mtUndisplay(c);
+  // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
+  col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
   // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));

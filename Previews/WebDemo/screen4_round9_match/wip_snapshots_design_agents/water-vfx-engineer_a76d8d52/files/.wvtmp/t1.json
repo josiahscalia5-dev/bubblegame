@@ -1,0 +1,5 @@
+{"matchWater": {
+ "lobe": {"hi": "#5cc4ff", "mid": "#2f8cf2", "violetCol": "#a99cf6", "violet": [0.22, 0.25, 0.06],
+          "alpha": 0.88, "sideAlpha": 0.92, "capFoam": 0.55, "capFrom": 0.05, "footFoam": 0.6, "frontFoam": 1.0, "cell": 9.0, "holeShare": 0.45},
+ "look": {"clear": 0.75, "sideClear": 0.85, "crestFront": 0.8}
+}}
