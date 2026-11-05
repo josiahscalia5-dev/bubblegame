@@ -154,8 +154,10 @@ export const MATCH = {
   farGem: [1.009, 15.04, 0.757],
   // the second sock (round3's, lane 2 at 12.1 m) stood right of the centre coin: 5.1 m nearer and 0.6 m further right, at
   // 0.61 m, behind the big first sock at the hero moment; within reach from the right lane without a jump (0.63 m)
-  // (the focused pass: re-solved for the camera moved by MATCH_CAM; before [2.85, 7.0, 0.61])
-  secondSock: [2.859, 7.44, 0.545],
+  // (the focused pass: re-solved for the camera moved by MATCH_CAM, before [2.85, 7.0, 0.61]; then 0.06 m further right and
+  // 0.1 m lower, so it stays hidden behind the first sock now that one lies tilted (it peeked out at its upper left): 0.67 m
+  // from the body riding in the right lane, inside the 0.82 m pick-up reach)
+  secondSock: [2.95, 7.44, 0.45],
   // the far collectibles converge on the vanishing point (four coin lines and two socks 19-34 m ahead at the hero moment;
   // the original has only the small centre coin and one far sock there): visual only, coins and gems shrink away between
   // these distances from the camera (m) and grow back in as the character comes on, socks further out (the nearest far

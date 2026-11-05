@@ -41,11 +41,11 @@
     },
     "laps": 0,
     "camera": [
-     -0.11,
-     1.562,
-     -1.973
+     -0.116,
+     1.457,
+     -1.533
     ],
-    "cameraPitchDeg": 2.58,
+    "cameraPitchDeg": 2.56,
     "particles": 134,
     "repairedNormals": 1002065,
     "machineryInnerX": 1.22,
@@ -67,12 +67,12 @@
     "bumps": 0
    },
    "cost": {
-    "drawCalls": 207,
-    "triangles": 1335235,
+    "drawCalls": 206,
+    "triangles": 1334611,
     "textures": 44,
     "geometries": 154,
     "programs": 64,
-    "msPerFrameSoftware": 5441.8
+    "msPerFrameSoftware": 4048.4
    }
   },
   {
@@ -113,11 +113,11 @@
     },
     "laps": 0,
     "camera": [
-     -0.11,
-     1.547,
-     -1.008
+     -0.116,
+     1.441,
+     -0.568
     ],
-    "cameraPitchDeg": 2.4,
+    "cameraPitchDeg": 2.38,
     "particles": 131,
     "repairedNormals": 1002065,
     "machineryInnerX": 1.22,
@@ -139,12 +139,12 @@
     "bumps": 0
    },
    "cost": {
-    "drawCalls": 209,
-    "triangles": 1423081,
+    "drawCalls": 205,
+    "triangles": 1359041,
     "textures": 44,
     "geometries": 155,
     "programs": 64,
-    "msPerFrameSoftware": 6108.9
+    "msPerFrameSoftware": 4021.9
    }
   },
   {
@@ -185,11 +185,11 @@
     },
     "laps": 0,
     "camera": [
-     -0.11,
-     1.55,
-     -0.289
+     -0.116,
+     1.445,
+     0.151
     ],
-    "cameraPitchDeg": 2.4,
+    "cameraPitchDeg": 2.38,
     "particles": 129,
     "repairedNormals": 1002065,
     "machineryInnerX": 1.22,
@@ -211,12 +211,12 @@
     "bumps": 0
    },
    "cost": {
-    "drawCalls": 202,
-    "triangles": 1311434,
+    "drawCalls": 201,
+    "triangles": 1263955,
     "textures": 44,
     "geometries": 155,
     "programs": 64,
-    "msPerFrameSoftware": 5761.4
+    "msPerFrameSoftware": 4195
    }
   }
  ],
@@ -430,10 +430,10 @@
       "drum"
      ],
      "rim": {
-      "u": -1.1500000000000001,
+      "u": -0.7100000000000002,
       "centre": [
-       -0.097,
-       0.755
+       -0.10300000000000001,
+       0.655
       ],
       "inner": 2.42,
       "outer": 2.55
@@ -530,6 +530,11 @@
      },
      "match": {
       "textures": true,
+      "camera": {
+       "dx": -0.006,
+       "dh": -0.1,
+       "du": 0.44
+      },
       "centre": {
        "ahead": 30,
        "end": 2,

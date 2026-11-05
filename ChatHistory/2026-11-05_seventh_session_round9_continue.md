@@ -551,3 +551,33 @@ When both finish, you'll get:
 - a close-up of the foam and water round the character;
 - the five-item checklist: tunnel energy and bubbles, foam, the character's framing on top of the water, the sock's tilt, and the overall composition.
 
+---
+
+### Automatic notice · 2026-11-05 20:33 UTC
+
+_Agent "Water &amp; VFX: froth foam, tunnel flecks" finished_
+
+---
+
+### Claude · 2026-11-05 20:33 UTC
+
+Water & VFX has finished its focused pass (`b0e1f07`):
+- **Purple in the foam:** 0.4% now, against 23.5% before (your original has 17.7%).
+- **See-through foam:** the lobes are now opaque froth.
+- **Under her:** the flat lilac plate is now white froth with blue gaps.
+- **On top of the water:** the waterline holds at 0.836, the same as your original.
+- **Tunnel flecks:** bold white splash flecks almost doubled (245 visible, 137 before).
+- **Tunnel bubbles:** 148 visible (129 before).
+
+It reports honest overshoots too: the froth under her is about twice your original's white, and the foam is one uniform sky blue. Merging it now, while Tunnel & Lighting works on the framing:
+
+Merged cleanly (`edf84f5`), and the committed bundle matches its source exactly. While Tunnel & Lighting works on the framing, I'll send Water & VFX back for the overshoots it reported:
+
+Water & VFX's foam pass is merged and on GitHub (`edf84f5`). It's now doing a short follow-up on what it reported:
+- **Under her:** less white, with more blue water showing between the froth (target about 14–18%, against 29%).
+- **Foam colour:** varied rather than one flat sky blue: white tops, aqua mid-tones, deeper blue between the lobes.
+- **Left of her:** fewer scattered white droplets.
+- **Far bubbles:** brought back deep in the tunnel.
+
+Tunnel & Lighting is still on the framing (the larger character), the sock's tilt and the turbulent walls. When it lands, I'll merge it and have the foam re-checked at the new camera. Then you'll get the side-by-side, the two close-ups and the five-item checklist.
+

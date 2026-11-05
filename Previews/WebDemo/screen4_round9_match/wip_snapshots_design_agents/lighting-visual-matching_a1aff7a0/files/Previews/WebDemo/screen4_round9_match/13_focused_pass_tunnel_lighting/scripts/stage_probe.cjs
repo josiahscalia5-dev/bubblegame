@@ -72,15 +72,26 @@ const server = http.createServer((req, res) => {
       if (x0 < 1e9) socks.push({ box: [x0, x1, y0, y1].map((t) => +t.toFixed(3)), w: +(x1 - x0).toFixed(3), hH: +(y1 - y0).toFixed(3), dist: +o.getWorldPosition(new V()).distanceTo(cam.position).toFixed(2), track: toTrack(o.getWorldPosition(new V())), visible: o.visible });
     });
     socks.sort((a, b) => a.dist - b.dist);
+    // the vanishing point (the drum's axis, 1.5 m over the water, 30 m ahead of the camera, as MATCH.centre) and the gold
+    // rim's outer edge where it crosses x 0.5 (r6Bezel's local circle of its outer radius, from its geometry)
+    const camU = toTrack(cam.position.clone()).u + L.tunnelStart;
+    TR.frame(camU + 30, fr); const vpp = fr.P.clone().addScaledVector(fr.U, 1.5).project(cam);
+    const vp30 = [+((vpp.x + 1) / 2).toFixed(4), +((1 - vpp.y) / 2).toFixed(4)];
+    let rimTop = null; const bz = scene.getObjectByName('r6Bezel');
+    if (bz) { bz.geometry.computeBoundingBox(); const R = bz.geometry.boundingBox.max.x; let best = null;
+      for (let a = 0; a < 6.2832; a += 0.0005) { const p = new V(Math.cos(a) * R, Math.sin(a) * R, 0).applyMatrix4(bz.matrixWorld).project(cam); const x = (p.x + 1) / 2, y = (1 - p.y) / 2;
+        if (y < 0.5 && (!best || Math.abs(x - 0.5) < Math.abs(best[0] - 0.5))) best = [x, y]; }
+      rimTop = { outerR: +R.toFixed(3), atX: +best[0].toFixed(4), y: +best[1].toFixed(4) }; }
     const cr = cam.matrixWorld.elements;   // forward = -Z column
     return { state: window.__bw.state(), camera: { pos: r3(cam.position), track: toTrack(cam.position.clone()), quat: cam.quaternion.toArray().map((x) => +x.toFixed(5)), fwd: [-cr[8], -cr[9], -cr[10]].map((x) => +x.toFixed(5)), fov: cam.fov, aspect: cam.aspect, near: cam.near },
-      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles, socks: socks.slice(0, 2) };
+      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles, socks: socks.slice(0, 2), vp30, rimTop };
   }, [ITEMS, DELTA]);
   fs.writeFileSync(OUT, JSON.stringify(info, null, 1));
   console.log(JSON.stringify({ camera: info.camera, mascot: info.mascot, fuzz: info.fuzz }));
   if (!process.env.NOPATH) console.log(JSON.stringify(info.path));
   if (!process.env.NOBUBBLES) for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
   for (const s of info.socks) console.log('sock', JSON.stringify(s));
+  console.log('vp30', JSON.stringify(info.vp30), 'rimTop', JSON.stringify(info.rimTop));
   for (const s of info.shifted) console.log(JSON.stringify(s));
   console.log(logs.join(' | ') || 'no console errors');
   await browser.close(); server.close();

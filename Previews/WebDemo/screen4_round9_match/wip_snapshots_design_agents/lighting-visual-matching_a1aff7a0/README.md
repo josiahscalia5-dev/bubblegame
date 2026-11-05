@@ -1,13 +1,26 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: framing, sock, walls)
 
-- **Taken:** 2026-11-05 20:31 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:36 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a1aff7a0d4ce10e34` (local only), started from `9a95c06`.
 - **Its own commits so far:** 
   - `4029424 Round 9 focused pass (checkpoint): framing, the pink character 1.2x larger through the hero camera`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (125; full copies in `files/`)
+## Files (149; full copies in `files/`)
 
+- `.tltmp/base_root/README.md (new)`
+- `.tltmp/base_root/artifact-models (deleted)`
+- `.tltmp/base_root/artifact.html (new)`
+- `.tltmp/base_root/build.mjs (new)`
+- `.tltmp/base_root/game.bundle.js (new)`
+- `.tltmp/base_root/index.html (new)`
+- `.tltmp/base_root/models (deleted)`
+- `.tltmp/base_root/node_modules (deleted)`
+- `.tltmp/base_root/package.json (new)`
+- `.tltmp/base_root/src (deleted)`
+- `.tltmp/base_root/textures (deleted)`
+- `.tltmp/base_root/tools (deleted)`
+- `.tltmp/base_root/ui (deleted)`
 - `.tltmp/baseline.bundle.js (new)`
 - `.tltmp/before/before_info.json (new)`
 - `.tltmp/before/before_t2.85.png (new)`
@@ -35,6 +48,7 @@
 - `.tltmp/s3_func_t2.txt (new)`
 - `.tltmp/sbs_t1.png (new)`
 - `.tltmp/sbs_t2.png (new)`
+- `.tltmp/sbs_t5.png (new)`
 - `.tltmp/sock/sockA_info.json (new)`
 - `.tltmp/sock/sockA_t3.00.png (new)`
 - `.tltmp/sock/sockB_info.json (new)`
@@ -47,6 +61,7 @@
 - `.tltmp/sock/sockE_t3.00.png (new)`
 - `.tltmp/sock/sockF_info.json (new)`
 - `.tltmp/sock/sockF_t3.00.png (new)`
+- `.tltmp/sock_final.png (new)`
 - `.tltmp/sock_t2.png (new)`
 - `.tltmp/sock_variants.json (new)`
 - `.tltmp/sock_variants.png (new)`
@@ -57,6 +72,7 @@
 - `.tltmp/sockmask/sockF_t3.00.png_sock.png (new)`
 - `.tltmp/sockmask/t2_t3.00.png_sock.png (new)`
 - `.tltmp/sockmask_cmp.png (new)`
+- `.tltmp/stage_base_final.json (new)`
 - `.tltmp/stage_before.json (new)`
 - `.tltmp/stage_shift.json (new)`
 - `.tltmp/stage_sock0.json (new)`
@@ -65,6 +81,7 @@
 - `.tltmp/stage_t1.json (new)`
 - `.tltmp/stage_t2.json (new)`
 - `.tltmp/stage_t3.json (new)`
+- `.tltmp/stage_t5.json (new)`
 - `.tltmp/t1/t1_info.json (new)`
 - `.tltmp/t1/t1_t2.85.png (new)`
 - `.tltmp/t1/t1_t2.85_canvas.png (new)`
@@ -89,6 +106,13 @@
 - `.tltmp/t4/t4_info.json (new)`
 - `.tltmp/t4/t4_t3.00.png (new)`
 - `.tltmp/t4/t4_t3.00_canvas.png (new)`
+- `.tltmp/t5/t5_info.json (new)`
+- `.tltmp/t5/t5_t2.85.png (new)`
+- `.tltmp/t5/t5_t2.85_canvas.png (new)`
+- `.tltmp/t5/t5_t3.00.png (new)`
+- `.tltmp/t5/t5_t3.00_canvas.png (new)`
+- `.tltmp/t5/t5_t3.10.png (new)`
+- `.tltmp/t5/t5_t3.10_canvas.png (new)`
 - `.tltmp/tune_sock0.json (new)`
 - `.tltmp/tune_sockD.json (new)`
 - `.tltmp/upper_grid.png (new)`

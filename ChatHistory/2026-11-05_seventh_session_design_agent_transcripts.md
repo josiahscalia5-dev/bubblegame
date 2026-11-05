@@ -1416,8 +1416,124 @@ Now the full measurements on the final frames for `measured.txt`.
 
 - 20:30 `Bash`: Run the Art Director measures on all final frames
 - 20:30 `Bash`: Hue and fleck-size measures on the final frames
+**Agent** (20:31 UTC):
 
-_153 tool steps._
+Measurements done. Now the evidence sheets; I'll adapt the sheet script to this folder's file names.
+
+- 20:31 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/sheets.py
+- 20:31 `Bash`: Build the comparison and close-up sheets
+- 20:31 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/closeup_02_foam_and_water_round_
+**Lead → agent** (20:31 UTC):
+
+[Image: original 3408x520, displayed at 2000x305. Multiply coordinates by 1.70 to map to original image.]
+
+- 20:31 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/closeup_01_tunnel_interior.jpg
+**Lead → agent** (20:31 UTC):
+
+[Image: original 2322x760, displayed at 2000x655. Multiply coordinates by 1.16 to map to original image.]
+
+**Agent** (20:31 UTC):
+
+Both close-ups show the intended change. Let me list the evidence folder before writing `measured.txt` and the README.
+
+- 20:31 `Bash`: List evidence files and total size
+**Agent** (20:31 UTC):
+
+I'll drop the probe's duplicate frames (the canvas captures cover them) and write `measured.txt`.
+
+- 20:31 `Bash`: Remove duplicate probe frames, confirm bundle md5
+- 20:31 `Bash`: Write measured.txt from the final measurements
+**Agent** (20:31 UTC):
+
+Correcting the triangle breakdown in `measured.txt` (26 lobes x 180 = 4,680; the layer's 210 extra quads = 420; the rest the 3 waterline soap bubbles added at her front).
+
+- 20:31 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/measured.txt
+**Agent** (20:31 UTC):
+
+Updating the file header comment of `tunnel_r9_match_water.js` so it no longer describes the old glossy see-through lobes.
+
+- 20:32 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 20:32 `Bash`: Rebuild after the comment change and check the bundle md5
+**Agent** (20:32 UTC):
+
+The bundle is unchanged by the comment (md5 `3e7fc194`, the one every check ran on). Now the README.
+
+- 20:32 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/README.md
+**Agent** (20:32 UTC):
+
+Correcting the iteration count in the README (9 iterations plus two final sets).
+
+- 20:33 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/README.md
+- 20:33 `Bash`: Check what is changed before the final commit
+**Agent** (20:33 UTC):
+
+Final commit (source, rebuilt bundle, evidence; `.wvtmp/` stays out).
+
+- 20:33 `Bash`: Commit the final pass
+**Agent** (20:33 UTC):
+
+The pass is committed as `b0e1f07` on branch `worktree-agent-a6a478aa3fef314d3`, after an earlier checkpoint `0cf8193`. Nothing is pushed. All numbers below are at 3.0 s, seed 7, written as original / before (`b91e952`) / now. Tunnel & Lighting's new framing had not arrived, so none of this has been checked at the closer camera yet.
+
+**Comparison:** `/home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/original_vs_before_vs_now_3.00s_fullres.png`. The close-ups (`closeup_01_tunnel_interior.jpg`, `closeup_02_foam_and_water_round_the_character.jpg`), `measured.txt`, `README.md` and the measuring scripts (`scripts/`) are in the same folder.
+
+**Verdicts**
+- **Foam "too purple": fixed.** Purple share (indigo, lavender and violet hues; `hues.py`) is 17.7 / 23.5 / **0.4%** in the bank and 47.8 / 54.6 / **1.4%** under her body.
+- **Foam "too transparent": fixed.** The foam lumps are now opaque froth that hides the ones behind them.
+- **Foam "thick, bright, blue-white froth": partly.** The lumps are now sky-blue froth with white froth patches of small bubbles, white droplets and bubbly white tops. Bank white is 20.3 / 17.4 / **20.2%**, inside the Art Director's 18-22% range.
+  - They still read as rounded lumps rather than the original's splashy spray crests.
+  - The colour is a single sky blue: pale aqua is 14.6 / 16.4 / **36.8%** and electric blue 12.2 / 12.0 / **29.8%**, both now above the original.
+  - The surface is smoother than the original: texture is 0.095 / 0.096 / **0.078**.
+- **Under her body: fixed in look, too white.** The flat pale-lilac plate (the hide probe showed it is the swell's front face) is now a band of white froth with blue holes. White there is 13.8 / 15.0 / **29.2%**, about twice the original's.
+- **She sits on top of the water: kept.** The waterline is 0.836 / 0.835 / **0.836**, her sides 0.806 and 0.860 (original 0.809 and 0.860), and the contact strip is 83.2% pink.
+- **Tunnel flecks: mostly fixed.** 380 bold white splash pieces (torn streaks, droplet clusters, short wavy splashes) ride the bands with the swirl; 245 are visible, against 137 before.
+  - Mid rings: large white pieces 30 / 18 / **27**, coverage 10.3 / 10.0 / **12.1%**.
+  - Walls: large white pieces 49 / 28 / **54**.
+- **Tunnel bubbles: partly.** 148 are visible (129 before): medium 46 → **83**, large 11 → **24**. By depth, near / mid / far is 46/54/29 → **57/74/17**, so there are fewer far ones than before. The crowded centre went from 32 to **12**.
+
+**Checks**
+- **Pixel identity:** the normal game, `splash` and `liquid` at Tap to Start and 2.85 s show 0 differing pixels in all six pairs.
+- **Gameplay:** lanes 1 → 0 → 2, the jump, 12 coins, 1 gem and 2 socks collected, no console errors. The water still reacts to a swerve, a jump and a landing.
+- **Cost:** 209 draw calls and 1,428,937 triangles at 3.0 s (before 209 and 1,423,081). No new textures, render passes or draw calls.
+
+**What still differs**
+1. The original's foreground mixes sky blue, periwinkle and lilac soap-bubble domes into splashy crests; ours is uniform sky-blue lumps.
+2. Under her the froth is about twice the original's white, and the original's lilac bubbles there are deliberately not reproduced because of "too purple".
+3. Separate white shapes left of her body rose to 80 (original 13, before 51, the Art Director's limit 40), because of the new froth droplets.
+4. Our flecks match the original's coverage but are smaller on average (42 px against 86 px in the mid rings). Most of the tiny specks come from the walls' own material, which is Tunnel & Lighting's: 186 of 272 in the mid rings, measured with my layer switched off.
+5. When the lead forwards the framing commit, I need to merge it, rebuild, and re-measure the waterline and the foam round her with `scripts/meas.py` and `scripts/hues.py`.
+
+**Lead → agent** (20:34 UTC):
+
+The coordinator sent a message while you were working:
+Good work; the lead merged b0e1f07 into the branch as edf84f5. Please do one short follow-up in your worktree on the overshoots you reported (BOUNDED: about 6-8 capture iterations), then commit ("Round 9 focused pass, Water & VFX (follow-up): ...") and reply:
+1. Under her body the froth is about twice the original's white (29.2% against 13.8%): bring it to about 14-18%, with more blue water showing between the froth, while she stays clearly ON TOP of the water (waterline about 0.836) and with no lilac plate or see-through purple coming back.
+2. The bank's colour is one uniform sky blue (pale aqua 36.8% against 14.6%, electric blue 29.8% against 12.2%): bring both toward the original by varying the froth's colour (white tops, aqua-cyan mid-tones, deeper blue shadows between the lobes, a little periwinkle only in soap-bubble outlines). Keep the purple share well under the original's 17.7% (the user said "too purple"; aim for a few percent at most).
+3. Separate white shapes left of her body: 80 against 13 (limit 40). Merge the scattered droplets into fewer, bigger froth patches.
+4. Far-depth tunnel bubbles dropped (29 to 17): bring the far ones back to at least the earlier 29, without crowding the centre again.
+Do not touch the camera, the collectibles or tunnel_r9_match.js: Tunnel & Lighting is moving the camera closer (the character larger) right now; after it lands the lead will ask you to re-measure the foam at the new framing. Keep the pixel identity of the normal game, splash and liquid and the s3_func gameplay check passing, and update your 14_focused_pass_water_vfx README and measured.txt with a "follow-up" section.
+
+Address this before completing your current task.
+
+**Agent** (20:34 UTC):
+
+Let me first see whether the lead's merge `edf84f5` changes anything in `WebDemo/` relative to my `b0e1f07`.
+
+- 20:34 `Bash`: Compare the lead's merge with my commit
+**Agent** (20:34 UTC):
+
+No `WebDemo/` differences between `b0e1f07` and `edf84f5`, so I continue in this worktree. First the full colour-class breakdown of the bank, original vs now, to set the colour targets precisely.
+
+- 20:34 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/classes_box.py
+- 20:34 `Bash`: Colour classes in the bank and in the left box
+- 20:35 `Bash`: Left-box white shape counts across iterations
+**Agent** (20:35 UTC):
+
+My tunnel layer contributes nothing there (83 with or without it). Let me look at the left box itself to see what the separate white shapes are.
+
+- 20:35 `Bash`: Outline white shapes in the left box, original vs now
+- 20:35 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/leftbox.png
+
+_173 tool steps._
 
 ---
 
@@ -1728,5 +1844,29 @@ The floor (Water & VFX's) reuses `MATCH.walls.lift`. I'll keep `lift` at 0.08 fo
 - 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 20:30 `Bash`: Build and capture iteration 5 at three moments with cost
+- 20:33 `Bash`: Compose original, before, iteration 5
+- 20:33 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sbs_t5.png
+**Agent** (20:34 UTC):
 
-_173 tool steps._
+Iteration 5 has all three changes. Now the final measurements: first the vanishing point and rim, through the overlay tool.
+
+- 20:34 `Bash`: Read match_overlay usage
+**Agent** (20:34 UTC):
+
+I'll add the vanishing point (the drum's axis 30 m ahead) and the rim's top edge at x 0.5 to the probe, and run it on the before and final builds.
+
+- 20:34 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:34 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:34 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+**Agent** (20:34 UTC):
+
+To probe and identity-test the baseline, I'll make a served copy of `WebDemo` (symlinks) with the baseline bundle.
+
+- 20:34 `Bash`: Create baseline-served copy of WebDemo
+- 20:34 `Bash`: Probe baseline and final builds at 3.0 s
+- 20:35 `Bash`: Sock close-ups across times
+- 20:35 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_final.png
+- 20:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:35 `Bash`: Build, capture final frames, compose sock close-ups
+
+_185 tool steps._
