@@ -94,10 +94,10 @@ export const LIQUID = {
   // the hero grade's vignette colour (sRGB) and the glowing centre's size (share of the width; the hero's is 0.12)
   grade: { vignetteCol: '#2a5fe0', glowSize: 0.085 },
   // the foam layer (off with nofoam)
-  foam: { crests: 0.85, flecks: 0.7, wake: 0.8, strokes: 0.9, lace: 0.6, swellCrest: 0.72, splash: 0.5,
+  foam: { crests: 0.85, flecks: 0.7, wake: 0.8, strokes: 0.9, lace: 0.6, swellCrest: 0.72, splash: 0.4,
     // translucent spray sheets rising from the waterline either side of the character, the biggest just right of it (the
     // approved splash at 71% across): [phi (degrees on the crest, - is screen right), height (m), lean outward (-1..1)]
-    plumes: [[-27, 0.42, 1], [-41, 0.4, 1], [-17, 0.26, 0.6], [28, 0.4, -1], [41, 0.3, -1], [-55, 0.3, 1]], plumeAlpha: 0.42,
+    plumes: [[-23, 0.36, 0.8], [-40, 0.3, 1], [-14, 0.22, 0.5], [26, 0.36, -1], [40, 0.28, -1], [-56, 0.26, 1]], plumeAlpha: 0.38,
     // clusters of clear soap bubbles sitting on the waterline: [phi, how many]
     bubbles: [[-52, 6], [-28, 5], [30, 5], [52, 6]], bubbleR: [0.022, 0.065] },
   // hidden while the liquid is up (replaced by it): round6's bow wave sheets; with nofoam also the splash particles
@@ -795,7 +795,7 @@ void main() {
   vec3 base = uC + uR * aPl.x + uU * aPl.y + uT * aPl.z;
   vec3 camR = normalize(vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]));
   float y = position.y + 0.5;
-  vec3 w = base + camR * (position.x * H * 0.85 * (0.4 + 0.6 * y) + aPl2.x * 0.4 * y * y * H) + uU * (y * H);
+  vec3 w = base + camR * (position.x * H * 0.7 * (0.4 + 0.6 * y) + aPl2.x * 0.4 * y * y * H) + uU * (y * H);
   vUv = vec2(position.x * 2.0, y); vA = k; vSeed = aPl2.y;
   gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
 }`,
