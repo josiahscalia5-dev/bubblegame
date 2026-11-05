@@ -78,8 +78,9 @@ export const MATCH_WATER = {
     // (m, ragged by noise), its small bubbles (cells per unit of the swell's angle and per metre), the share without a hole
     // (iteration 2: 90% white under the body against the original's 14%: thinner, lacier; periwinkle-blue holes in front of
     // the body, where the original has lilac-blue bubbles under her)
-    // (iteration 5: its cells were 2.5x taller than wide on screen, a striped row of ovals: cellD per metre down the face)
-    froth: { amount: 1.0, depth: [0.03, 0.035], cell: 34.0, cellD: 85.0, holeShare: 0.4, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
+    // (iterations 5-10: its cells were 2.5x taller than wide on screen, a striped row of ovals: cell per unit of the swell's
+    // angle, cellD per metre down the face; a colour-marked diagnostic run showed the angle's cells were the narrow ones)
+    froth: { amount: 1.0, depth: [0.03, 0.035], cell: 15.0, cellD: 110.0, holeShare: 0.4, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
   },
   // the bank's lobes (spLumps reshaded). (Gate fixes, step 7: glossy see-through domes with white caps, a violet soap tint
   // in front; replaced in the focused pass by the froth below)
@@ -103,7 +104,7 @@ export const MATCH_WATER = {
     speckCell: 11.0, speckShare: 0.45, speck: 0.95, speck2Cell: 21.0, speck2Share: 0.5,   // (iteration 7: + a finer layer: the froth's texture was smoother than the original's, hp5 0.079 against 0.095)   // fine white droplets on the aqua body
     crest: 0.95, crestW: 0.56, crestCell: 5.0,   // the bubbly white crest along the top of the outline (from 1 - n.v), its bubbles
     edgeCut: [0.62, 0.3],                        // the ragged bubbly outline: cut from 1 - n.v = [0] minus [1] x the cell's bump
-    spec: 0.6, specPow: 90,
+    spec: 0.9, specPow: 60,   // (iteration 9: a little stronger, for dimension: the lobes read matte)
     alpha: 0.98,
     lowFrom: [-0.35, -0.75],                     // toward aqua below (the normal's up), as the original's lower froth
   },

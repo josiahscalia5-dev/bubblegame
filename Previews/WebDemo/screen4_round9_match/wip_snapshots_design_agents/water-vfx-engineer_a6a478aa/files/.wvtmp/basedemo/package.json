@@ -1,0 +1,8 @@
+{
+  "name": "bubblewash-screen3-web-demo",
+  "private": true,
+  "description": "Browser-playable demo of approved Screen 3, built from the Meshy models. Separate from the Unity project.",
+  "type": "module",
+  "scripts": { "build": "node build.mjs" },
+  "devDependencies": { "three": "0.170.0", "esbuild": "0.24.0" }
+}

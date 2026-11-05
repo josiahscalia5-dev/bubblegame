@@ -54,9 +54,13 @@ const server = http.createServer((req, res) => {
       return { from: [lane, u, h0], to: [+lane1.toFixed(3), +u1.toFixed(3), +(hT + dh - W.baseHeight(L, x1, u1)).toFixed(3)], water: [+W.baseHeight(L, x, u).toFixed(3), +W.baseHeight(L, x1, u1).toFixed(3)] }; });
     // the hero bubbles (instanced, inst = world centre and radius; drift not included): screen centre and diameter in widths
     const bubbles = []; let hb = null; scene.traverse((o) => { if (!hb && o.name === 'heroBubbles' && o.geometry && o.geometry.attributes.inst) hb = o; });
-    if (hb) { const a = hb.geometry.attributes.inst, right = new V().setFromMatrixColumn(cam.matrixWorld, 0);
-      for (let i = 0; i < a.count; i++) { const c = new V(a.getX(i), a.getY(i), a.getZ(i)), r = a.getW(i), p = c.clone().project(cam), q = c.clone().addScaledVector(right, r).project(cam);
-        bubbles.push({ i, cx: +((p.x + 1) / 2).toFixed(3), cy: +((1 - p.y) / 2).toFixed(3), dW: +Math.abs(q.x - p.x).toFixed(3), dist: +c.distanceTo(cam.position).toFixed(2), r }); } }
+    // (with the shader's drift at this moment: seed = fract(3.1 x + 7.7 z), x + sin(0.9 t + 6 seed) * 0.04,
+    // y + mod(0.12 t + seed, 1) * 0.3 - 0.15; tunnel_r7_hero.js heroBubbles)
+    if (hb) { const a = hb.geometry.attributes.inst, right = new V().setFromMatrixColumn(cam.matrixWorld, 0), t = hb.material.uniforms.uTime.value;
+      const fr = (v) => v - Math.floor(v);
+      for (let i = 0; i < a.count; i++) { const sd = fr(a.getX(i) * 3.1 + a.getZ(i) * 7.7);
+        const c = new V(a.getX(i) + Math.sin(t * 0.9 + sd * 6) * 0.04, a.getY(i) + fr(t * 0.12 + sd) * 0.3 - 0.15, a.getZ(i)), r = a.getW(i), p = c.clone().project(cam), q = c.clone().addScaledVector(right, r).project(cam);
+        bubbles.push({ i, cx: +((p.x + 1) / 2).toFixed(3), cy: +((1 - p.y) / 2).toFixed(3), dW: +Math.abs(q.x - p.x).toFixed(3), dist: +c.distanceTo(cam.position).toFixed(2), r, seed: +sd.toFixed(3), inst: [a.getX(i), a.getY(i), a.getZ(i)].map((v) => +v.toFixed(3)) }); } }
     const cr = cam.matrixWorld.elements;   // forward = -Z column
     return { state: window.__bw.state(), camera: { pos: r3(cam.position), track: toTrack(cam.position.clone()), quat: cam.quaternion.toArray().map((x) => +x.toFixed(5)), fwd: [-cr[8], -cr[9], -cr[10]].map((x) => +x.toFixed(5)), fov: cam.fov, aspect: cam.aspect, near: cam.near },
       mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles };

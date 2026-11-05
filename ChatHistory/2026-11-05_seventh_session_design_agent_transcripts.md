@@ -1318,8 +1318,41 @@ I'll check the close-up of the foam round her base at iteration 8 before freezin
 
 [Image: original 2264x420, displayed at 2000x371. Multiply coordinates by 1.13 to map to original image.]
 
+- 20:00 `Bash`: Iteration 9: build, capture, close-up
+- 20:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it9_close.png
+**Lead → agent** (20:01 UTC):
 
-_119 tool steps._
+[Image: original 2264x420, displayed at 2000x371. Multiply coordinates by 1.13 to map to original image.]
+
+**Agent** (20:01 UTC):
+
+Iterations 8 and 9 look the same at her base, so the oval holes may not be the band's. A quick diagnostic run with the band's hole colours set to red/green via the tune hook.
+
+- 20:01 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/tune_diag.json
+- 20:01 `Bash`: Diagnostic capture with the band's colours marked
+- 20:02 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/diag_close.png
+**Agent** (20:02 UTC):
+
+The band is confirmed (yellow with red holes) and its holes are too narrow across: the angle frequency is too high, not the depth one. Fixing the across frequency and moving on to the final captures.
+
+- 20:02 `Bash`: Widen the band's cells; rebuild
+**Agent** (20:02 UTC):
+
+Final capture set (2.85, 3.0, 3.1 s, page and canvas, with cost).
+
+- 20:02 `Bash`: Final captures with cost at three moments
+**Agent** (20:05 UTC):
+
+Cost at 3.0 s: 209 draw calls (unchanged) and 1,428,897 triangles (+5.8 k; the finer lobe mesh is 500 instead of 320 triangles per lobe). Let me view the final frame.
+
+- 20:05 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/match_t3.00_canvas.png
+**Agent** (20:05 UTC):
+
+The final frame is coherent. Now the pixel-identity proof: a mirror of `WebDemo/` that serves the baseline bundle.
+
+- 20:05 `Bash`: Create a baseline demo mirror with the old bundle
+
+_128 tool steps._
 
 ---
 
@@ -1477,5 +1510,30 @@ Build is clean. Let me extend the probe to report the hero bubbles' screen place
 - 19:59 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 19:59 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 19:59 `Bash`: Build and capture iteration 1
+- 20:00 `Bash`: Compose original, before, iteration 1
+- 20:00 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sbs_t1.png
+**Agent** (20:00 UTC):
 
-_76 tool steps._
+The character is larger while the rim, coins, gem, sock and brushes hold their places. Measuring the character and the collectible boxes.
+
+- 20:00 `Bash`: Measure character in iteration 1 and read objects.py
+- 20:00 `Bash`: Measure character in iteration 1
+- 20:01 `Bash`: Character zone close-up original, before, iteration 1
+- 20:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/char_t1.png
+- 20:01 `Bash`: Read objects.py header
+- 20:01 `Bash`: Measure collectible boxes before and after
+- 20:01 `Bash`: Rim and edge strip measurements
+- 20:01 `Bash`: Compare rim area before and after with a difference image
+- 20:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/rim_t1.png
+- 20:02 `Bash`: Full-resolution upper wall crops before and after
+- 20:02 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_t1.png
+- 20:02 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:02 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+**Agent** (20:02 UTC):
+
+Now add the drift to the probe's bubble report.
+
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:03 `Bash`: Rebuild with seed-keeping and probe bubbles with drift
+
+_93 tool steps._

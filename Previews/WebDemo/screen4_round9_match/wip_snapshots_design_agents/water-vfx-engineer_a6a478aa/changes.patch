@@ -1257,10 +1257,10 @@ index 7b07bc3..97d26bd 100644
    vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
    float ndv = clamp(dot(N, V), 0.0, 1.0);
 diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
-index 53e97bf..209ea29 100644
+index 53e97bf..3a82252 100644
 --- a/WebDemo/src/tunnel_r9_match_water.js
 +++ b/WebDemo/src/tunnel_r9_match_water.js
-@@ -74,29 +74,39 @@ export const MATCH_WATER = {
+@@ -74,29 +74,40 @@ export const MATCH_WATER = {
      crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
      crestFront: 0.5,  // its share in front of the body (a broken foam rim at her base, where she sits on the water; a full-strength rim read as a flat white plate)
      crestW: [0.03, 0.06, 0.015, 0.035],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
@@ -1268,8 +1268,9 @@ index 53e97bf..209ea29 100644
 +    // (m, ragged by noise), its small bubbles (cells per unit of the swell's angle and per metre), the share without a hole
 +    // (iteration 2: 90% white under the body against the original's 14%: thinner, lacier; periwinkle-blue holes in front of
 +    // the body, where the original has lilac-blue bubbles under her)
-+    // (iteration 5: its cells were 2.5x taller than wide on screen, a striped row of ovals: cellD per metre down the face)
-+    froth: { amount: 1.0, depth: [0.03, 0.035], cell: 34.0, cellD: 85.0, holeShare: 0.4, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
++    // (iterations 5-10: its cells were 2.5x taller than wide on screen, a striped row of ovals: cell per unit of the swell's
++    // angle, cellD per metre down the face; a colour-marked diagnostic run showed the angle's cells were the narrow ones)
++    froth: { amount: 1.0, depth: [0.03, 0.035], cell: 15.0, cellD: 110.0, holeShare: 0.4, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#47a6ef', holeFront: '#7fa8f2' },   // (iteration 6: fewer, more varied holes: it read as polka dots)
 +  },
 +  // the bank's lobes (spLumps reshaded). (Gate fixes, step 7: glossy see-through domes with white caps, a violet soap tint
 +  // in front; replaced in the focused pass by the froth below)
@@ -1293,7 +1294,7 @@ index 53e97bf..209ea29 100644
 +    speckCell: 11.0, speckShare: 0.45, speck: 0.95, speck2Cell: 21.0, speck2Share: 0.5,   // (iteration 7: + a finer layer: the froth's texture was smoother than the original's, hp5 0.079 against 0.095)   // fine white droplets on the aqua body
 +    crest: 0.95, crestW: 0.56, crestCell: 5.0,   // the bubbly white crest along the top of the outline (from 1 - n.v), its bubbles
 +    edgeCut: [0.62, 0.3],                        // the ragged bubbly outline: cut from 1 - n.v = [0] minus [1] x the cell's bump
-+    spec: 0.6, specPow: 90,
++    spec: 0.9, specPow: 60,   // (iteration 9: a little stronger, for dimension: the lobes read matte)
 +    alpha: 0.98,
 +    lowFrom: [-0.35, -0.75],                     // toward aqua below (the normal's up), as the original's lower froth
    },
@@ -1322,7 +1323,7 @@ index 53e97bf..209ea29 100644
    // settings handed to the splash pass and the liquid (merged into MATCH.splash, MATCH.liquid, MATCH.heroWater before those
    // files merge them)
    splash: {
-@@ -112,6 +122,9 @@ export const MATCH_WATER = {
+@@ -112,6 +123,9 @@ export const MATCH_WATER = {
      lumpSquash: 0.66,   // flatter: rolling wave lobes, not balls
      lumpBump: 0.08,     // smoother domes than splash's foam lumps (0.16), so the white rim follows the outline
      lumpMin: 0.55,      // the smaller lobes of a cluster from this share of its biggest (splash: 0.35): no tiny lobes, whose thin rims broke into specks
@@ -1332,7 +1333,7 @@ index 53e97bf..209ea29 100644
      // curling sheets: [phi, height, width, curl, lean, shift]: short curved splashes curling over, two in front toward the
      // camera, and at both sides (low on the right: the approved right coin's face stays clear); saturated turquoise water
      // with a broken white lip, not tall glass fins
-@@ -119,8 +132,9 @@ export const MATCH_WATER = {
+@@ -119,8 +133,9 @@ export const MATCH_WATER = {
        [9, 0.16, 0.34, 1.35, 0.2, 0], [-13, 0.0, 0.28, 1.35, 0.2, 0],   // (the user's correction: lower at her base, the right one most)   // (gate fixes, step 7: the right-front one lower, 0.1 not 0.18: the fur shows pink to 0.85 there)
        [36, 0.27, 0.36, 1.45, 0.12, 0], [56, 0.24, 0.32, 1.4, 0.12, 0], [-36, 0.2, 0.32, 1.4, 0.12, 0], [-56, 0.17, 0.28, 1.4, 0.12, 0],
      ],
@@ -1344,7 +1345,7 @@ index 53e97bf..209ea29 100644
      apron: { amount: 0.13 },
    },
    liquid: {
-@@ -128,7 +142,7 @@ export const MATCH_WATER = {
+@@ -128,7 +143,7 @@ export const MATCH_WATER = {
      // (gate fixes, step 7: one on the left, not five: their thin rims over the new lobes broke into specks; the faint spray
      // sheets hidden: at 5% only their white drops were left, more specks)
      hide: ['r6BowWave', 'lqSpraySheets'],
@@ -1353,7 +1354,7 @@ index 53e97bf..209ea29 100644
    },
    heroWater: {
      // fewer, larger droplets (the Art Director: at most 30 white shapes of 20 px or more beside the body; splash had 900 small
-@@ -148,30 +162,41 @@ export const MATCH_WATER = {
+@@ -148,30 +163,41 @@ export const MATCH_WATER = {
    // 0.07 W, the others 0.03-0.05 W, a cluster of small rings), 3 at the lower left, and hundreds of small white flecks,
    // crescents and tiny rings along the bands)
    bubbles: {
@@ -1402,7 +1403,7 @@ index 53e97bf..209ea29 100644
    },
  };
  {
-@@ -309,71 +334,128 @@ export function matchSwellGLSL() {
+@@ -309,71 +335,128 @@ export function matchSwellGLSL() {
        mwCrest *= mix(1.0, ${f4(K.crestFront)}, mwFront);   // (in front of the body the lobes make the waterline: no white lip)
        mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
      }
@@ -1584,7 +1585,7 @@ index 53e97bf..209ea29 100644
  // Called at the end of buildHero (tunnel_r7_hero.js), right after buildMatch.
  export function buildMatchWater({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet }) {
    const report = { on: MATCH_ON, foam: MATCH_FOAM, floor: MATCH_WATER.floor, swell: MATCH_WATER.swell.mounds.length };
-@@ -451,7 +533,10 @@ void main() {
+@@ -451,7 +534,10 @@ void main() {
      dirT = dirT / max(length(dirT), 1e-4);
      vec2 dirR = vec2(-dirT.y, dirT.x);
      dirR *= -sign(dot(dirR, dirI) + 1e-6);                     // across it, pointing away from the axis
@@ -1596,7 +1597,7 @@ index 53e97bf..209ea29 100644
      mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);
      vRimW = hw / r;
      vBend = (floor(aB.w) - 50.0) / 10.0;
-@@ -464,13 +549,37 @@ uniform float uTime;
+@@ -464,13 +550,37 @@ uniform float uTime;
  varying vec2 vQ; varying float vA, vSeed, vKind, vRimW, vBend;
  void main() {
    if (vA < 0.003) discard;

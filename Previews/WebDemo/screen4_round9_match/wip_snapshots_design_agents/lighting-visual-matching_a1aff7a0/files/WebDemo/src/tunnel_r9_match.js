@@ -65,8 +65,13 @@ const restage = ([u, x, h, ...rest]) => [u + MATCH_CAM.du, x + MATCH_CAM.dx, h +
 //   4 lower-left  0.156 at (0.033, 0.768) -> original 0.137 at (0.084, 0.751)
 //   5 lower-left  0.093 at (0.16, 0.701)  -> original 0.08  at (0.197, 0.699)
 //   6 upper-left  0.121 at (0.064, 0.209) -> original 0.105 at (0.128, 0.23)
-const BUBBLE_FIX = { 2: [-0.164, 0, 0.15], 3: [0.072, 0, 0.102], 4: [-0.11, 0.074, 0.132], 5: [-0.085, 0, 0.086], 6: [-0.155, -0.102, 0.113] };
+const BUBBLE_FIX = {};
 const fixBubble = ([u, x, h, r], i) => { const f = BUBBLE_FIX[i]; return f ? [u, x + f[0], h + f[1], f[2]] : [u, x, h, r]; };
+// the bubbles' shader seeds each one's drift (up and sideways) from its world place, fract(3.1 x + 7.7 z) (tunnel_r7_hero.js):
+// a moved bubble would drift to another place by the hero moment, so its move along the path is trimmed (at most 0.065 m) to
+// keep the seed
+const keepSeed = (b0, b1) => { const k = 3.1 * (b1[1] - b0[1]) + 7.7 * (b1[0] - b0[0]); return [b1[0] - (k - Math.round(k)) / 7.7, ...b1.slice(1)]; };
+const heroBubble = (b0, i) => keepSeed(b0, fixBubble(restage(b0), i));
 // a framing brush [u, side (+1 screen-left), angle up from level (degrees), scale, radius from the drum's axis]: moved by
 // MATCH_CAM round the axis
 const restageDeco = ([u, side, a, sc, rr]) => {
@@ -128,7 +133,7 @@ export const MATCH = {
     // the big bubble in front of the rim plane (the collar cut it into a "ghost dome"), at the approved box (0.65-0.86,
     // 0.285-0.36) from the probed camera; the others +0.95 m
     // (the focused pass: all moved with the camera, MATCH_CAM, and the five too big ones resized and placed, BUBBLE_FIX)
-    bubbles: [restage([-1.7, -0.63, 2.52, 0.244]), ...HERO_BUBBLES.slice(1).map(([u, x, h, r]) => restage([u + STAGE, x, h, r]))].map(fixBubble),
+    bubbles: [[-1.7, -0.63, 2.52, 0.244], ...HERO_BUBBLES.slice(1).map(([u, x, h, r]) => [u + STAGE, x, h, r])].map(heroBubble),
     // round7's own bubbles duplicated the hero bubbles (a second big bubble, a column of small ones over the centre)
     hide: ['r6Flanges', 'r7Glow', 'r5Heart', 's4Rings', 'r7Bubbles'],
     vortex: { perLog: 4.5 },   // the procedural rings that remain (the floor's) as dense as the approved's 8-10 bands
