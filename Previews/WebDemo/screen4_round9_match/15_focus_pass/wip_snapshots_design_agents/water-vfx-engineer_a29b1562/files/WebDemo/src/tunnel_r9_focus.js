@@ -98,6 +98,10 @@ export const FOCUS = {
     //    water (no see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac); its white
     //    crest only as a broken highlight at her base
     swellFront: { dip: 0.08, full: 22, to: 48 },
+    // (item 1) the crest's mounds ([phi, height (m), half width (degrees)]; match's, with the two either side of her body
+    // raised: 13 -> 12 degrees at +0.13 m (match +0.07) and -21 degrees at -0.1 m -> -18 at +0.05), so the splash crests rise
+    // over her lower corners as in the original (her pink narrows to its base there, not cut flat), the front kept low
+    swell: { mounds: [[32, 0.079, 10], [12, 0.13, 8], [-4, 0.0, 6], [-18, 0.05, 8], [-42, 0.0, 9], [55, 0.049, 9], [-62, 0.055, 9]] },
     //    (the grazing-angle rim low and bluer)
     //    (the swell's upper face, between her body and its crest, is all "at the crest" for its white layer: at match's 0.95
     //    that white washed the whole face pale lavender-white (found with a colour-coded diagnostic render); 0.3 leaves
@@ -119,10 +123,10 @@ export const FOCUS = {
     //   water: the face's currents (light cyan, vivid blue, deeper blue), noise scale [along, down], how much
     face: {
       teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
-      rim: { w: [0.008, 0.03], cell: 16.0, share: 0.62, amount: 1.0 },
-      lace: { cell: 28.0, share: 0.45, reach: 0.32, r: [0.16, 0.36], flow: 1.4, amount: 1.0 },
+      rim: { w: [0.015, 0.045], cell: 16.0, share: 0.7, amount: 1.0 },
+      lace: { cell: 28.0, share: 0.6, reach: 0.32, r: [0.2, 0.42], flow: 1.4, amount: 1.0 },
       rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
-      spark: { cell: 34.0, share: 0.55, dot: [0.1, 0.2], reach: 0.45, amount: 1.0 },
+      spark: { cell: 34.0, share: 0.7, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
       water: { light: '#8edcff', mid: '#3aa8f7', deep: '#2272e8', scale: [1.7, 2.4], amount: 0.75 },
       white: '#f4fbff',
       debug: 0,

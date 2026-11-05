@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: camera, ribbons, objects)
 
-- **Taken:** 2026-11-05 18:43 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 18:48 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-ae55466877e7d52cb` (local only), started from `d6e836d`.
 - **Its own commits so far:** 
   - `0dae738 Focus camera: 0.85 m further back, 0.2 m higher, fov 68, 0.05 m right (off [-0.162, 1.126, -3.1], lookY 1.655, lookX 0.142): the character at the original's size and place at 3.0 s (width 0.473 W, top 0.695, base 0.850, centre (0.500, 0.780)); the gold rim 1.036x so its outer edge is the original's circle again (0.931 W round (0.550, 0.672)); rim ramp places for this camera (rimRho); water top 0.28`

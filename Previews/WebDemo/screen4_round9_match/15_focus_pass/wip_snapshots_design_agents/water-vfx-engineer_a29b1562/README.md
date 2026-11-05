@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: splash round her, floor)
 
-- **Taken:** 2026-11-05 18:43 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 18:48 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a29b1562d2b9d7e06` (local only), started from `d6e836d`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.

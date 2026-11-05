@@ -239,8 +239,15 @@ Now update NOTES.md with the camera decision as the first line.
 
 - 18:43 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
 - 18:43 `Bash`: Hide probe with new camera, lower corners
+- 18:47 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/hp_cam/crops.png
+**Lead → agent** (18:47 UTC):
 
-_96 tool steps._
+[Image: original 2690x1388, displayed at 2000x1032. Multiply coordinates by 1.34 to map to original image.]
+
+- 18:48 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 18:48 `Bash`: Build, capture fix A, crop lower corners
+
+_99 tool steps._
 
 ---
 
@@ -424,5 +431,21 @@ Rewrite the block to cut in the profile coordinate `t` and to use the distance a
 
 - 18:42 `Bash`: Add rounded lobes and smaller teeth, rebuild
 - 18:42 `Bash`: Capture trials 4 and 5 (more white; side mounds)
+- 18:44 `Bash`: Crop and measure trials 4 and 5
+- 18:44 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t45.png
+**Lead → agent** (18:44 UTC):
 
-_104 tool steps._
+[Image: original 2318x266, displayed at 2000x230. Multiply coordinates by 1.16 to map to original image.]
+
+- 18:44 `Bash`: Enlarged crop of trial 5
+- 18:44 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t5.png
+- 18:44 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/WebDemo/src/tunnel_r9_focus.js
+- 18:45 `Bash`: Make trial 5 settings the default and rebuild
+- 18:45 `Bash`: Capture trials 6 and 7 (whiter crest, lighter water)
+- 18:47 `Bash`: Crop and measure trials 6 and 7
+- 18:47 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t67.png
+- 18:47 `Bash`: Full-width crop of trial 6
+- 18:47 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t6.png
+- 18:47 `Bash`: Capture trial 8 (more lace, lighter water, more spray)
+
+_116 tool steps._
