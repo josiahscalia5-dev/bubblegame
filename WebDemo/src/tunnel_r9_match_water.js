@@ -619,7 +619,11 @@ void main() {
     // a streak along the band (its ring round the axis), bent toward the axis
     vec2 dirT = (viewMatrix * vec4(aT, 0.0)).xy, dirI = (viewMatrix * vec4(aN, 0.0)).xy;
     dirT = dirT / max(length(dirT), 1e-4);
-    vec2 dirR = vec2(-dirT.y, dirT.x);
+${FL.rot ? `    {   // ?s3=focus: turned off the band by up to rot degrees (the original's white bits do not all follow the rings)
+      float ro = (fract(aB.y * 13.7) - 0.5) * ${f4(2 * FL.rot * Math.PI / 180)};
+      dirT = vec2(dirT.x * cos(ro) - dirT.y * sin(ro), dirT.x * sin(ro) + dirT.y * cos(ro));
+    }
+` : ''}    vec2 dirR = vec2(-dirT.y, dirT.x);
     dirR *= -sign(dot(dirR, dirI) + 1e-6);                     // across it, pointing away from the axis
     float hw = max(fract(aB.w) * 0.1, 0.9 / pxPerM);          // half width (m), at least about a pixel
     mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);

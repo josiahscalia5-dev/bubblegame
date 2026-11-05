@@ -128,3 +128,17 @@ Still open after 1a: the side lumps read as smooth blue pillows (right x 0.78-0.
 | median | #aad7f4 | #7eb0e5 | #a7cdf2 |
 
 Round her after step 2 (the floor shows at her sides): white 16.8%, vivid 16.1%, texture 5.41, L* left / right 79.5 / 80.7.
+
+## Item 3: the flying white streaks among the bands (`mwTunnelBubbles` flecks; `frames/step3_*`)
+
+560 -> 220, chunkier (half width 2-4 cm, was 1.2-2.6), hooked (bend 0.3-2.2), and each turned off its band by up to 35
+degrees (`flecks.rot`, new; the shader piece is only generated when it is set, so match compiles the same shader). Bends up
+to 3 read as crescent moons (tune b1). The ring zone's measure (`streaks.py`) also counts Tunnel & Lighting's wall flecks:
+
+| ring zone r .12-.45 W | original | step 2 (560 flecks) | step 3 (220) |
+|---|---|---|---|
+| white pieces per 10k px | 3.2 | 13.2 | 10.7 |
+| p90 piece area (px) | 1,160 | 171 | 245 |
+| elongation | 2.1 | 3.4 | 2.7 |
+| along the tangent | 28% | 74% | 56% |
+| thickness median (px) | 3.5 | 1.9 | 2.0 |
