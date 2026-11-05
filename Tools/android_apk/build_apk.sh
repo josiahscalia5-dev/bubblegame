@@ -25,6 +25,7 @@ mkdir -p "$W/assets/www" "$W/classes"
 # 1. the game: the page, its bundle, the 3D models and the UI images, plus the start page
 cp "$ROOT/WebDemo/index.html" "$ROOT/WebDemo/game.bundle.js" "$W/assets/www/"
 cp -r "$ROOT/WebDemo/models" "$ROOT/WebDemo/ui" "$W/assets/www/"
+[ -d "$ROOT/WebDemo/textures" ] && cp -r "$ROOT/WebDemo/textures" "$W/assets/www/"   # Round 9's reference-derived textures
 cp "$HERE/start.html" "$W/assets/www/"
 # 2. the Java code -> DEX
 javac --release 11 -nowarn -classpath "$JAR" -d "$W/classes" $(find "$HERE/src" -name '*.java')
