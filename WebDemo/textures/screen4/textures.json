@@ -117,6 +117,38 @@
   ],
   "detail_ln_span": 2.99947267279344,
   "detail_bands": 12,
-  "detail_band_ln": 0.25
+  "detail_band_ln": 0.25,
+  "stars_removed": {
+   "top": 0.22,
+   "lum": 0.92,
+   "elong": 2.6,
+   "area": [
+    3,
+    4000
+   ],
+   "ray": [
+    8.0,
+    6.0
+   ],
+   "core": [
+    3.0,
+    1.5
+   ],
+   "keep": 0.3,
+   "found": 291
+  },
+  "lime_to_peach": {
+   "h": [
+    50.0,
+    62.0,
+    108.0,
+    125.0
+   ],
+   "to": 30.0,
+   "slope": 0.15,
+   "sat": 0.85,
+   "amount": 0.6,
+   "weight_mean": 0.0046
+  }
  }
 }

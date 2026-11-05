@@ -130,10 +130,8 @@ export function matchFloorDecl() {
 // nearK: 1 round the character (the water there deeper, vivid electric blue as approved); soft: the map's blur instead of its
 // detail (on the swell, where the lower water's cell pattern read as cracked glass)
 vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft) {
-  vec2 rel = cs - uHeroCam.xy;
-  float du = max(u - uHeroCam.z, 0.25);
-  float rw = length(rel) / du / uHeroTanW;
-  float tu = atan(rel.y, -rel.x) / 6.2831853;
+  float rw, tu;
+  mtPlace(cs, u, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
   float lr = log(max(rw, 1e-4));
   vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
   vec2 dx = dFdx(bv), dy = dFdy(bv);
