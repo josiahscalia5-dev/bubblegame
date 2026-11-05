@@ -1,0 +1,3 @@
+orig   core r<0.12W: pinkviolet  8.6%  warm 13.0%  white 35.3%  paleblue 14.5%  satblue  3.1%  L* 83.4
+match  core r<0.12W: pinkviolet  2.0%  warm  8.2%  white 36.5%  paleblue 26.3%  satblue  6.8%  L* 82.4
+focus  core r<0.12W: pinkviolet  0.9%  warm  7.8%  white 32.6%  paleblue 25.3%  satblue 15.7%  L* 80.9

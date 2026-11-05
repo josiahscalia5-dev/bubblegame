@@ -87,6 +87,12 @@ Measured at 3.0 s (original / match / focus):
   per pixel, so it also counts the rings and objects the nearer camera moved; how much of the rise comes from that is
   not separated.
 
+**Correction (the Art Director's review, `../16_art_director_focus_review/`):** `tunnel_palette.py`'s "deep blue" class
+needs brightness v < 0.85. The original's main cobalt, #1a60e1, has v 0.88 but is dark (L* 44), so the class misses it:
+14.8% of the original's ring zone is cobalt darker than L* 55 that the class leaves out. So the deep-blue figures above
+(3.9 / 7.0%) are wrong, and step 7's "less deep cobalt" followed that error. From now on, measure depth by L*
+(`ring_dark.py`, `polar_rings.py`): upper ring zone darker than L* 55, 30.5% original / 16.8% focus.
+
 ## Checklist (verified by the frames above; PASS only where the frame shows it)
 
 | item | verdict | note |

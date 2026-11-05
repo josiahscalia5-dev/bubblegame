@@ -1,0 +1,6 @@
+ring zone        orig   white 22.3%  pieces/10k px   3.2  area median    59 p90   1160  thickness median  3.5 px  elongation median  2.1  along-tangent  28%
+ring zone        match  white 18.8%  pieces/10k px   7.8  area median    21 p90    310  thickness median  1.9 px  elongation median  3.2  along-tangent  72%
+ring zone        focus  white 19.2%  pieces/10k px  12.7  area median    28 p90    126  thickness median  1.9 px  elongation median  3.5  along-tangent  71%
+upper arc y<.45  orig   white 12.0%  pieces/10k px   3.6  area median    44 p90    517  thickness median  3.2 px  elongation median  1.8  along-tangent  32%
+upper arc y<.45  match  white 12.5%  pieces/10k px   6.1  area median    24 p90    131  thickness median  1.8 px  elongation median  3.7  along-tangent  77%
+upper arc y<.45  focus  white 12.6%  pieces/10k px  12.2  area median    29 p90    102  thickness median  2.0 px  elongation median  3.8  along-tangent  73%

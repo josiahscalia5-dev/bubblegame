@@ -1,0 +1,3 @@
+orig   scene L* p5   43 p25   60 p50   75 p75   89 p95   98  white 20.1%
+match  scene L* p5   44 p25   60 p50   71 p75   84 p95   94  white 13.4%
+focus  scene L* p5   43 p25   59 p50   73 p75   82 p95   93  white 11.8%
