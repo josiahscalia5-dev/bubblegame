@@ -69,30 +69,30 @@
   mid vortex r.10-.22        H   230 S 0.46 V 0.94 | white 11%, pale blue 18%, azure 3%, electric blue 43%, deep cobalt 1%, lavender 23%, other 2% | obj 16%
   centre r<.08               H   232 S 0.35 V 0.97 | white 17%, pale blue 28%, azure 0%, electric blue 29%, deep cobalt 0%, lavender 24%, other 3% | obj 20%
 == liquid_2.85
-  char band y.60-.825        H   225 S 0.53 V 0.94 | white 8%, pale blue 11%, azure 29%, electric blue 23%, deep cobalt 2%, lavender 15%, other 12% | obj 45%
-  lower third y.667-.825     H   215 S 0.57 V 0.95 | white 3%, pale blue 11%, azure 41%, electric blue 19%, deep cobalt 1%, lavender 10%, other 15% | obj 51%
-  contact strip y.78-.88 x.33-.67 H   259 S 0.37 V 0.95 | white 6%, pale blue 6%, azure 0%, electric blue 24%, deep cobalt 0%, lavender 41%, other 23% | obj 45%
-  beside char L x<.22 y.66-.83 H   211 S 0.56 V 0.96 | white 5%, pale blue 18%, azure 52%, electric blue 13%, deep cobalt 0%, lavender 11%, other 1% | obj 8%
+  char band y.60-.825        H   226 S 0.51 V 0.94 | white 9%, pale blue 13%, azure 25%, electric blue 22%, deep cobalt 2%, lavender 14%, other 16% | obj 42%
+  lower third y.667-.825     H   216 S 0.52 V 0.94 | white 5%, pale blue 14%, azure 34%, electric blue 17%, deep cobalt 1%, lavender 9%, other 20% | obj 46%
+  contact strip y.78-.88 x.33-.67 H   262 S 0.35 V 0.95 | white 10%, pale blue 5%, azure 0%, electric blue 24%, deep cobalt 0%, lavender 33%, other 28% | obj 44%
+  beside char L x<.22 y.66-.83 H   211 S 0.52 V 0.96 | white 5%, pale blue 26%, azure 43%, electric blue 13%, deep cobalt 0%, lavender 11%, other 1% | obj 8%
   floor ahead y.55-.66 x.25-.8 H   240 S 0.48 V 0.93 | white 17%, pale blue 9%, azure 6%, electric blue 30%, deep cobalt 4%, lavender 28%, other 6% | obj 13%
   walls L/R r.22-.45         H   237 S 0.46 V 0.93 | white 23%, pale blue 11%, azure 4%, electric blue 38%, deep cobalt 3%, lavender 12%, other 9% | obj 29%
   upper wall r.22-.45        H   221 S 0.57 V 0.93 | white 12%, pale blue 14%, azure 3%, electric blue 55%, deep cobalt 3%, lavender 14%, other -0% | obj 0%
   mid vortex r.10-.22        H   228 S 0.48 V 0.94 | white 12%, pale blue 19%, azure 3%, electric blue 44%, deep cobalt 2%, lavender 18%, other 3% | obj 9%
   centre r<.08               H   230 S 0.37 V 0.96 | white 13%, pale blue 32%, azure 0%, electric blue 32%, deep cobalt 0%, lavender 19%, other 4% | obj 18%
 == liquid_3.0
-  char band y.60-.825        H   233 S 0.41 V 0.94 | white 16%, pale blue 18%, azure 14%, electric blue 18%, deep cobalt 1%, lavender 20%, other 12% | obj 41%
-  lower third y.667-.825     H   225 S 0.44 V 0.95 | white 11%, pale blue 19%, azure 21%, electric blue 18%, deep cobalt 1%, lavender 17%, other 14% | obj 47%
-  contact strip y.78-.88 x.33-.67 H   267 S 0.27 V 0.96 | white 17%, pale blue 10%, azure 0%, electric blue 13%, deep cobalt 0%, lavender 40%, other 21% | obj 48%
-  beside char L x<.22 y.66-.83 H   207 S 0.43 V 0.96 | white 15%, pale blue 34%, azure 33%, electric blue 9%, deep cobalt 1%, lavender 7%, other 1% | obj 30%
+  char band y.60-.825        H   234 S 0.39 V 0.94 | white 17%, pale blue 19%, azure 12%, electric blue 17%, deep cobalt 1%, lavender 19%, other 14% | obj 39%
+  lower third y.667-.825     H   227 S 0.42 V 0.95 | white 12%, pale blue 20%, azure 17%, electric blue 17%, deep cobalt 1%, lavender 16%, other 17% | obj 44%
+  contact strip y.78-.88 x.33-.67 H   271 S 0.26 V 0.96 | white 20%, pale blue 10%, azure 0%, electric blue 13%, deep cobalt 0%, lavender 32%, other 26% | obj 47%
+  beside char L x<.22 y.66-.83 H   208 S 0.39 V 0.96 | white 16%, pale blue 41%, azure 24%, electric blue 9%, deep cobalt 1%, lavender 7%, other 1% | obj 30%
   floor ahead y.55-.66 x.25-.8 H   238 S 0.39 V 0.93 | white 21%, pale blue 19%, azure 3%, electric blue 23%, deep cobalt 2%, lavender 29%, other 4% | obj 11%
   walls L/R r.22-.45         H   232 S 0.44 V 0.94 | white 22%, pale blue 17%, azure 3%, electric blue 38%, deep cobalt 1%, lavender 13%, other 6% | obj 25%
   upper wall r.22-.45        H   218 S 0.55 V 0.94 | white 13%, pale blue 21%, azure 2%, electric blue 60%, deep cobalt 1%, lavender 2%, other 1% | obj 0%
   mid vortex r.10-.22        H   230 S 0.41 V 0.94 | white 17%, pale blue 20%, azure 2%, electric blue 38%, deep cobalt 1%, lavender 21%, other 2% | obj 10%
   centre r<.08               H   232 S 0.35 V 0.97 | white 15%, pale blue 32%, azure 0%, electric blue 27%, deep cobalt 0%, lavender 22%, other 4% | obj 20%
 == liquid_3.1
-  char band y.60-.825        H   240 S 0.41 V 0.94 | white 19%, pale blue 17%, azure 10%, electric blue 17%, deep cobalt 1%, lavender 28%, other 7% | obj 31%
-  lower third y.667-.825     H   240 S 0.42 V 0.94 | white 18%, pale blue 17%, azure 15%, electric blue 15%, deep cobalt 1%, lavender 28%, other 8% | obj 39%
-  contact strip y.78-.88 x.33-.67 H   257 S 0.29 V 0.96 | white 14%, pale blue 19%, azure 0%, electric blue 12%, deep cobalt 0%, lavender 41%, other 13% | obj 41%
-  beside char L x<.22 y.66-.83 H   213 S 0.55 V 0.95 | white 4%, pale blue 18%, azure 35%, electric blue 28%, deep cobalt 1%, lavender 11%, other 1% | obj 21%
+  char band y.60-.825        H   241 S 0.39 V 0.94 | white 20%, pale blue 19%, azure 8%, electric blue 16%, deep cobalt 1%, lavender 28%, other 8% | obj 31%
+  lower third y.667-.825     H   241 S 0.39 V 0.95 | white 19%, pale blue 20%, azure 11%, electric blue 14%, deep cobalt 0%, lavender 27%, other 9% | obj 39%
+  contact strip y.78-.88 x.33-.67 H   260 S 0.28 V 0.96 | white 16%, pale blue 19%, azure 0%, electric blue 12%, deep cobalt 0%, lavender 35%, other 17% | obj 40%
+  beside char L x<.22 y.66-.83 H   214 S 0.50 V 0.95 | white 6%, pale blue 26%, azure 26%, electric blue 28%, deep cobalt 1%, lavender 11%, other 1% | obj 21%
   floor ahead y.55-.66 x.25-.8 H   242 S 0.38 V 0.94 | white 21%, pale blue 19%, azure 4%, electric blue 18%, deep cobalt 2%, lavender 34%, other 3% | obj 18%
   walls L/R r.22-.45         H   231 S 0.46 V 0.94 | white 22%, pale blue 16%, azure 3%, electric blue 40%, deep cobalt 1%, lavender 15%, other 3% | obj 18%
   upper wall r.22-.45        H   219 S 0.53 V 0.94 | white 14%, pale blue 22%, azure 3%, electric blue 57%, deep cobalt 1%, lavender 3%, other 0% | obj 0%

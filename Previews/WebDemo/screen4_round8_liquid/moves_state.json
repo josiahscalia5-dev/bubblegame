@@ -1,0 +1,185 @@
+{
+ "swerve": {
+  "phase": "running",
+  "time": 3.383,
+  "z": 0.627,
+  "x": 0.592,
+  "y": 0.358,
+  "world": [
+   0.592,
+   0.358,
+   0.627
+  ],
+  "path": {
+   "pitch": 0,
+   "heading": 0,
+   "bank": 0
+  },
+  "cameraUp": [
+   0,
+   1,
+   0
+  ],
+  "lane": 0,
+  "speed": 7.28,
+  "air": false,
+  "slope": 0,
+  "pitchDeg": -0.8,
+  "leanDeg": -16.8,
+  "coins": 1280,
+  "gems": 36,
+  "socks": 0,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "laps": 0,
+  "camera": [
+   0.111,
+   1.54,
+   -1.973
+  ],
+  "cameraPitchDeg": 1.12,
+  "particles": 165,
+  "repairedNormals": 1002065,
+  "machineryInnerX": 1.22,
+  "decorClear": {
+   "towers": 1.79,
+   "gears": 1.25,
+   "pipes": null,
+   "crowns": null
+  },
+  "rollerCandidate": null,
+  "hearts": 5,
+  "blasts": 3,
+  "turbos": 3,
+  "paused": false,
+  "blastT": 0,
+  "turboT": 0,
+  "knocks": 0,
+  "restarts": 0,
+  "bumps": 0
+ },
+ "jump": {
+  "phase": "running",
+  "time": 3.85,
+  "z": 3.997,
+  "x": 0.699,
+  "y": 1.268,
+  "world": [
+   0.699,
+   1.268,
+   3.997
+  ],
+  "path": {
+   "pitch": 0,
+   "heading": 0,
+   "bank": 0
+  },
+  "cameraUp": [
+   0,
+   1,
+   0
+  ],
+  "lane": 0,
+  "speed": 7.25,
+  "air": true,
+  "slope": -0.023,
+  "pitchDeg": -1.3,
+  "leanDeg": -0.5,
+  "coins": 1281,
+  "gems": 36,
+  "socks": 0,
+  "collected": {
+   "coins": 1,
+   "gems": 0
+  },
+  "laps": 0,
+  "camera": [
+   0.265,
+   1.779,
+   1.397
+  ],
+  "cameraPitchDeg": 1.37,
+  "particles": 116,
+  "repairedNormals": 1002065,
+  "machineryInnerX": 1.22,
+  "decorClear": {
+   "towers": 1.79,
+   "gears": 1.25,
+   "pipes": null,
+   "crowns": null
+  },
+  "rollerCandidate": null,
+  "hearts": 5,
+  "blasts": 3,
+  "turbos": 3,
+  "paused": false,
+  "blastT": 0,
+  "turboT": 0,
+  "knocks": 0,
+  "restarts": 0,
+  "bumps": 0
+ },
+ "landing": {
+  "phase": "running",
+  "time": 4.217,
+  "z": 6.568,
+  "x": 0.7,
+  "y": 0.407,
+  "world": [
+   0.7,
+   0.407,
+   6.568
+  ],
+  "path": {
+   "pitch": 0,
+   "heading": 0,
+   "bank": 0
+  },
+  "cameraUp": [
+   0,
+   1,
+   0
+  ],
+  "lane": 0,
+  "speed": 6.94,
+  "air": false,
+  "slope": -0.04,
+  "pitchDeg": 0.6,
+  "leanDeg": 0,
+  "coins": 1281,
+  "gems": 36,
+  "socks": 0,
+  "collected": {
+   "coins": 1,
+   "gems": 0
+  },
+  "laps": 0,
+  "camera": [
+   0.274,
+   1.521,
+   3.968
+  ],
+  "cameraPitchDeg": 1.77,
+  "particles": 229,
+  "repairedNormals": 1002065,
+  "machineryInnerX": 1.22,
+  "decorClear": {
+   "towers": 1.79,
+   "gears": 1.25,
+   "pipes": null,
+   "crowns": null
+  },
+  "rollerCandidate": null,
+  "hearts": 5,
+  "blasts": 3,
+  "turbos": 3,
+  "paused": false,
+  "blastT": 0,
+  "turboT": 0,
+  "knocks": 0,
+  "restarts": 0,
+  "bumps": 0
+ }
+}
