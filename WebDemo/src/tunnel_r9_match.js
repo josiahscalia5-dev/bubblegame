@@ -396,6 +396,23 @@ function focusInnerGLSL(M) {
   }
 `;
 }
+// ?s3=focus only (the Art Director's item 6, the left wall: x 0-0.30, y 0.44-0.79 glows pale in the original, L* 77, white
+// 25%, pale 30%; ours was saturated royal, L* 66, white 7%): on the walls' left sector (an angle window round `centre`
+// degrees, counter-clockwise from screen-right; cos: [from, full] of the cosine to it) and beyond r (rw), the water's own
+// light and dark are mapped onto a pale luminous palette (dark -> periwinkle blue, middle -> pale blue, bright -> white;
+// lum: [dark to middle from, to; middle to white from, to]), so the bands and splashes keep their shapes. The material's
+// colour, not a post effect: no bloom, exposure or haze
+function focusLeftGLSL(M) {
+  const G = M.leftGlow, a = (G.centre * Math.PI) / 180;
+  return /* glsl */ `  {   // ?s3=focus: the left wall's pale glowing water (tunnel_r9_focus.js walls.leftGlow)
+    float lw = smoothstep(${f4(G.cos[0])}, ${f4(G.cos[1])}, cos(6.2831853 * tu - ${f4(a)})) * smoothstep(${f4(G.r[0])}, ${f4(G.r[1])}, rw);
+    float ll = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    vec3 lpal = mix(${G.dark ? preLiftSat(M, G.dark) : 'c'}, ${preLiftSat(M, G.mid)}, smoothstep(${f4(G.lum[0])}, ${f4(G.lum[1])}, ll));   // (dark null: the darks kept vivid)
+    lpal = mix(lpal, ${preLiftSat(M, G.white)}, smoothstep(${f4(G.lum[2])}, ${f4(G.lum[3])}, ll));
+    c = mix(c, lpal, lw * ${f4(G.amount)});
+  }
+`;
+}
 function focusRibbonsGLSL(M) {
   const R = M.ribbons;
   const pre = (hex) => preLiftSat(M, hex);
@@ -584,7 +601,7 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
   gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
-${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
+${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}${FOCUS_ON && M.leftGlow ? focusLeftGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
       // to about 218 by bringing green down; the cyan streaks (205 degrees and under) and the warm patches kept (MATCH.walls.royal)
     float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
     float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};

@@ -189,3 +189,22 @@ the pale-blue body fixed it.
 | warm in the ring zone r 0.12-0.45 | 3.1% | 1.4% | 1.4% |
 
 Frames: `frames/focus_core_t3.00*.png`, crop `frames/crop_centre_original_before_after.png`, Pixel 7 `frames/phone_412x839_focus_core_3.00s.png`.
+Committed `2db3d6b`.
+
+## 7. AD item 6: the left wall (x 0-0.30, y 0.44-0.79; `scripts/left_wall.py`)
+
+Changed (focus only): `focusLeftGLSL` (`walls.leftGlow`): on the walls' left sector (angle window round 195 degrees) beyond rw
+0.2-0.3, the water's middle tones go pale azure (#9ccaf8) and its bright ones white, its darks stay vivid blue. The material's
+colour, no bloom, exposure or haze. A first version mapped the darks to periwinkle too: L* 78.5 but a flat lilac-grey wash
+(rejected by eye).
+
+| left wall at 3.0 s | original | before (`2db3d6b`) | after |
+|---|---|---|---|
+| L* | 76.9 | 66.5 | 77.3 |
+| white | 24.8% | 6.6% | 22.3% |
+| pale | 30.1% | 12.9% | 25.7% |
+| vivid blue | 26.1% | 63.2% | 24.1% |
+| lavender (whole zone / outer 3% strip) | 14.1 / 17.8% | 1.2 / 0.4% | 1.1 / 0.3% |
+
+Frames: `frames/focus_final_t3.00*.png` (and 2.85, 3.1), crop `frames/crop_left_wall_original_before_after.png`, Pixel 7
+`frames/phone_412x839_focus_final_3.00s.png`.
