@@ -116,3 +116,35 @@ Reach: lower-right coin 0.42 m from the body in the right lane; small coin 0.62-
 gem 0.26-0.33 m with a jump; first sock 0.737 m (0.735 before); second sock 0.55 m. `S3=focus s3_func.cjs`: lanes 0 / 2, jump,
 12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_after_objects.json`). Pixel 7 412x839: every object in frame
 (`frames/phone_412x839_focus_obj_3.00s.png`). Frames: `frames/focus_obj_t3.00*.png`, `frames/focus_obj_sock_only_t3.00.png`.
+Committed `82d568c`.
+
+## 4. Problem B (the kit) with AD item 3: the walls' water bands
+
+Cause of the hard outlines (`focusRibbonsGLSL`): across each band the colour was a sawtooth (dark gap at phase 0.86-0.985, then
+straight to the light cyan edge at phase 0), so every band had a hard dark/bright edge; each arc's offset was a step keyed
+on floor(rq) (hard breaks at arc ends and wherever rq crossed a whole band); `rEnd` drew dark lines at every arc end.
+Rebuilt (focus only): smooth value noise `fcNz` (FOCUS_NOISE_GLSL) over (angle, band phase) for the offsets and for the
+currents' colour picks; across a band deep -> body (royal / turquoise / periwinkle blended softly) with a soft cyan accent
+near the inner side -> deep -> gap -> deep (the same colour at both ends: no outline anywhere). Settings: `walls.bands.perLog`
+4.3 -> 3.4, `walls.ribbons` (soft, gapFrom, colours, turqShare 0.35, keep 0.15, satBoost 1.3, weaker curl).
+
+Findings while measuring (`scripts/minima_hist.py`, `lbins.py`, live renders with parts hidden):
+- the band count hardly follows perLog: the bubble layer (Water & VFX's, every object named *ubble*) adds about 1.2 dark
+  minima per ray (7.3 with them, 6.1 without, the original 6.3) and lifts the ring zone about 6 L*;
+- a calibration render (every flow colour `#1a62e2`) shows the display chain is exact (`#1c62e2` on screen); the lighter,
+  less saturated blues in the measures are under the translucent bubbles (forced flat royal, 25% of the zone still reads
+  `#547ce7`), so the saturated-blue median saturation stays 0.71 whatever the walls do;
+- the drum bloom (threshold 1.0) does not touch the walls' colours.
+
+| upper ring at 3.0 s | original | before (`82d568c`) | after | walls alone (bubbles hidden, similar settings) |
+|---|---|---|---|---|
+| dark bands per ray (polar_rings) | 6.3 | 7.4 | 7.6 | 6.1 |
+| L* sd along ray | 14.9 | 10.8 | 11.8 | 14.8 |
+| ray coherence (8 deg) | 0.60 | 0.49 | 0.48 | 0.61 |
+| median L* (ring_dark, y < .45) | 64 | 73 | 66 | 58 |
+| darker than L* 55 | 30.5% | 17.2% | 22.1% | 36-44% |
+| saturated blue hue / sat | 215 / 0.83 | 214 / 0.69 | 219 / 0.71 | 218-221 / 0.71-0.73 |
+| turquoise (zones ring_upper) | 7.5% | 10.8% | 7.3% | 3.6-12% |
+
+Waves animated (ring zone changes between 3.0 and 3.1 s). Pixel 7: no wedge, no holes (`frames/phone_412x839_focus_rib_3.00s.png`).
+Frames `frames/focus_rib_t3.00*.png`, `focus_rib_t3.10_canvas.png`; crop `frames/crop_rings_original_before_after_ribbons.png`.

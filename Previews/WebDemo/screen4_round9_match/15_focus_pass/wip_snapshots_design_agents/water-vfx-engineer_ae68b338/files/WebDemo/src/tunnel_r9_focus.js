@@ -207,7 +207,10 @@ export const FOCUS = {
       zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
         [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
       // more, bolder white streaks among the bands (match: 200)
-      flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
+      // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,
+      // chunkier (half width 2-4 cm), some hooked (bend), turned off the band by up to rot degrees (the original's white bits
+      // do not all follow the rings: along the tangent 28%, ours 74%))
+      flecks: { count: 220, size: [[0.05, 0.12], [0.02, 0.04]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
     },
   },
 };

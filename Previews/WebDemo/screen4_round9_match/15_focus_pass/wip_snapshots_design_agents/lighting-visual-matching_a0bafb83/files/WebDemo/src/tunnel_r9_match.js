@@ -432,7 +432,10 @@ function focusFlecksGLSL(M) {
       fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
-      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
+      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(${f4((F.edge || [0.6, 1.0])[0])}, ${f4((F.edge || [0.6, 1.0])[1])}, fe)) * fpx;
+      ${F.breakup ? `// (the Art Director's item 4: broken splash shapes, not clean dashes: the shape's edge eaten by smooth noise, so it
+      // breaks into an irregular blob with a ragged outline and a gap or two)
+      fk *= smoothstep(0.42, 0.58, fcNz(fq * vec2(${f4(F.breakup[0])}, ${f4(F.breakup[1])}) + fh * 31.0, 7.0) + (1.0 - fe) * ${f4(F.breakup[2])});` : ''}
       vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);

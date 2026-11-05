@@ -330,8 +330,54 @@ The build reproduces candidate M exactly, and the ring zone changes between 3.0 
 The walls are now deeper cobalt with soft, broad flows. Pixel 7 check, then commit.
 
 - 19:49 `Bash`: Pixel 7 capture after ribbons
+- 19:50 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/ribfinal/phone_412x839_rib.png
+**Lead → agent** (19:50 UTC):
 
-_170 tool steps._
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+**Agent** (19:50 UTC):
+
+Pixel 7 is fine: no wedge, no holes. I'll save the evidence (frames, ring crop, numbers) and commit item 2.
+
+- 19:50 `Bash`: Copy ribbons evidence into repo
+- 19:50 `Bash`: Copy ribbons frames and scripts into repo
+- 19:50 `Bash`: Write ring crop sheet into evidence
+**Agent** (19:50 UTC):
+
+Now the notes for item 2, then the commit.
+
+- 19:50 `Bash`: Show NOTES tail
+- 19:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:50 `Bash`: Commit the ribbons step
+**Agent** (19:50 UTC):
+
+Item 2 committed as `24fd87e`. Item 3, the wall streaks: let me read the Art Director's `streaks.py`.
+
+- 19:50 `Bash`: Read the streaks script and numbers
+- 19:51 `Bash`: Streak measures now, without wall flecks, and without bubbles
+- 19:51 `Bash`: Measure my wall flecks with bubbles hidden
+- 19:51 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl0_crop.png
+- 19:52 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:52 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl_cands.json
+- 19:52 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/cands_nobub.cjs
+- 19:52 `Bash`: Rebuild and render fleck candidates with and without bubbles
+- 19:53 `Bash`: Measure streaks for fleck candidates; crop
+- 19:53 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl1_crop.png
+**Lead → agent** (19:53 UTC):
+
+[Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
+
+- 19:54 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:54 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl_cands2.json
+- 19:54 `Bash`: Render, measure and crop crisper fleck candidate
+- 19:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl2_crop.png
+**Lead → agent** (19:54 UTC):
+
+[Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
+
+- 19:55 `Bash`: Locate edge and fleck application lines
+
+_192 tool steps._
 
 ---
 
@@ -687,5 +733,45 @@ f6 lands near the targets: L* 79.4 (target 80-84), white 22.1% as streaks, media
 
 - 19:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
 - 19:49 `Bash`: Build and capture item 2 defaults
+- 19:50 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/s2/s2_t3.00.png
+**Agent** (19:50 UTC):
 
-_184 tool steps._
+Coherent with the water round her and closer to the original's pale floor. Committing item 2.
+
+- 19:50 `Bash`: Save item 2 frames and floor crop
+- 19:50 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:50 `Bash`: Commit item 2
+**Agent** (19:51 UTC):
+
+Item 3: the flying white streaks among the bands (`mwTunnelBubbles` flecks). Let me read their code.
+
+- 19:51 `Bash`: Locate the tunnel bubbles and fleck code
+- 19:51 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (19:51 UTC):
+
+I'll add an optional random rotation for the flying streaks (gated: only when `flecks.rot` is set, so `match` compiles the same shader), then tune count, size and bend.
+
+- 19:51 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:51 `Bash`: Build and capture fewer, chunkier, rotated streaks
+- 19:52 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_b1.png
+- 19:52 `Bash`: Zoom on the left ring band
+- 19:52 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_b1z.png
+- 19:52 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:52 `Bash`: Build and capture item 3 defaults
+**Agent** (19:54 UTC):
+
+Committing item 3.
+
+- 19:54 `Bash`: Save item 3 frames and crop
+- 19:54 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:54 `Bash`: Commit item 3
+**Agent** (19:54 UTC):
+
+Item 4: bubbles near the tunnel's centre. First, how many of the detected circles are mine (hide-probe frames from earlier, same bubble placement).
+
+- 19:54 `Bash`: Count circles with each bubble layer hidden
+- 19:54 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tbcount.py
+- 19:54 `Bash`: Count my tunnel bubble pieces near the centre
+- 19:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp3.png
+
+_204 tool steps._

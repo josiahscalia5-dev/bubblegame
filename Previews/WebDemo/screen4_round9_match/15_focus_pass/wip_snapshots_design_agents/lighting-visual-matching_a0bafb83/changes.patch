@@ -1,8 +1,8 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-index 54f942e..2d94966 100644
+index 54f942e..5fb3005 100644
 --- a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
 +++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-@@ -87,3 +87,32 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
+@@ -87,3 +87,64 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
  small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
  gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
  Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
@@ -35,6 +35,42 @@ index 54f942e..2d94966 100644
 +gem 0.26-0.33 m with a jump; first sock 0.737 m (0.735 before); second sock 0.55 m. `S3=focus s3_func.cjs`: lanes 0 / 2, jump,
 +12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_after_objects.json`). Pixel 7 412x839: every object in frame
 +(`frames/phone_412x839_focus_obj_3.00s.png`). Frames: `frames/focus_obj_t3.00*.png`, `frames/focus_obj_sock_only_t3.00.png`.
++Committed `82d568c`.
++
++## 4. Problem B (the kit) with AD item 3: the walls' water bands
++
++Cause of the hard outlines (`focusRibbonsGLSL`): across each band the colour was a sawtooth (dark gap at phase 0.86-0.985, then
++straight to the light cyan edge at phase 0), so every band had a hard dark/bright edge; each arc's offset was a step keyed
++on floor(rq) (hard breaks at arc ends and wherever rq crossed a whole band); `rEnd` drew dark lines at every arc end.
++Rebuilt (focus only): smooth value noise `fcNz` (FOCUS_NOISE_GLSL) over (angle, band phase) for the offsets and for the
++currents' colour picks; across a band deep -> body (royal / turquoise / periwinkle blended softly) with a soft cyan accent
++near the inner side -> deep -> gap -> deep (the same colour at both ends: no outline anywhere). Settings: `walls.bands.perLog`
++4.3 -> 3.4, `walls.ribbons` (soft, gapFrom, colours, turqShare 0.35, keep 0.15, satBoost 1.3, weaker curl).
++
++Findings while measuring (`scripts/minima_hist.py`, `lbins.py`, live renders with parts hidden):
++- the band count hardly follows perLog: the bubble layer (Water & VFX's, every object named *ubble*) adds about 1.2 dark
++  minima per ray (7.3 with them, 6.1 without, the original 6.3) and lifts the ring zone about 6 L*;
++- a calibration render (every flow colour `#1a62e2`) shows the display chain is exact (`#1c62e2` on screen); the lighter,
++  less saturated blues in the measures are under the translucent bubbles (forced flat royal, 25% of the zone still reads
++  `#547ce7`), so the saturated-blue median saturation stays 0.71 whatever the walls do;
++- the drum bloom (threshold 1.0) does not touch the walls' colours.
++
++| upper ring at 3.0 s | original | before (`82d568c`) | after | walls alone (bubbles hidden, similar settings) |
++|---|---|---|---|---|
++| dark bands per ray (polar_rings) | 6.3 | 7.4 | 7.6 | 6.1 |
++| L* sd along ray | 14.9 | 10.8 | 11.8 | 14.8 |
++| ray coherence (8 deg) | 0.60 | 0.49 | 0.48 | 0.61 |
++| median L* (ring_dark, y < .45) | 64 | 73 | 66 | 58 |
++| darker than L* 55 | 30.5% | 17.2% | 22.1% | 36-44% |
++| saturated blue hue / sat | 215 / 0.83 | 214 / 0.69 | 219 / 0.71 | 218-221 / 0.71-0.73 |
++| turquoise (zones ring_upper) | 7.5% | 10.8% | 7.3% | 3.6-12% |
++
++Waves animated (ring zone changes between 3.0 and 3.1 s). Pixel 7: no wedge, no holes (`frames/phone_412x839_focus_rib_3.00s.png`).
++Frames `frames/focus_rib_t3.00*.png`, `focus_rib_t3.10_canvas.png`; crop `frames/crop_rings_original_before_after_ribbons.png`.
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png
+new file mode 100644
+index 0000000..da03010
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png
 new file mode 100644
 index 0000000..aaaa3c1
@@ -47,10 +83,26 @@ diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/fram
 new file mode 100644
 index 0000000..4f80e93
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00.png
+new file mode 100644
+index 0000000..d0b7685
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00_canvas.png
+new file mode 100644
+index 0000000..7c8d212
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.10_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.10_canvas.png
+new file mode 100644
+index 0000000..7d332d2
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.10_canvas.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png
 new file mode 100644
 index 0000000..2f63299
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_rib_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_rib_3.00s.png
+new file mode 100644
+index 0000000..d58dc09
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_rib_3.00s.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/s3_func_focus_after_objects.json b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/s3_func_focus_after_objects.json
 new file mode 100644
 index 0000000..88b06c8
@@ -607,6 +659,27 @@ index 0000000..e9897a0
 +S = Image.new('RGB', (w, h), (255, 255, 255)); x = 0
 +for t in tiles: S.paste(t, (x, 0)); x += t.width + 8
 +S.save(out)
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/lbins.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/lbins.py
+new file mode 100644
+index 0000000..4aab0ee
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/lbins.py
+@@ -0,0 +1,15 @@
++# lbins.py img...: the ring_upper zone (x .20-.85, y .29-.44), objects excluded: median sRGB colour, hue, saturation per L* bin
++import sys, numpy as np, cv2
++W, H = 767, 1536
++for p in sys.argv[1:]:
++    im = cv2.resize(cv2.imread(p)[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++    hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255; v = hsv[..., 2]/255
++    L = cv2.cvtColor(im, cv2.COLOR_BGR2LAB)[..., 0].astype(float)*100/255
++    obj = ((h > 25) & (h < 65) & (s > 0.5)) | (((h > 300) | (h < 15)) & (s > 0.40))
++    m = np.zeros((H, W), bool); m[int(.29*H):int(.44*H), int(.2*W):int(.85*W)] = True; m &= ~obj
++    print(p.split('/')[-1][:28])
++    for lo in range(20, 100, 10):
++        k = m & (L >= lo) & (L < lo + 10)
++        if k.sum() < 50: continue
++        rgb = np.median(im[k][:, ::-1], axis=0).astype(int)
++        print(f"   L* {lo:2d}-{lo+10:3d} share {k.sum()/m.sum()*100:5.1f}%  median #{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}  hue {np.median(h[k]):5.1f} sat {np.median(s[k]):.2f}")
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs
 new file mode 100644
 index 0000000..364a93f
@@ -681,6 +754,62 @@ index 0000000..361ba4d
 +    if len(xx) > 20:
 +        ev, evec = np.linalg.eigh(np.cov(np.vstack([xx, yy]))); d = evec[:, 1]; ang = (-np.degrees(np.arctan2(d[1], d[0])) + 90) % 180 - 90
 +    print(f"{p.split('/')[-1]:14s} x {x0/W:.3f}-{x1/W:.3f} y {y0/H:.3f}-{y1/H:.3f} centre ({(x0+x1)/2/W:.3f}, {(y0+y1)/2/H:.3f}) w {(x1-x0)/W:.3f} h {(y1-y0)/H:.3f} cuff {ang:+.1f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/minima_hist.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/minima_hist.py
+new file mode 100644
+index 0000000..5192019
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/minima_hist.py
+@@ -0,0 +1,24 @@
++# minima_hist.py img...: as the AD's polar_rings.py (VP (0.53, 0.525), r 0.08-0.42 W, upper arc 15-165 deg, L* smoothed 1.5,
++# minima with prominence >= 6, rays with < 10% objects): the dark minima per ray in 8 radius bins (r in W), and the mean L*
++import sys, numpy as np, cv2
++from scipy.ndimage import gaussian_filter1d
++from scipy.signal import find_peaks
++W, H = 767, 1536; cx, cy = 0.53*W, 0.525*H; NR, NA = 160, 720
++rr = np.exp(np.linspace(np.log(0.08*W), np.log(0.42*W), NR)); aa = np.radians(np.linspace(0, 360, NA, endpoint=False))
++mapx = (cx + rr[:, None]*np.cos(aa[None, :])).astype(np.float32); mapy = (cy - rr[:, None]*np.sin(aa[None, :])).astype(np.float32)
++edges = np.linspace(0, NR, 9).astype(int)
++print('r bins (W):', ' '.join(f'{rr[e]/W:.3f}' for e in edges[:-1]), f'{0.42:.3f}')
++for p in sys.argv[1:]:
++    im = cv2.resize(cv2.imread(p)[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++    pol = cv2.remap(im, mapx, mapy, cv2.INTER_LINEAR)
++    L = gaussian_filter1d(cv2.cvtColor(pol, cv2.COLOR_BGR2LAB)[..., 0].astype(float)*100/255, 1.5, axis=0)
++    hsv = cv2.cvtColor(pol, cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255
++    obj = ((h > 25) & (h < 65) & (s > 0.5)) | (((h > 300) | (h < 15)) & (s > 0.40))
++    deg = np.degrees(aa); sel = [i for i in range(NA) if 15 <= deg[i] <= 165 and obj[:, i].mean() < 0.1]
++    cnt = np.zeros(8)
++    for i in sel:
++        pk, _ = find_peaks(-L[:, i], prominence=6)
++        for k in pk: cnt[np.searchsorted(edges, k, side='right') - 1] += 1
++    cnt /= len(sel)
++    Lm = [L[edges[j]:edges[j+1], sel].mean() for j in range(8)]
++    print(f"{p.split('/')[-1][:24]:24s} minima/ray by bin: " + ' '.join(f'{c:4.2f}' for c in cnt) + f"  total {cnt.sum():.2f} | L* " + ' '.join(f'{v:4.0f}' for v in Lm))
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/ring_metrics.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/ring_metrics.py
+new file mode 100644
+index 0000000..6205d94
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/ring_metrics.py
+@@ -0,0 +1,20 @@
++# ring_metrics.py <canvas.png> [label]: the Art Director's ring measures (16_art_director_focus_review/scripts, via run_ad.py) on
++# one frame, only the lines for the new frame ('focus') and the original ('orig', with ORIG=1):
++#   polar_rings.py upper arc 15-165 (dark bands per ray, L* sd along ray), ring_dark.py upper arc y < .45 (median L*, share
++#   darker than L* 55, saturated-blue hue and saturation), zones.py ring_upper (turquoise share) and ring_left / centre
++import sys, os, subprocess
++HERE = os.path.dirname(os.path.abspath(__file__))
++RUN = os.environ.get('RUN_AD') or os.path.join(HERE, 'run_ad.py')
++canvas = os.path.abspath(sys.argv[1]); label = sys.argv[2] if len(sys.argv) > 2 else os.path.basename(canvas)
++who = ('focus', 'orig') if os.environ.get('ORIG') else ('focus',)
++def run(name):
++    return subprocess.run([sys.executable, '-I', RUN, name, canvas], capture_output=True, text=True).stdout.splitlines()
++print('==', label)
++for l in run('polar_rings'):
++    if 'upper arc' in l and l.split()[0] in who: print('  polar ', l)
++for l in run('ring_dark'):
++    if 'upper arc' in l and l.split()[0] in who: print('  dark  ', l)
++z = run('zones'); cur = ''
++for l in z:
++    if not l.startswith(' '): cur = l.split()[0]; continue
++    if cur in ('ring_upper', 'ring_left', 'centre') and l.split()[0] in who: print(f'  zone {cur:10s}', l.strip())
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
 index 2f39f0e..b05113b 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
@@ -775,7 +904,7 @@ index 2f39f0e..b05113b 100644
        royal: { amount: 0.1 },
        // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..ed41618 100644
+index 83acc58..ff34541 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -360,6 +360,14 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
@@ -851,7 +980,19 @@ index 83acc58..ed41618 100644
        float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
        c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
      }
-@@ -440,6 +453,7 @@ uniform vec2 uMatchVP, uMatchRes;
+@@ -419,7 +432,10 @@ function focusFlecksGLSL(M) {
+       fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
+       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
+       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
+-      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
++      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(${f4((F.edge || [0.6, 1.0])[0])}, ${f4((F.edge || [0.6, 1.0])[1])}, fe)) * fpx;
++      ${F.breakup ? `// (the Art Director's item 4: broken splash shapes, not clean dashes: the shape's edge eaten by smooth noise, so it
++      // breaks into an irregular blob with a ragged outline and a gap or two)
++      fk *= smoothstep(0.42, 0.58, fcNz(fq * vec2(${f4(F.breakup[0])}, ${f4(F.breakup[1])}) + fh * 31.0, 7.0) + (1.0 - fe) * ${f4(F.breakup[2])});` : ''}
+       vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
+       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
+       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
+@@ -440,6 +456,7 @@ uniform vec2 uMatchVP, uMatchRes;
  ${RIM_SAMPLE}
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
@@ -859,7 +1000,7 @@ index 83acc58..ed41618 100644
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
  // normal (toward the axis), T0 the path's direction
  vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
-@@ -652,6 +666,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -652,6 +669,7 @@ export function matchCollectibles({ coins, gems, socks }) {
        if (!k.turn || !k.turn.children[0]) continue;
        const model = k.turn.children[0], pose = new THREE.Group();
        pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
@@ -867,7 +1008,7 @@ index 83acc58..ed41618 100644
        k.turn.remove(model); pose.add(model); k.turn.add(pose);
      }
      report.sockPose = MATCH.sockPose;
-@@ -660,6 +675,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -660,6 +678,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }

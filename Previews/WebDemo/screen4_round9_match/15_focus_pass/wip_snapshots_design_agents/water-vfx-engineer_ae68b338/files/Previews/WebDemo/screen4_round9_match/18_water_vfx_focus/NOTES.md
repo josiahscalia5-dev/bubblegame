@@ -105,3 +105,40 @@ Still open after 1a: the side lumps read as smooth blue pillows (right x 0.78-0.
 | texture | 5.47 | 5.03 | 5.55 | 5.86 |
 | pink width at the base | 0.20 W | 0.27 W | 0.25 W | 0.25 W |
 | L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 78.6 / 80.5 | 77.7 / 79.8 |
+
+## Item 2: the floor ahead, behind her (`frames/step2_*`, `crop_floor_ahead_orig_before_step2.png`)
+
+- Hide probe (x .25-.65, y .60-.69): `lqFloor` draws 76% of it, `heroWalls` 12%. Match's floor levers (`deep` 0.5, `trough`
+  0.18, `delilac` 1.0) moved L* only 71.8 -> 72.1: the colour there is the walls' derived map continued onto the floor.
+- New `focusFloorGLSL` (inside `matchFloor`, the floor's own water only; the swell's lower water, which calls the same
+  function, passes fx 0): lilac turned pale blue, the colour lifted toward the original's pale blue, and broken white crest
+  streaks along the whirlpool's circles moving with the walls' flow, clustered in bands, with blue dashes between
+  (`FOCUS.water.floorFx`). Tunes f2-f6; f6 kept.
+- The floor's remaining lavender (about 11%) is NOT the water: with the floor forced fully pale (lift 1.0) it stays in the
+  same lane-shaped blobs and none of the bubble or glow objects draws it (hide probe); it matches the brushes' pulsing pink
+  hazard warning drawn on the floor after the water (`s4Haz` in `tunnel_r8_liquid.js`: gameplay feedback, not changed).
+
+| floor ahead | original | before (71f7fa7) | step 2 |
+|---|---|---|---|
+| L* | 83.5 | 71.8 | 79.4 |
+| white | 26.9% | 6.9% | 22.1% |
+| pale | 35.4% | 28.6% | 43.5% |
+| lavender | 3.6% | 10.7% | 10.8% (the hazard glow) |
+| vivid | 15.5% | 28.1% | 12.3% |
+| median | #aad7f4 | #7eb0e5 | #a7cdf2 |
+
+Round her after step 2 (the floor shows at her sides): white 16.8%, vivid 16.1%, texture 5.41, L* left / right 79.5 / 80.7.
+
+## Item 3: the flying white streaks among the bands (`mwTunnelBubbles` flecks; `frames/step3_*`)
+
+560 -> 220, chunkier (half width 2-4 cm, was 1.2-2.6), hooked (bend 0.3-2.2), and each turned off its band by up to 35
+degrees (`flecks.rot`, new; the shader piece is only generated when it is set, so match compiles the same shader). Bends up
+to 3 read as crescent moons (tune b1). The ring zone's measure (`streaks.py`) also counts Tunnel & Lighting's wall flecks:
+
+| ring zone r .12-.45 W | original | step 2 (560 flecks) | step 3 (220) |
+|---|---|---|---|
+| white pieces per 10k px | 3.2 | 13.2 | 10.7 |
+| p90 piece area (px) | 1,160 | 171 | 245 |
+| elongation | 2.1 | 3.4 | 2.7 |
+| along the tangent | 28% | 74% | 56% |
+| thickness median (px) | 3.5 | 1.9 | 2.0 |

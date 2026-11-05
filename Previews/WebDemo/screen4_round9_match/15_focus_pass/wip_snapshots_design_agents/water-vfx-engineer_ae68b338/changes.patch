@@ -1,9 +1,9 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
 new file mode 100644
-index 0000000..a9e6203
+index 0000000..86f585c
 --- /dev/null
 +++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
-@@ -0,0 +1,107 @@
+@@ -0,0 +1,144 @@
 +# Water & VFX, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
 +
 +Worktree branch `worktree-agent-a29b1562d2b9d7e06`, started at `d6e836d`. Files: `WebDemo/src/tunnel_r9_match_water.js` and
@@ -111,6 +111,43 @@ index 0000000..a9e6203
 +| texture | 5.47 | 5.03 | 5.55 | 5.86 |
 +| pink width at the base | 0.20 W | 0.27 W | 0.25 W | 0.25 W |
 +| L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 78.6 / 80.5 | 77.7 / 79.8 |
++
++## Item 2: the floor ahead, behind her (`frames/step2_*`, `crop_floor_ahead_orig_before_step2.png`)
++
++- Hide probe (x .25-.65, y .60-.69): `lqFloor` draws 76% of it, `heroWalls` 12%. Match's floor levers (`deep` 0.5, `trough`
++  0.18, `delilac` 1.0) moved L* only 71.8 -> 72.1: the colour there is the walls' derived map continued onto the floor.
++- New `focusFloorGLSL` (inside `matchFloor`, the floor's own water only; the swell's lower water, which calls the same
++  function, passes fx 0): lilac turned pale blue, the colour lifted toward the original's pale blue, and broken white crest
++  streaks along the whirlpool's circles moving with the walls' flow, clustered in bands, with blue dashes between
++  (`FOCUS.water.floorFx`). Tunes f2-f6; f6 kept.
++- The floor's remaining lavender (about 11%) is NOT the water: with the floor forced fully pale (lift 1.0) it stays in the
++  same lane-shaped blobs and none of the bubble or glow objects draws it (hide probe); it matches the brushes' pulsing pink
++  hazard warning drawn on the floor after the water (`s4Haz` in `tunnel_r8_liquid.js`: gameplay feedback, not changed).
++
++| floor ahead | original | before (71f7fa7) | step 2 |
++|---|---|---|---|
++| L* | 83.5 | 71.8 | 79.4 |
++| white | 26.9% | 6.9% | 22.1% |
++| pale | 35.4% | 28.6% | 43.5% |
++| lavender | 3.6% | 10.7% | 10.8% (the hazard glow) |
++| vivid | 15.5% | 28.1% | 12.3% |
++| median | #aad7f4 | #7eb0e5 | #a7cdf2 |
++
++Round her after step 2 (the floor shows at her sides): white 16.8%, vivid 16.1%, texture 5.41, L* left / right 79.5 / 80.7.
++
++## Item 3: the flying white streaks among the bands (`mwTunnelBubbles` flecks; `frames/step3_*`)
++
++560 -> 220, chunkier (half width 2-4 cm, was 1.2-2.6), hooked (bend 0.3-2.2), and each turned off its band by up to 35
++degrees (`flecks.rot`, new; the shader piece is only generated when it is set, so match compiles the same shader). Bends up
++to 3 read as crescent moons (tune b1). The ring zone's measure (`streaks.py`) also counts Tunnel & Lighting's wall flecks:
++
++| ring zone r .12-.45 W | original | step 2 (560 flecks) | step 3 (220) |
++|---|---|---|---|
++| white pieces per 10k px | 3.2 | 13.2 | 10.7 |
++| p90 piece area (px) | 1,160 | 171 | 245 |
++| elongation | 2.1 | 3.4 | 2.7 |
++| along the tangent | 28% | 74% | 56% |
++| thickness median (px) | 3.5 | 1.9 | 2.0 |
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json
 new file mode 100644
 index 0000000..d1295fc
@@ -1109,6 +1146,14 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before71/f
 new file mode 100644
 index 0000000..8e9ceda
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before71/focus_71f7fa7_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_floor_ahead_orig_before_step2.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_floor_ahead_orig_before_step2.png
+new file mode 100644
+index 0000000..fa6b929
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_floor_ahead_orig_before_step2.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_ring_band_orig_step2_step3.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_ring_band_orig_step2_step3.png
+new file mode 100644
+index 0000000..bfe8aac
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_ring_band_orig_step2_step3.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1a_1b.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1a_1b.png
 new file mode 100644
 index 0000000..fce5085
@@ -2141,6 +2186,22 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/ste
 new file mode 100644
 index 0000000..acbf4e8
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1c_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00.png
+new file mode 100644
+index 0000000..8abc8a2
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00_canvas.png
+new file mode 100644
+index 0000000..2e5efce
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00.png
+new file mode 100644
+index 0000000..a753de8
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00_canvas.png
+new file mode 100644
+index 0000000..269f44e
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00_canvas.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py
 new file mode 100644
 index 0000000..ca171b3
@@ -2303,7 +2364,7 @@ index 0000000..cb1ae08
 +        near = sum(1 for q in cs if np.hypot((q[0]+x0)/W - 0.53, (q[1]+y0 - 0.525*H)/W) < 0.2)
 +        print(f"   param2 {P2} {k:10s} circles {len(cs):3d}  in centre box {inbox:3d}  within 0.2 W of the centre {near:3d}")
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..e7fea08 100644
+index 2f39f0e..3195dc7 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -105,30 +105,83 @@ export const FOCUS = {
@@ -2412,8 +2473,20 @@ index 2f39f0e..e7fea08 100644
      bubbles: {
        // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
        //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
+@@ -149,7 +207,10 @@ export const FOCUS = {
+       zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
+         [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
+       // more, bolder white streaks among the bands (match: 200)
+-      flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
++      // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,
++      // chunkier (half width 2-4 cm), some hooked (bend), turned off the band by up to rot degrees (the original's white bits
++      // do not all follow the rings: along the tangent 28%, ours 74%))
++      flecks: { count: 220, size: [[0.05, 0.12], [0.02, 0.04]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
+     },
+   },
+ };
 diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
-index 4813c34..8e2d91a 100644
+index 4813c34..a67b8db 100644
 --- a/WebDemo/src/tunnel_r9_match_water.js
 +++ b/WebDemo/src/tunnel_r9_match_water.js
 @@ -175,20 +175,20 @@ export const MATCH_WATER = {
@@ -2658,3 +2731,16 @@ index 4813c34..8e2d91a 100644
      float cRd = max(dot(reflect(-L, N), V), 0.0);
      cc += vec3(1.0) * pow(cRd, 120.0) * ${f4(B.spec)} + ${lin3(B.hi)} * pow(cF, 3.0) * 0.25;
      col = cc;
+@@ -504,7 +619,11 @@ void main() {
+     // a streak along the band (its ring round the axis), bent toward the axis
+     vec2 dirT = (viewMatrix * vec4(aT, 0.0)).xy, dirI = (viewMatrix * vec4(aN, 0.0)).xy;
+     dirT = dirT / max(length(dirT), 1e-4);
+-    vec2 dirR = vec2(-dirT.y, dirT.x);
++${FL.rot ? `    {   // ?s3=focus: turned off the band by up to rot degrees (the original's white bits do not all follow the rings)
++      float ro = (fract(aB.y * 13.7) - 0.5) * ${f4(2 * FL.rot * Math.PI / 180)};
++      dirT = vec2(dirT.x * cos(ro) - dirT.y * sin(ro), dirT.x * sin(ro) + dirT.y * cos(ro));
++    }
++` : ''}    vec2 dirR = vec2(-dirT.y, dirT.x);
+     dirR *= -sign(dot(dirR, dirI) + 1e-6);                     // across it, pointing away from the axis
+     float hw = max(fract(aB.w) * 0.1, 0.9 / pxPerM);          // half width (m), at least about a pixel
+     mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);
