@@ -19,9 +19,29 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - Blue water first, foam only as an accent.
   - Real three.js only; never restart the game.
   - Pixel-identical older switches; no keys in the repository; ask before spending Tripo credits.
-- **Round 8, `?s3=liquid` (in progress):** the real animated water body the user asked for, in
-  `WebDemo/src/tunnel_r8_liquid.js`. `?s3=liquid,nofoam` shows the liquid alone. `?s3=hero` and everything older stay
-  pixel-identical. Evidence: `Previews/WebDemo/screen4_round8_liquid/`.
+- **Round 8, `?s3=liquid` (in progress):** the real animated water body the user asked for.
+  - **Code:** `WebDemo/src/tunnel_r8_liquid.js`, by the Water & VFX specialist. One custom `ShaderMaterial` water model:
+    - a generated normal texture, flow-mapped with the two-phase crossfade borrowed from three.js's `Water2.js`;
+    - analytic reflection of the tunnel's glow, colour by water depth, a sun-glint and cyan highlights.
+  - **It shades:** a new water ribbon along the track; the hero walls' rings, as bands of water; and the reshaped,
+    translucent swell round the character.
+  - **Switches:** `?s3=liquid,nofoam` shows the liquid alone.
+  - **Why not three.js's own water:** `Water` and `Water2` were rejected. They render the scene again into mirror
+    targets every frame and only work on flat planes.
+  - **Saved so far:**
+    - Checkpoint 1, `f1fb2fc`: the user called it "a real improvement, preserve it".
+    - Checkpoint 2, `8ddca5e`: a stronger swirl, a deeper centre, the first foam-off and foam-on captures.
+  - **Still to do:** the user's last requests.
+    - Translucent white splashes round the character. They are not yet visible, so foam on looks almost the same as
+      foam off.
+    - A deeper, less pale tunnel centre.
+  - **Then:** the specialist's pixel-identity proof that `?s3=hero` and everything older are unchanged, and the
+    gameplay checks.
+  - **Evidence:** `Previews/WebDemo/screen4_round8_liquid/`.
+- **Art Director's baseline review**, with measured water targets: `Previews/WebDemo/screen4_round8_art_director_baseline/`.
+- **Water look references** sent by the user (secondary to the approved Screen 4):
+  `Design/ReferencePacks/2026-11-05_Water_Look_References/`.
+- **Chat history:** `ChatHistory/2026-11-04_fourth_account_recovery_round8_liquid_session.md`.
 
 ## Newest (4–5 November, 22:00 UTC onward): original account, branch `claude/screen-4-art-rebuild-69gb2p`, Round 7 HERO SCENE
 
