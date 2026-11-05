@@ -76,7 +76,9 @@ export const MATCH_WATER = {
     crestW: [0.03, 0.06, 0.015, 0.035],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
     // (focused pass) the froth band along the top (foam layer only): depth below the crest [in front of the body, beside it]
     // (m, ragged by noise), its small bubbles (cells per unit of the swell's angle and per metre), the share without a hole
-    froth: { amount: 1.0, depth: [0.11, 0.07], cell: 34.0, holeShare: 0.45, holeK: 0.7, white: '#f2f8ff', side: '#cfe6fb', hole: '#5aa8ee' },
+    // (iteration 2: 90% white under the body against the original's 14%: thinner, lacier; periwinkle-blue holes in front of
+    // the body, where the original has lilac-blue bubbles under her)
+    froth: { amount: 0.92, depth: [0.045, 0.04], cell: 34.0, holeShare: 0.2, holeK: 0.9, white: '#f2f8ff', side: '#cfe6fb', hole: '#5aa8ee', holeFront: '#86a8f2' },
   },
   // the bank's lobes (spLumps reshaded). (Gate fixes, step 7: glossy see-through domes with white caps, a violet soap tint
   // in front; replaced in the focused pass by the froth below)
@@ -88,12 +90,15 @@ export const MATCH_WATER = {
   // crest along the top of each outline, a ragged bubbly outline; no violet soap tint and no indigo shade (the before's domes:
   // hue 228-235 on 16.5% of the bank against the original's 3.7%)
   froth: {
-    shade: '#4a98ea', mid: '#94c6f4', light: '#c4e0fa', white: '#f2f8ff', side: '#d6eafc', hole: '#5eaef0', low: '#3fa6ee',
-    lit: [0.62, 0.42],   // the light: share of the key light's N.L, share of the normal's up
-    cover: 0.18, upK: 0.42, scale: 0.42, coverFront: 0.1,   // froth patches: base, + the normal's up x upK; noise scale; in front of the body (+)
-    cell: 7.5, holeShare: 0.42, holeK: 0.75,     // its small bubbles: cells per unit radius, share without a hole, how dark the holes
+    shade: '#4a98ea', mid: '#94c6f4', light: '#c4e0fa', white: '#f2f8ff', side: '#c8e2fa', hole: '#5eaef0', low: '#3fa6ee',
+    // (iteration 2: iteration 1 was 72% white in the bank against the original's 20%: white cotton clouds) the light: [the key
+    // light's N.L, the normal's up, base]: pale blue facing the camera, sky blue below, light on the tops
+    // (iteration 4: 44% white in the bank, 67% under the body: chalky) darker base light, less cover, less in front of the body
+    lit: [0.5, 0.45, 0.28],
+    cover: -0.1, upK: 0.3, scale: 2.2, coverFront: -0.06,   // froth patches (value noise, mean 0.5): base, + the normal's up x upK; noise cells per unit radius; in front of the body (+)
+    cell: 7.5, holeShare: 0.3, holeK: 0.9,       // its small bubbles: cells per unit radius, share without a hole, how blue the holes
     speckCell: 15.0, speckShare: 0.62, speck: 0.95,   // fine white droplets on the aqua body
-    crest: 0.95, crestW: 0.46, crestCell: 5.0,   // the bubbly white crest along the top of the outline (from 1 - n.v), its bubbles
+    crest: 0.95, crestW: 0.56, crestCell: 5.0,   // the bubbly white crest along the top of the outline (from 1 - n.v), its bubbles
     edgeCut: [0.62, 0.3],                        // the ragged bubbly outline: cut from 1 - n.v = [0] minus [1] x the cell's bump
     spec: 0.6, specPow: 90,
     alpha: 0.98,
@@ -153,11 +158,11 @@ export const MATCH_WATER = {
   // 0.07 W, the others 0.03-0.05 W, a cluster of small rings), 3 at the lower left, and hundreds of small white flecks,
   // crescents and tiny rings along the bands)
   bubbles: {
-    count: 180,              // (focused pass: 160 -> 180, more medium ones on the near and mid rings, fewer far specks round the centre)
+    count: 170,              // (focused pass: 160 -> 170, more medium ones on the near and mid rings, fewer far specks round the centre)
     tube: 2.0,               // the hero lining's radius (m; the layout's tunnelRadius, 2.5, is the old drum's)
     // sizes: [share, world radius (m)]; far ones are drawn up to `far` times bigger (else they would be under a pixel). On
     // screen (0.69 r / distance frame widths): small 2-6 px, medium 8-20 px, an occasional large one 25-40 px (at 767 wide)
-    sizes: [[0.52, [0.04, 0.08]], [0.4, [0.09, 0.17]], [0.08, [0.18, 0.28]]],
+    sizes: [[0.45, [0.045, 0.085]], [0.45, [0.09, 0.17]], [0.1, [0.18, 0.28]]],
     far: [5, 24, 1.0],       // from 5 m into the drum, +100% by 24 m
     minPx: 2.4,              // never drawn under this radius (px): far ones stay readable rings, not sub-pixel dust
     // where round the tube: [share, angle (degrees from the side, 90 = the top, -40 and 220 just above the water), radius
@@ -167,8 +172,8 @@ export const MATCH_WATER = {
     // swirl, and a few round the far centre. Each loops over its own `loop` metres, drifting toward the camera.
     // (focused pass: the centre was crowded with bubbles where the original has white squiggles: the walls' zones nearer,
     // the inner zone smaller and nearer, the far centre zone gone)
-    zones: [[0.36, [20, 160], [0.66, 0.93], [5.3, 18]], [0.24, [160, 222], [0.66, 0.93], [5.3, 18]], [0.24, [-42, 20], [0.66, 0.93], [5.3, 18]],
-      [0.16, [-30, 210], [0.35, 0.66], [5.3, 12]]],
+    zones: [[0.4, [20, 160], [0.66, 0.93], [5.3, 18]], [0.25, [160, 222], [0.66, 0.93], [5.3, 18]], [0.25, [-42, 20], [0.66, 0.93], [5.3, 18]],
+      [0.1, [-30, 210], [0.4, 0.66], [5.3, 10]]],
     camAt: -4.9,             // the hero camera's place along the path at 3.0 s (m from the drum's mouth; hero probe)
     loop: 4.0,               // m each one loops over (faded at both ends)
     drift: [0.15, 0.45],     // m/s toward the camera (the walls' water flows toward the viewer)
@@ -185,8 +190,9 @@ export const MATCH_WATER = {
     // round droplets (1), short thick crescents (2), [shares]; white cores with a cyan edge; more of them on the near and mid rings
     // (iteration 2: the crescents read as white moons and the droplet rows as pearl strings: torn streaks, scattered droplets
     // with a spray tail, and squiggles; at most maxPx long on screen (half length, px at 1614 px tall))
-    flecks: { count: 380, size: [[0.07, 0.2], [0.018, 0.04]], rho: [0.8, 0.95], bend: [0.0, 1.8], alpha: 0.95, ahead: [5.5, 22], angles: [-44, 224],
-      shapes: [0.45, 0.25, 0.3], edge: '#9adcff', maxPx: 13 },
+    // (iteration 4: the squiggles read as thin bird marks: thicker, blobbier pieces, fewer far ones (they were specks))
+    flecks: { count: 340, size: [[0.06, 0.16], [0.026, 0.05]], rho: [0.8, 0.95], bend: [0.0, 1.6], alpha: 0.95, ahead: [5.5, 17], angles: [-44, 224],
+      shapes: [0.45, 0.3, 0.25], edge: '#9adcff', maxPx: 17 },
   },
 };
 {
@@ -332,12 +338,12 @@ export function matchSwellGLSL() {
       vec2 mfQ = vec2(as * ${f4(K.froth.cell)} - fl * 0.4, d * ${f4(K.froth.cell)} - fl * 0.7), mfI = floor(mfQ);
       float mfH = lqHash(mfI + 31.0);
       vec2 mfO = fract(mfQ) - 0.5 - (vec2(lqHash(mfI + 4.0), lqHash(mfI + 8.0)) - 0.5) * 0.35;
-      float mfR = 0.2 + 0.16 * fract(mfH * 7.3), mfL = length(mfO);
+      float mfR = 0.27 + 0.13 * fract(mfH * 7.3), mfL = length(mfO);
       float mfHole = step(${f4(K.froth.holeShare)}, mfH) * (1.0 - smoothstep(mfR - 0.07, mfR, mfL));
       float mfGl = mfHole * (1.0 - smoothstep(mfR * 0.12, mfR * 0.32, length(mfO - vec2(-0.35, 0.4) * mfR)));
       // white at the top, pale aqua lower in the band; the holes sky blue
       vec3 mfC = mix(${v3s(K.froth.white)}, ${v3s(K.froth.side)}, smoothstep(0.2, 1.0, d / max(mfD, 1e-3)));
-      mfC = mix(mfC, ${v3s(K.froth.hole)}, mfHole * ${f4(K.froth.holeK)});
+      mfC = mix(mfC, mix(${v3s(K.froth.hole)}, ${v3s(K.froth.holeFront)}, mwFront), mfHole * ${f4(K.froth.holeK)});
       mfC = mix(mfC, ${v3s(K.froth.white)}, mfGl);
       mwCol = mix(mwCol, mtUndisplay(mfC), mfZ); mwA = max(mwA, mfZ);
     }
@@ -373,6 +379,14 @@ vec3 mwUndisp(vec3 c) {
   return max(h * (L0 / L1), 0.0);
 }
 float mwHash3(vec3 p) { return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
+// smooth 3D value noise (mean 0.5, spread about 0.16): a known distribution for the froth's cover (the wave texture's height
+// channel is ridged and biased high)
+float mwVNoise(vec3 p) {
+  vec3 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  float a = mix(mix(mwHash3(i), mwHash3(i + vec3(1, 0, 0)), f.x), mix(mwHash3(i + vec3(0, 1, 0)), mwHash3(i + vec3(1, 1, 0)), f.x), f.y);
+  float b = mix(mix(mwHash3(i + vec3(0, 0, 1)), mwHash3(i + vec3(1, 0, 1)), f.x), mix(mwHash3(i + vec3(0, 1, 1)), mwHash3(i + vec3(1, 1, 1)), f.x), f.y);
+  return mix(a, b, f.z);
+}
 `;
 }
 // declarations for the lumps' fragment shader (tunnel_r8_splash.js, ?s3=match only)
@@ -394,24 +408,24 @@ export function matchLumpGLSL() {
     vec3 fBq = vO * ${f4(B.cell)} + vSeed * 11.0, fBi = floor(fBq);
     float fBh = mwHash3(fBi);
     vec3 fBo = fract(fBq) - 0.5 - (fract(fBh * vec3(7.13, 3.71, 5.29)) - 0.5) * 0.35;
-    float fBr = 0.2 + 0.17 * fract(fBh * 11.7), fBl = length(fBo);
+    float fBr = 0.22 + 0.16 * fract(fBh * 11.7), fBl = length(fBo);
     float fBump = 1.0 - smoothstep(0.0, 0.5, fBl);
     if (fF > ${f4(B.edgeCut[0])} + ${f4(B.edgeCut[1])} * fBump + 0.25 * (1.0 - smoothstep(-0.2, 0.3, fUp))) discard;   // (the lower outline stays whole: it sits in the water)
     // the light: the key light and the up direction; sky blue in the shade, pale blue, light on the tops; aqua low down
-    float fLit = clamp((d - 0.5) * ${f4(B.lit[0])} * 2.0 + fUp * ${f4(B.lit[1])} + 0.5, 0.0, 1.0);
-    vec3 fCol = mix(${v3s(B.shade)}, ${v3s(B.mid)}, smoothstep(0.1, 0.5, fLit));
-    fCol = mix(fCol, ${v3s(B.light)}, smoothstep(0.45, 0.85, fLit));
+    float fLit = clamp((d - 0.5) * ${f4(B.lit[0])} * 2.0 + fUp * ${f4(B.lit[1])} + ${f4(B.lit[2])}, 0.0, 1.0);
+    vec3 fCol = mix(${v3s(B.shade)}, ${v3s(B.mid)}, smoothstep(0.25, 0.62, fLit));
+    fCol = mix(fCol, ${v3s(B.light)}, smoothstep(0.72, 0.97, fLit));
     fCol = mix(fCol, ${v3s(B.low)}, smoothstep(${f4(B.lowFrom[0])}, ${f4(B.lowFrom[1])}, fUp) * 0.6);
     // 1. froth patches, most on the tops (broad, not specks)
-    vec2 fNq = vO.xz * ${f4(B.scale)} + vO.y * vec2(0.27, -0.19) + vSeed * 4.0 + vec2(uTime * 0.02, 0.0);
-    float fN = texture2D(uLqTex, fNq).b * 0.75 + texture2D(uLqTex, fNq * 2.6 + 0.31).b * 0.35;
-    float fCover = smoothstep(0.52, 0.64, fN + ${f4(B.cover)} + ${f4(B.coverFront)} * fFront + ${f4(B.upK)} * fUp);
+    vec3 fNq = vO * ${f4(B.scale)} + vSeed * 9.0 + vec3(uTime * 0.05, 0.0, 0.0);
+    float fN = mwVNoise(fNq) * 0.65 + mwVNoise(fNq * 2.3 + 4.1) * 0.35;
+    float fCover = smoothstep(0.5, 0.6, fN + ${f4(B.cover)} + ${f4(B.coverFront)} * fFront + ${f4(B.upK)} * fUp);
     // 2. in the froth: white bubble walls, each bubble an aqua hole with a white glint at its upper left
     float fHole = step(${f4(B.holeShare)}, fBh) * (1.0 - smoothstep(fBr - 0.06, fBr, fBl));
     vec3 fGo = fBo - vec3(0.35, 0.45, 0.0) * fBr;   // (the lobe's own axes: x = uR, screen-left; y = up)
     float fGl = fHole * (1.0 - smoothstep(fBr * 0.12, fBr * 0.3, length(fGo)));
     vec3 fWhite = mix(${v3s(B.side)}, ${v3s(B.white)}, smoothstep(-0.2, 0.5, fUp));
-    vec3 fFroth = mix(fWhite, mix(fCol, ${v3s(B.hole)}, 0.55), fHole * ${f4(B.holeK)});
+    vec3 fFroth = mix(fWhite, ${v3s(B.hole)}, fHole * ${f4(B.holeK)});
     fFroth = mix(fFroth, ${v3s(B.white)}, fGl);
     fCol = mix(fCol, fFroth, fCover);
     // 3. fine white droplets over the aqua body
@@ -535,7 +549,7 @@ void main() {
     float ph = vSeed * 40.0;
     if (k < ${f4(FL.shapes[0])}) {   // a broken streak along the band: ragged width, thick at its head, tapering, torn once or twice
       float dir = sign(fract(vSeed * 3.1) - 0.5);
-      float w = (0.3 + 0.85 * smoothstep(-1.0, 0.7, x * dir)) * (0.75 + 0.35 * sin(x * 9.0 + ph) * sin(x * 4.0 + ph * 0.7));
+      float w = (0.45 + 0.8 * smoothstep(-1.0, 0.7, x * dir)) * (0.8 + 0.3 * sin(x * 9.0 + ph) * sin(x * 4.0 + ph * 0.7));
       body = exp(-y * y * 2.0 / max(w * w, 0.02)) * (1.0 - smoothstep(0.7, 1.0, abs(x)));
       float gap = (fract(vSeed * 5.3) - 0.5) * 1.1;
       body *= mix(1.0, smoothstep(0.05, 0.13, abs(x - gap)), step(0.3, fract(vSeed * 2.3)));
@@ -544,14 +558,14 @@ void main() {
       for (int i = 0; i < 3; i++) {
         float fi = float(i), h = fract(vSeed * (3.7 + fi * 1.9));
         float cx = -0.6 + fi * 0.55 + (h - 0.5) * 0.35, cy = (fract(h * 7.1) - 0.5) * 2.0 + vBend * (cx * cx - 0.35);
-        float rr = 0.45 + 0.75 * fract(h * 3.3) * (1.0 - fi * 0.25);
+        float rr = 0.6 + 0.8 * fract(h * 3.3) * (1.0 - fi * 0.25);
         float dd = length(vec2((x - cx) / asp, yq - cy));
         body = max(body, 1.0 - smoothstep(rr * 0.55, rr, dd));
       }
       body = max(body, exp(-y * y * 6.0) * smoothstep(-0.9, -0.2, x) * (1.0 - smoothstep(0.1, 0.6, x)) * 0.8);
-    } else {   // a squiggle: a thin wavy splash line (the original's curls and "~" marks)
-      float yw = y - 0.9 * sin(x * 4.2 + ph);
-      float w = 0.3 + 0.55 * (1.0 - x * x);
+    } else {   // a short thick wavy splash (the original's curls and "~" marks)
+      float yw = y - 0.6 * sin(x * 3.6 + ph);
+      float w = 0.5 + 0.6 * (1.0 - x * x);
       body = exp(-yw * yw * 2.2 / (w * w)) * (1.0 - smoothstep(0.75, 1.0, abs(x)));
     }
     float core = smoothstep(0.5, 0.8, body), a = clamp(smoothstep(0.1, 0.45, body), 0.0, 1.0) * ${f4(FL.alpha)} * vA;

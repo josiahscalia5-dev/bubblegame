@@ -1226,8 +1226,55 @@ Big change, but the bank has overshot into white cotton clouds (a white blanket 
 - 19:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it1_tunnel.png
 - 19:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
 - 19:49 `Bash`: Rework fleck shapes, cap screen size, redistribute bubbles
+**Agent** (19:50 UTC):
 
-_79 tool steps._
+Now the froth: less cover, a bluer lit body (pale blue facing the camera, sky blue below, white on the tops), lacier holes; and a thinner, lacier froth band under her.
+
+- 19:50 `Bash`: Tune froth cover, lighting, holes and the swell band; rebuild
+- 19:50 `Bash`: Capture iteration 2 at 3.0 s
+- 19:50 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it/it2_t3.00_canvas.png
+**Agent** (19:50 UTC):
+
+Still mostly white. Let me check which colours actually reach the screen in the bank (whether the inverse display transform holds for this layer).
+
+- 19:51 `Bash`: K-means palette of iteration 2's bank
+**Agent** (19:51 UTC):
+
+The colours land as written; the froth cover is simply too high. Let me check the noise channel's distribution in the generated wave texture.
+
+- 19:51 `Grep`: DataTexture|\.b =|data\[i \* 4 \+ 2\]|// b:|blue channel|\[2\] =
+- 19:51 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r8_liquid.js
+**Agent** (19:51 UTC):
+
+The `.b` channel is ridged noise normalised to [0,1] (biased high), so my thresholds put almost everything under froth. I'll use a private 3D value noise with a known distribution instead.
+
+- 19:51 `Bash`: Switch froth cover to a private value noise; rebuild
+- 19:51 `Bash`: Capture iteration 3 and make the bank comparison
+- 19:52 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it3_bank.png
+**Lead → agent** (19:52 UTC):
+
+[Image: original 3011x460, displayed at 2000x306. Multiply coordinates by 1.51 to map to original image.]
+
+**Agent** (19:52 UTC):
+
+Better (froth with white tops, blue holes), but still chalky and pale next to the original's saturated sky-blue shadows and sparkling whites. Let me measure.
+
+- 19:52 `Bash`: Measure iteration 3
+**Agent** (19:52 UTC):
+
+Bank white is 44% (original 20%) and under the body 67% (original 14%); the purple share is now 0.2% (original 17.7% / 47.8%), so that target is met. Let me look at the tunnel flecks at iteration 3.
+
+- 19:52 `Bash`: Tunnel crop iteration 3
+- 19:52 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it3_tunnel.png
+- 19:53 `Bash`: Iteration 4 tuning: fleck shapes, bubbles, froth whites
+- 19:53 `Bash`: Capture and measure iteration 4
+- 19:53 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it4_under.png
+- 19:54 `Bash`: Capture with the tunnel bubble/fleck layer off and measure specks
+- 19:54 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/tune_nolayer.json
+- 19:54 `Bash`: Capture with the tunnel bubble/fleck layer off
+- 19:54 `Bash`: Measure specks with and without the layer
+
+_98 tool steps._
 
 ---
 
@@ -1341,5 +1388,19 @@ Playwright resolves. Capturing the "before" frames (current build, `b91e952` con
 - 19:49 `Bash`: Read brush placement and lane functions
 - 19:49 `Bash`: Read baseHeight and water constants
 - 19:49 `Bash`: Find debug accessor contents
+- 19:51 `Bash`: Write and run stage probe on the before build
+- 19:51 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 19:51 `Bash`: Run stage probe on the before build
+- 19:53 `Bash`: Find match hooks in the liquid file
+- 19:53 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r8_liquid.js
+- 19:53 `Bash`: Compute shifted collectible layouts
+- 19:54 `Bash`: Find sock placement and animation code
+- 19:54 `Bash`: Read sock build and update code
+**Agent** (19:54 UTC):
 
-_44 tool steps._
+The shifted layout is computed. Before writing code, let me compare the near-camera bubbles (mine to fix) in the original and the before frame.
+
+- 19:54 `Bash`: Make a gridded crop of the upper frame
+- 19:55 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/upper_grid.png
+
+_54 tool steps._
