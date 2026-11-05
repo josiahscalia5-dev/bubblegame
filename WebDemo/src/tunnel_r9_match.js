@@ -360,6 +360,14 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
 // body (the arc's own pick: the currents), deeper cobalt, then a dark gap; the derived water's own light and dark kept as
 // variation. Colours are the original's measured ring-zone colours, written through the inverse of the walls' display
 // compensation (lift, saturation) so they land as measured. Sets fRq, the ribbon phase the flecks follow.
+// ?s3=focus: smooth value noise (cells of 1 in p, smoothstep-blended; seed: another pattern) for the flows below
+const FOCUS_NOISE_GLSL = /* glsl */ `
+float fcH(vec2 i, float s) { return fract(sin(dot(i, vec2(12.9898, 78.233)) + s * 17.17) * 43758.5453); }
+float fcNz(vec2 p, float s) {
+  vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(fcH(i, s), fcH(i + vec2(1.0, 0.0), s), f.x), mix(fcH(i + vec2(0.0, 1.0), s), fcH(i + vec2(1.0, 1.0), s), f.x), f.y);
+}
+`;
 function focusRibbonsGLSL(M) {
   const R = M.ribbons;
   const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
@@ -367,34 +375,39 @@ function focusRibbonsGLSL(M) {
     const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
     return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
   };
+  // (the user's kit, 18:26 UTC, problem B: "tighter hard-outline ribbons, more even concentric circles": the ribbons were a
+  // sawtooth across each band (the dark gap jumped straight to the light cyan edge where the phase wrapped) and each arc was
+  // pushed by a step offset keyed on its band's index (hard breaks at every arc end and band boundary, dark lines where the
+  // arcs ended). Now every part is continuous: the offsets and the currents' colours are smooth value noise over (angle,
+  // band phase), and across a band the colour runs deep cobalt -> body (royal, turquoise and periwinkle currents blended
+  // softly) with a soft light-cyan accent near its inner side -> deep -> the dark-blue gap -> deep again, the same colour
+  // at both ends, so no outline is drawn anywhere. R.soft: [body in, body out from, body out to], the accent [at, half
+  // width, amount], cells: [noise cells round a turn, per band])
+  const S = R.soft;
+  const nz = (p, seed) => `fcNz(${p}, ${f4(seed)})`;
   return /* glsl */ `    float fRq = bs;
-    {   // ?s3=focus: broken, twisting cobalt ribbons (tunnel_r9_focus.js)
+    {   // ?s3=focus: broad, softly blended, twisting cobalt and turquoise flows (tunnel_r9_focus.js)
       float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
         + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
         + (vr.g - 0.5) * ${f4(R.wobble)};
       // (the spiral's seam: tu wraps at the screen-left, on the horizontal through the camera, where bs steps by one band; the
-      // per-band picks below (arcs, offsets, colours) then jumped there: a hard horizontal line across the left wall at the
-      // vanishing point's height, plain once the camera sat at the axis height. The angle is counted from straight down
-      // instead, so that step falls on the tube's bottom, under the water floor, and the left wall is continuous)
+      // angle is counted from straight down instead, so that step falls on the tube's bottom, under the water floor)
       float rTu = tu < -0.25 ? tu + 1.0 : tu;
-      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw, rbi = floor(rq);
-      float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
-      float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
-      float rsa = (rTu + 0.5) * rNs + rhb * 3.0;
-      float rsi = mod(floor(rsa), rNs);
-      float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
-      float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
+      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw;
+      vec2 rnp = vec2((rTu + 0.25) * ${f4(S.cells[0])}, rq * ${f4(S.cells[1])});
+      float rqo = rq + (${nz('rnp', 0)} - 0.5) * ${f4(R.offset)};
       float rk = fract(rqo);
       fRq = rqo;
-      float rse = fract(rsa), rEnd = smoothstep(0.0, 0.05, rse) * (1.0 - smoothstep(0.95, 1.0, rse));
-      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, step(${f4(1 - R.turqShare)}, rsh));
-      rBody = mix(rBody, ${pre(R.peri)}, step(${f4(1 - R.periShare)}, fract(rsh * 7.7)) * 0.8);
-      vec3 rc = mix(${pre(R.edge)}, rBody, smoothstep(0.02, ${f4(R.edgeTo)}, rk));
-      rc = mix(rc, ${pre(R.deep)}, smoothstep(${f4(R.deepFrom[0])}, ${f4(R.deepFrom[1])}, rk));
-      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(0.985, 1.0, rk)));
-      rc = mix(${pre(R.deep)}, rc, rEnd);
+      vec2 rcp = vec2((rTu + 0.25) * ${f4(S.cells[0])}, rqo * ${f4(S.cells[1])});
+      float rn1 = ${nz('rcp', 1)}, rn2 = ${nz('rcp * 1.7', 2)}, rn3 = ${nz('rcp * 2.3', 3)};
+      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, smoothstep(${f4(1 - R.turqShare - 0.12)}, ${f4(1 - R.turqShare + 0.12)}, rn1));
+      rBody = mix(rBody, ${pre(R.peri)}, smoothstep(${f4(1 - R.periShare - 0.1)}, ${f4(1 - R.periShare + 0.1)}, rn2) * 0.8);
+      vec3 rc = mix(${pre(R.deep)}, rBody, smoothstep(0.0, ${f4(S.body[0])}, rk) * (1.0 - smoothstep(${f4(S.body[1])}, ${f4(S.body[2])}, rk)));
+      rc = mix(rc, ${pre(R.edge)}, exp(-pow((rk - ${f4(S.accent[0])}) / ${f4(S.accent[1])}, 2.0)) * ${f4(S.accent[2])} * smoothstep(0.2, 0.7, rn3));
+      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(${f4(R.gapFrom[2])}, 1.0, rk)));
       float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
       rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
+      ${R.satBoost ? `{ float rs = dot(rc, vec3(0.2126, 0.7152, 0.0722)); rc = clamp(rs + (rc - rs) * ${f4(R.satBoost)}, 0.0, 1.0); }   // (measured: the flows showed less saturated than drawn)` : ''}
       float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
       c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
     }
@@ -440,6 +453,7 @@ uniform vec2 uMatchVP, uMatchRes;
 ${RIM_SAMPLE}
 ${undisplayGLSL()}
 ${matchPlaceGLSL()}
+${FOCUS_ON ? FOCUS_NOISE_GLSL : ''}
 // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
 // normal (toward the axis), T0 the path's direction
 vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
