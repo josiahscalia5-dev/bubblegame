@@ -524,8 +524,94 @@ The difference is repeatable and limited to the Turbo Spin button, while the can
 
 - 20:15 `Bash`: Crop and inspect the Turbo button differences
 - 20:15 `Bash`: Recapture the old build page and compare
+- 20:16 `Bash`: Run the focus functional test on the final build
+- 20:16 `Bash`: Show the in-tunnel result of the functional test
+- 20:16 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/sheet.py
+- 20:16 `Bash`: Write the full-frame comparison sheet
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/sheet_original_before_after_t3.00
+- 20:17 `Bash`: Write lower-left and ring crop sheets
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/crop_lower_left_original_before_a
+- 20:17 `Bash`: Rewrite lower-left crop sheet with the pre-pass frame
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/crop_rings_original_before_after_
+**Agent** (20:17 UTC):
 
-_272 tool steps._
+Now the identity proof and a final numbers file with every measure on the final 3.0 s frame.
+
+- 20:17 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/pixel_identity_match_vs_7
+- 20:17 `Bash`: Run all measures on the final frame
+- 20:18 `Bash`: Write the final numbers file and show the rest
+**Agent** (20:18 UTC):
+
+For a consistent "before" column in the README, I'll run the same measures on the `71f7fa7` frame.
+
+- 20:18 `Bash`: Measure the 71f7fa7 baseline frame
+**Agent** (20:18 UTC):
+
+Now the README the lead asked for, with a verified / partly / not table per item.
+
+- 20:18 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/README.md
+- 20:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 20:19 `Bash`: Commit evidence and README
+**Agent** (20:19 UTC):
+
+Last check: a rebuild must leave the committed bundle unchanged, and the tree must be clean.
+
+- 20:19 `Bash`: Rebuild and confirm clean tree
+- 20:19 `Bash`: Rebuild bundle
+- 20:19 `Bash`: Confirm clean tree and branch
+**Agent** (20:19 UTC):
+
+All five items are done and committed in my worktree (branch `worktree-agent-a0bafb8338e8bc494`, not pushed, ready for you to merge). The left wall, the centre, the objects and the band count now hit their targets. The ring colour and streak numbers are still off: most of that gap comes from Water & VFX's bubble and streak layer, which sits on top of the walls.
+
+The starting frame matched `focus_seam_t3.00_canvas.png` exactly. `?s3=match` at 3.0 s is unchanged: its 3D canvas is byte-identical to `71f7fa7`. Page screenshots are not a usable test here, because the same `71f7fa7` build captured twice differed in 1,736 HUD pixels. `S3=focus s3_func.cjs` passes: lanes, jump, 12 coins, 1 gem, 2 socks, no console errors. Each step was checked at the Pixel 7 framing.
+
+## Commits
+| commit | step |
+|---|---|
+| `82d568c` | Objects placed on the original's spots for the new camera. The two brushes were drawn too big and low after the camera change, so I moved them back onto the original's boxes; that also clears the small left coin. All collectibles stay within reach. |
+| `24fd87e` | Walls' water rebuilt as broad, softly blended flows with no outlines (kit problem B, AD item 3). |
+| `340b117` | Fewer, chunkier, broken white splashes on the walls, drawn crisp white (AD item 4). |
+| `2db3d6b` | Centre: pastel inner rings around a modest warm core (AD item 5). |
+| `956a7de` | Left wall glows pale like the original; dark tones stay vivid blue (AD item 6). |
+| `849217a` | Evidence: comparison sheets, crops, final numbers, identity proof, README. |
+
+## Numbers at 3.0 s (original / before / after)
+- **Objects:**
+  - Lower-right coin: (0.893, 0.733) / (0.751, 0.723) / (0.894, 0.736), width 0.214.
+  - Small left coin: now at (0.150, 0.472) and no longer behind the brush.
+  - Gem: (0.326, 0.511) / (0.310, 0.511) / (0.324, 0.514); height 0.033 / 0.045 / 0.033.
+  - Gold area: 4.35% / 4.82% / 4.67%.
+  - Sock: cuff tilt was -17° with its opening showing; now +0.4°, opening hidden, toe low on the left, box x 0.642-0.829, y 0.551-0.657 (original x 0.64-0.83, y 0.555-0.665).
+- **Walls' bands (upper ring):**
+  - Dark bands per ray: 6.3 / 7.3 / 6.5 (target met).
+  - Turquoise: 7.5 / 10.5 / 6.9% (target met).
+  - Median L*: 64 / 73 / 67 (one above the 62-66 target).
+  - Lightness spread: 14.9 / 10.8 / 12.8 (target ≥14).
+  - Darker than L* 55: 30.5 / 15.5 / 19.4% (target 27-32%).
+  - Blue hue / saturation: 215 / 0.83, 212 / 0.68, 219 / 0.71 (targets 213-217 and ≥0.78, both missed).
+- **Wall streaks (upper arc), full frame:** 9.8 pieces per 10k px (target ≤5), thickness 2.3 px (≥3), median area 50 (≥45), p90 318 (≥500). The walls' own splashes, with the bubble layer hidden: 4.3 per 10k px, 3.9 px, 60, 331.
+- **Centre:** pink-violet 8.6 / 1.1 / 7.3%, warm 13.0 / 8.1 / 10.9%, saturated blue 3.1 / 10.7 / 0.7% (all targets met). Warmth in the wider ring zone is 1.4% (target ≤5%).
+- **Left wall:** L* 76.9 / 69.1 / 77.3, white 24.8 / 6.5 / 22.3%, lavender at the edge 0.3% (all targets met).
+
+## What still differs from the original
+- **The bubble and streak layer** (`FOCUS.water.bubbles`, owned by Water & VFX) drives most of the remaining misses.
+  - With every object named *ubble* hidden, the walls alone give 6.1 bands per ray, a 14.8 spread and coherence 0.61, all close to the original.
+  - The thin white dashes in the streak measure are mostly its instanced streaks: 13.4 pieces per 10k px with them, 5.2 without.
+  - I rendered the flows in one flat royal blue to check the colour chain: it lands on screen exactly, yet a quarter of the ring zone under the translucent bubbles still reads lighter and greyer. That is why blue saturation stays near 0.71.
+  - Suggested to Water & VFX: fewer, chunkier streaks and fewer bubbles over the walls between 0.1 and 0.3 W from the centre.
+- **Colour and structure:** the flows run slightly more violet and lighter in the mid tones than the original. The original's bright cyan bands are more clearly layered than our soft flows, and its warm arc above the centre is still only faint here.
+- **Centre and left wall:** the inner rings are more regular and carry more pale blue (35% against 15%). The left wall lacks the original's lilac-pink tints. The original also shows a second blurred pink pom-pom at the left edge, which the game does not have.
+- **Sock:** the open eyes and violet toe come from the model; the original's sock has closed happy eyes and a blue toe.
+
+## Files changed
+- `WebDemo/src/tunnel_r9_match.js`
+- `WebDemo/src/tunnel_r9_focus.js` (the `FOCUS.match` part only)
+- `WebDemo/game.bundle.js`
+
+The evidence is in `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/`. Start with `README.md` (the verified / partly / not table per item); the sheets are `sheet_original_before_after_t3.00.png`, `crop_lower_left_original_before_after_t3.00.png` and `crop_rings_original_before_after_t3.00.png`. Also there: `NOTES.md`, the per-step frames, `numbers/`, and the measuring tools in `scripts/`.
+
+
+_291 tool steps._
 
 ---
 

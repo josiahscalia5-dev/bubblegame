@@ -85,3 +85,19 @@ The two images I just sent compare your original with the game before and after,
 
 Tunnel & Lighting is still running. It has committed four tested steps so far: the objects on the original's spots, broad softly blended water bands, chunkier wall splashes, and the warm centre. The left wall is next. When it finishes I'll merge it, run the full checks (gameplay, pause, power-ups, 1:2 and Pixel 7), and send the full comparison with the lower-left and ring close-ups and the commit hashes. The 5-minute autosave keeps pushing everything in the meantime.
 
+---
+
+### Automatic notice · 2026-11-05 20:19 UTC
+
+_Agent "Tunnel &amp; Lighting: objects, bands, centre" finished_
+
+---
+
+### Claude · 2026-11-05 20:19 UTC
+
+Tunnel & Lighting has finished too, with 6 commits. Merging it on top of Water & VFX. Both changed the game file, so I'll rebuild it after the merge.
+
+Only the built game file conflicted; the source files merged cleanly. Rebuilding it from the merged source:
+
+Merge done (`a78a143`). Now testing the combined build: a `?s3=focus` capture at 3.0 s and the `?s3=match` identity check.
+
