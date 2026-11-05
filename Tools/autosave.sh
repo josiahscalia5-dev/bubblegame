@@ -14,8 +14,9 @@
 #   3. with BW_WIP_DIR set: each agent worktree's unfinished work, a patch plus full copies of the files it changed or
 #      made (Tools/snapshot_agent_worktrees.py), into <folder>/<agent>_<id>/;
 #   4. Tools/save_now.sh: commit, push, and check GitHub has it.
-# Set CLAUDE_SESSION_URL to put the session link in each commit. Run it in the background; a cloud session stops background
-# jobs after 2 hours, so 23 rounds of 5 minutes fit, and Claude starts it again after that. Each round's save report goes to
+# Set CLAUDE_SESSION_URL to put the session link in each commit. A cloud session stops its own background jobs after 30
+# minutes to 2 hours, so start it DETACHED for a whole session (CLAUDE.md, Safety): setsid nohup bash Tools/autosave.sh ...
+# 5 288 > <log> 2>&1 < /dev/null & disown   (288 rounds of 5 minutes = 24 hours). Claude starts it again if it is gone. Each round's save report goes to
 # standard output. A round is skipped while another git command or a merge is in progress, and tried again next round.
 set -u
 LOG="$1"; OUT="$2"; TITLE="$3"; MINUTES="${4:-5}"; ROUNDS="${5:-23}"

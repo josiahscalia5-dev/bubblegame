@@ -37,6 +37,13 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   text (they reported "Round 9 ART MATCH" as their newest section) but worked correctly, with the repository, tools and
   `CLAUDE.md`. A new session loads the merged files. Until then, tell each agent to read the "Newest: tenth session"
   section of its own `.claude/agents/<name>.md` first.
+- **Autosave (the user's standing request, 22:25 UTC: everything to GitHub every 5 minutes):** running DETACHED for 24 hours
+  (288 rounds; `CLAUDE.md`, Safety, has the command). The earlier background autosaves were cut at 30 minutes by the
+  session's job limit. In a new session, start it first.
+- **The verification audit (22:30 UTC, no game changes):** `Previews/WebDemo/screen4_round9_match/22_verification_audit/README.md`.
+  - The phone video was `edf84f5` `?s3=match` with steering. The normal game has none of the Screen 4 work.
+  - The five differences (interface, composition, ring pattern, water, the character's look), their files, and the plan.
+  - Waiting for the user's three decisions: `focus`? how much white splash? may steps 2-3 start?
 - **Session naming:** this is the TENTH session (chat `ChatHistory/2026-11-05_tenth_session_both_lines_merged.md`, agents
   `..._tenth_session_design_agent_transcripts.md`); the eighth and ninth are line B's.
 

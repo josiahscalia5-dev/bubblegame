@@ -76,6 +76,21 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
 
 - **Never force-push or rewrite another branch.** Work on the session's own branch. Save with
   `bash Tools/save_now.sh "<message>"`, which verifies the push.
+- **The user's standing request: save EVERYTHING to GitHub every 5 minutes, all session long.** This covers the chat history,
+  the design agents' files, transcripts and unfinished work, the game build and all evidence. Start the autosave at the
+  beginning of every session, before other work, as a detached process: a normal background job is stopped after 30
+  minutes to 2 hours.
+
+  ```
+  export CLAUDE_SESSION_URL=<session link> BW_AGENT_TRANSCRIPTS=ChatHistory/<date>_<session>_design_agent_transcripts.md \
+    BW_AGENT_TITLE="<title>" BW_WIP_DIR=Previews/WebDemo/<round folder>/wip_snapshots_design_agents
+  setsid nohup bash Tools/autosave.sh ~/.claude/projects/<project>/<session-id>.jsonl ChatHistory/<date>_<session>.md \
+    "<title>" 5 288 > <scratchpad>/autosave.log 2>&1 < /dev/null & disown
+  ```
+
+  - 288 rounds is 24 hours.
+  - Check it with `ps -eo pid,etime,cmd | grep '[a]utosave.sh'` and the log, and start it again if it is gone.
+  - Name the files after a session number no other branch uses.
 - **Never put a key in the repository, a commit, a script or the chat.** The repository is public. Tripo's key goes in
   the cloud environment's settings (see `Tools/DEV_TOOLS.md`). The chat exporter redacts keys.
 - **Tripo spends real credits:** `tripo make`, `tripo ai` and `tripo redo` charge. Ask the user before each paid job, with
