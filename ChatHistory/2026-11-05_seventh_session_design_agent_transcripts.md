@@ -1532,8 +1532,28 @@ My tunnel layer contributes nothing there (83 with or without it). Let me look a
 
 - 20:35 `Bash`: Outline white shapes in the left box, original vs now
 - 20:35 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/leftbox.png
+- 20:36 `Bash`: Locate the settings lines for the follow-up
+- 20:36 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 20:36 `Bash`: Rewrite the froth colour, patches and droplets in the lobe shader
+**Agent** (20:36 UTC):
 
-_173 tool steps._
+Now the settings: the new palette, broader patches, fewer droplets and holes; the band under her (patchy, blue between, more opaque front); and the far bubbles.
+
+- 20:37 `Bash`: Apply the follow-up settings and the patchy band
+**Agent** (20:37 UTC):
+
+`mwVNoise` is only declared in the lobes' shader, not in the swell's. I'll use an inline 1D value noise from the swell's own `lqHash` instead.
+
+- 20:37 `Bash`: Fix the band noise, build, capture follow-up iteration 1
+- 20:39 `Bash`: Measure follow-up iteration 1
+- 20:39 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/f1_close.png
+**Lead → agent** (20:39 UTC):
+
+[Image: original 2878x440, displayed at 2000x306. Multiply coordinates by 1.44 to map to original image.]
+
+- 20:39 `Bash`: Follow-up iteration 2: build, capture, measure
+
+_181 tool steps._
 
 ---
 
@@ -1868,5 +1888,14 @@ To probe and identity-test the baseline, I'll make a served copy of `WebDemo` (s
 - 20:35 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_final.png
 - 20:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
 - 20:35 `Bash`: Build, capture final frames, compose sock close-ups
+- 20:38 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_t6.png
+**Agent** (20:38 UTC):
 
-_185 tool steps._
+The second sock stays hidden now. Final frames are in. Next the pixel-identity proof: let me check how `game_eval.cjs` SHOT was used last time.
+
+- 20:38 `Bash`: Read prior identity proof and game_eval options
+- 20:38 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/identity.cjs
+- 20:39 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/identity_compare.p
+- 20:39 `Bash`: Run pixel-identity captures and compare
+
+_190 tool steps._
