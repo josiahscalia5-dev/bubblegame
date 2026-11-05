@@ -22,10 +22,11 @@
 import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 import { buildHeroWater } from './tunnel_r7_hero_water.js';
+import { LIQUID_ON, buildLiquid } from './tunnel_r8_liquid.js';   // ?s3=liquid: Round 8's real water (on top of the hero scene)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const HERO_ON = LIST.includes('hero');
+export const HERO_ON = LIST.includes('hero') || LIST.includes('liquid');   // ?s3=liquid: the hero scene plus Round 8's water
 
 export const HERO = {
   // merged into ROUND6 after round7's own settings (tunnel_r6.js), so round7 itself is unchanged
@@ -281,6 +282,7 @@ export function buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets
 
   // 6. the water and foam round the character (the Water & VFX specialist's file, tunnel_r7_hero_water.js)
   report.water = buildHeroWater({ scene, TR, L, W, mascot, updaters, time, U, heroVortexGLSL, waterSheets, drumSheet, fogAnchor });
+  if (LIQUID_ON) report.liquid = buildLiquid({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet });   // ?s3=liquid (tunnel_r8_liquid.js)
 
   // 7. what the hero scene replaces
   const hidden = HERO.hide.map((n) => scene.getObjectByName(n)).filter(Boolean);
