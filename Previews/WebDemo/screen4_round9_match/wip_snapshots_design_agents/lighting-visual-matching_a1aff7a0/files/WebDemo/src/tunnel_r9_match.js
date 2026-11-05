@@ -121,7 +121,8 @@ export const MATCH = {
       // [-0.414, 5.7, 1.67])
       layout: { coinLines: [[-0.222, 3.21, 1, 1.0, 1.048, 0], [-0.665, 3.84, 1, 1.0, 1.924, 0], [1.079, 7.74, 1, 1.0, 1.087, 0], [2.366, 2.74, 1, 1.0, 0.476, 0],
         [2.009, 15.44, 1, 1.0, 0.437, 0], [1.009, 12.44, 3, 1.0, 0.8, 0]], replace: 3,
-        firstSock: [2.009, 3.64, 1.053], extraGem: [-0.405, 6.14, 1.565] },
+        // (the first sock 0.037 m further right than the re-solve, lane 2.061, so the posed sock is centred on the original's box)
+        firstSock: [2.061, 3.64, 1.053], extraGem: [-0.405, 6.14, 1.565] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
       // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
       // x 0.01-0.20, y 0.233-0.415, 2.0% of the frame; measured at 3.0 s: x 0.01-0.17, y 0.238-0.459, 2.1%)
@@ -178,13 +179,17 @@ export const MATCH = {
   },
   splash: {},      // deep-merged into SPLASH (tunnel_r8_splash.js)
   heroWater: {},   // deep-merged into HERO_WATER (tunnel_r7_hero_water.js) after the splash pass's settings
-  sockScale: 0.85, // the first sock's visual size
+  // the first sock's visual size (the focused pass: 0.85 -> 0.74, so the posed sock keeps the original's box, x 0.65-0.84,
+  // y 0.552-0.66; posed at 0.85 its mesh spanned 0.621-0.846 x 0.546-0.666)
+  sockScale: 0.74,
   // the first sock's pose (the user's brief, 5 November about 15:55 UTC, item 4: in the original it lies tilted, more
   // sideways, its cuff up-right, its toe down-left, its face toward the viewer; ours stood upright with its toe toward the
   // camera): degrees round the sock's own centre, applied to the model inside the game's animated holder (its bob and gentle
   // sway still play on top; at 2.85-3.1 s they move it by under 5 degrees). roll: round the line of sight (negative =
   // clockwise on screen); yaw: round its upright axis (negative = toe toward screen-left); pitch: round its sideways axis
-  sockPose: { roll: -30, yaw: -30, pitch: 0 },
+  // (six poses tried at 3.0 s; this one puts the cuff on top tilted clockwise, the face level toward the viewer and the toe out
+  // to the lower left, as the original's)
+  sockPose: { roll: -20, yaw: -40, pitch: 25 },
   // the coins' ramp (sRGB 0..1 as on screen): shade, yellow gold (hue 46), lemon; lum: the coin's lit linear brightness
   // mapped onto it; amount: how much of it replaces the coin's own colour
   coin: { shade: [0.839, 0.486, 0.008], mid: [0.973, 0.776, 0.11], lemon: [1.0, 0.945, 0.533], lum: [0.18, 0.95], amount: 0.85 },

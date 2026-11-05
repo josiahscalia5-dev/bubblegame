@@ -9,7 +9,8 @@
 // Usage: S3=match T=3.0 ITEMS='[[l,u,h],...]' DELTA='[dx,dh,du]' node stage_probe.cjs <abs WebDemo> <out.json> ['<tune json>']
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
-const [ROOT, OUT, TUNE = '{}'] = process.argv.slice(2);
+const [ROOT, OUT, TUNE_ARG = '{}'] = process.argv.slice(2);
+const TUNE = TUNE_ARG.endsWith('.json') ? fs.readFileSync(TUNE_ARG, 'utf8') : TUNE_ARG;   // tune JSON, or a file holding it
 const S3 = (process.env.S3 || 'match').split(',').filter(Boolean), T = +(process.env.T || 3.0);
 const ITEMS = JSON.parse(process.env.ITEMS || '[]'), DELTA = JSON.parse(process.env.DELTA || '[0,0,0]');
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };

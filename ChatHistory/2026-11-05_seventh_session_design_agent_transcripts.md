@@ -1377,8 +1377,30 @@ Gameplay holds: lanes 1, 0, 2, the jump (in the air), 12 coins, 1 gem, 2 socks, 
 A screenshot timed out on the third frame (software rendering is ~4 s per frame at DPR 1.5). Retrying once.
 
 - 20:13 `Bash`: Retry the moves capture
+- 20:15 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/tools/screen4/liquid_moves.cjs
+- 20:15 `Bash`: Check machine load and busy processes
+- 20:16 `Bash`: Copy the moves tool with a longer screenshot timeout
+- 20:16 `Bash`: Run the moves capture with the longer timeout
+**Agent** (20:17 UTC):
 
-_138 tool steps._
+Moves captured (swerve 3.38 s, jump 3.85 s, landing 4.22 s, no console errors). Let me make a sheet and check the water reacts.
+
+- 20:17 `Bash`: Make the moves sheet
+- 20:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/moves/moves_sheet.jpg
+**Agent** (20:17 UTC):
+
+The water still reacts: piled on the swerve side, smaller in the air, bigger on landing. Now the bubble and streak counts by depth with the probe from my last pass.
+
+- 20:17 `Bash`: Read the bubble probe usage
+- 20:17 `Bash`: Run the bubble probe at 3.0 s
+- 20:18 `Bash`: Add a far bubble zone, rebuild, probe again
+**Agent** (20:19 UTC):
+
+148 bubbles shown now (near 57, mid 74, far 17; centre 12, mid 106, walls 28). Re-running the final captures and the pixel-identity proof with this bundle.
+
+- 20:19 `Bash`: Final captures with cost, final bundle
+
+_148 tool steps._
 
 ---
 
@@ -1614,5 +1636,24 @@ The colour mask leaks into the white water. I'll measure the sock from its proje
 - 20:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
 - 20:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
 - 20:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:15 `Bash`: Tick-marked zoom of the original sock
+- 20:15 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/orig_sock_ticks.png
+- 20:16 `Bash`: Probe the sock's projected box with pose D and with no pose
+- 20:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+- 20:16 `Bash`: Write tune files for sock probes
+- 20:16 `Bash`: Probe sock box with pose D
+- 20:16 `Bash`: Probe sock box with no pose
+- 20:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:18 `Bash`: Build and probe the posed sock box
+**Agent** (20:19 UTC):
 
-_122 tool steps._
+The sock now spans 0.649-0.845 x 0.554-0.658 (original 0.65-0.84 x 0.552-0.66). Now the walls (priority 1). A close-up of the tunnel interior, original against now.
+
+- 20:19 `Bash`: Tunnel interior close-up original vs now
+- 20:19 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_cmp_t2.png
+- 20:19 `Bash`: Wall and ring measurements for before and iteration 2
+- 20:20 `Bash`: Inspect the relief and variation textures' statistics
+
+_137 tool steps._

@@ -163,7 +163,7 @@ export const MATCH_WATER = {
   // 0.07 W, the others 0.03-0.05 W, a cluster of small rings), 3 at the lower left, and hundreds of small white flecks,
   // crescents and tiny rings along the bands)
   bubbles: {
-    count: 170,              // (focused pass: 160 -> 170, more medium ones on the near and mid rings, fewer far specks round the centre)
+    count: 190,              // (focused pass: 160 -> 190, more medium ones on the near and mid rings, fewer far specks round the centre)
     tube: 2.0,               // the hero lining's radius (m; the layout's tunnelRadius, 2.5, is the old drum's)
     // sizes: [share, world radius (m)]; far ones are drawn up to `far` times bigger (else they would be under a pixel). On
     // screen (0.69 r / distance frame widths): small 2-6 px, medium 8-20 px, an occasional large one 25-40 px (at 767 wide)
@@ -178,7 +178,8 @@ export const MATCH_WATER = {
     // (focused pass: the centre was crowded with bubbles where the original has white squiggles: the walls' zones nearer,
     // the inner zone smaller and nearer, the far centre zone gone)
     zones: [[0.4, [20, 160], [0.66, 0.93], [5.3, 18]], [0.25, [160, 222], [0.66, 0.93], [5.3, 18]], [0.25, [-42, 20], [0.66, 0.93], [5.3, 18]],
-      [0.1, [-30, 210], [0.4, 0.66], [5.3, 10]]],
+      [0.1, [-30, 210], [0.4, 0.66], [5.3, 10]],
+      [0.12, [-40, 220], [0.7, 0.93], [18, 30]]],   // (final: a few far ones on the far walls' rings, so there are bubbles at every depth without crowding the centre)
     camAt: -4.9,             // the hero camera's place along the path at 3.0 s (m from the drum's mouth; hero probe)
     loop: 4.0,               // m each one loops over (faded at both ends)
     drift: [0.15, 0.45],     // m/s toward the camera (the walls' water flows toward the viewer)
