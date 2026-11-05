@@ -213,8 +213,15 @@ Now a measuring script for the sweep frames (character box by the AD's pink mask
 
 - 18:33 `Bash`: Read wall fragment main and heroWalls refs
 - 18:33 `Bash`: Read heroWalls geometry creation
+- 18:34 `Bash`: Find vanishing point used in AD scripts
+- 18:34 `Write`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 18:34 `Bash`: Commit evidence tools and notes
+- 18:35 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
+- 18:35 `Bash`: Find porthole rivet settings
+- 18:35 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sw2/cands_in.json
+- 18:35 `Bash`: Render camera plus rim restaging candidates
 
-_74 tool steps._
+_81 tool steps._
 
 ---
 
@@ -341,5 +348,28 @@ Now the settings in `FOCUS.water`.
 - 18:32 `Bash`: Crop the phi debug render
 - 18:32 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/dbg.png
 - 18:33 `Bash`: Capture with smaller teeth and raised side mounds
+- 18:33 `Bash`: Crop and measure the first trial
+- 18:33 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t1.png
+**Lead → agent** (18:33 UTC):
 
-_79 tool steps._
+[Image: original 2082x471, displayed at 2000x452. Multiply coordinates by 1.04 to map to original image.]
+
+- 18:34 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/WebDemo/src/tunnel_r9_match_water.js
+- 18:34 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+**Agent** (18:34 UTC):
+
+Now add a `lift` to swellFront and switch the face patterns to the signed coordinate.
+
+- 18:34 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/WebDemo/src/tunnel_r9_match_water.js
+- 18:34 `Bash`: Switch the face patterns to the signed arc coordinate
+- 18:34 `Bash`: Rebuild and capture with crest lift
+- 18:35 `Bash`: Crop and measure trial 2
+- 18:35 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_t2.png
+**Lead → agent** (18:35 UTC):
+
+[Image: original 2082x471, displayed at 2000x452. Multiply coordinates by 1.04 to map to original image.]
+
+- 18:36 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/batch.sh
+- 18:36 `Bash`: Capture three debug renders of the crest
+
+_90 tool steps._

@@ -180,11 +180,13 @@ if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r
   deepMerge(MATCH_WATER, FOCUS.water);
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
-  // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam
+  // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam. lift: the whole crest
+  // raised (m) by about the depth of the spiky teeth cut into it (focusSwellGLSL), so the teeth's tips stand above the old
+  // crest and their valleys below it
   const Fd = MATCH_WATER.swellFront;
   if (Fd) MATCH_WATER.swell.line = MATCH_WATER.swell.line.map((h, i) => {
     const phi = -110 + 5 * i, t = Math.min(Math.max((Math.abs(phi) - Fd.full) / (Fd.to - Fd.full), 0), 1);
-    return +(h - Fd.dip * (1 - t * t * (3 - 2 * t))).toFixed(4);
+    return +(h + (Fd.lift || 0) - Fd.dip * (1 - t * t * (3 - 2 * t))).toFixed(4);
   });
 } else if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);
 // handed on before tunnel_r8_splash.js and tunnel_r8_liquid.js merge MATCH.splash / heroWater / liquid (tunnel_r8_splash.js
@@ -296,28 +298,28 @@ function focusSwellGLSL() {
   const F = MATCH_WATER.face, T = F.teeth, R = F.rim, L = F.lace, B = F.rings, S = F.spark, Wt = F.water;
   return /* glsl */ `    {   // ?s3=focus: broken, sparkling splash water at her base (tunnel_r9_match_water.js focusSwellGLSL)
       // 1. the spiky crest
-      float fsK = as * ${f4(T.per)} - fl * ${f4(T.speed)};
+      float fsK = s * ${f4(T.per)} + fl * ${f4(T.speed)};
       float fsI = floor(fsK), fsF = fract(fsK);
       float fsH = lqHash(vec2(fsI, 3.7)), fsPk = 0.25 + 0.5 * lqHash(vec2(fsI, 8.1));
       float fsTooth = pow(fsF < fsPk ? fsF / fsPk : (1.0 - fsF) / (1.0 - fsPk), ${f4(T.sharp)});
       float fsTip = (0.35 + 0.65 * fsH) * (${f4(1 - T.bob)} + ${f4(T.bob)} * sin(uTime * 3.1 + fsH * 23.0));
-      float fsN = texture2D(uLqTex, vec2(as * 3.1 - fl * 0.25, 0.31 + uTime * 0.05)).b;
+      float fsN = texture2D(uLqTex, vec2(s * 3.1 + fl * 0.25, 0.31 + uTime * 0.05)).b;
       float fsCut = (${f4(T.depth)} * (1.0 - fsTooth * fsTip) + ${f4(T.fine)} * fsN) * mix(${f4(T.side)}, ${f4(T.front)}, mwFront);
       float fsE = d - fsCut;
       float fsKeep = smoothstep(0.0, max(fwidth(d), 1e-4) * 1.5, fsE);
       // 2. broken white pieces along the cut edge
-      float fsRc = floor(as * ${f4(R.cell)} - fl * 0.8);
+      float fsRc = floor(s * ${f4(R.cell)} + fl * 0.8);
       float fsRw = mix(${f4(R.w[0])}, ${f4(R.w[1])}, lqHash(vec2(fsRc, 5.3))) * (0.45 + 0.75 * fsTooth);
       float fsRim = (1.0 - smoothstep(fsRw * 0.55, fsRw, fsE)) * step(${f4(1 - R.share)}, lqHash(vec2(fsRc, 1.9)));
       // 3. small irregular white splash pieces down the face (two overlapping blobs per cell)
-      vec2 fsLq = vec2(as * ${f4(L.cell)} - fl * 0.3, d * ${f4(L.cell)} - fl * ${f4(L.flow)}), fsLi = floor(fsLq);
+      vec2 fsLq = vec2(s * ${f4(L.cell)} + fl * 0.3, d * ${f4(L.cell)} - fl * ${f4(L.flow)}), fsLi = floor(fsLq);
       vec2 fsLo = fract(fsLq) - 0.5 - (vec2(lqHash(fsLi + 4.0), lqHash(fsLi + 7.0)) - 0.5) * 0.4;
       vec2 fsLo2 = fsLo - (vec2(lqHash(fsLi + 5.0), lqHash(fsLi + 6.0)) - 0.5) * 0.45;
       float fsReach = 1.0 - smoothstep(0.0, ${f4(L.reach)}, fsE);
       float fsLr = mix(${f4(L.r[0])}, ${f4(L.r[1])}, lqHash(fsLi + 2.0)) * (0.55 + 0.45 * fsReach);
       float fsLace = step(1.0 - ${f4(L.share)} * fsReach, lqHash(fsLi + 11.0)) * (1.0 - smoothstep(fsLr - 0.05, fsLr, min(length(fsLo), length(fsLo2) * 1.15)));
       // 4. small clear bubble rings
-      vec2 fsBq = vec2(as * ${f4(B.cell)} + 0.15 * sin(uTime * 0.6), d * ${f4(B.cell)} - fl * 0.35), fsBi = floor(fsBq);
+      vec2 fsBq = vec2(s * ${f4(B.cell)} + 0.15 * sin(uTime * 0.6), d * ${f4(B.cell)} - fl * 0.35), fsBi = floor(fsBq);
       float fsBr = mix(${f4(B.r[0])}, ${f4(B.r[1])}, lqHash(fsBi + 29.0));
       vec2 fsBo = fract(fsBq) - 0.5 - (vec2(lqHash(fsBi + 31.0), lqHash(fsBi + 37.0)) - 0.5) * 0.3;
       float fsBl = length(fsBo);
@@ -325,12 +327,12 @@ function focusSwellGLSL() {
       float fsRingGl = fsRing * (1.0 - smoothstep(0.0, fsBr * 0.22, length(fsBo - vec2(-0.45, 0.45) * fsBr)));
       fsRing *= smoothstep(fsBr - 0.08, fsBr - 0.03, fsBl) * (1.0 - smoothstep(fsBr, fsBr + 0.03, fsBl));
       // 5. round twinkling glints
-      vec2 fsSq = vec2(as * ${f4(S.cell)}, d * ${f4(S.cell)} - fl * 0.6), fsSi = floor(fsSq);
+      vec2 fsSq = vec2(s * ${f4(S.cell)}, d * ${f4(S.cell)} - fl * 0.6), fsSi = floor(fsSq);
       float fsSh = lqHash(fsSi + 41.0);
       float fsSpark = step(${f4(1 - S.share)}, fsSh) * (1.0 - smoothstep(${f4(S.dot[0])}, ${f4(S.dot[1])}, length(fract(fsSq) - 0.5 - (vec2(lqHash(fsSi + 43.0), lqHash(fsSi + 47.0)) - 0.5) * 0.5)))
         * (0.55 + 0.45 * sin(uTime * 6.0 + fsSh * 40.0)) * (1.0 - smoothstep(0.05, ${f4(S.reach)}, fsE));
       // 6. light-cyan, vivid-blue and deeper-blue currents running down the face
-      float fsC = texture2D(uLqTex, vec2(as * ${f4(Wt.scale[0])} - fl * 0.08, d * ${f4(Wt.scale[1])} - fl * 0.45)).b;
+      float fsC = texture2D(uLqTex, vec2(s * ${f4(Wt.scale[0])} + fl * 0.08, d * ${f4(Wt.scale[1])} - fl * 0.45)).b;
       vec3 fsW = mix(${v3s(Wt.deep)}, ${v3s(Wt.mid)}, smoothstep(0.3, 0.55, fsC));
       fsW = mix(fsW, ${v3s(Wt.light)}, smoothstep(0.55, 0.8, fsC));
       mwCol = mix(mwCol, mtUndisplay(fsW), ${f4(Wt.amount)});

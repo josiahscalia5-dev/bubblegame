@@ -721,3 +721,33 @@ Make sure you save everything to my GitHub repository, including what design age
 
 Understood: everything saved every 5 minutes, including the chat history, the design agents' briefs, steps and reports, and their unfinished work. Since you've now asked for it explicitly, I'm starting the 5-minute autosave again.
 
+The autosave is running. Waiting for its first round to confirm it saves and pushes.
+
+While that runs, I'm telling both specialists to commit after each tested step and to write their findings into their evidence folders as they go, so each 5-minute snapshot captures what they know.
+
+Everything is now saved to GitHub every 5 minutes. The first round is pushed: **`3931891`**.
+
+- **What each round saves:**
+  - the full chat history;
+  - every design agent's brief, steps and report;
+  - both specialists' unfinished work: changed game code, new scripts and frames, as a patch plus full copies that restore it exactly.
+- **What the specialists do:** commit in their worktrees after each tested step, and keep a running `NOTES.md` of what they've found and tried, so their knowledge is saved too.
+- **Restart:** the loop runs for about 2 hours, the limit for a background job in a cloud session. A reminder at 20:22 UTC will restart it.
+- **Merged work:** when a specialist finishes, I merge its work, test it, and push it with its own commit hash, as before.
+
+The Tunnel & Lighting and Water & VFX specialists are still working through your kit's two problems and the Art Director's list. I'll report back with their merged, tested results.
+
+---
+
+### Automatic notice · 2026-11-05 18:35 UTC
+
+_1 unread notification (scheduled trigger (the stored prompt of a routine or task on this account): 1)_
+
+---
+
+### Claude · 2026-11-05 18:35 UTC
+
+That check-in was my own reminder. The 5-minute autosave now covers its snapshot-and-push part, so I'll only check whether Tunnel & Lighting has committed its camera, to pass it on.
+
+Both specialists are still working. The autosave pushes everything every 5 minutes, and I'll merge, test and report their results with commit hashes when they finish.
+
