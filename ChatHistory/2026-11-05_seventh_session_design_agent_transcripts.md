@@ -1118,5 +1118,12 @@ Let me capture the "before" baseline (b91e952 = current HEAD's WebDemo) at 2.85/
 
 You've hit your 5-hour limit · resets 7:30pm (UTC)
 
+**Lead → agent** (19:38 UTC):
+
+The coordinator sent a message while you were working:
+Resume: the usage limit has reset (19:37 UTC). Continue your focused pass exactly where you stopped (you were about to capture the "before" baseline of b91e952 at 2.85/3.0/3.1 with the canvas and cost). Your worktree and brief are unchanged. Any files you had in the shared scratchpad may be gone: keep your scripts and captures inside your worktree (e.g. Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/ and an uncommitted .wvtmp/). The Tunnel & Lighting specialist is being restarted now on the framing (camera closer, character larger), the sock and the walls; the lead will forward its framing checkpoint commit to you when it lands. Commit a checkpoint early.
+
+Address this before completing your current task.
+
 
 _34 tool steps._
