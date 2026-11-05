@@ -22,7 +22,9 @@ overlay. Keep these as they are unless the user says otherwise:
   target, for the four design agents and every tool. NOT targets: the EXACT TARGET board `03_SCREEN4_EXACT_TARGET_BOARD.png`,
   the guides `01_ROUND6_VISUAL_CONSTRUCTION_GUIDE.png`, `05_...` and `06_...`, concept sheets (`2026-11-04_Round5_References/`,
   the Tripo kit's `01_NEW_...`, `07_VFX_ONLY_...`, `08_VFX_ONLY_...`), `2026-11-05_Water_Look_References/`,
-  `Design/ApprovedScreens/` and any newly generated image. Measure against this file: pass it as `--approved` to `compare_s4.py` and as the
+  `Design/ApprovedScreens/` and any other generated image.
+  Supporting MATERIAL references (look and finish only, approved by the user on 5 November; the original wins):
+  `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/`. Measure against this file: pass it as `--approved` to `compare_s4.py` and as the
   first image to `hero_shares.py`.
 - Other approved targets: `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/`
   - Screen 3 is `01_APPROVED_SCREEN_3_OPENING.jpg`. The Screen 4 file there, `02_APPROVED_SCREEN_4_FULL.jpg`, is a 453 x 907

@@ -21,8 +21,11 @@ model: inherit
     `01_NEW_SCREEN4_ASSET_OVERVIEW.png`, `07_VFX_ONLY_BUBBLES_LOOK.png` and `08_VFX_ONLY_WATER_SPLASH_LOOK.png`;
   - the water-look references `Design/ReferencePacks/2026-11-05_Water_Look_References/`;
   - `Design/ApprovedScreens/` (an older Screen 4);
-  - any newly generated image.
+  - any other newly generated image.
 - `02_APPROVED_SCREEN_4_FULL.jpg` (453 x 907) is the same picture at a lower resolution: use the original instead.
+- Supporting MATERIAL references, approved by the user on 5 November (look and finish only, never layout; the original
+  wins any difference): `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (README there): REF5 blue-water vortex = the tunnel's water material, REF3 = the
+  character in turquoise water, REF2 = the washer's gold-and-lavender materials, REF4 = the props' look, REF1 = finish.
 
 You build real-time water effects for Bubble Wash Kingdom (three.js r170, game in `WebDemo/`). Target: the user's ORIGINAL
 APPROVED Screen 4 (`Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`; water close-up
