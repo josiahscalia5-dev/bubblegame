@@ -2303,10 +2303,10 @@ index 0000000..cb1ae08
 +        near = sum(1 for q in cs if np.hypot((q[0]+x0)/W - 0.53, (q[1]+y0 - 0.525*H)/W) < 0.2)
 +        print(f"   param2 {P2} {k:10s} circles {len(cs):3d}  in centre box {inbox:3d}  within 0.2 W of the centre {near:3d}")
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..3ab56fc 100644
+index 2f39f0e..e7fea08 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
-@@ -105,30 +105,81 @@ export const FOCUS = {
+@@ -105,30 +105,83 @@ export const FOCUS = {
      //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
      //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
      //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
@@ -2378,9 +2378,11 @@ index 2f39f0e..3ab56fc 100644
 +    // whirlpool's circles: cells round it (along) and per unit log radius (across), the share of cells with one, length and
 +    // thickness [min, max] as shares of the cell, bend (a shallow arc), how white; band: the white clustered in irregular
 +    // bands (noise from, to; scale round and out); blue: blue dashes in the other cells (colour, share of cells, how much)
-+    floorFx: { delilac: 1.0, pale: '#aad7f4', lift: 0.35, white: '#f6fbff',
-+      streak: { along: 20.0, across: 9.0, share: 0.95, len: [0.5, 1.0], thick: [0.22, 0.55], bend: 0.12, amount: 0.95,
-+        band: [0.35, 0.6, 3.0, 1.5], blue: { col: '#4f9ff0', share: 0.3, amount: 0.55 } } },
++    // (tunes f2-f6: 0.35 toward #aad7f4 gave L* 76; 0.55 toward a paler #b6dcf6 with thicker streaks in wider bands and
++    // stronger blue dashes gives the original's white water with blue dashes)
++    floorFx: { delilac: 1.0, pale: '#b6dcf6', lift: 0.55, white: '#f6fbff',
++      streak: { along: 20.0, across: 9.0, share: 0.95, len: [0.6, 1.0], thick: [0.35, 0.75], bend: 0.12, amount: 0.95,
++        band: [0.2, 0.5, 3.0, 1.5], blue: { col: '#4f9ff0', share: 0.35, amount: 0.75 } } },
      splash: {
        // small splash crests, not domes: lumpier, a wide spread of sizes
        lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
@@ -2396,7 +2398,7 @@ index 2f39f0e..3ab56fc 100644
          [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
        ],
        // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
-@@ -138,7 +189,12 @@ export const FOCUS = {
+@@ -138,7 +191,12 @@ export const FOCUS = {
      // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
      // droplets of spray (match: 30)
      liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },

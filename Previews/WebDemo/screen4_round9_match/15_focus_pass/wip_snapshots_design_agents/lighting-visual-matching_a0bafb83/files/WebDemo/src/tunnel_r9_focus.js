@@ -91,7 +91,9 @@ export const FOCUS = {
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
       //    over each band's crest
-      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
+      //    (Tunnel & Lighting, the kit's problem B: 4.3 -> 3.4 bands per ln r, broader flows; with the walls alone 6.1 dark
+      //    bands per ray against the original's 6.3)
+      bands: { perLog: 3.4, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
         // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
         // match's bands wider on screen)
         gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
@@ -107,10 +109,14 @@ export const FOCUS = {
       //    (Tunnel & Lighting, the user's kit problem B: rebuilt without outlines, see focusRibbonsGLSL: offset now smooth noise
       //    over soft.cells [round a turn, per band]; across a band deep -> body (soft.body: in, out from, out to) with a soft
       //    light-cyan accent (soft.accent: at, half width, amount) -> the gap (gapFrom: from, full, back to deep from) -> deep)
-      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, offset: 0.5,
-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.66, 0.82, 0.94],
-        soft: { body: [0.16, 0.42, 0.64], accent: [0.1, 0.06, 0.6], cells: [6, 1.0] },
-        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.92 },
+      //    Measured at 3.0 s (the Art Director's polar_rings / ring_dark / zones, upper ring): turquoise 10.8 -> 7.3% (the
+      //    original 7.5), median L* 73 -> 66 (64), darker than L* 55 17 -> 22% (30.5), hue 214 -> 219 (215); the curl a
+      //    little weaker (the original's layers are more concentric: ray coherence 0.60, the walls alone now 0.61);
+      //    satBoost: the flows' colours more saturated (in a render without the bubbles their darks went from 0.85 to 0.91)
+      ribbons: { curl: [[0.22, 2, 1.6, 0.35], [0.1, 5, 3.1, 0.6]], wobble: 0.4, offset: 0.5,
+        edge: '#6fd4fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c58d6', gap: '#142f96', gapFrom: [0.72, 0.86, 0.95],
+        soft: { body: [0.12, 0.5, 0.72], accent: [0.1, 0.08, 0.95], cells: [6, 1.0] },
+        turqShare: 0.35, periShare: 0.08, keep: 0.15, satBoost: 1.3, amount: 0.92 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it

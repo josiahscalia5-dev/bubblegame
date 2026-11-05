@@ -304,8 +304,34 @@ Saturation did not move (0.71), so something downstream desaturates. Let me comp
 - 19:43 `Bash`: Render and measure candidates J and K
 - 19:44 `Bash`: Crop ring structure for J
 - 19:44 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_J.png
+- 19:45 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/L_cands.json
+- 19:45 `Bash`: Render and measure candidates L and M
+- 19:46 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_LM.png
+**Lead → agent** (19:46 UTC):
 
-_156 tool steps._
+[Image: original 2317x599, displayed at 2000x517. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:46 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/N_cands.json
+- 19:46 `Bash`: Render and measure candidate N
+- 19:48 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:48 `Bash`: Set focus band density to 3.4 and show context
+- 19:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:48 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:48 `Bash`: Rebuild and capture the ribbons step at 3.0 and 3.1 s
+- 19:49 `Bash`: Check the build equals the tuned candidate and the waves move
+**Agent** (19:49 UTC):
+
+The build reproduces candidate M exactly, and the ring zone changes between 3.0 and 3.1 s (animated). Let me look at the full frame and the Pixel 7 framing.
+
+- 19:49 `Bash`: Original / before / after sheet for ribbons
+- 19:49 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/ribfinal_sheet.png
+**Agent** (19:49 UTC):
+
+The walls are now deeper cobalt with soft, broad flows. Pixel 7 check, then commit.
+
+- 19:49 `Bash`: Pixel 7 capture after ribbons
+
+_170 tool steps._
 
 ---
 
@@ -644,5 +670,22 @@ Now the focus-only floor piece.
 - 19:44 `Bash`: Build and capture banded floor streaks
 - 19:44 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f3.png
 - 19:44 `Bash`: Diagnostic capture with the floor fully pale
+- 19:45 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/lav_f4.png
+**Agent** (19:45 UTC):
 
-_175 tool steps._
+With the floor forced fully pale the lavender stays in the same shapes, so it is an overlay on top of the floor (around the sock, and a blob left of centre). Let me identify it.
+
+- 19:45 `Bash`: List visible object names at 3.0 s
+- 19:45 `Bash`: Hide probe overlay candidates on the floor ahead
+- 19:47 `Bash`: Capture lighter floor with thicker streaks
+- 19:48 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f5.png
+- 19:48 `Bash`: Capture whiter floor with blue dashes
+- 19:49 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_f6.png
+**Agent** (19:49 UTC):
+
+f6 lands near the targets: L* 79.4 (target 80-84), white 22.1% as streaks, median #a7cdf2 (original #aad7f4). Writing f6 into the settings and capturing the committed defaults.
+
+- 19:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:49 `Bash`: Build and capture item 2 defaults
+
+_184 tool steps._
