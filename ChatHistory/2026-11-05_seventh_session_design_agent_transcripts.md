@@ -1969,5 +1969,6 @@ Now the 50% blend over the original (with the measured vanishing points), and co
 Final frames captured (draw calls 206 / 205 / 201, as before). Now the identity proof against the final bundle, then gameplay and the phone frame.
 
 - 20:56 `Bash`: Final pixel-identity proof against the baseline bundle
+- 21:01 `Bash`: Final gameplay functional test
 
-_210 tool steps._
+_211 tool steps._

@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: froth foam, tunnel flecks)
 
-- **Taken:** 2026-11-05 20:58 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 21:01 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a6a478aa3fef314d3` (local only), started from `b0e1f07`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (108; full copies in `files/`)
+## Files (111; full copies in `files/`)
 
 - `.wvtmp/base/game.bundle.js (new)`
 - `.wvtmp/basedemo/README.md (new)`
@@ -100,6 +100,9 @@
 - `.wvtmp/leftbox_f4.png (new)`
 - `.wvtmp/meas_final.txt (new)`
 - `.wvtmp/pixid/normal_base.log (new)`
+- `.wvtmp/pixid/normal_base_2.9.png (new)`
+- `.wvtmp/pixid/normal_base_tap.png (new)`
+- `.wvtmp/pixid/normal_now.log (new)`
 - `.wvtmp/tune_diag.json (new)`
 - `.wvtmp/tune_nolayer.json (new)`
 - `.wvtmp/tunnel_before.png (new)`
