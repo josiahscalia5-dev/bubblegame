@@ -1147,3 +1147,57 @@ Everything is saved to your GitHub repository, branch `ccr-b41bbe83-3fbhkr`, at 
 
 **From now on:** the automatic save is running. It exports this conversation and pushes everything to GitHub every 5 minutes, and checks each push. When the Water & VFX specialist finishes, I'll save its final work and refresh the agents' reports and transcripts too.
 
+---
+
+### You · 2026-11-05 13:12 UTC
+
+Make sure everything is saved Make sure everything saved to my GitHub repository, like I said before. And plus, is there any way you could show me like a screenshot and a preview of how design agent is? I want to see how it looks.
+
+---
+
+### Claude · 2026-11-05 13:12 UTC
+
+I'll confirm the save state first, then render a real screenshot of what the design agents have built: both the saved version and the Water & VFX specialist's live work in progress.
+
+The specialist made a four-way comparison at 3.0 s a few minutes ago. Here it is:
+
+_[Sent you files: .claude/worktrees/agent-a60ed7c5dde43df5d/Previews/WebDemo/screen4_round9_match/03_water_vfx/approved_vs_splash_vs_matchTL_vs_match_3.00s.png]_
+
+Both versions are being served, with all their files present. A quick check that both actually load and play on an emulated phone:
+
+_[Sent you files: /tmp/claude-0/-home-user-bubblegame/1fd3c534-544f-5e73-8e8e-b614bdcc3aad/scratchpad/preview/phone_saved.png]_
+
+Yes, everything is saved, and here's how the design agents' work looks.
+
+**Saved:** your GitHub repository is fully up to date. The automatic save runs every 5 minutes, and its last push (12:57 UTC) is confirmed by GitHub with nothing left unsaved. That covers the full chat history, the agents' reports and step-by-step transcripts, everything they built, and a snapshot of the Water & VFX specialist's unfinished work. When that specialist finishes, its final work will be saved too.
+
+**Screenshots I've sent you:**
+1. **The work in progress, a four-way comparison at 3.0 s:** your original, the earlier splash version, the Tunnel & Lighting checkpoint, and the Water & VFX specialist's version as it stands right now. Its latest changes so far:
+   - the floor water in the tunnel is bluer, with less lavender;
+   - blue water and white crests are starting to show in front of and beside the character.
+
+   It isn't finished. The large wave shapes round the character and the deeper immersion are still being built.
+2. **The saved version on a phone:** the art-match version as saved on GitHub, on an emulated Pixel 7, 3 seconds after Tap to Start.
+
+**Live preview:** it's running again on port 8080. If your Claude app shows a preview for this session, open it. The start page now has two new buttons:
+- **Art-match pass, saved version:** what's on GitHub.
+- **Art-match, Water & VFX work in progress:** the specialist's current, unfinished version, live. It may change, or briefly not load, while the specialist rebuilds it.
+
+The preview only runs while this session is open. If it stops, tell me and I'll restart it.
+
+---
+
+### Automatic notice · 2026-11-05 13:16 UTC
+
+_Agent "Water &amp; VFX: continuous water + REF3 waves" finished_
+
+---
+
+### Claude · 2026-11-05 13:17 UTC
+
+The Water & VFX specialist has finished (`15acbc8`). Before merging, I'm pausing the 5-minute automatic save, so it can't commit halfway through a merge:
+
+As expected, the only conflict is the built game file, since both sides rebuilt it. The source code merged cleanly, so I'll rebuild the game file from the merged source:
+
+Both sides are in the merged game: my brush and relief fixes are there, along with the Water & VFX changes. Building the comparison of the merged version:
+
