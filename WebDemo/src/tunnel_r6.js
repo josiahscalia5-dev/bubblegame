@@ -21,6 +21,10 @@ const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ |
 // ?s3=round7 (test): round6 + the rich preview + the Screen 4 pass that matches the ORIGINAL approved Screen 4 (ROUND6.r7)
 export const R7_ON = LIST.includes('round7') || LIST.includes('hero') || LIST.includes('liquid') || LIST.includes('splash') || LIST.includes('match');   // ?s3=hero: round7's dedicated hero scene (tunnel_r7_hero.js)
 export const R6_ON = LIST.includes('round6') || R7_ON;
+// ?s3=match (Round 9): the face has no light panel above the door. It came from the Round 6 construction guide, not the
+// original approved Screen 4, and on a phone it showed as a flat pale rectangle under the mission banner (the user's
+// checkpoint 07, 5 November). Every other version keeps it.
+const R9_MATCH = LIST.includes('match');
 // ?s3=round6,rich (preview): pass 3 (the board's architecture and composition, which the user likes and keeps as ?s3=round6)
 // plus the ORIGINAL approved Screen 4's richness (ROUND6.rich below)
 export const R6_RICH = R6_ON && (LIST.includes('rich') || R7_ON);
@@ -651,9 +655,9 @@ void main() {
   float pa = a / 6.2832 * ${ROUND6.porthole.panels.toFixed(1)} + 0.5;                     // panel seams (the construction guide)
   float seam = exp(-pow((fract(pa) - 0.5) * r * 6.2832 / ${ROUND6.porthole.panels.toFixed(1)} / 0.025, 2.0)) * step(uIn + 0.95, r);
   col = mix(col, uShade * 0.7, seam * 0.6); col += uLilac * 0.18 * exp(-pow((fract(pa) - 0.47) * r * 6.2832 / ${ROUND6.porthole.panels.toFixed(1)} / 0.02, 2.0)) * step(uIn + 0.95, r);
-  float lightPanel = smoothstep(0.2, 0.17, abs(a - 1.5708)) * smoothstep(uIn + 0.42, uIn + 0.5, r) * (1.0 - smoothstep(uIn + 0.8, uIn + 0.88, r));
+${R9_MATCH ? '' : `  float lightPanel = smoothstep(0.2, 0.17, abs(a - 1.5708)) * smoothstep(uIn + 0.42, uIn + 0.5, r) * (1.0 - smoothstep(uIn + 0.8, uIn + 0.88, r));
   col = mix(col, vec3(0.75, 0.95, 1.0) * 1.35, lightPanel);                                 // a glowing light panel above the door
-  float view = clamp(dot(normalize(vN), normalize(cameraPosition - vW)), 0.0, 1.0);
+`}  float view = clamp(dot(normalize(vN), normalize(cameraPosition - vW)), 0.0, 1.0);
   col *= 0.75 + 0.35 * view;
   gl_FragColor = vec4(col, 1.0);
 }

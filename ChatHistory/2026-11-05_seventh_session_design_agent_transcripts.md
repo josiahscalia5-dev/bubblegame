@@ -171,8 +171,38 @@ Applying the lead's merge note to `mtPlace` (reference width = min(width, 0.5 ×
 Now solving the left coins' places against the original with the hero probe's PICKS.
 
 - 14:46 `Bash`: Build and solve coin places with hero probe
+- 14:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:47 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/t2.json
+- 14:47 `Bash`: Build and capture iteration t2
+- 14:48 `Bash`: Side by side of original and t2
+- 14:48 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/sbs_t2.png
+- 14:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:49 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:49 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/t3.json
+- 14:49 `Bash`: Build and capture iteration t3
+**Agent** (14:50 UTC):
 
-_68 tool steps._
+Upper-left coin now 0.092-0.209 x 0.438-0.504 (original 0.087-0.213 x 0.441-0.499). Let me look at the walls in t3.
+
+- 14:50 `Bash`: Crop upper tunnel for t3
+- 14:50 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_upper_t3.png
+- 14:50 `Bash`: Percentiles of relief and variation maps
+- 14:51 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:51 UTC):
+
+Now fold the t1-t3 settings into the source and add the new parameters.
+
+- 14:51 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:51 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 14:51 `Bash`: Build and capture iteration t4 (folded settings)
+- 14:51 `Bash`: Crop mid tunnel for t3 and t4
+- 14:51 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_mid_t4.png
+
+_90 tool steps._
 
 ---
 
@@ -336,5 +366,35 @@ I'll read the user's new evidence package, then continue with absolute paths (th
 - 14:46 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sbs.py
 - 14:46 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles.py
 - 14:46 `Bash`: Run per-sector bubble counter
+- 14:47 `Bash`: Combine overlays for viewing
+- 14:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/bub/cmp_ov.png
+**Agent** (14:47 UTC):
 
-_56 tool steps._
+The strict version misses most real bubbles and takes the coin and sock for bubbles. One looser setting, then I'll judge by eye.
+
+- 14:47 `Bash`: Looser bubble detector run with overlay
+- 14:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/bub8/cmp_ov.png
+- 14:48 `Bash`: Make 3x gridded tiles of the original's mid ring
+- 14:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/om1.png
+- 14:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/om2.png
+- 14:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/om3.png
+- 14:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/om4.png
+- 14:49 `Grep`: name = '[a-zA-Z0-9]*[Bb]ubble
+- 14:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r7_hero.js
+- 14:49 `Bash`: Find hero bubble settings under match
+- 14:49 `Bash`: Read hero bubble list and match overrides
+- 14:49 `Bash`: Read hide_probe header and debug hook
+- 14:50 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubble_probe.cjs
+- 14:50 `Bash`: Check waterline bubble attributes
+- 14:50 `Bash`: Probe bubble visibility at 3.0 s
+**Agent** (14:51 UTC):
+
+96 of my 140 tunnel bubbles show at 3.0 s (centre 30, mid 61, walls 12), mostly small. Let me compare them zoomed against the original's mid ring.
+
+- 14:51 `Bash`: Mid-tunnel crop original vs r0
+- 14:51 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/mid_r0.png
+- 14:51 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/specks.py
+- 14:51 `Bash`: Count small white shapes by zone
+- 14:51 `Bash`: Commit restored WIP checkpoint
+
+_78 tool steps._

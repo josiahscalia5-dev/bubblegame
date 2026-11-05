@@ -71,8 +71,15 @@ export const MATCH = {
       // within reach from the left lane with a jump; the far three-coin line (it stood under the centre coin, the "totem";
       // the original has only the small centre coin and one far sock at the vanishing point) raised 0.35 m onto the line from
       // the camera through the centre coin, so at the hero moment it is hidden behind it; still in the middle lane, in reach)
-      layout: { coinLines: [[-0.257, 2.75, 1, 1.0, 1.05, 0], [-1.14, 5.0, 1, 1.0, 1.5, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.357, 2.3, 1, 1.0, 0.57, 0],
-        [2, 13.0, 1, 1.0, 0.55, 0], [1, 12.0, 3, 1.0, 0.9, 0]], replace: 3,
+      // (the user's checkpoint 05, 14:43 UTC: the upper-left coin stood on the big left coin, "a huge left coin pair". Solved
+      // with hero_probe PICKS at 3.0 s onto the original's boxes: the big coin on (0.193, 0.602), 0.09 m up; the upper-left
+      // coin on (0.150, 0.470): at its old distance that is 2.1 m up and 1.05 m outside the left lane, out of reach, so it
+      // comes 1.6 m nearer (4.6 m from the camera), 2.03 m up, 0.47 m outside the left lane: 0.68 m from the body at the jump's
+      // top (1.53 m; 0.73 m with the coin's bob), inside the 0.82 m pick-up reach; drawn smaller there (MATCH.coinScales) so it
+      // is the original's 0.126 W.
+      // The small lower-right coin by the centre coin 2 m further (the original's is smaller, at 0.589, 0.574))
+      layout: { coinLines: [[-0.231, 2.77, 1, 1.0, 1.14, 0], [-0.674, 3.4, 1, 1.0, 2.03, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.357, 2.3, 1, 1.0, 0.57, 0],
+        [2, 15.0, 1, 1.0, 0.5, 0], [1, 12.0, 3, 1.0, 0.9, 0]], replace: 3,
         firstSock: [2.0, 3.2, 1.14], extraGem: [-0.414, 5.7, 1.67] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
       // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
@@ -108,6 +115,9 @@ export const MATCH = {
   // sock, 23 m ahead, stays as the original's). Their places, pick-up radii and the counts are unchanged
   farFade: { coins: [17, 21], socks: [25, 28] },
   gemScale: 0.89,   // the gem beside the big left coin (gems[0]): its visual size (the approved's is 0.103 W wide, ours 0.115)
+  // single coins' visual size, [layout u, scale] (checkpoint 05): the upper-left coin, brought nearer to stay in reach, at the
+  // original's 0.126 W; the big left coin toward the original's 0.216 W (ours 0.188). Pick-up places unchanged
+  coinScales: [[3.4, 0.69], [2.77, 1.1]],
   // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
   // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
   // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
@@ -173,13 +183,22 @@ export const MATCH = {
     // glow: the azure light on each band's inner part (to: where it fades); smooth: the water's cell pattern halved inside
     // the bands by this much; rim.broken: how much the relief breaks the rim line
     // blueFrom: the gaps and the azure light only outside the warm core (rw)
-    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.6,
+    // (the user's checkpoint 03, 14:43 UTC, "several distinct deep cobalt rings lead to a tight vortex": the wobble 0.6 bent
+    // the bands into topographic blobs; at 0.15 they are the approved's concentric drum rings. Narrower, deeper gaps; the
+    // water's cell pattern kept a little more (turbulence); ice-blue rims, wider)
+    // inner: the gaps' pastel pink inside the core's reach (blueFrom); splash: white where the relief crests (dl, from) on
+    // the band's lit part (bk under `to`)
+    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.15, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.7,
       blueFrom: [0.075, 0.12],
-      gap: { col: '#2c4fd0', from: [0.62, 0.86], amount: 0.8 }, rim: { col: '#c4f0ff', w: [0.0, 0.07], amount: 0.85, broken: 0.35 },
-      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.4 } },
+      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.85 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
+      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
+      inner: { col: '#e8a6d0', amount: 0.55 }, splash: { col: '#f2f8ff', from: [0.2, 0.25], to: [0.25, 0.5], amount: 0.85 } },
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
-    rainbow: { r: 0.225, w: 0.03, amount: 0.62, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
+    rainbow: { r: 0.225, w: 0.036, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
+    // the mid vortex (the approved r 0.08-0.20 W: white 22%, pale blue 18%; ours white 8%, pale blue 32%): its brightest
+    // pale blue whitened; r: [in, full, full to, out] in rw, from: the brightness where it starts and is full
+    midWhite: { r: [0.05, 0.08, 0.17, 0.24], from: [0.7, 0.86], amount: 0.75 },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -390,7 +409,15 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float bl = dot(c, vec3(0.2126, 0.7152, 0.0722)), bkeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
     c = mix(c, ${hx(M.bands.glow.col)} * mix(0.9, 1.1, bl), glowK * ${f4(M.bands.glow.amount)} * bkeep);
     c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * bkeep);
+    // (inside the core's reach, where the cobalt is kept out, the gaps pastel pink: the approved's tight inner rings, pink,
+    // peach and white, run right down to the centre coin)
+    float ginK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz * (1.0 - bout);
+    c = mix(c, ${hx(M.bands.inner.col)} * mix(0.9, 1.08, bl), ginK * ${f4(M.bands.inner.amount)});
     c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
+    // white water broken over each band's lit part where the relief crests (the approved's turbulent splash bits along the
+    // rings; blobs of the relief's own cells, not star shapes)
+    float spK = smoothstep(${f4(M.bands.splash.from[0])}, ${f4(M.bands.splash.from[1])}, dl) * (1.0 - smoothstep(${f4(M.bands.splash.to[0])}, ${f4(M.bands.splash.to[1])}, bk)) * bz;
+    c = mix(c, ${hx(M.bands.splash.col)}, spK * ${f4(M.bands.splash.amount)});
   }
   {   // the approved's pastel rainbow arc above the centre (pink at the left, peach and pale yellow over the top and right),
       // across the bands, on the upper half (MATCH.walls.rainbow)
@@ -402,6 +429,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     rc = mix(rc, ${hx(M.rainbow.cols[3])}, smoothstep(0.2, -0.6, cos(ra)) * 0.6);   // pinker on the left
     float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
     c = mix(c, rc * mix(0.85, 1.08, rl), rk);
+  }
+  {   // the mid vortex's bright pale blue toward the approved's white water (MATCH.walls.midWhite; the warm patches kept)
+    float mz = smoothstep(${f4(M.midWhite.r[0])}, ${f4(M.midWhite.r[1])}, rw) * (1.0 - smoothstep(${f4(M.midWhite.r[2])}, ${f4(M.midWhite.r[3])}, rw));
+    float ml = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    float mk = mz * smoothstep(${f4(M.midWhite.from[0])}, ${f4(M.midWhite.from[1])}, ml) * (1.0 - smoothstep(0.0, 0.1, c.r - c.b)) * ${f4(M.midWhite.amount)};
+    c = mix(c, min(vec3(ml * 0.97, ml * 1.0, ml * 1.04) + 0.04, 1.0), mk);
   }
   // the core's pale lilac rows toward warm white (blue brought down to the larger of red and green)
   float coreK = 1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw);
@@ -493,6 +526,13 @@ export function matchCollectibles({ coins, gems, socks }) {
   // the pop animation's scale are unchanged)
   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
   if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }
+  // single coins' visual size (MATCH.coinScales; their LOD levels, so the game's own pop and pass scales still apply on top)
+  report.coinScales = 0;
+  for (const [u, s] of MATCH.coinScales || []) for (const c of coins) {
+    if (Math.abs(c.u - u) > 0.01 || !c.obj || !c.obj.isLOD) continue;
+    for (const lv of c.obj.levels) lv.object.scale.multiplyScalar(s);
+    report.coinScales++;
+  }
   if (MATCH_BARE) { for (const it of [...coins, ...gems, ...socks]) hideFromCamera(it.obj); report.bare = coins.length + gems.length + socks.length; }
   // the paw coins' look (one shared material): the approved's yellow gold, shinier and more dimensional (the Art Director:
   // hue 46, brightness range 0.34-0.42, lemon highlights #fff188, shade #d67c02; ours hue 39-41, range 0.18-0.21). The coin's
