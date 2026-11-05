@@ -336,3 +336,108 @@ Water & VFX has finished (`97c5d58`). She now sits on the water as you corrected
 
 Merged and pushed (`b91e952`). Now the final checks. The pixel-identity run on the full merge goes in the background while I run the gameplay tests:
 
+---
+
+### You (sent while Claude was working) · 2026-11-05 15:48 UTC
+
+Claude, please do one focused correction pass on Bubble Wash Kingdom Level 1 Screen 4.
+
+Use my ORIGINAL_APPROVED_SCREEN4.png as the main truth reference. Also use the attached comparison image and the evidence inside the ZIP.
+
+This pass should focus only on the biggest remaining differences. Do not redesign the level in a new style. Do not redesign the pink character itself. Preserve the working gameplay, controls, and current progress.
+
+MAIN GOAL:
+Make the playable screen look much closer to my approved original by correcting the remaining differences in tunnel energy, foam material, framing, sock pose, and overall composition.
+
+PRIORITIES FOR THIS PASS:
+
+1. TUNNEL
+The tunnel is still too clean and too smooth.
+In my approved original, the tunnel has:
+- more energetic and irregular swirling water
+- more white splash flecks and streaks
+- more bubbles distributed through the tunnel interior
+- a fuller, more active washing-machine vortex look
+
+Please:
+- make the tunnel feel more alive and less smooth/perfect
+- add more white splash detail and streaking
+- add more bubbles at multiple depths inside the tunnel
+- keep the tunnel rich, dense, and dynamic
+
+2. FOAM
+The current foam still looks too transparent and too purple.
+In my approved original, the foam is:
+- thick
+- bright
+- blue-white / aqua-white
+- frothy and dimensional
+- more like bubbly foam, not glassy lavender lumps
+
+Please:
+- rebuild the foreground foam so it looks thick, bright, white-blue, and frothy
+- reduce the transparent purple/glassy look
+- make the foam read more clearly as water froth and bubbles
+
+3. PINK CHARACTER POSITION / FRAMING
+Do NOT redesign the pink character model.
+The issue is not the character design.
+The issue is how it appears in the frame.
+
+In my approved original:
+- the pink character appears larger
+- it sits clearly ON TOP OF the water
+- it is supported by the splash/foam
+- it is not hidden behind transparent water
+- it feels more present in the frame
+
+Please:
+- adjust framing / camera feel / scene scale so the pink character appears larger like in the approved original
+- keep it clearly sitting on top of the water
+- do not bury it inside the water
+- do not hide it behind transparent water layers
+
+4. SOCK
+The sock still looks wrong in pose.
+In my approved original, the sock is tilted / lying more sideways.
+In the current version, it stands too upright.
+
+Please:
+- change the sock pose and orientation so it matches the approved original more closely
+- keep the sock’s placement and scale aligned with the approved composition
+
+5. OVERALL COMPOSITION
+The original feels fuller, closer, and more visually exciting.
+The current version still feels more open and less packed.
+
+Please:
+- make the composition feel tighter and fuller
+- match the approved framing more closely
+- reduce the sense of empty space
+- preserve the correct coin/gem/sock layout while making the whole scene feel closer to the approved original
+
+IMPORTANT RULES:
+- preserve real playable gameplay
+- do not replace gameplay with a static image
+- do not redesign the pink character
+- do not drift into a new artistic interpretation
+- stay faithful to the approved original
+
+AFTER THIS PASS:
+Please show me:
+1. a side-by-side comparison with my ORIGINAL approved screen
+2. a close-up of the tunnel interior
+3. a close-up of the foam / water around the pink character
+4. a short checklist confirming what changed for:
+   - tunnel energy and bubbles
+   - foam material/color
+   - pink character framing/on-top-of-water placement
+   - sock tilt/orientation
+   - overall composition
+
+---
+
+### Claude · 2026-11-05 15:51 UTC
+
+Your focused pass is next. First, the identity result for the full merge, which just finished:
+
