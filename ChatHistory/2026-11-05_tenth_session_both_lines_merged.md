@@ -405,3 +405,11 @@ Step 2 is committed and pushed (`a715434`). The autosave had already swept the c
 
 _[Sent you files: Previews/WebDemo/screen4_round9_match/23_step2_interface/01_original_vs_before_vs_after_3.00s.jpg, Previews/WebDemo/screen4_round9_match/23_step2_interface/02_pixel7_original_vs_before_vs_after.jpg]_
 
+My column parsing went wrong; printing the raw lines instead:
+
+`tunnel_r5.js` describes "a gentle haze inside the drum". A haze that grows with depth would explain exactly this: more lightening toward the far end. Reading it:
+
+The class names are minified, so my bloom switch matched nothing. The bloom pass is the one with strength 0.16 and threshold 1.0. Re-running and selecting it by its settings instead:
+
+The bloom isn't it either: switching it off changes the picture by only 0.5%. So the loss happens before post-processing. Comparing the map and the game picture by eye around the centre:
+
