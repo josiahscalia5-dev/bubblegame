@@ -2,6 +2,22 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
+## Newest (5 November, 21:45 UTC onward): eighth session, branch `ccr-9f8e2c8d-0zg3mc`, focused pass merged
+
+- **Recovered from:** `6b96449`, the seventh session's last autosave (the same commit on `ccr-1f9da4c9-e0yrsc`, left
+  untouched). Both specialists had FINISHED their focused-pass work at about 21:06 UTC and stopped at the usage limit
+  just before committing; their worktrees were lost with the old container.
+- **Restored exactly from the 21:32 UTC snapshots** (`wip_snapshots_design_agents/`):
+  - Tunnel & Lighting (`lighting-visual-matching_a1aff7a0`, from `9a95c06`): `tunnel_r9_match.js` and one gated line in
+    `game.js`. Rebuilt alone: md5 `17101d7a...`, the final md5 its README reports. Evidence: `13_focused_pass_tunnel_lighting/`.
+  - Water & VFX follow-up (`water-vfx-engineer_a6a478aa`, from `b0e1f07`): `tunnel_r9_match_water.js`. Rebuilt alone: md5
+    `0f6f7d22...`, the md5 in its identity file. Evidence: `14_focused_pass_water_vfx/followup/`.
+  - Merged as `68c8c40` (different files, no conflict). Merged bundle md5 `e74ba8c9...`.
+- **The phone video** recorded at 21:11 UTC (`16_phone_video_into_the_machine/`) was sent to the user in this session.
+- **Checks and the merged comparison:** `Previews/WebDemo/screen4_round9_match/17_focused_pass_merged/` (README there).
+- **Autosave:** running, with `ChatHistory/2026-11-05_eighth_session_round9_merge.md` and
+  `..._eighth_session_design_agent_transcripts.md`.
+
 ## Newest (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
 
 - **Recovered from:** `36c8676`, the sixth session's last autosave (on both `ccr-4aef2c77-0cdeu2` and this branch; left
