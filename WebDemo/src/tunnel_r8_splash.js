@@ -241,7 +241,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);' : ''}
     for (const [phi0, count, rMax, out0, h0] of SPLASH.lumps) {
       for (let i = 0; i < count; i++) {
         const big = i === 0, phi = phi0 + (big ? 0 : (rnd() - 0.5) * 14), c = crest(phi);
-        const r = big ? rMax : rMax * (0.35 + 0.5 * rnd());
+        const r = big ? rMax : rMax * (MATCH_ON ? SPLASH.lumpMin + (0.85 - SPLASH.lumpMin) * rnd() : 0.35 + 0.5 * rnd());   // ?s3=match: no tiny lobes (their thin rims broke into specks)
         const out = out0 + (big ? 0 : (rnd() - 0.3) * rMax * 1.2), up = h0 + (big ? 0 : (rnd() - 0.2) * rMax * 1.1);
         list.push([c.x + c.nx * out, c.h + up, c.u + c.nu * out, r, rnd(), phi < 0 ? -1 : 1]);
       }
@@ -265,7 +265,7 @@ void main() {
   float k = spBoost(side) * uFade;
   vec3 q = position;
   // lumpy, and slowly boiling
-  float bump = 0.16 * sin(q.x * 3.1 + seed * 11.0) * sin(q.y * 2.7 + seed * 5.0) * sin(q.z * 3.3 + seed * 7.0)
+  float bump = ${MATCH_ON ? f3(SPLASH.lumpBump) : '0.16'} * sin(q.x * 3.1 + seed * 11.0) * sin(q.y * 2.7 + seed * 5.0) * sin(q.z * 3.3 + seed * 7.0)
     + 0.06 * sin(q.x * 7.0 + q.z * 5.0 + uTime * (3.0 + seed * 2.0) + seed * 20.0);
   vec3 o = q * (1.0 + bump);
   o.y *= ${f3(SPLASH.lumpSquash)};

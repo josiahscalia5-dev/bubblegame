@@ -1,0 +1,91 @@
+Round 9 step 7, Water & VFX gate fixes: every target, approved / before (merged 2a6ab30, ../04_merged) / now (this pass,
+bundle md5 b1d86dfe9c065ab24f8886b53350c473).
+Frames: seed 7, 538 x 1076 game area, DPR 1.5, HUD on (page) unless named _canvas (raw 3D canvas, no HUD); resized to 538 x 1076.
+Script: scripts/meas.py, which runs the Art Director's own measures unchanged (05_art_director_gate/scripts): bank.py (bank
+y .80-.875; under the body x .33-.67 y .835-.875; its HUD mask), contact.py (left x < .24 / right x > .74 at y .70-.835;
+contact strip x .30-.70 y .78-.835), char.py (waterline = median lowest pink over x .3-.7; sides x .30-.34 and .66-.70) and
+tools/screen4/liquid_shares.py (lower-third white). Targets in [brackets].
+'blobs' = contact.py's total count of separate white shapes (it is the Art Director's "white blobs 13 / 105"); '>=20px' counts
+only those of 20 px or more.
+Note: on the page frames the under-the-body box is partly covered by the game's "Swipe to steer" help panel (x .33-.67 from
+y .84); the _canvas lines show it without the HUD.
+
+== approved
+  F2 bank y.80-.875 (bank.py): white 20.3 [18-22] satblue 14.0 [>=13] elec 12.2 [>=11] pale 26.4 [<=27] hp5 0.095 [>=.09] lav 15.2 violet 11.4 med #c2b2f2
+  F2 left x<.24 y.70-.835 (contact.py): white 25.0 [>=20] blobs 13 [<=40] (>=20px 7) | right x>.74: white 30.6 elec 14.6 satblue 14.9 blobs 7
+  F2 lower-third white 16.9 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 3.6 [<=19] pink 85.1 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.112 [>=.10] white 14.2 [12-16] pale 20.5 [<=24] violet 36.8 [>=30] pink 16.1 med #b6a2f2
+  F8 waterline (char.py) 0.836 [~.836] | sides x.30-.34 0.809 x.66-.70 0.860
+== before_3.00
+  F2 bank y.80-.875 (bank.py): white 15.9 [18-22] satblue 10.7 [>=13] elec 8.9 [>=11] pale 31.6 [<=27] hp5 0.083 [>=.09] lav 16.2 violet 13.8 med #c5b5f3
+  F2 left x<.24 y.70-.835 (contact.py): white 14.1 [>=20] blobs 105 [<=40] (>=20px 25) | right x>.74: white 32.4 elec 7.9 satblue 15.8 blobs 60
+  F2 lower-third white 8.5 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 9.5 [<=19] pink 71.8 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.071 [>=.10] white 6.6 [12-16] pale 34.4 [<=24] violet 40.3 [>=30] pink 4.1 med #b6a1f3
+  F8 waterline (char.py) 0.824 [~.836] | sides x.30-.34 0.798 x.66-.70 0.811
+== now_3.00
+  F2 bank y.80-.875 (bank.py): white 17.5 [18-22] satblue 19.6 [>=13] elec 8.7 [>=11] pale 25.5 [<=27] hp5 0.101 [>=.09] lav 6.4 violet 0.5 med #d0a5f3
+  F2 left x<.24 y.70-.835 (contact.py): white 26.4 [>=20] blobs 48 [<=40] (>=20px 8) | right x>.74: white 27.7 elec 15.6 satblue 26.1 blobs 42
+  F2 lower-third white 10.0 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 2.6 [<=19] pink 83.6 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.101 [>=.10] white 16.1 [12-16] pale 35.6 [<=24] violet 1.3 [>=30] pink 9.3 med #c2b9f4
+  F8 waterline (char.py) 0.835 [~.836] | sides x.30-.34 0.806 x.66-.70 0.856
+== before_2.85
+  F2 bank y.80-.875 (bank.py): white 16.0 [18-22] satblue 11.4 [>=13] elec 10.0 [>=11] pale 35.9 [<=27] hp5 0.083 [>=.09] lav 16.4 violet 13.8 med #c1baf4
+  F2 left x<.24 y.70-.835 (contact.py): white 10.3 [>=20] blobs 73 [<=40] (>=20px 19) | right x>.74: white 16.3 elec 30.7 satblue 39.5 blobs 46
+  F2 lower-third white 8.3 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 10.4 [<=19] pink 67.5 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.071 [>=.10] white 6.6 [12-16] pale 34.6 [<=24] violet 41.2 [>=30] pink 3.0 med #b7a0f3
+  F8 waterline (char.py) 0.821 [~.836] | sides x.30-.34 0.796 x.66-.70 0.809
+== now_2.85
+  F2 bank y.80-.875 (bank.py): white 16.6 [18-22] satblue 21.5 [>=13] elec 10.0 [>=11] pale 27.8 [<=27] hp5 0.099 [>=.09] lav 6.8 violet 0.5 med #caa7f4
+  F2 left x<.24 y.70-.835 (contact.py): white 23.2 [>=20] blobs 31 [<=40] (>=20px 10) | right x>.74: white 16.9 elec 36.0 satblue 47.8 blobs 32
+  F2 lower-third white 9.8 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 2.5 [<=19] pink 81.8 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.097 [>=.10] white 15.9 [12-16] pale 37.1 [<=24] violet 1.2 [>=30] pink 6.1 med #bdbbf5
+  F8 waterline (char.py) 0.831 [~.836] | sides x.30-.34 0.802 x.66-.70 0.851
+== before_3.10
+  F2 bank y.80-.875 (bank.py): white 15.4 [18-22] satblue 13.6 [>=13] elec 10.8 [>=11] pale 31.2 [<=27] hp5 0.084 [>=.09] lav 22.3 violet 19.2 med #bab4f3
+  F2 left x<.24 y.70-.835 (contact.py): white 17.8 [>=20] blobs 95 [<=40] (>=20px 24) | right x>.74: white 20.3 elec 14.9 satblue 24.4 blobs 73
+  F2 lower-third white 9.9 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 9.0 [<=19] pink 62.3 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.069 [>=.10] white 4.2 [12-16] pale 21.1 [<=24] violet 56.2 [>=30] pink 2.8 med #af8ef1
+  F8 waterline (char.py) 0.818 [~.836] | sides x.30-.34 0.794 x.66-.70 0.806
+== now_3.10
+  F2 bank y.80-.875 (bank.py): white 17.1 [18-22] satblue 25.3 [>=13] elec 11.5 [>=11] pale 26.1 [<=27] hp5 0.101 [>=.09] lav 6.9 violet 0.7 med #c6a6f3
+  F2 left x<.24 y.70-.835 (contact.py): white 26.6 [>=20] blobs 51 [<=40] (>=20px 9) | right x>.74: white 18.5 elec 18.9 satblue 29.9 blobs 51
+  F2 lower-third white 11.3 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 3.1 [<=19] pink 77.5 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.098 [>=.10] white 16.1 [12-16] pale 31.7 [<=24] violet 1.9 [>=30] pink 4.9 med #a6a1f4
+  F8 waterline (char.py) 0.829 [~.836] | sides x.30-.34 0.800 x.66-.70 0.850
+== before_3.00_canvas
+  F2 bank y.80-.875 (bank.py): white 14.1 [18-22] satblue 14.0 [>=13] elec 12.0 [>=11] pale 32.1 [<=27] hp5 0.073 [>=.09] lav 22.7 violet 20.0 med #bbb2f3
+  F2 left x<.24 y.70-.835 (contact.py): white 14.2 [>=20] blobs 117 [<=40] (>=20px 25) | right x>.74: white 33.6 elec 11.3 satblue 19.2 blobs 67
+  F2 lower-third white 6.8 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 10.3 [<=19] pink 62.3 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.048 [>=.10] white 2.5 [12-16] pale 25.1 [<=24] violet 57.8 [>=30] pink 0.9 med #b492f2
+  F8 waterline (char.py) 0.820 [~.836] | sides x.30-.34 0.793 x.66-.70 0.806
+== now_3.00_canvas
+  F2 bank y.80-.875 (bank.py): white 16.8 [18-22] satblue 26.2 [>=13] elec 11.7 [>=11] pale 26.1 [<=27] hp5 0.096 [>=.09] lav 7.9 violet 0.7 med #c6a3f4
+  F2 left x<.24 y.70-.835 (contact.py): white 27.7 [>=20] blobs 53 [<=40] (>=20px 8) | right x>.74: white 26.1 elec 20.2 satblue 31.0 blobs 49
+  F2 lower-third white 10.6 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 3.7 [<=19] pink 76.1 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.089 [>=.10] white 15.0 [12-16] pale 32.6 [<=24] violet 2.1 [>=30] pink 2.4 med #9aa2f4
+  F8 waterline (char.py) 0.829 [~.836] | sides x.30-.34 0.799 x.66-.70 0.849
+
+Small white shapes in the tunnel (flecks, crescents, tiny rings, small bubbles; scripts/specks.py; count / % of the zone covered):
+frame                centre            mid          walls
+approved         37 /  3.5%    140 /  4.0%    208 /  2.0%
+before           97 /  6.3%    225 /  4.3%    394 /  2.0%
+now             116 /  7.0%    436 /  6.4%    461 /  2.3%
+(the walls' own star sparkles already gave the merged frame more small white shapes than the original, so this count does not
+separate the two; the difference is the shapes' size and crispness, judged on the close-ups)
+
+Free soap bubbles at 3.0 s, by zone (centre r < .12 W, mid .12-.30, walls >= .30 with y < .70, front y >= .70) and size (small
+< .012 W, medium .012-.03, large >= .03); the HUD's top and bottom buttons left out:
+                              total  centre  mid  walls  front | small medium large | depth near (<8 m) / mid / far (>18 m)
+original (by eye, scripts/bubbles_eye.py)   13     0      3     9      1 |   5      1     7  |  (not measurable)
+before (scripts/bubble_probe.cjs)            8     0      2     5      1 |   0      2     6  |  8 / 0 / 0   (the hero bubbles only)
+now (scripts/bubble_probe.cjs)             132    30     78    23      1 |  74     48    10  |  49 / 57 / 26
+now, white streaks (same probe)            140    15    102    23      0 |
+(the probe counts a bubble only where drawing the frame with and without its mesh differs inside its circle, so ones hidden by
+the walls, rim, objects or water, or faded out, do not count. The original's eye count lists only clearly outlined free
+bubbles; its hundreds of tiny rings and flecks along the bands are in the specks line above. An automatic ring detector,
+scripts/bubbles.py, was tried on all three and is not reliable on the painted original: strict settings found 19 (missing most,
+taking the coin and the sock for bubbles), loose ones 216 false rings.)
+
+Cost (tools/screen4/liquid_shots.cjs COST=1): 2.85 s 207 draw calls / 1,335,235 triangles; 3.0 s 209 / 1,423,081; 3.1 s 202 /
+1,311,434. Merged before: 209 / 1.42 M at 3.0 s. The tunnel's 160 bubbles and 200 streaks are one instanced draw call (360
+quads, 720 triangles); hiding the faint spray sheets (lqSpraySheets, earlier in this pass) saved one, so the total is unchanged.
