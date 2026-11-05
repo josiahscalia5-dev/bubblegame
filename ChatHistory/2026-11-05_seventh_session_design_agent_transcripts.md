@@ -760,5 +760,41 @@ While that runs, I'll prepare the pixel-identity check: a copy of the demo folde
 Baseline bundle md5 matches (`ba0c7f6c…`). Let me check the final capture.
 
 - 15:19 `Bash`: Wait for final capture
+- 15:23 `Bash`: Show final cost and measure three times
+- 15:23 `Bash`: Full side by side original before now
+- 15:23 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/full_fin.png
+- 15:23 `Bash`: Read s3_func and liquid_moves usage
+- 15:23 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/checks.sh
+- 15:23 `Bash`: Run final checks sequentially
+**Agent** (15:23 UTC):
 
-_172 tool steps._
+While the checks run, I'll assemble the evidence (no browser needed): the frames, the full-resolution three-way comparison at 1536 px tall, and the close-ups.
+
+- 15:23 `Bash`: Copy final frames into evidence folder
+- 15:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sheets.py
+- 15:24 `Bash`: Generate evidence sheets
+- 15:24 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_01_tunnel_bubbles_and_stre
+**Lead → agent** (15:24 UTC):
+
+[Image: original 2325x760, displayed at 2000x654. Multiply coordinates by 1.16 to map to original image.]
+
+- 15:24 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_04_foreground_foam_bank.jp
+**Lead → agent** (15:24 UTC):
+
+[Image: original 3163x420, displayed at 2000x266. Multiply coordinates by 1.58 to map to original image.]
+
+- 15:24 `Bash`: Measure approved, before and now at all times
+**Agent** (15:24 UTC):
+
+While the checks run, the eye count of the original as a script (list read off the 2x/3x gridded tiles, counted by the same zones and sizes as the probe, with an overlay to check).
+
+- 15:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles_eye.py
+- 15:24 `Bash`: Run eye count, check checks progress
+- 15:24 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/bubbles_original_by_eye_overlay.jp
+**Agent** (15:25 UTC):
+
+The eye-count overlay lines up with the original's visible free bubbles (13: walls 9, mid 3, front 1). Waiting for the remaining checks.
+
+- 15:25 `Bash`: Wait for all checks to finish
+
+_188 tool steps._

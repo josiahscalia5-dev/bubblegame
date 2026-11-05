@@ -240,3 +240,17 @@ _Background command "Capture baseline frames of all older versions" completed (e
 
 The identity check on the current merge is running in the background (about 6 minutes). Water & VFX is still working with your correction: the character sits on top of the water. I'll pick up again as soon as either finishes.
 
+---
+
+### Automatic notice · 2026-11-05 15:24 UTC
+
+_Background command "Pixel-identity check of the current merged build" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-05 15:24 UTC
+
+All 33 frames are pixel-identical: the phone fix, the panel removal and the Tunnel & Lighting merge changed nothing in the normal game or any older version. Saving that proof:
+
+The pixel-identity proof is saved and pushed (`bca028e`): all 33 frames of the normal game and the ten older switches are identical to the build you reviewed. Water & VFX is still running with your "on top of the water" correction. Its merge comes next, then the final side-by-side and checkpoint evidence.
+

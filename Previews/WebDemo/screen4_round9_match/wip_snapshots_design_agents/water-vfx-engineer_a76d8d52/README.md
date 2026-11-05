@@ -1,13 +1,13 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: finish bank and bubbles)
 
-- **Taken:** 2026-11-05 15:22 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 15:27 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `5d742e0`.
 - **Its own commits so far:** 
   - `b2454f5 Round 9 Water & VFX gate fixes (WIP): the tunnel bubble field at every depth with white streaks, opaque aqua-white froth lobes`
   - `9bfd9f7 Round 9 Water & VFX gate fixes (restored WIP): the bank's lobes, the swell's front, fewer flecks and droplets, the first tunnel bubble field`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (119; full copies in `files/`)
+## Files (167; full copies in `files/`)
 
 - `.wvtmp/bank_i1.png (new)`
 - `.wvtmp/bank_i2.png (new)`
@@ -33,6 +33,7 @@
 - `.wvtmp/bub8/bubbles_r0.png (new)`
 - `.wvtmp/bub8/cmp_ov.png (new)`
 - `.wvtmp/bubbles_fn.js (new)`
+- `.wvtmp/checks.sh (new)`
 - `.wvtmp/dbg/match_info.json (new)`
 - `.wvtmp/dbg/match_t3.00.png (new)`
 - `.wvtmp/dbg/match_t3.00_canvas.png (new)`
@@ -49,12 +50,14 @@
 - `.wvtmp/dbg4_crop.png (new)`
 - `.wvtmp/dbg_cmp.png (new)`
 - `.wvtmp/dbg_inst.cjs (new)`
+- `.wvtmp/fin/match_info.json (new)`
 - `.wvtmp/fin/match_t2.85.png (new)`
 - `.wvtmp/fin/match_t2.85_canvas.png (new)`
 - `.wvtmp/fin/match_t3.00.png (new)`
 - `.wvtmp/fin/match_t3.00_canvas.png (new)`
 - `.wvtmp/fin/match_t3.10.png (new)`
 - `.wvtmp/fin/match_t3.10_canvas.png (new)`
+- `.wvtmp/full_fin.png (new)`
 - `.wvtmp/full_i1.png (new)`
 - `.wvtmp/full_i3.png (new)`
 - `.wvtmp/full_i7.png (new)`
@@ -89,6 +92,7 @@
 - `.wvtmp/i9/match_info.json (new)`
 - `.wvtmp/i9/match_t3.00.png (new)`
 - `.wvtmp/i9/match_t3.00_canvas.png (new)`
+- `.wvtmp/meas_final.txt (new)`
 - `.wvtmp/mid_i3.png (new)`
 - `.wvtmp/mid_i4.png (new)`
 - `.wvtmp/mid_i5.png (new)`
@@ -107,6 +111,29 @@
 - `.wvtmp/p3/match_t3.00_bubbles.json (new)`
 - `.wvtmp/p3/match_t3.00_frame.png (new)`
 - `.wvtmp/p3/match_t3.00_streaks.json (new)`
+- `.wvtmp/pix/liquid_base.log (new)`
+- `.wvtmp/pix/liquid_base_2.9.png (new)`
+- `.wvtmp/pix/liquid_base_tap.png (new)`
+- `.wvtmp/pix/liquid_now.log (new)`
+- `.wvtmp/pix/liquid_now_2.9.png (new)`
+- `.wvtmp/pix/liquid_now_tap.png (new)`
+- `.wvtmp/pix/normal_base.log (new)`
+- `.wvtmp/pix/normal_base_2.9.png (new)`
+- `.wvtmp/pix/normal_base_tap.png (new)`
+- `.wvtmp/pix/normal_now.log (new)`
+- `.wvtmp/pix/normal_now_2.9.png (new)`
+- `.wvtmp/pix/normal_now_tap.png (new)`
+- `.wvtmp/pix/splash_base.log (new)`
+- `.wvtmp/pix/splash_base_2.9.png (new)`
+- `.wvtmp/pix/splash_base_tap.png (new)`
+- `.wvtmp/pix/splash_now.log (new)`
+- `.wvtmp/pix/splash_now_2.9.png (new)`
+- `.wvtmp/pix/splash_now_tap.png (new)`
+- `.wvtmp/probe_before.log (new)`
+- `.wvtmp/probe_now.log (new)`
+- `.wvtmp/probe_now/match_t3.00_bubbles.json (new)`
+- `.wvtmp/probe_now/match_t3.00_frame.png (new)`
+- `.wvtmp/probe_now/match_t3.00_streaks.json (new)`
 - `.wvtmp/r0/match_info.json (new)`
 - `.wvtmp/r0/match_t3.00.png (new)`
 - `.wvtmp/r0/match_t3.00_canvas.png (new)`
@@ -121,10 +148,31 @@
 - `.wvtmp/tun_i2.png (new)`
 - `.wvtmp/under_i3.png (new)`
 - `.wvtmp/under_i4.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/bubbles_original_by_eye_overlay.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/capture_info_cost.json (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_01_tunnel_bubbles_and_streaks.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_01b_mid_ring_zoom.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_02_waterline_character_on_the_water.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_04_foreground_foam_bank.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/gameplay_checks_match_s3_func.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t2.85.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t3.00.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t3.00_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t3.10.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/liquid_moves_match.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_in_the_air.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_just_landed.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_moves.json (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_swerve_left_2.85s.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/original_vs_before_vs_now_2.85s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/original_vs_before_vs_now_3.00s_fullres.png (new)`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/original_vs_before_vs_now_3.10s.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubble_probe.cjs`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles.py`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles_eye.py (new)`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/meas.py`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sbs.py`
+- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sheets.py (new)`
 - `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/specks.py`
 - `WebDemo/src/tunnel_r8_splash.js`
 - `WebDemo/src/tunnel_r9_match_water.js`
