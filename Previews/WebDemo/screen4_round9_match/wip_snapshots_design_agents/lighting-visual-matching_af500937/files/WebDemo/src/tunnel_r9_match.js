@@ -157,6 +157,12 @@ export const MATCH = {
     // the mid vortex's pastel lilac (the map's rows rw 0.06-0.12: lavender 20-33%) toward pale blue and white (approved mid
     // vortex r 0.08-0.20: lavender 12%, white 22%, pale blue 18%); [in, full, full to, out] in rw
     delilac: { amount: 1.0, r: [0.03, 0.06, 0.17, 0.24] },
+    // the concentric bands (see matchWall): perLog bands per unit of ln r (about 9 between 0.04 and 0.45 W), spiral bands per
+    // turn (a whole number: seamless), warp the spacing's irregularity (bands) at warpF per ln, wobble from the variation map,
+    // flow ln r per second outward and travel per metre ridden; r: [in, full, full to, out] in rw; gap: the dark cobalt
+    // between bands (from: where in the band it deepens); rim: the broken cyan-white edge at each band's inner side
+    bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.6, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62],
+      gap: { col: '#3550d0', from: [0.6, 0.86], amount: 0.6 }, rim: { col: '#c4f0ff', w: [0.0, 0.08], amount: 0.5 } },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -344,6 +350,23 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // under 235 degrees
   float lil = clamp((c.b - c.r + 0.03) * 15.0, 0.0, 1.0) * smoothstep(${f4(M.delilac.r[0])}, ${f4(M.delilac.r[1])}, rw) * (1.0 - smoothstep(${f4(M.delilac.r[2])}, ${f4(M.delilac.r[3])}, rw));
   c.r = mix(c.r, min(c.r, c.g * 0.9), lil * ${f4(M.delilac.amount)});
+  // the approved's concentric bands spiralling into the centre (the user's first priority, 14:16 UTC: crisp bands, 7-10 per
+  // sector, cobalt depth between them, no smooth open tube): a band phase in log r with a one-band-per-turn spiral, an
+  // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
+  // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
+  // than the pixels (seam-free: from the wrap-corrected derivatives)
+  {
+    float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
+      - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
+    float bk = fract(bs);
+    float aw = (abs(dx.y) + abs(dy.y)) * ${f4(M.span * M.bands.perLog)} + (abs(dx.x) + abs(dy.x)) * ${f4(M.bands.spiral)};
+    float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
+    float gapK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz;
+    float rimK = (1.0 - smoothstep(${f4(M.bands.rim.w[0])}, ${f4(M.bands.rim.w[1])}, bk)) * smoothstep(-0.12, 0.04, dl) * bz;
+    float bl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    c = mix(c, ${hx(M.bands.gap.col)} * mix(0.85, 1.2, bl), gapK * ${f4(M.bands.gap.amount)} * (1.0 - smoothstep(0.0, 0.1, c.r - c.b) * 0.6));
+    c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
+  }
   // the core's pale lilac rows toward warm white (blue brought down to the larger of red and green)
   float coreK = 1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw);
   c.b = mix(c.b, min(c.b, max(c.r, c.g) * 1.02), coreK * ${f4(M.core.white)});

@@ -372,3 +372,9 @@ I've passed your brief to the two specialists who were already working, so nothi
 
 The automatic save keeps pushing everything, including the specialists' unfinished work, every 5 minutes. The latest save is `aace90d`, confirmed on GitHub.
 
+---
+
+### You · 2026-11-05 14:23 UTC
+
+save everything to my github
+

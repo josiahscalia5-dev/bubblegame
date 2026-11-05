@@ -504,8 +504,19 @@ I'll read the user's brief first.
 - 14:18 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/02_four_way_comparison_original_saved_TL_WV_1357utc.jpg
 - 14:18 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/03_closeups_centre_and_foam_bank_1357utc.jpg
 - 14:19 `Bash`: Build, capture and compare upper tunnel halves
+- 14:21 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/upper_cmp.png
+- 14:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:22 `Bash`: Measure f4a, then build and capture the band layer
+- 14:22 `Bash`: Compare tunnel band look before and after
+- 14:22 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/m/bands_cmp.png
+**Agent** (14:23 UTC):
 
-_178 tool steps._
+The band layer is too weak to read against the busy water texture. Retuning through the tune file: wider, stronger cobalt gaps, stronger rims, less contrast in the map's own pale blotches.
+
+- 14:23 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tune_f4c.json
+
+_185 tool steps._
 
 ---
 
@@ -790,5 +801,23 @@ While the capture runs, I'll write the bubble counter for the original: Hough ci
 - 14:18 `Bash`: Detect bubbles in original and current frame
 - 14:19 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/bub0.png
 - 14:20 `Bash`: Tighten bubble detector and rerun
+- 14:20 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/tasks/bjn0n00zf.output
+- 14:21 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/grid.py
+- 14:21 `Bash`: Make gridded tiles of the original
+- 14:21 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/g1.png
+- 14:21 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/g2.png
+- 14:21 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/g3.png
+**Agent** (14:22 UTC):
 
-_167 tool steps._
+The free bubbles are hard to separate from white specks at this zoom. I'll read them off 2x quadrant tiles.
+
+- 14:22 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/sp/quad.py
+- 14:22 `Bash`: Make 2x gridded quadrant tiles of the original
+- 14:22 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/q1.png
+- 14:22 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/q2.png
+- 14:22 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/q3.png
+- 14:22 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/q4.png
+- 14:22 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/specks.py
+- 14:22 `Bash`: Count small bright shapes by zone
+
+_181 tool steps._
