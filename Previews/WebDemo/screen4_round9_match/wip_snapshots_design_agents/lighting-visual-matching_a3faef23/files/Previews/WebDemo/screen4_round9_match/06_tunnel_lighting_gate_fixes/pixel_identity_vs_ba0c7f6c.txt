@@ -1,0 +1,6 @@
+normal  tap  size 538x1076 differing pixels 0 max diff 0 md5 base 5432237327 new 5432237327
+normal  2.9  size 538x1076 differing pixels 0 max diff 0 md5 base 480e543577 new 480e543577
+splash  tap  size 538x1076 differing pixels 0 max diff 0 md5 base 4426c0e8ab new 4426c0e8ab
+splash  2.9  size 538x1076 differing pixels 0 max diff 0 md5 base 3260ba9b36 new 3260ba9b36
+liquid  tap  size 538x1076 differing pixels 0 max diff 0 md5 base 81734b0552 new 81734b0552
+liquid  2.9  size 538x1076 differing pixels 0 max diff 0 md5 base 75aad81e51 new 75aad81e51

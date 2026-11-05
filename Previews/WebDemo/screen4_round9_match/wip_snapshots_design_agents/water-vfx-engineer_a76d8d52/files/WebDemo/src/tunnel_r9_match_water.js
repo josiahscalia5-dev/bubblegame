@@ -410,15 +410,18 @@ function tunnelBubbles({ scene, TR, L, W, updaters, time, U }) {
   g.index = quad.index; g.setAttribute('position', quad.attributes.position);
   const aC = new THREE.InstancedBufferAttribute(new Float32Array(n * 4), 4), aB = new THREE.InstancedBufferAttribute(new Float32Array(n * 4), 4);
   aC.setUsage(THREE.DynamicDrawUsage); aB.setUsage(THREE.DynamicDrawUsage);
-  g.setAttribute('aC', aC); g.setAttribute('aB', aB); g.instanceCount = n;
+  const aT = new THREE.InstancedBufferAttribute(new Float32Array(n * 3), 3), aN = new THREE.InstancedBufferAttribute(new Float32Array(n * 3), 3);
+  aT.setUsage(THREE.DynamicDrawUsage); aN.setUsage(THREE.DynamicDrawUsage);
+  g.setAttribute('aC', aC); g.setAttribute('aB', aB); g.setAttribute('aT', aT); g.setAttribute('aN', aN); g.instanceCount = n;
   const avoid = Array.from({ length: 10 }, () => new THREE.Vector4());
-  const uVP = { value: new THREE.Vector2() }, uRes = { value: new THREE.Vector2(1, 1) };
-  const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uAvoid: { value: avoid }, uVP, uRes }, transparent: true, depthWrite: false,
+  const uRes = { value: new THREE.Vector2(1, 1) };
+  const mat = new THREE.ShaderMaterial({ uniforms: { uTime: time, uAvoid: { value: avoid }, uRes }, transparent: true, depthWrite: false,
     blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
     vertexShader: /* glsl */ `
 attribute vec4 aC, aB;   // centre (world), radius or half length (m) | fade, seed, kind (0 bubble, 1 streak), streak half width (m) and bend packed
+attribute vec3 aT, aN;   // streaks: the band's direction round the axis and the direction in to the axis (world)
 uniform vec4 uAvoid[10];  // the collectibles on screen: NDC centre, radius (NDC y units), view depth (0: none)
-uniform vec2 uVP, uRes;   // the vanishing point (NDC), the drawing buffer (px)
+uniform vec2 uRes;        // the drawing buffer (px)
 varying vec2 vQ; varying float vA, vSeed, vKind, vRimW, vBend;
 void main() {
   vec4 mv = viewMatrix * vec4(aC.xyz, 1.0), cc = projectionMatrix * mv;
@@ -438,13 +441,15 @@ void main() {
     vRimW = clamp(${f4(B.rimPx)} / max(r * pxPerM, 0.5), 0.0, 0.9);
     vBend = 0.0;
   } else {
-    // a streak along the band: its long side across the line to the vanishing point (on screen), bent round it
-    vec2 radial = (ndc - uVP) * asp; float rl = length(radial);
-    vec2 dirR = rl > 1e-4 ? radial / rl : vec2(0.0, 1.0), dirT = vec2(-dirR.y, dirR.x);
+    // a streak along the band (its ring round the axis), bent toward the axis
+    vec2 dirT = (viewMatrix * vec4(aT, 0.0)).xy, dirI = (viewMatrix * vec4(aN, 0.0)).xy;
+    dirT = dirT / max(length(dirT), 1e-4);
+    vec2 dirR = vec2(-dirT.y, dirT.x);
+    dirR *= -sign(dot(dirR, dirI) + 1e-6);                     // across it, pointing away from the axis
     float hw = max(fract(aB.w) * 0.1, 0.9 / pxPerM);          // half width (m), at least about a pixel
-    vec2 off = dirT * position.x * 2.0 * r + dirR * position.y * 2.0 * hw * 2.5;
-    mv.xy += off;
-    vRimW = hw / r; vBend = (floor(aB.w) - 50.0) / 10.0;
+    mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);
+    vRimW = hw / r;
+    vBend = (floor(aB.w) - 50.0) / 10.0;
   }
   gl_Position = projectionMatrix * mv;
   vQ = position.xy * 2.0;
@@ -455,7 +460,8 @@ varying vec2 vQ; varying float vA, vSeed, vKind, vRimW, vBend;
 void main() {
   if (vA < 0.003) discard;
   if (vKind > 0.5) {   // a white streak: a tapered, slightly bent dash (y across it: 2.5 x its half width)
-    float x = vQ.x, y = vQ.y * 2.5 - vBend * (x * x - 0.35);
+    float x = vQ.x;
+    float y = vQ.y * 2.5 - vBend * (x * x - 0.35);
     float body = exp(-y * y * 2.2) * (1.0 - smoothstep(0.55, 1.0, abs(x)));
     float a = clamp(body * 1.3, 0.0, 1.0) * ${f4(FL.alpha)} * vA;
     if (a < 0.004) discard;
@@ -487,7 +493,7 @@ void main() {
   const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
   const sm = (x, a, b) => THREE.MathUtils.clamp((x - a) / (b - a), 0, 1);
   updaters.push(() => {
-    const t = time.value, c = aC.array, b = aB.array;
+    const t = time.value, c = aC.array, b = aB.array, tg = aT.array, nn = aN.array;
     for (let i = 0; i < n; i++) {
       const q = list[i], sp = q.u1 - q.u0;
       const u = q.u0 + ((((q.uB - q.u0 - q.drift * t) % sp) + sp) % sp);
@@ -498,6 +504,11 @@ void main() {
       TR.frame(u, F);
       const x = rho * Math.cos(th), h = axisH + rho * Math.sin(th) + (q.kind ? 0 : 0.04 * Math.sin(t * 0.9 + q.seed * 9.0) + lift - 0.3);
       c[i * 4] = F.P.x + F.R.x * x + F.U.x * h; c[i * 4 + 1] = F.P.y + F.R.y * x + F.U.y * h; c[i * 4 + 2] = F.P.z + F.R.z * x + F.U.z * h;
+      if (q.kind) {   // the ring's direction at the streak, and in to the axis
+        const ct = Math.cos(th), st = Math.sin(th);
+        tg[i * 3] = -st * F.R.x + ct * F.U.x; tg[i * 3 + 1] = -st * F.R.y + ct * F.U.y; tg[i * 3 + 2] = -st * F.R.z + ct * F.U.z;
+        nn[i * 3] = -ct * F.R.x - st * F.U.x; nn[i * 3 + 1] = -ct * F.R.y - st * F.U.y; nn[i * 3 + 2] = -ct * F.R.z - st * F.U.z;
+      }
       const din = u - TS;
       c[i * 4 + 3] = q.r * (1 + B.far[2] * sm(din, B.far[0], B.far[1]));
       // fade in and out at the ends of the loop and of the rise, and never under the water
@@ -506,10 +517,10 @@ void main() {
       b[i * 4 + 1] = q.seed; b[i * 4 + 2] = q.kind;
       b[i * 4 + 3] = q.kind ? Math.round(50 + q.bend * 10) + Math.min(q.w2 * (1 + B.far[2] * sm(din, B.far[0], B.far[1])) / 0.1, 0.999) : 0;   // bend, half width / 0.1 m
     }
-    aC.needsUpdate = true; aB.needsUpdate = true;
+    aC.needsUpdate = true; aB.needsUpdate = true; aT.needsUpdate = true; aN.needsUpdate = true;
   });
-  const wp = new THREE.Vector3(), near = [], vpW = new THREE.Vector3();
-  mesh.onBeforeRender = (renderer, sc, cam) => {   // the collectibles' screen circles and the vanishing point, with the camera actually drawing
+  const wp = new THREE.Vector3(), near = [];
+  mesh.onBeforeRender = (renderer, sc, cam) => {   // the collectibles' screen circles, with the camera actually drawing
     near.length = 0;
     const P11 = cam.projectionMatrix.elements[5];
     for (const o of objs) {
@@ -524,8 +535,6 @@ void main() {
     }
     near.sort((a, b2) => b2[2] - a[2]);
     for (let i = 0; i < avoid.length; i++) { const a = near[i]; if (a) avoid[i].set(a[0], a[1], a[2], a[3]); else avoid[i].set(0, 0, 0, 0); }
-    TR.frame(Math.min((U && U.uHeroCam ? U.uHeroCam.value.z : TS) + 30, TE - 2), F);   // (the far axis point: the vanishing point)
-    vpW.copy(F.P).addScaledVector(F.U, axisH).project(cam); uVP.value.set(vpW.x, vpW.y);
     renderer.getDrawingBufferSize(uRes.value);
   };
   return { count: B.count, flecks: FL.count, drawCalls: 1, triangles: n * 2, avoiding: objs.length };

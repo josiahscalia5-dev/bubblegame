@@ -22,11 +22,17 @@ const server = http.createServer((req, res) => {
   await page.evaluate(() => window.__bw.advance(3.0));
   const r = await page.evaluate(() => {
     window.__bw.render();
-    const m = window.__bw.debug().scene.getObjectByName('mwTunnelBubbles'), g = m.geometry, C = g.attributes.aC.array, B = g.attributes.aB.array;
-    const o = { visible: m.visible, count: g.instanceCount, uVP: m.material.uniforms.uVP.value, uRes: m.material.uniforms.uRes.value, rows: [] };
-    for (const i of [0, 1, 300, 301, 302, 303, 400, 500]) o.rows.push([i, Array.from(C.slice(i * 4, i * 4 + 4)).map((v) => +v.toFixed(3)), Array.from(B.slice(i * 4, i * 4 + 4)).map((v) => +v.toFixed(4))]);
-    const gl = window.__bw.debug().renderer.getContext();
-    const prog = window.__bw.debug().renderer.info.programs.find((p) => p.name && p.name.includes('ShaderMaterial'));
+    const w = window.__bw.debug().scene.getObjectByName('heroWalls'), g = w.geometry, P = g.attributes.position, A = g.attributes.aLqAxis, AU = g.attributes.aAU;
+    w.updateMatrixWorld(); const M = w.matrixWorld.elements;
+    const byU = {};
+    for (let i = 0; i < P.count; i += 7) {
+      const x = P.getX(i), y = P.getY(i), z = P.getZ(i);
+      const wx = M[0] * x + M[4] * y + M[8] * z + M[12], wy = M[1] * x + M[5] * y + M[9] * z + M[13], wz = M[2] * x + M[6] * y + M[10] * z + M[14];
+      const d = Math.hypot(wx - A.getX(i), wy - A.getY(i), wz - A.getZ(i)), u = Math.round(AU.getY(i) / 3) * 3;
+      (byU[u] = byU[u] || []).push(d);
+    }
+    const o = {};
+    for (const u of Object.keys(byU).sort((a, b) => a - b)) { const v = byU[u].sort((a, b) => a - b); o[u] = [v[0].toFixed(2), v[v.length >> 1].toFixed(2), v[v.length - 1].toFixed(2), v.length]; }
     return o;
   });
   console.log(JSON.stringify(r));

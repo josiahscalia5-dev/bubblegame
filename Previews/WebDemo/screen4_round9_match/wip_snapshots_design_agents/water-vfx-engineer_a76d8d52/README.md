@@ -1,12 +1,12 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: finish bank and bubbles)
 
-- **Taken:** 2026-11-05 15:07 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 15:12 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `5d742e0`.
 - **Its own commits so far:** 
   - `9bfd9f7 Round 9 Water & VFX gate fixes (restored WIP): the bank's lobes, the swell's front, fewer flecks and droplets, the first tunnel bubble field`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (63; full copies in `files/`)
+## Files (79; full copies in `files/`)
 
 - `.wvtmp/bank_i1.png (new)`
 - `.wvtmp/bank_i2.png (new)`
@@ -21,6 +21,18 @@
 - `.wvtmp/dbg/match_info.json (new)`
 - `.wvtmp/dbg/match_t3.00.png (new)`
 - `.wvtmp/dbg/match_t3.00_canvas.png (new)`
+- `.wvtmp/dbg2/match_info.json (new)`
+- `.wvtmp/dbg2/match_t3.00.png (new)`
+- `.wvtmp/dbg2/match_t3.00_canvas.png (new)`
+- `.wvtmp/dbg3/match_info.json (new)`
+- `.wvtmp/dbg3/match_t3.00.png (new)`
+- `.wvtmp/dbg3/match_t3.00_canvas.png (new)`
+- `.wvtmp/dbg3_crop.png (new)`
+- `.wvtmp/dbg4/match_info.json (new)`
+- `.wvtmp/dbg4/match_t3.00.png (new)`
+- `.wvtmp/dbg4/match_t3.00_canvas.png (new)`
+- `.wvtmp/dbg4_crop.png (new)`
+- `.wvtmp/dbg_cmp.png (new)`
 - `.wvtmp/dbg_inst.cjs (new)`
 - `.wvtmp/full_i1.png (new)`
 - `.wvtmp/full_i3.png (new)`
@@ -36,8 +48,12 @@
 - `.wvtmp/i4/match_info.json (new)`
 - `.wvtmp/i4/match_t3.00.png (new)`
 - `.wvtmp/i4/match_t3.00_canvas.png (new)`
+- `.wvtmp/i5/match_info.json (new)`
+- `.wvtmp/i5/match_t3.00.png (new)`
+- `.wvtmp/i5/match_t3.00_canvas.png (new)`
 - `.wvtmp/mid_i3.png (new)`
 - `.wvtmp/mid_i4.png (new)`
+- `.wvtmp/mid_i5.png (new)`
 - `.wvtmp/mid_r0.png (new)`
 - `.wvtmp/om1.png (new)`
 - `.wvtmp/om2.png (new)`

@@ -194,7 +194,8 @@ export const MATCH = {
       glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
       inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
       // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
-      // [phase, half width] of the sparser inner line)
+      // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against
+      // the approved's brightest #cae0ff; at 1.3 they turned white and broke into specks, at 1.05 the glints went lilac again)
       edge: { col: '#c2dcff', w: [0.02, 0.045], broken: [-0.13, -0.07], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.6, boost: 1.12 } },
     royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,

@@ -114,3 +114,7 @@ The debug hook exposes the scene, camera and renderer. I'll first locate the rec
 
 The rectangle is at CSS x 149–293, y 145–170 on the 412 × 839 screen, pale blue-white (#d2edf4). Now the probe:
 
+Not robust either: the rim's top-centre is lavender-pink, not gold, in the original. The Art Director already wrote a rim locator for the gate, so I'll reuse that rather than invent another:
+
+The autosave already committed the source and bundle; only evidence remains. Checking the committed bundle matches its source, then saving:
+

@@ -1,3 +1,1681 @@
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/README.md b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/README.md
+new file mode 100644
+index 0000000..d8fc361
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/README.md
+@@ -0,0 +1,98 @@
++# Round 9, step 6: Tunnel & Lighting gate fixes (5 November 2026, resumed after the lost session)
++
++- **Target:** the ORIGINAL approved Screen 4 only, `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`.
++- **Build:** `?s3=match`, worktree branch `worktree-agent-a3faef23dd555533b`. `game.bundle.js` md5 `0c2caa715cf33c51750a5e90f2e43214`.
++- **Started from:** `36c8676`, whose `WebDemo/` matches `af5791d` (the merged `2a6ab30` plus the Art Director's gate). The lost run's work-in-progress was restored from `../wip_snapshots_design_agents/lighting-visual-matching_af500937/` and committed first (`942b8cd`).
++- **Captures:** real seeded gameplay (seed 7, DPR 1.5, HUD on) with `tools/screen4/liquid_shots.cjs`, with the camera locked. 3.0 s is the main moment; 2.85 s and 3.1 s are checks.
++- **Measurements:** the Art Director's step-5 scripts, copied to `scripts/` with the frames passed as an argument. Raw output is in `measured.txt`: approved | before (`../04_merged/match_t3.00.png`) | now at 3.0, 2.85 and 3.1 s.
++- **No overall similarity percentage is claimed.** The numbers below are per-zone class shares and boxes, named by script.
++
++## Images
++- `original_vs_before_vs_now_3.00s_1536.png`: original | merged 3.0 s before this pass | match 3.0 s now, all 1536 px tall.
++- `original_over_match_3.00s_blend50.png`, plus `_edges` and `_diff`: the original over the new 3.0 s frame (`tools/screen4/match_overlay.py`, vanishing points 0.528,0.532 and 0.53,0.53).
++- `match_t3.00.png`, `match_t2.85.png`, `match_t3.10.png`: the page frames. `*_canvas.png` are the raw 3D canvas. `match_info.json` holds the cost: 207 / 209 / 202 draw calls, the same as the merged build.
++- Close-ups, each original | before | now:
++  - `checkpoint03_vortex_original_before_now.png`
++  - `checkpoint05_objects_original_before_now.png`
++  - `checkpoint06_upper_frame_original_before_now.png`
++  - `centre_closeup_original_before_now.png`
++- `rw_probe/rw_probe_t3.00.json`: the Art Director's `rw_probe`, extended in `scripts/rw_probe_corrected.cjs` to evaluate the corrected placement.
++- `pixel_identity_vs_ba0c7f6c.txt`: the identity proof (see Checks below).
++
++## What changed (all under `?s3=match`; `WebDemo/src/tunnel_r9_match.js` unless named)
++1. **Centre, F1:** `mtPlace()` takes the colour map's place from the fragment's real screen position round the projected far axis (`uMatchVP`) inside 0.09-0.14 W. It is used by the walls and by the floor's `matchFloor()`; that one call is the only change in `tunnel_r9_match_water.js`. The tube's open far end draws the walls' map (`matchExit`), the core is tinted warm white, and the centre glow is a little softer (0.65 / 0.38), so the tight inner rings show. For the lead's phone fix, the screen radius is in widths of the 1:2 reference frame, `min(width, 0.5 * height)`; at 1:2 this is identical.
++2. **Rings, F3 and checkpoint 03:**
++   - concentric drum rings (band wobble 0.6 to 0.15; it had bent the bands into topographic blobs);
++   - narrower, deeper cobalt gaps (#2646c4);
++   - thin ice-blue ring lines broken into arcs by the relief (`bands.edge`, drawn just over the whites' cap);
++   - pastel pink inner gaps down to the centre coin (`bands.inner`);
++   - white splash bits where the relief crests (`bands.splash`);
++   - the mid vortex's bright pale blue turned white (`midWhite`);
++   - a stronger rainbow arc.
++3. **Light colour, F4 and F5:**
++   - electric blue pulled from 210 to the original's 217 degrees, with the cyan streaks kept (`royal`), and more relief crests turned cyan;
++   - kept from the restored work: four-point stars removed and lime pulled toward peach in `derive_ref5_water.py` (textures regenerated).
++4. **Housing, F6 (restored):** a thinner bezel (inner 2.42); its sides take the bevel and housing colours of the rim ramp.
++5. **Objects, F7, F10 and checkpoint 05:**
++   - **Big left coin:** on the original's place, 0.09 m higher, drawn 1.1x.
++   - **Upper-left coin:** at its old distance, the original's place is 2.1 m up and 1.05 m outside the left lane, out of reach. It now stands 1.6 m nearer (4.6 m from the camera), 2.03 m up and 0.47 m outside the left lane, drawn 0.69x (`MATCH.coinScales`). That is 0.68 m from the body at the top of a jump (1.53 m), or 0.73 m with the coin's bob, inside the 0.82 m pick-up reach.
++   - **Small coin by the centre coin:** 2 m further away (the original's is smaller).
++   - **Kept from the restored work:** the gem's place and 0.89x size, the right coin, the first and second socks, and the far gem.
++6. **Bug fixed:** the far-collectible fade (`MATCH.farFade`) never showed. It set the scale in `scene.onBeforeRender`, but three.js r170 has already worked out the world matrices by then, and `passBy()` sets the scale back to 1 every frame. The faded objects now get `updateMatrixWorld(true)`. This is what removed the coin and gem clutter beside the centre coin.
++
++## The Art Director's fixes: verdicts at 3.0 s (approved / before / now)
++| fix | verdict | numbers (script) |
++|---|---|---|
++| F1 centre | **fixed** at 3.0 s; just over at 2.85 / 3.1 s | Centre r < .06: warm 46.7 / 18.5 / **39.7%**, lavender 11.1 / 45.2 / **14.7%**, white 36.7 / 21.2 / 41.2%, median #f1d7db / #dac1f2 / #ebcfd4. At 2.85 / 3.1 s: warm 37.7 / 41.2%, lavender 15.1 / 15.3%. Mid vortex: lavender 12.1 / 19.2 / 11.0%, white 22.3 / 13.7 / 19.5% (`walls.py`). `rw_probe`: inside 0.09 W the corrected `rw` equals the true screen radius by construction. Cells at r .035-.06 have a median 0.058 (the old formula gave 0.076) and a core share of 0.65 (was 0). The rest are vertices just outside 0.06 in cells that straddle it. |
++| F3 wall depth | **partly** | Upper-wall deep cobalt 3.9 / 1.2 / **3.9%**. Side walls 4.1 / 1.1 / **1.7%**: not met, likely because the original's side zone holds its right brush's blue tufts (ours are pink and white). Texture hp5 0.094 / 0.062 / **0.087**. Bands up / left / right: 8/10/7, then 6/4/7, now **6/8/8**. Band contrast: 0.184/0.167/0.201, then 0.126/0.242/0.175, now **0.180/0.240/0.206**. Up meets 0.17-0.20; right is 0.006 over; left is still high. At 3.1 s the up contrast is 0.128 (`walls.py`, `rings.py`). |
++| F4 light colour | **partly** | Lime (hue 70-100) 29 / 783 / **11 px** (`palette.py`). Electric blue 43.0 / 51.4 / **44.6%**, median hue 217 / 220 / 217. Upper-wall azure 13.3 / 6.6 / **9.6%**: target 11 not met. |
++| F5 sparkles | **partly** | Four-point stars are gone. Small sparkle (upper wall) 0.20 / 0.85 / **0.53%**: target 0.3 not met; what remains is short pieces of the ring lines and splash bits. Brightest 2%: #cae0ff S 0.27 / #e6e0f9 S 0.14 / **#cee2f9 S 0.19**. They are now the ring lines, as in the original, not bubble outlines. |
++| F6 housing | **partly** | Rim thickness 0.019 / 0.032 / **0.019 H** (`rim.py`). Zone 1 lavender 45.5 / 41.6 / 43.9%: none added. Left strip x < .08 white 21.1 / 6.6 / **2.9%**: **not fixed**. The original's white there is soft white-pink fluff (a brush shape) and splash, not the wall; it needs a new element or Water & VFX's splash. |
++| F7 gem and centre | **fixed** | Gem 0.271-0.374 x 0.489-0.529 / 0.254-0.369 x 0.510-0.561 / **0.270-0.373 x 0.490-0.536** (`objects.py`). Beside the centre coin there are now only the small coin (the original has one at 0.589, 0.574; ours is at about 0.60, 0.575) and the far sock above it (the original has it too). The centre coin reads about 0.016 W right of and 0.013 H below the original's (0.468-0.571 x 0.529-0.579); it was left there so the coin lines hidden behind it stay hidden. |
++| F10 right coin and sock | **fixed** | Right coin 0.778-0.996 x 0.671-0.800 / 0.746-0.996 x 0.689-0.822 / **0.773-0.996 x 0.674-0.810** (`objects.py`). Sock, read off the grid: 0.645-0.84 x 0.555-0.665 / 0.635-0.83 x 0.583-0.695 / **0.647-0.825 x 0.556-0.668**. |
++
++## The user's checkpoints (14:43 UTC evidence package)
++- **03 Vortex geometry and depth: partly verified** (`checkpoint03_...png`, `centre_closeup_...png`).
++  - Corrected: distinct concentric rings with deep cobalt gaps; tight pink and white inner rings leading to a vanishing point at (0.528, 0.531) against the original's (0.528, 0.532); a warm peach centre; no smooth open tube.
++  - Remaining:
++    - our rings are cleaner and smoother than the original's busy, turbulent rings;
++    - their radii do not line up with the original's (wall band correlation -0.014, before -0.013, `match_overlay.py`), because ours flow outward over time;
++    - the up-sector contrast drops at 3.1 s.
++- **05 Coin / gem / sock composition: verified at 3.0 s** (`checkpoint05_...png`). The "huge left coin pair" is separated:
++  - big coin 0.093-0.300 x 0.544-0.669 (original 0.085-0.301 x 0.544-0.660);
++  - upper-left coin 0.092-0.209 x 0.438-0.504 (original 0.087-0.213 x 0.441-0.499), within reach as shown above;
++  - gem, sock and right coin as in the F7 and F10 rows.
++  - Remaining: the sock stands upright where the original's lies on its side.
++- **06 Upper frame at 538 x 1076: partly** (`checkpoint06_...png`).
++  - The rim's top edge at x 0.5 is at **0.209** (original 0.212); this pass did not move it.
++  - The gap under the mission banner is wider because the banner is shorter: it ends at 0.175 (original 0.186). The gap is 0.034 H of flat lavender-blue, against the original's 0.026 H light cyan strip. That is the HUD and phone framing (the lead's); the 1:2 camera framing itself is on target.
++
++## The user's fidelity brief (14:16 UTC): my parts
++- **Priority 1, tunnel shape and depth:**
++  - More ring and spiral structure: **corrected**.
++  - Stronger cobalt depth between bands: **corrected** (upper wall 3.9%).
++  - The warm glowing centre kept: **corrected**.
++  - Deeper swirling vortex: **partly**. The rings flow outward and spiral one band per turn, but the swirl's turn is slow.
++  - No smooth open tube: **partly**. The rings are distinct, but smoother than the original's.
++- **Priority 3, objects:**
++  - The original's arrangement, no oversized foreground coin (big coin 0.207 W against the original's 0.216; right coin 0.223 against 0.218), gem and socks placed, no clutter round the centre coin: **corrected**.
++- **Priority 4, colour and finish:**
++  - Deeper cobalt: **corrected**.
++  - Turquoise: **partly** (azure 9.6% against 13.3%).
++  - Warm centre highlights: **corrected**.
++  - No lime patches: **corrected**.
++  - No star sparkles: **corrected** for stars. Small specks are still 0.53% against 0.20%.
++
++## Still different from the original (honest list)
++- The walls are cleaner than the original's: fewer white splash bits and thin arcs, a lighter sky blue (upper-wall median #65acf6 against #5b99ef), and a fainter rainbow arc.
++- The core glow is peach-orange behind the coin; the original's is whiter and yellower.
++- The left edge lacks the original's white-pink fluff and splash (F6 left strip).
++- The side walls have little deep cobalt.
++- Small specks are 0.53% against 0.20%. Azure is 9.6% against 13.3%.
++- The centre coin sits about 13 px (807-wide frame) right of and below the original's.
++- The bubbles, the foam bank and the water round the character are Water & VFX's and were not touched.
++
++## Checks
++- **Gameplay** (`S3=match node tools/screen3/s3_func.cjs`): lanes 1 / 0 / 2, the jump (in the air), 12 coins, 1 gem and 2 socks collected in the tunnel run, no console errors.
++- **Pixel identity** (`tools/models/game_eval.cjs` SHOT, raw canvas, seed 7, at Tap to Start and 2.85 s): the normal game, `splash` and `liquid` match the baseline bundle `ba0c7f6c9b02e9b538182cade4a923ab` exactly, with 0 differing pixels in all six frames (`pixel_identity_vs_ba0c7f6c.txt`).
++- **Iterations:** 10 capture iterations (t1-t10). t10 (less boost on the ring lines, greyer splash bits) made the sparkle worse, so it was reverted to t9.
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/centre_closeup_original_before_now.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/centre_closeup_original_before_now.png
+new file mode 100644
+index 0000000..b2815fa
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/centre_closeup_original_before_now.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint03_vortex_original_before_now.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint03_vortex_original_before_now.png
+new file mode 100644
+index 0000000..5eed16b
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint03_vortex_original_before_now.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint05_objects_original_before_now.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint05_objects_original_before_now.png
+new file mode 100644
+index 0000000..a8b085d
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint05_objects_original_before_now.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint06_upper_frame_original_before_now.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint06_upper_frame_original_before_now.png
+new file mode 100644
+index 0000000..ac421dc
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint06_upper_frame_original_before_now.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_info.json b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_info.json
+new file mode 100644
+index 0000000..6e1f558
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_info.json
+@@ -0,0 +1,607 @@
++{
++ "s3": [
++  "match"
++ ],
++ "frames": [
++  {
++   "t": 2.85,
++   "state": {
++    "phase": "running",
++    "time": 3.383,
++    "z": 0.627,
++    "x": 0,
++    "y": 0.422,
++    "world": [
++     0,
++     0.422,
++     0.627
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.28,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.8,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.11,
++     1.562,
++     -1.973
++    ],
++    "cameraPitchDeg": 2.58,
++    "particles": 134,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   },
++   "cost": {
++    "drawCalls": 207,
++    "triangles": 1335515,
++    "textures": 44,
++    "geometries": 154,
++    "programs": 64,
++    "msPerFrameSoftware": 2916.5
++   }
++  },
++  {
++   "t": 3,
++   "state": {
++    "phase": "running",
++    "time": 3.517,
++    "z": 1.592,
++    "x": 0,
++    "y": 0.405,
++    "world": [
++     0,
++     0.405,
++     1.592
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.3,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.11,
++     1.547,
++     -1.008
++    ],
++    "cameraPitchDeg": 2.4,
++    "particles": 131,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   },
++   "cost": {
++    "drawCalls": 209,
++    "triangles": 1423361,
++    "textures": 44,
++    "geometries": 155,
++    "programs": 64,
++    "msPerFrameSoftware": 2915.9
++   }
++  },
++  {
++   "t": 3.1,
++   "state": {
++    "phase": "running",
++    "time": 3.617,
++    "z": 2.311,
++    "x": 0,
++    "y": 0.477,
++    "world": [
++     0,
++     0.477,
++     2.311
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": -0.042,
++    "pitchDeg": -0.8,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.11,
++     1.55,
++     -0.289
++    ],
++    "cameraPitchDeg": 2.4,
++    "particles": 129,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   },
++   "cost": {
++    "drawCalls": 202,
++    "triangles": 1311714,
++    "textures": 44,
++    "geometries": 155,
++    "programs": 64,
++    "msPerFrameSoftware": 2870.2
++   }
++  }
++ ],
++ "report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.42,
++      2.55
++     ],
++     "face": [
++      2.5,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.097,
++       0.755
++      ],
++      "inner": 2.42,
++      "outer": 2.55
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 180,
++       "drawCalls": 1,
++       "triangles": 360
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 12,
++        "drawCalls": 1,
++        "triangles": 3024
++       },
++       "bank": {
++        "curls": {
++         "count": 6,
++         "drawCalls": 1,
++         "triangles": 2016
++        },
++        "lumps": {
++         "count": 25,
++         "drawCalls": 1,
++         "triangles": 8000
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9490196078431373,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.35,
++       "glint": 0.9,
++       "deep": 0.7,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ }
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85.png
+new file mode 100644
+index 0000000..53c681f
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85_canvas.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85_canvas.png
+new file mode 100644
+index 0000000..092b154
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00.png
+new file mode 100644
+index 0000000..f0e01f5
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00_canvas.png
+new file mode 100644
+index 0000000..2ceb335
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10.png
+new file mode 100644
+index 0000000..f0e1ce3
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10_canvas.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10_canvas.png
+new file mode 100644
+index 0000000..eee1949
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/measured.txt b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/measured.txt
+new file mode 100644
+index 0000000..c316d82
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/measured.txt
+@@ -0,0 +1,204 @@
++# Round 9 step 6, Tunnel & Lighting gate fixes: measurements (the Art Director's step-5 scripts, copied to scripts/ with the
++# frames taken from FRAMES; default: approved | before = ../04_merged/match_t3.00.png | now 3.0 | now 2.85 | now 3.1). Frames
++# resized to 538x1076; game frames measured round (0.53, 0.53) as in the gate, the approved round (0.528, 0.532). Seed 7, DPR 1.5.
++== walls.py
++== approved
++  upper wall r.12-.45 a30-150      S 0.58 V 0.93 med #5b99ef | white  8.8 pale 11.2 azure 13.3 elect 43.0 deep  3.9 laven  8.7 oth 11.1 warm  6.4 | hi  7.0% sparkle 0.20% | hp1.5 0.030 hp5 0.094 | obj 4%
++  side walls r.15-.45 |a|<30|>150  S 0.34 V 0.94 med #d2c4ee | white 26.7 pale 11.4 azure  3.6 elect 15.8 deep  4.1 laven 18.0 oth 20.4 warm 13.6 | hi 23.3% sparkle 0.29% | hp1.5 0.029 hp5 0.100 | obj 31%
++  mid vortex r.08-.20              S 0.40 V 0.93 med #a7c2ee | white 22.3 pale 17.9 azure  9.0 elect 25.0 deep  2.1 laven 12.1 oth 11.6 warm  6.4 | hi 16.8% sparkle 0.38% | hp1.5 0.033 hp5 0.097 | obj 5%
++  centre r<.06                     S 0.23 V 0.95 med #f1d7db | white 36.7 pale 10.2 azure  0.0 elect  0.0 deep  0.0 laven 11.1 oth 42.0 warm 46.7 | hi 26.0% sparkle 0.81% | hp1.5 0.025 hp5 0.082 | obj 47%
++  floor ahead y.58-.68 x.3-.75     S 0.33 V 0.94 med #aed7f3 | white 30.5 pale 28.7 azure 15.9 elect 11.2 deep  3.6 laven  3.0 oth  7.0 warm  3.5 | hi 25.0% sparkle 0.38% | hp1.5 0.029 hp5 0.086 | obj 0%
++  play area y.21-.83               S 0.40 V 0.91 med #a6b3ed | white 21.0 pale 12.4 azure  6.9 elect 19.4 deep  4.1 laven 19.8 oth 16.3 warm  8.8 | hi 17.7% sparkle 0.18% | hp1.5 0.032 hp5 0.093 | obj 22%
++== before
++  upper wall r.12-.45 a30-150      S 0.52 V 0.95 med #6196f7 | white  9.4 pale  8.0 azure  6.6 elect 51.4 deep  1.2 laven 12.3 oth 11.1 warm  5.0 | hi  5.0% sparkle 0.85% | hp1.5 0.030 hp5 0.062 | obj 0%
++  side walls r.15-.45 |a|<30|>150  S 0.51 V 0.95 med #64b7f7 | white 14.6 pale 10.8 azure 22.4 elect 36.4 deep  1.1 laven  6.8 oth  7.9 warm  1.7 | hi  7.6% sparkle 0.61% | hp1.5 0.034 hp5 0.069 | obj 33%
++  mid vortex r.08-.20              S 0.40 V 0.94 med #9abaf7 | white 13.7 pale 20.9 azure 10.9 elect 19.3 deep  2.5 laven 19.2 oth 13.6 warm  3.7 | hi 11.1% sparkle 1.14% | hp1.5 0.044 hp5 0.086 | obj 9%
++  centre r<.06                     S 0.26 V 0.95 med #dac1f2 | white 21.2 pale 17.4 azure  0.0 elect  0.0 deep  0.0 laven 45.2 oth 16.1 warm 18.5 | hi 15.6% sparkle 1.41% | hp1.5 0.042 hp5 0.068 | obj 29%
++  floor ahead y.58-.68 x.3-.75     S 0.38 V 0.91 med #98bff1 | white 20.7 pale 16.4 azure 18.8 elect 11.5 deep  2.3 laven 18.9 oth 11.3 warm  1.8 | hi 12.3% sparkle 0.51% | hp1.5 0.049 hp5 0.103 | obj 5%
++  play area y.21-.83               S 0.45 V 0.91 med #81a7f2 | white 12.0 pale 13.0 azure 10.4 elect 29.0 deep  2.9 laven 21.5 oth 11.2 warm  5.0 | hi  7.0% sparkle 0.74% | hp1.5 0.038 hp5 0.075 | obj 24%
++== now3.0
++  upper wall r.12-.45 a30-150      S 0.51 V 0.95 med #65acf6 | white  8.7 pale 19.1 azure  9.6 elect 44.6 deep  3.9 laven  3.2 oth 10.8 warm  9.4 | hi  4.5% sparkle 0.53% | hp1.5 0.043 hp5 0.087 | obj 1%
++  side walls r.15-.45 |a|<30|>150  S 0.45 V 0.94 med #94b7f6 | white 14.7 pale 22.8 azure 12.2 elect 28.1 deep  1.7 laven 12.6 oth  7.9 warm  3.6 | hi  9.2% sparkle 0.62% | hp1.5 0.045 hp5 0.096 | obj 37%
++  mid vortex r.08-.20              S 0.38 V 0.94 med #9ebbf3 | white 19.5 pale 30.1 azure  5.3 elect 20.9 deep  5.3 laven 11.0 oth  7.9 warm  4.5 | hi 10.5% sparkle 1.01% | hp1.5 0.052 hp5 0.104 | obj 6%
++  centre r<.06                     S 0.18 V 0.91 med #ebcfd4 | white 41.2 pale  0.6 azure  0.0 elect  0.0 deep  0.0 laven 14.7 oth 43.4 warm 39.7 | hi 16.3% sparkle 3.99% | hp1.5 0.047 hp5 0.075 | obj 22%
++  floor ahead y.58-.68 x.3-.75     S 0.39 V 0.90 med #94bcf0 | white 18.6 pale 18.3 azure 18.1 elect 13.2 deep  3.0 laven 17.3 oth 11.5 warm  2.3 | hi 12.1% sparkle 0.48% | hp1.5 0.049 hp5 0.099 | obj 3%
++  play area y.21-.83               S 0.43 V 0.91 med #8aadf1 | white 12.1 pale 17.3 azure 10.2 elect 26.1 deep  3.2 laven 19.3 oth 11.8 warm  6.7 | hi  7.3% sparkle 0.69% | hp1.5 0.042 hp5 0.085 | obj 23%
++== now2.85
++  upper wall r.12-.45 a30-150      S 0.47 V 0.92 med #7ea4f1 | white  8.9 pale 14.6 azure  6.8 elect 32.0 deep  4.0 laven 21.3 oth 12.3 warm 10.7 | hi  4.7% sparkle 0.77% | hp1.5 0.042 hp5 0.087 | obj 5%
++  side walls r.15-.45 |a|<30|>150  S 0.45 V 0.93 med #85b0f2 | white 17.5 pale 14.8 azure 10.4 elect 28.8 deep  5.8 laven 11.7 oth 11.0 warm  4.7 | hi  8.8% sparkle 1.05% | hp1.5 0.047 hp5 0.095 | obj 31%
++  mid vortex r.08-.20              S 0.38 V 0.94 med #a2b9f2 | white 21.5 pale 24.3 azure  4.8 elect 20.4 deep  5.2 laven 14.4 oth  9.4 warm  6.0 | hi 11.1% sparkle 1.43% | hp1.5 0.054 hp5 0.107 | obj 6%
++  centre r<.06                     S 0.17 V 0.91 med #ecd0d6 | white 43.8 pale  0.9 azure  0.0 elect  0.0 deep  0.0 laven 15.1 oth 40.1 warm 37.7 | hi 20.2% sparkle 2.95% | hp1.5 0.048 hp5 0.077 | obj 14%
++  floor ahead y.58-.68 x.3-.75     S 0.40 V 0.90 med #8db6ef | white 14.9 pale 20.9 azure 17.8 elect 14.0 deep  2.2 laven 18.8 oth 11.5 warm  1.7 | hi 10.9% sparkle 0.53% | hp1.5 0.051 hp5 0.100 | obj 9%
++  play area y.21-.83               S 0.43 V 0.90 med #82a9ed | white 12.7 pale 16.4 azure  9.1 elect 22.6 deep  8.0 laven 17.1 oth 14.1 warm  6.3 | hi  7.5% sparkle 0.72% | hp1.5 0.040 hp5 0.079 | obj 20%
++== now3.1
++  upper wall r.12-.45 a30-150      S 0.51 V 0.95 med #64acf7 | white  7.9 pale 19.8 azure  9.8 elect 44.0 deep  3.7 laven  3.1 oth 11.8 warm  8.9 | hi  4.3% sparkle 0.54% | hp1.5 0.044 hp5 0.092 | obj 1%
++  side walls r.15-.45 |a|<30|>150  S 0.47 V 0.94 med #90b1f6 | white 13.4 pale 19.9 azure 11.4 elect 29.8 deep  1.5 laven 16.4 oth  7.5 warm  3.3 | hi  6.5% sparkle 0.69% | hp1.5 0.042 hp5 0.093 | obj 32%
++  mid vortex r.08-.20              S 0.38 V 0.94 med #9bbaf3 | white 20.4 pale 28.4 azure  5.0 elect 22.2 deep  5.4 laven 10.1 oth  8.7 warm  4.6 | hi 11.7% sparkle 1.05% | hp1.5 0.052 hp5 0.102 | obj 9%
++  centre r<.06                     S 0.19 V 0.91 med #eaced3 | white 37.1 pale  1.0 azure  0.0 elect  0.0 deep  0.0 laven 15.3 oth 46.5 warm 41.2 | hi 12.3% sparkle 3.67% | hp1.5 0.045 hp5 0.074 | obj 28%
++  floor ahead y.58-.68 x.3-.75     S 0.36 V 0.90 med #a6bfef | white 23.1 pale 19.9 azure 15.1 elect 10.6 deep  2.9 laven 18.0 oth 10.4 warm  4.4 | hi 13.6% sparkle 0.79% | hp1.5 0.042 hp5 0.090 | obj 9%
++  play area y.21-.83               S 0.46 V 0.92 med #85aaf2 | white 11.3 pale 17.3 azure  9.5 elect 27.9 deep  3.0 laven 21.6 oth  9.5 warm  5.6 | hi  7.0% sparkle 0.57% | hp1.5 0.042 hp5 0.085 | obj 23%
++== rings.py
++approved  up 50-130     bright bands  8 at r 0.038, 0.065, 0.113, 0.175, 0.205, 0.240, 0.265, 0.443 | log-spacing mean 0.353 CV 0.54 | band contrast 0.184 | along-ring lum std 0.148 | radial-profile std 0.134
++approved  left 140-175  bright bands 10 at r 0.073, 0.105, 0.163, 0.205, 0.238, 0.263, 0.308, 0.370, 0.418, 0.440 | log-spacing mean 0.200 CV 0.60 | band contrast 0.167 | along-ring lum std 0.118 | radial-profile std 0.136
++approved  right 5-40    bright bands  7 at r 0.123, 0.208, 0.258, 0.303, 0.348, 0.380, 0.453 | log-spacing mean 0.218 CV 0.66 | band contrast 0.201 | along-ring lum std 0.169 | radial-profile std 0.126
++before    up 50-130     bright bands  6 at r 0.098, 0.155, 0.188, 0.243, 0.345, 0.455 | log-spacing mean 0.308 CV 0.30 | band contrast 0.126 | along-ring lum std 0.114 | radial-profile std 0.123
++before    left 140-175  bright bands  4 at r 0.120, 0.208, 0.278, 0.413 | log-spacing mean 0.412 CV 0.26 | band contrast 0.242 | along-ring lum std 0.091 | radial-profile std 0.129
++before    right 5-40    bright bands  7 at r 0.038, 0.065, 0.090, 0.220, 0.345, 0.398, 0.463 | log-spacing mean 0.419 CV 0.62 | band contrast 0.175 | along-ring lum std 0.109 | radial-profile std 0.092
++now3.0    up 50-130     bright bands  6 at r 0.075, 0.093, 0.155, 0.248, 0.335, 0.435 | log-spacing mean 0.352 CV 0.34 | band contrast 0.180 | along-ring lum std 0.118 | radial-profile std 0.123
++now3.0    left 140-175  bright bands  8 at r 0.050, 0.095, 0.145, 0.183, 0.228, 0.288, 0.380, 0.410 | log-spacing mean 0.301 CV 0.56 | band contrast 0.240 | along-ring lum std 0.077 | radial-profile std 0.161
++now3.0    right 5-40    bright bands  8 at r 0.053, 0.100, 0.148, 0.233, 0.270, 0.360, 0.400, 0.463 | log-spacing mean 0.311 CV 0.59 | band contrast 0.206 | along-ring lum std 0.103 | radial-profile std 0.111
++now2.85   up 50-130     bright bands  6 at r 0.040, 0.075, 0.143, 0.235, 0.318, 0.413 | log-spacing mean 0.467 CV 0.34 | band contrast 0.177 | along-ring lum std 0.118 | radial-profile std 0.130
++now2.85   left 140-175  bright bands  7 at r 0.048, 0.093, 0.138, 0.185, 0.205, 0.278, 0.365 | log-spacing mean 0.340 CV 0.50 | band contrast 0.251 | along-ring lum std 0.077 | radial-profile std 0.133
++now2.85   right 5-40    bright bands  8 at r 0.055, 0.095, 0.140, 0.225, 0.260, 0.345, 0.393, 0.478 | log-spacing mean 0.309 CV 0.49 | band contrast 0.220 | along-ring lum std 0.104 | radial-profile std 0.122
++now3.1    up 50-130     bright bands 10 at r 0.040, 0.073, 0.093, 0.160, 0.218, 0.253, 0.343, 0.418, 0.448, 0.483 | log-spacing mean 0.277 CV 0.64 | band contrast 0.128 | along-ring lum std 0.124 | radial-profile std 0.120
++now3.1    left 140-175  bright bands  9 at r 0.048, 0.070, 0.100, 0.150, 0.185, 0.228, 0.268, 0.298, 0.393 | log-spacing mean 0.264 CV 0.39 | band contrast 0.233 | along-ring lum std 0.081 | radial-profile std 0.150
++now3.1    right 5-40    bright bands  9 at r 0.050, 0.083, 0.100, 0.153, 0.188, 0.235, 0.278, 0.373, 0.473 | log-spacing mean 0.281 CV 0.40 | band contrast 0.195 | along-ring lum std 0.085 | radial-profile std 0.133
++== palette.py
++== approved
++  azure         median #2fb2f5  p90-bright #77d8ff  H 200 S 0.81 V 0.96
++  electric blue median #337ced  p90-bright #689ffc  H 217 S 0.78 V 0.93
++  deep cobalt   median #4a64d2  p90-bright #5d79f5  H 229 S 0.67 V 0.82
++  white         median #f3edf6  p90-bright #fefcff  H 225 S 0.09 V 0.99
++  pale blue     median #a3d1f6  p90-bright #c9f0ff  H 208 S 0.32 V 0.96
++  lavender      median #bb99ed  p90-bright #e6c8fe  H 261 S 0.35 V 0.93
++  other: n 8457  hue hist: [468, 1433, 1237, 29, 9, 18, 1182, 25, 1191, 17, 36, 2280, 532] median #efc9d9 S 0.25
++  top-2% V glints median #cae0ff S 0.27;  darkest 5% median #5976ca
++== before
++  azure         median #52d7f7  p90-bright #78f6f8  H 192 S 0.67 V 0.97
++  electric blue median #4583f7  p90-bright #68a0f8  H 220 S 0.72 V 0.97
++  deep cobalt   median #3266c9  p90-bright #5e79f0  H 220 S 0.74 V 0.79
++  white         median #dbedf2  p90-bright #f4f1f9  H 200 S 0.10 V 0.95
++  pale blue     median #9fbff7  p90-bright #c3e7f8  H 222 S 0.35 V 0.97
++  lavender      median #bda7f7  p90-bright #e3cef8  H 253 S 0.31 V 0.97
++  other: n 8127  hue hist: [301, 530, 1285, 783, 3, 0, 599, 0, 1962, 1, 0, 2179, 484] median #ddc4e4 S 0.32
++  top-2% V glints median #e6e0f9 S 0.14;  darkest 5% median #3268d2
++== now3.0
++  azure         median #4bbaf8  p90-bright #75cef8  H 202 S 0.70 V 0.97
++  electric blue median #458df7  p90-bright #6eabf8  H 217 S 0.72 V 0.97
++  deep cobalt   median #4862ed  p90-bright #5770f5  H 230 S 0.69 V 0.93
++  white         median #e3e4ee  p90-bright #f7f4f9  H 223 S 0.09 V 0.95
++  pale blue     median #b1d1f7  p90-bright #c8e1f8  H 211 S 0.27 V 0.97
++  lavender      median #bdaeed  p90-bright #d7caf7  H 250 S 0.25 V 0.93
++  other: n 7316  hue hist: [865, 2025, 992, 11, 4, 9, 51, 42, 989, 71, 70, 679, 1508] median #efc3bd S 0.26
++  top-2% V glints median #cee2f9 S 0.19;  darkest 5% median #bfacd8
++== now2.85
++  azure         median #52bdf8  p90-bright #7bcef8  H 202 S 0.67 V 0.97
++  electric blue median #468bf7  p90-bright #73adf8  H 218 S 0.72 V 0.97
++  deep cobalt   median #425bec  p90-bright #5b73f4  H 229 S 0.72 V 0.93
++  white         median #e6e3eb  p90-bright #f7f4f9  H 225 S 0.09 V 0.95
++  pale blue     median #aecff7  p90-bright #c8e1f8  H 212 S 0.28 V 0.97
++  lavender      median #9282db  p90-bright #cab6f4  H 253 S 0.41 V 0.86
++  other: n 8147  hue hist: [681, 1881, 1320, 26, 4, 9, 30, 3, 1251, 14, 31, 1083, 1814] median #eec0c4 S 0.26
++  top-2% V glints median #dfe3f9 S 0.18;  darkest 5% median #715cb4
++== now3.1
++  azure         median #4dbaf8  p90-bright #76d1f8  H 202 S 0.69 V 0.97
++  electric blue median #458bf7  p90-bright #6dabf8  H 217 S 0.72 V 0.97
++  deep cobalt   median #4361ee  p90-bright #5872f7  H 229 S 0.72 V 0.93
++  white         median #e2e3f2  p90-bright #f5f2fa  H 224 S 0.09 V 0.96
++  pale blue     median #b5d4f7  p90-bright #c8e2f9  H 210 S 0.25 V 0.97
++  lavender      median #bbaaef  p90-bright #d9c8f8  H 249 S 0.27 V 0.94
++  other: n 7874  hue hist: [672, 2147, 1252, 34, 9, 22, 49, 9, 1381, 84, 121, 902, 1192] median #eec5bc S 0.28
++  top-2% V glints median #ebeafa S 0.08;  darkest 5% median #9f92d4
++== rim.py
++approved  warm rim band per column: 0.05:- 0.10:- 0.15:- 0.20:0.225-0.241 0.25:0.229-0.230 0.30:- 0.35:- 0.40:- 0.45:- 0.50:- 0.55:0.396-0.399 0.60:0.393-0.403 0.65:0.396-0.417 0.70:0.232-0.241 0.75:0.220-0.261 0.80:0.255-0.273 0.85:0.237-0.270 0.90:0.249-0.277 0.95:0.263-0.282
++          median thickness 0.019H  median colour #eea98b  warm-rim pixels 1.12% of frame
++before    warm rim band per column: 0.05:- 0.10:- 0.15:- 0.20:- 0.25:- 0.30:- 0.35:- 0.40:- 0.45:- 0.50:- 0.55:- 0.60:0.418-0.419 0.65:0.214-0.221 0.70:0.229-0.232 0.75:0.217-0.270 0.80:0.246-0.276 0.85:0.230-0.280 0.90:0.240-0.274 0.95:0.252-0.320
++          median thickness 0.032H  median colour #e8a48d  warm-rim pixels 1.33% of frame
++now3.0    warm rim band per column: 0.05:- 0.10:- 0.15:- 0.20:- 0.25:- 0.30:- 0.35:- 0.40:- 0.45:- 0.50:- 0.55:0.416-0.419 0.60:0.414-0.419 0.65:0.400-0.419 0.70:0.213-0.215 0.75:0.249-0.270 0.80:0.262-0.276 0.85:0.264-0.290 0.90:0.240-0.258 0.95:0.285-0.321
++          median thickness 0.019H  median colour #f1b698  warm-rim pixels 1.26% of frame
++now2.85   warm rim band per column: 0.05:- 0.10:- 0.15:- 0.20:- 0.25:- 0.30:- 0.35:0.178-0.193 0.40:- 0.45:- 0.50:- 0.55:- 0.60:0.409-0.419 0.65:0.404-0.419 0.70:0.286-0.300 0.75:0.321-0.328 0.80:0.300-0.315 0.85:0.336-0.356 0.90:0.349-0.373 0.95:0.370-0.397
++          median thickness 0.015H  median colour #f7c78f  warm-rim pixels 1.07% of frame
++now3.1    warm rim band per column: 0.05:0.415-0.419 0.10:0.416-0.419 0.15:- 0.20:- 0.25:- 0.30:- 0.35:- 0.40:- 0.45:- 0.50:- 0.55:0.415-0.419 0.60:0.410-0.419 0.65:0.401-0.419 0.70:0.415-0.419 0.75:- 0.80:0.183-0.201 0.85:0.205-0.225 0.90:0.210-0.231 0.95:0.205-0.229
++          median thickness 0.013H  median colour #f5cb90  warm-rim pixels 1.03% of frame
++== strips.py
++approved   left strip x<.08 y.40-.76    lavender 13.4 blue 49.3 (deep  3.4) white 21.1 S 0.40 med #9aabed lum-std 0.159
++approved   right strip x>.92 y.40-.76   lavender 15.8 blue 39.1 (deep 20.8) white 17.9 S 0.46 med #b99ae7 lum-std 0.073
++approved   top bevel x.30-.70 y.25-.31  lavender 61.5 blue 31.7 (deep 10.0) white  1.1 S 0.60 med #6763d8 lum-std 0.093
++before     left strip x<.08 y.40-.76    lavender 15.0 blue 78.4 (deep  4.0) white  6.6 S 0.56 med #57a4f6 lum-std 0.050
++before     right strip x>.92 y.40-.76   lavender 13.5 blue 27.6 (deep  3.0) white 43.5 S 0.25 med #d4caed lum-std 0.077
++before     top bevel x.30-.70 y.25-.31  lavender 68.2 blue 25.8 (deep  5.8) white  0.1 S 0.55 med #6c69db lum-std 0.092
++now3.0     left strip x<.08 y.40-.76    lavender 15.3 blue 81.6 (deep  5.8) white  2.9 S 0.57 med #59aef6 lum-std 0.050
++now3.0     right strip x>.92 y.40-.76   lavender 13.0 blue 23.4 (deep  2.4) white 46.3 S 0.25 med #dfceed lum-std 0.077
++now3.0     top bevel x.30-.70 y.25-.31  lavender 64.8 blue 29.3 (deep  9.2) white  0.1 S 0.54 med #6d6ddd lum-std 0.100
++now2.85    left strip x<.08 y.40-.76    lavender 23.7 blue 60.7 (deep  1.9) white  8.5 S 0.48 med #66b2f6 lum-std 0.063
++now2.85    right strip x>.92 y.40-.76   lavender 17.2 blue 47.0 (deep 15.2) white 18.7 S 0.44 med #7396ef lum-std 0.099
++now2.85    top bevel x.30-.70 y.25-.31  lavender 29.0 blue 49.8 (deep  1.2) white  0.0 S 0.41 med #7590de lum-std 0.112
++now3.1     left strip x<.08 y.40-.76    lavender  0.1 blue 95.0 (deep  4.6) white  2.8 S 0.63 med #47a3f7 lum-std 0.060
++now3.1     right strip x>.92 y.40-.76   lavender 10.5 blue 72.2 (deep 12.1) white  5.7 S 0.53 med #67a9f5 lum-std 0.056
++now3.1     top bevel x.30-.70 y.25-.31  lavender 14.0 blue 81.2 (deep  5.4) white  0.0 S 0.69 med #4582f4 lum-std 0.050
++== zones.py
++== approved
++  1 housing     S 0.40 V 0.83 med #a081ce | white  6.2 pale  0.7 azure  0.1 elect  5.1 deep  4.4 laven 45.5 gold  0.4 pink 15.5
++  2 whirlpool   S 0.47 V 0.94 med #c1b7eb | white 17.4 pale 11.9 azure  8.6 elect 21.0 deep  2.9 laven 10.7 gold  9.3 pink  6.8
++  3 swimmer     S 0.44 V 0.95 med #e5b5ee | white 20.6 pale 16.9 azure  2.6 elect  9.1 deep  0.2 laven  7.5 gold  7.4 pink 30.4
++  4 objects     S 0.42 V 0.94 med #dbc4ec | white 21.8 pale 14.8 azure  6.0 elect 14.1 deep  2.0 laven  8.6 gold 13.4 pink  7.3
++  5 brushes     S 0.47 V 0.91 med #b6a5e6 | white 14.8 pale  7.9 azure  6.2 elect 18.1 deep  4.1 laven 18.6 gold  6.6 pink 10.3
++  6 foreground  S 0.42 V 0.94 med #c2bbf4 | white 19.6 pale 24.9 azure  7.7 elect 12.9 deep  0.4 laven  9.8 gold  1.4 pink 20.8
++== before
++  1 housing     S 0.45 V 0.83 med #817fcc | white  1.5 pale  5.1 azure  0.0 elect 14.6 deep  7.4 laven 41.6 gold  0.1 pink 16.4
++  2 whirlpool   S 0.52 V 0.94 med #95a7f3 | white  9.6 pale 10.4 azure 10.3 elect 29.5 deep  1.5 laven 14.6 gold  9.7 pink  7.3
++  3 swimmer     S 0.47 V 0.94 med #d4a1dc | white  8.7 pale 15.7 azure  8.0 elect  9.9 deep  0.5 laven 10.8 gold 12.1 pink 27.6
++  4 objects     S 0.50 V 0.93 med #a7b4f2 | white 11.6 pale 12.8 azure 13.1 elect 20.1 deep  1.0 laven 11.3 gold 13.4 pink  8.2
++  5 brushes     S 0.50 V 0.92 med #949aed | white  9.0 pale  7.4 azure  7.3 elect 26.5 deep  2.6 laven 20.0 gold  6.1 pink 12.8
++  6 foreground  S 0.42 V 0.95 med #d29eef | white 12.0 pale 22.5 azure  1.8 elect 11.3 deep  0.5 laven 15.1 gold  6.4 pink 26.7
++== now3.0
++  1 housing     S 0.41 V 0.83 med #8a8ccc | white  2.1 pale  4.7 azure  0.0 elect 14.7 deep  3.8 laven 43.9 gold  0.1 pink 12.3
++  2 whirlpool   S 0.50 V 0.93 med #a1adf0 | white 10.0 pale 16.5 azure  8.5 elect 25.9 deep  2.6 laven 12.0 gold 10.5 pink  7.1
++  3 swimmer     S 0.46 V 0.94 med #d0a3e0 | white  8.6 pale 17.0 azure  9.9 elect 10.0 deep  1.0 laven  9.3 gold 10.3 pink 27.6
++  4 objects     S 0.48 V 0.93 med #b4b5ed | white 12.4 pale 17.2 azure 10.3 elect 17.4 deep  2.3 laven  9.1 gold 14.8 pink  8.0
++  5 brushes     S 0.48 V 0.91 med #a3a1eb | white 10.1 pale 12.6 azure  6.0 elect 23.3 deep  3.0 laven 17.5 gold  6.9 pink 11.7
++  6 foreground  S 0.41 V 0.95 med #cca1f0 | white 12.0 pale 24.6 azure  2.2 elect 11.8 deep  0.5 laven 15.2 gold  3.9 pink 26.7
++== now2.85
++  1 housing     S 0.47 V 0.82 med #727ed2 | white  3.5 pale  9.1 azure  0.0 elect 21.3 deep 25.3 laven 23.0 gold  0.2 pink  1.0
++  2 whirlpool   S 0.46 V 0.92 med #adabeb | white 12.2 pale 14.2 azure  7.0 elect 20.2 deep  2.7 laven 15.3 gold  7.5 pink 10.3
++  3 swimmer     S 0.46 V 0.93 med #caa6e4 | white  8.8 pale 17.8 azure 10.2 elect  9.8 deep  1.2 laven  9.3 gold  8.9 pink 26.5
++  4 objects     S 0.47 V 0.92 med #b4b1ec | white 12.6 pale 14.8 azure  9.2 elect 17.4 deep  3.5 laven 10.6 gold 12.3 pink  9.3
++  5 brushes     S 0.45 V 0.90 med #a19de4 | white 11.5 pale 11.3 azure  4.5 elect 20.4 deep  5.7 laven 16.7 gold  5.2 pink 11.3
++  6 foreground  S 0.39 V 0.95 med #c3aaf2 | white 12.4 pale 28.9 azure  2.2 elect 13.1 deep  0.8 laven 15.0 gold  0.0 pink 25.4
++== now3.1
++  1 housing     S 0.49 V 0.87 med #7a7dd9 | white  0.6 pale  2.0 azure  2.1 elect 19.5 deep  3.1 laven 57.1 gold  0.0 pink  5.6
++  2 whirlpool   S 0.50 V 0.94 med #9bb0f2 | white 12.1 pale 16.5 azure  9.2 elect 28.8 deep  2.5 laven  9.8 gold  9.3 pink  4.4
++  3 swimmer     S 0.42 V 0.94 med #cda0e5 | white  9.5 pale 18.7 azure  6.0 elect  8.9 deep  0.6 laven 13.5 gold  4.8 pink 31.5
++  4 objects     S 0.47 V 0.93 med #bcb1ec | white 12.9 pale 15.7 azure  8.0 elect 15.7 deep  2.4 laven 12.3 gold 13.7 pink 10.9
++  5 brushes     S 0.51 V 0.93 med #94a2ef | white  8.5 pale 13.0 azure  7.1 elect 28.9 deep  2.8 laven 16.2 gold  8.7 pink  7.8
++  6 foreground  S 0.41 V 0.94 med #c5a0f0 | white 13.0 pale 23.3 azure  2.1 elect 11.4 deep  1.1 laven 19.3 gold  4.4 pink 22.6
++== objects.py (approved, before, now 3.0; full-resolution frames)
++== /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg 767 1536
++  gold       x 0.778-0.996 y 0.671-0.800  ctr (0.887, 0.736)  w 0.218W h 0.258W  area 2.14%
++  gold       x 0.085-0.301 y 0.544-0.660  ctr (0.193, 0.602)  w 0.216W h 0.233W  area 1.89%
++  gold       x 0.761-0.971 y 0.933-0.998  ctr (0.866, 0.965)  w 0.210W h 0.130W  area 0.72%
++  gold       x 0.087-0.213 y 0.441-0.499  ctr (0.150, 0.470)  w 0.125W h 0.115W  area 0.48%
++  gold       x 0.468-0.571 y 0.529-0.579  ctr (0.520, 0.554)  w 0.103W h 0.099W  area 0.40%
++  gold       x 0.447-0.538 y 0.039-0.075  ctr (0.493, 0.057)  w 0.091W h 0.072W  area 0.25%
++  gem/purple x 0.013-0.083 y 0.273-0.396  ctr (0.048, 0.334)  w 0.070W h 0.246W  area 0.44%
++  gem/purple x 0.372-0.639 y 0.702-0.740  ctr (0.505, 0.721)  w 0.267W h 0.076W  area 0.32%
++  gem/purple x 0.222-0.342 y 0.778-0.826  ctr (0.282, 0.802)  w 0.120W h 0.096W  area 0.23%
++  gem/purple x 0.271-0.374 y 0.489-0.529  ctr (0.323, 0.509)  w 0.103W h 0.080W  area 0.21%
++  gem/purple x 0.621-0.713 y 0.812-0.871  ctr (0.667, 0.842)  w 0.093W h 0.117W  area 0.19%
++  gem/purple x 0.692-0.771 y 0.325-0.360  ctr (0.731, 0.342)  w 0.078W h 0.070W  area 0.17%
++  gem/purple x 0.398-0.572 y 0.811-0.851  ctr (0.485, 0.831)  w 0.175W h 0.081W  area 0.14%
++  gem/purple x 0.810-0.897 y 0.043-0.073  ctr (0.853, 0.058)  w 0.087W h 0.060W  area 0.12%
++  gem/purple x 0.776-0.824 y 0.327-0.360  ctr (0.800, 0.344)  w 0.048W h 0.065W  area 0.09%
++  gem/purple x 0.291-0.375 y 0.729-0.771  ctr (0.333, 0.750)  w 0.085W h 0.086W  area 0.07%
++  gem/purple x 0.714-0.780 y 0.559-0.569  ctr (0.747, 0.564)  w 0.065W h 0.021W  area 0.04%
++  gem/purple x 0.877-0.932 y 0.411-0.435  ctr (0.905, 0.423)  w 0.055W h 0.048W  area 0.04%
++== ../04_merged/match_t3.00.png 807 1602
++  gold       x 0.746-0.996 y 0.689-0.822  ctr (0.871, 0.755)  w 0.250W h 0.265W  area 2.60%
++  gold       x 0.093-0.281 y 0.507-0.681  ctr (0.187, 0.594)  w 0.188W h 0.346W  area 2.44%
++  gold       x 0.486-0.632 y 0.529-0.604  ctr (0.559, 0.567)  w 0.146W h 0.149W  area 0.62%
++  gold       x 0.742-0.892 y 0.863-0.938  ctr (0.817, 0.901)  w 0.150W h 0.149W  area 0.48%
++  gold       x 0.338-0.430 y 0.022-0.069  ctr (0.384, 0.046)  w 0.092W h 0.093W  area 0.34%
++  gem/purple x 0.346-0.667 y 0.868-0.893  ctr (0.506, 0.880)  w 0.321W h 0.050W  area 0.40%
++  gem/purple x 0.254-0.369 y 0.510-0.561  ctr (0.312, 0.536)  w 0.115W h 0.102W  area 0.35%
++  gem/purple x 0.625-0.709 y 0.034-0.064  ctr (0.667, 0.049)  w 0.084W h 0.058W  area 0.12%
++  gem/purple x 0.428-0.480 y 0.539-0.562  ctr (0.454, 0.551)  w 0.052W h 0.046W  area 0.07%
++== match_t3.00.png 807 1602
++  gold       x 0.773-0.996 y 0.674-0.810  ctr (0.885, 0.742)  w 0.223W h 0.271W  area 2.45%
++  gold       x 0.093-0.300 y 0.544-0.669  ctr (0.196, 0.606)  w 0.207W h 0.249W  area 2.06%
++  gold       x 0.092-0.209 y 0.438-0.504  ctr (0.151, 0.471)  w 0.118W h 0.131W  area 0.61%
++  gold       x 0.486-0.622 y 0.542-0.594  ctr (0.554, 0.568)  w 0.136W h 0.103W  area 0.50%
++  gold       x 0.742-0.892 y 0.863-0.938  ctr (0.817, 0.901)  w 0.150W h 0.149W  area 0.48%
++  gold       x 0.338-0.430 y 0.022-0.069  ctr (0.384, 0.046)  w 0.092W h 0.093W  area 0.34%
++  gem/purple x 0.347-0.667 y 0.868-0.893  ctr (0.507, 0.880)  w 0.320W h 0.050W  area 0.40%
++  gem/purple x 0.270-0.373 y 0.490-0.536  ctr (0.322, 0.513)  w 0.103W h 0.090W  area 0.28%
++  gem/purple x 0.625-0.709 y 0.034-0.064  ctr (0.667, 0.049)  w 0.084W h 0.058W  area 0.12%
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_blend50.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_blend50.png
+new file mode 100644
+index 0000000..5a8e544
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_blend50.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_diff.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_diff.png
+new file mode 100644
+index 0000000..07cc777
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_diff.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_edges.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_edges.png
+new file mode 100644
+index 0000000..8c52d95
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_edges.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_vs_before_vs_now_3.00s_1536.png b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_vs_before_vs_now_3.00s_1536.png
+new file mode 100644
+index 0000000..0df8fbb
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_vs_before_vs_now_3.00s_1536.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/pixel_identity_vs_ba0c7f6c.txt b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/pixel_identity_vs_ba0c7f6c.txt
+new file mode 100644
+index 0000000..d3345d8
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/pixel_identity_vs_ba0c7f6c.txt
+@@ -0,0 +1,6 @@
++normal  tap  size 538x1076 differing pixels 0 max diff 0 md5 base 5432237327 new 5432237327
++normal  2.9  size 538x1076 differing pixels 0 max diff 0 md5 base 480e543577 new 480e543577
++splash  tap  size 538x1076 differing pixels 0 max diff 0 md5 base 4426c0e8ab new 4426c0e8ab
++splash  2.9  size 538x1076 differing pixels 0 max diff 0 md5 base 3260ba9b36 new 3260ba9b36
++liquid  tap  size 538x1076 differing pixels 0 max diff 0 md5 base 81734b0552 new 81734b0552
++liquid  2.9  size 538x1076 differing pixels 0 max diff 0 md5 base 75aad81e51 new 75aad81e51
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/rw_probe/rw_probe_t3.00.json b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/rw_probe/rw_probe_t3.00.json
+new file mode 100644
+index 0000000..b116f18
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/rw_probe/rw_probe_t3.00.json
+@@ -0,0 +1,267 @@
++{
++ "T": 3.517,
++ "cam": {
++  "track": [
++   -0.11,
++   1.547,
++   -1.008
++  ],
++  "tanW": 0.7265,
++  "aspect": 0.5,
++  "fov": 72
++ },
++ "tunnel": [
++  3.9006939946349135,
++  37.20192241480899
++ ],
++ "vanishingPoint_trackDirection": [
++  0.546,
++  0.529
++ ],
++ "uMatchVP_screen": [
++  0.528,
++  0.531
++ ],
++ "axisOnScreen": [
++  {
++   "du": 0,
++   "x": -2.665,
++   "y": -14.648,
++   "T": [
++    0,
++    0,
++    1
++   ]
++  },
++  {
++   "du": 3,
++   "x": 0.496,
++   "y": 0.29,
++   "T": [
++    0,
++    0,
++    1
++   ]
++  },
++  {
++   "du": 5,
++   "x": 0.516,
++   "y": 0.385,
++   "T": [
++    0,
++    0,
++    1
++   ]
++  },
++  {
++   "du": 8,
++   "x": 0.527,
++   "y": 0.439,
++   "T": [
++    0,
++    0,
++    1
++   ]
++  },
++  {
++   "du": 12,
++   "x": 0.534,
++   "y": 0.469,
++   "T": [
++    0,
++    0,
++    1
++   ]
++  },
++  {
++   "du": 16,
++   "x": 0.531,
++   "y": 0.481,
++   "T": [
++    0.002,
++    0.063,
++    0.998
++   ]
++  },
++  {
++   "du": 20,
++   "x": 0.517,
++   "y": 0.48,
++   "T": [
++    0.059,
++    0.081,
++    0.995
++   ]
++  },
++  {
++   "du": 30,
++   "x": 0.505,
++   "y": 0.507,
++   "T": [
++    0.07,
++    -0.102,
++    0.992
++   ]
++  },
++  {
++   "du": 40,
++   "x": 0.51,
++   "y": 0.514,
++   "T": [
++    -0.045,
++    0,
++    0.999
++   ]
++  }
++ ],
++ "wallVertices": 14744,
++ "rings": [
++  {
++   "screenR": [
++    0,
++    0.035
++   ],
++   "cells": 0,
++   "shaderRw_p10_med_p90": [
++    null,
++    null,
++    null
++   ],
++   "du_med_m": null,
++   "du_p10_p90": [
++    null,
++    null
++   ],
++   "rwOverTrue_med": null,
++   "coreShare": null,
++   "correctedRw_med": null,
++   "correctedCoreShare": null
++  },
++  {
++   "screenR": [
++    0.035,
++    0.06
++   ],
++   "cells": 31,
++   "shaderRw_p10_med_p90": [
++    0.07,
++    0.076,
++    0.083
++   ],
++   "du_med_m": 34.509,
++   "du_p10_p90": [
++    31.259,
++    38.259
++   ],
++   "rwOverTrue_med": 1.441,
++   "coreShare": 0,
++   "correctedRw_med": 0.058,
++   "correctedCoreShare": 0.645
++  },
++  {
++   "screenR": [
++    0.06,
++    0.09
++   ],
++   "cells": 194,
++   "shaderRw_p10_med_p90": [
++    0.071,
++    0.087,
++    0.104
++   ],
++   "du_med_m": 30.509,
++   "du_p10_p90": [
++    25.259,
++    40.509
++   ],
++   "rwOverTrue_med": 1.14,
++   "coreShare": 0,
++   "correctedRw_med": 0.081,
++   "correctedCoreShare": 0
++  },
++  {
++   "screenR": [
++    0.09,
++    0.12
++   ],
++   "cells": 280,
++   "shaderRw_p10_med_p90": [
++    0.084,
++    0.101,
++    0.13
++   ],
++   "du_med_m": 26.009,
++   "du_p10_p90": [
++    21.009,
++    34.259
++   ],
++   "rwOverTrue_med": 0.959,
++   "coreShare": 0,
++   "correctedRw_med": 0.105,
++   "correctedCoreShare": 0
++  },
++  {
++   "screenR": [
++    0.12,
++    0.2
++   ],
++   "cells": 1118,
++   "shaderRw_p10_med_p90": [
++    0.117,
++    0.16,
++    0.198
++   ],
++   "du_med_m": 17.009,
++   "du_p10_p90": [
++    14.259,
++    23.009
++   ],
++   "rwOverTrue_med": 0.964,
++   "coreShare": 0,
++   "correctedRw_med": 0.16,
++   "correctedCoreShare": 0
++  },
++  {
++   "screenR": [
++    0.2,
++    0.3
++   ],
++   "cells": 1344,
++   "shaderRw_p10_med_p90": [
++    0.204,
++    0.247,
++    0.291
++   ],
++   "du_med_m": 11.009,
++   "du_p10_p90": [
++    9.509,
++    13.009
++   ],
++   "rwOverTrue_med": 0.983,
++   "coreShare": 0,
++   "correctedRw_med": 0.247,
++   "correctedCoreShare": 0
++  },
++  {
++   "screenR": [
++    0.3,
++    0.45
++   ],
++   "cells": 1196,
++   "shaderRw_p10_med_p90": [
++    0.305,
++    0.36,
++    0.43
++   ],
++   "du_med_m": 7.509,
++   "du_p10_p90": [
++    6.509,
++    8.759
++   ],
++   "rwOverTrue_med": 0.992,
++   "coreShare": 0,
++   "correctedRw_med": 0.36,
++   "correctedCoreShare": 0
++  }
++ ]
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/coin_probe.cjs b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/coin_probe.cjs
+new file mode 100644
+index 0000000..902cbd6
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/coin_probe.cjs
+@@ -0,0 +1,45 @@
++// coin_probe.cjs <abs WebDemo> [tune json]: at T (3.0 s) seeded match, project every coin (LOD) and every unnamed top-level
++// Group (gems, socks) with its screen place, distance, visual scale and layout z (u).
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, TUNE = '{}'] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'match').split(','), T = +(process.env.T || 3.0);
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: 1 })).newPage();
++  await page.addInitScript(([tune, s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = JSON.parse(tune); window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [TUNE, S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate((t) => window.__bw.advance(t), T);
++  await page.waitForTimeout(500);
++  const out = await page.evaluate(() => {
++    const d = window.__bw.debug(), cam = d.camera, scene = d.scene, L = d.layout;
++    const V = cam.position.constructor; const rows = [];
++    for (const o of scene.children) {
++      const isCoin = o.isLOD, isGrp = o.type === 'Group' && !o.name;
++      if (!isCoin && !isGrp) continue;
++      const wp = o.getWorldPosition(new V()), dist = wp.distanceTo(cam.position); if (dist > 45) continue;
++      const s = wp.clone().project(cam);
++      let kind = isCoin ? 'coin' : 'group'; o.traverse((q) => { if (q.isSprite) kind = 'sock?'; });
++      if (kind === 'group') { let n = 0; o.traverse((q) => { if (q.isMesh) n++; }); kind = 'grp' + n; }
++      rows.push({ kind, sx: +((s.x + 1) / 2).toFixed(3), sy: +((1 - s.y) / 2).toFixed(3), z: +s.z.toFixed(3), dist: +dist.toFixed(2), scale: +o.scale.x.toFixed(2), vis: o.visible, world: wp.toArray().map((v) => +v.toFixed(2)) });
++    }
++    rows.sort((a, b) => a.dist - b.dist);
++    return { tunnelStart: L.tunnelStart, cam: cam.position.toArray().map((v) => +v.toFixed(2)), rows };
++  });
++  console.log(JSON.stringify(out.cam), 'tunnelStart', out.tunnelStart);
++  for (const r of out.rows) console.log(JSON.stringify(r));
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/common.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/common.py
+new file mode 100644
+index 0000000..407d406
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/common.py
+@@ -0,0 +1,33 @@
++import os, numpy as np, cv2
++from PIL import Image
++APP='/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
++import os.path as _op
++_D=_op.dirname(_op.dirname(_op.abspath(__file__)))   # 06_tunnel_lighting_gate_fixes
++BEFORE=_op.join(_op.dirname(_D),'04_merged','match_t3.00.png')   # the merged build before this pass
++W0,H0=538,1076
++# (Tunnel & Lighting gate fixes, step 6: the Art Director's step-5 common.py with the frames as an argument.)
++# Frames from the environment: FRAMES="label=path;label=path" (each game frame measured round 0.53,0.53 as in the gate).
++# The approved original is always first.
++FR=[('approved',APP,(0.528,0.532))]
++_env=os.environ.get('FRAMES','before='+BEFORE+';now3.0='+_op.join(_D,'match_t3.00.png')+';now2.85='+_op.join(_D,'match_t2.85.png')+';now3.1='+_op.join(_D,'match_t3.10.png'))
++for it in [x for x in _env.split(';') if x]:
++    lab,p=it.split('=',1); FR.append((lab,p,(0.53,0.53)))
++def load(p): return np.asarray(Image.open(p).convert('RGB').resize((W0,H0),Image.LANCZOS))
++def hsv(im):
++    a=im.astype(np.float32)/255; mx,mn=a.max(-1),a.min(-1); v=mx; s=np.where(mx>0,(mx-mn)/np.maximum(mx,1e-6),0)
++    r,g,b=a[...,0],a[...,1],a[...,2]; d=np.maximum(mx-mn,1e-6)
++    h=np.where(mx==r,(60*((g-b)/d)+360)%360,np.where(mx==g,60*((b-r)/d)+120,60*((r-g)/d)+240))
++    return h,s,v
++def classes(im):
++    h,s,v=hsv(im); out={}
++    out['gold']=(h>=30)&(h<65)&(s>0.45)&(v>0.6)
++    out['pink']=((h>=290)|(h<20))&(s>0.3)&(v>0.5)
++    rest=~(out['gold']|out['pink'])
++    out['white']=rest&(s<0.15)&(v>0.85)
++    out['pale blue']=rest&(h>=185)&(h<235)&(s>=0.15)&(s<0.45)&(v>0.75)
++    out['azure']=rest&(h>=165)&(h<205)&(s>=0.45)
++    out['electric blue']=rest&(h>=205)&(h<228)&(s>=0.45)&(v>=0.8)
++    out['deep cobalt']=rest&(((h>=205)&(h<245)&(s>=0.45)&(v<0.8))|((h>=228)&(h<245)&(s>=0.6)))
++    out['lavender']=rest&(h>=235)&(h<290)&(s>=0.12)&~out['deep cobalt']
++    return out,h,s,v
++def hexc(c): c=np.clip(c,0,255).astype(int); return '#%02x%02x%02x'%tuple(c)
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/objects.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/objects.py
+new file mode 100644
+index 0000000..df615eb
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/objects.py
+@@ -0,0 +1,34 @@
++"""Object boxes by colour: gold (coins), magenta-purple (gem), pink (fur), from the Art Director's HSV classes.
++   python objects.py frame.png [frame2.png ...]   -> connected components as fractions of the frame (x/W, y/H)"""
++import sys, numpy as np
++from PIL import Image
++from scipy import ndimage as ndi
++
++
++def hsv(rgb):
++    a = rgb.astype(np.float32) / 255.0
++    mx, mn = a.max(-1), a.min(-1); v = mx; s = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0)
++    r, g, b = a[..., 0], a[..., 1], a[..., 2]; d = np.maximum(mx - mn, 1e-6)
++    h = np.where(mx == r, (60 * ((g - b) / d) + 360) % 360, np.where(mx == g, 60 * ((b - r) / d) + 120, 60 * ((r - g) / d) + 240))
++    return h, s, v
++
++def comps(mask, minfrac, W, H, close=3):
++    mask = ndi.binary_closing(mask, iterations=close); mask = ndi.binary_fill_holes(mask)
++    lab, n = ndi.label(mask); out = []
++    for i, sl in enumerate(ndi.find_objects(lab), 1):
++        area = (lab[sl] == i).sum()
++        if area < minfrac * W * H: continue
++        ys, xs = sl
++        out.append(dict(x0=xs.start / W, x1=xs.stop / W, y0=ys.start / H, y1=ys.stop / H, area=area / (W * H)))
++    return sorted(out, key=lambda o: -o['area'])
++
++if __name__ == '__main__':
++    for p in sys.argv[1:]:
++        im = np.asarray(Image.open(p).convert('RGB')); H, W = im.shape[:2]
++        h, s, v = hsv(im)
++        gold = (h >= 28) & (h < 62) & (s > 0.45) & (v > 0.55)
++        gem = (h >= 270) & (h < 310) & (s > 0.45) & (v > 0.45)
++        print('==', p, W, H)
++        for name, m, mf in (('gold', gold, 0.0008), ('gem/purple', gem, 0.0004)):
++            for o in comps(m, mf, W, H):
++                print(f"  {name:10s} x {o['x0']:.3f}-{o['x1']:.3f} y {o['y0']:.3f}-{o['y1']:.3f}  ctr ({(o['x0']+o['x1'])/2:.3f}, {(o['y0']+o['y1'])/2:.3f})  w {o['x1']-o['x0']:.3f}W h {(o['y1']-o['y0'])*H/W:.3f}W  area {o['area']*100:.2f}%")
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/palette.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/palette.py
+new file mode 100644
+index 0000000..2d0ec3c
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/palette.py
+@@ -0,0 +1,17 @@
++from common import *
++for lab,p,(vx,vy) in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    rr=np.hypot((xx-vx*W0)/W0,(yy-vy*H0)/W0); ang=np.rad2deg(np.arctan2(-(yy-vy*H0),xx-vx*W0))
++    hud=0.205 if lab=='approved' else 0.172
++    m=(rr>0.08)&(rr<0.45)&(ang>20)&(ang<160)&(yy>hud*H0)&~(cl['gold']|cl['pink'])
++    other=m.copy()
++    for k in ['white','pale blue','azure','electric blue','deep cobalt','lavender']: other&=~cl[k]
++    print('==',lab)
++    for k in ['azure','electric blue','deep cobalt','white','pale blue','lavender']:
++        mm=m&cl[k]
++        if mm.sum(): print(f"  {k:13s} median {hexc(np.median(im[mm],0))}  p90-bright {hexc(np.percentile(im[mm],90,0))}  H {np.median(h[mm]):.0f} S {np.median(s[mm]):.2f} V {np.median(v[mm]):.2f}")
++    hh=h[other]; ss=s[other]
++    print(f"  other: n {other.sum()}  hue hist:", np.histogram(hh,bins=[0,20,45,70,100,140,165,185,205,235,260,290,330,360])[0].tolist(), 'median', hexc(np.median(im[other],0)), f"S {np.median(ss):.2f}")
++    # brightest 2% in the wall: glints
++    L=v[m]; t=np.percentile(L,98); g=m&(v>=t)
++    print(f"  top-2% V glints median {hexc(np.median(im[g],0))} S {np.median(s[g]):.2f};  darkest 5% median {hexc(np.median(im[m&(v<=np.percentile(L,5))],0))}")
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rim.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rim.py
+new file mode 100644
+index 0000000..fc9caa0
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rim.py
+@@ -0,0 +1,14 @@
++from common import *
++for lab,p,vp in FR:
++    im=load(p); h,s,v=hsv(im); yy,xx=np.mgrid[0:H0,0:W0]
++    warm=(((h>=10)&(h<55))|(h>=345))&(s>0.25)&(v>0.55)&(yy>0.08*H0)&(yy<0.42*H0)
++    # exclude coins/pink brushes: brushes are pink h>=290 so not included; coins below .42 excluded
++    out=[]; th=[]; cols=[]
++    for x in np.arange(0.05,1.0,0.05):
++        c=int(x*W0); col=warm[:,max(c-2,0):c+3].any(1); ys=np.nonzero(col)[0]
++        if len(ys)<3: out.append(f"{x:.2f}:-"); continue
++        # largest contiguous run
++        runs=np.split(ys,np.nonzero(np.diff(ys)>2)[0]+1); r=max(runs,key=len)
++        out.append(f"{x:.2f}:{r[0]/H0:.3f}-{r[-1]/H0:.3f}"); th.append((r[-1]-r[0])/H0); cols.append(np.median(im[r[0]:r[-1]+1,c].reshape(-1,3),0))
++    print(f"{lab:9s} warm rim band per column: "+' '.join(out))
++    if th: print(f"          median thickness {np.median(th):.3f}H  median colour {hexc(np.median(cols,0))}  warm-rim pixels {100*warm.sum()/(W0*H0):.2f}% of frame")
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rings.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rings.py
+new file mode 100644
+index 0000000..c7f9c93
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rings.py
+@@ -0,0 +1,30 @@
++from common import *
++from scipy.signal import find_peaks
++from scipy.ndimage import gaussian_filter1d
++for lab,p,(vx,vy) in FR:
++    im=load(p); cl,h,s,v=classes(im)
++    lum=(0.2126*im[...,0]+0.7152*im[...,1]+0.0722*im[...,2])/255
++    obj=cl['gold']|cl['pink']
++    obj=cv2.dilate(obj.astype(np.uint8),np.ones((7,7),np.uint8))>0
++    cx,cy=vx*W0,vy*H0
++    rs=np.arange(0.03,0.50,0.0025)  # in W units
++    out=[]
++    for sector,(a0,a1) in (('up 50-130',(50,130)),('left 140-175',(140,175)),('right 5-40',(5,40))):
++        angs=np.deg2rad(np.arange(a0,a1,1.0))
++        prof=[];angcv=[]; satp=[]
++        for r in rs:
++            X=(cx+r*W0*np.cos(angs)).astype(int); Y=(cy-r*W0*np.sin(angs)).astype(int)
++            ok=(X>=0)&(X<W0)&(Y>=int(0.21*H0))&(Y<H0)
++            ok[ok]&=~obj[Y[ok],X[ok]]
++            if ok.sum()<10: prof.append(np.nan); angcv.append(np.nan); satp.append(np.nan); continue
++            L=lum[Y[ok],X[ok]]; prof.append(L.mean()); angcv.append(L.std()); satp.append(s[Y[ok],X[ok]].mean())
++        prof=np.array(prof); angcv=np.array(angcv); satp=np.array(satp)
++        good=~np.isnan(prof)
++        # mouth edge: outermost radius still inside the blue tunnel = where saturation drops (lavender collar S<.45) for this sector
++        P=gaussian_filter1d(np.nan_to_num(prof,nan=np.nanmean(prof)),1.0)
++        pk,_=find_peaks(P,prominence=0.025,distance=3)
++        tr,_=find_peaks(-P,prominence=0.025,distance=3)
++        pr=rs[pk]
++        sp=np.diff(np.log(pr)) if len(pr)>2 else np.array([np.nan])
++        amp=(np.mean(P[pk])-np.mean(P[tr])) if len(pk) and len(tr) else np.nan
++        print(f"{lab:9s} {sector:13s} bright bands {len(pk):2d} at r {', '.join(f'{x:.3f}' for x in pr)} | log-spacing mean {np.nanmean(sp):.3f} CV {np.nanstd(sp)/np.nanmean(sp):.2f} | band contrast {amp:.3f} | along-ring lum std {np.nanmean(angcv):.3f} | radial-profile std {np.nanstd(prof):.3f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rw_probe_corrected.cjs b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rw_probe_corrected.cjs
+new file mode 100644
+index 0000000..eaf74aa
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rw_probe_corrected.cjs
+@@ -0,0 +1,84 @@
++// Read-only diagnostic (Art Director gate, Round 9): does heroWalls' colour-map radius rw (tunnel_r9_match.js matchWall:
++// rw = |cs - uHeroCam.xy| / max(u - uHeroCam.z, 0.25) / uHeroTanW, i.e. worked out in each point's OWN track frame) agree with
++// where the point really appears on screen (its true radius round the projected vanishing point)? Loads the real game
++// (seed 7) like tools/screen4/hero_probe.cjs, advances to T, projects every heroWalls vertex with the real camera, keeps the
++// nearest per screen cell (a z-buffer of the walls alone) and compares the two radii by screen ring. Also prints where the
++// tube's axis lands on screen 5-80 m ahead (the path's turn). Nothing in the game is changed.
++//   cd WebDemo && S3=match T=3.0 node <this> "$PWD" <out dir>
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'match').split(','), T = +(process.env.T || 3.0);
++fs.mkdirSync(OUT, { recursive: true });
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: 1 })).newPage();
++  await page.addInitScript(([s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = {}; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate((t) => window.__bw.advance(t), T);
++  await page.waitForTimeout(800);
++  await page.screenshot({ path: path.join(OUT, `rw_probe_t${T.toFixed(2)}.png`), clip: await page.locator('#stage').boundingBox() });
++  const info = await page.evaluate(() => {
++    const d = window.__bw.debug(), cam = d.camera, scene = d.scene, TR = d.track, L = d.layout;
++    const V = cam.position.constructor;
++    cam.updateMatrixWorld(); cam.matrixWorldInverse.copy(cam.matrixWorld).invert();
++    const wall = scene.getObjectByName('heroWalls'); wall.updateMatrixWorld();
++    const Un = wall.material.uniforms, C = Un.uHeroCam.value, tanW = Un.uHeroTanW.value;
++    const F = { P: new V(), R: new V(), U: new V(), T: new V() };
++    const sc = (p) => { const q = p.clone().project(cam); return [(q.x + 1) / 2, (1 - q.y) / 2, q.z]; };
++    TR.frame(C.z, F); const vp = sc(cam.position.clone().addScaledVector(F.T, 1e4));
++    const axis = [];
++    const axH = (() => { TR.frame(C.z, F); return C.y; })();   // the camera's height above the water; the axis height below
++    for (const du of [0, 3, 5, 8, 12, 16, 20, 30, 40, 60, 80]) {
++      if (C.z + du > L.tunnelEnd + 2) break;
++      TR.frame(C.z + du, F); const p = sc(F.P.clone().addScaledVector(F.U, 2.6));
++      axis.push({ du, x: +p[0].toFixed(3), y: +p[1].toFixed(3), T: F.T.toArray().map((v) => +v.toFixed(3)) });
++    }
++    const pos = wall.geometry.attributes.position, au = wall.geometry.attributes.aAU, n = pos.count, GX = 135, GY = 270;
++    const zb = new Float32Array(GX * GY).fill(2), rwS = new Float32Array(GX * GY), duS = new Float32Array(GX * GY), rwC = new Float32Array(GX * GY);
++    const MVP = Un.uMatchVP ? Un.uMatchVP.value : null; const vpx = MVP ? MVP.x : vp[0], vpy = MVP ? 1 - MVP.y : vp[1];
++    const w = new V(); let lastU = NaN; const rel = new V();
++    for (let i = 0; i < n; i++) {
++      w.fromBufferAttribute(pos, i).applyMatrix4(wall.matrixWorld);
++      const s = sc(w); if (s[2] < -1 || s[2] > 1 || s[0] < 0 || s[0] >= 1 || s[1] < 0 || s[1] >= 1) continue;
++      const u = au.getY(i); if (u !== lastU) { TR.frame(u, F); lastU = u; }
++      rel.copy(w).sub(F.P); const cx = rel.dot(F.R), ch = rel.dot(F.U);
++      const rw = Math.hypot(cx - C.x, ch - C.y) / Math.max(u - C.z, 0.25) / tanW;
++      const k = Math.floor(s[1] * GY) * GX + Math.floor(s[0] * GX);
++      const rs = Math.hypot(s[0] - vpx, (s[1] - vpy) / cam.aspect); const t = Math.min(1, Math.max(0, (rs - 0.09) / 0.05)); const kk = 1 - t * t * (3 - 2 * t);
++      if (s[2] < zb[k]) { zb[k] = s[2]; rwS[k] = rw; duS[k] = u - C.z; rwC[k] = rw + (rs - rw) * kk; }
++    }
++    const rings = [[0, 0.035], [0.035, 0.06], [0.06, 0.09], [0.09, 0.12], [0.12, 0.2], [0.2, 0.3], [0.3, 0.45]], out = [];
++    for (const [r0, r1] of rings) {
++      const a = [], b = [], ratio = [], ac = [];
++      for (let y = 0; y < GY; y++) for (let x = 0; x < GX; x++) {
++        const k = y * GX + x; if (zb[k] > 1.5) continue;
++        const rt = Math.hypot((x + 0.5) / GX - vpx, ((y + 0.5) / GY - vpy) / cam.aspect);
++        if (rt < r0 || rt >= r1) continue;
++        a.push(rwS[k]); ac.push(rwC[k]); b.push(duS[k]); ratio.push(rwS[k] / Math.max(rt, 1e-3));
++      }
++      const med = (q) => { if (!q.length) return null; const s = [...q].sort((m, n) => m - n); return +s[s.length >> 1].toFixed(3); };
++      const pct = (q, f) => { if (!q.length) return null; const s = [...q].sort((m, n) => m - n); return +s[Math.floor(f * (s.length - 1))].toFixed(3); };
++      out.push({ screenR: [r0, r1], cells: a.length, shaderRw_p10_med_p90: [pct(a, 0.1), med(a), pct(a, 0.9)], du_med_m: med(b), du_p10_p90: [pct(b, 0.1), pct(b, 0.9)], rwOverTrue_med: med(ratio),
++        coreShare: a.length ? +(a.filter((v) => v < 0.06).length / a.length).toFixed(3) : null, correctedRw_med: med(ac), correctedCoreShare: ac.length ? +(ac.filter((v) => v < 0.06).length / ac.length).toFixed(3) : null });
++    }
++    return { T: window.__bw.state().time, cam: { track: [C.x, C.y, C.z].map((v) => +v.toFixed(3)), tanW: +tanW.toFixed(4), aspect: cam.aspect, fov: cam.fov }, tunnel: [L.tunnelStart, L.tunnelEnd],
++      vanishingPoint_trackDirection: vp.slice(0, 2).map((v) => +v.toFixed(3)), uMatchVP_screen: [+vpx.toFixed(3), +vpy.toFixed(3)], axisOnScreen: axis, wallVertices: n, rings: out };
++  });
++  fs.writeFileSync(path.join(OUT, `rw_probe_t${T.toFixed(2)}.json`), JSON.stringify(info, null, 1));
++  console.log(JSON.stringify(info, null, 1));
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/sbs.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/sbs.py
+new file mode 100644
+index 0000000..cafcd15
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/sbs.py
+@@ -0,0 +1,18 @@
++"""sbs.py out.png H frame1 [frame2 ...] : side by side, approved first, every frame resized to height H.
++   Optional crop via CROP=x0,y0,x1,y1 (fractions) applied to every frame."""
++import sys, os
++from PIL import Image
++APP='/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
++out=sys.argv[1]; H=int(sys.argv[2]); fr=[APP]+sys.argv[3:]
++crop=os.environ.get('CROP')
++ims=[]
++for p in fr:
++    im=Image.open(p).convert('RGB')
++    if crop:
++        x0,y0,x1,y1=map(float,crop.split(',')); W,Hh=im.size
++        im=im.crop((int(x0*W),int(y0*Hh),int(x1*W),int(y1*Hh)))
++    w=round(im.size[0]*H/im.size[1]); ims.append(im.resize((w,H),Image.LANCZOS))
++S=Image.new('RGB',(sum(i.size[0] for i in ims)+6*(len(ims)-1),H),(255,255,255))
++x=0
++for i in ims: S.paste(i,(x,0)); x+=i.size[0]+6
++S.save(out)
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/strips.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/strips.py
+new file mode 100644
+index 0000000..06feded
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/strips.py
+@@ -0,0 +1,10 @@
++"""The opening's edges: class shares in the left and right frame strips (x < .08, x > .92) between the rim and the bank
++   (y .40-.76), and the bevel band under the rim at the top (x .30-.70, y .25-.31). Art Director's HSV classes."""
++from common import *
++for lab,p,vp in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    blue=cl['azure']|cl['electric blue']|cl['deep cobalt']|cl['pale blue']
++    for k,m in (('left strip x<.08 y.40-.76',(xx<0.08*W0)&(yy>0.40*H0)&(yy<0.76*H0)),('right strip x>.92 y.40-.76',(xx>0.92*W0)&(yy>0.40*H0)&(yy<0.76*H0)),
++                ('top bevel x.30-.70 y.25-.31',(xx>0.30*W0)&(xx<0.70*W0)&(yy>0.25*H0)&(yy<0.31*H0))):
++        m=m&~cl['gold']&~cl['pink']; n=max(m.sum(),1)
++        print(f"{lab:10s} {k:28s} lavender {100*(cl['lavender']&m).sum()/n:4.1f} blue {100*(blue&m).sum()/n:4.1f} (deep {100*(cl['deep cobalt']&m).sum()/n:4.1f}) white {100*(cl['white']&m).sum()/n:4.1f} S {s[m].mean():.2f} med {hexc(np.median(im[m],0))} lum-std {(v[m]).std():.3f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/walls.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/walls.py
+new file mode 100644
+index 0000000..24bd351
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/walls.py
+@@ -0,0 +1,24 @@
++from common import *
++from scipy import ndimage as ndi
++KEYS=['white','pale blue','azure','electric blue','deep cobalt','lavender']
++for lab,p,(vx,vy) in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    hud=0.205 if lab=='approved' else 0.172
++    rr=np.hypot((xx-vx*W0)/W0,(yy-vy*H0)/W0); ang=np.rad2deg(np.arctan2(-(yy-vy*H0),xx-vx*W0))
++    lum=(0.2126*im[...,0]+0.7152*im[...,1]+0.0722*im[...,2]).astype(np.float32)/255
++    hp2=lum-cv2.GaussianBlur(lum,(0,0),1.5); hp6=lum-cv2.GaussianBlur(lum,(0,0),5)
++    obj=cl['gold']|cl['pink']
++    hi=(v>0.95)&(s<0.15)
++    labm,n=ndi.label(hi); sz=ndi.sum(hi,labm,range(1,n+1)); small=np.isin(labm,np.nonzero(sz<=12)[0]+1)
++    R={'upper wall r.12-.45 a30-150':(rr>0.12)&(rr<0.45)&(ang>30)&(ang<150)&(yy>hud*H0),
++       'side walls r.15-.45 |a|<30|>150':(rr>0.15)&(rr<0.45)&((np.abs(ang)<30)|(np.abs(ang)>150))&(yy<0.66*H0),
++       'mid vortex r.08-.20':(rr>0.08)&(rr<0.20),
++       'centre r<.06':rr<0.06,
++       'floor ahead y.58-.68 x.3-.75':(yy>0.58*H0)&(yy<0.68*H0)&(xx>0.3*W0)&(xx<0.75*W0),
++       'play area y.21-.83':(yy>max(hud,0.21)*H0)&(yy<0.83*H0)}
++    print('==',lab)
++    for k,m0 in R.items():
++        m=m0&~obj; n=max(m.sum(),1)
++        sh={c:100*(cl[c]&m).sum()/n for c in KEYS}; other=100-sum(sh.values())
++        warm=100*(m&(((h>=15)&(h<70)&(s>0.12))|((h>=320)|(h<15))&(s>0.12)&(s<=0.3))).sum()/n
++        print(f"  {k:32s} S {s[m].mean():.2f} V {v[m].mean():.2f} med {hexc(np.median(im[m],0))} | "+' '.join(f"{c.split()[0][:5]} {x:4.1f}" for c,x in sh.items())+f" oth {other:4.1f} warm {warm:4.1f} | hi {100*(hi&m).sum()/n:4.1f}% sparkle {100*(small&m).sum()/n:4.2f}% | hp1.5 {hp2[m].std():.3f} hp5 {hp6[m].std():.3f} | obj {100*(m0&obj).sum()/max(m0.sum(),1):.0f}%")
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zones.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zones.py
+new file mode 100644
+index 0000000..1b25912
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zones.py
+@@ -0,0 +1,15 @@
++"""Class shares in the user's six target zones (precision kit 10_TARGET_ZONES_ANNOTATED.jpg, boxes read off that image,
++   fractions of 767 x 1536), approved vs merged. HUD buttons masked in the game frame for zones 3 and 6."""
++from common import *
++Z={'1 housing':(0.013,0.213,0.986,0.304),'2 whirlpool':(0.081,0.307,0.919,0.667),'3 swimmer':(0.086,0.684,0.924,0.914),
++   '4 objects':(0.047,0.434,0.971,0.728),'5 brushes':(0.01,0.24,0.986,0.63),'6 foreground':(0.005,0.781,0.99,0.967)}
++KEYS=['white','pale blue','azure','electric blue','deep cobalt','lavender','gold','pink']
++for lab,p,vp in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    hudb=np.zeros((H0,W0),bool)
++    if lab!='approved': hudb|=(yy>0.835*H0)&(((xx>0.03*W0)&(xx<0.33*W0))|((xx>0.67*W0)&(xx<0.98*W0)))|(yy>0.885*H0)&(xx>0.33*W0)&(xx<0.67*W0)&(yy<0.98*H0)
++    else: hudb|=(yy>0.88*H0)&((xx<0.40*W0)|(xx>0.70*W0))
++    print('==',lab)
++    for k,(x0,y0,x1,y1) in Z.items():
++        m=(xx>=x0*W0)&(xx<x1*W0)&(yy>=y0*H0)&(yy<y1*H0)&~hudb; n=max(m.sum(),1)
++        print(f"  {k:13s} S {s[m].mean():.2f} V {v[m].mean():.2f} med {hexc(np.median(im[m],0))} | "+' '.join(f"{c.split()[0][:5]} {100*(cl[c]&m).sum()/n:4.1f}" for c in KEYS))
+diff --git a/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zoomgrid.py b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zoomgrid.py
+new file mode 100644
+index 0000000..b1239a4
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zoomgrid.py
+@@ -0,0 +1,12 @@
++import sys
++from PIL import Image, ImageDraw
++p=sys.argv[1]; x0,y0,x1,y1=map(float,sys.argv[2:6]); out=sys.argv[6]; step=float(sys.argv[7]) if len(sys.argv)>7 else 0.01
++im=Image.open(p).convert('RGB'); W,H=im.size
++c=im.crop((int(x0*W),int(y0*H),int(x1*W),int(y1*H))); s=1400/c.width; c=c.resize((1400,int(c.height*s)),Image.LANCZOS)
++d=ImageDraw.Draw(c)
++import numpy as np
++for y in np.arange(np.ceil(y0/step)*step,y1,step):
++    Y=(y-y0)*H*s; d.line([(0,Y),(c.width,Y)],fill=(255,255,0) if round(y/step)%5==0 else (0,255,0),width=1); d.text((2,Y+1),f'{y:.3f}',fill=(255,255,0))
++for x in np.arange(np.ceil(x0/0.05)*0.05,x1,0.05):
++    X=(x-x0)*W*s; d.line([(X,0),(X,c.height)],fill=(255,0,255),width=1); d.text((X+2,2),f'{x:.2f}',fill=(255,0,255))
++c.save(out)
 diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
 index 5d61108..55d4ba7 100644
 --- a/WebDemo/src/game.js
@@ -11,7 +1689,7 @@ index 5d61108..55d4ba7 100644
  const r3Rnd = R3 ? mulberry(0x3e3b) : null;   // round3's own random numbers (the game's own sequence is unchanged)
  
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index fbe063a..ee78147 100644
+index fbe063a..c31a8c4 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -58,15 +58,29 @@ export const MATCH = {
@@ -76,7 +1754,7 @@ index fbe063a..ee78147 100644
    // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
    // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
    // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
-@@ -124,13 +152,69 @@ export const MATCH = {
+@@ -124,13 +152,70 @@ export const MATCH = {
      // and less saturated than the approved at the same places (zero-flow test at 3.0 s: the drum's translucent layers and
      // texture filtering); undone before the transform
      lift: 0.08, sat: 1.2,
@@ -125,7 +1803,8 @@ index fbe063a..ee78147 100644
 +      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
 +      inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
 +      // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
-+      // [phase, half width] of the sparser inner line)
++      // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against
++      // the approved's brightest #cae0ff; at 1.3 they turned white and broke into specks, at 1.05 the glints went lilac again)
 +      edge: { col: '#c2dcff', w: [0.02, 0.045], broken: [-0.13, -0.07], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.6, boost: 1.12 } },
 +    royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
 +    // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
@@ -149,7 +1828,7 @@ index fbe063a..ee78147 100644
  };
  // a deep merge: objects merge key by key at every level, arrays and values replace
  export function deepMerge(target, over) {
-@@ -152,6 +236,9 @@ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tun
+@@ -152,6 +237,9 @@ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tun
  export const MATCH_UNIFORMS = {
    uMatchOn: { value: 0 },   // 1 once every texture has loaded (otherwise the walls keep the Round 8 look)
    uMatchCol: { value: null }, uMatchBase: { value: null }, uMatchDet: { value: null }, uMatchNrm: { value: null }, uMatchVar: { value: null }, uMatchRim: { value: null },
@@ -159,7 +1838,7 @@ index fbe063a..ee78147 100644
  };
  // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
  // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
-@@ -185,12 +272,18 @@ if (MATCH_ON) privately(0x9a72, () => {
+@@ -185,12 +273,18 @@ if (MATCH_ON) privately(0x9a72, () => {
  
  // ---------------------------------------------------------------- the walls' GLSL (inserted into tunnel_r8_liquid.js's wallCode)
  const f4 = (x) => (+x).toFixed(5);
@@ -178,7 +1857,7 @@ index fbe063a..ee78147 100644
  // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
  const RIM_SAMPLE = /* glsl */ `
  vec3 mtRimS(vec2 d, float rho) {
-@@ -224,6 +317,31 @@ vec3 mtUndisplay(vec3 c) {
+@@ -224,6 +318,31 @@ vec3 mtUndisplay(vec3 c) {
  }
  `;
  }
@@ -210,7 +1889,7 @@ index fbe063a..ee78147 100644
  // declarations and the shading, placed just before lqWall (the liquid's uniforms uTime, uHeroTravel, uHeroTanW, uHeroCam,
  // uLqGlow and uLqKey are declared above it)
  export function matchWallGLSL() {
-@@ -231,15 +349,15 @@ export function matchWallGLSL() {
+@@ -231,15 +350,15 @@ export function matchWallGLSL() {
    return /* glsl */ `
  // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
  uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
@@ -230,7 +1909,7 @@ index fbe063a..ee78147 100644
    float lr = log(max(rw, 1e-4));
    vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
    vec2 dx = dFdx(bv), dy = dFdy(bv);
-@@ -253,7 +371,9 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -253,7 +372,9 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    vec2 oA = vec2(-${f4(M.swirlAmp)} * (p0 - 0.5), -${f4(M.flowAmp / M.span)} * (p0 - 0.5));
    vec2 oB = vec2(-${f4(M.swirlAmp)} * (p1 - 0.5) + 0.0037, -${f4(M.flowAmp / M.span)} * (p1 - 0.5));
    vec3 cA = textureGrad(uMatchCol, bv + oA, dx, dy).rgb, cB = textureGrad(uMatchCol, bv + oB, dx, dy).rgb;
@@ -241,7 +1920,7 @@ index fbe063a..ee78147 100644
    // the colourless maps (relief, streaks) scroll on continuously, without a seam (periodic)
    float fl = uTime * ${f4(M.flow)} + uHeroTravel * ${f4(M.travel)};
    vec2 dv = vec2(tu + uTime * ${f4(M.swirl)}, (lr - ${f4(M.lnR0)} - fl) / ${f4(M.detailSpan)});
-@@ -261,13 +381,89 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -261,13 +382,89 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    vec3 det = textureGrad(uMatchDet, dv, ddx, ddy).rgb - 0.5;
    vec4 vr = textureGrad(uMatchVar, dv, ddx, ddy);
    c = mix(c, vec3(1.0), vr.r * ${f4(M.shimmer)} * (0.5 + 0.5 * sin(uTime * 3.1 + vr.b * 25.0 + tu * 40.0)));
@@ -332,7 +2011,7 @@ index fbe063a..ee78147 100644
    // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
    vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
    vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
-@@ -312,14 +508,18 @@ function matchBezel(scene, HERO) {
+@@ -312,14 +509,18 @@ function matchBezel(scene, HERO) {
    if (!bezel) return null;
    const B = HERO.round6.porthole.bezel, rin = B.inner / B.outer;
    bezel.material = new THREE.ShaderMaterial({ uniforms: { uTime: { value: 0 }, ...MATCH_UNIFORMS }, side: THREE.DoubleSide,
@@ -355,7 +2034,7 @@ index fbe063a..ee78147 100644
    // a slow polished glint running round the gold
    float ang = atan(vL.y, -vL.x);
    float warm = smoothstep(0.05, 0.25, c.r - c.b);
-@@ -333,11 +533,24 @@ void main() {
+@@ -333,11 +534,24 @@ void main() {
  // ?s3=match,bare: not drawn (camera layer 5). Visual only: positions, pick-up radii and the game's lists are untouched.
  const HIDDEN_LAYER = 5;
  const hideFromCamera = (o) => o.traverse((q) => q.layers.set(HIDDEN_LAYER));
@@ -380,7 +2059,7 @@ index fbe063a..ee78147 100644
    if (MATCH_BARE) { for (const it of [...coins, ...gems, ...socks]) hideFromCamera(it.obj); report.bare = coins.length + gems.length + socks.length; }
    // the paw coins' look (one shared material): the approved's yellow gold, shinier and more dimensional (the Art Director:
    // hue 46, brightness range 0.34-0.42, lemon highlights #fff188, shade #d67c02; ours hue 39-41, range 0.18-0.21). The coin's
-@@ -365,12 +578,74 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -365,12 +579,74 @@ export function matchCollectibles({ coins, gems, socks }) {
    return report;
  }
  

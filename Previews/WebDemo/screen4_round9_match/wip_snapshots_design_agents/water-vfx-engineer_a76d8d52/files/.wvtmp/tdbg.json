@@ -1,1 +1,1 @@
-{"matchWater":{"bubbles":{"count":1,"flecks":{"count":200,"size":[[0.8,1.2],[0.09,0.095]],"alpha":1.0}}}}
+{"matchWater":{"bubbles":{"count":1,"debugStreak":2,"flecks":{"count":200,"size":[[0.8,1.2],[0.09,0.095]],"alpha":1.0,"rho":[0.3,0.5]}}}}

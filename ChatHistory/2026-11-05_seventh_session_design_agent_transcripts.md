@@ -278,8 +278,109 @@ Draw calls 207/209/202, the same as the merged build. Now re-running the Art Dir
 
 - 15:06 `Bash`: Extend the rw probe for the corrected placement
 - 15:07 `Bash`: Run the extended rw probe at 3.0 s
+- 15:07 `Bash`: Copy scripts and probe output into the evidence folder
+- 15:07 `Bash`: Point evidence scripts at the folder and write measured.txt
+- 15:07 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/fix_common.py
+- 15:08 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/measure_all.sh
+- 15:08 `Bash`: Fix evidence common.py and write measured.txt
+- 15:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/measured.txt
+**Agent** (15:08 UTC):
 
-_131 tool steps._
+Measurements written. Now checkpoint 06: where the rim's top edge sits at x 0.5. Let me look at the top of the opening in both frames.
+
+- 15:08 `Bash`: Grid zoom of the top of the opening
+- 15:08 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/zg_top.png
+- 15:08 `Bash`: Read the overlay tool usage
+- 15:08 `Bash`: Read the overlay tool header
+- 15:08 `Bash`: Make 50% overlay and full-res side by side
+- 15:08 `Bash`: Overlay correlation for the before frame
+- 15:09 `Bash`: Downscale the side by side for viewing
+- 15:09 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/sbs_final_small.png
+**Agent** (15:09 UTC):
+
+Now the close-up crops for checkpoints 03, 05 and 06 (original / before / now).
+
+- 15:09 `Bash`: Make checkpoint close-up crops
+- 15:09 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint03_vortex_original
+**Lead → agent** (15:09 UTC):
+
+[Image: original 2594x800, displayed at 2000x617. Multiply coordinates by 1.30 to map to original image.]
+
+- 15:09 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/centre_closeup_original_befo
+**Agent** (15:09 UTC):
+
+Let me review the settings block once for coherent comments before writing the README.
+
+- 15:09 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 15:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+- 15:09 `Bash`: Rebuild and confirm only a comment changed
+**Agent** (15:10 UTC):
+
+Bundle code is unchanged by the comment edit (same md5 0c2caa71, the one all evidence was captured with). Now the README for the evidence folder.
+
+- 15:10 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/README.md
+- 15:11 `Bash`: Check evidence sizes and git status
+- 15:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint05_objects_origina
+**Lead → agent** (15:11 UTC):
+
+[Image: original 2954x800, displayed at 2000x542. Multiply coordinates by 1.48 to map to original image.]
+
+**Agent** (15:11 UTC):
+
+Evidence is complete. Final commit.
+
+- 15:11 `Bash`: Final commit of source, bundle and evidence
+**Agent** (15:11 UTC):
+
+I resumed the lost work, finished the pass and committed it as **`e490836`** on branch **`worktree-agent-a3faef23dd555533b`** (not pushed). F1, F7 and F10 are fixed; F3, F4, F5 and F6 are only partly fixed.
+
+**Comparison images:** `/home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/`
+- `original_vs_before_vs_now_3.00s_1536.png` (original | merged before | now)
+- the 50% blend of the original over the new frame
+- frames at 2.85, 3.0 and 3.1 s
+- close-ups for checkpoints 03, 05 and 06
+- `measured.txt` and `README.md`
+
+**Checks:**
+- The normal game, `splash` and `liquid` match the baseline bundle exactly: 0 differing pixels in all six raw-canvas frames.
+- The gameplay test under `match` still gives lanes 1/0/2, the jump, 12 coins and 2 socks, with no console errors.
+- Draw calls per frame are unchanged (202-209).
+
+**What changed this session:**
+- **The walls now read as drum rings.** They had looked like wavy topographic blobs. They are now concentric rings with deep cobalt gaps and thin ice-blue ring lines, and tight pink rings lead in to a warm centre.
+- **A bug fixed.** The fade that was meant to shrink far coins never worked, because the game reset their size every frame. Fixing it removed most of the clutter around the centre coin.
+- **The two stacked left coins are separated.** The upper-left coin could not reach the original's place at its old distance and still be collectable. It now stands 1.6 m nearer and is drawn at 0.69 of its size. At the top of a jump it is 0.68 m from the character's body, inside the 0.82 m pick-up reach.
+- **Your phone-fix note is applied.** The centre placement now measures in widths of the 1:2 frame, `min(width, 0.5 × height)`. At 1:2 this gives the same result. The only change in Water & VFX's file is the one placement call in `matchFloor()`.
+
+**Per fix at 3.0 s (original / before / now):**
+
+| Fix | Verdict | Key numbers |
+|---|---|---|
+| F1 centre | fixed at 3.0 s | Warm 46.7 / 18.5 / **39.7%**; lavender 11.1 / 45.2 / **14.7%**. Mid-vortex white 22.3 / 13.7 / 19.5%. At 2.85 and 3.1 s lavender is just over the limit (15.1 / 15.3%). |
+| F3 wall depth | partly | Upper-wall deep cobalt 3.9 / 1.2 / **3.9%**; texture 0.094 / 0.062 / **0.087**; bands up/left/right 8/10/7, 6/4/7, **6/8/8**. Band contrast 0.180 / 0.240 / 0.206: up is on target, left too high. Side-wall cobalt **1.7%** against 4.1% (likely the original's blue brush tufts, not the wall). Up contrast drops to 0.128 at 3.1 s. |
+| F4 light colour | partly | Lime 29 / 783 / **11 px**; electric blue 43.0 / 51.4 / **44.6%**; cyan **9.6%** against 13.3% (target was 11). |
+| F5 sparkles | partly | Star shapes are gone. Small specks 0.20 / 0.85 / **0.53%** (target 0.3). The brightest wall colour is now **#cee2f9**, close to the original's #cae0ff. |
+| F6 housing | partly | Rim thickness 0.019 / 0.032 / **0.019 H**; no lavender added. Left-edge white **2.9%** against 21.1%: not fixed. The original's white there is pink-white fluff and splash, which needs a new element or Water & VFX's splash. |
+| F7 gem and centre | fixed | Gem 0.270-0.373 × 0.490-0.536 against 0.271-0.374 × 0.489-0.529. Only the small side coin and the far sock remain beside the centre coin, as in the original. |
+| F10 right coin and sock | fixed | Right coin 0.773-0.996 × 0.674-0.810 against 0.778-0.996 × 0.671-0.800. Sock 0.647-0.825 × 0.556-0.668 against 0.645-0.84 × 0.555-0.665. |
+
+**Your checkpoints:**
+- **03 vortex: partly.** The cobalt rings are distinct and nested, and lead to the vanishing point at (0.528, 0.531) against the original's (0.528, 0.532), with a warm centre. Our rings are smoother than the original's busy ones and do not sit at its exact ring radii: the wall correlation with the original is -0.014, about the same as before (-0.013).
+- **05 composition: verified at 3.0 s.** Big left coin 0.093-0.300 × 0.544-0.669 against 0.085-0.301 × 0.544-0.660. Upper-left coin 0.092-0.209 × 0.438-0.504 against 0.087-0.213 × 0.441-0.499.
+- **06 upper frame: partly.** The rim's top edge at x 0.5 is at y **0.209** against the original's 0.212, so the 1:2 camera framing is on target. The original's top edge is at 0.212, not the 0.24-0.26 you estimated. The extra flat band under the mission bar comes from the banner ending at 0.175 instead of 0.186. That is the HUD and phone framing, which is yours.
+
+**Still different from the original:**
+- The walls are cleaner and a lighter sky blue (median #65acf6 against #5b99ef), with fewer white splash bits and a fainter rainbow arc.
+- The centre glow is more peach-orange than the original's white-yellow.
+- The left edge has no pink-white fluff or splash.
+- Small specks are still 0.53% against 0.20%, and cyan is 9.6% against 13.3%.
+- The centre coin sits about 13 px right of and below the original's (807-px-wide frame). I left it there so the coins hidden behind it stay hidden.
+- The sock stands upright where the original's lies on its side.
+
+I used 10 capture iterations. The last one made the specks worse, so I reverted to the one before it.
+
+
+_155 tool steps._
 
 ---
 
@@ -578,5 +679,40 @@ The JS side looks right. Let me read the live instance data and uniforms in the 
 - 15:04 `Bash`: Dump live instance data
 - 15:07 `Bash`: Find hero walls radius definition
 - 15:07 `Bash`: Read hero walls construction
+**Agent** (15:07 UTC):
 
-_131 tool steps._
+The 2.0 m is only a shader parameter; the wall mesh is round 4/6's lining. Let me measure its real distance from the axis along the path.
+
+- 15:07 `Bash`: Measure wall lining distance from axis
+**Agent** (15:07 UTC):
+
+The lining is exactly 2.0 m from the axis at every depth, so the streaks (1.6-1.97 m) are inside it. The bug must be in the shader. Let me read it as built.
+
+- 15:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (15:08 UTC):
+
+The shader reads correctly. One discriminating test: the same huge streaks placed well inside the tube (0.3-0.5 of the radius). If they appear, something drawn at the wall covers them.
+
+- 15:08 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/tdbg.json
+- 15:08 `Bash`: Debug capture with streaks near the axis
+- 15:08 `Bash`: Compare debug frames
+- 15:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/dbg_cmp.png
+- 15:08 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r9_match_water.js
+- 15:08 `Bash`: Rebuild with debug switch
+- 15:08 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/tdbg.json
+- 15:08 `Bash`: Magenta streak debug capture
+- 15:09 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/dbg3_crop.png
+**Agent** (15:09 UTC):
+
+Only 133 magenta pixels for 200 one-metre streaks, so the quads are faded out or collapsed before the fragment stage. Next split: route the streak instances through the bubble vertex path.
+
+- 15:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/WebDemo/src/tunnel_r9_match_water.js
+- 15:09 `Bash`: Rebuild and capture with streaks on bubble path
+- 15:10 `Bash`: Count magenta pixels in debug 4
+- 15:10 `Bash`: Rewrite streak vertex branch plainly
+- 15:10 `Bash`: Rebuild, capture with t4, mid crop
+- 15:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/mid_i5.png
+- 15:12 `Bash`: Streak orientation from CPU ring tangent
+- 15:12 `Bash`: Capture with CPU tangents and crop
+
+_150 tool steps._

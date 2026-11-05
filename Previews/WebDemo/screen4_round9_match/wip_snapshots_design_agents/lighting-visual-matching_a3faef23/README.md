@@ -1,21 +1,46 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: finish gate fixes)
 
-- **Taken:** 2026-11-05 15:07 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 15:12 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a3faef23dd555533b` (local only), started from `5d742e0`.
 - **Its own commits so far:** 
+  - `e490836 Round 9 Tunnel & Lighting gate fixes: concentric cobalt drum rings with ice-blue ring lines and tight pink inner rings to a warm centre, separated left coins at the original's places (in reach), far-collectible fade fixed, evidence (?s3=match only)`
   - `485893d Round 9 Tunnel & Lighting gate fixes (checkpoint): concentric drum rings with thin ice-blue lines, tight pink inner rings, royal-blue walls, far-collectible fade fixed, left coins separated as in the original (?s3=match only)`
   - `942b8cd Round 9 Tunnel & Lighting gate fixes (restored WIP): screen-space centre placement (mtPlace) and warm far end, star removal and lime pull in the Reference 5 maps, wall troughs and bands, thinner rim, gem / right coin / sock places (?s3=match only)`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (17; full copies in `files/`)
+## Files (41; full copies in `files/`)
 
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_info.json (new)`
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85.png (new)`
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85_canvas.png (new)`
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00.png (new)`
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00_canvas.png (new)`
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10.png (new)`
-- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/README.md`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/centre_closeup_original_before_now.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint03_vortex_original_before_now.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint05_objects_original_before_now.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/checkpoint06_upper_frame_original_before_now.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_info.json`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t2.85_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/match_t3.10_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/measured.txt`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_blend50.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_diff.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_over_match_3.00s_edges.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/original_vs_before_vs_now_3.00s_1536.png`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/pixel_identity_vs_ba0c7f6c.txt`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/rw_probe/rw_probe_t3.00.json`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/coin_probe.cjs`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/common.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/objects.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/palette.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rim.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rings.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/rw_probe_corrected.cjs`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/sbs.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/strips.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/walls.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zones.py`
+- `Previews/WebDemo/screen4_round9_match/06_tunnel_lighting_gate_fixes/scripts/zoomgrid.py`
 - `WebDemo/src/game.js`
 - `WebDemo/src/tunnel_r9_match.js`
 - `WebDemo/src/tunnel_r9_match_water.js`
