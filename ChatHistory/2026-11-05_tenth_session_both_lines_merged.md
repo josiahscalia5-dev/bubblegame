@@ -468,3 +468,39 @@ The second measure can reach at most about +0.63 here, which is what the ring ma
 
 **Do you accept steps 2 and 3?** If yes, the next pass is the water: blue water with clear bubble domes and no foam cushion. In the same pass I'd fix the pale, lavender far end and floor.
 
+---
+
+### You · 2026-11-05 23:40 UTC
+
+[attached file: BubbleWash_Step3_Visual_Review_Pack.zip] I have reviewed Steps 2 and 3 against my ORIGINAL CLASSIC APPROVED Screen 4.
+
+Step 2: APPROVED as a functional interface improvement.
+
+Step 3: Accepted as a saved technical checkpoint, but NOT visually approved as finished.
+
+You may continue to the next correction pass. Do not consider the tunnel artwork complete.
+
+The original approved screenshot remains the only visual target.
+
+My main concerns:
+
+1. Tunnel center: The middle is still too pale, lavender and pinkish. The approved center has deeper cobalt-blue and turquoise water, small bright highlights, and more convincing circular depth. Remove the unwanted pastel wash without destroying the original ring positions.
+
+2. Water floor: The current floor has excessive pale lavender coloring. Your measurements show 22% lavender against just 3% in my original. Correct the transparent floor and any overlapping 3D materials responsible for changing the water's appearance. It should blend naturally with the vivid blue tunnel.
+
+3. Water rings: Preserve the improved ring alignment, but restore the stronger saturated blue bands, irregular water texture, and sparkling white-aqua flecks visible in the approved original. Do not replace them with smooth, uniform pastel circles.
+
+4. Foreground water: Restore the beautiful blue-white splash detail and transparent bubbles around the character. Do not introduce a solid foam cushion or cover the character.
+
+5. Preserve completed work: Keep Step 2's functional UI, camera, collectibles, and gameplay intact. Do not modify the pink character's 3D model at this stage.
+
+Your investigation suggests that some of the unwanted lavender comes from the semi-transparent floor and distant 3D layers rather than the ring texture itself. Please isolate and correct those sources first instead of generating new textures or purchasing new assets.
+
+For every adjustment, show me the approved original next to the actual rendered game at seed 7, 3.0 seconds, no steering, matching camera and resolution.
+
+Please also provide the corrected blue-water regions enlarged, and verify that movement, collectibles, pause, and both power-ups still function.
+
+Do not ask me to approve the final visual appearance until the water is substantially closer to my actual approved screen.
+
+_[3 images attached]_
+
