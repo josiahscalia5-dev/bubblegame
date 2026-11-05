@@ -441,3 +441,31 @@ Please show me:
 
 Your focused pass is next. First, the identity result for the full merge, which just finished:
 
+Your focused pass is underway, with both specialists running in parallel on separate files:
+
+**Tunnel & Lighting:**
+1. **Character framing (first):** move the camera closer and widen its view, so the character appears about 1.37 times larger and sits slightly left, as in your original. The tunnel, the gold rim and the vanishing point stay where they are. Her model and size in the world don't change.
+   - The coins, gem and sock are then re-placed on your original's positions for the new camera, still collectable.
+   - When this is committed, I pass it to Water & VFX so the foam fits the new framing.
+2. **Sock:** tilted, lying sideways as in your original.
+3. **Tunnel walls:** less smooth and perfect, with irregular turbulent bands and deeper cobalt. The oversized near bubbles shrink to your original's sizes.
+4. **Composition:** a check for remaining empty space.
+
+**Water & VFX:**
+1. **Foam:** rebuilt as thick, bright aqua-white froth, with no glassy lavender lumps and no see-through purple. That includes the pale-lilac plate under her.
+2. **Character:** stays clearly on top of the water, supported by the foam.
+3. **Tunnel energy:** bolder, denser white splash flecks and streaks, and more visible bubbles at near, middle and far depth.
+
+**Already verified on the merged build before this pass started:**
+- Gameplay works: lanes, jump, 12 coins, 1 gem and 2 socks collected, no errors.
+- All 33 frames of the normal game and the ten older versions are pixel-identical.
+- The check of hearts, pause, Bubble Blast and Turbo Spin is still running.
+
+Everything is pushed (`9a7e4ce`), and the 5-minute autosave is capturing both specialists' work as they go.
+
+When they finish, you'll get:
+- the side-by-side with your original;
+- a close-up of the tunnel interior;
+- a close-up of the foam and water round the character;
+- the five-item checklist.
+
