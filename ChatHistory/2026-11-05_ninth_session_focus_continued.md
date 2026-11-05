@@ -150,3 +150,51 @@ Still to come:
 
 I'll push both results with their commit hashes.
 
+---
+
+### Automatic notice · 2026-11-05 20:28 UTC
+
+_Background command "Run gameplay and power-up tests on the merged build" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-05 20:28 UTC
+
+Hearts, pause, Bubble Blast and Turbo Spin all pass on the merged build, with no console errors. Now the Pixel 7 check:
+
+Both phone framings are clean: no grey wedge, no holes or clipping, she sits on the water, and the HUD is intact. Writing up the evidence and checklist, then pushing.
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/checks/pixel7_two_framings.png]_
+
+Both design agents' work is merged into `ccr-de8d9670-2ohd5t` on `josiahscalia5-dev/bubblegame`, and every check on the merged build passes. The latest push is **`b2a5b6e`**. The comparison images I sent earlier show this same merged build.
+
+**Tests on the merged build:**
+- **Movement and collectibles:** swipes change lanes, the jump and the keyboard start work, and she collected 12 coins, 1 gem and 2 socks. No console errors.
+- **Hearts:** five knocks take them from 5 to 0, and the game restarts at "5 Full".
+- **Pause:** time freezes and resumes, from the button and from the keyboard.
+- **Bubble Blast:** clears the two brushes ahead, the count goes 3 → 2, and the button is disabled once it reaches 0.
+- **Turbo Spin:** speed goes from 6.68 to 8.78 with no knocks.
+- **Pixel 7, at 412×839 and full-screen 412×915** (the image I just sent): no grey wedge, clipping or holes. She sits on the water and the HUD is intact.
+- **Older versions:** `?s3=match` is unchanged, pixel for pixel.
+
+**Your Tunnel Correction kit checklist:**
+- **Verified:**
+  - the lower-left wedge is now animated water;
+  - the top rim is where it belongs;
+  - the water's shape and colour come from real shader changes;
+  - she sits on blue water with no cushion;
+  - the gameplay and phone tests pass;
+  - the source is pushed with its hashes.
+- **Partly:** the tunnel's cobalt is less saturated than the original's (0.71 against 0.83). The warm centre is there, but its inner rings are more regular and paler than the original's.
+
+**Still different from your original:**
+- **Left wall:** by the numbers it matches. By eye it's smoother and milkier than the original's crisp cyan and white sparkle.
+- **Over the rings:** more small white streaks and bubbles than the original.
+- **Behind her:** the water is about 4 brightness points darker.
+- **Her base:** her pink is a little wider there (0.25 against 0.20 of the screen width).
+- **Sock:** it has open eyes and a violet toe, where the original's has closed happy eyes and a blue toe.
+
+The full checklist, numbers and commit list are in `Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/README.md`.
+
+The 5-minute autosave is still running. My reminder at 20:56 UTC restarts it before its 2-hour run ends. If you want another pass on the remaining differences, I'd send the agents after the tunnel's cobalt saturation and the extra streaks first, since those two make the tunnel look least like the original.
+
