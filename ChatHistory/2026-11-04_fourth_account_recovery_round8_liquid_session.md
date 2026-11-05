@@ -718,3 +718,17 @@ Saving everything now. That covers your main work branch, the chat history with 
 
 Both checkpoints are merged, and the game file matches its source. Next I'll update the hand-off notes with where Round 8 stands:
 
+Everything is saved to GitHub. Your work branch `ccr-aeee6378-mv5kot` is at commit `16c2103`, and GitHub confirms it has that commit.
+
+**What's saved:**
+- **The game:** all of the Water & VFX specialist's water work so far (`?s3=liquid` and `?s3=liquid,nofoam`), as two checkpoints. The built game file matches its source exactly.
+  - Checkpoint 1 is the blue-water version you asked me to preserve.
+  - Checkpoint 2 adds the stronger swirl and deeper centre pass.
+- **Evidence:** the full-resolution gameplay captures with the foam off and on at 2.85, 3.0 and 3.1 s, the side-by-sides with your approved Screen 4, the measurements, and the specialist's README.
+- **Chat history:** this whole conversation, in `ChatHistory/2026-11-04_fourth_account_recovery_round8_liquid_session.md`. I checked it for API keys and found none.
+- **Everything earlier this session:** `CLAUDE.md`, your two water reference images, the Game Art Director's review and its measuring scripts, the tool and plugin status, the updated screen-matching skill and the hand-off notes.
+
+Your earlier versions are untouched and still on GitHub: `?s3=hero` at `06b9805`, also on `claude/screen-4-art-rebuild-69gb2p`, plus the normal game and every other branch. Nothing was force-pushed.
+
+Two things are still outstanding. The specialist is adding the visible translucent splashes around your character, then running the check that your older versions are unchanged; that check hasn't been run yet. The autosave is still running every 5 minutes, but it only saves while this session is open.
+
