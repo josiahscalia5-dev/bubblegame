@@ -328,3 +328,51 @@ Everything is saved to your GitHub repository (`josiahscalia5-dev/bubblegame`, b
 
 The audit's three decisions are still open: continue from `focus`, how much white splash round her, and whether steps 2 and 3 can start.
 
+---
+
+### You · 2026-11-05 22:34 UTC
+
+[attached file: CLAUDE_SCREEN4_INSTRUCTIONS.txt] [attached file: CLAUDE_SCREEN4_COMPLETE_KIT.zip] Claude, I reviewed your verification audit and approve continuing with the "focus" version.
+
+YES, you may begin steps 2 and 3: interface/composition and tunnel-ring corrections.
+
+I have attached a reference package containing my approved original, your current focus build, and enlarged visual comparisons. Please use these as your visual authority.
+
+Important clarification about water:
+
+My approved screen has bright, sparkling blue and turquoise water, translucent bubble domes, and irregular white-blue splash highlights around my pink character. I DO NOT want solid white foam cushions or large lavender foam clumps.
+
+Keep the character visibly sitting on top of the water. Do not redesign the pink character at this stage.
+
+Most important visual correction:
+
+Your audit found the tunnel's ring-pattern correlation is approximately zero compared with the approved original. I want you to address this structural difference, not simply keep adding bubbles, lighting, or white splash effects.
+
+Use the approved reference's actual circular ring shapes, thin luminous cobalt/turquoise water bands, restrained warm center, and water flow. Remove the oversized pale-white circle at the distant end.
+
+For the interface, match the original's proportions and framing as closely as possible, but keep all gameplay controls functional and accessible.
+
+Save a clean checkpoint before changing anything. Finish and demonstrate each correction separately, using the same seed 7, 3.0-second camera position, and matching screenshot dimensions.
+
+I want to see the actual improvement before approving more extensive work. Please do not start additional paid asset generation or an open-ended redesign.
+
+The approved original is the only appearance target. I want the closest achievable recreation of THAT screen, not a new interpretation.
+
+After the corrections, show me an updated side-by-side screenshot and clearly identify what still differs.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-05 22:34 UTC
+
+You've approved `focus` and steps 2 and 3. I'll start by unpacking your kit into its own folder, then save a clean checkpoint before changing anything.
+
+Checking that your kit's `01_APPROVED_ORIGINAL_FULL.png` is the same picture as the original the project uses (`01_Original_Approved_Screen_4.jpg`, 767 × 1536):
+
+Branch `ccr-9f8e2c8d-0zg3mc`, HEAD `b405c88` (same on GitHub), and the build rebuilds byte-identical (`e9412484`). Tagging this as the checkpoint and saving your kit:
+
+The interface is HTML in `page.html`, sized in units of `--u`. Finding how `--u` is set and how `match`/`focus` switch the page's styling:
+
+The interface is laid out on a 269 × 537 "board" (`--u` = the screen size / that board). Reading the original's element boxes in those units from zoomed crops with a pixel grid:
+
