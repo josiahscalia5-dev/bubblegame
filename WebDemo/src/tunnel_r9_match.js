@@ -360,41 +360,95 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
 // body (the arc's own pick: the currents), deeper cobalt, then a dark gap; the derived water's own light and dark kept as
 // variation. Colours are the original's measured ring-zone colours, written through the inverse of the walls' display
 // compensation (lift, saturation) so they land as measured. Sets fRq, the ribbon phase the flecks follow.
+// ?s3=focus: smooth value noise (cells of 1 in p, smoothstep-blended; seed: another pattern) for the flows below
+const FOCUS_NOISE_GLSL = /* glsl */ `
+float fcH(vec2 i, float s) { return fract(sin(dot(i, vec2(12.9898, 78.233)) + s * 17.17) * 43758.5453); }
+float fcNz(vec2 p, float s) {
+  vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(fcH(i, s), fcH(i + vec2(1.0, 0.0), s), f.x), mix(fcH(i + vec2(0.0, 1.0), s), fcH(i + vec2(1.0, 1.0), s), f.x), f.y);
+}
+`;
+// the screen colour before matchWall's lift and saturation (both applied at its end): for colours drawn inside matchWall
+function preLiftSat(M, hex) {
+  const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+  const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
+  return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
+}
+// ?s3=focus only (the Art Director's item 5, the kit's "modest warm centre glow concentrated round the inner arcs"): the
+// original's tight pastel rings round its warm core, measured by radius round the centre (r < 0.12 W: salmon-peach #edada0
+// at 0.04-0.07 W, pink-violet #e1adeb-#eea0f0 at 0.07-0.12 W between white rings, almost no saturated blue inside 0.12 W;
+// ours had royal flows down to 0.075 W). Concentric bands on the walls' own band spacing, flowing outward with them; across
+// each band pale blue, a white ring (whiteAt), then a soft pink-violet ring (pinkAt: its place in the band, soft: the rings'
+// soft edges), salmon-peach instead of pink toward the core (peachTo: [full to, out] in rw); r: [in, full, full to, out] in
+// rw; after the mid vortex's whitening
+// and the core's tint (which would wash the pink out), before the hue pull, lift and saturation (colours pre-compensated)
+function focusInnerGLSL(M) {
+  const I = M.innerRings, B = M.bands;
+  return /* glsl */ `  {   // ?s3=focus: the original's pastel inner rings round the warm core (tunnel_r9_focus.js walls.innerRings)
+    float iz = smoothstep(${f4(I.r[0])}, ${f4(I.r[1])}, rw) * (1.0 - smoothstep(${f4(I.r[2])}, ${f4(I.r[3])}, rw));
+    float ik = fract(lr * ${f4(B.perLog)} + tu * ${f4(B.spiral)} + (vr.b - 0.5) * ${f4(B.wobble)} - uTime * ${f4(B.flow * B.perLog)} - uHeroTravel * ${f4(B.travel * B.perLog)}
+      + ${f4(I.twist || 0)} * sin(6.2831853 * tu * 2.0 + lr * 1.6 + uTime * 0.35));   // (bent a little, as the original's: not a target)
+    float ipk = smoothstep(${f4(I.pinkAt[0] - I.soft)}, ${f4(I.pinkAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.pinkAt[1] - I.soft)}, ${f4(I.pinkAt[1] + I.soft)}, ik));
+    vec3 iring = mix(${preLiftSat(M, I.pink)}, ${preLiftSat(M, I.peach)}, 1.0 - smoothstep(${f4(I.peachTo[0])}, ${f4(I.peachTo[1])}, rw));
+    float iwk = smoothstep(${f4(I.whiteAt[0] - I.soft)}, ${f4(I.whiteAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.whiteAt[1] - I.soft)}, ${f4(I.whiteAt[1] + I.soft)}, ik));
+    vec3 icol = mix(mix(${preLiftSat(M, I.pale)}, ${preLiftSat(M, I.white)}, iwk), iring, ipk);
+    c = mix(c, icol, iz * ${f4(I.amount)});
+  }
+`;
+}
+// ?s3=focus only (the Art Director's item 6, the left wall: x 0-0.30, y 0.44-0.79 glows pale in the original, L* 77, white
+// 25%, pale 30%; ours was saturated royal, L* 66, white 7%): on the walls' left sector (an angle window round `centre`
+// degrees, counter-clockwise from screen-right; cos: [from, full] of the cosine to it) and beyond r (rw), the water's own
+// light and dark are mapped onto a pale luminous palette (dark -> periwinkle blue, middle -> pale blue, bright -> white;
+// lum: [dark to middle from, to; middle to white from, to]), so the bands and splashes keep their shapes. The material's
+// colour, not a post effect: no bloom, exposure or haze
+function focusLeftGLSL(M) {
+  const G = M.leftGlow, a = (G.centre * Math.PI) / 180;
+  return /* glsl */ `  {   // ?s3=focus: the left wall's pale glowing water (tunnel_r9_focus.js walls.leftGlow)
+    float lw = smoothstep(${f4(G.cos[0])}, ${f4(G.cos[1])}, cos(6.2831853 * tu - ${f4(a)})) * smoothstep(${f4(G.r[0])}, ${f4(G.r[1])}, rw);
+    float ll = dot(c, vec3(0.2126, 0.7152, 0.0722));
+    vec3 lpal = mix(${G.dark ? preLiftSat(M, G.dark) : 'c'}, ${preLiftSat(M, G.mid)}, smoothstep(${f4(G.lum[0])}, ${f4(G.lum[1])}, ll));   // (dark null: the darks kept vivid)
+    lpal = mix(lpal, ${preLiftSat(M, G.white)}, smoothstep(${f4(G.lum[2])}, ${f4(G.lum[3])}, ll));
+    c = mix(c, lpal, lw * ${f4(G.amount)});
+  }
+`;
+}
 function focusRibbonsGLSL(M) {
   const R = M.ribbons;
-  const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
-    const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
-    const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
-    return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
-  };
+  const pre = (hex) => preLiftSat(M, hex);
+  // (the user's kit, 18:26 UTC, problem B: "tighter hard-outline ribbons, more even concentric circles": the ribbons were a
+  // sawtooth across each band (the dark gap jumped straight to the light cyan edge where the phase wrapped) and each arc was
+  // pushed by a step offset keyed on its band's index (hard breaks at every arc end and band boundary, dark lines where the
+  // arcs ended). Now every part is continuous: the offsets and the currents' colours are smooth value noise over (angle,
+  // band phase), and across a band the colour runs deep cobalt -> body (royal, turquoise and periwinkle currents blended
+  // softly) with a soft light-cyan accent near its inner side -> deep -> the dark-blue gap -> deep again, the same colour
+  // at both ends, so no outline is drawn anywhere. R.soft: [body in, body out from, body out to], the accent [at, half
+  // width, amount], cells: [noise cells round a turn, per band])
+  const S = R.soft;
+  const nz = (p, seed) => `fcNz(${p}, ${f4(seed)})`;
   return /* glsl */ `    float fRq = bs;
-    {   // ?s3=focus: broken, twisting cobalt ribbons (tunnel_r9_focus.js)
+    {   // ?s3=focus: broad, softly blended, twisting cobalt and turquoise flows (tunnel_r9_focus.js)
       float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
         + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
         + (vr.g - 0.5) * ${f4(R.wobble)};
       // (the spiral's seam: tu wraps at the screen-left, on the horizontal through the camera, where bs steps by one band; the
-      // per-band picks below (arcs, offsets, colours) then jumped there: a hard horizontal line across the left wall at the
-      // vanishing point's height, plain once the camera sat at the axis height. The angle is counted from straight down
-      // instead, so that step falls on the tube's bottom, under the water floor, and the left wall is continuous)
+      // angle is counted from straight down instead, so that step falls on the tube's bottom, under the water floor)
       float rTu = tu < -0.25 ? tu + 1.0 : tu;
-      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw, rbi = floor(rq);
-      float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
-      float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
-      float rsa = (rTu + 0.5) * rNs + rhb * 3.0;
-      float rsi = mod(floor(rsa), rNs);
-      float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
-      float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
+      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw;
+      vec2 rnp = vec2((rTu + 0.25) * ${f4(S.cells[0])}, rq * ${f4(S.cells[1])});
+      float rqo = rq + (${nz('rnp', 0)} - 0.5) * ${f4(R.offset)};
       float rk = fract(rqo);
       fRq = rqo;
-      float rse = fract(rsa), rEnd = smoothstep(0.0, 0.05, rse) * (1.0 - smoothstep(0.95, 1.0, rse));
-      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, step(${f4(1 - R.turqShare)}, rsh));
-      rBody = mix(rBody, ${pre(R.peri)}, step(${f4(1 - R.periShare)}, fract(rsh * 7.7)) * 0.8);
-      vec3 rc = mix(${pre(R.edge)}, rBody, smoothstep(0.02, ${f4(R.edgeTo)}, rk));
-      rc = mix(rc, ${pre(R.deep)}, smoothstep(${f4(R.deepFrom[0])}, ${f4(R.deepFrom[1])}, rk));
-      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(0.985, 1.0, rk)));
-      rc = mix(${pre(R.deep)}, rc, rEnd);
+      vec2 rcp = vec2((rTu + 0.25) * ${f4(S.cells[0])}, rqo * ${f4(S.cells[1])});
+      float rn1 = ${nz('rcp', 1)}, rn2 = ${nz('rcp * 1.7', 2)}, rn3 = ${nz('rcp * 2.3', 3)};
+      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, smoothstep(${f4(1 - R.turqShare - 0.12)}, ${f4(1 - R.turqShare + 0.12)}, rn1));
+      rBody = mix(rBody, ${pre(R.peri)}, smoothstep(${f4(1 - R.periShare - 0.1)}, ${f4(1 - R.periShare + 0.1)}, rn2) * 0.8);
+      vec3 rc = mix(${pre(R.deep)}, rBody, smoothstep(0.0, ${f4(S.body[0])}, rk) * (1.0 - smoothstep(${f4(S.body[1])}, ${f4(S.body[2])}, rk)));
+      rc = mix(rc, ${pre(R.edge)}, exp(-pow((rk - ${f4(S.accent[0])}) / ${f4(S.accent[1])}, 2.0)) * ${f4(S.accent[2])} * smoothstep(0.2, 0.7, rn3));
+      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(${f4(R.gapFrom[2])}, 1.0, rk)));
       float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
       rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
+      ${R.satBoost ? `{ float rs = dot(rc, vec3(0.2126, 0.7152, 0.0722)); rc = clamp(rs + (rc - rs) * ${f4(R.satBoost)}, 0.0, 1.0); }   // (measured: the flows showed less saturated than drawn)` : ''}
       float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
       c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
     }
@@ -419,7 +473,10 @@ function focusFlecksGLSL(M) {
       fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
-      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
+      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(${f4((F.edge || [0.6, 1.0])[0])}, ${f4((F.edge || [0.6, 1.0])[1])}, fe)) * fpx;
+      ${F.breakup ? `// (the Art Director's item 4: broken splash shapes, not clean dashes: the shape's edge eaten by smooth noise, so it
+      // breaks into an irregular blob with a ragged outline and a gap or two)
+      fk *= smoothstep(0.42, 0.58, fcNz(fq * vec2(${f4(F.breakup[0])}, ${f4(F.breakup[1])}) + fh * 31.0, 7.0) + (1.0 - fe) * ${f4(F.breakup[2])});` : ''}
       vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
@@ -427,7 +484,11 @@ function focusFlecksGLSL(M) {
       float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
       float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
       float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
-      c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});
+      ${F.late
+    // (late: drawn after the display compensation, as the thin ring lines: match's glintWall below tints every bright wall
+    // texel toward #cae0ff, so the splashes came out as pale translucent blue blobs instead of white water)
+    ? `mtFleck = clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)};`
+    : `c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});`}
     }
 `;
 }
@@ -440,6 +501,7 @@ uniform vec2 uMatchVP, uMatchRes;
 ${RIM_SAMPLE}
 ${undisplayGLSL()}
 ${matchPlaceGLSL()}
+${FOCUS_ON ? FOCUS_NOISE_GLSL : ''}
 // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
 // normal (toward the axis), T0 the path's direction
 vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
@@ -484,7 +546,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
   // than the pixels (seam-free: from the wrap-corrected derivatives)
-  float mtEdge = 0.0;
+  float mtEdge = 0.0;${FOCUS_ON ? ' float mtFleck = 0.0;' : ''}
   {
     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
       - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
@@ -539,7 +601,7 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
   gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
-  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
+${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}${FOCUS_ON && M.leftGlow ? focusLeftGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
       // to about 218 by bringing green down; the cyan streaks (205 degrees and under) and the warm patches kept (MATCH.walls.royal)
     float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
     float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
@@ -551,6 +613,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
   vec3 col = mtUndisplay(c);
   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
+${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)
+` : ''}
   // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
@@ -652,6 +716,7 @@ export function matchCollectibles({ coins, gems, socks }) {
       if (!k.turn || !k.turn.children[0]) continue;
       const model = k.turn.children[0], pose = new THREE.Group();
       pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
+      if (MATCH.sockLift) pose.position.set(...MATCH.sockLift);   // (m, in the rocking group's frame: y up; visual only)
       k.turn.remove(model); pose.add(model); k.turn.add(pose);
     }
     report.sockPose = MATCH.sockPose;
@@ -660,6 +725,9 @@ export function matchCollectibles({ coins, gems, socks }) {
   // the pop animation's scale are unchanged)
   const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
   if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }
+  // ?s3=focus: the original's gem is a wide, flat cut seen from the side (1.5 times as wide as tall on screen; ours 1.1): its
+  // height squashed round its own centre (MATCH.gemSquash, tunnel_r9_focus.js; it spins about this axis). Visual only
+  if (FOCUS_ON && gi && MATCH.gemSquash) { gi.scale.y *= MATCH.gemSquash; gi.position.y *= MATCH.gemSquash; report.gemSquash = MATCH.gemSquash; }
   // single coins' visual size (MATCH.coinScales; their LOD levels, so the game's own pop and pass scales still apply on top)
   report.coinScales = 0;
   for (const [u, s] of MATCH.coinScales || []) for (const c of coins) {

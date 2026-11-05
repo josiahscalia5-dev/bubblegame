@@ -87,3 +87,132 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
 small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
 gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
 Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
+
+### Done (ninth session, worktree `agent-a0bafb8338e8bc494`, from `71f7fa7`; baseline at 3.0 s identical to `frames/focus_seam_t3.00_canvas.png`, max diff 0)
+
+Tools added to `scripts/`: `live_sweep.cjs` (one seeded page at 3.0 s, then per candidate a JS edit of the scene, render, save; used
+for the sock poses and for object-only / sock-only silhouette renders), `maskbox.py` (silhouette box and cuff tilt),
+`brushes.py` (the pink fur boxes of the two framing brushes), `crops.py` (side-by-side crops). The probe's track u is relative
+to tunnelStart 3.9007 (layout u = probe u + 3.9).
+
+Changes (`FOCUS.match` in `tunnel_r9_focus.js`; `gemSquash` and `sockLift` read in `matchCollectibles`, focus only):
+coinLines (lower-right [2.586, 2.65, h 0.47]; small upper-left [-0.543, 3.1, h 2.025]), extraGem lane -0.314, firstSock lane 2.07,
+secondSock [2.726, 7.0, 0.61] (hidden behind the first again), r7.deco (left [2.07, 1, 42.5, 0.378, 1.60], right [3.55, -1, 9.6, 0.62,
+1.744]), coinScales [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]], gemSquash 0.78, sockPose [0, -0.65, 0.18], sockLift
+[0, 0.047, 0], sockScale 0.9.
+
+| at 3.0 s (objects.py, brushes.py, sock-only render) | original | before | after |
+|---|---|---|---|
+| lower-right coin centre, width | (0.893, 0.733), 0.219 | (0.751, 0.723), 0.241 | (0.894, 0.736), 0.214 |
+| big left coin | (0.198, 0.602), 0.211 | (0.195, 0.608), 0.198 | (0.195, 0.608), 0.202 |
+| small left coin | (0.152, 0.471), 0.123 | (0.158, 0.484), 0.112, behind the brush | (0.151, 0.472), 0.115, clear |
+| gem centre, height | (0.326, 0.511), 0.033 | (0.310, 0.511), 0.045 | (0.324, 0.514), 0.034 |
+| gold area (the four coin blobs) | 4.35% (+0.68% HUD coin) | 4.82% | 4.67% |
+| sock box | x 0.64-0.83, y 0.555-0.665 | opening showing, cuff -17 deg | x 0.642-0.829, y 0.551-0.657, cuff +0.4 deg |
+| left brush (pink) | x 0.010-0.171, y 0.240-0.416 | x 0-0.236, y 0.268-0.501 | x 0-0.186, y 0.240-0.418 |
+| right brush (pink) | x 0.789-0.984, y 0.394-0.610 | x 0.734-1.0, y 0.393-0.671 | x 0.795-1.0, y 0.393-0.606 |
+
+Reach: lower-right coin 0.42 m from the body in the right lane; small coin 0.62-0.69 m at the top of a jump from the left lane;
+gem 0.26-0.33 m with a jump; first sock 0.737 m (0.735 before); second sock 0.55 m. `S3=focus s3_func.cjs`: lanes 0 / 2, jump,
+12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_after_objects.json`). Pixel 7 412x839: every object in frame
+(`frames/phone_412x839_focus_obj_3.00s.png`). Frames: `frames/focus_obj_t3.00*.png`, `frames/focus_obj_sock_only_t3.00.png`.
+Committed `82d568c`.
+
+## 4. Problem B (the kit) with AD item 3: the walls' water bands
+
+Cause of the hard outlines (`focusRibbonsGLSL`): across each band the colour was a sawtooth (dark gap at phase 0.86-0.985, then
+straight to the light cyan edge at phase 0), so every band had a hard dark/bright edge; each arc's offset was a step keyed
+on floor(rq) (hard breaks at arc ends and wherever rq crossed a whole band); `rEnd` drew dark lines at every arc end.
+Rebuilt (focus only): smooth value noise `fcNz` (FOCUS_NOISE_GLSL) over (angle, band phase) for the offsets and for the
+currents' colour picks; across a band deep -> body (royal / turquoise / periwinkle blended softly) with a soft cyan accent
+near the inner side -> deep -> gap -> deep (the same colour at both ends: no outline anywhere). Settings: `walls.bands.perLog`
+4.3 -> 3.4, `walls.ribbons` (soft, gapFrom, colours, turqShare 0.35, keep 0.15, satBoost 1.3, weaker curl).
+
+Findings while measuring (`scripts/minima_hist.py`, `lbins.py`, live renders with parts hidden):
+- the band count hardly follows perLog: the bubble layer (Water & VFX's, every object named *ubble*) adds about 1.2 dark
+  minima per ray (7.3 with them, 6.1 without, the original 6.3) and lifts the ring zone about 6 L*;
+- a calibration render (every flow colour `#1a62e2`) shows the display chain is exact (`#1c62e2` on screen); the lighter,
+  less saturated blues in the measures are under the translucent bubbles (forced flat royal, 25% of the zone still reads
+  `#547ce7`), so the saturated-blue median saturation stays 0.71 whatever the walls do;
+- the drum bloom (threshold 1.0) does not touch the walls' colours.
+
+| upper ring at 3.0 s | original | before (`82d568c`) | after | walls alone (bubbles hidden, similar settings) |
+|---|---|---|---|---|
+| dark bands per ray (polar_rings) | 6.3 | 7.4 | 7.6 | 6.1 |
+| L* sd along ray | 14.9 | 10.8 | 11.8 | 14.8 |
+| ray coherence (8 deg) | 0.60 | 0.49 | 0.48 | 0.61 |
+| median L* (ring_dark, y < .45) | 64 | 73 | 66 | 58 |
+| darker than L* 55 | 30.5% | 17.2% | 22.1% | 36-44% |
+| saturated blue hue / sat | 215 / 0.83 | 214 / 0.69 | 219 / 0.71 | 218-221 / 0.71-0.73 |
+| turquoise (zones ring_upper) | 7.5% | 10.8% | 7.3% | 3.6-12% |
+
+Waves animated (ring zone changes between 3.0 and 3.1 s). Pixel 7: no wedge, no holes (`frames/phone_412x839_focus_rib_3.00s.png`).
+Frames `frames/focus_rib_t3.00*.png`, `focus_rib_t3.10_canvas.png`; crop `frames/crop_rings_original_before_after_ribbons.png`.
+Committed `24fd87e`.
+
+## 5. AD item 4: the wall streaks (`focusFlecksGLSL`, `walls.flecks`)
+
+Finding: the thin white dashes that dominate `streaks.py` are NOT the walls' flecks. With every object named *ubble* hidden
+(Water & VFX's bubbles and its instanced streaks, `FOCUS.water.bubbles.flecks` count 560) the ring zone drops from 13.4 to
+5.2 pieces per 10k px; with the walls' flecks off (and the bubbles shown) it stays at 12.7. Recommendation for Water & VFX:
+fewer, chunkier instanced streaks in the ring zone (they are 1.9 px thick, 70-75% along the ring tangent; the original's
+3.5 px, 28%).
+Changed (focus only): bigger cells, thicker, more bent, the outline broken by smooth noise (`breakup`), a crisp edge (`edge`),
+fewer drops, and drawn late (`late`: after the display compensation; match's glintWall had tinted them pale blue).
+
+| streaks.py, upper arc y < .45 | original | before | after |
+|---|---|---|---|
+| full frame: pieces per 10k px / median area / p90 / thickness | 3.6 / 44 / 517 / 3.2 | 10.4 / 38 / 175 / 2.2 | 9.8 / 50 / 292 / 2.3 |
+| bubble layer hidden (the walls' own) | | 3.5 / 10 / 42 / 1.8 | 4.3 / 60 / 331 / 3.9 |
+
+Frames: `frames/focus_flecks_t3.00_canvas.png`, `..._bubble_layer_hidden.png`, `frames/phone_412x839_focus_flecks_3.00s.png`.
+Committed `340b117`.
+
+## 6. AD item 5: the centre (`core.py`, `scripts/core_detail.py` by radius)
+
+The original by radius round (0.53, 0.525): r < 0.04 W warm 45% / white 39%; 0.04-0.07 salmon-peach (#edada0) 21%; 0.07-0.12
+pink-violet rings (#e1adeb-#eea0f0) 8-13% between white; saturated blue under 3% inside 0.12. Ours had the royal flows down to
+0.075 W (saturated blue 12-41% at 0.07-0.12). Changed (focus only): `bands.blueFrom` [0.075, 0.12] -> [0.11, 0.14] (the flows and
+cobalt gaps start further out) and `focusInnerGLSL` (`walls.innerRings`): concentric pastel bands on the walls' band spacing,
+flowing with them and bent a little (twist): pale blue, a white ring, a pink-violet ring, salmon-peach toward the core; drawn
+after match's mid-vortex whitening and core tint. First tries: white rings only made a flat white disc (white 68-75%, L* 90);
+the pale-blue body fixed it.
+
+| core r < 0.12 W at 3.0 s | original | before (`340b117`) | after |
+|---|---|---|---|
+| pink-violet | 8.6% | 1.7% | 7.3% |
+| warm | 13.0% | 7.9% | 10.9% |
+| saturated blue | 3.1% | 19.0% | 0.7% |
+| white | 35.3% | 33.3% | 34.4% |
+| pale blue | 14.5% | 22.2% | 35.2% |
+| L* | 83.4 | 79.9 | 84.3 |
+| warm in the ring zone r 0.12-0.45 | 3.1% | 1.4% | 1.4% |
+
+Frames: `frames/focus_core_t3.00*.png`, crop `frames/crop_centre_original_before_after.png`, Pixel 7 `frames/phone_412x839_focus_core_3.00s.png`.
+Committed `2db3d6b`.
+
+## 7. AD item 6: the left wall (x 0-0.30, y 0.44-0.79; `scripts/left_wall.py`)
+
+Changed (focus only): `focusLeftGLSL` (`walls.leftGlow`): on the walls' left sector (angle window round 195 degrees) beyond rw
+0.2-0.3, the water's middle tones go pale azure (#9ccaf8) and its bright ones white, its darks stay vivid blue. The material's
+colour, no bloom, exposure or haze. A first version mapped the darks to periwinkle too: L* 78.5 but a flat lilac-grey wash
+(rejected by eye).
+
+| left wall at 3.0 s | original | before (`2db3d6b`) | after |
+|---|---|---|---|
+| L* | 76.9 | 66.5 | 77.3 |
+| white | 24.8% | 6.6% | 22.3% |
+| pale | 30.1% | 12.9% | 25.7% |
+| vivid blue | 26.1% | 63.2% | 24.1% |
+| lavender (whole zone / outer 3% strip) | 14.1 / 17.8% | 1.2 / 0.4% | 1.1 / 0.3% |
+
+Frames: `frames/focus_final_t3.00*.png` (and 2.85, 3.1), crop `frames/crop_left_wall_original_before_after.png`, Pixel 7
+`frames/phone_412x839_focus_final_3.00s.png`. Committed `956a7de`.
+
+## 8. Final checks (after `956a7de`)
+
+- `?s3=match` at 3.0 s, 3D canvas: identical to `71f7fa7` (md5 e52d4ea32e519acaf868a87029894f03 both). Page screenshots are not
+  byte-stable run to run here (the same `71f7fa7` build twice: max 6, 1736 pixels, all HUD anti-aliasing): `numbers/pixel_identity_match_vs_71f7fa7.txt`.
+- `S3=focus s3_func.cjs`: lanes 0 / 2, jump, 12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_final.json`).
+- On the final frame the dark bands per ray came down to 6.5 (the centre and left-wall changes removed bubble-edge minima there).
+- Summary table and what still differs: `README.md`. All final numbers: `numbers/final_measures_t3.00.txt`.

@@ -25,14 +25,28 @@ export const FOCUS = {
   match: {
     hero: {
       round6: {
-        // 5. the lower-right coin in the right lane (match: 0.357 lane widths outside it): with the nearer camera it sat at the
-        //    frame's edge (x 0.89-1.0; the original's 0.78-1.0); easier to reach than before (the rest of match's layout kept)
-        layout: { coinLines: [[-0.231, 2.77, 1, 1.0, 1.14, 0], [-0.674, 3.4, 1, 1.0, 2.03, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [1.95, 2.3, 1, 1.0, 0.57, 0],
-          [2, 15.0, 1, 1.0, 0.5, 0], [1, 12.0, 3, 1.0, 0.9, 0]] },
-        // 5. the two framing brushes (decorative, not hazards) nearer the axis, so the nearer camera keeps them in the frame
-        //    as the original's pom-poms at the top left and the right ([u, side, angle, scale, radius]; match: radius 1.62
-        //    and 1.98)
-        r7: { deco: [[1.15 + 0.95, 1, 34, 0.5, 1.45], [2.6 + 0.95, -1, 2, 0.8, 1.72]] },
+        // the objects re-placed for the focus camera below (Tunnel & Lighting, the Art Director's item 8; solved with
+        // tools/screen4/hero_probe.cjs PICKS at 3.0 s onto the original's boxes, then measured on real 3.0 s frames with the
+        // review's objects.py). [lane, metres along the path (the drum's mouth at 3.9), count, step, height, arc]:
+        //  - the lower-right coin 4.4 m from the camera, 0.41 m outside the right lane, 0.47 m up: centre (0.894, 0.736), width
+        //    0.214 W (the original (0.893, 0.733), 0.219; with the camera moved back it sat at (0.751, 0.723)); 0.42 m from the
+        //    body riding in the right lane, in reach;
+        //  - the small upper-left coin 0.3 m nearer and 0.1 m lower than match's, at (0.151, 0.472), 0.115 W (the original
+        //    (0.152, 0.471), 0.123): no longer behind the left brush; 0.62-0.69 m from the body at the top of a jump from the
+        //    left lane (the pick-up reach 0.82 m);
+        //  - the big left coin unchanged in place (it measures (0.195, 0.607), the original (0.198, 0.602));
+        //  - the gem 0.07 m nearer the middle (lane -0.314): (0.324, 0.514) against the original's (0.326, 0.511); in reach
+        //    from the left lane with a jump;
+        //  - the first sock 0.05 m further right (lane 2.07): centre (0.735, 0.604), the original's (0.735, 0.61); its distance
+        //    from the body riding in the right lane 0.737 m (0.735 before)
+        layout: { coinLines: [[-0.231, 2.77, 1, 1.0, 1.14, 0], [-0.543, 3.1, 1, 1.0, 2.025, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.586, 2.65, 1, 1.0, 0.47, 0],
+          [2, 15.0, 1, 1.0, 0.5, 0], [1, 12.0, 3, 1.0, 0.9, 0]], extraGem: [-0.314, 5.7, 1.67], firstSock: [2.07, 3.2, 1.14] },
+        // 5. the two framing brushes (decorative, not hazards) where the original has them ([u, side, angle, scale, radius]):
+        //    with the camera moved back they were drawn larger and lower than the original's pom-poms (left x 0-0.236, y
+        //    0.268-0.501, over the small coin; right x 0.734-1.0, y 0.393-0.671); now the left one higher on the wall and smaller
+        //    (measured x 0-0.186, y 0.240-0.418; the original 0.010-0.171, 0.240-0.416) and the right one smaller and a little
+        //    higher (x 0.795-1.0, y 0.393-0.606; the original 0.789-0.984, 0.394-0.610)
+        r7: { deco: [[2.07, 1, 42.5, 0.378, 1.60], [3.55, -1, 9.6, 0.62, 1.744]] },
         round5: {
           // 3 / 5. (Tunnel & Lighting, after the Art Director's review 16: at off [-0.11, 0.93, -2.25], fov 73 she was drawn
           // too large and low: width 0.600 W against the original's 0.465, base 0.894 against 0.859.) The camera 0.85 m
@@ -58,12 +72,28 @@ export const FOCUS = {
     // 4. the sock's pose inside its rocking group (radians, the sock's own axes: x tips it toward the camera, y turns it, z
     //    rolls it as seen from the camera; + is counter-clockwise): the original's sock lies sideways, its toe low on the left,
     //    the cuff up to the right
-    sockPose: [0.45, -0.8, -0.1],
+    // (Tunnel & Lighting, the Art Director's item 8: at [0.45, -0.8, -0.1] it was tipped toward the camera, its opening
+    // showing and its cuff 17 degrees off level. Upright, turned 0.65 rad and rolled 0.18 rad: cuff level (+0.4 degrees),
+    // opening hidden, the toe low on the left; its silhouette x 0.642-0.829, y 0.551-0.657 at 3.0 s, the original's
+    // 0.64-0.83, 0.555-0.665.) sockLift: the pose group raised 0.047 m inside the rocking group (visual only; the pick-up
+    // place is the holder's)
+    sockPose: [0, -0.65, 0.18], sockLift: [0, 0.047, 0], sockScale: 0.9,
+    // the second sock (match's, 7.0 m) 0.09 m further in, so it stays hidden behind the smaller first sock as in the original
+    // (it showed beside it); 0.55 m from the body riding in the right lane
+    secondSock: [2.726, 7.0, 0.61],
+    // the gem's height (the original's 0.033 H; ours 0.045): see matchCollectibles
+    gemSquash: 0.78,
+    // single coins' visual size ([layout u, scale]; pick-up places unchanged): the small upper-left coin at its new place, the
+    // big left coin and the lower-right coin a little smaller (gold area 4.67% of the frame at 3.0 s, the target 4.0-4.8%;
+    // it was 4.96%), the small far coin beside the centre coin half size, as the original's tiny one (0.023 W)
+    coinScales: [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]],
     walls: {
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
       //    over each band's crest
-      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
+      //    (Tunnel & Lighting, the kit's problem B: 4.3 -> 3.4 bands per ln r, broader flows; with the walls alone 6.1 dark
+      //    bands per ray against the original's 6.3)
+      bands: { perLog: 3.4, warp: 0.3, wobble: 0.3, blueFrom: [0.11, 0.14], splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
         // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
         // match's bands wider on screen)
         gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
@@ -76,9 +106,30 @@ export const FOCUS = {
       //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
       //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
       //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
-      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.42,
-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.86, 0.95], deepFrom: [0.68, 0.9], edgeTo: 0.26,
-        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.8 },
+      //    (Tunnel & Lighting, the user's kit problem B: rebuilt without outlines, see focusRibbonsGLSL: offset now smooth noise
+      //    over soft.cells [round a turn, per band]; across a band deep -> body (soft.body: in, out from, out to) with a soft
+      //    light-cyan accent (soft.accent: at, half width, amount) -> the gap (gapFrom: from, full, back to deep from) -> deep)
+      //    Measured at 3.0 s (the Art Director's polar_rings / ring_dark / zones, upper ring): turquoise 10.8 -> 7.3% (the
+      //    original 7.5), median L* 73 -> 66 (64), darker than L* 55 17 -> 22% (30.5), hue 214 -> 219 (215); the curl a
+      //    little weaker (the original's layers are more concentric: ray coherence 0.60, the walls alone now 0.61);
+      //    satBoost: the flows' colours more saturated (in a render without the bubbles their darks went from 0.85 to 0.91)
+      ribbons: { curl: [[0.22, 2, 1.6, 0.35], [0.1, 5, 3.1, 0.6]], wobble: 0.4, offset: 0.5,
+        edge: '#6fd4fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c58d6', gap: '#142f96', gapFrom: [0.72, 0.86, 0.95],
+        soft: { body: [0.12, 0.5, 0.72], accent: [0.1, 0.08, 0.95], cells: [6, 1.0] },
+        turqShare: 0.35, periShare: 0.08, keep: 0.15, satBoost: 1.3, amount: 0.92 },
+      // (Tunnel & Lighting, the Art Director's item 5, the centre: within 0.12 W of it the original has no saturated blue
+      //  (3.1%), pink-violet rings (8.6%) and a warm peach core (13.0%); ours had royal flows down to 0.075 W (saturated blue
+      //  19%, pink-violet 1.7%, warm 7.9%). The blue flows start further out (bands.blueFrom, below) and inside them the
+      //  original's tight pastel rings are drawn (focusInnerGLSL): pale blue, a white ring, a pink-violet ring, salmon-peach
+      //  toward the core; colours sampled from the original by radius (pink-violet #e1adeb-#eea0f0, salmon-peach #edada0))
+      innerRings: { r: [0.03, 0.045, 0.115, 0.135], white: '#f6f2fa', pale: '#9dbff5', pink: '#e4a2ec', peach: '#eeaf9e',
+        whiteAt: [0.22, 0.4], pinkAt: [0.48, 0.8], soft: 0.05, peachTo: [0.07, 0.085], twist: 0.18, amount: 0.9 },
+      // (Tunnel & Lighting, the Art Director's item 6, the left wall x 0-0.30, y 0.44-0.79: the original glows pale there, L*
+      //  77, white 25%, vivid blue 26%; ours was saturated royal, L* 66.5, white 6.6%, vivid 63%. focusLeftGLSL: on the left
+      //  sector the water's middle tones go pale azure and its bright ones white, its darks stay vivid blue, so the flows keep
+      //  their shapes; measured L* 77.3, white 22.3%, vivid 24.1%, lavender at the frame's edge 0.3%. A uniformly pale palette
+      //  (darks to periwinkle) reached L* 78.5 but read as a flat lilac wash, so the darks are kept)
+      leftGlow: { centre: 195, cos: [0.45, 0.8], r: [0.2, 0.3], dark: null, mid: '#9ccaf8', white: '#f7f9fe', lum: [0.25, 0.5, 0.45, 0.66], amount: 0.9 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
@@ -92,9 +143,17 @@ export const FOCUS = {
       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
       //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
       //    band phase per pixel) over which they fade out where they would be under about two pixels
-      flecks: { cols: 96, rows: 3, dens: 0.34, len: [0.3, 0.5], wid: [0.06, 0.13], bend: 1.2, amount: 0.95, col: '#f6fbff',
-        drops: { cols: 160, rows: 5, dens: 0.16, r: [0.12, 0.22] },
-        r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
+      //    (Tunnel & Lighting, the Art Director's item 4 and the kit's "overcomplicated white pattern": fewer, chunkier, broken
+      //    splash shapes instead of thin dashes: bigger cells (cols 96 -> 36, rows 3 -> 1.5), thicker and more bent, the
+      //    outline broken by smooth noise (breakup: [cells across, cells along, how much the shape's core resists]), a crisp
+      //    edge (edge: the shape's soft edge, from / to), drawn late (after the display compensation: match's glintWall tinted
+      //    them pale blue). Measured with the bubble layer hidden (upper ring at 3.0 s): thickness 1.8 -> 3.7 px (the original
+      //    3.2), median area 10 -> 60 px (44), 3.5 -> 4.1 pieces per 10k px (3.6). The full frame's thin dashes are the
+      //    instanced streaks of the water file (FOCUS.water.bubbles.flecks), not these)
+      flecks: { cols: 36, rows: 1.5, dens: 0.28, len: [0.2, 0.46], wid: [0.11, 0.22], bend: 2.2, amount: 1.0, col: '#f6fbff',
+        breakup: [6, 3, 0.55], edge: [0.78, 0.9], late: true,
+        drops: { cols: 64, rows: 2, dens: 0.08, r: [0.16, 0.28] },
+        r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.3 },
     },
   },
   // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after it is defined, before it hands its splash, liquid and
