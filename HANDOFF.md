@@ -2,7 +2,29 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (5 November, about 22:10 UTC): tenth session, branch `ccr-9f8e2c8d-0zg3mc`, BOTH evening lines merged
+## Newest (5 November, 22:40 UTC onward): tenth session, the user's fidelity plan, steps 2 and 3 done (`?s3=focus`)
+
+- **The user's decisions** (kit `Design/ReferencePacks/2026-11-05_Screen4_Complete_Kit_from_user/`, `CLAUDE_SCREEN4_INSTRUCTIONS.txt`):
+  - continue from `focus`; `match` stays unchanged as the comparison and rollback baseline;
+  - water: blue water with white-aqua splash crests and clear bubble domes, NO foam cushion;
+  - steps 2 and 3 approved: one at a time, test and commit each, then STOP and ask for visual acceptance;
+  - no agents, no paid assets, no redesign.
+- **Checkpoint:** `d84aee5` (GitHub refuses tag pushes here).
+- **Step 2, interface and framing:** `a715434`, `Previews/WebDemo/screen4_round9_match/23_step2_interface/README.md`.
+  - The counters and banner sit at the original's measured places (offsets in `offsets.md`). Pause and the power buttons are
+    whole. The hint is hidden in the drum.
+  - Only `focus` changed (`page.html`, `body.s4focus`).
+- **Step 3, tunnel rings:** `13fccff`, `24_step3_tunnel_rings/README.md`.
+  - The walls draw the ORIGINAL's own rings (`tools/screen4/derive_ring_map.py`), centred round its centre.
+  - Ring profile vs the original, up / left / right: +0.61 / +0.26 / +0.24 → +0.79 / +0.56 / +0.67.
+  - Wall correlation: −0.05 → +0.22.
+  - Every other switch is pixel-identical; gameplay passes.
+- **Waiting for the user's visual acceptance of steps 2 and 3.** Next (plan step D, only after that):
+  - the water and splash round her (blue water, clear domes, no cushion);
+  - the pale lavender middle and floor ahead: objects over the centre, and the floor's transparency over the lavender shell;
+  - then promote `focus` to the normal game and rebuild the APK (plan step F).
+
+## Earlier (5 November, about 22:10 UTC): tenth session, branch `ccr-9f8e2c8d-0zg3mc`, BOTH evening lines merged
 
 - **Two lines of work ran in parallel this evening from `9a95c06` (16:29 UTC):**
   - `?s3=match`: the seventh session (`ccr-1f9da4c9-e0yrsc`) and its focused pass from the 15:55 brief. Merged here first as
