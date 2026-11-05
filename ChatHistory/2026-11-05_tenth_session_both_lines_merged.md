@@ -384,3 +384,5 @@ Built cleanly. Capturing `focus` at 3.0 s from the working copy and comparing it
 
 While those run, here's step 3 iteration 2 (white flecks left out of the map), next to your original and iteration 1:
 
+The gloss only adds sparse, sharp glints, so it can't move the median much. Testing the bloom pass: strength set to 0 by override, on top of test 4 above:
+
