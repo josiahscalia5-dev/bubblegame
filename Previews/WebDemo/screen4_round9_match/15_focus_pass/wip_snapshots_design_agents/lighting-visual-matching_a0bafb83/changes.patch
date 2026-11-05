@@ -1,5 +1,688 @@
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+index 54f942e..2d94966 100644
+--- a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+@@ -87,3 +87,32 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
+ small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
+ gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
+ Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
++
++### Done (ninth session, worktree `agent-a0bafb8338e8bc494`, from `71f7fa7`; baseline at 3.0 s identical to `frames/focus_seam_t3.00_canvas.png`, max diff 0)
++
++Tools added to `scripts/`: `live_sweep.cjs` (one seeded page at 3.0 s, then per candidate a JS edit of the scene, render, save; used
++for the sock poses and for object-only / sock-only silhouette renders), `maskbox.py` (silhouette box and cuff tilt),
++`brushes.py` (the pink fur boxes of the two framing brushes), `crops.py` (side-by-side crops). The probe's track u is relative
++to tunnelStart 3.9007 (layout u = probe u + 3.9).
++
++Changes (`FOCUS.match` in `tunnel_r9_focus.js`; `gemSquash` and `sockLift` read in `matchCollectibles`, focus only):
++coinLines (lower-right [2.586, 2.65, h 0.47]; small upper-left [-0.543, 3.1, h 2.025]), extraGem lane -0.314, firstSock lane 2.07,
++secondSock [2.726, 7.0, 0.61] (hidden behind the first again), r7.deco (left [2.07, 1, 42.5, 0.378, 1.60], right [3.55, -1, 9.6, 0.62,
++1.744]), coinScales [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]], gemSquash 0.78, sockPose [0, -0.65, 0.18], sockLift
++[0, 0.047, 0], sockScale 0.9.
++
++| at 3.0 s (objects.py, brushes.py, sock-only render) | original | before | after |
++|---|---|---|---|
++| lower-right coin centre, width | (0.893, 0.733), 0.219 | (0.751, 0.723), 0.241 | (0.894, 0.736), 0.214 |
++| big left coin | (0.198, 0.602), 0.211 | (0.195, 0.608), 0.198 | (0.195, 0.608), 0.202 |
++| small left coin | (0.152, 0.471), 0.123 | (0.158, 0.484), 0.112, behind the brush | (0.151, 0.472), 0.115, clear |
++| gem centre, height | (0.326, 0.511), 0.033 | (0.310, 0.511), 0.045 | (0.324, 0.514), 0.034 |
++| gold area (the four coin blobs) | 4.35% (+0.68% HUD coin) | 4.82% | 4.67% |
++| sock box | x 0.64-0.83, y 0.555-0.665 | opening showing, cuff -17 deg | x 0.642-0.829, y 0.551-0.657, cuff +0.4 deg |
++| left brush (pink) | x 0.010-0.171, y 0.240-0.416 | x 0-0.236, y 0.268-0.501 | x 0-0.186, y 0.240-0.418 |
++| right brush (pink) | x 0.789-0.984, y 0.394-0.610 | x 0.734-1.0, y 0.393-0.671 | x 0.795-1.0, y 0.393-0.606 |
++
++Reach: lower-right coin 0.42 m from the body in the right lane; small coin 0.62-0.69 m at the top of a jump from the left lane;
++gem 0.26-0.33 m with a jump; first sock 0.737 m (0.735 before); second sock 0.55 m. `S3=focus s3_func.cjs`: lanes 0 / 2, jump,
++12 coins, 1 gem, 2 socks, no console errors (`numbers/s3_func_focus_after_objects.json`). Pixel 7 412x839: every object in frame
++(`frames/phone_412x839_focus_obj_3.00s.png`). Frames: `frames/focus_obj_t3.00*.png`, `frames/focus_obj_sock_only_t3.00.png`.
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png
+new file mode 100644
+index 0000000..aaaa3c1
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00.png
+new file mode 100644
+index 0000000..d9ca481
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00_canvas.png
+new file mode 100644
+index 0000000..4f80e93
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png
+new file mode 100644
+index 0000000..2f63299
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/s3_func_focus_after_objects.json b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/s3_func_focus_after_objects.json
+new file mode 100644
+index 0000000..88b06c8
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/numbers/s3_func_focus_after_objects.json
+@@ -0,0 +1,507 @@
++{
++ "s3": [
++  "focus"
++ ],
++ "s3Report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.506,
++      2.641
++     ],
++     "face": [
++      2.59,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.1155,
++       0.8415
++      ],
++      "inner": 2.506,
++      "outer": 2.641
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 120,
++       "drawCalls": 1,
++       "triangles": 240
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 20,
++        "drawCalls": 1,
++        "triangles": 5040
++       },
++       "bank": {
++        "curls": {
++         "count": 4,
++         "drawCalls": 1,
++         "triangles": 1344
++        },
++        "lumps": {
++         "count": 16,
++         "drawCalls": 1,
++         "triangles": 5120
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9488829988640666,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.55,
++       "glint": 1.3,
++       "deep": 0.85,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 280,
++       "flecks": 560,
++       "drawCalls": 1,
++       "triangles": 1680,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ },
++ "costAtTapToStart": {
++  "drawCalls": 230,
++  "triangles": 1226944
++ },
++ "afterSettingsClick": {
++  "phase": "intro",
++  "lane": 1,
++  "air": false,
++  "z": -16.7,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "true"
++ },
++ "afterTap": {
++  "phase": "running",
++  "lane": 1,
++  "air": false,
++  "z": -16.7,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "afterSwipeLeft": {
++  "from": 1,
++  "phase": "running",
++  "lane": 0,
++  "air": false,
++  "z": -11.789,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "afterTwoSwipesRight": {
++  "phase": "running",
++  "lane": 2,
++  "air": false,
++  "z": -6.653,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "afterSwipeUp": {
++  "phase": "running",
++  "lane": 2,
++  "air": true,
++  "z": -5.677,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "inTunnel": {
++  "phase": "running",
++  "lane": 1,
++  "air": false,
++  "z": 20.561,
++  "coins": 1292,
++  "gems": 37,
++  "collected": {
++   "coins": 12,
++   "gems": 1,
++   "socks": 2
++  },
++  "socks": 2,
++  "sound": "false"
++ },
++ "costInTunnel": {
++  "drawCalls": 136,
++  "triangles": 1070375
++ },
++ "logs": [],
++ "keyboardStart": {
++  "phase": "running",
++  "lane": 1,
++  "air": false,
++  "z": -16.7,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "logs2": []
++}
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/brushes.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/brushes.py
+new file mode 100644
+index 0000000..c02a7d4
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/brushes.py
+@@ -0,0 +1,17 @@
++# brushes.py img...: the two framing brushes' pink fur (h 295-350, s > 0.3, v > 0.5) bbox in the left (x < 0.4, y 0.15-0.56)
++# and right (x > 0.6, y 0.3-0.7) zones, after a 9 px close; largest blob each; screen fractions at 767 x 1536
++import sys, numpy as np, cv2
++W, H = 767, 1536
++for p in sys.argv[1:]:
++    im = cv2.resize(cv2.imread(p)[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++    hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255; v = hsv[..., 2]/255
++    m0 = ((h > 295) & (h < 350) & (s > 0.3) & (v > 0.5)).astype(np.uint8)
++    out = []
++    for name, (x0, x1, y0, y1) in (('left', (0, 0.4, 0.15, 0.56)), ('right', (0.6, 1.0, 0.3, 0.7))):
++        m = np.zeros_like(m0); ys, xs = slice(int(y0*H), int(y1*H)), slice(int(x0*W), int(x1*W)); m[ys, xs] = m0[ys, xs]
++        m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
++        n, lab, st, cen = cv2.connectedComponentsWithStats(m)
++        if n < 2: out.append(f'{name}: none'); continue
++        i = 1 + np.argmax(st[1:, cv2.CC_STAT_AREA]); x, y, w, hh, a = st[i]
++        out.append(f'{name}: x {x/W:.3f}-{(x+w)/W:.3f} y {y/H:.3f}-{(y+hh)/H:.3f} area {a/(W*H)*100:.2f}%')
++    print(p.split('/')[-1][:40], ' | '.join(out))
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py
+new file mode 100644
+index 0000000..e9897a0
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py
+@@ -0,0 +1,14 @@
++# crops.py out.png box(x0,y0,x1,y1 fractions) img1 [img2 ...]: side-by-side crops at the original's 767x1536 scale (SC=2)
++import sys, os
++from PIL import Image
++out = sys.argv[1]; box = [float(v) for v in sys.argv[2].split(',')]; ims = sys.argv[3:]
++W, H = 767, 1536; sc = float(os.environ.get('SC', '2'))
++tiles = []
++for p in ims:
++    im = Image.open(p).convert('RGB').resize((W, H), Image.LANCZOS)
++    c = im.crop((int(box[0]*W), int(box[1]*H), int(box[2]*W), int(box[3]*H)))
++    c = c.resize((int(c.width*sc), int(c.height*sc)), Image.LANCZOS); tiles.append(c)
++w = sum(t.width for t in tiles) + 8*(len(tiles)-1); h = max(t.height for t in tiles)
++S = Image.new('RGB', (w, h), (255, 255, 255)); x = 0
++for t in tiles: S.paste(t, (x, 0)); x += t.width + 8
++S.save(out)
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs
+new file mode 100644
+index 0000000..364a93f
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs
+@@ -0,0 +1,47 @@
++// live_sweep.cjs <abs WebDemo> <out-dir> : one seeded page (seed 7, 538 x 1076, DPR), Tap then T s, then for each candidate
++// in CANDS_FILE ([{label, js}]) runs `js` in the page (with `scene`, `THREE`-free helpers: find(name) -> list of objects),
++// renders and saves <label>.png (the raw canvas). TUNE: base tune JSON (deep-merged at load).
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'focus').split(',').filter(Boolean), T = +(process.env.T || 3.0);
++const CANDS = JSON.parse(fs.readFileSync(process.env.CANDS_FILE, 'utf8'));
++const TUNE = process.env.TUNE_FILE ? JSON.parse(fs.readFileSync(process.env.TUNE_FILE, 'utf8')) : {};
++fs.mkdirSync(OUT, { recursive: true });
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: +(process.env.DPR || 1.5) })).newPage();
++  const logs = [];
++  page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text().slice(0, 300)); });
++  page.on('pageerror', (e) => logs.push(e.message));
++  await page.addInitScript(([tune, s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = tune;
++    window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [TUNE, S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate((t) => window.__bw.advance(t), T);
++  await page.waitForTimeout(800);
++  for (const c of CANDS) {
++    const url = await page.evaluate((js) => {
++      const scene = window.__bw.debug().scene;
++      const find = (n) => { const r = []; scene.traverse((o) => { if (o.name === n) r.push(o); }); return r; };
++      new Function('scene', 'find', js)(scene, find);
++      window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png');
++    }, c.js);
++    fs.writeFileSync(path.join(OUT, `${c.label}.png`), Buffer.from(url.split(',')[1], 'base64'));
++    console.log('saved', c.label);
++  }
++  console.log(logs.join(' | ') || 'no console errors');
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/maskbox.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/maskbox.py
+new file mode 100644
+index 0000000..361ba4d
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/maskbox.py
+@@ -0,0 +1,15 @@
++# maskbox.py mask.png...: the box of the non-background pixels (differs from the corner colour by > 40) in screen fractions,
++# plus the cuff tilt (violet stripe pixels in the top 35%, principal axis, + = right side up)
++import sys, numpy as np, cv2
++for p in sys.argv[1:]:
++    im = cv2.imread(p)[..., :3].astype(int); H, W = im.shape[:2]
++    bg = im[2, 2]; m = (np.abs(im - bg).sum(-1) > 40)
++    ys, xs = np.nonzero(m)
++    x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
++    hsv = cv2.cvtColor(im.astype(np.uint8), cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255; v = hsv[..., 2]/255
++    vio = (h > 245) & (h < 295) & (s > 0.45) & (v > 0.3) & m
++    top = np.zeros_like(m); top[y0:y0 + int(0.35*(y1-y0)), x0:x1] = True
++    yy, xx = np.nonzero(vio & top); ang = float('nan')
++    if len(xx) > 20:
++        ev, evec = np.linalg.eigh(np.cov(np.vstack([xx, yy]))); d = evec[:, 1]; ang = (-np.degrees(np.arctan2(d[1], d[0])) + 90) % 180 - 90
++    print(f"{p.split('/')[-1]:14s} x {x0/W:.3f}-{x1/W:.3f} y {y0/H:.3f}-{y1/H:.3f} centre ({(x0+x1)/2/W:.3f}, {(y0+y1)/2/H:.3f}) w {(x1-x0)/W:.3f} h {(y1-y0)/H:.3f} cuff {ang:+.1f}")
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..7ed3f55 100644
+index 2f39f0e..e625507 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -25,14 +25,28 @@ export const FOCUS = {
@@ -62,11 +745,106 @@ index 2f39f0e..7ed3f55 100644
      walls: {
        // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
        //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
+@@ -76,9 +104,13 @@ export const FOCUS = {
+       //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
+       //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
+       //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
+-      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.42,
+-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.86, 0.95], deepFrom: [0.68, 0.9], edgeTo: 0.26,
+-        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.8 },
++      //    (Tunnel & Lighting, the user's kit problem B: rebuilt without outlines, see focusRibbonsGLSL: offset now smooth noise
++      //    over soft.cells [round a turn, per band]; across a band deep -> body (soft.body: in, out from, out to) with a soft
++      //    light-cyan accent (soft.accent: at, half width, amount) -> the gap (gapFrom: from, full, back to deep from) -> deep)
++      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, offset: 0.5,
++        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.66, 0.82, 0.94],
++        soft: { body: [0.16, 0.42, 0.64], accent: [0.1, 0.06, 0.6], cells: [6, 1.0] },
++        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.92 },
+       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
+       royal: { amount: 0.1 },
+       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..94adf66 100644
+index 83acc58..14bbc38 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
-@@ -652,6 +652,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -360,6 +360,14 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
+ // body (the arc's own pick: the currents), deeper cobalt, then a dark gap; the derived water's own light and dark kept as
+ // variation. Colours are the original's measured ring-zone colours, written through the inverse of the walls' display
+ // compensation (lift, saturation) so they land as measured. Sets fRq, the ribbon phase the flecks follow.
++// ?s3=focus: smooth value noise (cells of 1 in p, smoothstep-blended; seed: another pattern) for the flows below
++const FOCUS_NOISE_GLSL = /* glsl */ `
++float fcH(vec2 i, float s) { return fract(sin(dot(i, vec2(12.9898, 78.233)) + s * 17.17) * 43758.5453); }
++float fcNz(vec2 p, float s) {
++  vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
++  return mix(mix(fcH(i, s), fcH(i + vec2(1.0, 0.0), s), f.x), mix(fcH(i + vec2(0.0, 1.0), s), fcH(i + vec2(1.0, 1.0), s), f.x), f.y);
++}
++`;
+ function focusRibbonsGLSL(M) {
+   const R = M.ribbons;
+   const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
+@@ -367,32 +375,36 @@ function focusRibbonsGLSL(M) {
+     const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
+     return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
+   };
++  // (the user's kit, 18:26 UTC, problem B: "tighter hard-outline ribbons, more even concentric circles": the ribbons were a
++  // sawtooth across each band (the dark gap jumped straight to the light cyan edge where the phase wrapped) and each arc was
++  // pushed by a step offset keyed on its band's index (hard breaks at every arc end and band boundary, dark lines where the
++  // arcs ended). Now every part is continuous: the offsets and the currents' colours are smooth value noise over (angle,
++  // band phase), and across a band the colour runs deep cobalt -> body (royal, turquoise and periwinkle currents blended
++  // softly) with a soft light-cyan accent near its inner side -> deep -> the dark-blue gap -> deep again, the same colour
++  // at both ends, so no outline is drawn anywhere. R.soft: [body in, body out from, body out to], the accent [at, half
++  // width, amount], cells: [noise cells round a turn, per band])
++  const S = R.soft;
++  const nz = (p, seed) => `fcNz(${p}, ${f4(seed)})`;
+   return /* glsl */ `    float fRq = bs;
+-    {   // ?s3=focus: broken, twisting cobalt ribbons (tunnel_r9_focus.js)
++    {   // ?s3=focus: broad, softly blended, twisting cobalt and turquoise flows (tunnel_r9_focus.js)
+       float rTw = ${f4(R.curl[0][0])} * sin(6.2831853 * tu * ${f4(R.curl[0][1])} + lr * ${f4(R.curl[0][2])} + uTime * ${f4(R.curl[0][3])})
+         + ${f4(R.curl[1][0])} * sin(6.2831853 * tu * ${f4(R.curl[1][1])} - lr * ${f4(R.curl[1][2])} - uTime * ${f4(R.curl[1][3])} + 1.7)
+         + (vr.g - 0.5) * ${f4(R.wobble)};
+       // (the spiral's seam: tu wraps at the screen-left, on the horizontal through the camera, where bs steps by one band; the
+-      // per-band picks below (arcs, offsets, colours) then jumped there: a hard horizontal line across the left wall at the
+-      // vanishing point's height, plain once the camera sat at the axis height. The angle is counted from straight down
+-      // instead, so that step falls on the tube's bottom, under the water floor, and the left wall is continuous)
++      // angle is counted from straight down instead, so that step falls on the tube's bottom, under the water floor)
+       float rTu = tu < -0.25 ? tu + 1.0 : tu;
+-      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw, rbi = floor(rq);
+-      float rhb = fract(sin(rbi * 12.9898 + 4.1) * 43758.5453);
+-      float rNs = floor(mix(${f4(R.arcs[0])}, ${f4(R.arcs[1] + 0.999)}, rhb));
+-      float rsa = (rTu + 0.5) * rNs + rhb * 3.0;
+-      float rsi = mod(floor(rsa), rNs);
+-      float rsh = fract(sin(dot(vec2(rbi, rsi), vec2(12.9898, 78.233))) * 43758.5453);
+-      float rqo = rq + (rsh - 0.5) * ${f4(R.offset)};
++      float rq = bs + (rTu - tu) * ${f4(M.bands.spiral)} + rTw;
++      vec2 rnp = vec2((rTu + 0.25) * ${f4(S.cells[0])}, rq * ${f4(S.cells[1])});
++      float rqo = rq + (${nz('rnp', 0)} - 0.5) * ${f4(R.offset)};
+       float rk = fract(rqo);
+       fRq = rqo;
+-      float rse = fract(rsa), rEnd = smoothstep(0.0, 0.05, rse) * (1.0 - smoothstep(0.95, 1.0, rse));
+-      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, step(${f4(1 - R.turqShare)}, rsh));
+-      rBody = mix(rBody, ${pre(R.peri)}, step(${f4(1 - R.periShare)}, fract(rsh * 7.7)) * 0.8);
+-      vec3 rc = mix(${pre(R.edge)}, rBody, smoothstep(0.02, ${f4(R.edgeTo)}, rk));
+-      rc = mix(rc, ${pre(R.deep)}, smoothstep(${f4(R.deepFrom[0])}, ${f4(R.deepFrom[1])}, rk));
+-      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(0.985, 1.0, rk)));
+-      rc = mix(${pre(R.deep)}, rc, rEnd);
++      vec2 rcp = vec2((rTu + 0.25) * ${f4(S.cells[0])}, rqo * ${f4(S.cells[1])});
++      float rn1 = ${nz('rcp', 1)}, rn2 = ${nz('rcp * 1.7', 2)}, rn3 = ${nz('rcp * 2.3', 3)};
++      vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, smoothstep(${f4(1 - R.turqShare - 0.12)}, ${f4(1 - R.turqShare + 0.12)}, rn1));
++      rBody = mix(rBody, ${pre(R.peri)}, smoothstep(${f4(1 - R.periShare - 0.1)}, ${f4(1 - R.periShare + 0.1)}, rn2) * 0.8);
++      vec3 rc = mix(${pre(R.deep)}, rBody, smoothstep(0.0, ${f4(S.body[0])}, rk) * (1.0 - smoothstep(${f4(S.body[1])}, ${f4(S.body[2])}, rk)));
++      rc = mix(rc, ${pre(R.edge)}, exp(-pow((rk - ${f4(S.accent[0])}) / ${f4(S.accent[1])}, 2.0)) * ${f4(S.accent[2])} * smoothstep(0.2, 0.7, rn3));
++      rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(${f4(R.gapFrom[2])}, 1.0, rk)));
+       float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+       rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
+       float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
+@@ -440,6 +452,7 @@ uniform vec2 uMatchVP, uMatchRes;
+ ${RIM_SAMPLE}
+ ${undisplayGLSL()}
+ ${matchPlaceGLSL()}
++${FOCUS_ON ? FOCUS_NOISE_GLSL : ''}
+ // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
+ // normal (toward the axis), T0 the path's direction
+ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -652,6 +665,7 @@ export function matchCollectibles({ coins, gems, socks }) {
        if (!k.turn || !k.turn.children[0]) continue;
        const model = k.turn.children[0], pose = new THREE.Group();
        pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
@@ -74,7 +852,7 @@ index 83acc58..94adf66 100644
        k.turn.remove(model); pose.add(model); k.turn.add(pose);
      }
      report.sockPose = MATCH.sockPose;
-@@ -660,6 +661,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -660,6 +674,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }

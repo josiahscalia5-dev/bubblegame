@@ -215,8 +215,46 @@ Everything stays in frame on the Pixel 7. Since collectibles moved, I'll run the
 - 19:22 `Bash`: Read s3_func header
 - 19:23 `Bash`: Run focus functional test
 - 19:24 `Bash`: Save full functional test output and show start
+- 19:25 `Bash`: Show lanes and jump results
+**Agent** (19:25 UTC):
 
-_99 tool steps._
+Functional test passes on focus: lanes 0 and 2, jump, 12 coins, 1 gem, 2 socks, no console errors. I'll save the evidence, update NOTES.md, and commit step 1.
+
+- 19:25 `Bash`: Copy object-step evidence and tools into the repo
+- 19:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:25 `Bash`: Show changed files before commit
+- 19:25 `Bash`: Commit the objects step
+**Agent** (19:25 UTC):
+
+Step 1 committed as `82d568c`. Now item 2, the walls' water bands. Let me read the Art Director's ring measures.
+
+- 19:25 `Bash`: Read ring_dark and polar_rings scripts and numbers
+- 19:25 `Bash`: Read polar_rings and tonal numbers
+- 19:25 `Bash`: Find the turquoise measurement source
+- 19:25 `Bash`: Read zones numbers and script
+**Agent** (19:26 UTC):
+
+Let me write a small runner that applies the Art Director's ring measures (polar bands, `ring_dark` upper arc, zones `ring_upper`) to any frame, and measure the current frame.
+
+- 19:26 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/ring_metrics.py
+- 19:26 `Bash`: Measure ring metrics on the current frame
+- 19:26 `Bash`: Crop ring structure original vs current
+- 19:26 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rings_before.png
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+**Agent** (19:28 UTC):
+
+Now the noise helper (declared only under focus) and the new settings.
+
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:28 `Bash`: Locate the focus band density setting
+- 19:28 `Bash`: Rebuild bundle with new ribbons
+- 19:28 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/rib_cands1.json
+- 19:28 `Bash`: Render ribbon candidates at 3.0 s
+- 19:29 `Bash`: Measure ring metrics on candidates
+
+_121 tool steps._
 
 ---
 
@@ -408,5 +446,46 @@ Her pink ends in a flat bottom edge (width drops 0.30 to 0.11 W in 0.01 H) where
 
 [Image: original 2006x221, displayed at 2000x220. Multiply coordinates by 1.00 to map to original image.]
 
+**Agent** (19:24 UTC):
 
-_100 tool steps._
+The left blob floats on her fur (the visible water edge is below the crest because of the cut teeth). I'll seat them lower so they sit on the waterline.
+
+- 19:24 `Bash`: Capture lower-seated side splash crests
+- 19:25 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v9.png
+**Agent** (19:25 UTC):
+
+I'll try scalloped dome-shaped crests along the cut edge (the original's waterline across her is a row of rounded bubble domes with white outlines), as a new `face.teeth.dome` option.
+
+- 19:25 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:26 `Bash`: Build and capture the dome-shaped waterline
+- 19:26 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v10.png
+- 19:27 `Bash`: Zoom her base for v2 and v6
+- 19:27 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v26z.png
+**Lead → agent** (19:27 UTC):
+
+[Image: original 2316x246, displayed at 2000x212. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:27 `Bash`: Measure side zones for v2 and v6
+**Agent** (19:27 UTC):
+
+Removing the side lumps (v2) keeps L* in range on both sides (78.6 / 80.5) and reads as continuous water. I'll write those settings into `FOCUS.water` and verify with a plain capture.
+
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:27 `Bash`: Build and capture step 1b defaults
+- 19:28 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/s1b/s1b_t3.00.png
+**Agent** (19:28 UTC):
+
+Reads as continuous light-blue water round her, no pillows or white masses. Committing step 1b.
+
+- 19:28 `Bash`: Save step 1b frames and comparison crop
+- 19:28 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:28 `Bash`: Commit step 1b
+**Agent** (19:28 UTC):
+
+Now step 1c: the spray as round droplets rather than vertical dashes, and more of the white in small pieces (the AD wants at least half in pieces of 400 px or less; 41% now).
+
+- 19:28 `Bash`: Capture rounder spray and smaller white pieces
+
+_117 tool steps._

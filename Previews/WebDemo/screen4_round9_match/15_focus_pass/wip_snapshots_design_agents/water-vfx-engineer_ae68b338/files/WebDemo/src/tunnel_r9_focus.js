@@ -110,7 +110,9 @@ export const FOCUS = {
     //    white pieces with blue water between (cells per unit radius, the share of cells with a piece, its radius as a share
     //    of the cell [min, max], bigger where the normal is up [from, to], how much; edge: the outline's white arc kept). (A
     //    white cap with round holes measured as one white mass of 2,800-4,250 px beside her: a cushion.)
-    crest: { low: '#1a5fe0', mid: '#1f9af6', hi: '#8fe0ff', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
+    //    (step 1b, ninth session) lighter, as the swell face's water (light cyan to vivid blue): the dark cobalt read as blue
+    //    pillows beside the light water round her
+    crest: { low: '#3f8cf0', mid: '#78c4f8', hi: '#acdffc', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
       edge: 0.85, alpha: 0.9, spec: 1.6, rag: [0.35, 0.5, 5.0],
       cap: { cell: 8.0, share: 0.7, r: [0.14, 0.34], up: [0.15, 0.6], amount: 0.95, edge: 0.6 } },
     // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque blue
@@ -160,9 +162,12 @@ export const FOCUS = {
       // small splash crests, not domes: lumpier, a wide spread of sizes
       lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
       // [phi, how many, biggest radius (m), outward (m), height from the crest (m)]: nothing in front of her body (phi -20 to
-      // 20 near the crest); a few small crests at her sides and low in the bottom corners (match: 30 lobes up to 0.22 m)
+      // 20 near the crest); a few small crests low in the bottom corners (match: 30 lobes up to 0.22 m). (Step 1b, ninth
+      // session: the four beside her, phi +-40 to +-54, taken out: with the new camera they were two smooth blue pillows
+      // 0.2 W wide at x 0.78-0.98 and a dark dome at the left edge; without them the swell's broken water with its white
+      // crest arcs runs on there, as the original's water does. Small crests at her lower sides, phi 9 and -14, narrowed her
+      // pink at the base to 0.19 W but read as blue blobs stuck on her fur.)
       lumps: [
-        [40, 2, 0.11, 0.08, -0.1], [52, 2, 0.12, 0.08, -0.1], [-40, 2, 0.11, 0.08, -0.1], [-54, 2, 0.12, 0.08, -0.1],
         [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
       ],
       // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the

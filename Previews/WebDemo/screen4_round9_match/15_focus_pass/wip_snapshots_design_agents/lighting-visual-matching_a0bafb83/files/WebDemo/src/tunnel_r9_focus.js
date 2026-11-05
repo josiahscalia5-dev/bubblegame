@@ -104,9 +104,13 @@ export const FOCUS = {
       //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
       //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
       //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
-      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.42,
-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.86, 0.95], deepFrom: [0.68, 0.9], edgeTo: 0.26,
-        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.8 },
+      //    (Tunnel & Lighting, the user's kit problem B: rebuilt without outlines, see focusRibbonsGLSL: offset now smooth noise
+      //    over soft.cells [round a turn, per band]; across a band deep -> body (soft.body: in, out from, out to) with a soft
+      //    light-cyan accent (soft.accent: at, half width, amount) -> the gap (gapFrom: from, full, back to deep from) -> deep)
+      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, offset: 0.5,
+        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.66, 0.82, 0.94],
+        soft: { body: [0.16, 0.42, 0.64], accent: [0.1, 0.06, 0.6], cells: [6, 1.0] },
+        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.92 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it

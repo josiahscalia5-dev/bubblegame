@@ -60,3 +60,27 @@ The 18:56 work restored from the snapshot (`changes.patch`, applied cleanly). Ne
 
 Still open after 1a: the side lumps read as smooth blue pillows (right x 0.78-0.98); white under the AD's 15%; her pink
 0.23 W wide at the base (target <= 0.2); the spray reads as vertical white dashes (rain), not round droplets.
+
+### Step 1b: the side lumps out (tunes v1-v10, `frames/step1b_*`)
+
+- v1: the lumps lighter (light cyan to vivid blue) with more white pieces: still pillows.
+- v2: the four lumps beside her (phi +-40 to +-54) out: the swell's broken water with crest arcs runs on there, as in the
+  original. White 15.2%, L* left / right 78.6 / 80.5 (both in the AD's 78-82), texture 5.55. **Kept (step 1b).**
+- v3-v6: the swell's front dip narrowed or deepened (`swellFront` full 0-16, to 30-44, dip 0.1-0.11, lift 0.03-0.035):
+  the water rises at her lower sides (a U-shaped waterline, v6) but her lowest visible point rises from y 0.849 to
+  0.834-0.843 (the original's 0.859), so she sits deeper; rejected (the user: never sunk).
+- v7-v9: small splash crests at her lower sides (phi 9 and -14): pink width at the base 0.18-0.21 W, but on screen they
+  are blue blobs stuck on her fur (the visible water edge is below the crest there); rejected.
+- v10: rounded domes cut along the crest: no visible change. Her visible base in front is where the water's surface meets
+  her body, not the cut, so the cut cannot shape it there; removed.
+
+| round her | original | before (71f7fa7) | 1a | 1b |
+|---|---|---|---|---|
+| white | 27.7% | 6.0% | 13.6% | 15.2% |
+| white in pieces <= 400 px | 13% | 78% | 47% | 41% |
+| largest white piece (px) | 10,247 | 1,449 | 1,672 | 1,671 (a bubble's glint) |
+| vivid blue | 12.9% | 47.6% | 23.6% | 20.8% |
+| lavender | 16.9% | 0.2% | 0.2% | 0.2% |
+| texture | 5.47 | 5.03 | 5.46 | 5.55 |
+| pink width at the base | 0.20 W | 0.27 W | 0.23 W | 0.25 W |
+| L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 77.7 / 79.7 | 78.6 / 80.5 |
