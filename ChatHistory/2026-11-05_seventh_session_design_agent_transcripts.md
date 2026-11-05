@@ -1405,8 +1405,19 @@ The water still reacts: piled on the swerve side, smaller in the air, bigger on 
 Pixel identity holds for the final bundle `3e7fc194`. Re-running the gameplay check and the moves with this exact bundle as well.
 
 - 20:25 `Bash`: Gameplay check and moves with the final bundle
+**Agent** (20:28 UTC):
 
-_150 tool steps._
+All checks pass with the final bundle. Now the probe on the baseline mirror, so before/now bubble counts come from the same tool and build lineage.
+
+- 20:28 `Bash`: Bubble probe on the baseline bundle
+**Agent** (20:30 UTC):
+
+Now the full measurements on the final frames for `measured.txt`.
+
+- 20:30 `Bash`: Run the Art Director measures on all final frames
+- 20:30 `Bash`: Hue and fleck-size measures on the final frames
+
+_153 tool steps._
 
 ---
 
@@ -1689,5 +1700,33 @@ Streaks along the rings read much closer to the original's painted, busy rings, 
 
 - 20:25 `Bash`: Wall and ring measurements for iteration 4
 - 20:25 `Bash`: Read rings.py metric definitions
+- 20:25 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/wall_variants.json
+- 20:25 `Bash`: Capture three wall variants and measure
+- 20:27 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/wall_variants2.json
+- 20:27 `Bash`: Capture second round of wall variants and measure
+- 20:30 `Bash`: Compose wall variant comparison
+- 20:30 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/walls_cmp_wv.png
+**Agent** (20:30 UTC):
 
-_157 tool steps._
+Variant F (deepest electric blue with streaks) is the closest in hue mix; I'll bake it in with the gaps eased back (to bring cobalt down) and a slightly brighter band glow (for contrast).
+
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+**Agent** (20:30 UTC):
+
+Let me check whether Water & VFX's floor reads any of the wall settings I changed.
+
+- 20:30 `Bash`: Check floor's dependence on wall settings
+- 20:30 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (20:30 UTC):
+
+The floor (Water & VFX's) reuses `MATCH.walls.lift`. I'll keep `lift` at 0.08 for the floor and give the walls their own value.
+
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:30 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:30 `Bash`: Build and capture iteration 5 at three moments with cost
+
+_173 tool steps._

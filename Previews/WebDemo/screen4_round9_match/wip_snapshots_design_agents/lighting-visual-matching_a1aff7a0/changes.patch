@@ -1128,7 +1128,7 @@ index f8550f8..0adb7bb 100644
  function updateCamera(dt) {
    const m = mascot;
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index c31a8c4..319fc69 100644
+index c31a8c4..35f43c7 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -45,13 +45,49 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
@@ -1260,10 +1260,43 @@ index c31a8c4..319fc69 100644
    // the coins' ramp (sRGB 0..1 as on screen): shade, yellow gold (hue 46), lemon; lum: the coin's lit linear brightness
    // mapped onto it; amount: how much of it replaces the coin's own colour
    coin: { shade: [0.839, 0.486, 0.008], mid: [0.973, 0.776, 0.11], lemon: [1.0, 0.945, 0.533], lum: [0.18, 0.95], amount: 0.85 },
-@@ -197,13 +254,40 @@ export const MATCH = {
+@@ -151,7 +208,9 @@ export const MATCH = {
+     // measured display compensation: drawn through the inverse display transform, the walls still showed about 4% lighter
+     // and less saturated than the approved at the same places (zero-flow test at 3.0 s: the drum's translucent layers and
+     // texture filtering); undone before the transform
+-    lift: 0.08, sat: 1.2,
++    // (lift is also the floor's, tunnel_r9_match_water.js; the focused pass gives the walls their own, 0.08 -> 0.12, a little
++    // darker between the bright bands)
++    lift: 0.08, liftWall: 0.12, sat: 1.2,
+     // the warm centre (the approved: r < 0.06 W warm 47%, white 37%, median #f1d7db): a pink-peach tint on the core zone.
+     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
+     // an orange ball, white 17%)
+@@ -171,7 +230,8 @@ export const MATCH = {
+     // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
+     // (narrow ranges: crisp band edges, as the approved's painted bands)
+     trough: { col: '#3c56cf', amount: 0.3, from: [0.08, 0.12] },
+-    crest: { col: '#2fb2f5', amount: 0.85, from: [0.02, 0.06], streak: 0.12 },
++    // (the focused pass: amount 0.85 -> 0.6, with the streaks the walls were too azure)
++    crest: { col: '#2fb2f5', amount: 0.6, from: [0.02, 0.06], streak: 0.12 },
+     zone: [0.12, 0.18],
+     // the mid vortex's pastel lilac (the map's rows rw 0.06-0.12: lavender 20-33%) toward pale blue and white (approved mid
+     // vortex r 0.08-0.20: lavender 12%, white 22%, pale blue 18%); [in, full, full to, out] in rw
+@@ -190,20 +250,53 @@ export const MATCH = {
+     // the band's lit part (bk under `to`)
+     bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.15, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.7,
+       blueFrom: [0.075, 0.12],
+-      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.85 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
+-      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
++      // (the focused pass: gap 0.85 -> 0.88, glow #3fbcf7 / 0.5 -> #5ab8fa / 0.7: brighter band tops over deeper gaps, the band
++      // contrast up / left / right 0.147 / 0.211 / 0.159 at the checkpoint against the original's 0.184 / 0.167 / 0.201)
++      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.88 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
++      glow: { col: '#5ab8fa', to: [0.3, 0.6], amount: 0.7 },
+       inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
+       // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
        // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against
        // the approved's brightest #cae0ff; at 1.3 they turned white and broke into specks, at 1.05 the glints went lilac again)
        edge: { col: '#c2dcff', w: [0.02, 0.045], broken: [-0.13, -0.07], amount: 1.0, second: [0.42, 0.025], secondAmount: 0.6, boost: 1.12 } },
+-    royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
 +    // the focused pass (the user's brief, 15:55 UTC, item 1: "still too clean and too smooth"; more energetic, irregular,
 +    // turbulent): measured at 3.0 s the rings were smoother along their length than the original's (along-ring brightness
 +    // std up / left / right 0.123 / 0.079 / 0.112 against 0.148 / 0.118 / 0.169, rings.py) and its walls paler (upper wall
@@ -1278,12 +1311,16 @@ index c31a8c4..319fc69 100644
 +    // arcs, not wide smooth fills: the relief sampled `scale` [turns (a whole number), log r] finer, so its cells stretch along
 +    // the rings, flowing round with the swirl; above +from (in the relief's spread, 0.11) toward the cyan, under -from toward
 +    // the cobalt, by amount (bands only, outside the warm core; the whites and warm patches kept)
-+    streak: { scale: [2, 7.0], from: [0.5, 1.3], amount: 0.55, light: '#45bdf8', dark: '#2549cb', speed: 0.02 },
++    // (seven variants measured at 3.0 s, walls.py / rings.py: a cobalt dark streak made the upper wall's deep cobalt 8.7%
++    // against the original's 3.9% and flattened the bands; cyan light streaks made it azure 24% against 13%. The dark streak
++    // is electric blue, the light one a lighter electric blue)
++    streak: { scale: [2, 7.0], from: [0.7, 1.5], amount: 0.4, light: '#58acf8', dark: '#3a6ee8', speed: 0.02 },
 +    // deepen: the walls' pale mid blues toward the original's saturated electric blue and azure (saturation times `amount`
 +    // under luminance lum[0], fading out by lum[1] so the whites and splash stay; blue hues only, the warm patches kept)
 +    // (screen luminance of the sRGB values: the original's pale blue #a3d1f6 is 0.79, its electric blue #337ced 0.46, white 0.95)
-+    deepen: { amount: 1.45, lum: [0.84, 0.92] },
-     royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
++    deepen: { amount: 1.7, lum: [0.84, 0.92] },
++    // (the focused pass: 0.6 / 0.37 -> 1.0 / 0.4, so the walls' light cyan turns the original's electric blue, median hue 215)
++    royal: { amount: 1.0, to: 0.4 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
      // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
      // middle, outer and the left side's pink
 -    rainbow: { r: 0.225, w: 0.036, amount: 0.85, cols: ['#f4b9e6', '#ffd3a0', '#fff1b0', '#f59ad8'] },
@@ -1303,7 +1340,7 @@ index c31a8c4..319fc69 100644
      white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
      grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
    },
-@@ -240,6 +324,7 @@ export const MATCH_UNIFORMS = {
+@@ -240,6 +333,7 @@ export const MATCH_UNIFORMS = {
    // the centre's place on the screen (drawing-buffer fractions, y up) and the size in pixels of the target being drawn
    // (set before each picture by buildMatch; MATCH.centre)
    uMatchVP: { value: new THREE.Vector2(0.5, 0.5) }, uMatchRes: { value: new THREE.Vector2(0, 0) },
@@ -1311,7 +1348,7 @@ index c31a8c4..319fc69 100644
  };
  // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
  // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
-@@ -277,12 +362,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
+@@ -277,12 +371,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
  // the rim ramp (textures/screen4/rim_ramp.png): columns the angle 0..pi round the rim's centre (0 = screen right), rows rho =
  // r / the rim's outer radius from RAMP[0] (the housing just outside) to RAMP[1] (the blue inside the navy ring)
  const RAMP = [1.04, 0.80];
@@ -1329,7 +1366,7 @@ index c31a8c4..319fc69 100644
  // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
  const BEZEL_SIDES = [0.912, 1.03];
  // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
-@@ -350,8 +434,16 @@ export function matchWallGLSL() {
+@@ -350,8 +443,16 @@ export function matchWallGLSL() {
    return /* glsl */ `
  // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
  uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
@@ -1347,7 +1384,7 @@ index c31a8c4..319fc69 100644
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
-@@ -399,9 +491,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -399,9 +500,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
    // than the pixels (seam-free: from the wrap-corrected derivatives)
    float mtEdge = 0.0;
@@ -1362,7 +1399,7 @@ index c31a8c4..319fc69 100644
      float bk = fract(bs);
      float aw = (abs(dx.y) + abs(dy.y)) * ${f4(M.span * M.bands.perLog)} + (abs(dx.x) + abs(dy.x)) * ${f4(M.bands.spiral)};
      float bz = smoothstep(${f4(M.bands.r[0])}, ${f4(M.bands.r[1])}, rw) * (1.0 - smoothstep(${f4(M.bands.r[2])}, ${f4(M.bands.r[3])}, rw)) * (1.0 - smoothstep(0.2, 0.45, aw));
-@@ -419,6 +515,15 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -419,6 +524,15 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
      // peach and white, run right down to the centre coin)
      float ginK = smoothstep(${f4(M.bands.gap.from[0])}, ${f4(M.bands.gap.from[1])}, bk) * (1.0 - smoothstep(0.965, 1.0, bk)) * bz * (1.0 - bout);
      c = mix(c, ${hx(M.bands.inner.col)} * mix(0.9, 1.08, bl), ginK * ${f4(M.bands.inner.amount)});
@@ -1378,7 +1415,7 @@ index c31a8c4..319fc69 100644
      c = mix(c, ${hx(M.bands.rim.col)}, rimK * ${f4(M.bands.rim.amount)});
      // white water broken over each band's lit part where the relief crests (the approved's turbulent splash bits along the
      // rings; blobs of the relief's own cells, not star shapes)
-@@ -440,6 +545,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -440,6 +554,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
      rc = mix(rc, ${hx(M.rainbow.cols[3])}, smoothstep(0.2, -0.6, cos(ra)) * 0.6);   // pinker on the left
      float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
      c = mix(c, rc * mix(0.85, 1.08, rl), rk);
@@ -1391,20 +1428,22 @@ index c31a8c4..319fc69 100644
    }
    {   // the mid vortex's bright pale blue toward the approved's white water (MATCH.walls.midWhite; the warm patches kept)
      float mz = smoothstep(${f4(M.midWhite.r[0])}, ${f4(M.midWhite.r[1])}, rw) * (1.0 - smoothstep(${f4(M.midWhite.r[2])}, ${f4(M.midWhite.r[3])}, rw));
-@@ -459,6 +570,12 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -459,7 +579,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
      float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
      c.g = mix(c.g, c.r + ${f4(M.royal.to)} * (c.b - c.r), rk);
    }
+-  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
 +  {   // the walls' pale mid blues toward saturated electric blue and azure (MATCH.walls.deepen; the focused pass): blue the
 +      // largest channel, outside the warm core, under the whites' brightness (screen luminance)
 +    float dlum = dot(c, vec3(0.2126, 0.7152, 0.0722));
 +    float dk = step(c.r, c.b) * step(c.g, c.b) * smoothstep(0.07, 0.11, rw) * (1.0 - smoothstep(${f4(M.deepen.lum[0])}, ${f4(M.deepen.lum[1])}, dlum));
 +    c = clamp(dlum + (c - dlum) * mix(1.0, ${f4(M.deepen.amount)}, dk), 0.0, 1.0);
 +  }
-   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
++  c = clamp((c - ${f4(M.liftWall)}) / ${f4(1 - M.liftWall)}, 0.0, 1.0);
    float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
    c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
-@@ -487,20 +604,21 @@ export function matchWallApply() {
+   vec3 col = mtUndisplay(c);
+@@ -487,20 +613,21 @@ export function matchWallApply() {
  // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
  // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
  export function matchMouthGLSL(HERO, axisH, radius) {
@@ -1434,7 +1473,7 @@ index c31a8c4..319fc69 100644
  `;
  }
  // the gold rim (round6's bezel, moved by heroRim): the approved rim band by angle round its centre and across its width
-@@ -541,6 +659,17 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -541,6 +668,17 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the first sock (the approved's big right sock): 0.85 of its size, as the Art Director measured (its holder, and so its
    // pick-up place, is unchanged)
    if (socks[0] && socks[0].turn) { socks[0].turn.scale.multiplyScalar(MATCH.sockScale); report.sockScale = MATCH.sockScale; }
@@ -1452,7 +1491,7 @@ index c31a8c4..319fc69 100644
    // the gem beside the big left coin at MATCH.gemScale of its size, round its own centre (its holder, the pick-up place and
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
-@@ -609,7 +738,8 @@ void main() {
+@@ -609,7 +747,8 @@ void main() {
  
  // Called at the end of buildHero (tunnel_r7_hero.js), after the liquid and the splash bank are built.
  export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet }) {

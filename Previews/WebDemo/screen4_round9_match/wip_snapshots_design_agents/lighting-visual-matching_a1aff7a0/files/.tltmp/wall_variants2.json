@@ -1,0 +1,5 @@
+{
+  "wD": { "match": { "walls": { "streak": { "amount": 0.4, "light": "#58acf8", "dark": "#3a6ee8", "from": [0.7, 1.5] }, "bands": { "glow": { "amount": 0.7, "col": "#56b4f9" }, "gap": { "amount": 0.95 } }, "lift": 0.1 } } },
+  "wE": { "match": { "walls": { "streak": { "amount": 0.4, "light": "#58acf8", "dark": "#3a6ee8", "from": [0.7, 1.5] }, "bands": { "glow": { "amount": 0.7, "col": "#56b4f9" }, "gap": { "amount": 0.95 } }, "lift": 0.1, "royal": { "amount": 1.0, "to": 0.4 } } } },
+  "wF": { "match": { "walls": { "streak": { "amount": 0.4, "light": "#58acf8", "dark": "#3a6ee8", "from": [0.7, 1.5] }, "bands": { "glow": { "amount": 0.7, "col": "#56b4f9" }, "gap": { "amount": 0.95 } }, "lift": 0.12, "royal": { "amount": 1.0, "to": 0.4 }, "deepen": { "amount": 1.7 }, "crest": { "amount": 0.6 } } } }
+}

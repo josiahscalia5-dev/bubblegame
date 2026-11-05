@@ -1,12 +1,12 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: framing, sock, walls)
 
-- **Taken:** 2026-11-05 20:25 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:31 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a1aff7a0d4ce10e34` (local only), started from `9a95c06`.
 - **Its own commits so far:** 
   - `4029424 Round 9 focused pass (checkpoint): framing, the pink character 1.2x larger through the hero camera`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (111; full copies in `files/`)
+## Files (125; full copies in `files/`)
 
 - `.tltmp/baseline.bundle.js (new)`
 - `.tltmp/before/before_info.json (new)`
@@ -93,12 +93,26 @@
 - `.tltmp/tune_sockD.json (new)`
 - `.tltmp/upper_grid.png (new)`
 - `.tltmp/wall_variants.json (new)`
+- `.tltmp/wall_variants2.json (new)`
 - `.tltmp/walls_cmp_t2.png (new)`
 - `.tltmp/walls_cmp_t3.png (new)`
 - `.tltmp/walls_cmp_t4.png (new)`
+- `.tltmp/walls_cmp_wv.png (new)`
 - `.tltmp/walls_t1.png (new)`
 - `.tltmp/walls_zoom_t3.png (new)`
 - `.tltmp/walls_zoom_t4.png (new)`
+- `.tltmp/wv/wA_info.json (new)`
+- `.tltmp/wv/wA_t3.00.png (new)`
+- `.tltmp/wv/wB_info.json (new)`
+- `.tltmp/wv/wB_t3.00.png (new)`
+- `.tltmp/wv/wC_info.json (new)`
+- `.tltmp/wv/wC_t3.00.png (new)`
+- `.tltmp/wv/wD_info.json (new)`
+- `.tltmp/wv/wD_t3.00.png (new)`
+- `.tltmp/wv/wE_info.json (new)`
+- `.tltmp/wv/wE_t3.00.png (new)`
+- `.tltmp/wv/wF_info.json (new)`
+- `.tltmp/wv/wF_t3.00.png (new)`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_checkpoint.txt`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/char_rows.py`
 - `Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/character.py`

@@ -208,7 +208,9 @@ export const MATCH = {
     // measured display compensation: drawn through the inverse display transform, the walls still showed about 4% lighter
     // and less saturated than the approved at the same places (zero-flow test at 3.0 s: the drum's translucent layers and
     // texture filtering); undone before the transform
-    lift: 0.08, sat: 1.2,
+    // (lift is also the floor's, tunnel_r9_match_water.js; the focused pass gives the walls their own, 0.08 -> 0.12, a little
+    // darker between the bright bands)
+    lift: 0.08, liftWall: 0.12, sat: 1.2,
     // the warm centre (the approved: r < 0.06 W warm 47%, white 37%, median #f1d7db): a pink-peach tint on the core zone.
     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
     // an orange ball, white 17%)
@@ -228,7 +230,8 @@ export const MATCH = {
     // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
     // (narrow ranges: crisp band edges, as the approved's painted bands)
     trough: { col: '#3c56cf', amount: 0.3, from: [0.08, 0.12] },
-    crest: { col: '#2fb2f5', amount: 0.85, from: [0.02, 0.06], streak: 0.12 },
+    // (the focused pass: amount 0.85 -> 0.6, with the streaks the walls were too azure)
+    crest: { col: '#2fb2f5', amount: 0.6, from: [0.02, 0.06], streak: 0.12 },
     zone: [0.12, 0.18],
     // the mid vortex's pastel lilac (the map's rows rw 0.06-0.12: lavender 20-33%) toward pale blue and white (approved mid
     // vortex r 0.08-0.20: lavender 12%, white 22%, pale blue 18%); [in, full, full to, out] in rw
@@ -247,8 +250,10 @@ export const MATCH = {
     // the band's lit part (bk under `to`)
     bands: { perLog: 3.7, spiral: 1, warp: 0.22, warpF: 2.6, wobble: 0.15, flow: 0.05, travel: 0.03, r: [0.035, 0.065, 0.5, 0.62], smooth: 0.7,
       blueFrom: [0.075, 0.12],
-      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.85 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
-      glow: { col: '#3fbcf7', to: [0.3, 0.6], amount: 0.5 },
+      // (the focused pass: gap 0.85 -> 0.88, glow #3fbcf7 / 0.5 -> #5ab8fa / 0.7: brighter band tops over deeper gaps, the band
+      // contrast up / left / right 0.147 / 0.211 / 0.159 at the checkpoint against the original's 0.184 / 0.167 / 0.201)
+      gap: { col: '#2646c4', from: [0.68, 0.88], amount: 0.88 }, rim: { col: '#cfe9ff', w: [0.0, 0.11], amount: 0.9, broken: 0.5 },
+      glow: { col: '#5ab8fa', to: [0.3, 0.6], amount: 0.7 },
       inner: { col: '#e8a6d0', amount: 0.8 }, splash: { col: '#f2f8ff', from: [0.14, 0.19], to: [0.3, 0.6], amount: 0.9 },
       // edge: the thin ice-blue ring lines (w: [full to, out] in band phase; broken: the relief's dl where they show; second:
       // [phase, half width] of the sparser inner line; boost: over the whites' cap, so #c2dcff shows as about #cee2f9 against
@@ -268,12 +273,16 @@ export const MATCH = {
     // arcs, not wide smooth fills: the relief sampled `scale` [turns (a whole number), log r] finer, so its cells stretch along
     // the rings, flowing round with the swirl; above +from (in the relief's spread, 0.11) toward the cyan, under -from toward
     // the cobalt, by amount (bands only, outside the warm core; the whites and warm patches kept)
-    streak: { scale: [2, 7.0], from: [0.5, 1.3], amount: 0.55, light: '#45bdf8', dark: '#2549cb', speed: 0.02 },
+    // (seven variants measured at 3.0 s, walls.py / rings.py: a cobalt dark streak made the upper wall's deep cobalt 8.7%
+    // against the original's 3.9% and flattened the bands; cyan light streaks made it azure 24% against 13%. The dark streak
+    // is electric blue, the light one a lighter electric blue)
+    streak: { scale: [2, 7.0], from: [0.7, 1.5], amount: 0.4, light: '#58acf8', dark: '#3a6ee8', speed: 0.02 },
     // deepen: the walls' pale mid blues toward the original's saturated electric blue and azure (saturation times `amount`
     // under luminance lum[0], fading out by lum[1] so the whites and splash stay; blue hues only, the warm patches kept)
     // (screen luminance of the sRGB values: the original's pale blue #a3d1f6 is 0.79, its electric blue #337ced 0.46, white 0.95)
-    deepen: { amount: 1.45, lum: [0.84, 0.92] },
-    royal: { amount: 0.6, to: 0.37 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
+    deepen: { amount: 1.7, lum: [0.84, 0.92] },
+    // (the focused pass: 0.6 / 0.37 -> 1.0 / 0.4, so the walls' light cyan turns the original's electric blue, median hue 215)
+    royal: { amount: 1.0, to: 0.4 },   // see matchWall (to: the green's place between red and blue, 0.37 = 218 degrees)
     // the pastel rainbow arc (the approved: about 0.2-0.25 W above the centre): radius and half width in rw, colours inner,
     // middle, outer and the left side's pink
     // (the focused pass, "less pastel peach band": measured round the upper sector, the original's warm band is at rw
@@ -576,7 +585,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
     float dk = step(c.r, c.b) * step(c.g, c.b) * smoothstep(0.07, 0.11, rw) * (1.0 - smoothstep(${f4(M.deepen.lum[0])}, ${f4(M.deepen.lum[1])}, dlum));
     c = clamp(dlum + (c - dlum) * mix(1.0, ${f4(M.deepen.amount)}, dk), 0.0, 1.0);
   }
-  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
+  c = clamp((c - ${f4(M.liftWall)}) / ${f4(1 - M.liftWall)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
   vec3 col = mtUndisplay(c);
