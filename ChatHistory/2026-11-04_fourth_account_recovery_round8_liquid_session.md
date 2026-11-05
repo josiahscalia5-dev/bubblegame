@@ -617,3 +617,62 @@ Please strengthen the liquid swirl and water movement, then add translucent whit
 
 Finish your current implementation and show me the actual gameplay with foam both off and on. Keep the working game and previous versions safe.
 
+---
+
+### Claude · 2026-11-05 00:08 UTC
+
+As a safeguard until the specialist commits, I'll also snapshot its current files myself:
+
+I've kept this water version safe and passed your next priorities to the Water & VFX specialist. Its work isn't committed yet, so it isn't on GitHub so far.
+
+**Keeping it safe:**
+- I've copied the specialist's current files, including the built game, to a backup in this session's temporary folder. That copy is lost if the session ends, so I've also asked the specialist to commit this version before changing anything.
+- As soon as it does, I'll merge that commit into your work branch and push it to GitHub.
+- Your earlier versions are unaffected. `?s3=hero` and everything before it stay saved at `06b9805`, and the normal game is untouched.
+
+**What I've asked for next:**
+1. **Stronger swirl and movement:**
+   - stronger, two-scale ripple detail;
+   - a visible spiral that moves round and along the tunnel;
+   - sharper contrast between deep cobalt troughs and cyan-lit crests;
+   - faster flow toward your character.
+2. **A deeper tunnel centre:** saturated electric-blue and cyan bands toward the middle, keeping the small warm peach-gold core, with no pale lavender or white haze.
+3. **Reflections everywhere:** moving cyan reflections and sharp white glints throughout the tunnel, not only on the floor.
+4. **Translucent white splashes round your character:** broken crests, spray and droplets you can see the blue through. These go only in the foam-on version; `?s3=liquid,nofoam` stays foam-free.
+
+When it's finished I'll check the frames and merge the work. Then I'll run the gameplay tests and send you the actual gameplay with the foam off (`?s3=liquid,nofoam`) and on (`?s3=liquid`), at 2.85, 3.0 and 3.1 s, beside your ORIGINAL approved Screen 4.
+
+---
+
+### Automatic check · 2026-11-05 00:08 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-05 00:09 UTC
+
+The specialist committed the checkpoint itself a moment ago (`f1fb2fc`). Next I'll merge it into your work branch, confirm the built game matches its source, and push:
+
+The checkpoint merged cleanly, and rebuilding from its source gives exactly the committed game file. Pushing:
+
+The blue-water version you approved is now on GitHub. It's on your work branch `ccr-aeee6378-mv5kot` at `9d4b767`, and GitHub confirms it has that commit.
+
+- **What's in it:** the specialist's checkpoint `f1fb2fc`, merged in. Rebuilding the game from its source produces exactly the committed game file.
+- **Not checked yet:** whether `?s3=hero` and the older versions still render pixel-identical. The specialist runs that check at the end. They remain safe on GitHub at `06b9805`.
+
+The specialist is now working on the stronger swirl, the deeper tunnel centre and the translucent white splashes. I'll send you the full-resolution gameplay with the foam off and on, at 2.85, 3.0 and 3.1 s beside your ORIGINAL approved Screen 4, once it reports back.
+
+---
+
+### You · 2026-11-05 00:12 UTC
+
+Ok
+
+---
+
+### Claude · 2026-11-05 00:12 UTC
+
+Nothing new to show you yet: the Water & VFX specialist is still building the stronger swirl, the deeper tunnel centre and the translucent white splashes. The autosave is still pushing to GitHub every 5 minutes. I'll send the foam-off and foam-on gameplay beside your approved Screen 4 once the specialist reports back.
+
