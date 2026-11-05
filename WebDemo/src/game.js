@@ -22,6 +22,7 @@ import { ROUND4 } from './tunnel_r4.js';
 import { ROUND5 } from './tunnel_r5.js';
 import { ROUND6, R6_ON, R7_ON, lemonGold } from './tunnel_r6.js';
 import { HERO_ON, HERO } from './tunnel_r7_hero.js';
+import { MATCH_ON, MATCH, MATCH_READY, matchCollectibles } from './tunnel_r9_match.js';   // ?s3=match only (Round 9)
 // ?s3=round2 (test only): the Screen 4 controls and the tidied tunnel. Hearts that the brushes take, Bubble Blast, Turbo Spin,
 // a pause button in place of the gameplay gear, embossed gold paw coins, and collectibles laid out in clean lane lines.
 // Without the switch none of it runs and the game is drawn exactly as before.
@@ -58,6 +59,7 @@ if (R3 && R6_ON) {   // ?s3=round6 pass 3: the collectibles at the drum's mouth 
   R2_RULES.coinLines = [...Lt.coinLines, ...R2_RULES.coinLines.slice((R7_ON && Lt.replace) || 1)];   // round7: replaces more of round3's lines (moved, none lost)
   R2_RULES.socks = [Lt.firstSock, ...R2_RULES.socks.slice(1)];
   R2_RULES.gems = [Lt.extraGem, ...R2_RULES.gems];
+  if (MATCH_ON && MATCH.farGem) R2_RULES.gems[1] = MATCH.farGem;   // ?s3=match: the far gem off the vanishing point (tunnel_r9_match.js)
 }
 const r3Rnd = R3 ? mulberry(0x3e3b) : null;   // round3's own random numbers (the game's own sequence is unchanged)
 
@@ -1643,6 +1645,7 @@ async function main() {
     const coinP2 = R5 ? await Promise.all([loadGltf('coinP2'), loadGltf('coinP2Lo')]) : null;   // round5 only: the Tripo coin
     buildCollectibles(gem, coinFace, coinP2);
     buildSocks(sock);
+    if (MATCH_ON) matchCollectibles({ coins, gems, socks });   // ?s3=match: visual sizes and looks only (tunnel_r9_match.js)
     buildMascot(mascotG);
     // The Screen 3 opening look (opening.js): a separate cosmetic layer, built with its own random numbers
     // so the game's own (coin bobbing, splashes) are drawn exactly as before. ?classic leaves it out.
@@ -1653,6 +1656,7 @@ async function main() {
       await withPrivateRandomAsync(makeRandom(0x0be6), opening.loadExtras);   // a roller candidate, only with ?roller=1|2
     }
     if (SIDE) buildSideView();
+    if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
     resize();
     resetRun();
     state.phase = 'intro';

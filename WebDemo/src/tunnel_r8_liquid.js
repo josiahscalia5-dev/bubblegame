@@ -33,7 +33,7 @@ import { HEIGHT_GLSL, SLIDE } from './world.js';
 import { RIPPLES } from './shaders.js';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { SPLASH_ON, SPLASH_FOAM, SPLASH, mergeSettings, splashWallGLSL, splashFloorGLSL, splashSwellGLSL, buildSplashBank } from './tunnel_r8_splash.js';   // ?s3=splash: Round 8 pass 2
-import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9
+import { MATCH_ON, MATCH, deepMerge, MATCH_UNIFORMS, matchWallGLSL, matchWallApply, matchMouthGLSL, matchCollarGLSL } from './tunnel_r9_match.js';   // ?s3=match: Round 9
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -339,6 +339,7 @@ export function buildLiquid({ scene, TR, L, W, mascot, updaters, time, U, HERO, 
   const LU = { ...U, uTime: time, uLqTex: { value: tex }, uLqGlow: { value: new THREE.Vector3() }, uLqKey: { value: new THREE.Vector3(0, 1, 0) },
     uLqFwd: { value: new THREE.Vector3(0, 0, 1) }, uLqUp: { value: new THREE.Vector3(0, 1, 0) }, uLqSide: { value: new THREE.Vector3(1, 0, 0) },
     uLqObj: { value: objs } };
+  if (MATCH_ON) Object.assign(LU, MATCH_UNIFORMS);   // ?s3=match: the walls' derived textures (tunnel_r9_match.js)
   const GL = liquidGLSL(HERO);
   // the character's state for the wake and the swell (as the hero water works it out)
   const S = { k: 0, lagX: mascot.x || 0, lat: 0, air: 0, land: 0, speed: 0, wasAir: false };
@@ -615,7 +616,7 @@ void main() { vAU = aAU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz;
 // the wall shading (also used round the collar): cs is the point's place in the tube's cross-section, u along the path
 function wallCode(HERO) {
   const Rg = LIQUID.ring, K = LIQUID.colours, Fm = LIQUID.foam, Wv = LIQUID.waves;
-  return /* glsl */ `
+  return /* glsl */ `${MATCH_ON ? matchWallGLSL() : ''}
 vec3 lqWall(vec3 W, vec3 N0, vec3 T0, vec2 cs, float a, float u, float arc) {
   float rw, ang, id, spacing;
   float k = lqRing(cs, u, rw, ang, id, spacing);
@@ -672,7 +673,7 @@ ${SPLASH_ON ? splashWallGLSL() : ''}  // the hero's pastel rainbow ring, tinted 
     col = mix(col, ${v3(K.foam)}, clamp(stroke * ${f3(Fm.strokes)} + drop * 0.8, 0.0, 1.0));
   }
 #endif
-  return col;
+${MATCH_ON ? matchWallApply() : ''}  return col;
 }
 `;
 }
@@ -687,7 +688,7 @@ void main() {
   vec3 col = lqWall(vW, normalize(vN), normalize(vT), cs, a, u, a * ${f3(radius)});
   col = mix(col, ${v3(HERO.collar.edge)}, exp(-pow((u - uStart - 0.1) / 0.07, 2.0)) * 0.9);   // the thin navy edge of the mouth
   col = mix(col, ${v3('#c4b8f0')}, 1.0 - smoothstep(uStart - 0.06, uStart + 0.06, u));   // the washer's lavender shell before the mouth
-  gl_FragColor = vec4(col, 1.0);
+${MATCH_ON ? matchMouthGLSL(HERO, axisH, radius) : ''}  gl_FragColor = vec4(col, 1.0);
 }
 `;
 }
@@ -698,10 +699,11 @@ function liquidCollar({ scene, GL, LU, HERO }) {
   if (!c || !c.material.fragmentShader.includes('float rw; vec3 water = heroVortex(vXHU.xy, vXHU.z, rw);')) return null;
   const m = c.material;
   // the collar's shader already declares the hero's camera uniforms and the time
-  const fs = m.fragmentShader.replace('void main() {', `#define LQ_SHARED_HERO\n${GL}\n${wallCode(HERO)}\nvarying vec3 vLqW;\nvoid main() {`)
+  let fs = m.fragmentShader.replace('void main() {', `#define LQ_SHARED_HERO\n${GL}\n${wallCode(HERO)}\nvarying vec3 vLqW;\nvoid main() {`)
     .replace('float rw; vec3 water = heroVortex(vXHU.xy, vXHU.z, rw);', `vec3 lqN = normalize(cross(dFdx(vLqW), dFdy(vLqW))); if (dot(lqN, cameraPosition - vLqW) < 0.0) lqN = -lqN;
   vec3 lqT = normalize(uLqFwd);
   vec3 water = lqWall(vLqW, lqN, lqT, vXHU.xy, a, vXHU.z, a * 2.2);`);
+  if (MATCH_ON) fs = fs.replace('  col = mix(water, col, smoothstep(0.3, 0.62, up));', `${matchCollarGLSL(HERO)}  col = mix(water, col, smoothstep(0.3, 0.62, up));`);   // ?s3=match: the approved rim ramp on its top arc
   const vs = m.vertexShader.replace('void main() {', 'varying vec3 vLqW;\nvoid main() { vLqW = (modelMatrix * vec4(position, 1.0)).xyz;');
   c.material = new THREE.ShaderMaterial({ uniforms: { ...m.uniforms, ...LU }, vertexShader: vs, fragmentShader: fs, side: THREE.DoubleSide });
   return true;
