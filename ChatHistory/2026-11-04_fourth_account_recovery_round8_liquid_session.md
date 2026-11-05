@@ -571,3 +571,49 @@ Ok
 
 Nothing new to show you yet: the Water & VFX specialist is still building. When it reports, I'll check its frames, merge the water, and have the Gameplay & Visual Testing specialist confirm the game still plays correctly. Then I'll send you the side-by-side captures. The autosave is still pushing your work and this chat to GitHub every 5 minutes.
 
+---
+
+### You · 2026-11-05 00:06 UTC
+
+Is it almost done?
+
+---
+
+### Claude · 2026-11-05 00:07 UTC
+
+_[Sent you files: /tmp/claude-0/-home-user-bubblegame/041b68bc-21a0-5e8b-ab85-eb10408ed51e/scratchpad/lq4/i3_t2.85.png]_
+
+It's past the halfway point but not finished yet. The Water & VFX specialist hasn't committed anything or reported back. I looked at its working copy directly:
+
+- **Code:** the new water module, `tunnel_r8_liquid.js`, is about 730 lines so far. It's wired into the game through small hooks in three existing files, plus two new capture and measuring tools.
+- **Captures:** it's on about its fourth round of real gameplay captures at 2.85 s, measuring each one against your approved Screen 4.
+
+I've sent you its latest test frame. It's work in progress, with the foam off, and I haven't checked it in detail.
+
+**Already better than the current build:**
+- The water under and round your pink character is now clearly blue.
+- It's see-through, so the character's lower body shows through it, as in your artwork.
+- The tunnel walls read as blue rings with some gloss, not a white floor.
+
+**Still to do:**
+- The walls toward the centre still look too pale and lavender; your artwork has deep cobalt and bright cyan there.
+- The swirl doesn't yet read strongly as moving water.
+- The foam layer hasn't been added back.
+- The check that `?s3=hero` and the older versions are pixel-identical hasn't been run.
+
+After it reports back I still need to merge it, run the gameplay tests, and make your full-resolution side-by-sides at 2.85, 3.0 and 3.1 s. I'll send those as soon as the water reads as blue water throughout the tunnel.
+
+---
+
+### You · 2026-11-05 00:08 UTC
+
+Claudia, this new blue-water version is a real improvement. Please preserve it.
+
+The next priority is making the water look like my ORIGINAL APPROVED Screen 4: powerful, glossy, swirling turquoise water with moving cyan reflections throughout the tunnel.
+
+The current water is still too smooth, and the tunnel's center is too pale.
+
+Please strengthen the liquid swirl and water movement, then add translucent white splashes around my character without covering the blue water.
+
+Finish your current implementation and show me the actual gameplay with foam both off and on. Keep the working game and previous versions safe.
+
