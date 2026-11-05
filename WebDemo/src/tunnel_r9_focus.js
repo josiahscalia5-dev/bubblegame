@@ -130,9 +130,17 @@ export const FOCUS = {
       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
       //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
       //    band phase per pixel) over which they fade out where they would be under about two pixels
-      flecks: { cols: 96, rows: 3, dens: 0.34, len: [0.3, 0.5], wid: [0.06, 0.13], bend: 1.2, amount: 0.95, col: '#f6fbff',
-        drops: { cols: 160, rows: 5, dens: 0.16, r: [0.12, 0.22] },
-        r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
+      //    (Tunnel & Lighting, the Art Director's item 4 and the kit's "overcomplicated white pattern": fewer, chunkier, broken
+      //    splash shapes instead of thin dashes: bigger cells (cols 96 -> 36, rows 3 -> 1.5), thicker and more bent, the
+      //    outline broken by smooth noise (breakup: [cells across, cells along, how much the shape's core resists]), a crisp
+      //    edge (edge: the shape's soft edge, from / to), drawn late (after the display compensation: match's glintWall tinted
+      //    them pale blue). Measured with the bubble layer hidden (upper ring at 3.0 s): thickness 1.8 -> 3.7 px (the original
+      //    3.2), median area 10 -> 60 px (44), 3.5 -> 4.1 pieces per 10k px (3.6). The full frame's thin dashes are the
+      //    instanced streaks of the water file (FOCUS.water.bubbles.flecks), not these)
+      flecks: { cols: 36, rows: 1.5, dens: 0.28, len: [0.2, 0.46], wid: [0.11, 0.22], bend: 2.2, amount: 1.0, col: '#f6fbff',
+        breakup: [6, 3, 0.55], edge: [0.78, 0.9], late: true,
+        drops: { cols: 64, rows: 2, dens: 0.08, r: [0.16, 0.28] },
+        r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.3 },
     },
   },
   // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after it is defined, before it hands its splash, liquid and

@@ -432,7 +432,10 @@ function focusFlecksGLSL(M) {
       fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
-      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
+      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(${f4((F.edge || [0.6, 1.0])[0])}, ${f4((F.edge || [0.6, 1.0])[1])}, fe)) * fpx;
+      ${F.breakup ? `// (the Art Director's item 4: broken splash shapes, not clean dashes: the shape's edge eaten by smooth noise, so it
+      // breaks into an irregular blob with a ragged outline and a gap or two)
+      fk *= smoothstep(0.42, 0.58, fcNz(fq * vec2(${f4(F.breakup[0])}, ${f4(F.breakup[1])}) + fh * 31.0, 7.0) + (1.0 - fe) * ${f4(F.breakup[2])});` : ''}
       vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
@@ -440,7 +443,11 @@ function focusFlecksGLSL(M) {
       float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
       float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
       float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
-      c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});
+      ${F.late
+    // (late: drawn after the display compensation, as the thin ring lines: match's glintWall below tints every bright wall
+    // texel toward #cae0ff, so the splashes came out as pale translucent blue blobs instead of white water)
+    ? `mtFleck = clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)};`
+    : `c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});`}
     }
 `;
 }
@@ -498,7 +505,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
   // than the pixels (seam-free: from the wrap-corrected derivatives)
-  float mtEdge = 0.0;
+  float mtEdge = 0.0;${FOCUS_ON ? ' float mtFleck = 0.0;' : ''}
   {
     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
       - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
@@ -565,6 +572,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
   vec3 col = mtUndisplay(c);
   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
+${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)
+` : ''}
   // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
