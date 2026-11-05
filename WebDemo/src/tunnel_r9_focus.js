@@ -22,6 +22,14 @@ export const FOCUS = {
   match: {
     hero: {
       round6: {
+        // 5. the lower-right coin in the right lane (match: 0.357 lane widths outside it): with the nearer camera it sat at the
+        //    frame's edge (x 0.89-1.0; the original's 0.78-1.0); easier to reach than before (the rest of match's layout kept)
+        layout: { coinLines: [[-0.231, 2.77, 1, 1.0, 1.14, 0], [-0.674, 3.4, 1, 1.0, 2.03, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [1.95, 2.3, 1, 1.0, 0.57, 0],
+          [2, 15.0, 1, 1.0, 0.5, 0], [1, 12.0, 3, 1.0, 0.9, 0]] },
+        // 5. the two framing brushes (decorative, not hazards) nearer the axis, so the nearer camera keeps them in the frame
+        //    as the original's pom-poms at the top left and the right ([u, side, angle, scale, radius]; match: radius 1.62
+        //    and 1.98)
+        r7: { deco: [[1.15 + 0.95, 1, 34, 0.5, 1.45], [2.6 + 0.95, -1, 2, 0.8, 1.72]] },
         round5: {
           // 3 / 5. The camera 0.35 m nearer the character and 0.15 m lower, aimed 0.08 m lower, the view 1 degree wider: she
           // is drawn about 1.15 times larger (the original draws her larger than match did: pink 4.16% of the frame against
@@ -39,7 +47,11 @@ export const FOCUS = {
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
       //    over each band's crest
-      bands: { warp: 0.3, wobble: 0.3, rim: { broken: 0.8 }, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 } },
+      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, rim: { broken: 0.8 }, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
+        // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
+        // match's bands wider on screen)
+        gap: { from: [0.6, 0.86], amount: 0.95 } },
+      trough: { amount: 0.42 },
       // 1. the white splash flecks and streaks on the walls' water (the original: hundreds of small white bits along the
       //    rings): cells round each ring, `cols` round a turn, `rows` per band, flowing with the bands; in each cell, with
       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
@@ -89,7 +101,7 @@ export const FOCUS = {
       camAt: -4.55,
       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
       zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
-        [0.34, [-30, 210], [0.25, 0.62], [4.5, 28]], [0.08, [0, 360], [0.08, 0.4], [16, 34]]],
+        [0.36, [-30, 210], [0.25, 0.62], [4.5, 28]], [0.03, [0, 360], [0.08, 0.4], [16, 34]]],
       // more, bolder white streaks among the bands (match: 200)
       flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
     },
