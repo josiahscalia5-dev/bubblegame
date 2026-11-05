@@ -192,3 +192,18 @@ At this size the changes are small, so I'll add close-ups of the two areas the s
 
 The changes show up clearly in the close-ups. Saving both pictures to the repository and sending them to you:
 
+_[Sent you files: Previews/WebDemo/screen4_round9_match/08_progress_snapshot_1357utc/original_vs_saved_vs_TL_live_vs_WV_live_3.00s.jpg, Previews/WebDemo/screen4_round9_match/08_progress_snapshot_1357utc/closeups_centre_and_foam_bank_3.00s.jpg]_
+
+I've sent you two pictures. Both are real gameplay at the same moment (3.0 seconds into the tunnel), not mock-ups:
+
+1. **Side by side:** your original, the version saved on GitHub, and each specialist's live work in progress, captured from their builds of a few minutes ago.
+2. **Close-ups** of the two areas they're changing.
+
+**What you can see so far:**
+- **Tunnel & Lighting, tunnel centre:** the centre now has a warm peach glow where the saved version is lilac, closer to your original's warm core. Its other fixes may not show yet: deeper cobalt, no lime or star sparkles, a thinner rim and the object sizes.
+- **Water & VFX, foam bank:** bigger, bubblier white-and-turquoise foam lobes are forming on both sides of her body, where the saved version has a thin lip with tiny flecks. It's still thinner than your original's big foam bank.
+
+Neither is finished or measured yet; their own checkpoints will carry the numbers. Both builds loaded with no errors. The pictures are saved to GitHub (`bebd494`) in `Previews/WebDemo/screen4_round9_match/08_progress_snapshot_1357utc/`.
+
+When both finish, I'll merge them and send you the final comparison with your original and a gameplay video.
+
