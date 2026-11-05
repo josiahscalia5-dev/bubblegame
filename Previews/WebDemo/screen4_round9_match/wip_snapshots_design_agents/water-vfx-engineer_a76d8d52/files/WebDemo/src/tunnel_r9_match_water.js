@@ -60,8 +60,8 @@ export const MATCH_WATER = {
   // down it is the floor's derived water (one body of water)
   look: {
     glassHi: '#5cb6ff', glass: '#3a8af2', glassDeep: '#2264dc', sky: '#c6ebff',
-    clear: 0.38,      // opacity at the very top in front of the body
-    sideClear: 0.6,   // and beside it
+    clear: 0.75,      // opacity at the very top in front of the body (checkpoint 02: real water over the lower body, not see-through glass)
+    sideClear: 0.85,  // and beside it
     soft: 0.7,        // the floor's map on the swell's lower face: its blur (the lower water's cells read as cracked glass)
     solid: [0.05, 0.24],   // m below the crest over which it becomes solid
     top: 0.18,        // m below the crest over which the see-through glass turns into the floor's water
@@ -69,8 +69,8 @@ export const MATCH_WATER = {
     frontRim: 0.12,   // its share in front of the body (gate fixes, step 7: the pale glass-bowl lip)
     spec: 1.4,        // the key light's specular points
     crest: 0.95,      // white on the crest, broken into bubbly pieces (foam layer only)
-    crestFront: 0.3,  // its share in front of the body (gate fixes, step 7: the lobes' rims make the waterline there)
-    crestW: [0.03, 0.06, 0.008, 0.02],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
+    crestFront: 0.9,  // its share in front of the body (checkpoint 02: thick white froth along the body's lower edge, as approved)
+    crestW: [0.03, 0.06, 0.03, 0.05],   // the crest's width (m below it): beside the body [base, + noise], in front of it [base, + noise]
   },
   // the lobes (spLumps reshaded): sRGB
   // alpha: in front of the body (see-through: the fur reads violet), sideAlpha: beside it (vivid blue); fres: the outline's
@@ -85,11 +85,15 @@ export const MATCH_WATER = {
   // radius, the share of cells without one); fleckCell / fleck / frontFleck: the round glints (fewer, bigger beside the body:
   // the Art Director's 105 small white shapes left of it against 13; more in front, where the original has white spots on
   // the violet domes)
-  lobe: { hi: '#4f9cff', mid: '#2f7cef', low: '#1f56d6', white: '#f6fcff', violetCol: '#8f7cf2', violet: [0.4, 0.4, 0.08],
-    alpha: 0.42, sideAlpha: 0.72, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 1.6, specPow: 160, sheen: 0.05,
-    foam: 0.95, foamScale: 0.32, capFoam: 0.3, capFrom: 0.25, footFoam: 0.42, frontFoam: 0.45, frontFeet: 1.3, capRight: 2.2, cell: 6.0, hole: 0.85,
-    holeShare: 0.6, fleck: 0.9, frontFleck: 0.6, fleckCell: 3.4,
-    foamSide: '#f6fcff', foamUp: [-0.1, 0.7] },   // the froth's colour on its sides (white where it faces up, from foamUp[0] to [1] of the normal's up)
+  // (the user's checkpoints 02 and 04, 14:43: the lower body "occluded by real-looking, foamy water and splashes on both
+  // sides", "soft, chunky aqua-white foam dominates the bottom", not "a transparent pink/purple water curtain": the lobes are
+  // now mostly opaque (alpha 0.82 in front, 0.9 beside), lilac only as an opaque tint of the front domes, the froth dense
+  // white with round holes (cell, holeShare) on aqua-white sides (foamSide), aqua-blue water between)
+  lobe: { hi: '#6cbcff', mid: '#3f8cf0', low: '#2f62da', white: '#f6fcff', violetCol: '#9a7ef0', violet: [0.9, 0.6, 0.06],
+    alpha: 0.82, sideAlpha: 0.9, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 2.0, specPow: 160, sheen: 0.12,
+    foam: 0.95, foamScale: 0.32, capFoam: 0.36, capFrom: 0.05, footFoam: 0.42, frontFoam: 0.8, frontFeet: 1.3, capRight: 2.2, cell: 8.0, hole: 0.95,
+    holeShare: 0.25, fleck: 0.9, frontFleck: 0.6, fleckCell: 3.4,
+    foamSide: '#c4e6ff', foamUp: [0.45, 0.95] },   // the froth's colour on its sides (white where it faces up, from foamUp[0] to [1] of the normal's up)
   // settings handed to the splash pass and the liquid (merged into MATCH.splash, MATCH.liquid, MATCH.heroWater before those
   // files merge them)
   splash: {
@@ -141,20 +145,20 @@ export const MATCH_WATER = {
   // 0.07 W, the others 0.03-0.05 W, a cluster of small rings), 3 at the lower left, and hundreds of small white flecks,
   // crescents and tiny rings along the bands)
   bubbles: {
-    count: 300,
+    count: 160,
     tube: 2.0,               // the hero lining's radius (m; the layout's tunnelRadius, 2.5, is the old drum's)
     // sizes: [share, world radius (m)]; far ones are drawn up to `far` times bigger (else they would be under a pixel). On
     // screen (0.69 r / distance frame widths): small 2-6 px, medium 8-20 px, an occasional large one 25-40 px (at 767 wide)
-    sizes: [[0.66, [0.05, 0.1]], [0.29, [0.12, 0.22]], [0.05, [0.26, 0.34]]],
-    far: [5, 24, 1.4],       // from 5 m into the drum, +140% by 24 m
+    sizes: [[0.72, [0.035, 0.075]], [0.25, [0.09, 0.16]], [0.03, [0.2, 0.28]]],
+    far: [5, 24, 1.0],       // from 5 m into the drum, +100% by 24 m
     minPx: 1.6,              // never drawn under this radius (px): far ones stay readable rings, not sub-pixel dust
     // where round the tube: [share, angle (degrees from the side, 90 = the top, -40 and 220 just above the water), radius
     // (share of the tube's), distance ahead of the hero camera (m; drawn with a density of 1 / distance^2, so the near and
     // mid rings, which cover most of the screen, get most of them: spread evenly along the drum, perspective packed them into
     // the middle of the screen, 147 of 248 within 0.12 W of the vanishing point)]: all round the walls, inside the water's
     // swirl, and a few round the far centre. Each loops over its own `loop` metres, drifting toward the camera.
-    zones: [[0.3, [20, 160], [0.62, 0.93], [5.3, 34]], [0.17, [160, 222], [0.62, 0.93], [5.3, 34]], [0.17, [-42, 20], [0.62, 0.93], [5.3, 34]],
-      [0.3, [-30, 210], [0.28, 0.62], [5.3, 30]], [0.06, [0, 360], [0.08, 0.4], [20, 34]]],
+    zones: [[0.32, [20, 160], [0.62, 0.93], [5.3, 34]], [0.2, [160, 222], [0.62, 0.93], [5.3, 34]], [0.2, [-42, 20], [0.62, 0.93], [5.3, 34]],
+      [0.24, [-30, 210], [0.3, 0.62], [5.3, 26]], [0.04, [0, 360], [0.08, 0.4], [20, 34]]],
     camAt: -4.9,             // the hero camera's place along the path at 3.0 s (m from the drum's mouth; hero probe)
     loop: 4.0,               // m each one loops over (faded at both ends)
     drift: [0.15, 0.45],     // m/s toward the camera (the walls' water flows toward the viewer)
@@ -164,7 +168,7 @@ export const MATCH_WATER = {
     rim: 1.0, film: 0.6, body: 0.07, glint: 1.0, rimPx: 1.1,   // rimPx: the outline's least width in pixels
     // the white water streaks among the bands (brief item 3): short white crescents and dashes on the walls' water, turning
     // with its swirl and flowing toward the camera. [count, length x width (m), share of the tube's radius, bend]
-    flecks: { count: 260, size: [[0.07, 0.2], [0.025, 0.05]], rho: [0.9, 0.985], bend: [0.0, 1.4], alpha: 0.85, ahead: [5.6, 34], angles: [-44, 224] },
+    flecks: { count: 200, size: [[0.035, 0.09], [0.01, 0.02]], rho: [0.82, 0.95], bend: [0.0, 2.0], alpha: 0.95, ahead: [6.5, 34], angles: [-44, 224] },
   },
 };
 {
@@ -462,8 +466,8 @@ void main() {
   if (vKind > 0.5) {   // a white streak: a tapered, slightly bent dash (y across it: 2.5 x its half width)
     float x = vQ.x;
     float y = vQ.y * 2.5 - vBend * (x * x - 0.35);
-    float body = exp(-y * y * 2.2) * (1.0 - smoothstep(0.55, 1.0, abs(x)));
-    float a = clamp(body * 1.3, 0.0, 1.0) * ${f4(FL.alpha)} * vA;
+    float body = exp(-y * y * 3.5) * (1.0 - smoothstep(0.5, 1.0, abs(x)));   // (crisp: the original's flecks are small sharp white bits)
+    float a = clamp(body * 1.7, 0.0, 1.0) * ${f4(FL.alpha)} * vA;
     if (a < 0.004) discard;
     gl_FragColor = vec4(vec3(0.93, 0.98, 1.0) * a, a);
     return;

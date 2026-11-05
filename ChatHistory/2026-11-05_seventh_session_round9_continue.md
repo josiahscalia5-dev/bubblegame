@@ -118,3 +118,113 @@ Not robust either: the rim's top-centre is lavender-pink, not gold, in the origi
 
 The autosave already committed the source and bundle; only evidence remains. Checking the committed bundle matches its source, then saving:
 
+Saved and confirmed on GitHub (`833f471`). Now merging Tunnel & Lighting's work:
+
+Only the bundle conflicted, as expected (both sides rebuilt it). The source merged cleanly, so I rebuild the bundle from the merged source:
+
+Merged cleanly, and Tunnel & Lighting's centre helper already uses the 1:2 reference width (`min(width, 0.5 × height)`), so it agrees with the phone framing. Committing the merge:
+
+I'll start the baseline captures for the identity proof now (the starting build, 11 older versions × 3 moments), since they don't depend on Water & VFX:
+
+While those run, I'll inspect the bubble assets you sent, as the kit asks:
+
+While Water & VFX finishes, I'll prepare the final checkpoint-sheet script so the evidence is ready the moment it merges. First the 1:2 capture tool's interface:
+
+A dry run of the sheet script on frames that already exist (Tunnel & Lighting's 1:2 frame and the merged phone capture), so it's proven before the final run:
+
+The sheet script works. This dry run also confirms that the phone row now has the same vertical framing as the 1:2 row. One difference it shows that no checkpoint names: your original's pink character is drawn larger, its dome about 0.58 of the frame width against about 0.42 in the game. I'll measure that in the final report rather than change it, since you asked for no character changes.
+
+Where things stand right now:
+
+**Done and saved to GitHub** (`ccr-1f9da4c9-e0yrsc`; the autosave pushes every 5 minutes):
+- **Resumed exactly where you left off.** Your newest work was the 14:30 autosave `36c8676`. Both specialists restarted from their 14:30 snapshots in fresh worktrees, so none of their unfinished work was lost. The four design agents and the screen-matcher skill load from your branch.
+- **Tunnel & Lighting finished and is merged** (`648d47f`):
+  - distinct nested cobalt rings leading to a warm centre;
+  - the two stacked left coins separated and placed as in your original;
+  - the gem, the lower-right coin and the sock placed as in your original;
+  - a thinner rim.
+  - Still partly done: the walls are smoother and lighter than your original's, and the centre glow is more orange.
+- **Checkpoint 07, the white rectangle:** traced to the washing machine's front face (`r6Face` in `tunnel_r6.js`). It painted a "glowing light panel above the door" taken from the old Round 6 construction guide, not from your original. It's removed in the art-match version: 0% pale pixels in that box now, against 59% (412 × 839) and 90% (412 × 915) before.
+- **Checkpoint 06, the purple band, and the phone fix** (`833f471`):
+  - The game now fills the phone edge to edge.
+  - It keeps your original's vertical framing, so the gold rim sits right under the mission banner on a Pixel 7 rather than below a broad purple band. Rim height at the right shoulder: 0.244 of the screen height now, against your original's 0.255 (0.283 before).
+  - Before and after: `Previews/WebDemo/screen4_round9_match/10_phone_fix/`.
+
+**Still running:**
+- **Water & VFX** (your checkpoints 01, 02 and 04): bubbles deep in the tunnel, the character sitting down into thick foam, and the foam bank. It has your kit's notes and the bubble sprites and model to use if they help. The model is only six plain spheres with no material.
+- **The baseline captures** for proving every older version unchanged.
+
+When Water & VFX finishes, I'll merge it and run the gameplay and pixel-identity checks. Then you'll get the side-by-side with your original at 3.0 s at both the 1:2 and Pixel 7 framings, a close-up sheet for each of the seven checkpoints, a verified / partly / not table, and a gameplay video.
+
+---
+
+### Automatic check · 2026-11-05 15:14 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-05 15:15 UTC
+
+Everything is committed and pushed. GitHub has the branch at `ff43741`, and the working tree is clean. That save includes the updated hand-off notes and the final-check scripts. The texture files listed in its report came in with the Tunnel & Lighting merge, which hadn't been pushed until now.
+
+Water & VFX and the baseline captures are still running. When they finish I'll merge, verify, and send you the seven-checkpoint evidence.
+
+---
+
+### You · 2026-11-05 15:15 UTC
+
+Claude, I've uploaded a complete reference and asset package for Bubble Wash Kingdom Screen 4.
+
+Please open the ZIP and carefully examine everything inside, including my ORIGINAL approved screen, all seven visual comparisons, bubble assets, and verification checklist.
+
+Use these resources to correct my existing playable game so it matches my original approved screen as closely as possible.
+
+Important correction:
+Do NOT redesign the pink character.
+Also, do NOT make the pink fuzzy character look submerged in the water.
+
+In my approved original screen, the pink character is sitting ON TOP of the water/splash area. It should feel naturally supported by the water and surrounded by splash/foam, but not sunk into the water, not buried behind the water, and not floating inside it.
+
+Focus on:
+
+- missing bubbles deep inside the tunnel
+- water and foam shape
+- tunnel depth and swirl
+- foreground foam
+- object placement
+- removing unwanted artifacts
+- matching the overall approved composition
+
+Preserve working gameplay.
+
+When finished, show me a side-by-side comparison with my original approved screen and explain what you've fixed.Important correction:
+
+Do NOT make the pink fuzzy character look submerged in the water.
+
+In my approved original screen, the pink character is sitting ON TOP of the water/splash area, supported by the water surface. It should feel naturally resting in the foam and splash, but not sunken into the water, not buried behind the water, and not floating inside the tunnel.
+
+Please keep the pink character sitting on top of the foreground water while improving the surrounding foam, bubbles, and water interaction so it matches the approved screen more closely.
+
+---
+
+### Claude · 2026-11-05 15:15 UTC
+
+An important change of direction, and Water & VFX is in the middle of building the opposite (water and foam built up over her lower body). I'll correct it first, before it goes further:
+
+Now checking whether you uploaded a new package or the same one:
+
+Saved (`4dea925`, verified on GitHub). Checking the baseline captures' progress:
+
+The baseline is 5 of 11 versions in; it slowed while the specialist shares the CPUs.
+
+Your correction is in place:
+- **Water & VFX (still running)** has been told, word for word: the pink character sits **on top** of the water and splash, supported by the surface, with foam and splash around her base and sides. Never sunk, never behind a water wall or curtain, never floating inside it. The see-through purple curtain still goes. If it had already raised the water over her body in this pass, it will take that back and put a foam rim at her base instead.
+- **Standing rule:** `CLAUDE.md` no longer says "partly submerged", and your correction is saved beside the kit (`04_Instructions/USER_CORRECTION_CHARACTER_ON_TOP.md`), so every future session and agent follows it. Saved to GitHub as `4dea925`.
+- **The package:** it's the same zip you sent at 14:43, which I had already opened and used. I followed `PASTE_INTO_CLAUDE.txt` and `VERIFY_CHECKLIST.md`, read all seven comparisons, and assigned each checkpoint to its specialist. The bubble sprites are clean soap-bubble rings that Water & VFX may use. The 3D model is six plain spheres with no material, so it's a placeholder only.
+
+Already fixed and merged (shown in my last message): the white rectangle, the purple band above the rim on phones, the separated left coins, the gem and sock placement, and the deeper nested cobalt rings.
+
+When Water & VFX finishes, I'll merge it and check that gameplay and every older version are unchanged. Then you'll get the side-by-side with your original at 3.0 s (desktop 1:2 and Pixel 7), a close-up for each checkpoint, and an honest fixed / partly / not list.
+
