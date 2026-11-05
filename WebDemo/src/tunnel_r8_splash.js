@@ -26,7 +26,7 @@
 import * as THREE from 'three';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9's settings
-import { matchLumpGLSL } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (imported here so its settings reach MATCH before the merges below)
+import { matchLumpGLSL, matchLumpDecl } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (imported here so its settings reach MATCH before the merges below)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -246,7 +246,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);' : ''}
         list.push([c.x + c.nx * out, c.h + up, c.u + c.nu * out, r, rnd(), phi < 0 ? -1 : 1]);
       }
     }
-    const n = list.length, sphere = new THREE.IcosahedronGeometry(1, 3), g = new THREE.InstancedBufferGeometry();
+    const n = list.length, sphere = new THREE.IcosahedronGeometry(1, MATCH_ON ? SPLASH.lumpDetail : 3), g = new THREE.InstancedBufferGeometry();
     g.index = sphere.index; g.setAttribute('position', sphere.attributes.position); g.setAttribute('normal', sphere.attributes.normal);
     if (!g.index) {   // IcosahedronGeometry is not indexed: index it as a plain list
       const cnt = sphere.attributes.position.count, ix = new Uint32Array(cnt); for (let i = 0; i < cnt; i++) ix[i] = i; g.setIndex(new THREE.BufferAttribute(ix, 1));
@@ -254,7 +254,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);' : ''}
     const a1 = new Float32Array(n * 4), a2 = new Float32Array(n * 4);
     list.forEach((b, i) => { a1.set([b[0], b[1], b[2], b[3]], i * 4); a2.set([b[4], b[5], 0, 0], i * 4); });
     g.setAttribute('aLump', new THREE.InstancedBufferAttribute(a1, 4)); g.setAttribute('aLump2', new THREE.InstancedBufferAttribute(a2, 4)); g.instanceCount = n;
-    const mat = new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: !MATCH_ON,   // ?s3=match: see-through lobes (no depth write)
+    const mat = new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: !MATCH_ON || !!SPLASH.lumpDepthWrite,   // ?s3=match: no depth write for see-through lobes; the focused pass's opaque froth writes it
       blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       vertexShader: /* glsl */ `
 ${LIFT}
@@ -266,7 +266,9 @@ void main() {
   vec3 q = position;
   // lumpy, and slowly boiling
   float bump = ${MATCH_ON ? f3(SPLASH.lumpBump) : '0.16'} * sin(q.x * 3.1 + seed * 11.0) * sin(q.y * 2.7 + seed * 5.0) * sin(q.z * 3.3 + seed * 7.0)
-    + 0.06 * sin(q.x * 7.0 + q.z * 5.0 + uTime * (3.0 + seed * 2.0) + seed * 20.0);
+    + 0.06 * sin(q.x * 7.0 + q.z * 5.0 + uTime * (3.0 + seed * 2.0) + seed * 20.0)${MATCH_ON ? `
+    + ${f3(SPLASH.lumpFroth)} * sin(q.x * 6.3 + seed * 17.0) * sin(q.y * 5.7 + seed * 3.0) * sin(q.z * 6.9 + seed * 13.0 + uTime * 0.6)   // ?s3=match: frothy bulges on the outline
+   ` : ''};
   vec3 o = q * (1.0 + bump);
   o.y *= ${f3(SPLASH.lumpSquash)};
   if (o.y < -0.25) o.y = -0.25 + (o.y + 0.25) * 0.4;   // flattened where it sits in the water
@@ -279,7 +281,7 @@ void main() {
       fragmentShader: /* glsl */ `
 uniform sampler2D uLqTex; uniform float uTime; uniform vec3 uR, uU, uT;
 varying vec3 vW, vN, vO; varying float vK, vSeed;
-void main() {
+${MATCH_ON ? matchLumpDecl() : ''}void main() {
   if (vK <= 0.001) discard;
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
   float ndv = clamp(dot(N, V), 0.0, 1.0);
