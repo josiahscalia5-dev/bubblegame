@@ -93,7 +93,7 @@ export const FOCUS = {
       //    over each band's crest
       //    (Tunnel & Lighting, the kit's problem B: 4.3 -> 3.4 bands per ln r, broader flows; with the walls alone 6.1 dark
       //    bands per ray against the original's 6.3)
-      bands: { perLog: 3.4, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
+      bands: { perLog: 3.4, warp: 0.3, wobble: 0.3, blueFrom: [0.11, 0.14], splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
         // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
         // match's bands wider on screen)
         gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
@@ -117,6 +117,13 @@ export const FOCUS = {
         edge: '#6fd4fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c58d6', gap: '#142f96', gapFrom: [0.72, 0.86, 0.95],
         soft: { body: [0.12, 0.5, 0.72], accent: [0.1, 0.08, 0.95], cells: [6, 1.0] },
         turqShare: 0.35, periShare: 0.08, keep: 0.15, satBoost: 1.3, amount: 0.92 },
+      // (Tunnel & Lighting, the Art Director's item 5, the centre: within 0.12 W of it the original has no saturated blue
+      //  (3.1%), pink-violet rings (8.6%) and a warm peach core (13.0%); ours had royal flows down to 0.075 W (saturated blue
+      //  19%, pink-violet 1.7%, warm 7.9%). The blue flows start further out (bands.blueFrom, below) and inside them the
+      //  original's tight pastel rings are drawn (focusInnerGLSL): pale blue, a white ring, a pink-violet ring, salmon-peach
+      //  toward the core; colours sampled from the original by radius (pink-violet #e1adeb-#eea0f0, salmon-peach #edada0))
+      innerRings: { r: [0.03, 0.045, 0.115, 0.135], white: '#f6f2fa', pale: '#9dbff5', pink: '#e4a2ec', peach: '#eeaf9e',
+        whiteAt: [0.22, 0.4], pinkAt: [0.48, 0.8], soft: 0.05, peachTo: [0.07, 0.085], twist: 0.18, amount: 0.9 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it

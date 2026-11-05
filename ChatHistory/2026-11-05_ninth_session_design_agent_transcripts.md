@@ -423,8 +423,30 @@ Centre now: pink-violet 1.7% (target 6-10), warm 7.9% (10-14), saturated blue 19
 - 19:59 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_before.png
 - 19:59 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/core_detail.py
 - 19:59 `Bash`: Core classes by radius ring
+- 20:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:00 `Bash`: Find the core tint line
+- 20:00 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:00 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_cands.json
+- 20:00 `Bash`: Render and measure centre candidates
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core1_crop.png
+- 20:01 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:02 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:02 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_cands2.json
+- 20:02 `Bash`: Render and measure revised centre candidates
+- 20:03 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core2_crop.png
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 20:03 `Edit`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/core_detail.py
+**Agent** (20:03 UTC):
 
-_215 tool steps._
+Now I'll write C4 plus the twist into `FOCUS.match` and capture with the standard tool.
+
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 20:03 `Bash`: Build, capture and measure the centre step
+- 20:04 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/corefinal_crop.png
+- 20:04 `Bash`: Pixel 7 capture after centre change
+
+_233 tool steps._
 
 ---
 
@@ -846,5 +868,20 @@ The Hough count barely moves (110 to 105) because about 87 of its detections nea
 All four items committed. Now the final checks, starting with `?s3=match` pixel identity against `71f7fa7` at 3.0 s.
 
 - 19:59 `Bash`: Capture ?s3=match at base and now
+- 20:00 `Bash`: Compare match frames before and after
+**Agent** (20:00 UTC):
 
-_218 tool steps._
+`?s3=match` is byte-identical (canvas md5 equal, 0 differing pixels, page too). Now the normal game the same way, then `s3_func`.
+
+- 20:00 `Bash`: Capture the normal game at base and now
+**Agent** (20:02 UTC):
+
+Normal game identical too. Now `s3_func` on `focus`.
+
+- 20:02 `Bash`: Run the functional gameplay check on focus
+- 20:04 `Bash`: Rerun s3_func saving the full output
+- 20:05 `Bash`: Summarize s3_func results
+- 20:05 `Bash`: Find the Pixel 7 capture script
+- 20:05 `Bash`: Capture the Pixel 7 framing now and at base
+
+_225 tool steps._

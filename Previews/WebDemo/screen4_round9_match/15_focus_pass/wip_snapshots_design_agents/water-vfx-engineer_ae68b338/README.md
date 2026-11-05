@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: splash round her, floor)
 
-- **Taken:** 2026-11-05 20:00 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:05 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-ae68b33859f973010` (local only), started from `565eb07`.
 - **Its own commits so far:** 
   - `b5fb9d3 Water & VFX focus item 4 (?s3=focus only): the tunnel's bubbles off its centre`

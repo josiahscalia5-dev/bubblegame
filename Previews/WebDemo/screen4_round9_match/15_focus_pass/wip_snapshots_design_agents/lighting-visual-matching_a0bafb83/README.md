@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: objects, bands, centre)
 
-- **Taken:** 2026-11-05 20:00 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:05 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a0bafb8338e8bc494` (local only), started from `565eb07`.
 - **Its own commits so far:** 
   - `340b117 Screen 4 ?s3=focus, the walls' white splashes fewer and chunkier, broken shapes, crisp white (Tunnel & Lighting, AD item 4)`

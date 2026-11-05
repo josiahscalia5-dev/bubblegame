@@ -887,7 +887,7 @@ index 0000000..6205d94
 +    if not l.startswith(' '): cur = l.split()[0]; continue
 +    if cur in ('ring_upper', 'ring_left', 'centre') and l.split()[0] in who: print(f'  zone {cur:10s}', l.strip())
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..fcf21d6 100644
+index 2f39f0e..ac9d83d 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -25,14 +25,28 @@ export const FOCUS = {
@@ -954,11 +954,11 @@ index 2f39f0e..fcf21d6 100644
 -      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
 +      //    (Tunnel & Lighting, the kit's problem B: 4.3 -> 3.4 bands per ln r, broader flows; with the walls alone 6.1 dark
 +      //    bands per ray against the original's 6.3)
-+      bands: { perLog: 3.4, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
++      bands: { perLog: 3.4, warp: 0.3, wobble: 0.3, blueFrom: [0.11, 0.14], splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
          // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
          // match's bands wider on screen)
          gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
-@@ -76,9 +106,17 @@ export const FOCUS = {
+@@ -76,9 +106,24 @@ export const FOCUS = {
        //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
        //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
        //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
@@ -976,10 +976,17 @@ index 2f39f0e..fcf21d6 100644
 +        edge: '#6fd4fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c58d6', gap: '#142f96', gapFrom: [0.72, 0.86, 0.95],
 +        soft: { body: [0.12, 0.5, 0.72], accent: [0.1, 0.08, 0.95], cells: [6, 1.0] },
 +        turqShare: 0.35, periShare: 0.08, keep: 0.15, satBoost: 1.3, amount: 0.92 },
++      // (Tunnel & Lighting, the Art Director's item 5, the centre: within 0.12 W of it the original has no saturated blue
++      //  (3.1%), pink-violet rings (8.6%) and a warm peach core (13.0%); ours had royal flows down to 0.075 W (saturated blue
++      //  19%, pink-violet 1.7%, warm 7.9%). The blue flows start further out (bands.blueFrom, below) and inside them the
++      //  original's tight pastel rings are drawn (focusInnerGLSL): pale blue, a white ring, a pink-violet ring, salmon-peach
++      //  toward the core; colours sampled from the original by radius (pink-violet #e1adeb-#eea0f0, salmon-peach #edada0))
++      innerRings: { r: [0.03, 0.045, 0.115, 0.135], white: '#f6f2fa', pale: '#9dbff5', pink: '#e4a2ec', peach: '#eeaf9e',
++        whiteAt: [0.22, 0.4], pinkAt: [0.48, 0.8], soft: 0.05, peachTo: [0.07, 0.085], twist: 0.18, amount: 0.9 },
        // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
        royal: { amount: 0.1 },
        // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
-@@ -92,9 +130,17 @@ export const FOCUS = {
+@@ -92,9 +137,17 @@ export const FOCUS = {
        //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
        //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
        //    band phase per pixel) over which they fade out where they would be under about two pixels
@@ -1001,10 +1008,10 @@ index 2f39f0e..fcf21d6 100644
    },
    // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after it is defined, before it hands its splash, liquid and
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..9329811 100644
+index 83acc58..58df6f0 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
-@@ -360,6 +360,14 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
+@@ -360,41 +360,78 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
  // body (the arc's own pick: the currents), deeper cobalt, then a dark gap; the derived water's own light and dark kept as
  // variation. Colours are the original's measured ring-zone colours, written through the inverse of the walls' display
  // compensation (lift, saturation) so they land as measured. Sets fRq, the ribbon phase the flecks follow.
@@ -1016,13 +1023,42 @@ index 83acc58..9329811 100644
 +  return mix(mix(fcH(i, s), fcH(i + vec2(1.0, 0.0), s), f.x), mix(fcH(i + vec2(0.0, 1.0), s), fcH(i + vec2(1.0, 1.0), s), f.x), f.y);
 +}
 +`;
++// the screen colour before matchWall's lift and saturation (both applied at its end): for colours drawn inside matchWall
++function preLiftSat(M, hex) {
++  const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
++  const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
++  return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
++}
++// ?s3=focus only (the Art Director's item 5, the kit's "modest warm centre glow concentrated round the inner arcs"): the
++// original's tight pastel rings round its warm core, measured by radius round the centre (r < 0.12 W: salmon-peach #edada0
++// at 0.04-0.07 W, pink-violet #e1adeb-#eea0f0 at 0.07-0.12 W between white rings, almost no saturated blue inside 0.12 W;
++// ours had royal flows down to 0.075 W). Concentric bands on the walls' own band spacing, flowing outward with them; across
++// each band pale blue, a white ring (whiteAt), then a soft pink-violet ring (pinkAt: its place in the band, soft: the rings'
++// soft edges), salmon-peach instead of pink toward the core (peachTo: [full to, out] in rw); r: [in, full, full to, out] in
++// rw; after the mid vortex's whitening
++// and the core's tint (which would wash the pink out), before the hue pull, lift and saturation (colours pre-compensated)
++function focusInnerGLSL(M) {
++  const I = M.innerRings, B = M.bands;
++  return /* glsl */ `  {   // ?s3=focus: the original's pastel inner rings round the warm core (tunnel_r9_focus.js walls.innerRings)
++    float iz = smoothstep(${f4(I.r[0])}, ${f4(I.r[1])}, rw) * (1.0 - smoothstep(${f4(I.r[2])}, ${f4(I.r[3])}, rw));
++    float ik = fract(lr * ${f4(B.perLog)} + tu * ${f4(B.spiral)} + (vr.b - 0.5) * ${f4(B.wobble)} - uTime * ${f4(B.flow * B.perLog)} - uHeroTravel * ${f4(B.travel * B.perLog)}
++      + ${f4(I.twist || 0)} * sin(6.2831853 * tu * 2.0 + lr * 1.6 + uTime * 0.35));   // (bent a little, as the original's: not a target)
++    float ipk = smoothstep(${f4(I.pinkAt[0] - I.soft)}, ${f4(I.pinkAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.pinkAt[1] - I.soft)}, ${f4(I.pinkAt[1] + I.soft)}, ik));
++    vec3 iring = mix(${preLiftSat(M, I.pink)}, ${preLiftSat(M, I.peach)}, 1.0 - smoothstep(${f4(I.peachTo[0])}, ${f4(I.peachTo[1])}, rw));
++    float iwk = smoothstep(${f4(I.whiteAt[0] - I.soft)}, ${f4(I.whiteAt[0] + I.soft)}, ik) * (1.0 - smoothstep(${f4(I.whiteAt[1] - I.soft)}, ${f4(I.whiteAt[1] + I.soft)}, ik));
++    vec3 icol = mix(mix(${preLiftSat(M, I.pale)}, ${preLiftSat(M, I.white)}, iwk), iring, ipk);
++    c = mix(c, icol, iz * ${f4(I.amount)});
++  }
++`;
++}
  function focusRibbonsGLSL(M) {
    const R = M.ribbons;
-   const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
-@@ -367,34 +375,39 @@ function focusRibbonsGLSL(M) {
-     const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
-     return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
-   };
+-  const pre = (hex) => {   // the screen colour before matchWall's lift and saturation (both applied after this block)
+-    const n = parseInt(hex.slice(1), 16), t = [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+-    const l = 0.2126 * t[0] + 0.7152 * t[1] + 0.0722 * t[2];
+-    return `vec3(${t.map((v) => f4(Math.min(Math.max((l + (v - l) / M.sat) * (1 - M.lift) + M.lift, 0), 1))).join(', ')})`;
+-  };
++  const pre = (hex) => preLiftSat(M, hex);
 +  // (the user's kit, 18:26 UTC, problem B: "tighter hard-outline ribbons, more even concentric circles": the ribbons were a
 +  // sawtooth across each band (the dark gap jumped straight to the light cyan edge where the phase wrapped) and each arc was
 +  // pushed by a step offset keyed on its band's index (hard breaks at every arc end and band boundary, dark lines where the
@@ -1077,7 +1113,7 @@ index 83acc58..9329811 100644
        float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
        c = mix(c, rc, ${f4(R.amount)} * bz * bout * rKeep);
      }
-@@ -419,7 +432,10 @@ function focusFlecksGLSL(M) {
+@@ -419,7 +456,10 @@ function focusFlecksGLSL(M) {
        fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
        float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
        float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
@@ -1089,7 +1125,7 @@ index 83acc58..9329811 100644
        vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
        vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
        float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
-@@ -427,7 +443,11 @@ function focusFlecksGLSL(M) {
+@@ -427,7 +467,11 @@ function focusFlecksGLSL(M) {
        float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
        float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
        float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
@@ -1102,7 +1138,7 @@ index 83acc58..9329811 100644
      }
  `;
  }
-@@ -440,6 +460,7 @@ uniform vec2 uMatchVP, uMatchRes;
+@@ -440,6 +484,7 @@ uniform vec2 uMatchVP, uMatchRes;
  ${RIM_SAMPLE}
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
@@ -1110,7 +1146,7 @@ index 83acc58..9329811 100644
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
  // normal (toward the axis), T0 the path's direction
  vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
-@@ -484,7 +505,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+@@ -484,7 +529,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
    // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
    // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
    // than the pixels (seam-free: from the wrap-corrected derivatives)
@@ -1119,7 +1155,16 @@ index 83acc58..9329811 100644
    {
      float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
        - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
-@@ -551,6 +572,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
+@@ -539,7 +584,7 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
+   gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+   c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
+   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
+-  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
++${FOCUS_ON && M.innerRings ? focusInnerGLSL(M) : ''}  {   // the walls' electric blue toward the approved's royal hue (its median 215 degrees against our 210): hue 203-216 pulled
+       // to about 218 by bringing green down; the cyan streaks (205 degrees and under) and the warm patches kept (MATCH.walls.royal)
+     float tq = (c.g - c.r) / max(c.b - c.r, 1e-4);   // 0 at 240 degrees, 1 at 180 (blue above green above red)
+     float rk = step(c.r, c.g) * step(c.g, c.b) * smoothstep(0.3, 0.42, tq) * (1.0 - smoothstep(0.52, 0.58, tq)) * wz * ${f4(M.royal.amount)};
+@@ -551,6 +596,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
    vec3 col = mtUndisplay(c);
    // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
    col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
@@ -1128,7 +1173,7 @@ index 83acc58..9329811 100644
    // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
    vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
    vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
-@@ -652,6 +675,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -652,6 +699,7 @@ export function matchCollectibles({ coins, gems, socks }) {
        if (!k.turn || !k.turn.children[0]) continue;
        const model = k.turn.children[0], pose = new THREE.Group();
        pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
@@ -1136,7 +1181,7 @@ index 83acc58..9329811 100644
        k.turn.remove(model); pose.add(model); k.turn.add(pose);
      }
      report.sockPose = MATCH.sockPose;
-@@ -660,6 +684,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -660,6 +708,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }
