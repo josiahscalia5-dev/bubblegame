@@ -666,3 +666,21 @@ Everything is saved to your GitHub repository, and GitHub confirms it has the co
 
 The 5-minute autosave is also running again, so all of this keeps saving automatically. The phone video of the character riding into the washing machine is still recording; I'll send it when it's done.
 
+---
+
+### Automatic notice · 2026-11-05 21:06 UTC
+
+_Agent "Tunnel &amp; Lighting: framing, sock, walls" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 12:30am (UTC) (error type rate_limit, HTTP 429, request id req_011CgkTnnD7qNsSXsjhdCNhm, model sent to the API: claude-opus-5-5)_
+
+---
+
+### Claude · 2026-11-05 21:06 UTC
+
+You've hit your 5-hour limit · resets 12:30am (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 21:06 UTC
+
+_Agent "Water &amp; VFX: froth foam, tunnel flecks" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 12:30am (UTC) (error type rate_limit, HTTP 429, request id req_011CgkTo3mm1Acw9bxZpS1L4, model sent to the API: claude-opus-5-5)_
+

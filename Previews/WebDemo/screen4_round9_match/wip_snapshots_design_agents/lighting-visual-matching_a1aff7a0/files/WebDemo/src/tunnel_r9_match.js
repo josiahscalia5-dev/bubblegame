@@ -56,6 +56,10 @@ const HERO_BUBBLES = [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1
 // the drum) moves with it, so they keep their screen places exactly (the path is straight from 6 m before the mouth to 9 m in);
 // only the world's own objects (the character and the water round it, the tube, the floor) change on screen. The far tunnel
 // keeps its vanishing point (the aim point moves with the camera). The camera stays inside the drum, 0.44 m nearer the mouth.
+// (Scale k round the dome top: du = 2.66 (1 - 1/k), dh = -0.61 (1 - 1/k); 0.44 / -0.10 is k = 1.2. The rim, housing, bubbles
+// and brushes follow MATCH_CAM by themselves; the collectibles' layout below (and farGem, secondSock, coinScales' u) holds
+// numbers re-solved for this MATCH_CAM: if it changes, re-solve them with Previews/WebDemo/screen4_round9_match/
+// 13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs ITEMS / DELTA, which adds the water heights.)
 export const MATCH_CAM = { dx: -0.006, dh: -0.10, du: 0.44 };
 const restage = ([u, x, h, ...rest]) => [u + MATCH_CAM.du, x + MATCH_CAM.dx, h + MATCH_CAM.dh, ...rest];
 // The near hero bubbles that were too big (Water & VFX's finding; the focused pass): {index: [dx, dh, radius]} after the

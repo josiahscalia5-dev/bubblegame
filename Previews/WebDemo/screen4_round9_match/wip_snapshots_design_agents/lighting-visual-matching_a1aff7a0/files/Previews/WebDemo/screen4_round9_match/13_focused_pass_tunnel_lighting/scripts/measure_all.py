@@ -22,6 +22,8 @@ out.append('== character.py (lead: saturated pink, the brief\'s measure; body: a
 out.append(run(['character.py', F['before'], F['now3.0'], F['now2.85'], F['now3.1']]))
 out.append('== char_rows.py (the silhouette\'s left-right edges by row)')
 out.append(run(['char_rows.py', F['before'], F['now3.0'], F['now2.85'], F['now3.1']]))
+out.append('== warm_radius.py (the rainbow band: warm share by radius round the vanishing point, upper sector)')
+out.append(run(['warm_radius.py'] + [f'{k}={v}' for k, v in F.items()]))
 for s in ('walls.py', 'rings.py', 'palette.py', 'rim.py', 'strips.py', 'zones.py'):
     out.append(f'== {s}'); out.append(run([s], env))
 out.append('== objects.py (approved, before, now 3.0; full-resolution frames)')

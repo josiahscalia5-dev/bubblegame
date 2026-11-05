@@ -1592,8 +1592,13 @@ Halving the floor glints did not change the count (51 / 52), so those specks are
 Far bubbles are back to 41 (target at least 29); the centre has 19 (32 at `b91e952`, 12 after the main pass). Now pixel identity, gameplay and moves on this exact bundle (`0f6f7d22`).
 
 - 20:57 `Bash`: Pixel identity for the follow-up bundle
+- 21:06 `Bash`: Gameplay check and moves on the follow-up bundle
+**Agent** (21:06 UTC):
 
-_197 tool steps._
+You've hit your 5-hour limit · resets 12:30am (UTC)
+
+
+_198 tool steps._
 
 ---
 
@@ -1970,5 +1975,51 @@ Final frames captured (draw calls 206 / 205 / 201, as before). Now the identity 
 
 - 20:56 `Bash`: Final pixel-identity proof against the baseline bundle
 - 21:01 `Bash`: Final gameplay functional test
+- 21:02 `Bash`: Final Pixel 7 capture
+**Agent** (21:03 UTC):
 
-_211 tool steps._
+Now regenerating the comparison images, blend and `measured.txt` from the final frames.
+
+- 21:04 `Bash`: Regenerate evidence images, blend and measurements
+- 21:04 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/measured.txt
+- 21:04 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/closeup_tunnel_walls_origi
+**Lead → agent** (21:04 UTC):
+
+[Image: original 2647x700, displayed at 2000x529. Multiply coordinates by 1.32 to map to original image.]
+
+**Agent** (21:04 UTC):
+
+Final numbers are in. One maintainability point before writing up: the collectibles' re-solved layout is tied to `MATCH_CAM`, so I'll document how to re-solve if the lead changes it.
+
+- 21:04 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 21:04 `Bash`: Rebuild and confirm bundle unchanged by the comment
+- 21:04 `Bash`: Rebuild and check bundle checksum
+- 21:04 `Bash`: Show working tree status and diff stat
+**Agent** (21:05 UTC):
+
+I'll drop the two extra raw-canvas frames (large, not needed) and the colour-mask sock script that I abandoned in favour of the probe's mesh box, then write the evidence README the lead asked for.
+
+- 21:05 `Bash`: Trim evidence and read the cost and build report
+**Agent** (21:05 UTC):
+
+Let me save the rainbow-radius sampling I used as a script, so that measurement is reproducible, and add it to `measured.txt`.
+
+- 21:05 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/warm_radius.py
+- 21:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/measure_all.py
+- 21:05 `Bash`: Regenerate measured.txt with the warm-radius section
+**Agent** (21:05 UTC):
+
+Now the evidence README.
+
+- 21:06 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/README.md
+**Agent** (21:06 UTC):
+
+Committing the final pass.
+
+- 21:06 `Bash`: Stage final source, bundle and evidence
+**Agent** (21:06 UTC):
+
+You've hit your 5-hour limit · resets 12:30am (UTC)
+
+
+_225 tool steps._
