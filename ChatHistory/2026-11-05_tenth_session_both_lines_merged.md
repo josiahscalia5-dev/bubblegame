@@ -419,3 +419,52 @@ Waiting for the two check jobs:
 
 `s3_func` passes on the step 3 build (lanes, jump, 12 coins, 1 gem, 2 socks, no console errors). `r2_func` is still running. Waiting for it:
 
+Step 3 is committed and pushed (`13fccff`). Updating the hand-off notes and checking the autosave is still running:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/24_step3_tunnel_rings/05_FINAL_original_vs_checkpoint_vs_step2_vs_step3_3.00s.jpg, Previews/WebDemo/screen4_round9_match/24_step3_tunnel_rings/02_closeup_tunnel_centre.jpg, Previews/WebDemo/screen4_round9_match/24_step3_tunnel_rings/03_closeup_mascot_waterline.jpg, Previews/WebDemo/screen4_round9_match/24_step3_tunnel_rings/04_pixel7_original_vs_step2_vs_step3.jpg]_
+
+Steps 2 and 3 are done, each tested and saved separately, and I've stopped here for your visual check. All comparisons are seed 7, 3.0 s after the tap, the same camera, no steering, at 767 × 1536. Everything is on GitHub at `ef00066`, and the 5-minute autosave is still running.
+
+**Before I changed anything:** I saved a clean checkpoint, `d84aee5`. GitHub won't accept tags from this environment, so the checkpoint is that commit.
+
+## Step 2: interface and framing (`a715434`)
+
+- **Matched:** the hearts, coin and gem counters and the mission banner now sit at your original's measured places and sizes, within about 0.1 units (a unit is 1/269 of the screen width). The banner now sits right on the gold rim, as in yours.
+- **Steering hint:** hidden once she's in the drum. It still shows as onboarding on the slide.
+- **Kept whole on purpose:** your original is cropped, and its pause button and both power buttons run off the edge. Keeping them whole moves the pause button 8.5 units further left and Turbo Spin 15 units further left. The power buttons start slightly higher on a 1:2 screen; on the Pixel 7 they match.
+- **Checks:** tested at the 1:2 frame and on the Pixel 7. All gameplay passes, with no console errors.
+
+## Step 3: tunnel rings (`13fccff`)
+
+**The cause:** the walls' texture came from your Reference 5, a different picture, with twisting ribbons drawn over it at their own spacing. The ring field was also centred in two places, about 0.03 of the screen width apart. That's why the ring pattern didn't line up with yours.
+
+**What changed:**
+- The walls now draw your original's own rings: its tunnel unwrapped round the centre, with objects masked out, so every ring keeps your original's radius and colour.
+- The whole ring field is centred on your original's centre, and still moves with the 3D tunnel as she rides.
+- The twisting ribbons and the pale inner circles are gone.
+- Bubbles and white streaks over the walls are reduced, because they were hiding the rings.
+
+**Measured at 3.0 s:**
+
+| measure | before | after step 3 |
+|---|---|---|
+| ring position vs your original, upper / left / right (+1 = same rings at the same radii) | +0.61 / +0.26 / +0.24 | +0.79 / +0.56 / +0.67 |
+| wall-pattern correlation | −0.05 | +0.22 |
+
+The second measure can reach at most about +0.63 here, which is what the ring map itself scores.
+
+**Checks:** `match`, the normal game and every older version are pixel-identical to before. Gameplay passes (lanes, jump, coins, gem, socks, hearts, pause, Bubble Blast, Turbo Spin) with no console errors.
+
+## What still differs from your original
+
+1. **The middle of the tunnel and the floor ahead are paler and more lavender than yours.**
+   - Middle: 25% lavender against your 12%.
+   - Floor ahead: 22% lavender against your 3%.
+   - It isn't the rings: the walls alone reproduce your colours there.
+   - It comes from objects drawn over the far end (distant brushes, socks, small bubbles), and from the floor being slightly see-through over the drum's lavender shell.
+2. **Softer than yours.** Your rings are crisp saturated bands covered in white splash flecks. Ours are your ring colours smoothed round each ring, with the flecks deliberately reduced.
+3. **The water round her** hasn't been touched yet. That's the next step in your plan, after your review.
+4. **Only exact at the hero moment.** The rings are real 3D, so they sit at your original's radii at 3.0 s and stream past either side of it.
+
+**Do you accept steps 2 and 3?** If yes, the next pass is the water: blue water with clear bubble domes and no foam cushion. In the same pass I'd fix the pale, lavender far end and floor.
+
