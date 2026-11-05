@@ -17,12 +17,16 @@ overlay. Keep these as they are unless the user says otherwise:
 
 - **Main reference for Screen 4, above every other image:** the user's ORIGINAL APPROVED Screen 4,
   `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536, the
-  largest copy). Its close-ups are `09_APPROVED_CHARACTER_WATER_CONTACT.png` and `10_APPROVED_TUNNEL_LIGHT_AND_DEPTH.png`
-  in the same folder. The four design agents use the same file. Concept sheets, boards and the smaller copy below are
-  secondary and never override it. Measure against this file: pass it as `--approved` to `compare_s4.py` and as the
+  largest copy). Its close-ups (crops of it, detail only) are `Design/ReferencePacks/2026-11-04_Tripo_Reference_Kit/09_APPROVED_CHARACTER_WATER_CONTACT.png`
+  and `10_APPROVED_TUNNEL_LIGHT_AND_DEPTH.png`, and the crops `01_...` to `08_...` in `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/03_SCREEN_4_CROPS/`. It is the ONLY Screen 4
+  target, for the four design agents and every tool. NOT targets: the EXACT TARGET board `03_SCREEN4_EXACT_TARGET_BOARD.png`,
+  the guides `01_ROUND6_VISUAL_CONSTRUCTION_GUIDE.png`, `05_...` and `06_...`, concept sheets (`2026-11-04_Round5_References/`,
+  the Tripo kit's `01_NEW_...`, `07_VFX_ONLY_...`, `08_VFX_ONLY_...`), `2026-11-05_Water_Look_References/`,
+  `Design/ApprovedScreens/` and any newly generated image. Measure against this file: pass it as `--approved` to `compare_s4.py` and as the
   first image to `hero_shares.py`.
 - Other approved targets: `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/`
-  - Screen 3 is `01_APPROVED_SCREEN_3_OPENING.jpg`; Screen 4 is `02_APPROVED_SCREEN_4_FULL.jpg`.
+  - Screen 3 is `01_APPROVED_SCREEN_3_OPENING.jpg`. The Screen 4 file there, `02_APPROVED_SCREEN_4_FULL.jpg`, is a 453 x 907
+    copy of the original: do not use it; use the original above.
   - Close-up crops are in `03_SCREEN_4_CROPS/`. Read `00_READ_ME_FIRST.txt` first.
 - The game: `WebDemo/`.
   - Source is in `src/`. Build with `cd WebDemo && node build.mjs`; the bundle `game.bundle.js` is committed.
@@ -94,7 +98,7 @@ commit, whether GitHub really has it, and the files saved.
 
    ```bash
    "$BW_PY" WebDemo/tools/screen4/compare_s4.py \
-     --approved Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/02_APPROVED_SCREEN_4_FULL.jpg \
+     --approved Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg \
      --out /tmp/cmp --name now r2=/tmp/frames/r2/t4.2.png r3=/tmp/frames/r3/t4.2.png
    ```
 

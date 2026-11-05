@@ -6,8 +6,12 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
 
 - **Only Screen 4.** No work on Screen 1, the Laundry Toss intro, the cartoon girl, the castle or other levels unless asked.
 - **The authority is the ORIGINAL APPROVED Screen 4:**
-  `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`. Concept sheets and
-  boards are secondary.
+  `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536). It is the ONLY Screen 4 target, for every agent, tool and comparison.
+  - Close-ups for detail only, all crops of it: `Design/ReferencePacks/2026-11-04_Tripo_Reference_Kit/09_APPROVED_CHARACTER_WATER_CONTACT.png`,
+    `10_APPROVED_TUNNEL_LIGHT_AND_DEPTH.png` and `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/03_SCREEN_4_CROPS/01_...` to `08_...`.
+  - NOT targets: the EXACT TARGET board (`03_SCREEN4_EXACT_TARGET_BOARD.png`), the guides (`01_ROUND6_...`, `05_...`, `06_...`),
+    concept sheets, the Tripo kit's `VFX_ONLY` images, the water-look references, `Design/ApprovedScreens/` and any newly
+    generated image. `02_APPROVED_SCREEN_4_FULL.jpg` is a smaller copy: use the original.
 - **First priority: a visibly blue/turquoise water body** through the tunnel, wrapping the pink character's lower body.
   White foam is only an accent on top. Never a white foam blanket, and never bloom, haze or a pale wash as a substitute.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D

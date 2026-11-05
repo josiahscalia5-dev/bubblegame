@@ -5,6 +5,25 @@ tools: Read, Grep, Glob, Bash
 model: inherit
 ---
 
+## THE ONE REFERENCE (5 November 2026, the user's rule; it overrides every other reference in this file)
+
+- The ONLY authoritative visual target for Screen 4 is the user's ORIGINAL CLASSIC APPROVED Screen 4:
+  `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536, md5 `991279e3...`). Every comparison, measurement and side-by-side uses this one file.
+- Close-ups, for detail only (each checked to be a crop of that same image):
+  - `Design/ReferencePacks/2026-11-04_Tripo_Reference_Kit/09_APPROVED_CHARACTER_WATER_CONTACT.png` and `10_APPROVED_TUNNEL_LIGHT_AND_DEPTH.png`;
+  - `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/03_SCREEN_4_CROPS/01_...` to `08_...` (splash round the hero, foreground water, the two brushes, coins/gem/sock, tunnel
+    rings, coins, bubbles).
+- NOT targets, never used for matching:
+  - the later EXACT TARGET board `03_SCREEN4_EXACT_TARGET_BOARD.png`;
+  - the guides `01_ROUND6_VISUAL_CONSTRUCTION_GUIDE.png`, `05_SCREEN4_WHAT_CLAUDIA_MUST_FIX.png` and
+    `06_SCREEN4_EXACT_MATCH_TARGET_BREAKDOWN.png`;
+  - concept sheets: `Design/ReferencePacks/2026-11-04_Round5_References/`, and in the Tripo kit
+    `01_NEW_SCREEN4_ASSET_OVERVIEW.png`, `07_VFX_ONLY_BUBBLES_LOOK.png` and `08_VFX_ONLY_WATER_SPLASH_LOOK.png`;
+  - the water-look references `Design/ReferencePacks/2026-11-05_Water_Look_References/`;
+  - `Design/ApprovedScreens/` (an older Screen 4);
+  - any newly generated image.
+- `02_APPROVED_SCREEN_4_FULL.jpg` (453 x 907) is the same picture at a lower resolution: use the original instead.
+
 You test Bubble Wash Kingdom, a playable three.js r170 mobile game in `WebDemo/`. Your job is to prove that the real game
 still plays correctly and to produce honest visual evidence. You do not edit game source; you may write capture output to a
 scratch folder or `Previews/WebDemo/<round folder>/` when asked.
@@ -70,8 +89,8 @@ was not run or could not finish, say so plainly.
   - A warmer peach-gold core.
 - **References:**
   - the Art Director's measured targets: `Previews/WebDemo/screen4_round8_art_director_baseline/README.md`;
-  - the user's water-look references, secondary to the approved Screen 4:
-    `Design/ReferencePacks/2026-11-05_Water_Look_References/`;
+  - the user's water-look references (`Design/ReferencePacks/2026-11-05_Water_Look_References/`) are no longer used for
+    matching (THE ONE REFERENCE, above);
   - capture tools: `WebDemo/tools/screen4/liquid_shots.cjs`, `liquid_moves.cjs`, `liquid_shares.py`.
 
 ## Previous: the Round 7 HERO SCENE, `?s3=hero` (5 November 2026; this section overrides the Round 7 notes below)
@@ -95,9 +114,8 @@ was not run or could not finish, say so plainly.
 - The visual test version is now **Round 7** (`?s3=round7` = Round 6 + the rich preview + the Round 7 pass). New visual
   changes go only there; `?s3=round6`, `?s3=round6,rich`, Round 5, Round 4, older switches and the normal game must stay
   pixel-identical. Use `S3=round7` wherever the commands above say `S3=round5`.
-- The three Screen 4 references, all in `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/`:
-  `01_Original_Approved_Screen_4.jpg` (the authority), `05_SCREEN4_WHAT_CLAUDIA_MUST_FIX.png` and
-  `06_SCREEN4_EXACT_MATCH_TARGET_BREAKDOWN.png` (build guides; their drawn mock-ups never override the original).
+- The ONE Screen 4 reference: `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`. The boards `05_SCREEN4_WHAT_CLAUDIA_MUST_FIX.png` and
+  `06_SCREEN4_EXACT_MATCH_TARGET_BREAKDOWN.png` are not targets (THE ONE REFERENCE, above).
 - Hero moment: about **3.0 s** after the tap (the washer entrance); 3.3 s and 4.2 s show the way in and the drum interior.
 - Who owns which file (so two specialists never edit the same file at once):
   - Tunnel & Lighting: `WebDemo/src/tunnel_r6.js` (settings in `ROUND6.r7`, round7-gated code), and round7-gated lines in

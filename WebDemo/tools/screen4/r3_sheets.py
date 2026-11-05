@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 FR, OUT = sys.argv[1], sys.argv[2]
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 APP = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS')
-S3A, S4A = os.path.join(APP, '01_APPROVED_SCREEN_3_OPENING.jpg'), os.path.join(APP, '02_APPROVED_SCREEN_4_FULL.jpg')
+S3A, S4A = os.path.join(APP, '01_APPROVED_SCREEN_3_OPENING.jpg'), os.path.join(ROOT, 'Design', 'ReferencePacks', '2026-11-04_Round6_Construction_Guide', '01_Original_Approved_Screen_4.jpg')   # the ONE Screen 4 reference (was the 453 x 907 copy)
 os.makedirs(OUT, exist_ok=True)
 BG, FG, DIM = (18, 16, 30), (245, 245, 255), (175, 170, 200)
 
