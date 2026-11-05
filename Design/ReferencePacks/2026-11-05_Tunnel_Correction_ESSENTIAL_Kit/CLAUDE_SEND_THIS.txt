@@ -1,0 +1,38 @@
+CLAUDE CODE — SCREEN 4 TUNNEL / WATER COVERAGE CORRECTION
+
+IMPORTANT: The ONLY approved target is 00_ORIGINAL_CLASSIC_MASTER.png (also 01_APPROVED_ORIGINAL_SCREEN_ACTUAL.png). The older stylized/AI-designed infographic is an explanation, NOT literal approved game art. The 02_CURRENT_FOCUS_BUILD_ACTUAL.png and three-way comparison are actual captures for problem identification.
+
+Goal: restore the lower-left inside-tunnel water coverage and the shape/color/light of the rotating water so that the playable frame matches the original. Do not redesign the scene.
+
+A — FIRST PRIORITY: EXPOSED INNER WALL / GRAY-LAVENDER SHOULDER
+Study 04_REAL_SIDE_BY_SIDE_MARKED.png and 05_LOWER_LEFT_WATER_VS_GRAY_WEDGE.png. In the current image, the lower-left inside curve near/below the large gold paw coin shows a lavender/gray rigid strip/wedge separating the water surface from frame edge. In the original that region reads as continuous luminous BLUE WATER with water splashes and highlights. Preserve the upper metallic/golden rim, which is visible in the approved original; only address the unwanted exposed lower-left interior wall.
+
+Inspect the existing actual scene graph/engine before modifying: inner wall/housing geometry, water mesh radius/coverage, texture mapping, camera clipping, transparency, render order, depth testing, sorting, and masks. Determine whether this is an uncovered gap, a housing mesh drawn over the water, a shader color leak or an incorrect camera radius/offset. Fix the REAL 3D scene or shader accordingly; don't paint a static opaque blue overlay over the screenshot or hide defects behind bubbles. Maintain perspective, reflections, water animation, geometry and collisions.
+
+B — SECOND PRIORITY: WATER CIRCLE, SHAPE AND LIGHT
+Use 06_TUNNEL_CIRCLES_LIGHT_AND_FLOW.png and 07_PREVIOUS_AUTHENTIC_WATER_BAND_COMPARISON.png. Approved water presents layered, irregular, broad cobalt and turquoise flows that bend inward and blend softly; brighter cyan/watery white accents; modest warm center glow; clear sense of depth. Current water contains tighter hard-outline ribbons, more even concentric circles, and an overcomplicated white/bubble pattern. Correct spatial band widths, curvature, water occupancy, inner/outer radius transition, UV/flow distortion and emission/lighting. Warm illumination should be supportive and concentrated around inner arcs/center, not flatten the entire tunnel into peach/lilac.
+
+C — DO NOT CHANGE / COLLATERAL PROTECTION
+Keep original CLASSIC screenshot as authority, keep the pink fluffy character ON TOP OF BLUE WATER (no giant white/lavender foam cushion), and preserve current gameplay controls, HUD, collectibles, sock behavior, movement, collision and progression unless a minimal dependent adjustment is required. Preserve the camera composition as the approved screenshot requires. Do not add a 2D reference background. Do not use the illustrative correction-board image as the approved target.
+
+D — TECHNICAL PROCESS
+1. First create a safe checkpoint on the current branch and record the Git commit.
+2. Inspect project files and name the exact mesh/material/shader/renderer controls responsible for the visible gray wedge and water bands. Print concise evidence; don't assume this project uses Three.js before inspecting dependencies.
+3. Capture the same test state (3.0 seconds, same seed/lane/camera, phone aspect ratio and DPR) and produce BEFORE side-by-side / 50% opacity overlay. Use compare_frames.py and/or reference_overlay.html if helpful; numerical pixel differences are only diagnostic because the approved source has a distinct painterly style.
+4. Make one small edit to remove the unwanted lower-left wedge without losing the upper metallic rim; verify the affected region in screenshots.
+5. Make a separate controlled pass adjusting the water-ring silhouette, band width/irregularity, cyan/cobalt balance, highlight softness and center light; keep waves animated. The optional flowmap is a starting direction field; only use it if its mapping aligns with the engine UVs; it is NOT an exact-match shader or mesh.
+6. Render screenshots after each step, show actual gameplay at the same moment, including upper-left, mid tunnel, lower-left corner and full screen. Save and push tested source changes to GitHub with commit hashes, not just evidence images.
+7. Test HUD, hearts, pause, Bubble Blast, Turbo Spin, movement and collectibles. Test at 1:2 target and at least one other phone aspect ratio; no extra gray wedge, clipping or holes, flicker/z-fighting, see-through artifacts or drops in gameplay function.
+
+CHECKLIST — NOT FINISHED UNTIL ALL ARE VERIFIED
+[ ] Lower-left inner-wall wedge is covered with animated WATER, rather than an opaque static patch.
+[ ] Approved top metal rim remains where it belongs.
+[ ] A real water-surface/ring mesh or shader change (not a bubble overlay) improves the target.
+[ ] Flowing cobalt/turquoise shapes have appropriate widths and irregularity, not hard white ring outlines.
+[ ] Warm center glow is readable; tunnel depth feels closer to approved screenshot.
+[ ] Existing pink character still sits atop blue water; no chunky white foam cushion.
+[ ] Real 3.0-s screenshot / zoom comparisons show where match improved and where it still differs.
+[ ] Both gameplay and mobile-screen tests pass.
+[ ] Source changes saved and pushed; final hash shared.
+
+OUTPUT BEFORE DECLARING DONE: (1) full approved/current/new screenshot comparison, (2) zoom of the exact lower-left corner, (3) zoom of water-ring structure, (4) changed source filenames + concise explanation, (5) tests passed/failed + commit hash. Don't claim an exact recreation solely based on subjective or pixel score.
