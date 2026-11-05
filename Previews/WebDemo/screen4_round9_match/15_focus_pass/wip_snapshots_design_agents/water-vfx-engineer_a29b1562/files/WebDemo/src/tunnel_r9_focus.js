@@ -92,17 +92,20 @@ export const FOCUS = {
     //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
     //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
     //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
+    //    (item 1, the AD's review) rag: their upper outline eaten into irregular points (from 1 - n.v [start, + noise], cells
+    //    per unit radius), so they read as splash crests, not smooth blue domes; cap: a broken white cap with round blue holes
+    //    on top (the normal's up [from, to], how much, hole cells per unit radius)
     crest: { low: '#1a5fe0', mid: '#1f9af6', hi: '#8fe0ff', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
-      edge: 0.85, alpha: 0.9, spec: 1.6 },
+      edge: 0.85, alpha: 0.9, spec: 1.6, rag: [0.35, 0.5, 5.0], cap: [0.2, 0.55, 0.95, 7.0] },
     // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque blue
     //    water (no see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac); its white
     //    crest only as a broken highlight at her base
-    swellFront: { dip: 0.08, full: 22, to: 48 },
-    // (item 1) the crest's mounds ([phi, height (m), half width (degrees)]; match's, with the two either side of her body
-    // raised and narrower: 13 degrees +0.07 m -> 10 degrees +0.19, and -21 degrees -0.1 m -> -14 degrees +0.11), so the splash
-    // crests rise over her lower corners as in the original (her pink narrows to its base there, not cut flat: 0.21 W wide
-    // 0.02 H above her lowest point, the original's 0.20), the front kept low (her base at about y 0.86-0.88)
-    swell: { mounds: [[32, 0.079, 10], [10, 0.19, 7], [-4, 0.0, 6], [-14, 0.11, 7], [-42, 0.0, 9], [55, 0.049, 9], [-62, 0.055, 9]] },
+    // (item 1, with Tunnel & Lighting's new camera, 18:50 UTC: off [-0.162, 1.126, -3.1], lookY 1.655, lookX 0.142, fov 68)
+    // lift: the crest 0.02 m higher, about what the spiky teeth cut out of it (focusSwellGLSL), so her base stays at about
+    // y 0.85 (the original's 0.86) and her pink narrows to it as in the original (0.23 W wide 0.02 H above her lowest point;
+    // the original 0.20, before 0.27). (Raised mounds either side of her body were tried with the old camera, and covered her
+    // to the middle with the new one: match's mounds are kept.)
+    swellFront: { dip: 0.08, full: 22, to: 48, lift: 0.02 },
     //    (the grazing-angle rim low and bluer)
     //    (the swell's upper face, between her body and its crest, is all "at the crest" for its white layer: at match's 0.95
     //    that white washed the whole face pale lavender-white (found with a colour-coded diagnostic render); 0.3 leaves

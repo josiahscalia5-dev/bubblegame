@@ -268,8 +268,20 @@ Now update NOTES.md with the camera decision as the first line.
 - 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/tasks/bmgwg74ug.output
 - 18:53 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
 - 18:53 `Bash`: Build, capture, and check the seam
+- 18:54 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/seam2.png
+- 18:54 `Bash`: Check seam in page frames
+- 18:54 `Bash`: Commit seam fix
+- 18:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 18:55 `Bash`: Measure brush silhouettes, ours and original
+- 18:56 `Bash`: Gridded comparison for object placement
+- 18:56 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/grid.png
+- 18:57 `Bash`: Probe picks for brushes, sock, coins, gem
+**Agent** (18:57 UTC):
 
-_117 tool steps._
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+
+_125 tool steps._
 
 ---
 
@@ -491,5 +503,18 @@ Now capture before and after with the new camera.
 - 18:53 `Bash`: Compare before and step 1 with the new camera
 - 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_cam1.png
 - 18:53 `Bash`: Capture two crest settings with the new camera
+- 18:55 `Bash`: Crop and measure the two camera trials
+- 18:55 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_c1011.png
+- 18:55 `Bash`: Crop the side water at both edges
+- 18:55 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_side_l.png
+- 18:55 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_side_r.png
+- 18:55 `Bash`: Show the lump shader function
+- 18:56 `Bash`: Add ragged outline and broken white cap to the side crests
+- 18:56 `Bash`: Set camera-tested crest defaults and the ragged side crests, rebuild
+- 18:56 `Bash`: Capture defaults and a whiter variant with the new camera
+**Agent** (18:57 UTC):
 
-_134 tool steps._
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+
+_143 tool steps._

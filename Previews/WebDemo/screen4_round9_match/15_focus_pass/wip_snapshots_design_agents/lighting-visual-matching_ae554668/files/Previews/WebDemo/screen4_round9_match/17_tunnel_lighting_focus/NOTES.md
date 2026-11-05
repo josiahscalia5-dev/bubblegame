@@ -66,7 +66,22 @@ where (1 - smoothstep(-0.15, 0.3, upA)) * (1 - smoothstep(0.2, 0.32, u - uStart)
 and the navy edge. Lavender share (h 235-300, s 0.08-0.45, v > 0.6) in x 0-0.10, y 0.45-0.80: 11.2% -> 0.4%; x 0.90-1.0: 10.6% -> 1.1%.
 Pixels changed only in y 0.615-0.783; none above y 0.60. Pixel 7 412x839: no wedge (`frames/phone_412x839_focus_A_3.00s.png`).
 
-Noticed (not yet looked into): a hard horizontal edge on the left wall at about y 0.48 (1:2) / 0.52 (Pixel 7), x 0-0.2,
-present before and after fix A.
+## 2b. The horizontal seam on the left wall (the lead, after `a61541c`)
+
+A hard straight line across the wall water at the vanishing point's height (canvas y 0.527, x 0-0.35), there before fix A too
+(not from the problem-A region: that changes only y 0.615-0.783). Cause: `focusRibbonsGLSL` keys its per-band picks (arc count,
+arc offsets, body colour, and so the flecks' phase fRq) on floor(rq), and the band phase bs = lr * perLog + tu * spiral steps by
+one band where tu wraps (screen-left, the horizontal through the camera in the cross-section, `mtPlace`). Every wall point at
+the camera's height projects onto the horizon line, so with the camera at the axis height (h 1.6) the step is a straight line.
+**Fixed (`2975aea`):** the ribbons count the angle from straight down (rTu = tu < -0.25 ? tu + 1 : tu; rq gets +spiral there), so
+the step falls on the tube's bottom, under the water floor. Largest row jump on the left wall (x 0.02-0.30, y 0.48-0.62): 28.2 ->
+14.0 (now the coin's edge; median 6). Page frame: the 0.531 jump (26.4) gone.
 
 ## 3. Objects after the camera (next)
+
+Probe at 3.0 s (new camera): camera track (u -5.4, x -0.16, h 1.6). Picks (screen x, y, distance -> track u rel. tunnelStart, x, h):
+lower-right coin (0.893, 0.733): d 3.0 -> (-2.6, -0.81, 0.83); d 3.5 -> (-2.1, -0.92, 0.70); d 4.0 -> (-1.65, -1.02, 0.58).
+big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.98, 1.11).
+small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
+gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
+Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.

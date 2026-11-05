@@ -780,3 +780,21 @@ Yes, there are two previews:
 
 Everything is being saved every 5 minutes. I'll merge and push each tested step with its hash.
 
+---
+
+### Automatic notice · 2026-11-05 18:57 UTC
+
+_Agent "Tunnel &amp; Lighting: camera, ribbons, objects" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 9:50pm (UTC) (error type rate_limit, HTTP 429, request id req_011CgkHwk2k2qvYJfdPRPfDP, model sent to the API: claude-opus-5-5)_
+
+---
+
+### Claude · 2026-11-05 18:57 UTC
+
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 18:57 UTC
+
+_Agent "Water &amp; VFX: splash round her, floor" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 9:50pm (UTC) (error type rate_limit, HTTP 429, request id req_011CgkHyGMuNscd65ZMUcLHh, model sent to the API: claude-opus-5-5)_
+
