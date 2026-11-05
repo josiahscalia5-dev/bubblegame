@@ -676,3 +676,31 @@ Ok
 
 Nothing new to show you yet: the Water & VFX specialist is still building the stronger swirl, the deeper tunnel centre and the translucent white splashes. The autosave is still pushing to GitHub every 5 minutes. I'll send the foam-off and foam-on gameplay beside your approved Screen 4 once the specialist reports back.
 
+---
+
+### You · 2026-11-05 00:25 UTC
+
+Is it almost done?
+
+---
+
+### Claude · 2026-11-05 00:25 UTC
+
+_[Sent you files: .claude/worktrees/agent-ad9d09342620a8834/Previews/WebDemo/screen4_round8_liquid/approved_vs_liquid_nofoam_vs_liquid_3.00s.jpg]_
+
+Nearly, but not finished. The Water & VFX specialist has made its full-resolution comparisons and is now checking that your older versions still render exactly as before. I've sent you its 3.0 s comparison as a preview, not the final result.
+
+**Improved:**
+- The tunnel walls now read as swirling bands of blue water with white streaks running through them, not a pale pipe.
+- The floor under and around your pink character is blue water rather than a white blanket.
+- The character's lower body sits in see-through water.
+
+**Still wrong:**
+- **The foam-on version looks almost the same as foam-off.** The translucent white splashes you asked for around the character aren't visible yet. In your artwork there are broken white splash crests, spray, droplets and clear bubbles around its lower body and to its right, with blue showing between them. I've sent the specialist that correction.
+- **The centre and upper rings are still lighter and more lavender than your artwork's deep cobalt and cyan.**
+
+**Left to do:**
+1. The specialist adds the visible splashes, finishes the check on the older versions, commits, and reports back.
+2. I merge it and have the Gameplay & Visual Testing specialist confirm the game still plays correctly.
+3. I send you the full set: foam off and on, at 2.85, 3.0 and 3.1 s, beside your ORIGINAL approved Screen 4.
+
