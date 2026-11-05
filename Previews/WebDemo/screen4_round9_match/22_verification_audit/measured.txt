@@ -1,0 +1,145 @@
+# Verification audit measurements, 3.0 s, seed 7, 538 x 1076 game area, HUD on (liquid_shots.cjs). Scripts copied from 20_focused_pass_merged/scripts (Tunnel & Lighting's and the Art Director's), unchanged. approved = the original.
+== character.py (approved, match, focus)
+original                     lead area 4.11% | x 0.268-0.712 (w 0.444) y 0.703-0.858 | centroid (0.502, 0.778) | dome top 0.705 | widest 0.398 at y 0.782 | mid-height width 0.401
+original                     body area 5.32% | x 0.212-0.732 (w 0.520) y 0.694-0.865 | centroid (0.502, 0.777) | dome top 0.696 | widest 0.494 at y 0.807 | mid-height width 0.444
+original                     lead area 4.11% | x 0.268-0.712 (w 0.444) y 0.703-0.858 | centroid (0.502, 0.778) | dome top 0.705 | widest 0.398 at y 0.782 | mid-height width 0.401
+original                     body area 5.32% | x 0.212-0.732 (w 0.520) y 0.694-0.865 | centroid (0.502, 0.777) | dome top 0.696 | widest 0.494 at y 0.807 | mid-height width 0.444
+match_t3.00                  lead area 2.76% | x 0.333-0.732 (w 0.400) y 0.710-0.887 | centroid (0.515, 0.812) | dome top 0.717 | widest 0.346 at y 0.831 | mid-height width 0.320
+match_t3.00                  body area 7.28% | x 0.158-0.801 (w 0.643) y 0.699-0.888 | centroid (0.476, 0.801) | dome top 0.700 | widest 0.641 at y 0.826 | mid-height width 0.572
+focus_t3.00                  lead area 2.13% | x 0.309-0.708 (w 0.400) y 0.704-0.855 | centroid (0.521, 0.792) | dome top 0.713 | widest 0.349 at y 0.804 | mid-height width 0.238
+focus_t3.00                  body area 4.61% | x 0.234-0.712 (w 0.478) y 0.695-0.855 | centroid (0.483, 0.778) | dome top 0.700 | widest 0.476 at y 0.786 | mid-height width 0.459
+== walls.py
+== approved
+  upper wall r.12-.45 a30-150      S 0.58 V 0.93 med #5b99ef | white  8.8 pale 11.2 azure 13.3 elect 43.0 deep  3.9 laven  8.7 oth 11.1 warm  6.4 | hi  7.0% sparkle 0.20% | hp1.5 0.030 hp5 0.094 | obj 4%
+  side walls r.15-.45 |a|<30|>150  S 0.34 V 0.94 med #d2c4ee | white 26.7 pale 11.4 azure  3.6 elect 15.8 deep  4.1 laven 18.0 oth 20.4 warm 13.6 | hi 23.3% sparkle 0.29% | hp1.5 0.029 hp5 0.100 | obj 31%
+  mid vortex r.08-.20              S 0.40 V 0.93 med #a7c2ee | white 22.3 pale 17.9 azure  9.0 elect 25.0 deep  2.1 laven 12.1 oth 11.6 warm  6.4 | hi 16.8% sparkle 0.38% | hp1.5 0.033 hp5 0.097 | obj 5%
+  centre r<.06                     S 0.23 V 0.95 med #f1d7db | white 36.7 pale 10.2 azure  0.0 elect  0.0 deep  0.0 laven 11.1 oth 42.0 warm 46.7 | hi 26.0% sparkle 0.81% | hp1.5 0.025 hp5 0.082 | obj 47%
+  floor ahead y.58-.68 x.3-.75     S 0.33 V 0.94 med #aed7f3 | white 30.5 pale 28.7 azure 15.9 elect 11.2 deep  3.6 laven  3.0 oth  7.0 warm  3.5 | hi 25.0% sparkle 0.38% | hp1.5 0.029 hp5 0.086 | obj 0%
+  play area y.21-.83               S 0.40 V 0.91 med #a6b3ed | white 21.0 pale 12.4 azure  6.9 elect 19.4 deep  4.1 laven 19.8 oth 16.3 warm  8.8 | hi 17.7% sparkle 0.18% | hp1.5 0.032 hp5 0.093 | obj 22%
+== match
+  upper wall r.12-.45 a30-150      S 0.42 V 0.97 med #8fc0f7 | white 19.4 pale 23.0 azure  8.4 elect 32.2 deep  5.3 laven  5.3 oth  6.4 warm  5.3 | hi 14.5% sparkle 2.21% | hp1.5 0.054 hp5 0.097 | obj 0%
+  side walls r.15-.45 |a|<30|>150  S 0.40 V 0.95 med #9ec8f7 | white 19.8 pale 25.5 azure 11.5 elect 19.5 deep  2.4 laven 14.0 oth  7.3 warm  3.2 | hi 14.3% sparkle 2.17% | hp1.5 0.060 hp5 0.111 | obj 37%
+  mid vortex r.08-.20              S 0.32 V 0.95 med #b8cff7 | white 27.6 pale 29.6 azure  8.8 elect 12.3 deep  2.6 laven 14.3 oth  4.8 warm  2.6 | hi 18.6% sparkle 3.23% | hp1.5 0.052 hp5 0.089 | obj 5%
+  centre r<.06                     S 0.17 V 0.92 med #edd3d5 | white 42.5 pale  0.1 azure  0.0 elect  0.0 deep  0.0 laven 12.6 oth 44.7 warm 39.9 | hi 18.5% sparkle 3.54% | hp1.5 0.047 hp5 0.075 | obj 23%
+  floor ahead y.58-.68 x.3-.75     S 0.39 V 0.90 med #94bcf2 | white 16.2 pale 20.0 azure 19.1 elect 10.1 deep  4.2 laven 18.3 oth 12.0 warm  2.1 | hi 12.3% sparkle 0.43% | hp1.5 0.049 hp5 0.093 | obj 3%
+  play area y.21-.83               S 0.41 V 0.92 med #8fb3f5 | white 16.1 pale 18.7 azure 10.2 elect 23.6 deep  3.7 laven 17.6 oth 10.1 warm  5.0 | hi 11.5% sparkle 1.34% | hp1.5 0.047 hp5 0.088 | obj 24%
+== focus
+  upper wall r.12-.45 a30-150      S 0.49 V 0.94 med #6ea9f7 | white 13.4 pale 18.5 azure 10.9 elect 39.9 deep  6.8 laven  6.0 oth  4.6 warm  3.1 | hi 11.2% sparkle 0.65% | hp1.5 0.055 hp5 0.106 | obj 1%
+  side walls r.15-.45 |a|<30|>150  S 0.41 V 0.93 med #91abf6 | white 20.6 pale 18.6 azure  4.0 elect 27.3 deep  4.9 laven 16.7 oth  8.0 warm  2.0 | hi 14.2% sparkle 1.35% | hp1.5 0.058 hp5 0.113 | obj 32%
+  mid vortex r.08-.20              S 0.38 V 0.95 med #a7bff6 | white 18.7 pale 32.8 azure  3.8 elect 21.7 deep  3.6 laven 15.6 oth  3.8 warm  2.2 | hi 16.2% sparkle 1.42% | hp1.5 0.057 hp5 0.102 | obj 6%
+  centre r<.06                     S 0.19 V 0.94 med #ebd2dc | white 44.9 pale 13.1 azure  0.0 elect  0.0 deep  0.0 laven 10.4 oth 31.5 warm 40.6 | hi 23.6% sparkle 2.91% | hp1.5 0.050 hp5 0.079 | obj 14%
+  floor ahead y.58-.68 x.3-.75     S 0.33 V 0.93 med #b1cbf3 | white 28.3 pale 33.0 azure  2.5 elect 12.7 deep  1.2 laven 21.6 oth  0.8 warm  2.4 | hi 21.5% sparkle 0.92% | hp1.5 0.054 hp5 0.099 | obj 3%
+  play area y.21-.83               S 0.40 V 0.92 med #96b4f3 | white 17.6 pale 23.2 azure  4.8 elect 23.7 deep  4.1 laven 18.7 oth  7.9 warm  4.8 | hi 13.8% sparkle 0.80% | hp1.5 0.046 hp5 0.089 | obj 21%
+== normal
+  upper wall r.12-.45 a30-150      S 0.45 V 0.94 med #94bdf3 | white  4.9 pale 34.2 azure 11.8 elect 25.6 deep  0.0 laven  2.5 oth 21.0 warm 18.4 | hi  3.2% sparkle 0.67% | hp1.5 0.034 hp5 0.063 | obj 11%
+  side walls r.15-.45 |a|<30|>150  S 0.62 V 0.96 med #52b3f6 | white  1.9 pale 16.6 azure 28.0 elect 48.9 deep  0.6 laven  0.8 oth  3.3 warm  2.6 | hi  1.7% sparkle 0.25% | hp1.5 0.026 hp5 0.047 | obj 2%
+  mid vortex r.08-.20              S 0.68 V 0.94 med #4b94f5 | white  1.2 pale  2.8 azure 22.3 elect 52.8 deep  1.2 laven  3.3 oth 16.5 warm 15.4 | hi  0.8% sparkle 0.12% | hp1.5 0.034 hp5 0.061 | obj 18%
+  centre r<.06                     S 0.72 V 0.96 med #3e7ff3 | white  0.7 pale  0.4 azure  0.9 elect 60.2 deep  0.2 laven  1.7 oth 35.9 warm 35.6 | hi  0.3% sparkle 0.12% | hp1.5 0.034 hp5 0.058 | obj 20%
+  floor ahead y.58-.68 x.3-.75     S 0.65 V 0.96 med #4cb0f6 | white  0.0 pale  5.5 azure 39.0 elect 43.1 deep  2.5 laven  3.5 oth  6.3 warm  5.2 | hi  0.0% sparkle 0.04% | hp1.5 0.033 hp5 0.056 | obj 57%
+  play area y.21-.83               S 0.51 V 0.95 med #79bdf6 | white  5.9 pale 27.5 azure 22.3 elect 32.3 deep  1.2 laven  2.1 oth  8.6 warm  6.3 | hi  5.0% sparkle 0.67% | hp1.5 0.031 hp5 0.057 | obj 13%
+== rings.py
+approved  up 50-130     bright bands  8 at r 0.038, 0.065, 0.113, 0.175, 0.205, 0.240, 0.265, 0.443 | log-spacing mean 0.353 CV 0.54 | band contrast 0.184 | along-ring lum std 0.148 | radial-profile std 0.134
+approved  left 140-175  bright bands 10 at r 0.073, 0.105, 0.163, 0.205, 0.238, 0.263, 0.308, 0.370, 0.418, 0.440 | log-spacing mean 0.200 CV 0.60 | band contrast 0.167 | along-ring lum std 0.118 | radial-profile std 0.136
+approved  right 5-40    bright bands  7 at r 0.123, 0.208, 0.258, 0.303, 0.348, 0.380, 0.453 | log-spacing mean 0.218 CV 0.66 | band contrast 0.201 | along-ring lum std 0.169 | radial-profile std 0.126
+match     up 50-130     bright bands  8 at r 0.080, 0.133, 0.155, 0.190, 0.255, 0.335, 0.400, 0.423 | log-spacing mean 0.238 CV 0.55 | band contrast 0.094 | along-ring lum std 0.113 | radial-profile std 0.098
+match     left 140-175  bright bands 10 at r 0.053, 0.098, 0.125, 0.165, 0.188, 0.245, 0.293, 0.378, 0.400, 0.445 | log-spacing mean 0.237 CV 0.65 | band contrast 0.133 | along-ring lum std 0.101 | radial-profile std 0.096
+match     right 5-40    bright bands 11 at r 0.053, 0.118, 0.158, 0.185, 0.205, 0.233, 0.280, 0.318, 0.348, 0.400, 0.458 | log-spacing mean 0.216 CV 0.94 | band contrast 0.128 | along-ring lum std 0.112 | radial-profile std 0.079
+focus     up 50-130     bright bands  7 at r 0.048, 0.080, 0.135, 0.225, 0.255, 0.295, 0.428 | log-spacing mean 0.366 CV 0.47 | band contrast 0.163 | along-ring lum std 0.133 | radial-profile std 0.117
+focus     left 140-175  bright bands  9 at r 0.045, 0.060, 0.085, 0.105, 0.138, 0.250, 0.308, 0.370, 0.413 | log-spacing mean 0.277 CV 0.50 | band contrast 0.185 | along-ring lum std 0.089 | radial-profile std 0.136
+focus     right 5-40    bright bands 11 at r 0.043, 0.065, 0.093, 0.150, 0.185, 0.200, 0.240, 0.318, 0.353, 0.445, 0.488 | log-spacing mean 0.244 CV 0.55 | band contrast 0.126 | along-ring lum std 0.150 | radial-profile std 0.089
+normal    up 50-130     bright bands  5 at r 0.048, 0.098, 0.118, 0.153, 0.208 | log-spacing mean 0.369 CV 0.56 | band contrast 0.115 | along-ring lum std 0.088 | radial-profile std 0.079
+normal    left 140-175  bright bands  5 at r 0.050, 0.228, 0.258, 0.325, 0.390 | log-spacing mean 0.514 CV 1.13 | band contrast 0.102 | along-ring lum std 0.084 | radial-profile std 0.061
+/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/22_verification_audit/scripts/rings.py:30: RuntimeWarning: Mean of empty slice
+  print(f"{lab:9s} {sector:13s} bright bands {len(pk):2d} at r {', '.join(f'{x:.3f}' for x in pr)} | log-spacing mean {np.nanmean(sp):.3f} CV {np.nanstd(sp)/np.nanmean(sp):.2f} | band contrast {amp:.3f} | along-ring lum std {np.nanmean(angcv):.3f} | radial-profile std {np.nanstd(prof):.3f}")
+/root/.bubblewash-tools/visual/lib/python3.13/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+normal    right 5-40    bright bands  2 at r 0.095, 0.468 | log-spacing mean nan CV nan | band contrast 0.304 | along-ring lum std 0.083 | radial-profile std 0.145
+== rim.py
+approved  warm rim band per column: 0.05:- 0.10:- 0.15:- 0.20:0.225-0.241 0.25:0.229-0.230 0.30:- 0.35:- 0.40:- 0.45:- 0.50:- 0.55:0.396-0.399 0.60:0.393-0.403 0.65:0.396-0.417 0.70:0.232-0.241 0.75:0.220-0.261 0.80:0.255-0.273 0.85:0.237-0.270 0.90:0.249-0.277 0.95:0.263-0.282
+          median thickness 0.019H  median colour #eea98b  warm-rim pixels 1.12% of frame
+match     warm rim band per column: 0.05:- 0.10:- 0.15:- 0.20:- 0.25:- 0.30:0.081-0.083 0.35:- 0.40:- 0.45:- 0.50:- 0.55:0.399-0.401 0.60:0.402-0.406 0.65:0.399-0.416 0.70:0.412-0.417 0.75:0.217-0.234 0.80:0.255-0.267 0.85:0.230-0.248 0.90:0.238-0.257 0.95:0.248-0.269
+          median thickness 0.015H  median colour #f5cb97  warm-rim pixels 0.78% of frame
+focus     warm rim band per column: 0.05:- 0.10:- 0.15:0.263-0.265 0.20:- 0.25:- 0.30:- 0.35:- 0.40:- 0.45:- 0.50:- 0.55:- 0.60:0.414-0.417 0.65:0.399-0.419 0.70:0.212-0.226 0.75:0.243-0.266 0.80:0.251-0.269 0.85:0.227-0.246 0.90:0.237-0.256 0.95:0.282-0.309
+          median thickness 0.019H  median colour #f0bc8f  warm-rim pixels 1.15% of frame
+normal    warm rim band per column: 0.05:0.081-0.092 0.10:0.292-0.332 0.15:0.273-0.283 0.20:0.392-0.393 0.25:0.220-0.225 0.30:0.209-0.213 0.35:0.404-0.419 0.40:0.311-0.356 0.45:0.323-0.336 0.50:0.354-0.359 0.55:0.400-0.419 0.60:0.390-0.409 0.65:0.390-0.419 0.70:0.209-0.214 0.75:0.402-0.408 0.80:0.356-0.362 0.85:0.283-0.286 0.90:0.391-0.409 0.95:0.081-0.095
+          median thickness 0.011H  median colour #e9ae86  warm-rim pixels 1.62% of frame
+== strips.py
+approved   left strip x<.08 y.40-.76    lavender 13.4 blue 49.3 (deep  3.4) white 21.1 S 0.40 med #9aabed lum-std 0.159
+approved   right strip x>.92 y.40-.76   lavender 15.8 blue 39.1 (deep 20.8) white 17.9 S 0.46 med #b99ae7 lum-std 0.073
+approved   top bevel x.30-.70 y.25-.31  lavender 61.5 blue 31.7 (deep 10.0) white  1.1 S 0.60 med #6763d8 lum-std 0.093
+match      left strip x<.08 y.40-.76    lavender  9.8 blue 85.8 (deep  6.7) white  4.3 S 0.57 med #48a9f8 lum-std 0.029
+match      right strip x>.92 y.40-.76   lavender  7.6 blue 27.0 (deep  2.8) white 49.2 S 0.25 med #e2d4f0 lum-std 0.074
+match      top bevel x.30-.70 y.25-.31  lavender 55.5 blue 36.1 (deep  2.8) white  5.2 S 0.52 med #6d77e3 lum-std 0.086
+focus      left strip x<.08 y.40-.76    lavender  1.5 blue 70.6 (deep  4.1) white 27.6 S 0.40 med #92bff7 lum-std 0.054
+focus      right strip x>.92 y.40-.76   lavender  9.6 blue 54.6 (deep 20.6) white 19.8 S 0.48 med #6282eb lum-std 0.101
+focus      top bevel x.30-.70 y.25-.31  lavender 63.3 blue 30.4 (deep  7.6) white  0.7 S 0.55 med #6c75e2 lum-std 0.091
+normal     left strip x<.08 y.40-.76    lavender  4.1 blue 87.7 (deep  0.3) white  6.1 S 0.56 med #5db1f6 lum-std 0.033
+normal     right strip x>.92 y.40-.76   lavender  3.5 blue 89.7 (deep  2.9) white  4.5 S 0.55 med #67abf6 lum-std 0.048
+normal     top bevel x.30-.70 y.25-.31  lavender  2.6 blue 83.6 (deep  0.0) white  4.5 S 0.42 med #8bc3f5 lum-std 0.069
+== zones.py
+== approved
+  1 housing     S 0.40 V 0.83 med #a081ce | white  6.2 pale  0.7 azure  0.1 elect  5.1 deep  4.4 laven 45.5 gold  0.4 pink 15.5
+  2 whirlpool   S 0.47 V 0.94 med #c1b7eb | white 17.4 pale 11.9 azure  8.6 elect 21.0 deep  2.9 laven 10.7 gold  9.3 pink  6.8
+  3 swimmer     S 0.44 V 0.95 med #e5b5ee | white 20.6 pale 16.9 azure  2.6 elect  9.1 deep  0.2 laven  7.5 gold  7.4 pink 30.4
+  4 objects     S 0.42 V 0.94 med #dbc4ec | white 21.8 pale 14.8 azure  6.0 elect 14.1 deep  2.0 laven  8.6 gold 13.4 pink  7.3
+  5 brushes     S 0.47 V 0.91 med #b6a5e6 | white 14.8 pale  7.9 azure  6.2 elect 18.1 deep  4.1 laven 18.6 gold  6.6 pink 10.3
+  6 foreground  S 0.42 V 0.94 med #c2bbf4 | white 19.6 pale 24.9 azure  7.7 elect 12.9 deep  0.4 laven  9.8 gold  1.4 pink 20.8
+== match
+  1 housing     S 0.41 V 0.83 med #8a89d0 | white  3.5 pale  7.0 azure  0.0 elect 15.1 deep  2.6 laven 44.5 gold  0.1 pink 12.0
+  2 whirlpool   S 0.46 V 0.95 med #b1b9f6 | white 15.0 pale 19.1 azure  8.8 elect 20.6 deep  3.6 laven 10.4 gold 10.8 pink  6.4
+  3 swimmer     S 0.49 V 0.94 med #ea9acb | white  5.1 pale 12.2 azure  9.7 elect  9.2 deep  0.8 laven  1.2 gold 10.6 pink 43.6
+  4 objects     S 0.46 V 0.93 med #bebcf3 | white 15.7 pale 17.8 azure 10.6 elect 13.3 deep  2.6 laven  9.7 gold 15.4 pink  7.5
+  5 brushes     S 0.45 V 0.93 med #acabf4 | white 14.5 pale 15.1 azure  6.4 elect 19.8 deep  3.5 laven 16.1 gold  7.2 pink 10.9
+  6 foreground  S 0.43 V 0.96 med #f792c9 | white 10.3 pale 16.8 azure  1.9 elect  5.2 deep  0.4 laven  0.3 gold  3.8 pink 56.5
+== focus
+  1 housing     S 0.41 V 0.83 med #8c88cc | white  3.0 pale  5.1 azure  0.1 elect 12.3 deep  4.4 laven 43.7 gold  0.1 pink 14.3
+  2 whirlpool   S 0.47 V 0.94 med #a6b2f3 | white 15.0 pale 17.9 azure  6.0 elect 24.1 deep  3.3 laven 13.6 gold  9.9 pink  6.1
+  3 swimmer     S 0.41 V 0.95 med #dcbeed | white 14.5 pale 30.5 azure  2.6 elect 10.1 deep  0.0 laven  1.2 gold  8.6 pink 29.6
+  4 objects     S 0.43 V 0.94 med #b7bcf2 | white 17.8 pale 24.7 azure  2.8 elect 17.7 deep  2.3 laven 11.0 gold 13.3 pink  6.2
+  5 brushes     S 0.45 V 0.91 med #a3a4ee | white 13.3 pale 13.3 azure  4.7 elect 21.8 deep  4.4 laven 18.6 gold  6.4 pink 10.6
+  6 foreground  S 0.39 V 0.96 med #cac3f4 | white 15.4 pale 32.5 azure  2.2 elect 16.8 deep  0.0 laven  0.2 gold  1.7 pink 28.5
+== normal
+  1 housing     S 0.44 V 0.95 med #92c5f7 | white  8.3 pale 34.6 azure 23.2 elect 18.2 deep  1.4 laven  0.9 gold  1.1 pink  3.2
+  2 whirlpool   S 0.55 V 0.95 med #7fb2f4 | white  3.2 pale 18.7 azure 19.7 elect 33.1 deep  0.4 laven  1.8 gold  2.8 pink 10.0
+  3 swimmer     S 0.51 V 0.95 med #9dcbf7 | white  7.5 pale 28.1 azure 27.0 elect 12.2 deep  0.3 laven  1.8 gold  0.0 pink 21.8
+  4 objects     S 0.61 V 0.96 med #68a2f4 | white  1.7 pale 11.7 azure 19.7 elect 38.6 deep  0.5 laven  1.9 gold  2.3 pink 17.0
+  5 brushes     S 0.52 V 0.95 med #7fb9f4 | white  4.9 pale 22.9 azure 20.4 elect 31.7 deep  0.8 laven  1.4 gold  2.5 pink  5.0
+  6 foreground  S 0.48 V 0.97 med #7bd1f9 | white  5.5 pale 34.3 azure 57.1 elect  1.7 deep  0.4 laven  0.5 gold  0.0 pink  0.3
+== objects.py (approved, match, focus)
+== /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg 767 1536
+  gold       x 0.778-0.996 y 0.671-0.800  ctr (0.887, 0.736)  w 0.218W h 0.258W  area 2.14%
+  gold       x 0.085-0.301 y 0.544-0.660  ctr (0.193, 0.602)  w 0.216W h 0.233W  area 1.89%
+  gold       x 0.761-0.971 y 0.933-0.998  ctr (0.866, 0.965)  w 0.210W h 0.130W  area 0.72%
+  gold       x 0.087-0.213 y 0.441-0.499  ctr (0.150, 0.470)  w 0.125W h 0.115W  area 0.48%
+  gold       x 0.468-0.571 y 0.529-0.579  ctr (0.520, 0.554)  w 0.103W h 0.099W  area 0.40%
+  gold       x 0.447-0.538 y 0.039-0.075  ctr (0.493, 0.057)  w 0.091W h 0.072W  area 0.25%
+  gem/purple x 0.013-0.083 y 0.273-0.396  ctr (0.048, 0.334)  w 0.070W h 0.246W  area 0.44%
+  gem/purple x 0.372-0.639 y 0.702-0.740  ctr (0.505, 0.721)  w 0.267W h 0.076W  area 0.32%
+  gem/purple x 0.222-0.342 y 0.778-0.826  ctr (0.282, 0.802)  w 0.120W h 0.096W  area 0.23%
+  gem/purple x 0.271-0.374 y 0.489-0.529  ctr (0.323, 0.509)  w 0.103W h 0.080W  area 0.21%
+  gem/purple x 0.621-0.713 y 0.812-0.871  ctr (0.667, 0.842)  w 0.093W h 0.117W  area 0.19%
+  gem/purple x 0.692-0.771 y 0.325-0.360  ctr (0.731, 0.342)  w 0.078W h 0.070W  area 0.17%
+  gem/purple x 0.398-0.572 y 0.811-0.851  ctr (0.485, 0.831)  w 0.175W h 0.081W  area 0.14%
+  gem/purple x 0.810-0.897 y 0.043-0.073  ctr (0.853, 0.058)  w 0.087W h 0.060W  area 0.12%
+  gem/purple x 0.776-0.824 y 0.327-0.360  ctr (0.800, 0.344)  w 0.048W h 0.065W  area 0.09%
+  gem/purple x 0.291-0.375 y 0.729-0.771  ctr (0.333, 0.750)  w 0.085W h 0.086W  area 0.07%
+  gem/purple x 0.714-0.780 y 0.559-0.569  ctr (0.747, 0.564)  w 0.065W h 0.021W  area 0.04%
+  gem/purple x 0.877-0.932 y 0.411-0.435  ctr (0.905, 0.423)  w 0.055W h 0.048W  area 0.04%
+== ../frames/match_t3.00.png 807 1602
+  gold       x 0.773-0.996 y 0.672-0.804  ctr (0.885, 0.738)  w 0.223W h 0.261W  area 2.45%
+  gold       x 0.088-0.304 y 0.543-0.668  ctr (0.196, 0.605)  w 0.216W h 0.248W  area 2.14%
+  gold       x 0.088-0.213 y 0.436-0.502  ctr (0.151, 0.469)  w 0.125W h 0.131W  area 0.65%
+  gold       x 0.486-0.622 y 0.536-0.594  ctr (0.554, 0.565)  w 0.136W h 0.114W  area 0.51%
+  gold       x 0.742-0.892 y 0.863-0.938  ctr (0.817, 0.901)  w 0.150W h 0.149W  area 0.48%
+  gold       x 0.338-0.430 y 0.022-0.069  ctr (0.384, 0.046)  w 0.092W h 0.093W  area 0.34%
+  gem/purple x 0.269-0.373 y 0.489-0.535  ctr (0.321, 0.512)  w 0.104W h 0.092W  area 0.28%
+  gem/purple x 0.625-0.708 y 0.034-0.064  ctr (0.666, 0.049)  w 0.083W h 0.058W  area 0.12%
+== ../frames/focus_t3.00.png 807 1602
+  gold       x 0.095-0.297 y 0.551-0.672  ctr (0.196, 0.611)  w 0.202W h 0.239W  area 1.94%
+  gold       x 0.786-0.996 y 0.687-0.797  ctr (0.891, 0.742)  w 0.211W h 0.218W  area 1.84%
+  gold       x 0.094-0.209 y 0.441-0.509  ctr (0.152, 0.475)  w 0.115W h 0.135W  area 0.63%
+  gold       x 0.742-0.892 y 0.863-0.938  ctr (0.817, 0.901)  w 0.150W h 0.149W  area 0.48%
+  gold       x 0.477-0.607 y 0.547-0.599  ctr (0.542, 0.573)  w 0.130W h 0.103W  area 0.45%
+  gold       x 0.338-0.430 y 0.022-0.069  ctr (0.384, 0.046)  w 0.092W h 0.093W  area 0.34%
+  gem/purple x 0.274-0.375 y 0.503-0.536  ctr (0.325, 0.519)  w 0.102W h 0.064W  area 0.18%
+  gem/purple x 0.625-0.708 y 0.034-0.064  ctr (0.666, 0.049)  w 0.083W h 0.058W  area 0.12%

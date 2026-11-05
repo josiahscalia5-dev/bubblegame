@@ -1,0 +1,61 @@
+{
+ "s3": [],
+ "frames": [
+  {
+   "t": 3,
+   "state": {
+    "phase": "running",
+    "time": 3.517,
+    "z": 1.592,
+    "x": 0,
+    "y": 0.405,
+    "world": [
+     0,
+     0.405,
+     1.592
+    ],
+    "path": {
+     "pitch": 0,
+     "heading": 0,
+     "bank": 0
+    },
+    "cameraUp": [
+     0,
+     1,
+     0
+    ],
+    "lane": 1,
+    "speed": 7.21,
+    "air": false,
+    "slope": 0,
+    "pitchDeg": -0.3,
+    "leanDeg": 0,
+    "coins": 1280,
+    "gems": 36,
+    "socks": 0,
+    "collected": {
+     "coins": 0,
+     "gems": 0
+    },
+    "laps": 0,
+    "camera": [
+     0,
+     1.51,
+     -3.344
+    ],
+    "cameraPitchDeg": -2.56,
+    "particles": 137,
+    "repairedNormals": 1002065,
+    "machineryInnerX": 1.22,
+    "decorClear": {
+     "towers": 1.79,
+     "gears": 1.25,
+     "pipes": null,
+     "crowns": null
+    },
+    "rollerCandidate": null
+   }
+  }
+ ],
+ "report": "SyntaxError: \"undefined\" is not valid JSON"
+}

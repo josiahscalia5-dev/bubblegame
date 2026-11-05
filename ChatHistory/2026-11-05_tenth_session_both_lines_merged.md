@@ -209,3 +209,7 @@ Preserve the current working game and all saved progress. Show me the evidence b
 
 I'll start with what you're actually watching, since that decides everything else. No agents and no visual changes; only captures and the existing comparison tools.
 
+Captured with no console errors. Looking at the actual frames, starting with `match`:
+
+The existing scripts give clear numbers. Two more facts to pin down: which files draw the interface, and how its size compares with the original's.
+
