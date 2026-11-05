@@ -142,8 +142,39 @@ Now the gem squash code (focus-gated, visual only) in `matchCollectibles`.
 - 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_a.png
 - 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_b.png
 - 19:14 `Bash`: Look for AD sock measurements
+- 19:14 `Bash`: Check sock mentions in AD scripts
+- 19:14 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/sock.py
+- 19:14 `Bash`: Measure sock box and cuff tilt
+**Agent** (19:15 UTC):
 
-_62 tool steps._
+The colour-mask box is contaminated by white water. I'll measure the sock silhouette exactly by rendering only the first sock (everything else hidden) for the leading poses.
+
+- 19:15 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/sock_cands2.json
+- 19:15 `Bash`: Render sock poses with silhouette masks
+- 19:16 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/maskbox.py
+- 19:16 `Bash`: Measure sock mask boxes
+- 19:16 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj2/q4_mask.png
+- 19:16 `Bash`: Find hazard brush placements
+- 19:16 `Bash`: Sheet of sock poses q4, q8, q6
+- 19:17 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/socks_c.png
+**Lead → agent** (19:17 UTC):
+
+[Image: original 2412x645, displayed at 2000x535. Multiply coordinates by 1.21 to map to original image.]
+
+- 19:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:17 `Bash`: Rebuild bundle
+- 19:17 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj3_tune.json
+- 19:17 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/mask_cands.json
+- 19:17 `Bash`: Render tuned objects: full, objects-only, first sock only
+- 19:18 `Bash`: Measure sock, coins, gem, brushes after tune
+**Agent** (19:19 UTC):
+
+Coins and gem now land on the original's spots (gem height 0.034). Total gold is 4.96%, above the 4.0-4.8% band, so the two big coins need trimming. Let me look at the frame.
+
+- 19:19 `Bash`: Side-by-side of original and tuned objects
+- 19:19 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/obj3_sheet.png
+
+_81 tool steps._
 
 ---
 
@@ -274,5 +305,43 @@ Now I'll rework the swell face's white pattern: from uniform round dots to broke
 - 19:13 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s3z.png
 - 19:13 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
 - 19:13 `Bash`: Capture a debug render of the face coordinates
+- 19:14 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_dbg2w.png
+- 19:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_match_water.js
+- 19:15 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:15 `Bash`: Build and capture the neighbour-cell arcs
+- 19:15 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4z.png
+- 19:15 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4w.png
+- 19:16 `Bash`: Crop both side areas of s4
+- 19:16 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4r.png
+- 19:16 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_s4l.png
+- 19:16 `Bash`: Measure zones on s4 and find spray settings
+**Agent** (19:16 UTC):
 
-_63 tool steps._
+Clear progress over the base on every measure round her. I'll save the frames, update NOTES.md, and commit this as step 1a.
+
+- 19:16 `Bash`: Save before and step 1a frames with full measures
+- 19:16 `Bash`: Copy before and step 1a frames into evidence
+- 19:16 `Bash`: Run all measures on before and step 1a
+**Agent** (19:16 UTC):
+
+Now update NOTES.md and commit step 1a.
+
+- 19:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:16 `Bash`: Stage step 1a source, bundle and evidence
+- 19:16 `Bash`: Commit step 1a
+- 19:17 `Bash`: Inspect hero water spray settings and merge
+- 19:17 `Bash`: Read the spray settings chain and the droplet builder
+- 19:17 `Bash`: Check deepMerge array semantics
+- 19:17 `Bash`: Capture lighter side crests and no side crests
+- 19:18 `Bash`: Compare s4, v1, v2 crops
+- 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12.png
+**Lead → agent** (19:18 UTC):
+
+[Image: original 2626x235, displayed at 2000x179. Multiply coordinates by 1.31 to map to original image.]
+
+- 19:18 `Bash`: Crop right and left sides for the variants
+- 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12r.png
+- 19:18 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_v12l.png
+- 19:18 `Bash`: Capture two swell-front variants without side lumps
+
+_89 tool steps._

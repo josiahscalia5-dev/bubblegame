@@ -652,6 +652,7 @@ export function matchCollectibles({ coins, gems, socks }) {
       if (!k.turn || !k.turn.children[0]) continue;
       const model = k.turn.children[0], pose = new THREE.Group();
       pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
+      if (MATCH.sockLift) pose.position.set(...MATCH.sockLift);   // (m, in the rocking group's frame: y up; visual only)
       k.turn.remove(model); pose.add(model); k.turn.add(pose);
     }
     report.sockPose = MATCH.sockPose;

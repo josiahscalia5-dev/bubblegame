@@ -1,8 +1,16 @@
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..f72e527 100644
+index 83acc58..94adf66 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
-@@ -660,6 +660,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -652,6 +652,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+       if (!k.turn || !k.turn.children[0]) continue;
+       const model = k.turn.children[0], pose = new THREE.Group();
+       pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
++      if (MATCH.sockLift) pose.position.set(...MATCH.sockLift);   // (m, in the rocking group's frame: y up; visual only)
+       k.turn.remove(model); pose.add(model); k.turn.add(pose);
+     }
+     report.sockPose = MATCH.sockPose;
+@@ -660,6 +661,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }

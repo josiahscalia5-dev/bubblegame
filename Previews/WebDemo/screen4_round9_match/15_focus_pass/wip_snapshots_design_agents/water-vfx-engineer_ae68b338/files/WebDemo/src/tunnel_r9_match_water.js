@@ -319,16 +319,21 @@ function focusSwellGLSL() {
       // 3. broken white crest arcs down the face (the original's water there: curving white crest lines over blue, not
       //    dots): per cell one arc of a circle, mostly its upper side, tilted a little, broken; clustered in bands that run
       //    down the face (blue gaps between), fewer further down
-      vec2 fsLq = vec2(s * ${f4(L.cell)} + fl * 0.3, fsPd * ${f4(L.cell)} - fl * ${f4(L.flow)}), fsLi = floor(fsLq);
-      vec2 fsLo = fract(fsLq) - 0.5 - (vec2(lqHash(fsLi + 4.0), lqHash(fsLi + 7.0)) - 0.5) * 0.3;
+      //    (the 2 x 2 nearest cells, so an arc may reach past its own cell without being cut off square)
+      vec2 fsLq = vec2(s * ${f4(L.cell)} + fl * 0.3, fsPd * ${f4(L.cell)} - fl * ${f4(L.flow)}), fsLb = floor(fsLq - 0.5);
       float fsReach = 1.0 - smoothstep(0.0, ${f4(L.reach)}, fsE);
-      float fsLr = mix(${f4(L.r[0])}, ${f4(L.r[1])}, lqHash(fsLi + 2.0));
-      float fsLw = mix(${f4(L.w[0])}, ${f4(L.w[1])}, lqHash(fsLi + 3.0)) * (0.6 + 0.4 * fsReach);
-      float fsLa = atan(fsLo.x, -fsLo.y) - (lqHash(fsLi + 13.0) - 0.5) * ${f4(L.tilt)};
-      float fsLs = mix(${f4(L.span[0])}, ${f4(L.span[1])}, lqHash(fsLi + 9.0));
-      float fsArc = (1.0 - smoothstep(fsLw * 0.55, fsLw, abs(length(fsLo) - fsLr))) * (1.0 - smoothstep(fsLs * 0.75, fsLs, abs(fsLa)));
       float fsBand = smoothstep(${f4(L.band[0])}, ${f4(L.band[1])}, texture2D(uLqTex, vec2(s * ${f4(L.band[2])} + fl * 0.1, fsPd * ${f4(L.band[2] * 1.4)} - fl * 0.5)).b);
-      float fsLace = step(1.0 - ${f4(L.share)} * fsReach * fsBand, lqHash(fsLi + 11.0)) * fsArc;
+      float fsLace = 0.0;
+      for (int j = 0; j < 4; j++) {
+        vec2 fsLi = fsLb + vec2(mod(float(j), 2.0), floor(float(j) * 0.5));
+        vec2 fsLo = fsLq - fsLi - 0.5 - (vec2(lqHash(fsLi + 4.0), lqHash(fsLi + 7.0)) - 0.5) * 0.4;
+        float fsLr = mix(${f4(L.r[0])}, ${f4(L.r[1])}, lqHash(fsLi + 2.0));
+        float fsLw = mix(${f4(L.w[0])}, ${f4(L.w[1])}, lqHash(fsLi + 3.0)) * (0.6 + 0.4 * fsReach);
+        float fsLa = atan(fsLo.x, -fsLo.y) - (lqHash(fsLi + 13.0) - 0.5) * ${f4(L.tilt)};
+        float fsLs = mix(${f4(L.span[0])}, ${f4(L.span[1])}, lqHash(fsLi + 9.0));
+        float fsArc = (1.0 - smoothstep(fsLw * 0.55, fsLw, abs(length(fsLo) - fsLr))) * (1.0 - smoothstep(fsLs * 0.75, fsLs, abs(fsLa)));
+        fsLace = max(fsLace, step(1.0 - ${f4(L.share)} * fsReach * fsBand, lqHash(fsLi + 11.0)) * fsArc);
+      }
       // 4. small clear bubble rings
       vec2 fsBq = vec2(s * ${f4(B.cell)} + 0.15 * sin(uTime * 0.6), fsPd * ${f4(B.cell)} - fl * 0.35), fsBi = floor(fsBq);
       float fsBr = mix(${f4(B.r[0])}, ${f4(B.r[1])}, lqHash(fsBi + 29.0));

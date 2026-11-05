@@ -146,8 +146,8 @@ export const FOCUS = {
     face: {
       teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
       rim: { w: [0.02, 0.06], cell: 16.0, share: 0.78, amount: 1.0 },
-      lace: { cell: 9.0, share: 0.9, reach: 0.4, r: [0.22, 0.42], w: [0.07, 0.13], span: [0.7, 1.5], tilt: 1.2, flow: 1.4,
-        band: [0.3, 0.6, 2.2], amount: 1.0 },
+      lace: { cell: 6.0, share: 1.0, reach: 0.6, r: [0.26, 0.48], w: [0.11, 0.19], span: [0.8, 1.7], tilt: 1.2, flow: 1.4,
+        band: [0.15, 0.5, 2.2], amount: 1.0 },
       rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
       spark: { cell: 34.0, share: 0.7, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
       water: { light: '#acdffc', mid: '#78c4f8', deep: '#3f8cf0', scale: [1.7, 2.4], amount: 0.8 },
