@@ -68,7 +68,9 @@ export const MATCH = {
         [2, 13.0, 1, 1.0, 0.55, 0], [1, 12.0, 3, 1.0, 0.55, 0]], replace: 3,
         firstSock: [1.97, 3.2, 0.97], extraGem: [-0.471, 5.7, 1.45] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
-      r7: { deco: [[1.15 + STAGE, 1, 31, 0.74, 1.86], [2.6 + STAGE, -1, 2, 0.8, 1.98]] },
+      // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
+      // x 0.01-0.20, y 0.233-0.415, 2.0% of the frame; measured at 3.0 s: x 0.01-0.17, y 0.238-0.459, 2.1%)
+      r7: { deco: [[1.15 + STAGE, 1, 34, 0.48, 1.62], [2.6 + STAGE, -1, 2, 0.8, 1.98]] },
     },
     rim: { u: -2.1 + STAGE, centre: [-0.097, 0.755] },   // (x corrected after the probe: the centre was 0.023 W right of target)
     coinScale: 1.02,   // visual only (pick-up distances unchanged)
@@ -109,7 +111,7 @@ export const MATCH = {
   // the walls' derived material (see the header). The unwrap's constants come from textures/screen4/textures.json (written by
   // tools/screen4/derive_tunnel_textures.py): lnR0 = ln(0.025), span = ln(0.85 / 0.025), detailSpan = the detail's period
   walls: {
-    lnR0: Math.log(0.025), span: Math.log(0.85 / 0.025), detailSpan: 3.22676,
+    lnR0: Math.log(0.025), span: Math.log(0.85 / 0.025), detailSpan: 2.99947,   // textures.json detail_ln_span (Reference 5's maps; 3.22676 was the dropped first texture's)
     period: 0.7,     // the colour map's flow cycle (s): each sample moves flowAmp outward and swirlAmp round per cycle
     flowAmp: 0.08,   // ln r per cycle (a third of a band: the two cross-faded samples stay close, so the bands stay crisp)
     swirlAmp: 0.012, // turns per cycle

@@ -50,12 +50,26 @@ def ln_r5(lr):
     return np.interp(lr, x, f)
 
 
+def remove_star_rays(img, ray=7, keep=0.35):
+    """Reference 5's four-point star glints are not in the original (it has white splash flecks and soft glossy glints).
+    A grey-level opening with a disc wider than a ray removes thin bright lines and keeps broad highlights: where the
+    picture is brighter than its opening by a thin structure (a ray), take the opening, keeping `keep` of the excess so
+    the glint's centre stays a soft spark."""
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ray, ray))
+    opened = np.stack([cv2.morphologyEx(np.ascontiguousarray(img[..., c]), cv2.MORPH_OPEN, k) for c in range(3)], -1)
+    excess = img - opened
+    lum = excess @ np.array([0.2126, 0.7152, 0.0722], np.float32)
+    rays = np.clip((lum - 0.04) / 0.12, 0.0, 1.0)[..., None]   # only clearly brighter thin structures
+    return np.clip(opened + excess * (1.0 - rays * (1.0 - keep)), 0.0, 1.0)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default=os.path.join(DT.REPO, 'WebDemo/textures/screen4'))
     ap.add_argument('--sheet', default='')
     a = ap.parse_args()
     ref = np.asarray(Image.open(REF5).convert('RGB')).astype(np.float32) / 255.0
+    ref = remove_star_rays(ref)
     H5, W5 = ref.shape[:2]
     th = 2 * np.pi * (np.arange(NU) + 0.5) / NU
     lr = np.log(R0) + (np.log(R1) - np.log(R0)) * (np.arange(NV) + 0.5) / NV

@@ -74,7 +74,7 @@
   "walls_written": false
  },
  "walls": {
-  "source": "../../../Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/05_REF5_BLUE_WATER_VORTEX.png",
+  "source": "Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/05_REF5_BLUE_WATER_VORTEX.png",
   "graded_to": "Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg",
   "ref5_vanishing_point": [
    0.5125,
