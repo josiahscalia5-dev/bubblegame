@@ -61,6 +61,7 @@ if (R3 && R6_ON) {   // ?s3=round6 pass 3: the collectibles at the drum's mouth 
   R2_RULES.socks = [Lt.firstSock, ...R2_RULES.socks.slice(1)];
   R2_RULES.gems = [Lt.extraGem, ...R2_RULES.gems];
   if (MATCH_ON && MATCH.farGem) R2_RULES.gems[1] = MATCH.farGem;   // ?s3=match: the far gem off the vanishing point (tunnel_r9_match.js)
+  if (MATCH_ON && MATCH.secondSock) R2_RULES.socks[1] = MATCH.secondSock;   // ?s3=match: the second sock off the centre coin (tunnel_r9_match.js)
 }
 const r3Rnd = R3 ? mulberry(0x3e3b) : null;   // round3's own random numbers (the game's own sequence is unchanged)
 

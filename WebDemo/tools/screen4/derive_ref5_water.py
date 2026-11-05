@@ -63,12 +63,65 @@ def remove_star_rays(img, ray=7, keep=0.35):
     return np.clip(opened + excess * (1.0 - rays * (1.0 - keep)), 0.0, 1.0)
 
 
+# star cores: brighter than the 15 px opening by `top` and brighter than `lum`, round (elongation at most `elong`; a glossy
+# streak on the water is long), area in px; rays cleared out to ray[0] + ray[1] x sqrt(area) px, the core to core[0] + core[1]
+# x sqrt(area) px; keep: the share of the core's excess kept (a soft glint, not a star)
+STARS = dict(top=0.22, lum=0.92, elong=2.6, area=(3, 4000), ray=(8.0, 6.0), core=(3.0, 1.5), keep=0.3)
+
+
+def remove_stars(img, P=STARS):
+    """The gate's F5 (Round 9): the user dislikes generic four-point star sparkles, and remove_star_rays left their bright
+    centres and longer rays. Each star's round white-hot core is found; round it the thin rays are cleared (a grey-level
+    opening with a 5 px disc, which keeps the water's wider glossy streaks) and the core itself is reduced to a soft glint
+    (an opening with a 15 px disc, keeping `keep` of its excess). Away from the stars the picture is unchanged."""
+    lum = img @ np.array([0.2126, 0.7152, 0.0722], np.float32)
+    k15 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15)); k5 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    th = lum - cv2.morphologyEx(lum, cv2.MORPH_OPEN, k15)
+    n, lab, st, cen = cv2.connectedComponentsWithStats(((th > P['top']) & (lum > P['lum'])).astype(np.uint8))
+    ray = np.zeros_like(lum); core = np.zeros_like(lum); found = 0
+    for i in range(1, n):
+        a = st[i, 4]
+        if a < P['area'][0] or a > P['area'][1]:
+            continue
+        ys, xs = np.nonzero(lab[st[i, 1]:st[i, 1] + st[i, 3], st[i, 0]:st[i, 0] + st[i, 2]] == i)
+        ev = np.linalg.eigvalsh(np.cov(np.vstack([xs, ys])) + np.eye(2) * 0.25)
+        if np.sqrt(ev[1] / ev[0]) > P['elong']:
+            continue
+        x, y = int(round(cen[i][0])), int(round(cen[i][1]))
+        cv2.circle(ray, (x, y), int(P['ray'][0] + P['ray'][1] * np.sqrt(a)), 1.0, -1)
+        cv2.circle(core, (x, y), int(P['core'][0] + P['core'][1] * np.sqrt(a)), 1.0, -1)
+        found += 1
+    ray = cv2.GaussianBlur(ray, (0, 0), 3.0)[..., None]; core = cv2.GaussianBlur(core, (0, 0), 2.0)[..., None]
+    op5 = np.stack([cv2.morphologyEx(np.ascontiguousarray(img[..., c]), cv2.MORPH_OPEN, k5) for c in range(3)], -1)
+    out = img * (1 - ray) + op5 * ray
+    op15 = np.stack([cv2.morphologyEx(np.ascontiguousarray(out[..., c]), cv2.MORPH_OPEN, k15) for c in range(3)], -1)
+    out = out * (1 - core) + (op15 + (out - op15) * P['keep']) * core
+    return np.clip(out, 0, 1), found
+
+
+# the gate's F4 (Round 9): the graded map's yellow-green highlights read lime in the game (hue 70-100: 783 wall pixels at
+# 3.0 s against the approved's 29); the approved's warm light is peach and gold (hue 20-45: 1433 against our 530). Hues from
+# h[0] (fully from h[1] to h[2], none past h[3]) move to `to` (+ slope x the distance from h[0]); saturation x sat
+LIME = dict(h=(50.0, 62.0, 108.0, 125.0), to=30.0, slope=0.15, sat=0.85, amount=0.6)
+
+
+def lime_to_peach(rgb, h=LIME['h'], to=LIME['to'], slope=LIME['slope'], sat=LIME['sat'], amount=LIME['amount']):
+    hsv_ = cv2.cvtColor(np.ascontiguousarray(rgb.astype(np.float32)), cv2.COLOR_RGB2HSV)
+    H, S = hsv_[..., 0], hsv_[..., 1]
+    ss = lambda a, b, x: np.clip((x - a) / (b - a), 0, 1) ** 2 * (3 - 2 * np.clip((x - a) / (b - a), 0, 1))
+    w = ss(h[0], h[1], H) * (1 - ss(h[2], h[3], H)) * ss(0.08, 0.2, S) * amount
+    hsv_[..., 0] = H * (1 - w) + (to + slope * (H - h[0])) * w
+    hsv_[..., 1] = S * (1 - w * (1 - sat))
+    return np.clip(cv2.cvtColor(hsv_, cv2.COLOR_HSV2RGB), 0, 1), float(w.mean())
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default=os.path.join(DT.REPO, 'WebDemo/textures/screen4'))
     ap.add_argument('--sheet', default='')
     a = ap.parse_args()
     ref = np.asarray(Image.open(REF5).convert('RGB')).astype(np.float32) / 255.0
+    ref, n_stars = remove_stars(ref)
     ref = remove_star_rays(ref)
     H5, W5 = ref.shape[:2]
     th = 2 * np.pi * (np.arange(NU) + 0.5) / NU
@@ -117,6 +170,7 @@ def main():
         g = ((lp.reshape(-1, 3) - ms) @ A.T + mt).reshape(lp.shape)
         graded += g.astype(np.float32) * w[:, None, None]; wsum += w
     colour = np.clip(graded / wsum[:, None, None], 0, 1)
+    colour, lime_share = lime_to_peach(colour)
 
     dv = lr[1] - lr[0]; du_deg = 360.0 / NU
     base = DT.blur_wrap(colour, DT.BASE_SIGMA[0] / dv, DT.BASE_SIGMA[1] / du_deg)
@@ -161,7 +215,8 @@ def main():
                          game_layout=dict(r0_w=R0, r1_w=R1, ln_r0=float(np.log(R0)), ln_span=float(span)),
                          angle='u = theta / 2 pi round the vanishing point, 0 = screen right, counter-clockwise (1:1 with Reference 5)',
                          grade_zones_rw=ZONES, grade_angles_deg=WALL_ANGLES,
-                         detail_ln_span=float(det_span), detail_bands=nb, detail_band_ln=band)
+                         detail_ln_span=float(det_span), detail_bands=nb, detail_band_ln=band,
+                         stars_removed=dict(STARS, found=int(n_stars)), lime_to_peach=dict(LIME, weight_mean=round(lime_share, 4)))
     with open(jpath, 'w') as f:
         json.dump(info, f, indent=1)
     print(json.dumps(info['walls'], indent=1))
