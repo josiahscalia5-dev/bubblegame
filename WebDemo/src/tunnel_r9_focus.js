@@ -105,30 +105,83 @@ export const FOCUS = {
     //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
     //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
     //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
-    crest: { low: '#1a5fe0', mid: '#1f9af6', hi: '#8fe0ff', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
-      edge: 0.85, alpha: 0.9, spec: 1.6 },
+    //    (item 1, the AD's review) rag: their upper outline eaten into irregular points (from 1 - n.v [start, + noise], cells
+    //    per unit radius), so they read as splash crests, not smooth blue domes; cap: their tops broken into separate small
+    //    white pieces with blue water between (cells per unit radius, the share of cells with a piece, its radius as a share
+    //    of the cell [min, max], bigger where the normal is up [from, to], how much; edge: the outline's white arc kept). (A
+    //    white cap with round holes measured as one white mass of 2,800-4,250 px beside her: a cushion.)
+    //    (step 1b, ninth session) lighter, as the swell face's water (light cyan to vivid blue): the dark cobalt read as blue
+    //    pillows beside the light water round her
+    crest: { low: '#3f8cf0', mid: '#78c4f8', hi: '#acdffc', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
+      edge: 0.85, alpha: 0.9, spec: 1.6, rag: [0.35, 0.5, 5.0],
+      cap: { cell: 8.0, share: 0.7, r: [0.14, 0.34], up: [0.15, 0.6], amount: 0.95, edge: 0.6 } },
     // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque blue
     //    water (no see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac); its white
     //    crest only as a broken highlight at her base
-    swellFront: { dip: 0.08, full: 22, to: 48 },
+    // (item 1, with Tunnel & Lighting's new camera, 18:50 UTC: off [-0.162, 1.126, -3.1], lookY 1.655, lookX 0.142, fov 68)
+    // lift: the crest 0.02 m higher, about what the spiky teeth cut out of it (focusSwellGLSL), so her base stays at about
+    // y 0.85 (the original's 0.86) and her pink narrows to it as in the original (0.23 W wide 0.02 H above her lowest point;
+    // the original 0.20, before 0.27). (Raised mounds either side of her body were tried with the old camera, and covered her
+    // to the middle with the new one: match's mounds are kept.)
+    swellFront: { dip: 0.08, full: 22, to: 48, lift: 0.02 },
     //    (the grazing-angle rim low and bluer)
     //    (the swell's upper face, between her body and its crest, is all "at the crest" for its white layer: at match's 0.95
     //    that white washed the whole face pale lavender-white (found with a colour-coded diagnostic render); 0.3 leaves
     //    broken highlights on vivid cobalt-turquoise water)
     look: { clear: 1.0, sideClear: 1.0, crest: 0.3, crestFront: 0.45, crestW: [0.025, 0.04, 0.03, 0.035], top: 0.05, rim: 0.12, frontRim: 0.5,
       sky: '#5ec8ff', glassHi: '#3fb4f8', glass: '#1f86ee', glassDeep: '#1450d0', spec: 2.2 },
-    // sparkle on the water's upper face round her base: twinkling white glints (cells per metre, the share of cells with one,
-    // the dot's radius as a share of the cell, how far down the face in m) and light turquoise, most where it turns to the light
-    sparkle: { cell: 24.0, share: 0.42, dot: [0.13, 0.22], reach: 0.3, amount: 0.95, white: '#f2fbff', light: '#6cd0ff', lightAmount: 0.4 },
+    // (the Art Director's review, 18:19 UTC, item 1) the swell's face as broken, sparkling splash water, not a flat light-blue
+    // sheet (focusSwellGLSL in the water file; sizes in m on the surface, cells per m):
+    //   teeth: the crest cut into spiky teeth: per m along the crest; where the edge is on the profile over the crest (t: 0.5
+    //          the crest, the natural silhouette from the camera about 0.53; less is further down the outer face) at the tips
+    //          (hi) and in the valleys (lo); sharpness; fine notches (in t); drift along the crest (per m of flow); how much
+    //          each tooth rises and falls; lobe: rounder crests and troughs along it (in t); the valleys' depth factor at her sides and
+    //          in front of her;
+    //   rim: short white pieces along the cut edge: width [min, max] (m), pieces per m, the share kept;
+    //   lace: broken white crest arcs down the face (the original's curving white crest lines over blue; round dots read as
+    //         a polka-dot print): cells per m, the share near the crest (fewer further down, over `reach` m), the arc's
+    //         radius and line width [min, max] as shares of the cell, its half-span [min, max] (radians from its top), random
+    //         tilt (radians), how fast they run down the face, band: the arcs clustered in bands [noise from, to, per m];
+    //   rings: small clear bubble rings: cells per m, share, radius, how far down (m), colour;
+    //   spark: round twinkling glints: cells per m, share, dot radius, how far down (m);
+    //   water: the face's currents (light cyan, vivid blue, deeper blue), noise scale [along, down], how much
+    face: {
+      teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
+      // (step 1c: smaller, denser arcs, 8.5 per m, so there are more of them in smaller pieces; a wider rim; more glints;
+      // wobble: the arc's radius wobbling along it (share), taper: the line thinning toward one end (share), so they read
+      // as irregular broken crests and not a row of white commas)
+      rim: { w: [0.03, 0.08], cell: 16.0, share: 0.78, amount: 1.0 },
+      lace: { cell: 8.5, share: 1.0, reach: 0.75, r: [0.26, 0.48], w: [0.17, 0.28], span: [0.8, 1.7], tilt: 1.2, flow: 1.4,
+        band: [0.05, 0.4, 2.2], wobble: 0.22, taper: 0.75, amount: 1.0 },
+      rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
+      spark: { cell: 34.0, share: 0.85, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
+      water: { light: '#acdffc', mid: '#78c4f8', deep: '#3f8cf0', scale: [1.7, 2.4], amount: 0.8 },
+      white: '#f4fbff',
+      debug: 0,
+    },
     // the floor round her: more sparkle (luminous blue-white highlights on vivid blue water)
     floor: { caustic: 0.55, glint: 1.3, deep: 0.85 },
+    // (item 2, the AD's review item 5) the floor ahead, behind her, as the original's pale blue-white water (focusFloorGLSL in
+    // the water file; the floor's own water only, not where it meets the walls): the map's lilac turned pale blue (how much),
+    // the colour lifted toward the original's median there (#aad7f4; how much), and broken white crest streaks along the
+    // whirlpool's circles: cells round it (along) and per unit log radius (across), the share of cells with one, length and
+    // thickness [min, max] as shares of the cell, bend (a shallow arc), how white; band: the white clustered in irregular
+    // bands (noise from, to; scale round and out); blue: blue dashes in the other cells (colour, share of cells, how much)
+    // (tunes f2-f6: 0.35 toward #aad7f4 gave L* 76; 0.55 toward a paler #b6dcf6 with thicker streaks in wider bands and
+    // stronger blue dashes gives the original's white water with blue dashes)
+    floorFx: { delilac: 1.0, pale: '#b6dcf6', lift: 0.55, white: '#f6fbff',
+      streak: { along: 20.0, across: 9.0, share: 0.95, len: [0.6, 1.0], thick: [0.35, 0.75], bend: 0.12, amount: 0.95,
+        band: [0.2, 0.5, 3.0, 1.5], blue: { col: '#4f9ff0', share: 0.35, amount: 0.75 } } },
     splash: {
       // small splash crests, not domes: lumpier, a wide spread of sizes
       lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
       // [phi, how many, biggest radius (m), outward (m), height from the crest (m)]: nothing in front of her body (phi -20 to
-      // 20 near the crest); a few small crests at her sides and low in the bottom corners (match: 30 lobes up to 0.22 m)
+      // 20 near the crest); a few small crests low in the bottom corners (match: 30 lobes up to 0.22 m). (Step 1b, ninth
+      // session: the four beside her, phi +-40 to +-54, taken out: with the new camera they were two smooth blue pillows
+      // 0.2 W wide at x 0.78-0.98 and a dark dome at the left edge; without them the swell's broken water with its white
+      // crest arcs runs on there, as the original's water does. Small crests at her lower sides, phi 9 and -14, narrowed her
+      // pink at the base to 0.19 W but read as blue blobs stuck on her fur.)
       lumps: [
-        [40, 2, 0.11, 0.08, -0.1], [52, 2, 0.12, 0.08, -0.1], [-40, 2, 0.11, 0.08, -0.1], [-54, 2, 0.12, 0.08, -0.1],
         [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
       ],
       // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
@@ -138,18 +191,32 @@ export const FOCUS = {
     // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
     // droplets of spray (match: 30)
     liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
-    heroWater: { splash: { count: 120 } },
+    // (item 1: fine spray thrown up round her lower sides; 120 -> 250, the zones match's: beside her, not in front of her)
+    // (step 1c: 300 FINE droplets, half match's size, 90% of them round: at match's size the droplets are drawn 2:1 tall
+    // (tunnel_r7_hero_water.js) and read as falling rain beside her; the original's spray is fine white specks)
+    heroWater: { splash: { count: 300, flecks: 0.9,
+      zones: [[0.22, [-48, -16], [0.7, 1.6], [0.2, 0.6], [0.007, 0.016], 0.05], [0.4, [16, 50], [1.2, 2.8], [0.25, 0.8], [0.007, 0.017], 0.06],
+        [0.16, [-80, -24], [0.5, 1.3], [0.15, 0.5], [0.006, 0.013], 0.03], [0.22, [24, 80], [0.7, 2.0], [0.15, 0.6], [0.006, 0.013], 0.03]] } },
     bubbles: {
       // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
       //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
       //    camera's place at 3.0 s with the new framing
-      count: 280,
+      // (item 4, the AD's review item 6: no more than about 10 bubbles within 0.2 W of the tunnel's centre; the original has
+      // 10 detected there. Spread with a 1 / d^2 density out to 34 m, about a third of the wall bubbles and most of the
+      // inner ones landed there, a dense cluster. Now: 220; the wall bubbles within 10 m (near and middle depth), the inner
+      // ones within 6.5 m, and a few at far depth along the walls (10-30 m) and round the far centre.)
+      count: 220,
       camAt: -4.55,
       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
-      zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
-        [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
+      //   (on screen a bubble is about 1.48 rho / d frame widths from the centre: inside 0.2 W beyond d = 7.4 rho. So the inner
+      //   ones at rho 0.84-1.24 m only to 5.5 m, the far ones few)
+      zones: [[0.3, [20, 160], [0.62, 0.93], [4.5, 10]], [0.2, [160, 222], [0.62, 0.93], [4.5, 10]], [0.2, [-42, 20], [0.62, 0.93], [4.5, 10]],
+        [0.24, [-30, 210], [0.42, 0.62], [4.5, 5.5]], [0.02, [20, 200], [0.75, 0.93], [10, 30]], [0.01, [0, 360], [0.08, 0.4], [16, 34]]],
       // more, bolder white streaks among the bands (match: 200)
-      flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
+      // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,
+      // chunkier (half width 2-4 cm), some hooked (bend), turned off the band by up to rot degrees (the original's white bits
+      // do not all follow the rings: along the tangent 28%, ours 74%))
+      flecks: { count: 220, size: [[0.05, 0.12], [0.02, 0.04]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
     },
   },
 };
