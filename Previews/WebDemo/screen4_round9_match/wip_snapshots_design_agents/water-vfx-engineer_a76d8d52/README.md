@@ -1,13 +1,13 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: finish bank and bubbles)
 
-- **Taken:** 2026-11-05 15:31 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 15:32 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `5d742e0`.
 - **Its own commits so far:** 
   - `b2454f5 Round 9 Water & VFX gate fixes (WIP): the tunnel bubble field at every depth with white streaks, opaque aqua-white froth lobes`
   - `9bfd9f7 Round 9 Water & VFX gate fixes (restored WIP): the bank's lobes, the swell's front, fewer flecks and droplets, the first tunnel bubble field`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (186; full copies in `files/`)
+## Files (189; full copies in `files/`)
 
 - `.wvtmp/bank_i1.png (new)`
 - `.wvtmp/bank_i10.png (new)`
@@ -59,10 +59,13 @@
 - `.wvtmp/fin/match_t3.10.png (new)`
 - `.wvtmp/fin/match_t3.10_canvas.png (new)`
 - `.wvtmp/fin2.log (new)`
+- `.wvtmp/fin2/match_info.json (new)`
 - `.wvtmp/fin2/match_t2.85.png (new)`
 - `.wvtmp/fin2/match_t2.85_canvas.png (new)`
 - `.wvtmp/fin2/match_t3.00.png (new)`
 - `.wvtmp/fin2/match_t3.00_canvas.png (new)`
+- `.wvtmp/fin2/match_t3.10.png (new)`
+- `.wvtmp/fin2/match_t3.10_canvas.png (new)`
 - `.wvtmp/final.sh (new)`
 - `.wvtmp/full_fin.png (new)`
 - `.wvtmp/full_i1.png (new)`

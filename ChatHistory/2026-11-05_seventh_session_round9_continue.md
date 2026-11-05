@@ -266,3 +266,23 @@ Save everything to my GitHub respiratory and chat history and design agent what 
 
 The 5-minute autosave has been running since 14:36. Checking that it's saving everything you listed:
 
+Everything is saved to your GitHub repository now, and GitHub confirms it has the commit: `1ea4e41` on `ccr-1f9da4c9-e0yrsc`.
+
+**What gets saved every 5 minutes, automatically:**
+- **The chat:** `ChatHistory/2026-11-05_seventh_session_round9_continue.md`.
+- **The design agents:** each agent's brief, every step and its report, in `ChatHistory/2026-11-05_seventh_session_design_agent_transcripts.md`.
+- **What each agent has built so far, before it's finished:** full copies of every file it changed or made, plus a readable patch, in `Previews/WebDemo/screen4_round9_match/wip_snapshots_design_agents/`. Water & VFX's latest snapshot has 186 files.
+- **The game itself:** the code, the rebuilt game and all the evidence.
+
+Each save is checked against GitHub, not just pushed.
+
+The automatic save has been running since 14:36 UTC. The cloud session stops background jobs after 2 hours, so it will end around 16:30 UTC; I'll start it again then so the 5-minute saves continue.
+
+Water & VFX is still working. When it finishes, I'll merge it and send you the side-by-side with your original and the checkpoint evidence.
+
+---
+
+### You · 2026-11-05 15:32 UTC
+
+show me the side by side comparison
+
