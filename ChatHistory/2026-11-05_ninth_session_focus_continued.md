@@ -101,3 +101,52 @@ Only the built game file conflicted; the source files merged cleanly. Rebuilding
 
 Merge done (`a78a143`). Now testing the combined build: a `?s3=focus` capture at 3.0 s and the `?s3=match` identity check.
 
+`?s3=match` is unchanged (max difference 0) and the merged build shows no errors. Making the comparison sheets against your original:
+
+While the gameplay tests run, I'm pushing the merge with its comparison sheets:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/full_original_before_now_3.00s.png, Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/zoom_lower_left_corner.png, Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/zoom_rings_and_currents.png]_
+
+Both design agents' work is merged and pushed to `ccr-de8d9670-2ohd5t`: **`dfa9c93`**. The three images I just sent show your original, the start of this session, and now, at 3.0 s, then the lower-left corner and the tunnel rings enlarged.
+
+**What's better:**
+- **Lower-left corner:** the lavender-grey wedge is gone and that corner is now moving wall water. The upper gold rim is unchanged.
+- **Objects:** the lower-right coin, gem, sock and both left coins sit on the original's spots. The sock lies level with its opening hidden. Every collectible stays within reach.
+- **Tunnel water:** broad, softly blended cobalt and turquoise flows instead of tight outlined ribbons. The wall splashes are fewer and chunkier, and there's a pastel inner ring round a modest warm centre.
+- **Round her:** she sits on top of broken, sparkling blue splash water, with no foam cushion.
+- **The normal game and `?s3=match`:** unchanged (pixel-identical).
+
+**Still different from your original:**
+- **Left wall:** by the numbers it now matches (blue saturation 0.47 against 0.47, vivid blue 25.9% against 25.8%, white 15.6% against 16.0%). By eye it's smoother and milkier than the original's crisp cyan-and-white sparkle.
+- **Tunnel colour:** the flows run slightly lighter and more violet. Blue saturation is 0.71 against the original's 0.83.
+- **Streaks and bubbles:** there are still more small white streaks and bubbles over the rings than in the original.
+- **Centre:** the inner rings are more regular and paler blue than the original's.
+- **Base of the character:** her pink is a little wider there (0.25 against 0.20 of the screen width).
+- **Behind her:** the water is about 4 brightness points darker than the original's.
+- **Sock:** it has open eyes and a violet toe, where the original's has closed happy eyes and a blue toe.
+
+**Tests on the merged build:**
+- **Done:** a 3.0 s capture with no console errors, and the `?s3=match` identity check.
+- **Running now:** movement, coins, gem and socks, then hearts, pause, Bubble Blast and Turbo Spin. The Pixel 7 check follows.
+
+I'll push the results with their hashes when they finish. The 5-minute autosave keeps saving everything meanwhile.
+
+---
+
+### Automatic check · 2026-11-05 20:22 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-05 20:22 UTC
+
+The movement and collectibles test passed on the merged build, and that result is pushed to `ccr-de8d9670-2ohd5t` at **`e611b11`**. In the run, swipes changed lanes, the jump worked, the keyboard start worked, and she collected 12 coins, 1 gem and 2 socks with no console errors.
+
+Still to come:
+- **Hearts, pause, Bubble Blast and Turbo Spin:** this test is running now. Its results file is empty until it finishes, so the autosave will keep re-committing it.
+- **Pixel 7 check:** I'll run it once that test is done, so only one browser runs at a time.
+
+I'll push both results with their commit hashes.
+
