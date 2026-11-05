@@ -84,3 +84,24 @@ Still open after 1a: the side lumps read as smooth blue pillows (right x 0.78-0.
 | texture | 5.47 | 5.03 | 5.46 | 5.55 |
 | pink width at the base | 0.20 W | 0.27 W | 0.23 W | 0.25 W |
 | L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 77.7 / 79.7 | 78.6 / 80.5 |
+
+### Step 1c: fine spray, irregular crest arcs (tunes v11-v16, `frames/step1c_*`)
+
+- Hide probe (`heroSplash`, 7% of the zone): the white dashes beside her are the spray. Its "round" droplets are drawn on
+  a 2:1 quad (`tunnel_r7_hero_water.js`, SPLASH_VERTEX: `len = max(L, wN)` then `len + wN` tall, `wN` wide), so at
+  match's size (1.6-3.6 cm) every droplet is a tall oval and they read as rain. Not my file; within `FOCUS.water`:
+  300 droplets at half the size, 90% round: fine white specks (v12).
+- v13-v14: the crest arcs denser and smaller (8.5 per m, bands nearly everywhere), a wider rim, more glints.
+- v15-v16: each arc's radius wobbles along it and its line tapers toward one end (`lace.wobble`, `lace.taper`), thicker:
+  irregular broken crests instead of a row of white commas. **Kept (step 1c).**
+
+| round her | original | before (71f7fa7) | 1b | 1c |
+|---|---|---|---|---|
+| white | 27.7% | 6.0% | 15.2% | 14.6% |
+| white in pieces <= 400 px | 13% | 78% | 41% | 47% |
+| largest white piece (px) | 10,247 | 1,449 | 1,671 | 1,388 |
+| vivid blue | 12.9% | 47.6% | 20.8% | 22.7% |
+| lavender | 16.9% | 0.2% | 0.2% | 0.2% |
+| texture | 5.47 | 5.03 | 5.55 | 5.86 |
+| pink width at the base | 0.20 W | 0.27 W | 0.25 W | 0.25 W |
+| L* left / right | 79.3 / 82.6 | 71.9 / 74.8 | 78.6 / 80.5 | 77.7 / 79.8 |

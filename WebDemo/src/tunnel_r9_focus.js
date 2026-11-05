@@ -147,11 +147,14 @@ export const FOCUS = {
     //   water: the face's currents (light cyan, vivid blue, deeper blue), noise scale [along, down], how much
     face: {
       teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
-      rim: { w: [0.02, 0.06], cell: 16.0, share: 0.78, amount: 1.0 },
-      lace: { cell: 6.0, share: 1.0, reach: 0.6, r: [0.26, 0.48], w: [0.11, 0.19], span: [0.8, 1.7], tilt: 1.2, flow: 1.4,
-        band: [0.15, 0.5, 2.2], amount: 1.0 },
+      // (step 1c: smaller, denser arcs, 8.5 per m, so there are more of them in smaller pieces; a wider rim; more glints;
+      // wobble: the arc's radius wobbling along it (share), taper: the line thinning toward one end (share), so they read
+      // as irregular broken crests and not a row of white commas)
+      rim: { w: [0.03, 0.08], cell: 16.0, share: 0.78, amount: 1.0 },
+      lace: { cell: 8.5, share: 1.0, reach: 0.75, r: [0.26, 0.48], w: [0.17, 0.28], span: [0.8, 1.7], tilt: 1.2, flow: 1.4,
+        band: [0.05, 0.4, 2.2], wobble: 0.22, taper: 0.75, amount: 1.0 },
       rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
-      spark: { cell: 34.0, share: 0.7, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
+      spark: { cell: 34.0, share: 0.85, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
       water: { light: '#acdffc', mid: '#78c4f8', deep: '#3f8cf0', scale: [1.7, 2.4], amount: 0.8 },
       white: '#f4fbff',
       debug: 0,
@@ -178,7 +181,11 @@ export const FOCUS = {
     // droplets of spray (match: 30)
     liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
     // (item 1: fine spray thrown up round her lower sides; 120 -> 250, the zones match's: beside her, not in front of her)
-    heroWater: { splash: { count: 250 } },
+    // (step 1c: 300 FINE droplets, half match's size, 90% of them round: at match's size the droplets are drawn 2:1 tall
+    // (tunnel_r7_hero_water.js) and read as falling rain beside her; the original's spray is fine white specks)
+    heroWater: { splash: { count: 300, flecks: 0.9,
+      zones: [[0.22, [-48, -16], [0.7, 1.6], [0.2, 0.6], [0.007, 0.016], 0.05], [0.4, [16, 50], [1.2, 2.8], [0.25, 0.8], [0.007, 0.017], 0.06],
+        [0.16, [-80, -24], [0.5, 1.3], [0.15, 0.5], [0.006, 0.013], 0.03], [0.22, [24, 80], [0.7, 2.0], [0.15, 0.6], [0.006, 0.013], 0.03]] } },
     bubbles: {
       // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
       //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
