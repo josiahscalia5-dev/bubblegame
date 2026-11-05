@@ -1,0 +1,150 @@
+{
+ "stage": {
+  "w": 412,
+  "h": 839,
+  "u": 1.5316
+ },
+ "els": {
+  "heartPill": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.0587,
+    0.0319,
+    0.3909,
+    0.0781
+   ],
+   "u": [
+    15.8,
+    17.5,
+    105.1,
+    42.8
+   ],
+   "onScreen": true
+  },
+  "coinPill": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.4301,
+    0.0319,
+    0.7499,
+    0.0781
+   ],
+   "u": [
+    115.7,
+    17.5,
+    201.7,
+    42.8
+   ],
+   "onScreen": true
+  },
+  "gemPill": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.7821,
+    0.0319,
+    0.9959,
+    0.0781
+   ],
+   "u": [
+    210.4,
+    17.5,
+    267.9,
+    42.8
+   ],
+   "onScreen": true
+  },
+  "sockPanel": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.0743,
+    0.0913,
+    0.8401,
+    0.2063
+   ],
+   "u": [
+    20,
+    50,
+    226,
+    113
+   ],
+   "onScreen": true
+  },
+  "pauseBtn": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.855,
+    0.0867,
+    0.9925,
+    0.1561
+   ],
+   "u": [
+    230,
+    47.5,
+    267,
+    85.5
+   ],
+   "onScreen": true
+  },
+  "blastBtn": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.052,
+    0.8923,
+    0.3866,
+    0.9945
+   ],
+   "u": [
+    14,
+    488.8,
+    104,
+    544.8
+   ],
+   "onScreen": true
+  },
+  "turboBtn": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.6543,
+    0.8923,
+    0.9889,
+    0.9945
+   ],
+   "u": [
+    176,
+    488.8,
+    266,
+    544.8
+   ],
+   "onScreen": true
+  },
+  "hint": {
+   "shown": false,
+   "opacity": 1,
+   "frac": [
+    0.3067,
+    0.7965,
+    0.6933,
+    0.885
+   ],
+   "u": [
+    82.5,
+    436.3,
+    186.5,
+    484.8
+   ],
+   "onScreen": true
+  }
+ },
+ "s3": [
+  "focus"
+ ],
+ "phone": "412x839",
+ "logs": "no console errors"
+}

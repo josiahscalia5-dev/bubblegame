@@ -30,7 +30,7 @@ const IDS = ['heartPill', 'coinPill', 'gemPill', 'sockPanel', 'pauseBtn', 'blast
   await page.evaluate(() => window.__bw.advance(0.5));
   await page.evaluate(() => window.__bw.tap());
   await page.evaluate(() => window.__bw.advance(3.0));
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(+(process.env.SETTLE || 900));   // (CSS transitions run on the wall clock: the banner slides in)
   const out = await page.evaluate((ids) => {
     const st = document.getElementById('stage').getBoundingClientRect();
     const u = parseFloat(getComputedStyle(document.getElementById('stage')).getPropertyValue('--u'));

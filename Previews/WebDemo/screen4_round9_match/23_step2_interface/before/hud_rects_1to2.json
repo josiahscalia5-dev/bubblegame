@@ -1,0 +1,133 @@
+{
+ "stage": {
+  "w": 538,
+  "h": 1076,
+  "u": 2
+ },
+ "els": {
+  "heartPill": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.0446,
+    0.0242,
+    0.3048,
+    0.0669
+   ],
+   "u": [
+    12,
+    13,
+    82,
+    36
+   ],
+   "onScreen": true
+  },
+  "gemPill": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.6171,
+    0.026,
+    0.829,
+    0.0669
+   ],
+   "u": [
+    166,
+    14,
+    223,
+    36
+   ],
+   "onScreen": true
+  },
+  "sockPanel": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.052,
+    0.0855,
+    0.7955,
+    0.171
+   ],
+   "u": [
+    14,
+    46,
+    214,
+    92
+   ],
+   "onScreen": true
+  },
+  "pauseBtn": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.8253,
+    0.0948,
+    0.9591,
+    0.1617
+   ],
+   "u": [
+    222,
+    51,
+    258,
+    87
+   ],
+   "onScreen": true
+  },
+  "blastBtn": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.0446,
+    0.8364,
+    0.3197,
+    0.9814
+   ],
+   "u": [
+    12,
+    450,
+    86,
+    528
+   ],
+   "onScreen": true
+  },
+  "turboBtn": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.6803,
+    0.8364,
+    0.9554,
+    0.9814
+   ],
+   "u": [
+    183,
+    450,
+    257,
+    528
+   ],
+   "onScreen": true
+  },
+  "hint": {
+   "shown": true,
+   "opacity": 1,
+   "frac": [
+    0.3067,
+    0.8838,
+    0.6933,
+    0.974
+   ],
+   "u": [
+    82.5,
+    475.5,
+    186.5,
+    524
+   ],
+   "onScreen": true
+  }
+ },
+ "s3": [
+  "focus"
+ ],
+ "phone": null,
+ "logs": "no console errors"
+}
