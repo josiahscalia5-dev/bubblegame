@@ -1,8 +1,8 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-index 54f942e..75e1b6f 100644
+index 54f942e..eb94dc8 100644
 --- a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
 +++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-@@ -87,3 +87,105 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
+@@ -87,3 +87,124 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
  small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
  gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
  Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
@@ -108,10 +108,33 @@ index 54f942e..75e1b6f 100644
 +| warm in the ring zone r 0.12-0.45 | 3.1% | 1.4% | 1.4% |
 +
 +Frames: `frames/focus_core_t3.00*.png`, crop `frames/crop_centre_original_before_after.png`, Pixel 7 `frames/phone_412x839_focus_core_3.00s.png`.
++Committed `2db3d6b`.
++
++## 7. AD item 6: the left wall (x 0-0.30, y 0.44-0.79; `scripts/left_wall.py`)
++
++Changed (focus only): `focusLeftGLSL` (`walls.leftGlow`): on the walls' left sector (angle window round 195 degrees) beyond rw
++0.2-0.3, the water's middle tones go pale azure (#9ccaf8) and its bright ones white, its darks stay vivid blue. The material's
++colour, no bloom, exposure or haze. A first version mapped the darks to periwinkle too: L* 78.5 but a flat lilac-grey wash
++(rejected by eye).
++
++| left wall at 3.0 s | original | before (`2db3d6b`) | after |
++|---|---|---|---|
++| L* | 76.9 | 66.5 | 77.3 |
++| white | 24.8% | 6.6% | 22.3% |
++| pale | 30.1% | 12.9% | 25.7% |
++| vivid blue | 26.1% | 63.2% | 24.1% |
++| lavender (whole zone / outer 3% strip) | 14.1 / 17.8% | 1.2 / 0.4% | 1.1 / 0.3% |
++
++Frames: `frames/focus_final_t3.00*.png` (and 2.85, 3.1), crop `frames/crop_left_wall_original_before_after.png`, Pixel 7
++`frames/phone_412x839_focus_final_3.00s.png`.
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png
 new file mode 100644
 index 0000000..3342855
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_left_wall_original_before_after.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_left_wall_original_before_after.png
+new file mode 100644
+index 0000000..2cce096
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_left_wall_original_before_after.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png
 new file mode 100644
 index 0000000..da03010
@@ -124,6 +147,22 @@ diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/fram
 new file mode 100644
 index 0000000..0dab2ad
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t2.85_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t2.85_canvas.png
+new file mode 100644
+index 0000000..3bcfea7
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t2.85_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00.png
+new file mode 100644
+index 0000000..5a27ee2
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00_canvas.png
+new file mode 100644
+index 0000000..1b4dc93
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.10_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.10_canvas.png
+new file mode 100644
+index 0000000..d955a76
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.10_canvas.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png
 new file mode 100644
 index 0000000..8069fcf
@@ -160,6 +199,10 @@ diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/fram
 new file mode 100644
 index 0000000..6b83b9a
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3.00s.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_final_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_final_3.00s.png
+new file mode 100644
+index 0000000..5040325
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_final_3.00s.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png
 new file mode 100644
 index 0000000..efbde5f
@@ -818,6 +861,31 @@ index 0000000..4aab0ee
 +        if k.sum() < 50: continue
 +        rgb = np.median(im[k][:, ::-1], axis=0).astype(int)
 +        print(f"   L* {lo:2d}-{lo+10:3d} share {k.sum()/m.sum()*100:5.1f}%  median #{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}  hue {np.median(h[k]):5.1f} sat {np.median(s[k]):.2f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/left_wall.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/left_wall.py
+new file mode 100644
+index 0000000..8e1d5e2
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/left_wall.py
+@@ -0,0 +1,19 @@
++# left_wall.py img...: the left wall zone x 0-0.30, y 0.44-0.79 (and its halves y .44-.58 / .58-.79), with zones.py's object
++# exclusion and classes: L*, white (s < .15, v > .88), pale (s .15-.40, v > .75), lavender (h 235-300, s .08-.45, v > .6),
++# vivid blue, deep; plus the lavender share in the outer 3% strips (x < 0.03) as the 'slivers at the edge' check
++import sys, numpy as np, cv2
++W, H = 767, 1536
++for p in sys.argv[1:]:
++    im = cv2.resize(cv2.imread(p)[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++    hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h = hsv[..., 0]*360/256; s = hsv[..., 1]/255; v = hsv[..., 2]/255
++    L = cv2.cvtColor(im, cv2.COLOR_BGR2LAB)[..., 0].astype(float)*100/255
++    obj = ((h > 25) & (h < 65) & (s > 0.5) & (v > 0.5)) | (((h > 300) | (h < 15)) & (s > 0.40) & (v > 0.45)) | ((h > 255) & (h < 300) & (s > 0.6))
++    out = []
++    for nm, (y0, y1, x0, x1) in (('all', (.44, .79, 0, .30)), ('upper', (.44, .58, 0, .30)), ('lower', (.58, .79, 0, .30)), ('edge', (.44, .79, 0, .03))):
++        m = np.zeros((H, W), bool); m[int(y0*H):int(y1*H), int(x0*W):int(x1*W)] = True; m &= ~obj
++        S, V, Hh = s[m], v[m], h[m]
++        wh = ((S < .15) & (V > .88)).mean()*100; pa = ((S >= .15) & (S < .4) & (V > .75)).mean()*100
++        lv = ((Hh > 235) & (Hh < 300) & (S > .08) & (S < .45) & (V > .6)).mean()*100
++        vi = ((Hh > 190) & (Hh < 232) & (S > .55) & (V > .75)).mean()*100
++        out.append(f"{nm}: L* {L[m].mean():4.1f} white {wh:4.1f} pale {pa:4.1f} lav {lv:4.1f} vivid {vi:4.1f}")
++    print(f"{p.split('/')[-1][:26]:26s} " + ' | '.join(out))
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs
 new file mode 100644
 index 0000000..364a93f

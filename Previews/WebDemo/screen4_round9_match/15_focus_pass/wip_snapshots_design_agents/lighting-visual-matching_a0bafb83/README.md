@@ -1,21 +1,27 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: objects, bands, centre)
 
-- **Taken:** 2026-11-05 20:10 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 20:15 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a0bafb8338e8bc494` (local only), started from `565eb07`.
 - **Its own commits so far:** 
+  - `956a7de Screen 4 ?s3=focus, the left wall's water glows pale like the original (Tunnel & Lighting, AD item 6)`
   - `2db3d6b Screen 4 ?s3=focus, the centre's pastel inner rings round a modest warm core (Tunnel & Lighting, AD item 5)`
   - `340b117 Screen 4 ?s3=focus, the walls' white splashes fewer and chunkier, broken shapes, crisp white (Tunnel & Lighting, AD item 4)`
   - `24fd87e Screen 4 ?s3=focus, the walls' water as broad, softly blended flows without outlines (Tunnel & Lighting, kit problem B / AD item 3)`
   - `82d568c Screen 4 ?s3=focus, objects on the original's spots for the new camera (Tunnel & Lighting, AD item 8)`
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (29; full copies in `files/`)
+## Files (36; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_centre_original_before_after.png`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_left_wall_original_before_after.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_core_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t2.85_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00.png`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.00_canvas.png`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_final_t3.10_canvas.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas_bubble_layer_hidden.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png`
@@ -25,6 +31,7 @@
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.00_canvas.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.10_canvas.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_core_3.00s.png`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_final_3.00s.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_rib_3.00s.png`
@@ -34,6 +41,7 @@
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/core_detail.py`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/lbins.py`
+- `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/left_wall.py`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/live_sweep.cjs`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/maskbox.py`
 - `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/minima_hist.py`

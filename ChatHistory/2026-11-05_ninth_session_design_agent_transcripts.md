@@ -473,8 +473,59 @@ Item 4 committed as `2db3d6b`. Item 5, the left wall (x 0-0.30, y 0.44-0.79). Le
 - 20:09 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/left2_crop.png
 - 20:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
 - 20:09 `Bash`: Build, capture final frames at 2.85/3.0/3.1 and verify
+- 20:11 `Bash`: Capture single-step 3.0 s final frame and compare
+**Agent** (20:11 UTC):
 
-_253 tool steps._
+Identical to L4. Pixel 7 check for the left wall.
+
+- 20:11 `Bash`: Pixel 7 capture of final focus
+- 20:12 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_final_
+**Lead → agent** (20:12 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+**Agent** (20:12 UTC):
+
+Pixel 7 is fine. Saving the evidence and committing item 5.
+
+- 20:12 `Bash`: Save final focus frames
+- 20:12 `Bash`: Left wall crop sheet into evidence
+- 20:12 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 20:12 `Bash`: Commit the left wall step
+- 20:12 `Bash`: Check WebDemo diffs and prepare old root
+**Agent** (20:12 UTC):
+
+No `WebDemo/` changes since `71f7fa7`. I'll set up a scratch web root with `71f7fa7`'s bundle and page, linking the unchanged assets.
+
+- 20:12 `Bash`: Extract the 71f7fa7 bundle and page; check assets unchanged
+- 20:12 `Bash`: Link unchanged asset folders into the old root
+- 20:12 `Bash`: List resources referenced by index.html
+**Agent** (20:12 UTC):
+
+Now `?s3=match` at 3.0 s from both builds (canvas and page).
+
+- 20:13 `Bash`: Capture match at 3.0 s from old and new builds
+- 20:14 `Bash`: Compare match frames old vs new
+**Agent** (20:14 UTC):
+
+The canvas is identical (same md5). The page shot differs in 105 pixels by at most 6. Let me see where they are, since the page includes the HUD with CSS animations.
+
+- 20:14 `Bash`: Locate page-shot differences
+- 20:14 `Bash`: Second page capture to show HUD noise
+**Agent** (20:14 UTC):
+
+Two captures of the new build are identical to each other, so this difference is repeatable, not noise. I need to know why the Turbo Spin button differs between builds when the 3D canvas does not.
+
+- 20:15 `Bash`: Look for Turbo Spin HUD animation in index.html
+- 20:15 `Bash`: Read HUD power button CSS
+**Agent** (20:15 UTC):
+
+The difference is repeatable and limited to the Turbo Spin button, while the canvas is identical. Let me look at both crops of that button.
+
+- 20:15 `Bash`: Crop and inspect the Turbo button differences
+- 20:15 `Bash`: Recapture the old build page and compare
+
+_272 tool steps._
 
 ---
 
