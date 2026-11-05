@@ -55,7 +55,31 @@ judgement; never claim a precise similarity percentage.
 Rules: visual changes only under `?s3=round5`; Round 4 and the normal game stay pixel-identical; never change controls, lanes,
 the route or gameplay rules; keep the fluffy shell-fur brushes; no paid Tripo generations.
 
-## Newest: the FOCUSED CORRECTION PASS, `?s3=focus` (5 November 2026, eighth session; this section overrides the notes below)
+## Newest: ninth session, where the work is saved (5 November 2026, from 19:00 UTC; this section overrides the notes below)
+
+- **Repository:** `josiahscalia5-dev/bubblegame` (the user's GitHub repository). **Branch:** `ccr-de8d9670-2ohd5t`, the ninth
+  session's branch; it continues `ccr-3d8a1ae9-hhgml1` exactly (both were at `182ad19`). Every agent's work is merged
+  into this branch and pushed there by the lead; never push another branch, never force-push.
+- **Tunnel & Lighting's focus work so far is on the branch** (`0ff0d0b`, restored from its 18:58 snapshot, identical frames):
+  - the focus camera at the original's size: `FOCUS.match.hero.round6.round5.camera = { off: [-0.162, 1.126, -3.1],
+    lookY: 1.655, lookX: 0.142, fov: 68 }`, with the gold rim restaged (`porthole.bezel`, `face.inner`, `rivets.radius`,
+    `hero.rim.centre`, `rimRho`). At 3.0 s: character width 0.473 W, top 0.695, base 0.850, centre (0.500, 0.780);
+  - the user's problem A (the lower-left lavender-grey wedge, `heroWalls` before the tube's mouth): drawn as the walls'
+    animated water (`focusMouthWaterGLSL`); the upper gold rim unchanged;
+  - the left-wall horizontal seam removed (`focusRibbonsGLSL` counts the angle from straight down).
+  - Notes and frames: `Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md`.
+- **Water & VFX's unfinished focus work** (the water round her: crest cut, side crests, sparkle; not yet committed) is in
+  `Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/water-vfx-engineer_a29b1562/`
+  (`changes.patch` against `d6e836d`, which applies cleanly here) with its notes in `.../files/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md`.
+- **The user's newest kit (18:26 UTC):** `Design/ReferencePacks/2026-11-05_Tunnel_Correction_ESSENTIAL_Kit/`
+  (`CLAUDE_SEND_THIS.txt`): A, the lower-left exposed wall (done, above); B, broader, softly blended cobalt and turquoise
+  flows, softer brighter cyan accents, fewer hard white outlines and less bubble clutter, a modest warm centre. Its
+  `00_ORIGINAL_CLASSIC_MASTER.png` is the same original; the original stays the only target.
+- **The Art Director's ranked review of focus:** `Previews/WebDemo/screen4_round9_match/16_art_director_focus_review/`.
+- **Saving:** commit in your worktree after each tested step and keep a running `NOTES.md` in your evidence folder; the
+  lead's 5-minute autosave copies your unfinished work into the repository (the user's standing request).
+
+## Earlier: the FOCUSED CORRECTION PASS, `?s3=focus` (5 November 2026, eighth session; this section overrides the notes below)
 
 - **Switch:** `?s3=focus` = everything `match` does plus the user's focused correction pass. Settings: `WebDemo/src/tunnel_r9_focus.js`
   (`FOCUS.match`, merged into `MATCH`; `FOCUS.water`, merged into `MATCH_WATER`). Code gated on `FOCUS_ON`:
