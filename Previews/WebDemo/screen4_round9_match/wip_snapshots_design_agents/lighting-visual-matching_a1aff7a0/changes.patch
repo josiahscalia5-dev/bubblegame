@@ -1,3 +1,1108 @@
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_checkpoint.txt b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_checkpoint.txt
+new file mode 100644
+index 0000000..ecd4f3c
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/gameplay_s3_func_checkpoint.txt
+@@ -0,0 +1,512 @@
++{
++ "s3": [
++  "match"
++ ],
++ "s3Report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.42,
++      2.55
++     ],
++     "face": [
++      2.5,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -0.7100000000000002,
++      "centre": [
++       -0.10300000000000001,
++       0.655
++      ],
++      "inner": 2.42,
++      "outer": 2.55
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 30,
++       "drawCalls": 1,
++       "triangles": 60
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 8,
++        "drawCalls": 1,
++        "triangles": 2016
++       },
++       "bank": {
++        "curls": {
++         "count": 6,
++         "drawCalls": 1,
++         "triangles": 2016
++        },
++        "lumps": {
++         "count": 26,
++         "drawCalls": 1,
++         "triangles": 8320
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "camera": {
++       "dx": -0.006,
++       "dh": -0.1,
++       "du": 0.44
++      },
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9490196078431373,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.35,
++       "glint": 0.9,
++       "deep": 0.7,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 160,
++       "flecks": 200,
++       "drawCalls": 1,
++       "triangles": 720,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ },
++ "costAtTapToStart": {
++  "drawCalls": 230,
++  "triangles": 1225984
++ },
++ "afterSettingsClick": {
++  "phase": "intro",
++  "lane": 1,
++  "air": false,
++  "z": -16.7,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "true"
++ },
++ "afterTap": {
++  "phase": "running",
++  "lane": 1,
++  "air": false,
++  "z": -16.7,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "afterSwipeLeft": {
++  "from": 1,
++  "phase": "running",
++  "lane": 0,
++  "air": false,
++  "z": -11.789,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "afterTwoSwipesRight": {
++  "phase": "running",
++  "lane": 2,
++  "air": false,
++  "z": -6.653,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "afterSwipeUp": {
++  "phase": "running",
++  "lane": 2,
++  "air": true,
++  "z": -5.677,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "inTunnel": {
++  "phase": "running",
++  "lane": 1,
++  "air": false,
++  "z": 20.561,
++  "coins": 1292,
++  "gems": 37,
++  "collected": {
++   "coins": 12,
++   "gems": 1,
++   "socks": 2
++  },
++  "socks": 2,
++  "sound": "false"
++ },
++ "costInTunnel": {
++  "drawCalls": 135,
++  "triangles": 1078617
++ },
++ "logs": [],
++ "keyboardStart": {
++  "phase": "running",
++  "lane": 1,
++  "air": false,
++  "z": -16.7,
++  "coins": 1280,
++  "gems": 36,
++  "collected": {
++   "coins": 0,
++   "gems": 0
++  },
++  "socks": 0,
++  "sound": "false"
++ },
++ "logs2": []
++}
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/char_rows.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/char_rows.py
+new file mode 100644
+index 0000000..b5297c4
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/char_rows.py
+@@ -0,0 +1,17 @@
++"""The pink character's silhouette row by row: for y = 0.70 .. 0.88 the left and right edge (x fractions) of the 'body' mask's
++largest blob (character.py), and the pink share of that row inside the edges. Usage: $BW_PY char_rows.py <frame.png> ..."""
++import sys, os, numpy as np
++sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
++from character import load, hsv, blob, APP, W0, H0
++import cv2
++for p in [APP] + sys.argv[1:]:
++    im = load(p); h, s, v = hsv(im)
++    body = ((h >= 290) | (h <= 20)) & (s > 0.25) & (v > 0.45)
++    body = cv2.morphologyEx(body.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8)).astype(bool)
++    b = blob(body)
++    tag = 'original' if p == APP else os.path.basename(p)[:26]
++    out = []
++    for yf in np.arange(0.70, 0.881, 0.02):
++        r = b[int(yf * H0)]; xs = np.nonzero(r)[0]
++        out.append(f'{yf:.2f}:' + (f'{xs.min()/W0:.2f}-{xs.max()/W0:.2f}' if len(xs) > 2 else '   -     '))
++    print(f'{tag:26s}', ' '.join(out))
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/character.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/character.py
+new file mode 100644
+index 0000000..58d025f
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/character.py
+@@ -0,0 +1,69 @@
++"""The pink character's size and place (focused pass, Tunnel & Lighting).
++
++Usage: $BW_PY character.py <frame.png> [<frame.png> ...] [--mask out_dir]
++Each frame is resized to 538 x 1076 (the original 767 x 1536 too) and measured in fractions of the frame.
++
++Two masks, both restricted to the largest connected blob inside x 0.12-0.88, y 0.55-0.95:
++  - 'lead':  the lead's saturated pink (hue >= 300 or <= 10 degrees, S > 0.45, V > 0.5), as in the brief;
++  - 'body':  any pink (hue >= 290 or <= 20, S > 0.25, V > 0.45), closed with a 7 px kernel, so the lighter fur tips count.
++Reported per mask: area share of the frame, bbox x0-x1 / y0-y1, width, centroid, the dome top (first row from the top with
++at least 3% of the width pink), the widest row and its y, and the half-height width (the body's width at the middle of the
++blob's height).
++"""
++import sys, os, numpy as np, cv2
++from PIL import Image
++W0, H0 = 538, 1076
++APP = '/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
++
++def load(p):
++    return np.asarray(Image.open(p).convert('RGB').resize((W0, H0), Image.LANCZOS))
++
++def hsv(im):
++    a = im.astype(np.float32) / 255; mx, mn = a.max(-1), a.min(-1); v = mx; s = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0)
++    r, g, b = a[..., 0], a[..., 1], a[..., 2]; d = np.maximum(mx - mn, 1e-6)
++    h = np.where(mx == r, (60 * ((g - b) / d) + 360) % 360, np.where(mx == g, 60 * ((b - r) / d) + 120, 60 * ((r - g) / d) + 240))
++    return h, s, v
++
++def blob(mask):
++    roi = np.zeros_like(mask); y0, y1, x0, x1 = int(0.55 * H0), int(0.95 * H0), int(0.12 * W0), int(0.88 * W0)
++    roi[y0:y1, x0:x1] = mask[y0:y1, x0:x1]
++    n, lab, st, _ = cv2.connectedComponentsWithStats(roi.astype(np.uint8), 8)
++    if n < 2: return None
++    k = 1 + np.argmax(st[1:, cv2.CC_STAT_AREA])
++    return lab == k
++
++def describe(m):
++    ys, xs = np.nonzero(m)
++    rows = m.sum(1) / W0
++    top = int(np.argmax(rows > 0.03))
++    wide = int(np.argmax(rows))
++    mid = (ys.min() + ys.max()) // 2
++    rw = np.nonzero(m[mid])[0]
++    return dict(area=m.mean() * 100, x0=xs.min() / W0, x1=xs.max() / W0, y0=ys.min() / H0, y1=ys.max() / H0,
++                w=(xs.max() - xs.min()) / W0, cx=xs.mean() / W0, cy=ys.mean() / H0, top=top / H0,
++                widest=rows[wide], widest_y=wide / H0, midw=(rw.max() - rw.min()) / W0 if len(rw) else 0)
++
++def measure(p, maskdir=None, tag=None):
++    im = load(p); h, s, v = hsv(im)
++    lead = ((h >= 300) | (h <= 10)) & (s > 0.45) & (v > 0.5)
++    body = ((h >= 290) | (h <= 20)) & (s > 0.25) & (v > 0.45)
++    body = cv2.morphologyEx(body.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8)).astype(bool)
++    out = {}
++    for name, m in (('lead', lead), ('body', body)):
++        b = blob(m)
++        out[name] = describe(b) if b is not None else None
++        if maskdir and b is not None:
++            vis = im.copy(); vis[b] = (vis[b] * 0.3 + np.array([0, 255, 0]) * 0.7).astype(np.uint8)
++            Image.fromarray(vis).save(os.path.join(maskdir, f'{tag}_{name}_mask.png'))
++    return out
++
++if __name__ == '__main__':
++    args = sys.argv[1:]; maskdir = None
++    if '--mask' in args: i = args.index('--mask'); maskdir = args[i + 1]; del args[i:i + 2]; os.makedirs(maskdir, exist_ok=True)
++    for p in [APP] + args:
++        tag = 'original' if p == APP else os.path.splitext(os.path.basename(p))[0]
++        r = measure(p, maskdir, tag)
++        for name, d in r.items():
++            if d is None: print(f'{tag:28s} {name:4s} none'); continue
++            print(f"{tag:28s} {name:4s} area {d['area']:.2f}% | x {d['x0']:.3f}-{d['x1']:.3f} (w {d['w']:.3f}) y {d['y0']:.3f}-{d['y1']:.3f} | "
++                  f"centroid ({d['cx']:.3f}, {d['cy']:.3f}) | dome top {d['top']:.3f} | widest {d['widest']:.3f} at y {d['widest_y']:.3f} | mid-height width {d['midw']:.3f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/coin_probe.cjs b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/coin_probe.cjs
+new file mode 100644
+index 0000000..902cbd6
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/coin_probe.cjs
+@@ -0,0 +1,45 @@
++// coin_probe.cjs <abs WebDemo> [tune json]: at T (3.0 s) seeded match, project every coin (LOD) and every unnamed top-level
++// Group (gems, socks) with its screen place, distance, visual scale and layout z (u).
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, TUNE = '{}'] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'match').split(','), T = +(process.env.T || 3.0);
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: 1 })).newPage();
++  await page.addInitScript(([tune, s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = JSON.parse(tune); window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [TUNE, S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate((t) => window.__bw.advance(t), T);
++  await page.waitForTimeout(500);
++  const out = await page.evaluate(() => {
++    const d = window.__bw.debug(), cam = d.camera, scene = d.scene, L = d.layout;
++    const V = cam.position.constructor; const rows = [];
++    for (const o of scene.children) {
++      const isCoin = o.isLOD, isGrp = o.type === 'Group' && !o.name;
++      if (!isCoin && !isGrp) continue;
++      const wp = o.getWorldPosition(new V()), dist = wp.distanceTo(cam.position); if (dist > 45) continue;
++      const s = wp.clone().project(cam);
++      let kind = isCoin ? 'coin' : 'group'; o.traverse((q) => { if (q.isSprite) kind = 'sock?'; });
++      if (kind === 'group') { let n = 0; o.traverse((q) => { if (q.isMesh) n++; }); kind = 'grp' + n; }
++      rows.push({ kind, sx: +((s.x + 1) / 2).toFixed(3), sy: +((1 - s.y) / 2).toFixed(3), z: +s.z.toFixed(3), dist: +dist.toFixed(2), scale: +o.scale.x.toFixed(2), vis: o.visible, world: wp.toArray().map((v) => +v.toFixed(2)) });
++    }
++    rows.sort((a, b) => a.dist - b.dist);
++    return { tunnelStart: L.tunnelStart, cam: cam.position.toArray().map((v) => +v.toFixed(2)), rows };
++  });
++  console.log(JSON.stringify(out.cam), 'tunnelStart', out.tunnelStart);
++  for (const r of out.rows) console.log(JSON.stringify(r));
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/common.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/common.py
+new file mode 100644
+index 0000000..407d406
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/common.py
+@@ -0,0 +1,33 @@
++import os, numpy as np, cv2
++from PIL import Image
++APP='/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
++import os.path as _op
++_D=_op.dirname(_op.dirname(_op.abspath(__file__)))   # 06_tunnel_lighting_gate_fixes
++BEFORE=_op.join(_op.dirname(_D),'04_merged','match_t3.00.png')   # the merged build before this pass
++W0,H0=538,1076
++# (Tunnel & Lighting gate fixes, step 6: the Art Director's step-5 common.py with the frames as an argument.)
++# Frames from the environment: FRAMES="label=path;label=path" (each game frame measured round 0.53,0.53 as in the gate).
++# The approved original is always first.
++FR=[('approved',APP,(0.528,0.532))]
++_env=os.environ.get('FRAMES','before='+BEFORE+';now3.0='+_op.join(_D,'match_t3.00.png')+';now2.85='+_op.join(_D,'match_t2.85.png')+';now3.1='+_op.join(_D,'match_t3.10.png'))
++for it in [x for x in _env.split(';') if x]:
++    lab,p=it.split('=',1); FR.append((lab,p,(0.53,0.53)))
++def load(p): return np.asarray(Image.open(p).convert('RGB').resize((W0,H0),Image.LANCZOS))
++def hsv(im):
++    a=im.astype(np.float32)/255; mx,mn=a.max(-1),a.min(-1); v=mx; s=np.where(mx>0,(mx-mn)/np.maximum(mx,1e-6),0)
++    r,g,b=a[...,0],a[...,1],a[...,2]; d=np.maximum(mx-mn,1e-6)
++    h=np.where(mx==r,(60*((g-b)/d)+360)%360,np.where(mx==g,60*((b-r)/d)+120,60*((r-g)/d)+240))
++    return h,s,v
++def classes(im):
++    h,s,v=hsv(im); out={}
++    out['gold']=(h>=30)&(h<65)&(s>0.45)&(v>0.6)
++    out['pink']=((h>=290)|(h<20))&(s>0.3)&(v>0.5)
++    rest=~(out['gold']|out['pink'])
++    out['white']=rest&(s<0.15)&(v>0.85)
++    out['pale blue']=rest&(h>=185)&(h<235)&(s>=0.15)&(s<0.45)&(v>0.75)
++    out['azure']=rest&(h>=165)&(h<205)&(s>=0.45)
++    out['electric blue']=rest&(h>=205)&(h<228)&(s>=0.45)&(v>=0.8)
++    out['deep cobalt']=rest&(((h>=205)&(h<245)&(s>=0.45)&(v<0.8))|((h>=228)&(h<245)&(s>=0.6)))
++    out['lavender']=rest&(h>=235)&(h<290)&(s>=0.12)&~out['deep cobalt']
++    return out,h,s,v
++def hexc(c): c=np.clip(c,0,255).astype(int); return '#%02x%02x%02x'%tuple(c)
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/objects.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/objects.py
+new file mode 100644
+index 0000000..df615eb
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/objects.py
+@@ -0,0 +1,34 @@
++"""Object boxes by colour: gold (coins), magenta-purple (gem), pink (fur), from the Art Director's HSV classes.
++   python objects.py frame.png [frame2.png ...]   -> connected components as fractions of the frame (x/W, y/H)"""
++import sys, numpy as np
++from PIL import Image
++from scipy import ndimage as ndi
++
++
++def hsv(rgb):
++    a = rgb.astype(np.float32) / 255.0
++    mx, mn = a.max(-1), a.min(-1); v = mx; s = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0)
++    r, g, b = a[..., 0], a[..., 1], a[..., 2]; d = np.maximum(mx - mn, 1e-6)
++    h = np.where(mx == r, (60 * ((g - b) / d) + 360) % 360, np.where(mx == g, 60 * ((b - r) / d) + 120, 60 * ((r - g) / d) + 240))
++    return h, s, v
++
++def comps(mask, minfrac, W, H, close=3):
++    mask = ndi.binary_closing(mask, iterations=close); mask = ndi.binary_fill_holes(mask)
++    lab, n = ndi.label(mask); out = []
++    for i, sl in enumerate(ndi.find_objects(lab), 1):
++        area = (lab[sl] == i).sum()
++        if area < minfrac * W * H: continue
++        ys, xs = sl
++        out.append(dict(x0=xs.start / W, x1=xs.stop / W, y0=ys.start / H, y1=ys.stop / H, area=area / (W * H)))
++    return sorted(out, key=lambda o: -o['area'])
++
++if __name__ == '__main__':
++    for p in sys.argv[1:]:
++        im = np.asarray(Image.open(p).convert('RGB')); H, W = im.shape[:2]
++        h, s, v = hsv(im)
++        gold = (h >= 28) & (h < 62) & (s > 0.45) & (v > 0.55)
++        gem = (h >= 270) & (h < 310) & (s > 0.45) & (v > 0.45)
++        print('==', p, W, H)
++        for name, m, mf in (('gold', gold, 0.0008), ('gem/purple', gem, 0.0004)):
++            for o in comps(m, mf, W, H):
++                print(f"  {name:10s} x {o['x0']:.3f}-{o['x1']:.3f} y {o['y0']:.3f}-{o['y1']:.3f}  ctr ({(o['x0']+o['x1'])/2:.3f}, {(o['y0']+o['y1'])/2:.3f})  w {o['x1']-o['x0']:.3f}W h {(o['y1']-o['y0'])*H/W:.3f}W  area {o['area']*100:.2f}%")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/palette.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/palette.py
+new file mode 100644
+index 0000000..2d0ec3c
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/palette.py
+@@ -0,0 +1,17 @@
++from common import *
++for lab,p,(vx,vy) in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    rr=np.hypot((xx-vx*W0)/W0,(yy-vy*H0)/W0); ang=np.rad2deg(np.arctan2(-(yy-vy*H0),xx-vx*W0))
++    hud=0.205 if lab=='approved' else 0.172
++    m=(rr>0.08)&(rr<0.45)&(ang>20)&(ang<160)&(yy>hud*H0)&~(cl['gold']|cl['pink'])
++    other=m.copy()
++    for k in ['white','pale blue','azure','electric blue','deep cobalt','lavender']: other&=~cl[k]
++    print('==',lab)
++    for k in ['azure','electric blue','deep cobalt','white','pale blue','lavender']:
++        mm=m&cl[k]
++        if mm.sum(): print(f"  {k:13s} median {hexc(np.median(im[mm],0))}  p90-bright {hexc(np.percentile(im[mm],90,0))}  H {np.median(h[mm]):.0f} S {np.median(s[mm]):.2f} V {np.median(v[mm]):.2f}")
++    hh=h[other]; ss=s[other]
++    print(f"  other: n {other.sum()}  hue hist:", np.histogram(hh,bins=[0,20,45,70,100,140,165,185,205,235,260,290,330,360])[0].tolist(), 'median', hexc(np.median(im[other],0)), f"S {np.median(ss):.2f}")
++    # brightest 2% in the wall: glints
++    L=v[m]; t=np.percentile(L,98); g=m&(v>=t)
++    print(f"  top-2% V glints median {hexc(np.median(im[g],0))} S {np.median(s[g]):.2f};  darkest 5% median {hexc(np.median(im[m&(v<=np.percentile(L,5))],0))}")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rim.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rim.py
+new file mode 100644
+index 0000000..fc9caa0
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rim.py
+@@ -0,0 +1,14 @@
++from common import *
++for lab,p,vp in FR:
++    im=load(p); h,s,v=hsv(im); yy,xx=np.mgrid[0:H0,0:W0]
++    warm=(((h>=10)&(h<55))|(h>=345))&(s>0.25)&(v>0.55)&(yy>0.08*H0)&(yy<0.42*H0)
++    # exclude coins/pink brushes: brushes are pink h>=290 so not included; coins below .42 excluded
++    out=[]; th=[]; cols=[]
++    for x in np.arange(0.05,1.0,0.05):
++        c=int(x*W0); col=warm[:,max(c-2,0):c+3].any(1); ys=np.nonzero(col)[0]
++        if len(ys)<3: out.append(f"{x:.2f}:-"); continue
++        # largest contiguous run
++        runs=np.split(ys,np.nonzero(np.diff(ys)>2)[0]+1); r=max(runs,key=len)
++        out.append(f"{x:.2f}:{r[0]/H0:.3f}-{r[-1]/H0:.3f}"); th.append((r[-1]-r[0])/H0); cols.append(np.median(im[r[0]:r[-1]+1,c].reshape(-1,3),0))
++    print(f"{lab:9s} warm rim band per column: "+' '.join(out))
++    if th: print(f"          median thickness {np.median(th):.3f}H  median colour {hexc(np.median(cols,0))}  warm-rim pixels {100*warm.sum()/(W0*H0):.2f}% of frame")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rings.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rings.py
+new file mode 100644
+index 0000000..c7f9c93
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rings.py
+@@ -0,0 +1,30 @@
++from common import *
++from scipy.signal import find_peaks
++from scipy.ndimage import gaussian_filter1d
++for lab,p,(vx,vy) in FR:
++    im=load(p); cl,h,s,v=classes(im)
++    lum=(0.2126*im[...,0]+0.7152*im[...,1]+0.0722*im[...,2])/255
++    obj=cl['gold']|cl['pink']
++    obj=cv2.dilate(obj.astype(np.uint8),np.ones((7,7),np.uint8))>0
++    cx,cy=vx*W0,vy*H0
++    rs=np.arange(0.03,0.50,0.0025)  # in W units
++    out=[]
++    for sector,(a0,a1) in (('up 50-130',(50,130)),('left 140-175',(140,175)),('right 5-40',(5,40))):
++        angs=np.deg2rad(np.arange(a0,a1,1.0))
++        prof=[];angcv=[]; satp=[]
++        for r in rs:
++            X=(cx+r*W0*np.cos(angs)).astype(int); Y=(cy-r*W0*np.sin(angs)).astype(int)
++            ok=(X>=0)&(X<W0)&(Y>=int(0.21*H0))&(Y<H0)
++            ok[ok]&=~obj[Y[ok],X[ok]]
++            if ok.sum()<10: prof.append(np.nan); angcv.append(np.nan); satp.append(np.nan); continue
++            L=lum[Y[ok],X[ok]]; prof.append(L.mean()); angcv.append(L.std()); satp.append(s[Y[ok],X[ok]].mean())
++        prof=np.array(prof); angcv=np.array(angcv); satp=np.array(satp)
++        good=~np.isnan(prof)
++        # mouth edge: outermost radius still inside the blue tunnel = where saturation drops (lavender collar S<.45) for this sector
++        P=gaussian_filter1d(np.nan_to_num(prof,nan=np.nanmean(prof)),1.0)
++        pk,_=find_peaks(P,prominence=0.025,distance=3)
++        tr,_=find_peaks(-P,prominence=0.025,distance=3)
++        pr=rs[pk]
++        sp=np.diff(np.log(pr)) if len(pr)>2 else np.array([np.nan])
++        amp=(np.mean(P[pk])-np.mean(P[tr])) if len(pk) and len(tr) else np.nan
++        print(f"{lab:9s} {sector:13s} bright bands {len(pk):2d} at r {', '.join(f'{x:.3f}' for x in pr)} | log-spacing mean {np.nanmean(sp):.3f} CV {np.nanstd(sp)/np.nanmean(sp):.2f} | band contrast {amp:.3f} | along-ring lum std {np.nanmean(angcv):.3f} | radial-profile std {np.nanstd(prof):.3f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rw_probe_corrected.cjs b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rw_probe_corrected.cjs
+new file mode 100644
+index 0000000..eaf74aa
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/rw_probe_corrected.cjs
+@@ -0,0 +1,84 @@
++// Read-only diagnostic (Art Director gate, Round 9): does heroWalls' colour-map radius rw (tunnel_r9_match.js matchWall:
++// rw = |cs - uHeroCam.xy| / max(u - uHeroCam.z, 0.25) / uHeroTanW, i.e. worked out in each point's OWN track frame) agree with
++// where the point really appears on screen (its true radius round the projected vanishing point)? Loads the real game
++// (seed 7) like tools/screen4/hero_probe.cjs, advances to T, projects every heroWalls vertex with the real camera, keeps the
++// nearest per screen cell (a z-buffer of the walls alone) and compares the two radii by screen ring. Also prints where the
++// tube's axis lands on screen 5-80 m ahead (the path's turn). Nothing in the game is changed.
++//   cd WebDemo && S3=match T=3.0 node <this> "$PWD" <out dir>
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'match').split(','), T = +(process.env.T || 3.0);
++fs.mkdirSync(OUT, { recursive: true });
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: 1 })).newPage();
++  await page.addInitScript(([s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = {}; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate((t) => window.__bw.advance(t), T);
++  await page.waitForTimeout(800);
++  await page.screenshot({ path: path.join(OUT, `rw_probe_t${T.toFixed(2)}.png`), clip: await page.locator('#stage').boundingBox() });
++  const info = await page.evaluate(() => {
++    const d = window.__bw.debug(), cam = d.camera, scene = d.scene, TR = d.track, L = d.layout;
++    const V = cam.position.constructor;
++    cam.updateMatrixWorld(); cam.matrixWorldInverse.copy(cam.matrixWorld).invert();
++    const wall = scene.getObjectByName('heroWalls'); wall.updateMatrixWorld();
++    const Un = wall.material.uniforms, C = Un.uHeroCam.value, tanW = Un.uHeroTanW.value;
++    const F = { P: new V(), R: new V(), U: new V(), T: new V() };
++    const sc = (p) => { const q = p.clone().project(cam); return [(q.x + 1) / 2, (1 - q.y) / 2, q.z]; };
++    TR.frame(C.z, F); const vp = sc(cam.position.clone().addScaledVector(F.T, 1e4));
++    const axis = [];
++    const axH = (() => { TR.frame(C.z, F); return C.y; })();   // the camera's height above the water; the axis height below
++    for (const du of [0, 3, 5, 8, 12, 16, 20, 30, 40, 60, 80]) {
++      if (C.z + du > L.tunnelEnd + 2) break;
++      TR.frame(C.z + du, F); const p = sc(F.P.clone().addScaledVector(F.U, 2.6));
++      axis.push({ du, x: +p[0].toFixed(3), y: +p[1].toFixed(3), T: F.T.toArray().map((v) => +v.toFixed(3)) });
++    }
++    const pos = wall.geometry.attributes.position, au = wall.geometry.attributes.aAU, n = pos.count, GX = 135, GY = 270;
++    const zb = new Float32Array(GX * GY).fill(2), rwS = new Float32Array(GX * GY), duS = new Float32Array(GX * GY), rwC = new Float32Array(GX * GY);
++    const MVP = Un.uMatchVP ? Un.uMatchVP.value : null; const vpx = MVP ? MVP.x : vp[0], vpy = MVP ? 1 - MVP.y : vp[1];
++    const w = new V(); let lastU = NaN; const rel = new V();
++    for (let i = 0; i < n; i++) {
++      w.fromBufferAttribute(pos, i).applyMatrix4(wall.matrixWorld);
++      const s = sc(w); if (s[2] < -1 || s[2] > 1 || s[0] < 0 || s[0] >= 1 || s[1] < 0 || s[1] >= 1) continue;
++      const u = au.getY(i); if (u !== lastU) { TR.frame(u, F); lastU = u; }
++      rel.copy(w).sub(F.P); const cx = rel.dot(F.R), ch = rel.dot(F.U);
++      const rw = Math.hypot(cx - C.x, ch - C.y) / Math.max(u - C.z, 0.25) / tanW;
++      const k = Math.floor(s[1] * GY) * GX + Math.floor(s[0] * GX);
++      const rs = Math.hypot(s[0] - vpx, (s[1] - vpy) / cam.aspect); const t = Math.min(1, Math.max(0, (rs - 0.09) / 0.05)); const kk = 1 - t * t * (3 - 2 * t);
++      if (s[2] < zb[k]) { zb[k] = s[2]; rwS[k] = rw; duS[k] = u - C.z; rwC[k] = rw + (rs - rw) * kk; }
++    }
++    const rings = [[0, 0.035], [0.035, 0.06], [0.06, 0.09], [0.09, 0.12], [0.12, 0.2], [0.2, 0.3], [0.3, 0.45]], out = [];
++    for (const [r0, r1] of rings) {
++      const a = [], b = [], ratio = [], ac = [];
++      for (let y = 0; y < GY; y++) for (let x = 0; x < GX; x++) {
++        const k = y * GX + x; if (zb[k] > 1.5) continue;
++        const rt = Math.hypot((x + 0.5) / GX - vpx, ((y + 0.5) / GY - vpy) / cam.aspect);
++        if (rt < r0 || rt >= r1) continue;
++        a.push(rwS[k]); ac.push(rwC[k]); b.push(duS[k]); ratio.push(rwS[k] / Math.max(rt, 1e-3));
++      }
++      const med = (q) => { if (!q.length) return null; const s = [...q].sort((m, n) => m - n); return +s[s.length >> 1].toFixed(3); };
++      const pct = (q, f) => { if (!q.length) return null; const s = [...q].sort((m, n) => m - n); return +s[Math.floor(f * (s.length - 1))].toFixed(3); };
++      out.push({ screenR: [r0, r1], cells: a.length, shaderRw_p10_med_p90: [pct(a, 0.1), med(a), pct(a, 0.9)], du_med_m: med(b), du_p10_p90: [pct(b, 0.1), pct(b, 0.9)], rwOverTrue_med: med(ratio),
++        coreShare: a.length ? +(a.filter((v) => v < 0.06).length / a.length).toFixed(3) : null, correctedRw_med: med(ac), correctedCoreShare: ac.length ? +(ac.filter((v) => v < 0.06).length / ac.length).toFixed(3) : null });
++    }
++    return { T: window.__bw.state().time, cam: { track: [C.x, C.y, C.z].map((v) => +v.toFixed(3)), tanW: +tanW.toFixed(4), aspect: cam.aspect, fov: cam.fov }, tunnel: [L.tunnelStart, L.tunnelEnd],
++      vanishingPoint_trackDirection: vp.slice(0, 2).map((v) => +v.toFixed(3)), uMatchVP_screen: [+vpx.toFixed(3), +vpy.toFixed(3)], axisOnScreen: axis, wallVertices: n, rings: out };
++  });
++  fs.writeFileSync(path.join(OUT, `rw_probe_t${T.toFixed(2)}.json`), JSON.stringify(info, null, 1));
++  console.log(JSON.stringify(info, null, 1));
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/sbs.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/sbs.py
+new file mode 100644
+index 0000000..cafcd15
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/sbs.py
+@@ -0,0 +1,18 @@
++"""sbs.py out.png H frame1 [frame2 ...] : side by side, approved first, every frame resized to height H.
++   Optional crop via CROP=x0,y0,x1,y1 (fractions) applied to every frame."""
++import sys, os
++from PIL import Image
++APP='/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg'
++out=sys.argv[1]; H=int(sys.argv[2]); fr=[APP]+sys.argv[3:]
++crop=os.environ.get('CROP')
++ims=[]
++for p in fr:
++    im=Image.open(p).convert('RGB')
++    if crop:
++        x0,y0,x1,y1=map(float,crop.split(',')); W,Hh=im.size
++        im=im.crop((int(x0*W),int(y0*Hh),int(x1*W),int(y1*Hh)))
++    w=round(im.size[0]*H/im.size[1]); ims.append(im.resize((w,H),Image.LANCZOS))
++S=Image.new('RGB',(sum(i.size[0] for i in ims)+6*(len(ims)-1),H),(255,255,255))
++x=0
++for i in ims: S.paste(i,(x,0)); x+=i.size[0]+6
++S.save(out)
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+new file mode 100644
+index 0000000..5bc1700
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
+@@ -0,0 +1,75 @@
++// Focused pass (Tunnel & Lighting): the hero camera's re-staging probe. Loads the real game (seed 7, 538 x 1076, ?s3=match
++// unless S3 is set), advances to T s after the tap and prints:
++//   - the camera (world position, track u/x/h relative to the drum's mouth, quaternion, forward vector, fov, near plane);
++//   - the path's tangent T and up U at u = -6 .. 12 m from the mouth (to check the hero zone is straight);
++//   - the pink character's screen footprint (projected vertices of its mesh, fractions of the 538 x 1076 stage);
++//   - for each ITEMS entry [lane, u, h0] (u absolute along the path, h0 above the water as in the game's layout) and the
++//     shift DELTA = [dx, dh, du] (track metres; x + screen-left): the shifted layout [lane', u', h0'] that keeps the item at
++//     the same place relative to a camera moved by DELTA (h0' accounts for the water height at the new place).
++// Usage: S3=match T=3.0 ITEMS='[[l,u,h],...]' DELTA='[dx,dh,du]' node stage_probe.cjs <abs WebDemo> <out.json> ['<tune json>']
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT, TUNE = '{}'] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'match').split(',').filter(Boolean), T = +(process.env.T || 3.0);
++const ITEMS = JSON.parse(process.env.ITEMS || '[]'), DELTA = JSON.parse(process.env.DELTA || '[0,0,0]');
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: 1 })).newPage();
++  const logs = [];
++  page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text()); });
++  page.on('pageerror', (e) => logs.push(e.message));
++  await page.addInitScript(([tune, s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = JSON.parse(tune);
++    window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [TUNE, S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate(() => window.__bw.advance(0.5));
++  await page.evaluate(() => window.__bw.tap());
++  await page.evaluate((t) => window.__bw.advance(t), T);
++  const info = await page.evaluate(([items, delta]) => {
++    const d = window.__bw.debug(), cam = d.camera, scene = d.scene, L = d.layout, TR = d.track, W = d.world;
++    const V = cam.position.constructor;
++    const fr = { P: new V(), R: new V(), U: new V(), T: new V() };
++    const r3 = (v) => v.toArray().map((x) => +x.toFixed(4));
++    const toTrack = (p) => { let best = null;
++      for (let u = L.tunnelStart - 20; u <= L.tunnelStart + 40; u += 0.01) { TR.frame(u, fr); const rel = p.clone().sub(fr.P), al = Math.abs(rel.dot(fr.T)); if (!best || al < best.al) best = { al, u, x: rel.dot(fr.R), h: rel.dot(fr.U) }; }
++      return { u: +(best.u - L.tunnelStart).toFixed(3), x: +best.x.toFixed(3), h: +best.h.toFixed(3) }; };
++    const path = []; for (let u = -6; u <= 12; u += 3) { TR.frame(L.tunnelStart + u, fr); path.push({ u, T: r3(fr.T), U: r3(fr.U), P: r3(fr.P) }); }
++    let fuzz = null; scene.traverse((o) => { if (!fuzz && o.isMesh && /PinkFuz/.test(o.name)) fuzz = o; });
++    let foot = null;
++    if (fuzz) { const pos = fuzz.geometry.attributes.position, v = new V(); let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9, cx = 0, n = 0;
++      for (let i = 0; i < pos.count; i += 3) { v.fromBufferAttribute(pos, i).applyMatrix4(fuzz.matrixWorld).project(cam); const x = (v.x + 1) / 2, y = (1 - v.y) / 2; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); cx += x; n++; }
++      foot = { x0: +x0.toFixed(3), x1: +x1.toFixed(3), y0: +y0.toFixed(3), y1: +y1.toFixed(3), w: +(x1 - x0).toFixed(3), cx: +(cx / n).toFixed(3), dist: +fuzz.getWorldPosition(new V()).distanceTo(cam.position).toFixed(3), track: toTrack(fuzz.getWorldPosition(new V())) }; }
++    const [dx, dh, du] = delta;
++    const shifted = items.map(([lane, u, h0]) => { const x = W.laneX(lane), hT = W.baseHeight(L, x, u) + h0, x1 = x + dx, u1 = u + du, lane1 = 1 - x1 / W.LANE;
++      return { from: [lane, u, h0], to: [+lane1.toFixed(3), +u1.toFixed(3), +(hT + dh - W.baseHeight(L, x1, u1)).toFixed(3)], water: [+W.baseHeight(L, x, u).toFixed(3), +W.baseHeight(L, x1, u1).toFixed(3)] }; });
++    // the hero bubbles (instanced, inst = world centre and radius; drift not included): screen centre and diameter in widths
++    const bubbles = []; let hb = null; scene.traverse((o) => { if (!hb && o.name === 'heroBubbles' && o.geometry && o.geometry.attributes.inst) hb = o; });
++    // (with the shader's drift at this moment: seed = fract(3.1 x + 7.7 z), x + sin(0.9 t + 6 seed) * 0.04,
++    // y + mod(0.12 t + seed, 1) * 0.3 - 0.15; tunnel_r7_hero.js heroBubbles)
++    if (hb) { const a = hb.geometry.attributes.inst, right = new V().setFromMatrixColumn(cam.matrixWorld, 0), t = hb.material.uniforms.uTime.value;
++      const fr = (v) => v - Math.floor(v);
++      for (let i = 0; i < a.count; i++) { const sd = fr(a.getX(i) * 3.1 + a.getZ(i) * 7.7);
++        const c = new V(a.getX(i) + Math.sin(t * 0.9 + sd * 6) * 0.04, a.getY(i) + fr(t * 0.12 + sd) * 0.3 - 0.15, a.getZ(i)), r = a.getW(i), p = c.clone().project(cam), q = c.clone().addScaledVector(right, r).project(cam);
++        bubbles.push({ i, cx: +((p.x + 1) / 2).toFixed(3), cy: +((1 - p.y) / 2).toFixed(3), dW: +Math.abs(q.x - p.x).toFixed(3), dist: +c.distanceTo(cam.position).toFixed(2), r, seed: +sd.toFixed(3), inst: [a.getX(i), a.getY(i), a.getZ(i)].map((v) => +v.toFixed(3)) }); } }
++    const cr = cam.matrixWorld.elements;   // forward = -Z column
++    return { state: window.__bw.state(), camera: { pos: r3(cam.position), track: toTrack(cam.position.clone()), quat: cam.quaternion.toArray().map((x) => +x.toFixed(5)), fwd: [-cr[8], -cr[9], -cr[10]].map((x) => +x.toFixed(5)), fov: cam.fov, aspect: cam.aspect, near: cam.near },
++      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles };
++  }, [ITEMS, DELTA]);
++  fs.writeFileSync(OUT, JSON.stringify(info, null, 1));
++  console.log(JSON.stringify({ camera: info.camera, mascot: info.mascot, fuzz: info.fuzz }));
++  if (!process.env.NOPATH) console.log(JSON.stringify(info.path));
++  for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
++  for (const s of info.shifted) console.log(JSON.stringify(s));
++  console.log(logs.join(' | ') || 'no console errors');
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/strips.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/strips.py
+new file mode 100644
+index 0000000..06feded
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/strips.py
+@@ -0,0 +1,10 @@
++"""The opening's edges: class shares in the left and right frame strips (x < .08, x > .92) between the rim and the bank
++   (y .40-.76), and the bevel band under the rim at the top (x .30-.70, y .25-.31). Art Director's HSV classes."""
++from common import *
++for lab,p,vp in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    blue=cl['azure']|cl['electric blue']|cl['deep cobalt']|cl['pale blue']
++    for k,m in (('left strip x<.08 y.40-.76',(xx<0.08*W0)&(yy>0.40*H0)&(yy<0.76*H0)),('right strip x>.92 y.40-.76',(xx>0.92*W0)&(yy>0.40*H0)&(yy<0.76*H0)),
++                ('top bevel x.30-.70 y.25-.31',(xx>0.30*W0)&(xx<0.70*W0)&(yy>0.25*H0)&(yy<0.31*H0))):
++        m=m&~cl['gold']&~cl['pink']; n=max(m.sum(),1)
++        print(f"{lab:10s} {k:28s} lavender {100*(cl['lavender']&m).sum()/n:4.1f} blue {100*(blue&m).sum()/n:4.1f} (deep {100*(cl['deep cobalt']&m).sum()/n:4.1f}) white {100*(cl['white']&m).sum()/n:4.1f} S {s[m].mean():.2f} med {hexc(np.median(im[m],0))} lum-std {(v[m]).std():.3f}")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/walls.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/walls.py
+new file mode 100644
+index 0000000..24bd351
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/walls.py
+@@ -0,0 +1,24 @@
++from common import *
++from scipy import ndimage as ndi
++KEYS=['white','pale blue','azure','electric blue','deep cobalt','lavender']
++for lab,p,(vx,vy) in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    hud=0.205 if lab=='approved' else 0.172
++    rr=np.hypot((xx-vx*W0)/W0,(yy-vy*H0)/W0); ang=np.rad2deg(np.arctan2(-(yy-vy*H0),xx-vx*W0))
++    lum=(0.2126*im[...,0]+0.7152*im[...,1]+0.0722*im[...,2]).astype(np.float32)/255
++    hp2=lum-cv2.GaussianBlur(lum,(0,0),1.5); hp6=lum-cv2.GaussianBlur(lum,(0,0),5)
++    obj=cl['gold']|cl['pink']
++    hi=(v>0.95)&(s<0.15)
++    labm,n=ndi.label(hi); sz=ndi.sum(hi,labm,range(1,n+1)); small=np.isin(labm,np.nonzero(sz<=12)[0]+1)
++    R={'upper wall r.12-.45 a30-150':(rr>0.12)&(rr<0.45)&(ang>30)&(ang<150)&(yy>hud*H0),
++       'side walls r.15-.45 |a|<30|>150':(rr>0.15)&(rr<0.45)&((np.abs(ang)<30)|(np.abs(ang)>150))&(yy<0.66*H0),
++       'mid vortex r.08-.20':(rr>0.08)&(rr<0.20),
++       'centre r<.06':rr<0.06,
++       'floor ahead y.58-.68 x.3-.75':(yy>0.58*H0)&(yy<0.68*H0)&(xx>0.3*W0)&(xx<0.75*W0),
++       'play area y.21-.83':(yy>max(hud,0.21)*H0)&(yy<0.83*H0)}
++    print('==',lab)
++    for k,m0 in R.items():
++        m=m0&~obj; n=max(m.sum(),1)
++        sh={c:100*(cl[c]&m).sum()/n for c in KEYS}; other=100-sum(sh.values())
++        warm=100*(m&(((h>=15)&(h<70)&(s>0.12))|((h>=320)|(h<15))&(s>0.12)&(s<=0.3))).sum()/n
++        print(f"  {k:32s} S {s[m].mean():.2f} V {v[m].mean():.2f} med {hexc(np.median(im[m],0))} | "+' '.join(f"{c.split()[0][:5]} {x:4.1f}" for c,x in sh.items())+f" oth {other:4.1f} warm {warm:4.1f} | hi {100*(hi&m).sum()/n:4.1f}% sparkle {100*(small&m).sum()/n:4.2f}% | hp1.5 {hp2[m].std():.3f} hp5 {hp6[m].std():.3f} | obj {100*(m0&obj).sum()/max(m0.sum(),1):.0f}%")
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zones.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zones.py
+new file mode 100644
+index 0000000..1b25912
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zones.py
+@@ -0,0 +1,15 @@
++"""Class shares in the user's six target zones (precision kit 10_TARGET_ZONES_ANNOTATED.jpg, boxes read off that image,
++   fractions of 767 x 1536), approved vs merged. HUD buttons masked in the game frame for zones 3 and 6."""
++from common import *
++Z={'1 housing':(0.013,0.213,0.986,0.304),'2 whirlpool':(0.081,0.307,0.919,0.667),'3 swimmer':(0.086,0.684,0.924,0.914),
++   '4 objects':(0.047,0.434,0.971,0.728),'5 brushes':(0.01,0.24,0.986,0.63),'6 foreground':(0.005,0.781,0.99,0.967)}
++KEYS=['white','pale blue','azure','electric blue','deep cobalt','lavender','gold','pink']
++for lab,p,vp in FR:
++    im=load(p); cl,h,s,v=classes(im); yy,xx=np.mgrid[0:H0,0:W0]
++    hudb=np.zeros((H0,W0),bool)
++    if lab!='approved': hudb|=(yy>0.835*H0)&(((xx>0.03*W0)&(xx<0.33*W0))|((xx>0.67*W0)&(xx<0.98*W0)))|(yy>0.885*H0)&(xx>0.33*W0)&(xx<0.67*W0)&(yy<0.98*H0)
++    else: hudb|=(yy>0.88*H0)&((xx<0.40*W0)|(xx>0.70*W0))
++    print('==',lab)
++    for k,(x0,y0,x1,y1) in Z.items():
++        m=(xx>=x0*W0)&(xx<x1*W0)&(yy>=y0*H0)&(yy<y1*H0)&~hudb; n=max(m.sum(),1)
++        print(f"  {k:13s} S {s[m].mean():.2f} V {v[m].mean():.2f} med {hexc(np.median(im[m],0))} | "+' '.join(f"{c.split()[0][:5]} {100*(cl[c]&m).sum()/n:4.1f}" for c in KEYS))
+diff --git a/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zoomgrid.py b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zoomgrid.py
+new file mode 100644
+index 0000000..b1239a4
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/zoomgrid.py
+@@ -0,0 +1,12 @@
++import sys
++from PIL import Image, ImageDraw
++p=sys.argv[1]; x0,y0,x1,y1=map(float,sys.argv[2:6]); out=sys.argv[6]; step=float(sys.argv[7]) if len(sys.argv)>7 else 0.01
++im=Image.open(p).convert('RGB'); W,H=im.size
++c=im.crop((int(x0*W),int(y0*H),int(x1*W),int(y1*H))); s=1400/c.width; c=c.resize((1400,int(c.height*s)),Image.LANCZOS)
++d=ImageDraw.Draw(c)
++import numpy as np
++for y in np.arange(np.ceil(y0/step)*step,y1,step):
++    Y=(y-y0)*H*s; d.line([(0,Y),(c.width,Y)],fill=(255,255,0) if round(y/step)%5==0 else (0,255,0),width=1); d.text((2,Y+1),f'{y:.3f}',fill=(255,255,0))
++for x in np.arange(np.ceil(x0/0.05)*0.05,x1,0.05):
++    X=(x-x0)*W*s; d.line([(X,0),(X,c.height)],fill=(255,0,255),width=1); d.text((X+2,2),f'{x:.2f}',fill=(255,0,255))
++c.save(out)
 diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
 index f8550f8..0adb7bb 100644
 --- a/WebDemo/src/game.js
@@ -11,10 +1116,10 @@ index f8550f8..0adb7bb 100644
  function updateCamera(dt) {
    const m = mascot;
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index c31a8c4..af3e426 100644
+index c31a8c4..22f2250 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
-@@ -45,13 +45,48 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
+@@ -45,13 +45,49 @@ export const MATCH_BARE = MATCH_ON && LIST.includes('bare');
  const STAGE = 0.95;
  const HERO_BUBBLES = [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1.35, 0.95, 2.76, 0.16], [-2.15, -1.29, 2.43, 0.15],
    [-3.2, 0.88, 0.62, 0.15], [-2.9, 0.72, 0.8, 0.1], [-3.0, 0.92, 2.91, 0.13], [0.6, 0.9, 2.2, 0.09], [1.2, -1.0, 2.5, 0.1], [-0.8, 1.2, 1.9, 0.08]];
@@ -32,13 +1137,14 @@ index c31a8c4..af3e426 100644
 +export const MATCH_CAM = { dx: -0.006, dh: -0.10, du: 0.44 };
 +const restage = ([u, x, h, ...rest]) => [u + MATCH_CAM.du, x + MATCH_CAM.dx, h + MATCH_CAM.dh, ...rest];
 +// The near hero bubbles that were too big (Water & VFX's finding; the focused pass): {index: [dx, dh, radius]} after the
-+// re-staging, from the probe at 3.0 s against the original's own bubbles (diameter in widths at its centre):
-+//   2 mid-left    0.096 at (0.228, 0.346) -> original 0.09  at (0.275, 0.348)
-+//   3 right edge  0.112 at (0.985, 0.363) -> original 0.076 at (0.96, 0.365)
-+//   4 lower-left  0.156 at (0.033, 0.768) -> original 0.137 at (0.084, 0.751)
-+//   5 lower-left  0.093 at (0.16, 0.701)  -> original 0.08  at (0.197, 0.699)
-+//   6 upper-left  0.121 at (0.064, 0.209) -> original 0.105 at (0.128, 0.23)
-+const BUBBLE_FIX = {};
++// re-staging, from the probe at 3.0 s (with the shader's drift) against the original's own bubbles (diameter in widths at
++// its centre):
++//   2 mid-left    0.097 at (0.215, 0.352) -> original 0.09  at (0.275, 0.348)
++//   3 right edge  0.113 at (0.976, 0.377) -> original 0.076 at (0.96, 0.365)
++//   4 lower-left  0.158 at (0.034, 0.743) -> original 0.137 at (0.084, 0.751)
++//   5 lower-left  0.095 at (0.172, 0.692) -> original 0.08  at (0.197, 0.699)
++//   6 upper-left  0.123 at (0.067, 0.201) -> original 0.105 at (0.128, 0.23)
++const BUBBLE_FIX = { 2: [-0.198, 0.026, 0.148], 3: [0.042, 0.064, 0.101], 4: [-0.095, -0.03, 0.13], 5: [-0.053, -0.03, 0.084], 6: [-0.129, -0.122, 0.111] };
 +const fixBubble = ([u, x, h, r], i) => { const f = BUBBLE_FIX[i]; return f ? [u, x + f[0], h + f[1], f[2]] : [u, x, h, r]; };
 +// the bubbles' shader seeds each one's drift (up and sideways) from its world place, fract(3.1 x + 7.7 z) (tunnel_r7_hero.js):
 +// a moved bubble would drift to another place by the hero moment, so its move along the path is trimmed (at most 0.065 m) to
@@ -64,7 +1170,7 @@ index c31a8c4..af3e426 100644
          // the walls now carry the approved picture's own glow: the drum's bloom halved (a decrease; it was lifting their darks)
          bloom: { strength: 0.16 },
        },
-@@ -78,19 +113,27 @@ export const MATCH = {
+@@ -78,19 +114,27 @@ export const MATCH = {
        // top (1.53 m; 0.73 m with the coin's bob), inside the 0.82 m pick-up reach; drawn smaller there (MATCH.coinScales) so it
        // is the original's 0.126 W.
        // The small lower-right coin by the centre coin 2 m further (the original's is smaller, at 0.589, 0.574))
@@ -98,7 +1204,7 @@ index c31a8c4..af3e426 100644
      // round7's own bubbles duplicated the hero bubbles (a second big bubble, a column of small ones over the centre)
      hide: ['r6Flanges', 'r7Glow', 'r5Heart', 's4Rings', 'r7Bubbles'],
      vortex: { perLog: 4.5 },   // the procedural rings that remain (the floor's) as dense as the approved's 8-10 bands
-@@ -105,10 +148,12 @@ export const MATCH = {
+@@ -105,10 +149,12 @@ export const MATCH = {
    // left, still within the pick-up reach (0.87 m) from the left lane (game.js applies it, gated)
    // (gate fix F7: it sat 0.088 W left of the centre, a second small gem beside the centre coin: now in the middle lane at
    // 0.82 m, on the line from the camera through the centre coin, so at the hero moment it is hidden behind it; in reach)
@@ -113,7 +1219,7 @@ index c31a8c4..af3e426 100644
    // the far collectibles converge on the vanishing point (four coin lines and two socks 19-34 m ahead at the hero moment;
    // the original has only the small centre coin and one far sock there): visual only, coins and gems shrink away between
    // these distances from the camera (m) and grow back in as the character comes on, socks further out (the nearest far
-@@ -117,7 +162,7 @@ export const MATCH = {
+@@ -117,7 +163,7 @@ export const MATCH = {
    gemScale: 0.89,   // the gem beside the big left coin (gems[0]): its visual size (the approved's is 0.103 W wide, ours 0.115)
    // single coins' visual size, [layout u, scale] (checkpoint 05): the upper-left coin, brought nearer to stay in reach, at the
    // original's 0.126 W; the big left coin toward the original's 0.216 W (ours 0.188). Pick-up places unchanged
@@ -122,7 +1228,7 @@ index c31a8c4..af3e426 100644
    // deep-merged into LIQUID (tunnel_r8_liquid.js) after the splash pass's settings. The ring stops by screen radius now only
    // colour the far floor round the centre (the walls draw the derived map): the pastel lilac ring at 0.08 W made the centre
    // lavender (53% at 3.0 s; approved 11%), so it is the approved's warm white there (centre median #f1d7db)
-@@ -240,6 +285,7 @@ export const MATCH_UNIFORMS = {
+@@ -240,6 +286,7 @@ export const MATCH_UNIFORMS = {
    // the centre's place on the screen (drawing-buffer fractions, y up) and the size in pixels of the target being drawn
    // (set before each picture by buildMatch; MATCH.centre)
    uMatchVP: { value: new THREE.Vector2(0.5, 0.5) }, uMatchRes: { value: new THREE.Vector2(0, 0) },
@@ -130,7 +1236,7 @@ index c31a8c4..af3e426 100644
  };
  // three.js gives every new texture and material a UUID drawn from Math.random: anything this file makes outside the
  // opening's private-random build (the textures at load, the rim's material after they arrive) is made with a private
-@@ -277,12 +323,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
+@@ -277,12 +324,11 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
  // the rim ramp (textures/screen4/rim_ramp.png): columns the angle 0..pi round the rim's centre (0 = screen right), rows rho =
  // r / the rim's outer radius from RAMP[0] (the housing just outside) to RAMP[1] (the blue inside the navy ring)
  const RAMP = [1.04, 0.80];
@@ -148,7 +1254,7 @@ index c31a8c4..af3e426 100644
  // the bezel's inner and outer sides take the ramp at these rho (the violet bevel, the housing)
  const BEZEL_SIDES = [0.912, 1.03];
  // sampling the ramp: d = the point relative to the rim's centre (x + screen-left, h up), rho as above; sRGB out
-@@ -350,8 +395,16 @@ export function matchWallGLSL() {
+@@ -350,8 +396,16 @@ export function matchWallGLSL() {
    return /* glsl */ `
  // ?s3=match: the walls' material derived from the approved picture (tunnel_r9_match.js)
  uniform sampler2D uMatchCol, uMatchBase, uMatchDet, uMatchNrm, uMatchVar, uMatchRim; uniform float uMatchOn;
@@ -166,7 +1272,7 @@ index c31a8c4..af3e426 100644
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
-@@ -487,20 +540,21 @@ export function matchWallApply() {
+@@ -487,20 +541,21 @@ export function matchWallApply() {
  // part of the mouth, the approved's violet bevel, lilac line and navy ring (the rim ramp), so the blue starts at 0.29-0.30
  // as approved (the tube's own mouth is at 0.256 at 3.0 s); object-anchored (metres from the mouth), so it stays on the tube
  export function matchMouthGLSL(HERO, axisH, radius) {
@@ -196,7 +1302,7 @@ index c31a8c4..af3e426 100644
  `;
  }
  // the gold rim (round6's bezel, moved by heroRim): the approved rim band by angle round its centre and across its width
-@@ -609,7 +663,8 @@ void main() {
+@@ -609,7 +664,8 @@ void main() {
  
  // Called at the end of buildHero (tunnel_r7_hero.js), after the liquid and the splash bank are built.
  export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, waterSheets, drumSheet }) {

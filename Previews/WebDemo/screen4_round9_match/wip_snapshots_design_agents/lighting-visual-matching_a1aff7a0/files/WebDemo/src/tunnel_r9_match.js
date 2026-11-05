@@ -59,13 +59,14 @@ const HERO_BUBBLES = [[-1.75, -0.72, 2.67, 0.33], [-0.2, -0.17, 2.76, 0.17], [-1
 export const MATCH_CAM = { dx: -0.006, dh: -0.10, du: 0.44 };
 const restage = ([u, x, h, ...rest]) => [u + MATCH_CAM.du, x + MATCH_CAM.dx, h + MATCH_CAM.dh, ...rest];
 // The near hero bubbles that were too big (Water & VFX's finding; the focused pass): {index: [dx, dh, radius]} after the
-// re-staging, from the probe at 3.0 s against the original's own bubbles (diameter in widths at its centre):
-//   2 mid-left    0.096 at (0.228, 0.346) -> original 0.09  at (0.275, 0.348)
-//   3 right edge  0.112 at (0.985, 0.363) -> original 0.076 at (0.96, 0.365)
-//   4 lower-left  0.156 at (0.033, 0.768) -> original 0.137 at (0.084, 0.751)
-//   5 lower-left  0.093 at (0.16, 0.701)  -> original 0.08  at (0.197, 0.699)
-//   6 upper-left  0.121 at (0.064, 0.209) -> original 0.105 at (0.128, 0.23)
-const BUBBLE_FIX = {};
+// re-staging, from the probe at 3.0 s (with the shader's drift) against the original's own bubbles (diameter in widths at
+// its centre):
+//   2 mid-left    0.097 at (0.215, 0.352) -> original 0.09  at (0.275, 0.348)
+//   3 right edge  0.113 at (0.976, 0.377) -> original 0.076 at (0.96, 0.365)
+//   4 lower-left  0.158 at (0.034, 0.743) -> original 0.137 at (0.084, 0.751)
+//   5 lower-left  0.095 at (0.172, 0.692) -> original 0.08  at (0.197, 0.699)
+//   6 upper-left  0.123 at (0.067, 0.201) -> original 0.105 at (0.128, 0.23)
+const BUBBLE_FIX = { 2: [-0.198, 0.026, 0.148], 3: [0.042, 0.064, 0.101], 4: [-0.095, -0.03, 0.13], 5: [-0.053, -0.03, 0.084], 6: [-0.129, -0.122, 0.111] };
 const fixBubble = ([u, x, h, r], i) => { const f = BUBBLE_FIX[i]; return f ? [u, x + f[0], h + f[1], f[2]] : [u, x, h, r]; };
 // the bubbles' shader seeds each one's drift (up and sideways) from its world place, fract(3.1 x + 7.7 z) (tunnel_r7_hero.js):
 // a moved bubble would drift to another place by the hero moment, so its move along the path is trimmed (at most 0.065 m) to

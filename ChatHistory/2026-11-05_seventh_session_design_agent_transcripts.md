@@ -1351,8 +1351,22 @@ Cost at 3.0 s: 209 draw calls (unchanged) and 1,428,897 triangles (+5.8 k; the f
 The final frame is coherent. Now the pixel-identity proof: a mirror of `WebDemo/` that serves the baseline bundle.
 
 - 20:05 `Bash`: Create a baseline demo mirror with the old bundle
+- 20:05 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/pixid.sh
+- 20:05 `Bash`: Run the six pixel-identity captures
+- 20:10 `Bash`: List the pixel identity frames
+**Agent** (20:10 UTC):
 
-_128 tool steps._
+The pixcmp script hard-codes the old baseline name; I'll make its label an argument, then compare.
+
+- 20:10 `Bash`: Compare baseline and new frames pixel by pixel
+**Agent** (20:10 UTC):
+
+All six pairs are pixel-identical (0 differing pixels). Next the gameplay check and the water's reactions to moves.
+
+- 20:10 `Bash`: Read usage of the gameplay and moves tools
+- 20:10 `Bash`: Run the gameplay functional check under match
+
+_134 tool steps._
 
 ---
 
@@ -1535,5 +1549,34 @@ Now add the drift to the probe's bubble report.
 
 - 20:03 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/stage_probe.cjs
 - 20:03 `Bash`: Rebuild with seed-keeping and probe bubbles with drift
+**Agent** (20:05 UTC):
 
-_93 tool steps._
+Now with the true rendered (drifted) places, the five fixes in world metres:
+
+- 20:05 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/WebDemo/src/tunnel_r9_match.js
+- 20:05 `Bash`: Rebuild with bubble fixes and probe
+**Agent** (20:06 UTC):
+
+All five bubbles now land on the original's sizes and places (within about 0.006 W), with their drift seeds kept. Capturing iteration 2.
+
+- 20:06 `Bash`: Capture iteration 2 and compose side by side
+- 20:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sbs_t2.png
+**Agent** (20:07 UTC):
+
+Framing checkpoint looks right. Gameplay check before committing it.
+
+- 20:07 `Bash`: Run the gameplay functional test under match
+- 20:07 `Bash`: Run the gameplay functional test under match
+- 20:08 `Bash`: Run s3_func fully and compare against the merged reference output
+- 20:09 `Bash`: Read end of s3_func output
+**Agent** (20:09 UTC):
+
+Gameplay holds: lanes 1/0/2, the jump, 12 coins, 1 gem and 2 socks collected in the tunnel, no console errors. Committing the framing checkpoint.
+
+- 20:09 `Bash`: Show working tree status
+- 20:09 `Bash`: Stage checkpoint files
+- 20:09 `Bash`: Commit the framing checkpoint
+- 20:10 `Bash`: Sock close-ups original and 2.85/3.0/3.1 s
+- 20:10 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/sock_t2.png
+
+_106 tool steps._
