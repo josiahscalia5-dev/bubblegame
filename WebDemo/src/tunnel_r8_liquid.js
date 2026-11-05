@@ -32,10 +32,11 @@ import * as THREE from 'three';
 import { HEIGHT_GLSL, SLIDE } from './world.js';
 import { RIPPLES } from './shaders.js';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
+import { SPLASH_ON, SPLASH_FOAM, SPLASH, mergeSettings, splashWallGLSL, splashFloorGLSL, splashSwellGLSL, buildSplashBank } from './tunnel_r8_splash.js';   // ?s3=splash: Round 8 pass 2
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const LIQUID_ON = LIST.includes('liquid');
+export const LIQUID_ON = LIST.includes('liquid') || SPLASH_ON;   // ?s3=splash: the liquid plus Round 8 pass 2 (tunnel_r8_splash.js)
 export const LIQUID_FOAM = LIQUID_ON && !LIST.includes('nofoam');
 
 export const LIQUID = {
@@ -104,6 +105,7 @@ export const LIQUID = {
   hide: ['r6BowWave'], hideNoFoam: ['heroSplash', 'r5Droplets'],
   debug: 0,   // 1: the swell in flat green, 2: its depth and opacity, 3: green without the depth test, 4: the floor in flat red
 };
+if (SPLASH_ON) mergeSettings(LIQUID, SPLASH.liquid);   // ?s3=splash: its settings, before the tune below
 {
   const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.liquid;
   if (tune) for (const k of Object.keys(tune)) LIQUID[k] = (tune[k] && typeof tune[k] === 'object' && !Array.isArray(tune[k]) && LIQUID[k]) ? { ...LIQUID[k], ...tune[k] } : tune[k];
@@ -575,7 +577,7 @@ ${haz ? `  if (inDrum > 0.0) {   // a brush's warning, as on the drum's own wate
     float foam = clamp(max(max(crestF, fleck), max(wakeF, laceF)), 0.0, 1.0) * (1.0 - s4Haz);
     col = mix(col, mix(${v3(K.foamShade)}, ${v3(K.foam)}, smoothstep(0.3, 0.8, hDet)), foam * 0.78);   // translucent: blue shows through
   }
-#endif
+${SPLASH_FOAM ? splashFloorGLSL() : ''}#endif
 ${haz ? `  col = mix(col, vec3(1.0, 0.12, 0.5) * 0.95, clamp(s4Haz * 1.7, 0.0, 1.0) * 0.35);   // softer than the drum sheet (0.8): a glow under the water\n` : ''}
   gl_FragColor = vec4(col, vA);
 ${LIQUID.debug === 4 ? '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);' : ''}
@@ -635,7 +637,7 @@ vec3 lqWall(vec3 W, vec3 N0, vec3 T0, vec2 cs, float a, float u, float arc) {
   col = mix(col, ringCol, ${f3(Rg.own[1])} + ${f3(Rg.own[0])} * own);
   col += (col * 0.6 + ${v3(K.cyanHi)} * 0.4) * (hDet - 0.5) * 0.5 * (1.0 - own);   // the waves' light and shade over the rings
   col += ${v3(K.cyanHi)} * pow(band, 6.0) * smoothstep(0.55, 0.8, hDet) * 0.35 * (1.0 - own);   // the lit cyan crest of each band
-  // the hero's pastel rainbow ring, tinted by angle
+${SPLASH_ON ? splashWallGLSL() : ''}  // the hero's pastel rainbow ring, tinted by angle
   float upA = clamp((cs.y - uHeroCam.y) / max(length(cs - uHeroCam.xy), 1e-3), -1.0, 1.0), rightA = -(cs.x - uHeroCam.x) / max(length(cs - uHeroCam.xy), 1e-3);
   vec3 tint = mix(${v3('#b98cf0')}, ${v3('#8fdcf6')}, smoothstep(-0.6, 0.6, rightA));
   tint = mix(tint, ${v3('#ffc27a')}, smoothstep(0.5, 0.95, upA));
@@ -741,7 +743,7 @@ void main() {
     float white = clamp(crest + fleck, 0.0, 1.0);
     col = mix(col, ${v3(K.foam)}, white * 0.8); a = max(a, white * 0.8);   // translucent: blue shows through
   }
-#endif
+${SPLASH_FOAM ? splashSwellGLSL() : ''}#endif
   gl_FragColor = vec4(col, a * step(0.001, uFade));
 ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : LIQUID.debug === 2 ? '  gl_FragColor = vec4(d * 2.0, a, hUp * 2.0, 1.0);' : ''}
 }
@@ -865,6 +867,7 @@ void main() {
   }
   const meshes = ['lqSpraySheets', 'lqWaterlineBubbles'].map((nm) => scene.getObjectByName(nm));
   updaters.push(() => { for (const m of meshes) m.visible = swell.visible; });   // with the swell
+  if (SPLASH_FOAM) report.bank = buildSplashBank({ scene, updaters, time, tex, crest, frame, swell });   // ?s3=splash (tunnel_r8_splash.js)
   return report;
 }
 function translucentSplash({ scene }) {

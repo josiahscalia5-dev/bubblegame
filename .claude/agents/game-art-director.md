@@ -32,7 +32,21 @@ Rules: Round 5 (`?s3=round5`) is the only place visual changes go. The normal ga
 pixel-identical. Controls, lanes, the tunnel route, the five-heart system, the sock mission and power-ups must not change. The
 fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and ranked.
 
-## Newest: Round 8 LIQUID, `?s3=liquid` (5 November 2026, fourth account; this section overrides the hero notes below)
+## Newest: Round 8 pass 2 SPLASH, `?s3=splash` (5 November 2026, fifth session; this section overrides the notes below)
+
+- **Switches:** `?s3=splash` is everything `?s3=liquid` does plus the visible translucent splashes round the character
+  and a deeper swirl; `?s3=splash,nofoam` is the deeper swirl and warmer core with no white. Code:
+  `WebDemo/src/tunnel_r8_splash.js` (settings `SPLASH`, splash bank `spCurls` and `spLumps`, gated GLSL pieces inserted
+  into `tunnel_r8_liquid.js`). `?s3=liquid`, `liquid,nofoam`, `hero` and everything older must stay pixel-identical to
+  `87aee11` (proof in `Previews/WebDemo/screen4_round8_splash/pixel_identity_vs_87aee11.txt`).
+- **Measured targets met (Art Director's classes):** white in the band beside and under the character 27-34% (approved
+  35%); contact strip white 9-19% (approved 19%); lower-third white 13.7-16.8% (approved 16.9%, must not exceed it);
+  side-wall deep cobalt 4-7% (approved 6%).
+- **Still open:** the core's warm share (other/peach) is still far under the approved's 27%; the left-side white at 3.0 s
+  (37% against 23%); the lumps read softer than the approved's sculpted bubbly bank. Evidence and README:
+  `Previews/WebDemo/screen4_round8_splash/`.
+
+## Earlier: Round 8 LIQUID, `?s3=liquid` (5 November 2026, fourth account; this section overrides the hero notes below)
 
 - **Switches:**
   - `?s3=liquid` is everything `?s3=hero` does plus real animated water: `WebDemo/src/tunnel_r8_liquid.js`, model

@@ -21,6 +21,8 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - normal game (no switch); `round4`, `round5`, `round6`, `round7` (older passes);
   - `hero`: the Round 7 hero scene, hero moment 2.85 s;
   - `liquid`: Round 8, real water; `liquid,nofoam` shows it without foam.
+  - `splash`: Round 8 pass 2, visible translucent splashes and a deeper swirl on top of `liquid`; `splash,nofoam` without the
+    white.
   - Everything older must stay **pixel-identical**. Prove it with frame comparisons before saying so.
 - **Gameplay is preserved:** controls, lanes, jump, tap to spin, coins, the gem, socks, hearts, pause, Bubble Blast,
   Turbo Spin, the mission. Use private random generators; the game's seeded `Math.random` is never touched.

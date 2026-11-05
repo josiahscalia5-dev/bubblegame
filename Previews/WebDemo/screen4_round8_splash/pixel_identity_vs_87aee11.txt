@@ -1,0 +1,47 @@
+normal         tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal         2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal         4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero           tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero           2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+hero           4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7         tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7         2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round7         4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6         tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6         2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6         4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich    tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich    2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round6+rich    4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5         tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5         2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round5         4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4         tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4         2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+round4         4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid         tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid         2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid         4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam  tap.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam  2.9.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+liquid+nofoam  4.2.png  538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.476817261492894
+normal_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.476817261492894
+hero_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+hero_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round7_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round7_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round6_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round6_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round6+rich_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round6+rich_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round5_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round5_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round4_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+round4_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+liquid_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+liquid_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+liquid+nofoam_base.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+liquid+nofoam_new.log -> T 2.85 0.6274238805594985 | T 4.2 10.492146985241591
+
+0 pair(s) not identical

@@ -2,6 +2,41 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
+## Newest (5 November, 01:30 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 8 pass 2 SPLASH (`?s3=splash`)
+
+- **Recovered from:** `eca999e`, the last autosave of `ccr-aeee6378-mv5kot`; `ccr-b41bbe83-3fbhkr` starts exactly there.
+  - The previous session's splash pass and gameplay tests both stopped at the 5-hour usage limit (00:57 UTC) before
+    saving anything, so this pass was rebuilt from the saved Round 8 water (`87aee11`).
+  - The environment started empty; `bash Tools/cloud_env_setup.sh` installed every tool. The rebuilt bundle matched
+    `87aee11` byte for byte (md5 `05ba504c...`).
+- **New switch `?s3=splash`:** everything `liquid` does, plus the visible translucent splashes round the character and a
+  deeper swirl. `?s3=splash,nofoam` is the deeper swirl and warmer core with no white.
+  - **Code:** `WebDemo/src/tunnel_r8_splash.js` (new). Hooks: `|| LIST.includes('splash')` on the hero switch in
+    `screen3_models.js`, `tunnel_r6.js` and `tunnel_r7_hero.js`; gated lines in `tunnel_r8_liquid.js`.
+  - **Built:**
+    - curling see-through water sheets either side of the body, the biggest just right of it (`spCurls`);
+    - rounded foam lumps on the waterline, white where lit and see-through blue in shade (`spLumps`);
+    - spray: 900 droplets, round, 92% opaque, beside the body only; 46 waterline bubbles;
+    - a broken foam crest beside the body, with none in front, so the fur shows through violet;
+    - foam clumps on the floor beside the swell;
+    - deep cobalt in the wall bands' troughs;
+    - a pastel pink-lavender ring round a bigger warm core.
+  - **Measured (Art Director's classes, at 2.85 / 3.0 / 3.1 s):**
+    - white in the band beside and under the character: 27 / 30 / 34% (approved 35%; Round 8 had 5-19%);
+    - contact strip white: 9 / 19 / 15% (approved 19%);
+    - lower-third white: 13.7 / 16.1 / 16.8%, under the approved's 16.9%;
+    - side-wall deep cobalt: 7 / 4 / 5% (approved 6%).
+  - **Pixel identity, PROVEN** against `87aee11`: normal, `hero`, `round7`, `round6`, `round6,rich`, `round5`, `round4`,
+    `liquid` and `liquid,nofoam`, each at Tap to Start, 2.85 s and 4.2 s. All 27 pairs have 0 differing pixels
+    (`Previews/WebDemo/screen4_round8_splash/pixel_identity_vs_87aee11.txt`).
+  - **Still open:**
+    - the splash is softer and less sculpted than the approved bank;
+    - the left side at 3.0 s has 37% white against 23%;
+    - the core's warm share is 6-10% against 27%, partly because the coins and the sock cover the vanishing point.
+  - **Evidence and README:** `Previews/WebDemo/screen4_round8_splash/`.
+- **Agents:** all four agent files have a "Round 8 pass 2 SPLASH" section. This pass was done in the main session, with no
+  subagents.
+
 ## Newest (4–5 November, 23:30 UTC onward): fourth Claude account, branch `ccr-aeee6378-mv5kot`, Round 8 LIQUID
 
 - **Recovered from:** `06b9805`, the tip of `claude/screen-4-art-rebuild-69gb2p` and the newest Screen 4 work.
