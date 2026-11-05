@@ -12,17 +12,23 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - NOT targets: the EXACT TARGET board (`03_SCREEN4_EXACT_TARGET_BOARD.png`), the guides (`01_ROUND6_...`, `05_...`, `06_...`),
     concept sheets, the Tripo kit's `VFX_ONLY` images, the water-look references, `Design/ApprovedScreens/` and any other
     generated image. `02_APPROVED_SCREEN_4_FULL.jpg` is a smaller copy: use the original.
+  - The user's evidence kit (5 November, 14:43 UTC): `Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/`
+    (seven annotated checkpoints, `04_Instructions/VERIFY_CHECKLIST.md`; verify at the Pixel 7 framing too). Its
+    checkpoint 02 is superseded by the correction above: the character sits on top of the water.
   - The user's precision kit, exact crops of the original by zone (verified): `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/` (`01`-`07`; `10` the annotated zones).
   - Supporting MATERIAL references the user approved on 5 November, for look and finish only (never layout; the original
     wins): `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (see its README). REF5, the blue-water vortex, is the tunnel's water material.
 - **The fidelity brief (5 November, 14:16 UTC):** `Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/README.md`.
   - Match the original as closely as possible; never a new or "better" variation.
   - Lock the camera and compare at the same moment.
-  - Do not redesign the pink character: build the water and foam up round it, so it sits partly submerged.
+  - Do not redesign the pink character. **The user's correction (5 November, about 15:20 UTC), overriding "partly
+    submerged" above and the kit's checkpoint 02:** the character sits ON TOP of the water and splash, supported by the
+    water surface and surrounded by splash and foam at its base and sides. Never sunk into the water, buried behind it,
+    hidden by a water wall or curtain, or floating inside it.
   - Many more bubbles inside the tunnel.
   - Order: tunnel depth and rings, then water, foam and bubbles, then objects (no oversized collectibles), then colour.
   - Report with a side by side and a corrected / remaining checklist.
-- **First priority: a visibly blue/turquoise water body** through the tunnel, wrapping the pink character's lower body.
+- **First priority: a visibly blue/turquoise water body** through the tunnel, supporting the pink character, which rests on it.
   White foam is only an accent on top. Never a white foam blanket, and never bloom, haze or a pale wash as a substitute.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
   scene. Never restart or rebuild the game from scratch.
