@@ -104,3 +104,21 @@ Same checksum (`e9412484`), so the game is unchanged by the comment edits. Waiti
 
 While that runs, drafting the hand-off section for the merged state:
 
+Autosave restarted under the new names. Checking the proof:
+
+Waiting for the frames to finish:
+
+Source is identical to the proven trial and the game file checksum matches the tested `e9412484`. Resolving the hand-off file, newest first:
+
+Now the proof files and README, then the merge commit:
+
+Merged and pushed: `a276c38`, and GitHub confirms it. Now checking that the four design agents load and work in this session. I'm giving each one a short real task, all read-only:
+
+While the agents work, I'm making a side-by-side of your original next to the two versions now on this branch:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/21_lines_merged/original_vs_match_vs_focus_3.00s.jpg]_
+
+While the tests run, I'm re-measuring `match`'s merged frames at the new framing. Nobody had checked the waterline and foam there since the camera moved.
+
+While the gameplay agent finishes, writing the README for the `match` merge folder with these numbers:
+

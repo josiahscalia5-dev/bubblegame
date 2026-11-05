@@ -1,0 +1,42 @@
+== approved
+  F2 bank y.80-.875 (bank.py): white 20.3 [18-22] satblue 14.0 [>=13] elec 12.2 [>=11] pale 26.4 [<=27] hp5 0.095 [>=.09] lav 15.2 violet 11.4 med #c2b2f2
+  F2 left x<.24 y.70-.835 (contact.py): white 25.0 [>=20] blobs 13 [<=40] (>=20px 7) | right x>.74: white 30.6 elec 14.6 satblue 14.9 blobs 7
+  F2 lower-third white 16.9 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 3.6 [<=19] pink 85.1 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.112 [>=.10] white 14.2 [12-16] pale 20.5 [<=24] violet 36.8 [>=30] pink 16.1 med #b6a2f2
+  F8 waterline (char.py) 0.836 [~.836] | sides x.30-.34 0.809 x.66-.70 0.860
+== before_3.00
+  F2 bank y.80-.875 (bank.py): white 20.2 [18-22] satblue 23.1 [>=13] elec 22.2 [>=11] pale 23.4 [<=27] hp5 0.085 [>=.09] lav 0.3 violet 0.1 med #dcbcf3
+  F2 left x<.24 y.70-.835 (contact.py): white 22.6 [>=20] blobs 80 [<=40] (>=20px 12) | right x>.74: white 12.6 elec 27.8 satblue 38.7 blobs 73
+  F2 lower-third white 9.9 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 6.1 [<=19] pink 83.2 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.084 [>=.10] white 34.9 [12-16] pale 34.4 [<=24] violet 0.1 [>=30] pink 9.2 med #c4d3f7
+  F8 waterline (char.py) 0.836 [~.836] | sides x.30-.34 0.806 x.66-.70 0.860
+== now_3.00
+  F2 bank y.80-.875 (bank.py): white 11.3 [18-22] satblue 3.5 [>=13] elec 1.9 [>=11] pale 15.8 [<=27] hp5 0.094 [>=.09] lav 0.4 violet 0.1 med #f890c7
+  F2 left x<.24 y.70-.835 (contact.py): white 25.8 [>=20] blobs 26 [<=40] (>=20px 7) | right x>.74: white 13.5 elec 9.8 satblue 23.8 blobs 34
+  F2 lower-third white 8.8 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 0.6 [<=19] pink 94.5 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.114 [>=.10] white 2.8 [12-16] pale 4.9 [<=24] violet 0.0 [>=30] pink 84.3 med #f981bf
+  F8 waterline (char.py) 0.873 [~.836] | sides x.30-.34 0.874 x.66-.70 0.875
+== now_2.85
+  F2 bank y.80-.875 (bank.py): white 11.0 [18-22] satblue 3.4 [>=13] elec 2.3 [>=11] pale 19.4 [<=27] hp5 0.091 [>=.09] lav 0.4 violet 0.1 med #f891c9
+  F2 left x<.24 y.70-.835 (contact.py): white 22.5 [>=20] blobs 18 [<=40] (>=20px 5) | right x>.74: white 8.6 elec 27.3 satblue 40.9 blobs 19
+  F2 lower-third white 8.7 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 0.6 [<=19] pink 94.7 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.108 [>=.10] white 4.2 [12-16] pale 12.8 [<=24] violet 0.0 [>=30] pink 77.1 med #f985c1
+  F8 waterline (char.py) 0.869 [~.836] | sides x.30-.34 0.874 x.66-.70 0.874
+== now_3.10
+  F2 bank y.80-.875 (bank.py): white 11.2 [18-22] satblue 4.1 [>=13] elec 2.6 [>=11] pale 20.9 [<=27] hp5 0.092 [>=.09] lav 0.5 violet 0.1 med #f68ec8
+  F2 left x<.24 y.70-.835 (contact.py): white 26.8 [>=20] blobs 40 [<=40] (>=20px 3) | right x>.74: white 12.2 elec 12.7 satblue 24.1 blobs 66
+  F2 lower-third white 9.2 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 0.6 [<=19] pink 93.4 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.110 [>=.10] white 4.5 [12-16] pale 17.3 [<=24] violet 0.1 [>=30] pink 65.5 med #f782c1
+  F8 waterline (char.py) 0.866 [~.836] | sides x.30-.34 0.874 x.66-.70 0.875
+== before_3.00_canvas
+  F2 bank y.80-.875 (bank.py): white 19.5 [18-22] satblue 30.7 [>=13] elec 29.8 [>=11] pale 24.3 [<=27] hp5 0.078 [>=.09] lav 0.2 violet 0.1 med #b8bcf3
+  F2 left x<.24 y.70-.835 (contact.py): white 22.6 [>=20] blobs 96 [<=40] (>=20px 12) | right x>.74: white 13.9 elec 32.6 satblue 42.5 blobs 78
+  F2 lower-third white 9.7 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 10.1 [<=19] pink 75.7 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.068 [>=.10] white 28.1 [12-16] pale 35.9 [<=24] violet 0.1 [>=30] pink 2.3 med #a9cdf6
+  F8 waterline (char.py) 0.829 [~.836] | sides x.30-.34 0.799 x.66-.70 0.855
+== now_3.00_canvas
+  F2 bank y.80-.875 (bank.py): white 10.0 [18-22] satblue 3.8 [>=13] elec 2.4 [>=11] pale 21.3 [<=27] hp5 0.087 [>=.09] lav 0.3 violet 0.1 med #f791c9
+  F2 left x<.24 y.70-.835 (contact.py): white 27.1 [>=20] blobs 37 [<=40] (>=20px 7) | right x>.74: white 13.0 elec 8.6 satblue 21.2 blobs 41
+  F2 lower-third white 10.9 [<=16.9] (liquid_shares.py) | contact strip x.30-.70 y.78-.835 white 0.1 [<=19] pink 95.0 [>=80] (contact.py)
+  F8 under x.33-.67 y.835-.875 (bank.py): hp5 0.103 [>=.10] white 3.1 [12-16] pale 16.8 [<=24] violet 0.1 [>=30] pink 70.4 med #f987c2
+  F8 waterline (char.py) 0.867 [~.836] | sides x.30-.34 0.841 x.66-.70 0.887
