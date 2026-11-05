@@ -61,11 +61,11 @@ export const FOCUS = {
       //    in or out (bands); colours: the original's ring zone measured (k-means at 3.0 s: azure #2396f1 13%, royal #1a60e1
       //    12%, periwinkle #6173e0 12%, pale blue #a7d8f4 11%; and cyan splash water, hue under 205 degrees, 10.6%): edge (the
       //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
-      //    periwinkle), deep, gap (from gapFrom across the ribbon); keep: how much of the derived water's own
+      //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
       //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
       ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.42,
-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.76, 0.9],
-        turqShare: 0.45, periShare: 0.2, keep: 0.12, amount: 0.88 },
+        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.86, 0.95], deepFrom: [0.68, 0.9], edgeTo: 0.26,
+        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.8 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
@@ -127,13 +127,14 @@ export const FOCUS = {
     liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
     heroWater: { splash: { count: 120 } },
     bubbles: {
-      // 1. many more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only
-      //    along the walls) and more mid-size ones; the camera's place at 3.0 s with the new framing
-      count: 340,
+      // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
+      //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
+      //    camera's place at 3.0 s with the new framing
+      count: 280,
       camAt: -4.55,
       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
       zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
-        [0.36, [-30, 210], [0.25, 0.62], [4.5, 28]], [0.03, [0, 360], [0.08, 0.4], [16, 34]]],
+        [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
       // more, bolder white streaks among the bands (match: 200)
       flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
     },

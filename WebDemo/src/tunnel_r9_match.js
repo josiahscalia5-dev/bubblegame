@@ -381,8 +381,8 @@ function focusRibbonsGLSL(M) {
       float rse = fract(rsa), rEnd = smoothstep(0.0, 0.05, rse) * (1.0 - smoothstep(0.95, 1.0, rse));
       vec3 rBody = mix(${pre(R.royal)}, ${pre(R.turq)}, step(${f4(1 - R.turqShare)}, rsh));
       rBody = mix(rBody, ${pre(R.peri)}, step(${f4(1 - R.periShare)}, fract(rsh * 7.7)) * 0.8);
-      vec3 rc = mix(${pre(R.edge)}, rBody, smoothstep(0.02, 0.15, rk));
-      rc = mix(rc, ${pre(R.deep)}, smoothstep(0.5, 0.82, rk));
+      vec3 rc = mix(${pre(R.edge)}, rBody, smoothstep(0.02, ${f4(R.edgeTo)}, rk));
+      rc = mix(rc, ${pre(R.deep)}, smoothstep(${f4(R.deepFrom[0])}, ${f4(R.deepFrom[1])}, rk));
       rc = mix(rc, ${pre(R.gap)}, smoothstep(${f4(R.gapFrom[0])}, ${f4(R.gapFrom[1])}, rk) * (1.0 - smoothstep(0.985, 1.0, rk)));
       rc = mix(${pre(R.deep)}, rc, rEnd);
       float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
