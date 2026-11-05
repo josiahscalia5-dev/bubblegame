@@ -469,3 +469,21 @@ When they finish, you'll get:
 - a close-up of the foam and water round the character;
 - the five-item checklist.
 
+---
+
+### Automatic notice · 2026-11-05 16:00 UTC
+
+_Agent "Water &amp; VFX: froth foam, tunnel flecks" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 7:30pm (UTC) (error type rate_limit, HTTP 429, request id req_011Cgk4SuDL4FvtnjsSXkXic, model sent to the API: claude-opus-5-5)_
+
+---
+
+### Claude · 2026-11-05 16:00 UTC
+
+You've hit your 5-hour limit · resets 7:30pm (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 16:00 UTC
+
+_Agent "Tunnel &amp; Lighting: framing, sock, walls" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 7:30pm (UTC) (error type rate_limit, HTTP 429, request id req_011Cgk4Sn9urfDxJ5yksFsqC, model sent to the API: claude-opus-5-5)_
+

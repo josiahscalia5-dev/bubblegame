@@ -917,8 +917,6 @@ _220 tool steps._
 
 ## Tunnel & Lighting specialist: Tunnel & Lighting: framing, sock, walls (started 15:53 UTC)
 
-_Worked in its own worktree, branch `worktree-agent-ab87ee82fc711adb9`._
-
 **Lead → agent** (15:53 UTC):
 
 You are the Tunnel & Lighting specialist for Bubble Wash Kingdom (three.js r170, `WebDemo/`). This is a new FOCUSED correction pass the user asked for, on top of everything already merged. You work in your OWN git worktree (your current directory), starting at the branch's current commit: both specialists' gate fixes (your own `e490836`, Water & VFX's `97c5d58`), the lead's phone fix (`WebDemo/src/match_phone.js`) and the removal of the face's light panel are merged (`b91e952` and later). The Water & VFX specialist works IN PARALLEL in another worktree on the foam and the tunnel's bubbles and splash flecks; the lead merges both.
@@ -1010,6 +1008,10 @@ Let me look at the original and the 15:40 side by side.
 I'll capture the "before" frames at the current HEAD (one browser, shared lock).
 
 - 15:56 `Bash`: Capture before frames at 2.85, 3.0, 3.1 s
+**Agent** (16:00 UTC):
+
+You've hit your 5-hour limit · resets 7:30pm (UTC)
+
 
 _25 tool steps._
 
@@ -1099,5 +1101,22 @@ Let me capture the "before" baseline (b91e952 = current HEAD's WebDemo) at 2.85/
 - 15:55 `Bash`: Capture before frames at the hero moment
 - 15:55 `Bash`: Find where playwright is installed
 - 15:55 `Bash`: Capture before frames with global playwright
+- 15:59 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/before/before_t3.00_canvas.png
+- 15:59 `Bash`: Make a side by side crop of the foam bank
+- 15:59 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/bank_before.png
+**Lead → agent** (15:59 UTC):
 
-_25 tool steps._
+[Image: original 2004x500, displayed at 2000x499. Multiply coordinates by 1.00 to map to original image.]
+
+- 15:59 `Bash`: Measure original and before frames
+- 16:00 `Bash`: Write and run hue histogram script for bank boxes
+- 16:00 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/Previews/WebDemo/screen4_round9_match/14_focused_pass_water_vfx/scripts/hues.py
+- 16:00 `Bash`: Hue histogram of the bank box
+- 16:00 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r8_splash.js
+- 16:00 `Grep`: mtUndisplay|function matchWallGLSL|heroGrade|toneMapping
+**Agent** (16:00 UTC):
+
+You've hit your 5-hour limit · resets 7:30pm (UTC)
+
+
+_34 tool steps._
