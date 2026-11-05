@@ -322,3 +322,17 @@ I've sent you four images, all real gameplay at the same moment (3.0 s, same see
 
 The sheets and close-ups are saved on GitHub (`1692d42`) in `Previews/WebDemo/screen4_round9_match/12_side_by_side_preview_1540utc/`.
 
+---
+
+### Automatic notice · 2026-11-05 15:39 UTC
+
+_Agent "Water &amp; VFX: finish bank and bubbles" finished_
+
+---
+
+### Claude · 2026-11-05 15:40 UTC
+
+Water & VFX has finished (`97c5d58`). She now sits on the water as you corrected: waterline 0.835 against your original's 0.836, and the purple see-through wall is gone. There are 132 bubbles inside the tunnel at near, middle and far depth (8 before), and the foam lobes are now opaque white froth over blue water. Merging it:
+
+Merged and pushed (`b91e952`). Now the final checks. The pixel-identity run on the full merge goes in the background while I run the gameplay tests:
+

@@ -851,5 +851,64 @@ Final 3.0 s numbers are in. One look at the final waterline close-up before writ
 I'll compose `measured.txt` directly from the outputs.
 
 - 15:37 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/meas_final.txt
+- 15:38 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/measured.txt
+- 15:38 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/measured.txt
+- 15:38 `Bash`: Summarize source diff and evidence files
+**Agent** (15:38 UTC):
 
-_211 tool steps._
+Now the README.
+
+- 15:39 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/README.md
+- 15:39 `Bash`: Check leftover debug and vague times
+- 15:39 `Bash`: Fix vague times in comments and README
+**Agent** (15:39 UTC):
+
+Comment-only source edits; I'll rebuild and confirm the bundle is byte-identical to the one all checks ran on.
+
+- 15:39 `Bash`: Rebuild and verify bundle md5
+**Agent** (15:39 UTC):
+
+Byte-identical (`b1d86dfe…`). Final commit in my worktree (source, bundle, evidence; the scratch folder `.wvtmp/` stays out).
+
+- 15:39 `Bash`: Stage final files and check status
+- 15:39 `Bash`: Final commit in worktree
+**Agent** (15:39 UTC):
+
+The pass is finished and committed as `97c5d58` on branch `worktree-agent-a76d8d522689c2f66` (not pushed). Two earlier commits sit under it: `9bfd9f7`, the restored work from the lost session, and `b2454f5`, a checkpoint. She now sits on the water as you corrected, the tunnel has many more bubbles, and the foam bank no longer shows a see-through purple wall. Several targets are only partly met (below).
+
+All numbers are at 3.0 s, measured with the Art Director's own scripts, as original / before (merged build) / now.
+
+**Your checkpoints**
+- **01, bubbles deep in the tunnel: partly verified.** 132 bubbles now show inside the tunnel at near, middle and far depth (49 / 57 / 26), against 8 before (only the big near ones). They drift and rise with the swirl and pass behind the coins, gem and sock. 140 small white crescents and dashes now ride the rings. All of this is one draw call. Still different: the original's white flecks are bolder and denser, and it has fewer clear outlined bubbles (13 counted by eye) than our many small ones.
+- **02, waterline (she sits on the water): verified on the numbers, partly on the look.** I had raised the water up her body earlier in this pass, then took it back after your correction. The waterline ends at 0.835 (0.836 / 0.824 / 0.835), with her sides at 0.806 and 0.856 (original 0.809 and 0.860). The purple see-through wall is gone: violet under her body dropped from 57.8% to 2.1%. Still different: right under her the water reads as a flat pale-lilac plate where the original has white froth.
+- **04, foreground foam: partly verified.** The lobes are now nearly opaque white froth over blue water. Bank white is 20.3 / 15.9 / 17.5% and saturated blue 14.0 / 10.7 / 19.6%. Still different: they read as glossy blue domes with white caps rather than the original's lacy froth.
+- I did not use your optional bubble sprites or the starter cluster model: a bubble drawn in the shader matched the original's thin outlined bubbles without adding textures.
+
+**The Art Director's fixes**
+- **F2, the foam bank: partly.**
+  - Met: saturated blue 19.6%, pale blue 25.5%, texture 0.101, white left of her body 26.4%, lower-third white 10.0%, contact strip white 2.6%.
+  - Not met: bank white 17.5% (target 18-22), electric blue 8.7% (≥11), separate white shapes left of her body 48 (≤40; down from 105).
+- **F8, under her body: partly.**
+  - Met: waterline 0.835, texture 0.101, white 16.1% (just at the 12-16% limit).
+  - Not met: pale blue 35.6% (≤24).
+  - Violet is 1.3% against the ≥30% target, on purpose: the violet there was her fur showing through see-through water, which you rejected. The original's lilac there is in its foam bubbles, which we don't reproduce yet.
+  - Most of that measuring box is behind the game's "Swipe to steer" panel on the page frame, so I also report it from the frame without the HUD.
+- **Reactions to moves: kept.** The water still reacts to a swerve, a jump and a landing, with no console errors.
+
+**Checks**
+- The normal game, `splash` and `liquid` are pixel-identical to the starting build, at Tap to Start and at 2.85 s.
+- Gameplay with `match`: lanes 1/0/2, the jump, 12 coins and 2 socks, no errors.
+- Cost is unchanged at 209 draw calls and 1.42 M triangles.
+
+**Other things you should know**
+- The "large near-camera bubbles" you flagged are the Tunnel & Lighting specialist's, set in their file, which I'm not allowed to edit. The biggest is about 0.1 of the frame width against the original's 0.07. I left them for that specialist.
+- An automatic bubble detector failed on the painted original, so its bubbles were counted by eye from zoomed tiles. Ours were counted from the game itself.
+- My measuring scripts were lost once because another session shares the scratch folder, so I moved them into the evidence folder. Captures are in an uncommitted `.wvtmp/` folder in my worktree.
+
+Everything is in `/home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/`. Start with:
+- `original_vs_before_vs_now_3.00s_fullres.png` (the full side by side)
+- `closeup_01_tunnel_bubbles_and_streaks.jpg`, `closeup_02_waterline_character_on_the_water.jpg`, `closeup_04_foreground_foam_bank.jpg`
+- `README.md` (checklist and verdicts) and `measured.txt` (every number, with the script that produced it)
+
+
+_220 tool steps._

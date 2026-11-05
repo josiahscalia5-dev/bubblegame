@@ -1,13 +1,11 @@
 # Work-in-progress snapshot: water-vfx-engineer (Water & VFX: finish bank and bubbles)
 
-- **Taken:** 2026-11-05 15:37 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
-- **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `5d742e0`.
-- **Its own commits so far:** 
-  - `b2454f5 Round 9 Water & VFX gate fixes (WIP): the tunnel bubble field at every depth with white streaks, opaque aqua-white froth lobes`
-  - `9bfd9f7 Round 9 Water & VFX gate fixes (restored WIP): the bank's lobes, the swell's front, fewer flecks and droplets, the first tunnel bubble field`
+- **Taken:** 2026-11-05 15:42 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Worktree branch:** `worktree-agent-a76d8d522689c2f66` (local only), started from `97c5d58`.
+- **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (191; full copies in `files/`)
+## Files (157; full copies in `files/`)
 
 - `.wvtmp/bank_i1.png (new)`
 - `.wvtmp/bank_i10.png (new)`
@@ -166,37 +164,3 @@
 - `.wvtmp/tun_i2.png (new)`
 - `.wvtmp/under_i3.png (new)`
 - `.wvtmp/under_i4.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/bubble_probe_before_t3.00.json (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/bubble_probe_now_t3.00.json (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/bubbles_original_by_eye_overlay.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/capture_info_cost.json (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_01_tunnel_bubbles_and_streaks.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_01b_mid_ring_zoom.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_02_waterline_character_on_the_water.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/closeup_04_foreground_foam_bank.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/gameplay_checks_match_s3_func.txt (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t2.85.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t3.00.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t3.00_canvas.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/match_t3.10.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/liquid_moves_match.txt (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_in_the_air.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_just_landed.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_moves.json (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/match_swerve_left_2.85s.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/moves/moves_sheet.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/original_vs_before_vs_now_2.85s.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/original_vs_before_vs_now_3.00s_fullres.png (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/original_vs_before_vs_now_3.10s.jpg (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/pixel_identity_vs_af5791d.txt (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubble_probe.cjs`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles.py`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles_eye.py (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/meas.py`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/pixcmp.py (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sbs.py`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sheets.py (new)`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/specks.py`
-- `Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/streak_probe_now_t3.00.json (new)`
-- `WebDemo/src/tunnel_r8_splash.js`
-- `WebDemo/src/tunnel_r9_match_water.js`
