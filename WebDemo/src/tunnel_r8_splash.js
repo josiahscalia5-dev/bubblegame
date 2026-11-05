@@ -26,6 +26,7 @@
 import * as THREE from 'three';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9's settings
+import { matchLumpGLSL } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (imported here so its settings reach MATCH before the merges below)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -253,7 +254,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);' : ''}
     const a1 = new Float32Array(n * 4), a2 = new Float32Array(n * 4);
     list.forEach((b, i) => { a1.set([b[0], b[1], b[2], b[3]], i * 4); a2.set([b[4], b[5], 0, 0], i * 4); });
     g.setAttribute('aLump', new THREE.InstancedBufferAttribute(a1, 4)); g.setAttribute('aLump2', new THREE.InstancedBufferAttribute(a2, 4)); g.instanceCount = n;
-    const mat = new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: true,
+    const mat = new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: !MATCH_ON,   // ?s3=match: see-through lobes (no depth write)
       blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       vertexShader: /* glsl */ `
 ${LIFT}
@@ -297,7 +298,7 @@ void main() {
   col += vec3(1.0) * spec * 0.9;
   float a = mix(${f3(SPLASH.lumpAlpha[0])}, ${f3(SPLASH.lumpAlpha[1])}, smoothstep(0.3, 0.75, d + web * 0.15));
   a = clamp(a + pow(1.0 - ndv, 2.0) * 0.2 + spec * 0.3, 0.0, 1.0) * clamp(vK * 1.5, 0.0, 1.0);
-  gl_FragColor = vec4(col * a, a);
+${MATCH_ON ? matchLumpGLSL() : ''}  gl_FragColor = vec4(col * a, a);
 ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : ''}
 }` });
     const mesh = new THREE.Mesh(g, mat); mesh.name = 'spLumps'; mesh.frustumCulled = false; mesh.renderOrder = 6;

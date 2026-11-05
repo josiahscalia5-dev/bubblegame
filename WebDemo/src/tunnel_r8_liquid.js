@@ -34,6 +34,7 @@ import { RIPPLES } from './shaders.js';
 import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { SPLASH_ON, SPLASH_FOAM, SPLASH, mergeSettings, splashWallGLSL, splashFloorGLSL, splashSwellGLSL, buildSplashBank } from './tunnel_r8_splash.js';   // ?s3=splash: Round 8 pass 2
 import { MATCH_ON, MATCH, deepMerge, MATCH_UNIFORMS, matchWallGLSL, matchWallApply, matchMouthGLSL, matchCollarGLSL } from './tunnel_r9_match.js';   // ?s3=match: Round 9
+import { matchFloorDecl, matchFloorApply, matchSwellGLSL } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (Water & VFX)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -519,7 +520,7 @@ function floorFragment(GL, TS, haz) {
   const Fm = LIQUID.foam, K = LIQUID.colours, Rg = LIQUID.ring, Wv = LIQUID.waves;
   return /* glsl */ `
 ${GL}
-uniform vec4 uTunnel; uniform vec3 uLqPlayer; uniform vec4 uLqMove;
+${MATCH_ON ? matchWallGLSL() + matchFloorDecl() : ''}uniform vec4 uTunnel; uniform vec3 uLqPlayer; uniform vec4 uLqMove;
 ${haz ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;' : ''}
 varying vec3 vW, vN, vTrk, vR, vT; varying float vA;
 void main() {
@@ -550,7 +551,7 @@ void main() {
   // far away the floor joins the whirlpool's rings round the centre
   ${rampDecl()}
   col = mix(col, mix(bd, cr, lqBand(k) * 0.5), smoothstep(0.14, 0.04, rw) * 0.8);
-  float s4Haz = 0.0;
+${MATCH_ON ? matchFloorApply() : ''}  float s4Haz = 0.0;
 ${haz ? `  if (inDrum > 0.0) {   // a brush's warning, as on the drum's own water (tunnel_s4.js): a pulsing pink glow down its lane
     float haz = 0.0;
     for (int i = 0; i < 6; i++) {
@@ -716,7 +717,7 @@ function liquidSwell({ scene, GL, LU }) {
   const old = s.material, C = LIQUID.swell.clear, Fm = LIQUID.foam, K = LIQUID.colours, Wv = LIQUID.waves;
   const fs = /* glsl */ `
 ${GL}
-uniform float uFade, uFlow, uLand;
+${MATCH_ON ? matchWallGLSL() + matchFloorDecl() : ''}uniform float uFade, uFlow, uLand;
 uniform vec3 uC, uR, uU, uT;
 varying vec3 vW, vN; varying vec4 vS;
 void main() {
@@ -748,7 +749,7 @@ void main() {
     col = mix(col, ${v3(K.foam)}, white * 0.8); a = max(a, white * 0.8);   // translucent: blue shows through
   }
 ${SPLASH_FOAM ? splashSwellGLSL() : ''}#endif
-  gl_FragColor = vec4(col, a * step(0.001, uFade));
+${MATCH_ON ? matchSwellGLSL() : ''}  gl_FragColor = vec4(col, a * step(0.001, uFade));
 ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : LIQUID.debug === 2 ? '  gl_FragColor = vec4(d * 2.0, a, hUp * 2.0, 1.0);' : ''}
 }
 `;
