@@ -1,0 +1,19 @@
+CLAUDE CODE — BUBBLE WASH KINGDOM SCREEN 4: EVIDENCE-BASED VISUAL CORRECTION
+
+Use the attachment 01_Approved_and_Latest/APPROVED_ORIGINAL_CLASSIC.png as the ONLY approved visual target. This package also includes the latest 3.0-second captures, seven annotated two-column comparisons, optional transparent bubble PNG sprites, and a lightweight GLB starter cluster. Read 04_Instructions/VERIFY_CHECKLIST.md and the seven comparison images before making changes.
+
+My concern is not the PINK CHARACTER MODEL. DO NOT REDESIGN ITS APPEARANCE. I am pointing to how the character sits IN the water in the reference, where the thick cyan-white foam intersects/occludes its LOWER portion. Current builds look like a semi-transparent purple wall hides the lower body. Fix WATER/SPLASH/FOAM DEPTH AND OCCLUSION, not the character mesh.
+
+Critical missing feature: MANY SMALL-TO-MEDIUM BUBBLES INSIDE THE TUNNEL, including distant bubbles that appear naturally to emerge from its swirl, as well as bubbles near and behind coin/gem/sock objects. Do not just add a few oversized static screen-space circles. Implement bubbles as native particles/instanced spheres/sprites compatible with the existing engine, depth tested, animated in vortex flow, using subtle iridescence. The optional provided sprites/GLB are possible starting assets, NOT visual truth.
+
+Make the exact seven changes shown in 02_Seven_Annotated_Comparisons, in priority order:
+1 Deep tunnel bubble field; 2 partly submerged waterline; 3 deep layered cobalt vortex; 4 frothy opaque foreground foam; 5 reference-like coins/gems/socks composition; 6 remove upper empty purple band; 7 fix bright white rectangular patch.
+
+REQUIRED PROCESS
+A. Check specialist-branch state, ensure safe merge and a clean rollback point. Identify rendering stack and actual scene files. Do not refactor the rest of the game.
+B. Inspect and report which original game entities/effects already exist and which exact things are missing (bubble emitter layers, foam occlusion/masks, ring geometry, white panel cause).
+C. Implement corrections in SMALL COMMITS, preserving real playable controls and level logic. Build and run, verify no runtime errors or material incompatibility.
+D. Lock viewport/camera/random seed and capture ACTUAL PLAYABLE GAME at 3.0 s (and a brief motion proof). Show the original reference beside the new merged scene and separate crops of the 7 checkpoints.
+E. Produce pass/partial/fail table for ALL SEVEN checklist items. State precisely what changed (files, effect types, tuning parameters) and what remains different. Never call an image-only mockup or a generic bubble overlay a gameplay implementation. Never claim 9/10 or exact match without visible side-by-side evidence.
+
+IMPORTANT: A visually more attractive but creatively different scene is a FAILURE. Stay faithful to the approved composition and preserve camera/HUD interactions, performance, and player control.

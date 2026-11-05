@@ -44,3 +44,73 @@ Now the edge-to-edge CSS in the page template, applying only when `s3match` is s
 
 I'm editing in the main checkout, which the autosave commits, so I'll rebuild right away to keep the bundle in step with its source.
 
+Builds cleanly. Now a phone capture with the same script the 14:25 preview used, so before and after are directly comparable.
+
+I'll capture two phone cases: Chrome on a Pixel 7 (412 × 839, as at 14:25) and the full-screen app (412 × 915, the 20:9 shape).
+
+The stage is 396 px wide at x = 8, not the full 412: the browser's default 8 px body margin is still there (at 14:25 it was 8 px margin + 16 px padding). Checking the vertical offset too:
+
+The default 8 px margin applies on every side, so on phones the stage also starts 8 px down and loses its bottom 8 px. Under `match` I'll zero the margin too:
+
+---
+
+### You (sent while Claude was working) · 2026-11-05 14:43 UTC
+
+[attached file: Starter_Transparent_Bubble_Cluster.glb] [attached file: Bubble_Wash_Screen4_Visual_Evidence_and_Assets.zip] [attached file: Starter_Transparent_Bubble_Cluster.glb] Claude, I have reviewed your latest Screen 4 screenshots.
+
+I can see improvements, particularly in the tunnel and foreground water. However, the build is still not close enough to my ORIGINAL CLASSIC approved screen.
+
+Please finish and merge the current specialists' work first, preserving everything that is functioning.
+
+Then prioritize these remaining corrections:
+
+1. Add the missing small and medium transparent bubbles throughout the tunnel interior. In my approved screen, bubbles are distributed deep inside the vortex, not just floating near the camera.
+
+2. Improve the water interaction around the pink fuzzy character. It should appear partially submerged in thick, frothy white-blue water, not sitting above the water or hidden behind a transparent purple bubble wall. Do not redesign the character.
+
+3. Match the original tunnel's tighter, deeper, layered spiral structure.
+
+4. Remove the bright white rectangular patch currently visible under the mission banner. Also correct the excessive empty purple space above the tunnel to better match the original composition.
+
+5. Improve the thick, rounded foreground foam, water splashes, and the placement and size of the coins, gems, and sock characters.
+
+Do not make unrelated visual changes. Preserve playable gameplay, controls, and existing progress.
+
+After the merge and corrections, provide the same-moment full-resolution comparison against my ORIGINAL CLASSIC approved Screen 4. Explicitly verify every correction and identify anything that still differs.
+
+Do not claim visual completion based only on successful code builds or screenshots. I need the actual gameplay scene to match the approved image.Claude, I'm attaching a complete visual evidence and asset package for Bubble Wash Kingdom, Level 1, Screen 4.
+
+This package contains my ORIGINAL CLASSIC approved image, your latest builds, SEVEN annotated comparison images, transparent bubble assets, a starter 3D bubble model, and a detailed verification checklist.
+
+I need you to actually inspect and use these resources, not just read my instructions and generate another interpretation.
+
+Please:
+
+1. Open the original approved image and all seven annotated comparisons.
+2. Identify the actual source-code components responsible for each difference.
+3. Inspect the bubble assets and 3D model provided. Use or adapt them only where appropriate for the existing engine.
+4. Implement the missing deep-tunnel bubble effects and correct the water/foam interaction so the pink character sits naturally within the water, without redesigning the character.
+5. Address the other five documented differences while preserving real gameplay.
+6. Verify every correction against the ORIGINAL approved screen.
+7. Show me screenshots of actual gameplay, including close-up evidence for each corrected area.
+
+The kit also includes a file named PASTE_INTO_CLAUDE.txt with the complete implementation instructions and VERIFY_CHECKLIST.md with the acceptance criteria. Read and follow both.
+
+Do not replace gameplay with a static image. Do not introduce a new design direction. Preserve the functioning game and GitHub progress.
+
+I want visual evidence that each correction was made, not merely a statement that the work is complete.
+
+_[16 images attached]_
+
+---
+
+### Claude · 2026-11-05 14:44 UTC
+
+Saved to the repository. Now the specialists' new checkpoints:
+
+Both specialists have their checkpoints. Now my own part: checkpoints 06 and 07. Let me find the Python that has OpenCV, then look at the before/after phone captures.
+
+The debug hook exposes the scene, camera and renderer. I'll first locate the rectangle precisely in the 14:25 capture, then probe which objects cover that spot and hide them one at a time.
+
+The rectangle is at CSS x 149–293, y 145–170 on the 412 × 839 screen, pale blue-white (#d2edf4). Now the probe:
+

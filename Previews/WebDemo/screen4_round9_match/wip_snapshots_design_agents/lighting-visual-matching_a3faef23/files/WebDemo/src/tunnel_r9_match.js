@@ -309,7 +309,9 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
   rw = length(rel) / du / uHeroTanW;
   vec2 at = vec2(-rel.x, rel.y);
   vec2 sd = gl_FragCoord.xy - uMatchVP * uMatchRes;
-  float rs = length(sd) / max(uMatchRes.x, 1.0);
+  // (in widths of the 1:2 reference frame: on screens narrower than 1:2 the camera keeps the original's vertical framing
+  // and uHeroTanW carries the 1:2 width, so the reference width is half the height; identical at 1:2)
+  float rs = length(sd) / max(min(uMatchRes.x, 0.5 * uMatchRes.y), 1.0);
   float k = (1.0 - smoothstep(${f4(C.r[0])}, ${f4(C.r[1])}, rs)) * step(1.0, uMatchRes.x);
   rw = mix(rw, rs, k);
   vec2 ab = mix(at / max(length(at), 1e-5), sd / max(length(sd), 1e-5), k);
@@ -565,11 +567,13 @@ export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, w
       if (rt) MATCH_UNIFORMS.uMatchRes.value.set(rt.width, rt.height);
       else MATCH_UNIFORMS.uMatchRes.value.copy(renderer.getDrawingBufferSize(size));
       // the far collectibles' fade (MATCH.farFade): only their visual scale, and only while they are far (the game's own pop
-      // and pass animations act near the character, where this leaves the scale alone)
+      // and pass animations act near the character, where this leaves the scale alone). The renderer has already worked out
+      // the world matrices when this runs (and the game's passBy sets the scale back to 1 every frame), so the faded ones are
+      // brought up to date here, or the fade would never show
       for (const [list, R] of [[FAR.coins, MATCH.farFade.coins], [FAR.socks, MATCH.farFade.socks]]) for (const o of list) {
         const d = o.position.distanceTo(cam.position);
-        if (d > R[0]) { o.scale.setScalar(Math.max(1e-3, 1 - THREE.MathUtils.smoothstep(d, R[0], R[1]))); o.userData.mtFar = true; }
-        else if (o.userData.mtFar) { o.scale.setScalar(1); o.userData.mtFar = false; }
+        if (d > R[0]) { o.scale.setScalar(Math.max(1e-3, 1 - THREE.MathUtils.smoothstep(d, R[0], R[1]))); o.userData.mtFar = true; o.updateMatrixWorld(true); }
+        else if (o.userData.mtFar) { o.scale.setScalar(1); o.userData.mtFar = false; o.updateMatrixWorld(true); }
       }
     };
     report.centre = C;

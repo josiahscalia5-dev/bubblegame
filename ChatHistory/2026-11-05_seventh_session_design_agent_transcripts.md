@@ -134,8 +134,45 @@ Let me look closely at the centre and objects area (original | before | now).
 - 14:41 `Bash`: List precision kit and brief folders
 - 14:41 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/README.md
 - 14:41 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/02_DEEP_COBALT_CYAN_WHIRLPOOL.jpg
+- 14:41 `Bash`: Capture with more concentric band settings
+- 14:41 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/t1.json
+- 14:42 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/run.sh
+- 14:42 `Bash`: Capture and measure tune iteration t1
+- 14:42 `Bash`: Crop upper tunnel for t1
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_upper_t1.png
+- 14:43 `Bash`: Read hero probe header
+- 14:43 `Bash`: Read hero probe body
+- 14:43 `Bash`: Find debug hook and coin rules in game.js
+- 14:43 `Bash`: Read collectible rules and creation code
+- 14:43 `Bash`: Read coin, gem, sock creation
+- 14:43 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/coin_probe.cjs
+- 14:43 `Bash`: Project every collectible at 3.0 s
+- 14:44 `Bash`: Zoom on the centre coin area
+- 14:44 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/crop_cc_t1.png
+- 14:44 `Bash`: Find per-frame collectible scale writes
+- 14:44 `Bash`: Read collectible per-frame animation
+- 14:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:45 UTC):
 
-_43 tool steps._
+Noted. Let me read the user's new package before continuing.
+
+- 14:45 `Bash`: Read the user's evidence package instructions
+- 14:45 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/02_Seven_Annotated_Comparisons/03_Vortex_geometry_and_depth.png
+- 14:45 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/02_Seven_Annotated_Comparisons/05_Coin___gem___sock_composition.png
+- 14:45 `Bash`: Find jump, lane and body radius constants
+- 14:45 `Bash`: Read world constants and lane function
+**Agent** (14:45 UTC):
+
+Applying the lead's merge note to `mtPlace` (reference width = min(width, 0.5 × height), identical at 1:2).
+
+- 14:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a3faef23dd555533b/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:46 UTC):
+
+Now solving the left coins' places against the original with the hero probe's PICKS.
+
+- 14:46 `Bash`: Build and solve coin places with hero probe
+
+_68 tool steps._
 
 ---
 
@@ -253,5 +290,51 @@ Let me see how previous reports measured "contact strip white" and the merged re
 - 14:40 `Bash`: Run measurement kit on approved and merged frame
 - 14:40 `Bash`: Capture restored state at 3.0 s with cost
 - 14:41 `Bash`: Measure restored state
+**Agent** (14:41 UTC):
 
-_26 tool steps._
+Restored state measures close on most targets. Let me look at it next to the original and the merged "before".
+
+- 14:41 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/kit/sbs.py
+- 14:41 `Bash`: Make full and bank side-by-sides
+- 14:41 `Bash`: Make full and bank side-by-sides
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/full_r0.png
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/bank_r0.png
+- 14:42 `Bash`: Zoomed bank crop original vs restored canvas
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/bankz_r0.png
+**Lead → agent** (14:42 UTC):
+
+[Image: original 2368x520, displayed at 2000x439. Multiply coordinates by 1.18 to map to original image.]
+
+- 14:42 `Bash`: Make gridded 2x quadrant tiles of the original
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/oq1.png
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/oq2.png
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/oq3.png
+- 14:42 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/oq4.png
+- 14:43 `Bash`: Tunnel crop original vs restored
+- 14:43 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/tun_r0.png
+- 14:43 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/kit/bubbles.py
+- 14:43 `Bash`: Run bubble counter on three frames
+**Agent** (14:44 UTC):
+
+Far too many detections; the thresholds are too loose. Let me look at the overlay.
+
+- 14:44 `Bash`: Crop approved overlay
+- 14:44 `Read`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/bub/a_crop.png
+- 14:44 `Bash`: Switch detector to per-sector contrast and rerun
+**Agent** (14:44 UTC):
+
+I'll read the user's new evidence package, then continue with absolute paths (the last command lost its working directory).
+
+- 14:44 `Bash`: Read the user's evidence package instructions
+- 14:44 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/02_Seven_Annotated_Comparisons/01_Bubbles_DEEP_inside_tunnel.png
+- 14:44 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/02_Seven_Annotated_Comparisons/02_Waterline_and_partial_submersion.png
+- 14:44 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/02_Seven_Annotated_Comparisons/04_Foreground_foam_density.png
+- 14:45 `Bash`: Per-sector contrast bubble detector rerun
+- 14:45 `Bash`: List scratchpad contents
+- 14:45 `Bash`: Create private work folders and move captures
+- 14:46 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/meas.py
+- 14:46 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/sbs.py
+- 14:46 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/Previews/WebDemo/screen4_round9_match/07_water_vfx_gate_fixes/scripts/bubbles.py
+- 14:46 `Bash`: Run per-sector bubble counter
+
+_56 tool steps._
