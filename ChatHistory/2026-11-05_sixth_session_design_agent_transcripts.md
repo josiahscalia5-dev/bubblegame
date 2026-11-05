@@ -486,8 +486,26 @@ Gem, right coin and rim thickness are now close to their targets. The walls over
 - 14:14 `Bash`: Capture with tuned wall settings and measure
 - 14:14 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/tune_f3b.json
 - 14:14 `Bash`: Capture with tuned wall settings and measure
+- 14:17 `Bash`: Ray-pick the lilac area above the centre
+- 14:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+- 14:18 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-af5009374d98fe44c/WebDemo/src/tunnel_r9_match.js
+**Agent** (14:18 UTC):
 
-_164 tool steps._
+I'll read the user's brief first.
+
+- 14:18 `Bash`: Read the user's fidelity pass brief
+- 14:18 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/02_four_way_comparison_original_saved_TL_WV_1357utc.jpg
+- 14:18 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/03_closeups_centre_and_foam_bank_1357utc.jpg
+- 14:19 `Bash`: Build, capture and compare upper tunnel halves
+
+_178 tool steps._
 
 ---
 
@@ -732,5 +750,45 @@ Fold t7 into the source too (side glints 0.9, hide spray sheets, left bubbles), 
 - 14:13 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/body_i9.png
 - 14:13 `Bash`: Fold t9 tune into source
 - 14:13 `Bash`: Rebuild, capture 2.85/3.0/3.1 with cost, measure
+**Agent** (14:16 UTC):
 
-_151 tool steps._
+Consistent across 2.85, 3.0 and 3.1 s, and the cost is 208 draw calls and 1.42 M triangles at 3.0 s (merged: 209, 1.42 M). Let me look at the bank at all three times.
+
+- 14:16 `Bash`: Bank crops at three times vs original
+- 14:16 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/times_i10.png
+**Lead → agent** (14:16 UTC):
+
+[Image: original 3107x368, displayed at 2000x237. Multiply coordinates by 1.55 to map to original image.]
+
+**Agent** (14:16 UTC):
+
+The bank now reads as a bubbly mass at all three times. Compared with the original, our dome rims are thinner and the domes look glassier. One tune test with thicker rims and slightly larger glints:
+
+- 14:16 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/t11.json
+- 14:16 `Bash`: Capture and measure thicker-rim variant
+- 14:17 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/body_i11.png
+- 14:17 `Bash`: Locate the rim line
+- 14:17 `Bash`: Add front rim width setting
+- 14:17 `Bash`: Rebuild, capture three times, measure iteration 12
+**Agent** (14:18 UTC):
+
+New brief from the user. I'll read it while the capture runs.
+
+- 14:18 `Bash`: Read the user's fidelity pass brief
+- 14:18 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-05_Screen4_Fidelity_Pass_Brief/03_closeups_centre_and_foam_bank_1357utc.jpg
+**Agent** (14:18 UTC):
+
+That sheet is a comparison, not a target. Now the capture result.
+
+- 14:18 `Bash`: Wait for and read capture output
+- 14:18 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/tasks/bjn0n00zf.output
+**Agent** (14:18 UTC):
+
+While the capture runs, I'll write the bubble counter for the original: Hough circles on the luminance, by zone round the vanishing point, with an overlay to check by eye.
+
+- 14:18 `Write`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/ad/bubbles.py
+- 14:18 `Bash`: Detect bubbles in original and current frame
+- 14:19 `Read`: /tmp/claude-0/-home-user-bubblegame/bf88ac6f-6adc-5c45-963a-b6a0b145986e/scratchpad/bub0.png
+- 14:20 `Bash`: Tighten bubble detector and rerun
+
+_167 tool steps._

@@ -69,9 +69,9 @@ export const MATCH = {
       // its centre on the approved's (0.907, 0.736); the first sock 0.17 m up and 0.03 m right, on the approved's (0.742,
       // 0.61), within reach from the right lane without a jump (0.81 m); the gem up 0.22 m onto the approved's (0.323, 0.509),
       // within reach from the left lane with a jump; the far three-coin line from the middle lane (straight behind the centre
-      // coin, the "totem") to the left lane 1.5 m nearer, 0.14 W from the centre)
+      // coin, the "totem") to just outside the left lane (0.14 m, within reach) 2.5 m nearer, 0.12 W from the centre coin)
       layout: { coinLines: [[-0.257, 2.75, 1, 1.0, 1.05, 0], [-1.14, 5.0, 1, 1.0, 1.5, 0], [1.07, 7.3, 1, 1.0, 1.15, 0], [2.357, 2.3, 1, 1.0, 0.57, 0],
-        [2, 13.0, 1, 1.0, 0.55, 0], [0, 10.5, 3, 1.0, 0.55, 0]], replace: 3,
+        [2, 13.0, 1, 1.0, 0.55, 0], [-0.2, 9.5, 3, 1.0, 0.55, 0]], replace: 3,
         firstSock: [2.0, 3.2, 1.14], extraGem: [-0.414, 5.7, 1.67] },
       // the two framing brushes +0.95 m; the right one smaller (it hid the vortex)
       // the left one smaller and nearer the axis, so it shows as the approved's round pom-pom at the left edge (approved box
@@ -137,23 +137,26 @@ export const MATCH = {
     // (Gate fixes: with the centre's place corrected the core rows show there, and the old tint 1.03, 0.9, 0.72 at 0.9 made
     // an orange ball, white 17%)
     // white: on the walls (and the far end), the core zone's pale lilac turned warm white first (the floor takes tint only)
-    core: { r: [0.035, 0.085], tint: [1.0, 0.94, 0.92], amount: 0.6, white: 0.85 },
+    core: { r: [0.035, 0.085], tint: [1.0, 0.94, 0.92], amount: 0.35, white: 1.0 },
     // the glints tinted (the approved's brightest wall texels are #cae0ff, not pure white); `glint` is also the floor's
     // (tunnel_r9_match_water.js); the walls now take `glintWall`: bluer (ours read lilac-white #e6e0f9 S 0.14 against #cae0ff
     // S 0.27) and not on the warm patches (blue-tinting a bright yellow made it lime: the gate's 783 lime pixels)
     glint: { tint: [0.84, 0.92, 1.0], from: [0.78, 0.96], amount: 0.85 },
-    glintWall: { tint: [0.76, 0.86, 1.0], from: [0.74, 0.96], amount: 0.9 },
+    // (only the brightest, and only on the walls: over the whole bright range it turned the mid vortex's whites pale blue,
+    // white 11% against the approved's 22%)
+    glintWall: { tint: [0.76, 0.86, 1.0], from: [0.88, 0.98], amount: 0.7 },
     // the gate fixes F3 / F4 on the walls (from rw zone[0], fully from zone[1]; the warm patches kept):
     // contrast: the colour map's own bands round its blur (the approved's crisper bands: band contrast 0.17-0.20, ours 0.13)
-    contrast: 1.6,
+    contrast: 1.5,
     // the relief's troughs toward the approved's deep cobalt (#4a64d2, 3.9% of the upper wall; ours 1.2%) and its crests and
     // the streak map's highlights toward the approved's cyan (#2fb2f5, 13.3%; ours 6.6%, too light and green)
-    trough: { col: '#3c56cf', amount: 0.7, from: [0.05, 0.14] },
-    crest: { col: '#2fb2f5', amount: 0.6, from: [0.03, 0.12], streak: 0.12 },
-    zone: [0.1, 0.16],
+    // (narrow ranges: crisp band edges, as the approved's painted bands)
+    trough: { col: '#3c56cf', amount: 0.3, from: [0.08, 0.12] },
+    crest: { col: '#2fb2f5', amount: 0.85, from: [0.04, 0.08], streak: 0.12 },
+    zone: [0.12, 0.18],
     // the mid vortex's pastel lilac (the map's rows rw 0.06-0.12: lavender 20-33%) toward pale blue and white (approved mid
     // vortex r 0.08-0.20: lavender 12%, white 22%, pale blue 18%); [in, full, full to, out] in rw
-    delilac: { amount: 0.8, r: [0.05, 0.08, 0.17, 0.24] },
+    delilac: { amount: 1.0, r: [0.03, 0.06, 0.17, 0.24] },
     white: 0.93,     // the brightest linear value drawn (the approved's whites; just under the bloom's threshold after the grade)
     grade: { contrast: 1.08, saturation: 1.16, exposure: 1.0 },   // the hero grade to undo (HERO.grade), so the colours show as measured
   },
@@ -339,13 +342,13 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   c = mix(c, ${hx(M.crest.col)}, smoothstep(${f4(M.crest.from[0])}, ${f4(M.crest.from[1])}, dl + vr.r * ${f4(M.crest.streak)}) * ${f4(M.crest.amount)} * wk * (1.0 - smoothstep(0.8, 0.94, gl)));   // (the whites kept)
   // the mid vortex's pastel lilac (blue above red above green) toward pale blue: red brought under green turns its hue
   // under 235 degrees
-  float lil = clamp((c.b - c.r) * 20.0, 0.0, 1.0) * smoothstep(${f4(M.delilac.r[0])}, ${f4(M.delilac.r[1])}, rw) * (1.0 - smoothstep(${f4(M.delilac.r[2])}, ${f4(M.delilac.r[3])}, rw));
+  float lil = clamp((c.b - c.r + 0.03) * 15.0, 0.0, 1.0) * smoothstep(${f4(M.delilac.r[0])}, ${f4(M.delilac.r[1])}, rw) * (1.0 - smoothstep(${f4(M.delilac.r[2])}, ${f4(M.delilac.r[3])}, rw));
   c.r = mix(c.r, min(c.r, c.g * 0.9), lil * ${f4(M.delilac.amount)});
   // the core's pale lilac rows toward warm white (blue brought down to the larger of red and green)
   float coreK = 1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw);
   c.b = mix(c.b, min(c.b, max(c.r, c.g) * 1.02), coreK * ${f4(M.core.white)});
   gl = dot(c, vec3(0.2126, 0.7152, 0.0722));
-  c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
+  c = mix(c, c * vec3(${M.glintWall.tint.map(f4)}), smoothstep(${f4(M.glintWall.from[0])}, ${f4(M.glintWall.from[1])}, gl) * ${f4(M.glintWall.amount)} * wz * (1.0 - smoothstep(0.0, 0.08, c.r - c.b)));
   c = mix(c, min(c * vec3(${M.core.tint.map(f4)}), 1.0), (1.0 - smoothstep(${f4(M.core.r[0])}, ${f4(M.core.r[1])}, rw)) * ${f4(M.core.amount)});
   c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));

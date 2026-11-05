@@ -78,14 +78,14 @@ export const MATCH_WATER = {
   // (gate fixes, step 7) the original's bank is glossy domes, each with a crisp white arc along its top, a soap-film violet
   // body (the left ones lavender, the right ones electric blue), a few round white glints, and dense bubbly white foam (white
   // with round blue holes) on the side lobes' tops and round their feet: violet: [front, left, right] soap tint; rimW: the
-  // rim's start (1 - n.v), rimBreak its share of breaks; capFoam / footFoam: the foam's reach on the tops and round the feet;
+  // rim's start (1 - n.v) beside the body and in front of it, rimBreak its share of breaks; capFoam / footFoam: the foam's reach on the tops and round the feet;
   // frontFoam / frontFeet / capRight: their factors in front of the body and on the right (the original's right bank is
   // whiter); foamScale: the foam patches' size (smaller = broader); cell / holeShare: the foam's round holes (cells per unit
   // radius, the share of cells without one); fleckCell / fleck / frontFleck: the round glints (fewer, bigger beside the body:
   // the Art Director's 105 small white shapes left of it against 13; more in front, where the original has white spots on
   // the violet domes)
   lobe: { hi: '#4f9cff', mid: '#2f7cef', low: '#1f56d6', white: '#f6fcff', violetCol: '#8f7cf2', violet: [0.4, 0.4, 0.08],
-    alpha: 0.42, sideAlpha: 0.72, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.52, rimBreak: 0.05, spec: 1.6, specPow: 220, sheen: 0.05,
+    alpha: 0.42, sideAlpha: 0.72, fres: 0.12, film: 0.12, rim: 0.95, rimW: 0.47, frontRimW: 0.52, rimBreak: 0.05, spec: 1.6, specPow: 160, sheen: 0.05,
     foam: 0.95, foamScale: 0.32, capFoam: 0.3, capFrom: 0.25, footFoam: 0.42, frontFoam: 0.45, frontFeet: 1.3, capRight: 2.2, cell: 6.0, hole: 0.85,
     holeShare: 0.6, fleck: 0.9, frontFleck: 0.6, fleckCell: 3.4 },
   // settings handed to the splash pass and the liquid (merged into MATCH.splash, MATCH.liquid, MATCH.heroWater before those
@@ -300,7 +300,8 @@ export function matchLumpGLSL() {
     // 1. an arc along the top of the outline, nearly whole (a few breaks)
     vec3 lbP = vO * 1.7 + vSeed * 5.0, lbPi = floor(lbP);
     float lbBreak = step(${f4(B.rimBreak)}, fract(sin(dot(lbPi, vec3(39.346, 11.135, 83.155))) * 24634.6345));
-    float lbRim = smoothstep(${f4(B.rimW)}, ${f4(B.rimW + 0.12)}, lbF) * smoothstep(-0.3, 0.2, lbUp) * lbBreak;
+    float lbRw = mix(${f4(B.rimW)}, ${f4(B.frontRimW)}, lbFront);   // (wider beside the body, thinner in front of it)
+    float lbRim = smoothstep(lbRw, lbRw + 0.12, lbF) * smoothstep(-0.3, 0.2, lbUp) * lbBreak;
     // 2. dense bubbly foam, white with round holes where the water shows through: patches on the tops of the lobes beside
     //    the body (less in front of it, where the fur shows violet) and round their feet; broad patches, not specks
     vec2 lbNq = vO.xz * ${f4(B.foamScale)} + vO.y * vec2(0.27, -0.19) + vSeed * 4.0 + vec2(uTime * 0.015, 0.0);

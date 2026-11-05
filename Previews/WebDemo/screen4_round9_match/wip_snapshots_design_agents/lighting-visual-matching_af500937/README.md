@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting focused pass)
 
-- **Taken:** 2026-11-05 14:15 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-05 14:20 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-af5009374d98fe44c` (local only), started from `af5791d`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
