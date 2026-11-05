@@ -57,7 +57,31 @@ Rules: Round 5 (`?s3=round5`) is the only place visual changes go. The normal ga
 pixel-identical. Controls, lanes, the tunnel route, the five-heart system, the sock mission and power-ups must not change. The
 fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and ranked.
 
-## Newest: Round 9 ART MATCH, `?s3=match` (5 November 2026, fifth and sixth sessions; this section overrides the notes below)
+## Newest: the FOCUSED CORRECTION PASS, `?s3=focus` (5 November 2026, eighth session; this section overrides the notes below)
+
+- **Switch:** `?s3=focus` = everything `match` does plus the user's focused correction pass. Settings: `WebDemo/src/tunnel_r9_focus.js`
+  (`FOCUS.match`, merged into `MATCH`; `FOCUS.water`, merged into `MATCH_WATER`). Code gated on `FOCUS_ON`:
+  - `tunnel_r9_match.js`: `focusRibbonsGLSL` (the walls' water as broken, twisting ribbons), `focusFlecksGLSL` (white
+    streaks and drops along the ribbons) and the sock pose;
+  - `tunnel_r9_match_water.js`: `focusLumpGLSL` (small blue splash crests), `swellFront` (the swell's crest lowered in front
+    of her) and `focusSparkleGLSL` (glints on the water round her).
+  `match` and every older switch must stay pixel-identical.
+- **The user's corrections (they supersede every earlier foam request):**
+  - round the character, sparkling BLUE water with small bubbles, splashes and blue-white highlights; NO thick white or
+    lavender foam cushion or clumps;
+  - in the tunnel, the water itself as twisting, irregular cobalt ribbons with turquoise currents, dark gaps and curved,
+    broken white streaks (`Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/`). Not smooth, even, wide pastel
+    rings or a big peach band. Bubbles are secondary.
+- **State and evidence:** `Previews/WebDemo/screen4_round9_match/15_focus_pass/README.md` (commits, numbers, checklist),
+  `final/` (the 3.0 s sheets).
+- **Capture:** `S3=focus TIMES=3.0 DPR=1.5 CANVAS=1 node tools/screen4/liquid_shots.cjs "$PWD" <out>`.
+  - Camera candidates: `tools/screen4/cam_sweep.cjs`.
+  - Measures: `15_focus_pass/scripts/` (`pink.py`, `tunnel_palette.py`, `final_sheets.py`).
+  - `r2_func.cjs` takes `VW=135 VH=270` (at full size its hearts loop outlasts 20 minutes in software rendering).
+- **The user's rule now:** commit and push each tested step and report its hash. Never call a fix done without the real 3.0 s
+  frame showing it.
+
+## Earlier: Round 9 ART MATCH, `?s3=match` (5 November 2026, fifth and sixth sessions; this section overrides the notes below)
 
 - **Branch:** `ccr-4aef2c77-0cdeu2` (sixth session), which continues `ccr-b41bbe83-3fbhkr` exactly (both at `a5be95c`).
   Round 9 so far is merged as `2a6ab30`.
