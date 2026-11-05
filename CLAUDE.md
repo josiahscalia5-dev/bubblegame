@@ -12,6 +12,7 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - NOT targets: the EXACT TARGET board (`03_SCREEN4_EXACT_TARGET_BOARD.png`), the guides (`01_ROUND6_...`, `05_...`, `06_...`),
     concept sheets, the Tripo kit's `VFX_ONLY` images, the water-look references, `Design/ApprovedScreens/` and any other
     generated image. `02_APPROVED_SCREEN_4_FULL.jpg` is a smaller copy: use the original.
+  - The user's precision kit, exact crops of the original by zone (verified): `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/` (`01`-`07`; `10` the annotated zones).
   - Supporting MATERIAL references the user approved on 5 November, for look and finish only (never layout; the original
     wins): `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (see its README). REF5, the blue-water vortex, is the tunnel's water material.
 - **First priority: a visibly blue/turquoise water body** through the tunnel, wrapping the pink character's lower body.

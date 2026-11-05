@@ -23,6 +23,9 @@ model: inherit
   - `Design/ApprovedScreens/` (an older Screen 4);
   - any other newly generated image.
 - `02_APPROVED_SCREEN_4_FULL.jpg` (453 x 907) is the same picture at a lower resolution: use the original instead.
+- The user's PRECISION KIT (5 November): `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/` — exact crops of the original (verified 1.000 match): `01` housing, `02`
+  cobalt-cyan whirlpool, `03` pink swimmer in blue water, `04` coins/gem/sock, `05` brushes, `06` foreground splashes, `07` HUD;
+  `10` the user's annotated target zones. `08`/`09`/`11` are game frames, not targets.
 - Supporting MATERIAL references, approved by the user on 5 November (look and finish only, never layout; the original
   wins any difference): `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (README there): REF5 blue-water vortex = the tunnel's water material, REF3 = the
   character in turquoise water, REF2 = the washer's gold-and-lavender materials, REF4 = the props' look, REF1 = finish.
