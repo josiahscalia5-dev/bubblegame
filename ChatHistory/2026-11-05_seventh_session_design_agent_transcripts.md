@@ -265,8 +265,21 @@ Gameplay holds under `?s3=match`: lanes 1/0/2, the jump, 12 coins, 1 gem, 2 sock
 
 - 15:01 `Write`: /tmp/claude-0/-home-user-bubblegame/030c89e6-794e-5e80-afe8-587a3d09f2db/scratchpad/m/ident.sh
 - 15:01 `Bash`: Capture identity shots with the new bundle
+- 15:03 `Bash`: Capture identity shots with the baseline bundle, then restore
+- 15:04 `Bash`: Compare baseline and new identity shots
+**Agent** (15:04 UTC):
 
-_126 tool steps._
+All six raw-canvas frames are pixel-identical (0 differing pixels) to the baseline bundle. Now the final evidence captures at 2.85, 3.0 and 3.1 s.
+
+- 15:04 `Bash`: Capture final match frames at three times
+**Agent** (15:06 UTC):
+
+Draw calls 207/209/202, the same as the merged build. Now re-running the Art Director's `rw_probe` diagnostic, extended to evaluate the corrected screen-space placement the shader now uses.
+
+- 15:06 `Bash`: Extend the rw probe for the corrected placement
+- 15:07 `Bash`: Run the extended rw probe at 3.0 s
+
+_131 tool steps._
 
 ---
 
@@ -530,5 +543,40 @@ One guard: the nearest stretches may not start more than 1 m before the drum's m
 - 15:01 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/under_i3.png
 - 15:01 `Bash`: Make swell crest width a setting and rebuild
 - 15:02 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/t4.json
+- 15:02 `Bash`: Capture, measure, crop iteration 4
+- 15:02 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/under_i4.png
+**Lead → agent** (15:02 UTC):
 
-_116 tool steps._
+[Image: original 2504x450, displayed at 2000x359. Multiply coordinates by 1.25 to map to original image.]
+
+- 15:02 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/mid_i4.png
+**Agent** (15:02 UTC):
+
+The streaks still do not show in the mid ring. Let me check one of the probe's reported streak positions up close.
+
+- 15:02 `Bash`: Zoom on a probed streak position
+- 15:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/streak_map.png
+- 15:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/streak_zoom.png
+**Agent** (15:03 UTC):
+
+No streak is drawn anywhere, although the probe reports pixel changes at their positions. A quick diagnostic: the same frame with the streaks made huge.
+
+- 15:03 `Bash`: Debug capture with huge streaks
+- 15:03 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/tdbg.json
+- 15:03 `Bash`: Debug capture with huge streaks
+- 15:04 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/dbg/match_t3.00_canvas.png
+**Agent** (15:04 UTC):
+
+Even 1 m streaks do not appear, so it is a bug, not a tuning issue. Let me read the builder as it is in the file.
+
+- 15:04 `Bash`: Check kind handling in builder
+**Agent** (15:04 UTC):
+
+The JS side looks right. Let me read the live instance data and uniforms in the page.
+
+- 15:04 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a76d8d522689c2f66/.wvtmp/dbg_inst.cjs
+- 15:04 `Bash`: Dump live instance data
+- 15:07 `Bash`: Find hero walls radius definition
+- 15:07 `Bash`: Read hero walls construction
+
+_131 tool steps._
