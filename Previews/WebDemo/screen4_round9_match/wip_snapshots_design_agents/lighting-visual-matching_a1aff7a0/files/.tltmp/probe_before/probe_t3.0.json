@@ -1,0 +1,2804 @@
+{
+ "state": {
+  "phase": "running",
+  "time": 3.517,
+  "z": 1.592,
+  "x": 0,
+  "y": 0.405,
+  "world": [
+   0,
+   0.405,
+   1.592
+  ],
+  "path": {
+   "pitch": 0,
+   "heading": 0,
+   "bank": 0
+  },
+  "cameraUp": [
+   0,
+   1,
+   0
+  ],
+  "lane": 1,
+  "speed": 7.21,
+  "air": false,
+  "slope": 0,
+  "pitchDeg": -0.3,
+  "leanDeg": 0,
+  "coins": 1280,
+  "gems": 36,
+  "socks": 0,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "laps": 0,
+  "camera": [
+   -0.11,
+   1.547,
+   -1.008
+  ],
+  "cameraPitchDeg": 2.4,
+  "particles": 131,
+  "repairedNormals": 1002065,
+  "machineryInnerX": 1.22,
+  "decorClear": {
+   "towers": 1.79,
+   "gears": 1.25,
+   "pipes": null,
+   "crowns": null
+  },
+  "rollerCandidate": null,
+  "hearts": 5,
+  "blasts": 3,
+  "turbos": 3,
+  "paused": false,
+  "blastT": 0,
+  "turboT": 0,
+  "knocks": 0,
+  "restarts": 0,
+  "bumps": 0
+ },
+ "tunnelStart": 3.9006939946349135,
+ "tunnelEnd": 37.20192241480899,
+ "clearRadius": 2.0148642322097374,
+ "mascot": {
+  "z": -2.309,
+  "x": 0,
+  "yAbs": 0.40464637008770515
+ },
+ "camera": {
+  "pos": [
+   -0.11,
+   1.547,
+   -1.008
+  ],
+  "track": {
+   "u": -4.9,
+   "x": -0.11,
+   "h": 1.55
+  },
+  "quat": [
+   -0.0004,
+   0.9996,
+   -0.0209,
+   -0.0168
+  ],
+  "fov": 72,
+  "aspect": 0.5
+ },
+ "stage": [
+  538,
+  1076
+ ],
+ "objects": [
+  {
+   "name": "WashingRoller_RotateAroundLocalY",
+   "type": "Group",
+   "kids": 2,
+   "sx": -0.18,
+   "sy": 0.47,
+   "z": 1.042,
+   "dist": 5.47,
+   "track": {
+    "u": -9.7,
+    "x": -2.7,
+    "h": 1.1
+   },
+   "size": [
+    1.79,
+    2.24,
+    1.93
+   ],
+   "foot": null
+  },
+  {
+   "name": "BubbleWash_SideWashingRoller_UltraLite",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -0.18,
+   "sy": 0.47,
+   "z": 1.042,
+   "dist": 5.47,
+   "track": {
+    "u": -9.7,
+    "x": -2.7,
+    "h": 1.1
+   },
+   "size": [
+    1.79,
+    2.11,
+    1.93
+   ],
+   "foot": null
+  },
+  {
+   "name": "BubbleWash_SideWashingRoller_UltraLite_1",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -0.18,
+   "sy": 0.47,
+   "z": 1.042,
+   "dist": 5.47,
+   "track": {
+    "u": -9.7,
+    "x": -2.7,
+    "h": 1.1
+   },
+   "size": [
+    0.99,
+    2.24,
+    1.18
+   ],
+   "foot": null
+  },
+  {
+   "name": "scenery",
+   "type": "Group",
+   "kids": 16,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    6.46,
+    4.11,
+    10.72
+   ],
+   "foot": null
+  },
+  {
+   "name": "tunnelDecor",
+   "type": "Group",
+   "kids": 58,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    6.41,
+    6.11,
+    30.24
+   ],
+   "foot": [
+    -0.054,
+    0.248,
+    1.115,
+    0.831
+   ]
+  },
+  {
+   "name": "entranceDecor",
+   "type": "Group",
+   "kids": 16,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    8.48,
+    7.85,
+    5.69
+   ],
+   "foot": [
+    -332.185,
+    -8.351,
+    31.523,
+    117.328
+   ]
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 6.04,
+   "sy": 2.83,
+   "z": 1.258,
+   "dist": 4.17,
+   "track": {
+    "u": -5.9,
+    "x": 2.99,
+    "h": 4.15
+   },
+   "size": [
+    2.48,
+    5.9,
+    2.66
+   ],
+   "foot": [
+    -12.225,
+    -5.517,
+    -3.536,
+    1.148
+   ]
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 6.07,
+   "sy": 2.84,
+   "z": 1.259,
+   "dist": 4.18,
+   "track": {
+    "u": -5.9,
+    "x": 3,
+    "h": 4.15
+   },
+   "size": [
+    2.48,
+    5.9,
+    2.66
+   ],
+   "foot": [
+    -12.225,
+    -5.517,
+    -3.536,
+    1.148
+   ]
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": -3.52,
+   "sy": 2.37,
+   "z": 1.206,
+   "dist": 4.01,
+   "track": {
+    "u": -5.9,
+    "x": -2.99,
+    "h": 4.15
+   },
+   "size": [
+    2.48,
+    5.9,
+    2.66
+   ],
+   "foot": [
+    4.937,
+    -8.351,
+    31.523,
+    1.828
+   ]
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -3.52,
+   "sy": 2.36,
+   "z": 1.206,
+   "dist": 4.01,
+   "track": {
+    "u": -5.9,
+    "x": -3,
+    "h": 4.15
+   },
+   "size": [
+    2.48,
+    5.9,
+    2.66
+   ],
+   "foot": [
+    4.937,
+    -8.351,
+    31.523,
+    1.828
+   ]
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 4.42,
+   "sy": 0,
+   "z": 1.308,
+   "dist": 2.02,
+   "track": {
+    "u": -5.6,
+    "x": 1.72,
+    "h": 1.05
+   },
+   "size": [
+    1.13,
+    1.1,
+    0.53
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 4.42,
+   "sy": 0,
+   "z": 1.309,
+   "dist": 2.02,
+   "track": {
+    "u": -5.6,
+    "x": 1.72,
+    "h": 1.05
+   },
+   "size": [
+    1.13,
+    1.1,
+    0.53
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 2.67,
+   "sy": -0.02,
+   "z": 1.147,
+   "dist": 2.76,
+   "track": {
+    "u": -6.3,
+    "x": 2,
+    "h": 0.45
+   },
+   "size": [
+    1.12,
+    1.07,
+    0.67
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 2.67,
+   "sy": -0.02,
+   "z": 1.148,
+   "dist": 2.76,
+   "track": {
+    "u": -6.3,
+    "x": 2,
+    "h": 0.45
+   },
+   "size": [
+    1.12,
+    1.07,
+    0.67
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 1.63,
+   "sy": 0.1,
+   "z": 1.097,
+   "dist": 2.95,
+   "track": {
+    "u": -7,
+    "x": 1.53,
+    "h": 0.26
+   },
+   "size": [
+    0.72,
+    0.73,
+    0.34
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 1.63,
+   "sy": 0.1,
+   "z": 1.097,
+   "dist": 2.95,
+   "track": {
+    "u": -7,
+    "x": 1.53,
+    "h": 0.26
+   },
+   "size": [
+    0.72,
+    0.73,
+    0.34
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": -2.24,
+   "sy": 0.04,
+   "z": 1.262,
+   "dist": 1.78,
+   "track": {
+    "u": -5.6,
+    "x": -1.66,
+    "h": 1
+   },
+   "size": [
+    0.86,
+    0.82,
+    0.49
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -2.24,
+   "sy": 0.04,
+   "z": 1.262,
+   "dist": 1.78,
+   "track": {
+    "u": -5.6,
+    "x": -1.66,
+    "h": 1
+   },
+   "size": [
+    0.86,
+    0.82,
+    0.49
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": -1.08,
+   "sy": 0.08,
+   "z": 1.126,
+   "dist": 2.63,
+   "track": {
+    "u": -6.4,
+    "x": -2,
+    "h": 0.5
+   },
+   "size": [
+    1.29,
+    1.25,
+    0.66
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -1.08,
+   "sy": 0.08,
+   "z": 1.126,
+   "dist": 2.63,
+   "track": {
+    "u": -6.4,
+    "x": -2,
+    "h": 0.5
+   },
+   "size": [
+    1.29,
+    1.25,
+    0.66
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": -0.31,
+   "sy": 0.13,
+   "z": 1.088,
+   "dist": 2.93,
+   "track": {
+    "u": -7.1,
+    "x": -1.53,
+    "h": 0.23
+   },
+   "size": [
+    0.71,
+    0.72,
+    0.33
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -0.31,
+   "sy": 0.13,
+   "z": 1.088,
+   "dist": 2.92,
+   "track": {
+    "u": -7.1,
+    "x": -1.53,
+    "h": 0.23
+   },
+   "size": [
+    0.71,
+    0.72,
+    0.33
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 2.6,
+   "sy": 1.29,
+   "z": 1.139,
+   "dist": 3.13,
+   "track": {
+    "u": -6.5,
+    "x": 2.05,
+    "h": 3.15
+   },
+   "size": [
+    1.25,
+    1.16,
+    0.79
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 2.6,
+   "sy": 1.29,
+   "z": 1.139,
+   "dist": 3.13,
+   "track": {
+    "u": -6.5,
+    "x": 2.05,
+    "h": 3.15
+   },
+   "size": [
+    1.25,
+    1.16,
+    0.79
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 3.66,
+   "sy": 2.35,
+   "z": 1.191,
+   "dist": 3.88,
+   "track": {
+    "u": -6.15,
+    "x": 2.27,
+    "h": 4.34
+   },
+   "size": [
+    1.03,
+    0.81,
+    1.03
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 3.66,
+   "sy": 2.35,
+   "z": 1.191,
+   "dist": 3.88,
+   "track": {
+    "u": -6.15,
+    "x": 2.27,
+    "h": 4.34
+   },
+   "size": [
+    1.03,
+    0.81,
+    1.03
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": -2.1,
+   "sy": 2.44,
+   "z": 1.199,
+   "dist": 3.57,
+   "track": {
+    "u": -5.95,
+    "x": -2.05,
+    "h": 4.34
+   },
+   "size": [
+    1.03,
+    0.81,
+    1.03
+   ],
+   "foot": null
+  },
+  {
+   "name": "geometry_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -2.1,
+   "sy": 2.43,
+   "z": 1.199,
+   "dist": 3.57,
+   "track": {
+    "u": -5.95,
+    "x": -2.05,
+    "h": 4.34
+   },
+   "size": [
+    1.03,
+    0.81,
+    1.03
+   ],
+   "foot": null
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 0.32,
+   "sy": 0.51,
+   "z": 0.971,
+   "dist": 6.8,
+   "track": {
+    "u": 1.8,
+    "x": 0.99,
+    "h": 1.74
+   },
+   "size": [
+    0.59,
+    0.48,
+    0.65
+   ],
+   "foot": [
+    0.253,
+    0.485,
+    0.387,
+    0.534
+   ]
+  },
+  {
+   "name": "0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.32,
+   "sy": 0.51,
+   "z": 0.971,
+   "dist": 6.8,
+   "track": {
+    "u": 1.8,
+    "x": 0.99,
+    "h": 1.74
+   },
+   "size": [
+    0.59,
+    0.48,
+    0.65
+   ],
+   "foot": [
+    0.253,
+    0.485,
+    0.387,
+    0.534
+   ]
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 0.54,
+   "sy": 0.55,
+   "z": 0.988,
+   "dist": 15.58,
+   "track": {
+    "u": 10.7,
+    "x": 0,
+    "h": 0.93
+   },
+   "size": [
+    0.64,
+    0.52,
+    0.71
+   ],
+   "foot": [
+    0.507,
+    0.543,
+    0.564,
+    0.567
+   ]
+  },
+  {
+   "name": "0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.54,
+   "sy": 0.55,
+   "z": 0.988,
+   "dist": 15.58,
+   "track": {
+    "u": 10.7,
+    "x": 0,
+    "h": 0.93
+   },
+   "size": [
+    0.64,
+    0.52,
+    0.71
+   ],
+   "foot": [
+    0.507,
+    0.543,
+    0.564,
+    0.567
+   ]
+  },
+  {
+   "name": "world",
+   "type": "Object3D",
+   "kids": 1,
+   "sx": 0.47,
+   "sy": 0.54,
+   "z": 0.995,
+   "dist": 35.18,
+   "track": {
+    "u": 30.3,
+    "x": 0.7,
+    "h": 1.1
+   },
+   "size": [
+    0,
+    0,
+    0
+   ],
+   "foot": [
+    0.474,
+    0.54,
+    0.474,
+    0.54
+   ]
+  },
+  {
+   "name": "0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.47,
+   "sy": 0.54,
+   "z": 0.995,
+   "dist": 35.18,
+   "track": {
+    "u": 30.3,
+    "x": 0.7,
+    "h": 1.1
+   },
+   "size": [
+    0,
+    0,
+    0
+   ],
+   "foot": [
+    0.474,
+    0.54,
+    0.474,
+    0.54
+   ]
+  },
+  {
+   "name": "mesh_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.74,
+   "sy": 0.61,
+   "z": 0.953,
+   "dist": 4.28,
+   "track": {
+    "u": -0.7,
+    "x": -0.7,
+    "h": 1.08
+   },
+   "size": [
+    0.74,
+    0.76,
+    0.97
+   ],
+   "foot": [
+    0.614,
+    0.545,
+    0.889,
+    0.672
+   ]
+  },
+  {
+   "name": "r2Halo",
+   "type": "Sprite",
+   "kids": 0,
+   "sx": 0.73,
+   "sy": 0.6,
+   "z": 0.956,
+   "dist": 4.59,
+   "track": {
+    "u": -0.4,
+    "x": -0.7,
+    "h": 1.08
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "mesh_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.75,
+   "sy": 0.6,
+   "z": 0.976,
+   "dist": 8.14,
+   "track": {
+    "u": 3.1,
+    "x": -1.29,
+    "h": 0.74
+   },
+   "size": [
+    0.84,
+    0.88,
+    1.13
+   ],
+   "foot": [
+    0.686,
+    0.559,
+    0.813,
+    0.644
+   ]
+  },
+  {
+   "name": "r2Halo",
+   "type": "Sprite",
+   "kids": 0,
+   "sx": 0.74,
+   "sy": 0.6,
+   "z": 0.977,
+   "dist": 8.45,
+   "track": {
+    "u": 3.4,
+    "x": -1.29,
+    "h": 0.74
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "mesh_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.56,
+   "sy": 0.53,
+   "z": 0.992,
+   "dist": 22.85,
+   "track": {
+    "u": 17.9,
+    "x": -0.7,
+    "h": 1
+   },
+   "size": [
+    0.78,
+    0.83,
+    1.11
+   ],
+   "foot": [
+    0.537,
+    0.518,
+    0.583,
+    0.544
+   ]
+  },
+  {
+   "name": "r2Halo",
+   "type": "Sprite",
+   "kids": 0,
+   "sx": 0.56,
+   "sy": 0.53,
+   "z": 0.992,
+   "dist": 23.17,
+   "track": {
+    "u": 18.2,
+    "x": -0.69,
+    "h": 1.01
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "mesh_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.5,
+   "sy": 0.54,
+   "z": 0.994,
+   "dist": 29.65,
+   "track": {
+    "u": 24.7,
+    "x": 0,
+    "h": 0.96
+   },
+   "size": [
+    0,
+    0,
+    0
+   ],
+   "foot": [
+    0.499,
+    0.543,
+    0.499,
+    0.543
+   ]
+  },
+  {
+   "name": "r2Halo",
+   "type": "Sprite",
+   "kids": 0,
+   "sx": 0.5,
+   "sy": 0.54,
+   "z": 0.994,
+   "dist": 29.65,
+   "track": {
+    "u": 24.7,
+    "x": 0,
+    "h": 0.96
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "mesh_0",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.47,
+   "sy": 0.55,
+   "z": 0.995,
+   "dist": 33.98,
+   "track": {
+    "u": 29.1,
+    "x": 0.69,
+    "h": 0.75
+   },
+   "size": [
+    0,
+    0,
+    0
+   ],
+   "foot": [
+    0.47,
+    0.548,
+    0.47,
+    0.548
+   ]
+  },
+  {
+   "name": "r2Halo",
+   "type": "Sprite",
+   "kids": 0,
+   "sx": 0.47,
+   "sy": 0.55,
+   "z": 0.995,
+   "dist": 33.98,
+   "track": {
+    "u": 29.1,
+    "x": 0.69,
+    "h": 0.75
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "BubbleWash_PinkFuzzyMascot_Small",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.49,
+   "sy": 0.84,
+   "z": 0.923,
+   "dist": 2.84,
+   "track": {
+    "u": -2.3,
+    "x": 0,
+    "h": 0.4
+   },
+   "size": [
+    1.03,
+    1.1,
+    0.84
+   ],
+   "foot": [
+    0.146,
+    0.665,
+    0.808,
+    1.082
+   ]
+  },
+  {
+   "name": "openingLook",
+   "type": "Group",
+   "kids": 5,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    7.84,
+    7.84,
+    3.88
+   ],
+   "foot": [
+    -2.473,
+    -0.876,
+    3.89,
+    2.544
+   ]
+  },
+  {
+   "name": "s3Castle",
+   "type": "Group",
+   "kids": 1,
+   "sx": 0.52,
+   "sy": 0.24,
+   "z": 0.969,
+   "dist": 6.67,
+   "track": {
+    "u": 1.2,
+    "x": 0,
+    "h": 4.2
+   },
+   "size": [
+    19.99,
+    15.47,
+    4.73
+   ],
+   "foot": [
+    -3.041,
+    -1.329,
+    4.797,
+    1.622
+   ]
+  },
+  {
+   "name": "Scene",
+   "type": "Group",
+   "kids": 1,
+   "sx": 0.52,
+   "sy": 0.24,
+   "z": 0.969,
+   "dist": 6.67,
+   "track": {
+    "u": 1.2,
+    "x": 0,
+    "h": 4.2
+   },
+   "size": [
+    19.99,
+    15.47,
+    4.73
+   ],
+   "foot": [
+    -3.041,
+    -1.329,
+    4.797,
+    1.622
+   ]
+  },
+  {
+   "name": "output_unwrapped",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.52,
+   "sy": 0.24,
+   "z": 0.969,
+   "dist": 6.67,
+   "track": {
+    "u": 1.2,
+    "x": 0,
+    "h": 4.2
+   },
+   "size": [
+    19.99,
+    15.47,
+    4.73
+   ],
+   "foot": [
+    -3.041,
+    -1.329,
+    4.797,
+    1.622
+   ]
+  },
+  {
+   "name": "s3Machinery",
+   "type": "Group",
+   "kids": 1,
+   "sx": -0.04,
+   "sy": 0.4,
+   "z": 1.034,
+   "dist": 6.64,
+   "track": {
+    "u": -10.9,
+    "x": -2.73,
+    "h": 0.4
+   },
+   "size": [
+    2.96,
+    3.16,
+    2.2
+   ],
+   "foot": null
+  },
+  {
+   "name": "Scene",
+   "type": "Group",
+   "kids": 1,
+   "sx": -0.04,
+   "sy": 0.4,
+   "z": 1.034,
+   "dist": 6.64,
+   "track": {
+    "u": -10.9,
+    "x": -2.73,
+    "h": 0.4
+   },
+   "size": [
+    2.96,
+    3.16,
+    2.2
+   ],
+   "foot": null
+  },
+  {
+   "name": "output_unwrapped",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -0.04,
+   "sy": 0.4,
+   "z": 1.034,
+   "dist": 6.64,
+   "track": {
+    "u": -10.9,
+    "x": -2.73,
+    "h": 0.4
+   },
+   "size": [
+    2.96,
+    3.16,
+    2.2
+   ],
+   "foot": null
+  },
+  {
+   "name": "s3Brush",
+   "type": "Group",
+   "kids": 1,
+   "sx": 1.52,
+   "sy": 0.29,
+   "z": 1.053,
+   "dist": 4.93,
+   "track": {
+    "u": -8.8,
+    "x": 2.62,
+    "h": 0.23
+   },
+   "size": [
+    2.83,
+    2.87,
+    2.66
+   ],
+   "foot": null
+  },
+  {
+   "name": "BubbleWashBrush",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 1.52,
+   "sy": 0.29,
+   "z": 1.053,
+   "dist": 4.93,
+   "track": {
+    "u": -8.8,
+    "x": 2.62,
+    "h": 0.23
+   },
+   "size": [
+    2.83,
+    2.87,
+    2.66
+   ],
+   "foot": null
+  },
+  {
+   "name": "s3Bubbles",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2,
+    2,
+    2
+   ],
+   "foot": [
+    -66.213,
+    0.715,
+    1.205,
+    16.98
+   ]
+  },
+  {
+   "name": "s3Bubbles",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2,
+    2,
+    2
+   ],
+   "foot": [
+    -66.213,
+    0.715,
+    1.205,
+    16.98
+   ]
+  },
+  {
+   "name": "s3IcyEdge",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    0.41,
+    1.79,
+    40
+   ],
+   "foot": [
+    5.932,
+    3.653,
+    13.174,
+    14.104
+   ]
+  },
+  {
+   "name": "s3IcyEdge",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    0.41,
+    1.79,
+    40
+   ],
+   "foot": [
+    -8.244,
+    2.837,
+    -4.604,
+    9.17
+   ]
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.16,
+   "sy": 0.57,
+   "z": 0.982,
+   "dist": 10.84,
+   "track": {
+    "u": 5.5,
+    "x": 2.86,
+    "h": 0.9
+   },
+   "size": [
+    2.91,
+    2.33,
+    2.65
+   ],
+   "foot": [
+    -0.011,
+    0.495,
+    0.34,
+    0.665
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.16,
+   "sy": 0.57,
+   "z": 0.982,
+   "dist": 10.84,
+   "track": {
+    "u": 5.5,
+    "x": 2.86,
+    "h": 0.9
+   },
+   "size": [
+    2.4,
+    2.28,
+    1.63
+   ],
+   "foot": [
+    -0.003,
+    0.496,
+    0.319,
+    0.656
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.16,
+   "sy": 0.57,
+   "z": 0.982,
+   "dist": 10.84,
+   "track": {
+    "u": 5.5,
+    "x": 2.86,
+    "h": 0.9
+   },
+   "size": [
+    2.4,
+    2.28,
+    1.63
+   ],
+   "foot": [
+    -0.003,
+    0.496,
+    0.319,
+    0.656
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.16,
+   "sy": 0.57,
+   "z": 0.982,
+   "dist": 10.84,
+   "track": {
+    "u": 5.5,
+    "x": 2.86,
+    "h": 0.9
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.96,
+   "sy": 0.57,
+   "z": 0.983,
+   "dist": 11.6,
+   "track": {
+    "u": 6.2,
+    "x": -3.38,
+    "h": 0.9
+   },
+   "size": [
+    2.57,
+    1.97,
+    2.5
+   ],
+   "foot": [
+    0.807,
+    0.509,
+    1.099,
+    0.647
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.96,
+   "sy": 0.57,
+   "z": 0.983,
+   "dist": 11.6,
+   "track": {
+    "u": 6.2,
+    "x": -3.38,
+    "h": 0.9
+   },
+   "size": [
+    2.07,
+    1.92,
+    1.49
+   ],
+   "foot": [
+    0.824,
+    0.509,
+    1.09,
+    0.639
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.96,
+   "sy": 0.57,
+   "z": 0.983,
+   "dist": 11.6,
+   "track": {
+    "u": 6.2,
+    "x": -3.38,
+    "h": 0.9
+   },
+   "size": [
+    2.07,
+    1.92,
+    1.49
+   ],
+   "foot": [
+    0.824,
+    0.509,
+    1.09,
+    0.639
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.96,
+   "sy": 0.57,
+   "z": 0.983,
+   "dist": 11.6,
+   "track": {
+    "u": 6.2,
+    "x": -3.38,
+    "h": 0.9
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.81,
+   "sy": 0.54,
+   "z": 0.99,
+   "dist": 17.89,
+   "track": {
+    "u": 12.7,
+    "x": -3.52,
+    "h": 0.9
+   },
+   "size": [
+    3.25,
+    2.92,
+    2.72
+   ],
+   "foot": [
+    0.684,
+    0.48,
+    0.932,
+    0.596
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.81,
+   "sy": 0.54,
+   "z": 0.99,
+   "dist": 17.89,
+   "track": {
+    "u": 12.7,
+    "x": -3.52,
+    "h": 0.9
+   },
+   "size": [
+    2.76,
+    2.72,
+    1.71
+   ],
+   "foot": [
+    0.694,
+    0.483,
+    0.92,
+    0.592
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.81,
+   "sy": 0.54,
+   "z": 0.99,
+   "dist": 17.89,
+   "track": {
+    "u": 12.7,
+    "x": -3.52,
+    "h": 0.9
+   },
+   "size": [
+    2.76,
+    2.72,
+    1.71
+   ],
+   "foot": [
+    0.694,
+    0.483,
+    0.92,
+    0.592
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.81,
+   "sy": 0.54,
+   "z": 0.99,
+   "dist": 17.89,
+   "track": {
+    "u": 12.7,
+    "x": -3.52,
+    "h": 0.9
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.28,
+   "sy": 0.55,
+   "z": 0.991,
+   "dist": 19.91,
+   "track": {
+    "u": 14.9,
+    "x": 3.52,
+    "h": 0.9
+   },
+   "size": [
+    3.11,
+    2.61,
+    2.85
+   ],
+   "foot": [
+    0.176,
+    0.504,
+    0.387,
+    0.598
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.28,
+   "sy": 0.55,
+   "z": 0.991,
+   "dist": 19.91,
+   "track": {
+    "u": 14.9,
+    "x": 3.52,
+    "h": 0.9
+   },
+   "size": [
+    2.54,
+    2.51,
+    1.86
+   ],
+   "foot": [
+    0.191,
+    0.506,
+    0.375,
+    0.596
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.28,
+   "sy": 0.55,
+   "z": 0.991,
+   "dist": 19.91,
+   "track": {
+    "u": 14.9,
+    "x": 3.52,
+    "h": 0.9
+   },
+   "size": [
+    2.54,
+    2.51,
+    1.86
+   ],
+   "foot": [
+    0.191,
+    0.506,
+    0.375,
+    0.596
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.28,
+   "sy": 0.55,
+   "z": 0.991,
+   "dist": 19.91,
+   "track": {
+    "u": 14.9,
+    "x": 3.52,
+    "h": 0.9
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": -0.08,
+   "sy": 0.34,
+   "z": 0.938,
+   "dist": 3.54,
+   "track": {
+    "u": -1.8,
+    "x": 1.34,
+    "h": 2.41
+   },
+   "size": [
+    1.57,
+    1.32,
+    1.35
+   ],
+   "foot": [
+    -0.482,
+    0.158,
+    0.236,
+    0.493
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": -0.08,
+   "sy": 0.34,
+   "z": 0.938,
+   "dist": 3.54,
+   "track": {
+    "u": -1.8,
+    "x": 1.34,
+    "h": 2.41
+   },
+   "size": [
+    1.33,
+    1.29,
+    0.86
+   ],
+   "foot": [
+    -0.437,
+    0.183,
+    0.217,
+    0.483
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -0.08,
+   "sy": 0.34,
+   "z": 0.938,
+   "dist": 3.54,
+   "track": {
+    "u": -1.8,
+    "x": 1.34,
+    "h": 2.41
+   },
+   "size": [
+    1.33,
+    1.29,
+    0.86
+   ],
+   "foot": [
+    -0.437,
+    0.183,
+    0.217,
+    0.483
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": -0.08,
+   "sy": 0.34,
+   "z": 0.938,
+   "dist": 3.54,
+   "track": {
+    "u": -1.8,
+    "x": 1.34,
+    "h": 2.41
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 1.12,
+   "sy": 0.53,
+   "z": 0.956,
+   "dist": 4.93,
+   "track": {
+    "u": -0.35,
+    "x": -1.98,
+    "h": 1.57
+   },
+   "size": [
+    2.61,
+    2.2,
+    2.25
+   ],
+   "foot": [
+    0.732,
+    0.332,
+    1.616,
+    0.73
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 1.12,
+   "sy": 0.53,
+   "z": 0.956,
+   "dist": 4.93,
+   "track": {
+    "u": -0.35,
+    "x": -1.98,
+    "h": 1.57
+   },
+   "size": [
+    2.21,
+    2.14,
+    1.44
+   ],
+   "foot": [
+    0.763,
+    0.348,
+    1.558,
+    0.707
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 1.12,
+   "sy": 0.53,
+   "z": 0.956,
+   "dist": 4.93,
+   "track": {
+    "u": -0.35,
+    "x": -1.98,
+    "h": 1.57
+   },
+   "size": [
+    2.21,
+    2.14,
+    1.44
+   ],
+   "foot": [
+    0.763,
+    0.348,
+    1.558,
+    0.707
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 1.12,
+   "sy": 0.53,
+   "z": 0.956,
+   "dist": 4.93,
+   "track": {
+    "u": -0.35,
+    "x": -1.98,
+    "h": 1.57
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Brush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.19,
+   "sy": 0.45,
+   "z": 0.985,
+   "dist": 12.71,
+   "track": {
+    "u": 7.3,
+    "x": 3.1,
+    "h": 3.04
+   },
+   "size": [
+    2.61,
+    2.08,
+    2.52
+   ],
+   "foot": [
+    0.059,
+    0.38,
+    0.321,
+    0.505
+   ]
+  },
+  {
+   "name": "fluffyBrush",
+   "type": "Group",
+   "kids": 2,
+   "sx": 0.19,
+   "sy": 0.45,
+   "z": 0.985,
+   "dist": 12.71,
+   "track": {
+    "u": 7.3,
+    "x": 3.1,
+    "h": 3.04
+   },
+   "size": [
+    2.14,
+    2,
+    1.52
+   ],
+   "foot": [
+    0.071,
+    0.387,
+    0.311,
+    0.501
+   ]
+  },
+  {
+   "name": "fluffyShells",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.19,
+   "sy": 0.45,
+   "z": 0.985,
+   "dist": 12.71,
+   "track": {
+    "u": 7.3,
+    "x": 3.1,
+    "h": 3.04
+   },
+   "size": [
+    2.14,
+    2,
+    1.52
+   ],
+   "foot": [
+    0.071,
+    0.387,
+    0.311,
+    0.501
+   ]
+  },
+  {
+   "name": "fluffyFringe",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.19,
+   "sy": 0.45,
+   "z": 0.985,
+   "dist": 12.71,
+   "track": {
+    "u": 7.3,
+    "x": 3.1,
+    "h": 3.04
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "s4Bubbles",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2,
+    2,
+    1.99
+   ],
+   "foot": [
+    -50.099,
+    0.716,
+    1.207,
+    13.009
+   ]
+  },
+  {
+   "name": "heroWalls",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    5.05,
+    4.42,
+    37.74
+   ],
+   "foot": [
+    -0.413,
+    0.162,
+    1.145,
+    0.845
+   ]
+  },
+  {
+   "name": "r5Droplets",
+   "type": "Points",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "r5SoftBubbles",
+   "type": "Group",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": null,
+   "foot": null
+  },
+  {
+   "name": "r6Porthole",
+   "type": "Group",
+   "kids": 6,
+   "sx": 0.54,
+   "sy": 0.68,
+   "z": 0.947,
+   "dist": 3.84,
+   "track": {
+    "u": -1.15,
+    "x": -0.1,
+    "h": 0.76
+   },
+   "size": [
+    28,
+    28,
+    0.72
+   ],
+   "foot": [
+    -5.247,
+    -2.029,
+    8.638,
+    4.802
+   ]
+  },
+  {
+   "name": "r6Face",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.54,
+   "sy": 0.68,
+   "z": 0.947,
+   "dist": 3.84,
+   "track": {
+    "u": -1.15,
+    "x": -0.1,
+    "h": 0.76
+   },
+   "size": [
+    28,
+    28,
+    0.3
+   ],
+   "foot": [
+    -5.247,
+    -2.029,
+    8.638,
+    4.802
+   ]
+  },
+  {
+   "name": "r6Bezel",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.54,
+   "sy": 0.68,
+   "z": 0.947,
+   "dist": 3.84,
+   "track": {
+    "u": -1.15,
+    "x": -0.1,
+    "h": 0.76
+   },
+   "size": [
+    5.1,
+    5.1,
+    0.24
+   ],
+   "foot": [
+    -0.438,
+    0.194,
+    1.573,
+    1.204
+   ]
+  },
+  {
+   "name": "heroCollar",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    4.78,
+    5.15,
+    1.26
+   ],
+   "foot": [
+    -0.358,
+    0.162,
+    1.486,
+    1.157
+   ]
+  },
+  {
+   "name": "heroGlow",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.53,
+   "sy": 0.53,
+   "z": 0.979,
+   "dist": 9,
+   "track": {
+    "u": 4.1,
+    "x": 0,
+    "h": 1.5
+   },
+   "size": [
+    1.7,
+    1.7,
+    0.13
+   ],
+   "foot": [
+    0.399,
+    0.467,
+    0.66,
+    0.597
+   ]
+  },
+  {
+   "name": "heroBubbles",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2,
+    2,
+    2
+   ],
+   "foot": [
+    -66.213,
+    0.715,
+    1.205,
+    16.98
+   ]
+  },
+  {
+   "name": "heroSwell",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2.58,
+    1.61,
+    1.6
+   ],
+   "foot": [
+    -0.947,
+    0.955,
+    1.904,
+    1.932
+   ]
+  },
+  {
+   "name": "heroSplash",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    1,
+    1,
+    0
+   ],
+   "foot": [
+    -0.341,
+    1.262,
+    1.142,
+    2.081
+   ]
+  },
+  {
+   "name": "lqFloor",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    6,
+    0.9,
+    51.27
+   ],
+   "foot": [
+    0.449,
+    0.544,
+    0.637,
+    0.558
+   ]
+  },
+  {
+   "name": "lqWaterlineBubbles",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2,
+    2,
+    1.95
+   ],
+   "foot": [
+    -31.333,
+    0.718,
+    1.214,
+    8.385
+   ]
+  },
+  {
+   "name": "spCurls",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2.04,
+    0.34,
+    0.46
+   ],
+   "foot": [
+    -5.788,
+    1.205,
+    7.33,
+    4.503
+   ]
+  },
+  {
+   "name": "spLumps",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    2,
+    2,
+    2
+   ],
+   "foot": [
+    -66.213,
+    0.715,
+    1.205,
+    16.98
+   ]
+  },
+  {
+   "name": "mwTunnelBubbles",
+   "type": "Mesh",
+   "kids": 0,
+   "sx": 0.39,
+   "sy": 1.65,
+   "z": 0.789,
+   "dist": 1.85,
+   "track": {
+    "u": -3.9,
+    "x": 0,
+    "h": 0
+   },
+   "size": [
+    1,
+    1,
+    0
+   ],
+   "foot": [
+    -0.341,
+    1.262,
+    1.142,
+    2.081
+   ]
+  }
+ ],
+ "picks": [],
+ "report": {
+  "castle": {
+   "scale": 10,
+   "nearestToAxis": 2.64,
+   "frontZ": 2.75
+  },
+  "entrance": {
+   "scale": 3.942,
+   "nearestToAxis": 1.95,
+   "frontZ": 1.25
+  },
+  "machinery": {
+   "scale": 1.66,
+   "at": [
+    -2.73,
+    0.4,
+    -7
+   ],
+   "nearestToLanes": 1.25
+  },
+  "brush": {
+   "scale": 1.51,
+   "at": [
+    2.62,
+    0.23,
+    -4.9
+   ],
+   "nearestToLanes": 1.21,
+   "spins": false
+  },
+  "cine": {
+   "up": 0.099,
+   "forward": 0.818,
+   "pitch": 0.3,
+   "fov": 1.0375,
+   "blend": 0.9
+  },
+  "bubbles": {
+   "spheres": true,
+   "extra": 3,
+   "reducedMotion": false
+  },
+  "edges": {
+   "wallsHidden": 2,
+   "railsHidden": 2,
+   "icyEdges": 2
+  },
+  "tunnel": {
+   "rings": 43,
+   "brushes": 11,
+   "bubbles": 22,
+   "panelsHidden": 2,
+   "waterCopy": true,
+   "goldGlow": 28,
+   "drumMaterialsTinted": 1,
+   "brushTriangles": 51512,
+   "brushTrianglesDelivered": 120961,
+   "hazards": 6,
+   "hits": [],
+   "warnShader": true,
+   "round2": {
+    "exit": true,
+    "grade": true
+   },
+   "round3": {
+    "foam": {
+     "heaps": 150,
+     "trianglesEach": 500
+    },
+    "swirl": {
+     "triangles": 17856
+    },
+    "bubbles": {
+     "count": 110
+    },
+    "whirl": {
+     "ahead": 14,
+     "radius": 1.9
+    }
+   },
+   "round4": {
+    "hidden": 5,
+    "lining": {
+     "triangles": 28992,
+     "rows": 152,
+     "cols": 97
+    },
+    "rings": {
+     "glow": 32,
+     "gold": 11,
+     "trianglesEach": [
+      2048,
+      2560
+     ]
+    },
+    "crown": {
+     "petals": 32
+    }
+   },
+   "round5": {
+    "vortex": {
+     "replaced": "r4Lining"
+    },
+    "entrance": {
+     "at": 3.9006939946349135
+    },
+    "droplets": {
+     "count": 1600
+    },
+    "heart": {
+     "ahead": 20
+    },
+    "crests": {
+     "cards": 8
+    },
+    "contact": {
+     "radius": 0.45
+    },
+    "softBubbles": {
+     "count": 0
+    },
+    "bloom": {
+     "strength": 0.16,
+     "radius": 0.42,
+     "threshold": 1
+    }
+   },
+   "round6": {
+    "porthole": {
+     "bezel": [
+      2.42,
+      2.55
+     ],
+     "face": [
+      2.5,
+      14
+     ],
+     "rivets": 16
+    },
+    "flanges": {
+     "count": 8,
+     "every": 4.6,
+     "triangles": 2048
+    },
+    "walls": {
+     "replaced": "r5Vortex"
+    },
+    "waterTint": {
+     "sheets": [
+      "drum",
+      "slide"
+     ]
+    },
+    "bowWave": {
+     "rows": 14,
+     "cols": 64,
+     "triangles": 3584
+    },
+    "wake": {
+     "speedLen": 0.6,
+     "swing": 0.16
+    },
+    "r7water": {
+     "hidden": [
+      "r5Contact",
+      "r4SplashCrown"
+     ],
+     "sheets": {
+      "restyled": "r6BowWave",
+      "triangles": 3584
+     },
+     "foam": {
+      "lumps": 660,
+      "triangles": 1320,
+      "drawCalls": 1
+     },
+     "spray": {
+      "points": 1000,
+      "drawCalls": 1
+     },
+     "bubbles": {
+      "hero": 3,
+      "mid": 14,
+      "drawCalls": 1,
+      "triangles": 34
+     },
+     "streamBubbles": {
+      "restyled": [
+       "r3Bubbles",
+       "s4Bubbles"
+      ]
+     },
+     "drumBubbles": {
+      "restyled": "game bubbles (in the drum)",
+      "instances": 47
+     }
+    },
+    "r7glow": {
+     "ahead": 11,
+     "radius": 3.2
+    },
+    "foamBubblesHidden": true,
+    "crestCardsHidden": true,
+    "hero": {
+     "walls": true,
+     "floor": [
+      "slide",
+      "drum"
+     ],
+     "rim": {
+      "u": -1.1500000000000001,
+      "centre": [
+       -0.097,
+       0.755
+      ],
+      "inner": 2.42,
+      "outer": 2.55
+     },
+     "glow": {
+      "ahead": 9,
+      "size": 0.12
+     },
+     "bubbles": {
+      "count": 10
+     },
+     "water": {
+      "swell": {
+       "drawCalls": 1,
+       "triangles": 13392
+      },
+      "splash": {
+       "droplets": 30,
+       "drawCalls": 1,
+       "triangles": 60
+      },
+      "floor": [
+       "slide",
+       "drum"
+      ],
+      "hidden": [
+       "r7FoamBank",
+       "mascotFoam",
+       "r7Spray"
+      ]
+     },
+     "liquid": {
+      "foam": true,
+      "walls": {
+       "radius": 2,
+       "attributes": [
+        "aLqAxis",
+        "aLqT"
+       ]
+      },
+      "collar": true,
+      "floor": {
+       "triangles": 20592,
+       "rows": 235,
+       "cols": 45,
+       "hazards": true
+      },
+      "swell": {
+       "restyled": "heroSwell",
+       "drawCalls": 0
+      },
+      "glow": true,
+      "splash": {
+       "alpha": 0.92
+      },
+      "waterlineFoam": {
+       "sheets": {
+        "count": 6,
+        "drawCalls": 1,
+        "triangles": 12
+       },
+       "bubbles": {
+        "count": 8,
+        "drawCalls": 1,
+        "triangles": 2016
+       },
+       "bank": {
+        "curls": {
+         "count": 6,
+         "drawCalls": 1,
+         "triangles": 2016
+        },
+        "lumps": {
+         "count": 26,
+         "drawCalls": 1,
+         "triangles": 8320
+        }
+       }
+      },
+      "slideCut": true,
+      "hidden": [
+       "r6BowWave",
+       "lqSpraySheets"
+      ],
+      "objects": {
+       "coins": 24,
+       "others": 5
+      },
+      "cost": {
+       "drawCalls": 1,
+       "textures": 1,
+       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
+      }
+     },
+     "match": {
+      "textures": true,
+      "centre": {
+       "ahead": 30,
+       "end": 2,
+       "offset": [
+        0.028,
+        0
+       ],
+       "r": [
+        0.09,
+        0.14
+       ],
+       "exitGlow": [
+        0.2,
+        0.15,
+        0.11
+       ]
+      },
+      "bezel": {
+       "rho": [
+        0.9490196078431373,
+        1
+       ]
+      },
+      "exit": {
+       "exit": true,
+       "glow": true
+      }
+     },
+     "matchWater": {
+      "on": true,
+      "foam": true,
+      "floor": {
+       "amount": 1,
+       "wave": 0.22,
+       "trough": 0.35,
+       "cobalt": "#0e4fd0",
+       "caustic": 0.35,
+       "glint": 0.9,
+       "deep": 0.7,
+       "deepTint": [
+        0.6,
+        0.8,
+        1
+       ],
+       "deepR": 2.4,
+       "delilac": 0.85
+      },
+      "swell": 7,
+      "lobes": true,
+      "curls": true,
+      "bubbles": {
+       "count": 160,
+       "flecks": 200,
+       "drawCalls": 1,
+       "triangles": 720,
+       "avoiding": 29
+      }
+     },
+     "hidden": [
+      "r6Flanges",
+      "r7Glow",
+      "r5Heart",
+      "s4Rings",
+      "r7Bubbles"
+     ]
+    }
+   },
+   "heroGrade": {
+    "ok": true,
+    "contrast": 1.08,
+    "saturation": 1.16,
+    "exposure": 1,
+    "vignette": 0.28,
+    "vignetteCol": "#2a5fe0",
+    "in": [
+     -12,
+     -8
+    ]
+   }
+  },
+  "hiddenInTunnel": 8
+ }
+}

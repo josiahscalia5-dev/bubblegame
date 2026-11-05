@@ -1168,8 +1168,66 @@ Now the tunnel interior: original vs before at the same crop.
 The bloom threshold matters (whites capped at linear 0.93). Let me sample the original's foam palette so the new froth colours come from it.
 
 - 19:44 `Bash`: K-means palette of the original's foam areas
+- 19:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (19:45 UTC):
 
-_53 tool steps._
+Fix the glint offset (object space: +x is screen-left, +y up) and remove the old lobe shader rather than leave dead code.
+
+- 19:45 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:45 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (19:45 UTC):
+
+I'll remove the old lobe function (lines 424-476) with a Python edit, since it's a large block.
+
+- 19:45 `Bash`: Remove the old lobe shader function
+- 19:45 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:45 `Bash`: Replace the old lobe settings with a note
+**Agent** (19:46 UTC):
+
+Now the gated hooks in `tunnel_r8_splash.js`: the declarations and froth bumps on the lobe outline.
+
+- 19:46 `Bash`: Check imports and lump settings in the splash file
+- 19:46 `Bash`: Add gated froth bumps, declarations and detail in the splash file
+**Agent** (19:46 UTC):
+
+Keep the non-match shader text untouched: move that comment inside the gated piece, and let the opaque froth write depth under match.
+
+- 19:46 `Bash`: Fix comment placement and depth write gate
+- 19:46 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:46 `Bash`: Build the bundle
+**Agent** (19:47 UTC):
+
+Now the froth band at the top of the swell (under and beside her body), replacing the pale glass plate.
+
+- 19:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+**Agent** (19:47 UTC):
+
+Now the tunnel layer: bolder, more varied white splash flecks and more visible bubbles. Settings first.
+
+- 19:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:47 `Bash`: Locate bubble settings lines
+- 19:47 `Bash`: Update bubble settings and rebuild
+- 19:47 `Bash`: Check the edited bubble settings lines
+**Agent** (19:47 UTC):
+
+Iteration 1: capture at 3.0 s (page + canvas).
+
+- 19:47 `Bash`: Capture iteration 1 at 3.0 s
+- 19:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it/it1_t3.00_canvas.png
+**Agent** (19:48 UTC):
+
+Big change, but the bank has overshot into white cotton clouds (a white blanket risk) and the crescents read as moons. Let me measure before adjusting.
+
+- 19:48 `Bash`: Measure iteration 1: bank hues, under-body hues, fleck sizes
+- 19:49 `Bash`: Tunnel crop iteration 1 vs original
+- 19:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/.wvtmp/it1_tunnel.png
+- 19:49 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a6a478aa3fef314d3/WebDemo/src/tunnel_r9_match_water.js
+- 19:49 `Bash`: Rework fleck shapes, cap screen size, redistribute bubbles
+
+_79 tool steps._
 
 ---
 
@@ -1261,5 +1319,27 @@ Playwright resolves. Capturing the "before" frames (current build, `b91e952` con
 
 - 19:43 `Bash`: Capture before frames at 2.85, 3.0, 3.1 s
 - 19:44 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/before/before_t3.00.png
+- 19:45 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/Previews/WebDemo/screen4_round9_match/13_focused_pass_tunnel_lighting/scripts/character.py
+- 19:45 `Bash`: Measure the character in original and before frames
+- 19:45 `Bash`: Compose character mask comparison
+- 19:45 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/masks/masks_cmp.png
+**Lead → agent** (19:45 UTC):
 
-_30 tool steps._
+[Image: original 2182x360, displayed at 2000x330. Multiply coordinates by 1.09 to map to original image.]
+
+- 19:45 `Bash`: Make a gridded crop of the character zone
+- 19:45 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a1aff7a0d4ce10e34/.tltmp/char_grid.png
+**Lead → agent** (19:45 UTC):
+
+[Image: original 2172x688, displayed at 2000x634. Multiply coordinates by 1.09 to map to original image.]
+
+- 19:46 `Bash`: Probe camera and objects at 3.0 s before changes
+- 19:46 `Bash`: List near objects' screen footprints
+- 19:46 `Bash`: Row-by-row character silhouette comparison
+- 19:49 `Bash`: Find where deco and collectible layouts are applied
+- 19:49 `Bash`: Read collectible building and deco brush placement
+- 19:49 `Bash`: Read brush placement and lane functions
+- 19:49 `Bash`: Read baseHeight and water constants
+- 19:49 `Bash`: Find debug accessor contents
+
+_44 tool steps._
