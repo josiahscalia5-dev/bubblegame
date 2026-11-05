@@ -780,3 +780,31 @@ The water pass is merged and the game file matches its source. Next, a Round 8 s
 
 Next, a log of the design agents' work this session, and the hand-off updated to the merged result:
 
+Everything is saved. Now that the specialist has finished, I'll send you its final side-by-sides at all three moments:
+
+_[Sent you files: Previews/WebDemo/screen4_round8_liquid/approved_vs_liquid_nofoam_vs_liquid_2.85s.jpg, Previews/WebDemo/screen4_round8_liquid/approved_vs_liquid_nofoam_vs_liquid_3.00s.jpg, Previews/WebDemo/screen4_round8_liquid/approved_vs_liquid_nofoam_vs_liquid_3.10s.jpg]_
+
+Everything is saved to your GitHub repository, on your work branch `ccr-aeee6378-mv5kot` at commit `87aee11`. GitHub confirms it has that commit, and I found no API keys in anything saved.
+
+**What's saved:**
+- **The game:** the Water & VFX specialist's finished Round 8 water (`?s3=liquid` and `?s3=liquid,nofoam`), merged in. Rebuilding the game from its source gives exactly the committed game file.
+- **Your earlier versions are proven unchanged:** the normal game, `?s3=hero` and Rounds 4–7 were each compared pixel by pixel against `06b9805`, at three moments. All 21 comparisons had 0 differing pixels.
+- **Design agents:**
+  - All four agent definitions in `.claude/agents/` now have a Round 8 section with the current state and your open requests, so they pick up where we are in future sessions.
+  - A log of what each agent did this session is in `ChatHistory/2026-11-05_fourth_account_design_agent_reports.md`.
+  - The Game Art Director's review and the Water & VFX specialist's full write-up are saved with their evidence.
+- **Chat history:** this whole conversation, in `ChatHistory/2026-11-04_fourth_account_recovery_round8_liquid_session.md`.
+- **Evidence:** full-resolution gameplay captures, foam off and on, at 2.85, 3.0 and 3.1 s, plus swerve, jump and landing frames.
+- **Also:** the hand-off notes, `CLAUDE.md`, your water reference images, and the tool and plugin status.
+
+I've sent you the final side-by-sides: your approved Screen 4, then foam off, then foam on.
+
+**Where the water stands:**
+- **Better:** the tunnel walls read as swirling bands of blue water, and the floor and the water around your character are blue and see-through.
+- **Splashes:** the foam-on version still looks almost the same as foam-off. The translucent white splashes around your character aren't visible enough: about 5–19% white beside it, vs about 35% in your artwork.
+- **Swirl:** there's less deep cobalt between the bands than in your artwork.
+- **Centre:** the warm core is smaller and cooler than yours.
+- **Gameplay:** the gameplay tests haven't been run on `?s3=liquid` yet.
+
+Shall I start the next pass on the visible translucent splashes and the deeper swirl, with the gameplay tests running alongside?
+
