@@ -148,3 +148,21 @@ Findings while measuring (`scripts/minima_hist.py`, `lbins.py`, live renders wit
 
 Waves animated (ring zone changes between 3.0 and 3.1 s). Pixel 7: no wedge, no holes (`frames/phone_412x839_focus_rib_3.00s.png`).
 Frames `frames/focus_rib_t3.00*.png`, `focus_rib_t3.10_canvas.png`; crop `frames/crop_rings_original_before_after_ribbons.png`.
+Committed `24fd87e`.
+
+## 5. AD item 4: the wall streaks (`focusFlecksGLSL`, `walls.flecks`)
+
+Finding: the thin white dashes that dominate `streaks.py` are NOT the walls' flecks. With every object named *ubble* hidden
+(Water & VFX's bubbles and its instanced streaks, `FOCUS.water.bubbles.flecks` count 560) the ring zone drops from 13.4 to
+5.2 pieces per 10k px; with the walls' flecks off (and the bubbles shown) it stays at 12.7. Recommendation for Water & VFX:
+fewer, chunkier instanced streaks in the ring zone (they are 1.9 px thick, 70-75% along the ring tangent; the original's
+3.5 px, 28%).
+Changed (focus only): bigger cells, thicker, more bent, the outline broken by smooth noise (`breakup`), a crisp edge (`edge`),
+fewer drops, and drawn late (`late`: after the display compensation; match's glintWall had tinted them pale blue).
+
+| streaks.py, upper arc y < .45 | original | before | after |
+|---|---|---|---|
+| full frame: pieces per 10k px / median area / p90 / thickness | 3.6 / 44 / 517 / 3.2 | 10.4 / 38 / 175 / 2.2 | 9.8 / 50 / 292 / 2.3 |
+| bubble layer hidden (the walls' own) | | 3.5 / 10 / 42 / 1.8 | 4.3 / 60 / 331 / 3.9 |
+
+Frames: `frames/focus_flecks_t3.00_canvas.png`, `..._bubble_layer_hidden.png`, `frames/phone_412x839_focus_flecks_3.00s.png`.

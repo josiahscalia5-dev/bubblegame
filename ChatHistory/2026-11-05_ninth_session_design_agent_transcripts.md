@@ -376,8 +376,55 @@ Item 2 committed as `24fd87e`. Item 3, the wall streaks: let me read the Art Dir
 [Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
 
 - 19:55 `Bash`: Locate edge and fleck application lines
+- 19:55 `Bash`: Show the fleck application context
+- 19:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:55 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_match.js
+- 19:55 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl_cands3.json
+- 19:55 `Bash`: Render, measure and crop late-drawn fleck candidate
+- 19:56 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl3_crop.png
+**Lead → agent** (19:56 UTC):
 
-_192 tool steps._
+[Image: original 3004x522, displayed at 2000x348. Multiply coordinates by 1.50 to map to original image.]
+
+- 19:56 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/built.json
+- 19:56 `Bash`: Build final fleck settings, render and measure
+**Agent** (19:57 UTC):
+
+Walls alone, upper arc: thickness 3.9 px, median area 60, p90 331, 4.3 pieces per 10k px. Let me check the whole frame before committing.
+
+- 19:57 `Bash`: Sheet original / before / after flecks
+- 19:57 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/fl4_sheet.png
+**Agent** (19:57 UTC):
+
+Fewer, chunkier wall splashes; the rest of the frame is unchanged. Pixel 7 check, then commit.
+
+- 19:57 `Bash`: Pixel 7 capture and save fleck evidence
+- 19:58 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks
+**Lead → agent** (19:58 UTC):
+
+[Image: original 1082x2202, displayed at 983x2000. Multiply coordinates by 1.10 to map to original image.]
+
+- 19:58 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a0bafb8338e8bc494/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 19:58 `Bash`: Commit the flecks step
+**Agent** (19:58 UTC):
+
+Item 3 committed as `340b117`. Item 4, the centre: let me read `core.py` and measure the current frame.
+
+- 19:58 `Bash`: Read core script and measure current frame
+**Agent** (19:58 UTC):
+
+Centre now: pink-violet 1.7% (target 6-10), warm 7.9% (10-14), saturated blue 19.0% (≤6). Let me look at the centre close up.
+
+- 19:59 `Bash`: Crop the centre of original, current, current without bubbles
+- 19:59 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/core_before.png
+- 19:59 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/tl/scripts/core_detail.py
+- 19:59 `Bash`: Core classes by radius ring
+
+_215 tool steps._
 
 ---
 
@@ -773,5 +820,31 @@ Item 4: bubbles near the tunnel's centre. First, how many of the detected circle
 - 19:54 `Write`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tbcount.py
 - 19:54 `Bash`: Count my tunnel bubble pieces near the centre
 - 19:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp3.png
+- 19:55 `Bash`: Capture bubbles kept off the centre
+- 19:55 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/c_z1.png
+**Agent** (19:55 UTC):
 
-_204 tool steps._
+Visually the centre is still busy, but most of the detected circles there are not my bubbles (87 remain with mine hidden). I'll write z1 into the settings and hide-probe it to count mine.
+
+- 19:56 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:56 `Bash`: Build z1 defaults and hide-probe my bubbles
+- 19:56 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp4.png
+- 19:57 `Bash`: Count my bubble pieces inside the centre discs
+- 19:57 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/WebDemo/src/tunnel_r9_focus.js
+- 19:57 `Bash`: Build z2 and count my pieces near the centre
+- 19:58 `Read`: /tmp/claude-0/-home-user-bubblegame/b40ec4c6-ff8b-51fe-a3f7-d1555fac517a/scratchpad/wv/tb_hp5.png
+- 19:58 `Bash`: Capture and measure item 4 defaults
+**Agent** (19:58 UTC):
+
+The Hough count barely moves (110 to 105) because about 87 of its detections near the centre come from other layers (the hide probe). I'll report both measures. Committing item 4.
+
+- 19:59 `Bash`: Save item 4 frames, probe maps and scripts
+- 19:59 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae68b33859f973010/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 19:59 `Bash`: Commit item 4
+**Agent** (19:59 UTC):
+
+All four items committed. Now the final checks, starting with `?s3=match` pixel identity against `71f7fa7` at 3.0 s.
+
+- 19:59 `Bash`: Capture ?s3=match at base and now
+
+_218 tool steps._

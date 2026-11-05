@@ -1,8 +1,8 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-index 54f942e..5fb3005 100644
+index 54f942e..5659dd6 100644
 --- a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
 +++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
-@@ -87,3 +87,64 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
+@@ -87,3 +87,82 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
  small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
  gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
  Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
@@ -67,10 +67,36 @@ index 54f942e..5fb3005 100644
 +
 +Waves animated (ring zone changes between 3.0 and 3.1 s). Pixel 7: no wedge, no holes (`frames/phone_412x839_focus_rib_3.00s.png`).
 +Frames `frames/focus_rib_t3.00*.png`, `focus_rib_t3.10_canvas.png`; crop `frames/crop_rings_original_before_after_ribbons.png`.
++Committed `24fd87e`.
++
++## 5. AD item 4: the wall streaks (`focusFlecksGLSL`, `walls.flecks`)
++
++Finding: the thin white dashes that dominate `streaks.py` are NOT the walls' flecks. With every object named *ubble* hidden
++(Water & VFX's bubbles and its instanced streaks, `FOCUS.water.bubbles.flecks` count 560) the ring zone drops from 13.4 to
++5.2 pieces per 10k px; with the walls' flecks off (and the bubbles shown) it stays at 12.7. Recommendation for Water & VFX:
++fewer, chunkier instanced streaks in the ring zone (they are 1.9 px thick, 70-75% along the ring tangent; the original's
++3.5 px, 28%).
++Changed (focus only): bigger cells, thicker, more bent, the outline broken by smooth noise (`breakup`), a crisp edge (`edge`),
++fewer drops, and drawn late (`late`: after the display compensation; match's glintWall had tinted them pale blue).
++
++| streaks.py, upper arc y < .45 | original | before | after |
++|---|---|---|---|
++| full frame: pieces per 10k px / median area / p90 / thickness | 3.6 / 44 / 517 / 3.2 | 10.4 / 38 / 175 / 2.2 | 9.8 / 50 / 292 / 2.3 |
++| bubble layer hidden (the walls' own) | | 3.5 / 10 / 42 / 1.8 | 4.3 / 60 / 331 / 3.9 |
++
++Frames: `frames/focus_flecks_t3.00_canvas.png`, `..._bubble_layer_hidden.png`, `frames/phone_412x839_focus_flecks_3.00s.png`.
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png
 new file mode 100644
 index 0000000..da03010
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/crop_rings_original_before_after_ribbons.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png
+new file mode 100644
+index 0000000..8069fcf
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas_bubble_layer_hidden.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas_bubble_layer_hidden.png
+new file mode 100644
+index 0000000..0d94746
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_flecks_t3.00_canvas_bubble_layer_hidden.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_obj_sock_only_t3.00.png
 new file mode 100644
 index 0000000..aaaa3c1
@@ -95,6 +121,10 @@ diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/fram
 new file mode 100644
 index 0000000..7d332d2
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/focus_rib_t3.10_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png
+new file mode 100644
+index 0000000..efbde5f
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_flecks_3.00s.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png
 new file mode 100644
 index 0000000..2f63299
@@ -639,6 +669,52 @@ index 0000000..c02a7d4
 +        i = 1 + np.argmax(st[1:, cv2.CC_STAT_AREA]); x, y, w, hh, a = st[i]
 +        out.append(f'{name}: x {x/W:.3f}-{(x+w)/W:.3f} y {y/H:.3f}-{(y+hh)/H:.3f} area {a/(W*H)*100:.2f}%')
 +    print(p.split('/')[-1][:40], ' | '.join(out))
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/cands_nobub.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/cands_nobub.cjs
+new file mode 100644
+index 0000000..defc75a
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/cands_nobub.cjs
+@@ -0,0 +1,40 @@
++// cands_nobub.cjs <abs WebDemo> <out-dir>: like tune_cands.cjs (a fresh seeded page per candidate in CANDS_FILE, 3.0 s), but saves
++// two canvases per candidate: <label>.png (as played) and <label>_nobub.png (every object named *ubble* hidden: the bubble and
++// instanced-streak layers), so the walls' own look can be measured
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, OUT] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'focus').split(',').filter(Boolean), T = +(process.env.T || 3.0);
++const CANDS = JSON.parse(fs.readFileSync(process.env.CANDS_FILE, 'utf8'));
++fs.mkdirSync(OUT, { recursive: true });
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  for (const c of CANDS) {
++    const ctx = await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: +(process.env.DPR || 1.5) });
++    const page = await ctx.newPage(); const logs = [];
++    page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text().slice(0, 300)); });
++    page.on('pageerror', (e) => logs.push(e.message));
++    await page.addInitScript(([tune, s3]) => {
++      window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = tune; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++      let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++    }, [c.tune, S3]);
++    await page.goto(`http://localhost:${server.address().port}/index.html`);
++    await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++    await page.evaluate(() => window.__bw.advance(0.5)); await page.evaluate(() => window.__bw.tap());
++    await page.evaluate((t) => window.__bw.advance(t), T); await page.waitForTimeout(800);
++    for (const [suffix, js] of [['', ''], ['_nobub', "scene.traverse((o) => { if (/ubble/.test(o.name || '')) o.visible = false; });"]]) {
++      const url = await page.evaluate((js) => { const scene = window.__bw.debug().scene; if (js) new Function('scene', js)(scene); window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); }, js);
++      fs.writeFileSync(path.join(OUT, `${c.label}${suffix}.png`), Buffer.from(url.split(',')[1], 'base64'));
++    }
++    console.log(c.label, logs.length ? logs.join(' | ') : 'no errors');
++    await ctx.close();
++  }
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
 diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/crops.py
 new file mode 100644
 index 0000000..e9897a0
@@ -811,7 +887,7 @@ index 0000000..6205d94
 +    if not l.startswith(' '): cur = l.split()[0]; continue
 +    if cur in ('ring_upper', 'ring_left', 'centre') and l.split()[0] in who: print(f'  zone {cur:10s}', l.strip())
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..b05113b 100644
+index 2f39f0e..fcf21d6 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -25,14 +25,28 @@ export const FOCUS = {
@@ -903,8 +979,29 @@ index 2f39f0e..b05113b 100644
        // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
        royal: { amount: 0.1 },
        // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
+@@ -92,9 +130,17 @@ export const FOCUS = {
+       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
+       //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
+       //    band phase per pixel) over which they fade out where they would be under about two pixels
+-      flecks: { cols: 96, rows: 3, dens: 0.34, len: [0.3, 0.5], wid: [0.06, 0.13], bend: 1.2, amount: 0.95, col: '#f6fbff',
+-        drops: { cols: 160, rows: 5, dens: 0.16, r: [0.12, 0.22] },
+-        r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
++      //    (Tunnel & Lighting, the Art Director's item 4 and the kit's "overcomplicated white pattern": fewer, chunkier, broken
++      //    splash shapes instead of thin dashes: bigger cells (cols 96 -> 36, rows 3 -> 1.5), thicker and more bent, the
++      //    outline broken by smooth noise (breakup: [cells across, cells along, how much the shape's core resists]), a crisp
++      //    edge (edge: the shape's soft edge, from / to), drawn late (after the display compensation: match's glintWall tinted
++      //    them pale blue). Measured with the bubble layer hidden (upper ring at 3.0 s): thickness 1.8 -> 3.7 px (the original
++      //    3.2), median area 10 -> 60 px (44), 3.5 -> 4.1 pieces per 10k px (3.6). The full frame's thin dashes are the
++      //    instanced streaks of the water file (FOCUS.water.bubbles.flecks), not these)
++      flecks: { cols: 36, rows: 1.5, dens: 0.28, len: [0.2, 0.46], wid: [0.11, 0.22], bend: 2.2, amount: 1.0, col: '#f6fbff',
++        breakup: [6, 3, 0.55], edge: [0.78, 0.9], late: true,
++        drops: { cols: 64, rows: 2, dens: 0.08, r: [0.16, 0.28] },
++        r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.3 },
+     },
+   },
+   // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after it is defined, before it hands its splash, liquid and
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..ff34541 100644
+index 83acc58..9329811 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -360,6 +360,14 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
@@ -992,7 +1089,20 @@ index 83acc58..ff34541 100644
        vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
        vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
        float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
-@@ -440,6 +456,7 @@ uniform vec2 uMatchVP, uMatchRes;
+@@ -427,7 +443,11 @@ function focusFlecksGLSL(M) {
+       float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
+       float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
+       float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
+-      c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});
++      ${F.late
++    // (late: drawn after the display compensation, as the thin ring lines: match's glintWall below tints every bright wall
++    // texel toward #cae0ff, so the splashes came out as pale translucent blue blobs instead of white water)
++    ? `mtFleck = clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)};`
++    : `c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});`}
+     }
+ `;
+ }
+@@ -440,6 +460,7 @@ uniform vec2 uMatchVP, uMatchRes;
  ${RIM_SAMPLE}
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}
@@ -1000,7 +1110,25 @@ index 83acc58..ff34541 100644
  // cs: the point in the tube's cross-section (x sideways, + screen-left; h above the water), u along the path; W world, N0 its
  // normal (toward the axis), T0 the path's direction
  vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
-@@ -652,6 +669,7 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -484,7 +505,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+   // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
+   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
+   // than the pixels (seam-free: from the wrap-corrected derivatives)
+-  float mtEdge = 0.0;
++  float mtEdge = 0.0;${FOCUS_ON ? ' float mtFleck = 0.0;' : ''}
+   {
+     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
+       - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
+@@ -551,6 +572,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
+   vec3 col = mtUndisplay(c);
+   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
+   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
++${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)
++` : ''}
+   // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
+   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
+   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
+@@ -652,6 +675,7 @@ export function matchCollectibles({ coins, gems, socks }) {
        if (!k.turn || !k.turn.children[0]) continue;
        const model = k.turn.children[0], pose = new THREE.Group();
        pose.name = 'focusSockPose'; pose.rotation.set(...MATCH.sockPose);
@@ -1008,7 +1136,7 @@ index 83acc58..ff34541 100644
        k.turn.remove(model); pose.add(model); k.turn.add(pose);
      }
      report.sockPose = MATCH.sockPose;
-@@ -660,6 +678,9 @@ export function matchCollectibles({ coins, gems, socks }) {
+@@ -660,6 +684,9 @@ export function matchCollectibles({ coins, gems, socks }) {
    // the pop animation's scale are unchanged)
    const gi = gems[0] && gems[0].obj && gems[0].obj.children[0];
    if (gi && MATCH.gemScale !== 1) { gi.scale.multiplyScalar(MATCH.gemScale); gi.position.multiplyScalar(MATCH.gemScale); report.gemScale = MATCH.gemScale; }

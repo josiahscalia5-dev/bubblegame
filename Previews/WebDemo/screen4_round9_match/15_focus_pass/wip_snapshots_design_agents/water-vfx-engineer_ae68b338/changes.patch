@@ -1,9 +1,9 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
 new file mode 100644
-index 0000000..86f585c
+index 0000000..a7819a8
 --- /dev/null
 +++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
-@@ -0,0 +1,144 @@
+@@ -0,0 +1,165 @@
 +# Water & VFX, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
 +
 +Worktree branch `worktree-agent-a29b1562d2b9d7e06`, started at `d6e836d`. Files: `WebDemo/src/tunnel_r9_match_water.js` and
@@ -148,6 +148,27 @@ index 0000000..86f585c
 +| elongation | 2.1 | 3.4 | 2.7 |
 +| along the tangent | 28% | 74% | 56% |
 +| thickness median (px) | 3.5 | 1.9 | 2.0 |
++
++## Item 4: bubbles round the tunnel's centre (`frames/step4_*`, `item4_my_bubbles_before/after.png`)
++
++- The AD's Hough count (`bubbles.py`, param2 40) within 0.2 W of the centre: original 10, step 3 110. With
++  `mwTunnelBubbles` hidden it is still 87: most of those detections are other layers (the walls' drops and texture), not
++  my bubbles. So my layer is judged by a hide probe (`scripts/tbcount.py`: the pixels that change when it is hidden).
++- Cause: spread with a 1 / d^2 density out to 34 m, a third of the wall bubbles and most of the inner ones (rho 0.6-1.24
++  m to 20 m) land inside 0.2 W (on screen about 1.48 rho / d frame widths from the centre).
++- Now 220 (was 280): wall bubbles within 10 m (near and middle), inner ones at rho 0.84-1.24 m within 5.5 m, 2% along the
++  walls at 10-30 m and 1% round the far centre (far depth kept).
++
++| my bubbles and streaks (hide probe, DPR 1) | step 3 | step 4 |
++|---|---|---|
++| drawn share of the disc r < 0.2 W | 28.0% | 12.3% |
++| drawn share of the disc r < 0.12 W | 20.6% | 2.4% |
++| pieces inside r < 0.12 W | 37 | 15 |
++| pieces inside r < 0.2 W (bubbles, ring fragments and streaks) | 54 | 51 |
++| Hough circles within 0.2 W, whole frame (orig 10) | 110 | 105 |
++
++By eye (`item4_my_bubbles_after.png`) about 8-10 small bubbles of mine are left inside 0.2 W; the rest of the pieces there
++are the white streaks of item 3 and fragments of rings at the disc's edge.
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json
 new file mode 100644
 index 0000000..d1295fc
@@ -1162,6 +1183,18 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/cro
 new file mode 100644
 index 0000000..aa0f453
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_round_her_orig_before_1c.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_tunnel_orig_step3_step4.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_tunnel_orig_step3_step4.png
+new file mode 100644
+index 0000000..2f7a6e5
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/crop_tunnel_orig_step3_step4.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_after.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_after.png
+new file mode 100644
+index 0000000..d1cb6f1
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_after.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_before.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_before.png
+new file mode 100644
+index 0000000..bcd5b31
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item4_my_bubbles_before.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1a.txt b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1a.txt
 new file mode 100644
 index 0000000..55c67a4
@@ -2202,6 +2235,14 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/ste
 new file mode 100644
 index 0000000..269f44e
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step3_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00.png
+new file mode 100644
+index 0000000..59bdd3e
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00_canvas.png
+new file mode 100644
+index 0000000..1ae1cf3
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step4_t3.00_canvas.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py
 new file mode 100644
 index 0000000..ca171b3
@@ -2250,6 +2291,25 @@ index 0000000..6f27fe7
 +    tiles.append(t)
 +    print(f"{name:22s} " + '  '.join(f"box {bx}: {m[int(bx[2]*H):int(bx[3]*H), int(bx[0]*W):int(bx[1]*W)].mean()*100:5.1f}%" for bx in boxes))
 +cv2.imwrite(out, np.hstack(tiles))
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/lavmap.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/lavmap.py
+new file mode 100644
+index 0000000..f78c102
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/lavmap.py
+@@ -0,0 +1,13 @@
++# lavmap.py <frame> <out.png>: the floor_ahead zone's lavender pixels (zones.py class) marked, and their typical RGB
++import sys, numpy as np, cv2
++W, H = 767, 1536
++im = cv2.resize(cv2.imread(sys.argv[1])[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h, s, v = hsv[..., 0]*360/256, hsv[..., 1]/255, hsv[..., 2]/255
++lav = (h > 235) & (h < 300) & (s > 0.08) & (s < 0.45) & (v > 0.6)
++z = np.zeros((H, W), bool); z[int(.60*H):int(.69*H), int(.25*W):int(.65*W)] = True
++m = lav & z
++px = im[m]
++print('lav share', m.sum() / z.sum(), 'median BGR', np.median(px, axis=0) if len(px) else None, 'hue median', np.median(h[m]) if m.any() else None)
++out = im.copy(); out[m] = (255, 0, 255)
++c = out[int(.56*H):int(.72*H), int(.15*W):int(.75*W)]
++cv2.imwrite(sys.argv[2], cv2.resize(c, None, fx=1.4, fy=1.4))
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/measure.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/measure.py
 new file mode 100644
 index 0000000..cb1ae08
@@ -2363,8 +2423,66 @@ index 0000000..cb1ae08
 +        inbox = sum(1 for q in cs if .38*W <= q[0]+x0 <= .70*W and .40*H <= q[1]+y0 <= .56*H)
 +        near = sum(1 for q in cs if np.hypot((q[0]+x0)/W - 0.53, (q[1]+y0 - 0.525*H)/W) < 0.2)
 +        print(f"   param2 {P2} {k:10s} circles {len(cs):3d}  in centre box {inbox:3d}  within 0.2 W of the centre {near:3d}")
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/tbcount.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/tbcount.py
+new file mode 100644
+index 0000000..17d1550
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/tbcount.py
+@@ -0,0 +1,20 @@
++# tbcount.py <all.png> <hide_mwTunnelBubbles.png> <out.png>: what mwTunnelBubbles draws (pixels changing when hidden),
++# split into pieces; counts the pieces (each about one bubble or streak) whose centre is within 0.2 W of (.53, .525)
++import sys, numpy as np, cv2
++a = cv2.imread(sys.argv[1]).astype(int); b = cv2.imread(sys.argv[2]).astype(int)
++H, W = a.shape[:2]
++m = (np.abs(a - b).sum(2) > 30).astype(np.uint8)
++m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
++n, lab, st, cen = cv2.connectedComponentsWithStats(m, connectivity=8)
++cx, cy = 0.53 * W, 0.525 * H
++inside = []; allp = []
++for i in range(1, n):
++    if st[i, cv2.CC_STAT_AREA] < 6: continue
++    d = np.hypot(cen[i][0] - cx, cen[i][1] - cy) / W
++    allp.append(i)
++    if d < 0.2: inside.append(i)
++print(f"pieces {len(allp)}, within 0.2 W of the centre {len(inside)}")
++out = (a * 0.5).astype(np.uint8)
++for i in allp: out[lab == i] = (0, 0, 255) if i in inside else (0, 255, 0)
++cv2.circle(out, (int(cx), int(cy)), int(0.2 * W), (255, 255, 0), 1)
++cv2.imwrite(sys.argv[3], out[int(0.25 * H):int(0.75 * H)])
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/whitemap.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/whitemap.py
+new file mode 100644
+index 0000000..9579639
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/whitemap.py
+@@ -0,0 +1,26 @@
++# whitemap.py <frame_canvas.png> <out.png>: the character_water zone's white pieces coloured by size
++# (green <= 40 px, yellow 41-400, orange 401-2500, red > 2500), same masks as measure.py (767 x 1536)
++import sys, numpy as np, cv2
++W, H = 767, 1536
++im = cv2.resize(cv2.imread(sys.argv[1])[..., :3], (W, H), interpolation=cv2.INTER_AREA)
++hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV_FULL).astype(float); h, s, v = hsv[..., 0]*360/256, hsv[..., 1]/255, hsv[..., 2]/255
++m = (((h >= 300) | (h <= 10)) & (s > 0.45) & (v > 0.5)).astype(np.uint8)
++box = np.zeros_like(m); box[int(.58*H):int(.92*H), int(.12*W):int(.82*W)] = 1; m &= box
++m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
++n, lab, st, cen = cv2.connectedComponentsWithStats(m); i = 1 + np.argmax(st[1:, cv2.CC_STAT_AREA]); ch = lab == i
++zone = np.zeros((H, W), bool); zone[int(.74*H):int(.885*H), int(.02*W):int(.98*W)] = True
++gold = cv2.dilate(((h > 25) & (h < 65) & (s > 0.5) & (v > 0.5)).astype(np.uint8), np.ones((9, 9), np.uint8)) > 0
++chd = cv2.dilate(ch.astype(np.uint8), np.ones((13, 13), np.uint8)) > 0
++z = zone & ~chd & ~gold
++wh = ((s < 0.15) & (v > 0.88)) & z
++nw, lw, sw, cw = cv2.connectedComponentsWithStats(wh.astype(np.uint8), connectivity=8)
++out = (im * 0.55).astype(np.uint8)
++cols = [(0, 255, 0), (0, 255, 255), (0, 140, 255), (0, 0, 255)]
++for j in range(1, nw):
++    a = sw[j, cv2.CC_STAT_AREA]
++    c = cols[0 if a <= 40 else 1 if a <= 400 else 2 if a <= 2500 else 3]
++    out[lw == j] = c
++    if a > 1000: print(f"piece {a} px at x {cw[j][0]/W:.3f} y {cw[j][1]/H:.3f} bbox x {sw[j,0]/W:.3f}-{(sw[j,0]+sw[j,2])/W:.3f} y {sw[j,1]/H:.3f}-{(sw[j,1]+sw[j,3])/H:.3f}")
++out[~z & zone] = (out[~z & zone] * 0.5).astype(np.uint8)
++crop = out[int(.70*H):int(.90*H)]
++cv2.imwrite(sys.argv[2], cv2.resize(crop, None, fx=1.3, fy=1.3))
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..3195dc7 100644
+index 2f39f0e..f7ecd35 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -105,30 +105,83 @@ export const FOCUS = {
@@ -2459,7 +2577,7 @@ index 2f39f0e..3195dc7 100644
          [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
        ],
        // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
-@@ -138,7 +191,12 @@ export const FOCUS = {
+@@ -138,18 +191,32 @@ export const FOCUS = {
      // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
      // droplets of spray (match: 30)
      liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
@@ -2473,9 +2591,21 @@ index 2f39f0e..3195dc7 100644
      bubbles: {
        // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
        //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
-@@ -149,7 +207,10 @@ export const FOCUS = {
-       zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
-         [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
+       //    camera's place at 3.0 s with the new framing
+-      count: 280,
++      // (item 4, the AD's review item 6: no more than about 10 bubbles within 0.2 W of the tunnel's centre; the original has
++      // 10 detected there. Spread with a 1 / d^2 density out to 34 m, about a third of the wall bubbles and most of the
++      // inner ones landed there, a dense cluster. Now: 220; the wall bubbles within 10 m (near and middle depth), the inner
++      // ones within 6.5 m, and a few at far depth along the walls (10-30 m) and round the far centre.)
++      count: 220,
+       camAt: -4.55,
+       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
+-      zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
+-        [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
++      //   (on screen a bubble is about 1.48 rho / d frame widths from the centre: inside 0.2 W beyond d = 7.4 rho. So the inner
++      //   ones at rho 0.84-1.24 m only to 5.5 m, the far ones few)
++      zones: [[0.3, [20, 160], [0.62, 0.93], [4.5, 10]], [0.2, [160, 222], [0.62, 0.93], [4.5, 10]], [0.2, [-42, 20], [0.62, 0.93], [4.5, 10]],
++        [0.24, [-30, 210], [0.42, 0.62], [4.5, 5.5]], [0.02, [20, 200], [0.75, 0.93], [10, 30]], [0.01, [0, 360], [0.08, 0.4], [16, 34]]],
        // more, bolder white streaks among the bands (match: 200)
 -      flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
 +      // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,

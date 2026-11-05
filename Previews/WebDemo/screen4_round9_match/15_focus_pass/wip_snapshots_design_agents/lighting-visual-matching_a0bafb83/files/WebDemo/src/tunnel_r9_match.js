@@ -443,7 +443,11 @@ function focusFlecksGLSL(M) {
       float dr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, fract(dh * 23.1));
       float dpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(D.rows)});
       float dk = step(${f4(1 - D.dens)}, dh) * (1.0 - smoothstep(dr * 0.7, dr, length(dO * vec2(0.72, 1.0)))) * dpx;
-      c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});
+      ${F.late
+    // (late: drawn after the display compensation, as the thin ring lines: match's glintWall below tints every bright wall
+    // texel toward #cae0ff, so the splashes came out as pale translucent blue blobs instead of white water)
+    ? `mtFleck = clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)};`
+    : `c = mix(c, ${hx(F.col)}, clamp(max(fk, dk * 0.9) * fz * flit, 0.0, 1.0) * ${f4(F.amount)});`}
     }
 `;
 }
@@ -501,7 +505,7 @@ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   // irregular spacing (the approved's log spacing varies by about 60%) and a wobble from the variation map, flowing outward;
   // in each band a dark cobalt gap and a broken cyan-white rim on the water's own colours. Faded where the bands get finer
   // than the pixels (seam-free: from the wrap-corrected derivatives)
-  float mtEdge = 0.0;
+  float mtEdge = 0.0;${FOCUS_ON ? ' float mtFleck = 0.0;' : ''}
   {
     float bs = lr * ${f4(M.bands.perLog)} + tu * ${f4(M.bands.spiral)} + ${f4(M.bands.warp)} * sin(lr * ${f4(M.bands.warpF)} + 1.3) + (vr.b - 0.5) * ${f4(M.bands.wobble)}
       - uTime * ${f4(M.bands.flow * M.bands.perLog)} - uHeroTravel * ${f4(M.bands.travel * M.bands.perLog)};
@@ -568,6 +572,8 @@ ${FOCUS_ON ? focusRibbonsGLSL(M) + focusFlecksGLSL(M) : ''}    // the approved's
   vec3 col = mtUndisplay(c);
   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
+${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)
+` : ''}
   // glossy light on the derived relief: the glowing centre ahead and the key light behind the camera
   vec2 nm = textureGrad(uMatchNrm, dv, ddx, ddy).rg * 2.0 - 1.0;
   vec3 TA = normalize(T0 - N0 * dot(T0, N0)), TB = normalize(cross(N0, TA));
