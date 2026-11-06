@@ -57,7 +57,7 @@ if a.fill == 'exemplar':
     vs[:R] = vs[-R:] = False; vs[:, :R] = vs[:, -R:] = False
     cy, cx = np.nonzero(vs); keep = ((cy % 2) == 0) & ((cx % 2) == 0); cy, cx = cy[keep], cx[keep]
     offs = np.arange(-R, R + 1)
-    src = np.stack([img[cy + dy][:, None, :] if False else img[cy + dy, cx[:, None] + offs[None, :]] for dy in offs], 1)  # (N, P, P, 3)
+    src = np.stack([img[(cy + dy)[:, None], cx[:, None] + offs[None, :]] for dy in offs], 1)  # (N, P, P, 3)
     src = src.reshape(len(cy), P * P, 3)
     conf = valid.astype(np.float32)
     known = valid.copy()
@@ -73,7 +73,7 @@ if a.fill == 'exemplar':
         near = np.abs(cy - ty) <= 120
         idx = np.nonzero(near)[0] if near.any() else np.arange(len(cy))
         if kn.any():
-            d = ((src[idx][:, kn] - win[kn][None]) ** 2).sum((1, 2))
+            d = ((src[np.ix_(idx, np.nonzero(kn)[0])] - win[kn][None]) ** 2).sum((1, 2))
         else:
             d = rng.random(len(idx))
         best = idx[np.argsort(d)[:3]]; pick = best[rng.integers(len(best))]
@@ -102,9 +102,6 @@ if a.fill == 'reflect':
                 src = 2 * bot + 1 - y if bot + 1 < Hc and (bot + 1 + (bot - y)) < Hc else 2 * top - 1 - y
                 if 0 <= src < Hc and not col[src]: out0[y, x] = c[src, x]
     fill = cv2.GaussianBlur(out0, (0, 0), 0.6)
-soft = cv2.GaussianBlur(fill, (0, 0), 4)
-k = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3)[..., None]
-out = (fill * (1 - k * 0.6) + soft * k * 0.6).astype(np.uint8)
 os.makedirs(a.out, exist_ok=True)
 if a.fill == 'patch':
     # (R3b, after the art director's review of the mirrored fill: a hard seam on the mirror line, a mirrored blotch, a
@@ -132,7 +129,12 @@ if a.fill == 'patch':
     dist = cv2.distanceTransform(m, cv2.DIST_L2, 5).astype(np.float32)
     w = (np.clip(dist / 16.0, 0.0, 1.0) * have)[..., None]
     fill = (telea * (1 - w) + patch * w).astype(np.uint8)
-name = 'foreground_water_original.png' if a.fill == 'telea' else 'foreground_water_original_r3.png'
+# the filled texels softened a little (telea, reflect, patch; the patch fill's own texels were saved before this fix);
+# the exemplar fill keeps the original's pixels unsoftened
+soft = cv2.GaussianBlur(fill, (0, 0), 4)
+k = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3)[..., None]
+out = fill if a.fill == 'exemplar' else (fill * (1 - k * 0.6) + soft * k * 0.6).astype(np.uint8)
+name = {'telea': 'foreground_water_original.png', 'exemplar': 'foreground_water_original_r4.png'}.get(a.fill, 'foreground_water_original_r3.png')
 Image.fromarray(out).save(os.path.join(a.out, name))
 json.dump({'source': os.path.relpath(ORIG, ROOT), 'y0': y0 / H, 'y1': 1.0, 'size': [W, H - y0], 'masked_share': round(float(m.mean()), 3)},
           open(os.path.join(a.out, name.replace('.png', '.json')), 'w'), indent=1)

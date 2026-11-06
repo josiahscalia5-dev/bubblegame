@@ -1648,3 +1648,7 @@ _[5 images attached]_
 
 R3c stays experimental and is not merged. I'll save your kit to the repository, then measure what makes the water under her soft and stretched before changing anything.
 
+Before anything else: the default Telea texture must come out byte-identical, so R2 and R3c are untouched. Then the exemplar texture, written to scratch first:
+
+The Telea texture is byte-identical (`d66d3bc0`). The mask share explains a lot: 64 % of the old texture was filled in, not water. With the shaped buttons it is 51.6 %. Now the new texture:
+
