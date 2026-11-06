@@ -71,3 +71,5 @@ About half done. Meanwhile, the `focus` settings for the floor and walls:
 
 Every ablation restored cleanly (the frame after all 42 is pixel-identical to the first). The original against the current game, region by region:
 
+The default derivation reproduces the shipped map byte-for-byte, so the tool chain is trustworthy. Adding texture-interception support to the diagnostic harness:
+
