@@ -201,3 +201,5 @@ You can save everything to my GitHub repository. Make sure you save the recordin
 
 Saving everything now: exporting the latest chat history and design-agent transcripts, then committing and pushing. I'll save again the moment the two clips and the +2 s frame finish.
 
+While the clips finish, writing the side-by-side clip script (R7 | R9, the same run) and a strip of key moments (swipe left, swipe right, jump, landing):
+
