@@ -52,8 +52,34 @@ Good, playwright resolves. Now build.
 - 00:07 `Bash`: Link node_modules into worktree
 - 00:07 `Bash`: Build game bundle
 - 00:07 `Bash`: Save baseline bundle and list sources
+- 00:07 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ac156d90628456587/WebDemo/src/tunnel_r9_focus.js
+- 00:07 `Bash`: Find ring/centre related code in match
+- 00:07 `Bash`: Read MATCH settings section
+- 00:07 `Bash`: Read wall shader code
+- 00:08 `Bash`: List pass4 and step3 evidence folders
+- 00:08 `Bash`: Read step3 README and only_walls script
+- 00:08 `Bash`: Read walls.py and common.py measure scripts
+- 00:08 `Bash`: Read liquid_shots capture tool
+- 00:08 `Bash`: Capture baseline focus frame at 3.0 s
+- 00:08 `Bash`: Capture baseline focus frame at 3.0 s
+- 00:09 `Bash`: Compare baseline capture with pass4a capture
+- 00:09 `Bash`: Measure zone colours of baseline
+- 00:09 `Bash`: Write crop tool and make centre crop comparison
+- 00:10 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/crops.py
+- 00:10 `Bash`: Make centre crop comparison
+- 00:10 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_base.png
+- 00:10 `Bash`: Find debug API and composer passes
+- 00:10 `Bash`: Read composer setup and find haze code
+- 00:10 `Bash`: Read GradeShader
+- 00:10 `Bash`: Find grade glowSize usage
+- 00:10 `Bash`: Read hero glow handling
+- 00:10 `Bash`: Read heroGlow and warmGlow
+- 00:11 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/layer_probe.cjs
+- 00:11 `Bash`: List visible scene objects at 3.0 s
+- 00:12 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/zstat.py
+- 00:12 `Bash`: Run layer hide probe at 3.0 s
 
-_14 tool steps._
+_40 tool steps._
 
 ---
 
@@ -105,5 +131,37 @@ I'll start by reading the required files in order.
 - 00:07 `Bash`: Crop the foreground of original and pass4a side by side
 - 00:07 `Bash`: Read pass4a info json
 - 00:07 `Bash`: Crop the foreground of original and pass4a
+- 00:07 `Bash`: Create evidence and scratch folders
+- 00:07 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/crop.py
+- 00:07 `Bash`: Crop the foreground of original and pass4a
+- 00:07 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/v/fg_cmp.png
+- 00:08 `Bash`: Enlarge lower-left foreground of both
+- 00:08 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/v/fg_cmp2.png
+- 00:08 `Bash`: Enlarge lower-right foreground of both
+- 00:08 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/v/fg_cmp3.png
+- 00:08 `Bash`: Read the audit colour class scripts
+- 00:08 `Bash`: Read the capture tool
+- 00:08 `Bash`: Capture baseline focus frames at three times
+- 00:08 `Bash`: Find FOCUS_ON gates in the water file
+- 00:08 `Bash`: Read water file part 1
+- 00:08 `Bash`: Check baseline capture output
+- 00:08 `Bash`: Inspect failed capture and playwright availability
+- 00:08 `Bash`: Locate the playwright module
+- 00:09 `Bash`: Check playwright via /opt/node-tools
+- 00:09 `Bash`: Capture baseline focus frames at three times
+- 00:09 `Bash`: Read water file swell section
+- 00:09 `Bash`: Read water file floor and focusSwellGLSL
+- 00:09 `Bash`: List screen4 tools and read hide probe
+- 00:10 `Write`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Previews/WebDemo/screen4_round9_match/25_pass4_water/c_foreground_water/scripts/fgwater.py
+- 00:10 `Bash`: Check baseline capture progress
+- 00:10 `Bash`: Measure the original and pass4a foreground
+- 00:10 `Bash`: Fix path and measure the original and pass4a
+- 00:11 `Bash`: Side by side of zone overlays
+- 00:11 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/ov_cmp.png
+- 00:11 `Bash`: Compare my baseline with pass4a frame
+- 00:11 `Bash`: Locate differences vs pass4a frame
+- 00:11 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/base/diffmask.png
+- 00:11 `Bash`: Save base bundle and read rest of hide probe
+- 00:12 `Bash`: List visible objects at 3.0 s in focus
 
-_15 tool steps._
+_47 tool steps._
