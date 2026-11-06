@@ -1,0 +1,8 @@
+page.evaluate: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.
+    at vis (eval at evaluate (:311:30), <anonymous>:2:50)
+    at eval (eval at evaluate (:311:30), <anonymous>:3:157)
+    at UtilityScript.evaluate (<anonymous>:313:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /home/user/bubblegame/WebDemo/tools/screen3/r2_func.cjs:27:28 {
+  log: []
+}

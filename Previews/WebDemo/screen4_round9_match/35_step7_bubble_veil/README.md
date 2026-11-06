@@ -40,3 +40,14 @@ zone, bubbles floating inside the open tube over the centre rings, and the far-c
   the same; V3 slightly less blue.
 - **Reversible:** the step 7 build with the old values put back by a test tune is identical to step 6 (0 differing pixels at
   3.0 s); the step 7 build is identical to the V2 test at all four positions.
+
+## Tests
+
+| test | result | file |
+|---|---|---|
+| the old settings by test tune on the step 7 build | identical to step 6 at 3.0 s, 0 differing pixels | (above) |
+| identity: the normal game, the ten older switches, `match`, `match,nofoam` (41 raw-canvas frames) | all 41 identical, 0 differing pixels, no console errors | `identity_proof_step7.txt`, `scripts/identity.sh` |
+| gameplay `?s3=focus`: `s3_func` and `r2_func` (lanes, jump, coins, gem, socks, keyboard start, hearts, pause, Bubble Blast, Turbo Spin) | identical to step 6's reports but for the bubble count and 240 fewer triangles; no console errors | `gameplay/` |
+| gameplay, the NORMAL game: `s3_func` | identical on step 6 and step 7; no console errors (the normal game has no hearts, pause or power-ups: `gameplay/README.md`) | `gameplay/` |
+| Pixel 7 (412 x 839) at 3, 4, 5 and 6 s | captured, no console errors | `frames/step7_pixel7_T*`, `11_pixel7_*.jpg` |
+| build | the main checkout rebuilds md5 `57b069116c2baf1b66644fba87c8fe14`, the tested build byte for byte | |

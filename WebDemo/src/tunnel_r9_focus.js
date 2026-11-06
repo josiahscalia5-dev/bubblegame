@@ -304,13 +304,24 @@ export const FOCUS = {
       // inner ones landed there, a dense cluster. Now: 220; the wall bubbles within 10 m (near and middle depth), the inner
       // ones within 6.5 m, and a few at far depth along the walls (10-30 m) and round the far centre.)
       // (step 3: 220 -> 160, "keep bubble counts restrained where they obscure ring structure")
-      count: 160,
+      // STEP 7, the bubble veil (6 November 2026, the user's go: "reduce the excessive tunnel bubbles while keeping the
+      // appropriate clear bubbles ... restore the strong cobalt-blue"): 160 -> 40, along the walls only. Measured at seed 7, 3.0 s
+      // (Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/): this layer covered 7.7 % of the tunnel, a cloud of
+      // small and medium bubbles over the middle rings and the far centre, where the original has about 7 outlined bubbles in
+      // the upper tunnel and none over the centre. The inner zone (bubbles floating inside the open tube, over the centre
+      // rings) and the far-centre zone are gone; their share goes to the walls. Unchanged: the large clear hero bubbles, the
+      // Screen 4 bubbles, the bubbles at her waterline and in her splash, the white streaks (`flecks`, a later step).
+      // Rollback: count 160 and the zones in the comment below.
+      count: 40,
       camAt: -4.55,
       sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
       //   (on screen a bubble is about 1.48 rho / d frame widths from the centre: inside 0.2 W beyond d = 7.4 rho. So the inner
       //   ones at rho 0.84-1.24 m only to 5.5 m, the far ones few)
-      zones: [[0.3, [20, 160], [0.62, 0.93], [4.5, 10]], [0.2, [160, 222], [0.62, 0.93], [4.5, 10]], [0.2, [-42, 20], [0.62, 0.93], [4.5, 10]],
-        [0.24, [-30, 210], [0.42, 0.62], [4.5, 5.5]], [0.02, [20, 200], [0.75, 0.93], [10, 30]], [0.01, [0, 360], [0.08, 0.4], [16, 34]]],
+      //   (step 6 and before: [[0.3, [20, 160], [0.62, 0.93], [4.5, 10]], [0.2, [160, 222], [0.62, 0.93], [4.5, 10]],
+      //   [0.2, [-42, 20], [0.62, 0.93], [4.5, 10]], [0.24, [-30, 210], [0.42, 0.62], [4.5, 5.5]], [0.02, [20, 200], [0.75, 0.93],
+      //   [10, 30]], [0.01, [0, 360], [0.08, 0.4], [16, 34]]])
+      zones: [[0.38, [20, 160], [0.62, 0.93], [4.5, 10]], [0.25, [160, 222], [0.62, 0.93], [4.5, 10]], [0.25, [-42, 20], [0.62, 0.93], [4.5, 10]],
+        [0.12, [20, 200], [0.75, 0.93], [10, 30]]],
       // more, bolder white streaks among the bands (match: 200)
       // (item 3, the AD's review item 4 and the user's 18:26 kit: "an overcomplicated white/bubble pattern": 560 -> 220,
       // chunkier (half width 2-4 cm), some hooked (bend), turned off the band by up to rot degrees (the original's white bits
