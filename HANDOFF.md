@@ -1,6 +1,34 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-ea1aad4b-wq5nrm`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-55a78d65-d26sa9`)
 
-## Newest (6 November, about 17:00-17:40 UTC): `?s3=intunnel,water2`, the existing water's material corrected; FOR THE USER'S APPROVAL
+## Newest (6 November, about 17:50-19:10 UTC): fourteenth and fifteenth sessions, water R3c -> R4 -> R5; R5 FOR THE USER'S APPROVAL
+
+- **Branch:** `ccr-55a78d65-d26sa9` (it contains all of `ccr-ea1aad4b-wq5nrm`). The fifteenth session (a fresh container,
+  session `1cadc793`) picked up where the fourteenth stopped, mid R5 comparison.
+- **The user's brief (17:49 UTC, `Design/ReferencePacks/2026-11-06_R3c_Review_and_Claude_Prompt_from_user/`):** R3c not
+  approved, the water round her too soft, stretched and pale; fix the real mapping / sampling / transparency / bloom cause,
+  one reversible step at a time, no new water objects.
+- **The candidates** (all under test switches; `?s3=intunnel` unchanged, 0 pixels against the pre-water bundle `99d9bc10`):
+  - `water3` (R3c, `Previews/WebDemo/screen4_round9_match/45_water_r3/README.md`): R2's texture with the face's extras off,
+    almost no distortion, colours lifted. The user: better colour, still soft, stretched, pale.
+  - `water4` (R4, `46_water_r4/`): the cause found by layer isolation: 64 % of the texture was Telea-inpainted holes (her
+    body, coins, buttons), drawn as streaks and a lavender blur under her. Holes refilled with exemplar patches of the
+    original's own water (filled share 51.6 %).
+  - `water5` (R5, `47_water_r5/README.md`): R4 with the texture's registration corrected (22 px too high at the start frame;
+    NCC 0.203 -> 0.954).
+- **R5 measured** (foreground water, `region_compare.py`): LPIPS accepted 0.656, R3c 0.576, R5 0.530; but saturated blue
+  13.5 % against the original's 24.6 % and white 21.1 against 16.8. Moving (+1, +2 s): slightly behind R3c by LPIPS.
+- **The art director:** present R5 instead of R3c, "stretching fixed, still pale"; moving about the same; not in `intunnel`
+  until the user approves (`47_water_r5/art_director/verdict.md`).
+- **Tests:** identity 0 pixels (`47_water_r5/identity_proof.txt`); `s3_func` identical to R3c's; `r2_func` and the videos in
+  `47_water_r5/` (see its README).
+- **Proposed next, for the user's go:** one controlled test making the water face see-through where the texture's mask marks
+  the original's body, so the original's lobe outlines become the contact edge (risk: a gap, since her base sits 23 px high).
+- **Tools:** all present and run in the fresh container (`Tools/DEV_TOOLS.md`, newest check). The claude.ai account still has
+  no catalog plugins enabled; the session's own Playwright and GitHub tools work.
+- **Autosave:** started by the SessionStart hook, restarted under `ChatHistory/2026-11-06_fifteenth_session_screen4_water_r5.md`
+  (mapping in `Tools/autosave_sessions.json`).
+
+## Earlier (6 November, about 17:00-17:40 UTC): `?s3=intunnel,water2`, the existing water's material corrected; FOR THE USER'S APPROVAL
 
 - **The user's brief:** stop adding objects; correct the existing water itself.
 - **The investigation:** `heroSwell`'s own face material makes the pale flat water. Its palette is the game's two biggest
