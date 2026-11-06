@@ -1,0 +1,14 @@
+# Bubble Wash Kingdom: the node tools in ~/.bubblewash-tools/node (outside the game), exactly as verified on 6 November 2026.
+# Installed by Tools/cloud_env_setup.sh (NODE_PACKAGES). Top-level packages and versions:
++-- @emnapi/runtime@1.11.3 extraneous
++-- @gltf-transform/cli@4.5.1
++-- @gltf-transform/core@4.5.1
++-- @gltf-transform/extensions@4.5.1
++-- @gltf-transform/functions@4.5.1
++-- @img/sharp-wasm32@0.35.5 extraneous
++-- gltf-validator@2.0.0-dev.3.10
++-- spectorjs@0.9.33
++-- tripo-cli@0.11.2
++-- tslib@2.9.1 extraneous
+`-- vite@8.3.5
+

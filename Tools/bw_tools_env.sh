@@ -40,4 +40,10 @@ if ! command -v blender > /dev/null 2>&1 || [ "$(command -v blender)" = "$_bw_ro
   case ":$PATH:" in *":$_bw_root/Tools/bin:"*) ;; *) export PATH="$_bw_root/Tools/bin:$PATH" ;; esac
 fi
 
+# (6 November 2026) BW_METRICS_PY: Python with PyTorch, LPIPS and Optuna (region_compare.py, optuna_domes.py);
+# BW_SPECTOR: Spector.js's bundle for WebDemo/tools/screen4/spector_capture.cjs (SPECTOR="$BW_SPECTOR" ...)
+if [ -x "$_bw_home/metrics/bin/python" ]; then export BW_METRICS_PY="$_bw_home/metrics/bin/python"; else export BW_METRICS_PY=""; fi
+if [ -f "$_bw_home/node/node_modules/spectorjs/dist/spector.bundle.js" ]; then
+  export BW_SPECTOR="$_bw_home/node/node_modules/spectorjs/dist/spector.bundle.js"; else export BW_SPECTOR=""; fi
+
 unset _bw_root _bw_home

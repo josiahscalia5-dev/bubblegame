@@ -1,0 +1,12 @@
+# Bubble Wash Kingdom: the 'visual' Python environment (~/.bubblewash-tools/visual, $BW_PY), exactly as verified on 6 November 2026.
+# Installed by Tools/cloud_env_setup.sh (PY_PACKAGES). Exact reproduction:  uv pip install --python ~/.bubblewash-tools/visual/bin/python -r Tools/requirements/visual.lock.txt
+imageio==2.38.1
+lazy-loader==0.6
+networkx==3.7
+numpy==2.5.4
+opencv-python-headless==5.0.0.93
+packaging==26.3
+pillow==13.0.0
+scikit-image==0.26.0
+scipy==1.18.1
+tifffile==2026.10.15

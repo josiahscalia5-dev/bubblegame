@@ -106,3 +106,45 @@ THIS IS AN ENVIRONMENT AND PROJECT HANDOFF TASK ONLY. DO NOT REDESIGN OR CHANGE 
 
 The session's container was restarted and the working directory moved, so I'll first find where the repository now lives and what survived.
 
+The autosave's first round after the restart is verified (`e53e533`). Now the end of the previous session's chat: the 14:08 UTC request and what was done before that account stopped.
+
+The README records the accepted `?s3=intunnel` bundle as md5 `9d7f484f`. Let me compare bundles and see how the previous identity proof was run.
+
+`game_eval.cjs` saves the raw 3D canvas, which repeats to the pixel. First test: does the current source rebuild byte-identical to the committed bundle?
+
+While those render, I'll inventory the four design agents and the Screen Matcher skill from their actual definition files.
+
+That notification only covers the launcher; the renders themselves are still running. Meanwhile, the Spector.js tooling: how it finds `spectorjs`, and whether it's installed.
+
+Installed. Now I'll fold it into the setup script, and pin the metrics packages to the versions verified on both accounts (they were unpinned):
+
+Now the lock files that record the exact verified environments, then an idempotency re-run of the edited setup script exactly as the environment will run it:
+
+---
+
+### You · 2026-11-06 14:59 UTC
+
+Claude, I want to conserve my Claude Code usage and return to developing my Bubble Wash Kingdom mobile game now.
+
+Please stop doing unnecessary environment investigations, lengthy reports, repeated installations, and exhaustive plugin checks.
+
+Use the GitHub repository and branch already selected in this session.
+
+Quickly verify only three things: that my existing Screen 4 game builds and runs, that my latest work is safely saved to GitHub, and that the five-minute autosave has restarted successfully after the container reboot.
+
+If those three checks pass, immediately resume my existing Screen 4 development. Do not restart or redesign my game.
+
+My priority is still recreating my original approved blue laundry tunnel, particularly the rounded, glossy blue water surrounding my pink fluffy character while it travels ON TOP of the water.
+
+Use the working development tools already available. Only investigate or install additional tools when they're actually needed to fix a specific problem.
+
+Preserve the existing gameplay, accepted improvements, and rollback points. I want real visual progress, not another lengthy environment audit.
+
+If one of the three essential checks fails, explain the specific blocker and fix only that blocker before continuing.
+
+---
+
+### Claude · 2026-11-06 14:59 UTC
+
+Running only the three checks.
+
