@@ -311,3 +311,15 @@ The link didn't make the skill reappear mid-session. Claude Code reads project a
 2. **Plugins (optional):** on claude.ai, open the plugin directory, enable **playwright** (Microsoft) and **typescript-lsp** (Anthropic), then start a new session. The project already drives Playwright directly, so nothing depends on these.
 3. **Tripo (only when you want a paid job):** I'll open the secure credential form for its API host. Never paste the key into chat, and every paid job still needs your yes.
 
+---
+
+### You · 2026-11-06 15:31 UTC
+
+Make sure you save everything to my GitHub repository. Make sure everything's saved, like the chat history , the most recent last chat history between me and you, and everything. Make sure everything's saved to my GitHub repository.
+
+---
+
+### Claude · 2026-11-06 15:31 UTC
+
+Exporting the chat right up to this message and saving now, rather than waiting for the next 5-minute round:
+
