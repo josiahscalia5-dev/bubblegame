@@ -1,6 +1,21 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-ea1aad4b-wq5nrm`)
 
-## Newest (6 November, about 13:20-14:45 UTC): fourteenth session continued, `?s3=intunnel`: the game STARTS inside the tunnel
+## Newest (6 November, about 14:50-16:20 UTC): fourteenth session, the water round her: four candidates, ALL REJECTED
+
+- **The user's brief (14:50 UTC):** the water round her first. Rounded glossy cobalt-turquoise wave forms, cyan-white crests,
+  a few clear lavender domes. Then the brushes and the diamond, only if the water got visibly closer.
+- **Technique 1** (`?s3=intunnel,bank`): a bank of the splash bank's instanced lobes. W1 and W1b: pale matte pillows.
+- **Technique 2** (`?s3=intunnel,wave`): the swell's face drawing rounded lobes. W2 too blue; W2b matched the colours but
+  read as "a still pile of balloons" (the art director).
+- All four reverted, gated behind their flags; `?s3=intunnel` is unchanged (0 pixels). Evidence:
+  `Previews/WebDemo/screen4_round9_match/42_water_bank/README.md`.
+- **The limitation:** the original draws splashing CRESTS curling up her sides; neither technique makes crests.
+- **Proposed next, for the user:** real curling crest meshes (Blender) at her sides, from the existing `spCurls`.
+- **The brushes and the diamond:** not started (the user's order).
+- **The machine restarted twice** (13:21 and about 16:00 UTC). The autosave was restarted each time; it had stopped at 14:38
+  the second time.
+
+## Earlier (6 November, about 13:20-14:45 UTC): fourteenth session continued, `?s3=intunnel`: the game STARTS inside the tunnel
 
 - **The user's directive (13:30 UTC):** the playable level starts directly inside the blue laundry tunnel, her already on the
   water, moving forward when play starts. No girl scene, Laundry Toss, washing-machine cinematic, castle or swim section

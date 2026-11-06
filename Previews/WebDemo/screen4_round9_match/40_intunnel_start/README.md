@@ -75,3 +75,13 @@
   (LPIPS 0.37-0.66 for both, within about +-0.02). It is the same picture, now at the very start of the game.
 - **Honestly:** this pass makes the game start where the user asked, at the approved view. It does not by itself bring the
   picture closer to the original. The visual correction tried this session (the bubble domes) failed twice and was reverted.
+
+## Tests (final bundle `24d954fb`; `?s3=intunnel` draws 0 pixels differently from the tested bundle `9d7f484f`)
+
+| test | result | file |
+|---|---|---|
+| `s3_func`: Tap to Start, lanes, jump, pick-ups | the run starts at 1.592 m inside the tunnel; swipes change lanes (to lane 2), the jump works; 14 coins and a sock collected; a left swipe into the brush at 9.4 m is knocked back to the middle lane | `gameplay/s3_func_intunnel.txt` |
+| `r2_func`: hearts, knocks, pause, Bubble Blast, Turbo Spin | 5 knocks take the hearts from 5 to 0, then the restart at "5 Full" back at 1.592 m. Pause stops the clock; it resumes; the keyboard pause works. Bubble Blast clears the brushes ahead with no knock, runs down to 0 and disables the button. Turbo Spin raises the speed from 6.7 to 8.8 m/s with no knock. No console errors | `gameplay/r2_func_intunnel.txt` |
+| videos, Pixel 7, 10 s | **straight:** the start screen, the tap, the ride down the middle lane, 2 socks, a lap back to the in-tunnel start. **Steering:** lanes 1, 0, 2, a jump, 2 socks, a lap. No console errors | `videos/intunnel_straight.mp4`, `videos/intunnel_steering.mp4` |
+| 3-panel videos, ORIGINAL / previous `bt` / new | the previous build's video starts 3 s in, so both are at the same places once the new one is tapped (at its 2.0 s). For the first 2 s the new start screen is already inside while the previous is still on the slide outside | `videos/compare_straight_original_bt_intunnel.mp4`, `videos/compare_steering_original_bt_intunnel.mp4` |
+| identity: the normal game, ten older switches, `match`, `match,nofoam`, `focus` (45 frames) vs step 8 | see `identity_proof_final.txt` | |
