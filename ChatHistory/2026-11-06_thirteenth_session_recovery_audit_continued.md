@@ -1030,3 +1030,7 @@ _[2 images attached]_
 
 This changes the plan: you now want the opening (Screen 3) fixed as well, with your authentic Screen 3 from the repository as its only target, and never the AI concept. Before anything else I'll save your new kit to the repository. The zip goes into its own empty folder, and I'll only read it, never run anything from it:
 
+At the Screen 4 moment, a 5 m dish changes the top quarter of the frame (9% of pixels). That's either the dish's shading changing or the castle showing through. Looking at both:
+
+The main build is byte-identical to the tested one (`e6cd9334…`). Adding the test results to the step 8 record and committing:
+
