@@ -241,5 +241,58 @@ Address this before completing your current task.
 - 19:35 `Bash`: Find non-pink pixels revealed by the cut-out
 - 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/gap_start.png
 - 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/gap_2.png
+- 19:35 `Bash`: Zoom the revealed regions left and right
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/gapz.png
+- 19:35 `Bash`: Normal-scale figure view R7 vs R8
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/fig.png
+- 19:36 `Bash`: Find foreground water texture files
+- 19:36 `Bash`: Inspect R8 texture and its mapping
+- 19:36 `Bash`: Compare R8 texture under her with original
+- 19:36 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/tex_vs_orig.png
+- 19:36 `Bash`: Compare dome area original vs R8 registered
+- 19:36 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/dome.png
+- 19:37 `Bash`: Per-column pink edge: original vs R7, R8
+**Agent** (19:38 UTC):
 
-_68 tool steps._
+1. **Verdict: R8 is slightly closer than R7, both at the start and in motion (+1 s, +2 s).**
+
+2. **Her lower edge is more like the original's, but only partly.**
+   - **Better:**
+     - Her edge now slopes down to the right, as in the original (about 20-35 px lower at x 400-500).
+     - More of her lower body shows, so she reads rounder and more supported, not sunk.
+     - She does not look like a taller, squarer block; the visible pink is still smaller than the original's (51.5k against 62.8k px, your measure).
+     - Under her centre-right (about x 340-450) the original's dome shows a rounded top with a thin blue-white rim crossing her edge.
+   - **Not yet:**
+     - Over the left dome (about x 230-340) the edge is still the old flat ragged cut. Her fur's teeth hang over the dome's top and hide its white rim, so only half of the row of domes reads.
+     - Your own measurement shows why: at x 260-320 the edge did not move. The face does not reach the original's outline there. Either her body is in front of it in depth, or its top edge is lower; the evidence does not show which.
+     - Overall the domes still read as soft lavender-blue masses, with few of the original's bright white rim arcs.
+
+3. **Regressions**
+   - **Two small see-through notches.** Where the original's body outline is wider than her 3D model, the face is cut away and nothing of hers fills the gap, so the far tunnel water shows through (saturated cyan with ripples, hard-edged):
+     - left of her left ear lobe, about x 155-240, y 1215-1250;
+     - beside her lower right, about x 535-570, y 1265-1310.
+
+     They are obvious in close-up and barely visible at full size. My check: about 2.3-2.7k of the changed pixels per frame are not pink, mostly these two patches.
+   - **A small pointed pink "drip"** at +2 s, about x 348, y 1295.
+   - **Flicker:** none visible in the two stills; the edge has the same shape at +1 s and +2 s. But she bobs and squashes against a cut that is fixed in the texture, so the notches could open and close from frame to frame. Check a 2-3 s video before presenting.
+   - Nothing else changed. She is not more submerged; it is the opposite.
+
+4. **Recommendation: keep R8 as the candidate.**
+   - **Before presenting, close the two notches.** They are R8's own side effect. Don't cut the alpha where her model does not cover that area, for example by shrinking the mask only at its outer sides (x below about 250 and above about 520). This is a texture-only change.
+   - **The single most important next correction is the left dome (x about 230-340).**
+     - First, one layer probe at the start view, hiding or isolating `heroSwell` and her body, to see whether her body is in front of the face in depth there or the face's top edge is lower.
+     - Then make the face reach the original's outline: let the alpha cut, not depth, decide what is in front of her lower edge, or raise the face's top edge there.
+     - That should put the left dome's rounded top and white rim across her edge, giving the row of domes the original has.
+   - **After that, in order:**
+     - re-test R5's 22 px registration on top, since the cut now protects her body;
+     - the brightness of the dome rims and the softness.
+
+Files are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/`:
+- `dome.png` (the original's left and centre domes, then R8 shifted 22 px and unshifted: her fur covers the left dome's top and rim)
+- `gap_start.png` and `gap_2.png` (yellow marks changed pixels that are not pink, i.e. the two notches)
+- `gapz.png` (the two notches zoomed, all moments)
+- `r8z_start.png`, `r8z_1.png`, `r8z_2.png` (the contact edge, R7 above R8)
+- `fig.png` (normal-scale view: original, R7, R8 at all three moments)
+
+
+_79 tool steps._
