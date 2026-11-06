@@ -583,3 +583,7 @@ Starting with the checks: the branch state, the 5-minute autosave and the tools.
 
 The machine restarted, so the autosave has stopped. Restarting it first, as your standing rule requires:
 
+Autosave is running again. **Step 1, the tool audit:**
+
+Approved, thank you. Installing into the separate `metrics` environment: CPU-only PyTorch and torchvision, then LPIPS, Optuna, and the existing image libraries.
+
