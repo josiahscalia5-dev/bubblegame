@@ -384,5 +384,41 @@ Files are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f
 - `fade_zones.png` (the cut's fade zones at x 248 and 522)
 - `r8b_fig.png` (normal-scale view at all three moments)
 
+**Lead → agent** (20:54 UTC):
 
-_112 tool steps._
+The coordinator sent a message while you were working:
+New brief from the user, and a strict verdict needed. The user: "I want the pink character to look like he's swimming through the laundry tunnel ... When he comes back down to the water, a wide white-blue patch appears behind his lower body. Please remove that traveling patch so I can see the blue tunnel water directly behind him ... When I swipe left or right, I want him to move through the water and leave clear blue water where he was. Let his lower fur dip gently into the surface as he moves. Preserve the original's rounded blue water and lavender domes where the water touches him. Please don't add a wake, spray, particles, or anything trailing behind him ... If the swimming doesn't look clearly more natural, keep R7 and stop there." The user's board: `/workspace/bubblegame/Design/ReferencePacks/2026-11-06_Screen4_Swim_Brief_from_user/01_where_the_water_meets_the_pink_character.jpg`.
+
+The patch is heroSwell itself: a crest ring 0.95 m out to each side of her (her body ~0.52 m), 0.4-0.7 m tall, carrying the original's foamy water texture since water2. Try A (the swell's opacity faded away from her) showed her lower body as a tall pink block down to the buttons, because the swell is the water she sits in, so it was dropped (`51_swim/try_a/`). R9 (`?s3=intunnel,water9`) = R8 + only this: the swell keeps its shape and opacity, so she stays dipped, but outside a band just below her contact edge (0.06-0.18 m below the crest) and within her width (0.55-0.8 m sideways) it takes the tunnel's own water at that place (`mwFloor`, made to continue the floor seamlessly). The original's water and domes stay only in that contact band. Nothing added. Band at her base (icy / saturated / mid / white / lavender): start R7 31.4 / 19.3 / 12.0 / 19.6 / 10.0, R9 26.3 / 37.2 / 11.8 / 11.3 / 8.2; +1 s R7 31.9 / 15.6 / 12.6 / 22.2 / 10.4, R9 27.6 / 32.4 / 11.5 / 14.1 / 9.3 (original 27.5 / 19.6 / 11.4 / 18.6 / 15.3).
+
+Files in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/51_swim/`:
+- `sheets/00_FULLRES_ORIGINAL_R7_R9_start.jpg`, `_plus1s.jpg`, `_plus2s.jpg` (seed 7, no steering); `sheets/02_closeup_water_x1.6.jpg`, `sheets/03_moving_closeup_x1.4.jpg`;
+- the clip (Pixel 7 screen, seed 7: tap 2.0 s, swipe left 3.0 s, right 3.9 s, jump 4.8 s, landing at frame 165): `videos/clip_R7.mp4`, `videos/clip_R9.mp4`, `videos/clip_compare_R7_R9.mp4`, `videos/clip_key_moments_R7_R9.jpg`; raw frames `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/frames_clip_R7/` and `frames_clip_R9/` (f0000-f0209.jpg, 824 x 1678; every frame's position identical between the two).
+- frames `try_b/{start,T1.0,T2.0}/base_page.png` (R9); R7's in `../49_water_r7/mirror_fix/{start,T1.0,T2.0}/`.
+
+Please answer concisely:
+1. Does R9 look CLEARLY more natural as swimming than R7, in the clip (the swipes, the landing) and in the stills? One of "clearly more natural", "slightly", "about the same", "worse". Be strict: the user's rule is to keep R7 unless it is clearly more natural.
+2. Is the travelling white-blue patch gone behind and beside her, especially right after landing? Does she leave clear blue water where she was after a swipe? Does her lower fur read as dipping into the water surface (not floating, not a block, not sunk)?
+3. Are the original's rounded blue water and lavender domes still there where the water touches her? Any seam, a visible edge of the swell, or a blue mound shape around her?
+4. Against the ORIGINAL approved still: closer, further or the same (the original has foamy white-blue water below her)? State it plainly so the user can weigh it.
+5. Recommendation: R9 or keep R7, and if R9, the single most important remaining issue.
+
+Address this before completing your current task.
+
+- 20:54 `Bash`: List swim evidence and user board
+- 20:54 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-06_Screen4_Swim_Brief_from_user/README.md
+- 20:54 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-06_Screen4_Swim_Brief_from_user/01_where_the_water_meets_the_pink_character.jpg
+- 20:54 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/51_swim/videos/clip_key_moments_R7_R9.jpg
+**Lead → agent** (20:54 UTC):
+
+[Image: original 2316x1163, displayed at 2000x1004. Multiply coordinates by 1.16 to map to original image.]
+
+- 20:55 `Bash`: Build clip frame comparison tool and first sheet
+- 20:55 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/clipA.png
+- 20:55 `Bash`: Larger clip sheet: start and left swipe
+**Agent** (20:55 UTC):
+
+You've hit your 5-hour limit · resets 12:20am (UTC)
+
+
+_119 tool steps._
