@@ -304,3 +304,45 @@ Reverting the water and stripe changes in the settings. The rejected values are 
 
 That video notice is just the job I stopped on purpose. Rendering the reduced candidate (step 8 + brushes + blue toe) at 3, 4, 5 and 6 s, plus plain `focus` again to re-prove it's untouched:
 
+Two of the five logs ended oddly. Checking them:
+
+Two renders timed out on the screenshot because 5 parallel browsers overloaded the machine (not a game error). Re-running those two:
+
+`focus` is still identical to step 8 (0 pixels). Making the comparison sheets for the reduced candidate, including a corrected sock close-up (the art director noted my earlier crop showed the brush):
+
+While the tests run, saving the rejected candidate's comparisons as evidence (your gate asks for the failed comparisons to be shown):
+
+Now rewriting the README for the final state: what was kept, what was rejected and why, the proof and the proposal.
+
+Updating `CLAUDE.md` and `HANDOFF.md` so the next session knows about `bt`:
+
+Waiting on the identity, gameplay and video tests now; I'll finish the report when they're done.
+
+The tests are running on a fully loaded 4-core machine, so the 41-frame identity check and the two 10-second videos will take a while, roughly 30-60 minutes.
+
+Where things stand:
+- **Kept in `?s3=bt` (reviewed as closer):** the smaller brushes, so the tunnel shows while she moves, and the sock's blue toe.
+- **Reverted:** both water candidates and the stripe colour, after your art director judged them further from the original. At 3.0 s, `bt` now looks like step 8 except the sock's toe.
+- **Proven:** `focus` and `bt`-at-zero are pixel-identical to step 8.
+
+I'll report the test results and the videos when they finish, and I'm not starting another feature.
+
+---
+
+### Automatic check · 2026-11-06 12:37 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 12:37 UTC
+
+I saved and pushed this state as commit `863aa56` (nothing left uncommitted). It's on this work branch only, and `focus`, `match` and the normal game are unchanged.
+
+What's in `?s3=bt` now:
+- **Kept:** the smaller brushes, which knock you exactly as before. The sock's toe is blue, as in your original.
+- **Reverted:** both water candidates and the stripe colour. The art director judged them further from your original: she read as a taller, squarer block, and the froth made a white strip under her. Their values are kept in the file as a record, not applied.
+
+Still running: the 41-frame identity test, the gameplay checks and the two videos. I'll report the results when they finish and won't start another feature before then.
+
