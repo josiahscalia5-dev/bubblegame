@@ -18,7 +18,7 @@ ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
 ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])
-ap.add_argument('--patch', type=int, default=21); ap.add_argument('--topk', type=int, default=1); ap.add_argument('--name', default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--name', default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -47,7 +47,7 @@ if a.fill == 'exemplar':
     # below it the face shows this texture's Telea fill, a pale lavender-white blur where her body was and long vertical
     # streaks and a flat triangle where the buttons were, and in the game she sits higher and the buttons differ, so those
     # fills are what is seen under her.) Exemplar-based filling (Criminisi, Perez and Toyama 2004, confidence term only):
-    # from the hole's edge inward, each --patch x --patch window (21 by default) takes the best-matching real window of the original's own water
+    # from the hole's edge inward, each --patch x --patch window (15 by default) takes the best-matching real window of the original's own water
     # (sum of squared differences over its known texels, among sources within 120 rows so the water keeps its depth from
     # top to bottom; --topk > 1 picks one of the best k by a private seeded generator) and copies its texels into the hole unchanged. No
     # smoothing: the bubbles, rims and sparkles are the original's own pixels.
@@ -79,6 +79,9 @@ if a.fill == 'exemplar':
             d = rng.random(len(idx))
         best = idx[np.argsort(d)[:max(1, a.topk)]]; pick = best[rng.integers(len(best))]
         newp = ~kn
+        if a.feather > 0:   # the texels an earlier window filled (never the original's own) blended with this one: no square seams
+            ov = kn & ~valid[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P)
+            win[ov] = win[ov] * (1 - a.feather) + src[pick][ov] * a.feather
         win[newp] = src[pick][newp]
         img[ty - R:ty + R + 1, tx - R:tx + R + 1] = win.reshape(P, P, 3)
         cval = float(cv2.boxFilter(conf, -1, (P, P), normalize=True, borderType=cv2.BORDER_CONSTANT)[ty, tx])
