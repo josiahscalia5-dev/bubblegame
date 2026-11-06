@@ -561,3 +561,5 @@ Before capturing, the ablation format, so I can hide each bubble layer on its ow
 
 Entries are either object ids or patterns matched against the object's path. Listing every bubble-like layer the step 6 frame draws, from its census:
 
+The frames job is still running in the background. The rollback and test-tune frames already exist, so I'll check those proofs now:
+
