@@ -615,3 +615,19 @@ While those run, I'll draft the step 7 record. The main tree has to stay at step
 
 Step 6's straight video is at 271 of 300 frames. Waiting for the videos and the gameplay checks to report.
 
+---
+
+### Automatic notice · 2026-11-06 05:49 UTC
+
+_Background command "Run gameplay checks for focus and the normal game" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 05:50 UTC
+
+The normal game is missing one of the interface elements this check reads. Let me see which ones the normal game has:
+
+The main build is byte-identical to the tested one (`57b06911…`). Committing step 7 now: the change, its tests and its evidence. The videos follow in the next commit.
+
+Step 7's game files are in that commit (`bd8d49e`). Now the straight-driving video in three panels, your original beside step 6 and step 7, with labels:
+
