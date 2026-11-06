@@ -210,3 +210,80 @@ While the review, tests and recordings run, I'll write R6's README.
 
 Recording and tests are running. I'll commit R7's code and the evidence so far:
 
+While the tests run, I'll draft R7's README with the measured results; the art director's verdict and the test results go in when they arrive.
+
+Saved and pushed: commit `040c46a`. Still running in the background: the art director's review of R6 and R7, the gameplay tests (`s3_func` and `r2_func` for R7, and `r2_func` reruns for R5 and the accepted build), and R7's straight and steering videos. I'll finish the report as soon as they're in.
+
+---
+
+### Automatic notice · 2026-11-06 19:40 UTC
+
+_Agent "Strict verdict on water R6/R7" finished_
+
+---
+
+### Claude · 2026-11-06 19:41 UTC
+
+The art director's verdict: **present R7.** It keeps all of R6's start-frame gains with nothing worse, and it's the only candidate whose moving frames aren't white-clumped. It's still paler and softer than your original, so "darker" isn't met yet.
+
+The flaws it names:
+- a small see-through window at her right paw;
+- the waterline sitting lower on her while moving;
+- the hard cut edge and a violet fringe;
+- the blue drops piling into soft discs.
+
+I'll save the verdict and its crops, then check the tests and videos.
+
+While the tests and videos finish, I'll update R7's README with the verdict and the corrected / remaining checklist, then `HANDOFF.md` and `CLAUDE.md`.
+
+Pushed: commit `270b530`. While the videos record, I'll check the main gameplay test that already finished, `s3_func` for R7, against R3c's earlier report:
+
+I've committed R6 and R7 as new test switches. R7 (`?s3=intunnel,water7`) is the one to judge. Nothing is merged: the accepted `?s3=intunnel` renders identically to the pixel, at the start and moving. R7's moving videos and one of its two gameplay checks are still running, and I'll add them when they finish.
+
+**What was wrong at the source:**
+1. **Hard cut and zigzag:** the water's top edge in front of her was its own geometric crest, 10 to 60 px higher on her body than your original's water line. Under it, the water drew a filled-in pale patch where your original has her body.
+2. **Pale bottom water:** leftover soap suds and foam bubbles from the old washing-machine opening were still drawn over the start as milky rings. The water underneath already matched your original's blue.
+3. **White clumps while moving:** a white spray effect from an earlier round throws up to 450 bright droplets a second round her, and the glow turns them into white beads.
+
+**What changed (nothing added, the character model untouched):**
+- **R6:** the water is cut along your original's own outline of her body, so the original's rounded lobes become the water's edge and her round fur silhouette shows down to it. The old suds are hidden.
+- **R7, the one refinement:** the same spray is drawn as clear blue drops with small blue-white glints. The amount, timing and gameplay randomness are unchanged.
+
+**Measured (the band of water at her base):**
+
+| | saturated blue | white | mean saturation |
+|---|---|---|---|
+| original | 19.6 % | 18.6 % | 0.35 |
+| accepted, start | 17.5 % | 14.4 % | 0.37 |
+| R7, start | 20.3 % | 20.6 % | 0.34 |
+| R6, 1 s into the run | 11.8 % | 37.1 % | 0.26 |
+| R7, 1 s into the run | 14.9 % | 17.5 % | 0.33 |
+
+- The bottom water between the buttons went from 36.6 % to 48.6 % saturated blue (original 53.5 %).
+- On the perceptual difference score (LPIPS, lower is closer), the foreground water improves from 0.656 to 0.524 at the start. While moving it's about level with the accepted build.
+
+**Art director's verdict:** present R7. It is clearly closer than the accepted build at the start and while moving. But it is still paler and softer than your original, so "darker" is not met yet.
+
+**Still different:**
+- **Paler and hazier:** your original's dark cobalt pockets are missing. The water face alone is nearly as dark as your original, so the glow (bloom) and the layers drawn over it are what lighten it.
+- **Edge:** the cut is hard-edged, with a thin violet fringe under her right side.
+- **Right paw:** a small see-through gap, because your original's paw is wider than her model.
+- **Moving:** the waterline sits 30 to 50 px lower on her, and during the waiting look-back her mouth now shows.
+- **Drops:** they bunch into soft blue discs.
+- **Other layers, unchanged:** pink sparkle stars over her at 2 s, and white streaks on the floor water behind her.
+
+**Gameplay checks:**
+- **Main check passed** (lanes, jump, coins, sock, keyboard start, the tunnel, console). It matches the earlier candidate's report, apart from 2 fewer draw calls from the hidden suds.
+- **Hearts:** passed.
+- **Pause, Bubble Blast and Turbo Spin:** not confirmed yet. That run timed out reloading the page while a recording was using the machine, so I'll rerun it once the videos finish.
+
+If you approve, the next single fix I'd suggest is the glow and haze over the water face, the main cause of the remaining paleness.
+
+Commit `270b530` is on `ccr-55a78d65-d26sa9`; the write-up is in `Previews/WebDemo/screen4_round9_match/49_water_r7/README.md`.
+
+Files are in `Previews/WebDemo/screen4_round9_match/49_water_r7/sheets/`:
+- 01_FULLRES_original_accepted_R6_R7.jpg
+- 02_closeup_water_start_x1.4.jpg
+- 03_closeup_water_moving_T1.0.jpg
+- 03_closeup_water_moving_T2.0.jpg
+

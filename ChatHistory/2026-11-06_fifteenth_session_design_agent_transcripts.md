@@ -290,5 +290,69 @@ I'll look at the sheets first.
 
 [Image: original 2428x363, displayed at 2000x299. Multiply coordinates by 1.21 to map to original image.]
 
+- 19:38 `Bash`: Find water5/6/7 code, textures and R6 README
+- 19:39 `Bash`: Check face texture resolution and water6/7 code hooks
+- 19:39 `Bash`: Inspect the face shader's sampling and flow
+- 19:39 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_water2.js
+- 19:39 `Bash`: Compare face alone, ablations and texture against the original's lower water
+**Agent** (19:40 UTC):
 
-_49 tool steps._
+**Strict review: R5, R6 and R7 against the original (`?s3=intunnel,water6` and `water7`)**
+
+R7 is clearly closer to the original than the accepted build, at the start and while moving. It is still paler and softer than the original, so the "darker" part of the brief is not met yet. Coordinates below are in the original's 767 x 1536 frame. I'm only confirming the 0-pixel identity claim from your `identity_proof_raw.txt`, not from a new capture of my own.
+
+**1. Is R6 closer than the accepted build and than R5?**
+- **Against the accepted build, at the start: yes, clearly.**
+  - **Contact edge:** under her (x 180-530, y 1240-1340) the water's top edge now follows the original's own lobes: the lavender dome at x 200-300, the lobe at x 330-450 and the corner at x 450-510. The accepted build has a nearly level crest across her at about y 1255-1275, with white hook-shaped streaks.
+  - **Lower water:** the original's mix of mid-blue, lavender and white lobes replaces the accepted build's even sky-blue sheet. Between the buttons it is far more saturated.
+  - **Colour:** richer in hue, but not darker. Overall brightness is the same.
+  - **Sharpness:** softer than the accepted build.
+- **Against the accepted build, moving: no.** The white bead clumps beside her make R6 whiter than the accepted build.
+- **Against R5: yes, clearly, at the start.**
+  - R5's straight crest sat 10-30 px higher across her body (x 300-450). R6 drops it to the lobe line, so her rounded lower outline shows.
+  - R5's milky bubble rings at the bottom (x 40-700, y 1370-1430) are gone.
+  - Colour is only slightly better. Moving, R6 looks the same as R5.
+
+**2. Is R7 closer than R6 while moving, and is anything worse at the start?**
+- **Moving: yes, clearly.** The white bead clumps on the left (x 0-200, y 1150-1420) and right (x 540-767, y 1130-1420) become blue. The water round her now reads blue at +1 s and +2 s.
+- **Start: nothing is worse.** Only a few drops differ from R6 (3,320 pixels).
+
+**3. Things that look less like the original in R6/R7** (all present in both; R7's drops are R7 only)
+- **Right side, a window beside her:** at x 520-560, y 1220-1320 the cut removes the face where the original's wider right paw is, but her model is narrower there. The scene behind shows through: white-blue at the start, cyan with a blue streak at +1 s (x 515-545, y 1300-1340).
+- **Moving, the waterline sits too low on her:** about 30-50 px below the original's line. The bottom of her fur is at y 1303-1323 for x 225-400 and about 1350 for x 450-500. This exposes a pointed, jagged fur tuft hanging to y ~1365 at x 465-505.
+- **Moving, her face shows at the waterline:** in the R7 run (frame 36), her eyes are visible at x 245-280 and 355-395 (y 1220-1270), and her open mouth at x 310-345 (y 1265-1290). The accepted build and R5 already show the eyes; R6/R7's lower cut adds the mouth. The original shows only her back.
+- **The cut itself:** a hard pixel edge with serrated fur tips along x 300-470, and no shading where she meets the water. The original darkens her fur to deep magenta there and lays glossy white lobe rims over it.
+- **Violet fringe:** a purple wedge under her right side (x 455-505, y 1310-1345). It is the original's dark fur-shadow pixels, which next to her light-pink fur read as a stain.
+- **R7's drops:** they bunch into piles of overlapping soft pale-blue discs (x 560-720, y 1250-1400 and x 0-200, y 1200-1420). The glints are barely visible. The original has curved white splash strokes and a few defined bubbles instead.
+
+**4. Verdict: present R7.** It keeps every start-frame gain of R6 with nothing worse, and is the only candidate whose moving frames are no longer white-clumped. Tell the user plainly that it is closer but still paler and softer than the original; it is not yet the darker water they asked for.
+
+**5. Remaining differences in the water round her, ranked (and the likely layer)**
+1. **Too pale and hazy; the original's dark cobalt pockets are missing** (for example x 330 y 1345, x 640 y 1330, and the strong blue at left, x 20-150). Most of the lightening comes from bloom and what is drawn over the water face: the face drawn alone is about as dark as the original, and the finished frame is lighter. The face texture itself is also slightly light.
+2. **Soft, low-contrast forms:** the lobe rims and highlight dots don't stand out. The texture is the original at 1:1 and holds as much fine detail as the original, so the softness comes from the same haze lowering contrast. It also looks softer next to her hard-edged fur.
+3. **Contact without shading, and a hard cut edge:** the cut threshold `WATER6.cut` 0.5 gives no rim. The missing fur darkening is in her material, which is out of scope for now.
+4. **Right-side window (x 520-560):** the body mask (`foreground_water_original_r6_body.png`) is wider than her model.
+5. **The waterline drops 30-50 px while moving, exposing the tuft and her face:** her model's roll and bob against the face's cut.
+6. **Drops as disc clusters:** `water7DropFragment` (`WATER7.body` 0.22 and `rim` 0.3 give filled discs), with the emission unchanged.
+7. **Violet fringe:** the original's pixels restored in the 11 px ring of `foreground_water_original_r6.png`.
+8. **Pink four-point sparkle stars over her and the water at +2 s** (x 300-480, y 1150-1330), in every build: the game's sparkle effect, unchanged by R7.
+
+Not checked: the Pixel 7 framing (no captures in the evidence) and steering frames for R7.
+
+**Measured, my own script** (water band x 60-700, y 1250-1420, pink and gold left out):
+
+| | White, start | White, +1 s | White, +2 s | Darker than luminance 0.6 (start) | Deep cobalt |
+|---|---|---|---|---|---|
+| Original | 17.7 % | | | 18.0 % | 4.5 % |
+| Accepted | 12.8 % | 28.1 % | 35.2 % | 8.7 % | 0.0 % |
+| R5 | 21.1 % | 37.2 % | 41.4 % | 9.7 % | 1.0 % |
+| R6 | 19.0 % | 37.7 % | 39.6 % | 11.5 % | 1.1 % |
+| R7 | 18.9 % | 16.4 % | 18.7 % | 11.9 % | 1.1 % |
+
+- R7's dark share falls to 9.3 % at +1 s and 7.4 % at +2 s.
+- Lower water strip (y 1330-1400): the face drawn alone has 14.9 % dark pixels (the original 15.9 %); the finished frame has 11.4 %. In R5's ablation, bloom alone was worth about 3 points.
+
+My crops are in `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/` (`foreground.png`, `cut_zoom.png`, `right_edge.png`, `eyes_zoom.png`, `r7_video.png`). They were saved alongside `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/contact_start.png`, `contact_T1.0.png`, `contact_T2.0.png`, `sides_T1.0.png`, `sides_T2.0.png` and `r6r7_start.png`, `r6r7_T1.0.png`, `r6r7_T2.0.png`.
+
+
+_54 tool steps._
