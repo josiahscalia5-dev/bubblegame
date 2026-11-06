@@ -1,6 +1,28 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-55a78d65-d26sa9`)
 
-## Newest (6 November, about 17:50-19:10 UTC): fourteenth and fifteenth sessions, water R3c -> R4 -> R5; R5 FOR THE USER'S APPROVAL
+## Newest (6 November, about 19:20-20:30 UTC): fifteenth session, water R6 and R7; R7 (`?s3=intunnel,water7`) FOR THE USER'S APPROVAL
+
+- **The user's brief (about 19:20 UTC):** measurable progress on the foreground water round her now: darker, sharper, more
+  rounded, a clean irregular contact edge (no hard cut, zigzag or foam cushion), also while moving; fix it at the source;
+  nothing new added; one correction and at most one refinement; keep the accepted build.
+- **R6** (`water6`, `Previews/WebDemo/screen4_round9_match/48_water_r6/README.md`):
+  - the water face is cut where the ORIGINAL draws her body (`tools/screen4/derive_water_contact.py`: her outline and the
+    texture `foreground_water_original_r6*.png`), so the original's lobe outline is the water's top edge. The face's own
+    crest had sat 10-60 px higher on her body;
+  - the old opening's suds and foam bubbles (`opening.js`), which washed the bottom water out, are hidden.
+- **R7** (`water7`, `49_water_r7/README.md`): R6 + the game's spray (round3's kind-3 white spray, 450 a second, bloomed)
+  drawn as clear blue drops; emission and random sequences unchanged.
+- **Measured** (the band at her base; LPIPS by `region_compare.py`):
+  - start: saturated blue 17.5 % (accepted) -> 20.3 % (R7), against the original's 19.6;
+  - start, foreground water LPIPS: 0.656 -> 0.524;
+  - +1 s, white: 37.1 % (R6) -> 17.5 % (R7), against 18.6.
+- **The art director:** present R7; clearly closer than the accepted build at the start and moving; still paler and softer
+  than the original (bloom and haze over the face). Flaws: a small window at her right paw, the waterline lower on her while
+  moving, a hard cut edge, a violet fringe, drops as soft discs (`49_water_r7/art_director/verdict.md`).
+- **Identity:** the accepted `?s3=intunnel`, R5 and R6 are 0 pixels changed on the final bundle `46fad479`.
+- **Not merged.** Rollback: do not use `water7` / `water6`.
+
+## Earlier (6 November, about 17:50-19:10 UTC): fourteenth and fifteenth sessions, water R3c -> R4 -> R5; R5 FOR THE USER'S APPROVAL
 
 - **Branch:** `ccr-55a78d65-d26sa9` (it contains all of `ccr-ea1aad4b-wq5nrm`). The fifteenth session (a fresh container,
   session `1cadc793`) picked up where the fourteenth stopped, mid R5 comparison.

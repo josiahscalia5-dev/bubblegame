@@ -70,7 +70,10 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
     material takes the original's foreground water, `44_water_material/`) was judged moderately closer by the art director;
     `water3` (R3c, `45_water_r3/`) was not approved by the user (soft, stretched, pale); `water4` (R4: the texture's
     inpainted holes refilled from the original's own water, `46_water_r4/`) and `water5` (R5: R4 plus the texture's
-    registration, `47_water_r5/`; the art director: present it instead of R3c, "stretching fixed, still pale") wait for the
+    registration, `47_water_r5/`; the art director: present it instead of R3c, "stretching fixed, still pale"), `water6`
+    (R6: the face cut where the original draws her body, so the original's lobe outline is the contact edge; the opening's
+    suds hidden; `48_water_r6/`) and `water7` (R7, the newest: R6 plus the game's spray drawn as blue drops, not white
+    beads; `49_water_r7/`; the art director: present R7, closer but still paler and softer than the original) wait for the
     user. None of them is part of `intunnel` until the user approves.
   - `bt` (6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
     gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,

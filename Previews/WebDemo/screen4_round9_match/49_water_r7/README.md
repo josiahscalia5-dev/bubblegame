@@ -59,13 +59,41 @@ closer, dE the mean-colour CIEDE2000):
 - **Moving:** the water's colour mix is clearly closer (hist), LPIPS about level with the accepted build. The character
   zone is slightly worse by LPIPS: the sparkle stars over her and her turning pose dominate it in every build.
 
-## The art director
+## The art director (`art_director/verdict.md`)
 
-PENDING.
+- **R7 is clearly closer to the original than the accepted build, at the start and while moving,** but still paler and softer
+  than the original; "darker" is not met yet.
+- **R6 against the accepted build, at the start:** the contact edge now follows the original's own lobes (x 180-530,
+  y 1240-1340), where the accepted build has a nearly level crest with white hook streaks. The lower water has the
+  original's mid-blue, lavender and white lobes instead of an even sky-blue sheet. Richer in hue, not darker.
+- **R7 against R6:** clearly closer while moving (the white bead clumps beside her become blue); nothing worse at the start.
+- **Verdict:** present R7.
 
 ## Corrected / remaining
 
-PENDING (after the art director).
+- **Corrected:**
+  1. **The hard cut and the zigzag:** the water's top edge in front of her is the original's irregular lobe outline, and
+     her rounded lower body shows down to it. She sits on the water, not cut by a straight crest.
+  2. **The milky bubble rings over the bottom water** (the opening's suds): gone; the bottom water is 48.6 % saturated blue
+     (36.6 before, the original 53.5).
+  3. **The white bead cushion beside her while moving** (the kind-3 spray): now blue drops; white at her base 17.5 % at
+     +1 s (37.1 before, the original 18.6).
+  4. **The band at her base matches the original's colour mix** within about 2 points per class at the start.
+  5. **The water's colour mix while moving is closer** (hist 0.411 -> 0.333 at +1 s, 0.370 -> 0.313 at +2 s).
+- **Remaining (the art director's ranking, with the likely layer):**
+  1. **Still paler and hazier than the original;** its dark cobalt pockets are missing (dark pixels 11.9 % against 18.0).
+     The face alone is nearly as dark as the original, so it is bloom and the layers drawn over the face.
+  2. **Soft, low-contrast forms** (the same haze).
+  3. **The contact has no shading, and the cut edge is hard** (`WATER6.cut`; her fur's darkening is in her material).
+  4. **A small window at her right paw** (x 520-560): the body mask is wider than her model there.
+  5. **Moving, the waterline sits 30-50 px lower on her** than the original's line, and during the waiting look-back her
+     mouth now shows.
+  6. **R7's drops bunch into soft pale-blue discs.**
+  7. **A violet fringe** under her right side (x 455-505).
+  8. **Pink sparkle stars over her at +2 s**, in every build.
+  9. **Behind her:** the floor's white crest streaks (`floorFx.streak`, `tunnel_r9_focus.js`), in every build.
+- **Proposed next, for the user's go (one at a time):** the bloom and haze over the water face (item 1), then the right-paw
+  window and the fringe (items 4 and 7, mask only).
 
 ## Tests
 
