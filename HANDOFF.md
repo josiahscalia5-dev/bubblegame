@@ -1,6 +1,21 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-ea1aad4b-wq5nrm`)
 
-## Newest (6 November, about 16:25-17:00 UTC): the curling-crest experiment (rejected) and the session-start autosave hook
+## Newest (6 November, about 17:00-17:40 UTC): `?s3=intunnel,water2`, the existing water's material corrected; FOR THE USER'S APPROVAL
+
+- **The user's brief:** stop adding objects; correct the existing water itself.
+- **The investigation:** `heroSwell`'s own face material makes the pale flat water. Its palette is the game's two biggest
+  clusters at her base; hiding it halves the icy pale blue; our white is its comma arcs. Bloom, grade, floor and extras are
+  1-2.5 points each.
+- **The candidate:** the face takes the ORIGINAL's foreground water as a texture in her water frame (projected through the
+  start camera, so it rides with her), the comma arcs off. No new objects.
+  - Measured closer: lavender 0.3 -> 10.7 % (15.3), white 14.2 -> 18.7 (18.6), LPIPS 0.656 -> 0.613 and 0.593 -> 0.557.
+  - The art director: "moderately closer, visible by eye"; present for approval, judged in the video.
+  - Remaining: the bank's shape (the crest geometry); the icy pale blue still 38.7 %.
+  - Evidence: `Previews/WebDemo/screen4_round9_match/44_water_material/README.md`.
+  - NOT merged into `?s3=intunnel` until the user approves.
+- **Tripo / Meshy:** not used, no credits (not suited to animated water).
+
+## Earlier (6 November, about 16:25-17:00 UTC): the curling-crest experiment (rejected) and the session-start autosave hook
 
 - **The user approved one experiment:** real curling crest geometry (`spCurls`) round her, `?s3=intunnel,crest`.
   - C1: edge-on slivers. C2: standing frosted fins.

@@ -1,0 +1,360 @@
+{
+ "accepted": {
+  "1 tunnel rings": {
+   "lpips": 0.372,
+   "ssim": 0.367,
+   "dE": 0.6,
+   "hist": 0.245,
+   "game": {
+    "sat_blue": 32.4,
+    "white": 4.9,
+    "pink": 4.7,
+    "lavender": 19.0
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.445,
+   "ssim": 0.359,
+   "dE": 4.1,
+   "hist": 0.31,
+   "game": {
+    "sat_blue": 4.9,
+    "white": 22.9,
+    "pink": 1.4,
+    "lavender": 14.3
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.656,
+   "ssim": 0.375,
+   "dE": 2.1,
+   "hist": 0.381,
+   "game": {
+    "sat_blue": 18.7,
+    "white": 15.1,
+    "pink": 5.8,
+    "lavender": 0.6
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.593,
+   "ssim": 0.131,
+   "dE": 8.9,
+   "hist": 0.628,
+   "game": {
+    "sat_blue": 11.3,
+    "white": 11.2,
+    "pink": 30.2,
+    "lavender": 0.3
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.698,
+    "game": {
+     "top": 0.693,
+     "base": 0.852,
+     "width": 0.475,
+     "area": 3.88
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.455,
+   "ssim": 0.167,
+   "dE": 1.9,
+   "hist": 0.415,
+   "game": {
+    "sat_blue": 16.2,
+    "white": 12.2,
+    "pink": 19.2,
+    "lavender": 16.5
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.557,
+   "ssim": 0.308,
+   "dE": 5.9,
+   "hist": 0.417,
+   "game": {
+    "sat_blue": 10.4,
+    "white": 16.4,
+    "pink": 0.9,
+    "lavender": 6.6
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.442,
+   "ssim": 0.387,
+   "dE": 3.7,
+   "hist": 0.333,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 4.2,
+    "pink": 2.4,
+    "lavender": 20.8
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.281,
+   "ssim": 0.184,
+   "dE": 2.0,
+   "hist": 0.327,
+   "game": {
+    "sat_blue": 23.5,
+    "white": 11.4,
+    "pink": 9.6,
+    "lavender": 8.7
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.259,
+   "ssim": 0.206,
+   "dE": 1.8,
+   "hist": 0.326,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 10.7,
+    "pink": 8.5,
+    "lavender": 8.1
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "water2": {
+  "1 tunnel rings": {
+   "lpips": 0.372,
+   "ssim": 0.367,
+   "dE": 0.6,
+   "hist": 0.245,
+   "game": {
+    "sat_blue": 32.4,
+    "white": 4.9,
+    "pink": 4.7,
+    "lavender": 19.0
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.445,
+   "ssim": 0.359,
+   "dE": 4.1,
+   "hist": 0.31,
+   "game": {
+    "sat_blue": 4.9,
+    "white": 22.8,
+    "pink": 1.4,
+    "lavender": 14.3
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.613,
+   "ssim": 0.392,
+   "dE": 4.0,
+   "hist": 0.301,
+   "game": {
+    "sat_blue": 12.3,
+    "white": 18.0,
+    "pink": 5.8,
+    "lavender": 4.9
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.557,
+   "ssim": 0.128,
+   "dE": 7.8,
+   "hist": 0.589,
+   "game": {
+    "sat_blue": 9.5,
+    "white": 13.0,
+    "pink": 30.2,
+    "lavender": 5.3
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.698,
+    "game": {
+     "top": 0.693,
+     "base": 0.852,
+     "width": 0.475,
+     "area": 3.88
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.455,
+   "ssim": 0.167,
+   "dE": 1.9,
+   "hist": 0.415,
+   "game": {
+    "sat_blue": 16.2,
+    "white": 12.2,
+    "pink": 19.2,
+    "lavender": 16.5
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.555,
+   "ssim": 0.309,
+   "dE": 6.0,
+   "hist": 0.416,
+   "game": {
+    "sat_blue": 10.5,
+    "white": 16.3,
+    "pink": 0.9,
+    "lavender": 6.7
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.442,
+   "ssim": 0.387,
+   "dE": 3.7,
+   "hist": 0.333,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 4.2,
+    "pink": 2.4,
+    "lavender": 20.8
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.267,
+   "ssim": 0.195,
+   "dE": 1.5,
+   "hist": 0.322,
+   "game": {
+    "sat_blue": 22.4,
+    "white": 12.0,
+    "pink": 9.6,
+    "lavender": 9.7
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.245,
+   "ssim": 0.219,
+   "dE": 1.3,
+   "hist": 0.32,
+   "game": {
+    "sat_blue": 22.7,
+    "white": 11.1,
+    "pink": 8.5,
+    "lavender": 8.9
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ }
+}

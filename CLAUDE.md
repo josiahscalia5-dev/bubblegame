@@ -66,7 +66,9 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
     opening camera `S3.cine` off). Evidence: `Previews/WebDemo/screen4_round9_match/40_intunnel_start/README.md`. The bubble
     domes (`domes` flag, `tunnel_s4_domes.js`) were REJECTED twice by the art director and are not in it
     (`41_bubble_domes/`); the water bank and the lobe-drawing water face (`bank`, `wave`) were rejected too (`42_water_bank/`);
-    next proposed: real curling crest meshes at her sides (for the user's decision).
+    the curling crests (`crest`) were rejected too (`43_curling_crests/`). `water2` (`tunnel_s4_water2.js`: heroSwell's own face
+    material takes the original's foreground water, `44_water_material/`) was judged moderately closer by the art director
+    and is waiting for the user's approval; it is NOT part of `intunnel` until then.
   - `bt` (6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
     gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,
     unchanged), the wall brushes 0.66, the sock's toe blue. Evidence and the proof that it is step 8 plus only these:
