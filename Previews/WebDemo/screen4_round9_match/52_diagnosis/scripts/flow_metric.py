@@ -10,8 +10,11 @@ Dense optical flow (OpenCV Farneback) between consecutive frames of a gameplay c
              within her width plus 6 % of the frame each side;
     beside:  the same rows, 6-22 % of the frame outside her width on each side;
     below:   from 8 % to 18 % of the frame below her lowest pink row, her width plus 10 % each side.
-Prints, per zone, the median over the pairs of the zone's median relative speed (px per second of a 1536-px-tall frame)
-and the share of the zone's pixels moving more than 60 px/s relative to her. A water texture pinned to her reads ~0."""
+Prints, per zone (px per second of a 1536-px-tall frame): STREAMING, the time-mean over the pairs of the zone's median
+flow vector relative to her (x mirrored left of her centre, so +x is outward on both sides; +y is down the screen, toward
+the camera): water flowing past her as she travels has a steady direction, so this is large; a pad that rides with her and
+only wobbles against her (her bob) averages out, so this is small; OSCILLATION, the rms of the vectors about that mean (the
+wobble); and the median relative speed."""
 import sys, numpy as np, cv2
 path, t0, t1 = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]); label = sys.argv[4] if len(sys.argv) > 4 else path
 cap = cv2.VideoCapture(path); fps = cap.get(cv2.CAP_PROP_FPS)
@@ -37,7 +40,7 @@ def keep_mask(bgr):
     keep = ~((((h >= 290) | (h <= 15)) & (s > 0.3)) | ((h > 20) & (h < 65) & (s > 0.35)))
     yy, xx = np.mgrid[0:H, 0:W]; keep &= ~((yy / H > 0.885) & ((xx / W < 0.37) | (xx / W > 0.66)))
     return keep
-res = {'contact': [], 'beside': [], 'below': []}; mov = {'contact': [], 'beside': [], 'below': []}; her_v = []
+res = {'contact': [], 'beside': [], 'below': []}; mov = {'contact': [], 'beside': [], 'below': []}; vec = {'contact': [], 'beside': [], 'below': []}; her_v = []
 for a, b in zip(frames[:-1], frames[1:]):
     ga, gb = cv2.cvtColor(a, cv2.COLOR_BGR2GRAY), cv2.cvtColor(b, cv2.COLOR_BGR2GRAY)
     fl = cv2.calcOpticalFlowFarneback(ga, gb, None, 0.5, 4, 21, 3, 7, 1.5, 0) * fps * k   # px/s of a 1536 frame
@@ -54,8 +57,15 @@ for a, b in zip(frames[:-1], frames[1:]):
     zs = box(bot - 0.12 * hh, bot + 0.08 * H, x0 - 0.22 * W, x0 - 0.06 * W) | box(bot - 0.12 * hh, bot + 0.08 * H, x1 + 0.06 * W, x1 + 0.22 * W)
     zb = box(bot + 0.08 * H, bot + 0.18 * H, x0 - 0.10 * W, x1 + 0.10 * W)
     for nm, z in (('contact', zc), ('beside', zs), ('below', zb)):
-        if z.sum() > 50: res[nm].append(float(np.median(spd[z]))); mov[nm].append(float((spd[z] > 60).mean()))
+        if z.sum() > 50:
+            res[nm].append(float(np.median(spd[z]))); mov[nm].append(float((spd[z] > 60).mean()))
+            # the zone's median flow relative to her, x mirrored left of her centre (so +x is outward on both sides)
+            sg = np.where(np.arange(W)[None, :] < (x0 + x1) / 2, -1.0, 1.0)
+            vec[nm].append([float(np.median((rel[..., 0] * sg)[z])), float(np.median(rel[..., 1][z]))])
 hv = np.array(her_v)
 print(f'{label}: {len(frames) - 1} frame pairs, {t0}-{t1} s | her own screen motion: median |v| {np.median(np.hypot(hv[:, 0], hv[:, 1])):.0f} px/s')
 for nm in res:
-    if res[nm]: print(f'  {nm:8s} water relative to her: median {np.median(res[nm]):6.0f} px/s | moving > 60 px/s: {np.median(mov[nm]) * 100:5.1f} % of the zone')
+    if res[nm]:
+        v = np.array(vec[nm]); m = v.mean(0); osc = np.sqrt(((v - m) ** 2).sum(1).mean())
+        print(f'  {nm:8s} relative to her: STREAMING (time-mean vector) outward {m[0]:+5.0f}, down {m[1]:+5.0f} = {np.hypot(*m):4.0f} px/s'
+              f' | oscillation about it (rms) {osc:4.0f} px/s | median speed {np.median(res[nm]):4.0f} px/s')
