@@ -391,5 +391,48 @@ Address this before completing your current task.
    - **Still differs: it is soft and smeared.** The froth has vertical streaks, and the domes have no crisp white rims or sculpted shape, so it reads like an out-of-focus copy. Likely cause: the 767-pixel original is magnified across the swell, then smoothed by texture filtering and stretched by the flow distortion.
    - **Still differs: saturated blue is 14.8% against 19.6%.** Likely cause: the swell's transparency over the pale floor, plus bloom.
 
+**Lead → agent** (17:41 UTC):
 
-_46 tool steps._
+The coordinator sent a message while you were working:
+R3 (`?s3=intunnel,water3`, on top of R2; the user's brief: R2 still too soft, smeared and under-saturated; correct it in the existing material, sampling and compositing, no new objects). Diagnosis (45_water_r3/diag/): the face's extras over the original's texture (sparkle, white rim pieces, bubble rings, the grazing sheen, specular) and the flow distortion cost ~2 points of saturated blue; bloom ~1; the smear is streaks from the inpainted strip under her (her fur's place in the original), not missing detail (fine-detail energy there: original 25.3, R2 97.5). R3: that hole filled by mirroring the original's own water about the hole's edge, the face extras off where the texture shows, distortion almost off, a mild colour lift (saturation 1.1) against the bloom's haze.
+Sheets: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/sheets/01_FULLRES_original_accepted_r3.jpg, 02_closeup_water_x1.4.jpg (ORIGINAL | ACCEPTED | R2 | R3), 03_moving_accepted_vs_r3.jpg.
+Band at her base (icy / saturated / mid / white / lavender / mean sat): original 27.5 / 19.6 / 11.4 / 18.6 / 15.3 / 0.35; R2 32.4 / 14.8 / 10.0 / 21.2 / 16.0 / 0.32; R3 28.4 / 18.0 / 11.1 / 19.0 / 16.5 / 0.35. LPIPS foreground water R2 0.589 -> R3 0.571, contact 0.568 -> 0.557.
+In under 130 words, strictly against the original: is R3 clearly closer than R2 (and than the accepted build)? Keep R3 as the candidate for the user's approval, or stay with R2? Any artifact that should stop it (I see a mirrored violet blotch under her right side)?
+
+Address this before completing your current task.
+
+- 17:41 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/sheets/02_closeup_water_x1.4.jpg
+**Lead → agent** (17:41 UTC):
+
+[Image: original 3446x543, displayed at 2000x315. Multiply coordinates by 1.72 to map to original image.]
+
+- 17:41 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/sheets/03_moving_accepted_vs_r3.jpg
+**Lead → agent** (17:41 UTC):
+
+[Image: original 3098x716, displayed at 2000x462. Multiply coordinates by 1.55 to map to original image.]
+
+- 17:41 `Bash`: List the R3 evidence folders
+- 17:41 `Bash`: Zoom on R2 and R3 base bands, and R3 moving frames
+- 17:41 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r3_zoom.png
+**Lead → agent** (17:41 UTC):
+
+[Image: original 2273x322, displayed at 2000x283. Multiply coordinates by 1.14 to map to original image.]
+
+- 17:41 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r3_moving.png
+**Agent** (17:42 UTC):
+
+1. **R3 is not clearly closer than R2 by eye.** Both R2 and R3 are clearly closer than the accepted build.
+   - Its colour is genuinely closer: saturated blue 18.0% against 14.8% (original 19.6%), icy 28.4% (original 27.5%), and less vertical streaking.
+   - But the mirroring adds man-made artefacts the original does not have.
+2. **Yes, stop it; do not present R3 as it is.** Keep R2 as the candidate until these are fixed:
+   - a hard vertical seam on the mirror line, from her base down to the buttons, which rides with her at +2.0 s;
+   - the mirrored violet blotch under her right side, with a straight left edge;
+   - a kaleidoscope-like symmetry in the froth.
+
+   The straight horizontal top edge of the texture across her base is in both R2 and R3.
+3. **Fix:** cross-fade the fill over about 15–20 pixels at the seam, or fill the hole with offset patches of the original's own water rather than a mirror. Then present R3.
+
+Frames checked: `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/r3/start/`, `T1.0/` and `T2.0/`.
+
+
+_52 tool steps._

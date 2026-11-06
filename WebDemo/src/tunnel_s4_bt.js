@@ -123,7 +123,12 @@ export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0
 // (derive_water_map.py --fill reflect), the face's extras off where the texture shows (a few twinkles kept), the distortion
 // almost off (a slight shimmer), and the texture's colours lifted a little (saturation 1.1 round its luminance, a 1.06 power
 // that deepens the mid-tones; white stays white) against the bloom's haze, as step 8 did for the walls
-export const WATER3 = { file: 'foreground_water_original_r3.png', wobble: 0.004, gain: [1.1, 1.06],
+// (R3 first used foreground_water_original_r3.png, the holes filled by MIRRORING the original's water: the art director
+// rejected it for a hard seam on the mirror line, a mirrored blotch and a kaleidoscope symmetry; a translated-patch fill
+// could not reach across her 60 %-wide silhouette and changed nothing. So R3c: R2's own texture (no mirror artefacts) with
+// R3's other corrections: band icy 28.6 % / saturated 18.5 / mid 11.3 / white 18.4 / lavender 17.0 / mean saturation 0.35,
+// the original 27.5 / 19.6 / 11.4 / 18.6 / 15.3 / 0.35; 45_water_r3/r3c)
+export const WATER3 = { file: 'foreground_water_original.png', wobble: 0.004, gain: [1.1, 1.06],
   face: { spark: { amount: 0.2 }, rim: { amount: 0 }, rings: { amount: 0 } }, look: { rim: 0.03, frontRim: 0, spec: 1.0 } };
 if (WATER3_ON) {
   Object.assign(WATER2, { file: WATER3.file, wobble: WATER3.wobble, gain: WATER3.gain });

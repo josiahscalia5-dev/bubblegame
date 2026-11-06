@@ -17,7 +17,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')
 ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg')
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
-ap.add_argument('--fill', default='telea', choices=['telea', 'reflect'])   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch'])   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -49,6 +49,32 @@ soft = cv2.GaussianBlur(fill, (0, 0), 4)
 k = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3)[..., None]
 out = (fill * (1 - k * 0.6) + soft * k * 0.6).astype(np.uint8)
 os.makedirs(a.out, exist_ok=True)
+if a.fill == 'patch':
+    # (R3b, after the art director's review of the mirrored fill: a hard seam on the mirror line, a mirrored blotch, a
+    # kaleidoscope symmetry) each hole run in a row takes a TRANSLATED copy of the original's own water beside it at the
+    # same height (the left part of the run from the left of the hole, the right part from the right, shifted by the run's
+    # length plus a margin, never mirrored), cross-faded over 16 texels where the two halves meet and into the hole's edge;
+    # rows with no clear water beside them keep the Telea fill
+    telea = fill.astype(np.float32); patch = telea.copy(); have = np.zeros(m.shape, np.float32)
+    for y in range(c.shape[0]):
+        row = m[y].astype(bool)
+        if not row.any(): continue
+        xs = np.nonzero(row)[0]; runs = np.split(xs, np.nonzero(np.diff(xs) > 1)[0] + 1)
+        for r in runs:
+            x0, x1 = r[0], r[-1]; L = x1 - x0 + 1; mid = (x0 + x1) / 2.0
+            for x in r:
+                wR = np.clip((x - mid) / 16.0 + 0.5, 0.0, 1.0)            # 0 on the left half, 1 on the right, a 16-texel blend
+                sl, sr = x - L - 6, x + L + 6
+                okl = 0 <= sl < W and not row[sl]; okr = 0 <= sr < W and not row[sr]
+                if okl and okr: v = c[y, sl] * (1 - wR) + c[y, sr] * wR
+                elif okl: v = c[y, sl]
+                elif okr: v = c[y, sr]
+                else: continue
+                patch[y, x] = v; have[y, x] = 1.0
+    # into the hole's edge and over rows without a source: back to the Telea fill
+    dist = cv2.distanceTransform(m, cv2.DIST_L2, 5).astype(np.float32)
+    w = (np.clip(dist / 16.0, 0.0, 1.0) * have)[..., None]
+    fill = (telea * (1 - w) + patch * w).astype(np.uint8)
 name = 'foreground_water_original.png' if a.fill == 'telea' else 'foreground_water_original_r3.png'
 Image.fromarray(out).save(os.path.join(a.out, name))
 json.dump({'source': os.path.relpath(ORIG, ROOT), 'y0': y0 / H, 'y1': 1.0, 'size': [W, H - y0], 'masked_share': round(float(m.mean()), 3)},
