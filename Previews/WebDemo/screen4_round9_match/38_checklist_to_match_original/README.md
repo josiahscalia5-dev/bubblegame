@@ -14,7 +14,26 @@ out); the user's standard is at least 8.5 / 10 by eye with the game fully playab
 - [x] Step 4: the floor's pale wash off.
 - [x] Step 6: the far rings stay concentric where the path bends (no smeared lavender band).
 - [x] Step 7: the bubble veil (160 tunnel bubbles -> 40, along the walls only).
-- [ ] Step 8: the original's own white splashes on the walls, at its cobalt (tests running; see `../37_step8_white_splashes/`).
+- [x] Step 8 (`2a5cda2`): the original's own white splashes on the walls, at its cobalt (`../37_step8_white_splashes/`).
+
+## Screen 3, the opening (the user's directive of 6 November, about 10:20 UTC; target: the AUTHENTIC
+`Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/01_APPROVED_SCREEN_3_OPENING.jpg`; the
+kit's AI concept images are NOT targets; evidence `Previews/WebDemo/screen3_opening_authentic/`)
+- [x] The authentic Screen 3 loaded and checked; the AI concepts excluded.
+- [ ] **S3-1 The castle visible** (tests running): the drum's 14 m lavender face covered the whole opening; cut to 4.5 m, the
+      castle (towers, crown facade, gold trim) shows from Tap to Start to 2.5 s; inside the tunnel from 3.0 s pixel-identical.
+- [ ] **S3-2 The gold washer doorway:** large, thick glowing gold rim with strong blue tunnel depth through it; the game's is a
+      slim rim, a dark purple ring round it and a pale glass-ball look inside.
+- [ ] **S3-3 The slide water:** vivid turquoise with irregular white-aqua splashes and sparkle (the game: a smooth slide with a
+      hexagonal net pattern).
+- [ ] **S3-4 The left blue fluffy brush:** large, cropped at the left edge (the game's is smaller and lower).
+- [ ] **S3-5 The right gold-and-blue machinery, rollers and water tubes:** the original's composition.
+- [ ] **S3-6 Bubbles:** a handful of large iridescent bubbles at the sides.
+- [ ] **S3-7 Coins and objects** through the door at believable sizes; the small golden helper on the slide in the original.
+- [ ] **S3-8 The pink character** centred, from behind, on top of the water (placement and water only; no remodel).
+- [ ] **S3-9 The transition** into Screen 4 without a long lavender stretch (M1 below).
+- [ ] **S3-10 The normal game** shows the approved Screen 3 PICTURE at Tap to Start (a pasted image, not 3D): the 3D opening
+      is what `?s3=focus` shows. DECISION for the user once the 3D opening matches: make it the normal game's opening.
 
 ## The tunnel (Claude does these)
 - [ ] **T1 Cobalt depth:** the walls' saturated blue 55.9 % against 58.9 %; their lavender 13.3 % against 10.0 %.

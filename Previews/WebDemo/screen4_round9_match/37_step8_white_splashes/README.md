@@ -61,4 +61,4 @@ little under it.
 | gameplay, the normal game, `s3_func` | identical to step 7's | `gameplay/` |
 | stills at 3, 4, 5, 6 s, 1:2 and Pixel 7 | captured, no console errors | `frames/` |
 | build | the main checkout rebuilds md5 `e6cd9334e52d35ad7f3b131773c3af05`, the tested build | |
-| videos, straight and steering | recording (`videos/`) | |
+| videos, straight and steering (Pixel 7, 10 s) | recorded, no console errors; 3-panel comparisons `videos/compare_straight_original_step7_step8_10s.mp4`, `videos/compare_steering_original_step7_step8_10s.mp4` | `videos/` |
