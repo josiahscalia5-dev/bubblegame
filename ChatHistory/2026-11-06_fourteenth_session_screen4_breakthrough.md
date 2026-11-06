@@ -160,3 +160,9 @@ _[6 images attached]_
 
 I'm starting the 5-minute autosave first, then I'll capture the current game against your original.
 
+Autosave is running (5 minutes, 24 hours). Now reading the current state: step 8 and the checklist.
+
+The build reproduces step 8 exactly (`e6cd9334`). Capturing the current game at seed 7, 3.0 s now.
+
+Spector didn't load in the first try; fixing the injection.
+
