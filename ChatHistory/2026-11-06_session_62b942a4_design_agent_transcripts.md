@@ -91,3 +91,22 @@ The crops are in `/tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-49
 
 
 _11 tool steps._
+
+---
+
+## Water & VFX specialist: Water VFX: foreground water design (started 22:30 UTC)
+
+**Lead → agent** (22:30 UTC):
+
+Read /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md first. This is an INSPECTION AND DESIGN task: do NOT edit any game file and do NOT launch browsers or renders. Your subject: the water round and in front of the pink character (heroSwell and the layers that follow its crest: spLumps, spCurls, lqWaterlineBubbles, heroSplash; the floor's wake lqWake in tunnel_r8_liquid.js), and the water-to-fur contact edge.
+
+Inspect independently: the geometry (tunnel_r7_hero_water.js swellGeometry / swellVertex, its per-frame updater), the shading chain (tunnel_r8_liquid.js liquidSwell -> tunnel_r9_match_water.js matchSwellGLSL / focusSwellGLSL -> tunnel_s4_water2.js), the compiled GLSL in 52_diagnosis/cdp/R9_T1.0_water_shaders.json, and the ORIGINAL's foreground (crop it yourself: y 1150-1536).
+
+Design the single strongest technically justified correction for this zone that gives: the original's full-width foreground of uneven rounded water heaps in deep cobalt / turquoise / periwinkle with crisp white rims and darker cores; a clean water-to-fur contact edge; and water that visibly MOVES relative to her (the heaps form and stream outward and toward the camera as she swims; on a swerve the water piles on the side she moves to and she leaves open water behind; in a jump the water closes under her; on landing a splash ring), WITHOUT a stationary pedestal, a glass wall, a white cloud or a pinned picture. Be concrete: which existing mesh to reuse and how to reshape it (numbers), what the vertex shader must do (e.g. heap heights that travel along the crest driven by her travel distance, not time alone), what the fragment shader must compute (colours as sRGB hex through mtUndisplay, rim/core logic, world- or travel-anchored pattern coordinates), what to do with the pinned picture (water2..9) and the crest-following layers, and how to keep the start frame's composition close to the original. Give file:line insertion points and code (GLSL / JS) ready to paste behind a new flag SWIM2_ON (exported from tunnel_s4_bt.js; settings in a new file tunnel_s4_swim2.js). Name the main risk of your design and how to check it on a frame.
+
+Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/water_vfx_engineer.md (under 1200 words plus code) and reply with a 10-line summary.
+
+- 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md
+- 22:30 `Bash`: List specialist and diagnosis folders and git state
+
+_2 tool steps._
