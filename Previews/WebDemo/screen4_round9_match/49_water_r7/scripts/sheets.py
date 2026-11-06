@@ -34,6 +34,10 @@ def sheet(panels, out, box=None, scale=1.0, title=None):
 o = load(ORIG)
 name = '_'.join(l.split(' ')[0] for l, _ in RUNS)
 sheet([('ORIGINAL APPROVED', o)] + [(l, load(os.path.join(d, 'start', 'base_page.png'))) for l, d in RUNS], f'01_FULLRES_original_{name}.jpg')
+if os.environ.get('FULL_MOVING') == '1':   # the full scene at +1 s and +2 s too
+    for m in ('T1.0', 'T2.0'):
+        sheet([('ORIGINAL APPROVED (still)', o)] + [(f"{l.split(' (')[0]} +{m[1:]} s", load(os.path.join(d, m, 'base_page.png'))) for l, d in RUNS],
+              f'01_FULLRES_original_{name}_{m}.jpg')
 sheet([('ORIGINAL', o)] + [(l.split(' (')[0], load(os.path.join(d, 'start', 'base_canvas.png'))) for l, d in RUNS],
       '02_closeup_water_start_x1.4.jpg', (40, 1000, 727, 1420), 1.4, 'The water round her at the start (same camera, seed, moment)')
 for m in ('T1.0', 'T2.0'):

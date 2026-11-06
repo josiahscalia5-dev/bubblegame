@@ -1,8 +1,8 @@
 // Bubble Wash Kingdom: playable browser version of approved Screen 3 ("Let's go! Into the
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
-import { INTUNNEL_ON, INTUNNEL, WATER7_ON } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
-import { water7DropFragment, water7Spray } from './tunnel_s4_water2.js';   // ?s3=intunnel,water7: the spray drawn as blue drops (R7)
+import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER8_ON } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
+import { water7DropFragment, water7Spray, water8Bloom } from './tunnel_s4_water2.js';   // ?s3=intunnel,water7: the spray drawn as blue drops (R7)
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -93,6 +93,7 @@ const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 // Soft glow over the bright parts of the scene, as in the approved artwork.
 const bloom = new UnrealBloomPass(new THREE.Vector2(256, 512), 0.32, 0.45, 0.97);
+if (WATER8_ON) water8Bloom(bloom);   // ?s3=intunnel,water8: the glow faded over the foreground water (R8)
 composer.addPass(bloom);
 const gradePass = new ShaderPass(SH.GradeShader);
 composer.addPass(gradePass);

@@ -15,7 +15,7 @@
 // keeps it moving; the comma arcs off (the original's own whites are in it). Colours through mtUndisplay (exact on screen).
 // The swell's geometry, crest, waterline, her model and everything else unchanged. Code gated on WATER2_ON.
 import * as THREE from 'three';
-import { WATER2_ON, WATER2, WATER7 } from './tunnel_s4_bt.js';
+import { WATER2_ON, WATER2, WATER7, WATER8 } from './tunnel_s4_bt.js';
 
 const f4 = (x) => (+x).toFixed(5);
 const v3 = (c) => `vec3(${c.slice(0, 3).map(f4).join(', ')})`;
@@ -43,6 +43,20 @@ void main() {
   gl_FragColor = vec4(col * a, a);   // premultiplied
 }
 `;
+// ?s3=intunnel,water8 (R8): the bloom pass's own blend (UnrealBloomPass.blendMaterial, three's CopyShader, added onto the
+// frame) faded over the lower part of the screen, where the foreground water is (tunnel_s4_bt.js WATER8). Only the glow
+// it adds changes; the frame under it, the bloom above the band and every other pass are as before.
+export function water8Bloom(bloom) {
+  const [b0, b1] = WATER8.band;
+  bloom.blendMaterial.fragmentShader = /* glsl */ `
+uniform float opacity; uniform sampler2D tDiffuse; varying vec2 vUv;
+void main() {
+  vec4 texel = texture2D(tDiffuse, vUv);
+  float k = mix(1.0, ${f4(WATER8.keep)}, smoothstep(${f4(b0)}, ${f4(b1)}, 1.0 - vUv.y));   // (R8) screen y from the top
+  gl_FragColor = opacity * texel * k;
+}`;
+  bloom.blendMaterial.needsUpdate = true;
+}
 // (R7) round3's kind 3 white spray (game.js, the patch after `fx`): the same particles drawn as clear blue drops. Puts R7's
 // branch in front of round3's white one (which stays, unreached), so the shader is otherwise exactly round3's.
 export const water7Spray = (src) => { const S = WATER7.spray; return src.replace('if (vKind > 2.5) {', `if (vKind > 2.5) {   // (R7) a clear blue drop with a small blue-white glint

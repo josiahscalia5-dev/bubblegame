@@ -100,7 +100,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
-export const WATER7_ON = BT_ON && LIST.includes('water7');   // (R7, below: water6 with the spray drawn as blue drops, not white beads)
+export const WATER8_ON = BT_ON && LIST.includes('water8');   // (R8, below: water7 with the bloom's glow faded over the foreground water)
+export const WATER7_ON = BT_ON && (LIST.includes('water7') || WATER8_ON);   // (R7, below: water6 with the spray drawn as blue drops, not white beads)
 export const WATER6_ON = BT_ON && (LIST.includes('water6') || WATER7_ON);   // (R6, below: water5 with the original's contact edge and without the opening's suds)
 export const WATER5_ON = BT_ON && (LIST.includes('water5') || WATER6_ON);   // (R5, below: water4 with the texture's registration corrected)
 export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON);   // (R4, below: water3 with the exemplar-filled texture)
@@ -190,6 +191,20 @@ if (WATER6_ON) Object.assign(WATER2, { file: WATER6.file, body: WATER6.body, cut
 // second (game.js; its own random numbers), alpha 0.85 and a 1.25 glint. spray: kind 3 the same way, a clear blue drop.)
 export const WATER7 = { drop: [0.22, 0.55, 1.0], glint: [0.9, 0.96, 1.0], body: 0.22, rim: 0.3, hl: 0.45, foam: [0.7, 0.86, 1.0, 0.18],
   spray: { drop: [0.25, 0.58, 1.0], glint: [0.88, 0.95, 1.0], body: 0.3, rim: 0.3, hl: 0.4 } };
+// ?s3=intunnel,water8 (R8; the user's approval of about 20:00 UTC: ONE isolated experiment on the excessive bloom, glow and
+// haze over the foreground water round her; reveal the existing deeper cobalt water by adjusting only the responsible
+// glow / haze layers; no global darkening of the tunnel, no geometry change; keep R7's contact, domes, character, HUD, coins,
+// brushes, camera, gameplay and the bright cyan-white highlights). The diagnosis (50_water_r8/diag/: R7's frames at the
+// start, +1 s and +2 s re-rendered with one layer off at a time): the live bloom is strength 0.16, radius 0.42, threshold
+// 1.0 at all three moments. With it off, the water band's dark pockets go 12.1 -> 15.8 % at the start (the original 14.6),
+// 10.1 -> 12.0 at +1 s, 7.2 -> 9.8 at +2 s; the saturated blue up 2-2.5 points; the white and the crisp highlights stay.
+// Most of that glow is the water face's own whites blooming over its darker pockets. The grade is not a haze (without it the
+// water is paler), and the start's opening-grade term darkens slightly. So R8 fades ONLY the bloom's glow over the lower
+// part of the screen, where the foreground water is: band (screen y, from the top) where the fade starts and ends, keep (the
+// share of the glow left there). The water's highlights stay at full brightness (they are drawn, just without the halo);
+// the tunnel, the coins and everything above keep their glow exactly as R7.
+export const WATER8 = { band: [0.74, 0.80], keep: 0.0 };
+{ const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water8; if (t) Object.assign(WATER8, t); }   // (test tunes only)
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {
