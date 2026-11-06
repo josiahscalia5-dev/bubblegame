@@ -218,3 +218,7 @@ Neither the first import nor the brush file is the cause. Before bisecting furth
 
 The true step 8 bundle reproduces its frames exactly (0 pixels), so the leak is real and comes from my edits. Bisecting by file on top of the step 8 source:
 
+Each of those three files is clean on its own (0 pixels). My earlier variant B had used an autosaved copy of the brush file, so `tunnel_s4.js` and `game.js` are left to test:
+
+Rebuilt. Re-running the proof: plain `focus` on the new bundle, and the neutralised `bt`, both against the true step 8 frames at 3.0 and 4.0 s.
+

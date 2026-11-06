@@ -186,11 +186,11 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       const holder = new THREE.Group();
       let x, y;
       if (hazard) { x = side * P.brushX; y = P.brushY; }
+      else { const a = THREE.MathUtils.degToRad(angleDeg), rr = rr0 || 1.95; x = side * Math.cos(a) * rr; y = axisH + Math.sin(a) * rr; }
       // ?s3=bt: a hazard brush drawn at BT.brushes.scale of its size round the point of its rim 45 degrees down toward the
       // middle lane (so that edge, in the outer lane where it knocks, stays where it was; the knock is the lane, unchanged)
       const btK = BT_ON && hazard ? BT.brushes.scale : 1;
       if (btK !== 1) { const d = (1 - btK) * P.brushR * Math.SQRT1_2; x -= side * d; y -= d; }
-      else { const a = THREE.MathUtils.degToRad(angleDeg), rr = rr0 || 1.95; x = side * Math.cos(a) * rr; y = axisH + Math.sin(a) * rr; }
       holder.position.copy(F.P).addScaledVector(F.R, x).addScaledVector(F.U, y);
       // its face looks back down the tunnel toward the coming rider, turned in toward the middle
       const back = F.T.clone().negate(), inward = F.R.clone().multiplyScalar(-side);
