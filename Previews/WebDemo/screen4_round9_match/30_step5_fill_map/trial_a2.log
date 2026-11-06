@@ -1,0 +1,5 @@
+objects 245 canvas [ 768, 1536 ] post [{"type":"Nc","enabled":true},{"type":"n","enabled":true},{"type":"Ho","enabled":true},{"type":"Dc","enabled":true}]
+bloom_off hidden 0
+overlays_off hidden 21
+bloom_and_overlays_off hidden 21
+no console errors or warnings

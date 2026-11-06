@@ -24,6 +24,17 @@ What it does (no randomness):
   4. writes tunnel_rings_original.png (sRGB, NU_OUT x NV: angle across, ln r down, row 0 = 0.025 W, the same rows as
      tunnel_colour.png / tunnel_base.png, so the shader samples it with the base map's coordinates).
 With --sheet: a contact sheet (the original, its unwrap with the mask, the ring map, and the map wrapped back to the frame).
+
+--fill (step 5, the user's request of 6 November: "the actual irregular white-and-aqua splashes from my approved image
+restored ... retain those authentic patterns"; the investigation in Previews/WebDemo/screen4_round9_match/28_next_investigation/):
+  steps 2b and 3 above throw the original's own water away: the blur replaces EVERY texel (not only the holes) and the
+  whites are masked out first, so the map kept 0.1 % white and 44 % of the original's fine texture on the walls. With
+  --fill the map keeps the ORIGINAL's own pixels wherever its water is visible, whites included, and only the holes
+  (objects, interface, character, beyond the mouth) are filled, by derive_tunnel_textures.fill_rings: each ring band's
+  low-frequency colour plus its own detail quilted ALONG THE ANGLE from clear stretches of the same band, feathered into
+  the clear texels (no blurred rectangles where the original had an object). Written at the unwrap's full 2048 columns as
+  tunnel_rings_fill.png (+ .json); the step 3 map, tunnel_rings_original.png, is not touched (the defaults still make it,
+  byte-identical).
 """
 import argparse, os, sys, json
 import numpy as np, cv2
@@ -36,6 +47,7 @@ import derive_tunnel_textures as DT   # noqa: E402  (its unwrap, masks and norma
 ANGLE_SIGMA = 6.0     # degrees round the ring (keeps each sector's own band radii; the rings are near-circular)
 RADIAL_SIGMA = 1.2    # rows across the ring (1 row = 0.0034 in ln r: the rings stay thin)
 NU_OUT = 512          # columns written (the map is smooth along the angle)
+SEAM = 12.0           # --fill: texels either side of a hole's edge over which the fine detail fades (no hard seams)
 # the white splash flecks and crests left out of each ring's colour (saturation under [0], value over [1]), outside the warm
 # core (radius over [2] W): averaged round a ring they turned its cobalt and turquoise a pale grey-blue (the first try); the
 # shader's own white fleck layer draws them as separate white shapes
@@ -63,6 +75,33 @@ def ring_map(im, angle_sigma=None, radial_sigma=None, white_out=True):
     return np.clip(out, 0, 1), valid, lp
 
 
+def fill_map(im):
+    """--fill: the original's own pixels where its water is visible (whites kept), the holes filled along each ring by
+    derive_tunnel_textures.fill_rings (low frequency + the band's own quilted detail, feathered). Returns (map, clear, unwrap)."""
+    H, W = im.shape[:2]
+    mask = DT.object_mask(im)
+    lp, inside, th, lr = DT.unwrap(im, W, H)
+    mlp, _, _, _ = DT.unwrap(mask.astype(np.float32), W, H, interp=cv2.INTER_NEAREST, border=1.0)
+    valid = inside & (mlp < 0.5)
+    mr = DT.mouth_radius(im, th)
+    r = np.exp(lr)[:, None]
+    upper = (th > 0.05) & (th < np.pi - 0.05)
+    beyond = upper[None, :] & ~np.isnan(mr)[None, :] & (r > np.nan_to_num(mr, nan=9.0)[None, :])
+    valid &= ~beyond
+    F, _ = DT.fill_rings(lp.astype(np.float32), valid, beyond | ~inside, lr)
+    # the seams: the original's rectangular object masks meet the quilted fill in hard straight lines (two different
+    # textures side by side; fill_rings' own feather cannot blend them, its fill keeps the clear texels' own detail). Within
+    # SEAM texels of the boundary, on both sides, only the fine detail fades out; the ring bands (a 3-row x 6-column blur)
+    # run on unbroken
+    dc = cv2.distanceTransform(valid.astype(np.uint8), cv2.DIST_L2, 3)
+    dh = cv2.distanceTransform((~valid).astype(np.uint8), cv2.DIST_L2, 3)
+    fade = np.clip(np.where(valid, dc, dh) / SEAM, 0, 1)
+    fade = fade * fade * (3 - 2 * fade)
+    LF = DT.blur_wrap(F, 3.0, 6.0)
+    F = LF + (F - LF) * fade[..., None]
+    return np.clip(F, 0, 1), valid, lp
+
+
 def wrap_back(m, W, H):
     """the map drawn back onto the frame (for the sheet): each pixel's angle and ln r round the vanishing point"""
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -83,17 +122,24 @@ def main():
     ap.add_argument('--angle', type=float, default=ANGLE_SIGMA, help='smoothing round each ring, degrees')
     ap.add_argument('--radial', type=float, default=RADIAL_SIGMA, help='smoothing across the rings, rows')
     ap.add_argument('--keep-white', action='store_true', help="keep the original's white flecks (not masked)")
-    ap.add_argument('--cols', type=int, default=NU_OUT, help='columns written')
-    ap.add_argument('--name', default='tunnel_rings_original')
+    ap.add_argument('--cols', type=int, default=None, help='columns written (default 512; 2048 with --fill)')
+    ap.add_argument('--name', default=None, help='file name (default tunnel_rings_original; tunnel_rings_fill with --fill)')
+    ap.add_argument('--fill', action='store_true', help="step 5: the original's own pixels kept, only the holes filled (fill_rings)")
     a = ap.parse_args()
+    if a.cols is None: a.cols = DT.NU if a.fill else NU_OUT
+    if a.name is None: a.name = 'tunnel_rings_fill' if a.fill else 'tunnel_rings_original'
     im = DT.load_approved(); H, W = im.shape[:2]
-    m, valid, lp = ring_map(im, a.angle, a.radial, not a.keep_white)
+    if a.fill:
+        m, valid, lp = fill_map(im)
+        a.angle = a.radial = None; a.keep_white = True
+    else:
+        m, valid, lp = ring_map(im, a.angle, a.radial, not a.keep_white)
     small = m if a.cols == DT.NU else cv2.resize(m, (a.cols, DT.NV), interpolation=cv2.INTER_AREA)
     os.makedirs(a.out, exist_ok=True)
     Image.fromarray((np.clip(small, 0, 1) * 255 + 0.5).astype(np.uint8)).save(os.path.join(a.out, a.name + '.png'))
     meta = {'source': os.path.relpath(DT.APPROVED, DT.REPO), 'vanishing_point': DT.VP, 'r0_w': DT.R0, 'r1_w': DT.R1,
             'ln_r0': float(np.log(DT.R0)), 'ln_span': float(np.log(DT.R1 / DT.R0)), 'size': [a.cols, DT.NV],
-            'angle_sigma_deg': a.angle, 'radial_sigma_rows': a.radial, 'white_out': None if a.keep_white else WHITE_OUT, 'clear_share': float(valid.mean()),
+            'angle_sigma_deg': a.angle, 'radial_sigma_rows': a.radial, 'white_out': None if a.keep_white else WHITE_OUT, 'clear_share': float(valid.mean()), 'mode': 'fill (step 5: own pixels, holes by fill_rings)' if a.fill else 'ring blur (step 3)',
             'note': 'u = theta / 2pi (0 = screen right, counter-clockwise); v = (ln(rw) - ln_r0) / ln_span; sRGB'}
     json.dump(meta, open(os.path.join(a.out, a.name + '.json'), 'w'), indent=1)
     print('wrote', os.path.join(a.out, a.name + '.png'), small.shape, 'clear share %.3f' % valid.mean())

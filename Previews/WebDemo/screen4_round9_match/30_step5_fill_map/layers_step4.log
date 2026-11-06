@@ -1,0 +1,6 @@
+objects 245 canvas [ 768, 1536 ] post [{"type":"Nc","enabled":true},{"type":"n","enabled":true},{"type":"Ho","enabled":true},{"type":"Dc","enabled":true}]
+only_walls hidden 242
+only_floor hidden 242
+only_front_splash hidden 239
+only_bubbles_vfx hidden 225
+no console errors or warnings

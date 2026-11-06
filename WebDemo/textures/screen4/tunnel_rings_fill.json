@@ -1,0 +1,21 @@
+{
+ "source": "Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg",
+ "vanishing_point": [
+  0.528,
+  0.532
+ ],
+ "r0_w": 0.025,
+ "r1_w": 0.85,
+ "ln_r0": -3.6888794541139363,
+ "ln_span": 3.5263605246161616,
+ "size": [
+  2048,
+  1024
+ ],
+ "angle_sigma_deg": null,
+ "radial_sigma_rows": null,
+ "white_out": null,
+ "clear_share": 0.4088735580444336,
+ "mode": "fill (step 5: own pixels, holes by fill_rings)",
+ "note": "u = theta / 2pi (0 = screen right, counter-clockwise); v = (ln(rw) - ln_r0) / ln_span; sRGB"
+}
