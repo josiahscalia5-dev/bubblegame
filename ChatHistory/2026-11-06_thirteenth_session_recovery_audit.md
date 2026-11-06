@@ -165,3 +165,9 @@ Built. Two first tests in parallel:
 1. The stripe calibration on the step 6 build.
 2. The step 6 build with the new switch turned off by a test tune, which should give step 4's frame exactly.
 
+Same shell-scoping slip the last session hit: the variable definitions went into the first background job. I'll put the runs in a small script.
+
+About 11% of the frame changed. I expected only the far bend to change, so let me see where the differences are before judging:
+
+Your brief also asks for the 3.0 s checkpoint at Pixel 7 resolution. Let me find how step 4 captured its Pixel 7 frame:
+

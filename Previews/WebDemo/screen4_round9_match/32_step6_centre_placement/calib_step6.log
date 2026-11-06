@@ -1,0 +1,4 @@
+objects 245 canvas [ 768, 1536 ] post [{"type":"Dc","enabled":true},{"type":"n","enabled":true},{"type":"Ho","enabled":true},{"type":"Bc","enabled":true}]
+calib_walls hidden 242
+calib_walls_floor hidden 240
+no console errors or warnings
