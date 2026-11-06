@@ -1,0 +1,27 @@
+== character_water (zone x .02-.98 y .74-.885 minus her and the coins)
+orig         pink 4.16%  x 0.249-0.714  y 0.702-0.859  centre (0.502, 0.778)  w 0.465  width 0.02H above lowest 0.20
+             widths per 0.01 H from 0.68: 0.00 0.00 0.09 0.22 0.27 0.31 0.34 0.33 0.38 0.40 0.42 0.42 0.42 0.35 0.28 0.26 0.16 0.08 0.00 0.00 0.00 0.00
+             water: white 27.7%  pieces/10k   4.6  <=40px   1%  41-400  12%  >400  87%  (<=400:  13%)  largest 10247  | light cyan 16.7%  vivid 12.9%  lavender 16.9%  | texture 5.47
+before_cam   pink 3.21%  x 0.241-0.714  y 0.695-0.850  centre (0.500, 0.780)  w 0.473  width 0.02H above lowest 0.27
+             widths per 0.01 H from 0.68: 0.00 0.01 0.08 0.18 0.22 0.26 0.25 0.32 0.39 0.45 0.47 0.47 0.41 0.32 0.30 0.18 0.07 0.00 0.00 0.00 0.00 0.00
+             water: white  5.3%  pieces/10k  22.1  <=40px  33%  41-400  59%  >400   8%  (<=400:  92%)  largest 488  | light cyan 15.8%  vivid 46.3%  lavender  3.9%  | texture 4.98
+step2_cam    pink 3.10%  x 0.246-0.714  y 0.699-0.849  centre (0.497, 0.779)  w 0.468  width 0.02H above lowest 0.25
+             widths per 0.01 H from 0.68: 0.00 0.01 0.07 0.18 0.22 0.26 0.25 0.32 0.39 0.45 0.47 0.45 0.39 0.35 0.30 0.11 0.05 0.00 0.00 0.00 0.00 0.00
+             water: white 19.7%  pieces/10k  37.1  <=40px  15%  41-400  57%  >400  28%  (<=400:  72%)  largest 1621  | light cyan 35.3%  vivid 15.5%  lavender  3.4%  | texture 6.14
+== zones
+floor_ahead x.25-.65 y.60-.69
+   orig       white  26.9 pale  35.4 lav   3.6 vivid  15.5 deep   0.0 turq  10.6 warm   1.6 | L*  83.5 texture 4.32 median #aad7f4 kept  95%
+   before_cam white   6.8 pale  28.2 lav  10.7 vivid  30.9 deep   0.3 turq  18.8 warm   0.6 | L*  71.5 texture 4.16 median #7daee5 kept  91%
+   step2_cam  white  27.2 pale  39.5 lav  10.5 vivid  15.1 deep   0.2 turq   5.7 warm   0.6 | L*  79.9 texture 4.28 median #b0d0f2 kept  91%
+left_low x.00-.22 y.62-.79
+   orig       white  21.8 pale  22.2 lav   6.9 vivid  40.2 deep   0.3 turq   1.0 warm   2.0 | L*  73.9 texture 5.74 median #81b2f4 kept  90%
+   before_cam white   5.8 pale  30.1 lav  15.5 vivid  48.3 deep   1.4 turq   6.0 warm   0.1 | L*  68.2 texture 4.59 median #6db2f3 kept  88%
+   step2_cam  white  13.3 pale  33.0 lav  13.7 vivid  36.4 deep   1.4 turq   4.2 warm   0.1 | L*  71.3 texture 4.54 median #88b8f4 kept  88%
+char_left x.02-.25 y.76-.885
+   orig       white  27.9 pale  36.4 lav   9.4 vivid  18.9 deep   0.0 turq   0.1 warm   0.0 | L*  79.3 texture 5.18 median #b0c5f7 kept  99%
+   before_cam white   5.0 pale  20.2 lav   1.3 vivid  50.1 deep   0.0 turq   6.8 warm   0.0 | L*  71.9 texture 3.88 median #6db5f3 kept 100%
+   step2_cam  white  19.7 pale  34.7 lav   0.8 vivid  19.6 deep   0.0 turq   2.7 warm   0.0 | L*  80.0 texture 4.64 median #9acef5 kept 100%
+char_right x.71-.98 y.79-.885
+   orig       white  31.2 pale  41.0 lav  12.8 vivid  10.7 deep   0.0 turq   1.3 warm   2.5 | L*  82.6 texture 4.20 median #c2cff7 kept  95%
+   before_cam white   5.8 pale  20.7 lav   0.2 vivid  39.8 deep   0.0 turq  16.5 warm   0.0 | L*  74.8 texture 3.53 median #79c3f4 kept 100%
+   step2_cam  white  17.2 pale  41.0 lav   0.2 vivid  16.4 deep   0.0 turq   6.3 warm   0.0 | L*  81.2 texture 4.14 median #9fd4f5 kept 100%

@@ -534,8 +534,31 @@ diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/fram
 new file mode 100644
 index 0000000..6f70f0b
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
+index 49e99fd..80bed02 100644
+--- a/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
++++ b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
+@@ -85,6 +85,18 @@ const server = http.createServer((req, res) => {
+     });
+     const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); });
+     fs.writeFileSync(path.join(OUT, `${c.label}.png`), Buffer.from(url.split(',')[1], 'base64'));
++    // HIDE=name,name: also a capture with those objects not drawn (<label>_hidden.png), e.g. to measure the walls without
++    // the instanced tunnel bubbles and streaks (mwTunnelBubbles)
++    if (process.env.HIDE) {
++      const url2 = await page.evaluate((names) => {
++        const d = window.__bw.debug(), keep = [];
++        d.scene.traverse((o) => { if (names.includes(o.name)) { keep.push([o, o.visible, o.onBeforeRender]); o.visible = false; o.onBeforeRender = () => { o.visible = false; }; } });
++        window.__bw.render(); const u = d.renderer.domElement.toDataURL('image/png');
++        for (const [o, v, f] of keep) { o.visible = v; o.onBeforeRender = f; }
++        return u;
++      }, process.env.HIDE.split(','));
++      fs.writeFileSync(path.join(OUT, `${c.label}_hidden.png`), Buffer.from(url2.split(',')[1], 'base64'));
++    }
+     out.push({ label: c.label, tune: c.tune, ...info, errors: logs });
+     console.log(JSON.stringify({ label: c.label, ...info, errors: logs.length }));
+     await ctx.close();
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..93e749c 100644
+index 2f39f0e..055375a 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -27,12 +27,28 @@ export const FOCUS = {
@@ -633,7 +656,7 @@ index 2f39f0e..93e749c 100644
 +      //    original's white pieces 3.5 px thick, median 59 px, 3.2 per 10k px, 28% along the ring; ours were 1.9 px, 28 px,
 +      //    12.7 per 10k px, 71%: bigger cells (cols 96 -> 40, rows 3 -> 2), wider pieces, each turned up to `rot` either way and
 +      //    bent into a hook, softer edges (`soft`: where the edge starts fading), jitter: their place in the cell; fewer drops)
-+      flecks: { cols: 40, rows: 2, dens: 0.32, len: [0.18, 0.32], wid: [0.1, 0.2], bend: 2.2, rot: 0.7, soft: 0.45, jitter: [0.2, 0.25], amount: 0.95, col: '#f2f9ff',
++      flecks: { cols: 40, rows: 2, dens: 0.4, len: [0.2, 0.36], wid: [0.14, 0.24], bend: 2.2, rot: 0.5, soft: 0.45, jitter: [0.15, 0.2], amount: 0.95, col: '#f2f9ff',
 +        drops: { cols: 60, rows: 3, dens: 0.06, r: [0.14, 0.26] },
          r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
      },

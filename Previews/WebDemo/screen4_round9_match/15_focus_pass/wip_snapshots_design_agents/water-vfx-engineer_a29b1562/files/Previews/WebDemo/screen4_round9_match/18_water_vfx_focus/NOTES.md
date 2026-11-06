@@ -59,6 +59,28 @@ Tries:
   texture 6.46, L* left 78.8 / right 80.5, pink 0.25 W at 0.02 H above lowest, base 0.849. Now the defaults:
   `frames/step1_cam_t3.00_canvas.png` (identical to c15), `frames/measure_step1_cam.txt`,
   `frames/item1_water_round_her_original_before_after.png`.
-- Item 1 committed (see the README table for the hash).
+- Item 1 committed: `1d8b24c`.
 
-Next: item 2 (floor ahead), item 3 (flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle).
+## Item 2: the floor ahead (x 0.25-0.65, y 0.60-0.69), all with the new camera
+
+- Code: `focusDelilacGLSL` (in matchFloor, display space) and `focusFloorAheadGLSL` (in matchFloorApply: a light-cyan lift
+  and broken white crest pieces on the floor 0.4-16 m ahead of her, not at the walls nor the far centre); settings
+  `FOCUS.water.floorAhead`.
+- f1 (lift 0.45, small pieces): L* 76.4, white 14.1%, lavender 10.8% (unchanged by the de-lilac).
+- The lavender: lqFloor draws the zone (hide probe: 78.9% of it changes without lqFloor), but a green debug render of the
+  zone (`frames/item2_floor_debug_zone_green.png`) shows pink mixed in after the water's colour at x 0.32-0.47 and at the
+  right: the brushes' pink lane-warning glow (tunnel_r8_liquid.js, drawn after matchFloorApply; at 3.0 s brushes at u 9.4 m
+  in lane +0.7 and 10.1 m in lane -0.7, the player at 1.6 m, warning from 7.5 m before a brush) plus the sock's pale
+  fabric. A gameplay cue, not changed. Her fur is not the cause (hiding it: 9.8 -> 9.8%).
+- f2 (lift 0.6, more pieces, the zone to 16 m): L* 80.1, white 22.1%, median #acd3f2, but pale 51% and texture 3.45: a
+  pale wash. Rejected.
+- f3 (lift 0.3, pieces cell [5, 2] r [0.28, 0.48] share 0.6, crests [0.62, 0.82] share 0.7): white 26.7%, pale 38.4%,
+  L* 79.6, texture 4.42. f4 (lift 0.2, bigger): white 28.1% (over), L* 79.3.
+- Defaults = f3 with lift 0.35: step2 `frames/step2_cam_t3.00_canvas.png`: white 27.2%, pale 39.5%, vivid 15.1%, L* 79.9,
+  texture 4.28, median #b0d0f2, lavender 10.5% (the warning glow and the sock). Round her after step 2: white 19.7%,
+  <=400 px 72%, largest 1621, vivid 15.5%, texture 6.14.
+
+Next: item 3 (flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle). Tested so far as tunes
+(b1-b3, `scripts/bubble_count.cjs` counts the instances on screen): b3 = count 100, camAt -5.4 (the new camera is 0.85 m
+further back), walls 4.0-8.5 m ahead, a few far ones 9-24 m, the open tube 3.5-5.5 m; streaks 220, turned +-26 degrees,
+hooked, softer: 94 bubbles on screen, 5 within 0.2 W of the centre (before 261 / 144).

@@ -1,9 +1,9 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
 new file mode 100644
-index 0000000..5b2b231
+index 0000000..051ca70
 --- /dev/null
 +++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,86 @@
 +# Water & VFX, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
 +
 +Worktree branch `worktree-agent-a29b1562d2b9d7e06`, started at `d6e836d`. Files: `WebDemo/src/tunnel_r9_match_water.js` and
@@ -65,9 +65,31 @@ index 0000000..5b2b231
 +  texture 6.46, L* left 78.8 / right 80.5, pink 0.25 W at 0.02 H above lowest, base 0.849. Now the defaults:
 +  `frames/step1_cam_t3.00_canvas.png` (identical to c15), `frames/measure_step1_cam.txt`,
 +  `frames/item1_water_round_her_original_before_after.png`.
-+- Item 1 committed (see the README table for the hash).
++- Item 1 committed: `1d8b24c`.
 +
-+Next: item 2 (floor ahead), item 3 (flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle).
++## Item 2: the floor ahead (x 0.25-0.65, y 0.60-0.69), all with the new camera
++
++- Code: `focusDelilacGLSL` (in matchFloor, display space) and `focusFloorAheadGLSL` (in matchFloorApply: a light-cyan lift
++  and broken white crest pieces on the floor 0.4-16 m ahead of her, not at the walls nor the far centre); settings
++  `FOCUS.water.floorAhead`.
++- f1 (lift 0.45, small pieces): L* 76.4, white 14.1%, lavender 10.8% (unchanged by the de-lilac).
++- The lavender: lqFloor draws the zone (hide probe: 78.9% of it changes without lqFloor), but a green debug render of the
++  zone (`frames/item2_floor_debug_zone_green.png`) shows pink mixed in after the water's colour at x 0.32-0.47 and at the
++  right: the brushes' pink lane-warning glow (tunnel_r8_liquid.js, drawn after matchFloorApply; at 3.0 s brushes at u 9.4 m
++  in lane +0.7 and 10.1 m in lane -0.7, the player at 1.6 m, warning from 7.5 m before a brush) plus the sock's pale
++  fabric. A gameplay cue, not changed. Her fur is not the cause (hiding it: 9.8 -> 9.8%).
++- f2 (lift 0.6, more pieces, the zone to 16 m): L* 80.1, white 22.1%, median #acd3f2, but pale 51% and texture 3.45: a
++  pale wash. Rejected.
++- f3 (lift 0.3, pieces cell [5, 2] r [0.28, 0.48] share 0.6, crests [0.62, 0.82] share 0.7): white 26.7%, pale 38.4%,
++  L* 79.6, texture 4.42. f4 (lift 0.2, bigger): white 28.1% (over), L* 79.3.
++- Defaults = f3 with lift 0.35: step2 `frames/step2_cam_t3.00_canvas.png`: white 27.2%, pale 39.5%, vivid 15.1%, L* 79.9,
++  texture 4.28, median #b0d0f2, lavender 10.5% (the warning glow and the sock). Round her after step 2: white 19.7%,
++  <=400 px 72%, largest 1621, vivid 15.5%, texture 6.14.
++
++Next: item 3 (flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle). Tested so far as tunes
++(b1-b3, `scripts/bubble_count.cjs` counts the instances on screen): b3 = count 100, camAt -5.4 (the new camera is 0.85 m
++further back), walls 4.0-8.5 m ahead, a few far ones 9-24 m, the open tube 3.5-5.5 m; streaks 220, turned +-26 degrees,
++hooked, softer: 94 bubbles on screen, 5 within 0.2 W of the centre (before 261 / 144).
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json
 new file mode 100644
 index 0000000..d1295fc
@@ -1062,6 +1084,14 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/ite
 new file mode 100644
 index 0000000..a855e6c
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item1_water_round_her_original_before_after.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_ahead_original_before_after.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_ahead_original_before_after.png
+new file mode 100644
+index 0000000..75637f3
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_ahead_original_before_after.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_debug_zone_green.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_debug_zone_green.png
+new file mode 100644
+index 0000000..f48ce37
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_debug_zone_green.png differ
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1_cam.txt b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1_cam.txt
 new file mode 100644
 index 0000000..58c4d35
@@ -1106,6 +1136,39 @@ index 0000000..58c4d35
 +   param2 55 orig       circles   3  in centre box   1  within 0.2 W of the centre   1
 +   param2 55 before_cam circles  36  in centre box  12  within 0.2 W of the centre  16
 +   param2 55 step1_cam  circles  37  in centre box  13  within 0.2 W of the centre  17
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step2_cam.txt b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step2_cam.txt
+new file mode 100644
+index 0000000..6ab95cc
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step2_cam.txt
+@@ -0,0 +1,27 @@
++== character_water (zone x .02-.98 y .74-.885 minus her and the coins)
++orig         pink 4.16%  x 0.249-0.714  y 0.702-0.859  centre (0.502, 0.778)  w 0.465  width 0.02H above lowest 0.20
++             widths per 0.01 H from 0.68: 0.00 0.00 0.09 0.22 0.27 0.31 0.34 0.33 0.38 0.40 0.42 0.42 0.42 0.35 0.28 0.26 0.16 0.08 0.00 0.00 0.00 0.00
++             water: white 27.7%  pieces/10k   4.6  <=40px   1%  41-400  12%  >400  87%  (<=400:  13%)  largest 10247  | light cyan 16.7%  vivid 12.9%  lavender 16.9%  | texture 5.47
++before_cam   pink 3.21%  x 0.241-0.714  y 0.695-0.850  centre (0.500, 0.780)  w 0.473  width 0.02H above lowest 0.27
++             widths per 0.01 H from 0.68: 0.00 0.01 0.08 0.18 0.22 0.26 0.25 0.32 0.39 0.45 0.47 0.47 0.41 0.32 0.30 0.18 0.07 0.00 0.00 0.00 0.00 0.00
++             water: white  5.3%  pieces/10k  22.1  <=40px  33%  41-400  59%  >400   8%  (<=400:  92%)  largest 488  | light cyan 15.8%  vivid 46.3%  lavender  3.9%  | texture 4.98
++step2_cam    pink 3.10%  x 0.246-0.714  y 0.699-0.849  centre (0.497, 0.779)  w 0.468  width 0.02H above lowest 0.25
++             widths per 0.01 H from 0.68: 0.00 0.01 0.07 0.18 0.22 0.26 0.25 0.32 0.39 0.45 0.47 0.45 0.39 0.35 0.30 0.11 0.05 0.00 0.00 0.00 0.00 0.00
++             water: white 19.7%  pieces/10k  37.1  <=40px  15%  41-400  57%  >400  28%  (<=400:  72%)  largest 1621  | light cyan 35.3%  vivid 15.5%  lavender  3.4%  | texture 6.14
++== zones
++floor_ahead x.25-.65 y.60-.69
++   orig       white  26.9 pale  35.4 lav   3.6 vivid  15.5 deep   0.0 turq  10.6 warm   1.6 | L*  83.5 texture 4.32 median #aad7f4 kept  95%
++   before_cam white   6.8 pale  28.2 lav  10.7 vivid  30.9 deep   0.3 turq  18.8 warm   0.6 | L*  71.5 texture 4.16 median #7daee5 kept  91%
++   step2_cam  white  27.2 pale  39.5 lav  10.5 vivid  15.1 deep   0.2 turq   5.7 warm   0.6 | L*  79.9 texture 4.28 median #b0d0f2 kept  91%
++left_low x.00-.22 y.62-.79
++   orig       white  21.8 pale  22.2 lav   6.9 vivid  40.2 deep   0.3 turq   1.0 warm   2.0 | L*  73.9 texture 5.74 median #81b2f4 kept  90%
++   before_cam white   5.8 pale  30.1 lav  15.5 vivid  48.3 deep   1.4 turq   6.0 warm   0.1 | L*  68.2 texture 4.59 median #6db2f3 kept  88%
++   step2_cam  white  13.3 pale  33.0 lav  13.7 vivid  36.4 deep   1.4 turq   4.2 warm   0.1 | L*  71.3 texture 4.54 median #88b8f4 kept  88%
++char_left x.02-.25 y.76-.885
++   orig       white  27.9 pale  36.4 lav   9.4 vivid  18.9 deep   0.0 turq   0.1 warm   0.0 | L*  79.3 texture 5.18 median #b0c5f7 kept  99%
++   before_cam white   5.0 pale  20.2 lav   1.3 vivid  50.1 deep   0.0 turq   6.8 warm   0.0 | L*  71.9 texture 3.88 median #6db5f3 kept 100%
++   step2_cam  white  19.7 pale  34.7 lav   0.8 vivid  19.6 deep   0.0 turq   2.7 warm   0.0 | L*  80.0 texture 4.64 median #9acef5 kept 100%
++char_right x.71-.98 y.79-.885
++   orig       white  31.2 pale  41.0 lav  12.8 vivid  10.7 deep   0.0 turq   1.3 warm   2.5 | L*  82.6 texture 4.20 median #c2cff7 kept  95%
++   before_cam white   5.8 pale  20.7 lav   0.2 vivid  39.8 deep   0.0 turq  16.5 warm   0.0 | L*  74.8 texture 3.53 median #79c3f4 kept 100%
++   step2_cam  white  17.2 pale  41.0 lav   0.2 vivid  16.4 deep   0.0 turq   6.3 warm   0.0 | L*  81.2 texture 4.14 median #9fd4f5 kept 100%
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_info.json
 new file mode 100644
 index 0000000..4f1cbb2
@@ -1584,6 +1647,546 @@ diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/ste
 new file mode 100644
 index 0000000..1502fff
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_info.json
+new file mode 100644
+index 0000000..4f1cbb2
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_info.json
+@@ -0,0 +1,463 @@
++{
++ "s3": [
++  "focus"
++ ],
++ "frames": [
++  {
++   "t": 3,
++   "state": {
++    "phase": "running",
++    "time": 3.517,
++    "z": 1.592,
++    "x": 0,
++    "y": 0.405,
++    "world": [
++     0,
++     0.405,
++     1.592
++    ],
++    "path": {
++     "pitch": 0,
++     "heading": 0,
++     "bank": 0
++    },
++    "cameraUp": [
++     0,
++     1,
++     0
++    ],
++    "lane": 1,
++    "speed": 7.21,
++    "air": false,
++    "slope": 0,
++    "pitchDeg": -0.3,
++    "leanDeg": 0,
++    "coins": 1280,
++    "gems": 36,
++    "socks": 0,
++    "collected": {
++     "coins": 0,
++     "gems": 0
++    },
++    "laps": 0,
++    "camera": [
++     -0.162,
++     1.599,
++     -1.508
++    ],
++    "cameraPitchDeg": 2.17,
++    "particles": 136,
++    "repairedNormals": 1002065,
++    "machineryInnerX": 1.22,
++    "decorClear": {
++     "towers": 1.79,
++     "gears": 1.25,
++     "pipes": null,
++     "crowns": null
++    },
++    "rollerCandidate": null,
++    "hearts": 5,
++    "blasts": 3,
++    "turbos": 3,
++    "paused": false,
++    "blastT": 0,
++    "turboT": 0,
++    "knocks": 0,
++    "restarts": 0,
++    "bumps": 0
++   }
++  }
++ ],
++ "report": {
++  "castle": {
++   "scale": 10,
++   "nearestToAxis": 2.64,
++   "frontZ": 2.75
++  },
++  "entrance": {
++   "scale": 3.942,
++   "nearestToAxis": 1.95,
++   "frontZ": 1.25
++  },
++  "machinery": {
++   "scale": 1.66,
++   "at": [
++    -2.73,
++    0.4,
++    -7
++   ],
++   "nearestToLanes": 1.25
++  },
++  "brush": {
++   "scale": 1.51,
++   "at": [
++    2.62,
++    0.23,
++    -4.9
++   ],
++   "nearestToLanes": 1.21,
++   "spins": false
++  },
++  "cine": {
++   "up": 0.099,
++   "forward": 0.818,
++   "pitch": 0.3,
++   "fov": 1.0375,
++   "blend": 0.9
++  },
++  "bubbles": {
++   "spheres": true,
++   "extra": 3,
++   "reducedMotion": false
++  },
++  "edges": {
++   "wallsHidden": 2,
++   "railsHidden": 2,
++   "icyEdges": 2
++  },
++  "tunnel": {
++   "rings": 43,
++   "brushes": 11,
++   "bubbles": 22,
++   "panelsHidden": 2,
++   "waterCopy": true,
++   "goldGlow": 28,
++   "drumMaterialsTinted": 1,
++   "brushTriangles": 51512,
++   "brushTrianglesDelivered": 120961,
++   "hazards": 6,
++   "hits": [],
++   "warnShader": true,
++   "round2": {
++    "exit": true,
++    "grade": true
++   },
++   "round3": {
++    "foam": {
++     "heaps": 150,
++     "trianglesEach": 500
++    },
++    "swirl": {
++     "triangles": 17856
++    },
++    "bubbles": {
++     "count": 110
++    },
++    "whirl": {
++     "ahead": 14,
++     "radius": 1.9
++    }
++   },
++   "round4": {
++    "hidden": 5,
++    "lining": {
++     "triangles": 28992,
++     "rows": 152,
++     "cols": 97
++    },
++    "rings": {
++     "glow": 32,
++     "gold": 11,
++     "trianglesEach": [
++      2048,
++      2560
++     ]
++    },
++    "crown": {
++     "petals": 32
++    }
++   },
++   "round5": {
++    "vortex": {
++     "replaced": "r4Lining"
++    },
++    "entrance": {
++     "at": 3.9006939946349135
++    },
++    "droplets": {
++     "count": 1600
++    },
++    "heart": {
++     "ahead": 20
++    },
++    "crests": {
++     "cards": 8
++    },
++    "contact": {
++     "radius": 0.45
++    },
++    "softBubbles": {
++     "count": 0
++    },
++    "bloom": {
++     "strength": 0.16,
++     "radius": 0.42,
++     "threshold": 1
++    }
++   },
++   "round6": {
++    "porthole": {
++     "bezel": [
++      2.42,
++      2.55
++     ],
++     "face": [
++      2.5,
++      14
++     ],
++     "rivets": 16
++    },
++    "flanges": {
++     "count": 8,
++     "every": 4.6,
++     "triangles": 2048
++    },
++    "walls": {
++     "replaced": "r5Vortex"
++    },
++    "waterTint": {
++     "sheets": [
++      "drum",
++      "slide"
++     ]
++    },
++    "bowWave": {
++     "rows": 14,
++     "cols": 64,
++     "triangles": 3584
++    },
++    "wake": {
++     "speedLen": 0.6,
++     "swing": 0.16
++    },
++    "r7water": {
++     "hidden": [
++      "r5Contact",
++      "r4SplashCrown"
++     ],
++     "sheets": {
++      "restyled": "r6BowWave",
++      "triangles": 3584
++     },
++     "foam": {
++      "lumps": 660,
++      "triangles": 1320,
++      "drawCalls": 1
++     },
++     "spray": {
++      "points": 1000,
++      "drawCalls": 1
++     },
++     "bubbles": {
++      "hero": 3,
++      "mid": 14,
++      "drawCalls": 1,
++      "triangles": 34
++     },
++     "streamBubbles": {
++      "restyled": [
++       "r3Bubbles",
++       "s4Bubbles"
++      ]
++     },
++     "drumBubbles": {
++      "restyled": "game bubbles (in the drum)",
++      "instances": 47
++     }
++    },
++    "r7glow": {
++     "ahead": 11,
++     "radius": 3.2
++    },
++    "foamBubblesHidden": true,
++    "crestCardsHidden": true,
++    "hero": {
++     "walls": true,
++     "floor": [
++      "slide",
++      "drum"
++     ],
++     "rim": {
++      "u": -1.1500000000000001,
++      "centre": [
++       -0.097,
++       0.755
++      ],
++      "inner": 2.42,
++      "outer": 2.55
++     },
++     "glow": {
++      "ahead": 9,
++      "size": 0.12
++     },
++     "bubbles": {
++      "count": 10
++     },
++     "water": {
++      "swell": {
++       "drawCalls": 1,
++       "triangles": 13392
++      },
++      "splash": {
++       "droplets": 250,
++       "drawCalls": 1,
++       "triangles": 500
++      },
++      "floor": [
++       "slide",
++       "drum"
++      ],
++      "hidden": [
++       "r7FoamBank",
++       "mascotFoam",
++       "r7Spray"
++      ]
++     },
++     "liquid": {
++      "foam": true,
++      "walls": {
++       "radius": 2,
++       "attributes": [
++        "aLqAxis",
++        "aLqT"
++       ]
++      },
++      "collar": true,
++      "floor": {
++       "triangles": 20592,
++       "rows": 235,
++       "cols": 45,
++       "hazards": true
++      },
++      "swell": {
++       "restyled": "heroSwell",
++       "drawCalls": 0
++      },
++      "glow": true,
++      "splash": {
++       "alpha": 0.92
++      },
++      "waterlineFoam": {
++       "sheets": {
++        "count": 6,
++        "drawCalls": 1,
++        "triangles": 12
++       },
++       "bubbles": {
++        "count": 20,
++        "drawCalls": 1,
++        "triangles": 5040
++       },
++       "bank": {
++        "curls": {
++         "count": 4,
++         "drawCalls": 1,
++         "triangles": 1344
++        },
++        "lumps": {
++         "count": 16,
++         "drawCalls": 1,
++         "triangles": 5120
++        }
++       }
++      },
++      "slideCut": true,
++      "hidden": [
++       "r6BowWave",
++       "lqSpraySheets"
++      ],
++      "objects": {
++       "coins": 24,
++       "others": 5
++      },
++      "cost": {
++       "drawCalls": 1,
++       "textures": 1,
++       "texture": "256 x 256 RGBA (normal, height, caustics), mipmapped"
++      }
++     },
++     "match": {
++      "textures": true,
++      "centre": {
++       "ahead": 30,
++       "end": 2,
++       "offset": [
++        0.028,
++        0
++       ],
++       "r": [
++        0.09,
++        0.14
++       ],
++       "exitGlow": [
++        0.2,
++        0.15,
++        0.11
++       ]
++      },
++      "bezel": {
++       "rho": [
++        0.9490196078431373,
++        1
++       ]
++      },
++      "exit": {
++       "exit": true,
++       "glow": true
++      }
++     },
++     "matchWater": {
++      "on": true,
++      "foam": true,
++      "floor": {
++       "amount": 1,
++       "wave": 0.22,
++       "trough": 0.35,
++       "cobalt": "#0e4fd0",
++       "caustic": 0.55,
++       "glint": 1.3,
++       "deep": 0.85,
++       "deepTint": [
++        0.6,
++        0.8,
++        1
++       ],
++       "deepR": 2.4,
++       "delilac": 0.85
++      },
++      "swell": 7,
++      "lobes": true,
++      "curls": true,
++      "bubbles": {
++       "count": 280,
++       "flecks": 560,
++       "drawCalls": 1,
++       "triangles": 1680,
++       "avoiding": 29
++      }
++     },
++     "hidden": [
++      "r6Flanges",
++      "r7Glow",
++      "r5Heart",
++      "s4Rings",
++      "r7Bubbles"
++     ]
++    }
++   },
++   "heroGrade": {
++    "ok": true,
++    "contrast": 1.08,
++    "saturation": 1.16,
++    "exposure": 1,
++    "vignette": 0.28,
++    "vignetteCol": "#2a5fe0",
++    "in": [
++     -12,
++     -8
++    ]
++   }
++  },
++  "hiddenInTunnel": 8
++ }
++}
+\ No newline at end of file
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_t3.00.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_t3.00.png
+new file mode 100644
+index 0000000..ba367a4
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_t3.00.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_t3.00_canvas.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_t3.00_canvas.png
+new file mode 100644
+index 0000000..f24635a
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step2_cam_t3.00_canvas.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/bubble_count.cjs b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/bubble_count.cjs
+new file mode 100644
+index 0000000..95e8dd3
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/bubble_count.cjs
+@@ -0,0 +1,56 @@
++// bubble_count.cjs: counts the tunnel's soap bubbles and white streaks (mwTunnelBubbles) on screen at a moment of real seeded
++// gameplay (seed 7, the 538 x 1076 game area, Tap to Start then T s), from the instances' own positions and fades projected
++// with the real camera: how many bubbles are drawn (fade > 0.05, in front of the camera, on screen), how many within 0.2 W
++// of the tunnel's centre on screen (CX, CY; default the Art Director's (0.53, 0.525)), by size on screen (radius in px at
++// 767 wide), and the streaks' lengths on screen.
++// (The Hough-circle count of bubbles.py also finds the walls' ring arcs as circles, so it cannot isolate the bubbles.)
++//   S3=focus T=3.0 node bubble_count.cjs <abs WebDemo> ['<tune json>']
++const { chromium } = require('playwright');
++const http = require('http'), fs = require('fs'), path = require('path');
++const [ROOT, TUNE = '{}'] = process.argv.slice(2);
++const S3 = (process.env.S3 || 'focus').split(',').filter(Boolean), T = +(process.env.T || 3.0);
++const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
++const server = http.createServer((req, res) => {
++  const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
++  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
++  res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(res);
++});
++(async () => {
++  await new Promise((r) => server.listen(0, r));
++  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
++  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: 1.5 })).newPage();
++  await page.addInitScript(([tune, s3]) => {
++    window.__BW_S3__ = s3; window.__BW_S3_TUNE__ = JSON.parse(tune); window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
++    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
++  }, [TUNE, S3]);
++  await page.goto(`http://localhost:${server.address().port}/index.html`);
++  await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
++  await page.evaluate((t) => { window.__bw.advance(0.5); window.__bw.tap(); window.__bw.advance(t); window.__bw.render(); }, T);
++  const out = await page.evaluate((cen) => {
++    const { scene, camera, renderer } = window.__bw.debug();
++    const m = scene.getObjectByName('mwTunnelBubbles'); if (!m) return { error: 'no mwTunnelBubbles' };
++    const g = m.geometry, C = g.attributes.aC.array, B = g.attributes.aB.array, n = g.instanceCount;
++    const V = camera.position.constructor;
++    const Wpx = renderer.domElement.width, Hpx = renderer.domElement.height;
++    const P11 = camera.projectionMatrix.elements[5];
++    const res = { bubbles: 0, near: 0, sizes: { lt6: 0, '6-12': 0, '12-25': 0, gt25: 0 }, streaks: 0, streakLen: [], centre: cen };
++    const p = new V();
++    for (let i = 0; i < n; i++) {
++      if (B[i * 4] < 0.05) continue;
++      p.set(C[i * 4], C[i * 4 + 1], C[i * 4 + 2]);
++      const dz = -p.clone().applyMatrix4(camera.matrixWorldInverse).z; if (dz < 0.1) continue;
++      p.project(camera); if (Math.abs(p.x) > 1 || Math.abs(p.y) > 1) continue;
++      const sx = (p.x + 1) / 2, sy = (1 - p.y) / 2;
++      const rpx = C[i * 4 + 3] * P11 / dz * 0.5 * Hpx;   // radius (or half length) in canvas px
++      const d = Math.hypot((sx - res.centre[0]), (sy - res.centre[1]) * Hpx / Wpx);   // in widths
++      if (B[i * 4 + 2] > 0.5) { res.streaks++; res.streakLen.push(Math.round(rpx * 2 * 767 / Wpx)); continue; }
++      res.bubbles++; if (d < 0.2) res.near++;
++      const r767 = rpx * 767 / Wpx;
++      if (r767 < 6) res.sizes.lt6++; else if (r767 < 12) res.sizes['6-12']++; else if (r767 < 25) res.sizes['12-25']++; else res.sizes.gt25++;
++    }
++    const L = res.streakLen.sort((a, b) => a - b); res.streakLen = { median: L[L.length >> 1], p90: L[Math.floor(L.length * 0.9)] };
++    return res;
++  }, [+(process.env.CX || 0.53), +(process.env.CY || 0.525)]);
++  console.log(JSON.stringify(out));
++  await browser.close(); server.close();
++})().catch((e) => { console.error(e); process.exit(1); });
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/crops.py
 new file mode 100644
 index 0000000..ca171b3
@@ -1746,10 +2349,10 @@ index 0000000..cb1ae08
 +        near = sum(1 for q in cs if np.hypot((q[0]+x0)/W - 0.53, (q[1]+y0 - 0.525*H)/W) < 0.2)
 +        print(f"   param2 {P2} {k:10s} circles {len(cs):3d}  in centre box {inbox:3d}  within 0.2 W of the centre {near:3d}")
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2fa77f1..497f766 100644
+index 2fa77f1..49698e9 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
-@@ -92,31 +92,69 @@ export const FOCUS = {
+@@ -92,31 +92,73 @@ export const FOCUS = {
      //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
      //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
      //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
@@ -1809,8 +2412,12 @@ index 2fa77f1..497f766 100644
 +    // centre); light / lift: toward light cyan; pieces: small white splash pieces (cells per m [across, along], the share of
 +    // cells with one, radius as a share of the cell, flow toward her in cells per s); crest: the waves' own crests broken into
 +    // short white lengths [hDet from, to, share]; amount: the white's strength
-+    floorAhead: { delilac: 1.0, ahead: [0.4, 1.2, 6.0, 11.0], rw: [0.05, 0.1], light: '#b4e0f6', lift: 0.45,
-+      pieces: { cell: [7.0, 2.6], share: 0.55, r: [0.2, 0.42], flow: 0.9 }, crest: [0.72, 0.9, 0.5], white: '#f4fbff', amount: 0.95 },
++    // (with the new camera, 3.0 s: a light-cyan lift of 0.6 read as a pale wash (pale 51%, texture 3.45): a smaller lift and
++    // bolder, larger white crest pieces keep the blue between them, as in the original. The zone's remaining lavender, about
++    // 10%, is not the water's colour: the brushes' pink lane-warning glow (tunnel_r8_liquid.js, a gameplay cue drawn after
++    // this; brushes at 9.4 m in lane +0.7 and 10.1 m in lane -0.7) and the sock's pale fabric; the de-lilac changed it by 0.1%)
++    floorAhead: { delilac: 1.0, ahead: [0.4, 1.2, 9.0, 16.0], rw: [0.04, 0.07], light: '#b4e0f6', lift: 0.35,
++      pieces: { cell: [5.0, 2.0], share: 0.6, r: [0.28, 0.48], flow: 0.9 }, crest: [0.62, 0.82, 0.7], white: '#f4fbff', amount: 0.95, debug: 0 },
      splash: {
        // small splash crests, not domes: lumpier, a wide spread of sizes
        lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
@@ -1826,7 +2433,7 @@ index 2fa77f1..497f766 100644
        ],
        // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
        // side splashes kept, a little smaller, as the irregular blue splashes beside her
-@@ -125,7 +163,8 @@ export const FOCUS = {
+@@ -125,7 +167,8 @@ export const FOCUS = {
      // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
      // droplets of spray (match: 30)
      liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },

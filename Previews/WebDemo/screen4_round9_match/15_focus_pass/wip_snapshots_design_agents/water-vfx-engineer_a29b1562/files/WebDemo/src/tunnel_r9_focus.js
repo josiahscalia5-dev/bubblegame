@@ -143,8 +143,12 @@ export const FOCUS = {
     // centre); light / lift: toward light cyan; pieces: small white splash pieces (cells per m [across, along], the share of
     // cells with one, radius as a share of the cell, flow toward her in cells per s); crest: the waves' own crests broken into
     // short white lengths [hDet from, to, share]; amount: the white's strength
-    floorAhead: { delilac: 1.0, ahead: [0.4, 1.2, 6.0, 11.0], rw: [0.05, 0.1], light: '#b4e0f6', lift: 0.45,
-      pieces: { cell: [7.0, 2.6], share: 0.55, r: [0.2, 0.42], flow: 0.9 }, crest: [0.72, 0.9, 0.5], white: '#f4fbff', amount: 0.95 },
+    // (with the new camera, 3.0 s: a light-cyan lift of 0.6 read as a pale wash (pale 51%, texture 3.45): a smaller lift and
+    // bolder, larger white crest pieces keep the blue between them, as in the original. The zone's remaining lavender, about
+    // 10%, is not the water's colour: the brushes' pink lane-warning glow (tunnel_r8_liquid.js, a gameplay cue drawn after
+    // this; brushes at 9.4 m in lane +0.7 and 10.1 m in lane -0.7) and the sock's pale fabric; the de-lilac changed it by 0.1%)
+    floorAhead: { delilac: 1.0, ahead: [0.4, 1.2, 9.0, 16.0], rw: [0.04, 0.07], light: '#b4e0f6', lift: 0.35,
+      pieces: { cell: [5.0, 2.0], share: 0.6, r: [0.28, 0.48], flow: 0.9 }, crest: [0.62, 0.82, 0.7], white: '#f4fbff', amount: 0.95, debug: 0 },
     splash: {
       // small splash crests, not domes: lumpier, a wide spread of sizes
       lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,

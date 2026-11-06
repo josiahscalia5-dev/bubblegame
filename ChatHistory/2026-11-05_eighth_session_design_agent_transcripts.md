@@ -361,8 +361,17 @@ Now the fleck settings and the colour tweaks.
 - 00:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/b_metrics.sh
 - 00:27 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/b2/cands_in.json
 - 00:27 `Bash`: Build, render C candidates, measure
+- 00:29 `Bash`: Upper ring crop: original, before, C1
+- 00:30 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/midC1.png
+- 00:30 `Bash`: Find the streak and bubble mesh names
+- 00:30 `Bash`: Streak measures with and without the instanced streaks
+- 00:31 `Bash`: Band metrics with and without instanced streaks
+- 00:31 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/tune_cands.cjs
+- 00:32 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:32 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/b3/cands_in.json
+- 00:32 `Bash`: Render D candidates with and without instanced bubbles
 
-_181 tool steps._
+_190 tool steps._
 
 ---
 
@@ -691,5 +700,19 @@ Now update NOTES.md with the state before the WIP commit.
 - 00:29 `Bash`: Crop the tunnel and measure streaks for b3
 - 00:29 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_b3.png
 - 00:29 `Bash`: Zoom on the ring zone streaks
+- 00:29 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_b3z.png
+- 00:29 `Bash`: Set the floor-ahead defaults, rebuild, capture step 2
+- 00:30 `Bash`: Make a one-off script reading the warning glow uniforms
+- 00:30 `Bash`: Read the brush warning uniforms at 3.0 s
+- 00:31 `Bash`: Measure step 2 and write the floor evidence crops
+- 00:31 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item2_floor_ahead_original_befor
+- 00:31 `Bash`: Capture two higher-contrast floor variants
+- 00:32 `Bash`: Measure and crop the floor variants
+- 00:32 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_f34.png
+- 00:33 `Bash`: Set the higher-contrast floor defaults and capture step 2
+- 00:33 `Bash`: Measure step 2 and refresh the floor crop
+- 00:34 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 00:34 `Bash`: Commit item 2
+- 00:34 `Bash`: Show the focus bubble settings
 
-_208 tool steps._
+_222 tool steps._

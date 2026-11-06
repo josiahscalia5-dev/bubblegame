@@ -128,7 +128,7 @@ export const FOCUS = {
       //    original's white pieces 3.5 px thick, median 59 px, 3.2 per 10k px, 28% along the ring; ours were 1.9 px, 28 px,
       //    12.7 per 10k px, 71%: bigger cells (cols 96 -> 40, rows 3 -> 2), wider pieces, each turned up to `rot` either way and
       //    bent into a hook, softer edges (`soft`: where the edge starts fading), jitter: their place in the cell; fewer drops)
-      flecks: { cols: 40, rows: 2, dens: 0.32, len: [0.18, 0.32], wid: [0.1, 0.2], bend: 2.2, rot: 0.7, soft: 0.45, jitter: [0.2, 0.25], amount: 0.95, col: '#f2f9ff',
+      flecks: { cols: 40, rows: 2, dens: 0.4, len: [0.2, 0.36], wid: [0.14, 0.24], bend: 2.2, rot: 0.5, soft: 0.45, jitter: [0.15, 0.2], amount: 0.95, col: '#f2f9ff',
         drops: { cols: 60, rows: 3, dens: 0.06, r: [0.14, 0.26] },
         r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
     },
