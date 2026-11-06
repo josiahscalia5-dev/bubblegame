@@ -101,7 +101,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
-export const WATER7_ON = BT_ON && LIST.includes('water7');   // (R7, below: water6 with the spray droplets drawn no bigger than small flecks)
+export const WATER8_ON = BT_ON && LIST.includes('water8');   // (R8, below: water7 with the face's edge in front of her following the original's outline)
+export const WATER7_ON = BT_ON && (LIST.includes('water7') || WATER8_ON);   // (R7, below: water6 with the spray droplets drawn no bigger than small flecks)
 export const WATER6_ON = BT_ON && (LIST.includes('water6') || WATER7_ON);   // (R6, below: water4 with the fill under her from the lower water)
 export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON || WATER6_ON);   // (R4, below: water3 with the exemplar-filled texture)
 export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
@@ -183,6 +184,17 @@ if (WATER6_ON) WATER2.file = WATER6.file;
 // (12 px of the 1536 px frame), so near ones stay small flecks. The emitters, their counts, sizes and random numbers are
 // untouched (the same droplets in the same places); code in game.js gated on WATER7_ON.
 export const WATER7 = { maxPx: 12 / 1536 };
+// (R7, the art director: clearly closer than R6 and the accepted build while moving, the cotton-ball piles gone; about the
+// same at the start; THE candidate. 49_water_r7/.)
+// ?s3=intunnel,water8 (R8, the fifteenth session; the art director's first-ranked remaining difference): R7 with ONLY the
+// face's edge in front of her changed. Measured per column (50_contact_edge/): the face's top edge crosses her as a nearly
+// flat line (y 1212-1286 at the start) where the original's water meets her body in a scalloped outline of lavender domes
+// (y 1240-1323; in the texture's own registration 0-27 px below the game's edge). The texture gets an alpha channel, 0
+// where the original has her body (derive_water_map.py --alpha-body; the colour is R6's, byte-identical), and the face drops
+// its pixels there: its edge follows the original's own outline and the water at her lower edge is the original's own
+// domes, not fill. No geometry, registration, colour or other layer changed.
+export const WATER8 = { file: 'foreground_water_original_r8.png' };
+if (WATER8_ON) Object.assign(WATER2, { file: WATER8.file, alpha: true });
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

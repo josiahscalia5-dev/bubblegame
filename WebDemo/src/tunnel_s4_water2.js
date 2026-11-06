@@ -58,7 +58,12 @@ ${P.shift ? `        bwS.y += ${f4(P.shift / 1536)};   // (R5) the registration:
 ` : ''}        vec2 bwQ = vec2(bwS.x, (bwS.y - ${f4(P.y0)}) / ${f4(1 - P.y0)});
         vec2 bwD = vec2(texture2D(uLqTex, bwQ * vec2(2.1, 1.3) + vec2(0.13, -uTime * ${f4(P.flow)})).b,
                         texture2D(uLqTex, bwQ * vec2(1.7, 2.3) + vec2(0.57, -uTime * ${f4(P.flow * 1.3)})).b) - 0.5;
-        vec3 bwT = texture2D(uBwTex, clamp(bwQ + bwD * ${f4(P.wobble)}, vec2(0.002), vec2(0.998))).rgb;
+${P.alpha ? `        vec4 bwT4 = texture2D(uBwTex, clamp(bwQ + bwD * ${f4(P.wobble)}, vec2(0.002), vec2(0.998)));
+        // (R8) where the original has her body the face is dropped: its edge in front of her follows the original's outline
+        if (uBwOn > 0.5 && bwT4.a < 0.5 && bwS.y > ${f4(P.y0 + 0.004)}) discard;
+        vec3 bwT = bwT4.rgb;
+` : `        vec3 bwT = texture2D(uBwTex, clamp(bwQ + bwD * ${f4(P.wobble)}, vec2(0.002), vec2(0.998))).rgb;
+`}
 ${P.gain ? `        { float bwL = dot(bwT, vec3(0.2126, 0.7152, 0.0722));   // (R3) the colours lifted against the bloom's haze; white stays white
           bwT = pow(clamp(bwL + (bwT - bwL) * ${f4(P.gain[0])}, 0.0, 1.0), vec3(${f4(P.gain[1])})); }
 ` : ''}        float bwK = ${f4(P.amount)} * uBwOn * smoothstep(${f4(P.y0)}, ${f4(P.y0 + 0.03)}, bwS.y);

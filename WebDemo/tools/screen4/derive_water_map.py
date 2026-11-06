@@ -18,7 +18,7 @@ ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
 ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])
-ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--body-grow', type=int, default=0); ap.add_argument('--body-src-row', type=int, default=-1); ap.add_argument('--name', default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--body-grow', type=int, default=0); ap.add_argument('--body-src-row', type=int, default=-1); ap.add_argument('--name', default=None); ap.add_argument('--alpha-body', action='store_true')   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -150,6 +150,16 @@ soft = cv2.GaussianBlur(fill, (0, 0), 4)
 k = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3)[..., None]
 out = fill if a.fill == 'exemplar' else (fill * (1 - k * 0.6) + soft * k * 0.6).astype(np.uint8)
 name = a.name or {'telea': 'foreground_water_original.png', 'exemplar': 'foreground_water_original_r4.png'}.get(a.fill, 'foreground_water_original_r3.png')
+if a.alpha_body:
+    # (R8, the fifteenth session) an alpha channel: 0 where the ORIGINAL has her body (the largest pink region, the pink
+    # mask itself, not grown), 255 elsewhere, its edge feathered 1 px; the face drops its pixels there, so its edge in front
+    # of her follows the original's own outline of the water and lavender domes against her (the colour is unchanged)
+    pk = pink.astype(np.uint8); n_, lab_, st_, _ = cv2.connectedComponentsWithStats(pk)
+    bodyc = lab_ == (1 + int(np.argmax(st_[1:, cv2.CC_STAT_AREA])))
+    bodyc = cv2.morphologyEx(bodyc.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8)).astype(np.float32)
+    al = 1.0 - np.clip(cv2.GaussianBlur(bodyc, (0, 0), 1.0), 0.0, 1.0)
+    out = np.dstack([out, np.round(al * 255).astype(np.uint8)])
+    print('alpha: her body', round(float(bodyc.mean()) * 100, 1), '% of the texture')
 Image.fromarray(out).save(os.path.join(a.out, name))
 json.dump({'source': os.path.relpath(ORIG, ROOT), 'y0': y0 / H, 'y1': 1.0, 'size': [W, H - y0], 'masked_share': round(float(m.mean()), 3)},
           open(os.path.join(a.out, name.replace('.png', '.json')), 'w'), indent=1)

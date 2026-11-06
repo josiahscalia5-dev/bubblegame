@@ -58,3 +58,5 @@ Meanwhile, reading how the water face's top edge (the "cut" across her) is built
 
 Only about 3 minutes in; the pair needs about 20 minutes. Meanwhile I'm reading how the crest in front of her is lifted (`swellFront`), for R8:
 
+While the R8 texture generates, adding R8's shader change: the face drops a pixel where the texture's alpha says "her body", and nothing else changes.
+
