@@ -1,7 +1,8 @@
 // Bubble Wash Kingdom: playable browser version of approved Screen 3 ("Let's go! Into the
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
-import { INTUNNEL_ON, INTUNNEL } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
+import { INTUNNEL_ON, INTUNNEL, WATER7_ON } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
+import { water7DropFragment } from './tunnel_s4_water2.js';   // ?s3=intunnel,water7: the spray drawn as blue drops (R7)
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -797,7 +798,7 @@ class Particles {
     this.kindAttr = new THREE.BufferAttribute(this.kind, 1).setUsage(THREE.DynamicDrawUsage);
     g.setAttribute('position', this.posAttr); g.setAttribute('size', this.sizeAttr); g.setAttribute('alpha', this.alphaAttr); g.setAttribute('kind', this.kindAttr);
     this.u = { uScale: { value: 400 } };
-    this.points = new THREE.Points(g, new THREE.ShaderMaterial({ vertexShader: SH.dropVertex, fragmentShader: SH.dropFragment, uniforms: this.u,
+    this.points = new THREE.Points(g, new THREE.ShaderMaterial({ vertexShader: SH.dropVertex, fragmentShader: WATER7_ON ? water7DropFragment() : SH.dropFragment, uniforms: this.u,
       transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor }));
     this.points.frustumCulled = false; this.points.renderOrder = 6;
     this.sources = [];

@@ -100,7 +100,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
-export const WATER6_ON = BT_ON && LIST.includes('water6');   // (R6, below: water5 with the original's contact edge and without the opening's suds)
+export const WATER7_ON = BT_ON && LIST.includes('water7');   // (R7, below: water6 with the spray drawn as blue drops, not white beads)
+export const WATER6_ON = BT_ON && (LIST.includes('water6') || WATER7_ON);   // (R6, below: water5 with the original's contact edge and without the opening's suds)
 export const WATER5_ON = BT_ON && (LIST.includes('water5') || WATER6_ON);   // (R5, below: water4 with the texture's registration corrected)
 export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON);   // (R4, below: water3 with the exemplar-filled texture)
 export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
@@ -175,6 +176,16 @@ if (WATER5_ON) WATER2.shift = WATER5.shift;
 // Nothing is added. The texture, registration (R5), material and everything else as R5.
 export const WATER6 = { file: 'foreground_water_original_r6.png', body: 'foreground_water_original_r6_body.png', cut: 0.5, suds: false };
 if (WATER6_ON) Object.assign(WATER2, { file: WATER6.file, body: WATER6.body, cut: WATER6.cut });
+// ?s3=intunnel,water7 (R7, the one evidence-based refinement of R6): moving, the water round her is dominated by round white
+// beads (R6 +1 s, the band at her base: white 37.1 %, saturated blue 11.8; the original 18.6 and 19.6). The same-frame
+// ablation (48_water_r6/diag/): they are the game's own spray pool (game.js Particles, `fx`: the wake, bow and foam spray
+// she throws, dozens a second); hiding it gives white 24.8 %, saturated 16.7; her splash meshes together change 1 point.
+// The droplets are drawn with a cyan body and a 1.25 (over-white) rim and glint, which the bloom turns into glowing white
+// beads. R7 draws the same particles as the original's small splashes: a clear blue drop (drop) with a small blue-white glint
+// (glint, under 1 so it does not bloom), less opaque (body, rim, hl: the alpha of the body, the rim and the glint), and the
+// foam puffs fainter and blue (foam: colour, alpha). The emission, counts, sizes and the game's random sequence unchanged;
+// the sparkle stars (kind 2, the collect feedback) unchanged.
+export const WATER7 = { drop: [0.22, 0.55, 1.0], glint: [0.9, 0.96, 1.0], body: 0.22, rim: 0.3, hl: 0.45, foam: [0.7, 0.86, 1.0, 0.18] };
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

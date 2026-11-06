@@ -1,0 +1,9 @@
+[
+ {"label":"no_heroSplash", "hide":["heroSplash"]},
+ {"label":"no_spLumps", "hide":["spLumps"]},
+ {"label":"no_spCurls", "hide":["spCurls"]},
+ {"label":"no_waterlineBubbles", "hide":["lqWaterlineBubbles"]},
+ {"label":"no_heroBubbles", "hide":["heroBubbles"]},
+ {"label":"no_points", "hide":[1,189]},
+ {"label":"no_all_splash", "hide":["heroSplash","spLumps","spCurls","lqWaterlineBubbles","heroBubbles",1,189]}
+]

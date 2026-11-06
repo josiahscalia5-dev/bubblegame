@@ -1,0 +1,7 @@
+[
+ {"label":"no_froth", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles"]},
+ {"label":"no_froth_icy", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3IcyEdge"]},
+ {"label":"no_herobubbles", "hide":["heroBubbles"]},
+ {"label":"no_froth_icy_herobubbles", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3IcyEdge","heroBubbles"]},
+ {"label":"no_points", "hide":[1,199,160,"openingLook"]}
+]

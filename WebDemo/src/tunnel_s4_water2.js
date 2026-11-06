@@ -15,9 +15,34 @@
 // keeps it moving; the comma arcs off (the original's own whites are in it). Colours through mtUndisplay (exact on screen).
 // The swell's geometry, crest, waterline, her model and everything else unchanged. Code gated on WATER2_ON.
 import * as THREE from 'three';
-import { WATER2_ON, WATER2 } from './tunnel_s4_bt.js';
+import { WATER2_ON, WATER2, WATER7 } from './tunnel_s4_bt.js';
 
 const f4 = (x) => (+x).toFixed(5);
+const v3 = (c) => `vec3(${c.slice(0, 3).map(f4).join(', ')})`;
+// ?s3=intunnel,water7 (R7): the spray particles' fragment shader (shaders.js dropFragment) with the droplets drawn as clear
+// blue drops with a small blue-white glint, the foam puffs fainter and blue; the sparkle stars as before (tunnel_s4_bt.js WATER7)
+export const water7DropFragment = () => /* glsl */ `
+varying float vAlpha; varying float vKind;
+void main() {
+  vec2 p = gl_PointCoord * 2.0 - 1.0; float r = length(p);
+  if (r > 1.0) discard;
+  vec3 col; float a;
+  if (vKind < 0.5) {            // (R7) water droplet: a clear blue drop, a thin rim and a small blue-white glint
+    float hl = 1.0 - smoothstep(0.0, 0.3, length(p - vec2(-0.32, -0.32)));
+    a = (1.0 - smoothstep(0.8, 1.0, r)) * (${f4(WATER7.body)} + ${f4(WATER7.rim)} * smoothstep(0.5, 0.92, r)) + hl * ${f4(WATER7.hl)};
+    col = mix(${v3(WATER7.drop)}, ${v3(WATER7.glint)}, clamp(hl + smoothstep(0.7, 0.98, r) * 0.25, 0.0, 1.0));
+  } else if (vKind < 1.5) {     // (R7) foam puff: fainter and blue
+    a = (1.0 - smoothstep(0.15, 1.0, r)) * ${f4(WATER7.foam[3])};
+    col = ${v3(WATER7.foam)};
+  } else {                      // sparkle star (unchanged)
+    float cross_ = max((1.0 - smoothstep(0.0, 0.14, abs(p.x))) * (1.0 - abs(p.y)), (1.0 - smoothstep(0.0, 0.14, abs(p.y))) * (1.0 - abs(p.x)));
+    a = clamp(cross_ + (1.0 - smoothstep(0.0, 0.35, r)), 0.0, 1.0);
+    col = vec3(2.2, 1.6, 2.0);
+  }
+  a *= vAlpha;
+  gl_FragColor = vec4(col * a, a);   // premultiplied
+}
+`;
 // the uniforms added to the swell's material (tunnel_r8_liquid.js liquidSwell)
 export function water2Uniforms() {
   const u = { uBwRef: { value: new THREE.Matrix4() }, uBwOn: { value: 0 }, uBwTex: { value: null } };

@@ -1,0 +1,6 @@
+[
+ {"label":"no_1", "hide":[1]},
+ {"label":"no_199", "hide":[199]},
+ {"label":"no_160", "hide":[160]},
+ {"label":"no_openingLook", "hide":["openingLook"]}
+]
