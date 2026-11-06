@@ -1660,3 +1660,11 @@ The bundle was rebuilt while the identity check was still running, so that run w
 
 Registration verified. R5's face, as drawn, matches the original's own water at NCC 0.954 with no shift; R4 needed a 22 px shift to reach that. Now the visual comparison:
 
+While the art director reviews R5, I'll save the diagnosis evidence into the repository:
+
+40 MB of layer PNGs is more than this evidence needs. I'll keep the key layers as high-quality JPEGs:
+
+Now the diagnosis write-up, with the measured numbers:
+
+The art director's review and R5's videos are still running. Meanwhile I'll commit the tested R4 step and R5 in progress:
+

@@ -604,5 +604,83 @@ Let me zoom in on R3c and R4 at the same crop, at the start and while moving.
 
 5. **Make R4 the water candidate in place of R3c.** But tell the user plainly that it removes the streaks and the violet blob, not the paleness or the low contrast.
 
+**Lead → agent** (18:27 UTC):
 
-_74 tool steps._
+The coordinator sent a message while you were working:
+Next step, following your order: R5 (`?s3=intunnel,water5`) is R4 with ONLY the texture's registration corrected. The texture now lands 22 px lower. Verified on the face alone (no bloom, no grade) against the original's own pixels: NCC 0.954 as drawn (R4: 0.203 as drawn, 0.954 only when shifted 22 px). It still rides with her swell frame, so it bobs with the swell as before; the bob was not changed.
+
+Please review strictly, by eye, against the ORIGINAL only. The user's words: "too soft, stretched and pale ... compare shape and contrast, not only LPIPS / colour percentages ... inspect moving gameplay at one and two seconds."
+
+Files (in `Previews/WebDemo/screen4_round9_match/47_water_r5/`):
+- `sheets/01_FULLRES_original_accepted_R5.jpg` and `01b_FULLRES_original_R3c_R5.jpg`;
+- `sheets/02_closeup_water_x1.4.jpg` (ORIGINAL | ACCEPTED | R3c | R4 | R5) and `02b_closeup_original_R3c_R5_x1.6.jpg`;
+- `sheets/03_moving_1s_2s.jpg`, and `sheets/04_moving_closeup_R3c_R4_R5.jpg` (+1 s and +2 s close-ups);
+- frames in `final/start|T1.0|T2.0/base_page.png`; R4's are in `../46_water_r4/final/`.
+
+Measures (supporting only):
+- region LPIPS, foreground water: start R3c 0.576 / R4 0.556 / R5 0.530 (SSIM 0.397 / 0.371 / 0.407); +1 s R3c 0.652 / R4 0.644 / R5 0.665; +2 s R3c 0.606 / R5 0.632;
+- contact: start 0.555 / 0.547 / 0.551.
+- My band at her base: R5 is whiter. White at the start is R4 20.4 %, R5 23.4 % (the original 18.6); +1 s 33.6 -> 36.4; +2 s 38.6 -> 43.2. The saturated blue at +2 s is 5.4 %, against the original's 19.6. My reading: correct registration puts the original's rows 1250-1330, its lower body, directly under her in the game, where her body ends higher. So more of the body-hole fill shows there, and that fill continues the original's white halo round her fur.
+
+Please answer:
+1. Verdict: R5 vs R4, R5 vs R3c, and R5 vs accepted, at the start AND moving. Each one of "clearly closer", "slightly closer", "about the same" or "worse".
+2. Is the water at her base now shaped more like the original (rounded lobes and lavender domes supporting her from underneath, her lower body not hidden)?
+3. Regressions, especially the extra white while moving, or anything less like the original.
+4. Recommendation: which of R3c, R4 or R5 to present as THE candidate, and the single most important next correction for the remaining paleness and low contrast, in the existing material (bloom, overlays, the fill under her). No new objects.
+
+Address this before completing your current task.
+
+- 18:27 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/47_water_r5/sheets/02b_closeup_original_R3c_R5_x1.6.jpg
+**Lead → agent** (18:27 UTC):
+
+[Image: original 3140x680, displayed at 2000x433. Multiply coordinates by 1.57 to map to original image.]
+
+- 18:27 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/47_water_r5/sheets/04_moving_closeup_R3c_R4_R5.jpg
+**Lead → agent** (18:27 UTC):
+
+[Image: original 2630x880, displayed at 2000x669. Multiply coordinates by 1.31 to map to original image.]
+
+- 18:27 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/47_water_r5/sheets/02_closeup_water_x1.4.jpg
+**Lead → agent** (18:27 UTC):
+
+[Image: original 4585x600, displayed at 2000x262. Multiply coordinates by 2.29 to map to original image.]
+
+- 18:28 `Bash`: Measure white and blue under her for R4 and R5
+**Agent** (18:28 UTC):
+
+1. **Verdict.**
+
+   | R5 against | At the start | Moving (+1 s, +2 s) |
+   |---|---|---|
+   | R4 | about the same | worse |
+   | R3c | slightly closer | about the same |
+   | Accepted | clearly closer | slightly closer |
+
+   - **Against R4:** the lavender domes moved down, and a pale band opened between her body and them.
+   - **Against R3c:** at the start the streaks and violet blob are gone, as in R4; moving, R5 is whiter than R3c, which cancels the gain.
+   - **Against the accepted build:** it has the right forms; moving, it has the wrong paleness.
+
+2. **No, the shape at her base is less like the original than R4.** In the original, lavender domes rise in front of her lower body and overlap it.
+   - In R5 the domes sit 20 or so px below her body edge. Her lower edge rests on a pale white-lavender band, the filled hole where the original has her body, plus its white fur halo.
+   - Directly under her (x 0.33–0.67, y 0.81–0.86), R4 to R5:
+
+     | Under her | R4 | R5 | Original |
+     |---|---|---|---|
+     | Lavender, start | 37.6% | 29.0% | 32.1% |
+     | Lavender, +1 s | 16.5% | 5.2% | |
+     | White, start | 13.0% | 18.8% | 9.6% |
+     | White, +2 s | 17.7% | 23.9% | |
+     | Saturated blue, +2 s | 6.3% | 2.0% | |
+
+   Her lower body is not hidden. It is simply not supported by the domes any more.
+
+3. **Regressions.** The extra white while moving is the main one: the band under her turns a pale white mottle at +1 and +2 s, the "soft and pale" the user objects to. Correct registration to the original's screen position does not help here, because she sits higher in the game than in the original. It shows the fill exactly where she should be supported. No new seams or blocks.
+
+4. **Recommendation.**
+   - **Present R4 as the candidate**, not R5.
+   - **The most important next correction is the fill under her.** Refill the body hole with exemplars from the original's saturated cobalt-and-white water (lower left and lower right). First widen the hole by about 12–15 px, so the original's white fur halo goes too.
+   - **Then register the texture to her base,** not to the screen, so the domes stay against her lower edge as she bobs.
+   - Bloom and overlays are only about 1–2 points each, so leave them for later.
+
+
+_78 tool steps._

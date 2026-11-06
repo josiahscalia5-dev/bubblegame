@@ -18,7 +18,7 @@ ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
 ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])
-ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--name', default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--body-grow', type=int, default=0); ap.add_argument('--body-src-row', type=int, default=-1); ap.add_argument('--name', default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -41,6 +41,14 @@ if a.fill == 'exemplar':
 else:
     m[(fy > 0.875) & ((fx < 0.42) | (fx > 0.64))] = 1          # the power buttons and their badges (bottom corners)
 m = cv2.dilate(m, np.ones((11, 11), np.uint8))
+body = np.zeros_like(m, dtype=bool)
+if a.fill == 'exemplar' and a.body_grow > 0:
+    # (R6, the art director's review of R4 / R5) the hole where her body was widened by --body-grow px, so the original's
+    # white fur halo round her goes too; that hole is refilled only from the original's water below --body-src-row
+    # (texture rows: its lower cobalt-and-white water), not from the pale glow beside her
+    k = 11 + 2 * a.body_grow
+    body = cv2.dilate(pink.astype(np.uint8), np.ones((k, k), np.uint8)).astype(bool)
+    m = (m.astype(bool) | body).astype(np.uint8)
 fill = cv2.inpaint(c, m * 255, 9, cv2.INPAINT_TELEA)
 if a.fill == 'exemplar':
     # (R4, after the layer isolation of R3c: heroSwell drawn alone shows the original's bubbly water only in its top strip;
@@ -71,7 +79,7 @@ if a.fill == 'exemplar':
         ty, tx = fyx[np.argmax(pr)]
         ty = int(np.clip(ty, R, Hc - 1 - R)); tx = int(np.clip(tx, R, W - 1 - R))
         win = img[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P, 3); kn = known[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P)
-        near = np.abs(cy - ty) <= 120
+        near = (cy >= a.body_src_row) if (a.body_src_row >= 0 and body[ty, tx]) else (np.abs(cy - ty) <= 120)
         idx = np.nonzero(near)[0] if near.any() else np.arange(len(cy))
         if kn.any():
             d = ((src[np.ix_(idx, np.nonzero(kn)[0])] - win[kn][None]) ** 2).sum((1, 2))
