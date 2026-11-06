@@ -1,6 +1,26 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 8, the new `?s3=bt` on top; branch `ccr-ea1aad4b-wq5nrm`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-ea1aad4b-wq5nrm`)
 
-## Newest (6 November, about 11:40-13:00 UTC): fourteenth session, the breakthrough pass `?s3=bt`; STOPPED for the user's review
+## Newest (6 November, about 13:20-14:45 UTC): fourteenth session continued, `?s3=intunnel`: the game STARTS inside the tunnel
+
+- **The user's directive (13:30 UTC):** the playable level starts directly inside the blue laundry tunnel, her already on the
+  water, moving forward when play starts. No girl scene, Laundry Toss, washing-machine cinematic, castle or swim section
+  (those come later).
+- **`?s3=intunnel`** = `bt` + the run starting at the approved viewpoint (1.592 m, the old 3.0 s moment's spot):
+  - on the tap she rides on at 7.21 m/s, and every lap and restart begins there;
+  - the Screen 3 opening camera (`S3.cine`, which zoomed the start screen in 1.25 x), its banner and its painted picture
+    are off;
+  - the clock starts at the approved moment's 3.0 s (the sock's pose); the buttons are up from the start; a small Tap to
+    Start badge.
+  - Proof: `bt` and `focus` are 0 pixels changed. Evidence: `Previews/WebDemo/screen4_round9_match/40_intunnel_start/README.md`.
+- **The bubble domes** (`?s3=intunnel,domes`, real 3D, colours from the original, size and opacity from 12 Optuna trials):
+  two candidates, both rejected by the art director, reverted (`41_bubble_domes/README.md`). Proposed next, for the user: a
+  sculpted splash-bank mesh at her base (Blender), the original's merged white-lavender bank.
+- **Tools installed:** PyTorch 2.15 (CPU), LPIPS 0.1.4, Optuna 5.0 in `~/.bubblewash-tools/metrics`. `download.pytorch.org`
+  was added to the bubblegame environment, approved by the user. New: `region_compare.py`, `optuna_domes.py`,
+  `spector_capture.cjs` / `spector_report.py`.
+- **Autosave:** restarted after the machine restart at 13:21 UTC (detached, 288 rounds).
+
+## Earlier (6 November, about 11:40-13:00 UTC): fourteenth session, the breakthrough pass `?s3=bt`; STOPPED for the user's review
 
 - **The user's brief:** `Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/05_SOURCE_SPECIFIC_EXECUTION_PLAN.md`
   plus the 11:33 and 12:20 UTC messages: one major visible improvement, at most two candidates per issue, verify that it

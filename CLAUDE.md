@@ -40,7 +40,7 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
 - **The user's briefs of 6 November** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`, `05_...` and
   `10_...`): one correction at a time, each compared original / previous / new at the checkpoint, at Pixel 7 and at moving
   moments; **revert anything that looks less like the original**; the tunnel is the hero, with a clear glowing centre, less
-  clutter and a clean coin / gem path. `focus` is at step 8 (the original's white splashes); step 5 is held (see `HANDOFF.md`). The 6 November breakthrough brief (`Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/`): the new `?s3=bt` (below) keeps the smaller brushes and the sock's blue toe; two water candidates were rejected (her model's silhouette is the limit) and 3D bubble domes at her base are proposed, waiting for the user's go.
+  clutter and a clean coin / gem path. `focus` is at step 8 (the original's white splashes); step 5 is held (see `HANDOFF.md`). The 6 November breakthrough brief (`Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/`): the new `?s3=bt` (below) keeps the smaller brushes and the sock's blue toe; two water candidates were rejected (her model's silhouette is the limit). Then `?s3=intunnel`: the game starts INSIDE the tunnel at the approved view (the user's directive of 6 November, 13:30 UTC); the bubble domes tried on it were rejected twice.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
   scene. Never restart or rebuild the game from scratch.
 
@@ -50,6 +50,9 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   (esbuild; Vite is installed only for side tests). Commit `game.bundle.js` together with its source.
 - Each visual pass is a new `?s3=<switch>` test version:
   - normal game (no switch); `round4`, `round5`, `round6`, `round7` (older passes);
+  - tools added on 6 November: Spector.js frame capture (`WebDemo/tools/screen4/spector_capture.cjs`, `spector_report.py`), the region
+    comparison with OpenCV, scikit-image and LPIPS (`region_compare.py`), a 12-trial Optuna study (`optuna_domes.py`); LPIPS, Optuna
+    and PyTorch live in `~/.bubblewash-tools/metrics/bin/python` (`Tools/cloud_env_setup.sh` installs them);
   - `hero`: the Round 7 hero scene, hero moment 2.85 s;
   - `liquid`: Round 8, real water; `liquid,nofoam` shows it without foam.
   - `splash`: Round 8 pass 2, visible translucent splashes and a deeper swirl on top of `liquid`; `splash,nofoam` without the
@@ -57,7 +60,13 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - `match`: Round 9 art match (`tunnel_r9_match.js`, `tunnel_r9_match_water.js`), including the seventh session's focused
     pass from the 15:55 brief (larger character, tilted sock, aqua-white froth bank; evidence `13_...`, `14_...`,
     `20_focused_pass_merged/`). Its froth predates the 17:15 correction above.
-  - `bt` (newest, 6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
+  - `intunnel` (newest, 6 November, fourteenth session, the user's directive: "start directly inside this blue laundry
+    tunnel ... no girl scene, no extra opening, no separate swimming sequence"): `bt` plus the run STARTING inside the tunnel
+    at the approved viewpoint (`INTUNNEL` in `WebDemo/src/tunnel_s4_bt.js`, code gated on `INTUNNEL_ON` in `game.js`; the
+    opening camera `S3.cine` off). Evidence: `Previews/WebDemo/screen4_round9_match/40_intunnel_start/README.md`. The bubble
+    domes (`domes` flag, `tunnel_s4_domes.js`) were REJECTED twice by the art director and are not in it
+    (`41_bubble_domes/`); next proposed: a sculpted splash-bank mesh at her base (for the user's decision).
+  - `bt` (6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
     gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,
     unchanged), the wall brushes 0.66, the sock's toe blue. Evidence and the proof that it is step 8 plus only these:
     `Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/README.md`. Spector.js frame captures:

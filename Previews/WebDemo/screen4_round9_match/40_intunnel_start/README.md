@@ -24,6 +24,12 @@
   camera, 0.82 m further forward and pitched. Inside the tunnel that zoomed the start screen in about 1.25 x. Found by
   probing: the gameplay camera's numbers were identical, the picture was not.
 - **The painted Screen 3 picture and the Screen 3 banner are off;** the Tap to Start panel is a small pill (`page.html`).
+- **After the art director's review of the first start screen:**
+  - the game clock starts at the approved moment's 3.0 s (`INTUNNEL.clock`), so the sock's rocking, the brushes' turning
+    and the water's flow are in the approved pose (the sock had been side-on, its face hidden);
+  - the pause, Bubble Blast and Turbo Spin buttons show from the start, as in the approved screen;
+  - Tap to Start is a small two-line badge in the gap between the buttons (`page.html`).
+  - The art director's verdict: "the start screen keeps the composition".
 - **Unchanged:** the course, lanes, coins, gem, socks, brushes and their knock, hearts, pause, Bubble Blast, Turbo Spin.
   The layout's own `startZ` is not changed: it also places scenery and random items.
 
@@ -54,4 +60,18 @@
   - lavender round her base: 0.3 % against the original's 6.5 %;
   - lavender in the foreground water: 0.6 % against 6.5 %.
 
-  That is the original's translucent lavender bubble domes, missing: the next correction (`../41_bubble_domes/`).
+  That is the original's translucent lavender bubble domes, missing. The next correction tried them (`../41_bubble_domes/`):
+  two controlled candidates, both rejected by the art director and reverted. A sculpted splash-bank mesh is proposed instead.
+
+## The final `?s3=intunnel` (bundle `9d7f484f`)
+
+- **Sheets** (`sheets/`):
+  - `01_FULLRES_original_previous_new.jpg`: ORIGINAL | PREVIOUS ACCEPTED (`bt` 3.0 s) | NEW (the in-tunnel start);
+  - close-ups `02_` (tunnel), `03_` (character and water), `04_` (brushes, coins, gem, sock);
+  - the moving moments at the same places, `05_` and `06_` (the previous `bt` at 4, 5 and 6 s is the new build at 1, 2 and
+    3 s after the tap: she now starts where `bt` was at 3.0 s).
+- **Frames:** `final/`.
+- **Region comparison** (`regions_final/`): the new start scores as the previous accepted 3.0 s frame, region by region
+  (LPIPS 0.37-0.66 for both, within about +-0.02). It is the same picture, now at the very start of the game.
+- **Honestly:** this pass makes the game start where the user asked, at the approved view. It does not by itself bring the
+  picture closer to the original. The visual correction tried this session (the bubble domes) failed twice and was reverted.

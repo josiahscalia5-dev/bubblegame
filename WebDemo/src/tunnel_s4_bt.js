@@ -39,7 +39,10 @@ if (INTUNNEL_ON) window.__BW_OPENING_OFF__ = [...new Set([...(window.__BW_OPENIN
 // the brushes' turning and the water's flow are in its pose on the start screen (the art director's review: the sock was side-on)
 export const INTUNNEL = { u: 1.592, speed: 7.21, clock: 3.0 };
 // ?s3=intunnel,domes (or bt,domes): real 3D translucent bubble domes along her base (tunnel_s4_domes.js), the visual
-// correction tested on top of the in-tunnel start. Colours sampled from the ORIGINAL at her base (y 1220-1340, x 120-680:
+// correction tested on top of the in-tunnel start. REJECTED (6 November, the art director's reviews of both controlled
+// candidates: candidate 1 'about the same, not yet closer', milky balloons hiding her fur; candidate 2 'not clearly closer',
+// clear soap bubbles, only the lavender share nearer the original): NOT part of ?s3=intunnel, kept behind its own `domes`
+// flag as a record (Previews/WebDemo/screen4_round9_match/41_bubble_domes/README.md). Colours sampled from the ORIGINAL at her base (y 1220-1340, x 120-680:
 // lavender 20 % of the zone, k-means #a295ee 34 %, #b9b6f2 27 %, #dcd2fa 26 %, #8879db 14 %; its aqua #a6d1f5, #c6e6fa,
 // #87b9ed, #5ea2eb). Sizes and places from the original's domes there (about 30-65 px radius, 0.07-0.15 m at the swell's
 // front): [phi round her (degrees, + screen-left), radius (m), out from the crest (m), sink (share of the radius below the

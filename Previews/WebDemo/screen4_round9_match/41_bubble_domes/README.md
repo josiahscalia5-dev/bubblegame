@@ -1,4 +1,8 @@
-# Screen 4: translucent bubble domes at her base (`?s3=intunnel,domes`; 6 November 2026, fourteenth session)
+# Screen 4: translucent bubble domes at her base (`?s3=intunnel,domes`; 6 November 2026, fourteenth session): REJECTED
+
+**Outcome: both controlled candidates rejected by the art director and reverted under the user's rule.** The domes are
+NOT part of `?s3=intunnel`; the code stays behind its own `domes` flag as a record. The in-tunnel start is kept
+(`../40_intunnel_start/`).
 
 - **The target:** the ORIGINAL approved Screen 4 only.
 - **Before:** `?s3=intunnel`, the in-tunnel start (`../40_intunnel_start/`, commit `6febe04`). **After:** `?s3=intunnel,domes`
@@ -45,6 +49,38 @@
   - The first build (trial 0: x 1.0, alpha 0.42) was too small and faint, glassy pale circles.
 - **Proof:** the built start screen is 0 pixels from trial 8.
 
-REVIEW_PLACEHOLDER
+## The reviews (the read-only art director agent, against the original only)
 
-TESTS_PLACEHOLDER
+- **Candidate 1** (trial 8, `frames/`): about the same, not yet closer.
+  - Better: the domes are in the original's places, and the lavender at her base went from 0.3 % to 15 % (the original 21 %).
+  - Worse: milky, nearly opaque balloons hiding her fur (visible pink 29 -> 17 %, the original 29), no bright rims, the big
+    centre dome reading as a sticker, an even row of pale beads while moving.
+- **Candidate 2** (`cand2/`): the advice applied.
+  - The changes: body alpha 0.73 -> 0.38 (clear violet-tinted centres), near-white Fresnel rims, the centre dome 30 %
+    smaller, the lavender deepened at each foot.
+  - The verdict: not clearly closer than the build without domes, revert. Only the lavender improved; the domes read as
+    clear soap bubbles, a different element from the original's saturated violet domes merged into a white splash bank.
+
+  | the art director's base band, y 0.80-0.90, x 0.25-0.75 | saturation | contrast | white | pink | lavender |
+  |---|---|---|---|---|---|
+  | original | 0.45 | 0.18 | 13.4 % | 28.8 % | 18.1 % |
+  | previous (`bt`) | 0.39 | 0.11 | 11.3 % | 25.9 % | 0.6 % |
+  | candidate 1 | 0.34 | 0.09 | 7.1 % | 14.4 % | 26.4 % |
+  | candidate 2 | 0.36 | 0.10 | 10.3 % | 19.9 % | 9.0 % |
+
+- **Sheets:** `sheets/` (candidate 1), `cand2/sheets/` (candidate 2).
+
+## Why it did not work, and a different technique
+
+- Bubbles alone are not what the original has at her base. Its domes are part of a sculpted white-and-lavender splash bank
+  with curling crests up her sides, saturated violet, with bright white highlights. A row of separate spheres on a flat face
+  reads as an added element, whether milky or clear.
+- **What is left there** (the art director's top remaining difference):
+  - the foreground and her base are a flatter pale sheet with regular white dashes;
+  - white in the foreground is 8 % against the original's 17 %, behind her 16 % against 28 %;
+  - the layers: `tunnel_r9_match_water.js` (the swell face) and `tunnel_r8_splash.js` (`spCurls`, `spLumps`).
+- **Proposed instead (not started; for the user's decision):** a sculpted splash-bank MESH round her base, modelled in
+  Blender from the original's silhouette there. Merged lobes with curling crests rising up her sides, a saturated
+  violet-to-aqua translucent material and white crest highlights. One piece of geometry riding the swell, replacing the
+  flat face's look there (not lowering it). This changes geometry, not shader numbers, and is what the original draws.
+
