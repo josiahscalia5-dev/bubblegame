@@ -10,5 +10,11 @@
     "agents": "ChatHistory/2026-11-06_fifteenth_session_design_agent_transcripts.md",
     "title": "Fifteenth session (6 November): Screen 4 water R6",
     "url": "https://claude.ai/code/session_01AvQv6UUVTrtkPv7SUBtAza"
+  },
+  "08b39b21-0dec-5ec1-bc99-07d34f97f077": {
+    "chat": "ChatHistory/2026-11-06_session_08b39b21.md",
+    "agents": "ChatHistory/2026-11-06_session_08b39b21_design_agent_transcripts.md",
+    "title": "Seventeenth session (6 November, second account): account restoration",
+    "url": "https://claude.ai/code/session_019Rgj5j972EGfpaim3TnBha"
   }
 }
