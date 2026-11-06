@@ -216,3 +216,5 @@ _[1 image attached]_
 
 Neither the first import nor the brush file is the cause. Before bisecting further, checking that the step 8 "before" frame itself reproduces from the committed step 8 bundle:
 
+The true step 8 bundle reproduces its frames exactly (0 pixels), so the leak is real and comes from my edits. Bisecting by file on top of the step 8 source:
+
