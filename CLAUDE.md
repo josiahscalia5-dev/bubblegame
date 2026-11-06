@@ -109,6 +109,11 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
 
   - 288 rounds is 24 hours.
   - Check it with `ps -eo pid,etime,cmd | grep '[a]utosave.sh'` and the log, and start it again if it is gone.
+  - **A SessionStart hook restarts it by itself** (`.claude/hooks/session-start.sh`, registered in `.claude/settings.json`;
+    the user's approval of 6 November). On a cloud session start or resume it starts the autosave only if none is running,
+    never on `main` / `master` or a detached HEAD, never switching branches, logging to `~/.bubblewash-autosave/`. A
+    session's file names come from `Tools/autosave_sessions.json` (add your session id there); without an entry they are
+    `ChatHistory/<date>_session_<id8>.md`. It acts in future sessions once it is on their branch (or merged).
   - Name the files after a session number no other branch uses.
 - **Never put a key in the repository, a commit, a script or the chat.** The repository is public. Tripo's key goes in
   the cloud environment's settings (see `Tools/DEV_TOOLS.md`). The chat exporter redacts keys.

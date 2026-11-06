@@ -81,6 +81,25 @@ export const DOMES_ON = BT_ON && (LIST.includes('domes') || BANK_ON);
 //   cell: domes per m [along, down]; r: a dome's radius [min, max] as a share of its cell; share: cells with a dome; flow:
 //   how fast they run down the face (m/s); reach: m down the face the domes cover; lav: the share of lavender bubbles
 export const WAVE_ON = BT_ON && LIST.includes('wave');
+// ?s3=intunnel,crest (the user's approval of 6 November, about 16:25 UTC: ONE controlled experiment with real curling
+// water-crest geometry round her, reusing the existing curling splash sheets; not replacing the accepted water until it is
+// visibly closer): the splash bank's curling sheets (spCurls, tunnel_r8_splash.js: thin real 3D sheets rising from the
+// swell's crest, leaning out and curling over, a broken white lip, streaks running up them, animated by the flow, her
+// swerves and landings) placed as the original's crests: pairs rising beside her lower body and out to the screen's
+// lower corners, taller and more curled than focus's four, and two small low curls at the front contact, under her base so
+// her body stays clear; the sheets in the original's cobalt and cyan with bright white lips. Nothing else changes.
+//   curls: [phi (degrees round her, + screen-left), height (m), width (m), curl (radians at the top), lean (radians outward
+//   at the base), shift along the crest (m)]
+export const CREST_ON = BT_ON && LIST.includes('crest');
+export const CREST = {
+  water: { splash: {
+    curls: [[22, 0.2, 0.26, 1.7, 0.18, 0], [-22, 0.18, 0.26, 1.7, 0.18, 0], [34, 0.26, 0.32, 1.6, 0.14, 0], [-34, 0.24, 0.32, 1.6, 0.14, 0],
+      [50, 0.22, 0.32, 1.5, 0.12, 0], [-50, 0.2, 0.3, 1.5, 0.12, 0], [66, 0.18, 0.3, 1.4, 0.1, 0], [-66, 0.16, 0.28, 1.4, 0.1, 0],
+      [6, 0.08, 0.2, 1.8, 0.25, 0], [-8, 0.07, 0.2, 1.8, 0.25, 0]],
+    curlAlpha: 0.85, curlLip: 1.0,
+    colours: { glassDeep: '#1466d8', glass: '#3aa8f4', white: '#e6f4ff', lip: '#ffffff' },
+  } },
+};
 // (W2: gap #178ee8, body #3d9ff0, light #9fd3f7, rim #cfeafc, glint [0.86, 0.95], share 0.85, r [0.42, 0.62], lav 0.16: the
 // rounded lobes right, but too blue: in the foreground water saturated blue 47.8 % against the original's 24.6 %, white 11 %
 // against 16.8 %, LPIPS 0.708 against the previous 0.656. W2b: the original's own balance there (k-means: white #e5effa 30 %,
