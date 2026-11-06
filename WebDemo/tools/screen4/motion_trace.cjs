@@ -39,18 +39,22 @@ const server = http.createServer((req, res) => {
     const scr = (v) => { const p = v.clone().project(cam); return [(p.x + 1) / 2 * 1536 * rect.width / rect.height, (1 - p.y) / 2 * 1536]; };   // px of a 1536-px-tall frame
     const rows = [];
     const rec = (ev) => {
-      const t = bw.state().time, root = m.root.position.clone();
+      const st = bw.state(), t = st.time, root = m.root.position.clone();
       const surf = W.surface(L, m.x, m.z, t), ride = W.baseHeight(L, m.x, m.z);
-      const r = { t: +t.toFixed(3), ev, phase: bw.state().phase, x: +m.x.toFixed(4), xv: +m.xv.toFixed(3), lane: m.lane, air: m.air,
+      const r = { t: +t.toFixed(3), ev, phase: st.phase, speed: st.speed, hearts: st.hearts, coins: st.coins, gems: st.gems, socks: st.socks, knocks: st.knocks, bumps: st.bumps, z: st.z, x: +m.x.toFixed(4), xv: +m.xv.toFixed(3), lane: m.lane, air: m.air,
         yAbs: +m.yAbs.toFixed(4), surf: +surf.toFixed(4), ride: +ride.toFixed(4),
         leanDeg: +(m.lean * 180 / Math.PI).toFixed(2), rollDeg: +(m.tilt.rotation.z * 180 / Math.PI).toFixed(2), pitchDeg: +(m.tilt.rotation.x * 180 / Math.PI).toFixed(2),
         yawDeg: +(m.tilt.rotation.y * 180 / Math.PI).toFixed(2), flipDeg: +(m.flip * 180 / Math.PI).toFixed(1), squashY: +m.squash.scale.y.toFixed(4),
         her: scr(root).map((v) => +v.toFixed(1)), cam: cam.position.toArray().map((v) => +v.toFixed(4)) };
+      // (her DRAWN centre: her model's group, which ?s3=...,swim offsets for the swim rhythm; elsewhere her root)
+      const drawn = m.squash.getWorldPosition(root.clone());
+      r.drawn = scr(drawn).map((v) => +v.toFixed(1));
       if (su && swell.visible) {
         const C = su.uC.value.clone(), U = su.uU.value.clone();
         r.swellC = C.toArray().map((v) => +v.toFixed(4));
         r.swellScr = scr(C).map((v) => +v.toFixed(1));
         r.herAboveSwellBase = +root.clone().sub(C).dot(U).toFixed(4);   // metres: her centre above the mound's base
+        r.drawnAboveSwellBase = +drawn.clone().sub(C).dot(U).toFixed(4);   // metres: her DRAWN centre above it
         r.swellLat = +su.uLat.value.toFixed(3); r.swellAir = +su.uAir.value.toFixed(3); r.swellLand = +su.uLand.value.toFixed(3);
         r.swellLagX = +su.uPX.value.toFixed(4);
       }

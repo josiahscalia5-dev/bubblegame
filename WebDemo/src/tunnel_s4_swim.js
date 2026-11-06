@@ -57,7 +57,17 @@ export const SWIM = {
     lobe: { cell: [5.2, 5.0], r: [0.46, 0.66], share: 0.92, down: 0.55, out: 0.18, top: 0.075, gap: '#0f47c4', rim: '#b8e4ff',
       hi: '#7fe8fb', amount: 1.0 },
     // (c3) how opaque the collar's water is: near the crest .. lower down (her fur shows through, violet)
-    clear: [0.55, 0.86] },
+    // (c5, after c4 showed her whole lower body as a large plain violet blob: water seen at this shallow angle mostly
+    // reflects the bright tunnel, so her body under it shows only as a violet hint) [0.55, 0.86] -> [0.74, 0.9]
+    clear: [0.74, 0.9],
+    // (c5) the original's sparkling splash along her waterline (small white specks and a broken froth line, never a
+    // cushion): specks per m, the share of cells with one, their size (share of a cell), how far down the face (m), the
+    // froth line's width (m) [min, extra] and how often it breaks
+    froth: { cell: 34, share: 0.4, dot: [0.12, 0.3], reach: 0.2, line: [0.018, 0.04], gaps: 0.42, amount: 0.95 },
+    // (c6) the share of the face's cells with a twinkling glint (c1-c5: 0.07): the original's waterline glitters
+    glints: 0.12,
+    // (c4) beside her body: from / to (m sideways from her centre), how much of that opacity is left there
+    sideClear: [0.42, 0.56, 0.18] },
   // 3. the wake on the floor: the V arms (where they start beside her, how fast they open per m behind her, their width),
   // how far behind her it fades (m), the ring round her (radius m), colours (sRGB) and strengths
   wake: { arm: [0.62, 0.42, 0.13], fade: 2.5, ring: 0.68, cobalt: '#1757d8', turq: '#5fdcf7', white: '#f2faff',
@@ -78,7 +88,7 @@ const v3s = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((
 // mwFloor (the floor's own water here), mwKey (the key light on N), mwSpec, uC, uR, uTime, uLqTex, lqHash, mtUndisplay
 export function swimCollarGLSL() {
   if (!SWIM_ON) return '';
-  const K = SWIM.look, L = K.lobe;
+  const K = SWIM.look, L = K.lobe, F = K.froth;
   return /* glsl */ `    {   // ?s3=...,swim: the contact collar as the same flowing water (tunnel_s4_swim.js)
       float swX = dot(vW - uC, uR);                                    // m sideways from her centre (screen left +)
       float swPd = (0.5 - vS.y) * 1.9;                                 // about m down the outer face from the crest
@@ -125,7 +135,7 @@ export function swimCollarGLSL() {
       // crisp blue-white glints: the key light's specular points and sparkles travelling down the face
       vec2 swGq = vec2(as * 26.0, swPd * 26.0 - fl * 14.0), swGi = floor(swGq);
       float swGh = lqHash(swGi + 41.0);
-      float swGl = step(0.93, swGh) * (1.0 - smoothstep(0.08, 0.2, length(fract(swGq) - 0.5 - (vec2(lqHash(swGi + 43.0), lqHash(swGi + 47.0)) - 0.5) * 0.5)))
+      float swGl = step(${f4(1 - K.glints)}, swGh) * (1.0 - smoothstep(0.08, 0.2, length(fract(swGq) - 0.5 - (vec2(lqHash(swGi + 43.0), lqHash(swGi + 47.0)) - 0.5) * 0.5)))
         * (0.5 + 0.5 * sin(uTime * 7.0 + swGh * 40.0)) * smoothstep(0.2, 0.6, swUp);
       swCol += ${v3s(K.glint)} * (mwSpec * ${f4(K.spec)} + swGl * ${f4(K.sparkle)});
       // small clear bubbles riding the water near the crest
@@ -141,6 +151,18 @@ export function swimCollarGLSL() {
       float swLw = ${f4(K.lip0[0])} + ${f4(K.lip0[1])} * swLn;
       float swLip = (1.0 - smoothstep(swLw * 0.5, swLw, d)) * smoothstep(0.45, 0.62, swLn) * (1.0 - smoothstep(0.36, 0.5, abs(swX)));
       swCol = mix(swCol, mtUndisplay(${v3s(K.lip)}), swLip * 0.85);
+      // (c5) sparkling splash along her waterline: a broken froth line with bubbly holes and small white specks just under
+      // it, streaming out along the crest and down the face as she swims
+      float swFn = texture2D(uLqTex, vec2(as * 3.3 - fl * 0.25, 0.17 + uTime * 0.08)).b;
+      float swFw = ${f4(F.line[0])} + ${f4(F.line[1])} * swFn;
+      float swFl = (1.0 - smoothstep(swFw * 0.6, swFw, swPd)) * smoothstep(${f4(F.gaps)}, ${f4(F.gaps + 0.1)}, swFn * 0.7 + swC2 * 0.4);
+      vec2 swFq = vec2(as * ${f4(F.cell)} - fl * 3.0, swPd * ${f4(F.cell)} - fl * 9.0), swFi = floor(swFq);
+      float swFh = lqHash(swFi + 83.0), swFr = mix(${f4(F.dot[0])}, ${f4(F.dot[1])}, lqHash(swFi + 89.0));
+      float swFd = length(fract(swFq) - 0.5 - (vec2(lqHash(swFi + 91.0), lqHash(swFi + 97.0)) - 0.5) * 0.5);
+      swFl *= 1.0 - (1.0 - smoothstep(swFr * 0.8, swFr, swFd)) * step(0.55, swFh);                 // bubbly holes in the froth
+      float swSpk = step(${f4(1 - F.share)}, swFh) * (1.0 - smoothstep(swFr * 0.7, swFr, swFd)) * (1.0 - smoothstep(${f4(F.reach * 0.4)}, ${f4(F.reach)}, swPd));
+      float swFroth = clamp(max(swFl, swSpk) * ${f4(F.amount)}, 0.0, 1.0);
+      swCol = mix(swCol, mtUndisplay(${v3s(K.lip)}), swFroth);
       // white glints on the lobes' lit tops
       float swLg = smoothstep(0.95, 0.995, swLlit) * smoothstep(0.45, 0.8, swLh) * swLin;
       swCol = mix(swCol, mtUndisplay(${v3s(K.glint)}), swLg);
@@ -149,7 +171,10 @@ export function swimCollarGLSL() {
       // lavender at her base), clearer near the crest and deeper lower down; the gaps a little less clear; the rims, sheens,
       // glints, bubbles and lip more opaque
       float swClr = mix(${f4(K.clear[0])}, ${f4(K.clear[1])}, smoothstep(0.03, 0.42, swPd)) + (1.0 - swLin) * 0.08 * smoothstep(0.05, 0.4, swUp);
-      mwA = clamp(max(swClr, max(max(swRimL * 0.7, swSheen * 0.55), max(swLg, max(swRing * 0.75 + swBgl, swLip * 0.85)))), 0.0, 1.0);
+      // (c4, after c3 read as a glass jar: its sides stood as walls beside her) beside her body the water is nearly clear,
+      // only its rims, glints and bubbles show: water climbing her sides, not a container
+      swClr *= mix(1.0, ${f4(K.sideClear[2])}, smoothstep(${f4(K.sideClear[0])}, ${f4(K.sideClear[1])}, abs(swX)));
+      mwA = clamp(max(swClr, max(max(swRimL * 0.7, swSheen * 0.55), max(swLg, max(swRing * 0.75 + swBgl, max(swLip * 0.85, swFroth))))), 0.0, 1.0);
       // (c2) in the top band only the lobes stand: her waterline is the row of their rounded tops (pink between them)
       float swTop = 1.0 - smoothstep(${f4(L.top * 0.6)}, ${f4(L.top)}, swPd);
       mwA *= mix(1.0, smoothstep(0.0, max(fwidth(swLh) * 1.5, 0.02), swLh), swTop);
