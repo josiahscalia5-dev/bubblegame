@@ -1,8 +1,24 @@
-# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9, `?s3=match` and `?s3=focus` both merged, branch `ccr-9f8e2c8d-0zg3mc`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Round 9, `?s3=focus` pass 4, branch `ccr-b10ee34b-rn9s7h`)
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (5 November, 22:40 UTC onward): tenth session, the user's fidelity plan, steps 2 and 3 done (`?s3=focus`)
+## Newest (6 November, from 00:00 UTC): eleventh session, branch `ccr-b10ee34b-rn9s7h`, pass 4 of `?s3=focus`
+
+- **Started at `04daf57`**, the tenth session's last save (`ccr-9f8e2c8d-0zg3mc`, left untouched). That session stopped at its
+  5-hour usage limit at about 23:50 UTC, mid-way through pass 4a; everything it had was already saved (`fa55483`). The
+  rebuilt bundle is byte-identical to it.
+- **The user's review of step 3 (23:40 UTC):** step 2 approved; step 3 a technical checkpoint, not visually approved. Pack
+  `Design/ReferencePacks/2026-11-06_Step3_Visual_Review_Pack_from_user/`. Five concerns: the pale lavender tunnel centre,
+  the lavender floor ahead, the ring saturation / texture / flecks, the foreground water round her, keep step 2 and the
+  character. Every adjustment shown as the original next to the game at seed 7, 3.0 s.
+- **The user asked (00:00 UTC) that the design agents be enabled in this session.** The four agent files have a new
+  "Newest: eleventh session" section with this state and each agent's part.
+- **Pass 4a so far** (`FOCUS.liquid.hazard`): the brushes' magenta warning stripes on the floor now use the water's colours.
+  Floor-ahead lavender 22.0% -> 13.5% (original 3.0%); middle 24.7% -> 23.2% (original 12.1%) (`walls.py` zone shares).
+- **Autosave:** running detached (chat `ChatHistory/2026-11-06_eleventh_session_lavender_and_water.md`, agents
+  `..._eleventh_session_design_agent_transcripts.md`).
+
+## Earlier (5 November, 22:40 UTC onward): tenth session, the user's fidelity plan, steps 2 and 3 done (`?s3=focus`)
 
 - **The user's decisions** (kit `Design/ReferencePacks/2026-11-05_Screen4_Complete_Kit_from_user/`, `CLAUDE_SCREEN4_INSTRUCTIONS.txt`):
   - continue from `focus`; `match` stays unchanged as the comparison and rollback baseline;

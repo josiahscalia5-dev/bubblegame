@@ -55,7 +55,50 @@ judgement; never claim a precise similarity percentage.
 Rules: visual changes only under `?s3=round5`; Round 4 and the normal game stay pixel-identical; never change controls, lanes,
 the route or gameplay rules; keep the fluffy shell-fur brushes; no paid Tripo generations.
 
-## Newest: tenth session, BOTH evening lines merged (5 November 2026, from 21:45 UTC; this section overrides the notes below)
+## Newest: eleventh session, pass 4 of `?s3=focus` (6 November 2026, from 00:00 UTC; this section overrides the notes below)
+
+- **Repository:** `josiahscalia5-dev/bubblegame`. **Branch:** `ccr-b10ee34b-rn9s7h` (the eleventh session's). It starts at
+  `04daf57`, the tenth session's last save (`ccr-9f8e2c8d-0zg3mc`, left untouched). The lead merges every agent's work into
+  it and pushes; never push another branch, never force-push. Read `HANDOFF.md`'s top section first.
+- **The user re-enabled the design agents for this session** (6 November, about 00:00 UTC: "make sure that the design agents
+  ... is enabled on this session"). The tenth session's step 2-3 kit said "no agents"; that applied to steps 2 and 3 only.
+- **Where the work stands (all `?s3=focus`; `match` is the frozen comparison and rollback baseline):**
+  - step 2, the interface at the original's places (`a715434`): APPROVED by the user. Freeze it (`page.html`, `body.s4focus`).
+  - step 3, the walls draw the ORIGINAL's own rings (`13fccff`, `WebDemo/tools/screen4/derive_ring_map.py`,
+    `WebDemo/textures/screen4/tunnel_rings_original.png`, `focusRingMapGLSL` in `tunnel_r9_match.js`): accepted only as a
+    technical checkpoint, NOT visually approved.
+- **The user's review of step 3 (5 November, 23:40 UTC),** pack `Design/ReferencePacks/2026-11-06_Step3_Visual_Review_Pack_from_user/`
+  (`BubbleWash_Step3_Review_Notes.txt`, `BubbleWash_Approved_vs_Step3_Annotated.png`). In the user's order:
+  1. **Tunnel centre:** too pale, lavender and pinkish. The original has deeper cobalt-blue and turquoise water, small
+     bright highlights and convincing circular depth. Remove the pastel wash without moving the original's ring positions.
+  2. **Floor ahead:** 22% lavender against the original's 3%. Fix the floor and any overlapping 3D materials.
+  3. **Wall rings:** keep the alignment; restore strong saturated blue bands, irregular water texture and sparkling
+     white-aqua flecks ("broken, crisp cobalt/cyan streaks"). Not smooth, uniform pastel circles.
+  4. **Foreground water:** the blue-white splash detail and transparent bubbles round her. No solid foam cushion, never
+     covering her.
+  5. **Keep:** step 2's interface, the camera, collectibles, gameplay. Do NOT modify the pink character's model.
+  - Isolate and correct the existing sources first (layers, materials, settings). No new generated textures from other
+    pictures, no paid assets. Ring maps derived from the ORIGINAL itself are allowed (step 3's method).
+  - For every adjustment: the original next to the real game at seed 7, 3.0 s, no steering, the same camera, 767 x 1536;
+    the corrected blue-water regions enlarged. Reversible commits, one tested step each.
+- **Pass 4 so far (lead):** 4a, lavender sources. Found by switching layers off at 3.0 s: the floor ahead is opaque there;
+  its lavender came mostly from the brushes' WARNING stripes (a pulsing magenta glow down the floor before each brush).
+  Now in the water's colours (`FOCUS.liquid.hazard`, `tunnel_r8_liquid.js`). Floor-ahead lavender 22.0% -> 13.5% (original
+  3.0%); the middle (r 0.08-0.20 W) 24.7% -> 23.2% (original 12.1%). Evidence: `Previews/WebDemo/screen4_round9_match/25_pass4_water/`.
+- **Capture and measure** (repository root, `source Tools/bw_tools_env.sh` first):
+  - frames: `cd WebDemo && S3=focus TIMES=3.0 DPR=1.5 CANVAS=1 LABEL=<name> node tools/screen4/liquid_shots.cjs "$PWD" <out> ['<tune json>']`
+    (807 x 1602 page and 807 x 1614 canvas; sheets resize to 767 x 1536);
+  - zone colours (lavender, electric blue, white shares per zone): `cd Previews/WebDemo/screen4_round9_match/22_verification_audit/scripts
+    && FRAMES="a=<abs canvas png>;b=..." "$BW_PY" walls.py`; ring radii `rings.py`;
+  - ring alignment: `"$BW_PY" Previews/WebDemo/screen4_round9_match/24_step3_tunnel_rings/scripts/ringprof.py name=<canvas png>@0.525,0.531`
+    (keep up / left / right at or above step 3's +0.79 / +0.56 / +0.67).
+  - Identity: `match`, the normal game and every older switch must stay pixel-identical (raw canvas, `CANVAS=1`).
+- **Your part in pass 4 (lead assigns):** items 1 and 3, the tunnel centre's colour and depth and the wall rings' saturation,
+  irregular texture and white-aqua flecks, `?s3=focus` only: `FOCUS.walls` in `tunnel_r9_focus.js`, `FOCUS_RINGS` /
+  `FOCUS_ON`-gated code in `tunnel_r9_match.js`, `derive_ring_map.py` and new maps it writes from the ORIGINAL. Not the
+  floor round her, not the interface, not the character.
+
+## Earlier: tenth session, BOTH evening lines merged (5 November 2026, from 21:45 UTC; this section overrides the notes below)
 
 - **Repository:** `josiahscalia5-dev/bubblegame`. **Branch:** `ccr-9f8e2c8d-0zg3mc` (the tenth session's). The lead merges every
   agent's work into it and pushes; never push another branch, never force-push. `HANDOFF.md` names the merge commit.
