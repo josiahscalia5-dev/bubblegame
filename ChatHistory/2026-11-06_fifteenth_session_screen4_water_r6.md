@@ -18,3 +18,11 @@ Continuing the R6 water candidate from the last session (R4 is the current candi
 
 Now I'll register this as the fifteenth session and restart the autosave under that name, with the session link in each commit.
 
+I'm checking that the R6 texture regenerates byte-identical from the script, then rebuilding the game with it.
+
+Needs the `.png` in the name. Rerunning (about 3 minutes) in the background while I read the render tools.
+
+The bundle rebuilds byte-identical and already contains R6. Now rendering R6's start view and its +1 s and +2 s moving frames.
+
+While R6 renders, I'm writing the comparison-sheet script (original / accepted / R4 / R6, full-res, close-up and moving).
+
