@@ -1,0 +1,11 @@
+[{"label": "no_quad22", "hide": [22]},
+ {"label": "no_tunnelDecor", "hide": ["^tunnelDecor"]},
+ {"label": "no_entranceDecor", "hide": ["^entranceDecor"]},
+ {"label": "no_openingLook", "hide": ["^openingLook"]},
+ {"label": "no_s3Bubbles", "hide": ["^s3Bubbles"]},
+ {"label": "no_heroCollar", "hide": ["^heroCollar"]},
+ {"label": "no_heroWalls", "hide": ["^heroWalls"]},
+ {"label": "no_r6Bezel", "hide": ["r6Bezel"]},
+ {"label": "no_scenery", "hide": ["^scenery"]},
+ {"label": "no_Group_mesh2", "hide": [2]},
+ {"label": "no_mesh18", "hide": [18]}]

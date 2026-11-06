@@ -1034,3 +1034,7 @@ At the Screen 4 moment, a 5 m dish changes the top quarter of the frame (9% of p
 
 The main build is byte-identical to the tested one (`e6cd9334…`). Adding the test results to the step 8 record and committing:
 
+The step 6/step 8 "before" frames for the new moments are still capturing in the background. Meanwhile, checking on the step 8 videos:
+
+The straight-driving video for step 8 is done, and the steering one is recording. Making the straight three-panel comparison now: your original, step 7, step 8.
+
