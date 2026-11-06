@@ -1,0 +1,538 @@
+{
+ "original": {
+  "walls": {
+   "sat_blue": 58.9,
+   "turquoise": 2.2,
+   "pale_blue": 12.2,
+   "periwinkle": 6.7,
+   "lavender": 10.0,
+   "white": 8.2,
+   "dark_cobalt": 0.1,
+   "chroma": 46.4,
+   "L_mean": 66.6,
+   "L_p5": 41.4,
+   "L_p95": 96.0,
+   "detail": 4.89,
+   "white_blobs": {
+    "count_per_10k": 3.45,
+    "mean_area": 236.6,
+    "solidity": 0.854,
+    "elongation": 2.16
+   },
+   "pixels": 113176,
+   "ring_breakup": 10.31
+  },
+  "core": {
+   "sat_blue": 29.7,
+   "turquoise": 1.8,
+   "pale_blue": 20.6,
+   "periwinkle": 7.8,
+   "lavender": 16.0,
+   "white": 21.7,
+   "dark_cobalt": 0.1,
+   "chroma": 29.6,
+   "L_mean": 77.7,
+   "L_p5": 49.7,
+   "L_p95": 97.6,
+   "detail": 4.87,
+   "white_blobs": {
+    "count_per_10k": 5.25,
+    "mean_area": 413.8,
+    "solidity": 0.803,
+    "elongation": 1.97
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 18.0,
+   "turquoise": 1.3,
+   "pale_blue": 34.5,
+   "periwinkle": 7.4,
+   "lavender": 11.1,
+   "white": 32.0,
+   "dark_cobalt": 0.0,
+   "chroma": 20.6,
+   "L_mean": 84.7,
+   "L_p5": 66.0,
+   "L_p95": 98.7,
+   "detail": 3.41,
+   "white_blobs": {
+    "count_per_10k": 2.7,
+    "mean_area": 1183.3,
+    "solidity": 0.8,
+    "elongation": 2.36
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 28.1
+ },
+ "step 4 (now)": {
+  "walls": {
+   "sat_blue": 50.2,
+   "turquoise": 0.6,
+   "pale_blue": 11.7,
+   "periwinkle": 14.2,
+   "lavender": 13.5,
+   "white": 7.1,
+   "dark_cobalt": 0.0,
+   "chroma": 42.1,
+   "L_mean": 68.7,
+   "L_p5": 45.3,
+   "L_p95": 92.1,
+   "detail": 3.47,
+   "white_blobs": {
+    "count_per_10k": 9.45,
+    "mean_area": 69.6,
+    "solidity": 0.643,
+    "elongation": 3.79
+   },
+   "pixels": 113176,
+   "ring_breakup": 8.08
+  },
+  "core": {
+   "sat_blue": 15.8,
+   "turquoise": 0.8,
+   "pale_blue": 31.2,
+   "periwinkle": 15.0,
+   "lavender": 21.1,
+   "white": 8.8,
+   "dark_cobalt": 0.0,
+   "chroma": 27.7,
+   "L_mean": 77.9,
+   "L_p5": 59.0,
+   "L_p95": 93.4,
+   "detail": 3.43,
+   "white_blobs": {
+    "count_per_10k": 14.27,
+    "mean_area": 56.9,
+    "solidity": 0.643,
+    "elongation": 3.4
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 28.2,
+   "turquoise": 7.7,
+   "pale_blue": 53.9,
+   "periwinkle": 3.9,
+   "lavender": 0.8,
+   "white": 9.9,
+   "dark_cobalt": 0.0,
+   "chroma": 26.3,
+   "L_mean": 78.8,
+   "L_p5": 62.3,
+   "L_p95": 96.1,
+   "detail": 3.09,
+   "white_blobs": {
+    "count_per_10k": 6.3,
+    "mean_area": 156.2,
+    "solidity": 0.867,
+    "elongation": 3.35
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 53.4
+ },
+ "T1 fill-only map": {
+  "walls": {
+   "sat_blue": 48.9,
+   "turquoise": 1.0,
+   "pale_blue": 11.2,
+   "periwinkle": 11.9,
+   "lavender": 11.9,
+   "white": 14.9,
+   "dark_cobalt": 0.0,
+   "chroma": 40.0,
+   "L_mean": 70.5,
+   "L_p5": 43.9,
+   "L_p95": 95.5,
+   "detail": 4.09,
+   "white_blobs": {
+    "count_per_10k": 6.8,
+    "mean_area": 213.6,
+    "solidity": 0.727,
+    "elongation": 2.92
+   },
+   "pixels": 113176,
+   "ring_breakup": 10.51
+  },
+  "core": {
+   "sat_blue": 12.9,
+   "turquoise": 0.6,
+   "pale_blue": 22.4,
+   "periwinkle": 13.0,
+   "lavender": 19.0,
+   "white": 30.2,
+   "dark_cobalt": 0.0,
+   "chroma": 22.5,
+   "L_mean": 82.3,
+   "L_p5": 58.0,
+   "L_p95": 96.2,
+   "detail": 3.82,
+   "white_blobs": {
+    "count_per_10k": 11.32,
+    "mean_area": 262.3,
+    "solidity": 0.704,
+    "elongation": 2.92
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 26.0,
+   "turquoise": 7.9,
+   "pale_blue": 52.3,
+   "periwinkle": 4.5,
+   "lavender": 1.0,
+   "white": 13.7,
+   "dark_cobalt": 0.0,
+   "chroma": 24.8,
+   "L_mean": 80.2,
+   "L_p5": 62.3,
+   "L_p95": 96.2,
+   "detail": 3.24,
+   "white_blobs": {
+    "count_per_10k": 7.21,
+    "mean_area": 189.7,
+    "solidity": 0.843,
+    "elongation": 3.27
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 41.3
+ },
+ "T3 T1 + duplicate whites off": {
+  "walls": {
+   "sat_blue": 49.9,
+   "turquoise": 1.0,
+   "pale_blue": 11.2,
+   "periwinkle": 11.7,
+   "lavender": 12.0,
+   "white": 13.9,
+   "dark_cobalt": 0.0,
+   "chroma": 40.6,
+   "L_mean": 70.1,
+   "L_p5": 43.8,
+   "L_p95": 95.3,
+   "detail": 3.81,
+   "white_blobs": {
+    "count_per_10k": 5.48,
+    "mean_area": 245.8,
+    "solidity": 0.677,
+    "elongation": 2.58
+   },
+   "pixels": 113176,
+   "ring_breakup": 9.47
+  },
+  "core": {
+   "sat_blue": 13.2,
+   "turquoise": 0.6,
+   "pale_blue": 22.5,
+   "periwinkle": 13.0,
+   "lavender": 19.3,
+   "white": 29.4,
+   "dark_cobalt": 0.0,
+   "chroma": 22.8,
+   "L_mean": 82.0,
+   "L_p5": 57.7,
+   "L_p95": 96.1,
+   "detail": 3.74,
+   "white_blobs": {
+    "count_per_10k": 9.84,
+    "mean_area": 293.4,
+    "solidity": 0.666,
+    "elongation": 2.9
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 26.1,
+   "turquoise": 7.9,
+   "pale_blue": 52.4,
+   "periwinkle": 4.5,
+   "lavender": 1.0,
+   "white": 13.6,
+   "dark_cobalt": 0.0,
+   "chroma": 24.8,
+   "L_mean": 80.2,
+   "L_p5": 62.2,
+   "L_p95": 96.2,
+   "detail": 3.23,
+   "white_blobs": {
+    "count_per_10k": 7.03,
+    "mean_area": 193.0,
+    "solidity": 0.84,
+    "elongation": 3.22
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 41.7
+ },
+ "R4 core placement": {
+  "walls": {
+   "sat_blue": 51.8,
+   "turquoise": 0.6,
+   "pale_blue": 11.7,
+   "periwinkle": 15.2,
+   "lavender": 11.7,
+   "white": 6.7,
+   "dark_cobalt": 0.0,
+   "chroma": 42.5,
+   "L_mean": 68.3,
+   "L_p5": 45.3,
+   "L_p95": 91.9,
+   "detail": 3.58,
+   "white_blobs": {
+    "count_per_10k": 9.28,
+    "mean_area": 67.2,
+    "solidity": 0.667,
+    "elongation": 3.89
+   },
+   "pixels": 113176,
+   "ring_breakup": 10.44
+  },
+  "core": {
+   "sat_blue": 20.2,
+   "turquoise": 0.8,
+   "pale_blue": 32.2,
+   "periwinkle": 14.5,
+   "lavender": 16.1,
+   "white": 8.9,
+   "dark_cobalt": 0.0,
+   "chroma": 28.6,
+   "L_mean": 77.2,
+   "L_p5": 57.7,
+   "L_p95": 93.5,
+   "detail": 3.62,
+   "white_blobs": {
+    "count_per_10k": 13.78,
+    "mean_area": 60.0,
+    "solidity": 0.667,
+    "elongation": 3.57
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 28.2,
+   "turquoise": 7.7,
+   "pale_blue": 54.0,
+   "periwinkle": 3.9,
+   "lavender": 0.9,
+   "white": 9.9,
+   "dark_cobalt": 0.0,
+   "chroma": 26.3,
+   "L_mean": 78.8,
+   "L_p5": 62.3,
+   "L_p95": 96.1,
+   "detail": 3.08,
+   "white_blobs": {
+    "count_per_10k": 6.48,
+    "mean_area": 152.1,
+    "solidity": 0.875,
+    "elongation": 3.36
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 40.5
+ },
+ "B3 40 bubbles": {
+  "walls": {
+   "sat_blue": 53.0,
+   "turquoise": 0.7,
+   "pale_blue": 10.9,
+   "periwinkle": 13.3,
+   "lavender": 13.5,
+   "white": 5.6,
+   "dark_cobalt": 0.0,
+   "chroma": 43.6,
+   "L_mean": 67.6,
+   "L_p5": 45.0,
+   "L_p95": 91.5,
+   "detail": 3.32,
+   "white_blobs": {
+    "count_per_10k": 6.72,
+    "mean_area": 80.5,
+    "solidity": 0.707,
+    "elongation": 3.78
+   },
+   "pixels": 113176,
+   "ring_breakup": 6.31
+  },
+  "core": {
+   "sat_blue": 19.3,
+   "turquoise": 1.0,
+   "pale_blue": 30.5,
+   "periwinkle": 13.8,
+   "lavender": 20.8,
+   "white": 7.6,
+   "dark_cobalt": 0.0,
+   "chroma": 29.1,
+   "L_mean": 76.7,
+   "L_p5": 57.4,
+   "L_p95": 93.2,
+   "detail": 3.28,
+   "white_blobs": {
+    "count_per_10k": 10.17,
+    "mean_area": 70.4,
+    "solidity": 0.677,
+    "elongation": 3.11
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 29.2,
+   "turquoise": 7.8,
+   "pale_blue": 53.2,
+   "periwinkle": 3.9,
+   "lavender": 0.6,
+   "white": 9.8,
+   "dark_cobalt": 0.0,
+   "chroma": 26.6,
+   "L_mean": 78.5,
+   "L_p5": 61.4,
+   "L_p95": 96.1,
+   "detail": 3.04,
+   "white_blobs": {
+    "count_per_10k": 6.12,
+    "mean_area": 158.7,
+    "solidity": 0.877,
+    "elongation": 3.29
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 53.5
+ },
+ "P1 T3 + R4": {
+  "walls": {
+   "sat_blue": 51.5,
+   "turquoise": 1.0,
+   "pale_blue": 11.8,
+   "periwinkle": 12.4,
+   "lavender": 10.6,
+   "white": 12.3,
+   "dark_cobalt": 0.0,
+   "chroma": 41.3,
+   "L_mean": 69.5,
+   "L_p5": 43.8,
+   "L_p95": 94.9,
+   "detail": 3.92,
+   "white_blobs": {
+    "count_per_10k": 6.01,
+    "mean_area": 197.6,
+    "solidity": 0.68,
+    "elongation": 2.74
+   },
+   "pixels": 113176,
+   "ring_breakup": 12.38
+  },
+  "core": {
+   "sat_blue": 17.5,
+   "turquoise": 0.6,
+   "pale_blue": 24.1,
+   "periwinkle": 11.8,
+   "lavender": 15.2,
+   "white": 28.2,
+   "dark_cobalt": 0.0,
+   "chroma": 23.9,
+   "L_mean": 81.1,
+   "L_p5": 55.8,
+   "L_p95": 96.1,
+   "detail": 3.91,
+   "white_blobs": {
+    "count_per_10k": 10.5,
+    "mean_area": 264.4,
+    "solidity": 0.662,
+    "elongation": 2.88
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 26.0,
+   "turquoise": 7.9,
+   "pale_blue": 52.4,
+   "periwinkle": 4.5,
+   "lavender": 1.0,
+   "white": 13.7,
+   "dark_cobalt": 0.0,
+   "chroma": 24.8,
+   "L_mean": 80.2,
+   "L_p5": 62.3,
+   "L_p95": 96.2,
+   "detail": 3.23,
+   "white_blobs": {
+    "count_per_10k": 7.03,
+    "mean_area": 193.7,
+    "solidity": 0.84,
+    "elongation": 3.22
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 31.0
+ },
+ "P2 P1 + 40 bubbles": {
+  "walls": {
+   "sat_blue": 54.6,
+   "turquoise": 1.1,
+   "pale_blue": 11.3,
+   "periwinkle": 11.3,
+   "lavender": 10.4,
+   "white": 11.0,
+   "dark_cobalt": 0.0,
+   "chroma": 42.6,
+   "L_mean": 68.5,
+   "L_p5": 43.5,
+   "L_p95": 95.0,
+   "detail": 3.87,
+   "white_blobs": {
+    "count_per_10k": 3.71,
+    "mean_area": 290.6,
+    "solidity": 0.703,
+    "elongation": 2.68
+   },
+   "pixels": 113176,
+   "ring_breakup": 10.39
+  },
+  "core": {
+   "sat_blue": 20.6,
+   "turquoise": 0.8,
+   "pale_blue": 23.9,
+   "periwinkle": 10.7,
+   "lavender": 14.8,
+   "white": 26.8,
+   "dark_cobalt": 0.0,
+   "chroma": 25.1,
+   "L_mean": 80.2,
+   "L_p5": 54.2,
+   "L_p95": 96.2,
+   "detail": 3.97,
+   "white_blobs": {
+    "count_per_10k": 6.4,
+    "mean_area": 415.3,
+    "solidity": 0.667,
+    "elongation": 3.09
+   },
+   "pixels": 60949
+  },
+  "floor": {
+   "sat_blue": 27.0,
+   "turquoise": 8.0,
+   "pale_blue": 51.7,
+   "periwinkle": 4.5,
+   "lavender": 0.8,
+   "white": 13.5,
+   "dark_cobalt": 0.0,
+   "chroma": 25.1,
+   "L_mean": 79.9,
+   "L_p5": 61.5,
+   "L_p95": 96.2,
+   "detail": 3.19,
+   "white_blobs": {
+    "count_per_10k": 6.85,
+    "mean_area": 196.9,
+    "solidity": 0.843,
+    "elongation": 3.12
+   },
+   "pixels": 55513
+  },
+  "core_band_lav_peri": 31.0
+ }
+}
