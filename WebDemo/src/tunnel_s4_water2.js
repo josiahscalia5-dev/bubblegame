@@ -19,7 +19,7 @@ import { WATER2_ON, WATER2, WATER9_ON, WATER9 } from './tunnel_s4_bt.js';
 // ?s3=intunnel,water9 (R9): the swell's opacity `a` faded out beyond the contact zone round her (tunnel_s4_bt.js WATER9),
 // placed in the swell's fragment shader just before its output (tunnel_r8_liquid.js liquidSwell; vW, uC, uR, uT, a in scope)
 export function water9GLSL() {
-  if (!WATER9_ON) return '';
+  if (!WATER9_ON || !WATER9.fade) return '';   // (try A only: the swell's opacity faded beyond the contact zone)
   const P = WATER9, f = (x) => (+x).toFixed(5);
   return /* glsl */ `  {   // ?s3=...,water9: the swell only where the water touches her; beside and behind her the tunnel's own water
     vec3 swO = vW - uC;
@@ -84,7 +84,11 @@ ${P.mirror ? `        // (R7) beyond the texture's edges the original's water mi
 ${P.gain ? `        { float bwL = dot(bwT, vec3(0.2126, 0.7152, 0.0722));   // (R3) the colours lifted against the bloom's haze; white stays white
           bwT = pow(clamp(bwL + (bwT - bwL) * ${f4(P.gain[0])}, 0.0, 1.0), vec3(${f4(P.gain[1])})); }
 ` : ''}        float bwK = ${f4(P.amount)} * uBwOn * smoothstep(${f4(P.y0)}, ${f4(P.y0 + 0.03)}, bwS.y);
-        mwCol = mix(mwCol, mtUndisplay(bwT), bwK);
+${WATER9_ON ? `        // (R9) the original's water only where it touches her: a band below her contact edge and within her width;
+        // beside, behind and below that the swell is the tunnel's own water at that place (mwFloor), so no pale patch
+        { vec3 swO = vW - uC;
+          float swNear = (1.0 - smoothstep(${f4(WATER9.band[0])}, ${f4(WATER9.band[1])}, d)) * (1.0 - smoothstep(${f4(WATER9.side[0])}, ${f4(WATER9.side[1])}, abs(dot(swO, uR))));
+          mwCol = mix(mwFloor, mix(mwCol, mtUndisplay(bwT), bwK), swNear); }` : `        mwCol = mix(mwCol, mtUndisplay(bwT), bwK);`}
       }
 `;
 }

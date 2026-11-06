@@ -221,7 +221,12 @@ if (WATER8_ON) Object.assign(WATER2, { file: WATER8.file, alpha: true });
 // so beside, behind and in front of her the tunnel's own blue water shows and the swell (the original's water and domes at
 // R8's contact edge) stays only where it touches her. No geometry, colour, layer or control changed. Tunable for tests:
 // the tune {"water9": {...}}.
-export const WATER9 = { keep: [0.62, 0.62], fade: [1.0, 1.4] };
+// (Try A, the swell's opacity faded beyond `keep`, fade [1.0, 1.4]: her lower body then shows as a tall pink block down to
+// the buttons, because the swell is the water mound, 0.4-0.7 m tall, she sits in; the floor's water is that far below her.
+// So R9 keeps the swell's shape and opacity and changes its colour:) `band` (m below the crest: her contact edge in front of
+// her) and `side` (m sideways from her centre) bound where the original's water and domes stay; elsewhere the swell takes
+// the tunnel's own water at that place (mwFloor in tunnel_r9_match_water.js, made to continue the floor seamlessly).
+export const WATER9 = { band: [0.06, 0.18], side: [0.55, 0.8], keep: [0.62, 0.62], fade: null };
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water9; if (t) Object.assign(WATER9, t); }   // (test tunes only)
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {

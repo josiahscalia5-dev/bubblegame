@@ -177,3 +177,9 @@ The face's alpha ends up in `a` just before the swell's final output, so the can
 
 Built (`7ac52fed`). Rendering the candidate at the start and +1 s with the default contact zone (0.62 m round her):
 
+Built (`7402397a`). Rendering try B at the start and +1 s:
+
+Recording the clip for R7 and the candidate (R9) in parallel, then R9's +2 s frame:
+
+While the clips record, saving your brief and its image with the project, as earlier sessions did with your kits:
+
