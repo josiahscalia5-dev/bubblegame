@@ -557,5 +557,52 @@ Address this before completing your current task.
 
 [Image: original 4652x676, displayed at 2000x291. Multiply coordinates by 2.33 to map to original image.]
 
+**Agent** (18:16 UTC):
 
-_64 tool steps._
+Let me zoom in on R3c and R4 at the same crop, at the start and while moving.
+
+- 18:16 `Bash`: Zoom on R3c vs R4 at start and while moving
+- 18:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r4_zoom.png
+**Lead → agent** (18:16 UTC):
+
+[Image: original 2282x344, displayed at 2000x301. Multiply coordinates by 1.14 to map to original image.]
+
+- 18:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r4_mov.png
+**Lead → agent** (18:16 UTC):
+
+[Image: original 2376x261, displayed at 2000x220. Multiply coordinates by 1.19 to map to original image.]
+
+- 18:16 `Bash`: Compare the old and new water textures side by side
+- 18:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/tex.png
+- 18:17 `Bash`: Zoom on the R4 texture's filled regions
+- 18:17 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/tex_r4_top.png
+- 18:17 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/tex_r4_bot.png
+- 18:17 `Bash`: Measure detail, streak direction and contrast under her
+- 18:17 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r4_detail.png
+**Agent** (18:18 UTC):
+
+1. **Verdict.**
+   - **R4 against R3c: slightly closer,** not clearly.
+   - **R4 against the accepted build: clearly closer in shape and colour**, with bubbly forms, lavender domes and white froth where the accepted build has a flat sheet with comma arcs. It is **not yet closer in contrast.**
+
+2. **The smear under her is partly corrected.**
+   - **Gone:** the vertical streaks at the lower left above Bubble Blast, and the large smooth violet blob under her right side. Both are now rounded blue-white bubble cells. Mid-scale detail under her rose from 3.37 to 3.66 (original 4.14), and the vertical streaking eased (direction ratio in the lower band 0.91 → 0.84; original 0.77).
+   - **Still there:** a pale lavender-white mottled band directly under her centre, where the original has her body.
+
+3. **Regressions: none clearly visible in the frames.**
+   - The texture file shows 15 px square patches and some repeated pale cells in the fill where her body was. In the game they are softened to blobs, and I see no seams at 2x. Check the Pixel 7 framing, where they may show.
+   - There is no hard line at the buttons' top.
+   - The filled areas look evenly mottled, with no big forms.
+   - While moving it is no worse than R3c. Both go whiter.
+
+4. **What still differs, ranked.**
+   1. **Contrast and saturation.** Under her the original has deep cobalt pockets and bright white rims (saturation 0.52, light-dark spread 0.24). R4 is mid-tone and pale (0.36 / 0.16), and paler still while moving. Likely causes: the swell's transparency over the pale floor, and bloom haze.
+   2. **No large sculpted mounds.** The original has a big rounded wave lower left and a crest under her right side. Half the band is still fill, which has no large shapes.
+   3. **The pale lavender-white under her centre.**
+
+   **The registration fix would matter, but less than these.** The texture's real top strip carries the lavender domes, about 40–60 px tall. Sliding 16–29 px moves them a third to half their height against her fur, so the froth visibly climbs and sinks during the wait. Fix it, then deal with contrast.
+
+5. **Make R4 the water candidate in place of R3c.** But tell the user plainly that it removes the streaks and the violet blob, not the paleness or the low contrast.
+
+
+_74 tool steps._
