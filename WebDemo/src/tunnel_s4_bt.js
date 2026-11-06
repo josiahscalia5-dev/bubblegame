@@ -183,7 +183,14 @@ if (WATER6_ON) WATER2.file = WATER6.file;
 // balls: the "cotton-ball" piles beside her. The change: every droplet drawn no bigger than maxPx of the canvas height
 // (12 px of the 1536 px frame), so near ones stay small flecks. The emitters, their counts, sizes and random numbers are
 // untouched (the same droplets in the same places); code in game.js gated on WATER7_ON.
-export const WATER7 = { maxPx: 12 / 1536 };
+// mirror (added after the art director's review, the R7 steering video): beyond the texture's edges the original's water
+// is mirrored back in instead of the edge texel being smeared. The texture's first 4 columns are the original screenshot's
+// dark frame border (column 0 RGB 19 / 22 / 36): when she steers left the face samples left of the texture and the clamp
+// drew a dark grey fin at the lower left (in every water2-based candidate since R2: 44_water_material/videos/
+// water2_steering.mp4 at 4 s); the clamped last rows drew vertical streaks along the bottom of the start view. [left (skip
+// the border), right, bottom] in texture shares; the R7 frames the art director reviewed: the tune {"water2": {"mirror": null}}
+export const WATER7 = { maxPx: 12 / 1536, mirror: [5 / 767, 1 / 767, 1 / 431] };
+if (WATER7_ON) WATER2.mirror = WATER7.mirror;
 // (R7, the art director: clearly closer than R6 and the accepted build while moving, the cotton-ball piles gone; about the
 // same at the start; THE candidate. 49_water_r7/.)
 // ?s3=intunnel,water8 (R8, the fifteenth session; the art director's first-ranked remaining difference): R7 with ONLY the

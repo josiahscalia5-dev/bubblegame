@@ -74,3 +74,7 @@ While R8b renders, saving the art director's R8 crops:
 
 The notches are visible in those crops (R7 then R8, pairs); R8b should remove them. While it renders, checking the accepted videos:
 
+That `bwD` rewrite is a hack. Restructuring so the mirrored coordinate is its own variable, while the older candidates' shader text stays exactly as it was:
+
+The older candidates' shader text is byte-identical to before; only R7's (and so R8's) changes. Checking whether the gameplay tests have finished before starting more renders:
+
