@@ -1,0 +1,10 @@
+[
+ {"label":"no_bloom", "post":{"bloom":false}},
+ {"label":"no_grade", "post":{"grade":false}},
+ {"label":"face_solo", "solo":["heroSwell"]},
+ {"label":"face_solo_nobloom", "solo":["heroSwell"], "post":{"bloom":false}},
+ {"label":"no_face", "hide":["heroSwell"]},
+ {"label":"no_face_nobloom", "hide":["heroSwell"], "post":{"bloom":false}},
+ {"label":"no_overlays", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3IcyEdge","heroBubbles",1]},
+ {"label":"no_overlays_nobloom", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3IcyEdge","heroBubbles",1], "post":{"bloom":false}}
+]
