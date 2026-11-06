@@ -291,3 +291,29 @@ A Pixel 7 phone video script already exists from an earlier session (recorded wi
 
 Recording runs in software rendering, so it takes several minutes. Checking progress:
 
+---
+
+### You (sent while Claude was working) · 2026-11-06 02:19 UTC
+
+And yes start step 5
+
+---
+
+### Claude · 2026-11-06 02:27 UTC
+
+Understood, I'll start step 5 right after the video, which is nearly done (238 of 300 frames).
+
+The video shows the whole ride: Tap to Start, the slide into the washing machine, then the tunnel with coins, socks and brushes, ending with 2 of 5 socks rescued. Sending it:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/29_video_step4/pixel7_focus_step4_ride_10s_small.mp4, Previews/WebDemo/screen4_round9_match/29_video_step4/contact_strip.jpg]_
+
+The game already loads a 2048 × 1024 tunnel texture, so a ring map that size is within the existing budget. Now how the wall flecks are switched:
+
+Starting from step 4's bundle (`73ed2a8b…`). Now the derivation's new `--fill` mode:
+
+The sheet path needs `lp` in fill mode too, so I'll have `fill_map` return it, matching `ring_map`, and record the mode in the JSON:
+
+Now generate. First proof that the default derivation still reproduces the step 3 map byte-for-byte, then the new fill map with a sheet:
+
+The derivation reads the original from the repository, and my sparse worktree didn't include that folder. Adding it:
+
