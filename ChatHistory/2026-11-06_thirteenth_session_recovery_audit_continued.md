@@ -773,3 +773,72 @@ Step 8's tests are running: stills, the 41 identity frames, gameplay and the two
 
 The record is drafted, and the change is saved as a patch and in the 5-minute snapshots. I'll report back with the images, the videos, the commit, and the full answer to what you need to do to get it as close as possible.
 
+---
+
+### You · 2026-11-06 10:11 UTC
+
+Show me the image when it's done
+
+---
+
+### Claude · 2026-11-06 10:11 UTC
+
+I'll check whether the still frames have finished; those come first and are what the comparison image is built from:
+
+The 3.0 s frames are ready. Before building the image, a check that the built step 8 is exactly the G2 version I tested:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/37_step8_white_splashes/10_pixel7_original_vs_step7_vs_step8_T3.0.jpg, Previews/WebDemo/screen4_round9_match/37_step8_white_splashes/12_zoom_tunnel_original_vs_step7_vs_step8_T3.0.jpg]_
+
+I've sent the step 8 images: the phone screen and the tunnel enlarged, each as your original, then before (step 7), then after (step 8), at the same moment 3.0 s after the tap.
+
+**What changed in step 8:**
+- The tunnel walls now show your original's own white splash shapes in their real places: the curls, dot clusters and splotches.
+- The game's drawn-in white dashes and specks are off, since your real splashes replace them.
+- A colour calibration keeps your original's cobalt, so the tunnel doesn't turn pale as it did in the earlier attempts.
+
+**Compared with step 7, measured on the tunnel water at that moment:**
+
+| | your original | step 7 | step 8 |
+|---|---|---|---|
+| walls: white | 8.2% | 5.3% | 8.8% |
+| walls: size of white splash pieces | 237 px | 75 px | 182 px |
+| walls: periwinkle tint | 6.7% | 14.2% | 6.8% |
+| far centre: pale wash | 20.6% | 31.2% | 22.2% |
+| far centre: white | 21.7% | 7.7% | 22.5% |
+| walls: strong cobalt | 58.9% | 55.0% | 55.9% |
+| far centre: strong cobalt | 29.7% | 24.8% | 24.9% |
+
+The cobalt stays slightly under your original's, and wall lavender rose a little (13.3% against 10.0% in your original). Both are for the next step, blue water and floor.
+
+**Not done yet:** step 8 is checked against the version I tested but isn't in the game build or committed yet. The rest of its tests are still running: the frames 4–6 s into the ride, the 41-frame regression run, the gameplay checks and the straight and steering videos. If everything passes, I'll commit it and send you the videos and the commit number. Everything so far is saved (`ee60b25`).
+
+---
+
+### You · 2026-11-06 10:13 UTC
+
+Show me the videos when it's done And after you're done with this stuff, can you tell me what I need to still fix to make it exactly like my original approved screen, like a checklist or something, so we could get to the bottom of this and eventually get it where it's very identical or exactly like my approved original screen.
+
+---
+
+### Claude · 2026-11-06 10:13 UTC
+
+Understood: the videos when the tests finish, then a checklist of everything still to fix. Checking where the tests are:
+
+The checklist is drafted and saved in the repository, where the autosave will push it. Step 8's tests are still running in the background (stills, then the regression frames, then the two videos). When they finish I'll check the results, and if step 8 passes I'll put it in the game build. Then I'll commit it and send you the videos and the checklist.
+
+---
+
+### You · 2026-11-06 10:15 UTC
+
+Show me the checklist and videos when it's done
+
+---
+
+### Claude · 2026-11-06 10:15 UTC
+
+I'll check progress so I can tell you how long it will be:
+
+The tests are still running: 7 of 8 still frames and 27 of 41 regression frames are done. After those come the gameplay checks and the two videos (straight and steering), each about 15–20 minutes, so allow roughly 45–60 more minutes.
+
+When they finish I'll check the results. If step 8 passes, I'll put it in the game build and commit it. Then I'll send you the two videos and the full checklist together.
+
