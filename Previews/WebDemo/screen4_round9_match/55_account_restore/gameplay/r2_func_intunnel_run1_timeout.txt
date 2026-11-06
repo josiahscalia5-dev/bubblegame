@@ -1,0 +1,12 @@
+hearts {"seq":[{"t":3.95,"z":8.273,"lap":0,"hearts":4,"heartsText":"4"},{"t":5.483,"z":17.594,"lap":0,"hearts":3,"heartsText":"3"},{"t":6.817,"z":24.971,"lap":0,"hearts":2,"heartsText":"2"},{"t":9.317,"z":8.273,"lap":1,"hearts":1,"heartsText":"1"},{"t":10.85,"z":17.594,"lap":1,"hearts":0,"heartsText":"0"},{"t":12.25,"z":1.592,"lap":1,"hearts":5,"heartsText":"5 Full"}],"outAt":{"t":10.85,"toast":"0"},"back":{"t":12.25,"after":1.4,"hearts":5,"restarts":1,"z":1.592,"heartsText":"5 Full","pauseBtn":"visible"},"knocks":5}
+page.goto: Timeout 300000ms exceeded.
+Call log:
+[2m  - navigating to "http://localhost:38583/index.html", waiting until "domcontentloaded"[22m
+
+    at fresh (/home/user/bubblegame/WebDemo/tools/screen3/r2_func.cjs:24:42)
+    at /home/user/bubblegame/WebDemo/tools/screen3/r2_func.cjs:49:9 {
+  log: [
+    '  - navigating to "http://localhost:38583/index.html", waiting until "domcontentloaded"'
+  ],
+  name: 'TimeoutError'
+}
