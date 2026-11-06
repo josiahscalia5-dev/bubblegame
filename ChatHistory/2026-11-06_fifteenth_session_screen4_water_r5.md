@@ -436,3 +436,9 @@ Last item: the power-up test (pause, Bubble Blast, Turbo Spin), running alone on
 
 _Background command "Wait for the power-up test reruns" completed (exit code 0)_
 
+---
+
+### Claude · 2026-11-06 20:22 UTC
+
+The accepted build passes the full power-up test now. Next the same test on R7, then a line-by-line comparison of the two reports:
+
