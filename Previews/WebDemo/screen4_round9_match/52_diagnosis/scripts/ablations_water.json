@@ -1,0 +1,13 @@
+[
+ {"label": "21_noTunnelFlecks", "hide": ["^mwTunnelBubbles$"]},
+ {"label": "22_noBubbleLayers", "hide": ["^s4Bubbles$", "^r3Bubbles$", "^heroBubbles$"]},
+ {"label": "23_noWhirlpool", "hide": ["^r3Whirlpool$"]},
+ {"label": "24_noGlow", "hide": ["^heroGlow$"]},
+ {"label": "25_noSwirl", "hide": ["^r3Swirl$"]},
+ {"label": "26_noSwell_noTunnelFlecks", "hide": ["^heroSwell$", "^mwTunnelBubbles$"]},
+ {"label": "27_noBloom", "post": {"bloom": false}},
+ {"label": "28_noGrade", "post": {"grade": false}},
+ {"label": "29_noBloomGrade", "post": {"bloom": false, "grade": false}},
+ {"label": "30_soloWalls", "solo": ["^heroWalls$"], "post": {"bloom": false}},
+ {"label": "31_soloFloor", "solo": ["^lqFloor$"], "post": {"bloom": false}}
+]

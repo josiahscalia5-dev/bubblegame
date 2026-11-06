@@ -1,0 +1,531 @@
+{
+ "s3": [
+  "intunnel",
+  "water9"
+ ],
+ "moments": [
+  {
+   "t": 3.517,
+   "x": 0,
+   "z": 1.592,
+   "y": 0.405,
+   "uC": [
+    0,
+    0.055549,
+    1.592
+   ],
+   "uBwOn": 1,
+   "uBwRef": [
+    -2.963611,
+    -0.001527,
+    0.031932,
+    0.0319,
+    0,
+    1.481788,
+    0.032312,
+    0.03228,
+    0.094636,
+    -0.047833,
+    0.999969,
+    0.99897,
+    -0.186732,
+    -2.509585,
+    2.853491,
+    3.050539
+   ],
+   "swellVisible": true
+  },
+  {
+   "t": 4.517,
+   "x": 0,
+   "z": 8.784,
+   "y": 0.18,
+   "uC": [
+    0,
+    -0.131104,
+    8.784281
+   ],
+   "uBwOn": 1,
+   "uBwRef": [
+    -2.963611,
+    -0.001527,
+    0.031932,
+    0.0319,
+    0,
+    1.481788,
+    0.032312,
+    0.03228,
+    0.094636,
+    -0.047833,
+    0.999969,
+    0.99897,
+    -0.186732,
+    -2.509585,
+    2.853491,
+    3.050539
+   ],
+   "swellVisible": true
+  },
+  {
+   "t": 5.517,
+   "x": 0,
+   "z": 15.751,
+   "y": 0.303,
+   "uC": [
+    0.001811,
+    0.068804,
+    15.750906
+   ],
+   "uBwOn": 1,
+   "uBwRef": [
+    -2.963611,
+    -0.001527,
+    0.031932,
+    0.0319,
+    0,
+    1.481788,
+    0.032312,
+    0.03228,
+    0.094636,
+    -0.047833,
+    0.999969,
+    0.99897,
+    -0.186732,
+    -2.509585,
+    2.853491,
+    3.050539
+   ],
+   "swellVisible": true
+  }
+ ],
+ "scene": {
+  "toneMapping": 7,
+  "exposure": 1.05,
+  "outputColorSpace": "srgb",
+  "passes": [
+   {
+    "type": "ru",
+    "enabled": true,
+    "uniforms": null
+   },
+   {
+    "type": "n",
+    "enabled": true,
+    "strength": 0.16,
+    "radius": 0.42,
+    "threshold": 1,
+    "uniforms": null
+   },
+   {
+    "type": "Ko",
+    "enabled": true,
+    "uniforms": {
+     "uSat": 1.32,
+     "uContrast": 1.12,
+     "uVignette": 0.18,
+     "uOpen": 0,
+     "uOpenExposure": 0.9,
+     "uOpenVibrance": 0.35,
+     "uOpenDepth": 0.16,
+     "uS4Grade": 1,
+     "uHero": 1
+    }
+   },
+   {
+    "type": "ou",
+    "enabled": true,
+    "uniforms": {
+     "toneMappingExposure": 1.05
+    }
+   }
+  ],
+  "heroSwell": {
+   "visible": true,
+   "renderOrder": 5,
+   "type": "ShaderMaterial",
+   "transparent": true,
+   "depthWrite": false,
+   "blending": 1,
+   "fragmentChars": 47014,
+   "uniforms": {
+    "uTime": 5.5167,
+    "uFade": 1,
+    "uC": [
+     0.0018,
+     0.0688,
+     15.7509
+    ],
+    "uR": [
+     0.9985,
+     -0.0551,
+     -0.0036
+    ],
+    "uU": [
+     0.0546,
+     0.9952,
+     -0.0806
+    ],
+    "uT": [
+     0.008,
+     0.0803,
+     0.9967
+    ],
+    "uLat": 0,
+    "uAir": 0,
+    "uLand": 0,
+    "uPX": 0,
+    "uXMax": 1.78,
+    "uFlow": 0.9951,
+    "uKcrest": "#8fe3ff",
+    "uKturq": "#2fb4f5",
+    "uKazure": "#4bbbf7",
+    "uKelectric": "#1e8ff0",
+    "uKdeep": "#0f6fe0",
+    "uKpale": "#aad6f8",
+    "uKwhite": "#f4fbff",
+    "uKsky": "#d4f0ff",
+    "uHeroTime": 5.5167,
+    "uHeroTravel": 15.7508,
+    "uHeroTanW": 0.6745,
+    "uHeroCam": [
+     -0.1358,
+     1.4465,
+     12.5869
+    ],
+    "uLqTex": "texture:256x256",
+    "uLqGlow": [
+     0.8697,
+     1.4746,
+     28.6668
+    ],
+    "uLqKey": [
+     0.3563,
+     0.8144,
+     -0.4581
+    ],
+    "uLqFwd": [
+     0,
+     0,
+     1
+    ],
+    "uLqUp": [
+     0,
+     1,
+     0
+    ],
+    "uLqSide": [
+     1,
+     0,
+     0
+    ],
+    "uLqObj": "array[6]",
+    "uMatchOn": 1,
+    "uMatchCol": "texture:tunnel_colour.png",
+    "uMatchBase": "texture:tunnel_base.png",
+    "uMatchDet": "texture:tunnel_detail.png",
+    "uMatchNrm": "texture:tunnel_normal.png",
+    "uMatchVar": "texture:tunnel_var.png",
+    "uMatchRim": "texture:rim_ramp.png",
+    "uMatchVP": [
+     0.5039,
+     0.4215
+    ],
+    "uMatchRes": [
+     269,
+     538
+    ],
+    "uMatchRimU": 2.7507,
+    "uFocusRings": "texture:tunnel_rings_fill.png",
+    "uMatchPathVP": [
+     0.5528,
+     0.4263
+    ],
+    "uBwRef": "matrix",
+    "uBwOn": 1,
+    "uBwTex": "texture:foreground_water_original_r8b.png"
+   },
+   "count": null
+  },
+  "lqFloor": {
+   "visible": true,
+   "renderOrder": -1,
+   "type": "ShaderMaterial",
+   "transparent": true,
+   "depthWrite": true,
+   "blending": 1,
+   "fragmentChars": 41261,
+   "uniforms": {
+    "uHeroTime": 5.5167,
+    "uHeroTravel": 15.7508,
+    "uHeroTanW": 0.6745,
+    "uHeroCam": [
+     -0.1358,
+     1.4465,
+     12.5869
+    ],
+    "uTime": 5.5167,
+    "uLqTex": "texture:256x256",
+    "uLqGlow": [
+     0.8697,
+     1.4746,
+     28.6668
+    ],
+    "uLqKey": [
+     0.3563,
+     0.8144,
+     -0.4581
+    ],
+    "uLqFwd": [
+     0,
+     0,
+     1
+    ],
+    "uLqUp": [
+     0,
+     1,
+     0
+    ],
+    "uLqSide": [
+     1,
+     0,
+     0
+    ],
+    "uLqObj": "array[6]",
+    "uMatchOn": 1,
+    "uMatchCol": "texture:tunnel_colour.png",
+    "uMatchBase": "texture:tunnel_base.png",
+    "uMatchDet": "texture:tunnel_detail.png",
+    "uMatchNrm": "texture:tunnel_normal.png",
+    "uMatchVar": "texture:tunnel_var.png",
+    "uMatchRim": "texture:rim_ramp.png",
+    "uMatchVP": [
+     0.5039,
+     0.4215
+    ],
+    "uMatchRes": [
+     269,
+     538
+    ],
+    "uMatchRimU": 2.7507,
+    "uFocusRings": "texture:tunnel_rings_fill.png",
+    "uMatchPathVP": [
+     0.5528,
+     0.4263
+    ],
+    "uLqPlayer": [
+     0,
+     -0.0595,
+     15.7508
+    ],
+    "uLqMove": [
+     0,
+     0.9877,
+     0,
+     0
+    ],
+    "uLqAlpha": 1,
+    "uTunnel": [
+     3.9007,
+     37.2019,
+     2.5,
+     1.5
+    ],
+    "uRipples": "array[8]",
+    "uS4Haz": "array[6]",
+    "uS4Warn": [
+     7.5,
+     3,
+     0.34
+    ]
+   },
+   "count": null
+  },
+  "heroWalls": {
+   "visible": true,
+   "renderOrder": 0,
+   "type": "ShaderMaterial",
+   "transparent": false,
+   "depthWrite": true,
+   "blending": 1,
+   "fragmentChars": 35606,
+   "uniforms": {
+    "uHeroTime": 5.5167,
+    "uHeroTravel": 15.7508,
+    "uHeroTanW": 0.6745,
+    "uHeroCam": [
+     -0.1358,
+     1.4465,
+     12.5869
+    ],
+    "uTime": 5.5167,
+    "uLqTex": "texture:256x256",
+    "uLqGlow": [
+     0.8697,
+     1.4746,
+     28.6668
+    ],
+    "uLqKey": [
+     0.3563,
+     0.8144,
+     -0.4581
+    ],
+    "uLqFwd": [
+     0,
+     0,
+     1
+    ],
+    "uLqUp": [
+     0,
+     1,
+     0
+    ],
+    "uLqSide": [
+     1,
+     0,
+     0
+    ],
+    "uLqObj": "array[6]",
+    "uMatchOn": 1,
+    "uMatchCol": "texture:tunnel_colour.png",
+    "uMatchBase": "texture:tunnel_base.png",
+    "uMatchDet": "texture:tunnel_detail.png",
+    "uMatchNrm": "texture:tunnel_normal.png",
+    "uMatchVar": "texture:tunnel_var.png",
+    "uMatchRim": "texture:rim_ramp.png",
+    "uMatchVP": [
+     0.5039,
+     0.4215
+    ],
+    "uMatchRes": [
+     269,
+     538
+    ],
+    "uMatchRimU": 2.7507,
+    "uFocusRings": "texture:tunnel_rings_fill.png",
+    "uMatchPathVP": [
+     0.5528,
+     0.4263
+    ],
+    "uStart": 3.9007
+   },
+   "count": null
+  },
+  "mwTunnelBubbles": {
+   "visible": true,
+   "renderOrder": 4,
+   "type": "ShaderMaterial",
+   "transparent": true,
+   "depthWrite": false,
+   "blending": 5,
+   "fragmentChars": 1579,
+   "uniforms": {
+    "uTime": 5.5167,
+    "uAvoid": "array[10]",
+    "uRes": [
+     269,
+     538
+    ]
+   },
+   "count": null,
+   "kinds": {
+    "instances": 40,
+    "streaks": 0,
+    "bubbles": 40
+   }
+  },
+  "spLumps": {
+   "visible": true,
+   "renderOrder": 6,
+   "type": "ShaderMaterial",
+   "transparent": true,
+   "depthWrite": false,
+   "blending": 5,
+   "fragmentChars": 3834,
+   "uniforms": {
+    "uC": [
+     0.0018,
+     0.0688,
+     15.7509
+    ],
+    "uR": [
+     0.9985,
+     -0.0551,
+     -0.0036
+    ],
+    "uU": [
+     0.0546,
+     0.9952,
+     -0.0806
+    ],
+    "uT": [
+     0.008,
+     0.0803,
+     0.9967
+    ],
+    "uFade": 1,
+    "uLat": 0,
+    "uAir": 0,
+    "uLand": 0,
+    "uTime": 5.5167,
+    "uLqTex": "texture:256x256"
+   },
+   "count": null
+  },
+  "heroSplash": {
+   "visible": true,
+   "renderOrder": 8,
+   "type": "ShaderMaterial",
+   "transparent": true,
+   "depthWrite": false,
+   "blending": 5,
+   "fragmentChars": 713,
+   "uniforms": {
+    "uTime": 5.5167,
+    "uFade": 1,
+    "uC": [
+     0.0018,
+     0.0688,
+     15.7509
+    ],
+    "uR": [
+     0.9985,
+     -0.0551,
+     -0.0036
+    ],
+    "uU": [
+     0.0546,
+     0.9952,
+     -0.0806
+    ],
+    "uT": [
+     0.008,
+     0.0803,
+     0.9967
+    ],
+    "uLat": 0,
+    "uAir": 0,
+    "uLand": 0
+   },
+   "count": null
+  }
+ },
+ "perf": [
+  {
+   "name": "Nodes",
+   "value": 502
+  },
+  {
+   "name": "ScriptDuration",
+   "value": 0.191944
+  },
+  {
+   "name": "TaskDuration",
+   "value": 11.532817
+  },
+  {
+   "name": "JSHeapUsedSize",
+   "value": 28627588
+  }
+ ],
+ "consoleErrors": []
+}

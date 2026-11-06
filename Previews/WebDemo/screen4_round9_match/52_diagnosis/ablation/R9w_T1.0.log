@@ -1,0 +1,13 @@
+objects 238 canvas [ 768, 1536 ] post [{"type":"ru","enabled":true},{"type":"n","enabled":true},{"type":"Ko","enabled":true},{"type":"ou","enabled":true}]
+21_noTunnelFlecks hidden 1
+22_noBubbleLayers hidden 3
+23_noWhirlpool hidden 1
+24_noGlow hidden 1
+25_noSwirl hidden 1
+26_noSwell_noTunnelFlecks hidden 2
+27_noBloom hidden 0
+28_noGrade hidden 0
+29_noBloomGrade hidden 0
+30_soloWalls hidden 237
+31_soloFloor hidden 237
+no console errors or warnings
