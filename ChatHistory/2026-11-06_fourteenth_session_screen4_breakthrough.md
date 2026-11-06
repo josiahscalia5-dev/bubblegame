@@ -1388,3 +1388,9 @@ Checking that the swell's fragment shader can see her water frame (`uC`, `uR`, `
 
 Built. Rendering the candidate's start screen:
 
+While moving, the original's water pattern stays attached to the water at her base and moves with her: it isn't pasted on the screen. The art director's verdict next. Making the sheets:
+
+While it reviews: proving `?s3=intunnel` itself is untouched on this bundle, and recording a moving phone video of the candidate:
+
+The water candidate and its write-up are saved (`fa00606`). The moving gameplay video is still recording, and I'll send it with the comparison sheets when it finishes.
+

@@ -314,5 +314,44 @@ Address this before completing your current task.
 
 The original has nothing like this at her sides. Its water there is low, bright-white broken crests, spray and bubbles hugging her base. The fins also add more pale milky blue, which the build already has too much of: 17.1% → 18.7%, with the original at 11.8%. The right-side colour difference nearly doubled (2.2 → 3.9). The small gain in white (18.6% → 19.3%) does not outweigh either.
 
+**Lead → agent** (17:02 UTC):
 
-_35 tool steps._
+The coordinator sent a message while you were working:
+A different kind of change this time (the user: stop adding objects; correct the existing water itself). Investigation (44_water_material/diag/band_ablations.md): in the water band at her base the accepted build is 40.6 % icy pale blue (original 27.5), lavender 0.3 % (15.3); hiding heroSwell drops the icy blue to 20.3 %; its face palette (#acdffc / #78c4f8) is the game's two biggest clusters there; the white is its comma arcs (off: 14.2 -> 5.4 %); bloom / grade / floor / extras each 1-2.5 points.
+Candidate `?s3=intunnel,water2`: heroSwell's own face material takes the ORIGINAL's foreground water as a texture (the original from y 0.72 down, the character, coins and buttons filled from the water round them), placed in her water frame (projected through the start camera, so it lands where the original has it and rides with her while moving), a slow flow distortion, the comma arcs off. No new objects; geometry, waterline, character unchanged.
+Sheets: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/01_FULLRES_original_accepted_new.jpg, 02_closeup_water_x1.6.jpg, 03_moving_accepted_vs_new.jpg (+1.0, +2.0 s).
+Measures: band icy pale 40.6 -> 38.7 % (27.5), lavender 0.3 -> 10.7 (15.3), white 14.2 -> 18.7 (18.6), mid blue 20.3 -> 10.8 (11.4), saturated 21.3 -> 14.6 (19.6); region_compare LPIPS foreground water 0.656 -> 0.613, character + contact 0.593 -> 0.557, histogram distance 0.381 -> 0.301 and 0.628 -> 0.589; Screen Matcher mean colour difference 11.9 -> 11.8, play-area pale milky blue unchanged 17.1 % (11.8).
+In under 150 words, strictly against the original: is the water round her MEANINGFULLY closer than the accepted build? yes / no. Present to the user for approval, or revert? The main remaining difference and its likely cause.
+
+Address this before completing your current task.
+
+- 17:02 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/02_closeup_water_x1.6.jpg
+**Lead → agent** (17:02 UTC):
+
+[Image: original 2948x552, displayed at 2000x374. Multiply coordinates by 1.47 to map to original image.]
+
+- 17:02 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/01_FULLRES_original_accepted_new.jpg
+**Lead → agent** (17:02 UTC):
+
+[Image: original 2321x1576, displayed at 2000x1358. Multiply coordinates by 1.16 to map to original image.]
+
+- 17:02 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/03_moving_accepted_vs_new.jpg
+- 17:02 `Bash`: List the water material candidate folders
+- 17:03 `Bash`: Zoom the water band in water2 start and moving frames
+- 17:03 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/w2_zoom.png
+**Lead → agent** (17:03 UTC):
+
+[Image: original 2495x246, displayed at 2000x197. Multiply coordinates by 1.25 to map to original image.]
+
+**Agent** (17:03 UTC):
+
+1. **Yes, moderately closer**, and visible by eye, not only in the numbers. Lavender bubbles and broken white froth now sit at her base, as in the original, in place of the flat blue with white comma arcs.
+2. **Present it to the user for approval, with one caveat stated plainly.** The water's texture is the original's own pixels, which lines it up with CLAUDE.md's "never a static screenshot". That makes the near-perfect numbers partly self-fulfilling. It lines up only from the start camera; while moving it is held together by the flow distortion. The user should judge it in a video.
+3. **The main remaining difference is the bank's shape.**
+   - In the original, the froth rises in front of her and overlaps her lower body.
+   - In the game, it stays a low, flat band below a visible white zigzag line at her base.
+   - Likely cause: `heroSwell`'s geometry and waterline are unchanged (crest height, the `swellFront` cut).
+   - Icy pale blue is still 38.7% against 27.5%. My guess is the soft, upscaled texture plus the flow distortion blending white and blue into pale blue.
+
+
+_41 tool steps._
