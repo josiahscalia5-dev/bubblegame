@@ -485,3 +485,5 @@ The rollback checkpoint is **`2f88104`**; the game there is step 4's build. This
 
 The tool checks out. Capturing the motion baseline (step 4 build) at video times 5.0 s (3.0 s after the tap, with steering), 5.5, 6.5, 7.7 and 9.0 s, on Pixel 7 and in the 1:2 frame:
 
+The page screenshot hit Playwright's 30-second timeout. Two software-rendered browsers in parallel at high resolution are slow. I'll lift that timeout and run them one at a time:
+
