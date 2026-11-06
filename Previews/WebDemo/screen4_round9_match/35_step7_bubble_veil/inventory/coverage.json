@@ -1,0 +1,142 @@
+{
+ "3.0": {
+  "sat_blue_full": 26.3,
+  "no_tunnelBubbles": [
+   7.7,
+   2.5
+  ],
+  "no_heroBubbles": [
+   5.2,
+   0.8
+  ],
+  "no_s3Bubbles": [
+   0.1,
+   0.0
+  ],
+  "no_s4Bubbles": [
+   1.3,
+   0.3
+  ],
+  "no_r5Droplets": [
+   1.2,
+   0.3
+  ],
+  "no_points": [
+   0.0,
+   -0.0
+  ],
+  "no_waterlineBubbles": [
+   0.0,
+   -0.0
+  ],
+  "no_all_but_waterline": [
+   15.5,
+   4.1
+  ]
+ },
+ "4.0": {
+  "sat_blue_full": 19.6,
+  "no_tunnelBubbles": [
+   0.6,
+   0.2
+  ],
+  "no_heroBubbles": [
+   0.0,
+   0.0
+  ],
+  "no_s3Bubbles": [
+   0.0,
+   0.0
+  ],
+  "no_s4Bubbles": [
+   0.6,
+   0.1
+  ],
+  "no_r5Droplets": [
+   0.7,
+   0.2
+  ],
+  "no_points": [
+   2.6,
+   1.3
+  ],
+  "no_waterlineBubbles": [
+   0.0,
+   -0.0
+  ],
+  "no_all_but_waterline": [
+   4.6,
+   1.8
+  ]
+ },
+ "5.0": {
+  "sat_blue_full": 29.6,
+  "no_tunnelBubbles": [
+   1.3,
+   0.3
+  ],
+  "no_heroBubbles": [
+   0.0,
+   0.0
+  ],
+  "no_s3Bubbles": [
+   0.0,
+   0.0
+  ],
+  "no_s4Bubbles": [
+   2.1,
+   1.1
+  ],
+  "no_r5Droplets": [
+   0.7,
+   0.2
+  ],
+  "no_points": [
+   9.8,
+   1.1
+  ],
+  "no_waterlineBubbles": [
+   0.0,
+   -0.0
+  ],
+  "no_all_but_waterline": [
+   14.2,
+   2.8
+  ]
+ },
+ "6.0": {
+  "sat_blue_full": 23.3,
+  "no_tunnelBubbles": [
+   3.9,
+   0.4
+  ],
+  "no_heroBubbles": [
+   0.0,
+   0.0
+  ],
+  "no_s3Bubbles": [
+   0.0,
+   0.0
+  ],
+  "no_s4Bubbles": [
+   2.0,
+   1.1
+  ],
+  "no_r5Droplets": [
+   0.6,
+   0.2
+  ],
+  "no_points": [
+   0.2,
+   0.1
+  ],
+  "no_waterlineBubbles": [
+   0.0,
+   -0.0
+  ],
+  "no_all_but_waterline": [
+   6.7,
+   1.7
+  ]
+ }
+}

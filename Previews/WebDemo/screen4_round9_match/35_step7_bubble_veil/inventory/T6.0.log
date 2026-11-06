@@ -1,0 +1,10 @@
+objects 217 canvas [ 768, 1536 ] post [{"type":"Dc","enabled":true},{"type":"n","enabled":true},{"type":"Ho","enabled":true},{"type":"Bc","enabled":true}]
+no_tunnelBubbles hidden 1
+no_heroBubbles hidden 0
+no_s3Bubbles hidden 0
+no_s4Bubbles hidden 1
+no_r5Droplets hidden 1
+no_points hidden 2
+no_waterlineBubbles hidden 1
+no_all_but_waterline hidden 5
+no console errors or warnings
