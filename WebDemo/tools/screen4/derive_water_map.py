@@ -18,7 +18,7 @@ ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
 ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])
-ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--body-grow', type=int, default=0); ap.add_argument('--body-src-row', type=int, default=-1); ap.add_argument('--name', default=None); ap.add_argument('--alpha-body', action='store_true')   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--patch', type=int, default=15); ap.add_argument('--topk', type=int, default=3); ap.add_argument('--feather', type=float, default=0.5); ap.add_argument('--body-grow', type=int, default=0); ap.add_argument('--body-src-row', type=int, default=-1); ap.add_argument('--name', default=None); ap.add_argument('--alpha-body', action='store_true'); ap.add_argument('--alpha-x', type=int, nargs=2, default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -158,6 +158,12 @@ if a.alpha_body:
     bodyc = lab_ == (1 + int(np.argmax(st_[1:, cv2.CC_STAT_AREA])))
     bodyc = cv2.morphologyEx(bodyc.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8)).astype(np.float32)
     al = 1.0 - np.clip(cv2.GaussianBlur(bodyc, (0, 0), 1.0), 0.0, 1.0)
+    if a.alpha_x:
+        # (R8b, the art director's review of R8) no cut outside her 3D model's span: where the original's silhouette is wider
+        # than her model, the cut showed the far tunnel water through two notches; the cut fades out over 8 px at x0 and x1
+        x0, x1 = a.alpha_x; xs = np.arange(W, dtype=np.float32)
+        win = np.clip((xs - x0) / 8.0, 0, 1) * np.clip((x1 - xs) / 8.0, 0, 1)
+        al = 1.0 - (1.0 - al) * win[None, :]
     out = np.dstack([out, np.round(al * 255).astype(np.uint8)])
     print('alpha: her body', round(float(bodyc.mean()) * 100, 1), '% of the texture')
 Image.fromarray(out).save(os.path.join(a.out, name))
