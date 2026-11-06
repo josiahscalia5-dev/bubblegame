@@ -504,3 +504,30 @@ The key finding: the bloom only ever added 2-3 brightness levels over the water.
 
 By your rule, R8 is reverted: R7 stays the candidate. As with earlier rejected experiments, R8 stays only as a record behind its own `water8` switch, and it can't affect R7, which is proven unchanged. I'll save the verdict and check R8's last gameplay results.
 
+_[Sent you files: Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/02_closeup_water_start_x1.4.jpg, Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/03_closeup_water_moving_T2.0.jpg, Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/01_FULLRES_original_R7_R8.jpg]_
+
+R8 wasn't visibly better than R7, so I've reverted it as you asked, and R7 stays the candidate. R7 passed every gameplay test and recording before R8 began.
+
+**R7:**
+- The pause, Bubble Blast and Turbo Spin test now passes. Its report is identical to the accepted game's, line for line.
+- The main gameplay test (lanes, jump, coins, sock, tunnel, keyboard start) matches as well; the only difference is the two hidden suds layers.
+- The straight and steering recordings at Pixel 7 size have no errors.
+
+The pause test had been timing out for every version, the accepted one included. The test script was loading a second page while the first was still running. I fixed the script; the game didn't need changing.
+
+**R8:** it faded the glow (bloom) over the lower part of the screen, where the foreground water is. Nothing above the water changed, and the bright highlights kept their full brightness.
+- **Measured:** the water's dark pockets went from 12.1 % to 15.8 % at the start (your original has 14.6 %), with similar gains at +1 s and +2 s. It didn't turn too dark: average brightness was 0.767 against your original's 0.773.
+- **Art director:** not visibly better at any of the three moments. Even zoomed 4×, R7 and R8 are barely distinguishable. The perceptual and structural scores moved very slightly away from your original.
+- **What that tells us:** the glow added only about 2-3 brightness levels out of 255 over the water. The milky look is not the glow. It comes from the water's own pastel colour and the white layers on it.
+
+R8 stays only as a record behind its own `water8` switch. It isn't the default, and R7 and the accepted game are unchanged to the pixel.
+
+If you want another round, the art director ranks what still differs most in the water round her:
+1. The hard white diagonal streaks on the floor water behind and beside her.
+2. The front water's pastel periwinkle colour and its white layers.
+3. The pink-white star glints that pass over her at +2 s.
+
+I won't start any of these without your approval. The live preview is still on port 8765, where the main page opens R7.
+
+Everything is saved on `ccr-55a78d65-d26sa9` at commit `6908750`. The comparison sheets I sent are in `Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/`, and the full write-up is `50_water_r8/README.md`.
+
