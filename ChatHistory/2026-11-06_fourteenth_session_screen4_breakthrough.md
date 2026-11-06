@@ -346,3 +346,28 @@ What's in `?s3=bt` now:
 
 Still running: the 41-frame identity test, the gameplay checks and the two videos. I'll report the results when they finish and won't start another feature before then.
 
+---
+
+### Automatic notice · 2026-11-06 12:47 UTC
+
+_Monitor event: "bt final tests: identity, gameplay, videos"_
+
+---
+
+### Claude · 2026-11-06 12:47 UTC
+
+The identity test passed. All 45 frames are pixel-identical to step 8: the normal game, the ten older switches, `match`, `match,nofoam` and `focus`, each at Tap to Start, 2.85 and 4.2 s (plus 3.0 s for `match`, `match,nofoam` and `focus`). The gameplay checks and the two videos are still running; I'll report when they finish.
+
+---
+
+### Automatic check · 2026-11-06 12:47 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 12:47 UTC
+
+I committed and pushed the identity proof as `7ca6e7d`; nothing is left uncommitted. The proof shows all 45 frames, `focus` included, pixel-identical to step 8. The gameplay checks and the two videos are still running; I'll report when they finish.
+
