@@ -14,3 +14,19 @@ Continue where I left off, exactly where I left off, and make sure that the desi
 
 Picking up from your last message: first I'll confirm everything from the last session reached GitHub, then restart the 5-minute autosave and continue the lavender/water pass from where it stopped.
 
+Meanwhile, installing the game's build packages in parallel:
+
+The rebuild matches the saved bundle byte for byte, so pass 4a's code is exactly as the last session left it. Checking the agent files next:
+
+Tools are installed. Measuring pass 4a (the brush warning stripes recoloured) against step 3 and the original:
+
+Now a short hand-off entry so any later session finds this state, then saving:
+
+Saved (`e4c5fa1`). Looking at your annotated review image and the current frame before briefing the agents:
+
+Both agents are running. Now my part, the floor ahead: comparing that zone in your original and the pass 4a frame.
+
+The floor ahead takes 88% of its colour from the ring map. Checking whether the map itself carries the lavender there, by measuring the map wrapped back onto the screen:
+
+The map itself has only 2.0% lavender in the floor ahead (and S 0.41), but the game shows 13.5% (S 0.34). So something drawn after the map adds it. Finding out what, layer by layer:
+
