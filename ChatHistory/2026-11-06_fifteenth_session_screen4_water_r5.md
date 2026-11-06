@@ -442,3 +442,5 @@ _Background command "Wait for the power-up test reruns" completed (exit code 0)_
 
 The accepted build passes the full power-up test now. Next the same test on R7, then a line-by-line comparison of the two reports:
 
+While those render, I'll check how the water face material is drawn (opaque or blended, and what it outputs), since that decides which glow fix is clean:
+
