@@ -105,6 +105,9 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // (a tight contact collar shaded as flowing water, the floor's wake made visible) and a calmer swim rhythm on her model.
 // Settings and shader code in tunnel_s4_swim.js; NOT on water2-9 (their pinned picture is the diagnosed cause).
 export const SWIM_ON = BT_ON && LIST.includes('swim');
+// ?s3=intunnel,swim2 (the sixteenth session's second candidate, from the specialists' inspections in
+// Previews/WebDemo/screen4_round9_match/54_specialists/): settings and code in tunnel_s4_swim2.js. Not on swim or water2-9.
+export const SWIM2_ON = BT_ON && LIST.includes('swim2');
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
 export const WATER8_ON = BT_ON && (LIST.includes('water8') || WATER9_ON);   // (R8, below: water7 with the face's edge in front of her following the original's outline)

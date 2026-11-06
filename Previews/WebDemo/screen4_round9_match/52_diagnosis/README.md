@@ -205,6 +205,64 @@ Gameplay (must all hold):
 - **G3:** `?s3=intunnel`, R9 and the normal game: 0 pixels changed on the new bundle.
 - **G4:** no console errors; draw calls not above R9's.
 
+## 6. Second pass (about 22:20 UTC): the whole frame, the moving tunnel, and runtime inspection
+
+The user asked for the whole frame and for browser debugging tools. Three findings beyond section 1.
+
+**(a) The tunnel's water washes pale only while moving.**
+- **The cause:** `r3Swirl`, Round 3's cyan-white swirl overlay (`tunnel_r3.js:263-290`; `ROUND3.swirl` line 24: strength
+  1.3, white 1.0; blending One / OneMinusSrcAlpha).
+- **Why it is visible:** Round 4 hides it once at build (`tunnel_r4.js:65`, "behind the new lining"). But its own
+  updater (`tunnel_r3.js:286`) sets `visible = k > 0` every frame, with `k` rising from 0 to 1 as she travels 3.0-4.3 m
+  along the path. So it is off in the start frame (at 1.59 m) and on in every moving one. That is why all the
+  start-frame comparisons missed it.
+- **Measured:** tunnel zone (x 0.32-0.68, y 0.22-0.52; `scripts/zone_water.py`, `report/zone_water_T1.0.md`, extra
+  ablations `ablation/R9w_T1.0/`):
+
+| | pale | white | lavender | cobalt | turquoise | mean saturation |
+|---|---|---|---|---|---|---|
+| ORIGINAL | 8.3 % | 5.8 % | 28.5 % | 14.6 % | 11.4 % | 0.55 |
+| R9 start | 8.0 | 7.8 | 29.4 | 6.4 | 8.3 | 0.50 |
+| R9 +1 s | 23.0 | 14.0 | 5.0 | 10.8 | 5.5 | 0.46 |
+| R9 +1 s, r3Swirl hidden | 11.6 | 12.6 | 6.7 | 13.9 | 8.7 | 0.54 |
+| R9 +1 s, bloom + grade off | 21.8 | 14.9 | 4.9 | 14.4 | 5.8 | 0.47 |
+| R9 +1 s, the walls alone | 5.5 | 4.1 | 7.1 | 16.1 | 11.2 | 0.61 |
+
+- **Confirmed live:** with the DevTools tools (`cdp/live_R9_T1.0_as_is.png` against `cdp/live_R9_T1.0_r3Swirl_hidden.png`).
+- **The lavender rings:** the moving tunnel also loses the original's lavender (5 % against 28.5), the walls' own
+  material included.
+
+**(b) The floor's white "paper-scrap" dashes** are `focusFloorGLSL` (`tunnel_r9_match_water.js:329-355`, settings
+`MATCH_WATER.floorFx` in `tunnel_r9_focus.js:278-279`):
+- rows of tapered white streaks, `#f6fbff` at 0.95, in 95 % of their band cells;
+- the same block turns the painted map's lilac pale blue on the floor (`delilac 1.0`);
+- the floor drawn alone shows them on blue water (`ablation/R9w_T1.0/abl_31_soloFloor.png`).
+
+`mwTunnelBubbles` holds 40 bubbles and no streaks.
+
+**(c) The foreground is not short of cobalt.**
+- **The colours:** in the full-width foreground (y 0.72-0.97) the ORIGINAL is pale 30.9 %, white 22.3, lavender 11.0
+  and cobalt 2.9. R9 has 19.4 % cobalt.
+- **The shapes:** the original's foreground is uneven rounded heaps across the whole width, with glassy periwinkle
+  bodies, darker cores, white rims and droplets. R9 has a pad carrying a still picture. So the foreground difference is
+  shape and motion, not colour totals.
+
+**Runtime inspection through the Chrome DevTools Protocol** (`tools/screen4/cdp_inspect.cjs`, `cdp/R9_scene.json`):
+- heroSwell's start-view matrix `uBwRef` is identical at +0, +1 and +2 s while she travels 14 m (the picture is pinned
+  to her);
+- bloom strength 0.16, radius 0.42, threshold 1.0; Neutral tone mapping, exposure 1.05;
+- no console errors.
+
+After the `parallax-threejs` plugin was enabled, its `chrome-devtools-mcp` and `threejs-devtools-mcp` bridge opened the
+same R9 moment (clock 4.517 s, z 8.784). The compiled water shaders are dumped in `cdp/R9_T1.0_water_shaders.json`.
+
+**The rejected candidate `?s3=intunnel,swim`** (`../53_swim/`), the art director's verdict:
+- "not closer": a tight collar reads as "a frilled glass bowl on a pile of blue pillows", mid azure, not cobalt;
+- it lost the full-width spread;
+- it uncovered more of the floor's paper-scrap dashes.
+
+Its motion parts measured well: the swim bob, the collar's base on the water, gameplay state identical.
+
 ## Files
 
 - `scripts/ablations.json`, `scripts/run_ablation.sh`, `scripts/ablation_report.py`, `scripts/pink_silhouette.py`,
