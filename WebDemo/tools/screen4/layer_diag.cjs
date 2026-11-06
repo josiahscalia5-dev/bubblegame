@@ -105,8 +105,11 @@ const server = http.createServer((req, res) => {
         const d = window.__bw.debug(), objs = window.__diagObjs, R = d.renderer;
         const match = (o, i, pats) => pats.some((p) => (typeof p === 'number' ? p === i : new RegExp(p).test((() => { const n = []; for (let q = o; q && q !== d.scene; q = q.parent) n.unshift(q.name || q.type); return n.join('/'); })())));
         const undo = [];
+        // (sixteenth session) sp.hideU: also hide objects whose material has one of these uniform names (the unnamed slide /
+        // drum water sheet has uRipples, the spray particles uMaxPx)
+        const hasU = (o, names) => (Array.isArray(o.material) ? o.material : [o.material]).some((m) => m && m.uniforms && names.some((n) => n in m.uniforms));
         objs.forEach((o, i) => {
-          const hide = (sp.hide && match(o, i, sp.hide)) || (sp.solo && !match(o, i, sp.solo));
+          const hide = (sp.hide && match(o, i, sp.hide)) || (sp.hideU && hasU(o, sp.hideU)) || (sp.solo && !match(o, i, sp.solo));
           if (hide) { undo.push([o, o.visible]); o.visible = false; }
         });
         const passes = d.composer.passes, saved = { tm: R.toneMapping, ex: R.toneMappingExposure, en: passes.map((p) => p.enabled) };

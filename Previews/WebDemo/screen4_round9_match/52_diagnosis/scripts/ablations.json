@@ -1,0 +1,16 @@
+[
+ {"label": "01_noSwell", "hide": ["^heroSwell$"]},
+ {"label": "02_noFloorLiquid", "hide": ["^lqFloor$"]},
+ {"label": "03_noWaterSheet", "hideU": ["uRipples"]},
+ {"label": "04_noFoamBank", "hide": ["^spLumps$", "^spCurls$", "^lqWaterlineBubbles$"]},
+ {"label": "05_noSplashDroplets", "hide": ["^heroSplash$"]},
+ {"label": "06_noSprayParticles", "hideU": ["uMaxPx"]},
+ {"label": "07_noOverlays", "hide": ["^r3Swirl$", "^heroGlow$", "^openingLook/"]},
+ {"label": "08_noBloom", "post": {"bloom": false}},
+ {"label": "09_noGrade", "post": {"grade": false}},
+ {"label": "10_noToneMap", "post": {"tone": "none"}},
+ {"label": "11_noPost", "post": {"bloom": false, "grade": false}},
+ {"label": "12_noWaterDressing", "hide": ["^heroSwell$", "^spLumps$", "^spCurls$", "^lqWaterlineBubbles$", "^heroSplash$"], "hideU": ["uMaxPx"]},
+ {"label": "13_soloSwell", "solo": ["^heroSwell$"], "post": {"bloom": false}},
+ {"label": "14_noMascot", "hide": ["PinkFuzzyMascot"]}
+]
