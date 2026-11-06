@@ -66,8 +66,14 @@ Now the match water shading of the swell.
 - 23:44 `Bash`: Evaluate swell settings under intunnel in node
 - 23:44 `Bash`: See failing line in match module
 - 23:44 `Bash`: Retry module evaluation with DOM stub
+- 23:48 `Bash`: Find crest-following layer names and game hooks
+- 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_splash.js
+- 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_splash.js
+- 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 23:49 `Bash`: Measure per-column waterline on her fur
+- 23:49 `Bash`: Solve crest heights matching original waterline
 
-_41 tool steps._
+_47 tool steps._
 
 ---
 
@@ -131,8 +137,34 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 23:45 `Bash`
 - 23:45 `Bash`
 - 23:45 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/centre4.png
+- 23:45 `Bash`
+- 23:45 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/centre_walls.png
+- 23:46 `Bash`
+- 23:46 `Bash`
+- 23:46 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/est_sheet.png
+- 23:46 `Bash`
+- 23:46 `Bash`
+- 23:46 `Bash`
+- 23:46 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/top.png
+- 23:47 `Bash`
+- 23:47 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 23:47 `Bash`
+- 23:47 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r9_match.js
+- 23:47 `Bash`
+- 23:47 `Bash`
+- 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r9_match_water.js
+- 23:48 `Bash`
+- 23:49 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 23:49 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 23:49 `Bash`
+- 23:49 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/floor4.png
+- 23:49 `Bash`
+- 23:49 `Bash`
+- 23:49 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/solofloor_crop.png
+- 23:49 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/orig_floorahead.png
+- 23:50 `Bash`
 
-_44 tool steps._
+_70 tool steps._
 
 ---
 
@@ -191,5 +223,19 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 23:44 `Grep`: tilt\.position|squash\.position|squash\.scale|tilt\.rotation|mascot\.tilt|mascot\.squash|m\.tilt|m\.squash
 - 23:44 `Grep`: export (const|function) (FLOAT_H|JUMP_V|GRAVITY|CRUISE|LANE|laneX|surface|baseHeight|BODY_R|WATER|AXIS_H)
 - 23:44 `Read`: /home/user/bubblegame/WebDemo/src/world.js
+- 23:45 `Read`: /home/user/bubblegame/WebDemo/src/game.js
+- 23:45 `Grep`: updateMascot\(|updateCamera\(|for \(const u of updaters\)|updaters\.forEach|function step\(|function frame\(|fx\.update\(
+- 23:45 `Read`: /home/user/bubblegame/WebDemo/src/game.js
+- 23:46 `Grep`: updaters
+- 23:46 `Bash`: Find where the updaters list is executed
+- 23:46 `Bash`: Locate the updaters array definition and runner
+- 23:46 `Bash`: See how opening.js runs the updaters
+- 23:46 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/frames/swl_r9.jpg
+- 23:47 `Bash`: Crop the somersault frames at higher resolution
+- 23:47 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/frames/flip_r9.jpg
+- 23:48 `Bash`: Find modules that modify heroSwell
+- 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 23:48 `Bash`: Check ripple count and the splash bank's use of swell uniforms
+- 23:49 `Bash`: Locate arm and foot vertex clusters on the model
 
-_39 tool steps._
+_53 tool steps._
