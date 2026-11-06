@@ -1,6 +1,25 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-55a78d65-d26sa9`)
 
-## Newest (6 November, about 19:20-20:30 UTC): fifteenth session, water R6 and R7; R7 (`?s3=intunnel,water7`) FOR THE USER'S APPROVAL
+## Newest (6 November, about 20:00-20:55 UTC): fifteenth session, R7's tests all passed; R8 (glow / haze) REJECTED, reverted to R7
+
+- **R7's checks, all passed** (`Previews/WebDemo/screen4_round9_match/49_water_r7/README.md`):
+  - `s3_func` identical to R3c's, apart from the 2 hidden suds meshes;
+  - `r2_func` (hearts, pause, Bubble Blast, Turbo Spin) identical to the accepted build's;
+  - straight and steering videos at Pixel 7 size, without console errors;
+  - `r2_func` had timed out on its second page load for every build. `NEWPAGE=1` (the old page closed first) fixes it in
+    the tool.
+- **The user's approval:** ONE isolated R8 experiment on the bloom / glow / haze over the foreground water, then stop.
+- **R8** (`water8`, `50_water_r8/README.md`): the bloom pass's glow faded over the lower screen (y 0.74-0.80). 0 pixels
+  changed above it. The water's dark pockets 12.1 -> 15.8 % (original 14.6), highlights kept.
+- **The art director: NOT visibly better** (barely distinguishable even at 4x; LPIPS and SSIM slightly worse). The bloom only
+  added 2-3 of 255 levels over the water: the milky look is the water's own colour and white layers, not the bloom.
+  **Reverted: R7 stays the candidate** (R8 only a record behind its flag; R7 and the accepted build 0 pixels changed).
+- **The preview server** for the user (scratch, not in the repository): port 8765, `/` = R7, `/accepted`, `/original`.
+- **Waiting for the user.** No further round without approval. The art director's ranked list of what still differs is in
+  `50_water_r8/art_director/verdict.md`: the floor's white streaks behind her, the front water's pastel colour and white
+  overlays, the sparkle glints.
+
+## Earlier (6 November, about 19:20-20:30 UTC): fifteenth session, water R6 and R7; R7 (`?s3=intunnel,water7`) FOR THE USER'S APPROVAL
 
 - **The user's brief (about 19:20 UTC):** measurable progress on the foreground water round her now: darker, sharper, more
   rounded, a clean irregular contact edge (no hard cut, zigzag or foam cushion), also while moving; fix it at the source;

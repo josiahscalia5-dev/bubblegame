@@ -73,8 +73,9 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
     registration, `47_water_r5/`; the art director: present it instead of R3c, "stretching fixed, still pale"), `water6`
     (R6: the face cut where the original draws her body, so the original's lobe outline is the contact edge; the opening's
     suds hidden; `48_water_r6/`) and `water7` (R7, the newest: R6 plus the game's spray drawn as blue drops, not white
-    beads; `49_water_r7/`; the art director: present R7, closer but still paler and softer than the original) wait for the
-    user. None of them is part of `intunnel` until the user approves.
+    beads; `49_water_r7/`; the art director: present R7, closer but still paler and softer than the original; all its gameplay
+    checks pass) wait for the user. `water8` (R8, the bloom faded over the foreground water, `50_water_r8/`) was REJECTED
+    (not visibly better) and reverted: R7 is the candidate. None of them is part of `intunnel` until the user approves.
   - `bt` (6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
     gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,
     unchanged), the wall brushes 0.66, the sock's toe blue. Evidence and the proof that it is step 8 plus only these:
