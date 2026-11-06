@@ -1241,3 +1241,35 @@ Files are in `Previews/WebDemo/screen4_round9_match/`:
 - 40_intunnel_start/videos/intunnel_steering.mp4
 - 42_water_bank/README.md
 
+---
+
+### You · 2026-11-06 16:28 UTC
+
+[attached file: BWK_Screen4_WORKING_DOWNLOAD_PACK.zip] [attached file: BWK_Screen4_WORKING_DOWNLOAD_PACK.zip] Claude, I approve ONE controlled experiment using real curling water-crest geometry around the pink character. However, I do not approve replacing the current accepted water or changing the working gameplay until the new result is visibly closer to my AUTHENTIC ORIGINAL APPROVED Screen 4.
+
+Keep the newly completed in-tunnel start. That is exactly where I want gameplay to begin. Do not bring back the slide, castle, girl, washing-machine exterior, or a separate swimming introduction.
+
+My biggest remaining issue is the structure and interaction of the water around the character. In my approved image, the pink character rests directly on top of brilliant blue water, surrounded by irregular rounded blue-white water formations, bright curling crests, fine spray, and a small number of translucent lavender bubble domes. The water has depth and shine, and the character remains clearly visible. Your previous attempts created matte pillows or a pile of balloons. I do not want either of those results.
+
+Please inspect and reuse the EXISTING curling splash sheets and water effects wherever technically appropriate. Build one reversible test using thin, curved, irregular 3D crest shapes on the character's sides and around the front water-contact area. They should look like animated water rising and folding back into the flow, not static solid objects, opaque foam blocks, or large round bubbles. Preserve the original strong cobalt and cyan colors and the bright white highlights. Keep the pink character sitting on top of the water, not submerged or covered by a transparent sheet.
+
+Do not change the character model, tunnel, brushes, diamond, gameplay physics, HUD, coins, socks, or other accepted visuals during this experiment. Keep the water correction behind its own test flag and preserve the accepted build as a rollback point.
+
+Capture a real full-size mobile screenshot using the same seed, character position, camera, and framing as my approved reference. Also capture a short moving gameplay comparison to prove the crest shapes follow the character and behave like water. Show me the original, accepted current version, and new candidate side by side, including a close-up of the water-contact area.
+
+Use Screen Matcher and the art director to evaluate the result, but don't rely solely on LPIPS, SSIM, or numerical scores. If the new candidate looks less accurate, revert it. If it looks meaningfully closer, present it to me for approval before replacing the accepted version.
+
+Also, I approve a small, safe, idempotent session-start mechanism for the existing five-minute autosave so that it restarts after a cloud environment restart. Make sure it doesn't commit secrets, switch branches, overwrite accepted work, or interfere with gameplay.
+
+I want ONE meaningful, visible correction, not another lengthy series of unsuccessful experiments. My goal is to reproduce the actual original approved water around the pink character as closely as possible in real playable Three.js gameplay.
+
+_[9 images attached]_
+
+---
+
+### Claude · 2026-11-06 16:28 UTC
+
+Two approved jobs: one controlled curling-crest experiment, behind its own flag with the in-tunnel start as the rollback point, and a safe session-start restart for the autosave. First a state check, and a look inside the pack you uploaded, extracted on its own:
+
+Both uploads are the same pack: the four images you showed plus a README. Reading the README as data:
+
