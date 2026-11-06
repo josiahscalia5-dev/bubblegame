@@ -631,3 +631,52 @@ The main build is byte-identical to the tested one (`57b06911…`). Committing s
 
 Step 7's game files are in that commit (`bd8d49e`). Now the straight-driving video in three panels, your original beside step 6 and step 7, with labels:
 
+The step 7 steering video is done too. Building the three-panel steering comparison and its frame strip. The step 6 steering run is the one recorded earlier, with the same swipes:
+
+Pushed and confirmed on GitHub (`527c487`). A short hand-off update so the next session knows `focus` is at step 7, then I'll send you the evidence:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/12_zoom_tunnel_T3.0_2x.jpg, Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/11_pixel7_original_vs_step6_vs_step7_T3.0_T4.0.jpg, Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/13_video_frames_steering_step6_over_step7.jpg, Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/videos/compare_straight_original_step6_step7_10s.mp4, Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/videos/compare_steering_original_step6_step7_10s.mp4]_
+
+I've done the bubble correction and stopped for your review. The commit is **`bd8d49e`**; the videos and the full write-up are in `527c487`, the latest save. I've sent five files: three image sheets and two gameplay videos, straight and steering. Each puts your original, the game before (step 6) and after (step 7) side by side at the same moment. In the video frame strip, before is on top and after below.
+
+**What changed:** the tunnel bubbles went from 160 to 40, and now sit only along the walls; none float over the middle rings or the far centre anymore. That is one setting in the `?s3=focus` test version.
+
+**Kept as they were:**
+- the large clear bubbles (the big one upper right, the medium ones by the walls), which match your original's;
+- the bubbles at her waterline and in her splash;
+- the Screen 4 bubbles further in;
+- the sparkle bursts when she collects things.
+
+**What you'll see:**
+- **At 3.0 s:** the cloud of small bubbles covering the rings is gone, and the rings read clearer and bluer.
+- **Entering the tunnel (4.0–4.5 s, steering video):** the milky mass of bubbles that filled the drum's mouth is gone, and the blue rings show through.
+- **At 5–6 s:** only slightly different, because those bubbles were mostly around the 3.0 s part of the tunnel.
+
+**Measured** on the tunnel water only, coins and characters masked out, at the 3.0 s checkpoint:
+
+| strong cobalt blue | your original | before | after |
+|---|---|---|---|
+| walls | 58.9% | 51.8% | **55.0%** |
+| far centre | 29.7% | 20.3% | **24.8%** |
+
+**Tested:**
+- **Normal game and older versions:** 41 frames identical to before.
+- **Gameplay in `?s3=focus`:** lanes, jump, coins, gem, socks, hearts, pause, Bubble Blast and Turbo Spin all behave exactly as before.
+- **Normal game:** its gameplay check is identical too. It has no hearts, pause or power-ups at all; those exist only in the test versions.
+- **Pixel 7:** captured with no errors.
+- **Undoing it:** putting the old settings back reproduces the earlier frame exactly.
+
+**One thing to know about the videos:** the coin counter differs by 1–2 between the before and after videos. That isn't caused by this change: I recorded the same build twice, and those two recordings differ in the same way. The video recorder isn't frame-exact, so a coin right at the edge of her reach can be collected in one recording and missed in another. The exact gameplay checks confirm nothing changed.
+
+**Still different from your original**, in your order:
+1. Your original's chunky white splashes. The game's splash pieces are much smaller (75 px against 237) and its white dashes are procedural.
+2. The walls' cobalt (55% against 59%), and the floor ahead, which is paler and smoother.
+3. The brushes, which fill the frame from about 5.5 s.
+4. The lavender drum front at the tunnel entry.
+5. The pale disc at the far centre at 5.5 s.
+6. The sock's purple stripes and toe, against your original's white sock with a blue toe.
+
+The opening stays untouched as you asked, and the pink character is postponed.
+
+Tell me whether the bubbles look right to you. If they do, the next step is your original's white splash textures.
+
