@@ -101,7 +101,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
-export const WATER8_ON = BT_ON && LIST.includes('water8');   // (R8, below: water7 with the face's edge in front of her following the original's outline)
+export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
+export const WATER8_ON = BT_ON && (LIST.includes('water8') || WATER9_ON);   // (R8, below: water7 with the face's edge in front of her following the original's outline)
 export const WATER7_ON = BT_ON && (LIST.includes('water7') || WATER8_ON);   // (R7, below: water6 with the spray droplets drawn no bigger than small flecks)
 export const WATER6_ON = BT_ON && (LIST.includes('water6') || WATER7_ON);   // (R6, below: water4 with the fill under her from the lower water)
 export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON || WATER6_ON);   // (R4, below: water3 with the exemplar-filled texture)
@@ -208,6 +209,20 @@ if (WATER7_ON) WATER2.mirror = WATER7.mirror;
 // file below: no cut outside her model's span, x 248-522, faded over 8 px: derive_water_map.py ... --alpha-body --alpha-x 248 522)
 export const WATER8 = { file: 'foreground_water_original_r8b.png' };
 if (WATER8_ON) Object.assign(WATER2, { file: WATER8.file, alpha: true });
+// ?s3=intunnel,water9 (R9, the user's brief of 6 November, about 20:30 UTC: "I want the pink character to look like he's
+// swimming through the laundry tunnel ... When he comes back down to the water, a wide white-blue patch appears behind his
+// lower body. Please remove that traveling patch so I can see the blue tunnel water directly behind him ... leave clear blue
+// water where he was. Let his lower fur dip gently into the surface ... Preserve the original's rounded blue water and
+// lavender domes where the water touches him ... don't add a wake, spray, particles, or anything trailing"). The patch is
+// heroSwell itself: a crest ring 0.95 m out to each side of her (her body is about 0.52 m) with a 0.3 m outer face, which
+// rides with her and carries the original's foamy foreground water (water2-8); in a jump it slumps and the tunnel's blue
+// water shows, on landing it returns. R9 = R8 with ONLY the swell's opacity changed: it fades out beyond a contact zone
+// round her, an ellipse of `keep` metres (sideways, toward the camera) in her water frame, between `fade` times that size,
+// so beside, behind and in front of her the tunnel's own blue water shows and the swell (the original's water and domes at
+// R8's contact edge) stays only where it touches her. No geometry, colour, layer or control changed. Tunable for tests:
+// the tune {"water9": {...}}.
+export const WATER9 = { keep: [0.62, 0.62], fade: [1.0, 1.4] };
+{ const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water9; if (t) Object.assign(WATER9, t); }   // (test tunes only)
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

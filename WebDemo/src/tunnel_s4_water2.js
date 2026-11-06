@@ -15,7 +15,19 @@
 // keeps it moving; the comma arcs off (the original's own whites are in it). Colours through mtUndisplay (exact on screen).
 // The swell's geometry, crest, waterline, her model and everything else unchanged. Code gated on WATER2_ON.
 import * as THREE from 'three';
-import { WATER2_ON, WATER2 } from './tunnel_s4_bt.js';
+import { WATER2_ON, WATER2, WATER9_ON, WATER9 } from './tunnel_s4_bt.js';
+// ?s3=intunnel,water9 (R9): the swell's opacity `a` faded out beyond the contact zone round her (tunnel_s4_bt.js WATER9),
+// placed in the swell's fragment shader just before its output (tunnel_r8_liquid.js liquidSwell; vW, uC, uR, uT, a in scope)
+export function water9GLSL() {
+  if (!WATER9_ON) return '';
+  const P = WATER9, f = (x) => (+x).toFixed(5);
+  return /* glsl */ `  {   // ?s3=...,water9: the swell only where the water touches her; beside and behind her the tunnel's own water
+    vec3 swO = vW - uC;
+    float swE = length(vec2(dot(swO, uR) / ${f(P.keep[0])}, dot(swO, uT) / ${f(P.keep[1])}));
+    a *= 1.0 - smoothstep(${f(P.fade[0])}, ${f(P.fade[1])}, swE);
+  }
+`;
+}
 
 const f4 = (x) => (+x).toFixed(5);
 // the uniforms added to the swell's material (tunnel_r8_liquid.js liquidSwell)

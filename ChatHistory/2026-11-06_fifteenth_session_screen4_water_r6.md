@@ -157,3 +157,23 @@ Saved as `0a51175`. Starting R8's steering video, the last check the art directo
 
 While it records (about 12 minutes), updating the write-ups with the art director's final verdicts and the APK:
 
+---
+
+### You (sent while Claude was working) · 2026-11-06 20:30 UTC
+
+I want the pink character to look like he’s swimming through the laundry tunnel. In my video, compare 0:18.65 with 0:19.80. When he comes back down to the water, a wide white-blue patch appears behind his lower body. Please remove that traveling patch so I can see the blue tunnel water directly behind him.
+
+For the single R8 test after R7’s controls pass, check the existing "heroSwell" water pattern first. When I swipe left or right, I want him to move through the water and leave clear blue water where he was. Let his lower fur dip gently into the surface as he moves. Preserve the original’s rounded blue water and lavender domes where the water touches him. Please don’t add a wake, spray, particles, or anything trailing behind him. Keep the correction visual only and preserve the existing controls, jump, camera, tunnel, and HUD.
+
+Show me the original, R7, and the candidate at the start, +1 second, and +2 seconds with seed 7 and no steering. Then show one short left-right swipe and jump-and-landing clip so I can judge how it feels in motion. If R8 is already underway, use that same test. If the swimming doesn’t look clearly more natural, keep R7 and stop there.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-06 20:34 UTC
+
+The face's alpha ends up in `a` just before the swell's final output, so the candidate needs only one gated line there. Checking the liquid swell's imports to place it cleanly:
+
+Built (`7ac52fed`). Rendering the candidate at the start and +1 s with the default contact zone (0.62 m round her):
+

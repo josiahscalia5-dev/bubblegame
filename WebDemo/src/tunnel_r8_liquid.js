@@ -38,7 +38,7 @@ import { matchFloorDecl, matchFloorApply, matchSwellGLSL } from './tunnel_r9_mat
 import { DOMES_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,domes: bubble domes at her base
 import { buildBaseDomes } from './tunnel_s4_domes.js';
 import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swell's face takes the original's water
-import { water2Uniforms, installWater2 } from './tunnel_s4_water2.js';
+import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -753,7 +753,7 @@ void main() {
     col = mix(col, ${v3(K.foam)}, white * 0.8); a = max(a, white * 0.8);   // translucent: blue shows through
   }
 ${SPLASH_FOAM ? splashSwellGLSL() : ''}#endif
-${MATCH_ON ? matchSwellGLSL() : ''}  gl_FragColor = vec4(col, a * step(0.001, uFade));
+${MATCH_ON ? matchSwellGLSL() : ''}${water9GLSL()}  gl_FragColor = vec4(col, a * step(0.001, uFade));
 ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : LIQUID.debug === 2 ? '  gl_FragColor = vec4(d * 2.0, a, hUp * 2.0, 1.0);' : ''}
 }
 `;
