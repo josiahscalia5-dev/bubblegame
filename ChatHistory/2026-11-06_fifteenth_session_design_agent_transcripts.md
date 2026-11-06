@@ -323,5 +323,66 @@ Address this before completing your current task.
 
 - 20:15 `Bash`: Before/after lower-left at fin frames
 - 20:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/vid/fin_cmp.png
+- 20:16 `Bash`: Zoom lower-left of fixed steering frames
+- 20:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/vid/after_ll_zoom.png
+- 20:16 `Bash`: Search for mirror-symmetry seam columns
+- 20:16 `Bash`: High zoom of lower-left in two frames
+- 20:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/vid/ll3_13.png
+- 20:16 `Bash`: Inspect original's edge columns and bottom rows
+- 20:17 `Bash`: Compare R7 before/after mirror fix bottom
+- 20:17 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/mf_bottom_start.png
+- 20:17 `Bash`: Left edge at start: original, R7 old, R7 fixed, R8
+- 20:17 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/mf_left_start.png
+- 20:17 `Bash`: Final R8 vs fixed R7 crops and gap map
+- 20:17 `Bash`: Locate all changes at +2 s
+- 20:17 `Bash`: View the other +2 s changed regions
+- 20:17 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/T2_top.png
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/T2_bot.png
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8b_start.png
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8b_gap_start.png
+- 20:18 `Bash`: Zoom the cut fade zones at x 248 and 522
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/fade_zones.png
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8b_1.png
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8b_2.png
+- 20:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8b_fig.png
+- 20:18 `Bash`: Find how heroSwell and the R8 cut are placed
+- 20:18 `Bash`: Check whether swell and its texture follow her
+- 20:19 `Bash`: Read the face texture mapping code
+**Agent** (20:19 UTC):
 
-_87 tool steps._
+1. **A, the fin.**
+   - **The fin is gone.** I checked every 10th frame of the new `water7_steering.mp4`. The dark share at the lower left is 0.2-0.3 % in all 30 sampled frames; the old video reached up to 8.8 % at frames 110-150 and 240-280. By eye the lower left now reads as continuous blue-white water.
+   - **But the mirrored edge is not seamless.** Whenever she steers left, a thin pale lavender-white vertical stripe runs from the water's top down to the Bubble Blast button. Examples are frames 130, 150, 260 and 280, at about x 120-140 of the 618 px video. A faint mirrored V of white streaks sits next to it.
+   - **Cause:** the mirror skips only 4 px, but the original's columns 4-9 are not water. They are the screenshot's white inner frame bevel (column 4 is RGB 244/251/255, fading to about 179/198/227 by column 9). The water's own colour starts at column 12 (RGB 131/163/207). Mirrored, that bevel doubles into the stripe.
+   - The same bevel shows unmirrored at the start view, as a pale line about 10 px in from the left edge, in every water candidate since water2.
+   - **Fix:** raise `WATER7.mirror[0]` from 4 px to about 12-13 px (the shader takes it as a texture fraction). That removes the stripe and the start-view line together.
+   - **The bottom is fine:** the changed bottom rows sit under the HUD buttons and nothing shows between them. The right edge columns are lavender water, so no problem there.
+
+2. **B: final R8 vs the fixed R7 is slightly closer at the start, and slightly closer in motion by a small margin.**
+   - **The outer notches are gone.**
+     - My check: changed pixels that are not pink fell from 2.3-2.7k per frame in the first R8 to 810 at the start and 780 at +1 s. What remains is only anti-aliased edge pixels and the bubble sprites over her.
+     - There is no patch left beside her left ear lobe or her lower right.
+     - I can't separate this at +2 s: that pair also differs in the HUD region (y 64-256 and the very bottom). The difference is invisible, but confirm it is only capture noise.
+   - **No step or seam at x 248 or x 522** at any of the three moments. At the left fade, R8 is identical to R7. At the right fade, the edge follows her model's own right side.
+   - **Why it is closer:** her lower edge now slopes down to the right, as in the original. At +1 s, R8 replaces R7's blue-white crest across her centre-right lower edge with her pink meeting lavender. That is the original's arrangement, pink down to the lavender domes. The domes' white rims are still faint.
+   - **Remaining:** the small pink drip at +2 s (about x 350, y 1296).
+   - **When she steers:** from the code, the cut is mapped in her own water frame, so it should move with her when she changes lanes and leave no body-shaped hole. No R8 steering video exists yet to confirm it.
+
+3. **Present the final R8 (with the mirror fix in it) as THE candidate**, after two checks:
+   - set the mirror skip to about 12 px;
+   - render one R8 steering video and look for the stripe and for gaps opening at her edge as she bobs and steers.
+
+   **The single next correction is still the left dome (x 230-340).** First run one layer probe to see whether her body is in front of the face in depth there, or the face's top edge is lower. Then make the face reach the original's outline, so the dome's rounded top and white rim cross her edge.
+
+Files are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/`:
+- `vid/fin_cmp.png` (steering frames 130, 150, 260, 280: the old video beside the new one)
+- `vid/after_ll_zoom.png` (the stripe in the fixed frames)
+- `vid/ll3_13.png` (the stripe at 3x)
+- `mf_left_start.png` (the bevel line at the start: original, R7 before the fix, R7 fixed, R8)
+- `r8b_start.png`, `r8b_1.png`, `r8b_2.png` (fixed R7 above final R8)
+- `r8b_gap_start.png` (yellow marks changed pixels that are not pink)
+- `fade_zones.png` (the cut's fade zones at x 248 and 522)
+- `r8b_fig.png` (normal-scale view at all three moments)
+
+
+_112 tool steps._

@@ -188,8 +188,10 @@ if (WATER6_ON) WATER2.file = WATER6.file;
 // dark frame border (column 0 RGB 19 / 22 / 36): when she steers left the face samples left of the texture and the clamp
 // drew a dark grey fin at the lower left (in every water2-based candidate since R2: 44_water_material/videos/
 // water2_steering.mp4 at 4 s); the clamped last rows drew vertical streaks along the bottom of the start view. [left (skip
-// the border), right, bottom] in texture shares; the R7 frames the art director reviewed: the tune {"water2": {"mirror": null}}
-export const WATER7 = { maxPx: 12 / 1536, mirror: [5 / 767, 1 / 767, 1 / 431] };
+// the border), right, bottom] in texture shares. (The left skip was 5 px first; the art director found a thin pale stripe when
+// she steers left: columns 4-11 are the screenshot's white inner frame bevel, mirrored double. The water starts at column
+// 12, so 13 px; it also removes the bevel's pale line 10 px in from the left edge at the start view.) the R7 frames the art director reviewed: the tune {"water2": {"mirror": null}}
+export const WATER7 = { maxPx: 12 / 1536, mirror: [13 / 767, 1 / 767, 1 / 431] };
 if (WATER7_ON) WATER2.mirror = WATER7.mirror;
 // (R7, the art director: clearly closer than R6 and the accepted build while moving, the cotton-ball piles gone; about the
 // same at the start; THE candidate. 49_water_r7/.)

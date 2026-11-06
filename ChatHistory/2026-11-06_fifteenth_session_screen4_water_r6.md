@@ -100,3 +100,56 @@ Waiting for the art director's verdict on the final R8 and the edge fix.
 
 I'll commit the current state while the review runs:
 
+Meanwhile, building the full-resolution moving comparison with the final frames (ORIGINAL | ACCEPTED | fixed R7 | final R8 at +1 s and +2 s), the sheet the user asked for:
+
+At +2 s the accepted build has the large pink star crosses over her and the white piles; R7 and R8 do not. Waiting for the art director's verdict on the final R8.
+
+The art director is still working (it's running renders of its own). Waiting for its notification.
+
+The autosave is running (1 h 27 min, pushing every 5 minutes). Waiting for the art director's review to finish.
+
+The art director is still reviewing the final R8 and the edge fix. I'll pick up as soon as its verdict arrives and then send you the full report.
+
+---
+
+### Automatic check · 2026-11-06 20:17 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 20:17 UTC
+
+Everything is committed and pushed: `9fc4318`, verified on GitHub, and the working tree is clean. The art director's verdict on the final R8 and the edge fix is still pending. When it arrives I'll send you the full report: the side-by-side comparisons, what improved, what still differs, and which candidate deserves your approval.
+
+---
+
+### You · 2026-11-06 20:17 UTC
+
+And I have the APK file so I can see the preview of my mobile app on my phone.
+
+---
+
+### Claude · 2026-11-06 20:17 UTC
+
+Checking whether the project already has an Android build set up and any earlier APK:
+
+The JDK is here, but the Android SDK is not (the machine is new). Checking how the fifth session installed it:
+
+The Android SDK must be downloaded from Google again. Checking whether this environment's network allows it:
+
+Approved and saved. Downloading the Android command-line tools and installing the platform and build tools the script needs:
+
+The checksum I grabbed may belong to the neighbouring entry (in this XML the checksum comes before the file name). Verifying properly:
+
+Size and SHA-1 match Google's manifest. Installing the platform and build tools:
+
+Water colour starts at column 12, so the mirror will skip 13 px. Updating, rebuilding, and checking the left edge:
+
+Only the left 20 columns change, now bluer (the pale bevel line is gone), and the accepted build is still 0 differing pixels (bundle `3dac5847`). Rebuilding the APK with it:
+
+The APK is built and checked: signed (v2 and v3), carrying exactly the tested bundle `3dac5847`, the new start page and the R8 textures; Android 7.0 or newer. Sending it:
+
+_[Sent you files: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/apk/BubbleWashKingdom_preview.apk]_
+
