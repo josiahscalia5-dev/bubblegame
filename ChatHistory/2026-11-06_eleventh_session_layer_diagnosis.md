@@ -275,3 +275,19 @@ A preview of all three together (image 4) comes closest to your original on almo
 
 Reports are in `Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/README.md` and `28_next_investigation/README.md`. Everything is pushed (latest `f574e9c`). The autosave had stopped silently after 01:11 and I restarted it.
 
+---
+
+### You · 2026-11-06 02:18 UTC
+
+First can I see what it looks like when the pink cartoon  goes through the laundry tunnel thing
+
+---
+
+### Claude · 2026-11-06 02:18 UTC
+
+I'll record a real gameplay video of the current build (`?s3=focus` at step 4) with the project's recording tool. Let me check how it works:
+
+A Pixel 7 phone video script already exists from an earlier session (recorded with `?s3=match`). I'll reuse it for the current `focus` build:
+
+Recording runs in software rendering, so it takes several minutes. Checking progress:
+
