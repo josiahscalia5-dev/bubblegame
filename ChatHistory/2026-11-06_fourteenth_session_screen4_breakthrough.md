@@ -1510,3 +1510,141 @@ Both R2 videos recorded cleanly: the same lanes, laps and sock rescues as the ac
 
 Built and verified (0 pixels from the tested version, bundle `6a535ff7`). Final sheets for R3c, then the art director's verdict, with R3c's videos and gameplay tests running alongside:
 
+---
+
+### You · 2026-11-06 17:46 UTC
+
+This session is being continued from a previous conversation that ran out of context. The summary below covers the earlier portion of the conversation.
+
+
+Summary:
+1. Primary Request and Intent:
+   - Overall (fourteenth session, 6 November 2026, repo josiahscalia5-dev/bubblegame, branch `ccr-ea1aad4b-wq5nrm`): make the playable three.js Bubble Wash Kingdom Screen 4 match the user's AUTHENTIC ORIGINAL APPROVED Screen 4 (`Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`, the ONLY visual authority) as closely as possible (goal 8/10 → 90–95%, never claimed without evidence), keeping it a real playable game. Screen 4 only; no girl, Laundry Toss, castle, washing-machine intro, swim section, character redesign.
+   - The game must START inside the tunnel (`?s3=intunnel`, accepted by user: "That is exactly where I want gameplay to begin").
+   - Number-one priority now: the blue water around the pink character — correct the EXISTING water (heroSwell material/texture/sampling/compositing/bloom), no new objects (no domes, lobes, fins, curling sheets, white strips, lowering), one reversible candidate behind a separate flag, three-panel full-res ORIGINAL | CURRENT ACCEPTED | NEW CANDIDATE, enlarged water close-ups, real moving videos (straight and steering), Screen Matcher + art director judged by eye, gameplay tests must pass; do not merge/overwrite the accepted build until the candidate is clearly closer AND its gameplay tests pass (user also: "R2 is a candidate, NOT automatically an approved build"); if worse, revert and explain the technical reason; report files changed, test flag, commit hash.
+   - Latest message also: evaluate Needle Inspector (answered: not installed/accessible; browser extension unusable in headless cloud; duplicates census + Spector; nothing purchased).
+   - Standing: save EVERYTHING to GitHub every 5 minutes (chat history, design agents, tools, plugins, project, mobile app, uploads); the session-start hook for autosave was approved and built.
+   - Security/constraints (verbatim where given): "Do not purchase Needle Inspector Pro or any paid software without my permission." "Do not use Tripo or Meshy, spend credits, or purchase additional plugins for this correction." "Do not spend credits or change the accepted playable game without my approval." CLAUDE.md: "Never put a key in the repository, a commit, a script or the chat. The repository is public." "Never force-push or rewrite another branch." "Tripo spends real credits ... Ask the user before each paid job." Hook: "Make sure it doesn't commit secrets, switch branches, overwrite accepted work, or interfere with gameplay." "Work only within the GitHub repository and branch selected for this Claude Code session."
+
+2. Key Technical Concepts:
+   - three.js r170 game in WebDemo/ (esbuild `node build.mjs`; commit game.bundle.js with source); test switches `?s3=` (normal, round4–7, hero, liquid, splash, match, focus (step 8), bt, intunnel, plus flags domes/bank/wave/crest/water2/water3 — all experimental flags gated, older modes must stay pixel-identical, proven by frame comparisons).
+   - Switch list parsing per module from window.__BW_S3__ or URL; `bt`/`intunnel` expand the list (`[...new Set([...LIST,'bt','focus'])]`) in tunnel_s4_bt.js imported FIRST in game.js.
+   - Private random generators (game's seeded Math.random never touched; texture/material UUIDs drawn privately).
+   - mtUndisplay (inverse of grade + Neutral tone mapping) so shader colours land as written on screen; bloom not inverted.
+   - heroSwell (horseshoe swell mesh round the character; focusSwellGLSL face shader: teeth, rim, lace commas, rings, spark, water currents), lqFloor, spLumps, spCurls, lqWaterlineBubbles, heroSplash; swell frame uniforms uC,uR,uU,uT; swellFront crest dip/lift.
+   - water2 technique: the original's foreground water as a texture projected onto heroSwell's face in her water frame via a matrix uBwRef captured once at the start view (scene.onBeforeRender), slow flow distortion.
+   - Tools: Spector.js (npm spectorjs 0.9.33 in scratchpad, injected via served index.html), Playwright/Chromium SwiftShader, layer_diag.cjs (census, ablations, TUNE via __BW_S3_TUNE__, NOTAP, T), region_compare.py (OpenCV/scikit-image/LPIPS), compare_s4.py (Screen Matcher), band.py (foreground band shares + k-means), optuna_domes.py, game_eval.cjs identity, s3_func.cjs/r2_func.cjs gameplay, record_phone.cjs videos; metrics venv ~/.bubblewash-tools/metrics/bin/python (PyTorch 2.15, LPIPS 0.1.4 AlexNet weights, Optuna 5.0); $BW_PY = ~/.bubblewash-tools/visual/bin/python.
+   - Autosave Tools/autosave.sh via start_autosave.sh / SessionStart hook; Tools/save_now.sh verifies push.
+
+3. Files and Code Sections:
+   - `WebDemo/src/tunnel_s4_bt.js` (new, central settings): LIST parse; `INTUNNEL_ON = LIST.includes('intunnel')`; `BT_ON = LIST.includes('bt') || INTUNNEL_ON`; list expansion; `__BW_OPENING_OFF__ += 'art'` under intunnel; `INTUNNEL = { u: 1.592, speed: 7.21, clock: 3.0 }`; `DOMES_ON = BT_ON && (LIST.includes('domes') || BANK_ON)`, DOMES (list, look), BANK_ON/BANK, WAVE_ON/WAVE, CREST_ON/CREST (all REJECTED, records); `BT = { brushes: { scale: 0.62, deco: 0.66 }, sock: { toe: '#2f55d8', stripe: null, split: 0.0, amount: 1.0 } }`, BT_REJECTED; and water:
+     ```js
+     export const WATER3_ON = BT_ON && LIST.includes('water3');
+     export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
+     export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0.06, wobble: 0.012, amount: 1.0,
+       water: { face: { lace: { amount: 0 }, rings: { amount: 0.3 }, teeth: { sharp: 0.6, fine: 0.0, lobe: 0.06 }, rim: { amount: 0.35 },
+         spark: { amount: 0.6 } }, swellFront: { lift: 0.05 } } };   // R2
+     export const WATER3 = { file: 'foreground_water_original.png', wobble: 0.004, gain: [1.1, 1.06],
+       face: { spark: { amount: 0.2 }, rim: { amount: 0 }, rings: { amount: 0 } }, look: { rim: 0.03, frontRim: 0, spec: 1.0 } };  // R3c (file changed from _r3.png just before summary)
+     if (WATER3_ON) { Object.assign(WATER2, { file: WATER3.file, wobble: WATER3.wobble, gain: WATER3.gain }); /* face, look merged */ }
+     { const t = window.__BW_S3_TUNE__?.water2; if (t) Object.assign(WATER2, t); }   // test tunes
+     ```
+   - `WebDemo/src/tunnel_s4_water2.js` (new): `water2Uniforms()` (uBwRef Matrix4, uBwOn, uBwTex loaded with private Math.random; NoColorSpace, flipY false, clamp, mipmaps), `installWater2({scene, swell})` (onBeforeRender: once swell visible and uFade≥0.99, F = frame matrix from uC/uR/uU/uT, M = proj*viewInv*F → uBwRef, uBwOn=1), `water2Decl()`, `water2GLSL()`:
+     ```glsl
+     vec3 bwO = vW - uC; vec4 bwC = uBwRef * vec4(dot(bwO,uR), dot(bwO,uU), dot(bwO,uT), 1.0);
+     vec2 bwS = vec2(bwC.x/bwC.w*0.5+0.5, 0.5-bwC.y/bwC.w*0.5); vec2 bwQ = vec2(bwS.x, (bwS.y - y0)/(1-y0));
+     vec2 bwD = (noise from uLqTex flowing) - 0.5; vec3 bwT = texture2D(uBwTex, clamp(bwQ + bwD*wobble, ...)).rgb;
+     [gain: bwL luminance; bwT = pow(clamp(bwL+(bwT-bwL)*g0,0,1), vec3(g1))]
+     float bwK = amount*uBwOn*smoothstep(y0, y0+0.03, bwS.y); mwCol = mix(mwCol, mtUndisplay(bwT), bwK);
+     ```
+   - `WebDemo/src/tunnel_r9_match_water.js`: imports BT/BANK/WAVE/CREST/WATER2 from tunnel_s4_bt.js and water2GLSL/water2Decl; merges in FOCUS branch (`if (BANK_ON)`, `if (CREST_ON)`, `if (WATER2_ON) deepMerge(MATCH_WATER, WATER2.water)`, `if (BT_ON && BT.water)`, then MW_TUNE, then swellFront applied); focusSwellGLSL inserts `${WATER2_ON ? water2GLSL() : ''}` after `mwCol = mix(mwCol, mtUndisplay(fsW), Wt.amount);` and `${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}${WAVE_ON ? btWaveGLSL() : ''}` before `mwA *= fsKeep;`; matchFloorDecl returns `water2Decl() + ...`.
+   - `WebDemo/src/tunnel_r8_liquid.js`: imports DOMES_ON, buildBaseDomes, WATER2_ON, water2Uniforms, installWater2; swell material uniforms `...(WATER2_ON ? water2Uniforms() : {})`; after it `if (WATER2_ON) installWater2({ scene, swell: s });`; waterlineFoam builds domes if DOMES_ON; S.speed uses `mascot.visSpeed ?? (mascot.speed || 0)` (also in tunnel_r7_hero_water.js).
+   - `WebDemo/src/game.js`: first import `import { INTUNNEL_ON, INTUNNEL } from './tunnel_s4_bt.js';`; body class 'intunnel'; state.time starts at INTUNNEL.clock; mascot z/resetRun z0 = INTUNNEL.u; visSpeed; startRun/loopRun set speed INTUNNEL.speed; inDrum at intro; tilt at running value; buttons g=1 under intunnel.
+   - `WebDemo/src/screen3_models.js`: `if (LIST.includes('intunnel')) S3.cine = false;` (the opening camera zoomed 1.25x).
+   - `WebDemo/src/page.html`: `body.intunnel #banner {display:none}`; compact two-line Tap to Start badge (62u wide, bottom 9u, margin-left 5.5u).
+   - `WebDemo/src/tunnel_s4.js`: hazard brushes `btK = BT_ON && hazard ? BT.brushes.scale : 1` (shift x,y by (1-btK)*brushR*SQRT1_2, holder.scale), deco `else if (BT_ON) setScalar(BT.brushes.deco)` — the if/else bug fixed (lines after the else).
+   - `WebDemo/src/tunnel_r9_match.js`: sock recolour `btSock` (toe only when stripe null) in matchCollectibles under BT_ON.
+   - `WebDemo/src/tunnel_s4_domes.js` (domes; rejected, gated).
+   - `WebDemo/tools/screen4/derive_water_map.py`: crops original from Y0=0.72, masks pink (s>35,v>110), gold, buttons (fy>0.875 & fx<0.42 or >0.64), dilate 11, Telea inpaint → `textures/screen4/foreground_water_original.png` (md5 d66d3bc0...); `--fill reflect|patch` → `foreground_water_original_r3.png` (rejected mirror version; patch had no effect).
+   - Tools: `spector_capture.cjs`, `spector_report.py`, `region_compare.py`, `optuna_domes.py`; `Previews/.../44_water_material/diag/band.py`.
+   - `.claude/hooks/session-start.sh`, `.claude/settings.json`, `Tools/autosave_sessions.json` (session 9add4357 mapping to the fourteenth-session chat/agent files and URL); CLAUDE.md, HANDOFF.md, Tools/cloud_env_setup.sh, Tools/DEV_TOOLS.md updated.
+   - Evidence: Previews/WebDemo/screen4_round9_match/39_breakthrough_pass, 40_intunnel_start (final/, sheets/, videos/, gameplay/, identity_proof_final.txt), 41_bubble_domes, 42_water_bank, 43_curling_crests, 44_water_material (R2: diag/, c1/, r1/, r2/, final/, sheets/, videos/ water2_straight/steering + compare + closeup, gameplay/), 45_water_r3 (diag/, r3/, r3c/, final/, sheets/ (R3 versions), videos/ (empty/killed)).
+   - Reference packs saved: Design/ReferencePacks/2026-11-06_Screen4_Working_Download_Pack_from_user/, _Water_3_Way_Comparison_from_user/, _Water_Reference_and_Prompt_Kit_from_user/, _Visual_Proof_and_Tools_Kit_from_user/; uploads in ChatHistory/2026-11-06_fourteenth_session_uploads/.
+
+4. Errors and fixes:
+   - Spector load failures (no head at document start) → serve index.html with Spector script injected in head.
+   - `?s3=bt` loaded old tunnel (other modules read 'focus' directly) → alias module imported first sets window.__BW_S3__ with focus.
+   - GLSL `NaN` from duplicate `hole` key → renamed colour to holeCol.
+   - Brush lines inserted between `if (hazard)` and `else` moved focus's hazard brushes (422,563 px) → found via file bisect; moved after else. (Also bisect confusion because autosave had committed WIP; used commit 7b7a9e2's bundle e6cd9334 as step 8.)
+   - User feedback: candidate 1 "MUCH WORSE"; verify step 8 inclusion → 0-pixel proofs.
+   - In-tunnel start zoomed: opening cine camera → S3.cine off under intunnel; sock pose/buttons → clock 3.0 and g=1.
+   - Parallel 4-browser renders timed out → run ≤2-3 at once.
+   - download.pytorch.org blocked → user approved host; CPU wheel redirect still blocked → PyPI torch build used.
+   - Machine restarts killed autosave (13:21, ~16:00) → restarted; built SessionStart hook.
+   - Rejected experiments (art director / Screen Matcher): water lowering + froth, domes (2), bank W1/W1b, wave W2/W2b, crests C1/C2, R3 mirror fill (seam, blotch, kaleidoscope), patch fill (no effect).
+
+5. Problem Solving:
+   - Diagnosis of pale water: heroSwell face palette (#acdffc/#78c4f8) = game's top clusters; comma arcs = white; bloom/grade/floor/extras 1–2.5 points. Water2 texture approach fixed colour/structure; R2 refinement (rounded crest, fewer rim pieces, lift) → AD "clearly closer". R2 diagnosis: face extras + distortion ≈ −2 pts saturation, bloom ≈ −1, smear = inpaint streaks under her (not missing detail). R3c = R2 texture + extras off + wobble 0.004 + gain → band 28.6/18.5/11.3/18.4/17.0/0.35 vs original 27.5/19.6/11.4/18.6/15.3/0.35; LPIPS 0.576 (fg) / 0.555 (contact) vs R2 0.589/0.568. Remaining: softness/streak under her (R2's fill), straight top edge noted by AD.
+   - Accepted build `?s3=intunnel` proven unchanged (0 px) across all bundles; R2 unchanged on R3 bundle (0 px).
+
+6. All user messages:
+   - "Continue Depending on where we left off, the very last chat between me and the chat history, it should be saved to my GitHub repository branch."
+   - Long breakthrough brief (11:33 UTC): change approach; one major visible improvement; three areas (foreground water/character contact, tunnel composition, brushes/coins/gem/sock); use Playwright, diagnostics, OpenCV, design agents, Spector.js; "Do not purchase Tripo or Meshy assets for problems that are caused by materials, rendering or camera composition."; 3-panel; videos; two candidates then stop; plus the Spector authorization message ("I authorize you to investigate and set up the official open-source Spector.js WebGL debugger and MCP server ... MY GOAL IS THE ENTIRE PLAYABLE SCREEN 4 ... NO Laundry Toss ... NO unnecessary paid assets").
+   - "Claude, I have seen your ORIGINAL | CURRENT STEP 8 | NEW CANDIDATE 1 comparison ... the third image is MUCH WORSE ... DO NOT ACCEPT OR COMMIT THE VISUAL CANDIDATE UNTIL YOU VERIFY THAT IT ACTUALLY USES ALL THE COMPLETED STEP 8 IMPROVEMENTS ... If the new candidate does not look clearly closer ... REVERT IT ... Do not proceed to another feature until the new visual comparison proves the correction actually works." (sent twice)
+   - Tools brief: verify/install scikit-image, LPIPS, Optuna, PyTorch; region comparison; heroSwell; bubble domes; Optuna ≤12 trials; three-panel; don't buy Needle Inspector Pro; "START BY VERIFYING THE FREE TOOLS ..."
+   - Strict reconstruction brief: game must start INSIDE the tunnel (no exterior/swim), separate reversible test mode; region comparison; preserve accepted work; checklist; "DO NOT BUILD THE GIRL INTRO ... DO NOT SPEND PAID CREDITS WITHOUT ASKING."
+   - "Make sure also continue on what you're working on. I just want to make sure you're saving everything to my GitHub repository ... every 5 minutes ..."
+   - Water #1 priority brief (images: original, comparison, close-up): rounded glossy cobalt water, a few lavender domes with clear centres; not repeat rejected; then brushes and diamond if water closer; plus repeated saving request.
+   - "Continue"
+   - Approval of ONE curling-crest experiment + "I approve a small, safe, idempotent session-start mechanism for the existing five-minute autosave ... doesn't commit secrets, switch branches, overwrite accepted work, or interfere with gameplay."
+   - "Save everything to my GitHub resporitory and chat and chat history and my entire project and mobile app ... plugins and tools and the design agent with Claudia ... every 5 minutes"
+   - Change approach: stop adding objects; correct existing water; Spector/diagnostics; one reversible candidate; plus Tripo/Meshy evaluation ("Do not spend credits or change the accepted playable game without my approval.")
+   - Water reference & prompt kit message: recreate original water; use tools; one reversible candidate; three-way comparison, close-up, videos; AD; "DO NOT CLAIM SUCCESS MERELY BECAUSE TESTS PASS"; "Do not use Tripo or Meshy, spend credits, or purchase additional plugins for this correction."
+   - "Claude, R2 looks visibly closer ... However, do not merge it until the moving gameplay videos and functionality tests pass. My original still has richer saturated cobalt-blue water, sharper sparkling details, and less smearing. Once R2 is verified and accepted, prioritize correcting those remaining rendering differences using the existing water material, texture sampling, transparency and bloom. Do not introduce another separate water object or redesign the scene."
+   - Visual proof kit message: diagnose R2's remaining gap (32.4% pale vs 27.5, 14.8% saturated vs 19.6); one targeted reversible improvement; "R2 is a candidate, NOT automatically an approved build. Preserve the accepted version"; "Do not overwrite or merge the accepted build until the new candidate is clearly closer and its gameplay tests pass"; plus Needle Inspector evaluation ("Do not purchase anything without my authorization.").
+
+7. Pending Tasks:
+   - Finish R3c (`?s3=intunnel,water3`) evaluation: art director review (R3c vs R2 vs accepted vs original), Screen Matcher already run on R3 (re-run for R3c optional), sheets (01 full-res ORIGINAL | ACCEPTED | R3c, 02 close-up, 03 moving), straight and steering videos + 3-panel/closeup videos, gameplay tests (s3_func, r2_func), verify accepted `?s3=intunnel` and R2 unchanged on bundle 6a535ff7.
+   - Write 45_water_r3/README.md (diagnosis, R3 mirror rejected, patch no effect, R3c results), update HANDOFF.md and CLAUDE.md, commit/push via save_now.sh, give the user the hash, files, flag.
+   - Do NOT merge R2 or R3c into `?s3=intunnel` without clear closeness + passing tests + user approval.
+   - Keep autosave running (hook-started pid 3650; log ~/.bubblewash-autosave/autosave_9add4357.log).
+
+8. Current Work:
+   Immediately before the summary I made R3c the `water3` candidate: edited `WebDemo/src/tunnel_s4_bt.js` so `WATER3.file = 'foreground_water_original.png'` (R2's Telea-filled texture, with a comment that R3's mirror fill was rejected and the patch fill changed nothing), rebuilt (bundle md5 `6a535ff76eaf068eeae7b7f99370750d`), rendered `45_water_r3/final/start` and `final/T1.0`, copied `r3c/T2.0` to `final/T2.0`, and verified "built R3c vs its tested tune: 0 differing pixels". These edits are not yet committed (last commit aca6f5d; autosave may pick them up). The earlier R3 video job was killed; scratchpad script `/tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/water3_videos.sh` records `S3=intunnel,water3` straight/steering videos into 45_water_r3/videos and then runs gameplay tests into 45_water_r3/gameplay.
+
+9. Optional Next Step:
+   Continue the R3c verification the user asked for: "MAKE ONE TARGETED, REVERSIBLE IMPROVEMENT ... Capture three full-resolution images side by side: ORIGINAL APPROVED, CURRENT ACCEPTED and NEW CANDIDATE. Also provide enlarged comparisons of the water around the character ... Record short videos showing real forward movement and steering ... Use Screen Matcher metrics and an independent art-director review ... Do not overwrite or merge the accepted build until the new candidate is clearly closer and its gameplay tests pass." Concretely: make the R3c sheets in 45_water_r3/sheets (ORIGINAL | ACCEPTED | R3c full-res; close-up ORIGINAL | ACCEPTED | R2 | R3c; moving), send to the game-art-director agent (resume agent ac3cbd8f0103fae0f via SendMessage) for a strict verdict, start `water3_videos.sh` detached (setsid nohup) for videos + gameplay tests, prove `?s3=intunnel` and `?s3=intunnel,water2` 0 pixels changed on bundle 6a535ff7, write 45_water_r3/README.md, commit with `bash Tools/save_now.sh`, and report to the user with the three-way comparison, close-up, videos, files changed, flag `?s3=intunnel,water3`, and commit hash — presenting R3c for approval only if the art director judges it clearly closer, otherwise keeping R2 as the candidate.
+
+If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: /root/.claude/projects/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619.jsonl
+Continue the conversation from where it left off without asking the user any further questions. Resume directly — do not acknowledge the summary, do not recap what was happening, do not preface with "I'll continue" or similar. Pick up the last task as if the break never happened.
+
+The messages after this summary are the most recent messages from before compaction, kept verbatim. The summary was written without seeing them, so something it says has not happened yet may already have happened in them.
+
+---
+
+### Claude · 2026-11-06 17:47 UTC
+
+The art director is reviewing R3c now, and R3c's moving videos and gameplay tests are running. Meanwhile I'm checking that the new build leaves the accepted game and R2 unchanged.
+
+The 3D render is identical: 0 differing pixels in the WebGL canvas for both the accepted build and R2. The 1-level HUD flicker is page text, not the game. Now the uncommitted state:
+
+---
+
+### You (sent while Claude was working) · 2026-11-06 17:49 UTC
+
+[attached file: BubbleWash_R3c_Review_and_Claude_Prompt.zip] Claude, continue improving my existing Bubble Wash Kingdom Screen 4. I have attached my authentic original approved screenshot and the current R3c comparison. My approved image is the ONLY visual target. R3c seems to improve the color and remove the mirrored R3 artifact, but it is still NOT approved because the water around the pink character remains too soft, stretched and pale compared with my original.
+
+Focus specifically on correcting the existing moving water material and the shape where it touches the character. The original has saturated shiny blue water, irregular rounded bubbly forms, fine bright white and cyan highlights, and subtle transparent lavender bubbles. The water supports the character from underneath and surrounds the lower body without submerging or obscuring it. Fix the actual texture-mapping, distortion, transparency, sampling or bloom problem causing the current soft, vertically stretched appearance. Do not keep adding artificial water objects that do not match the reference.
+
+Use our existing Spector.js, Three.js diagnostics, Playwright, Screen Matcher, scikit-image and LPIPS tools where useful, but judge the actual visual comparison rather than trusting a numerical score alone. Test one reversible improvement at a time, compare the same camera and gameplay position, and inspect moving gameplay at one and two seconds.
+
+Preserve the accepted build, all working gameplay, existing tunnel scenery, HUD, controls, collectibles and character movement. Do not add new scenes or install unnecessary plugins. Keep R3c experimental until the visual evidence and gameplay tests are complete. Show me a full-resolution original-versus-new comparison and clearly explain what improved, what still differs and whether the result deserves approval.
+
+_[5 images attached]_
+
+---
+
+### Claude · 2026-11-06 17:50 UTC
+
+R3c stays experimental and is not merged. I'll save your kit to the repository, then measure what makes the water under her soft and stretched before changing anything.
+

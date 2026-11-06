@@ -434,5 +434,82 @@ Address this before completing your current task.
 
 Frames checked: `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/r3/start/`, `T1.0/` and `T2.0/`.
 
+**Lead → agent** (17:47 UTC):
 
-_52 tool steps._
+The coordinator sent a message while you were working:
+Please give a strict read-only review of the water candidate R3c (`?s3=intunnel,water3`). Judge only against the ORIGINAL approved Screen 4 (`Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`).
+
+The question: is R3c CLEARLY closer to the original's foreground water and her water contact than R2 (`?s3=intunnel,water2`, your earlier verdict "clearly closer" than the accepted build)? And is it closer than the CURRENT ACCEPTED build (`?s3=intunnel`)? The user's remaining gap for R2: "richer saturated cobalt-blue water, sharper sparkling details, and less smearing". It must not be a new design and must add no new object.
+
+What R3c changes over R2: the same texture (the original's foreground water projected onto heroSwell's face, Telea-filled under her). On top of that, the face's own extras are switched off or reduced (spark 0.6 -> 0.2, rim 0.35 -> 0, rings 0.3 -> 0), so they no longer draw over the texture. The flow distortion is almost off (wobble 0.012 -> 0.004), which keeps the texture sharp. A mild colour lift on the texture (saturation x1.1, gamma 1.06). The swell's rim light goes from 0.03 to 0 at the front. A variant that mirror-filled the holes under her (R3) was rejected for seams and kaleidoscope blotches and is not in R3c.
+
+Files (all in `Previews/WebDemo/screen4_round9_match/`):
+- R3c full-res sheet: `45_water_r3/sheets/01_FULLRES_original_accepted_new.jpg` (ORIGINAL | ACCEPTED | R3c).
+- R3c close-up, 1.4x: `45_water_r3/sheets/02_closeup_water_x1.4.jpg` (ORIGINAL | ACCEPTED | R2 | R3c).
+- R3c moving: `45_water_r3/sheets/03_moving_accepted_vs_new.jpg` (ACCEPTED and R3c at +1.0 s and +2.0 s).
+- R3c frames: `45_water_r3/final/start/base_page.png`, `final/T1.0/base_page.png`, `final/T2.0/base_page.png`.
+- R2 frames: `44_water_material/final/start/base_page.png`, plus `T1.0`, `T2.0` there. The accepted build: `40_intunnel_start/final/intunnel_start/base_page.png`, `intunnel_T1.0`, `intunnel_T2.0`.
+- Measures already taken (band y 0.72-1.0 colour shares, icy / saturated / deep / white / lavender / mean saturation): original 27.5 / 19.6 / 11.4 / 18.6 / 15.3 / 0.35; R2 32.4 / 14.8 / ... ; R3c 28.6 / 18.5 / 11.3 / 18.4 / 17.0 / 0.35. LPIPS (region_compare.py; lower is closer): foreground water R2 0.589 -> R3c 0.576, contact R2 0.568 -> R3c 0.555, accepted 0.652 / 0.592. No number is a verdict: judge by eye.
+
+Please answer with:
+1. Verdict: R3c vs R2, and R3c vs accepted. Each one of "clearly closer", "slightly closer", "about the same" or "worse".
+2. Corrected (what R3c now matches better) and remaining (what still differs, ranked), with the visible evidence.
+3. Any regression: new seams, blotches, smearing, a flat or straight edge, a sticker look, her fur hidden or sunk, anything less like the original while moving.
+4. Recommendation: present R3c to the user as the water candidate in place of R2, or keep R2. If keep, say why.
+
+Address this before completing your current task.
+
+- 17:47 `Bash`: List the R3c evidence
+- 17:47 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/sheets/02_closeup_water_x1.4.jpg
+**Lead → agent** (17:47 UTC):
+
+[Image: original 3446x543, displayed at 2000x315. Multiply coordinates by 1.72 to map to original image.]
+
+- 17:47 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/sheets/03_moving_accepted_vs_new.jpg
+**Lead → agent** (17:47 UTC):
+
+[Image: original 3098x716, displayed at 2000x462. Multiply coordinates by 1.55 to map to original image.]
+
+- 17:47 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/45_water_r3/sheets/01_FULLRES_original_accepted_new.jpg
+**Lead → agent** (17:47 UTC):
+
+[Image: original 2321x1576, displayed at 2000x1358. Multiply coordinates by 1.16 to map to original image.]
+
+- 17:47 `Bash`: Zoom on R2 vs R3c at start and while moving
+- 17:47 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r3c_zoom.png
+**Lead → agent** (17:47 UTC):
+
+[Image: original 2282x343, displayed at 2000x301. Multiply coordinates by 1.14 to map to original image.]
+
+- 17:47 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/r3c_mov.png
+**Lead → agent** (17:47 UTC):
+
+[Image: original 2376x275, displayed at 2000x231. Multiply coordinates by 1.19 to map to original image.]
+
+- 17:47 `Bash`: Measure sharpness, saturation, seams and streaking
+**Agent** (17:48 UTC):
+
+1. **Verdict.**
+   - **R3c against R2: slightly closer.** The gain is colour only. Side by side at 1.4x the two are nearly the same picture.
+   - **R3c against the accepted build: clearly closer,** for the same reasons R2 was. Lavender bubbles and froth now flow over her lower edge in place of flat blue with comma arcs, and the icy milky blue is about the original's level.
+
+2. **Corrected and remaining.**
+   - **Corrected:** the blue is a little richer. My band measures (y 0.80–0.92, x 0.15–0.85) are below.
+
+     | | Original | R2 | R3c |
+     |---|---|---|---|
+     | Mean saturation | 0.42 | 0.31 | 0.34 |
+     | Strong cobalt share | 13.9% | 6.3% | 8.7% |
+
+     The game's own sparkles and rims no longer muddy the texture.
+   - **Remaining 1, the smear is not fixed.** The streaky fill under her centre is still there. Mid-scale detail is unchanged from R2 (3.04 against 3.09; original 3.77), and the streaks look slightly more vertical. Cause: the Telea fill of the hole under her fur.
+   - **Remaining 2, the cobalt is still short.** Saturation and cobalt are both well below the original, and the gap grows while moving: at +2.0 s saturation is 0.30 and cobalt 4.1%.
+   - **Remaining 3, no crisp detail.** The original's sharp white bubble rims and sparkles are missing. R3c removed the game's own sparkle, so there is slightly less fine detail than R2 (Laplacian 2.57 against 2.79). The user's "sharper sparkling details" is not met.
+   - **Remaining 4, the lavender at her base.** It reads as a soft violet smudge while moving, not sculpted domes.
+
+3. **Regressions: none found.** There are no new seams or mirrored blotches, her fur is not hidden or sunk, and it moves no worse than R2. The slightly wavy top edge of the texture along her base is the same as in R2.
+
+4. **Recommendation: present R3c in place of R2.** It is no worse anywhere and a little bluer. But tell the user plainly that only "richer cobalt" moved, and only partly. "Sharper sparkling details" and "less smearing" are not improved.
+
+
+_60 tool steps._
