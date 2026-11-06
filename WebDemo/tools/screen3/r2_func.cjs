@@ -12,16 +12,27 @@ const server = http.createServer((req, res) => {
 (async () => {
   await new Promise((r) => server.listen(0, r));
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-  const page = await (await browser.newContext({ viewport: { width: +(process.env.VW || 538), height: +(process.env.VH || 1076) } })).newPage();   // VW/VH: a smaller viewport for heavy scenes in software rendering (same game logic)
   const logs = [];
-  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.text().slice(0, 300)); });
-  page.on('pageerror', (e) => logs.push(e.message));
-  await page.addInitScript((s3) => {
-    window.__BW_TEST__ = true; window.__BW_S3__ = s3;
-    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  }, (process.env.S3 || 'round2').split(','));
+  // NEWPAGE=1 (6 November 2026): each section in a new page instead of reloading the same one. In software rendering the
+  // reload of a heavy scene (?s3=intunnel and its test switches) can hang in the old page's unload past the 300 s timeout;
+  // a new page is the same fresh start (the same seed, init script and viewport).
+  const openPage = async () => {
+    const p = await (await browser.newContext({ viewport: { width: +(process.env.VW || 538), height: +(process.env.VH || 1076) } })).newPage();   // VW/VH: a smaller viewport for heavy scenes in software rendering (same game logic)
+    p.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.text().slice(0, 300)); });
+    p.on('pageerror', (e) => logs.push(e.message));
+    await p.addInitScript((s3) => {
+      window.__BW_TEST__ = true; window.__BW_S3__ = s3;
+      let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    }, (process.env.S3 || 'round2').split(','));
+    return p;
+  };
+  let page = await openPage();
   const url = `http://localhost:${server.address().port}/index.html`;
-  const fresh = async () => { await page.goto(url, { timeout: 300000, waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 }); };
+  let loaded = false;
+  const fresh = async () => {
+    if (process.env.NEWPAGE === '1' && loaded) { const old = page; page = await openPage(); old.context().close().catch(() => {}); }
+    await page.goto(url, { timeout: 300000, waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 }); loaded = true;
+  };
   const out = {};
   await fresh();
   out.atStart = await page.evaluate(() => {
