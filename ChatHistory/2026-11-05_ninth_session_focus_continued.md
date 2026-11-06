@@ -261,3 +261,9 @@ _1 unread notification (scheduled trigger (the stored prompt of a routine or tas
 
 That reminder was queued yesterday at 22:52 UTC and only arrived now. Checking whether the autosave is still running before I restart it:
 
+The 5-minute autosave is running again; its first round is on GitHub at **`0aee32f`**.
+
+It had stopped at 22:47 UTC yesterday, when the container restarted, and the reminder to restart it only arrived now. Nothing was lost: no work happened in that gap, and everything before it was already saved on `ccr-de8d9670-2ohd5t`. The last tested build is **`b2a5b6e`**: both design agents' work, merged and passing every check.
+
+A reminder at 20:30 UTC will restart the autosave when this 2-hour run ends. Neither design agent is running. If you want another round, I'd point them at the tunnel's blue, which is less saturated than the original's, and the extra small streaks over the rings.
+
