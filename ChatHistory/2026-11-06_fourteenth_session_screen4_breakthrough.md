@@ -411,3 +411,40 @@ _Background command "Wait for the steering video to finish" completed (exit code
 
 One difference: in the straight run, step 8's log says 1 sock collected and `bt`'s says 2. The paths matched at every sampled frame, so checking the frame-by-frame track before trusting either:
 
+_[Sent you files: Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/sheets/01_FULLRES_original_current_new_T3.0.jpg, Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/sheets/06_moving_current_vs_new_T4_T5_T6.jpg, Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/videos/compare_steering_original_step8_bt_10s.mp4, Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/videos/compare_straight_original_step8_bt_10s.mp4, Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/rejected_water_candidates/02_closeup_water_rejected_T3.0.jpg]_
+
+Not the 8/10 you asked for: the one visible gain is while playing, where the brushes no longer bury the tunnel. At 3.0 s the new test mode is step 8 with only the sock's toe now blue. The water at her base was the biggest fix you asked for, and neither attempt was clearly closer, so I reverted both and stopped there as your rule says.
+
+**What's in the new mode (`?s3=bt`), on top of step 8**
+- **Brushes:** the hazard brushes are drawn at 62 % of their size and the high wall brushes at 66 %. At 4-6 s they frame the sides and the rings and bright centre show between them. They still knock you exactly as before.
+- **Sock:** the toe is blue, like your original's.
+
+**It keeps all of step 8.** With my changes set to zero it renders pixel-identical to step 8. The normal game, `focus`, `match` and the older switches are identical too, across 45 test frames. Gameplay checks (coins, gem, socks, knocks, hearts, pause, Bubble Blast, Turbo Spin) match step 8's reports. The straight video's log says 2 socks collected where step 8's said 1. That's a known quirk of the video recorder; the frame-exact check is identical.
+
+**What I reverted (comparison sent):**
+- **Lowering the water in front of her:** I tried twice, by 0.36 m and by 0.20 m with froth. Your art director judged both further from the original: she read as a taller, squarer pink block and the froth as a white strip under her.
+- **The lilac sock stripes:** they came out greyish.
+
+**Why the water can't get closer that way:**
+- Step 8's waterline is already at the original's height.
+- Her model is taller and squarer below its widest point, so lowering the water shows more of the wrong shape; reshaping her is the character work you postponed.
+- The white at her base in the original is separate 3D bubble domes. A painted-on froth texture reads as a flat strip.
+
+**Spector.js:** the debugger works here and captured the real frame's 209 draw calls. It pointed at the water layer around her, and hiding that layer in the same frame confirmed it causes her flattened look. Its MCP server can't be added to a session that's already running, so I drove the same library through Playwright instead.
+
+**Still far from the original:**
+- the water at her base;
+- the tunnel walls, more pastel and lavender than your saturated cobalt;
+- white streaks on the floor behind her;
+- her silhouette.
+
+**Decision for you:** should I add real 3D lavender-blue bubble domes along her base, keeping step 8's waterline? It's a new technique (geometry, not shader numbers) for the biggest remaining gap. I haven't started it.
+
+Everything is pushed; the last commit is `0806e4f`. The breakthrough kit zip never arrived, only its plan and images. The 5-minute autosave is still running, and it commits work in progress on this branch.
+
+Files are in `Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/`:
+- README.md
+- sheets/01_FULLRES_original_current_new_T3.0.jpg
+- videos/compare_steering_original_step8_bt_10s.mp4
+- videos/compare_straight_original_step8_bt_10s.mp4
+
