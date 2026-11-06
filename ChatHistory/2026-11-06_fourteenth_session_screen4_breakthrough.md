@@ -448,3 +448,138 @@ Files are in `Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/`:
 - videos/compare_steering_original_step8_bt_10s.mp4
 - videos/compare_straight_original_step8_bt_10s.mp4
 
+---
+
+### You · 2026-11-06 13:21 UTC
+
+Claude, I want you to strengthen our Bubble Wash Kingdom Screen 4 development tools and use them to produce REAL, VISIBLE improvements to my existing playable game.
+
+MY GOAL IS NOT TO INSTALL MORE TOOLS JUST FOR THE SAKE OF HAVING THEM. MY GOAL IS TO RECREATE MY EXACT ORIGINAL APPROVED SCREEN 4 AS CLOSELY AS TECHNICALLY POSSIBLE.
+
+My pink fluffy character must already be inside the magical laundry tunnel, viewed from behind, moving ON TOP of saturated cobalt-blue water. I want the approved tunnel rings, turquoise currents, white-aqua splashes, translucent bubbles, fluffy side brushes, gold coins, purple gem, smiling sock, lighting, camera composition and overall scenery.
+
+DO NOT WORK ON THE GIRL-THROWING SCENE, LAUNDRY TOSS, CASTLE EXTERIOR OR OTHER OPENING SCENES. SCREEN 4 ONLY.
+
+STEP 1 — VERIFY AND INSTALL THE TOOLS
+
+First, audit the tools already available in our project environment.
+
+Keep using:
+
+- Spector.js for WebGL draw calls, shaders, textures and blending.
+- Playwright and Chromium for real gameplay screenshots.
+- OpenCV for image analysis.
+- Existing Three.js scene-debugging tools.
+- Blender if actual 3D geometry requires modification.
+
+Check whether these free Python libraries are already installed:
+
+- scikit-image
+- LPIPS
+- Optuna
+- PyTorch
+
+Install only missing packages in a compatible Python environment.
+
+Use:
+
+"python -m pip install scikit-image"
+
+"python -m pip install lpips"
+
+"python -m pip install optuna"
+
+Check PyTorch compatibility before installing LPIPS. Do not disrupt existing working dependencies.
+
+Do not purchase Needle Inspector Pro or any paid software without my permission.
+
+STEP 2 — CREATE AN ACCURATE VISUAL COMPARISON SYSTEM
+
+Use my AUTHENTIC ORIGINAL APPROVED Screen 4 from the repository, not newly AI-generated concept images.
+
+Capture the current accepted playable game at seed 7, exactly 3.0 seconds AFTER the tap, without steering, using the same camera and portrait viewport.
+
+Compare the original and current game in separate regions:
+
+1. Cobalt-blue tunnel rings and distant center.
+2. Foreground water, waves and splashes.
+3. Pink character silhouette and water contact.
+4. Blue, pink and white side brushes.
+5. Gold paw coins, purple gem and smiling sock.
+6. Soap bubbles, lighting and colour balance.
+7. Overall camera perspective and composition.
+
+Use OpenCV, scikit-image and LPIPS to identify which regions differ most.
+
+Do not rely on one numerical similarity score. A lower pixel difference does not automatically mean the game looks more accurate.
+
+STEP 3 — MAKE MEANINGFUL REAL GAME CORRECTIONS
+
+Use Spector.js and Three.js diagnostics to identify the actual objects, materials, shaders and geometry responsible for the largest visual differences.
+
+Pay special attention to the existing "heroSwell" foreground-water layer.
+
+My character must have a rounded pink silhouette resting ON TOP of blue water.
+
+The foreground must have rich cobalt and turquoise water, irregular white-aqua splash details, and appropriately sized translucent bubble domes.
+
+Do not recreate the rejected water-lowering or white shader-froth experiments.
+
+Preserve the successful Step 8 tunnel changes, smaller moving brushes and corrected sock toe, along with any later verified improvements.
+
+Implement ONE meaningful visual correction and test it before moving to another.
+
+STEP 4 — USE OPTUNA ONLY WHERE IT HELPS
+
+If there are specific adjustable shader or lighting parameters, use Optuna to test a small number of controlled variations.
+
+Limit the first experiment to 12 trials.
+
+Do not randomly change unrelated settings, perform endless optimization or use a numerical result as a substitute for visual judgment.
+
+STEP 5 — VERIFY EVERYTHING
+
+Show me a full-resolution comparison containing:
+
+LEFT: ORIGINAL APPROVED SCREEN 4
+
+MIDDLE: CURRENT ACCEPTED PLAYABLE BUILD
+
+RIGHT: NEW CORRECTED PLAYABLE BUILD
+
+Include comparisons of the tunnel, foreground water, character, brushes, bubbles and collectibles.
+
+Record actual moving gameplay, including the character collecting coins, approaching the brushes and travelling farther through the tunnel.
+
+Verify that steering, coins, socks, gems, collisions, pause, Bubble Blast and Turbo Spin still work.
+
+Keep the normal game and previous test modes unchanged. Implement experimental changes behind a reversible test switch.
+
+STEP 6 — SHOW RESULTS, NOT JUST REPORTS
+
+I do not want another lengthy investigation that ends without a visible improvement.
+
+Tell me which tools were already installed, which new tools were installed and whether each one actually helped.
+
+Then show the actual visual correction, screenshots, gameplay recordings, changed files, test results and Git commit hash.
+
+If an experiment makes the scene less accurate, revert it.
+
+MY ACCEPTANCE STANDARD:
+
+I want an obvious improvement toward at least 8/10 visual fidelity, ultimately aiming for approximately 90–95% resemblance to my authentic approved screen if technically achievable.
+
+Do not claim success without clear visual proof.
+
+Do not rebuild the game, replace it with static artwork, remodel my character or spend paid credits.
+
+START BY VERIFYING THE FREE TOOLS, THEN USE THEM TO MAKE A REAL IMPROVEMENT TO THE FOREGROUND WATER AND COMPLETE PLAYABLE TUNNEL SCENE. I WANT AN ACTUAL RESULT, NOT ANOTHER PROPOSAL.
+
+---
+
+### Claude · 2026-11-06 13:21 UTC
+
+Starting with the checks: the branch state, the 5-minute autosave and the tools.
+
+The machine restarted, so the autosave has stopped. Restarting it first, as your standing rule requires:
+
