@@ -1,0 +1,3 @@
+[{"label": "no_r6Face", "hide": ["r6Face"]},
+ {"label": "no_r6Porthole", "hide": ["^r6Porthole"]},
+ {"label": "no_r6Porthole_heroCollar_heroWalls", "hide": ["^r6Porthole", "^heroCollar", "^heroWalls"]}]
