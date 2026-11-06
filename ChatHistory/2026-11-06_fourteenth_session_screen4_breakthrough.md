@@ -978,3 +978,11 @@ _[3 images attached]_
 
 Built. Rendering `?s3=intunnel` at Tap to Start and at 1.0 s and 3.0 s after the tap:
 
+Every update runs in both phases, so I'll probe the live page directly and print the swell's state at Tap to Start under `intunnel` and at 3.0 s under `bt`:
+
+The swell's state is identical in both, so the water is drawn the same. Looking at the two raw canvases at full resolution, bottom half:
+
+Same objects too. The scene state matches, but the pixels don't. Rendering a frame from inside the probe itself to see which part of the pipeline differs:
+
+These hooks don't move the camera either. Viewing the probe's two renders side by side, full frame:
+
