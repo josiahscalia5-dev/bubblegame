@@ -294,5 +294,34 @@ Files are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f
 - `r8z_start.png`, `r8z_1.png`, `r8z_2.png` (the contact edge, R7 above R8)
 - `fig.png` (normal-scale view: original, R7, R8 at all three moments)
 
+**Lead → agent** (20:15 UTC):
 
-_79 tool steps._
+The coordinator sent a message while you were working:
+Two things to review, strictly and against the ORIGINAL only.
+
+A) A defect I found in R7's steering video, now fixed: a dark grey "fin" at the lower left when she steers left (also in the old water2 video, so in every water candidate since R2). Cause: the face samples left of the texture once the camera swings; the clamp smeared the texture's first columns, which are the original screenshot's dark frame border (column 0 RGB 19/22/36). Fix, now part of R7 (`WATER7.mirror`): beyond the texture's edges the original's water is mirrored back in, skipping the 4-px border. Proof: the R7 frames you reviewed are 0 px from the tune `mirror: null`; the fix changes only the clamped zones (the start view's bottom 36 rows, which were vertical streaks, and the left edge; at +1 s 91 px). Lower-left dark share over the whole steering run: 22.6 % at worst before, 2.7 % after (accepted 3.7 %). See `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/mirror_fix/fin_accepted_before_after_frame150.jpg` (accepted | R7 before | R7 fixed, frame 150), the new `videos/water7_steering.mp4` and `videos/compare_steering_original_accepted_R7.mp4`; fixed frames in `mirror_fix/{start,T1.0,T2.0}/`.
+
+B) The final R8 (`?s3=intunnel,water8`) = the fixed R7 + your R8 contact edge with your notch fix ("R8b"): the cut only inside her model's span, x 248-522, fading over 8 px, so no see-through notches at her outer sides. Everything else as the R8 you reviewed. Edge (where her pink ends, start; original / final R8): x 220 1264/1215 and x 240 1250/1212 (no cut there now, as R7); x 340 1286/1263; x 400 1284/1265; x 460 1315/1290; x 500 1321/1298.
+Files in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_contact_edge/`: `sheets_final/01_FULLRES_ORIGINAL_ACCEPTED_R7_NEWR8.jpg`, `sheets_final/02_closeup_water_x1.6.jpg`, `sheets_final/03_moving_closeup_x1.4.jpg` (ORIGINAL | R7 +1 s | R8 +1 s | R7 +2 s | R8 +2 s; R7 here is the fixed R7); frames `final/{start,T1.0,T2.0}/base_page.png`.
+
+Please answer concisely:
+1. A: is the fin gone, and does the mirrored edge look natural (no visible mirror seam or repeated pattern at the bottom or the left edge)?
+2. B: final R8 vs the fixed R7, at the start and moving: "clearly closer", "slightly closer", "about the same" or "worse". Are the notches gone? Any new step or seam where the cut fades out at x 248 / 522?
+3. Which to present to the user as THE candidate: the fixed R7 or the final R8? And the next single correction (your ranking: the left dome, x 230-340, where the face does not reach the original's outline).
+
+Address this before completing your current task.
+
+- 20:15 `Bash`: List mirror-fix and final R8 evidence
+- 20:15 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/mirror_fix/fin_accepted_before_after_frame150.jpg
+- 20:15 `Bash`: Probe steering videos
+- 20:15 `Bash`: Extract every tenth frame from steering videos
+- 20:15 `Bash`: Contact sheets and lower-left dark share per frame
+- 20:15 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/vid/after_sheet.png
+**Lead → agent** (20:15 UTC):
+
+[Image: original 2048x565, displayed at 2000x552. Multiply coordinates by 1.02 to map to original image.]
+
+- 20:15 `Bash`: Before/after lower-left at fin frames
+- 20:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/vid/fin_cmp.png
+
+_87 tool steps._

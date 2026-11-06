@@ -88,3 +88,15 @@ Committing the tested R7 state (videos, gameplay tests, the dark-fin fix with it
 
 Saved as `b0aaf16` (verified on GitHub). Waiting for the fixed steering video and R8's final frames.
 
+R8's final frames are done, and the accepted build is again 0 differing pixels on the final bundle `215f35c5`. The fixed steering video is recorded; reading the dark-fin check:
+
+Now the art director's review of the final R8 (the cut limited to her model's span, plus the edge fix):
+
+While the art director reviews, writing R8's README and updating `CLAUDE.md` and `HANDOFF.md`:
+
+Now the HANDOFF's newest section, updated to the current state:
+
+Waiting for the art director's verdict on the final R8 and the edge fix.
+
+I'll commit the current state while the review runs:
+
