@@ -129,4 +129,37 @@ Full-resolution frames: `before/step8_T*/` and `cand3/bt_T*/` (`base_page.png` w
 3D). The final `bt` build differs from step 8 by 41.7 % of the frame at 4.0 s, 35.5 % at 5.0 s and 44.8 % at 6.0 s (the
 brushes, and what they no longer cover).
 
-TESTS_PLACEHOLDER
+## Tests (the final `bt` build, bundle `74f5c844`)
+
+| test | result | file |
+|---|---|---|
+| identity: the normal game, the ten older switches, `match`, `match,nofoam`, `focus` (45 raw-canvas frames), step 8's bundle vs this one | **all identical, 0 differing pixels** | `identity_proof_bt.txt` |
+| gameplay `?s3=bt` `s3_func` (lanes, jump, spin, pick-ups) | identical to step 8's `focus` report but for the switch's name: 12 coins, 1 gem, 2 socks, 135 draw calls | `gameplay/s3_func_bt.txt` |
+| gameplay `?s3=bt` `r2_func` (hearts, brush knocks, pause, Bubble Blast, Turbo Spin) | identical to step 8's: 5 knocks, hearts 4 -> 0, the restart at 5 Full | `gameplay/r2_func_bt.txt` |
+| gameplay, the normal game, `s3_func` | identical to step 8's | `gameplay/s3_func_normal.txt` |
+| stills 3, 4, 5, 6 s (768 x 1536) | captured, no console errors | `cand3/` |
+| videos, Pixel 7, 10 s, straight and steering | recorded, no console errors | `videos/bt_straight.mp4`, `videos/bt_steering.mp4` |
+| 3-panel videos ORIGINAL (still) / step 8 / bt, the same scripted inputs | made | `videos/compare_straight_original_step8_bt_10s.mp4`, `videos/compare_steering_original_step8_bt_10s.mp4` |
+
+- **The straight run's pick-ups:** the path is the same at every frame, but the phone recorder is not frame-exact (found
+  at step 7), so a few pick-up moments shift by a frame. That is why its log says 2 socks where step 8's run said 1; step 7's
+  two straight runs of one build both said 2. The frame-exact gameplay checks above are identical to step 8's.
+
+## Corrected / remaining (against the original)
+
+- [x] Brushes frame the sides while she moves (4-6 s), the tunnel's rings and centre visible between them; knocks
+      unchanged.
+- [x] The sock's toe blue.
+- [x] `?s3=bt` is step 8 plus only these (proven); the first broken `bt` render and the duplicate setting fixed.
+- [ ] Her water contact: step 8's kept. Two candidates rejected; 3D bubble domes at her base proposed (above). Waiting for
+      the user's go.
+- [ ] The tunnel walls still read more pastel and lavender than the original's saturated cobalt, with less of its glowing
+      centre (the art director's item 2: `heroWalls`, the hero grade, the porthole's inner face).
+- [ ] The floor behind and beside her: white diagonal streaks over pale blue (`lqFloor`'s streaks), where the original has
+      saturated blue water with round bubbles.
+- [ ] The character's silhouette (her model: the postponed character phase).
+- [ ] The sock's pose and size, the coins' warmth, the interface items (see `../38_checklist_to_match_original/`).
+
+**By eye, honestly:** at 3.0 s `bt` is step 8 with the original's blue sock toe, a small step. The visible gain is while
+playing: the brushes no longer bury the tunnel. This is not the 8/10 the user asked for. The remaining large gaps are the
+water at her base, the walls' pastel, and the floor's streaks.
