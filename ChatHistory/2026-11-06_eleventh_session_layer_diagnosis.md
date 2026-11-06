@@ -491,3 +491,9 @@ Before trusting the batched tool, an equivalence check: the same run to 3.0 s, f
 
 A shell scoping mistake: my variable definitions were swallowed into the first background job, so the other runs got empty paths. I'll put the runs in a small script instead:
 
+Step 5's census still lists 245 objects, where I expected 244 with the droplets hidden. Checking which object that is, so the groups are right:
+
+Hiding the droplets made a different layer **appear**: `lqSpraySheets`. Replacing the hide list must have dropped an entry inherited from another settings layer. Checking:
+
+The only visible-layer difference between the builds is now the droplets, as intended (bundle `22fa5a5a…`). Re-capturing step 5's layer sheet and motion moments:
+
