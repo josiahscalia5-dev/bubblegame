@@ -482,7 +482,7 @@ function btFrothGLSL() {
         float btR = mix(${f4(P.hole[0])}, ${f4(P.hole[1])}, lqHash(btI + 57.0)), btL = length(btO);
         float btHole = step(${f4(P.holeShare)}, lqHash(btI + 59.0)) * (1.0 - smoothstep(btR - 0.07, btR, btL));
         float btGl = btHole * (1.0 - smoothstep(btR * 0.1, btR * 0.3, length(btO - vec2(-0.4, 0.4) * btR)));
-        vec3 btC = mix(${v3s(P.white)}, ${v3s(P.hole)}, btHole * ${f4(P.holeK)});
+        vec3 btC = mix(${v3s(P.white)}, ${v3s(P.holeCol)}, btHole * ${f4(P.holeK)});
         btC = mix(btC, ${v3s(P.glint)}, btGl);
         btC = mix(${v3s(P.aqua)}, btC, smoothstep(btTh + ${f4(P.edge * 0.4)}, btTh + ${f4(P.edge * 1.6)}, btN));
         mwCol = mix(mwCol, mtUndisplay(btC), btP * ${f4(P.amount)});

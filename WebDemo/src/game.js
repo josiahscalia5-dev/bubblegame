@@ -1,6 +1,7 @@
 // Bubble Wash Kingdom: playable browser version of approved Screen 3 ("Let's go! Into the
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
+import './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';

@@ -18,6 +18,9 @@
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const BT_ON = LIST.includes('bt');
+// `bt` is `focus` plus this pass: the switch list handed on with `focus` in it, before any other module reads it (game.js
+// imports this file first; every switch module reads window.__BW_S3__ before the address). Without `bt` nothing happens.
+if (BT_ON && !LIST.includes('focus')) window.__BW_S3__ = [...LIST, 'focus'];
 
 export const BT = {
   // deep-merged into MATCH_WATER (tunnel_r9_match_water.js) right after FOCUS.water, before the test tune
@@ -42,7 +45,7 @@ export const BT = {
     //   which it goes from the first to the second; edge: the patch edge's width (noise units); cell: bubbles per m; hole: a
     //   bubble's radius [min, max] as a share of its cell; holeShare: the share of cells WITHOUT a hole; holeK: how blue
     btFroth: { scale: [2.2, 3.0], th: [0.44, 0.66], reach: [0.04, 0.5], edge: 0.06, cell: 26.0, hole: [0.2, 0.36], holeShare: 0.35, holeK: 0.75,
-      white: '#eef5fd', aqua: '#9fdcfa', hole: '#7fc4f4', glint: '#ffffff', amount: 1.0 },
+      white: '#eef5fd', aqua: '#9fdcfa', holeCol: '#7fc4f4', glint: '#ffffff', amount: 1.0 },
   },
   // the hazard and wall brushes' DRAWN size (tunnel_s4.js; where they knock is the lane, unchanged): the brush scaled by
   // `scale` round the point of its rim nearest the middle lane at the water, so its inner, lower edge stays in the outer

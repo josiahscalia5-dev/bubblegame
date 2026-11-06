@@ -178,3 +178,11 @@ Now the sock. Checking what its model's materials are:
 
 Built. Rendering the `bt` frame at 3.0 s and the moving moment at 4.0 s:
 
+The first `bt` render loaded the old tunnel, not the focus scene. Other files must imply the older switches from the word `focus` itself. Finding where:
+
+Making `bt` a proper alias: a first import in `game.js` expands `bt` to `bt,focus` before any module reads the list (it does nothing without `bt`).
+
+The alias now runs first in the bundle. Re-rendering candidate 1:
+
+Found it: my settings object had two keys named `hole` (a size range and a colour), so the size became a colour string. Renaming the colour:
+
