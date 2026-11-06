@@ -112,3 +112,105 @@ My crops and masks are in `/tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c8
 
 
 _18 tool steps._
+
+---
+
+## Game Art Director: Art director review of the domes (started 13:55 UTC)
+
+**Lead → agent** (13:55 UTC):
+
+Read-only review for Bubble Wash Kingdom Screen 4. Do not edit anything. The ONLY target is the ORIGINAL approved Screen 4: /workspace/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg (767 x 1536).
+
+Two things changed, both behind test switches:
+1. `?s3=intunnel`: the run now STARTS inside the tunnel at the approved viewpoint (no exterior, slide or swim); the start screen is the same composition as the previous accepted build's 3.0 s moment.
+2. `?s3=intunnel,domes`: real 3D translucent lavender-blue bubble domes along the pink character's base (8 instanced spheres sitting on the water at step 8's waterline; colours sampled from the original's domes; size and opacity picked by eye among 12 Optuna trials). NOT the rejected ideas: the water is not lowered and there is no white shader froth.
+
+Files (sheets in /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/):
+- 01_FULLRES_original_previous_new.jpg: ORIGINAL | PREVIOUS ACCEPTED (bt at 3.0 s) | NEW (intunnel,domes start screen, with a small Tap to Start pill);
+- 02_closeup_character_water_domes.jpg, 03_closeup_tunnel.jpg, 04_closeup_brushes_collectibles.jpg;
+- 06_moving_previous_vs_new.jpg and 05_moving_same_place_*.jpg: the same places in the tunnel while moving (previous bt at 4/5/6 s = new at 1/2/3 s after the tap).
+Full frames: .../39_breakthrough_pass/cand3/bt_T*/base_page.png and .../41_bubble_domes/frames/domes_*/base_page.png. Optuna trial frames: .../41_bubble_domes/optuna/trial_NN/base_page.png (trial 8 was chosen).
+
+Answer in under 300 words:
+A. The domes: closer to the original, the same, or further? Be strict (too pale, too glassy, too big, covering her, flat stickers?). One line on what would make them closer.
+B. The in-tunnel start screen: does it keep the approved composition (tunnel, rings, brushes, coins, gem, sock, HUD)? Anything lost?
+C. Over the moving moments: does anything look worse with the domes?
+D. Keep, adjust (say exactly what) or revert the domes? Then the top 2 remaining LARGE differences overall, each with the likely Three.js layer.
+You may use /root/.bubblewash-tools/visual/bin/python for crops or measurements.
+
+- 13:55 `Bash`: List the evidence folders
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/01_FULLRES_original_previous_new.jpg
+**Lead → agent** (13:55 UTC):
+
+[Image: original 2321x1572, displayed at 2000x1355. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/02_closeup_character_water_domes.jpg
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/03_closeup_tunnel.jpg
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/04_closeup_brushes_collectibles.jpg
+**Lead → agent** (13:55 UTC):
+
+[Image: original 2321x916, displayed at 2000x789. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/06_moving_previous_vs_new.jpg
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/05_moving_same_place_bt5.0_new2.0.jpg
+**Lead → agent** (13:55 UTC):
+
+[Image: original 2321x1572, displayed at 2000x1355. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:55 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/05_moving_same_place_bt6.0_new3.0.jpg
+**Lead → agent** (13:55 UTC):
+
+[Image: original 2321x1572, displayed at 2000x1355. Multiply coordinates by 1.16 to map to original image.]
+
+- 13:55 `Bash`: List frame folders and logs
+- 13:55 `Bash`: Crop the character base region from the three frames
+- 13:55 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/base.png
+- 13:55 `Bash`: Zoom on the domes against the original's base
+- 13:55 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/domes_zoom.png
+- 13:56 `Bash`: Measure colour classes in the base band
+- 13:56 `Bash`: Crop sock zone and map where previous and new differ
+- 13:56 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/sock.png
+- 13:56 `Bash`: Crop base region in moving frames and read trials
+- 13:56 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/moving_base.png
+- 13:56 `Bash`: Summarise the Optuna trials
+- 13:57 `Bash`: Measure tunnel, centre, floor and foreground colour shares
+- 13:57 `Bash`: Measure the character's pink in both images
+**Agent** (13:57 UTC):
+
+**Screen 4 review: `?s3=intunnel,domes` against the original only, with the previous accepted bt at 3.0 s for reference**
+
+**A. The domes: overall about the same, not yet closer.**
+- **Better:** the right element is now in the right place. The domes sit where the original's do (x 0.30 to 0.57, top near y 0.81), and lavender at her base went from 0.3% to 15% (original 21%).
+- **Worse (measured, base band):**
+  - Saturation is 0.33 (previous 0.39, original 0.47).
+  - Light-dark contrast is 0.12 (original 0.24).
+  - White is 7% (original 13%).
+  - Visible pink fell from 29% to 17% (original 29%).
+- **What I see:** milky, nearly opaque balloons with soft edges. They have no bright white rims and no white crests joining them to the water. The big centre dome reads as a flat sticker covering her base.
+- **What would make them closer:** a clear, violet-tinted centre so her fur shows through, a near-white rim, and white splash crests between them.
+
+**B. The start screen keeps the composition.** The tunnel, rings, rim, both top brushes, coins, gem and character are in the same places. Three things are lost:
+1. The sock is turned side-on, so its face is hidden. The original and the previous build both show the smiling face.
+2. The Bubble Blast and Turbo Spin buttons are gone.
+3. The pause button has become a gear.
+
+**C. Moving moments: worse with the domes.** The domes stay on the waterline. But at +1, +2 and +3 s they form an even row of pale beads in front of her lower body, which looks busier than the original's merged bank. The new frames also run slightly behind the previous ones (coins 1,286 against 1,287), so the pairs are not exactly the same place.
+
+**D. Adjust the domes, don't revert them.** All changes are to trial 8 in `tunnel_s4_bt.js`:
+- Centre opacity from 0.73–0.81 down to about 0.35–0.45.
+- A Fresnel white rim at about 0.9.
+- The centre dome (index 2) about 30% smaller.
+- Keep the lavender `#8d7fdf`, deepened at the bottom of each dome.
+- Separately, fix the sock's pose on the start screen.
+
+**Top 2 remaining large differences:**
+1. **The splash bank round her base and in the foreground.**
+   - Original: tall, sculpted white-and-lavender froth with curling crests up her sides.
+   - Game: a flatter pale sheet with regular white dashes. Foreground white is 8% against 17%; behind her it is 16% against 28%.
+   - Layers: `tunnel_r9_match_water.js` (the swell, `focusLumpGLSL`) and `tunnel_r8_splash.js` (`spCurls`, `spLumps`).
+2. **The fur colour.** The original's median pink is hot magenta `#f54dba` with glowing tips; the game's is candy `#fb86c2`. This is the character's fur material, which the user has said not to touch yet.
+
+Files are in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/`.
+
+
+_21 tool steps._

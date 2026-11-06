@@ -998,3 +998,44 @@ The gameplay checks are mostly position-driven ("advance until she reaches 8.5 m
 
 Trials are running (about 1-1.5 minutes per batch of three). Writing the in-tunnel start's evidence README meanwhile:
 
+All four renders timed out on the screenshot: four browsers at once overloads the 4-core machine. Re-running two at a time:
+
+While the tests run, saving the dome candidate and its Optuna evidence:
+
+The dome candidate is saved as commit `ca6a2e5`, labelled as under test. The art director's review and the identity, gameplay and video tests are running; I'll act on the results when they arrive.
+
+---
+
+### You · 2026-11-06 13:55 UTC
+
+Make sure also continue on what you're working on. I just want to make sure you're saving everything to my GitHub repository, including the chat history, all the plugins, the tools, all the design agents, everything. I want to make sure everything's saved every 5 minutes or frequently, so I don't have to keep asking, and I feel confident about everything saved to my GitHub repository, and make sure everything is saved, like everything, every 5 minutes.
+
+---
+
+### Claude · 2026-11-06 13:55 UTC
+
+Checking the autosave now, so you have proof rather than a promise:
+
+Everything is saved now (commit `96bf125`, pushed), and the autosave keeps going every 5 minutes. Back to the work: drafting the domes' evidence README while the review and tests run.
+
+I've drafted the domes' evidence README and am now waiting for the art director's verdict and the test results. I'll keep or revert the domes on that evidence.
+
+---
+
+### Automatic check · 2026-11-06 13:56 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 13:56 UTC
+
+I committed and pushed the README draft as `c209eb4`; nothing is left unsaved. The 5-minute autosave is still running. I'm waiting on the art director's verdict and the tests before deciding whether the domes stay.
+
+---
+
+### Automatic notice · 2026-11-06 13:57 UTC
+
+_Agent "Art director review of the domes" finished_
+
