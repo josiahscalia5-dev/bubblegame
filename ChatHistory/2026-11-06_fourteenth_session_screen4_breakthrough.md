@@ -210,3 +210,9 @@ Do not proceed to another feature until the new visual comparison proves the cor
 
 _[1 image attached]_
 
+---
+
+### Claude · 2026-11-06 12:11 UTC
+
+Neither the first import nor the brush file is the cause. Before bisecting further, checking that the step 8 "before" frame itself reproduces from the committed step 8 bundle:
+
