@@ -85,3 +85,15 @@ big left coin (0.198, 0.602): d 4.5 -> (-1.05, 0.87, 1.16); d 5.0 -> (-0.55, 0.9
 small left coin (0.152, 0.471): d 4.6 -> (-1.0, 1.03, 1.94); d 5.5 -> (-0.1, 1.26, 2.01).
 gem (0.326, 0.511): d 6.0 -> (0.5, 0.73, 1.74); d 7.0 -> (1.5, 0.88, 1.76).
 Lane spacing 0.7 m (laneX = (1 - lane) * 0.7), pick-up within 0.82 m of the body (BODY_R 0.4 + 0.42), body 0.34 m above the water.
+
+Measured after the camera (`frames/focus_seam`, objects.py; original in brackets): lower-right coin (0.751, 0.723) w 0.241
+[(0.893, 0.733) w 0.219]; big left coin (0.195, 0.608) w 0.198 [(0.198, 0.602) w 0.211]; small left coin (0.158, 0.484) w 0.112
+[(0.152, 0.471) w 0.123], partly behind the left brush; gem (0.310, 0.511) h 0.045 [(0.326, 0.511) h 0.033]; centre coin (0.540,
+0.570) w 0.140 [(0.520, 0.554) w 0.100]. Brush silhouettes (hide probe diff): left x 0-0.23, y 0.27-0.50, 3.96% [x 0.01-0.20, y
+0.233-0.415, 2.0%]; right x 0.74-1.0, y 0.40-0.67, 4.86% [about x 0.79-1.0, y 0.40-0.62]. Sock x 0.59-0.73 [x 0.66-0.84, y 0.555-0.705].
+
+More picks (probe2): left brush centre (0.06, 0.325): d 4.6 -> (u -1.2, x 1.25, h 2.78) = deco radius 1.79, angle 45.7; d 4.95 ->
+(-0.85, 1.36, 2.87) = 1.93, 45.2. Right brush (0.93, 0.51) d 5.29 -> (-0.3, -1.47, 1.72) = 1.49, 8.5. Sock origin (0.81, 0.62): d 4.0
+-> (-1.5, -0.85, 1.12); d 4.4 -> (-1.1, -0.91, 1.07); d 4.77 -> (-0.75, -0.98, 1.03). Small coin (0.152, 0.471) d 4.6 -> (-1.0, 1.03,
+1.94). Gem (0.326, 0.511) d 7.3 -> (1.8, 0.92, 1.77). Lower-right coin (0.893, 0.733) d 3.9 -> (-1.75, -1.0, 0.6) = lane 2.43.
+(Layout u = track u + 3.9; deco radius/angle round the axis at h 1.5.)

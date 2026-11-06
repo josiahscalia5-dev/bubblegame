@@ -93,10 +93,10 @@ export const FOCUS = {
     //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
     //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
     //    (item 1, the AD's review) rag: their upper outline eaten into irregular points (from 1 - n.v [start, + noise], cells
-    //    per unit radius), so they read as splash crests, not smooth blue domes; cap: a broken white cap with round blue holes
-    //    on top (the normal's up [from, to], how much, hole cells per unit radius)
+    //    per unit radius), so they read as splash crests, not smooth blue domes; cap: separate small white splash pieces on
+    //    their tops (the normal's up [from, to], how much, cells per unit radius; a solid cap read as a white clump)
     crest: { low: '#1a5fe0', mid: '#1f9af6', hi: '#8fe0ff', white: '#f4fbff', spray: 0.9, sprayCell: 9.0, sprayShare: 0.86,
-      edge: 0.85, alpha: 0.9, spec: 1.6, rag: [0.35, 0.5, 5.0], cap: [0.2, 0.55, 0.95, 7.0] },
+      edge: 0.85, alpha: 0.9, spec: 1.6, rag: [0.2, 0.6, 7.0], cap: [0.35, 0.75, 0.9, 9.0] },
     // 3. the swell (the water's surface round her): its crest lowered in front of her body (see the water file), opaque blue
     //    water (no see-through plate over her base: match's front was 0.9 opaque, so the fur behind it read lilac); its white
     //    crest only as a broken highlight at her base
@@ -128,9 +128,9 @@ export const FOCUS = {
     face: {
       teeth: { per: 22.0, hi: 0.56, lo: 0.49, sharp: 1.2, fine: 0.02, lobe: 0.03, speed: 0.5, bob: 0.25, side: 1.0, front: 1.0 },
       rim: { w: [0.02, 0.06], cell: 16.0, share: 0.78, amount: 1.0 },
-      lace: { cell: 28.0, share: 0.85, reach: 0.4, r: [0.22, 0.42], flow: 1.4, amount: 1.0 },
+      lace: { cell: 28.0, share: 0.85, reach: 0.6, r: [0.22, 0.42], flow: 1.4, amount: 1.0 },
       rings: { cell: 11.0, share: 0.22, r: [0.2, 0.4], reach: 0.4, col: '#d8f4ff', amount: 0.85 },
-      spark: { cell: 34.0, share: 0.7, dot: [0.12, 0.24], reach: 0.45, amount: 1.0 },
+      spark: { cell: 34.0, share: 0.8, dot: [0.12, 0.24], reach: 0.6, amount: 1.0 },
       water: { light: '#acdffc', mid: '#78c4f8', deep: '#3f8cf0', scale: [1.7, 2.4], amount: 0.8 },
       white: '#f4fbff',
       debug: 0,
@@ -142,9 +142,11 @@ export const FOCUS = {
       lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
       // [phi, how many, biggest radius (m), outward (m), height from the crest (m)]: nothing in front of her body (phi -20 to
       // 20 near the crest); a few small crests at her sides and low in the bottom corners (match: 30 lobes up to 0.22 m)
+      // (item 1, the new camera: about 0.7 times smaller again, 0.07-0.085 m: at 0.09-0.12 m they read as glossy blue domes at
+      // both edges of the frame)
       lumps: [
-        [40, 2, 0.11, 0.08, -0.1], [52, 2, 0.12, 0.08, -0.1], [-40, 2, 0.11, 0.08, -0.1], [-54, 2, 0.12, 0.08, -0.1],
-        [24, 2, 0.09, 0.5, -0.27], [-22, 2, 0.09, 0.5, -0.29], [36, 2, 0.1, 0.45, -0.22], [-34, 2, 0.1, 0.45, -0.24],
+        [40, 2, 0.08, 0.08, -0.1], [52, 2, 0.085, 0.08, -0.1], [-40, 2, 0.08, 0.08, -0.1], [-54, 2, 0.085, 0.08, -0.1],
+        [24, 2, 0.07, 0.5, -0.27], [-22, 2, 0.07, 0.5, -0.29], [36, 2, 0.075, 0.45, -0.22], [-34, 2, 0.075, 0.45, -0.24],
       ],
       // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
       // side splashes kept, a little smaller, as the irregular blue splashes beside her

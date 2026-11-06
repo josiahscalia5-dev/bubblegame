@@ -842,3 +842,32 @@ You've hit your 5-hour limit · resets 9:50pm (UTC)
 
 The session's worker restarted. Checking what survived: the repository, the agents' worktrees, the autosave and the tools.
 
+The autosave is running again, and the preview is back on the same port (8765). Resuming both specialists from where they stopped:
+
+Both specialists have resumed. Now merging Tunnel & Lighting's four tested commits into the main branch and checking them.
+
+Merge is clean and the bundle rebuilds byte-identical. Capturing the merged build at 3.0 s, plus a `match` frame to confirm the older version hasn't changed.
+
+Pushed: **`b1b12cd`**. Scheduling the next autosave restart reminder, since background jobs stop after about 2 hours:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/19_merged_tunnel_lighting_1/original_vs_before_vs_merged_3.00s.png, Previews/WebDemo/screen4_round9_match/19_merged_tunnel_lighting_1/lowerleft_original_vs_before_vs_merged.png]_
+
+The session's worker restarted overnight. Nothing was lost: the 18:58 UTC autosave had already pushed the specialists' unfinished work. The autosave, the preview and both specialists are running again.
+
+The specialists had stopped on the account's 5-hour usage limit (it reset at 21:50 UTC) and are now continuing from their notes. The autosave pushes everything every 5 minutes again, including the chat history, agent transcripts and unfinished work. A reminder at 02:02 UTC will restart it.
+
+**Merged and pushed: `b1b12cd`.** These are the Tunnel & Lighting specialist's first steps, in the two images just sent:
+- **Camera:** she is drawn at your original's size and place again (0.472 of the width vs the original's 0.465), and the gold rim is kept at the original's circle.
+- **Lower-left corner:** the lavender-grey strip was the tunnel lining drawn in front of the tunnel mouth, painted flat lavender. It now shows animated water, and the upper gold rim is unchanged.
+- **Seam:** a straight line across the left wall, from the ribbon pattern stepping at the screen's left edge, is gone.
+- **Checks:** `match` is still pixel-identical. Lanes, jump and collecting (12 coins, 1 gem, 2 socks) all work, with no console errors.
+
+**Still in progress:**
+- **Tunnel & Lighting:**
+  - re-placing the coins on your original's spots (the small upper-left coin sits partly behind the left brush);
+  - problem B: softer, broader water currents with a warm centre;
+  - chunkier white streaks and the pink inner rings.
+- **Water & VFX:** the water round her (splash crests, spray and glints, no cushion), the brighter water behind her, and fewer bubbles over the centre.
+
+The preview is live again on the same port (8765) and shows this merged build. I'll merge and push each step as the specialists report.
+

@@ -280,8 +280,39 @@ Now update NOTES.md with the camera decision as the first line.
 
 You've hit your 5-hour limit · resets 9:50pm (UTC)
 
+**Lead → agent** (00:09 UTC):
 
-_125 tool steps._
+The coordinator sent a message while you were working:
+From the lead: you stopped on the account's usage limit, which has reset, and the session's worker restarted, so any browser you had running is gone. Your four commits are intact in your worktree (`2164bd3`, `0dae738` camera, `a61541c` lower-left wedge, `2975aea` seam). Uncommitted: your `NOTES.md`; commit it first.
+
+The lead will merge your four commits into the lead branch now and push them, so the user sees progress. Keep working in your worktree as before. Your later commits will be merged as you report them.
+
+Continue your list from where you stopped:
+1. objects re-placed for the new camera (the small upper-left coin is partly behind the left brush; all onto the original's spots, within reach; sock level and lower);
+2. problem B, the softer, broader flowing currents with a warm centre;
+3. wall streaks, the centre's pink-violet rings, the left wall.
+
+Rules as before:
+- one browser at a time;
+- commit after each tested step;
+- `NOTES.md` kept current;
+- `match` pixel-identical;
+- check at 1:2 and on the Pixel 7.
+
+Address this before completing your current task.
+
+- 00:09 `Bash`: Check worktree state after restart
+- 00:09 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 00:09 `Bash`: Commit notes
+- 00:10 `Bash`: Probe picks for brush centres
+- 00:11 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/ob1/cands_in.json
+- 00:11 `Bash`: Render object placement candidate and measure
+- 00:12 `Bash`: Gridded comparison of object candidate
+- 00:13 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/grid_ob1.png
+- 00:13 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/ob2/cands_in.json
+- 00:13 `Bash`: Render sock pose variants and measure
+
+_135 tool steps._
 
 ---
 
@@ -516,5 +547,46 @@ Now capture before and after with the new camera.
 
 You've hit your 5-hour limit · resets 9:50pm (UTC)
 
+**Lead → agent** (00:09 UTC):
 
-_143 tool steps._
+The coordinator sent a message while you were working:
+From the lead: you stopped on the account's usage limit, which has reset, and the session's worker restarted, so any browser you had running is gone.
+
+Your worktree is intact, but nothing is committed yet: your edits to `tunnel_r9_match_water.js`, `tunnel_r9_focus.js` and `game.bundle.js` and your `18_water_vfx_focus/` folder are uncommitted. Commit them now as a WIP checkpoint, with a message saying they are not finished, so nothing more can be lost. Then continue item 1 (the water round her) from your NOTES: lift the crest by the teeth's depth, signed s for every pattern, mounds at her lower sides.
+
+Tunnel & Lighting's camera (to add to every capture's tune JSON) is in force; with it she is 0.473 W wide, base 0.850:
+`{"match":{"hero":{"round6":{"round5":{"camera":{"off":[-0.162,1.126,-3.1],"lookY":1.655,"lookX":0.142,"fov":68}}}}}}`
+
+The lead is merging Tunnel & Lighting's camera into the lead branch now. When you report, your work will be merged on top of it.
+
+Rules as before:
+- one browser at a time;
+- commit after each tested step;
+- `NOTES.md` kept current;
+- `match` pixel-identical;
+- no foam cushion round her.
+
+Address this before completing your current task.
+
+- 00:09 `Bash`: Show uncommitted state
+- 00:09 `Bash`: Rebuild bundle from current source
+- 00:09 `Bash`: Rebuild bundle from current source
+**Agent** (00:10 UTC):
+
+Now update NOTES.md with the state before the WIP commit.
+
+- 00:10 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 00:10 `Bash`: Commit the WIP checkpoint
+- 00:10 `Bash`: Measure the c12 and c13 captures
+- 00:10 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_c1213.png
+- 00:10 `Bash`: Enlarge the right side crests of c12
+- 00:10 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_c12_r.png
+- 00:11 `Bash`: Make the side crests' white separate pieces, rebuild
+- 00:11 `Bash`: Capture c14 and c15 with the new camera
+- 00:12 `Bash`: Measure c14 and c15
+- 00:12 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_c1415.png
+- 00:13 `Bash`: Set c15 as defaults, rebuild, capture step 1 with the camera
+- 00:13 `Bash`: Verify step 1 frame and save its measures
+- 00:14 `Bash`: Write the item 1 enlarged comparison crop
+
+_159 tool steps._

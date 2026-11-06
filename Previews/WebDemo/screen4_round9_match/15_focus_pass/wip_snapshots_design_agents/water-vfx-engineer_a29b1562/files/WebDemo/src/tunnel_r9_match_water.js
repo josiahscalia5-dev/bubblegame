@@ -418,15 +418,16 @@ function focusLumpGLSL() {
     vec3 cQ = vO * ${f4(B.sprayCell)} + vSeed * 13.0, cQi = floor(cQ);
     float cH = fract(sin(dot(cQi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
     float cSpray = step(${f4(B.sprayShare)}, cH) * (1.0 - smoothstep(0.1, 0.18, length(fract(cQ) - 0.5))) * smoothstep(-0.1, 0.4, cUp);
-${B.rag ? `    // (item 1) a splash crest, not a smooth dome: its upper outline eaten into irregular points, and a broken white cap with
-    // round blue holes on top
+${B.rag ? `    // (item 1) a splash crest, not a smooth dome: its upper outline eaten into irregular points, and separate small white
+    // splash pieces on its top (never a white cap)
     float cRn = texture2D(uLqTex, vO.xz * 0.9 + vO.y * vec2(0.37, -0.29) + vSeed * 3.0 + vec2(uTime * 0.04, 0.0)).b;
     float cRn2 = fract(sin(dot(floor(vO * ${f4(B.rag[2])} + vSeed * 9.0), vec3(17.13, 53.71, 29.37))) * 43758.5453);
     if (cUp > -0.15 && cF > ${f4(B.rag[0])} + ${f4(B.rag[1])} * (cRn * 0.7 + cRn2 * 0.3)) discard;
     vec3 cCq = vO * ${f4(B.cap[3])} + vSeed * 11.0, cCi = floor(cCq);
     float cCh = fract(sin(dot(cCi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
-    float cHole = step(0.35, cCh) * (1.0 - smoothstep(0.22, 0.3, length(fract(cCq) - 0.5 - (fract(cCh * vec3(7.13, 3.71, 5.29)) - 0.5) * 0.3)));
-    float cCap = smoothstep(${f4(B.cap[0])}, ${f4(B.cap[1])}, cUp + (cRn - 0.5) * 0.5) * (1.0 - cHole) * ${f4(B.cap[2])};
+    float cBr2 = 0.28 + 0.14 * fract(cCh * 11.7);
+    float cBlob = step(0.3, cCh) * (1.0 - smoothstep(cBr2 - 0.06, cBr2, length(fract(cCq) - 0.5 - (fract(cCh * vec3(7.13, 3.71, 5.29)) - 0.5) * 0.3)));
+    float cCap = smoothstep(${f4(B.cap[0])}, ${f4(B.cap[1])}, cUp + (cRn - 0.5) * 0.5) * cBlob * ${f4(B.cap[2])};
     cEdge = max(cEdge, cCap);
 ` : ''}    cc = mix(cc, ${lin3(B.white)}, clamp(max(cEdge * ${f4(B.edge)}, cSpray * ${f4(B.spray)}), 0.0, 1.0));
     float cRd = max(dot(reflect(-L, N), V), 0.0);
