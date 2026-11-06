@@ -353,5 +353,43 @@ Address this before completing your current task.
    - Likely cause: `heroSwell`'s geometry and waterline are unchanged (crest height, the `swellFront` cut).
    - Icy pale blue is still 38.7% against 27.5%. My guess is the soft, upscaled texture plus the flow distortion blending white and blue into pale blue.
 
+**Lead → agent** (17:16 UTC):
 
-_41 tool steps._
+The coordinator sent a message while you were working:
+Final review of the water candidate `?s3=intunnel,water2`, refined after your last review (the user's newest brief, about 17:45 UTC: correct the existing water; judge against Image 01, the original, only; reject pale milky material, pillows, fins, excessive white foam or a flat sheet). The refinement, only the existing heroSwell surface: the crest rounded (no spiky teeth), the white rim pieces 1.0 -> 0.35, sparkle 0.6, gentler flow distortion, the original's texture full strength, the crest in front of her 3 cm higher so the original's water flows over her lower edge. No new objects.
+Sheets: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/01_FULLRES_original_accepted_new.jpg, 02_closeup_water_x1.6.jpg, 03_moving_accepted_vs_new.jpg. Earlier variants: .../44_water_material/c1/start/base_page.png (your 'moderately closer' one), r1/, r2/ (= final).
+Band at her base (icy pale / saturated / white / lavender): original 27.5 / 19.6 / 18.6 / 15.3 %; accepted 40.6 / 21.3 / 14.2 / 0.3; c1 38.7 / 14.6 / 18.7 / 10.7; final 32.4 / 14.8 / 21.2 / 16.0. region_compare foreground water LPIPS 0.656 -> 0.589, histogram 0.381 -> 0.286; character + contact 0.593 -> 0.568.
+In under 150 words: (1) is the water round her clearly closer to Image 01 than the accepted build? (2) present for the user's approval, or revert? (3) what visibly improved, and what still differs (with the likely cause)? Be strict.
+
+Address this before completing your current task.
+
+- 17:16 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/02_closeup_water_x1.6.jpg
+**Lead → agent** (17:16 UTC):
+
+[Image: original 2948x616, displayed at 2000x418. Multiply coordinates by 1.47 to map to original image.]
+
+- 17:16 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/44_water_material/sheets/03_moving_accepted_vs_new.jpg
+**Lead → agent** (17:16 UTC):
+
+[Image: original 3098x716, displayed at 2000x462. Multiply coordinates by 1.55 to map to original image.]
+
+- 17:16 `Bash`: List the refined candidate folders
+- 17:16 `Bash`: Zoom on the final water candidate's base band
+- 17:16 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/final_zoom.png
+**Lead → agent** (17:16 UTC):
+
+[Image: original 2122x319, displayed at 2000x301. Multiply coordinates by 1.06 to map to original image.]
+
+**Agent** (17:16 UTC):
+
+1. **Yes, clearly closer** in the water round her. I see it by eye at the start screen and at +1 and +2 s.
+2. **Present it for the user's approval**, with two things stated plainly:
+   - the water's texture is the original's own pixels, which bears on CLAUDE.md's "never a static screenshot";
+   - the user should judge it in a video, not only the start frame.
+3. **What improved, and what still differs:**
+   - **Improved:** lavender domes and white froth now flow over her lower edge, as in the original. The spiky teeth and comma arcs are gone, and there is less milky icy blue (32.4% against 40.6%; original 27.5%).
+   - **Still differs: it is soft and smeared.** The froth has vertical streaks, and the domes have no crisp white rims or sculpted shape, so it reads like an out-of-focus copy. Likely cause: the 767-pixel original is magnified across the swell, then smoothed by texture filtering and stretched by the flow distortion.
+   - **Still differs: saturated blue is 14.8% against 19.6%.** Likely cause: the swell's transparency over the pale floor, plus bloom.
+
+
+_46 tool steps._

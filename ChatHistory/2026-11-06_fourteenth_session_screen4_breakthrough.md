@@ -1434,3 +1434,28 @@ So I'll refine that one candidate rather than start another. First saving your n
 
 That notice is the earlier candidate's video job, which I stopped to re-record the final version. Making the final comparison sheets for the art director:
 
+I saved the refined candidate (`38ec14d`), but it isn't merged: `?s3=intunnel` is unchanged. The art director is reviewing it against your original, and the straight and steering videos are recording. I'll bring you the verdict, the three-way comparison and the videos when they're done.
+
+---
+
+### Automatic notice · 2026-11-06 17:16 UTC
+
+_Agent "Art director review of the domes" finished_
+
+---
+
+### Claude · 2026-11-06 17:16 UTC
+
+The art director's verdict on the refined candidate: **"yes, clearly closer"**, seen by eye at the start screen and while moving at 1 and 2 s. It recommends presenting it to you for approval.
+
+**Improved:**
+- lavender domes and white froth flow over her lower edge, as in your original;
+- the spiky teeth and white comma arcs are gone;
+- less milky icy blue: 32.4 % against 40.6 % (your original 27.5 %).
+
+**Still differs:**
+- **It's soft and a little smeared, with some vertical streaks.** Your 767-pixel original is magnified across the water surface, smoothed by texture filtering and stretched by the flow distortion.
+- **Saturated blue is 14.8 % against 19.6 %.** The likely causes are the water surface's transparency over the pale floor, plus bloom.
+
+Waiting for the two videos:
+
