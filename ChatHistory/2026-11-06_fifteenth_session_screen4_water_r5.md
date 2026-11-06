@@ -204,3 +204,9 @@ The autosave will pick this up, but I'll make a proper commit now that R6's code
 
 Pushed: commit `8854e02`, and GitHub is at the same commit. While R7 renders, I'll write the final sheet script, which compares any set of builds at the same moments.
 
+While that runs, I'll queue the gameplay tests and R7's moving videos to start automatically once the renders finish. Only two browsers will run at once, so nothing times out.
+
+While the review, tests and recordings run, I'll write R6's README.
+
+Recording and tests are running. I'll commit R7's code and the evidence so far:
+

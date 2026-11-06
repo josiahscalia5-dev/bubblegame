@@ -154,3 +154,88 @@ I edited no files.
 
 
 _40 tool steps._
+
+---
+
+## Game Art Director: Strict verdict on water R6/R7 (started 19:31 UTC)
+
+**Lead → agent** (19:31 UTC):
+
+You are the strict, independent art director for Bubble Wash Kingdom's Screen 4. Read `/workspace/bubblegame/CLAUDE.md` first. Do not edit any file.
+
+THE ONLY TARGET: the ORIGINAL approved Screen 4, `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536).
+
+THE USER'S BRIEF (now): make the existing foreground water round the pink character DARKER/richer blue, SHARPER with defined rounded and highlighted forms (no streaks, blur or blocks), and meeting the character CLEANLY with an irregular flowing edge (not a hard horizontal cut, not a jagged white zigzag, not a separate foam cushion). The character sits ON TOP of the water, its rounded silhouette clearly visible. Must also hold while moving. No new objects. Judge the pictures, not the numbers alone.
+
+THE CANDIDATES (test switches; the accepted `?s3=intunnel` is unchanged, 0 pixels):
+- R5 (`water5`, your earlier verdict: "stretching fixed, still pale").
+- R6 (`water6`) = R5 + (1) the existing water face cut where the ORIGINAL draws her body (her outline from the original), so the original's lobe outline becomes the water's top edge in front of her instead of the face's own straight crest, which sat 10-60 px higher on her body; her model continues, lit, behind the face, so no gap; (2) the old opening's soap suds and foam bubbles, which drew milky bubble rings over her water, hidden.
+- R7 (`water7`) = R6 + the game's spray particles drawn as clear blue drops with small blue-white glints instead of over-white beads (the white bead clumps beside her while moving were round3's kind-3 white spray, 450 a second, bloomed); emission unchanged.
+
+EVIDENCE (real three.js gameplay captures, seed 7, same camera, same moments), in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/`:
+- `49_water_r7/sheets/01_FULLRES_original_accepted_R6_R7.jpg` (full resolution with the HUD, the start view);
+- `49_water_r7/sheets/02_closeup_water_start_x1.4.jpg` (ORIGINAL | ACCEPTED | R6 | R7, the water round her at the start);
+- `49_water_r7/sheets/03_closeup_water_moving_T1.0.jpg`, `03_closeup_water_moving_T2.0.jpg` (1 s and 2 s after the tap);
+- `48_water_r6/sheets/` (ORIGINAL | ACCEPTED | R5 | R6 at the same moments);
+- raw canvases `47_water_r5/final/`, `48_water_r6/final/`, `49_water_r7/final/` (start, T1.0, T2.0; base_canvas.png no HUD, base_page.png with HUD);
+- diagnosis `48_water_r6/diag/` (zones_start.md, edge_check.md, band_T1_ablations.md, crops), `48_water_r6/diag/R6_face_alone_start.jpg`;
+- region metrics will appear in `49_water_r7/regions/regions.md` (may not exist yet; do not wait for it).
+Look at the images yourself; crop and enlarge with `$BW_PY` (after `source Tools/bw_tools_env.sh`) where useful.
+
+ANSWER strictly and briefly, per the user's three results (darker/richer blue; sharper rounded defined forms without streaks/blur/blocks; clean irregular contact edge, character on top and clearly visible), at the start and moving (+1 s, +2 s):
+1. Is R6 clearly closer to the original than the accepted build? Than R5? Where exactly?
+2. Is R7 clearly closer than R6 while moving? Anything worse at the start?
+3. Anything that looks LESS like the original in R6 or R7 (e.g. her silhouette, a fringe at the cut, a gap, colour)? Be specific with coordinates.
+4. Verdict: which candidate to present to the user for approval (R7, R6, or neither), one sentence why.
+5. The exact remaining differences in the water round her, ranked, each with the layer that most likely causes it.
+
+**Agent** (19:31 UTC):
+
+I'll look at the sheets first.
+
+- 19:31 `Bash`: List evidence folders
+- 19:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/sheets/02_closeup_water_start_x1.4.jpg
+**Lead → agent** (19:31 UTC):
+
+[Image: original 3872x678, displayed at 2000x350. Multiply coordinates by 1.94 to map to original image.]
+
+- 19:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/sheets/01_FULLRES_original_accepted_R6_R7.jpg
+**Lead → agent** (19:31 UTC):
+
+[Image: original 3092x1576, displayed at 2000x1019. Multiply coordinates by 1.55 to map to original image.]
+
+- 19:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/sheets/03_closeup_water_moving_T1.0.jpg
+**Lead → agent** (19:31 UTC):
+
+[Image: original 3320x654, displayed at 2000x394. Multiply coordinates by 1.66 to map to original image.]
+
+- 19:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/sheets/03_closeup_water_moving_T2.0.jpg
+**Lead → agent** (19:31 UTC):
+
+[Image: original 3320x654, displayed at 2000x394. Multiply coordinates by 1.66 to map to original image.]
+
+- 19:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/48_water_r6/sheets/02_closeup_water_start_x1.4.jpg
+**Lead → agent** (19:31 UTC):
+
+[Image: original 3872x678, displayed at 2000x350. Multiply coordinates by 1.94 to map to original image.]
+
+- 19:31 `Bash`: List canvases and read diagnosis notes
+- 19:31 `Bash`: Check image sizes and sheet script
+- 19:32 `Bash`: Make 2x contact-zone crops of original, R5, R6, R7
+- 19:32 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/contact_start.png
+- 19:32 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/contact_T1.0.png
+- 19:32 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/contact_T2.0.png
+- 19:32 `Bash`: Diff R6 vs R7 and band colour stats
+- 19:33 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/r6r7_T1.0.png
+**Lead → agent** (19:33 UTC):
+
+[Image: original 2316x400, displayed at 2000x345. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:33 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/r6r7_T2.0.png
+**Lead → agent** (19:33 UTC):
+
+[Image: original 2316x400, displayed at 2000x345. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:33 `Bash`: Zoom side spray zones original vs R6 vs R7
+
+_16 tool steps._
