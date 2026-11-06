@@ -1,4 +1,21 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 4, step 5 held; branch `ccr-d224d313-81g2dq`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 6, step 5 held; branch `ccr-d224d313-81g2dq`)
+
+## Newest (6 November, about 04:55 UTC): thirteenth session, STEP 6 done (`?s3=focus` only)
+
+- **The user's go-ahead:** "Yes start step 6". Evidence, tests and the corrected / remaining checklist:
+  `Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/README.md`.
+- **The change:** `mtPlace` (`tunnel_r9_match.js`) works out each wall and floor point's ring place from its REAL position
+  seen from the camera, in the camera's own track frame (`FOCUS.match.centre.bend`, `MT_BEND`), not from its own
+  cross-section, which assumed a straight tube. The far rings now stay concentric where the path bends 15-30 m ahead.
+- **Measured:** stripe calibration stretch 1.36-1.56 / 0.72 -> 1.0 in every band; core lavender 21.1 -> 16.1 % (original
+  16.0); wall ring breakup 8.08 -> 10.62 (10.31); core saturated blue 15.8 -> 20.3 % (29.7). By eye closer at 3.0, 7.7 and
+  9.0 s; unchanged at 5.5 s (the pale far disc there has another cause).
+- **Tests:** switch off = step 4 exactly; 41 identity frames identical; `s3_func` and `r2_func` reports identical to step 4's;
+  bundle md5 `1784ffd7...`. Before step 6: step 4 (`666905c`); the commit hash of step 6 is in the git log ("Screen 4 step 6").
+- **Next:** step 5 (the fill-only map) re-tested ON TOP of step 6; then step 7 (the bubble overlays).
+- **Saving:** the autosave plus `Tools/snapshot_lead_worktree.sh` (new, the user's request: the lead's test worktree outside
+  the repository copied into `wip_snapshots_design_agents/lead_<name>/` every 5 minutes), both detached for 24 hours.
+
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 

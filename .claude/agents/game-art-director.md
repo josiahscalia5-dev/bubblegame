@@ -84,6 +84,10 @@ fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and
 - **Diagnosis tools (use them before changing anything):** `WebDemo/tools/screen4/layer_diag.cjs` (census, per-layer
   ablation of the SAME frame, texture swap), `layer_metrics.py`, `motion_shots.cjs`; findings in `26_layer_diagnosis/`.
 - **Settings trap:** a `liquid.hide` list in `focus` REPLACES `match`'s (`['r6BowWave', 'lqSpraySheets']`); keep both entries.
+- **Step 6 DONE (thirteenth session, `32_step6_centre_placement/README.md`):** `FOCUS.match.centre.bend` / `MT_BEND`:
+  `mtPlace` takes the point's world position and places the rings from where it really is seen from the camera (the camera's
+  track frame), so the far rings stay concentric where the path bends; walls, floor and exit. The game is now at step 6
+  (bundle `1784ffd7...`). Next: step 5 re-tested on top of it. Calibration tools: `32_.../scripts/calib_map.py`, `stretch.py`.
 - **Recovery proof (thirteenth session):** the rebuilt bundle is byte-identical (`73ed2a8b...`) and the seed 7, 3.0 s frame
   has 0 differing pixels against `30_step5_fill_map/layers_step4/base_canvas.png` (`31_recovery_audit/`).
 
