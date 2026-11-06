@@ -430,3 +430,9 @@ R7's videos are done and pushed (commit `df4db7e`):
 
 Last item: the power-up test (pause, Bubble Blast, Turbo Spin), running alone on the machine with the fixed page handling, first for the accepted build, then for R7. R8 starts when it passes.
 
+---
+
+### Automatic notice · 2026-11-06 20:13 UTC
+
+_Background command "Wait for the power-up test reruns" completed (exit code 0)_
+
