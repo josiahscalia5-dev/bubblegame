@@ -31,3 +31,34 @@ halos, glows and particles none) and in the 8 % of procedural band colour and th
 - `tunnel_r9_match.js`: the texture file from the settings (step 5's line) and the `gain` code, only when `gain` is set.
 - **Chosen from tests by tune** (`iso/G1`, `G2`, `G3`): gain [1.15, 1.0], [1.15, 1.15] (chosen), [1.25, 1.25] (over-coloured).
   The gain code without a gain is identical to the pure map (0 differing pixels).
+
+## Result (seed 7, 3.0 s, masked water; `iso/G2` = the step 8 build, 0 differing pixels)
+
+| | original | step 7 | step 8 |
+|---|---|---|---|
+| walls: white | 8.2 % | 5.3 | **8.8** |
+| walls: white pieces, mean | 237 px | 75 | **182** |
+| walls: periwinkle | 6.7 % | 14.2 | **6.8** |
+| walls: chroma | 46.4 | 44.0 | **47.4** |
+| walls: saturated blue | 58.9 % | 55.0 | **55.9** |
+| walls: lavender | 10.0 % | 11.6 | 13.3 (further) |
+| far centre: pale blue | 20.6 % | 31.2 | **22.2** |
+| far centre: white | 21.7 % | 7.7 | **22.5** |
+| far centre: saturated blue | 29.7 % | 24.8 | 24.9 |
+
+By eye (`10_pixel7_original_vs_step7_vs_step8_T3.0.jpg`, `12_zoom_tunnel_original_vs_step7_vs_step8_T3.0.jpg`): the walls
+carry the original's own white curls, dot clusters and splotches at their places, with deeper blue bands and a stronger
+rainbow arc; step 7's smooth pastel bands and procedural dashes are gone. Still softer than the original, and the cobalt a
+little under it.
+
+## Tests
+
+| test | result | file |
+|---|---|---|
+| the step 8 build vs the tested G2 tune | identical, 0 differing pixels at 3.0 s | |
+| identity: the normal game, the ten older switches, `match`, `match,nofoam` (41 raw-canvas frames) | all identical, no console messages | `identity_proof_step8.txt` |
+| gameplay `?s3=focus` `s3_func`, `r2_func` | identical to step 7's reports but for the intended settings (droplets hidden, streaks 0: 160 fewer triangles, one draw call fewer) | `gameplay/` |
+| gameplay, the normal game, `s3_func` | identical to step 7's | `gameplay/` |
+| stills at 3, 4, 5, 6 s, 1:2 and Pixel 7 | captured, no console errors | `frames/` |
+| build | the main checkout rebuilds md5 `e6cd9334e52d35ad7f3b131773c3af05`, the tested build | |
+| videos, straight and steering | recording (`videos/`) | |

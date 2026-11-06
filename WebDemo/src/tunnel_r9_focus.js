@@ -111,7 +111,19 @@ export const FOCUS = {
       // detail 0.25 with the restrained flecks and streaks below: +0.56)
       // floor: the floor ahead (not the swell round her) takes the same map, the original's own floor water, inside rw
       // r[0]..r[1] (faded out before her body); it replaces the pale lift there (floorFx), the pale disc round the far end
-      ringMap: { amount: 0.92, detail: 0.25, r: [0.0, 0.005, 0.46, 0.56], edgeOff: 1.0, floor: { amount: 0.88, r: [0.22, 0.32] } },
+      // (step 5, the user's go of 6 November: "the actual irregular white-and-aqua splashes from my approved image restored":
+      // the fill map, tunnel_rings_fill.png (derive_ring_map.py --fill): the ORIGINAL's own pixels wherever its water is
+      // visible, whites included, only the holes filled along each ring. The step 3 map blurred every texel and masked the
+      // whites out: on the walls 0.1 % white, 44 % of the original's fine texture. Rollback: drop `file`.)
+      // STEP 8, the original's white splashes (6 November 2026, the user's order after step 7; evidence
+      // Previews/WebDemo/screen4_round9_match/37_step8_white_splashes/): the fill map above, drawn PURE (amount 0.92 -> 1, so
+      // none of the procedural band colour is left under it; detail 0.25 -> 0, so the moving relief no longer smears the
+      // original's splashes), and its colours calibrated (`gain`: saturation 1.15 round the luminance, then a 1.15 power that
+      // deepens the mid-tones; 1.0 stays white) so the RENDERED walls show the original's measured cobalt: drawn alone the fill
+      // map's walls already had the original's white (8.0 % against 8.2) and splash size; the loss was in the layers over them.
+      // Rollback: amount 0.92, detail 0.25, no gain (and drop `file` for the step 3 map).
+      ringMap: { amount: 1.0, detail: 0, r: [0.0, 0.005, 0.46, 0.56], edgeOff: 1.0, floor: { amount: 0.88, r: [0.22, 0.32] },
+        file: 'tunnel_rings_fill.png', gain: [1.15, 1.15] },
       innerRings: null, leftGlow: null,
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
@@ -177,7 +189,9 @@ export const FOCUS = {
       //    instanced streaks of the water file (FOCUS.water.bubbles.flecks), not these)
       // (step 3: thin and sparser, dens 0.28 -> 0.12, wid [0.11, 0.22] -> [0.07, 0.14], drops 0.08 -> 0.04: the user, "thin
       // broken white-blue flecks"; at full density they hid the original's rings, see ringMap)
-      flecks: { cols: 36, rows: 1.5, dens: 0.12, len: [0.2, 0.46], wid: [0.07, 0.14], bend: 2.2, amount: 1.0, col: '#f6fbff',
+      // (step 5: OFF, amount 1 -> 0: the fill map now carries the original's own white splashes at their places; these
+      // procedural flecks were their stand-in and doubled them. Rollback: amount 1.0)
+      flecks: { cols: 36, rows: 1.5, dens: 0.12, len: [0.2, 0.46], wid: [0.07, 0.14], bend: 2.2, amount: 0, col: '#f6fbff',
         breakup: [6, 3, 0.55], edge: [0.78, 0.9], late: true,
         drops: { cols: 64, rows: 2, dens: 0.04, r: [0.16, 0.28] },
         r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.3 },
@@ -288,7 +302,11 @@ export const FOCUS = {
       // the 7.5 m of floor before each brush in a side lane (six on at 3.0 s, 8-25 m ahead): off, the floor ahead went from
       // lavender 21.3% to 12.9% (the original 3.0%). The warning stays (gameplay), in the water's own colours: a bright
       // aqua-white streak pulsing down the brush's lane (col sRGB, how much at full warning)
-      hazard: { col: '#c4f2ff', amount: 0.3 } },
+      hazard: { col: '#c4f2ff', amount: 0.3 },
+      // (step 5: also hidden while the liquid is up, r5Droplets: 1,600 additive white specks swirling over the tunnel, more
+      // procedural white over the fill map's own; the list replaces match's ['r6BowWave', 'lqSpraySheets'], both kept.
+      // Rollback: drop this `hide`)
+      hide: ['r6BowWave', 'lqSpraySheets', 'r5Droplets'] },
     // (item 1: fine spray thrown up round her lower sides; 120 -> 250, the zones match's: beside her, not in front of her)
     // (step 1c: 300 FINE droplets, half match's size, 90% of them round: at match's size the droplets are drawn 2:1 tall
     // (tunnel_r7_hero_water.js) and read as falling rain beside her; the original's spray is fine white specks)
@@ -328,7 +346,9 @@ export const FOCUS = {
       // do not all follow the rings: along the tangent 28%, ours 74%))
       // (step 3: 220 -> 80 and thinner, [[0.05, 0.12], [0.02, 0.04]] -> [[0.04, 0.09], [0.012, 0.025]]: over the walls they
       // took the rings back out of the original's)
-      flecks: { count: 80, size: [[0.04, 0.09], [0.012, 0.025]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
+      // (step 5: none, 80 -> 0: the floating white dashes over the walls duplicated the fill map's own whites. The tunnel's
+      // bubbles above are unchanged (planned step 7). Rollback: count 80)
+      flecks: { count: 0, size: [[0.04, 0.09], [0.012, 0.025]], bend: [0.3, 2.2], rot: 35, ahead: [5.0, 34] },
     },
   },
 };

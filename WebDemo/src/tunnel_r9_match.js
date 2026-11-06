@@ -342,7 +342,8 @@ if (FOCUS_ON) { restoreSettings(MATCH, PRE_FOCUSED_PASS.MATCH); deepMerge(MATCH,
 const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tunnel_detail.png', normal: 'tunnel_normal.png', variation: 'tunnel_var.png', rim: 'rim_ramp.png' };
 // ?s3=focus with MATCH.walls.ringMap (step 3): the original's own rings (tools/screen4/derive_ring_map.py)
 const FOCUS_RINGS = FOCUS_ON && !!MATCH.walls.ringMap;
-if (FOCUS_RINGS) TEX.rings = 'tunnel_rings_original.png';
+// (step 5: the file from the settings, MATCH.walls.ringMap.file: the fill map keeps the original's own water and whites)
+if (FOCUS_RINGS) TEX.rings = MATCH.walls.ringMap.file || 'tunnel_rings_original.png';
 // ?s3=focus step 6 (MATCH.centre.bend, tunnel_r9_focus.js): mtPlace from the point's real position seen from the camera
 // (its world position in the camera's track frame), so the rings stay concentric on screen where the far tube bends
 export const MT_BEND = FOCUS_RINGS && !!MATCH.centre.bend;
@@ -638,7 +639,13 @@ function focusRingMapGLSL(M) {
   const R = M.ringMap;
   return /* glsl */ `  {   // ?s3=focus: the original's own rings (tunnel_rings_original.png, tools/screen4/derive_ring_map.py)
     vec3 rmS = clamp(textureGrad(uFocusRings, bv, dx, dy).rgb + dl * ${f4(R.detail)}, 0.0, 1.0);
-${R.debugCol ? `    rmS = vec3(${R.debugCol.map(f4).join(', ')});   // (debug only: a constant colour, to test the display path)
+${R.gain ? `    {   // (step 8, ringMap.gain [saturation, depth]: the map's colours calibrated so the RENDERED walls show the original's
+        // measured cobalt; the whites stay white: saturation round the luminance, then a power curve that deepens the
+        // mid-tones and leaves 1.0 at 1.0)
+      float gL = dot(rmS, vec3(0.2126, 0.7152, 0.0722));
+      rmS = pow(clamp(gL + (rmS - gL) * ${f4(R.gain[0])}, 0.0, 1.0), vec3(${f4(R.gain[1])}));
+    }
+` : ''}${R.debugCol ? `    rmS = vec3(${R.debugCol.map(f4).join(', ')});   // (debug only: a constant colour, to test the display path)
 ` : ''}    float rmL = dot(rmS, vec3(0.2126, 0.7152, 0.0722));
     vec3 rmP = clamp((rmL + (rmS - rmL) / ${f4(M.sat)}) * ${f4(1 - M.lift)} + ${f4(M.lift)}, 0.0, 1.0);
     float rmK = ${f4(R.amount)} * smoothstep(${f4(R.r[0])}, ${f4(R.r[1])}, rw) * (1.0 - smoothstep(${f4(R.r[2])}, ${f4(R.r[3])}, rw));
