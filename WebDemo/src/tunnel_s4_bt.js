@@ -19,10 +19,23 @@
 // Settings only (plain data); the code that reads them is gated on BT_ON in the files named.
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const BT_ON = LIST.includes('bt');
-// `bt` is `focus` plus this pass: the switch list handed on with `focus` in it, before any other module reads it (game.js
-// imports this file first; every switch module reads window.__BW_S3__ before the address). Without `bt` nothing happens.
-if (BT_ON && !LIST.includes('focus')) window.__BW_S3__ = [...LIST, 'focus'];
+// ?s3=intunnel (the user's directive of 6 November, about 13:30 UTC: "the playable game must start directly inside this
+// blue laundry tunnel, with my pink character traveling on top of the water. No girl scene, no extra opening, and no
+// separate swimming sequence"): `bt` plus the run STARTING at the approved inside-tunnel viewpoint (game.js, INTUNNEL).
+export const INTUNNEL_ON = LIST.includes('intunnel');
+export const BT_ON = LIST.includes('bt') || INTUNNEL_ON;
+// `bt` is `focus` plus this pass: the switch list handed on with `bt` and `focus` in it, before any other module reads it
+// (game.js imports this file first; every switch module reads window.__BW_S3__ before the address). Without `bt` or
+// `intunnel` nothing happens.
+if (BT_ON && !(LIST.includes('focus') && LIST.includes('bt'))) window.__BW_S3__ = [...new Set([...LIST, 'bt', 'focus'])];
+// (intunnel: no painted Screen 3 picture at Tap to Start; the live 3D tunnel is the start screen)
+if (INTUNNEL_ON) window.__BW_OPENING_OFF__ = [...new Set([...(window.__BW_OPENING_OFF__ || []), 'art'])];
+// the start: where she waits at Tap to Start and where every lap begins (m along the path; the drum's mouth is at 3.9), and
+// her speed the moment the run starts (m/s). These are the approved hero moment's: at seed 7, 3.0 s after the tap from the
+// old start on the slide, she was at 1.592 m going 7.21 m/s (layer_diag.cjs state), with the camera at its drum framing
+// (its blend ends at -0.4 m) and the hero water up (position-based). So the start screen is that composition, and she
+// moves on at once from it.
+export const INTUNNEL = { u: 1.592, speed: 7.21 };
 
 export const BT = {
   // the hazard and wall brushes' DRAWN size (tunnel_s4.js; where they knock is the lane, unchanged): the brush scaled by

@@ -82,7 +82,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
   const half = Math.sqrt(Math.max(0.01, L.tunnelRadius * L.tunnelRadius - W.AXIS_H * W.AXIS_H));
   // the character's frame at the water under it and its movement, worked out once a frame (first) for everything below
   const S = { k: 0, F: { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, C: new THREE.Vector3(),
-    lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: 0, xMax: 3, wasAir: false };
+    lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: mascot.visSpeed || 0, xMax: 3, wasAir: false };   // (visSpeed: ?s3=intunnel only)
   updaters.push((dt) => {
     dt = Math.min(dt || 0, 0.1);
     const z = mascot.z;
@@ -90,7 +90,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     const e = (tau) => 1 - Math.exp(-dt / tau);
     S.lagX += (mascot.x - S.lagX) * e(0.07);
     S.lat += ((mascot.xv || 0) - S.lat) * e(0.12);
-    S.speed += ((mascot.speed || 0) - S.speed) * e(0.3);
+    S.speed += ((mascot.visSpeed ?? (mascot.speed || 0)) - S.speed) * e(0.3);   // (?s3=intunnel: visSpeed at the start; undefined elsewhere)
     const ride = W.baseHeight(L, S.lagX, z);
     const lift = Math.max(0, mascot.yAbs - ride - W.FLOAT_H);
     const air = mascot.air ? THREE.MathUtils.smoothstep(lift, 0.08, 0.6) : 0;

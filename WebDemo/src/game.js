@@ -1,7 +1,7 @@
 // Bubble Wash Kingdom: playable browser version of approved Screen 3 ("Let's go! Into the
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
-import './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module
+import { INTUNNEL_ON, INTUNNEL } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -67,6 +67,7 @@ if (R3 && R6_ON) {   // ?s3=round6 pass 3: the collectibles at the drum's mouth 
 const r3Rnd = R3 ? mulberry(0x3e3b) : null;   // round3's own random numbers (the game's own sequence is unchanged)
 
 const TEST = !!window.__BW_TEST__;
+if (INTUNNEL_ON) document.body.classList.add('intunnel');   // ?s3=intunnel (page.html: no Screen 3 banner)
 // Debug views for play-test recordings: ?side shows the run from the side with the camera fixed in
 // height (proves the mascot's real climbs and drops); ?touches draws each finger trail and the gesture
 // it was read as (proves the swipes are recognised).
@@ -899,7 +900,10 @@ function buildMascot(gltf) {
   scene.add(root);
   mascot = {
     root, tilt, squash, height: size.y * s,
-    lane: 1, x: 0, xv: 0, z: L.startZ, y: 0, speed: 0, air: false, vy: 0, yAbs: 0,
+    lane: 1, x: 0, xv: 0, z: INTUNNEL_ON ? INTUNNEL.u : L.startZ, y: 0, speed: 0, air: false, vy: 0, yAbs: 0,   // (?s3=intunnel: at the approved inside-tunnel start)
+    // ?s3=intunnel: the speed the WATER shows while she waits at the start (the hero water's swell and the liquid's bow wave
+    // rise with her speed; at Tap to Start she is already riding the tunnel's water). Visual only; undefined elsewhere
+    visSpeed: INTUNNEL_ON ? INTUNNEL.speed : undefined,
     pitch: 0, lean: 0, yaw: 0, flip: 0, spin: 0, spinV: 0, sq: 0, sqV: 0, look: 0, lookT: 2.5,
     lastSlope: 0, downhill: 0, wakeCarry: 0, foamCarry: 0, bobRipple: 0,
   };
@@ -907,8 +911,10 @@ function buildMascot(gltf) {
 
 function resetRun() {
   const m = mascot;
-  Object.assign(m, { lane: 1, x: 0, xv: 0, z: L.startZ, speed: 0, air: false, vy: 0, pitch: 0, lean: 0, yaw: 0, flip: 0, spin: 0, spinV: 0, sq: 0, sqV: 0 });
-  m.yAbs = W.surface(L, 0, L.startZ, state.time) + W.FLOAT_H;
+  // (?s3=intunnel: every run and lap starts inside the tunnel, at the approved viewpoint, not on the slide outside)
+  const z0 = INTUNNEL_ON ? INTUNNEL.u : L.startZ;
+  Object.assign(m, { lane: 1, x: 0, xv: 0, z: z0, speed: 0, air: false, vy: 0, pitch: 0, lean: 0, yaw: 0, flip: 0, spin: 0, spinV: 0, sq: 0, sqV: 0 });
+  m.yAbs = W.surface(L, 0, z0, state.time) + W.FLOAT_H;
   for (const c of [...coins, ...gems, ...socks]) { c.live = true; c.pop = -1; c.obj.visible = true; c.obj.scale.setScalar(1); c.obj.position.copy(c.home); }
   state.socks = 0; if (state.phase !== 'loading') refreshHud();
   if (side) side.n = 0;
@@ -964,6 +970,7 @@ function bumpMascot(side) {
 function updateMascot(dt) {
   const m = mascot, t = state.time;
   const running = state.phase === 'running';
+  if (INTUNNEL_ON) m.visSpeed = running ? undefined : INTUNNEL.speed;   // (?s3=intunnel: see the mascot's visSpeed)
   const slope = W.slopeAt(L, m.x, m.z);                 // the slide's hills and swells (track space)
   const slopeAll = slope + Math.tan(TR.pitch(m.z));     // plus the climb or drop of the tube itself
   const targetSpeed = running ? W.CRUISE * (1 + THREE.MathUtils.clamp(-slopeAll * 1.6, -0.22, 0.4)) * (R2 && state.turboT > 0 ? R2_RULES.turboSpeed : 1) : 0;
@@ -1065,7 +1072,7 @@ function updateMascot(dt) {
   mats.fur.uCentre.value.copy(m.root.position);
   TR.frame(m.z, F); mats.fur.uUp.value.copy(F.U);
 
-  document.body.classList.toggle('inDrum', running && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // round7: the mission card at the hero moment
+  document.body.classList.toggle('inDrum', (running || INTUNNEL_ON && state.phase === 'intro') && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // (?s3=intunnel: the tunnel's HUD from Tap to Start)   // round7: the mission card at the hero moment
   if (side) sideTrail();
   if (running && m.z > L.tunnelEnd - 2.0) loopRun();   // flash back to the slide just before the drum ends
 }
@@ -1163,6 +1170,7 @@ function loopRun() {
   const flash = $('flash'); flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
   resetRun();
   state.phase = 'running';
+  if (INTUNNEL_ON) mascot.speed = INTUNNEL.speed;   // ?s3=intunnel: on through the tunnel at once
 }
 
 // ------------------------------------------------------------------ camera rig
@@ -1187,7 +1195,7 @@ function updateCamera(dt) {
   // Tilt with the path: look along the average slope of the next few metres (only once running,
   // so the Tap-to-Start view is exactly the approved framing).
   let ahead = 0; for (let d = 1; d <= 6; d++) ahead += W.slopeAt(L, m.x, m.z + d * 1.2); ahead /= 6;
-  const tiltTarget = state.phase === 'running' ? ahead : 0;
+  const tiltTarget = state.phase === 'running' || INTUNNEL_ON ? ahead : 0;   // (?s3=intunnel: Tap to Start is the running view)
   const snap = rig.snap;
   if (rig.snap) { rig.x = targetX; rig.y = targetY; rig.tilt = tiltTarget; rig.snap = false; }
   const a = 1 - Math.exp(-dt / 0.14);
@@ -1302,6 +1310,7 @@ function startRun() {
   if (state.phase !== 'intro') return;
   state.phase = 'running';
   state.startedAt = state.time;
+  if (INTUNNEL_ON) mascot.speed = INTUNNEL.speed;   // ?s3=intunnel: she is already riding the tunnel's water when the run starts
   document.body.classList.add('running');
   unlockAudio();
 }

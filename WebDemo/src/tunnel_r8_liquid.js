@@ -343,7 +343,7 @@ export function buildLiquid({ scene, TR, L, W, mascot, updaters, time, U, HERO, 
   if (MATCH_ON) Object.assign(LU, MATCH_UNIFORMS);   // ?s3=match: the walls' derived textures (tunnel_r9_match.js)
   const GL = liquidGLSL(HERO);
   // the character's state for the wake and the swell (as the hero water works it out)
-  const S = { k: 0, lagX: mascot.x || 0, lat: 0, air: 0, land: 0, speed: 0, wasAir: false };
+  const S = { k: 0, lagX: mascot.x || 0, lat: 0, air: 0, land: 0, speed: mascot.visSpeed || 0, wasAir: false };   // (visSpeed: ?s3=intunnel only)
   const P = { uLqPlayer: { value: new THREE.Vector3() }, uLqMove: { value: new THREE.Vector4() }, uLqAlpha: { value: 0 } };
 
   report.walls = liquidWalls({ scene, TR, axisH, TS, GL, LU, HERO });
@@ -383,7 +383,7 @@ void main() {
     S.k = THREE.MathUtils.smoothstep(z, TS + LIQUID.fade[0], TS + LIQUID.fade[1]) * (1 - THREE.MathUtils.smoothstep(z, TE + 6, TE + 8));
     S.lagX += (mascot.x - S.lagX) * e(0.05);
     S.lat += ((mascot.xv || 0) - S.lat) * e(0.1);
-    S.speed += ((mascot.speed || 0) - S.speed) * e(0.3);
+    S.speed += ((mascot.visSpeed ?? (mascot.speed || 0)) - S.speed) * e(0.3);   // (?s3=intunnel: visSpeed at the start; undefined elsewhere)
     const ride = W.baseHeight(L, mascot.x, z), lift = Math.max(0, mascot.yAbs - ride - W.FLOAT_H);
     S.air += ((mascot.air ? THREE.MathUtils.smoothstep(lift, 0.08, 0.6) : 0) - S.air) * e(0.08);
     if (S.wasAir && !mascot.air) S.land = 1;

@@ -972,3 +972,9 @@ THIS IS THE ONLY PRIORITY FOR THE CURRENT DEVELOPMENT SESSION. I want the playab
 
 _[3 images attached]_
 
+---
+
+### Claude · 2026-11-06 13:32 UTC
+
+Built. Rendering `?s3=intunnel` at Tap to Start and at 1.0 s and 3.0 s after the tap:
+

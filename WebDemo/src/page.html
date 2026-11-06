@@ -212,6 +212,13 @@
      shows none there) */
   body.s4focus.r2 #hint { bottom: calc(var(--u) * 63 + env(safe-area-inset-bottom, 0px)); }
   body.s4focus.inDrum #hint { visibility: hidden; }
+  /* ?s3=intunnel: the run starts inside the tunnel, so Screen 3's "Into the washing machine!" banner is not shown */
+  body.intunnel #banner { display: none !important; }
+  /* (and its Tap to Start is a small pill at the bottom, under her, so the start screen is the approved view: the swipe
+     lines, arrows and hand are left out; the steering hint still shows after the tap) */
+  body.intunnel #startPanel { bottom: calc(var(--u) * 10); width: calc(var(--u) * 120); height: calc(var(--u) * 30); }
+  body.intunnel #startPanel .l:not(.tap), body.intunnel #startPanel img { display: none; }
+  body.intunnel #startPanel .tap { top: calc(var(--u) * 2) !important; font-size: calc(var(--u) * 17); }
   /* the sound button on Tap to Start (hidden while running): under the gem counter, where the pause button shows in the run */
   body.s4focus #soundBtn { top: calc(var(--u) * 52 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 236); width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
   #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
