@@ -73,3 +73,7 @@ Every ablation restored cleanly (the frame after all 42 is pixel-identical to th
 
 The default derivation reproduces the shipped map byte-for-byte, so the tool chain is trustworthy. Adding texture-interception support to the diagnostic harness:
 
+All six rendered with no console errors. Measuring them against the original with the same regions and mask:
+
+Now a short "Newest" section in the hand-off, then commit and push with the project's verified save script.
+
