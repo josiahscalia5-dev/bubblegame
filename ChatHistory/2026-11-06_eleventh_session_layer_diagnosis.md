@@ -207,3 +207,71 @@ Now onto the session branch as its own commit. The branch has moved on with auto
 
 The autosave process died after its 01:11 round; the log just stops, with no error. CLAUDE.md says to restart it when it's gone, so I'm restarting it detached, the same way as before:
 
+Both previews rendered cleanly. Next, the bubble question: how many bubbles each version shows in the tunnel, and how much each bubble layer veils.
+
+The Python edit failed (the README sentence wraps across a line break), so the save went through without the README fix and the hand-off update. I'll apply both with exact edits:
+
+Everything is pushed (`f574e9c`). The temporary worktree is removed, and the autosave is running. Sending the key before/after and investigation images:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/01_original_vs_before_vs_after_3.00s_767x1536.jpg, Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/04_zoom_floor_ahead_2x.jpg, Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/06_pixel7_original_vs_before_vs_after.jpg]_
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/28_next_investigation/02_walls_texture_2x.jpg, Previews/WebDemo/screen4_round9_match/28_next_investigation/05_core_calibration_stripes.jpg, Previews/WebDemo/screen4_round9_match/28_next_investigation/04_bubbles_tunnel.jpg, Previews/WebDemo/screen4_round9_match/28_next_investigation/08_combined_preview_tunnel_1to1.jpg]_
+
+Step 4 passed every test and is committed on its own as **`666905c`**, with **`2babe4f`** as the rollback point. As you said, the water isn't finished.
+
+## Step 4: the floor's pale lift is off (`?s3=focus` only)
+
+- **The change:** `floorFx.lift` goes from 0.55 to 0 in `tunnel_r9_focus.js`. The rebuilt game file differs in that one value only.
+- **Floor ahead** (same frame: seed 7, 3.0 s, no steering, same camera):
+
+| Floor ahead | Original | Before | After |
+|---|---|---|---|
+| Saturated blue | 18.0% | 11.5% | 28.2% |
+| Pale blue | 34.5% | 74.5% | 53.9% |
+| White | 32.0% | 9.0% | 9.9% |
+| Fine texture | 3.41 | 2.29 | 3.09 |
+
+- **Front splash:** saturated blue rises from 16.3% to 23.1%.
+- **Unchanged:** the walls, the core and the front water.
+
+**Tests, all passed:**
+- **Other versions:** 41 frames of the normal game, the ten older test versions, `match` and `match,nofoam` are pixel-identical before and after.
+- **The pink character:** drawn on its own, it is identical, 0 differing pixels. In the full frame the only changed pixels near her are the floor showing through gaps in her fur.
+- **Gameplay:** lanes, jump, coins, gem, socks, hearts, pause, Bubble Blast and Turbo Spin give results identical to step 3, with no console errors.
+- **Captures:** 767 × 1536 and Pixel 7, before and after.
+
+**Still missing on the floor:** the original's chunky white splash (32% against 10%). The floor still shows a smooth texture with procedural white dashes.
+
+The previous session had left one change in its last autosave that was never tested as a step: the brushes' warning stripes on the floor were recoloured from magenta to aqua-white. That was your "pink-violet floor". I left it as it was.
+
+## Investigation (nothing implemented)
+
+**1. Why your original's splashes are lost.**
+- **Cause:** the tool that builds the wall texture from your image blurs every pixel, including where your water is clearly visible, and masks the whites out first. Only 30% of the texture is your own pixels.
+- **Tested alternative:** a texture that keeps your original's pixels wherever its water is visible, whites included, and blurs only behind objects. I served it to the real game.
+  - Your curls, dot clusters and "~" marks appear in the 3D walls, at their places.
+  - The white pieces average 246 px (original 237, now 70), instead of confetti.
+  - Removing the duplicate procedural wall flecks and tunnel streaks then takes away whites that would otherwise be doubled.
+- **Still to fix before it can ship:**
+  - lighter rectangular patches where objects were masked out of your image;
+  - whites softer than in the original;
+  - the floor ahead, which this texture can't supply because her body hides it in your image.
+
+**2. The bubbles.**
+- **Coverage:** bubbles and other overlays cover 35% of the tunnel. Under them, saturation falls from 0.47 to 0.32.
+- **Count:** your original has about 4–5 bubbles there, counted by eye; the game shows about 40 or more.
+- **Test:** cutting the tunnel bubbles from 160 to 40 adds 2.8 points of saturated blue on the walls and 3.5 in the core. Clearing their tint did little, so the veil is the number and coverage of the bubbles, not their colour.
+
+**3. The extra lavender in the core.**
+- **Not the cause:** none of the colour settings, overlays or post-processing.
+- **The cause:** I served a test texture with red and blue stripes every 0.01 W to the game. Between 0.10 and 0.16 W from the centre, one stripe is stretched across 4–5 stripes' width.
+  - The tunnel bends upward and to the right from about 15 m ahead.
+  - The code that places the rings assumes a straight tunnel, so your narrow pink-violet ring is smeared into a wide lavender band.
+- **Test:** locking the rings to the screen over the bent part cut that band's lavender from 53% to 40% (original 28%). A proper fix would follow the bend.
+
+A preview of all three together (image 4) comes closest to your original on almost every measure, but it is only a preview.
+
+**Recommended step 5:** build the wall texture the fill-only way, with angle-wise hole filling so the rectangular patches don't show. In the same step, remove the procedural wall flecks and tunnel streaks it replaces. The floor's own streaks stay until the floor has an authentic source. Then step 6, the core placement, and step 7, fewer bubbles, each tested separately. Should I start step 5?
+
+Reports are in `Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/README.md` and `28_next_investigation/README.md`. Everything is pushed (latest `f574e9c`). The autosave had stopped silently after 01:11 and I restarted it.
+
