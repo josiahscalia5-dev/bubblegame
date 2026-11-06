@@ -1178,3 +1178,15 @@ Continue
 
 The machine restarted again (up under a minute), which stopped the autosave. Its last save was 14:38 UTC. Restarting it first:
 
+The autosave's first round is running git right now, so my manual save was skipped. Retrying once it finishes:
+
+Now the in-tunnel README with the tests and videos, and the hand-off:
+
+Saved (`63b78a4`). Waiting for the final identity test, about 20 minutes:
+
+Meanwhile, sending you the results so far: the full-resolution three-panel, the moving comparison video, and the rejected water candidates.
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/40_intunnel_start/sheets/01_FULLRES_original_previous_new.jpg, Previews/WebDemo/screen4_round9_match/40_intunnel_start/videos/compare_steering_original_bt_intunnel.mp4, Previews/WebDemo/screen4_round9_match/40_intunnel_start/videos/intunnel_steering.mp4, Previews/WebDemo/screen4_round9_match/42_water_bank/sheets/04_W2b_original_previous_w2_w2b.jpg, Previews/WebDemo/screen4_round9_match/42_water_bank/sheets/02_W1b_original_previous_w1_w1b.jpg]_
+
+I sent you the comparison sheets and videos. The last check, the 45-frame test that the normal game and older modes are unchanged, is still running on the final build. I'll give you the full results when it finishes.
+
