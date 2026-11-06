@@ -170,3 +170,11 @@ Spector works here: it captured the real 3.0 s frame (96 MB of WebGL calls). Now
 
 Frames for 4-6 s are still rendering. Meanwhile, here is a close look at the original's foreground water so I can match what's actually there.
 
+Now wiring the switch in: `bt` turns `focus` on under it, and its settings merge after focus's.
+
+Now the froth shader itself, added inside the swell face code and only compiled under `bt`:
+
+Now the sock. Checking what its model's materials are:
+
+Built. Rendering the `bt` frame at 3.0 s and the moving moment at 4.0 s:
+

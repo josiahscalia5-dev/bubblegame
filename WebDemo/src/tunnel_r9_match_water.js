@@ -33,6 +33,7 @@ import * as THREE from 'three';
 import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
+import { BT_ON, BT } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus)
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -224,6 +225,7 @@ const MW_TUNE = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window
 if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
   restoreSettings(MATCH_WATER, PRE_FOCUSED_PASS.MATCH_WATER);   // (`match`'s water as it was at 9a95c06, tunnel_r9_focus_base.js)
   deepMerge(MATCH_WATER, FOCUS.water);
+  if (BT_ON) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js)
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
   // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam. lift: the whole crest
@@ -451,7 +453,7 @@ function focusSwellGLSL() {
       mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
       mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
       mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
-      mwA *= fsKeep;
+${BT_ON ? btFrothGLSL() : ''}      mwA *= fsKeep;
 ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
         mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
       }
@@ -461,6 +463,30 @@ ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stri
         if (abs(fsPhi) < 1.5) mwCol = vec3(1.0); mwA = fsKeep;
       }
 ` : ''}    }
+`;
+}
+// ?s3=bt (the breakthrough pass, tunnel_s4_bt.js): bubbly white-aqua froth on the swell's face, in place of focus's white comma
+// arcs. The original's white there is froth made of small round bubbles in irregular patches, thickest along the crest,
+// with vivid blue water between; noise patches (two octaves of the liquid's noise, flowing down the face), white inside
+// with small round light-sky bubble holes and a glint, aqua at the patch edge, and a white glint on top. (Inside
+// focusSwellGLSL's block: s, fsPd, fsE, fl, fsSpark and mwCol are its.)
+function btFrothGLSL() {
+  const P = MATCH_WATER.btFroth;
+  return /* glsl */ `      {   // ?s3=bt: the froth patches
+        float btN = texture2D(uLqTex, vec2(s * ${f4(P.scale[0])} + fl * 0.15, fsPd * ${f4(P.scale[1])} - fl * 0.6)).b * 0.65
+          + texture2D(uLqTex, vec2(s * ${f4(P.scale[0] * 2.7)} - fl * 0.1, fsPd * ${f4(P.scale[1] * 2.7)} - fl * 0.9 + 0.37)).b * 0.35;
+        float btTh = mix(${f4(P.th[0])}, ${f4(P.th[1])}, smoothstep(${f4(P.reach[0])}, ${f4(P.reach[1])}, fsE));
+        float btP = smoothstep(btTh, btTh + ${f4(P.edge)}, btN);
+        vec2 btQ = vec2(s * ${f4(P.cell)} + fl * 0.2, fsPd * ${f4(P.cell)} - fl * 1.1), btI = floor(btQ);
+        vec2 btO = fract(btQ) - 0.5 - (vec2(lqHash(btI + 51.0), lqHash(btI + 53.0)) - 0.5) * 0.35;
+        float btR = mix(${f4(P.hole[0])}, ${f4(P.hole[1])}, lqHash(btI + 57.0)), btL = length(btO);
+        float btHole = step(${f4(P.holeShare)}, lqHash(btI + 59.0)) * (1.0 - smoothstep(btR - 0.07, btR, btL));
+        float btGl = btHole * (1.0 - smoothstep(btR * 0.1, btR * 0.3, length(btO - vec2(-0.4, 0.4) * btR)));
+        vec3 btC = mix(${v3s(P.white)}, ${v3s(P.hole)}, btHole * ${f4(P.holeK)});
+        btC = mix(btC, ${v3s(P.glint)}, btGl);
+        btC = mix(${v3s(P.aqua)}, btC, smoothstep(btTh + ${f4(P.edge * 0.4)}, btTh + ${f4(P.edge * 1.6)}, btN));
+        mwCol = mix(mwCol, mtUndisplay(btC), btP * ${f4(P.amount)});
+      }
 `;
 }
 export function matchSwellGLSL() {

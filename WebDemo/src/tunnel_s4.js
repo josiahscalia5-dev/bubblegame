@@ -22,6 +22,7 @@ import { makeFluffyBrush } from './fluffy_brush.js';
 import { ROUND5, buildRound5 } from './tunnel_r5.js';
 import { R6_ON, R7_ON, ROUND6, buildRound6 } from './tunnel_r6.js';
 import { HERO_ON, HERO, heroGrade } from './tunnel_r7_hero.js';
+import { BT_ON, BT } from './tunnel_s4_bt.js';   // ?s3=bt: the brushes' drawn size (the breakthrough pass)
 
 export const TUNNEL = {
   ringStep: 0.85, ringIn: 2.0, ringOut: 2.5,
@@ -185,6 +186,10 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       const holder = new THREE.Group();
       let x, y;
       if (hazard) { x = side * P.brushX; y = P.brushY; }
+      // ?s3=bt: a hazard brush drawn at BT.brushes.scale of its size round the point of its rim 45 degrees down toward the
+      // middle lane (so that edge, in the outer lane where it knocks, stays where it was; the knock is the lane, unchanged)
+      const btK = BT_ON && hazard ? BT.brushes.scale : 1;
+      if (btK !== 1) { const d = (1 - btK) * P.brushR * Math.SQRT1_2; x -= side * d; y -= d; }
       else { const a = THREE.MathUtils.degToRad(angleDeg), rr = rr0 || 1.95; x = side * Math.cos(a) * rr; y = axisH + Math.sin(a) * rr; }
       holder.position.copy(F.P).addScaledVector(F.R, x).addScaledVector(F.U, y);
       // its face looks back down the tunnel toward the coming rider, turned in toward the middle
@@ -202,12 +207,13 @@ export async function buildTunnelS4({ scene, TR, L, W, camera, updaters, mascot,
       // a gold axle and arm back to the wall where the bracket was
       const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 1.1, 16), hubMat); arm.rotation.x = Math.PI / 2; arm.position.z = -0.75; holder.add(arm);
       holder.name = 's4Brush'; scene.add(holder);
+      if (btK !== 1) holder.scale.setScalar(btK);
       const b = { holder, spinner, u, side, hazard, hit: false, dir: side * (hazard ? 1 : 0.6), base: holder.position.clone(), out: F.R.clone().multiplyScalar(side), cleared: false, clear: 0, bonk: 0 };
       brushes.push(b);
       return b;
     };
     for (const [u, side] of (HERO_ON ? HERO.hazards : P.hazards)) place(u, side, 0, true);   // ?s3=hero: the first pair further in   // u: metres along the path from its start (the drum begins at 3.9)
-    for (const [u, side, a, sc, rr] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) { const b = place(u, side, a, false, rr); if (sc) b.holder.scale.setScalar(sc); }   // round7: two more framing the mouth, scaled
+    for (const [u, side, a, sc, rr] of (R7_ON ? [...ROUND6.r7.deco, ...P.deco] : P.deco)) { const b = place(u, side, a, false, rr); if (sc) b.holder.scale.setScalar(sc); else if (BT_ON) b.holder.scale.setScalar(BT.brushes.deco); }   // round7: two more framing the mouth, scaled
     report.brushes = brushes.length; report.hazards = P.hazards.length;
   }
   const hits = [];

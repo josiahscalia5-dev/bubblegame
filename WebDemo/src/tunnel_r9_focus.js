@@ -18,7 +18,8 @@
 // Settings only (plain data); the code that reads the new keys is gated on FOCUS_ON in the files named. Colours are sRGB hex.
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const FOCUS_ON = LIST.includes('focus');
+// (?s3=bt, the breakthrough pass of 6 November, tunnel_s4_bt.js: `focus` with that pass's settings on top)
+export const FOCUS_ON = LIST.includes('focus') || LIST.includes('bt');
 
 export const FOCUS = {
   // deep-merged into MATCH (tunnel_r9_match.js) right after it is defined, before the test tune and before anything reads it

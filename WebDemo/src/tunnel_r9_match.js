@@ -33,6 +33,7 @@
 import * as THREE from 'three';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
+import { BT_ON, BT } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -943,6 +944,33 @@ export function matchCollectibles({ coins, gems, socks }) {
       k.turn.remove(model); pose.add(model); k.turn.add(pose);
     }
     report.sockPose = MATCH.sockPose;
+  }
+  // ?s3=bt: the socks' purple recoloured as the original's (BT.sock, tunnel_s4_bt.js): the toe blue, the cuff stripes lilac,
+  // the white knit unchanged. Their one shared material is changed in place (no new object, so no UUID from the game's seeded
+  // Math.random); the texture is a scattered atlas, so the toe and the cuff are told apart by the model's own height (the
+  // decoded mesh: purple at the bottom, the toe, and at the top, the cuff, white between)
+  if (BT_ON && socks[0] && socks[0].turn) {
+    const mats = new Set(); socks[0].turn.traverse((o) => { if (o.isMesh) mats.add(o.material); });
+    const K = BT.sock, lin3 = (hex) => hx(hex).replace(/vec3\(([^)]*)\)/, (m, a) => `pow(vec3(${a}), vec3(2.2))`);
+    const FN = /* glsl */ `
+vec3 btSock(vec3 c) {   // ?s3=bt: purple texels to the original's toe blue / cuff lilac, keeping their light and dark
+  vec3 q = pow(max(c, 0.0), vec3(1.0 / 2.2));
+  float pur = smoothstep(0.06, 0.2, q.b - q.g) * smoothstep(0.0, 0.08, q.r - q.g);
+  vec3 tgt = mix(${lin3(K.toe)}, ${lin3(K.stripe)}, smoothstep(-0.12, 0.12, vBtH - ${f4(K.split)}));
+  float l = dot(c, vec3(0.2126, 0.7152, 0.0722)) / max(dot(tgt, vec3(0.2126, 0.7152, 0.0722)), 1e-3);
+  return mix(c, tgt * clamp(l / 0.55, 0.35, 1.6), pur * ${f4(K.amount)});
+}
+`;
+    for (const m of mats) {
+      m.onBeforeCompile = (sh) => {
+        sh.vertexShader = 'varying float vBtH;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vBtH = position.y;');
+        sh.fragmentShader = 'varying float vBtH;\n' + sh.fragmentShader.replace('void main() {', FN + 'void main() {')
+          .replace('#include <map_fragment>', '#include <map_fragment>\n  diffuseColor.rgb = btSock(diffuseColor.rgb);')
+          .replace('#include <emissivemap_fragment>', '#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= btSock(texture2D(emissiveMap, vEmissiveMapUv).rgb);\n#endif');
+      };
+      m.customProgramCacheKey = () => 'bt:sock'; m.needsUpdate = true;
+    }
+    report.btSock = mats.size;
   }
   // the gem beside the big left coin at MATCH.gemScale of its size, round its own centre (its holder, the pick-up place and
   // the pop animation's scale are unchanged)
