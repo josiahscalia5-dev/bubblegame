@@ -1,3 +1,13 @@
 objects 219 canvas [ 768, 1536 ] post [{"type":"Dc","enabled":true},{"type":"n","enabled":true},{"type":"Ho","enabled":true},{"type":"Bc","enabled":true}]
 no_quad22 hidden 1
 no_tunnelDecor hidden 98
+no_entranceDecor hidden 23
+no_openingLook hidden 3
+no_s3Bubbles hidden 2
+no_heroCollar hidden 1
+no_heroWalls hidden 1
+no_r6Bezel hidden 1
+no_scenery hidden 14
+no_Group_mesh2 hidden 1
+no_mesh18 hidden 1
+no console errors or warnings

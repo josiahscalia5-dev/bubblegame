@@ -1038,3 +1038,27 @@ The step 6/step 8 "before" frames for the new moments are still capturing in the
 
 The straight-driving video for step 8 is done, and the steering one is recording. Making the straight three-panel comparison now: your original, step 7, step 8.
 
+Still running:
+
+- **Step 8 steering video:** recording. When it finishes I'll make its three-panel comparison and send you both step 8 videos with the checklist.
+- **S3-1** (your castle visible at the opening): its 41-frame regression run and gameplay checks.
+- **The step 8 "before" frames** for the tunnel interior. I'll use them to confirm that, with your castle shown, the Screen 4 moments at 2.5–4.0 s are unchanged.
+
+Once S3-1 passes, I'll commit it with its before/after images and start S3-2, the gold washer doorway.
+
+---
+
+### Automatic notice · 2026-11-06 11:00 UTC
+
+_Background command "Set the cut to 4.5 m, rebuild and capture all frames" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 11:00 UTC
+
+By eye, S3-1 shows your castle all through the approach. From Tap to Start to 2.5 s the pink-lavender facade with crowns and gold arches sits above and around the door, much closer to your Screen 3 than the flat purple wall before. From 3.0 s inside the tunnel, nothing changed.
+
+The remaining visible difference is the dark purple ring of the drum front around the door, which reads as a dark disc against the pale castle. In your original, the door sits in a pale lavender facade. That ring is part of S3-2, the washer doorway.
+
+Still waiting on S3-1's regression and gameplay checks and the step 8 steering video. When they're done I'll commit S3-1 and send you the step 8 videos, the S3-1 images and the checklist.
+
