@@ -1597,6 +1597,13 @@ Far bubbles are back to 41 (target at least 29); the centre has 19 (32 at `b91e9
 
 You've hit your 5-hour limit · resets 12:30am (UTC)
 
+**Lead → agent** (00:39 UTC):
+
+The coordinator sent a message while you were working:
+Resume: the usage limit has reset (00:40 UTC). You stopped just before the final checks of your follow-up ("Far bubbles are back to 41 ... Now pixel identity, gameplay and moves on this exact bundle (0f6f7d22)"). Run those checks (pixel identity of the normal game, splash and liquid; s3_func; liquid_moves), add the follow-up section to your 14_focused_pass_water_vfx README and measured.txt, commit ("Round 9 focused pass, Water & VFX (follow-up): ..."), and reply with the commit hash and the follow-up's numbers (white under her, aqua and electric blue in the bank, purple share, white shapes left of her, far bubbles, waterline). Do not start new changes.
+
+Address this before completing your current task.
+
 
 _198 tool steps._
 
