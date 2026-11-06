@@ -89,6 +89,26 @@ export const WAVE_ON = BT_ON && LIST.includes('wave');
 export const WAVE = { cell: [7.0, 6.0], r: [0.5, 0.68], share: 0.95, flow: 0.9, reach: 1.1, lav: 0.2,
   gap: '#2a8ae8', body: '#5fb2f2', light: '#b8def8', rim: '#eaf4fd', white: '#ffffff', lavBody: '#98a4ec', lavRim: '#e8e6fc',
   glint: [0.7, 0.88], amount: 1.0 };
+// ?s3=intunnel,mounds (fifteenth session, 6 November, CANDIDATE under review, not accepted): the water's CONTACT LINE with
+// her. Every rejected candidate (lower water, white strip, domes, the bank's lobes, W2's domes painted on the face) kept the
+// swell's straight top edge across her base, which squares her off. The original's water meets her as a few LARGE rounded
+// mounds of varied height (3-4 across her width), convex glossy tops with white highlights, dark-blue cusps between, rising
+// unevenly over her lower fur. Here the swell's own cut edge (focusSwellGLSL's spiky teeth, 22 per m, too small to read) is
+// cut into round mounds instead, and each mound is shaded as a glossy dome from its own outline (the outline its silhouette,
+// a broken white rim at grazing angles, a glint upper left, a few lavender-tinted). Geometry, camera and character unchanged.
+//   teeth.round: the round profile; per: mounds per m along the crest; warp: their widths varied (share); tip: their heights
+//   [min, max] (share of hi - lo); mound: the dome shading (colours are the screen's, through mtUndisplay)
+export const MOUNDS_ON = BT_ON && LIST.includes('mounds');
+export const MOUNDS = {
+  water: {
+    face: {
+      // (hi / lo about focus's own 0.56 / 0.49, so the waterline stays the approved one: the user's brief, 15:10 UTC)
+      teeth: { round: 1, per: 6.5, warp: 0.45, speed: 0.12, hi: 0.56, lo: 0.485, fine: 0.004, lobe: 0.0, bob: 0.15, tip: [0.55, 1.0] },
+      mound: { foot: 0.35, lav: 0.25, deep: '#2f86ea', body: '#5aaef2', light: '#b4dcf8', lavBody: '#93a6ec', white: '#f2f8ff',
+        rim: 0.9, rimPow: 2.5, glint: [0.06, 0.14], amount: 0.9 },
+    },
+  },
+};
 export const DOMES = {
   // (first build: the radii below / 1.106, body alpha [0.42, 0.5], lavender #a295ee, highlight 0.9: too small and too faint by
   // eye, glassy pale circles. Then 12 Optuna trials on the real game, tools/screen4/optuna_domes.py; LPIPS hardly moved, 0.567-

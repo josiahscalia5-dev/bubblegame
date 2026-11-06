@@ -148,3 +148,37 @@ If one of the three essential checks fails, explain the specific blocker and fix
 
 Running only the three checks.
 
+Now the water shader: import, settings merge, the round profile and the dome shading. All of it is emitted only when `teeth.round` is set.
+
+Now the dome shading, inserted just before the alpha cut and emitted only for `mounds`:
+
+---
+
+### You (sent while Claude was working) · 2026-11-06 15:02 UTC
+
+Claude, I want you to focus specifically on recreating the water surrounding my pink fluffy character in my original approved Bubble Wash Kingdom Screen 4. I have attached an annotated visual reference showing exactly what I want, along with comparisons of the existing gameplay. My authentic original approved screen is the ONLY authoritative visual target. The newly created visual reference is an explanatory guide, not a replacement for my original artwork. I want you to carefully study the original before modifying anything.
+
+MY NUMBER ONE PRIORITY IS THE SHAPE, STRUCTURE, COLOUR AND THREE-DIMENSIONAL APPEARANCE OF THE WATER DIRECTLY AROUND MY PINK CHARACTER. In my original approved screenshot, the character is a low, rounded, fluffy pink silhouette, viewed from behind, sitting ON TOP of beautiful, shiny cobalt-blue and turquoise water. The water is not flat and does not look like an ordinary swimming pool. It has large, rounded, overlapping blue liquid formations, flowing wave shapes, translucent cyan surfaces, brilliant white highlights, and a few glossy lavender-blue bubble domes around the character's lower edge. There is visible depth in the water, with larger rounded waves in the foreground and smaller details farther away. I want the water to surround and visually support the character without covering its pink fur or making it look submerged.
+
+The current gameplay water is still noticeably different. It is too pale and icy blue, with repetitive thin splashes, sharp fragmented textures, and water formations that do not have the original's rounded, thick, glossy appearance. The existing bubble-bank experiment also looks too much like a collection of separate blue spheres. I do not want a row of evenly spaced spheres, a hard white foam strip, or a generic particle effect. I want the actual water surface to have the rounded, connected, flowing structure of the approved illustration, with a small number of transparent bubble domes naturally integrated into the water.
+
+Before making any changes, inspect the latest accepted GitHub build, the existing water shaders and geometry, the "heroSwell" layer, the new W1 bubble-bank experiment, and all previously rejected water attempts. Preserve the successful tunnel, smaller brushes, corrected sock, collectibles, camera and gameplay. Do not repeat the failed water-lowering experiments that exposed too much of the character. Keep the existing approved waterline and character placement unless a side-by-side visual comparison proves a different adjustment is necessary.
+
+Use Spector.js, existing Three.js inspection tools, Playwright, OpenCV, scikit-image and LPIPS where useful to identify why the water's depth, colour, surface normals, transparency, highlights and geometry differ from the original. If you believe an image-derived material, custom shader, displacement mesh, connected wave geometry or translucent surface effect would recreate the approved appearance more accurately, implement a controlled experiment using the existing Three.js game. Do not just change colour percentages or bubble counts. Focus on actually reproducing the original's WATER STRUCTURE and overall visual impression.
+
+I also want you to evaluate whether Tripo AI could provide a useful 3D reference mesh for a stylized water formation. If Tripo is suitable, explain exactly what object it would generate and how the resulting GLB could be integrated into Three.js without interfering with animation or gameplay. However, DO NOT spend Tripo credits or generate a model without my permission. If native Three.js procedural geometry and shaders are better for this specific water effect, use those instead. I do not want to waste credits on a decorative static asset that will not solve the actual problem.
+
+Create ONE meaningful, reversible water-correction candidate. The character must remain a rounded pink shape sitting on top of moving blue water, with a natural contact boundary, rounded turquoise-blue waves, sharp-but-organic white highlights and correctly shaded translucent lavender bubble domes. The result must remain animated and responsive while the character automatically travels forward through the laundry tunnel. Do not add new opening scenes, the girl, Laundry Toss, an additional swimming sequence, or unrelated gameplay features.
+
+When you finish the candidate, capture a full-resolution comparison of ORIGINAL APPROVED | PREVIOUS ACCEPTED GAME | NEW CORRECTED GAME, using equivalent camera framing and gameplay positions. Include a close-up showing precisely how the blue water meets the pink character. Also record real gameplay footage to prove that the waves and bubble structures work while the character moves, steers and interacts with collectibles. If the new experiment does not look noticeably closer than the previous build, revert it and explain the technical limitation.
+
+I AM NOT ASKING FOR MORE RANDOM BUBBLES OR A DIFFERENT-LOOKING WATER EFFECT. I AM ASKING YOU TO RECONSTRUCT THE SPECIFIC BLUE WATER GEOMETRY, MATERIALS, SHINE, DEPTH AND CHARACTER CONTACT VISIBLE IN MY ORIGINAL APPROVED SCREEN. Make a real visual improvement in the playable game, preserve everything that already works, and show me the result before accepting it.
+
+_[3 images attached]_
+
+---
+
+### Claude · 2026-11-06 15:04 UTC
+
+The identity rerun failed only because that subshell started in the wrong folder. I'll rerun it. The candidate rendered fine; here's original | previous accepted | new at the base:
+

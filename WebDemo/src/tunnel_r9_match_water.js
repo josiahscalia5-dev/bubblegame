@@ -33,7 +33,7 @@ import * as THREE from 'three';
 import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
-import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
+import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE, MOUNDS_ON, MOUNDS } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank; ?s3=...,mounds
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -226,6 +226,7 @@ if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r
   restoreSettings(MATCH_WATER, PRE_FOCUSED_PASS.MATCH_WATER);   // (`match`'s water as it was at 9a95c06, tunnel_r9_focus_base.js)
   deepMerge(MATCH_WATER, FOCUS.water);
   if (BANK_ON) deepMerge(MATCH_WATER, BANK.water);   // ?s3=...,bank: the bank of rounded blue lobes (tunnel_s4_bt.js)
+  if (MOUNDS_ON) deepMerge(MATCH_WATER, MOUNDS.water);   // ?s3=...,mounds: the contact edge as round water mounds (tunnel_s4_bt.js)
   if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
@@ -397,11 +398,16 @@ function focusSwellGLSL() {
       // 1. the spiky crest: keep t below a jagged limit (tips at about the natural silhouette, valleys down the outer face)
       float fsT = vS.y, fsPd = (0.5 - fsT) * 1.9;
       float fsK = s * ${f4(T.per)} + fl * ${f4(T.speed)};
-      float fsI = floor(fsK), fsF = fract(fsK);
+${T.round ? `      fsK += ${f4(T.warp || 0)} * sin(s * ${f4(T.per * 0.61)} + 1.7);   // (?s3=...,mounds: the mounds' widths varied)
+` : ''}      float fsI = floor(fsK), fsF = fract(fsK);
       float fsH = lqHash(vec2(fsI, 3.7)), fsPk = 0.25 + 0.5 * lqHash(vec2(fsI, 8.1));
       float fsTooth = pow(fsF < fsPk ? fsF / fsPk : (1.0 - fsF) / (1.0 - fsPk), ${f4(T.sharp)});
       float fsTip = (0.35 + 0.65 * fsH) * (${f4(1 - T.bob)} + ${f4(T.bob)} * sin(uTime * 3.1 + fsH * 23.0));
-      float fsN = texture2D(uLqTex, vec2(s * 3.1 + fl * 0.25, 0.31 + uTime * 0.05)).b;
+${T.round ? `      // ?s3=...,mounds: each tooth a round mound (a half-circle outline, cusps between), heights varied, rising and falling slowly
+      float fsMu = 2.0 * fsF - 1.0;
+      fsTooth = sqrt(max(1.0 - fsMu * fsMu, 0.0));
+      fsTip = (${f4(T.tip[0])} + ${f4(T.tip[1] - T.tip[0])} * fsH) * (${f4(1 - T.bob)} + ${f4(T.bob)} * sin(uTime * 1.7 + fsH * 23.0));
+` : ''}      float fsN = texture2D(uLqTex, vec2(s * 3.1 + fl * 0.25, 0.31 + uTime * 0.05)).b;
       float fsCutT = ${f4(T.hi)} - (${f4(T.hi - T.lo)} * (1.0 - fsTooth * fsTip) + ${f4(T.fine)} * fsN) * mix(${f4(T.side)}, ${f4(T.front)}, mwFront);
       fsCutT += ${f4(T.lobe)} * (0.6 * sin(s * 11.0 + 1.3 + fl * 0.4) + 0.4 * sin(s * 23.0 + 4.1 - fl * 0.7));   // rounder crests and troughs along it
       float fsE = fsCutT - fsT;
@@ -454,7 +460,7 @@ function focusSwellGLSL() {
       mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
       mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
       mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
-${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}${WAVE_ON ? btWaveGLSL() : ''}      mwA *= fsKeep;
+${T.round ? moundGLSL() : ''}${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}${WAVE_ON ? btWaveGLSL() : ''}      mwA *= fsKeep;
 ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
         mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
       }
@@ -487,6 +493,33 @@ function btFrothGLSL() {
         btC = mix(btC, ${v3s(P.glint)}, btGl);
         btC = mix(${v3s(P.aqua)}, btC, smoothstep(btTh + ${f4(P.edge * 0.4)}, btTh + ${f4(P.edge * 1.6)}, btN));
         mwCol = mix(mwCol, mtUndisplay(btC), btP * ${f4(P.amount)});
+      }
+`;
+}
+// ?s3=...,mounds (tunnel_s4_bt.js MOUNDS; inside focusSwellGLSL's block: fsMu across the mound -1..1, fsTooth its outline,
+// fsTip its height, fsE m below the cut edge, fsSpark, mwCol): each round mound shaded as a glossy water dome from its own
+// outline, so the outline is its silhouette: up the dome mdY (its outline at fsTooth, its foot at 0), the dome's normal
+// from (fsMu, mdY); a broken white rim where it turns away (grazing), a glint upper left, a few lavender-tinted; below its
+// foot it fades into the face's water
+function moundGLSL() {
+  const T = MATCH_WATER.face.teeth, M = MATCH_WATER.face.mound;
+  return /* glsl */ `      {   // ?s3=...,mounds: the round mounds as glossy water domes
+        float mdH = max(${f4((T.hi - T.lo) * 1.9)} * fsTip, 1e-3);
+        float mdY = fsTooth - fsE / mdH;
+        float mdIn = smoothstep(${f4(-M.foot)}, 0.0, mdY);
+        float mdZ = sqrt(max(1.0 - fsMu * fsMu - mdY * mdY, 0.0));
+        vec3 mdN = normalize(vec3(fsMu, max(mdY, 0.0), mdZ + 0.05));
+        float mdLit = clamp(dot(mdN, normalize(vec3(-0.45, 0.6, 0.66))), 0.0, 1.0);
+        float mdLav = step(1.0 - ${f4(M.lav)}, lqHash(vec2(fsI, 17.3)));
+        vec3 mdC = mix(${v3s(M.deep)}, ${v3s(M.body)}, smoothstep(0.1, 0.7, mdLit));
+        mdC = mix(mdC, ${v3s(M.lavBody)}, mdLav * 0.7);
+        mdC = mix(mdC, ${v3s(M.light)}, smoothstep(0.7, 0.95, mdLit));
+        float mdRimN = texture2D(uLqTex, vec2(s * 4.3 + fl * 0.2, 0.71 + uTime * 0.03)).b;   // (broken, not a ring)
+        float mdRim = pow(1.0 - mdZ, ${f4(M.rimPow)}) * smoothstep(0.25, 0.55, mdRimN + 0.25 * mdY);
+        mdC = mix(mdC, ${v3s(M.white)}, clamp(mdRim * ${f4(M.rim)}, 0.0, 1.0));
+        float mdGl = 1.0 - smoothstep(${f4(M.glint[0])}, ${f4(M.glint[1])}, length(vec2(fsMu + 0.38, mdY - 0.55 * fsTooth) * vec2(1.0, 1.6)));
+        mdC = mix(mdC, ${v3s(M.white)}, mdGl);
+        mwCol = mix(mwCol, mtUndisplay(mdC), mdIn * ${f4(M.amount)} * (1.0 - fsSpark * 0.6));
       }
 `;
 }
