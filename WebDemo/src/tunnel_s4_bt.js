@@ -101,8 +101,17 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
 export const WATER2_ON = BT_ON && LIST.includes('water2');
-export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0.06, wobble: 0.025, amount: 0.92,
-  water: { face: { lace: { amount: 0 }, rings: { amount: 0.3 } } } };
+// (candidate c1: wobble 0.025, amount 0.92, the face's spiky crest, white rim pieces and sparkle unchanged; the art director:
+// "moderately closer", the remaining gaps a white zigzag at her base and too much icy pale blue. R2, the user's brief of
+// about 17:45 UTC, the same candidate refined, only the existing surface: the crest rounded (teeth sharpness 1.2 -> 0.6, no
+// fine notches, rounder lobes), the white rim pieces 1.0 -> 0.35, the sparkle 1.0 -> 0.6, a gentler distortion, the
+// texture full strength, and the crest in front of her 3 cm higher (swellFront lift 0.02 -> 0.05) so the original's water
+// flows over her lower edge. In the band at her base: icy pale blue 38.7 -> 32.4 % (the original 27.5), white 18.7 -> 21.2
+// (18.6), lavender 10.7 -> 16.0 (15.3); 44_water_material/r1, r2)
+export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0.06, wobble: 0.012, amount: 1.0,
+  water: { face: { lace: { amount: 0 }, rings: { amount: 0.3 }, teeth: { sharp: 0.6, fine: 0.0, lobe: 0.06 }, rim: { amount: 0.35 },
+    spark: { amount: 0.6 } }, swellFront: { lift: 0.05 } } };
+{ const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {
     curls: [[22, 0.2, 0.26, 1.7, 0.18, 0], [-22, 0.18, 0.26, 1.7, 0.18, 0], [34, 0.26, 0.32, 1.6, 0.14, 0], [-34, 0.24, 0.32, 1.6, 0.14, 0],

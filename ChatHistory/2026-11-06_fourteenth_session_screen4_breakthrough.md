@@ -1422,3 +1422,15 @@ I WANT A REAL, VISIBLE IMPROVEMENT TO THE WATER I ALREADY HAVE. I DO NOT WANT AN
 
 _[3 images attached]_
 
+---
+
+### Claude · 2026-11-06 17:10 UTC
+
+Your three images are clear. Image 01 stays the only authority, and the other two only explain it. This is the same direction as the water candidate already under test, `?s3=intunnel,water2`, which corrects `heroSwell`'s own water material with no new objects. The art director judged it moderately closer and named two remaining gaps, which match your guide:
+- **The contact shape:** a white zigzag line at her base, where your original has soft, rounded water flowing over her lower edge. It comes from the swell's own crest cut.
+- **Too much icy pale blue:** 38.7 % against your original's 27.5 %.
+
+So I'll refine that one candidate rather than start another. First saving your new kit and measuring how much of the water band the corrected surface actually covers:
+
+That notice is the earlier candidate's video job, which I stopped to re-record the final version. Making the final comparison sheets for the art director:
+
