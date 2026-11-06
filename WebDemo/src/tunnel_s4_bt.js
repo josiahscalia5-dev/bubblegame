@@ -100,7 +100,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
-export const WATER3_ON = BT_ON && LIST.includes('water3');   // (R3, below: water2 plus its corrections)
+export const WATER4_ON = BT_ON && LIST.includes('water4');   // (R4, below: water3 with the exemplar-filled texture)
+export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
 export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
 // (candidate c1: wobble 0.025, amount 0.92, the face's spiky crest, white rim pieces and sparkle unchanged; the art director:
 // "moderately closer", the remaining gaps a white zigzag at her base and too much icy pale blue. R2, the user's brief of
@@ -125,7 +126,7 @@ export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0
 // that deepens the mid-tones; white stays white) against the bloom's haze, as step 8 did for the walls
 // (R3 first used foreground_water_original_r3.png, the holes filled by MIRRORING the original's water: the art director
 // rejected it for a hard seam on the mirror line, a mirrored blotch and a kaleidoscope symmetry; a translated-patch fill
-// could not reach across her 60 %-wide silhouette and changed nothing. So R3c: R2's own texture (no mirror artefacts) with
+// changed nothing, because derive_water_map.py saved its picture before the patch step ran (found and fixed in R4). So R3c: R2's own texture (no mirror artefacts) with
 // R3's other corrections: band icy 28.6 % / saturated 18.5 / mid 11.3 / white 18.4 / lavender 17.0 / mean saturation 0.35,
 // the original 27.5 / 19.6 / 11.4 / 18.6 / 15.3 / 0.35; 45_water_r3/r3c)
 export const WATER3 = { file: 'foreground_water_original.png', wobble: 0.004, gain: [1.1, 1.06],
@@ -135,6 +136,17 @@ if (WATER3_ON) {
   for (const k of Object.keys(WATER3.face)) WATER2.water.face[k] = { ...(WATER2.water.face[k] || {}), ...WATER3.face[k] };
   WATER2.water.look = { ...(WATER2.water.look || {}), ...WATER3.look };
 }
+// ?s3=intunnel,water4 (R4; the user's brief of about 18:55 UTC: R3c still soft, vertically stretched and pale round her;
+// fix the actual mapping / sampling cause). The layer isolation (Previews/WebDemo/screen4_round9_match/46_water_r4/diag/): heroSwell drawn ALONE
+// shows the original's bubbly water only in its top strip; below it the face shows the texture's inpainted holes, a pale
+// lavender-white blur where the original has her body and long vertical streaks and a flat triangle where it has the power
+// buttons (64 % of the old texture is filled, not water). She sits higher in the game than in the original and the buttons
+// differ, so those fills are what is seen under her: the "soft, stretched, pale" water. R4 is R3c with ONLY the texture
+// changed: the buttons masked by their own outline (the foam above them kept; filled share 51.6 %) and the holes filled
+// by exemplar patches of the original's own water (derive_water_map.py --fill exemplar), the original's pixels unsoftened.
+// Mapping, material, distortion, bloom and everything else as R3c.
+export const WATER4 = { file: 'foreground_water_original_r4.png' };
+if (WATER4_ON) WATER2.file = WATER4.file;
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

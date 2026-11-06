@@ -511,5 +511,51 @@ Address this before completing your current task.
 
 4. **Recommendation: present R3c in place of R2.** It is no worse anywhere and a little bluer. But tell the user plainly that only "richer cobalt" moved, and only partly. "Sharper sparkling details" and "less smearing" are not improved.
 
+**Lead → agent** (18:16 UTC):
 
-_60 tool steps._
+The coordinator sent a message while you were working:
+Please give a strict read-only review of a new water candidate, R4 (`?s3=intunnel,water4`), against the ORIGINAL approved Screen 4 only. The user's new review (about 18:55 UTC) says R3c is NOT approved: "the water around the pink character remains too soft, stretched and pale ... still soft, stretched under hero, with lavender/pale smears ... Compare shape and contrast, not only LPIPS / colour percentages." The original has saturated shiny blue water, irregular rounded bubbly forms, fine bright white and cyan highlights, and subtle transparent lavender bubbles. The water must support her from underneath and surround her lower body without hiding it.
+
+What was found (layer isolation, `Previews/WebDemo/screen4_round9_match/46_water_r4/diag/` once saved; heroSwell drawn alone): the face shows the original's bubbly water only in its top strip. Below it, the face shows the texture's INPAINTED holes. 64 % of R2/R3c's texture is filled in, not water: a pale lavender-white blur where the original has her body, and long vertical streaks and a flat triangle where it has the power buttons. In the game she sits higher and the buttons differ, so those fills are what shows under her: the soft, stretched, pale smear. R4 is R3c with ONLY the texture changed:
+- the buttons are masked by their own outline, so the foam above them is kept (filled share 51.6 %);
+- the holes are filled with exemplar patches (15 px) of the original's own water, copied unsoftened;
+- mapping, material, distortion and bloom are exactly as R3c.
+
+A second defect, NOT fixed in R4 (it comes next, as a separate step): the texture's registration. It is captured at the first render while her swell frame bobs against the camera. At the compared start frame it lands about 16 px higher than the original, and it slides about 29 px against her body during the wait, +18 px at +1 s.
+
+Files (in `Previews/WebDemo/screen4_round9_match/`):
+- the full-res sheets `46_water_r4/sheets/01_FULLRES_original_accepted_R4.jpg` (ORIGINAL | ACCEPTED | R4) and `01b_FULLRES_original_R3c_R4.jpg` (ORIGINAL | R3c | R4);
+- the close-up `46_water_r4/sheets/02_closeup_water_x1.4.jpg` (ORIGINAL | ACCEPTED | R3c | R4);
+- moving: `46_water_r4/sheets/03_moving_1s_2s.jpg` (ACCEPTED, R3c and R4 at +1 s and +2 s);
+- frames: `46_water_r4/final/start|T1.0|T2.0/base_page.png`, R3c's in `45_water_r3/final/`, and the accepted build's in `40_intunnel_start/final/intunnel_start|intunnel_T1.0|intunnel_T2.0/`;
+- the old and new textures: `WebDemo/textures/screen4/foreground_water_original.png` (R2/R3c) and `foreground_water_original_r4.png` (R4).
+
+Measures (supporting only): region LPIPS, foreground water accepted 0.656 / R3c 0.576 / R4 0.556; contact 0.593 / 0.555 / 0.547; at +1 s, water R3c 0.652 -> R4 0.644 and contact 0.605 -> 0.592. In the band at her base the colour shares are almost unchanged (R4: icy 29.5, saturated 18.6, white 20.4, lavender 13.0, saturation 0.34; R3c 28.6 / 18.5 / 18.4 / 17.0 / 0.35; the original 27.5 / 19.6 / 18.6 / 15.3 / 0.35). Moving, both R3c and R4 go whiter and less saturated (white 33-38 %, saturation 0.24-0.27).
+
+Please answer, judging shape and contrast by eye:
+1. Verdict: R4 vs R3c, and R4 vs accepted. Each one of "clearly closer", "slightly closer", "about the same" or "worse".
+2. Is the "soft, vertically stretched, lavender/pale smear" under her corrected, partly corrected or not? Point to where.
+3. Regressions: patch seams, repetition, noise or speckle, a blocky look, a hard line at the buttons' top, worse while moving.
+4. What still differs, ranked. Would the registration fix (the texture slides 16-29 px against her) plausibly matter visibly, judging from the frames?
+5. Recommendation: make R4 the water candidate in place of R3c, or not.
+
+Address this before completing your current task.
+
+- 18:16 `Bash`: List the R4 evidence
+- 18:16 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/46_water_r4/sheets/02_closeup_water_x1.4.jpg
+**Lead → agent** (18:16 UTC):
+
+[Image: original 3666x600, displayed at 2000x327. Multiply coordinates by 1.83 to map to original image.]
+
+- 18:16 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/46_water_r4/sheets/01b_FULLRES_original_R3c_R4.jpg
+**Lead → agent** (18:16 UTC):
+
+[Image: original 2321x1576, displayed at 2000x1358. Multiply coordinates by 1.16 to map to original image.]
+
+- 18:16 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/46_water_r4/sheets/03_moving_1s_2s.jpg
+**Lead → agent** (18:16 UTC):
+
+[Image: original 4652x676, displayed at 2000x291. Multiply coordinates by 2.33 to map to original image.]
+
+
+_64 tool steps._

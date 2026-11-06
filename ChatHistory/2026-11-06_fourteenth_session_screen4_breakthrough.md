@@ -1652,3 +1652,7 @@ Before anything else: the default Telea texture must come out byte-identical, so
 
 The Telea texture is byte-identical (`d66d3bc0`). The mask share explains a lot: 64 % of the old texture was filled in, not water. With the shaped buttons it is 51.6 %. Now the new texture:
 
+The comment at lines 126–128 gives the wrong reason the patch fill "changed nothing": it was the ordering bug, not her silhouette's width. I'll correct it and add `water4`:
+
+Built (bundle `9ed16b27`). Now R4's frames: the start view, then +1.0 s and +2.0 s moving. After that, the proofs that the accepted build and R3c are unchanged on this bundle:
+
