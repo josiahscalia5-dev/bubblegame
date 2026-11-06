@@ -55,5 +55,11 @@
   border) instead of the edge texel being smeared. The older candidates' shader text is byte-identical (checked by
   emitting it from the old and new files); the R7 frames the art director reviewed are reproduced by the tune
   `{"water2": {"mirror": null}}` (`mirror_fix/`).
+- **Verified (the art director, the new steering video):** the fin is gone (lower-left dark share 0.2-0.3 % in every
+  sampled frame). But with a 5-px skip a thin pale stripe appeared at the left edge when she steers left: the original's
+  columns 4-11 are its white inner frame bevel (RGB 245 / 251 / 255 fading to 140 / 167 / 207), mirrored double; the same
+  bevel showed as a pale line about 10 px in from the left edge at the start view in every candidate since R2. The water
+  starts at column 12, so the skip is now 13 px (`mirror_fix13/`): R7's start view changes only in screen columns 0-20,
+  now blue; the accepted build is 0 pixels changed on bundle `3dac5847`.
 - **Next (the art director's ranking):** 1. the contact edge (`../50_contact_edge/`, R8); 2. varied fleck sizes (the cap
   scaled with each droplet's own size); 3. the softness of the filled areas; 4. the remaining paleness.

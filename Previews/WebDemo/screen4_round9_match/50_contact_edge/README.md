@@ -26,6 +26,11 @@
 - **Sheets:** `sheets/` (the first R8 against R7), `sheets_final/` (ORIGINAL | ACCEPTED | R7 | final R8, close-up and
   moving).
 - **Proof:** the accepted `?s3=intunnel` start view is 0 differing pixels on bundle `215f35c5` (`identity_intunnel_start/`).
+- **The art director on the final R8:** slightly closer than the fixed R7 at the start and moving. The outer notches are
+  gone (changed non-pink pixels 2.3-2.7k -> about 800 per frame: anti-aliased edge and bubble sprites); no step or seam at
+  the fades (x 248 / 522). At +1 s her pink meets the lavender domes across her centre-right, as in the original, where R7
+  had a blue-white crest. "Present the final R8 ... as THE candidate", after the 13-px mirror skip and one steering video
+  (`videos/water8_steering.mp4`). A small pink drip at +2 s (about x 350, y 1296) remains.
 - **Still different (the art director):** over the left dome (x 230-340) the edge did not move: there the face's top edge is
   lower than the original's outline, so her fur covers the dome's top and white rim and only half the row of domes reads;
   the domes are soft lavender-blue masses with few of the original's bright rim arcs.

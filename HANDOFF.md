@@ -33,6 +33,14 @@
 - **Remaining differences (the art director):** the left dome (x 230-340), where the face's top edge is lower than the
   original's outline, so her fur covers the dome's top and white rim; varied fleck sizes; the softness of the fill; some
   paleness.
+- **The art director's latest verdicts:** the final R8 is slightly closer than the fixed R7 (start and moving), notches
+  gone; R8 is to be presented as the candidate. The mirror now skips 13 px (the original's whole frame bevel), after the
+  art director found a thin pale stripe with the first 5-px skip.
+- **Android preview APK (about 20:25 UTC, the user's request):** the SDK reinstalled in `~/android-sdk` (`dl.google.com`
+  added to the `bubblegame` environment, approved by the user); `Tools/android_apk/start.html` now opens
+  `?s3=intunnel,water7`, `intunnel,water8`, `intunnel`, `match` and the normal game. `BubbleWashKingdom_preview.apk`
+  (75 MB, bundle `3dac5847`) was sent to the user; not committed. Its debug key is new on this machine, so a phone with
+  the 5 November APK must uninstall that first.
 - **Tools added (diagnostic only):** `layer_diag.cjs` `ROUTE_WATER=` (serve another face texture, e.g. a coordinate-coded
   one) and per-ablation `drop` shader edits; `48_water_r6/diag/scripts/uv_texture.py`, `uv_read.py`, `white_trace.py`;
   `50_contact_edge/scripts/edge_profile.py`; `derive_water_map.py --alpha-body --alpha-x`.

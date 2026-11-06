@@ -153,3 +153,7 @@ The APK is built and checked: signed (v2 and v3), carrying exactly the tested bu
 
 _[Sent you files: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/apk/BubbleWashKingdom_preview.apk]_
 
+Saved as `0a51175`. Starting R8's steering video, the last check the art director asked for before presenting R8 as the candidate:
+
+While it records (about 12 minutes), updating the write-ups with the art director's final verdicts and the APK:
+
