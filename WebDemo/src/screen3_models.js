@@ -66,6 +66,9 @@ if (S3.round2) { S3.paint = !S3.round3; S3.tunnel = true; }
 // Measured against the approved Screen 3 (tools/screen4/compare_s4.py), the closest fully 3D opening is the user's five Meshy
 // opening models (castle, entrance, machinery, brush, bubbles) with the icy edges and the opening camera of the cine test.
 if (S3.round3) for (const k of ['castle', 'entrance', 'machinery', 'brush', 'bubbles', 'edges', 'cine']) S3[k] = true;
+// ?s3=intunnel (tunnel_s4_bt.js): the run starts inside the tunnel, so there is no opening shot: the opening camera (cine,
+// 0.82 m further forward and pitched at Tap to Start) would zoom the start screen in by about 1.25 x
+if (LIST.includes('intunnel')) S3.cine = false;
 if (S3.paint) { S3.castle = true; S3.edges = true; }
 export const S3_ON = Object.values(S3).some(Boolean);
 export const S3_FILES = { castle: 'models/s3_castle.glb', entrance: 'models/s3_entrance.glb', machinery: 'models/s3_machinery.glb', brush: 'models/s3_brush.glb' };
