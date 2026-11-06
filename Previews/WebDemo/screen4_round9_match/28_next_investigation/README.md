@@ -163,7 +163,7 @@ procedural whites it replaces on the walls.**
 - **Scope:** `?s3=focus` only. The pink character untouched. The same tests as step 4.
 
 It is the user's main request, and the measured gain is the largest one available: white pieces at the original's size
-instead of confetti, ring breakup back to the original's, and texture +10 %.
+instead of confetti (246 px against 237; now 70), ring breakup 8.08 → 9.47 (original 10.31), and texture +10 %.
 
 **Then, each as its own step:**
 

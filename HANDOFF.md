@@ -2,7 +2,27 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (6 November, about 01:00 UTC): eleventh session, branch `ccr-038551a2-x01b22`, the layer diagnosis (no game changes)
+## Newest (6 November, about 02:30 UTC): eleventh session, step 4 done, the next corrections investigated
+
+- **Step 4, committed `666905c` (rollback point `2babe4f`):** `?s3=focus` `floorFx.lift` 0.55 → 0, the user's approved
+  first correction. Evidence and tests: `Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/README.md`.
+  - Floor ahead: saturated blue 11.5 → 28.2 %, pale blue 74.5 → 53.9 %, detail 2.29 → 3.09.
+  - Tests:
+    - 41 frames of every other switch identical;
+    - the character drawn alone identical;
+    - `s3_func` and `r2_func` identical to step 3;
+    - Pixel 7 captured.
+- **Investigated, NOT implemented** (`28_next_investigation/README.md`):
+  - the walls lose the original's splashes in `derive_tunnel_textures._lowfreq`, which blurs every texel. A fill-only map
+    keeps them;
+  - the tunnel bubbles and other overlays cover 35 % of the tunnel and cut its saturation from 0.47 to 0.32;
+  - the core's lavender band is the walls' ring placement stretched 4-5 x where the path bends 15-30 m ahead
+    (calibration map).
+- **Recommended step 5, waiting for the user:** the fill-only ring map with the original's whites, and the walls' duplicate
+  procedural flecks and the tunnel streaks removed.
+- **Autosave:** restarted at about 02:07 UTC; it had stopped after its 01:11 round without an error.
+
+## Earlier (6 November, about 01:00 UTC): eleventh session, branch `ccr-038551a2-x01b22`, the layer diagnosis (no game changes)
 
 - **The user's request:** use real developer tools, not visual trial and error.
   - Inventory the tools.
@@ -22,7 +42,7 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
   - Texture: the ring map loses 56-60% of the original's texture and all its white in `derive_ring_map.py` (`WHITE_OUT`
     mask, 6° blur). The whites come back as procedural "confetti".
   - Tunnel: the bubble overlays veil the walls.
-- **Proposed single correction, NOT applied, waiting for the user:** `floorFx.lift` 0.55 → 0 in `tunnel_r9_focus.js`
+- **Proposed single correction (applied as step 4, `666905c`, after the user's approval):** `floorFx.lift` 0.55 → 0 in `tunnel_r9_focus.js`
   (`?s3=focus` only). Measured on the floor ahead: saturated blue 11.5 → 28.2% (original 18.0), pale blue 74.5 → 53.9%
   (34.5), detail 2.29 → 3.09 (3.41).
 - **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_eleventh_session_layer_diagnosis.md`).
