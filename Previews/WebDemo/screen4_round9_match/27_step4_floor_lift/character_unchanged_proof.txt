@@ -1,0 +1,4 @@
+The pink character drawn ALONE (every other layer hidden; layer_diag.cjs solo [196] = BubbleWash_PinkFuzzyMascot_Small), seed 7, 3.0 s,
+before (lift 0.55, bundle 2619938c) against after (step 4, bundle 73ed2a8b): canvas 768 x 1536
+whole frame (her and the cleared, post-processed background; 554802 non-black pixels) | differing pixels: 0 | max channel difference: 0
+(In the full frame, pixels inside her outline change only where the floor shows between her fur strands.)

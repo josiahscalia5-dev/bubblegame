@@ -247,7 +247,12 @@ export const FOCUS = {
     // bands (noise from, to; scale round and out); blue: blue dashes in the other cells (colour, share of cells, how much)
     // (tunes f2-f6: 0.35 toward #aad7f4 gave L* 76; 0.55 toward a paler #b6dcf6 with thicker streaks in wider bands and
     // stronger blue dashes gives the original's white water with blue dashes)
-    floorFx: { delilac: 1.0, pale: '#b6dcf6', lift: 0.55, white: '#f6fbff',
+    // (step 4, the user's approval of 6 November: the pale lift OFF, 0.55 -> 0. The layer diagnosis, 26_layer_diagnosis/,
+    // found this mix the floor's main flattening: #b6dcf6 was the original's MEDIAN there, and the median of its white
+    // splash and cobalt is that pale blue, so pulling every pixel 55% toward it turned two-tone water into one mid-tone.
+    // Seed 7, 3.0 s, floor ahead: saturated blue 11.5 -> 28.2%, pale blue 74.5 -> 53.9%, detail 2.29 -> 3.09, L* p5-p95
+    // spread 26.2 -> 33.8; the original 18.0%, 34.5%, 3.41, 32.7. Rollback: lift 0.55.)
+    floorFx: { delilac: 1.0, pale: '#b6dcf6', lift: 0, white: '#f6fbff',
       streak: { along: 20.0, across: 9.0, share: 0.95, len: [0.6, 1.0], thick: [0.35, 0.75], bend: 0.12, amount: 0.95,
         band: [0.2, 0.5, 3.0, 1.5], blue: { col: '#4f9ff0', share: 0.35, amount: 0.75 } } },
     splash: {
