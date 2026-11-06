@@ -72,7 +72,11 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
     previous and none merged (all in `tunnel_s4_bt.js`, `WATER3`-`WATER6`): `water3` (R3c: the face extras off, a mild colour
     lift, `45_water_r3/`), `water4` (R4, the current water candidate: the texture's holes filled with exemplar patches of the
     original's water, `46_water_r4/`), `water5` (R5, rejected: registered 22 px lower, `47_water_r5/`), `water6` (R6: the fill
-    under her from the original's lower water only, `48_water_r6/`).
+    under her from the original's lower water only, `48_water_r6/`), `water7` (R7, the fifteenth session's candidate: the
+    game's spray droplets drawn no bigger than 12 px of the canvas height, which removed the white "cotton-ball" piles while
+    moving, plus mirrored sampling beyond the texture's edges, which removed a dark fin at the lower left when steering left;
+    `49_water_r7/`), `water8` (R8: the face's edge in front of her follows the original's own outline, an alpha channel from
+    the original's body silhouette; `50_contact_edge/`).
   - `bt` (6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
     gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,
     unchanged), the wall brushes 0.66, the sock's toe blue. Evidence and the proof that it is step 8 plus only these:

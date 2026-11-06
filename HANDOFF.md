@@ -13,19 +13,29 @@
   - `water5` R5 (`47_water_r5/`): REJECTED (registered 22 px lower; the lavender domes then sit below her).
   - `water6` R6 (`48_water_r6/`): the fill under her from the original's lower water only. The art director: about the same
     as R4, clearly closer than the accepted build at the start, slightly closer moving; "not the fix".
-  - `water7` R7 (`49_water_r7/`): R6 + the game's spray droplets drawn no bigger than 12 px of the 1536 px canvas.
+  - `water7` R7 (`49_water_r7/`), THE CANDIDATE: R6 + the game's spray droplets drawn no bigger than 12 px of the
+    1536 px canvas + mirrored sampling beyond the texture's edges. The art director: clearly closer than R6 and the
+    accepted build while moving, the white "cotton-ball" piles gone. Gameplay tests identical to the accepted build.
+    Videos, straight and steering, with side-by-side ORIGINAL | ACCEPTED | R7.
+  - **A defect found and fixed:** a dark grey fin at the lower left when she steers left, in every water candidate since
+    R2. The texture's clamp smeared the original screenshot's own dark frame border; the mirrored edge sampling removes it.
+  - `water8` R8 (`50_contact_edge/`): R7 + the face's edge in front of her following the original's own outline (an alpha
+    channel from the original's body silhouette, cut only within her model's span). The first R8: slightly closer than
+    R7; its see-through notches fixed in R8b (the final `water8`).
 - **The diagnosis (`48_water_r6/README.md`, `48_water_r6/diag/`):**
   - The texture mapping is exact (a coordinate-coded texture via `layer_diag.cjs ROUTE_WATER=`): 0.94-1.00 texture rows per
     screen pixel; about 45 % of the band under her is filled hole; at the start the bottom 30 px are a clamped smear.
   - The moving frames' extra white (33-38 % against the original's 18.6) is NOT the water: the face alone is 20.6 % white.
     It is the game's own spray particles (`game.js` `Particles`, nearly all round3's white spray, kind 3), drawn 50-90 px
     wide near the camera: the "cotton-ball" piles. The art director found the same cause independently.
-- **R7 measured:** band white at +1 s 32.3 -> 22.2 %, saturated blue 12.1 -> 15.6 (original 18.6 / 19.6). Its +1 s and +2 s
-  frames are 0 pixels from the 12 px cap test; R6 and the accepted build are 0 pixels changed (bundle `5ae28f9f`).
-- **Still to finish for R7:** the art director's verdict, the straight / steering videos (`49_water_r7/videos/`), the
-  gameplay tests (`49_water_r7/gameplay/`), the README.
-- **Remaining differences (the art director):** the contact edge, a flat ragged cut across her instead of the original's two
-  large lavender domes with white rims rising in front of her lower edge; the softness of the fill; some paleness.
+- **R7 measured:** band white at +1 s 32.3 -> 22.2 %, saturated blue 12.1 -> 15.6 (original 18.6 / 19.6); foreground water
+  LPIPS at +2 s accepted 0.647, R6 0.602, R7 0.586. The accepted build is 0 pixels changed (final bundle `215f35c5`).
+- **Remaining differences (the art director):** the left dome (x 230-340), where the face's top edge is lower than the
+  original's outline, so her fur covers the dome's top and white rim; varied fleck sizes; the softness of the fill; some
+  paleness.
+- **Tools added (diagnostic only):** `layer_diag.cjs` `ROUTE_WATER=` (serve another face texture, e.g. a coordinate-coded
+  one) and per-ablation `drop` shader edits; `48_water_r6/diag/scripts/uv_texture.py`, `uv_read.py`, `white_trace.py`;
+  `50_contact_edge/scripts/edge_profile.py`; `derive_water_map.py --alpha-body --alpha-x`.
 - **Tripo / Meshy:** not used, no credits.
 
 ## Newest (6 November, about 17:00-17:40 UTC): `?s3=intunnel,water2`, the existing water's material corrected; FOR THE USER'S APPROVAL
