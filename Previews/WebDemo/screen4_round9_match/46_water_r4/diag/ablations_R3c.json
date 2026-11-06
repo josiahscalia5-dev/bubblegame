@@ -1,0 +1,15 @@
+[
+ {"label":"swell_solo", "solo":["heroSwell"]},
+ {"label":"swell_solo_nobloom", "solo":["heroSwell"], "post":{"bloom":false}},
+ {"label":"swell_mascot", "solo":["heroSwell","PinkFuzzyMascot"]},
+ {"label":"no_bloom", "post":{"bloom":false}},
+ {"label":"no_opening", "hide":["openingLook",160]},
+ {"label":"no_splash", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles"]},
+ {"label":"no_bubbles", "hide":["s3Bubbles","s4Bubbles","heroBubbles","mwTunnelBubbles",1,199]},
+ {"label":"no_icy", "hide":["s3IcyEdge"]},
+ {"label":"no_floor12", "hide":[12]},
+ {"label":"no_bg0", "hide":[0]},
+ {"label":"no_swell", "hide":["heroSwell"]},
+ {"label":"no_overlays", "hide":["openingLook",160,"heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3Bubbles","s4Bubbles","heroBubbles","mwTunnelBubbles",1,199,"s3IcyEdge"]},
+ {"label":"no_overlays_nobloom", "hide":["openingLook",160,"heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3Bubbles","s4Bubbles","heroBubbles","mwTunnelBubbles",1,199,"s3IcyEdge"], "post":{"bloom":false}}
+]

@@ -1,0 +1,10 @@
+[
+ {"label":"swell_solo_nobloom", "solo":["heroSwell"], "post":{"bloom":false}},
+ {"label":"swell_solo_nobloom_nograde", "solo":["heroSwell"], "post":{"bloom":false, "grade":false}},
+ {"label":"no_overlays_nobloom", "hide":["openingLook",160,"heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3Bubbles","s4Bubbles","heroBubbles","mwTunnelBubbles",1,199,"s3IcyEdge"], "post":{"bloom":false}},
+ {"label":"no_overlays", "hide":["openingLook",160,"heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3Bubbles","s4Bubbles","heroBubbles","mwTunnelBubbles",1,199,"s3IcyEdge"]},
+ {"label":"no_bloom", "post":{"bloom":false}},
+ {"label":"no_grade", "post":{"grade":false}},
+ {"label":"no_swell", "hide":["heroSwell"]},
+ {"label":"behind_swell", "hide":["heroSwell","openingLook",160,"heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3Bubbles","s4Bubbles","heroBubbles","mwTunnelBubbles",1,199,"s3IcyEdge"], "post":{"bloom":false}}
+]
