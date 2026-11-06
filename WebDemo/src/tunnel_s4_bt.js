@@ -67,6 +67,26 @@ export const BANK = {
   domes: [[34, 0.085, 0.08, 0.3, 0], [-36, 0.075, 0.08, 0.3, 0], [50, 0.06, 0.12, 0.25, 0]],
 };
 export const DOMES_ON = BT_ON && (LIST.includes('domes') || BANK_ON);
+// (the bank, candidates W1 and W1b: REJECTED by eye: smooth pale matte blue pillows beside her, not the original's glossy
+// water; its lobes are lit and pass through the grade and tone mapping, which wash them out. Not part of ?s3=intunnel)
+// ?s3=intunnel,wave: a DIFFERENT technique after the two failed lobe-object candidates: the swell's own water face
+// (heroSwell, focusSwellGLSL) draws the original's rounded water lobes itself, in place of its white comma arcs (`lace`):
+// a field of rounded domes on the face's surface coordinates (along the crest s, down the face), flowing down it, each
+// shaded as a lit bulge (its 2D normal from the dome's profile): cobalt in the gaps, azure bodies, pale cyan rims, a white
+// glint upper left; a share of them lavender bubbles with clear centres and white rims. Its colours are the screen's,
+// through the inverse display transform (mtUndisplay), so they land as the original's (the step that washed W1 out).
+// Geometry, waterline and character unchanged.
+//   cell: domes per m [along, down]; r: a dome's radius [min, max] as a share of its cell; share: cells with a dome; flow:
+//   how fast they run down the face (m/s); reach: m down the face the domes cover; lav: the share of lavender bubbles
+export const WAVE_ON = BT_ON && LIST.includes('wave');
+// (W2: gap #178ee8, body #3d9ff0, light #9fd3f7, rim #cfeafc, glint [0.86, 0.95], share 0.85, r [0.42, 0.62], lav 0.16: the
+// rounded lobes right, but too blue: in the foreground water saturated blue 47.8 % against the original's 24.6 %, white 11 %
+// against 16.8 %, LPIPS 0.708 against the previous 0.656. W2b: the original's own balance there (k-means: white #e5effa 30 %,
+// pale #acd4f5 24 %, azure #53aff0 18 %, lavender #8fa6e9 17 %, cobalt #178ee8 9 %): lighter bodies, bigger white glints and
+// rims, thin cobalt gaps (more and bigger domes), a fifth of them lavender)
+export const WAVE = { cell: [7.0, 6.0], r: [0.5, 0.68], share: 0.95, flow: 0.9, reach: 1.1, lav: 0.2,
+  gap: '#2a8ae8', body: '#5fb2f2', light: '#b8def8', rim: '#eaf4fd', white: '#ffffff', lavBody: '#98a4ec', lavRim: '#e8e6fc',
+  glint: [0.7, 0.88], amount: 1.0 };
 export const DOMES = {
   // (first build: the radii below / 1.106, body alpha [0.42, 0.5], lavender #a295ee, highlight 0.9: too small and too faint by
   // eye, glassy pale circles. Then 12 Optuna trials on the real game, tools/screen4/optuna_domes.py; LPIPS hardly moved, 0.567-

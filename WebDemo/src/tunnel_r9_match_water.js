@@ -33,7 +33,7 @@ import * as THREE from 'three';
 import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
-import { BT_ON, BT, BANK_ON, BANK } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
+import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -454,7 +454,7 @@ function focusSwellGLSL() {
       mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
       mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
       mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
-${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}      mwA *= fsKeep;
+${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}${WAVE_ON ? btWaveGLSL() : ''}      mwA *= fsKeep;
 ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
         mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
       }
@@ -487,6 +487,35 @@ function btFrothGLSL() {
         btC = mix(btC, ${v3s(P.glint)}, btGl);
         btC = mix(${v3s(P.aqua)}, btC, smoothstep(btTh + ${f4(P.edge * 0.4)}, btTh + ${f4(P.edge * 1.6)}, btN));
         mwCol = mix(mwCol, mtUndisplay(btC), btP * ${f4(P.amount)});
+      }
+`;
+}
+// ?s3=...,wave (tunnel_s4_bt.js WAVE): the original's rounded water lobes drawn by the swell's face itself (inside
+// focusSwellGLSL's block: s along the crest (m), fsPd down the face (m), fsE m below the cut edge, fl the flow, mwCol)
+function btWaveGLSL() {
+  const P = WAVE;
+  return /* glsl */ `      {   // ?s3=...,wave: rounded glossy water lobes flowing down the face
+        vec2 bwQ = vec2(s * ${f4(P.cell[0])} + fl * 0.15, fsPd * ${f4(P.cell[1])} - uTime * ${f4(P.flow * P.cell[1])}), bwB = floor(bwQ - 0.5);
+        float bwH = 0.0, bwLav = 0.0; vec2 bwN = vec2(0.0);
+        for (int j = 0; j < 4; j++) {   // the 2 x 2 nearest cells: the highest dome wins (their union)
+          vec2 bwI = bwB + vec2(mod(float(j), 2.0), floor(float(j) * 0.5));
+          float bwS = lqHash(bwI + 61.0);
+          if (bwS > ${f4(P.share)}) continue;
+          vec2 bwO = bwQ - bwI - 0.5 - (vec2(lqHash(bwI + 63.0), lqHash(bwI + 67.0)) - 0.5) * 0.45;
+          float bwR = mix(${f4(P.r[0])}, ${f4(P.r[1])}, lqHash(bwI + 71.0)), bwD = length(bwO) / bwR;
+          if (bwD >= 1.0) continue;
+          float h = sqrt(1.0 - bwD * bwD);
+          if (h > bwH) { bwH = h; bwN = bwO / bwR; bwLav = step(1.0 - ${f4(P.lav)}, lqHash(bwI + 73.0)); }
+        }
+        float bwReach = 1.0 - smoothstep(${f4(P.reach * 0.6)}, ${f4(P.reach)}, fsE);
+        vec3 bwNrm = normalize(vec3(bwN.x, -bwN.y, bwH + 0.15));   // the dome's normal on the face (x along, y up the face, z out)
+        float bwLit = clamp(dot(bwNrm, normalize(vec3(-0.45, 0.55, 0.7))), 0.0, 1.0), bwEdge = 1.0 - smoothstep(0.0, 0.35, bwH);
+        vec3 bwC = mix(${v3s(P.body)}, ${v3s(P.light)}, smoothstep(0.35, 0.95, bwLit));
+        bwC = mix(bwC, ${v3s(P.rim)}, bwEdge * 0.85);
+        bwC = mix(bwC, mix(${v3s(P.lavBody)}, ${v3s(P.lavRim)}, bwEdge), bwLav * 0.9);          // the lavender bubbles: light centre, white rim
+        bwC = mix(bwC, ${v3s(P.white)}, smoothstep(${f4(P.glint[0])}, ${f4(P.glint[1])}, bwLit) * smoothstep(0.25, 0.6, bwH));   // the glint
+        vec3 bwW = mix(${v3s(P.gap)}, bwC, smoothstep(0.0, 0.08, bwH));                         // cobalt between the domes
+        mwCol = mix(mwCol, mtUndisplay(bwW), bwReach * ${f4(P.amount)} * (1.0 - fsSpark * 0.5));
       }
 `;
 }

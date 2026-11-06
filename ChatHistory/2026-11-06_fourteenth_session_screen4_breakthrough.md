@@ -1121,3 +1121,5 @@ Your saving question first: yes. The autosave is running every 5 minutes (it has
 
 Now the water, your top priority. Your close-up shows rounded, glossy blue liquid lobes with cyan highlights and white specks, rising around her base, with a few lavender domes among them. The closest existing 3D element is the splash bank's water lobes (`spLumps`, instanced rounded meshes on the swell). `focus` cut them down to four small ones low in the corners. Reading how they're placed and shaded:
 
+The 2.0 s render timed out because the machine is busy with the video recording. The start frame rendered; looking at it:
+
