@@ -1356,3 +1356,21 @@ Everything is saved to your GitHub repository: the latest commit is `2542d46`, G
 - **The built Android file (.apk) and its signing key** are deliberately left out because your repository is public; a published signing key would let anyone sign apps as you. The app's full source and build script are saved, so it rebuilds exactly.
 - **Plugins:** this account has no Claude plugins switched on. Your project's own design agents and Screen Matcher skill are all saved.
 
+---
+
+### You · 2026-11-06 16:54 UTC
+
+[attached file: Bubble_Wash_3_Way_Water_Comparison_FRESH.zip] Claude, I need you to change your approach to matching my original approved Screen 4 water. The previous experiments have proved that adding water domes, lobes, fins, and curling sheets does not solve the actual problem. Stop adding new objects to the water. My original approved screenshot clearly has a different blue-water appearance, shape, texture, depth and structure than my current game. I want you to correct the existing water itself.
+
+First, examine my authentic original approved image next to the accepted playable "?s3=intunnel" version. Focus specifically on the foreground water underneath and immediately around the pink character. The original has stronger blue areas, luminous cyan and turquoise, irregular rounded water forms, bright broken white highlights, fine details, and a few translucent lavender reflections. My current version has too much pale icy blue and repeated white streaks, with a different water-contact shape. Do not simply darken the entire screen, increase bloom, or add more foam. I want the original's actual color distribution and structure recreated.
+
+Use Spector.js and your existing Three.js diagnostics to isolate the foreground water material, "heroSwell" or the relevant current mesh, its texture and shader, transparent overlays, lighting, bloom, and color processing. Identify exactly what causes the pale, flattened appearance. Once you have that evidence, use my approved image and any authentic water-layer extraction assets already in the repository to reconstruct the original water's color patterns and rounded shapes. Prefer changing the existing animated water material, flow texture, shader, and local water-contact geometry over stacking more separate effects on top. The water must remain genuinely animated and playable in 3D, and the pink character must remain sitting ON TOP of it.
+
+Build one reversible candidate behind a separate test flag, preserving the accepted game, current branch, movement, HUD, collectibles, brushes, collision systems and controls. Give me a full-size original-versus-current-versus-new comparison and an enlarged water close-up, all with matching camera framing, seed and character position. Provide a moving gameplay test as well. Do not claim success based only on LPIPS, SSIM or regression tests. I want to SEE that the actual blue water is substantially closer to the original.
+
+If the candidate still looks like pale water with different effects on top, do not accept it. Show me what the investigation established and what underlying rendering issue remains. Do not work on the girl, earlier introduction, brushes, diamond or unrelated features. I want to solve the original approved water appearance first, without losing the real gameplay we've already built.Claude, before spending credits on Tripo AI or Meshy, inspect whether either tool could genuinely improve the water surrounding my pink character in my original approved Bubble Wash Kingdom Screen 4. My priority is the darker cobalt-blue water, its irregular rounded structure, crisp highlights, and the way the character sits directly on top of it. Do not generate another separate water object unless there is clear evidence it would produce a closer match. Prior water domes, lobes and curling-crest objects failed, so do not repeat those approaches.
+
+Use our existing Three.js water geometry, shader, textures, Spector.js diagnostics and authentic approved image as the primary solution. Consider Meshy or Tripo only for specific standalone 3D assets such as fluffy brushes, diamonds or other objects where image-to-3D generation is appropriate. Do not spend credits or change the accepted playable game without my approval. I want a visibly closer result, not another unrelated water design.
+
+_[2 images attached]_
+
