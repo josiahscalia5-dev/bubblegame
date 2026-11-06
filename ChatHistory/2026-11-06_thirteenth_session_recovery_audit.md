@@ -150,3 +150,18 @@ Starting step 6. First, a check that the autosave is still running, and the inve
 
 The notes point at `mtPlace` in `tunnel_r9_match.js`: the walls' ring placement assumes a straight tube. Let me read how the placement and the centre blend work.
 
+The stripe calibration map from the investigation wasn't kept in the repository, so I'll regenerate it from the ring map's own geometry. Reading the map's row and column convention:
+
+The map is 512 × 1024: angle across, log radius down, row 0 = 0.025 W, not flipped. Now the layer groups the last session used to hide the overlays:
+
+I'll set up the step 6 worktree (sparse: the game, the tools and the original) and link its dependencies, so the main tree stays the untouched step 4 "before" build.
+
+The liquid's shared shader code declares `uLqFwd`, `uLqUp` and `uLqSide` for both walls and floor, and the exit declares them itself. Now the settings file, to add the switch for step 6:
+
+The edit tool needs a prior read of those worktree files, so I'll apply the same four replacements with a script that asserts each one matches exactly once:
+
+Built. Two first tests in parallel:
+
+1. The stripe calibration on the step 6 build.
+2. The step 6 build with the new switch turned off by a test tune, which should give step 4's frame exactly.
+
