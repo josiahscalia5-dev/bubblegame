@@ -1,0 +1,10 @@
+[
+ {"label":"no_splash", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles"]},
+ {"label":"no_bubbles", "hide":["s3Bubbles","s4Bubbles","r3Bubbles","heroBubbles","mwTunnelBubbles"]},
+ {"label":"no_glow_collar", "hide":["heroGlow","heroCollar"]},
+ {"label":"no_bloom", "post":{"bloom":false}},
+ {"label":"no_floor", "hide":["lqFloor"]},
+ {"label":"no_swell", "hide":["heroSwell"]},
+ {"label":"swell_solo_nobloom", "solo":["heroSwell"], "post":{"bloom":false}},
+ {"label":"no_overlays_nobloom", "hide":["heroSplash","spCurls","spLumps","lqWaterlineBubbles","s3Bubbles","s4Bubbles","r3Bubbles","heroBubbles","mwTunnelBubbles","heroGlow","heroCollar"], "post":{"bloom":false}}
+]

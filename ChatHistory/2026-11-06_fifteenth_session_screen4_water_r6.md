@@ -26,3 +26,9 @@ The bundle rebuilds byte-identical and already contains R6. Now rendering R6's s
 
 While R6 renders, I'm writing the comparison-sheet script (original / accepted / R4 / R6, full-res, close-up and moving).
 
+While those run, I'm preparing a layer ablation of the moving frame (+1 s) to find which layers make it so white, since that's the largest measured gap while moving.
+
+Writing the missing READMEs for R4 and R5 while the ablation runs.
+
+While the probe renders, updating `CLAUDE.md`'s switch list (it still stops at `water2`):
+

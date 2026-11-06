@@ -38,6 +38,10 @@ const server = http.createServer((req, res) => {
   // (the game's own loader and shaders unchanged; nothing on disk in WebDemo/textures changes)
   if (process.env.ROUTE_RINGS) await page.route('**/textures/screen4/tunnel_rings_original.png',
     (route) => route.fulfill({ status: 200, contentType: 'image/png', body: fs.readFileSync(process.env.ROUTE_RINGS) }));
+  // (fifteenth session) ROUTE_WATER=<png> serves that file in place of every textures/screen4/foreground_water_original*.png
+  // (the ?s3=...,water2..6 face textures), e.g. a coordinate-coded texture to read back where the face samples
+  if (process.env.ROUTE_WATER) await page.route('**/textures/screen4/foreground_water_original*.png',
+    (route) => route.fulfill({ status: 200, contentType: 'image/png', body: fs.readFileSync(process.env.ROUTE_WATER) }));
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   await page.evaluate(() => window.__bw.advance(0.5));

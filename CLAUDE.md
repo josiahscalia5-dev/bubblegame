@@ -68,7 +68,11 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
     (`41_bubble_domes/`); the water bank and the lobe-drawing water face (`bank`, `wave`) were rejected too (`42_water_bank/`);
     the curling crests (`crest`) were rejected too (`43_curling_crests/`). `water2` (`tunnel_s4_water2.js`: heroSwell's own face
     material takes the original's foreground water, `44_water_material/`) was judged moderately closer by the art director
-    and is waiting for the user's approval; it is NOT part of `intunnel` until then.
+    and is waiting for the user's approval; it is NOT part of `intunnel` until then. Its refinements, each on top of the
+    previous and none merged (all in `tunnel_s4_bt.js`, `WATER3`-`WATER6`): `water3` (R3c: the face extras off, a mild colour
+    lift, `45_water_r3/`), `water4` (R4, the current water candidate: the texture's holes filled with exemplar patches of the
+    original's water, `46_water_r4/`), `water5` (R5, rejected: registered 22 px lower, `47_water_r5/`), `water6` (R6: the fill
+    under her from the original's lower water only, `48_water_r6/`).
   - `bt` (6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
     gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,
     unchanged), the wall brushes 0.66, the sock's toe blue. Evidence and the proof that it is step 8 plus only these:

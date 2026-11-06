@@ -1,0 +1,10 @@
+objects 238 canvas [ 768, 1536 ] post [{"type":"Zc","enabled":true},{"type":"n","enabled":true},{"type":"$o","enabled":true},{"type":"Jc","enabled":true}]
+no_splash hidden 4
+no_bubbles hidden 4
+no_glow_collar hidden 2
+no_bloom hidden 0
+no_floor hidden 1
+no_swell hidden 1
+swell_solo_nobloom hidden 237
+no_overlays_nobloom hidden 10
+no console errors or warnings
