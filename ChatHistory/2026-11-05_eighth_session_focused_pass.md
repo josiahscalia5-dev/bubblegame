@@ -798,3 +798,47 @@ You've hit your 5-hour limit · resets 9:50pm (UTC)
 
 _Agent "Water &amp; VFX: splash round her, floor" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 9:50pm (UTC) (error type rate_limit, HTTP 429, request id req_011CgkHyGMuNscd65ZMUcLHh, model sent to the API: claude-opus-5-5)_
 
+---
+
+### Claude · 2026-11-05 20:22 UTC
+
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 20:22 UTC
+
+_1 unread notification (scheduled trigger (the stored prompt of a routine or task on this account): 1)_
+
+---
+
+### Claude · 2026-11-05 20:22 UTC
+
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 20:22 UTC
+
+_1 unread notification (scheduled trigger (the stored prompt of a routine or task on this account): 1)_
+
+---
+
+### Claude · 2026-11-05 20:22 UTC
+
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+---
+
+### Automatic notice · 2026-11-05 20:22 UTC
+
+_1 unread notification (scheduled trigger (the stored prompt of a routine or task on this account): 1)_
+
+---
+
+### Claude · 2026-11-05 20:22 UTC
+
+You've hit your 5-hour limit · resets 9:50pm (UTC)
+
+The session's worker restarted. Checking what survived: the repository, the agents' worktrees, the autosave and the tools.
+

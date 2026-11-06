@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: lighting-visual-matching (Tunnel & Lighting: camera, ribbons, objects)
 
-- **Taken:** 2026-11-05 18:58 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-06 00:09 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-ae55466877e7d52cb` (local only), started from `d6e836d`.
 - **Its own commits so far:** 
   - `2975aea Focus: the hard horizontal seam across the left wall (at the vanishing point's height, x 0-0.35) removed. Cause: focusRibbonsGLSL's per-band picks (arc count, arc offsets, colours) keyed on floor(band phase), and the band phase steps by one band where the screen angle wraps (screen-left, on the horizontal through the camera); with the camera at the axis height that step drew a straight line. The ribbons now count the angle from straight down, so the step falls on the tube's bottom under the water floor. Largest row-to-row jump on the left wall (x 0.02-0.30, y 0.48-0.62): 28.2 -> 14.0 (the coin's edge; median 6)`
