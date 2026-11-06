@@ -1,0 +1,5 @@
+objects 244 canvas [ 768, 1536 ] post [{"type":"Yc","enabled":true},{"type":"n","enabled":true},{"type":"Go","enabled":true},{"type":"Zc","enabled":true}]
+bloom_off hidden 0
+overlays_hidden hidden 6
+floor_hidden hidden 1
+no console errors or warnings

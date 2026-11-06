@@ -1,0 +1,3 @@
+[{"label":"bloom_off","post":{"bloom":false}},
+ {"label":"overlays_hidden","hide":["lqWaterlineBubbles","heroSplash","spLumps","spCurls","^Points$"]},
+ {"label":"floor_hidden","hide":["lqFloor"]}]
