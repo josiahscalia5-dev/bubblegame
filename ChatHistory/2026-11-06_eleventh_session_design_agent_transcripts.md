@@ -78,8 +78,18 @@ Good, playwright resolves. Now build.
 - 00:11 `Bash`: List visible scene objects at 3.0 s
 - 00:12 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/zstat.py
 - 00:12 `Bash`: Run layer hide probe at 3.0 s
+- 00:16 `Bash`: Read rest of matchWall shader
+- 00:16 `Bash`: Read ring map derivation script
+- 00:16 `Bash`: Inspect derive constants and current ring map
+- 00:16 `Bash`: Check probe progress
+- 00:16 `Bash`: Check probe output
+- 00:16 `Bash`: Measure probe frames zone stats
+- 00:16 `Bash`: Crop probe frames for visual comparison
+- 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_probe.png
+- 00:17 `Bash`: Read object mask and lowfreq functions
+- 00:17 `Bash`: Generate ring map variants with sheets
 
-_40 tool steps._
+_50 tool steps._
 
 ---
 
@@ -163,5 +173,9 @@ I'll start by reading the required files in order.
 - 00:11 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/base/diffmask.png
 - 00:11 `Bash`: Save base bundle and read rest of hide probe
 - 00:12 `Bash`: List visible objects at 3.0 s in focus
+- 00:12 `Bash`: Hide probe of the water layers at 3.0 s
+- 00:17 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/probe_sheet.py
+- 00:17 `Bash`: Make the hide probe sheet
+- 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/probe1/sheet.png
 
-_47 tool steps._
+_51 tool steps._

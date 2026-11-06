@@ -30,3 +30,7 @@ The floor ahead takes 88% of its colour from the ring map. Checking whether the 
 
 The map itself has only 2.0% lavender in the floor ahead (and S 0.41), but the game shows 13.5% (S 0.34). So something drawn after the map adds it. Finding out what, layer by layer:
 
+Now measuring the floor ahead without the sock (x 0.30–0.62, where neither sock reaches), for your original, step 3 and pass 4a:
+
+I'll test candidate floor maps in a scratch copy of the game first, so nothing in the repository changes until one works:
+
