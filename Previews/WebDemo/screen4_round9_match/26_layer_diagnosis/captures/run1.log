@@ -1,0 +1,9 @@
+full -> full.png (0 changes)
+page.evaluate: TypeError: Cannot read properties of undefined (reading 'enabled')
+    at eval (eval at evaluate (:311:30), <anonymous>:7:51)
+    at UtilityScript.evaluate (<anonymous>:313:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at apply (/home/user/bubblegame/WebDemo/tools/screen4/layer_diag.cjs:68:37)
+    at /home/user/bubblegame/WebDemo/tools/screen4/layer_diag.cjs:91:21 {
+  log: []
+}

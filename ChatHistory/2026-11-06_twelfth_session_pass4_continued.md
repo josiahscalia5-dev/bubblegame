@@ -69,3 +69,5 @@ First give me the available tool list, a diagnosis supported by visual evidence,
 
 Spector.js 0.9.33 and `chrome-devtools-mcp` 1.12.0 are both on npm. Now the repository's own capture and layer-hiding tools, to see how the frame is framed and which layers can be switched off:
 
+The bundle's class names are minified, so finding the bloom pass by name failed. Checking the pass list in the inventory:
+
