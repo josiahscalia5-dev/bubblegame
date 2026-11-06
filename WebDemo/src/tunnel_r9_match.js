@@ -343,6 +343,9 @@ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tun
 // ?s3=focus with MATCH.walls.ringMap (step 3): the original's own rings (tools/screen4/derive_ring_map.py)
 const FOCUS_RINGS = FOCUS_ON && !!MATCH.walls.ringMap;
 if (FOCUS_RINGS) TEX.rings = 'tunnel_rings_original.png';
+// ?s3=focus step 6 (MATCH.centre.bend, tunnel_r9_focus.js): mtPlace from the point's real position seen from the camera
+// (its world position in the camera's track frame), so the rings stay concentric on screen where the far tube bends
+export const MT_BEND = FOCUS_RINGS && !!MATCH.centre.bend;
 export const MATCH_UNIFORMS = {
   uMatchOn: { value: 0 },   // 1 once every texture has loaded (otherwise the walls keep the Round 8 look)
   uMatchCol: { value: null }, uMatchBase: { value: null }, uMatchDet: { value: null }, uMatchNrm: { value: null }, uMatchVar: { value: null }, uMatchRim: { value: null },
@@ -451,10 +454,17 @@ vec3 mtUndisplay(vec3 c) {
 function matchPlaceGLSL() {
   const C = MATCH.centre;
   return /* glsl */ `${FOCUS_RINGS ? 'uniform vec2 uMatchPathVP;\n' : ''}
-void mtPlace(vec2 cs, float u, out float rw, out float tu) {
+void mtPlace(vec2 cs, float u${MT_BEND ? ', vec3 W' : ''}, out float rw, out float tu) {
   vec2 rel = cs - uHeroCam.xy;
   float du = max(u - uHeroCam.z, 0.25);
-  rw = length(rel) / du / uHeroTanW;
+${MT_BEND ? `  {   // ?s3=focus step 6: the point's real place seen from the camera, in the camera's own track frame (x along the track's
+      // R, screen-left, as cs; h along its U; depth along its T). On a straight tube this is exactly cs - uHeroCam.xy and
+      // u - uHeroCam.z; where the far tube bends it follows the bend, so the rings stay concentric on screen
+    vec3 cw = W - cameraPosition;
+    rel = vec2(dot(cw, uLqSide), dot(cw, uLqUp));
+    du = max(dot(cw, uLqFwd), 0.25);
+  }
+` : ''}  rw = length(rel) / du / uHeroTanW;
   vec2 at = vec2(-rel.x, rel.y);
 ${FOCUS_RINGS ? `  {   // ?s3=focus with the ring map (step 3): the whole ring field concentric round uMatchVP (where the original has its
       // centre), not only the inner part: the walls' 3D offset from the path's own vanishing point (uMatchPathVP), less
@@ -659,7 +669,7 @@ ${FOCUS_ON ? FOCUS_NOISE_GLSL : ''}
 // normal (toward the axis), T0 the path's direction
 vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
   float rw, tu;
-  mtPlace(cs, u, rw, tu);
+  mtPlace(cs, u${MT_BEND ? ', W' : ''}, rw, tu);
   float lr = log(max(rw, 1e-4));
   vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
   vec2 dx = dFdx(bv), dy = dFdy(bv);

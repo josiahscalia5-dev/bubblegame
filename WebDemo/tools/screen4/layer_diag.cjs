@@ -1,5 +1,5 @@
 // Screen 4 layer diagnosis (diagnostic only; changes nothing in the game).
-//   S3=focus [DPR=1.42751] node tools/screen4/layer_diag.cjs <abs WebDemo> <out-dir> [ablations.json]
+//   S3=focus [DPR=1.42751] [VIEW=700x1076] node tools/screen4/layer_diag.cjs <abs WebDemo> <out-dir> [ablations.json]
 // Reproduces the established hero frame exactly as tools/screen4/liquid_shots.cjs does it: Math.random seed 7,
 // __BW_OPENING_OFF__ ['art'], advance(0.5), tap, advance(3.0), no steering, the game's own camera. DPR 1536/1076 makes
 // the 538 x 1076 game area a 768 x 1536 canvas (resized to the original's 767 x 1536 in the analysis).
@@ -23,7 +23,9 @@ const server = http.createServer((req, res) => {
 (async () => {
   await new Promise((r) => server.listen(0, r));
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: DPR })).newPage();
+  // VIEW=412x839 DPR=2.625: a Pixel 7 screen (step 6); default the 1:2 frame as before
+  const [VW, VH] = (process.env.VIEW || '700x1076').split('x').map(Number);
+  const page = await (await browser.newContext({ viewport: { width: VW, height: VH }, deviceScaleFactor: DPR })).newPage();
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.text().slice(0, 400)); });
   page.on('pageerror', (e) => logs.push(e.message));

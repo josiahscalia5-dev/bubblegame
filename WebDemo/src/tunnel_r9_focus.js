@@ -87,6 +87,14 @@ export const FOCUS = {
     // big left coin and the lower-right coin a little smaller (gold area 4.67% of the frame at 3.0 s, the target 4.0-4.8%;
     // it was 4.96%), the small far coin beside the centre coin half size, as the original's tiny one (0.023 W)
     coinScales: [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]],
+    // STEP 6 of the user's fidelity plan (6 November 2026; the strict brief: "the distant center must not turn into an
+    // enormous white or lavender circle ... preserve the original ring structure"): the rings' place (mtPlace) worked out
+    // from each point's REAL position seen from the camera, in the camera's own track frame, instead of from the point's own
+    // cross-section, which assumes a straight tube. The path bends 15-30 m ahead, and there the old placement stretched the
+    // original's inner rings (stripe calibration, upper half: 1.36-1.56 x at 0.10-0.16 W, 0.72 x at 0.16-0.20 W; blobs
+    // locally) into the lavender / white band round the far centre (Previews/WebDemo/screen4_round9_match/
+    // 32_step6_centre_placement/). On the straight part it is the same number as before, so the near walls keep their rings.
+    centre: { bend: true },
     walls: {
       // STEP 3 of the user's fidelity plan (5 November 2026, about 22:40 UTC: "use the approved reference's actual circular ring
       // shapes, thin luminous cobalt / turquoise water bands, restrained warm centre, and water flow; remove the oversized

@@ -288,3 +288,57 @@ I saved and pushed the new evidence, and GitHub confirms it (`982e01e`). The gam
 
 Each one reports when it's done, and I'll pick up from there.
 
+---
+
+### You · 2026-11-06 04:50 UTC
+
+Can you show me Can you show me an image of how it looks? My app.
+
+---
+
+### Claude · 2026-11-06 04:50 UTC
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/06_pixel7_original_vs_step4_vs_step6_3.0s.jpg, Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/11_zoom_distant_centre_2x.jpg, Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/13_motion_t7.7_pixel7.jpg]_
+
+I've sent three images. They're real screenshots of your playable game on a Pixel 7 screen, each set out as your original, then step 4 (the game before today), then step 6 (today's change).
+
+1. **The checkpoint moment (3.0 s into the ride):** the full phone screen with the counters, mission banner and buttons. The change is mainly in the far tunnel, above and around the small coin in the middle.
+2. **The far tunnel centre, enlarged 2×:**
+   - Step 4 has a smeared pink, mint and cream patch above and left of the centre.
+   - In step 6 that patch is gone, and the blue rings continue in toward the centre as clean circles, like your original's vortex.
+3. **Moving through the tunnel at 7.7 s,** where the path bends most. Step 6 keeps the round, ring-within-ring vortex with the rainbow arc around the far centre. Step 4 smears it into broad bands.
+
+**What is still different from your original:**
+- Your original has more crisp white splashes and deeper cobalt blue in the tunnel. The next step (re-testing the walls drawn from your original's own pixels) is aimed at that.
+- The big brushes and the bubbles crowd the view more than in your original.
+- At 5.5 s into the ride, a bright pale disc still shows at the far centre. It has a different cause and isn't fixed yet.
+
+Step 6 isn't in the playable game build yet. One gameplay check (hearts, pause and both power-ups) and the video are still running; once they finish I'll commit it and send you the video and the commit number.
+
+---
+
+### Automatic check · 2026-11-06 04:50 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 04:51 UTC
+
+The gameplay check's report file has just changed, so `r2_func` may have finished. Checking:
+
+`r2_func` is part-way through: the hearts part has finished and matches step 4's (5 knocks, then back to "5 Full"). Pause, Bubble Blast and Turbo Spin are still running. Saved and confirmed on GitHub (`d91e604`).
+
+---
+
+### Automatic notice · 2026-11-06 04:51 UTC
+
+_Background command "Run gameplay checks on the step 6 build" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 04:51 UTC
+
+The main tree's rebuilt game is byte-identical to the tested one (`1784ffd7…`). Now I'll complete the step 6 record with the results and the corrected / remaining checklist:
+

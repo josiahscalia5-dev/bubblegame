@@ -30,7 +30,7 @@
 // Colours are written as the screen's sRGB and passed through the inverse display transform (mtUndisplay, tunnel_r9_match.js)
 // where noted (lin3: sRGB to linear for the lobes, which go through the grade like the other splash layers).
 import * as THREE from 'three';
-import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge } from './tunnel_r9_match.js';
+import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
 
@@ -257,7 +257,7 @@ export function matchFloorDecl() {
 // detail (on the swell, where the lower water's cell pattern read as cracked glass)
 vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft${FOCUS_ON ? ', float fx' : ''}) {
   float rw, tu;
-  mtPlace(cs, u, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
+  mtPlace(cs, u${MT_BEND ? ', W' : ''}, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
   float lr = log(max(rw, 1e-4));
   vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
   vec2 dx = dFdx(bv), dy = dFdy(bv);
