@@ -1,0 +1,114 @@
+{
+ "s3": [],
+ "s3Report": null,
+ "costAtTapToStart": {
+  "drawCalls": 322,
+  "triangles": 1914051
+ },
+ "afterSettingsClick": {
+  "phase": "intro",
+  "lane": 1,
+  "air": false,
+  "z": -16.7,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "true"
+ },
+ "afterTap": {
+  "phase": "running",
+  "lane": 1,
+  "air": false,
+  "z": -16.7,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "afterSwipeLeft": {
+  "from": 1,
+  "phase": "running",
+  "lane": 0,
+  "air": false,
+  "z": -11.789,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "afterTwoSwipesRight": {
+  "phase": "running",
+  "lane": 2,
+  "air": false,
+  "z": -6.653,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "afterSwipeUp": {
+  "phase": "running",
+  "lane": 2,
+  "air": true,
+  "z": -5.677,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "inTunnel": {
+  "phase": "running",
+  "lane": 2,
+  "air": false,
+  "z": 21.064,
+  "coins": 1289,
+  "gems": 37,
+  "collected": {
+   "coins": 9,
+   "gems": 1,
+   "socks": 2
+  },
+  "socks": 2,
+  "sound": "false"
+ },
+ "costInTunnel": {
+  "drawCalls": 120,
+  "triangles": 703685
+ },
+ "logs": [],
+ "keyboardStart": {
+  "phase": "running",
+  "lane": 1,
+  "air": false,
+  "z": -16.7,
+  "coins": 1280,
+  "gems": 36,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "socks": 0,
+  "sound": "false"
+ },
+ "logs2": []
+}
