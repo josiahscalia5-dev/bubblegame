@@ -247,7 +247,7 @@ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet,
   c = clamp(c * (1.0 + face * ${f4(F.wave)} * fk), 0.0, 1.0);
   c = mix(c, ${v3s(F.cobalt)}, smoothstep(0.45, 0.1, hDet) * ${f4(F.trough)} * fk);
   c = mix(c, M_SCREEN(c, vec3(0.62, 0.9, 1.0)), clamp(caus * caus * ${f4(F.caustic)} * 2.0, 0.0, 1.0) * fk);
-  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
+${FOCUS_ON ? focusDelilacGLSL() : ''}  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
   vec3 col = mtUndisplay(c);
@@ -273,8 +273,40 @@ export function matchFloorApply() {
   return /* glsl */ `  {   // ?s3=match: the walls' water continued onto the floor (tunnel_r9_match_water.js)
     float mwNear = exp(-rP * rP / ${f4(F.deepR * F.deepR)});
     vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0);
-    col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
+${FOCUS_ON ? focusFloorAheadGLSL() : ''}    col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
   }
+`;
+}
+// ?s3=focus only (the Art Director's review, item 5: the water between her and the tunnel read darker, with flat lavender
+// stripes, where the original's is bright white-cyan splash water; MATCH_WATER.floorAhead):
+//   in matchFloor (display space, before the lift): the floor's remaining lavender and pink (red over green, blue over
+//   green) pulled to light cyan-blue;
+//   in matchFloorApply: on the floor ahead of her (from ahead[0] to ahead[3] m along the path, not where it meets the walls
+//   nor round the far warm centre), a lift toward light cyan and broken white crests: small pieces in cells flowing toward
+//   her (stretched across the path, larger on the waves' crests) and the waves' own crests broken into short lengths.
+function focusDelilacGLSL() {
+  const A = MATCH_WATER.floorAhead;
+  return /* glsl */ `  {   // ?s3=focus: no lavender on the floor (tunnel_r9_match_water.js focusDelilacGLSL)
+    float fdl = smoothstep(0.0, 0.05, c.r - c.g) * smoothstep(-0.03, 0.05, c.b - c.g) * (1.0 - onWall);
+    c.r = mix(c.r, c.g * 0.82, fdl * ${f4(A.delilac)});
+  }
+`;
+}
+function focusFloorAheadGLSL() {
+  const A = MATCH_WATER.floorAhead, P = A.pieces;
+  return /* glsl */ `    {   // ?s3=focus: the floor ahead of her as bright white-cyan splash water (tunnel_r9_match_water.js focusFloorAheadGLSL)
+      float faK = smoothstep(${f4(A.ahead[0])}, ${f4(A.ahead[1])}, toP.y) * (1.0 - smoothstep(${f4(A.ahead[2])}, ${f4(A.ahead[3])}, toP.y))
+        * (1.0 - side) * smoothstep(${f4(A.rw[0])}, ${f4(A.rw[1])}, rw);
+      mwCol = mix(mwCol, mtUndisplay(${v3s(A.light)}), faK * ${f4(A.lift)} * (0.55 + 0.45 * smoothstep(0.3, 0.8, hDet)));
+      vec2 faQ = vec2(xu.x * ${f4(P.cell[0])}, xu.y * ${f4(P.cell[1])} + uTime * ${f4(P.flow)}), faI = floor(faQ);
+      vec2 faO = fract(faQ) - 0.5 - (vec2(lqHash(faI + 1.7), lqHash(faI + 8.9)) - 0.5) * 0.4;
+      float faR = mix(${f4(P.r[0])}, ${f4(P.r[1])}, lqHash(faI + 5.1)) * (0.65 + 0.5 * smoothstep(0.4, 0.9, hDet));
+      vec2 faO2 = faO - (vec2(lqHash(faI + 6.3), lqHash(faI + 2.9)) - 0.5) * 0.5;
+      float faP = step(${f4(1 - P.share)}, lqHash(faI + 3.3)) * (1.0 - smoothstep(faR - 0.06, faR, min(length(faO), length(faO2) * 1.2)));
+      float faC = smoothstep(${f4(A.crest[0])}, ${f4(A.crest[1])}, hDet + caus * 0.3) * step(${f4(1 - A.crest[2])}, lqHash(floor(faQ * vec2(0.5, 1.0)) + 9.7));
+      mwCol = mix(mwCol, mtUndisplay(${v3s(A.white)}), clamp(max(faP, faC) * faK * ${f4(A.amount)}, 0.0, 1.0));
+${A.debug ? '      mwCol = mix(mwCol, vec3(0.0, 0.6, 0.0), faK);   // (debug: the zone in green)
+' : ''}    }
 `;
 }
 

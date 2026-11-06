@@ -137,6 +137,14 @@ export const FOCUS = {
     },
     // the floor round her: more sparkle (luminous blue-white highlights on vivid blue water)
     floor: { caustic: 0.55, glint: 1.3, deep: 0.85 },
+    // (the AD's review, item 5) the floor ahead of her, between her and the tunnel (focusDelilacGLSL, focusFloorAheadGLSL):
+    // delilac: the floor's remaining lavender and pink pulled to light cyan-blue; ahead: [in from, full from, full to, out to]
+    // (m ahead of her along the path); rw: [from, full] screen radius round the vanishing point (W; none at the far warm
+    // centre); light / lift: toward light cyan; pieces: small white splash pieces (cells per m [across, along], the share of
+    // cells with one, radius as a share of the cell, flow toward her in cells per s); crest: the waves' own crests broken into
+    // short white lengths [hDet from, to, share]; amount: the white's strength
+    floorAhead: { delilac: 1.0, ahead: [0.4, 1.2, 6.0, 11.0], rw: [0.05, 0.1], light: '#b4e0f6', lift: 0.45,
+      pieces: { cell: [7.0, 2.6], share: 0.55, r: [0.2, 0.42], flow: 0.9 }, crest: [0.72, 0.9, 0.5], white: '#f4fbff', amount: 0.95 },
     splash: {
       // small splash crests, not domes: lumpier, a wide spread of sizes
       lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,

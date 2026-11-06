@@ -1,9 +1,9 @@
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
 new file mode 100644
-index 0000000..8ed20ae
+index 0000000..5b2b231
 --- /dev/null
 +++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,64 @@
 +# Water & VFX, focused pass on `?s3=focus`: running notes (5 November 2026, from about 18:20 UTC)
 +
 +Worktree branch `worktree-agent-a29b1562d2b9d7e06`, started at `d6e836d`. Files: `WebDemo/src/tunnel_r9_match_water.js` and
@@ -57,8 +57,17 @@ index 0000000..8ed20ae
 +  eats their upper outline into irregular points and puts a broken white cap with round holes on top (crest.rag, crest.cap).
 +  c12 (defaults with that) and c13 (lace/spark reach 0.6) were captured but not yet measured when the session stopped.
 +
-+Next: measure c12/c13, pick, set defaults, capture step 1 with the camera, commit; then item 2 (floor ahead), item 3
-+(flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle).
++- WIP commit `06edd34` (session stopped on the usage limit; resumed 6 November).
++- c12 (white caps on the side crests): white 17.2% but the caps were solid white clumps (largest piece 4253 px): rejected.
++  The caps are now separate small white pieces (crest.cap: blobs, not a web with holes), rag [0.2, 0.6, 7.0].
++- c14 (+ lace reach 0.6, spark share 0.8 reach 0.6): white 16.1%, largest 765, vivid 21.2%.
++- c15 (+ side lumps 0.7x smaller): white 17.1%, <=400 px 86%, largest 798, light cyan 33.9%, vivid 19.8%, lavender 3.4%,
++  texture 6.46, L* left 78.8 / right 80.5, pink 0.25 W at 0.02 H above lowest, base 0.849. Now the defaults:
++  `frames/step1_cam_t3.00_canvas.png` (identical to c15), `frames/measure_step1_cam.txt`,
++  `frames/item1_water_round_her_original_before_after.png`.
++- Item 1 committed (see the README table for the hash).
++
++Next: item 2 (floor ahead), item 3 (flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle).
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/before/before_cam_info.json
 new file mode 100644
 index 0000000..d1295fc
@@ -1049,6 +1058,54 @@ index 0000000..71d990e
 +   param2 40 before     circles 215  in centre box 102  within 0.2 W of the centre 107
 +   param2 55 orig       circles   3  in centre box   1  within 0.2 W of the centre   1
 +   param2 55 before     circles  29  in centre box  20  within 0.2 W of the centre  21
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item1_water_round_her_original_before_after.png b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item1_water_round_her_original_before_after.png
+new file mode 100644
+index 0000000..a855e6c
+Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/item1_water_round_her_original_before_after.png differ
+diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1_cam.txt b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1_cam.txt
+new file mode 100644
+index 0000000..58c4d35
+--- /dev/null
++++ b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/measure_step1_cam.txt
+@@ -0,0 +1,38 @@
++== character_water (zone x .02-.98 y .74-.885 minus her and the coins)
++orig         pink 4.16%  x 0.249-0.714  y 0.702-0.859  centre (0.502, 0.778)  w 0.465  width 0.02H above lowest 0.20
++             widths per 0.01 H from 0.68: 0.00 0.00 0.09 0.22 0.27 0.31 0.34 0.33 0.38 0.40 0.42 0.42 0.42 0.35 0.28 0.26 0.16 0.08 0.00 0.00 0.00 0.00
++             water: white 27.7%  pieces/10k   4.6  <=40px   1%  41-400  12%  >400  87%  (<=400:  13%)  largest 10247  | light cyan 16.7%  vivid 12.9%  lavender 16.9%  | texture 5.47
++before_cam   pink 3.21%  x 0.241-0.714  y 0.695-0.850  centre (0.500, 0.780)  w 0.473  width 0.02H above lowest 0.27
++             widths per 0.01 H from 0.68: 0.00 0.01 0.08 0.18 0.22 0.26 0.25 0.32 0.39 0.45 0.47 0.47 0.41 0.32 0.30 0.18 0.07 0.00 0.00 0.00 0.00 0.00
++             water: white  5.3%  pieces/10k  22.1  <=40px  33%  41-400  59%  >400   8%  (<=400:  92%)  largest 488  | light cyan 15.8%  vivid 46.3%  lavender  3.9%  | texture 4.98
++step1_cam    pink 3.13%  x 0.244-0.714  y 0.695-0.849  centre (0.497, 0.779)  w 0.471  width 0.02H above lowest 0.25
++             widths per 0.01 H from 0.68: 0.00 0.01 0.08 0.18 0.22 0.26 0.25 0.32 0.39 0.45 0.47 0.46 0.39 0.35 0.30 0.11 0.05 0.00 0.00 0.00 0.00 0.00
++             water: white 17.1%  pieces/10k  38.4  <=40px  18%  41-400  68%  >400  14%  (<=400:  86%)  largest 798  | light cyan 33.9%  vivid 19.8%  lavender  3.4%  | texture 6.46
++== zones
++floor_ahead x.25-.65 y.60-.69
++   orig       white  26.9 pale  35.4 lav   3.6 vivid  15.5 deep   0.0 turq  10.6 warm   1.6 | L*  83.5 texture 4.32 median #aad7f4 kept  95%
++   before_cam white   6.8 pale  28.2 lav  10.7 vivid  30.9 deep   0.3 turq  18.8 warm   0.6 | L*  71.5 texture 4.16 median #7daee5 kept  91%
++   step1_cam  white   6.8 pale  28.4 lav  10.7 vivid  30.8 deep   0.3 turq  18.7 warm   0.6 | L*  71.5 texture 4.16 median #7daee5 kept  91%
++left_low x.00-.22 y.62-.79
++   orig       white  21.8 pale  22.2 lav   6.9 vivid  40.2 deep   0.3 turq   1.0 warm   2.0 | L*  73.9 texture 5.74 median #81b2f4 kept  90%
++   before_cam white   5.8 pale  30.1 lav  15.5 vivid  48.3 deep   1.4 turq   6.0 warm   0.1 | L*  68.2 texture 4.59 median #6db2f3 kept  88%
++   step1_cam  white  11.2 pale  31.6 lav  13.7 vivid  41.5 deep   1.4 turq   5.0 warm   0.1 | L*  70.2 texture 4.88 median #7fb5f4 kept  88%
++char_left x.02-.25 y.76-.885
++   orig       white  27.9 pale  36.4 lav   9.4 vivid  18.9 deep   0.0 turq   0.1 warm   0.0 | L*  79.3 texture 5.18 median #b0c5f7 kept  99%
++   before_cam white   5.0 pale  20.2 lav   1.3 vivid  50.1 deep   0.0 turq   6.8 warm   0.0 | L*  71.9 texture 3.88 median #6db5f3 kept 100%
++   step1_cam  white  17.1 pale  33.6 lav   0.8 vivid  24.5 deep   0.0 turq   3.4 warm   0.0 | L*  78.8 texture 4.89 median #95cbf5 kept 100%
++char_right x.71-.98 y.79-.885
++   orig       white  31.2 pale  41.0 lav  12.8 vivid  10.7 deep   0.0 turq   1.3 warm   2.5 | L*  82.6 texture 4.20 median #c2cff7 kept  95%
++   before_cam white   5.8 pale  20.7 lav   0.2 vivid  39.8 deep   0.0 turq  16.5 warm   0.0 | L*  74.8 texture 3.53 median #79c3f4 kept 100%
++   step1_cam  white  15.3 pale  40.7 lav   0.2 vivid  19.2 deep   0.0 turq   6.9 warm   0.0 | L*  80.5 texture 4.24 median #9bd3f5 kept 100%
++== streaks (ring zone r .12-.45 W round (.53, .525), y .25-.62)
++   orig       white 22.3%  pieces/10k   3.2  area median    59 p90   1160  thickness median  3.5 px  elongation  2.1  along-tangent  28%
++   before_cam white 18.4%  pieces/10k  13.3  area median    28 p90    163  thickness median  1.9 px  elongation  3.4  along-tangent  73%
++   step1_cam  white 18.4%  pieces/10k  13.3  area median    28 p90    163  thickness median  1.9 px  elongation  3.4  along-tangent  73%
++== bubbles (HoughCircles r 6-60 px in x .15-.85 y .30-.60; centre box x .38-.70 y .40-.56; within 0.2 W of (.53, .525))
++   param2 40 orig       circles  17  in centre box   7  within 0.2 W of the centre  10
++   param2 40 before_cam circles 247  in centre box 116  within 0.2 W of the centre 118
++   param2 40 step1_cam  circles 242  in centre box 113  within 0.2 W of the centre 117
++   param2 55 orig       circles   3  in centre box   1  within 0.2 W of the centre   1
++   param2 55 before_cam circles  36  in centre box  12  within 0.2 W of the centre  16
++   param2 55 step1_cam  circles  37  in centre box  13  within 0.2 W of the centre  17
 diff --git a/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_info.json b/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/frames/step1_cam_info.json
 new file mode 100644
 index 0000000..4f1cbb2
@@ -1689,10 +1746,10 @@ index 0000000..cb1ae08
 +        near = sum(1 for q in cs if np.hypot((q[0]+x0)/W - 0.53, (q[1]+y0 - 0.525*H)/W) < 0.2)
 +        print(f"   param2 {P2} {k:10s} circles {len(cs):3d}  in centre box {inbox:3d}  within 0.2 W of the centre {near:3d}")
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2fa77f1..edc65de 100644
+index 2fa77f1..497f766 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
-@@ -92,21 +92,49 @@ export const FOCUS = {
+@@ -92,31 +92,69 @@ export const FOCUS = {
      //    foam cushion. So the big lobes round her are gone; what is left of the bank is a few small, low splash crests at the
      //    sides and the bottom corners, shaded as glossy cobalt-to-turquoise water (focusLumpGLSL): light cyan where they
      //    face the light, a thin broken white edge on top, fine white spray dots, glints; never lavender, never a white mass
@@ -1746,8 +1803,16 @@ index 2fa77f1..edc65de 100644
 +    },
      // the floor round her: more sparkle (luminous blue-white highlights on vivid blue water)
      floor: { caustic: 0.55, glint: 1.3, deep: 0.85 },
++    // (the AD's review, item 5) the floor ahead of her, between her and the tunnel (focusDelilacGLSL, focusFloorAheadGLSL):
++    // delilac: the floor's remaining lavender and pink pulled to light cyan-blue; ahead: [in from, full from, full to, out to]
++    // (m ahead of her along the path); rw: [from, full] screen radius round the vanishing point (W; none at the far warm
++    // centre); light / lift: toward light cyan; pieces: small white splash pieces (cells per m [across, along], the share of
++    // cells with one, radius as a share of the cell, flow toward her in cells per s); crest: the waves' own crests broken into
++    // short white lengths [hDet from, to, share]; amount: the white's strength
++    floorAhead: { delilac: 1.0, ahead: [0.4, 1.2, 6.0, 11.0], rw: [0.05, 0.1], light: '#b4e0f6', lift: 0.45,
++      pieces: { cell: [7.0, 2.6], share: 0.55, r: [0.2, 0.42], flow: 0.9 }, crest: [0.72, 0.9, 0.5], white: '#f4fbff', amount: 0.95 },
      splash: {
-@@ -114,9 +142,11 @@ export const FOCUS = {
+       // small splash crests, not domes: lumpier, a wide spread of sizes
        lumpSquash: 0.72, lumpBump: 0.16, lumpMin: 0.4,
        // [phi, how many, biggest radius (m), outward (m), height from the crest (m)]: nothing in front of her body (phi -20 to
        // 20 near the crest); a few small crests at her sides and low in the bottom corners (match: 30 lobes up to 0.22 m)
@@ -1761,7 +1826,7 @@ index 2fa77f1..edc65de 100644
        ],
        // the curling glass sheets straight in front of her body taken out (they drew a see-through sheet over her base); the
        // side splashes kept, a little smaller, as the irregular blue splashes beside her
-@@ -125,7 +155,8 @@ export const FOCUS = {
+@@ -125,7 +163,8 @@ export const FOCUS = {
      // small clear soap bubbles sitting on the water round her base ([phi, how many]; match: 8 in four clusters), and more fine
      // droplets of spray (match: 30)
      liquid: { foam: { bubbles: [[-58, 3], [-38, 3], [-20, 2], [-4, 2], [12, 2], [28, 3], [46, 3], [64, 2]], bubbleR: [0.025, 0.07] } },
@@ -1772,7 +1837,7 @@ index 2fa77f1..edc65de 100644
        // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
        //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
 diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
-index 4813c34..ab90bed 100644
+index 4813c34..f15b954 100644
 --- a/WebDemo/src/tunnel_r9_match_water.js
 +++ b/WebDemo/src/tunnel_r9_match_water.js
 @@ -175,20 +175,20 @@ export const MATCH_WATER = {
@@ -1803,7 +1868,59 @@ index 4813c34..ab90bed 100644
  // handed on before tunnel_r8_splash.js and tunnel_r8_liquid.js merge MATCH.splash / heroWater / liquid (tunnel_r8_splash.js
  // imports this file for that order); ?s3=match only
  if (MATCH_ON) {
-@@ -283,22 +283,74 @@ export function matchFloorApply() {
+@@ -247,7 +247,7 @@ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet,
+   c = clamp(c * (1.0 + face * ${f4(F.wave)} * fk), 0.0, 1.0);
+   c = mix(c, ${v3s(F.cobalt)}, smoothstep(0.45, 0.1, hDet) * ${f4(F.trough)} * fk);
+   c = mix(c, M_SCREEN(c, vec3(0.62, 0.9, 1.0)), clamp(caus * caus * ${f4(F.caustic)} * 2.0, 0.0, 1.0) * fk);
+-  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
++${FOCUS_ON ? focusDelilacGLSL() : ''}  c = clamp((c - ${f4(M.lift)}) / ${f4(1 - M.lift)}, 0.0, 1.0);
+   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
+   vec3 col = mtUndisplay(c);
+@@ -273,32 +273,116 @@ export function matchFloorApply() {
+   return /* glsl */ `  {   // ?s3=match: the walls' water continued onto the floor (tunnel_r9_match_water.js)
+     float mwNear = exp(-rP * rP / ${f4(F.deepR * F.deepR)});
+     vec3 mwCol = matchFloor(vec2(xu.x, vTrk.y), xu.y, vW, N0, normalize(vT), N, hDet, caus, side, mwNear, 0.0);
+-    col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
++${FOCUS_ON ? focusFloorAheadGLSL() : ''}    col = mix(col, mwCol, uMatchOn * ${f4(F.amount)});
++  }
++`;
++}
++// ?s3=focus only (the Art Director's review, item 5: the water between her and the tunnel read darker, with flat lavender
++// stripes, where the original's is bright white-cyan splash water; MATCH_WATER.floorAhead):
++//   in matchFloor (display space, before the lift): the floor's remaining lavender and pink (red over green, blue over
++//   green) pulled to light cyan-blue;
++//   in matchFloorApply: on the floor ahead of her (from ahead[0] to ahead[3] m along the path, not where it meets the walls
++//   nor round the far warm centre), a lift toward light cyan and broken white crests: small pieces in cells flowing toward
++//   her (stretched across the path, larger on the waves' crests) and the waves' own crests broken into short lengths.
++function focusDelilacGLSL() {
++  const A = MATCH_WATER.floorAhead;
++  return /* glsl */ `  {   // ?s3=focus: no lavender on the floor (tunnel_r9_match_water.js focusDelilacGLSL)
++    float fdl = smoothstep(0.0, 0.05, c.r - c.g) * smoothstep(-0.03, 0.05, c.b - c.g) * (1.0 - onWall);
++    c.r = mix(c.r, c.g * 0.82, fdl * ${f4(A.delilac)});
+   }
+ `;
+ }
++function focusFloorAheadGLSL() {
++  const A = MATCH_WATER.floorAhead, P = A.pieces;
++  return /* glsl */ `    {   // ?s3=focus: the floor ahead of her as bright white-cyan splash water (tunnel_r9_match_water.js focusFloorAheadGLSL)
++      float faK = smoothstep(${f4(A.ahead[0])}, ${f4(A.ahead[1])}, toP.y) * (1.0 - smoothstep(${f4(A.ahead[2])}, ${f4(A.ahead[3])}, toP.y))
++        * (1.0 - side) * smoothstep(${f4(A.rw[0])}, ${f4(A.rw[1])}, rw);
++      mwCol = mix(mwCol, mtUndisplay(${v3s(A.light)}), faK * ${f4(A.lift)} * (0.55 + 0.45 * smoothstep(0.3, 0.8, hDet)));
++      vec2 faQ = vec2(xu.x * ${f4(P.cell[0])}, xu.y * ${f4(P.cell[1])} + uTime * ${f4(P.flow)}), faI = floor(faQ);
++      vec2 faO = fract(faQ) - 0.5 - (vec2(lqHash(faI + 1.7), lqHash(faI + 8.9)) - 0.5) * 0.4;
++      float faR = mix(${f4(P.r[0])}, ${f4(P.r[1])}, lqHash(faI + 5.1)) * (0.65 + 0.5 * smoothstep(0.4, 0.9, hDet));
++      vec2 faO2 = faO - (vec2(lqHash(faI + 6.3), lqHash(faI + 2.9)) - 0.5) * 0.5;
++      float faP = step(${f4(1 - P.share)}, lqHash(faI + 3.3)) * (1.0 - smoothstep(faR - 0.06, faR, min(length(faO), length(faO2) * 1.2)));
++      float faC = smoothstep(${f4(A.crest[0])}, ${f4(A.crest[1])}, hDet + caus * 0.3) * step(${f4(1 - A.crest[2])}, lqHash(floor(faQ * vec2(0.5, 1.0)) + 9.7));
++      mwCol = mix(mwCol, mtUndisplay(${v3s(A.white)}), clamp(max(faP, faC) * faK * ${f4(A.amount)}, 0.0, 1.0));
++${A.debug ? '      mwCol = mix(mwCol, vec3(0.0, 0.6, 0.0), faK);   // (debug: the zone in green)
++' : ''}    }
++`;
++}
+ 
+ // ---------------------------------------------------------------- 2. the swell round the character (GLSL)
+ // in the swell's main (tunnel_r8_liquid.js liquidSwell), after its own colour and foam: see-through glossy turquoise near the
  // crest (the fur behind it shows violet), the floor's derived water lower down (one body of water), a glassy rim at grazing
  // angles, the key light's specular points, a white crest broken into bubbly pieces (foam layer only). Its place in the track
  // frame comes from the camera's frame (the hero stretch is straight there).
@@ -1894,7 +2011,7 @@ index 4813c34..ab90bed 100644
  `;
  }
  export function matchSwellGLSL() {
-@@ -339,7 +391,7 @@ export function matchSwellGLSL() {
+@@ -339,7 +423,7 @@ export function matchSwellGLSL() {
        mwCol = mix(mwCol, mtUndisplay(${v3s('#f6fcff')}), mwCrest * ${f4(K.crest)}); mwA = max(mwA, mwCrest * ${f4(K.crest)});
      }
  #endif
@@ -1903,7 +2020,7 @@ index 4813c34..ab90bed 100644
      a = mix(a, mwA * smoothstep(-0.06, 0.06, hUp + 0.02), uMatchOn);
    }
  `;
-@@ -366,7 +418,18 @@ function focusLumpGLSL() {
+@@ -366,7 +450,18 @@ function focusLumpGLSL() {
      vec3 cQ = vO * ${f4(B.sprayCell)} + vSeed * 13.0, cQi = floor(cQ);
      float cH = fract(sin(dot(cQi, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
      float cSpray = step(${f4(B.sprayShare)}, cH) * (1.0 - smoothstep(0.1, 0.18, length(fract(cQ) - 0.5))) * smoothstep(-0.1, 0.4, cUp);

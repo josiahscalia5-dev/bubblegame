@@ -311,8 +311,22 @@ Address this before completing your current task.
 - 00:13 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/grid_ob1.png
 - 00:13 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/ob2/cands_in.json
 - 00:13 `Bash`: Render sock pose variants and measure
+- 00:14 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sock2.png
+- 00:15 `Bash`: Gridded sock region comparison
+- 00:15 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sock_grid.png
+- 00:15 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/ob3/cands_in.json
+- 00:15 `Bash`: Render ob3 candidate, measure, sock crop
+- 00:16 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sock_grid3.png
+- 00:16 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/ob4/cands_in.json
+- 00:16 `Bash`: Render ob4 sock refinement and crop
+- 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/sock_grid4.png
+- 00:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:17 `Bash`: Build objects step, capture, verify against tune render
+- 00:18 `Bash`: Read s3_func header
+- 00:18 `Bash`: Run gameplay functional check under focus
 
-_135 tool steps._
+_149 tool steps._
 
 ---
 
@@ -588,5 +602,33 @@ Now update NOTES.md with the state before the WIP commit.
 - 00:13 `Bash`: Set c15 as defaults, rebuild, capture step 1 with the camera
 - 00:13 `Bash`: Verify step 1 frame and save its measures
 - 00:14 `Bash`: Write the item 1 enlarged comparison crop
+- 00:14 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
+- 00:14 `Bash`: Commit item 1
+- 00:14 `Bash`: Crop the floor ahead with the new camera
+- 00:14 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_floor1.png
+- 00:14 `Bash`: Analyse the lavender pixels of the floor ahead
+- 00:14 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/lavmask.png
+- 00:15 `Bash`: Find the floor de-lilac code and display helpers
+- 00:15 `Bash`: Read the display transform helper
+- 00:15 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/WebDemo/src/tunnel_r9_match_water.js
+- 00:16 `Bash`: Add the focus floor-ahead pass and de-lilac, rebuild
+- 00:16 `Bash`: Capture the first floor-ahead trial
+- 00:16 `Bash`: Crop and measure the floor trial
+- 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_f1.png
+- 00:17 `Bash`: Show where the floor zone's lavender is
+- 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/lavmask2.png
+- 00:17 `Bash`: Find reflection and hazard glow code in the floor
+- 00:17 `Bash`: Enlarge the pink patch on the floor
+- 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_patch.png
+- 00:18 `Bash`: Check which layer draws the floor ahead
+- 00:18 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_hfl.png
+**Lead → agent** (00:18 UTC):
 
-_159 tool steps._
+[Image: original 2470x392, displayed at 2000x317. Multiply coordinates by 1.24 to map to original image.]
+
+- 00:18 `Bash`: Find the brush warning glow setup
+- 00:18 `Bash`: Find warning range settings
+- 00:18 `Bash`: Check the floor's alpha uniform
+- 00:19 `Bash`: Add a floor zone debug view and capture it
+
+_183 tool steps._

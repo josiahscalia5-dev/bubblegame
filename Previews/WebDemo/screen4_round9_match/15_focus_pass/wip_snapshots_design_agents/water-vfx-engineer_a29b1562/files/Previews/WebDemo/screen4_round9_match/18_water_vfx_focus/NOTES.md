@@ -51,5 +51,14 @@ Tries:
   eats their upper outline into irregular points and puts a broken white cap with round holes on top (crest.rag, crest.cap).
   c12 (defaults with that) and c13 (lace/spark reach 0.6) were captured but not yet measured when the session stopped.
 
-Next: measure c12/c13, pick, set defaults, capture step 1 with the camera, commit; then item 2 (floor ahead), item 3
-(flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle).
+- WIP commit `06edd34` (session stopped on the usage limit; resumed 6 November).
+- c12 (white caps on the side crests): white 17.2% but the caps were solid white clumps (largest piece 4253 px): rejected.
+  The caps are now separate small white pieces (crest.cap: blobs, not a web with holes), rag [0.2, 0.6, 7.0].
+- c14 (+ lace reach 0.6, spark share 0.8 reach 0.6): white 16.1%, largest 765, vivid 21.2%.
+- c15 (+ side lumps 0.7x smaller): white 17.1%, <=400 px 86%, largest 798, light cyan 33.9%, vivid 19.8%, lavender 3.4%,
+  texture 6.46, L* left 78.8 / right 80.5, pink 0.25 W at 0.02 H above lowest, base 0.849. Now the defaults:
+  `frames/step1_cam_t3.00_canvas.png` (identical to c15), `frames/measure_step1_cam.txt`,
+  `frames/item1_water_round_her_original_before_after.png`.
+- Item 1 committed (see the README table for the hash).
+
+Next: item 2 (floor ahead), item 3 (flying streaks: fewer, softer, chunkier), item 4 (fewer bubbles over the middle).
