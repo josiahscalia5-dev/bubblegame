@@ -8,3 +8,9 @@ objects 244 canvas [ 768, 1536 ] post [{"type":"tu","enabled":true},{"type":"n",
 07_noOverlays hidden 3
 08_noBloom hidden 0
 09_noGrade hidden 0
+10_noToneMap hidden 0
+11_noPost hidden 0
+12_noWaterDressing hidden 6
+13_soloSwell hidden 243
+14_noMascot hidden 1
+no console errors or warnings

@@ -1,0 +1,16 @@
+objects 231 canvas [ 768, 1536 ] post [{"type":"tu","enabled":true},{"type":"n","enabled":true},{"type":"Wo","enabled":true},{"type":"nu","enabled":true}]
+01_noSwell hidden 1
+02_noFloorLiquid hidden 1
+03_noWaterSheet hidden 2
+04_noFoamBank hidden 3
+05_noSplashDroplets hidden 1
+06_noSprayParticles hidden 1
+07_noOverlays hidden 4
+08_noBloom hidden 0
+09_noGrade hidden 0
+10_noToneMap hidden 0
+11_noPost hidden 0
+12_noWaterDressing hidden 6
+13_soloSwell hidden 230
+14_noMascot hidden 1
+no console errors or warnings
