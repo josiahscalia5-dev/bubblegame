@@ -182,3 +182,132 @@ _[3 images attached]_
 
 The identity rerun failed only because that subshell started in the wrong folder. I'll rerun it. The candidate rendered fine; here's original | previous accepted | new at the base:
 
+This save carried only two files because the 5-minute autosave had already pushed the code, bundle, tooling and sheets. Confirming everything is in the pushed commit:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/43_water_mounds/sheets/01_FULLRES_ORIGINAL_PREVIOUS_NEW_start.jpg, Previews/WebDemo/screen4_round9_match/43_water_mounds/sheets/03_CLOSEUP_water_contact.jpg]_
+
+I built your water candidate, compared it against your original, and rejected it: it isn't noticeably closer. Your accepted game is unchanged.
+
+**The three checks all passed**
+- **Builds and runs:** the game rebuilds byte-identical. `?s3=intunnel`, `bt`, `focus`, `match` and the normal game render 0 pixels different from your accepted build (`cb69eac`), with no console errors.
+- **Saved to GitHub:** branch `ccr-99533f95-olruo6`, now at **`e19064b`**. I checked that every file is in the pushed commit.
+- **Autosave:** restarted after the container reboot; its pushes are verified and it's still running.
+
+The old account ran out mid-revert of the rejected `bank` / `wave` water experiments, and the autosaves kept that code. I proved it only runs when those flags are switched on, so it doesn't touch the accepted game.
+
+**The candidate: `?s3=intunnel,mounds`** (sheets sent above)
+- **What I changed:** none of the rejected attempts touched the straight edge where the water meets her, which squares her base off. This one cut that edge into a few large, connected, rounded water mounds of varied height. Each mound was shaded as a glossy lobe, with a couple tinted lavender. The average waterline stayed where it was.
+- **Better:** the contact. Rounded lobes now cover the square corners of her base.
+- **Worse:** the material. The lobes read as smooth matte gel with faint folds, and they lose the white sparkle that makes the accepted build look like water. I tried eight variants; two read as a curtain, which your brief rules out.
+- It stays behind its own flag as a record, like the earlier rejected water. I didn't record video for a rejected candidate.
+
+**Why painting won't work here:** I painted the mounds pure red to see exactly where the shading lands. Near her base the water's surface is seen almost edge-on from the camera. Anything painted on it gets squeezed into a thin strip or stretched into columns. Your original's mounds stand up *toward the camera*, and only real 3D shapes can do that.
+
+**Proposed next candidate:**
+- One connected, animated bank of rounded water lobes in front of and beside her, built as real three.js geometry and moving with the water. It would not be separate spheres.
+- It would be coloured the way the water's surface already is, so the colour grading can't wash it out (that's what sank W1).
+- It would have white rims, glints and sparkle, plus two or three clear lavender lobes.
+
+**Tripo:** not suitable, and no credits were spent. A Tripo model is a fixed sculpture; it can't flow with the moving water, so it would slide or clip as she travels.
+
+**Also done:**
+- Your new account now has a `bubblegame` cloud environment, like the old account's. It installs every tool, including Spector.js, which was previously lost on each new machine. Its setup script is untested until a fresh session starts on it.
+- I skipped the long handoff document (`docs/CLAUDE_NEW_ACCOUNT_HANDOFF.md`) after you asked me to stop the audit. `HANDOFF.md` is updated instead.
+
+Should I build that water-bank mesh as the next candidate?
+
+Evidence: `Previews/WebDemo/screen4_round9_match/43_water_mounds/README.md`
+
+---
+
+### You · 2026-11-06 15:17 UTC
+
+Claude, I want you to perform a COMPLETE BUT EFFICIENT VERIFICATION of my development tools, plugins, design agents, skills, and integrations in this NEW Claude Code account and CURRENT session.
+
+This is my existing Bubble Wash Kingdom project. USE THE GITHUB REPOSITORY AND BRANCH ALREADY SELECTED IN THIS SESSION. Do not switch repositories, change branches, create a new project, or modify my game.
+
+I recently transferred from another Claude Code account, and I need to make absolutely sure that all the tools and capabilities I previously used are available and working in this new account and session.
+
+FIRST, CHECK MY DESIGN AGENTS AND SCREEN MATCHER. Verify that all four original design agents are present. Identify their exact names, configuration files, responsibilities, and permitted tools. Confirm whether each agent can actually be invoked in this session. Also verify my Screen Matcher skill, all custom Claude skills, and any related image-comparison or visual-development workflows. Do not assume they work simply because their files exist in GitHub.
+
+SECOND, VERIFY ALL MY PLUGINS AND MCP SERVERS. Inspect the actual Claude Code plugin configuration, installed plugins, plugin marketplaces, MCP server definitions, and active MCP connections. Confirm which ones are installed, enabled, connected, authenticated, and accessible to the appropriate agents in this CURRENT session. Check both project-level and account-level configurations wherever accessible. If you cannot inspect the previous account's private plugin settings, compare against the verified handoff inventory instead. Do not pretend that account-level plugins automatically transferred through GitHub.
+
+THIRD, VERIFY MY DEVELOPMENT TOOLS. Check Spector.js, Three.js debugging utilities, Playwright, Chromium, Blender, FFmpeg, OpenCV, NumPy, scikit-image, LPIPS, Optuna, PyTorch, glTF utilities, Tripo CLI, GitHub integration, image-comparison scripts, rendering diagnostics, screenshot capture tools, and any other installed project dependencies. Identify their actual installed versions and run lightweight functionality checks. Confirm that the tools needed for visual matching and gameplay debugging can be used by Claude Code.
+
+FOURTH, VERIFY MY PROJECT WORKFLOWS. Confirm that the current game can build, the authentic approved Screen 4 references are accessible, the visual comparison workflow is available, the current GitHub branch is connected, and the five-minute autosave is operational after the environment restart. Do not repeat expensive tests that have already passed unless the environment has materially changed.
+
+FIFTH, FIX ONLY WHAT IS MISSING. If a free tool or project-level configuration is missing, restore it using the existing verified setup scripts where safe. Do not reinstall software that already works. If a Claude plugin, MCP server, cloud integration, or external service needs my manual authorization, give me the exact steps to enable it. Do not spend money, purchase credits, modify security settings, or expose credentials.
+
+IMPORTANT: DO NOT WASTE MY CLAUDE CODE USAGE. Perform the verification efficiently, using existing environment manifests, handoff records, saved test results, and short commands. Avoid lengthy investigations, repeated installations, unnecessary browser renders, or running multiple design agents just to prove they exist. For agents and integrations, use the smallest reliable capability check available.
+
+When finished, give me ONE concise verification table with the name of each tool, plugin, design agent, skill, or MCP server and its status: WORKING, INSTALLED BUT NOT TESTED, MISSING, NEEDS AUTHORIZATION, or UNAVAILABLE IN THIS SESSION. Clearly distinguish what you actually tested from what you only found in configuration files.
+
+Also tell me whether my four design agents and Screen Matcher are fully available, whether Spector.js, scikit-image, LPIPS, and Optuna are ready, whether my original visual reference files are accessible, and whether anything important from the previous account is missing.
+
+If everything essential is ready, clearly say: "THE BUBBLE WASH KINGDOM DEVELOPMENT ENVIRONMENT IS READY."
+
+THIS IS A VERIFICATION TASK ONLY. DO NOT CHANGE MY GAMEPLAY, RESTART DEVELOPMENT, MODIFY MY ACCEPTED SCREEN 4, OR BEGIN NEW VISUAL EXPERIMENTS. I ONLY WANT TO VERIFY THAT MY NEW CLAUDE ACCOUNT AND SESSION HAVE THE SAME DEVELOPMENT CAPABILITIES AS MY PREVIOUS ACCOUNT.
+
+---
+
+### Claude · 2026-11-06 15:18 UTC
+
+I'll reuse what this session already proved and only test what hasn't been. First, the configuration side: plugin folders, settings, MCP definitions and tool usage lines.
+
+Spector.js is the one important tool not yet exercised on this account, so it gets a single real WebGL frame capture, run in the background. Meanwhile, the quick functional checks:
+
+The Spector.js capture succeeded: a 56 MB recording of one real WebGL frame of the in-tunnel start. To prove the analysis half too, I'll run the project's report on it:
+
+The link didn't make the skill reappear mid-session. Claude Code reads project agents and skills when a session starts. I've left the link in place: it's outside the repository and harmless, and may help if this session restarts again. Nothing in the repository or game changed during this check, and the branch is clean at `e19064b`.
+
+**The Bubble Wash Kingdom development environment is not fully ready in this session.** Every tool works, but the four design agents and Screen Matcher can't be called here. Starting a new session on this branch should load them from `.claude/`; that is the only thing missing for full readiness.
+
+## Verification table
+
+**Tested** = I ran it in this session. **Found** = configuration or version only.
+
+| Item | Status | Evidence |
+|---|---|---|
+| **Design agent `game-art-director`** (read-only reviewer; Read, Grep, Glob, Bash) | UNAVAILABLE IN THIS SESSION | Found: file valid. It was listed at this session's start and dropped at the 14:54 restart |
+| **Design agent `gameplay-visual-testing`** (Playwright gameplay tests; Read, Grep, Glob, Bash) | UNAVAILABLE IN THIS SESSION | same |
+| **Design agent `lighting-visual-matching`** (tunnel, lighting, camera; + Edit, Write) | UNAVAILABLE IN THIS SESSION | same |
+| **Design agent `water-vfx-engineer`** (water, splashes, bubbles; + Edit, Write) | UNAVAILABLE IN THIS SESSION | same |
+| **Screen Matcher skill** | UNAVAILABLE IN THIS SESSION | Tested: "Unknown skill", twice. The scripts it drives work (rows below) |
+| Built-in skills (code-review, simplify, skill-creator, security-review) | INSTALLED BUT NOT TESTED | Found: listed in session |
+| Plugin **playwright** (Microsoft) | NEEDS AUTHORIZATION | Found: in this account's catalog, not enabled |
+| Plugin **typescript-lsp** (Anthropic) | NEEDS AUTHORIZATION | same |
+| Project MCP servers (`.mcp.json`) | WORKING | Found: empty on purpose (you dropped Meshy on 4 November) |
+| GitHub MCP | WORKING | Tested: answers as `josiahscalia5-dev` |
+| Claude Code Remote MCP | WORKING | Tested: created and configured your environment |
+| Claude Docs MCP | INSTALLED BUT NOT TESTED | Found: connected |
+| **Spector.js** 0.9.33 | WORKING | Tested: real frame capture plus report (132 draw calls, 14 framebuffers) |
+| Playwright 1.63.0 + Chromium 153 | WORKING | Tested: about 20 real game renders |
+| three.js r170 build | WORKING | Tested: byte-identical rebuild |
+| three.js scene inspection tools (`game_eval.cjs`, `layer_diag.cjs`) | WORKING | Tested: frames plus scene census |
+| Blender 5.2.3 | WORKING | Tested: headless Python script |
+| FFmpeg 6.1.1 | WORKING | Tested: H.264 encode |
+| OpenCV 5.0.0, NumPy 2.5.4 | WORKING | Tested |
+| **scikit-image** 0.26.0 | WORKING | Tested: SSIM, original vs game |
+| **LPIPS** 0.1.4, PyTorch 2.15.0 (CPU) | WORKING | Tested: 0.482 original vs game, 0.000 frame vs itself |
+| **Optuna** 5.0.0 | WORKING | Tested: 8-trial study |
+| glTF Validator and glTF Transform | WORKING | Tested on `coin_p2.glb` (0 errors) |
+| `region_compare.py`, `optuna_domes.py`, sheet scripts | INSTALLED BUT NOT TESTED | Their libraries are tested |
+| ImageMagick, Vite, Git LFS, `tsc`, `pyright` | INSTALLED BUT NOT TESTED | Found: versions only |
+| Tripo CLI 0.11.2 | NEEDS AUTHORIZATION | Installed; no key, and its API host is blocked until one is saved |
+| Approved Screen 4 original and close-up kits | WORKING | Tested: original read at 767 × 1536; all kits present |
+| Game build and visual comparison workflow | WORKING | Tested this session |
+| GitHub branch `ccr-99533f95-olruo6` | WORKING | Local and GitHub both at `e19064b`, clean |
+| 5-minute autosave | WORKING | Running since the restart; last push verified |
+| Cloud environment `bubblegame` setup script | INSTALLED BUT NOT TESTED | Passed when run here; first fresh session not yet proven |
+
+## Your questions
+- **Four design agents and Screen Matcher:** files intact, but not usable in this session (see top).
+- **Spector.js, scikit-image, LPIPS, Optuna:** all ready and tested.
+- **Original visual references:** all accessible.
+- **Missing from the previous account:** only account-level items. The two plugins aren't enabled, Tripo isn't signed in, and the agents and skill need a new session. No tools or project files are missing.
+
+## What you need to do
+1. **Agents and Screen Matcher:** start a new Claude Code session on this repository and branch, choosing the `bubblegame` environment. At the start of this session, before the restart, all four agents were listed.
+2. **Plugins (optional):** on claude.ai, open the plugin directory, enable **playwright** (Microsoft) and **typescript-lsp** (Anthropic), then start a new session. The project already drives Playwright directly, so nothing depends on these.
+3. **Tripo (only when you want a paid job):** I'll open the secure credential form for its API host. Never paste the key into chat, and every paid job still needs your yes.
+
