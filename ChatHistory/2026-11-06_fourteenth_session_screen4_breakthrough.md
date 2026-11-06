@@ -1459,3 +1459,9 @@ The art director's verdict on the refined candidate: **"yes, clearly closer"**, 
 
 Waiting for the two videos:
 
+---
+
+### You (sent while Claude was working) · 2026-11-06 17:20 UTC
+
+Claude, R2 looks visibly closer to my authentic original approved Screen 4, especially the rounded water shapes surrounding the pink character. However, do not merge it until the moving gameplay videos and functionality tests pass. My original still has richer saturated cobalt-blue water, sharper sparkling details, and less smearing. Once R2 is verified and accepted, prioritize correcting those remaining rendering differences using the existing water material, texture sampling, transparency and bloom. Do not introduce another separate water object or redesign the scene. Preserve the actual playable gameplay and provide real before-and-after evidence against my original approved image.
+
