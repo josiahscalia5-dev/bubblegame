@@ -120,8 +120,10 @@ Good, playwright resolves. Now build.
 - 00:25 `Bash`: Run walls-only probes for candidates
 - 00:25 `Bash`: Read ringprof script and step3 measures
 - 00:25 `Bash`: Wait for batch 1 and measure
+- 00:32 `Bash`: Crop upper wall comparisons
+- 00:32 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_b1up.png
 
-_82 tool steps._
+_84 tool steps._
 
 ---
 
@@ -284,5 +286,19 @@ Confirmed: new three.js objects draw UUIDs from `Math.random`. I'll build the bu
 - 00:27 `Bash`: Check batch 3 progress
 - 00:27 `Bash`: See processes waiting on the browser lock
 - 00:27 `Bash`: Check batch 3 files
+- 00:28 `Write`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Previews/WebDemo/screen4_round9_match/25_pass4_water/c_foreground_water/scripts/sheets.py
+- 00:28 `Bash`: Check batch 3 files
+- 00:28 `Bash`: Show liquid_shots process arguments
+- 00:28 `Bash`: Wait for the eA capture
+- 00:28 `Bash`: Zoom eA against original
+- 00:28 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b3/zeA.png
+- 00:28 `Bash`: Measure dB and eA
+- 00:29 `Bash`: Wait for the eB capture
+- 00:31 `Bash`: Measure and view eB vs eA
+- 00:31 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b3/zeB.png
+- 00:31 `Bash`: Wait for fA and zoom against original
+- 00:31 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b4/zfA.png
+- 00:31 `Bash`: Measure fA
+- 00:32 `Bash`: Wait for fB, zoom and measure
 
-_114 tool steps._
+_128 tool steps._

@@ -44,3 +44,5 @@ Now the edit: the streak masks are kept in variables, and the map block redraws 
 
 Built. Capturing the unchanged default (to prove it's identical) and three strengths, one at a time:
 
+The default is byte-identical to pass 4a, so the code change alone alters nothing. Measuring the three strengths:
+

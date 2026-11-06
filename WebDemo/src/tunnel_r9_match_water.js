@@ -359,7 +359,10 @@ function focusFloorRingsGLSL() {
 ${O ? `    // (pass 4a: the map is smoothed round each ring, so on the floor it averaged the original's white flecks and cobalt
     // streaks into a flat pale blue; the floor's own moving streaks and dashes, which the map covered, drawn again on top:
     // MATCH_WATER.floorFx.overMap, how much; dash / white colours: overDash / overWhite, else the streaks' own)
-    c = mix(c, ${v3s(O.dash || S.blue.col)}, ffDo * ${f4(S.blue.amount * (O.dashK ?? 1))} * frK * ${f4(O.amount)});
+${O.vivid ? `    // vivid blue currents in the map's pale water (floorFx.overMap.vivid: colour, how much, noise [round, out, from, to]),
+    // moving with the floor's flow: the original's floor ahead is vivid blue between its white splash, not pale blue
+    c = mix(c, ${v3s(O.vivid.col)}, smoothstep(${f4(O.vivid.noise[2])}, ${f4(O.vivid.noise[3])}, texture2D(uLqTex, vec2(tu * ${f4(O.vivid.noise[0])} + 0.37, (lr - ${f4(MATCH.walls.lnR0)} - uTime * ${f4(MATCH.walls.flow)} - uHeroTravel * ${f4(MATCH.walls.travel)}) * ${f4(O.vivid.noise[1])})).g) * ${f4(O.vivid.amount)} * frK);
+` : ''}    c = mix(c, ${v3s(O.dash || S.blue.col)}, ffDo * ${f4(S.blue.amount * (O.dashK ?? 1))} * frK * ${f4(O.amount)});
     c = mix(c, ${v3s(O.white || P.white)}, ffSo * ${f4(S.amount * (O.whiteK ?? 1))} * frK * ${f4(O.amount)});
 ` : ''}  }
 `;
