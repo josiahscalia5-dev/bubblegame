@@ -1190,3 +1190,54 @@ _[Sent you files: Previews/WebDemo/screen4_round9_match/40_intunnel_start/sheets
 
 I sent you the comparison sheets and videos. The last check, the 45-frame test that the normal game and older modes are unchanged, is still running on the final build. I'll give you the full results when it finishes.
 
+---
+
+### Automatic notice · 2026-11-06 16:12 UTC
+
+_Background command "Wait for the final identity test and read it" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 16:12 UTC
+
+All 45 frames are identical on the final build. The earlier 2-pixel difference in `round5` doesn't reproduce: it was noise from the overloaded machine. Saving the proof:
+
+The water round your character is not closer yet. I tried two different techniques, twice each, and the art director judged all four further from your original than the current build, so I reverted them. What did change is where the game starts: it now opens inside the blue tunnel at your approved view, and everything is saved to GitHub (last commit `acd1962`).
+
+**New test mode: `?s3=intunnel`**
+- She waits at the approved spot inside the tunnel at Tap to Start, with the HUD, mission banner and Bubble Blast / Turbo Spin buttons in place. On the tap she rides straight on at the approved speed. There's no slide, castle or swim first.
+- Every lap and every restart begins there again.
+- The start screen is your approved composition: the same tunnel, rings, brushes, coins, gem and sock, with the sock facing forward. The art director confirmed it keeps the composition.
+- One bug I found and fixed: the old outdoor opening drew Tap to Start through its own camera, which zoomed the in-tunnel picture in by about 1.25×. It's switched off in this mode.
+- Because it's the same picture, it scores the same as the previous build region by region. This step moves the start, not the look.
+
+**The water (reverted)**
+- **Separate rounded water lobes round her base:** they came out as pale, matte blue pillows.
+- **The water surface itself drawing rounded lobes:** the second try matched your original's colour balance, but the art director called it "a still pile of balloons, not splashing water".
+- **Why it isn't working:** your original draws white crests curling up her sides, with fine spray and a few lavender domes. Neither technique can make curling crests.
+- **Decision for you:** should I build real curling crest shapes at her sides, starting from the existing curling splash sheets? That's new geometry rather than shader settings, and I haven't started it.
+- The brushes and the diamond aren't started, since you said to do them only once the water was visibly closer.
+
+**Tests on the final build:**
+- 45 frames of the normal game and every older mode, including `focus`, are pixel-identical to step 8.
+- Steering, jumping, coins, the gem, sock rescue, brush knocks, hearts, restart, pause, Bubble Blast and Turbo Spin all work in the new mode. Both 10-second phone videos (straight and steering) recorded with no console errors.
+
+**Tools:**
+
+| Tool | Status | Helped? |
+|---|---|---|
+| Spector.js, Playwright and Chromium, OpenCV, scikit-image, Blender | already installed | yes |
+| PyTorch, LPIPS, Optuna | newly installed in their own environment; I added one host, `download.pytorch.org`, to your environment, which you approved | partly |
+
+- **Blender** wasn't used; it's for the proposed crest shapes.
+- **LPIPS** gave a useful region-by-region ranking, but it couldn't tell similar water looks apart.
+- **Optuna's 12 trials** picked sizes and colours, but a matching number didn't mean a matching look. The final choice was always by eye and by the art director.
+
+**Saving:** the 5-minute autosave is running. It covers the chat history, the design agents' files and transcripts, the tools, the build and all evidence, and GitHub matches this machine. The machine restarted twice today and the autosave stopped both times; I restarted it each time. The second stop left a gap from 14:38 to 16:04 UTC with no automatic saves. I can add a start-up hook to the repository so the autosave restarts itself whenever a session resumes; tell me if you'd like that.
+
+Files are in `Previews/WebDemo/screen4_round9_match/`:
+- 40_intunnel_start/sheets/01_FULLRES_original_previous_new.jpg
+- 40_intunnel_start/videos/compare_steering_original_bt_intunnel.mp4
+- 40_intunnel_start/videos/intunnel_steering.mp4
+- 42_water_bank/README.md
+
