@@ -422,3 +422,11 @@ _Background command "Wait for the tests and the R7 videos" completed (exit code 
 
 R7's videos are done, with no console errors in either run. I'll check their gameplay summaries against R5's recordings, which use the same seed and the same scripted steering.
 
+R7's videos are done and pushed (commit `df4db7e`):
+
+- **Runs:** a straight run and a steering run at Pixel 7 size, with no console errors.
+- **Comparisons:** each run side by side with your original and the accepted build.
+- **Against R5:** gameplay matches, apart from one sock picked up at a lane's edge. That's the recorder's known clock drift, which also happens between two runs of one build.
+
+Last item: the power-up test (pause, Bubble Blast, Turbo Spin), running alone on the machine with the fixed page handling, first for the accepted build, then for R7. R8 starts when it passes.
+
