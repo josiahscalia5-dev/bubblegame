@@ -50,3 +50,11 @@ At full size the difference shows at the bottom: R7's water beside her is blue w
 
 While the art director reviews and the videos record, committing the tested R6 step, the diagnosis and R7's code and proofs with a named commit:
 
+The videos are recording at about 3 s per frame (two at once, 300 frames each), so about 15 minutes per pair. Waiting for the art director's verdict on R7:
+
+While the videos finish, I'm running the region comparison (LPIPS, SSIM, colour) for R6 and R7 at low priority:
+
+Meanwhile, reading how the water face's top edge (the "cut" across her) is built, for the next correction the art director ranked first:
+
+Only about 3 minutes in; the pair needs about 20 minutes. Meanwhile I'm reading how the crest in front of her is lifted (`swellFront`), for R8:
+

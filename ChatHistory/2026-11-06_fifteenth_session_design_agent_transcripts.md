@@ -157,5 +157,57 @@ Address this before completing your current task.
 - 19:09 `Bash`: List R7 evidence folder
 - 19:09 `Bash`: Build R7 comparison crops and white shares
 - 19:09 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_band.png
+- 19:09 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_left1.png
+- 19:09 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_right1.png
+- 19:10 `Bash`: Original vs R7 side crops
+- 19:10 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_right_orig.png
+- 19:10 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_left_orig.png
+- 19:10 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_T2.png
+- 19:10 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_vs_acc.png
+- 19:10 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_start.png
+- 19:10 `Bash`: Find the R7 point-size cap code
+**Agent** (19:11 UTC):
 
-_47 tool steps._
+1. **Verdicts**
+
+| | Moving (+1 s, +2 s) | Start |
+|---|---|---|
+| R7 vs R6 | Clearly closer | About the same (only 644 px differ: the small resting bubbles) |
+| R7 vs accepted | Clearly closer | Clearly closer (the same as R6) |
+
+   - **By eye:** the matte white cotton-ball piles at both sides are gone. At +1 s and +2 s the blue and lavender water now shows round her, as it does in the original. The accepted build still has those piles at both times, plus its pale glassy sheet with white strokes.
+   - **My white share, y 1150-1400 (whole width / left / right):**
+
+| | Whole width | Left | Right |
+|---|---|---|---|
+| R6 +1 s | 23.9 % | 32.9 % | 39.7 % |
+| R7 +1 s | 16.8 % | 22.6 % | 22.9 % |
+| R6 +2 s | 28.8 % | 38.3 % | 47.8 % |
+| R7 +2 s | 18.9 % | 25.4 % | 26.8 % |
+| Accepted +2 s | 27.2 % | 38.6 % | 44.0 % |
+| Original | 14.9 % | 21.4 % | 15.5 % |
+
+2. **The remaining flecks mostly read as fine spray, like the original's small white droplets.** Two caveats, one of them a gameplay check:
+   - **One size for every fleck:** the cap squashes all the near droplets to about 12 px, so they are uniform round dots. On the right at +1 s (about x 560-720, y 1250-1380) they form an even, dense field that starts to look like a polka-dot pattern rather than the original's irregular flecks and crest strands.
+   - **Splash energy:** a little is lost (no thrown volume), but the water does not look empty; the texture underneath carries it. Fine for now.
+   - **The sparkle stars, which need a check:** at +2 s the pink four-point crosses over her body are gone, which is closer to the original and matches the user's dislike of star sparkles. But the cap is on the whole particle material (`game.js` lines 1642-1646), not only the spray. It also shrinks the coin-pickup sparkle, the Bubble Blast pop burst and every other `fx` effect. Mechanics are unchanged, but in play that feedback will be smaller. Check it in a gameplay video and tell the user. If it is too faint, the vertex shader already has the `kind` attribute, so the cap could be limited to the droplets and foam puffs. That would bring the stars back.
+   - **Still a bit pale:** at +2 s the right side is 26.8 % white against the original's 15.5 %. In the band at +1 s, white is 22.2 % against 18.6 %, and saturated blue 15.6 % against 19.6 %.
+
+3. **Yes, R7 should replace R6 as THE candidate.** It is the first water step that is clearly closer in motion. When you present it, mention the smaller coin and Bubble Blast feedback.
+
+4. **Next corrections, ranked**
+   1. **The contact edge.** This is now the largest difference from the original, both at the start and in motion. The water's top edge crosses her body as a flat, ragged, roughly horizontal cut. The original has rounded periwinkle-lavender domes with bright white rims overlapping her lower edge (about x 230-440, y 1225-1300, plus the small ring at about x 460).
+      - **Fix, within the existing material:** make `heroSwell`'s top edge (its transparency) follow the original's own outline of the water against her body, so the face ends in the original's rounded dome tops. Register or warp the texture so those domes sit across her lower edge.
+      - **Fill:** take it from the original's lavender dome pixels at that place, not from lower cobalt water. That would also bring back the lavender R6 lost (band 10.4 % against 15.3 %).
+   2. **Varied fleck size.** Scale the cap with each droplet's own `size` value, for example `uMaxPx * (0.4 + 0.6 * clamp(size / 0.11, 0, 1))`, so small and large flecks stay distinct. Emitters and random numbers stay untouched.
+   3. **Softness.** The blurred fill areas lack the original's crisp white rims. This is about texture resolution and filtering; edge strength overall is not below the original's, so it ranks below the edge.
+   4. **Remaining paleness.** Icy-pale water is 31.8 % against 27.5 % (band, +1 s, the coordinator's measure). It will probably shrink once the edge and fill change.
+
+My comparison crops are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/`:
+- `r7_band.png` (original, R6, R7 at +1 s and +2 s)
+- `r7_vs_acc.png` (original, accepted and R7, moving)
+- `r7_right_orig.png` and `r7_left_orig.png` (fleck character against the original)
+- `r7_T2.png` (R6 and R7 at +2 s: the stars are gone)
+
+
+_56 tool steps._
