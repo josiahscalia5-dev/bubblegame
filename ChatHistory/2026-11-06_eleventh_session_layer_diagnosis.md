@@ -317,3 +317,5 @@ Now generate. First proof that the default derivation still reproduces the step 
 
 The derivation reads the original from the repository, and my sparse worktree didn't include that folder. Adding it:
 
+`fill_rings` takes several minutes per run; the 96-texel version is still going. Waiting for it:
+
