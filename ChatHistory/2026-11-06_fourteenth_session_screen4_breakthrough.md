@@ -383,3 +383,31 @@ _Monitor event: "bt final tests: identity, gameplay, videos"_
 
 I committed and pushed the gameplay results as `aa3eec8`. The straight video has finished recording and the steering one is still recording; I'll send both, side by side with your original and step 8, when it's done.
 
+---
+
+### Automatic notice · 2026-11-06 13:05 UTC
+
+_Monitor event: "bt final tests: identity, gameplay, videos"_
+
+---
+
+### Claude · 2026-11-06 13:06 UTC
+
+While the steering video finishes, preparing the side-by-side video: ORIGINAL (still) | STEP 8 | NEW `bt`, using step 8's own recorded runs at the same inputs.
+
+Both straight runs have 300 frames and follow the same path. Writing the side-by-side video script:
+
+The side-by-side script is ready. I'll run it once the steering video finishes, then send you both videos.
+
+---
+
+### Automatic notice · 2026-11-06 13:07 UTC
+
+_Background command "Wait for the steering video to finish" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 13:08 UTC
+
+One difference: in the straight run, step 8's log says 1 sock collected and `bt`'s says 2. The paths matched at every sampled frame, so checking the frame-by-frame track before trusting either:
+
