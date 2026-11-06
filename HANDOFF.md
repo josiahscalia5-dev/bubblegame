@@ -1,4 +1,21 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-1535d773-7e5f95`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
+
+## Newest (6 November, about 21:20-22:50 UTC): sixteenth session, the engineering diagnosis; NOT merged
+
+- **Branch:** `ccr-10503be1-pnv5vq`, started from the fifteenth session's R9 work.
+- **Account switch:** `ACCOUNT_SWITCH_HANDOFF.md` has the full state, the verified tool inventory and the first message
+  for another account.
+- **The diagnosis** (`Previews/WebDemo/screen4_round9_match/52_diagnosis/README.md`):
+  - the pale travelling mound is `heroSwell` (a 1.9 m pad in her frame carrying a still picture pinned to her);
+  - the moving tunnel's paleness is `r3Swirl`, re-shown every frame by its own updater despite Round 4's hide;
+  - the floor's white dashes are `focusFloorGLSL`;
+  - her bob, lean, somersault and squash exist, but the water touching her moves with her.
+- **`?s3=intunnel,swim`** (`53_swim/`): REJECTED by the art director (a tight collar reads as a glass bowl). Its motion
+  parts measured well.
+- **Specialist inspections** (water, tunnel lighting, swim animation): `54_specialists/`. They inspect only.
+- **Waiting on the user:** whether to activate the proposed `screen4-water-motion-engineer` agent, and whether to build
+  `?s3=intunnel,swim2`. No game-code changes until then.
+- **The accepted `?s3=intunnel`:** 0 pixels changed (the old bundle `7402397a` against the current `5bb24e28`).
 
 ## Newest (6 November, about 18:50-19:40 UTC): fifteenth session (a new Claude account), the water candidates R6 and R7; NOT merged
 
