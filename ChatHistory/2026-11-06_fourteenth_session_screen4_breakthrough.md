@@ -371,3 +371,15 @@ Stop hook feedback:
 
 I committed and pushed the identity proof as `7ca6e7d`; nothing is left uncommitted. The proof shows all 45 frames, `focus` included, pixel-identical to step 8. The gameplay checks and the two videos are still running; I'll report when they finish.
 
+---
+
+### Automatic notice · 2026-11-06 12:57 UTC
+
+_Monitor event: "bt final tests: identity, gameplay, videos"_
+
+---
+
+### Claude · 2026-11-06 12:57 UTC
+
+I committed and pushed the gameplay results as `aa3eec8`. The straight video has finished recording and the steering one is still recording; I'll send both, side by side with your original and step 8, when it's done.
+
