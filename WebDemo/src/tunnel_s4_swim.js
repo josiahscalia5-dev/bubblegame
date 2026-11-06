@@ -55,7 +55,9 @@ export const SWIM = {
     // and out along the crest (m/s at her cruising speed), the top band (m) where only the lobes stand (so her waterline is
     // scalloped by their rounded tops), and the lobes' colours: gap (between them), rim, highlight
     lobe: { cell: [5.2, 5.0], r: [0.46, 0.66], share: 0.92, down: 0.55, out: 0.18, top: 0.075, gap: '#0f47c4', rim: '#b8e4ff',
-      hi: '#7fe8fb', amount: 1.0 } },
+      hi: '#7fe8fb', amount: 1.0 },
+    // (c3) how opaque the collar's water is: near the crest .. lower down (her fur shows through, violet)
+    clear: [0.55, 0.86] },
   // 3. the wake on the floor: the V arms (where they start beside her, how fast they open per m behind her, their width),
   // how far behind her it fades (m), the ring round her (radius m), colours (sRGB) and strengths
   wake: { arm: [0.62, 0.42, 0.13], fade: 2.5, ring: 0.68, cobalt: '#1757d8', turq: '#5fdcf7', white: '#f2faff',
@@ -89,13 +91,13 @@ export function swimCollarGLSL() {
       float swKey = mwKey + (swCur - 0.5) * 0.55;
       vec3 swW = mix(${v3s(K.deep)}, ${v3s(K.body)}, smoothstep(0.22, 0.52, swKey));
       swW = mix(swW, ${v3s(K.lit)}, smoothstep(0.55, 0.82, swKey));
-      swW = mix(swW, ${v3s(K.turq)}, smoothstep(0.6, 0.8, swCur) * smoothstep(0.35, 0.7, mwKey) * 0.85);
+      swW = mix(swW, ${v3s(K.turq)}, smoothstep(0.6, 0.8, swCur) * smoothstep(0.35, 0.7, mwKey) * 0.5);
       swW = mix(swW, ${v3s(K.turq)}, (1.0 - smoothstep(0.0, 0.06, d)) * 0.45);   // thin water at the crest, lit through
       // (c2) large irregular rounded water lobes streaming down the face and out along the crest (the 2 x 2 nearest cells:
       // the highest lobe wins), each lit as a rounded bulge from above and the screen's left: turquoise-white highlight,
       // azure body, cobalt shade and deep cobalt gaps between them, a thin pale rim
       vec2 swLq = vec2(as * ${f4(L.cell[0])} + fl * ${f4(L.out * L.cell[0])}, swPd * ${f4(L.cell[1])} - fl * ${f4(L.down * L.cell[1])}), swLb = floor(swLq - 0.5);
-      float swLh = 0.0; vec2 swLn = vec2(0.0);
+      float swLh = 0.0; vec2 swLv = vec2(0.0);
       for (int j = 0; j < 4; j++) {
         vec2 swLi = swLb + vec2(mod(float(j), 2.0), floor(float(j) * 0.5));
         if (lqHash(swLi + 61.0) > ${f4(L.share)}) continue;
@@ -105,19 +107,21 @@ export function swimCollarGLSL() {
         float swLd = length(swLo) / swLr;
         if (swLd >= 1.0) continue;
         float h = sqrt(1.0 - swLd * swLd);
-        if (h > swLh) { swLh = h; swLn = swLo / swLr; }
+        if (h > swLh) { swLh = h; swLv = swLo / swLr; }
       }
       float swSide = s >= 0.0 ? 1.0 : -1.0;                                       // (s > 0: screen left of her)
-      vec3 swLnrm = normalize(vec3(swLn.x * swSide, -swLn.y, swLh + 0.2));       // the lobe's normal: x screen right, y up, z out
+      vec3 swLnrm = normalize(vec3(swLv.x * swSide, -swLv.y, swLh + 0.2));       // the lobe's normal: x screen right, y up, z out
       float swLlit = clamp(dot(swLnrm, normalize(vec3(-0.4, 0.62, 0.68))), 0.0, 1.0);
       float swLin = smoothstep(0.0, 0.1, swLh) * smoothstep(0.05, 0.4, swUp);
-      vec3 swLc = mix(${v3s(K.deep)}, ${v3s(K.body)}, smoothstep(0.25, 0.6, swLlit));
-      swLc = mix(swLc, ${v3s(K.lit)}, smoothstep(0.6, 0.85, swLlit));
-      swLc = mix(swLc, ${v3s(L.hi)}, smoothstep(0.85, 0.97, swLlit) * smoothstep(0.3, 0.7, swLh));
-      swLc = mix(swLc, ${v3s(L.rim)}, (1.0 - smoothstep(0.0, 0.22, swLh)) * smoothstep(0.0, 0.03, swLh) * 0.55);   // the thin rim
-      swLc *= 0.82 + 0.36 * smoothstep(0.2, 0.8, mwKey);                         // the collar's own shape light over them
-      swW = mix(mix(${v3s(L.gap)}, swW, 0.35), swLc, swLin * ${f4(L.amount)});   // deep cobalt gaps between the lobes
+      // (c3, after c2's opaque lobes read as a quilted blue basket) the lobes are bulges of CLEAR water, not balls: each shows
+      // as a turquoise sheen on its lit upper left, a thin pale rim along its upper outline and a white glint; between them
+      // the water lies a little deeper (cobalt, a little less clear)
+      float swRimL = (1.0 - smoothstep(0.0, 0.25, swLh)) * smoothstep(0.0, 0.04, swLh) * smoothstep(-0.2, 0.5, swLv.y * -1.0) * swLin;
+      float swSheen = smoothstep(0.72, 0.95, swLlit) * smoothstep(0.2, 0.6, swLh) * swLin;
+      swW = mix(swW, ${v3s(L.gap)}, (1.0 - smoothstep(0.0, 0.1, swLh)) * 0.5 * smoothstep(0.05, 0.4, swUp));
+      swW = mix(swW, ${v3s(L.hi)}, swSheen * 0.7 * ${f4(L.amount)});
       vec3 swCol = mix(mwFloor, mtUndisplay(swW), smoothstep(0.0, 0.35, swUp));   // its foot: the floor's own water
+      swCol = mix(swCol, mtUndisplay(${v3s(L.rim)}), swRimL * 0.65 * ${f4(L.amount)});
       // crisp blue-white glints: the key light's specular points and sparkles travelling down the face
       vec2 swGq = vec2(as * 26.0, swPd * 26.0 - fl * 14.0), swGi = floor(swGq);
       float swGh = lqHash(swGi + 41.0);
@@ -138,9 +142,14 @@ export function swimCollarGLSL() {
       float swLip = (1.0 - smoothstep(swLw * 0.5, swLw, d)) * smoothstep(0.45, 0.62, swLn) * (1.0 - smoothstep(0.36, 0.5, abs(swX)));
       swCol = mix(swCol, mtUndisplay(${v3s(K.lip)}), swLip * 0.85);
       // white glints on the lobes' lit tops
-      swCol = mix(swCol, mtUndisplay(${v3s(K.glint)}), smoothstep(0.95, 0.995, swLlit) * smoothstep(0.45, 0.8, swLh) * swLin);
+      float swLg = smoothstep(0.95, 0.995, swLlit) * smoothstep(0.45, 0.8, swLh) * swLin;
+      swCol = mix(swCol, mtUndisplay(${v3s(K.glint)}), swLg);
       mwCol = swCol;
-      mwA = mix(${f4(K.crestClear)}, 1.0, smoothstep(0.0, 0.035, d));   // solid water; only the very crest a little see-through
+      // (c3) clear water: her fur shows through it (violet where the blue water lies over her pink, as the original's
+      // lavender at her base), clearer near the crest and deeper lower down; the gaps a little less clear; the rims, sheens,
+      // glints, bubbles and lip more opaque
+      float swClr = mix(${f4(K.clear[0])}, ${f4(K.clear[1])}, smoothstep(0.03, 0.42, swPd)) + (1.0 - swLin) * 0.08 * smoothstep(0.05, 0.4, swUp);
+      mwA = clamp(max(swClr, max(max(swRimL * 0.7, swSheen * 0.55), max(swLg, max(swRing * 0.75 + swBgl, swLip * 0.85)))), 0.0, 1.0);
       // (c2) in the top band only the lobes stand: her waterline is the row of their rounded tops (pink between them)
       float swTop = 1.0 - smoothstep(${f4(L.top * 0.6)}, ${f4(L.top)}, swPd);
       mwA *= mix(1.0, smoothstep(0.0, max(fwidth(swLh) * 1.5, 0.02), swLh), swTop);
