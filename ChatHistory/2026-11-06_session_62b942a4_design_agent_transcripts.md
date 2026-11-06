@@ -108,5 +108,160 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 
 - 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md
 - 22:30 `Bash`: List specialist and diagnosis folders and git state
+- 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/52_diagnosis/README.md
+- 22:30 `Bash`: Count lines of relevant source files
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r7_hero_water.js
+- 22:30 `Grep`: liquidSwell|heroSwell|lqWake|uRipples|function |MATCH_ON|SPLASH_ON|export
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+**Agent** (22:30 UTC):
 
-_2 tool steps._
+Now the match water and water2, and the swim file.
+
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_water2.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_swim.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_bt.js
+- 22:30 `Grep`: export function|^function|^const|^export const|swellFront|focusSwell|matchSwellGLSL|mwFloor|mwCol|mwA|mwKey|mwSpec|mtUndisplay
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match_water.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match_water.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_focus.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_splash.js
+- 22:30 `Bash`: Inspect structure of compiled shader dump and scene JSON
+- 22:30 `Bash`: Show rest of scene JSON
+- 22:30 `Bash`: Crop the original's foreground region
+- 22:31 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/wv/orig_lower.png
+- 22:31 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/wv/orig_fg_x2.png
+- 22:31 `Bash`: K-means palette of the original's foreground zones
+- 22:31 `Bash`: Project her water frame through the captured start camera
+- 22:34 `Grep`: SWIM_ON|swimPose|WATER7_ON|maxPx|addRipple|visSpeed|FLOAT_H|BODY_R
+- 22:34 `Read`: /workspace/bubblegame/WebDemo/src/game.js
+- 22:34 `Bash`: Print compiled heroSwell vertex shader main
+- 22:34 `Bash`: List uniforms and functions in compiled heroSwell fragment shader
+- 22:34 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:34 `Grep`: vec3 mtUndisplay|void mtPlace|export const MT_BEND|uHeroTravel|travel:
+- 22:34 `Grep`: surface\(|baseHeight\(|FLOAT_H|BODY_R|CRUISE|bwWaves|HEIGHT_GLSL
+- 22:34 `Read`: /workspace/bubblegame/WebDemo/src/world.js
+- 22:34 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match.js
+- 22:34 `Bash`: List swim evidence and diagnosis report files
+- 22:34 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/52_diagnosis/report/T1.0_lower_original_R9_noswell_nodressing.jpg
+**Lead → agent** (22:34 UTC):
+
+[Image: original 3086x696, displayed at 2000x451. Multiply coordinates by 1.54 to map to original image.]
+
+- 22:34 `Bash`: List swim sheets and read swim README head
+- 22:34 `Bash`: Build a lower-frame comparison sheet of original, R9 and swim
+- 22:34 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/wv/cmp_lower.png
+- 22:35 `Bash`: Measure the lowest visible pink row per column (contact edge)
+
+_39 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: Lighting: tunnel water colour fix (started 22:30 UTC)
+
+**Lead → agent** (22:30 UTC):
+
+Read /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md first. This is an INSPECTION AND DESIGN task: do NOT edit any game file and do NOT launch browsers or renders. Your subject: the tunnel's water (walls and the floor ahead of and beside her) while she is MOVING, plus bloom / tone mapping / grade as they affect it.
+
+Inspect independently: r3Swirl (tunnel_r3.js:24, 263-310, and the round4 hide at tunnel_r4.js:65 overridden by tunnel_r3.js:286), the walls' material (tunnel_r9_match.js matchWallGLSL and its flow: why the moving tunnel keeps only 5-7 % lavender against the original's 28.5 % while the start frame matches), the floor's focusFloorGLSL streaks and delilac (tunnel_r9_match_water.js:264-355, tunnel_r9_focus.js:270-290), matchFloor, the bubble layers' whites, and the post chain. Use the existing frames and the zone table (52_diagnosis/report/zone_water_T1.0.md; frames in 52_diagnosis/ablation/R9w_T1.0/ and R9_T1.0/), and crop the ORIGINAL's tunnel (x 0.32-0.68, y 0.22-0.52 and the floor ahead) yourself.
+
+Design the single strongest technically justified correction that makes the moving tunnel water deep cobalt and turquoise with the original's rounded wave bands and lavender rings, with NO paper-like white streaks and no white haze, without changing the tunnel's layout, the camera or the start frame's match. Be concrete: the exact code change for r3Swirl (one gated line?), what replaces the floor's white dashes (e.g. rounded crest bands lit from the water's own normals, with numbers), how to keep the lavender while moving (find the actual cause in the flow / travel mapping or delilac, quote the lines), and whether bloom / grade need any change (with the numbers from the ablations). Give file:line insertion points and code ready to paste behind a new flag SWIM2_ON (exported from tunnel_s4_bt.js; settings in a new file tunnel_s4_swim2.js). Predict each change's effect on the tunnel-zone table and name how to check it.
+
+Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/lighting_visual_matching.md (under 1000 words plus code) and reply with a 10-line summary.
+
+- 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md
+- 22:30 `Bash`
+- 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/52_diagnosis/README.md
+- 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/52_diagnosis/report/zone_water_T1.0.md
+- 22:30 `Bash`
+- 22:30 `Bash`
+- 22:30 `Bash`
+- 22:30 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/tunnel.png
+- 22:30 `Bash`
+- 22:30 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/lavmap.png
+- 22:31 `Bash`
+- 22:31 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/full_s.png
+**Lead → agent** (22:31 UTC):
+
+[Image: original 2256x900, displayed at 2000x798. Multiply coordinates by 1.13 to map to original image.]
+
+- 22:31 `Bash`
+- 22:31 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/t1_four.png
+- 22:31 `Bash`
+- 22:31 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r3.js
+- 22:31 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r4.js
+- 22:31 `Grep`: r3Swirl|swirl\b|buildRound4\(|buildRound3\(
+- 22:31 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match.js
+- 22:31 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match.js
+- 22:32 `Grep`: uHeroCam|uHeroTravel|uHeroTanW
+- 22:32 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r7_hero.js
+- 22:32 `Bash`
+- 22:32 `Bash`
+- 22:32 `Bash`
+- 22:32 `Bash`
+- 22:32 `Grep`: r3Whirlpool|r3Bubbles|'s4Bubbles'|heroBubbles'|hide:
+- 22:33 `Bash`
+- 22:33 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/centre.png
+- 22:33 `Bash`
+- 22:33 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match.js
+- 22:33 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_focus.js
+- 22:34 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match_water.js
+- 22:34 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match_water.js
+- 22:34 `Bash`
+- 22:34 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/floor.png
+**Lead → agent** (22:34 UTC):
+
+[Image: original 2310x442, displayed at 2000x383. Multiply coordinates by 1.16 to map to original image.]
+
+- 22:35 `Bash`
+- 22:35 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/floorahead.png
+
+_38 tool steps._
+
+---
+
+## general-purpose: Animation: swimming motion review (started 22:30 UTC)
+
+**Lead → agent** (22:30 UTC):
+
+You are acting as a 3D gameplay-animation reviewer (character locomotion in water, game feel). Read /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md first. This is an INSPECTION AND DESIGN task: do NOT edit any game file and do NOT launch browsers or renders (the 4-core machine is busy). Your subject: making the pink character visibly SWIM through the water during forward travel, left/right swipes, jumps and landings, synchronised with the water, as a purely visual layer (her gameplay state x, yAbs, air, lane, speed, collisions must stay identical frame by frame; no Math.random).
+
+Inspect independently: WebDemo/src/game.js updateMascot (about lines 970-1080: bob, lean, yaw, flip, squash, spray, ripples), changeLane / jump / landing, updateCamera (the camera follows 35 % of bob and jumps), the swell's updater in tunnel_r7_hero_water.js (how the water round her follows her: lag, base, uLat / uAir / uLand), the rejected candidate's swimPose in tunnel_s4_swim.js and its motion data (53_swim/motion/trace_swim_swipejump.json and trace_accepted_swipejump.json; 52_diagnosis/motion/trace_R9_swipejump.json; per frame t, x, xv, yAbs, surf, rollDeg, pitchDeg, flipDeg, squashY, her screen position, the swell's frame and uLat / uAir / uLand), and the clips 51_swim/videos/clip_R9.mp4 and 53_swim/videos/clip_swim.mp4 (extract frames with ffmpeg if useful: the run taps at 2.0 s, swipes left at 3.0 s, right at 3.9 s, jumps at 4.8 s, lands about 5.5 s).
+
+Decide, with reasons a game animator would accept: (1) the forward swim cycle (rate, bob, pitch, roll, squash; e.g. is a full forward somersault on every jump right for a swimmer, or should the drawn rotation be a dive-and-surface arc while the gameplay flip state stays as it is?); (2) the swerve (lean, a body offset that leads or lags, how the water should respond: pile on the leading side, open water left behind, timing in frames); (3) the jump (take-off splash, the water closing under her) and (4) the landing (dip under the surface and rebound, splash ring, how long). Specify exact formulas and constants, where each goes (file:line), what the water layers must receive each frame (uniform names / values) to stay in sync, and how to verify each with the existing motion_trace.cjs fields. Code ready to paste behind a new flag SWIM2_ON (exported from tunnel_s4_bt.js; settings in a new file tunnel_s4_swim2.js).
+
+Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md (under 1000 words plus code) and reply with a 10-line summary.
+
+- 22:30 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/BRIEF.md
+- 22:30 `Bash`: Check repo state and list evidence folders
+- 22:30 `Grep`: function (updateMascot|updateCamera|changeLane|jump|land|startJump|doJump)\b
+- 22:30 `Bash`: Count lines of key source files
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/game.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_swim.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_bt.js
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r7_hero_water.js
+- 22:30 `Bash`: Inspect motion trace file structure
+- 22:30 `Bash`: Summarise trace events and sampling
+- 22:30 `Bash`: Locate motion_trace.cjs
+- 22:30 `Read`: /workspace/bubblegame/WebDemo/tools/screen4/motion_trace.cjs
+- 22:31 `Bash`: Print accepted vs swim trace tables
+- 22:31 `Bash`: Find world constants and surface functions
+- 22:31 `Read`: /workspace/bubblegame/WebDemo/src/world.js
+- 22:31 `Bash`: Search swim README for motion findings
+- 22:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/53_swim/README.md
+- 22:31 `Bash`: Search diagnosis README for motion findings
+- 22:31 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/52_diagnosis/README.md
+- 22:32 `Bash`: Probe clip properties and log
+- 22:32 `Bash`: Extract contact sheets of swerve and jump moments
+- 22:32 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/frames/swim_jump.png
+- 22:32 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/frames/swim_swR.png
+- 22:32 `Bash`: Extract larger swerve and landing frames
+- 22:32 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/frames/R9_swerve4.jpg
+- 22:32 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/frames/R9_land4.jpg
+- 22:32 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/frames/swim_land4.jpg
+- 22:33 `Bash`: Find player-driven water uniforms
+- 22:33 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:33 `Bash`: Check ribbon resolution, ripple count and flip readers
+
+_30 tool steps._
