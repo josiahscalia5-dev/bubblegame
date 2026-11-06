@@ -101,7 +101,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
-export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON);   // (R4, below: water3 with the exemplar-filled texture)
+export const WATER6_ON = BT_ON && LIST.includes('water6');   // (R6, below: water4 with the fill under her from the lower water)
+export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON || WATER6_ON);   // (R4, below: water3 with the exemplar-filled texture)
 export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
 export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
 // (candidate c1: wobble 0.025, amount 0.92, the face's spiky crest, white rim pieces and sparkle unchanged; the art director:
@@ -158,6 +159,17 @@ if (WATER4_ON) WATER2.file = WATER4.file;
 // her water (the same frame, so it bobs with the swell as before).
 export const WATER5 = { shift: -22 };
 if (WATER5_ON) WATER2.shift = WATER5.shift;
+// (R5 REJECTED by the art director: about the same as R4 at the start and worse moving. Registered to the screen, the
+// original's lavender domes land about 20 px below her body edge, because she sits higher in the game than in the original;
+// she rests on a pale band, the hole where the original has her lower body; white under her 13.0 -> 18.8 % at the start.
+// Kept behind its flag as a record; 47_water_r5/.)
+// ?s3=intunnel,water6 (R6; the art director's next correction after R4): R4 with ONLY the texture's fill under her changed.
+// The hole where the original has her body is widened 13 px up and to the sides (not down: the lavender domes touching her
+// lower fur stay), so the original's white fur halo round her goes too, and that hole is refilled only from the original's
+// lower water (texture rows from 140, about y 1245 down) and never from its lavender (no purple blobs):
+// derive_water_map.py --fill exemplar --body-grow 13 --body-src-row 140. R4's registration (no shift), material and all else.
+export const WATER6 = { file: 'foreground_water_original_r6.png' };
+if (WATER6_ON) WATER2.file = WATER6.file;
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

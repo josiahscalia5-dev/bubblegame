@@ -46,8 +46,9 @@ if a.fill == 'exemplar' and a.body_grow > 0:
     # (R6, the art director's review of R4 / R5) the hole where her body was widened by --body-grow px, so the original's
     # white fur halo round her goes too; that hole is refilled only from the original's water below --body-src-row
     # (texture rows: its lower cobalt-and-white water), not from the pale glow beside her
-    k = 11 + 2 * a.body_grow
-    body = cv2.dilate(pink.astype(np.uint8), np.ones((k, k), np.uint8)).astype(bool)
+    # (up and to the sides only: the original's lavender domes touching her lower fur stay; the halo is above and beside her)
+    g = 5 + a.body_grow
+    body = cv2.dilate(pink.astype(np.uint8), np.ones((g + 1, 2 * g + 1), np.uint8), anchor=(g, 0)).astype(bool)
     m = (m.astype(bool) | body).astype(np.uint8)
 fill = cv2.inpaint(c, m * 255, 9, cv2.INPAINT_TELEA)
 if a.fill == 'exemplar':
@@ -66,6 +67,8 @@ if a.fill == 'exemplar':
     vs[:R] = vs[-R:] = False; vs[:, :R] = vs[:, -R:] = False
     cy, cx = np.nonzero(vs); keep = ((cy % 2) == 0) & ((cx % 2) == 0); cy, cx = cy[keep], cx[keep]
     offs = np.arange(-R, R + 1)
+    hs = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(np.float32); lav_px = ((hs[..., 0] * 2 >= 235) & (hs[..., 0] * 2 <= 290) & (hs[..., 1] > 50) & (hs[..., 2] > 100)).astype(np.float32)
+    lav_win = cv2.boxFilter(lav_px, -1, (P, P))[cy, cx]   # each source window's lavender share (the body hole takes none)
     src = np.stack([img[(cy + dy)[:, None], cx[:, None] + offs[None, :]] for dy in offs], 1)  # (N, P, P, 3)
     src = src.reshape(len(cy), P * P, 3)
     conf = valid.astype(np.float32)
@@ -79,7 +82,7 @@ if a.fill == 'exemplar':
         ty, tx = fyx[np.argmax(pr)]
         ty = int(np.clip(ty, R, Hc - 1 - R)); tx = int(np.clip(tx, R, W - 1 - R))
         win = img[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P, 3); kn = known[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P)
-        near = (cy >= a.body_src_row) if (a.body_src_row >= 0 and body[ty, tx]) else (np.abs(cy - ty) <= 120)
+        near = ((cy >= a.body_src_row) & (lav_win < 0.1)) if (a.body_src_row >= 0 and body[ty, tx]) else (np.abs(cy - ty) <= 120)
         idx = np.nonzero(near)[0] if near.any() else np.arange(len(cy))
         if kn.any():
             d = ((src[np.ix_(idx, np.nonzero(kn)[0])] - win[kn][None]) ** 2).sum((1, 2))
