@@ -17,7 +17,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')
 ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg')
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
-ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch'])   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -25,9 +25,66 @@ pink = (((h >= 290) | (h <= 15)) & (s > 35) & (v > 110))   # (her pale fur edge 
 gold = ((h > 20) & (h < 65) & (s > 90) & (v > 110))
 m = (pink | gold).astype(np.uint8)
 yy, xx = np.mgrid[0:c.shape[0], 0:W]; fy = (yy + y0) / H; fx = xx / W
-m[(fy > 0.875) & ((fx < 0.42) | (fx > 0.64))] = 1          # the power buttons and their badges (bottom corners)
+if a.fill == 'exemplar':
+    # (R4) the power buttons by their own outline, measured on the original (rounded panels from y 1392 / 1394, a badge
+    # circle r 48 on each), not the whole corner from y 1344: the real foam above and between them is kept
+    Y = yy + y0
+    def rrect(x0, x1, top, r):
+        inside = (xx >= x0) & (xx <= x1) & (Y >= top)
+        cyy = top + r   # the rounded top corners
+        inside &= ~((xx < x0 + r) & (Y < cyy) & ((xx - (x0 + r)) ** 2 + (Y - cyy) ** 2 > r * r))
+        inside &= ~((xx > x1 - r) & (Y < cyy) & ((xx - (x1 - r)) ** 2 + (Y - cyy) ** 2 > r * r))
+        return inside
+    m[rrect(36, 300, 1392, 30) | rrect(536, 800, 1394, 30)] = 1
+    m[((xx - 256) ** 2 + (Y - 1420) ** 2 <= 48 ** 2) | ((xx - 745) ** 2 + (Y - 1418) ** 2 <= 48 ** 2)] = 1
+else:
+    m[(fy > 0.875) & ((fx < 0.42) | (fx > 0.64))] = 1          # the power buttons and their badges (bottom corners)
 m = cv2.dilate(m, np.ones((11, 11), np.uint8))
 fill = cv2.inpaint(c, m * 255, 9, cv2.INPAINT_TELEA)
+if a.fill == 'exemplar':
+    # (R4, after the layer isolation of R3c: heroSwell drawn alone shows the original's bubbly water only in its top strip;
+    # below it the face shows this texture's Telea fill, a pale lavender-white blur where her body was and long vertical
+    # streaks and a flat triangle where the buttons were, and in the game she sits higher and the buttons differ, so those
+    # fills are what is seen under her.) Exemplar-based filling (Criminisi, Perez and Toyama 2004, confidence term only):
+    # from the hole's edge inward, each 15 x 15 window takes the best-matching real window of the original's own water
+    # (sum of squared differences over its known texels, among sources within 120 rows so the water keeps its depth from
+    # top to bottom, one of the best 3 by a private seeded generator) and copies its texels into the hole unchanged. No
+    # smoothing: the bubbles, rims and sparkles are the original's own pixels.
+    P, R = 15, 7
+    rng = np.random.default_rng(7)
+    img = c.astype(np.float32); hole = m.astype(bool); Hc = img.shape[0]
+    valid = ~hole; vs = cv2.erode(valid.astype(np.uint8), np.ones((P, P), np.uint8)).astype(bool)
+    vs[:R] = vs[-R:] = False; vs[:, :R] = vs[:, -R:] = False
+    cy, cx = np.nonzero(vs); keep = ((cy % 2) == 0) & ((cx % 2) == 0); cy, cx = cy[keep], cx[keep]
+    offs = np.arange(-R, R + 1)
+    src = np.stack([img[cy + dy][:, None, :] if False else img[cy + dy, cx[:, None] + offs[None, :]] for dy in offs], 1)  # (N, P, P, 3)
+    src = src.reshape(len(cy), P * P, 3)
+    conf = valid.astype(np.float32)
+    known = valid.copy()
+    pad = lambda a_: np.pad(a_, R, mode='edge')
+    while not known.all():
+        front = known == False  # noqa: E712
+        front &= cv2.dilate(known.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
+        fyx = np.argwhere(front)
+        pr = cv2.boxFilter(conf, -1, (P, P), normalize=True, borderType=cv2.BORDER_CONSTANT)[front]
+        ty, tx = fyx[np.argmax(pr)]
+        ty = int(np.clip(ty, R, Hc - 1 - R)); tx = int(np.clip(tx, R, W - 1 - R))
+        win = img[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P, 3); kn = known[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P)
+        near = np.abs(cy - ty) <= 120
+        idx = np.nonzero(near)[0] if near.any() else np.arange(len(cy))
+        if kn.any():
+            d = ((src[idx][:, kn] - win[kn][None]) ** 2).sum((1, 2))
+        else:
+            d = rng.random(len(idx))
+        best = idx[np.argsort(d)[:3]]; pick = best[rng.integers(len(best))]
+        newp = ~kn
+        win[newp] = src[pick][newp]
+        img[ty - R:ty + R + 1, tx - R:tx + R + 1] = win.reshape(P, P, 3)
+        cval = float(cv2.boxFilter(conf, -1, (P, P), normalize=True, borderType=cv2.BORDER_CONSTANT)[ty, tx])
+        cw = conf[ty - R:ty + R + 1, tx - R:tx + R + 1].reshape(P * P); cw[newp] = cval
+        conf[ty - R:ty + R + 1, tx - R:tx + R + 1] = cw.reshape(P, P)
+        known[ty - R:ty + R + 1, tx - R:tx + R + 1] = True
+    fill = np.clip(img, 0, 255).astype(np.uint8)
 if a.fill == 'reflect':
     # (R3) Telea fills a large hole with streaks drawn toward its middle: the strip under her body (where the original has
     # her fur) read as vertical smears on the water. Instead each hole texel takes the original's own water mirrored about
