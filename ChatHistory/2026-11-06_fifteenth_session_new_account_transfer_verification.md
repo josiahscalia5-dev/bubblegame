@@ -48,3 +48,9 @@ The clone is shallow (50 commits), so those "ahead" counts are an artifact. Let 
 
 Fifteenth session is the next unused number. I'll check no branch uses it, then start the detached autosave exactly as CLAUDE.md prescribes.
 
+Autosave is running (PID 758, 288 rounds). I'll track the audit with a task list.
+
+Now the account side: cloud environment, plugins, connectors, skills.
+
+Both hosts are reachable now. Running the project's documented setup script (it takes a few minutes; PyTorch is large):
+
