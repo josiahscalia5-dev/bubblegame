@@ -1,14 +1,2 @@
-page.screenshot: Timeout 30000ms exceeded.
-Call log:
-[2m  - taking page screenshot[22m
-[2m  - waiting for fonts to load...[22m
-[2m  - fonts loaded[22m
-
-    at /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/wd8/tools/screen4/layer_diag.cjs:53:14 {
-  log: [
-    '  - taking page screenshot',
-    '  - waiting for fonts to load...',
-    '  - fonts loaded'
-  ],
-  name: 'TimeoutError'
-}
+objects 238 canvas [ 768, 1536 ] post [{"type":"Zc","enabled":true},{"type":"n","enabled":true},{"type":"$o","enabled":true},{"type":"Jc","enabled":true}]
+no console errors or warnings

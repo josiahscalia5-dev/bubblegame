@@ -209,5 +209,37 @@ My comparison crops are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-53
 - `r7_right_orig.png` and `r7_left_orig.png` (fleck character against the original)
 - `r7_T2.png` (R6 and R7 at +2 s: the stars are gone)
 
+**Lead → agent** (19:34 UTC):
 
-_56 tool steps._
+The coordinator sent a message while you were working:
+R8 is ready, built on R7: `?s3=intunnel,water8` = R7 + ONLY your first-ranked correction, the contact edge, done in the existing face material. The face's texture (R6's colour, byte-identical) gets an alpha channel: 0 where the ORIGINAL has her body (the largest pink region, not grown, 1 px feather; `derive_water_map.py --alpha-body`). The face discards its pixels there, so its edge in front of her follows the original's own outline. The water right under her edge is the original's own lavender domes, not fill. No geometry, registration, colour, crest or other layer changed. The registration is still R4's (the texture lands about 22 px high at the start, so the original's outline lands 22 px higher than in the original).
+
+Measured edge (where her visible pink ends, per column, start view; original / R7 / R8): x 340 1286 / 1251 / 1263; x 400 1284 / 1244 / 1265; x 440 1300 / 1243 / 1278; x 460 1315 / 1258 / 1290; x 500 1321 / 1283 / 1298; x 220 1264 / 1215 / 1242; x 260-320 unchanged (the game's edge is already below the shifted outline there). Visible pink 46.8k -> 51.5k px (original 62.8k by the same mask). Band (icy / saturated / mid / white / lavender): start R7 31.2 / 19.3 / 11.9 / 19.5 / 9.9 -> R8 29.9 / 19.8 / 11.6 / 19.7 / 10.3; +1 s R7 31.8 / 15.6 / 12.6 / 22.2 / 10.4 -> R8 30.7 / 15.9 / 12.4 / 22.2 / 10.9; +2 s R7 30.5 / 15.1 / 11.7 / 23.9 / 11.6 -> R8 29.2 / 15.3 / 12.0 / 23.8 / 12.1 (original 27.5 / 19.6 / 11.4 / 18.6 / 15.3). Built in a scratch copy (bundle 90d3e4c0); R7 and the accepted build unaffected (gated).
+
+Files in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_contact_edge/`:
+- `sheets/01_FULLRES_ORIGINAL_R7_NEWR8.jpg`, `sheets/02_closeup_water_x1.6.jpg` (ORIGINAL | R7 | R8 at the start), `sheets/03_moving_closeup_x1.4.jpg` (ORIGINAL | R7 +1 s | R8 +1 s | R7 +2 s | R8 +2 s);
+- frames `r8/{start,T1.0,T2.0}/base_page.png` (R7's in `../49_water_r7/final/`);
+- `edge_start.png` (the measured edge on the original and on R7).
+
+Please answer concisely:
+1. Verdict R8 vs R7, at the start and moving: "clearly closer", "slightly closer", "about the same" or "worse".
+2. Is her lower edge now more like the original's: rounded lavender domes with white rims across her lower edge, her supported from underneath, not sunk, and not a taller squarer pink block?
+3. Any regression: holes or see-through gaps where the face is dropped, jagged edges, her looking more submerged or more like a block, anything flickering between +1 s and +2 s.
+4. Keep R8 (make it the candidate) or revert to R7? And the single most important next correction.
+
+Address this before completing your current task.
+
+- 19:34 `Bash`: Build R8 vs R7 crops and diff maps
+- 19:34 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8_start.png
+- 19:34 `Bash`: Larger zoom crops of the contact edge
+- 19:34 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8z_orig.png
+- 19:34 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8z_start.png
+- 19:34 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/d8_r8_start.png
+- 19:34 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_contact_edge/edge_start.png
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8z_1.png
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r8z_2.png
+- 19:35 `Bash`: Find non-pink pixels revealed by the cut-out
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/gap_start.png
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/gap_2.png
+
+_68 tool steps._

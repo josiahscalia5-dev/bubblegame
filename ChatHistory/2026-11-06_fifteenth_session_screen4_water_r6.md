@@ -64,3 +64,9 @@ Ten-plus load on four cores (two video recordings and two R8 renders). Meanwhile
 
 The R8 +1 s render timed out from CPU contention (the R8 +2 s and start renders are done). I'll make the diagnostic tool's screenshot wait longer, and render it once the R7 videos finish.
 
+The R7 videos are recorded (300 frames each, no console errors). Starting R8's +1 s render alongside the accepted-build recordings:
+
+Checking the R7 gameplay video for the art director's caveat (coin-pickup sparkles drawn smaller). Finding the coin pickups in the recorded track:
+
+While the accepted-build videos record, writing the side-by-side video script (ORIGINAL still | ACCEPTED | R7, labelled):
+
