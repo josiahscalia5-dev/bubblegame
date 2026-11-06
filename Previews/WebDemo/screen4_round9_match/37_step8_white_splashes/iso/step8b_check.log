@@ -1,3 +1,4 @@
 objects 244 canvas [ 768, 1536 ] post [{"type":"Dc","enabled":true},{"type":"n","enabled":true},{"type":"Ho","enabled":true},{"type":"Bc","enabled":true}]
 walls_only hidden 241
 no_overlays hidden 114
+no console errors or warnings

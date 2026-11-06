@@ -769,3 +769,7 @@ Short answer: you don't have to do the fixing yourself; I do the work in the gam
 
 I'll work through your order, starting with the white splashes. Each fix is separate, tested and reversible, with a picture and a commit for each. First, a check that the tools survived the environment restart:
 
+Step 8's tests are running: stills, the 41 identity frames, gameplay and the two videos, about an hour in total. When they finish I'll check the results by eye and only keep step 8 if it looks closer to your original.
+
+The record is drafted, and the change is saved as a patch and in the 5-minute snapshots. I'll report back with the images, the videos, the commit, and the full answer to what you need to do to get it as close as possible.
+
