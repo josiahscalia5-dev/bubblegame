@@ -81,6 +81,10 @@ export const DOMES_ON = BT_ON && (LIST.includes('domes') || BANK_ON);
 //   cell: domes per m [along, down]; r: a dome's radius [min, max] as a share of its cell; share: cells with a dome; flow:
 //   how fast they run down the face (m/s); reach: m down the face the domes cover; lav: the share of lavender bubbles
 export const WAVE_ON = BT_ON && LIST.includes('wave');
+// (REJECTED, 6 November: C1 curled toward the camera and showed as edge-on slivers; C2, standing taller (tune in
+// Previews/WebDemo/screen4_round9_match/43_curling_crests/c2/tune.json), read as 'pale, frosted, vertically streaked fins ...
+// no visible curl and no bright white lip' (the art director), more pale milky blue (Screen Matcher 17.1 -> 18.7 %, the
+// original 11.8). Not part of ?s3=intunnel; a record behind its flag)
 // ?s3=intunnel,crest (the user's approval of 6 November, about 16:25 UTC: ONE controlled experiment with real curling
 // water-crest geometry round her, reusing the existing curling splash sheets; not replacing the accepted water until it is
 // visibly closer): the splash bank's curling sheets (spCurls, tunnel_r8_splash.js: thin real 3D sheets rising from the

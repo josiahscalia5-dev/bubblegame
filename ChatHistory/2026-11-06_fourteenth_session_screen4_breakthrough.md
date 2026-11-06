@@ -1273,3 +1273,18 @@ Two approved jobs: one controlled curling-crest experiment, behind its own flag 
 
 Both uploads are the same pack: the four images you showed plus a README. Reading the README as data:
 
+The candidate looks almost identical to the accepted build. Either the curls aren't drawn here or they're hidden behind something. Checking the census and the pixel difference rather than guessing:
+
+The Screen Matcher measures with `compare_s4.py` against your original. Running it on the accepted build and the candidate:
+
+While it reviews, recording the session-start hook in `CLAUDE.md`'s safety rules, so future sessions know it exists and how to name their files:
+
+I've documented the hook in `CLAUDE.md`. I'm waiting for the art director's verdict on the curling-crest candidate before keeping or reverting it.
+
+---
+
+### Automatic check · 2026-11-06 16:34 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+

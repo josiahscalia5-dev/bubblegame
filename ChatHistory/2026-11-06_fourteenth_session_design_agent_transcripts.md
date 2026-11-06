@@ -278,5 +278,41 @@ The original's water round her is irregular, broken splashing: sharp white crest
 
 Your colour numbers are closer (white 17.4% against the original's 16.8%; saturated blue 29.2% against 24.6%). But here the white is soft rims on each lobe, not crests, so the numbers don't show the main difference.
 
+**Lead → agent** (16:33 UTC):
 
-_29 tool steps._
+The coordinator sent a message while you were working:
+One more, the user's approved single experiment (about 16:25 UTC): real curling water-crest geometry round her, reusing the existing curling splash sheets (spCurls: thin 3D sheets rising from the swell's crest, curling over, broken white lip, streaks, animated with the flow, swerves and landings). Candidate C1 (they curled toward the camera) was nearly invisible, edge-on slivers. C2 (`?s3=intunnel,crest` with the tune in 43_curling_crests/c2/tune.json): taller sheets standing up facing the camera, pairs from beside her base out to the lower corners, two small low ones at the front contact, the original's cobalt / cyan with white lips. Nothing else changed.
+Sheets: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/01_FULLRES_original_accepted_candidate.jpg, 02_closeup_water_contact.jpg, 03_moving_accepted_vs_candidate.jpg (+1.0 and +2.0 s after the tap).
+Screen Matcher (compare_s4.py): pale milky blue 17.1 % -> 18.7 % (original 11.8), white 18.6 -> 19.3 (20.6), right side colour difference 2.2 -> 3.9, mean colour difference 11.9 -> 12.0.
+The user's rule: if less accurate, revert; if meaningfully closer, present for approval. In under 120 words, strictly against the original: is C2 meaningfully closer in the water round her than the accepted build? yes / no; keep for the user's approval, or revert; the one main reason.
+
+Address this before completing your current task.
+
+- 16:33 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/02_closeup_water_contact.jpg
+**Lead → agent** (16:33 UTC):
+
+[Image: original 2081x516, displayed at 2000x496. Multiply coordinates by 1.04 to map to original image.]
+
+- 16:33 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/01_FULLRES_original_accepted_candidate.jpg
+**Lead → agent** (16:33 UTC):
+
+[Image: original 2321x1572, displayed at 2000x1355. Multiply coordinates by 1.16 to map to original image.]
+
+- 16:33 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/03_moving_accepted_vs_candidate.jpg
+**Lead → agent** (16:33 UTC):
+
+[Image: original 3098x872, displayed at 2000x563. Multiply coordinates by 1.55 to map to original image.]
+
+- 16:34 `Bash`: List the crest candidate frames
+- 16:34 `Bash`: Zoom on the water round her for original, accepted and C2
+- 16:34 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/crest_zoom.png
+**Agent** (16:34 UTC):
+
+1. **No.** C2 is not meaningfully closer to the original in the water round her.
+2. **Revert it.**
+3. **The main reason:** the new sheets read as pale, frosted, vertically streaked fins standing beside her. The left one rises at the screen edge and the right one sits under the coin. They have no visible curl and no bright white lip.
+
+The original has nothing like this at her sides. Its water there is low, bright-white broken crests, spray and bubbles hugging her base. The fins also add more pale milky blue, which the build already has too much of: 17.1% → 18.7%, with the original at 11.8%. The right-side colour difference nearly doubled (2.2 → 3.9). The small gain in white (18.6% → 19.3%) does not outweigh either.
+
+
+_35 tool steps._
