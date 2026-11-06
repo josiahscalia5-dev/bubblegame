@@ -487,3 +487,5 @@ The tool checks out. Capturing the motion baseline (step 4 build) at video times
 
 The page screenshot hit Playwright's 30-second timeout. Two software-rendered browsers in parallel at high resolution are slow. I'll lift that timeout and run them one at a time:
 
+Before trusting the batched tool, an equivalence check: the same run to 3.0 s, frame by frame and batched, at the small 1× size for speed. The two frames must be identical:
+
