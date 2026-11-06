@@ -1,0 +1,106 @@
+diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
+index 6324b8d..060a9e3 100644
+--- a/WebDemo/src/tunnel_r9_focus.js
++++ b/WebDemo/src/tunnel_r9_focus.js
+@@ -87,6 +87,14 @@ export const FOCUS = {
+     // big left coin and the lower-right coin a little smaller (gold area 4.67% of the frame at 3.0 s, the target 4.0-4.8%;
+     // it was 4.96%), the small far coin beside the centre coin half size, as the original's tiny one (0.023 W)
+     coinScales: [[3.1, 0.69], [2.77, 1.12], [2.65, 0.96], [15.0, 0.5]],
++    // STEP 6 of the user's fidelity plan (6 November 2026; the strict brief: "the distant center must not turn into an
++    // enormous white or lavender circle ... preserve the original ring structure"): the rings' place (mtPlace) worked out
++    // from each point's REAL position seen from the camera, in the camera's own track frame, instead of from the point's own
++    // cross-section, which assumes a straight tube. The path bends 15-30 m ahead, and there the old placement stretched the
++    // original's inner rings (stripe calibration, upper half: 1.36-1.56 x at 0.10-0.16 W, 0.72 x at 0.16-0.20 W; blobs
++    // locally) into the lavender / white band round the far centre (Previews/WebDemo/screen4_round9_match/
++    // 32_step6_centre_placement/). On the straight part it is the same number as before, so the near walls keep their rings.
++    centre: { bend: true },
+     walls: {
+       // STEP 3 of the user's fidelity plan (5 November 2026, about 22:40 UTC: "use the approved reference's actual circular ring
+       // shapes, thin luminous cobalt / turquoise water bands, restrained warm centre, and water flow; remove the oversized
+diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
+index e3af1b5..b93efee 100644
+--- a/WebDemo/src/tunnel_r9_match.js
++++ b/WebDemo/src/tunnel_r9_match.js
+@@ -343,6 +343,9 @@ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tun
+ // ?s3=focus with MATCH.walls.ringMap (step 3): the original's own rings (tools/screen4/derive_ring_map.py)
+ const FOCUS_RINGS = FOCUS_ON && !!MATCH.walls.ringMap;
+ if (FOCUS_RINGS) TEX.rings = 'tunnel_rings_original.png';
++// ?s3=focus step 6 (MATCH.centre.bend, tunnel_r9_focus.js): mtPlace from the point's real position seen from the camera
++// (its world position in the camera's track frame), so the rings stay concentric on screen where the far tube bends
++export const MT_BEND = FOCUS_RINGS && !!MATCH.centre.bend;
+ export const MATCH_UNIFORMS = {
+   uMatchOn: { value: 0 },   // 1 once every texture has loaded (otherwise the walls keep the Round 8 look)
+   uMatchCol: { value: null }, uMatchBase: { value: null }, uMatchDet: { value: null }, uMatchNrm: { value: null }, uMatchVar: { value: null }, uMatchRim: { value: null },
+@@ -451,10 +454,17 @@ vec3 mtUndisplay(vec3 c) {
+ function matchPlaceGLSL() {
+   const C = MATCH.centre;
+   return /* glsl */ `${FOCUS_RINGS ? 'uniform vec2 uMatchPathVP;\n' : ''}
+-void mtPlace(vec2 cs, float u, out float rw, out float tu) {
++void mtPlace(vec2 cs, float u${MT_BEND ? ', vec3 W' : ''}, out float rw, out float tu) {
+   vec2 rel = cs - uHeroCam.xy;
+   float du = max(u - uHeroCam.z, 0.25);
+-  rw = length(rel) / du / uHeroTanW;
++${MT_BEND ? `  {   // ?s3=focus step 6: the point's real place seen from the camera, in the camera's own track frame (x along the track's
++      // R, screen-left, as cs; h along its U; depth along its T). On a straight tube this is exactly cs - uHeroCam.xy and
++      // u - uHeroCam.z; where the far tube bends it follows the bend, so the rings stay concentric on screen
++    vec3 cw = W - cameraPosition;
++    rel = vec2(dot(cw, uLqSide), dot(cw, uLqUp));
++    du = max(dot(cw, uLqFwd), 0.25);
++  }
++` : ''}  rw = length(rel) / du / uHeroTanW;
+   vec2 at = vec2(-rel.x, rel.y);
+ ${FOCUS_RINGS ? `  {   // ?s3=focus with the ring map (step 3): the whole ring field concentric round uMatchVP (where the original has its
+       // centre), not only the inner part: the walls' 3D offset from the path's own vanishing point (uMatchPathVP), less
+@@ -659,7 +669,7 @@ ${FOCUS_ON ? FOCUS_NOISE_GLSL : ''}
+ // normal (toward the axis), T0 the path's direction
+ vec3 matchWall(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0) {
+   float rw, tu;
+-  mtPlace(cs, u, rw, tu);
++  mtPlace(cs, u${MT_BEND ? ', W' : ''}, rw, tu);
+   float lr = log(max(rw, 1e-4));
+   vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
+   vec2 dx = dFdx(bv), dy = dFdy(bv);
+diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
+index 1687fad..527a0b6 100644
+--- a/WebDemo/src/tunnel_r9_match_water.js
++++ b/WebDemo/src/tunnel_r9_match_water.js
+@@ -30,7 +30,7 @@
+ // Colours are written as the screen's sRGB and passed through the inverse display transform (mtUndisplay, tunnel_r9_match.js)
+ // where noted (lin3: sRGB to linear for the lobes, which go through the grade like the other splash layers).
+ import * as THREE from 'three';
+-import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge } from './tunnel_r9_match.js';
++import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
+ import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
+ import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
+ 
+@@ -257,7 +257,7 @@ export function matchFloorDecl() {
+ // detail (on the swell, where the lower water's cell pattern read as cracked glass)
+ vec3 matchFloor(vec2 cs, float u, vec3 W, vec3 N0, vec3 T0, vec3 Nw, float hDet, float caus, float onWall, float nearK, float soft${FOCUS_ON ? ', float fx' : ''}) {
+   float rw, tu;
+-  mtPlace(cs, u, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
++  mtPlace(cs, u${MT_BEND ? ', W' : ''}, rw, tu);   // the walls' place, corrected at the centre (tunnel_r9_match.js matchPlaceGLSL)
+   float lr = log(max(rw, 1e-4));
+   vec2 bv = vec2(tu, (lr - ${f4(M.lnR0)}) / ${f4(M.span)});
+   vec2 dx = dFdx(bv), dy = dFdy(bv);
+diff --git a/WebDemo/tools/screen4/layer_diag.cjs b/WebDemo/tools/screen4/layer_diag.cjs
+index 6800173..abe70fe 100644
+--- a/WebDemo/tools/screen4/layer_diag.cjs
++++ b/WebDemo/tools/screen4/layer_diag.cjs
+@@ -1,5 +1,5 @@
+ // Screen 4 layer diagnosis (diagnostic only; changes nothing in the game).
+-//   S3=focus [DPR=1.42751] node tools/screen4/layer_diag.cjs <abs WebDemo> <out-dir> [ablations.json]
++//   S3=focus [DPR=1.42751] [VIEW=700x1076] node tools/screen4/layer_diag.cjs <abs WebDemo> <out-dir> [ablations.json]
+ // Reproduces the established hero frame exactly as tools/screen4/liquid_shots.cjs does it: Math.random seed 7,
+ // __BW_OPENING_OFF__ ['art'], advance(0.5), tap, advance(3.0), no steering, the game's own camera. DPR 1536/1076 makes
+ // the 538 x 1076 game area a 768 x 1536 canvas (resized to the original's 767 x 1536 in the analysis).
+@@ -23,7 +23,9 @@ const server = http.createServer((req, res) => {
+ (async () => {
+   await new Promise((r) => server.listen(0, r));
+   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+-  const page = await (await browser.newContext({ viewport: { width: 700, height: 1076 }, deviceScaleFactor: DPR })).newPage();
++  // VIEW=412x839 DPR=2.625: a Pixel 7 screen (step 6); default the 1:2 frame as before
++  const [VW, VH] = (process.env.VIEW || '700x1076').split('x').map(Number);
++  const page = await (await browser.newContext({ viewport: { width: VW, height: VH }, deviceScaleFactor: DPR })).newPage();
+   const logs = [];
+   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.text().slice(0, 400)); });
+   page.on('pageerror', (e) => logs.push(e.message));
