@@ -1,5 +1,18 @@
 # Development tools for Bubble Wash Kingdom
 
+## Newest check: 6 November 2026, 18:42 UTC, branch `ccr-55a78d65-d26sa9` (fifteenth session, a fresh container)
+
+- **All tools present and run** (no reinstall needed; `~/.bubblewash-tools` was there): Blender 5.2.3 LTS, OpenCV 5.0.0,
+  scikit-image 0.26.0, PyTorch 2.15.0, LPIPS, Optuna 5.0.0, Node 22.23.4, npm 10.9.9, FFmpeg 6.1.1, ImageMagick 6.9.12,
+  Git LFS 3.4.1, Tripo CLI 0.11.2 (not signed in; no credits spent), glTF Transform 4.5.1, Playwright (the pre-installed
+  Chromium). `node build.mjs` rebuilds `game.bundle.js` byte-identical (md5 `782f4b1b...`).
+- **Loaded in this session:** the Playwright plugin's browser tools and the GitHub tools (both connected), the project skill
+  `bubble-wash-screen-matcher`, the four design agents in `.claude/agents/`, the SessionStart autosave hook (it started the
+  autosave on its own; restarted under this session's name from `Tools/autosave_sessions.json`).
+- **claude.ai account plugins:** `ListPlugins` still reports none enabled on the account. The catalog (Anthropic Directory)
+  offers playwright, github, context7, frontend-design, code-review, Superpowers and others, not enabled. Only the user can
+  enable them on claude.ai; a NEW session then loads them. Nothing this project needs is missing.
+
 ## Newest check: 6 November 2026, 04:10 UTC, branch `ccr-d224d313-81g2dq`, on a new Claude account (thirteenth session)
 
 - **Cloud environment:** the account's Default environment allows package registries only, so `cloud_env_setup.sh`'s Blender

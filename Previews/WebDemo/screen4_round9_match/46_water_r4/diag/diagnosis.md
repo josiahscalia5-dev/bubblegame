@@ -1,6 +1,6 @@
 # Why R3c's water round her looks soft, vertically stretched and pale (6 November 2026, fourteenth session)
 
-- **The question:** the user's review of R3c (about 18:55 UTC): "too soft, stretched and pale ... Fix the actual
+- **The question:** the user's review of R3c (17:49 UTC): "too soft, stretched and pale ... Fix the actual
   texture-mapping, distortion, transparency, sampling or bloom problem."
 - **The target:** the ORIGINAL approved Screen 4 only.
 - **The frame:** the in-tunnel start view (`layer_diag.cjs`, seed 7, `NOTAP=1`, the 768 x 1536 canvas), with the same
