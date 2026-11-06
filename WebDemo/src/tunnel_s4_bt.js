@@ -100,7 +100,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
-export const WATER2_ON = BT_ON && LIST.includes('water2');
+export const WATER3_ON = BT_ON && LIST.includes('water3');   // (R3, below: water2 plus its corrections)
+export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
 // (candidate c1: wobble 0.025, amount 0.92, the face's spiky crest, white rim pieces and sparkle unchanged; the art director:
 // "moderately closer", the remaining gaps a white zigzag at her base and too much icy pale blue. R2, the user's brief of
 // about 17:45 UTC, the same candidate refined, only the existing surface: the crest rounded (teeth sharpness 1.2 -> 0.6, no
@@ -111,6 +112,24 @@ export const WATER2_ON = BT_ON && LIST.includes('water2');
 export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0.06, wobble: 0.012, amount: 1.0,
   water: { face: { lace: { amount: 0 }, rings: { amount: 0.3 }, teeth: { sharp: 0.6, fine: 0.0, lobe: 0.06 }, rim: { amount: 0.35 },
     spark: { amount: 0.6 } }, swellFront: { lift: 0.05 } } };
+// ?s3=intunnel,water3 (R3; the user's brief of about 18:25 UTC: R2's remaining softness, smearing and low saturation, in the
+// existing material, texture sampling and compositing). The diagnosis (45_water_r3/diag/): in the band at her base the
+// face's own extras over the original's texture (sparkle dots, white rim pieces, bubble rings, the pale-cyan grazing sheen,
+// the specular points) and the flow distortion cost about 2 points of saturated blue (14.8 -> 16.9 % without them; the
+// original 19.6) and 2 of icy pale blue (32.4 -> 30.5; 27.5); bloom about 1 point; the floor and the overlays nothing. The
+// smear is not missing detail (the strip under her: fine-detail energy 97.5 against the original's 25.3, the accepted
+// 208.6) but streaks: that strip is where the original has her fur, filled by inpainting, which draws streaks toward the
+// hole's middle. R3: the texture's holes filled by mirroring the original's own water about each hole's edge
+// (derive_water_map.py --fill reflect), the face's extras off where the texture shows (a few twinkles kept), the distortion
+// almost off (a slight shimmer), and the texture's colours lifted a little (saturation 1.1 round its luminance, a 1.06 power
+// that deepens the mid-tones; white stays white) against the bloom's haze, as step 8 did for the walls
+export const WATER3 = { file: 'foreground_water_original_r3.png', wobble: 0.004, gain: [1.1, 1.06],
+  face: { spark: { amount: 0.2 }, rim: { amount: 0 }, rings: { amount: 0 } }, look: { rim: 0.03, frontRim: 0, spec: 1.0 } };
+if (WATER3_ON) {
+  Object.assign(WATER2, { file: WATER3.file, wobble: WATER3.wobble, gain: WATER3.gain });
+  for (const k of Object.keys(WATER3.face)) WATER2.water.face[k] = { ...(WATER2.water.face[k] || {}), ...WATER3.face[k] };
+  WATER2.water.look = { ...(WATER2.water.look || {}), ...WATER3.look };
+}
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {
