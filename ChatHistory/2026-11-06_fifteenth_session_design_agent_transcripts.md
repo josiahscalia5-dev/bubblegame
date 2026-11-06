@@ -237,5 +237,58 @@ I'll look at the sheets first.
 [Image: original 2316x400, displayed at 2000x345. Multiply coordinates by 1.16 to map to original image.]
 
 - 19:33 `Bash`: Zoom side spray zones original vs R6 vs R7
+- 19:33 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/sides_T1.0.png
+- 19:33 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/sides_T2.0.png
+- 19:33 `Bash`: Find the accepted build's frames
+- 19:33 `Bash`: Locate accepted canvases
+- 19:33 `Bash`: List scratchpad capture folders
+- 19:33 `Bash`: Measure water zone lightness, saturation, white, deep blue, edges
+- 19:34 `Bash`: Measure lightness distribution of the water band
+- 19:34 `Bash`: 3x zoom of the cut edge under her body
+- 19:34 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/cut_zoom.png
+- 19:34 `Bash`: Measure the fur's bottom edge per column vs the original
+- 19:34 `Bash`: Locate her body top and width per frame
+- 19:35 `Bash`: Stack foreground water crops for close comparison
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/foreground.png
+- 19:35 `Bash`: Crop bottom of page frames with HUD
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/page_bottom3.png
+**Lead → agent** (19:35 UTC):
 
-_16 tool steps._
+[Image: original 2319x476, displayed at 2000x411. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:35 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/r6r7_start.png
+**Lead → agent** (19:35 UTC):
+
+[Image: original 2316x400, displayed at 2000x345. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:36 `Bash`: Zoom the right lower edge of her body
+- 19:36 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/right_edge.png
+**Lead → agent** (19:36 UTC):
+
+[Image: original 2430x450, displayed at 2000x370. Multiply coordinates by 1.22 to map to original image.]
+
+- 19:36 `Bash`: Find where the R6 cut reveals far water beside her
+- 19:36 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/48_water_r6/diag/ol_check.jpg
+**Lead → agent** (19:36 UTC):
+
+[Image: original 2313x1110, displayed at 2000x960. Multiply coordinates by 1.16 to map to original image.]
+
+- 19:36 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/48_water_r6/diag/R6_face_alone_start.jpg
+- 19:37 `Bash`: Check for steering or video frames
+- 19:37 `Bash`: Count recorded video frames
+- 19:37 `Bash`: Contact sheet of R7 straight-run video frames
+- 19:37 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/r7_video.png
+- 19:37 `Bash`: Read video capture log and script
+- 19:37 `Bash`: Compare R5 and R7 video frames for her eyes at the water line
+- 19:37 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/eyes_r5_r7.png
+- 19:37 `Bash`: Zoom on the eyes at the water line in video frames
+- 19:37 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/eyes_zoom.png
+- 19:38 `Bash`: Extract comparison video frames
+- 19:38 `Bash`: Crop accepted panel from comparison video frames
+- 19:38 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/ad_review/acc_eyes.png
+**Lead → agent** (19:38 UTC):
+
+[Image: original 2428x363, displayed at 2000x299. Multiply coordinates by 1.21 to map to original image.]
+
+
+_49 tool steps._
