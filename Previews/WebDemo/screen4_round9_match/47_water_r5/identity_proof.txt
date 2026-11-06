@@ -1,0 +1,13 @@
+Identity proof, 6 November 2026 about 18:55 UTC (fifteenth session). Tool: WebDemo/tools/screen4/layer_diag.cjs (seed 7, 768 x 1536 WebGL canvas, no HUD).
+Bundles: accepted before the water work = commit a28c026, game.bundle.js md5 99d9bc10...; now = md5 782f4b1b... (commit dd13463 onward; node build.mjs rebuilds it byte-identical).
+start = the in-tunnel start view (NOTAP=1); T1 = 1.0 s after the tap. 'base_again' = the same frame rendered twice (determinism).
+
+accepted (99d9bc10)_start/base_canvas.png vs accepted (782f4b1b)_start/base_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+accepted (99d9bc10)_T1/base_canvas.png vs accepted (782f4b1b)_T1/base_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+water2 start (782f4b1b)/base_canvas.png vs 44_water_material/final/start/base_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+water3 start (782f4b1b)/base_canvas.png vs 45_water_r3/final/start/base_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+water4 start (782f4b1b)/base_canvas.png vs 46_water_r4/final/start/base_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+water5 start (782f4b1b)/base_canvas.png vs 47_water_r5/final/start/base_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+water5 start (782f4b1b)/base_canvas.png vs water5 start (782f4b1b)/base_again_canvas.png: 0 differing pixels of 1179648, max channel diff 0
+
+Console: every render printed 'no console errors or warnings'.
