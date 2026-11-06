@@ -13,7 +13,7 @@
 // helper); no Math.random (a private generator), nothing else changed.
 import * as THREE from 'three';
 import { matchLumpDecl } from './tunnel_r9_match_water.js';
-import { DOMES } from './tunnel_s4_bt.js';
+import { DOMES, BANK_ON, BANK } from './tunnel_s4_bt.js';
 
 const f4 = (x) => (+x).toFixed(5);
 const v3 = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n >> 16 & 255) / 255)}, ${f4((n >> 8 & 255) / 255)}, ${f4((n & 255) / 255)})`; };
@@ -22,7 +22,7 @@ export function buildBaseDomes({ scene, crest, frame }) {
   const D = DOMES, list = [];
   // [phi (degrees round her; + screen-left), radius (m), out from the crest (m, toward the camera), sink (share of the radius
   // below the crest), kind (0 a lavender soap dome, 1 a light aqua water dome)]
-  for (const [phi, r, out, sink, kind] of D.list) {
+  for (const [phi, r, out, sink, kind] of BANK_ON ? BANK.domes : D.list) {   // (?s3=...,bank: its 3 side domes)
     const c = crest(phi);
     list.push([c.x + c.nx * out, c.h - r * sink, c.u + c.nu * out, r, kind, (phi * 0.137 + r * 7.3) % 1]);
   }

@@ -33,7 +33,7 @@ import * as THREE from 'three';
 import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
-import { BT_ON, BT } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus)
+import { BT_ON, BT, BANK_ON, BANK } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -225,6 +225,7 @@ const MW_TUNE = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window
 if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
   restoreSettings(MATCH_WATER, PRE_FOCUSED_PASS.MATCH_WATER);   // (`match`'s water as it was at 9a95c06, tunnel_r9_focus_base.js)
   deepMerge(MATCH_WATER, FOCUS.water);
+  if (BANK_ON) deepMerge(MATCH_WATER, BANK.water);   // ?s3=...,bank: the bank of rounded blue lobes (tunnel_s4_bt.js)
   if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond

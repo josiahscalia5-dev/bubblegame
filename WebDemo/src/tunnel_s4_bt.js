@@ -47,7 +47,26 @@ export const INTUNNEL = { u: 1.592, speed: 7.21, clock: 3.0 };
 // #87b9ed, #5ea2eb). Sizes and places from the original's domes there (about 30-65 px radius, 0.07-0.15 m at the swell's
 // front): [phi round her (degrees, + screen-left), radius (m), out from the crest (m), sink (share of the radius below the
 // crest), kind (0 a lavender soap dome, 1 a light aqua water dome)]
-export const DOMES_ON = BT_ON && LIST.includes('domes');
+// ?s3=intunnel,bank (the user's brief of 6 November, about 14:50 UTC: "broad, rounded, animated blue wave forms, varied
+// transparent cyan-white crests, and a small number of properly shaded lavender-blue bubble domes with clear centers,
+// luminous rims"): the splash bank's existing water lobes (spLumps, tunnel_r8_splash.js, shaded by focusLumpGLSL) as a bank
+// of rounded glossy blue lobes round her base and sides (focus kept 4 small ones low in the corners), in the original's
+// water colours, their outlines rounded (focus cut them into spiky points), fewer and varied white crest pieces; plus 3
+// clear lavender domes at her sides only. NOT the rejected ideas: no lowering, no white strip, nothing in front of her body.
+export const BANK_ON = BT_ON && LIST.includes('bank');
+export const BANK = {
+  water: {
+    // [phi round her (degrees, + screen-left), how many, biggest radius (m), outward from the crest (m), height from it (m)]
+    splash: { lumps: [[30, 3, 0.13, 0.15, -0.04], [-30, 3, 0.13, 0.15, -0.04], [44, 3, 0.15, 0.25, -0.08], [-44, 3, 0.15, 0.25, -0.08],
+      [58, 3, 0.18, 0.4, -0.18], [-58, 3, 0.18, 0.4, -0.18], [12, 2, 0.08, 0.25, -0.09], [-12, 2, 0.08, 0.25, -0.09]], lumpMin: 0.55, lumpSquash: 0.8 },
+    // the lobes' water: the original's foreground colours (k-means #178ee8, #53aff0, #acd4f5; white #e5effa)
+    crest: { low: '#1a6fe3', mid: '#3d9cf0', hi: '#9fd8fb', white: '#f4fbff', alpha: 0.9, spec: 2.2, spray: 0.9, sprayShare: 0.82, edge: 0.7,
+      rag: [0.72, 0.22, 4.0], cap: { cell: 6.0, share: 0.42, r: [0.12, 0.3], up: [0.3, 0.7], amount: 0.9, edge: 0.6 } },
+  },
+  // [phi, radius (m), out (m), sink (share of the radius), kind]: at her sides only, never in front of her body
+  domes: [[34, 0.085, 0.08, 0.3, 0], [-36, 0.075, 0.08, 0.3, 0], [50, 0.06, 0.12, 0.25, 0]],
+};
+export const DOMES_ON = BT_ON && (LIST.includes('domes') || BANK_ON);
 export const DOMES = {
   // (first build: the radii below / 1.106, body alpha [0.42, 0.5], lavender #a295ee, highlight 0.9: too small and too faint by
   // eye, glassy pale circles. Then 12 Optuna trials on the real game, tools/screen4/optuna_domes.py; LPIPS hardly moved, 0.567-
