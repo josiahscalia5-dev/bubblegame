@@ -438,11 +438,15 @@ function focusFlecksGLSL(M) {
       vec2 fi = floor(fq); fi.x = mod(fi.x, ${f4(F.cols)});
       float fh = fract(sin(dot(fi, vec2(12.9898, 78.233))) * 43758.5453);
       float fh2 = fract(fh * 17.13), fh3 = fract(fh * 31.71);
-      vec2 fo = fract(fq) - 0.5 - (vec2(fh2, fh3) - 0.5) * vec2(0.35, 0.45);
+      vec2 fo = fract(fq) - 0.5 - (vec2(fh2, fh3) - 0.5) * vec2(${f4(F.jitter[0])}, ${f4(F.jitter[1])});
+      // (problem B: chunky broken splash shapes, not thin dashes all along the ring: each turned by its own angle, up to
+      // F.rot either way, and bent into a hook)
+      float fth = (fract(fh * 53.7) - 0.5) * ${f4(2 * F.rot)};
+      fo = vec2(cos(fth) * fo.x + sin(fth) * fo.y, cos(fth) * fo.y - sin(fth) * fo.x);
       fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
-      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
+      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(${f4(F.soft)}, 1.0, fe)) * fpx;
       vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);

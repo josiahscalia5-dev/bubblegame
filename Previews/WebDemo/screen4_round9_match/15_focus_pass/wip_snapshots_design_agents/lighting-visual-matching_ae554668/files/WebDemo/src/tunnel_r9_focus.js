@@ -107,10 +107,10 @@ export const FOCUS = {
       //    the last part of each arc / band its offset and body blend into the next one's (no breaks); across each current a
       //    soft periodic profile: the light crest fading over edgeTo (edgeAmount), the body deepening from deepFrom, a soft
       //    darker core (gap) at gapAt, width gapW, gapAmount, and the next crest rising over the band's last `wrap`
-      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.35, arcBlend: 0.35, bandBlend: 0.3,
-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96',
+      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.3, arcBlend: 0.35, bandBlend: 0.5,
+        edge: '#86e2fb', royal: '#1d6fe6', turq: '#18acf4', peri: '#5f74e0', deep: '#1b58d6', gap: '#142f96',
         edgeTo: 0.2, edgeAmount: 0.9, wrap: 0.14, deepFrom: [0.35, 0.75], gapAt: 0.75, gapW: 0.12, gapAmount: 0.35,
-        turqShare: 0.3, periShare: 0.2, keep: 0.12, amount: 0.95 },
+        turqShare: 0.3, periShare: 0.12, keep: 0.06, amount: 0.95 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
@@ -124,8 +124,12 @@ export const FOCUS = {
       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
       //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
       //    band phase per pixel) over which they fade out where they would be under about two pixels
-      flecks: { cols: 96, rows: 3, dens: 0.34, len: [0.3, 0.5], wid: [0.06, 0.13], bend: 1.2, amount: 0.95, col: '#f6fbff',
-        drops: { cols: 160, rows: 5, dens: 0.16, r: [0.12, 0.22] },
+      //    (problem B / the Art Director's item 4: fewer, chunkier, softer splash shapes, not thin dashes along the ring: the
+      //    original's white pieces 3.5 px thick, median 59 px, 3.2 per 10k px, 28% along the ring; ours were 1.9 px, 28 px,
+      //    12.7 per 10k px, 71%: bigger cells (cols 96 -> 40, rows 3 -> 2), wider pieces, each turned up to `rot` either way and
+      //    bent into a hook, softer edges (`soft`: where the edge starts fading), jitter: their place in the cell; fewer drops)
+      flecks: { cols: 40, rows: 2, dens: 0.32, len: [0.18, 0.32], wid: [0.1, 0.2], bend: 2.2, rot: 0.7, soft: 0.45, jitter: [0.2, 0.25], amount: 0.95, col: '#f2f9ff',
+        drops: { cols: 60, rows: 3, dens: 0.06, r: [0.14, 0.26] },
         r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
     },
   },

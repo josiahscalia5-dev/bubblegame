@@ -535,7 +535,7 @@ new file mode 100644
 index 0000000..6f70f0b
 Binary files /dev/null and b/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/frames/phone_412x839_focus_obj_3.00s.png differ
 diff --git a/WebDemo/src/tunnel_r9_focus.js b/WebDemo/src/tunnel_r9_focus.js
-index 2f39f0e..6d5966b 100644
+index 2f39f0e..93e749c 100644
 --- a/WebDemo/src/tunnel_r9_focus.js
 +++ b/WebDemo/src/tunnel_r9_focus.js
 @@ -27,12 +27,28 @@ export const FOCUS = {
@@ -616,15 +616,30 @@ index 2f39f0e..6d5966b 100644
 +      //    the last part of each arc / band its offset and body blend into the next one's (no breaks); across each current a
 +      //    soft periodic profile: the light crest fading over edgeTo (edgeAmount), the body deepening from deepFrom, a soft
 +      //    darker core (gap) at gapAt, width gapW, gapAmount, and the next crest rising over the band's last `wrap`
-+      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.35, arcBlend: 0.35, bandBlend: 0.3,
-+        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96',
++      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.3, arcBlend: 0.35, bandBlend: 0.5,
++        edge: '#86e2fb', royal: '#1d6fe6', turq: '#18acf4', peri: '#5f74e0', deep: '#1b58d6', gap: '#142f96',
 +        edgeTo: 0.2, edgeAmount: 0.9, wrap: 0.14, deepFrom: [0.35, 0.75], gapAt: 0.75, gapW: 0.12, gapAmount: 0.35,
-+        turqShare: 0.3, periShare: 0.2, keep: 0.12, amount: 0.95 },
++        turqShare: 0.3, periShare: 0.12, keep: 0.06, amount: 0.95 },
        // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
        royal: { amount: 0.1 },
        // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it
+@@ -92,8 +124,12 @@ export const FOCUS = {
+       //    probability `dens`, a white streak along the ring (length and width as shares of the cell, bent) or a round drop;
+       //    r: [in, full, full to, out] in rw (screen radius round the vanishing point, in widths); fade: the cell size (in
+       //    band phase per pixel) over which they fade out where they would be under about two pixels
+-      flecks: { cols: 96, rows: 3, dens: 0.34, len: [0.3, 0.5], wid: [0.06, 0.13], bend: 1.2, amount: 0.95, col: '#f6fbff',
+-        drops: { cols: 160, rows: 5, dens: 0.16, r: [0.12, 0.22] },
++      //    (problem B / the Art Director's item 4: fewer, chunkier, softer splash shapes, not thin dashes along the ring: the
++      //    original's white pieces 3.5 px thick, median 59 px, 3.2 per 10k px, 28% along the ring; ours were 1.9 px, 28 px,
++      //    12.7 per 10k px, 71%: bigger cells (cols 96 -> 40, rows 3 -> 2), wider pieces, each turned up to `rot` either way and
++      //    bent into a hook, softer edges (`soft`: where the edge starts fading), jitter: their place in the cell; fewer drops)
++      flecks: { cols: 40, rows: 2, dens: 0.32, len: [0.18, 0.32], wid: [0.1, 0.2], bend: 2.2, rot: 0.7, soft: 0.45, jitter: [0.2, 0.25], amount: 0.95, col: '#f2f9ff',
++        drops: { cols: 60, rows: 3, dens: 0.06, r: [0.14, 0.26] },
+         r: [0.07, 0.12, 0.62, 0.8], fade: [0.22, 0.5], lit: 0.45 },
+     },
+   },
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 83acc58..1f37393 100644
+index 83acc58..160da20 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
 @@ -351,15 +351,38 @@ void mtPlace(vec2 cs, float u, out float rw, out float tu) {
@@ -724,7 +739,25 @@ index 83acc58..1f37393 100644
        float rl = dot(c, vec3(0.2126, 0.7152, 0.0722));
        rc = clamp(rc * (${f4(1 - R.keep)} + ${f4(2 * R.keep)} * clamp(rl, 0.0, 1.0)), 0.0, 1.0);
        float rKeep = 1.0 - smoothstep(0.0, 0.1, c.r - c.b);   // (the warm patches kept)
-@@ -440,7 +463,7 @@ uniform vec2 uMatchVP, uMatchRes;
+@@ -415,11 +438,15 @@ function focusFlecksGLSL(M) {
+       vec2 fi = floor(fq); fi.x = mod(fi.x, ${f4(F.cols)});
+       float fh = fract(sin(dot(fi, vec2(12.9898, 78.233))) * 43758.5453);
+       float fh2 = fract(fh * 17.13), fh3 = fract(fh * 31.71);
+-      vec2 fo = fract(fq) - 0.5 - (vec2(fh2, fh3) - 0.5) * vec2(0.35, 0.45);
++      vec2 fo = fract(fq) - 0.5 - (vec2(fh2, fh3) - 0.5) * vec2(${f4(F.jitter[0])}, ${f4(F.jitter[1])});
++      // (problem B: chunky broken splash shapes, not thin dashes all along the ring: each turned by its own angle, up to
++      // F.rot either way, and bent into a hook)
++      float fth = (fract(fh * 53.7) - 0.5) * ${f4(2 * F.rot)};
++      fo = vec2(cos(fth) * fo.x + sin(fth) * fo.y, cos(fth) * fo.y - sin(fth) * fo.x);
+       fo.y += fo.x * fo.x * (fh2 - 0.5) * ${f4(F.bend)};
+       float fe = length(vec2(fo.x / mix(${f4(F.len[0])}, ${f4(F.len[1])}, fh3), fo.y / mix(${f4(F.wid[0])}, ${f4(F.wid[1])}, fh2)));
+       float fpx = 1.0 - smoothstep(${f4(F.fade[0])}, ${f4(F.fade[1])}, aw * ${f4(F.rows)});
+-      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(0.6, 1.0, fe)) * fpx;
++      float fk = step(${f4(1 - F.dens)}, fh) * (1.0 - smoothstep(${f4(F.soft)}, 1.0, fe)) * fpx;
+       vec2 dq = vec2(fa * ${f4(D.cols)}, fRq * ${f4(D.rows)} + 0.37);
+       vec2 di = floor(dq); di.x = mod(di.x, ${f4(D.cols)});
+       float dh = fract(sin(dot(di, vec2(39.3468, 11.1351))) * 24634.6345);
+@@ -440,7 +467,7 @@ uniform vec2 uMatchVP, uMatchRes;
  ${RIM_SAMPLE}
  ${undisplayGLSL()}
  ${matchPlaceGLSL()}

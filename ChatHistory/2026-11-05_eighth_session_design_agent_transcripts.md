@@ -347,8 +347,22 @@ Address this before completing your current task.
 - 00:23 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/b1/cands_in.json
 - 00:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/b_metrics.sh
 - 00:24 `Bash`: Build, render B candidates, measure
+- 00:26 `Bash`: Read polar_rings method
+- 00:26 `Bash`: Read colour class definitions
+- 00:26 `Bash`: Read ring_dark class definitions
+- 00:27 `Bash`: Locate fleck shape code
+- 00:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+**Agent** (00:27 UTC):
 
-_171 tool steps._
+Now the fleck settings and the colour tweaks.
+
+- 00:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/b_metrics.sh
+- 00:27 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/b2/cands_in.json
+- 00:27 `Bash`: Build, render C candidates, measure
+
+_181 tool steps._
 
 ---
 
@@ -668,5 +682,14 @@ Now update NOTES.md with the state before the WIP commit.
 - 00:23 `Bash`: Compare the patch colours before and after the floor change
 - 00:23 `Bash`: Sample the debug green zone for additive tints
 - 00:23 `Bash`: Rebuild and capture floor and streak/bubble trials
+- 00:25 `Bash`: Measure the floor, streak and bubble trials
+- 00:25 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/scripts/bubble_count.cjs
+- 00:26 `Bash`: Fix the bubble counter and add a wrapper
+- 00:26 `Bash`: Count bubbles before and in trial b1
+- 00:27 `Bash`: Count bubbles in trial b2
+- 00:27 `Bash`: Count and capture trial b3
+- 00:29 `Bash`: Crop the tunnel and measure streaks for b3
+- 00:29 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_b3.png
+- 00:29 `Bash`: Zoom on the ring zone streaks
 
-_199 tool steps._
+_208 tool steps._

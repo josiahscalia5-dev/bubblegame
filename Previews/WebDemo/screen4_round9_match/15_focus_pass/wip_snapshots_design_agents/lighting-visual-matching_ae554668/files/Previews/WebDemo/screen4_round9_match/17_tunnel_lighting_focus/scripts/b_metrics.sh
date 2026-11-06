@@ -8,7 +8,7 @@ for f in "$@"; do
   echo "== $f"
   "$PY" -I "$HERE/run_ad.py" polar_rings "$f" | grep "^focus  upper arc"
   "$PY" -I "$HERE/run_ad.py" ring_dark "$f" | grep "^focus  upper arc"
-  "$PY" -I "$HERE/run_ad.py" zones "$f" | grep -A1 "^ring_upper" | grep focus
+  "$PY" -I "$HERE/run_ad.py" zones "$f" | grep -A3 "^ring_upper" | grep focus
   "$PY" -I "$HERE/run_ad.py" streaks "$f" | grep "ring zone        focus"
   "$PY" -I "$HERE/run_ad.py" core "$f" | grep "^focus"
 done
