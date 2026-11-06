@@ -114,6 +114,7 @@ It installs in `~/.bubblewash-tools/`:
 |---|---|
 | `blender-5.2.3-linux-x64/` | **Blender 5.2.3 LTS**, the official Linux build (checksum checked against blender.org), linked as `/usr/local/bin/blender` |
 | `visual/` | Python 3.13 with OpenCV 5.0.0, scikit-image 0.26.0, NumPy 2.5.4, Pillow 13.0.0, SciPy 1.18.1 |
+| `metrics/` (6 November) | Python 3.13 with PyTorch 2.15.0 (CPU use), torchvision 0.29.2, LPIPS 0.1.4 (AlexNet weights in `~/.cache/torch`), Optuna 5.0.0, scikit-image, OpenCV: `~/.bubblewash-tools/metrics/bin/python`; `WebDemo/tools/screen4/region_compare.py` |
 | `node/` | glTF Transform 4.5.1, Khronos glTF Validator 2.0.0-dev.3.10, Vite 8.3.5, tripo-cli 0.11.2 |
 | `activate.sh` | puts the node tools on `PATH` (sourced by `Tools/bw_tools_env.sh`) |
 

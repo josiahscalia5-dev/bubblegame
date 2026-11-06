@@ -587,3 +587,388 @@ Autosave is running again. **Step 1, the tool audit:**
 
 Approved, thank you. Installing into the separate `metrics` environment: CPU-only PyTorch and torchvision, then LPIPS, Optuna, and the existing image libraries.
 
+LPIPS works: it downloaded its AlexNet weights and scores identical images 0.0. Recording the new environment in the setup script and the tools page, so a fresh container gets it too:
+
+---
+
+### You (sent while Claude was working) · 2026-11-06 13:29 UTC
+
+CLAUDE CODE — BUBBLE WASH KINGDOM: STRICT SCREEN 4 RECONSTRUCTION AND GAMEPLAY IMPLEMENTATION
+
+Claude, I need you to follow these instructions extremely carefully.
+
+I WANT MY EXACT ORIGINAL APPROVED BUBBLE WASH KINGDOM SCREEN 4 RECREATED AS CLOSELY AS TECHNICALLY POSSIBLE IN MY REAL, PLAYABLE 3D GAME.
+
+I have spent several days working on this same scene, and I do not want another round of minor adjustments that barely change the appearance.
+
+I want meaningful, visible progress toward my approved artwork.
+
+This is an implementation request, not a request for another lengthy design proposal.
+
+1. UNDERSTAND EXACTLY WHICH SCREEN I WANT
+
+I am attaching the original approved screenshot. In the comparison I provided, I marked it with a large white arrow.
+
+THAT ORIGINAL APPROVED SCREEN IS MY ONLY AUTHORITATIVE VISUAL TARGET.
+
+It shows:
+
+- My pink fluffy cartoon character already INSIDE the magical laundry tunnel.
+- The character viewed from behind, near the bottom center.
+- The character riding and traveling forward ON TOP of bright blue moving water.
+- A large, circular, glowing cobalt-blue and turquoise laundry tunnel stretching into the distance.
+- Beautiful layered blue rings, luminous water currents and irregular bright white splash details.
+- Large fluffy pink, blue and white washing brushes framing the sides.
+- Gold paw-print coins, purple diamonds, a smiling sock and collectibles along the route.
+- Transparent, glossy lavender-blue soap bubbles.
+- A bright, colorful magical laundry atmosphere.
+- The existing mission banner, HUD, Bubble Blast and Turbo Spin controls.
+
+I WANT THAT COMPLETE SCENE — NOT YOUR OWN INTERPRETATION OF IT.
+
+Do not use later AI-generated illustrations or gameplay storyboards as substitutes for the original.
+
+2. THIS IS WHERE THE CURRENT GAMEPLAY MUST BEGIN
+
+This is extremely important.
+
+WHEN THE CURRENT PLAYABLE LEVEL STARTS, THE PINK CHARACTER MUST ALREADY BE INSIDE THE BLUE LAUNDRY TUNNEL.
+
+The character should immediately begin traveling forward through the tunnel, just like the action implied by my approved screenshot.
+
+I do not want the player to travel through a long exterior washing-machine area first.
+
+I do not want an additional swimming section before reaching the approved tunnel.
+
+I do not want a separate castle, lavender drum or washing-machine entrance scene before the gameplay.
+
+The correct sequence for the CURRENT BUILD is:
+
+1. The level starts at the approved inside-tunnel viewpoint.
+2. The pink character is already positioned on the blue water.
+3. Forward movement begins automatically when gameplay starts.
+4. The camera follows behind the character.
+5. The character moves through the magical tunnel toward coins, gems, socks and obstacles.
+6. The player can steer, collect items and use the existing gameplay abilities.
+
+Keep the familiar approved portrait composition at the start.
+
+Do not create a completely different camera angle or substitute a generic endless-running tunnel.
+
+The start should resemble my approved screenshot immediately, and that appearance should remain convincing while the character moves.
+
+If the existing "?s3=focus" or "?s3=bt" modes have an earlier exterior section, create a separate reversible test mode for this direct-to-tunnel start. Do not destroy or overwrite existing working modes.
+
+3. THE GIRL AND LAUNDRY TOSS ARE FOR LATER
+
+Eventually, the full game will have an earlier story sequence.
+
+A girl will be doing laundry and will send or toss the pink character into the washing machine.
+
+The character may tumble or spin briefly inside the machine, then arrive directly in the blue laundry tunnel.
+
+THAT EARLIER SEQUENCE IS NOT PART OF YOUR CURRENT ASSIGNMENT.
+
+Do not build:
+
+- The girl.
+- The laundry basket interaction.
+- Laundry Toss.
+- A new washing-machine cinematic.
+- An extra swimming transition.
+- A new castle opening.
+
+We will build those later.
+
+For now, ONLY build and perfect the gameplay from the moment the pink character is already inside the approved laundry tunnel.
+
+Keep the future story sequence in mind for continuity, but do not spend development time or credits on it.
+
+4. RECREATE THE ENTIRE APPROVED ENVIRONMENT
+
+I want you to compare the original screenshot with my actual playable game and identify the largest remaining differences.
+
+Pay attention to:
+
+TUNNEL STRUCTURE
+
+Match the original's circular perspective, ring depth, apparent diameter, distant center, layered blue currents and glowing highlights.
+
+Do not make the tunnel overly lavender, flat or pastel.
+
+The tunnel must feel magical, saturated and three-dimensional.
+
+WATER
+
+The water must look like my original approved water.
+
+Use rich cobalt-blue and turquoise currents, bright aqua reflections, irregular white splash shapes and animated waves.
+
+Avoid smooth pale-blue sheets, repetitive white dashes, sharp artificial streaks or a solid white foam wall.
+
+PINK CHARACTER
+
+Keep my existing pink fluffy character model for now.
+
+Position it accurately relative to the camera and water.
+
+The character must appear as a low, rounded pink silhouette viewed from behind, resting ON TOP of the water.
+
+It must not be submerged, buried behind an opaque water layer or exposed too high above the water.
+
+Do not repeat the previously rejected water-lowering experiments.
+
+BUBBLES AND SPLASHES
+
+Recreate the original's shiny, translucent lavender-blue bubbles and the organic white-aqua water details around the character.
+
+Any new bubble domes must be real 3D objects or correctly rendered effects, not flat stickers.
+
+Do not add excessive bubbles that obscure the scenery.
+
+WASHING BRUSHES
+
+Match the approved visual framing.
+
+Preserve the successful smaller moving brushes where they improve the view.
+
+Do not let brushes become so enormous that they block the center of the tunnel.
+
+Preserve obstacle behavior and collision accuracy.
+
+COLLECTIBLES
+
+Keep the gold paw coins, purple gems and smiling socks in the correct visual style, approximate sizes and perspective.
+
+Preserve the corrected blue toe of the sock.
+
+Keep collectible items functional, not decorative screenshots.
+
+LIGHTING AND MATERIALS
+
+Match the original's strong blue saturation, white highlights, colorful reflections and magical depth.
+
+Do not merely increase global saturation or bloom until the entire scene is washed out.
+
+Fix the actual materials, textures, lighting, geometry and rendering layers responsible for differences.
+
+5. USE THE EXISTING DEVELOPMENT TOOLS AND CHECK ADDITIONAL ONES
+
+Before installing anything, check what is already available in our cloud development environment.
+
+Continue using:
+
+- Spector.js for WebGL shaders, textures, draw calls and rendering diagnostics.
+- Playwright and Chromium for real gameplay screenshots and videos.
+- OpenCV for image analysis.
+- Existing Three.js scene inspection and debugging capabilities.
+- Blender when real 3D geometry requires modification.
+- Existing project Screen Matcher tools and design agents where genuinely helpful.
+
+Also verify whether these additional FREE Python libraries are installed:
+
+scikit-image
+
+Use it for region-based structural comparison, contrast, edges, colour distributions and texture differences.
+
+If missing:
+
+"python -m pip install scikit-image"
+
+LPIPS
+
+Use it as an additional learned perceptual similarity measurement.
+
+First verify PyTorch compatibility. Install in an isolated compatible environment if necessary.
+
+If missing:
+
+"python -m pip install lpips"
+
+Optuna
+
+Use it to test a limited number of precise, controllable rendering parameters after identifying a real problem.
+
+If missing and genuinely useful:
+
+"python -m pip install optuna"
+
+Do not run endless automated experiments. Start with no more than 12 controlled trials.
+
+Do not install unnecessary tools or break working dependencies.
+
+Do not purchase Needle Inspector Pro, Tripo, Meshy or any other paid software without my explicit permission.
+
+IMPORTANT: INSTALLATION IS NOT THE GOAL. ACTUAL GAME IMPROVEMENT IS THE GOAL.
+
+6. BUILD A PROPER ORIGINAL-VERSUS-GAME MATCHING WORKFLOW
+
+Use the actual original approved Screen 4 directly from the repository or the image I attached.
+
+Capture the newest accepted playable build.
+
+Use seed 7 and capture the established comparison moment at exactly 3.0 seconds AFTER gameplay begins, no steering, at the same portrait viewport and camera position.
+
+Additionally capture moving gameplay at 4, 5 and 6 seconds, and later moments where the character travels past brushes and collects items.
+
+Do not confuse the time since the video recording started with the time after the character begins moving.
+
+Compare the following regions independently:
+
+1. HUD and mission banner.
+2. Upper tunnel and gold rim.
+3. Cobalt-blue rings and far center.
+4. Left and right brushes.
+5. Coins, gem, sock and other collectibles.
+6. Pink character silhouette.
+7. Water immediately around the character.
+8. Foreground splashes and translucent bubble domes.
+9. Overall color balance, perspective and visual atmosphere.
+
+Use OpenCV, scikit-image and LPIPS where they are appropriate.
+
+Account for the limitations of comparing stylized illustration with rendered 3D.
+
+Do not claim a 90% match based on one automated image score.
+
+I want you to identify exactly which major visible differences remain, then find the real Three.js objects, shaders or materials responsible.
+
+7. PROTECT ALL OUR SUCCESSFUL WORK
+
+Read the latest GitHub handoff, source files, current branch and accepted commits before editing.
+
+Preserve the successful Screen 4 changes, including the approved Step 8 improvements and later accepted work.
+
+Keep the smaller moving brushes and the sock's corrected blue toe if the latest verified build includes them.
+
+Do not restore rejected experiments that made the pink character too tall, too square or surrounded by an unnatural white strip of foam.
+
+Do not accidentally load an older tunnel by misconfiguring experimental switches.
+
+Create a safe rollback point.
+
+Put significant experimental changes behind a separate test switch until they have been visually approved.
+
+Keep the existing working gameplay intact.
+
+8. MAKE ACTUAL, HIGH-IMPACT CORRECTIONS
+
+I want you to stop spending entire sessions on tiny values that make almost no noticeable difference.
+
+Look at the original and current game side by side.
+
+Determine the two or three biggest remaining perceptual differences.
+
+Then fix the largest one.
+
+If the water is the biggest problem, focus on the actual water surface, splash shapes, materials, transparency and character contact.
+
+If the tunnel is too pale, identify the responsible rendering stage and correct it.
+
+If the camera, scale or geometry creates a noticeably different composition, correct those.
+
+Do not just give me another report explaining what is wrong.
+
+I WANT TO SEE THE GAME VISIBLY CHANGE FOR THE BETTER.
+
+If a proposed correction fails to improve the image after two well-controlled attempts, document the failure, revert it and use a different technical approach.
+
+Do not endlessly repeat the same experiment.
+
+9. KEEP THE GAME FULLY PLAYABLE
+
+This must remain a real Three.js/WebGL 3D game.
+
+It must NOT be a static image, a fake screenshot-based game or a noninteractive animated background.
+
+Preserve:
+
+- Automatic forward motion.
+- Left and right movement.
+- Existing jump and movement controls.
+- Coin and gem collection.
+- Sock rescue mechanics.
+- Obstacle collisions.
+- Hearts and health.
+- Pause functionality.
+- Bubble Blast.
+- Turbo Spin.
+- Existing HUD and mission progress.
+- Portrait mobile gameplay.
+
+The pink character must actually travel through the 3D tunnel, with real perspective changes and functional interactive objects.
+
+10. MANDATORY VERIFICATION CHECKLIST
+
+Before presenting a candidate as successful, verify:
+
+- [ ] Gameplay starts directly inside the approved blue laundry tunnel.
+- [ ] No separate exterior or swimming approach is required.
+- [ ] The character automatically moves forward when gameplay starts.
+- [ ] The camera matches the approved rear-view composition as closely as possible.
+- [ ] The character rides ON TOP of the moving blue water.
+- [ ] The original-like low, rounded pink silhouette is preserved.
+- [ ] No opaque water sheet flattens or hides the character.
+- [ ] Water has bright blue, turquoise and irregular white-aqua details.
+- [ ] Tunnel geometry, concentric rings and distant center resemble the original.
+- [ ] Brushes frame the scene correctly throughout movement.
+- [ ] Coins, gems and socks remain visible and collectible.
+- [ ] Bubble quantity, size and transparency resemble the original.
+- [ ] Lighting and colors remain saturated without being washed out.
+- [ ] HUD, controls, collisions, powers and mission mechanics function correctly.
+- [ ] Existing accepted Screen 4 improvements are not lost.
+- [ ] Other game modes remain unchanged unless separately approved.
+- [ ] A real gameplay recording proves the result works in motion.
+
+11. SHOW ME ACTUAL PROOF
+
+For every significant candidate, produce a full-resolution comparison:
+
+LEFT — MY AUTHENTIC ORIGINAL APPROVED SCREEN
+
+MIDDLE — PREVIOUS ACCEPTED PLAYABLE BUILD
+
+RIGHT — YOUR NEW CORRECTED PLAYABLE BUILD
+
+Keep the camera, viewport, seed and gameplay moment consistent.
+
+Include close-up images of the tunnel, character, water, brushes and collectibles.
+
+Provide real gameplay videos showing the character automatically traveling forward, collecting coins, approaching brushes and continuing through the tunnel.
+
+Report the changed files, working tools, test results and verified Git commit.
+
+I WILL NOT ACCEPT A CLAIM THAT THE GAME LOOKS CLOSER WITHOUT THE ACTUAL VISUAL EVIDENCE.
+
+12. MY FINAL INSTRUCTIONS
+
+I ultimately want approximately 90–95% perceived resemblance to my original approved Screen 4, if technically achievable.
+
+My immediate goal is a clearly visible improvement beyond our current build.
+
+I understand that an illustrated reference may not be perfectly reproducible in a moving 3D environment. Do not promise a percentage you cannot substantiate.
+
+But I expect you to use the best practical rendering techniques, the development tools already available and the real approved artwork to make the scene substantially more faithful.
+
+DO NOT BUILD THE GIRL INTRO.
+
+DO NOT BUILD LAUNDRY TOSS.
+
+DO NOT ADD ANOTHER SWIMMING SECTION.
+
+DO NOT REPLACE MY APPROVED SCENE WITH A NEW DESIGN.
+
+DO NOT REBUILD MY GAME FROM SCRATCH.
+
+DO NOT SPEND PAID CREDITS WITHOUT ASKING.
+
+DO NOT GIVE ME ANOTHER LONG PLAN IN PLACE OF WORKING CODE.
+
+START WITH THE PINK CHARACTER ALREADY INSIDE MY EXACT APPROVED BLUE LAUNDRY TUNNEL. MAKE THE REAL PLAYABLE GAME LOOK AS CLOSE AS POSSIBLE TO THAT IMAGE.
+
+Verify the necessary tools, preserve the accepted build, implement meaningful corrections, and show me real playable visual proof.
+
+THIS IS THE ONLY PRIORITY FOR THE CURRENT DEVELOPMENT SESSION. I want the playable game to start directly inside this blue laundry tunnel, with my pink character traveling on top of the water. No girl scene, no extra opening, and no separate swimming sequence right now.
+
+_[3 images attached]_
+

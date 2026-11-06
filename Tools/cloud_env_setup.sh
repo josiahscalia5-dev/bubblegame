@@ -71,6 +71,21 @@ else
   fi && echo "  installed" || fail "Python visual tools"
 fi
 
+step "Python metrics tools (PyTorch on CPU, LPIPS with its AlexNet weights, Optuna) in their own environment"
+# (6 November, the user's request: LPIPS and Optuna for the Screen 4 comparisons; kept apart from visual/ so it never
+# disturbs it. PyPI's torch build, about 5.6 GB; the CPU-only index redirects to a host the network does not allow. LPIPS
+# fetches its AlexNet weights from download.pytorch.org, allowed in the bubblegame environment.)
+if "$T/metrics/bin/python" -c "import torch, lpips, optuna, skimage, cv2" 2>/dev/null; then
+  echo "  already installed"
+else
+  UV="$(command -v uv || true)"; [ -z "$UV" ] && [ -x "$HOME/.local/bin/uv" ] && UV="$HOME/.local/bin/uv"
+  if [ -n "$UV" ]; then
+    "$UV" venv -q --python "$(command -v python3)" "$T/metrics" && "$UV" pip install -q --python "$T/metrics/bin/python" \
+      torch torchvision lpips optuna scikit-image opencv-python-headless pillow scipy \
+      && "$T/metrics/bin/python" -c "import lpips; lpips.LPIPS(net='alex', verbose=False)" > /dev/null 2>&1 && echo "  installed" || fail "Python metrics tools"
+  else fail "Python metrics tools (needs uv)"; fi
+fi
+
 step "Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI)"
 mkdir -p "$T/node"
 [ -f "$T/node/package.json" ] || echo '{"name":"bubblewash-dev-tools","private":true,"description":"Dev tools for Bubble Wash Kingdom, outside the game"}' > "$T/node/package.json"
