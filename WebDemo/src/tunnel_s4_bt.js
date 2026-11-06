@@ -193,7 +193,11 @@ export const WATER7 = { maxPx: 12 / 1536 };
 // where the original has her body (derive_water_map.py --alpha-body; the colour is R6's, byte-identical), and the face drops
 // its pixels there: its edge follows the original's own outline and the water at her lower edge is the original's own
 // domes, not fill. No geometry, registration, colour or other layer changed.
-export const WATER8 = { file: 'foreground_water_original_r8.png' };
+// (R8 as first tried, foreground_water_original_r8.png, the art director: slightly closer than R7 at the start and moving,
+// but two small see-through notches at her outer sides, where the original's silhouette is wider than her model and the cut
+// showed the far tunnel water; reproduce it with the tune {"water2": {"file": "foreground_water_original_r8.png"}}. R8b, the
+// file below: no cut outside her model's span, x 248-522, faded over 8 px: derive_water_map.py ... --alpha-body --alpha-x 248 522)
+export const WATER8 = { file: 'foreground_water_original_r8b.png' };
 if (WATER8_ON) Object.assign(WATER2, { file: WATER8.file, alpha: true });
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {

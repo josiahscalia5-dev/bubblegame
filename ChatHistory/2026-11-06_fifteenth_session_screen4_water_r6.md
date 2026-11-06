@@ -70,3 +70,7 @@ Checking the R7 gameplay video for the art director's caveat (coin-pickup sparkl
 
 While the accepted-build videos record, writing the side-by-side video script (ORIGINAL still | ACCEPTED | R7, labelled):
 
+While R8b renders, saving the art director's R8 crops:
+
+The notches are visible in those crops (R7 then R8, pairs); R8b should remove them. While it renders, checking the accepted videos:
+
