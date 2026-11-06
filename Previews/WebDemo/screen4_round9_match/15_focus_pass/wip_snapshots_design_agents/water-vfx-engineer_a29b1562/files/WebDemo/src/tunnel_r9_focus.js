@@ -170,16 +170,22 @@ export const FOCUS = {
     // (item 1: fine spray thrown up round her lower sides; 120 -> 250, the zones match's: beside her, not in front of her)
     heroWater: { splash: { count: 250 } },
     bubbles: {
-      // 1. more bubbles through the tunnel, at every depth (match: 160), more of them inside the open tube (not only along
-      //    the walls) and more mid-size ones, but not piled up over the centre (the open tube's ones within 20 m); the
-      //    camera's place at 3.0 s with the new framing
-      count: 280,
-      camAt: -4.55,
-      sizes: [[0.66, [0.035, 0.075]], [0.29, [0.085, 0.16]], [0.05, [0.18, 0.27]]],
-      zones: [[0.26, [20, 160], [0.62, 0.93], [4.5, 34]], [0.16, [160, 222], [0.62, 0.93], [4.5, 34]], [0.16, [-42, 20], [0.62, 0.93], [4.5, 34]],
-        [0.3, [-30, 210], [0.25, 0.62], [4.5, 20]], [0.02, [0, 360], [0.08, 0.4], [16, 34]]],
-      // more, bolder white streaks among the bands (match: 200)
-      flecks: { count: 560, size: [[0.04, 0.12], [0.012, 0.026]], ahead: [5.0, 34] },
+      // (the AD's review items 4 and 6, and the user's note on the new kit: the tunnel's white and bubble pattern was
+      // "overcomplicated") a modest number of bubbles along the walls at near, middle and far depth, some medium ones, and
+      // clearly fewer over the middle of the tunnel: with the old 280 (0.25-0.62 of the radius in the open tube, walls to
+      // 34 m) 144 of 261 bubbles on screen lay within 0.2 W of the tunnel's centre (the original: about 10). Now 100, the walls'
+      // ones 4-8.5 m ahead (beyond about 9 m perspective packs them round the centre), a few far ones 9-24 m on the walls, a
+      // few in the open tube near the camera only; smaller sizes (a 0.16 m bubble 4.5 m ahead was 40 px across). camAt: the
+      // camera's place at 3.0 s with Tunnel & Lighting's new camera (0.85 m further back than the old -4.55)
+      count: 100,
+      camAt: -5.4,
+      sizes: [[0.7, [0.03, 0.06]], [0.27, [0.065, 0.11]], [0.03, [0.14, 0.2]]],
+      zones: [[0.3, [20, 160], [0.62, 0.93], [4.0, 8.5]], [0.2, [160, 222], [0.62, 0.93], [4.0, 8.5]], [0.2, [-42, 20], [0.62, 0.93], [4.0, 8.5]],
+        [0.05, [-30, 210], [0.45, 0.62], [3.5, 5.5]], [0.05, [0, 360], [0.7, 0.93], [9, 24]]],
+      // the white streaks among the bands: fewer, softer, chunkier (match: 200 of 0.035-0.09 x 0.01-0.02 m; focus had 560):
+      // 220 of 0.07-0.16 x 0.03-0.055 m, each turned up to 26 degrees off its band (turn, radians across the spread), some
+      // hooked (hook: the cubic bend's spread), softer across (soft: the profile's falloff; 3.5 was crisp)
+      flecks: { count: 220, size: [[0.07, 0.16], [0.03, 0.055]], ahead: [5.0, 34], turn: 0.9, hook: 2.0, soft: 2.2, alpha: 0.9 },
     },
   },
 };

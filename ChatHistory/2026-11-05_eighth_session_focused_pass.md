@@ -871,3 +871,21 @@ The specialists had stopped on the account's 5-hour usage limit (it reset at 21:
 
 The preview is live again on the same port (8765) and shows this merged build. I'll merge and push each step as the specialists report.
 
+---
+
+### Automatic notice · 2026-11-06 00:35 UTC
+
+_Agent "Tunnel &amp; Lighting: camera, ribbons, objects" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 5am (UTC) (error type rate_limit, HTTP 429, request id req_011CgkjganEkPN8YpFSR46gu, model sent to the API: claude-opus-5-5)_
+
+---
+
+### Claude · 2026-11-06 00:35 UTC
+
+You've hit your 5-hour limit · resets 5am (UTC)
+
+---
+
+### Automatic notice · 2026-11-06 00:36 UTC
+
+_Agent "Water &amp; VFX: splash round her, floor" failed: Agent terminated early due to an API error: You've hit your 5-hour limit · resets 5am (UTC) (error type rate_limit, HTTP 429, request id req_011CgkjnXbQqDqifKtaN4Bz2, model sent to the API: claude-opus-5-5)_
+

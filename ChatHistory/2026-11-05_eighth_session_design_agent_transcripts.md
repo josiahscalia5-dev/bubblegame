@@ -370,8 +370,15 @@ Now the fleck settings and the colour tweaks.
 - 00:32 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
 - 00:32 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/b3/cands_in.json
 - 00:32 `Bash`: Render D candidates with and without instanced bubbles
+- 00:34 `Bash`: Mid-tunnel crops: original, D2, D2 without instanced bubbles
+- 00:34 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/midD2.png
+- 00:35 `Bash`: Zoom upper-left wall original vs D2 walls only
+**Agent** (00:35 UTC):
 
-_190 tool steps._
+You've hit your 5-hour limit · resets 5am (UTC)
+
+
+_193 tool steps._
 
 ---
 
@@ -714,5 +721,11 @@ Now update NOTES.md with the state before the WIP commit.
 - 00:34 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a29b1562d2b9d7e06/Previews/WebDemo/screen4_round9_match/18_water_vfx_focus/NOTES.md
 - 00:34 `Bash`: Commit item 2
 - 00:34 `Bash`: Show the focus bubble settings
+- 00:34 `Bash`: Set the bubble and streak defaults and rebuild
+- 00:34 `Bash`: Capture step 3, frames without tunnel bubbles/streaks, and count
+**Agent** (00:36 UTC):
 
-_222 tool steps._
+You've hit your 5-hour limit · resets 5am (UTC)
+
+
+_224 tool steps._
