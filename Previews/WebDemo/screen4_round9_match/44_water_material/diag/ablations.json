@@ -1,0 +1,5 @@
+[{"label":"no_swell","hide":["heroSwell"]},
+ {"label":"no_extras","hide":["spLumps","spCurls","lqWaterlineBubbles","heroSplash","btBaseDomes"]},
+ {"label":"no_bloom","post":{"bloom":false}},
+ {"label":"no_grade","post":{"grade":false}},
+ {"label":"no_floor","hide":["lqFloor"]}]

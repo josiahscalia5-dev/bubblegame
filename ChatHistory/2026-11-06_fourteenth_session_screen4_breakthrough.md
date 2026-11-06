@@ -1374,3 +1374,17 @@ Use our existing Three.js water geometry, shader, textures, Spector.js diagnosti
 
 _[2 images attached]_
 
+---
+
+### Claude · 2026-11-06 16:55 UTC
+
+Changing approach as you ask: no more objects added to the water. I'll find what makes the existing water pale and flat, then correct the water material itself.
+
+On Tripo and Meshy, first: I won't spend any credits. Both turn an image into a static 3D model. They can't produce animated, see-through, flowing water, so they can't fix this. They could suit standalone objects like the brushes or the diamond later, and I'd ask you first with the job and its cost.
+
+Saving your new pack, then measuring the water:
+
+Checking that the swell's fragment shader can see her water frame (`uC`, `uR`, `uU`, `uT`), then wiring the material in:
+
+Built. Rendering the candidate's start screen:
+

@@ -95,6 +95,14 @@ export const WAVE_ON = BT_ON && LIST.includes('wave');
 //   curls: [phi (degrees round her, + screen-left), height (m), width (m), curl (radians at the top), lean (radians outward
 //   at the base), shift along the crest (m)]
 export const CREST_ON = BT_ON && LIST.includes('crest');
+// ?s3=intunnel,water2 (the user's brief of 6 November, about 17:00 UTC: correct the EXISTING water, no new objects):
+// heroSwell's own face material takes the original's foreground water (tunnel_s4_water2.js). y0: the texture's top in the
+// frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
+// much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
+// texture), its bubble rings lower
+export const WATER2_ON = BT_ON && LIST.includes('water2');
+export const WATER2 = { file: 'foreground_water_original.png', y0: 0.72, flow: 0.06, wobble: 0.025, amount: 0.92,
+  water: { face: { lace: { amount: 0 }, rings: { amount: 0.3 } } } };
 export const CREST = {
   water: { splash: {
     curls: [[22, 0.2, 0.26, 1.7, 0.18, 0], [-22, 0.18, 0.26, 1.7, 0.18, 0], [34, 0.26, 0.32, 1.6, 0.14, 0], [-34, 0.24, 0.32, 1.6, 0.14, 0],

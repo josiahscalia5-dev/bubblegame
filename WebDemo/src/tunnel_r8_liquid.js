@@ -37,6 +37,8 @@ import { MATCH_ON, MATCH, deepMerge, MATCH_UNIFORMS, matchWallGLSL, matchWallApp
 import { matchFloorDecl, matchFloorApply, matchSwellGLSL } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (Water & VFX)
 import { DOMES_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,domes: bubble domes at her base
 import { buildBaseDomes } from './tunnel_s4_domes.js';
+import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swell's face takes the original's water
+import { water2Uniforms, installWater2 } from './tunnel_s4_water2.js';
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -755,8 +757,9 @@ ${MATCH_ON ? matchSwellGLSL() : ''}  gl_FragColor = vec4(col, a * step(0.001, uF
 ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : LIQUID.debug === 2 ? '  gl_FragColor = vec4(d * 2.0, a, hUp * 2.0, 1.0);' : ''}
 }
 `;
-  s.material = new THREE.ShaderMaterial({ uniforms: { ...old.uniforms, ...LU, uTime: old.uniforms.uTime || LU.uTime }, vertexShader: old.vertexShader, fragmentShader: fs,
+  s.material = new THREE.ShaderMaterial({ uniforms: { ...old.uniforms, ...LU, uTime: old.uniforms.uTime || LU.uTime, ...(WATER2_ON ? water2Uniforms() : {}) }, vertexShader: old.vertexShader, fragmentShader: fs,
     transparent: true, depthWrite: false, depthTest: LIQUID.debug !== 3 });
+  if (WATER2_ON) installWater2({ scene, swell: s });   // ?s3=...,water2: the start view, captured once (tunnel_s4_water2.js)
   return { restyled: 'heroSwell', drawCalls: 0 };
 }
 

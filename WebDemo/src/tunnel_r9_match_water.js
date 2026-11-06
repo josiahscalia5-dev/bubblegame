@@ -33,7 +33,8 @@ import * as THREE from 'three';
 import { MATCH_ON, MATCH_FOAM, MATCH, deepMerge, MT_BEND } from './tunnel_r9_match.js';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
-import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE, CREST_ON, CREST } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
+import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE, CREST_ON, CREST, WATER2_ON, WATER2 } from './tunnel_s4_bt.js';
+import { water2GLSL, water2Decl } from './tunnel_s4_water2.js';   // ?s3=...,water2   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -226,7 +227,8 @@ if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r
   restoreSettings(MATCH_WATER, PRE_FOCUSED_PASS.MATCH_WATER);   // (`match`'s water as it was at 9a95c06, tunnel_r9_focus_base.js)
   deepMerge(MATCH_WATER, FOCUS.water);
   if (BANK_ON) deepMerge(MATCH_WATER, BANK.water);
-  if (CREST_ON) deepMerge(MATCH_WATER, CREST.water);   // ?s3=...,crest: the curling crests (tunnel_s4_bt.js)   // ?s3=...,bank: the bank of rounded blue lobes (tunnel_s4_bt.js)
+  if (CREST_ON) deepMerge(MATCH_WATER, CREST.water);
+  if (WATER2_ON) deepMerge(MATCH_WATER, WATER2.water);   // ?s3=...,water2: the face's comma arcs off (tunnel_s4_water2.js)   // ?s3=...,crest: the curling crests (tunnel_s4_bt.js)   // ?s3=...,bank: the bank of rounded blue lobes (tunnel_s4_bt.js)
   if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
@@ -253,7 +255,7 @@ const v3s = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((
 // declarations, placed in the floor's fragment shader after tunnel_r9_match.js's matchWallGLSL() (samplers, mtUndisplay)
 export function matchFloorDecl() {
   const M = MATCH.walls, F = MATCH_WATER.floor;
-  return /* glsl */ `
+  return water2Decl() + /* glsl */ `
 // ?s3=match: the floor's water, the walls' derived map at the same place (tunnel_r9_match_water.js). cs: (x, h) in the track's
 // cross-section, u along the path; W world; N0 the surface's normal (up), T0 the path's direction; Nw the liquid's wave normal,
 // hDet its wave height (0 trough .. 1 crest), caus its caustic web; onWall: 1 where the water meets the walls (the walls' own look);
@@ -452,7 +454,7 @@ function focusSwellGLSL() {
       vec3 fsW = mix(${v3s(Wt.deep)}, ${v3s(Wt.mid)}, smoothstep(0.3, 0.55, fsC));
       fsW = mix(fsW, ${v3s(Wt.light)}, smoothstep(0.55, 0.8, fsC));
       mwCol = mix(mwCol, mtUndisplay(fsW), ${f4(Wt.amount)});
-      mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
+${WATER2_ON ? water2GLSL() : ''}      mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
       mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
       mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
 ${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}${WAVE_ON ? btWaveGLSL() : ''}      mwA *= fsKeep;
