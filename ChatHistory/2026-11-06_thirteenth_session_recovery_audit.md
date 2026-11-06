@@ -563,3 +563,41 @@ Entries are either object ids or patterns matched against the object's path. Lis
 
 The frames job is still running in the background. The rollback and test-tune frames already exist, so I'll check those proofs now:
 
+Six of the eight Pixel 7 frames are done, and the two straight videos are 261 of 600 frames in. After them come the regression and gameplay tests: the 41 identity frames, plus `s3_func` and `r2_func` both under `?s3=focus` and on the normal game, as you asked. Waiting for the frames job to report.
+
+---
+
+### Automatic notice · 2026-11-06 05:24 UTC
+
+_Background command "Capture step 7 frames, Pixel 7 pairs and rollback proof" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 05:24 UTC
+
+Sheets built. Looking at the main comparison by eye, first at the 3.0 s checkpoint enlarged:
+
+While that runs, the Pixel 7 sheets with the interface, at the four interior positions:
+
+At 5.0 and 6.0 s the change is small: a few fewer bubbles near the upper walls and the left. At those positions the bigger mismatch is the brushes, and coins stacked in front of her when she doesn't steer. That's a later step, so I'll report it as remaining rather than call it fixed.
+
+Waiting for the regression run and the videos to finish. Then come the gameplay checks on `?s3=focus` and on the normal game.
+
+---
+
+### Automatic check · 2026-11-06 05:25 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 05:25 UTC
+
+I saved and pushed the work so far, and GitHub confirms it (`30b8832`). The game build is still at step 6; the bubble change goes in after its tests pass.
+
+Still running in the background:
+- the straight-driving and steering videos;
+- the 41-frame regression run;
+- the gameplay checks, on `?s3=focus` and on the normal game, which start once the processor frees up.
+
