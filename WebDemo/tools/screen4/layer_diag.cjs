@@ -1,5 +1,5 @@
 // Screen 4 layer diagnosis (diagnostic only; changes nothing in the game).
-//   S3=focus [DPR=1.42751] [VIEW=700x1076] node tools/screen4/layer_diag.cjs <abs WebDemo> <out-dir> [ablations.json]
+//   S3=focus [DPR=1.42751] [VIEW=700x1076] [T=3.0] node tools/screen4/layer_diag.cjs <abs WebDemo> <out-dir> [ablations.json]
 // Reproduces the established hero frame exactly as tools/screen4/liquid_shots.cjs does it: Math.random seed 7,
 // __BW_OPENING_OFF__ ['art'], advance(0.5), tap, advance(3.0), no steering, the game's own camera. DPR 1536/1076 makes
 // the 538 x 1076 game area a 768 x 1536 canvas (resized to the original's 767 x 1536 in the analysis).
@@ -42,7 +42,7 @@ const server = http.createServer((req, res) => {
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   await page.evaluate(() => window.__bw.advance(0.5));
   await page.evaluate(() => window.__bw.tap());
-  await page.evaluate(() => window.__bw.advance(3.0));
+  await page.evaluate((t) => window.__bw.advance(t), +(process.env.T || 3.0));   // T: seconds after the tap (default the 3.0 s checkpoint)
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(OUT, 'base_page.png'), clip: await page.locator('#stage').boundingBox() });
   const canvasShot = async (file) => { const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); }); fs.writeFileSync(path.join(OUT, file), Buffer.from(url.split(',')[1], 'base64')); };

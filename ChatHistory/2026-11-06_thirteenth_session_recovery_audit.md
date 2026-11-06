@@ -511,3 +511,53 @@ With every step I'll give you two real gameplay MP4s (straight and steering) and
   - **B:** start the level at the tunnel mouth with your approved framing, skipping the exterior.
   - **C:** keep the exterior but shorten it.
 
+---
+
+### You · 2026-11-06 04:58 UTC
+
+Claude, I've reviewed your audit.
+
+I approve the general correction order, but I want strict visual matching, not another creative interpretation of my approved screen.
+
+My original approved Bubble Wash Kingdom Screen 4 is the ONLY visual target. I want the actual playable game to reproduce that appearance as closely as technically possible.
+
+Here are my instructions:
+
+1. Start with the bubble veil correction ONLY. Reduce the excessive tunnel bubbles while keeping the appropriate clear bubbles, especially those around the water and character. Restore the strong cobalt-blue appearance of the approved original. Do not simply remove all bubbles.
+
+2. Show me the approved original, the current version and your corrected version side by side at the same camera position. I also want the actual game moving, including the character entering the tunnel, travelling through it and passing the brushes.
+
+3. After I review the bubbles, proceed with the original white splash textures, blue water and floor, brush sizes, tunnel entry, distant centre and sock colours. Each change must remain separately testable and reversible.
+
+4. The tunnel should have the original's circular blue-water shape, vivid saturated cobalt and turquoise currents, authentic white highlights, rainbow reflections and brightly illuminated depth. Do not substitute smooth lavender or pale-blue surfaces, generic procedural white dashes or a large white disc at the far end.
+
+5. Keep my approved artwork and existing assets as the authoritative references. Use the recovered textures, extraction tools, Blender, Three.js debugging tools and other installed resources wherever they provide a closer match. Do not generate replacement scenery or spend paid credits without showing why existing assets are insufficient.
+
+6. Preserve working gameplay, collecting coins, rescuing socks, camera movement, jump, spin, pause and both power-ups. Test on the Pixel 7 and the normal game configuration, not only "?s3=focus".
+
+7. For the opening, my preference is Option C: preserve the washing-machine exterior but eventually shorten the opening so the player reaches the approved-looking tunnel sooner. Do not modify the opening in this correction pass.
+
+8. I want comparisons at the same scene position, especially when the character is fully inside the tunnel. A comparison at 3 seconds is not sufficient if that frame doesn't represent the actual entry or interior. Provide real-game screenshots and straight-driving and steering MP4s.
+
+9. Keep the pink fluffy character's remodeling postponed. My priority is matching everything else in the original.
+
+10. Before proceeding to the next correction, show me the image, explain exactly what changed, identify any remaining differences and provide the commit hash.
+
+Do not tell me it matches simply because the tests pass. I want visual evidence that it resembles my approved original. My goal is at least an 8.5/10 visual match while retaining a fully playable game.
+
+Begin with the bubble correction, then stop for my visual review.
+
+---
+
+### Claude · 2026-11-06 04:58 UTC
+
+Starting the bubble correction only. I'll stop for your review with the image, what changed, what still differs, and the commit hash. First, which bubble layers exist and how much of the tunnel each one covers:
+
+The step 6 video (10 s, Pixel 7, with steering) has finished. Encoding it, and making a side-by-side with the step 4 video from the same run:
+
+I'll add an optional `T` setting (seconds after the tap, default 3.0) so the same tool can capture any interior moment, and the same setting to the ring-placement worktree's copy:
+
+Before capturing, the ablation format, so I can hide each bubble layer on its own by name:
+
+Entries are either object ids or patterns matched against the object's path. Listing every bubble-like layer the step 6 frame draws, from its census:
+

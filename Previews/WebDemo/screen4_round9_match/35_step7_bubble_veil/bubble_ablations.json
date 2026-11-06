@@ -1,0 +1,8 @@
+[{"label": "no_tunnelBubbles", "hide": ["mwTunnelBubbles"]},
+ {"label": "no_heroBubbles", "hide": ["heroBubbles"]},
+ {"label": "no_s3Bubbles", "hide": ["s3Bubbles"]},
+ {"label": "no_s4Bubbles", "hide": ["s4Bubbles"]},
+ {"label": "no_r5Droplets", "hide": ["r5Droplets"]},
+ {"label": "no_points", "hide": ["^Points$"]},
+ {"label": "no_waterlineBubbles", "hide": ["lqWaterlineBubbles"]},
+ {"label": "no_all_but_waterline", "hide": ["mwTunnelBubbles", "heroBubbles", "s3Bubbles", "s4Bubbles", "r5Droplets", "^Points$"]}]
