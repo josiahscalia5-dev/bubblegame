@@ -1,0 +1,9 @@
+[{"label": "no_tunnelDecor", "hide": ["^tunnelDecor"]},
+ {"label": "no_r2Halo", "hide": ["r2Halo"]},
+ {"label": "no_heroGlow", "hide": ["^heroGlow$"]},
+ {"label": "no_additive_mesh22", "hide": [22]},
+ {"label": "no_heroBubbles", "hide": ["^heroBubbles$"]},
+ {"label": "no_s4Bubbles", "hide": ["^s4Bubbles$"]},
+ {"label": "no_tunnelBubbles", "hide": ["^mwTunnelBubbles$"]},
+ {"label": "no_points", "hide": ["^Points$"]},
+ {"label": "no_droplets", "hide": ["^r5Droplets$"]}]
