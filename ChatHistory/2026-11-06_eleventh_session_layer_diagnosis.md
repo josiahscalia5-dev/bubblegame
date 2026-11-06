@@ -63,3 +63,11 @@ The water floor is shader code injected into other meshes, so runtime inspection
 
 Bundle class names are minified, so I'll address the post passes by index (0 render, 1 bloom, 2 grade, 3 output). First, verify the frame matches the earlier sessions' frame and is deterministic.
 
+Now the ablation set: each layer group hidden on its own (same frame, no time advance), the post passes switched off one at a time, and a few "solo" stacks.
+
+Running the full ablation pass (42 renders of the identical frame) in the background while I read the floor shader code.
+
+About half done. Meanwhile, the `focus` settings for the floor and walls:
+
+Every ablation restored cleanly (the frame after all 42 is pixel-identical to the first). The original against the current game, region by region:
+
