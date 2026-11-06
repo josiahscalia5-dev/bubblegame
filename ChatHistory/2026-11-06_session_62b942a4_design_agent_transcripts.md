@@ -153,8 +153,13 @@ Now the match water and water2, and the swim file.
 - 22:34 `Bash`: Build a lower-frame comparison sheet of original, R9 and swim
 - 22:34 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/wv/cmp_lower.png
 - 22:35 `Bash`: Measure the lowest visible pink row per column (contact edge)
+- 22:36 `Bash`: Inspect swim solve inputs
+- 22:36 `Bash`: Project her frame through the real start camera and solve heap heights
+- 22:37 `Grep`: samples|antialias|EffectComposer\(|WebGLRenderTarget\(
+- 22:38 `Grep`: INTUNNEL\.(speed|u|clock)
+- 22:39 `Bash`: Check WATER constant, TR.map and uHeroTravel source
 
-_39 tool steps._
+_44 tool steps._
 
 ---
 
@@ -216,8 +221,24 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 
 - 22:35 `Bash`
 - 22:35 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/floorahead.png
+- 22:35 `Bash`
+- 22:36 `Bash`
+- 22:36 `Bash`
+- 22:36 `Bash`
+- 22:36 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/tex.png
+- 22:38 `Bash`
+- 22:38 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4_bt.js
+- 22:38 `Bash`
+- 22:38 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r9_match.js
+- 22:38 `Grep`: buildHero\(|buildMatch\(|buildRound3\(|buildRound4\(|buildR7Water|buildHeroWater\(|buildSwim|SWIM_ON
+- 22:38 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4.js
+- 22:38 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r7_hero.js
+- 22:39 `Grep`: hDet|float caus|vec3 Nw|lqWaves|lqWake\(|uLqTex
+- 22:39 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:39 `Bash`
+- 22:39 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/floor2.png
 
-_38 tool steps._
+_54 tool steps._
 
 ---
 
@@ -263,5 +284,17 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 22:33 `Bash`: Find player-driven water uniforms
 - 22:33 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
 - 22:33 `Bash`: Check ribbon resolution, ripple count and flip readers
+- 22:35 `Bash`: Find users of mascot transforms and swim imports
+- 22:36 `Bash`: Find game loop ordering
+- 22:36 `Read`: /workspace/bubblegame/WebDemo/src/game.js
+- 22:36 `Bash`: Find where updaters run
+- 22:36 `Bash`: Find updater runner and swell state readers
+- 22:36 `Bash`: Locate updater loop and splash/match uniform use
+- 22:36 `Bash`: Find all updaters writing swell uniforms
+- 22:36 `Bash`: See how splash bank gets swell uniforms
+- 22:36 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_splash.js
+- 22:40 `Bash`: Check whether later modules replace swell shaders
+- 22:40 `Bash`: Trace which updaters array the tunnel uses
+- 22:40 `Bash`: Confirm updaters come from opening
 
-_30 tool steps._
+_42 tool steps._
