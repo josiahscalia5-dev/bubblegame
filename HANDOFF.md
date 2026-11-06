@@ -2,6 +2,28 @@
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
+## Newest (6 November, about 01:00 UTC): eleventh session, branch `ccr-038551a2-x01b22`, the layer diagnosis (no game changes)
+
+- **The user's request:** use real developer tools, not visual trial and error.
+  - Inventory the tools.
+  - Capture the seed 7, 3.0 s, no-steering frame at 767 x 1536.
+  - Compare by region and find which texture, material, layer, shader or pass causes each difference.
+  - Give ONE correction for review before any large change. Do not add more white streaks first.
+- **Evidence and full findings:** `Previews/WebDemo/screen4_round9_match/26_layer_diagnosis/README.md`.
+  - New diagnostic tools: `WebDemo/tools/screen4/layer_diag.cjs` (census, per-layer ablation of the SAME frame, test tunes,
+    texture swap by request interception) and `layer_metrics.py`.
+- **Diagnosis, in short:**
+  - Post-processing is not the cause.
+  - Floor: the floor ahead is `lqFloor`'s shader. `floorFx.lift` 0.55 mixes every floor pixel toward ONE pale blue
+    (#b6dcf6), turning the original's white-plus-cobalt water into a flat mid-tone.
+  - Texture: the ring map loses 56-60% of the original's texture and all its white in `derive_ring_map.py` (`WHITE_OUT`
+    mask, 6° blur). The whites come back as procedural "confetti".
+  - Tunnel: the bubble overlays veil the walls.
+- **Proposed single correction, NOT applied, waiting for the user:** `floorFx.lift` 0.55 → 0 in `tunnel_r9_focus.js`
+  (`?s3=focus` only). Measured on the floor ahead: saturated blue 11.5 → 28.2% (original 18.0), pale blue 74.5 → 53.9%
+  (34.5), detail 2.29 → 3.09 (3.41).
+- **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_eleventh_session_layer_diagnosis.md`).
+
 ## Newest (5 November, 22:40 UTC onward): tenth session, the user's fidelity plan, steps 2 and 3 done (`?s3=focus`)
 
 - **The user's decisions** (kit `Design/ReferencePacks/2026-11-05_Screen4_Complete_Kit_from_user/`, `CLAUDE_SCREEN4_INSTRUCTIONS.txt`):
