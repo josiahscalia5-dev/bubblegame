@@ -45,3 +45,21 @@ Let me start the autosave first (standing rule), and look at what the user's las
 
 Now the autosave (eleventh session; no branch uses that name) and the dev tools check.
 
+Autosave is running (pid 736). Now the tool inventory: dev-tools setup, Python imaging libraries, and the MCP servers.
+
+The tools dir is missing (new container), so per CLAUDE.md I'll run the setup script. Checking what it does first.
+
+Serena and the three.js DevTools bridge are present. Meanwhile, let me check the newest evidence folder (`25_pass4_water`, not yet in the handoff's top section) and the existing capture tooling.
+
+The prior session only took one baseline capture for pass 4. Let me find the established capture and comparison scripts so this is reproducible with the same camera.
+
+Setup is still installing (Blender is large). While it runs, let me look at the target and the user's own annotated step-3 comparison.
+
+Now let me use Serena to map the rendering code (water floor, walls, overlays) before capturing.
+
+Serena is connected but only has a Python language server, so it can't index the JS symbols; its pattern search still works, but Grep does the same job. Mapping the water/tunnel layers:
+
+The water floor is shader code injected into other meshes, so runtime inspection will be more reliable than reading. Let me see exactly how the established harness defines "3.0 s".
+
+Bundle class names are minified, so I'll address the post passes by index (0 render, 1 bloom, 2 grade, 3 output). First, verify the frame matches the earlier sessions' frame and is deterministic.
+
