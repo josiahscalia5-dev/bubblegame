@@ -1,6 +1,26 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 7, step 5 held; branch `ccr-d224d313-81g2dq`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 8; branch `ccr-d224d313-81g2dq`)
 
-## Newest (6 November, about 06:05 UTC): thirteenth session, STEP 7 done, the bubble veil; STOPPED for the user's visual review
+## Newest (6 November, about 11:40 UTC): thirteenth session; step 8 done; S3-1 tested, NOT merged; the Screen 4 breakthrough request waiting
+
+- **The game (`?s3=focus`) is at step 8** (`2a5cda2`): the original's own white splashes on the walls (fill map drawn pure +
+  `ringMap.gain` [1.15, 1.15]), the duplicate procedural whites off. Evidence `Previews/WebDemo/screen4_round9_match/37_step8_white_splashes/`.
+- **Screen 3, S3-1 (the castle visible at the opening):** the drum's 14 m lavender face (`r6Face`) covered the opening; cut to
+  4.5 m (`round6.porthole.face.cut`, new code in `tunnel_r6.js`) the castle shows from Tap to Start to 2.5 s, and from 3.0 s
+  inside the tunnel the frames are pixel-identical. Its 41 identity frames passed; its gameplay checks were cut off when the
+  environment restarted (about 11:20 UTC). The change lives in the worktree snapshot
+  `Previews/WebDemo/screen4_round9_match/wip_snapshots_design_agents/lead_s3a_worktree/` (and `/home/user/bw-s3a` while the
+  container lives); evidence `Previews/WebDemo/screen3_opening_authentic/`. NOT in the game: the user's newest request
+  (11:33 UTC) puts the exterior out of the current scope.
+- **The user's newest request (11:33 UTC, `Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/`):** ONE
+  major visible Screen 4 pass: the foreground water and her water contact, the whole tunnel's composition (camera, geometry,
+  ring placement, material, lighting together), the brushes / coins / gem / sock framing the tunnel. Spector.js authorised.
+  At most two controlled candidates per major mismatch, then stop and show the failures. Scope: inside the tunnel only. The
+  user then asked to save everything first (done, `7b7a9e2`), so the pass has NOT started.
+- **The checklist:** `Previews/WebDemo/screen4_round9_match/38_checklist_to_match_original/README.md`.
+- **Saving:** the container restarted twice today (about 09:30 and 11:20 UTC) and stopped the autosave both times; restart it
+  first (CLAUDE.md, Safety; the session log is now under `~/.claude/projects/-workspace/`).
+
+## Earlier (6 November, about 06:05 UTC): thirteenth session, STEP 7 done, the bubble veil; STOPPED for the user's visual review
 
 - **The user's plan (after the recovery audit), in order, each separately testable and reversible, each stopped for review:**
   the bubble veil (done), then the original's white splash textures, blue water and floor, brush sizes, the tunnel entry, the
