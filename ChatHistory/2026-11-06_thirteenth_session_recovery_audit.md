@@ -342,3 +342,172 @@ _Background command "Run gameplay checks on the step 6 build" completed (exit co
 
 The main tree's rebuilt game is byte-identical to the tested one (`1784ffd7…`). Now I'll complete the step 6 record with the results and the corrected / remaining checklist:
 
+Now the hand-off, `CLAUDE.md` and the agents' newest section, so the next session knows `focus` is at step 6:
+
+The video is 137 of 300 frames in, roughly 5 more minutes. When it finishes I'll encode it, check that its opening matches the step 4 video frame for frame, put the two side by side, and send it to you.
+
+---
+
+### You · 2026-11-06 04:52 UTC
+
+Okay, so if you said what is different from my original, your original has more crisp white splashes and deeper blue in the tunnel. So why don't you do everything in my original? Why don't you fix that so I can have my original approved screen exactly like that? Make my exact screen like the original approved screen.
+
+---
+
+### Claude · 2026-11-06 04:52 UTC
+
+You're right that those two differences, the crisp white splashes and the deeper blue, are the biggest ones left. One limit up front: a live 3D scene can't be made pixel-for-pixel identical to a painted image. The only way to get exactly the same pixels would be pasting your picture over the game, which you've ruled out. What I can do is make the tunnel walls use your original's own pixels, whites included. That's exactly what step 5 does, and it was held only because of the stretched far centre that step 6 just fixed. So I'm re-testing step 5 on top of step 6 now.
+
+The settings file applied cleanly. The texture line clashes with the `MT_BEND` line I added just below it in step 6. Resolving it by keeping both:
+
+Built (`4e9c2294…`). Following your rule to save everything, I'm also starting the 5-minute snapshot of this new test copy. Then I'll capture the checkpoint frame:
+
+---
+
+### You (sent while Claude was working) · 2026-11-06 04:53 UTC
+
+I need you to continue my existing Bubble Wash Kingdom project, but I need you to understand the real goal correctly.
+
+MY GOAL:
+I do not just want Screen 4 to be “better.” I want the actual beginning of the level and the moment the pink character goes into and through the laundry tunnel to look as close as possible to my APPROVED proof screen — ideally almost identical.
+
+You must treat this as an exact visual-matching task, not a generic tunnel-polish task.
+
+ATTACHED FILES:
+- Bubble_Wash_Kingdom_New_Claude_Account_Handoff.md
+- BWK_Claude_Strict_Motion_Match_Kit.zip
+- BubbleWash_Approved_Art_Layer_Extraction_Kit_VERIFIED.zip
+- bubble_screen4_motion_review_board.png
+- bubble_screen4_video_honest_comparison.jpg
+- my approved original reference image
+
+YOUR JOB:
+1. Recover the correct project state from GitHub and confirm the correct active branch and latest saved Screen 4 work.
+2. Read the handoff and my existing project instructions.
+3. Recover all design agents, tools, and plugins that are available in this new account.
+4. Audit the current visual state of the beginning of the level and the tunnel-entry motion against my approved screen.
+5. Focus on BOTH:
+   A. the beginning / opening appearance of the level
+   B. the moving tunnel sequence after the pink character enters
+
+VISUAL STANDARD:
+- Match my approved original as closely as physically possible.
+- No creative redesign.
+- No generic replacement scenery.
+- No “close enough” unless you prove why a closer match is impossible.
+
+FOR THE TUNNEL:
+- Use the approved image as the visual source of truth.
+- Continue the authentic tunnel texture / fill-only map direction rather than replacing it with generic generated art.
+- Reduce the excess lavender wash.
+- Reduce bubble veiling.
+- Improve the white splash chunk shapes.
+- Improve the floor texture so it reads more like the approved water.
+- Improve core placement / tunnel ring appearance.
+- Improve the overall motion look, not just one frozen frame.
+
+FOR SCENERY / SUPPORT ASSETS:
+- Review whether the brushes, socks, tunnel-side objects, and other scenic elements are helping or hurting the match.
+- Use Tripo or other 3D generation ONLY for supporting scenic objects like brush clusters, sock props, or decorative tunnel-side scenery if needed.
+- Do NOT replace the tunnel’s core visual identity with generic 3D generation.
+
+FOR THE BEGINNING OF THE LEVEL:
+- Audit the first playable / opening view against the approved target.
+- If necessary, use an opening-specific visual framing or camera solution that preserves gameplay but improves the match.
+- Make the beginning and tunnel-entry sequence feel like one visually correct experience.
+
+WORKFLOW RULES:
+- Do not waste credits regenerating random things.
+- Do not restart from scratch.
+- Do not edit the wrong branch.
+- Do not make major visual changes until you finish the recovery audit and tell me exactly what is already done and what remains.
+
+FIRST RESPONSE I WANT:
+Give me a structured recovery report with:
+1. what you recovered
+2. what tools/plugins/agents are active
+3. current visual status of the beginning and tunnel sequence
+4. the biggest remaining mismatches
+5. the exact next plan to make it look more like my approved screen
+
+Do not start broad experimentation until I approve the plan.
+
+_[2 images attached]_
+
+---
+
+### Claude · 2026-11-06 04:55 UTC
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/34_recovery_audit_opening_and_tunnel/01_opening_to_tunnel_strip_step6_pixel7.jpg, Previews/WebDemo/screen4_round9_match/34_recovery_audit_opening_and_tunnel/02_tunnel_original_vs_step6_vs_step5_on_step6_test.jpg]_
+
+I finished the audit before making any more visual changes. Step 6 is the only change since the old account stopped, and it's already in the game.
+
+## 1. What I recovered
+
+- **Repository and branch:** `josiahscalia5-dev/bubblegame`, branch `ccr-d224d313-81g2dq`. It continues the old account's last save (`d3a35aa`). I checked every branch on GitHub against it; none holds newer Screen 4 work.
+- **The game:** the tunnel test version `?s3=focus`, now at **step 6** (commit `084a4ed`). Rollback points are step 4 (`666905c`) and the checkpoint `2f88104`.
+- **Done so far:**
+  - Step 2: the counters, banner and buttons at the original's places.
+  - Step 3: the walls draw your original's own rings.
+  - Step 4: the floor's pale wash removed.
+  - Step 6 (today): the far rings stay round and centred while the path bends. The smeared lavender band round the far centre is gone; centre lavender went from 21.1% to 16.1% (your original: 16.0%).
+- **Held, not in the game:** step 5, the tunnel walls drawn from your original's own pixels including its white splashes. I re-tested it on top of step 6 today: the splash shapes come back, but the tunnel turns paler and loses cobalt (second image).
+- **Your files:** only two arrived, your approved image and the motion-review board; both are saved in the repository. These four did not come through:
+  - the handoff .md;
+  - the Strict Motion Match Kit .zip (its contents were already saved on 6 November, 03:02 UTC);
+  - **BubbleWash_Approved_Art_Layer_Extraction_Kit_VERIFIED.zip**;
+  - bubble_screen4_video_honest_comparison.jpg.
+
+  Please re-attach the extraction kit if you want me to use it.
+
+## 2. Tools, plugins and agents
+
+- **Working:**
+  - GitHub, signed in as `josiahscalia5-dev`.
+  - All the project tools: Blender, OpenCV, Playwright and Chromium, FFmpeg, the glTF tools, the Tripo command-line tool.
+  - Your Screen Matcher skill, and all four design agents (available, none launched).
+  - A new cloud environment called `bubblegame`, which installs the tools at the start of every new session.
+- **Saving:** the 5-minute autosave plus a 5-minute snapshot of my unfinished test work, both running for 24 hours and confirmed on GitHub. The latest save is `36b59b5`.
+- **Not active:**
+  - No Claude plugins are enabled on this account. You enable them on claude.ai, then start a new session.
+  - Tripo is not signed in, and no credits have been spent.
+
+## 3. Current visual state (first image: real frames of your game)
+
+- **0.5–3.5 s, the opening:** the washing machine from outside (pipes, slide, "Let's go!" banner, Tap to Start). None of your approved screen is visible yet.
+- **4.0–4.5 s, entering:** a lavender drum front and ceiling, and a pale tunnel inside.
+- **5.0 s, inside the tunnel:** the closest moment to your original.
+- **5.5–6.0 s:** the brushes grow huge and hide the tunnel rings.
+
+## 4. Biggest remaining differences
+
+1. **The opening (0–3.5 s) is a different scene.** Your approved screen shows the inside of the tunnel. Until now your rules said not to touch the opening.
+2. **Bubble veil:** the bubble layers cover about 35% of the tunnel; your original shows about 4–5 bubbles there. This veil is also why step 5's whites look milky.
+3. **White splash shapes and cobalt:** splash pieces are 69 px against your original's 237, and the walls' strong blue is 52% against 59%.
+4. **The floor ahead:** pale and smooth. Pale blue covers 54% against 35% in your original, and white 10% against 32%.
+5. **Brushes while moving:** oversized at 5.5–10 s.
+6. **The entry (4.0–4.5 s):** a lavender wash on the drum front.
+7. **A pale disc at the far centre at 5.5 s:** a separate cause, not yet diagnosed.
+8. **The sock:** purple stripes and toe in the game, against white with a blue toe in your original.
+
+## 5. The plan
+
+Each step is one change: compared with your original at 3.0 s (full size and Pixel 7), checked while moving, reverted if it looks less like your original, then committed with its hash.
+
+1. **Bubble veil:** cut the tunnel bubbles toward your original's handful. In the investigation tests, halving or quartering their count raised the tunnel's strong blue by 3–4 points.
+2. **White splashes:** re-test step 5 on the cleared walls, drawing the whites sharp instead of soft.
+3. **The floor ahead:** use your original's own visible floor water as its texture.
+4. **Brushes and objects while moving:** the original's sizes and a clean coin and gem path; the sock recoloured from its existing model. No Tripo unless an existing model can't match, and I'd ask you first with the cost.
+5. **The entry:** the drum front and tunnel mouth toward your original's gold rim and blue interior.
+6. **The pale disc at 5.5 s:** diagnose and fix.
+7. **The opening:** depends on your choice below.
+
+With every step I'll give you two real gameplay MP4s (straight and steering) and frames at 3, 6, 10 and 15 s, as your review board asks. The step 6 video is still recording and I'll send it when it's done.
+
+**Two decisions I need from you:**
+- Do you approve this order, starting with step 1 (the bubble veil)?
+- For the opening, which do you want?
+  - **A:** keep the washing-machine exterior and match from the entry onward.
+  - **B:** start the level at the tunnel mouth with your approved framing, skipping the exterior.
+  - **C:** keep the exterior but shorten it.
+
