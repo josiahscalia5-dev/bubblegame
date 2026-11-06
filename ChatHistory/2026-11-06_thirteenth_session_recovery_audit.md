@@ -214,3 +214,77 @@ _Background command "Capture step 6 motion moments and a step 4 recheck" complet
 
 While those run, I'll find the recorder used for the step 4 video, since your brief asks for a video of the corrected tunnel:
 
+The step 4 video was recorded with `record_phone.cjs` (Pixel 7, 412 × 839 at 2×, 10 s, 300 frames, about 10 minutes of rendering). I'll record step 6 the same way once the regression and gameplay runs free up the processor, and also put the two videos side by side.
+
+Waiting for the regression run (60 of 82 frames) and the gameplay checks to report.
+
+---
+
+### You · 2026-11-06 04:42 UTC
+
+and make it clear. Make sure you save everything to the GitHub repository, chat history, everything. And when I mean everything, I mean like the design agents, you know, everything you built for my app and project. Make sure everything is saved, and do that frequently, every 5 minutes. And make sure you do that every 5 minutes, so you know everything's saved.
+
+---
+
+### Claude · 2026-11-06 04:42 UTC
+
+I'll check the autosave log first, to confirm every 5-minute round has actually reached GitHub:
+
+The companion job is running and has taken its first snapshot (all five changed files). Pushing it now rather than waiting for the next round:
+
+Everything is saved to GitHub and keeps saving every 5 minutes. The latest save is `9a14f9c` (04:42 UTC), and the save script checked that GitHub really has it.
+
+**Saved every 5 minutes, all session (24 hours):**
+- **Chat history:** this conversation, exported to `ChatHistory/2026-11-06_thirteenth_session_recovery_audit.md`.
+- **Design agents:**
+  - The four agent files and the Screen Matcher skill are in the repository; I updated the agent files this session.
+  - If an agent runs, its brief, steps and report go to `..._thirteenth_session_design_agent_transcripts.md`, and its unfinished code is copied in too.
+  - None has been launched this session, so there's nothing in those yet.
+- **Unfinished game work:**
+  - The autosave couldn't see the separate working copy where step 6 is being tested (`/home/user/bw-step6`); until now its code was only on GitHub as one patch I saved by hand.
+  - I've added a second job, `Tools/snapshot_lead_worktree.sh`, which copies that work into the repository every 5 minutes so the autosave pushes it.
+- **All evidence:** the comparison sheets, captures, measurements and the step 6 record.
+
+**Checked, not assumed:** all 7 autosave rounds so far (04:11–04:41 UTC) came 5 minutes apart and were confirmed on GitHub. Both save jobs are still running.
+
+**Where step 6 stands:** the fix works. The far rings follow the bend and stay concentric, as in your original.
+
+- **Still running:** the regression run (60 of 82 frames, proving the normal game and older versions didn't change) and the gameplay checks.
+- **Then:** I record the video, put step 6 into the game build, and give you the commit hash with the side-by-side comparisons.
+
+---
+
+### Automatic notice · 2026-11-06 04:44 UTC
+
+_Background command "Run the 41-frame identity proof for other switches" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 04:44 UTC
+
+`s3_func` passed. Comparing its report with step 4's, which should match apart from anything timing-related:
+
+While the video records, I'll check how the step 4 video was set up, so the side-by-side is a fair comparison:
+
+The step 4 video starts on the 3D washing-machine opening with the game's own Tap to Start panel, so it was recorded with the painted overlay off, as I'm doing now. Once the recording finishes I'll check that its first frames match step 4's before the tunnel, which proves the two runs are the same.
+
+Waiting for `r2_func` (hearts, pause, Bubble Blast, Turbo Spin) and the video recording.
+
+---
+
+### Automatic check · 2026-11-06 04:45 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 04:45 UTC
+
+I saved and pushed the new evidence, and GitHub confirms it (`982e01e`). The game itself is still at step 4 for now; step 6 goes into the playable build once the last two runs finish:
+
+- **`r2_func`**, the gameplay check for hearts, pause, Bubble Blast and Turbo Spin.
+- **The 10 s Pixel 7 video** of step 6.
+
+Each one reports when it's done, and I'll pick up from there.
+
