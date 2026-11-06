@@ -4,5 +4,11 @@
     "agents": "ChatHistory/2026-11-06_fourteenth_session_design_agent_transcripts.md",
     "title": "Fourteenth session (6 November): Screen 4 breakthrough pass",
     "url": "https://claude.ai/code/session_01L8bvJeZc9rVMuCUG45nhjU"
+  },
+  "1cadc793-36fb-5fea-90e3-fc0c8f5efb1a": {
+    "chat": "ChatHistory/2026-11-06_fifteenth_session_screen4_water_r5.md",
+    "agents": "ChatHistory/2026-11-06_fifteenth_session_design_agent_transcripts.md",
+    "title": "Fifteenth session (6 November): Screen 4 water R4 and R5",
+    "url": "https://claude.ai/code/session_01AvQv6VLsqQQJ9s6mB6BXgt"
   }
 }
