@@ -100,7 +100,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
-export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
+export const WATER6_ON = BT_ON && LIST.includes('water6');   // (R6, below: water5 with the original's contact edge and without the opening's suds)
+export const WATER5_ON = BT_ON && (LIST.includes('water5') || WATER6_ON);   // (R5, below: water4 with the texture's registration corrected)
 export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON);   // (R4, below: water3 with the exemplar-filled texture)
 export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
 export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
@@ -158,6 +159,22 @@ if (WATER4_ON) WATER2.file = WATER4.file;
 // her water (the same frame, so it bobs with the swell as before).
 export const WATER5 = { shift: -22 };
 if (WATER5_ON) WATER2.shift = WATER5.shift;
+// ?s3=intunnel,water6 (R6; the user's brief of about 19:20 UTC: darker, sharper, more rounded water meeting her cleanly with
+// an irregular flowing edge, not a hard cut, a zigzag or a foam cushion; the existing water corrected at its source). Measured
+// on R5's start frame (Previews/WebDemo/screen4_round9_match/48_water_r6/diag/):
+// 1. the contact edge: the face's top edge in front of her is its own geometric crest, 10-60 px HIGHER on her body than the
+//    original's lobe line in every column, and under it the face draws its texture opaque over the filled patch where the
+//    original has her body (the mottled lavender-white band). Her model goes on, lit, behind the face (to about y 1381).
+//    So the face is cut where the original draws her body (body: foreground_water_original_r6_body.png, her outline from
+//    the original, anti-aliased): her own fur shows down to the original's lobe outline, which is the water's edge. Its
+//    colour texture (r6) is R4's with the 11 px ring round her body back to the original's own pixels (the lobe tops).
+//    tools/screen4/derive_water_contact.py.
+// 2. the washout: hiding the opening's soap suds and foam bubbles (opening.js, 'openingLook', drawn round her in the
+//    in-tunnel start) takes the bottom water from 36.6 to 48.5 % saturated blue and its icy pale blue from 26.7 to 17.2 %
+//    (the original 53.5 and 17.0); the splash lumps, curls and waterline bubbles change it by 1-2 points (kept).
+// Nothing is added. The texture, registration (R5), material and everything else as R5.
+export const WATER6 = { file: 'foreground_water_original_r6.png', body: 'foreground_water_original_r6_body.png', cut: 0.5, suds: false };
+if (WATER6_ON) Object.assign(WATER2, { file: WATER6.file, body: WATER6.body, cut: WATER6.cut });
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

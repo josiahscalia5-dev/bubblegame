@@ -182,3 +182,7 @@ Understood: one focused fix to the existing water face, measured against your or
 
 The steering recording is at 274 of 300 frames, so I'll let it finish (about two minutes). Meanwhile I'll read the water face code in full, since the fix goes there.
 
+My `sed` replaced that line with a placeholder. I'll write it back properly with the widened test:
+
+Those two meshes are the old opening's soap bubbles and suds (`opening.js`, section 3), still drawn in the in-tunnel start. I'll check what exactly disappears with them before deciding.
+
