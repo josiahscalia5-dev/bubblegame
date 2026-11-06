@@ -1,0 +1,1613 @@
+{
+ "accepted": {
+  "1 tunnel rings": {
+   "lpips": 0.372,
+   "ssim": 0.367,
+   "dE": 0.6,
+   "hist": 0.245,
+   "game": {
+    "sat_blue": 32.4,
+    "white": 4.9,
+    "pink": 4.7,
+    "lavender": 19.0
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.445,
+   "ssim": 0.359,
+   "dE": 4.1,
+   "hist": 0.31,
+   "game": {
+    "sat_blue": 4.9,
+    "white": 22.9,
+    "pink": 1.4,
+    "lavender": 14.3
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.656,
+   "ssim": 0.375,
+   "dE": 2.1,
+   "hist": 0.381,
+   "game": {
+    "sat_blue": 18.7,
+    "white": 15.1,
+    "pink": 5.8,
+    "lavender": 0.6
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.593,
+   "ssim": 0.131,
+   "dE": 8.9,
+   "hist": 0.628,
+   "game": {
+    "sat_blue": 11.3,
+    "white": 11.2,
+    "pink": 30.2,
+    "lavender": 0.3
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.698,
+    "game": {
+     "top": 0.693,
+     "base": 0.852,
+     "width": 0.475,
+     "area": 3.88
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.455,
+   "ssim": 0.167,
+   "dE": 1.9,
+   "hist": 0.415,
+   "game": {
+    "sat_blue": 16.2,
+    "white": 12.2,
+    "pink": 19.2,
+    "lavender": 16.5
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.557,
+   "ssim": 0.308,
+   "dE": 5.9,
+   "hist": 0.417,
+   "game": {
+    "sat_blue": 10.4,
+    "white": 16.4,
+    "pink": 0.9,
+    "lavender": 6.6
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.442,
+   "ssim": 0.387,
+   "dE": 3.7,
+   "hist": 0.333,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 4.2,
+    "pink": 2.4,
+    "lavender": 20.8
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.281,
+   "ssim": 0.184,
+   "dE": 2.0,
+   "hist": 0.327,
+   "game": {
+    "sat_blue": 23.5,
+    "white": 11.4,
+    "pink": 9.6,
+    "lavender": 8.7
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.259,
+   "ssim": 0.206,
+   "dE": 1.8,
+   "hist": 0.326,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 10.7,
+    "pink": 8.5,
+    "lavender": 8.1
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "R6": {
+  "1 tunnel rings": {
+   "lpips": 0.372,
+   "ssim": 0.367,
+   "dE": 0.6,
+   "hist": 0.245,
+   "game": {
+    "sat_blue": 32.4,
+    "white": 4.9,
+    "pink": 4.7,
+    "lavender": 19.0
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.445,
+   "ssim": 0.359,
+   "dE": 4.1,
+   "hist": 0.31,
+   "game": {
+    "sat_blue": 4.9,
+    "white": 22.8,
+    "pink": 1.4,
+    "lavender": 14.3
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.559,
+   "ssim": 0.372,
+   "dE": 3.3,
+   "hist": 0.272,
+   "game": {
+    "sat_blue": 16.4,
+    "white": 19.8,
+    "pink": 5.5,
+    "lavender": 3.7
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.555,
+   "ssim": 0.113,
+   "dE": 8.9,
+   "hist": 0.585,
+   "game": {
+    "sat_blue": 11.6,
+    "white": 13.6,
+    "pink": 27.7,
+    "lavender": 4.2
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.658,
+    "game": {
+     "top": 0.693,
+     "base": 0.844,
+     "width": 0.475,
+     "area": 3.53
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.455,
+   "ssim": 0.167,
+   "dE": 1.9,
+   "hist": 0.415,
+   "game": {
+    "sat_blue": 16.2,
+    "white": 12.2,
+    "pink": 19.2,
+    "lavender": 16.5
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.558,
+   "ssim": 0.31,
+   "dE": 6.3,
+   "hist": 0.411,
+   "game": {
+    "sat_blue": 10.8,
+    "white": 16.5,
+    "pink": 0.9,
+    "lavender": 6.9
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.442,
+   "ssim": 0.387,
+   "dE": 3.7,
+   "hist": 0.333,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 4.2,
+    "pink": 2.4,
+    "lavender": 20.8
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.264,
+   "ssim": 0.196,
+   "dE": 1.9,
+   "hist": 0.321,
+   "game": {
+    "sat_blue": 23.2,
+    "white": 12.3,
+    "pink": 9.2,
+    "lavender": 9.5
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.244,
+   "ssim": 0.222,
+   "dE": 1.6,
+   "hist": 0.319,
+   "game": {
+    "sat_blue": 23.5,
+    "white": 11.3,
+    "pink": 8.2,
+    "lavender": 8.7
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "R7": {
+  "1 tunnel rings": {
+   "lpips": 0.372,
+   "ssim": 0.367,
+   "dE": 0.6,
+   "hist": 0.245,
+   "game": {
+    "sat_blue": 32.4,
+    "white": 4.9,
+    "pink": 4.7,
+    "lavender": 19.0
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.445,
+   "ssim": 0.359,
+   "dE": 4.1,
+   "hist": 0.31,
+   "game": {
+    "sat_blue": 4.9,
+    "white": 22.8,
+    "pink": 1.4,
+    "lavender": 14.3
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.558,
+   "ssim": 0.371,
+   "dE": 3.3,
+   "hist": 0.272,
+   "game": {
+    "sat_blue": 16.4,
+    "white": 20.0,
+    "pink": 5.5,
+    "lavender": 3.7
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.555,
+   "ssim": 0.111,
+   "dE": 8.9,
+   "hist": 0.585,
+   "game": {
+    "sat_blue": 11.7,
+    "white": 13.7,
+    "pink": 27.7,
+    "lavender": 4.2
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.658,
+    "game": {
+     "top": 0.693,
+     "base": 0.844,
+     "width": 0.475,
+     "area": 3.53
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.455,
+   "ssim": 0.167,
+   "dE": 1.9,
+   "hist": 0.415,
+   "game": {
+    "sat_blue": 16.2,
+    "white": 12.2,
+    "pink": 19.2,
+    "lavender": 16.5
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.558,
+   "ssim": 0.31,
+   "dE": 6.3,
+   "hist": 0.412,
+   "game": {
+    "sat_blue": 10.8,
+    "white": 16.5,
+    "pink": 0.9,
+    "lavender": 6.8
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.442,
+   "ssim": 0.387,
+   "dE": 3.7,
+   "hist": 0.333,
+   "game": {
+    "sat_blue": 23.6,
+    "white": 4.2,
+    "pink": 2.4,
+    "lavender": 20.8
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.263,
+   "ssim": 0.196,
+   "dE": 1.9,
+   "hist": 0.321,
+   "game": {
+    "sat_blue": 23.2,
+    "white": 12.3,
+    "pink": 9.2,
+    "lavender": 9.5
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.244,
+   "ssim": 0.222,
+   "dE": 1.6,
+   "hist": 0.319,
+   "game": {
+    "sat_blue": 23.5,
+    "white": 11.4,
+    "pink": 8.2,
+    "lavender": 8.7
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "accepted_T1": {
+  "1 tunnel rings": {
+   "lpips": 0.595,
+   "ssim": 0.2,
+   "dE": 4.4,
+   "hist": 0.443,
+   "game": {
+    "sat_blue": 38.8,
+    "white": 10.0,
+    "pink": 9.9,
+    "lavender": 6.1
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.714,
+   "ssim": 0.315,
+   "dE": 6.1,
+   "hist": 0.466,
+   "game": {
+    "sat_blue": 0.1,
+    "white": 45.0,
+    "pink": 0.0,
+    "lavender": 6.0
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.679,
+   "ssim": 0.376,
+   "dE": 8.5,
+   "hist": 0.411,
+   "game": {
+    "sat_blue": 10.0,
+    "white": 25.5,
+    "pink": 13.3,
+    "lavender": 0.4
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.626,
+   "ssim": 0.162,
+   "dE": 9.1,
+   "hist": 0.62,
+   "game": {
+    "sat_blue": 9.9,
+    "white": 13.1,
+    "pink": 30.2,
+    "lavender": 1.0
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.555,
+    "game": {
+     "top": 0.722,
+     "base": 0.874,
+     "width": 0.477,
+     "area": 3.51
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.557,
+   "ssim": 0.135,
+   "dE": 10.7,
+   "hist": 0.533,
+   "game": {
+    "sat_blue": 34.9,
+    "white": 7.3,
+    "pink": 13.5,
+    "lavender": 5.7
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.791,
+   "ssim": 0.263,
+   "dE": 19.7,
+   "hist": 0.549,
+   "game": {
+    "sat_blue": 12.1,
+    "white": 22.0,
+    "pink": 17.9,
+    "lavender": 6.5
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.558,
+   "ssim": 0.284,
+   "dE": 12.3,
+   "hist": 0.487,
+   "game": {
+    "sat_blue": 50.9,
+    "white": 4.4,
+    "pink": 2.7,
+    "lavender": 6.0
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.443,
+   "ssim": 0.079,
+   "dE": 4.7,
+   "hist": 0.39,
+   "game": {
+    "sat_blue": 27.0,
+    "white": 15.5,
+    "pink": 13.0,
+    "lavender": 4.0
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.392,
+   "ssim": 0.104,
+   "dE": 4.6,
+   "hist": 0.359,
+   "game": {
+    "sat_blue": 29.7,
+    "white": 14.3,
+    "pink": 11.3,
+    "lavender": 3.6
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "R6_T1": {
+  "1 tunnel rings": {
+   "lpips": 0.595,
+   "ssim": 0.2,
+   "dE": 4.4,
+   "hist": 0.443,
+   "game": {
+    "sat_blue": 38.8,
+    "white": 10.0,
+    "pink": 9.9,
+    "lavender": 6.1
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.714,
+   "ssim": 0.315,
+   "dE": 6.1,
+   "hist": 0.466,
+   "game": {
+    "sat_blue": 0.1,
+    "white": 45.0,
+    "pink": 0.0,
+    "lavender": 6.0
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.649,
+   "ssim": 0.386,
+   "dE": 9.3,
+   "hist": 0.327,
+   "game": {
+    "sat_blue": 9.8,
+    "white": 28.8,
+    "pink": 11.3,
+    "lavender": 4.4
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.6,
+   "ssim": 0.15,
+   "dE": 9.1,
+   "hist": 0.587,
+   "game": {
+    "sat_blue": 9.5,
+    "white": 13.5,
+    "pink": 27.4,
+    "lavender": 5.1
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.56,
+    "game": {
+     "top": 0.722,
+     "base": 0.867,
+     "width": 0.476,
+     "area": 3.17
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.557,
+   "ssim": 0.135,
+   "dE": 10.7,
+   "hist": 0.533,
+   "game": {
+    "sat_blue": 34.9,
+    "white": 7.3,
+    "pink": 13.5,
+    "lavender": 5.7
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.791,
+   "ssim": 0.262,
+   "dE": 19.7,
+   "hist": 0.548,
+   "game": {
+    "sat_blue": 12.0,
+    "white": 22.4,
+    "pink": 17.8,
+    "lavender": 6.5
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.558,
+   "ssim": 0.284,
+   "dE": 12.3,
+   "hist": 0.487,
+   "game": {
+    "sat_blue": 50.9,
+    "white": 4.4,
+    "pink": 2.7,
+    "lavender": 6.0
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.438,
+   "ssim": 0.078,
+   "dE": 4.7,
+   "hist": 0.383,
+   "game": {
+    "sat_blue": 26.9,
+    "white": 16.1,
+    "pink": 12.4,
+    "lavender": 4.7
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.387,
+   "ssim": 0.107,
+   "dE": 4.6,
+   "hist": 0.35,
+   "game": {
+    "sat_blue": 30.0,
+    "white": 14.8,
+    "pink": 10.8,
+    "lavender": 4.2
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "R7_T1": {
+  "1 tunnel rings": {
+   "lpips": 0.595,
+   "ssim": 0.198,
+   "dE": 4.4,
+   "hist": 0.444,
+   "game": {
+    "sat_blue": 39.2,
+    "white": 10.0,
+    "pink": 9.9,
+    "lavender": 5.9
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.71,
+   "ssim": 0.306,
+   "dE": 6.3,
+   "hist": 0.461,
+   "game": {
+    "sat_blue": 0.3,
+    "white": 39.9,
+    "pink": 0.0,
+    "lavender": 6.9
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.641,
+   "ssim": 0.358,
+   "dE": 7.7,
+   "hist": 0.297,
+   "game": {
+    "sat_blue": 12.7,
+    "white": 20.6,
+    "pink": 11.6,
+    "lavender": 5.2
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.597,
+   "ssim": 0.147,
+   "dE": 9.2,
+   "hist": 0.592,
+   "game": {
+    "sat_blue": 10.0,
+    "white": 11.8,
+    "pink": 27.8,
+    "lavender": 5.0
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.559,
+    "game": {
+     "top": 0.722,
+     "base": 0.867,
+     "width": 0.476,
+     "area": 3.18
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.56,
+   "ssim": 0.138,
+   "dE": 10.7,
+   "hist": 0.542,
+   "game": {
+    "sat_blue": 35.6,
+    "white": 7.1,
+    "pink": 14.2,
+    "lavender": 5.4
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.8,
+   "ssim": 0.26,
+   "dE": 20.2,
+   "hist": 0.55,
+   "game": {
+    "sat_blue": 13.8,
+    "white": 20.3,
+    "pink": 19.1,
+    "lavender": 5.7
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.558,
+   "ssim": 0.284,
+   "dE": 12.4,
+   "hist": 0.489,
+   "game": {
+    "sat_blue": 51.2,
+    "white": 4.3,
+    "pink": 2.7,
+    "lavender": 5.8
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.438,
+   "ssim": 0.084,
+   "dE": 4.9,
+   "hist": 0.386,
+   "game": {
+    "sat_blue": 28.0,
+    "white": 14.0,
+    "pink": 12.9,
+    "lavender": 4.5
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.387,
+   "ssim": 0.113,
+   "dE": 4.7,
+   "hist": 0.353,
+   "game": {
+    "sat_blue": 31.0,
+    "white": 13.1,
+    "pink": 11.2,
+    "lavender": 4.1
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "accepted_T2": {
+  "1 tunnel rings": {
+   "lpips": 0.586,
+   "ssim": 0.149,
+   "dE": 8.9,
+   "hist": 0.454,
+   "game": {
+    "sat_blue": 48.3,
+    "white": 5.8,
+    "pink": 2.6,
+    "lavender": 4.4
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.715,
+   "ssim": 0.263,
+   "dE": 11.3,
+   "hist": 0.393,
+   "game": {
+    "sat_blue": 10.9,
+    "white": 32.8,
+    "pink": 0.9,
+    "lavender": 10.1
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.647,
+   "ssim": 0.398,
+   "dE": 7.0,
+   "hist": 0.37,
+   "game": {
+    "sat_blue": 9.5,
+    "white": 27.4,
+    "pink": 9.1,
+    "lavender": 1.0
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.642,
+   "ssim": 0.131,
+   "dE": 8.6,
+   "hist": 0.66,
+   "game": {
+    "sat_blue": 6.2,
+    "white": 13.4,
+    "pink": 30.5,
+    "lavender": 1.1
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.351,
+    "game": {
+     "top": 0.721,
+     "base": 0.869,
+     "width": 0.224,
+     "area": 1.77
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.584,
+   "ssim": 0.133,
+   "dE": 15.5,
+   "hist": 0.552,
+   "game": {
+    "sat_blue": 44.7,
+    "white": 6.5,
+    "pink": 6.8,
+    "lavender": 4.4
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.814,
+   "ssim": 0.258,
+   "dE": 17.8,
+   "hist": 0.555,
+   "game": {
+    "sat_blue": 9.9,
+    "white": 23.3,
+    "pink": 21.2,
+    "lavender": 7.3
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.561,
+   "ssim": 0.265,
+   "dE": 11.3,
+   "hist": 0.496,
+   "game": {
+    "sat_blue": 46.6,
+    "white": 6.1,
+    "pink": 2.6,
+    "lavender": 4.1
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.461,
+   "ssim": 0.03,
+   "dE": 3.9,
+   "hist": 0.383,
+   "game": {
+    "sat_blue": 28.7,
+    "white": 14.7,
+    "pink": 10.8,
+    "lavender": 3.7
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.403,
+   "ssim": 0.068,
+   "dE": 3.9,
+   "hist": 0.355,
+   "game": {
+    "sat_blue": 31.9,
+    "white": 13.8,
+    "pink": 9.5,
+    "lavender": 3.4
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "R6_T2": {
+  "1 tunnel rings": {
+   "lpips": 0.586,
+   "ssim": 0.149,
+   "dE": 8.9,
+   "hist": 0.454,
+   "game": {
+    "sat_blue": 48.3,
+    "white": 5.8,
+    "pink": 2.6,
+    "lavender": 4.4
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.715,
+   "ssim": 0.263,
+   "dE": 11.3,
+   "hist": 0.392,
+   "game": {
+    "sat_blue": 10.9,
+    "white": 32.8,
+    "pink": 0.9,
+    "lavender": 10.1
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.602,
+   "ssim": 0.425,
+   "dE": 7.5,
+   "hist": 0.304,
+   "game": {
+    "sat_blue": 9.5,
+    "white": 29.1,
+    "pink": 7.9,
+    "lavender": 6.4
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.621,
+   "ssim": 0.149,
+   "dE": 8.1,
+   "hist": 0.634,
+   "game": {
+    "sat_blue": 5.3,
+    "white": 14.5,
+    "pink": 28.5,
+    "lavender": 6.1
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.335,
+    "game": {
+     "top": 0.721,
+     "base": 0.86,
+     "width": 0.223,
+     "area": 1.6
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.584,
+   "ssim": 0.133,
+   "dE": 15.5,
+   "hist": 0.552,
+   "game": {
+    "sat_blue": 44.7,
+    "white": 6.5,
+    "pink": 6.8,
+    "lavender": 4.4
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.811,
+   "ssim": 0.262,
+   "dE": 17.8,
+   "hist": 0.55,
+   "game": {
+    "sat_blue": 10.0,
+    "white": 23.4,
+    "pink": 20.8,
+    "lavender": 7.4
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.561,
+   "ssim": 0.265,
+   "dE": 11.3,
+   "hist": 0.496,
+   "game": {
+    "sat_blue": 46.6,
+    "white": 6.1,
+    "pink": 2.6,
+    "lavender": 4.1
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.457,
+   "ssim": 0.046,
+   "dE": 3.9,
+   "hist": 0.376,
+   "game": {
+    "sat_blue": 28.7,
+    "white": 15.0,
+    "pink": 10.4,
+    "lavender": 4.7
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.405,
+   "ssim": 0.085,
+   "dE": 4.0,
+   "hist": 0.348,
+   "game": {
+    "sat_blue": 32.1,
+    "white": 14.1,
+    "pink": 9.2,
+    "lavender": 4.1
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ },
+ "R7_T2": {
+  "1 tunnel rings": {
+   "lpips": 0.586,
+   "ssim": 0.15,
+   "dE": 8.9,
+   "hist": 0.456,
+   "game": {
+    "sat_blue": 48.9,
+    "white": 5.5,
+    "pink": 2.6,
+    "lavender": 3.8
+   },
+   "original": {
+    "sat_blue": 33.5,
+    "white": 6.2,
+    "pink": 3.2,
+    "lavender": 13.8
+   }
+  },
+  "1 far centre": {
+   "lpips": 0.712,
+   "ssim": 0.251,
+   "dE": 11.5,
+   "hist": 0.41,
+   "game": {
+    "sat_blue": 11.2,
+    "white": 31.0,
+    "pink": 1.1,
+    "lavender": 9.0
+   },
+   "original": {
+    "sat_blue": 7.5,
+    "white": 19.5,
+    "pink": 1.1,
+    "lavender": 9.8
+   }
+  },
+  "2 foreground water": {
+   "lpips": 0.586,
+   "ssim": 0.398,
+   "dE": 4.6,
+   "hist": 0.268,
+   "game": {
+    "sat_blue": 13.8,
+    "white": 19.4,
+    "pink": 8.2,
+    "lavender": 5.7
+   },
+   "original": {
+    "sat_blue": 24.6,
+    "white": 16.8,
+    "pink": 4.1,
+    "lavender": 6.5
+   }
+  },
+  "3 character + contact": {
+   "lpips": 0.643,
+   "ssim": 0.137,
+   "dE": 8.1,
+   "hist": 0.632,
+   "game": {
+    "sat_blue": 7.1,
+    "white": 10.1,
+    "pink": 35.1,
+    "lavender": 4.7
+   },
+   "original": {
+    "sat_blue": 4.4,
+    "white": 18.1,
+    "pink": 36.0,
+    "lavender": 6.5
+   },
+   "silhouette": {
+    "iou": 0.668,
+    "game": {
+     "top": 0.704,
+     "base": 0.86,
+     "width": 0.477,
+     "area": 3.91
+    },
+    "original": {
+     "top": 0.7,
+     "base": 0.859,
+     "width": 0.458,
+     "area": 4.4
+    }
+   }
+  },
+  "4 brushes": {
+   "lpips": 0.584,
+   "ssim": 0.131,
+   "dE": 15.8,
+   "hist": 0.567,
+   "game": {
+    "sat_blue": 45.0,
+    "white": 5.1,
+    "pink": 7.2,
+    "lavender": 3.8
+   },
+   "original": {
+    "sat_blue": 15.2,
+    "white": 10.7,
+    "pink": 14.5,
+    "lavender": 17.4
+   }
+  },
+  "5 coins gem sock": {
+   "lpips": 0.827,
+   "ssim": 0.235,
+   "dE": 18.5,
+   "hist": 0.548,
+   "game": {
+    "sat_blue": 13.7,
+    "white": 19.2,
+    "pink": 23.3,
+    "lavender": 5.0
+   },
+   "original": {
+    "sat_blue": 9.8,
+    "white": 18.8,
+    "pink": 1.2,
+    "lavender": 7.7
+   }
+  },
+  "6 bubbles + upper light": {
+   "lpips": 0.561,
+   "ssim": 0.265,
+   "dE": 11.3,
+   "hist": 0.498,
+   "game": {
+    "sat_blue": 46.7,
+    "white": 6.0,
+    "pink": 2.6,
+    "lavender": 4.0
+   },
+   "original": {
+    "sat_blue": 23.8,
+    "white": 7.7,
+    "pink": 3.2,
+    "lavender": 18.1
+   }
+  },
+  "6 colour balance (whole)": {
+   "lpips": 0.46,
+   "ssim": 0.047,
+   "dE": 3.6,
+   "hist": 0.386,
+   "game": {
+    "sat_blue": 30.4,
+    "white": 12.0,
+    "pink": 11.9,
+    "lavender": 3.8
+   },
+   "original": {
+    "sat_blue": 24.0,
+    "white": 12.5,
+    "pink": 9.5,
+    "lavender": 10.0
+   }
+  },
+  "7 composition (whole)": {
+   "lpips": 0.407,
+   "ssim": 0.087,
+   "dE": 3.8,
+   "hist": 0.357,
+   "game": {
+    "sat_blue": 34.0,
+    "white": 11.4,
+    "pink": 10.4,
+    "lavender": 3.3
+   },
+   "original": {
+    "sat_blue": 27.3,
+    "white": 11.2,
+    "pink": 8.6,
+    "lavender": 9.0
+   }
+  }
+ }
+}
