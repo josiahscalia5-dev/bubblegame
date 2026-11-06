@@ -34,3 +34,7 @@ Now measuring the floor ahead without the sock (x 0.30–0.62, where neither soc
 
 I'll test candidate floor maps in a scratch copy of the game first, so nothing in the repository changes until one works:
 
+While the four captures run, looking at what the floor's own white dashes are:
+
+The machine has 4 cores and both agents are rendering too, so four browsers at once timed out. Re-running the captures one after another:
+

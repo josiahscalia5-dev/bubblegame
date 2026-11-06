@@ -1,0 +1,156 @@
+diff --git a/WebDemo/src/tunnel_r8_splash.js b/WebDemo/src/tunnel_r8_splash.js
+index 7d6a949..57b974a 100644
+--- a/WebDemo/src/tunnel_r8_splash.js
++++ b/WebDemo/src/tunnel_r8_splash.js
+@@ -27,7 +27,7 @@ import * as THREE from 'three';
+ import { HERO_WATER } from './tunnel_r7_hero_water.js';
+ import { MATCH_ON, MATCH, deepMerge } from './tunnel_r9_match.js';   // ?s3=match: Round 9's settings
+ import { FOCUS_ON } from './tunnel_r9_focus.js';   // ?s3=focus: the seventh session's froth lobes are `match` only
+-import { matchLumpGLSL, matchLumpDecl } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (imported here so its settings reach MATCH before the merges below)
++import { matchLumpGLSL, matchLumpDecl, focusFrontBubbles } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (imported here so its settings reach MATCH before the merges below)
+ 
+ const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
+ const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+@@ -310,6 +310,7 @@ ${SPLASH.debug === 1 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : ''}
+   }
+   const meshes = ['spCurls', 'spLumps'].map((nm) => scene.getObjectByName(nm));
+   updaters.push(() => { for (const m of meshes) m.visible = swell.visible; });   // with the swell
++  if (FOCUS_ON) report.frontBubbles = focusFrontBubbles({ scene, updaters, time, crest, frame, swell });   // ?s3=focus (pass 4c): big clear bubbles round her base
+   return report;
+ }
+ 
+diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
+index 1687fad..3b49eff 100644
+--- a/WebDemo/src/tunnel_r9_match_water.js
++++ b/WebDemo/src/tunnel_r9_match_water.js
+@@ -389,7 +389,7 @@ export function matchFloorApply() {
+ // not d: near the crest d is nearly flat and clamped to 0 by the running waves, so any cut in d took the whole top away.)
+ // Inside matchSwellGLSL (mwCol, mwA, mwFront, mwSpec, s, vS, fl, uTime).
+ function focusSwellGLSL() {
+-  const F = MATCH_WATER.face, T = F.teeth, R = F.rim, L = F.lace, B = F.rings, S = F.spark, Wt = F.water;
++  const F = MATCH_WATER.face, T = F.teeth, R = F.rim, L = F.lace, B = F.rings, S = F.spark, Wt = F.water, D = F.dots;
+   return /* glsl */ `    {   // ?s3=focus: broken, sparkling splash water at her base (tunnel_r9_match_water.js focusSwellGLSL)
+       // 1. the spiky crest: keep t below a jagged limit (tips at about the natural silhouette, valleys down the outer face)
+       float fsT = vS.y, fsPd = (0.5 - fsT) * 1.9;
+@@ -443,15 +443,38 @@ function focusSwellGLSL() {
+       float fsSh = lqHash(fsSi + 41.0);
+       float fsSpark = step(${f4(1 - S.share)}, fsSh) * (1.0 - smoothstep(${f4(S.dot[0])}, ${f4(S.dot[1])}, length(fract(fsSq) - 0.5 - (vec2(lqHash(fsSi + 43.0), lqHash(fsSi + 47.0)) - 0.5) * 0.5)))
+         * (0.55 + 0.45 * sin(uTime * 6.0 + fsSh * 40.0)) * (1.0 - smoothstep(0.05, ${f4(S.reach)}, fsE));
+-      // 6. light-cyan, vivid-blue and deeper-blue currents running down the face
++${D ? `      // 7. (pass 4c, the user's step 3 review: "FRONT SPLASH: approved, bright bubbly blue-white spray") clusters of small
++      //    round white spray specks, two sizes, gathered in patches that run down the face with vivid blue water between
++      //    them (cl), thinning further down (reach: m from the cut edge [full to, none from])
++      float fsDc = smoothstep(${f4(D.band[0])}, ${f4(D.band[1])}, texture2D(uLqTex, vec2(s * ${f4(D.band[2])} + fl * 0.12 + 0.37, fsPd * ${f4(D.band[2] * 1.3)} - fl * 0.5 + 0.61)).b);
++      float fsDreach = 1.0 - smoothstep(${f4(D.reach[0])}, ${f4(D.reach[1])}, fsE);
++      float fsDots = 0.0;
++      for (int j = 0; j < 2; j++) {
++        float fsDk = j == 0 ? ${f4(D.cell)} : ${f4(D.cell * D.fine[0])};
++        vec2 fsDq = vec2(s * fsDk + fl * 0.3 + float(j) * 0.43, fsPd * fsDk - fl * ${f4(D.flow)} + float(j) * 0.71), fsDi = floor(fsDq);
++        float fsDh = lqHash(fsDi + 51.0 + float(j) * 13.0);
++        float fsDr = mix(${f4(D.r[0])}, ${f4(D.r[1])}, pow(lqHash(fsDi + 53.0 + float(j) * 13.0), 1.6));
++        vec2 fsDo = fract(fsDq) - 0.5 - (vec2(lqHash(fsDi + 57.0), lqHash(fsDi + 59.0)) - 0.5) * (1.0 - 2.0 * fsDr);
++        float fsDs = (j == 0 ? ${f4(D.share)} : ${f4(D.fine[1])}) * mix(${f4(D.floor)}, 1.0, fsDc) * fsDreach;
++        fsDots = max(fsDots, step(1.0 - fsDs, fsDh) * (1.0 - smoothstep(fsDr * 0.7, fsDr, length(fsDo))));
++      }
++` : ''}${B.film ? `      // (pass 4c) the bubbles' soap film: a thin rainbow sheen round the rim (lilac, cyan, gold), a faint lilac body inside
++      vec3 fsFilm = 0.62 + 0.38 * cos(6.2832 * (atan(fsBo.y, fsBo.x) / 6.2832 + vec3(0.0, 0.33, 0.67) + lqHash(fsBi + 61.0)));
++      float fsBin = step(${f4(1 - B.share)}, lqHash(fsBi + 23.0)) * (1.0 - smoothstep(0.05, ${f4(B.reach)}, fsE)) * (1.0 - smoothstep(fsBr - 0.06, fsBr - 0.02, fsBl));
++` : ''}      // 6. light-cyan, vivid-blue and deeper-blue currents running down the face
+       float fsC = texture2D(uLqTex, vec2(s * ${f4(Wt.scale[0])} + fl * 0.08, fsPd * ${f4(Wt.scale[1])} - fl * 0.45)).b;
+-      vec3 fsW = mix(${v3s(Wt.deep)}, ${v3s(Wt.mid)}, smoothstep(0.3, 0.55, fsC));
+-      fsW = mix(fsW, ${v3s(Wt.light)}, smoothstep(0.55, 0.8, fsC));
+-      mwCol = mix(mwCol, mtUndisplay(fsW), ${f4(Wt.amount)});
++      vec3 fsW = mix(${v3s(Wt.deep)}, ${v3s(Wt.mid)}, smoothstep(${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[0])}, ${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[1])}, fsC));
++      fsW = mix(fsW, ${v3s(Wt.light)}, smoothstep(${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[2])}, ${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[3])}, fsC));
++${D && D.blue ? `      fsW = mix(fsW, ${v3s(D.blue[0])}, fsDc * fsDreach * ${f4(D.blue[1])});   // (pass 4c) vivid blue under the spray patches, so the white reads crisp on it
++` : ''}      mwCol = mix(mwCol, mtUndisplay(fsW), ${f4(Wt.amount)});
+       mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
+-      mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
+-      mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
+-      mwA *= fsKeep;
++${B.film ? `      mwCol = mix(mwCol, mtUndisplay(${v3s(B.body || '#c8c6f4')}), fsBin * ${f4(B.bodyK || 0)});
++      mwCol = mix(mwCol, mtUndisplay(mix(${v3s(B.col)}, fsFilm, ${f4(B.film)})), clamp(fsRing * ${f4(B.amount)}, 0.0, 1.0));
++      mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(fsRingGl, 0.0, 1.0));
++` : `      mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
++`}      mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
++${D ? `      mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(fsDots * ${f4(D.amount)}, 0.0, 1.0));
++` : ''}      mwA *= fsKeep;
+ ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
+         mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
+       }
+@@ -882,5 +905,75 @@ ${FOCUS_ON ? `  if (vKind > 0.5) {   // a white streak: a tapered, slightly bent
+   return { count: B.count, flecks: FL.count, drawCalls: 1, triangles: n * 2, avoiding: objs.length };
+ }
+ 
++// ?s3=focus only (pass 4c, the user's step 3 review, 23:40 UTC: "restore the beautiful blue-white splash detail and
++// transparent bubbles around the character"): the original's big clear soap bubbles round her base, several large ones at
++// the lower left and right, sitting on the water in front of her and up her sides (MATCH_WATER.frontBubbles, from
++// tunnel_r9_focus.js). Riding in the character's frame with the swell (its frame uniforms and lift), like the waterline
++// bubbles; drawn see-through: a crisp white rim, a thin soap-film rainbow round it (lilac, cyan, gold), a faint lilac-blue
++// body, a bright window highlight up-left and a small one down-right. Built from the splash bank (tunnel_r8_splash.js);
++// one instanced draw call; private random numbers only (its own sequence).
++export function focusFrontBubbles({ scene, updaters, time, crest, frame, swell }) {
++  const P = MATCH_WATER.frontBubbles;
++  if (!FOCUS_ON || !P) return null;
++  // (three.js draws each new object's, geometry's and material's UUID from Math.random: built with a private sequence in its
++  // place, so the game's seeded Math.random sequence is exactly as it was without these bubbles)
++  const gameRandom = Math.random;
++  Math.random = mulberryMw(0x77e1d);
++  try { return buildFrontBubbles({ scene, updaters, time, crest, frame, swell, P }); } finally { Math.random = gameRandom; }
++}
++function buildFrontBubbles({ scene, updaters, time, crest, frame, swell, P }) {
++  const rnd = mulberryMw(0x4cb0b), list = [];
++  // [phi (degrees on the crest, + is screen left), out (m along the crest's outward normal), drop (m below the crest), radius (m)]
++  for (const [phi, out, drop, r] of P.list) {
++    const c = crest(phi);
++    list.push([c.x + c.nx * out, c.h - drop, c.u + c.nu * out, r, rnd()]);
++  }
++  const n = list.length, sphere = new THREE.SphereGeometry(1, 28, 18), g = new THREE.InstancedBufferGeometry();
++  g.index = sphere.index; g.setAttribute('position', sphere.attributes.position); g.setAttribute('normal', sphere.attributes.normal);
++  const a1 = new Float32Array(n * 4), a2 = new Float32Array(n);
++  list.forEach((b, i) => { a1.set(b.slice(0, 4), i * 4); a2[i] = b[4]; });
++  g.setAttribute('aBub', new THREE.InstancedBufferAttribute(a1, 4)); g.setAttribute('aSeed', new THREE.InstancedBufferAttribute(a2, 1)); g.instanceCount = n;
++  const K = P.look;
++  const mat = new THREE.ShaderMaterial({ uniforms: { ...frame, uTime: time }, transparent: true, depthWrite: false,
++    blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
++    vertexShader: /* glsl */ `
++attribute vec4 aBub; attribute float aSeed;
++uniform vec3 uC, uR, uU, uT; uniform float uTime, uFade, uAir;
++varying vec3 vN, vV, vL; varying float vSeed, vA;
++void main() {
++  vSeed = aSeed;
++  vec3 c = uC + uR * aBub.x + uU * (aBub.y * uFade + 0.01 * sin(uTime * 2.6 + aSeed * 30.0)) + uT * aBub.z;
++  vec3 w = c + (uR * position.x + uU * position.y + uT * position.z) * aBub.w * (1.0 + 0.03 * sin(uTime * 4.2 + aSeed * 9.0));
++  vN = normalize(uR * normal.x + uU * normal.y + uT * normal.z); vV = normalize(cameraPosition - w);
++  vL = vec3(dot(vN, uR), dot(vN, uU), dot(vN, uT));   // the normal in the character's frame (right, up, forward)
++  vA = uFade * (1.0 - 0.5 * uAir);
++  gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
++}`,
++    fragmentShader: /* glsl */ `
++uniform float uTime; varying vec3 vN, vV, vL; varying float vSeed, vA;
++void main() {
++  vec3 N = normalize(vN), V = normalize(vV);
++  float f = 1.0 - abs(dot(N, V));
++  float rim = smoothstep(${f4(K.rimAt[0])}, ${f4(K.rimAt[1])}, f);                 // the crisp outline
++  float film = smoothstep(${f4(K.filmAt[0])}, ${f4(K.filmAt[1])}, f) * (1.0 - rim * 0.6);   // the soap film's rainbow just inside it
++  vec3 rb = 0.6 + 0.4 * cos(6.2832 * (f * 1.6 + vL.y * 0.35 + atan(vL.x, vL.y) * 0.08 + vec3(0.0, 0.33, 0.67) + vSeed + uTime * 0.04));
++  vec3 col = ${lin3(K.body)} * ${f4(K.bodyA)};
++  float a = ${f4(K.bodyA)};
++  col = mix(col, mix(${lin3(K.film)}, rb, ${f4(K.rainbow)}), film * ${f4(K.filmA)}); a = max(a, film * ${f4(K.filmA)});
++  col = mix(col, ${lin3(K.rim)}, rim * ${f4(K.rimA)}); a = max(a, rim * ${f4(K.rimA)});
++  // the window highlights: a bright soft patch up-left, a small one down-right (the screen's left is the frame's +right)
++  float hi1 = 1.0 - smoothstep(${f4(K.hi[0])}, ${f4(K.hi[1])}, length(vec2(vL.x, vL.y) - vec2(0.42, 0.5)));
++  float hi2 = 1.0 - smoothstep(${f4(K.hi[0] * 0.5)}, ${f4(K.hi[1] * 0.5)}, length(vec2(vL.x, vL.y) - vec2(-0.5, -0.45)));
++  float hl = clamp(hi1 + hi2 * 0.7, 0.0, 1.0);
++  col = mix(col, vec3(1.0), hl * ${f4(K.hiA)}); a = max(a, hl * ${f4(K.hiA)});
++  a = clamp(a, 0.0, 1.0) * vA;
++  gl_FragColor = vec4(col * vA, a);
++}` });
++  const mesh = new THREE.Mesh(g, mat); mesh.name = 'focusFrontBubbles'; mesh.frustumCulled = false; mesh.renderOrder = 8;
++  scene.add(mesh);
++  updaters.push(() => { mesh.visible = swell.visible; });
++  return { count: n, drawCalls: 1, triangles: n * sphere.index.count / 3 };
++}
++
+ // a private random sequence (never the game's seeded Math.random)
+ function mulberryMw(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

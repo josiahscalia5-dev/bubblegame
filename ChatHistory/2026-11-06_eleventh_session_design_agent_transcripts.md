@@ -88,8 +88,16 @@ Good, playwright resolves. Now build.
 - 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_probe.png
 - 00:17 `Bash`: Read object mask and lowfreq functions
 - 00:17 `Bash`: Generate ring map variants with sheets
+- 00:21 `Bash`: Measure wrapped-back ring maps vs original
+- 00:21 `Bash`: Crop wrapped-back maps for visual comparison
+- 00:21 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_maps.png
+- 00:21 `Bash`: Larger crop of original vs a15w map
+- 00:21 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_maps2.png
+- 00:22 `Bash`: Generate sharper ring map variants
+- 00:22 `Bash`: Crop and measure sharper map variants
+- 00:22 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_maps3.png
 
-_50 tool steps._
+_58 tool steps._
 
 ---
 
@@ -177,5 +185,45 @@ I'll start by reading the required files in order.
 - 00:17 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/probe_sheet.py
 - 00:17 `Bash`: Make the hide probe sheet
 - 00:17 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/probe1/sheet.png
+- 00:18 `Bash`: List the precision kit crops
+- 00:18 `Read`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/06_FOREGROUND_GLOSSY_SPLASHES_BUB
+- 00:18 `Read`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/03_PINK_SWIMMER_BLUE_WATER_WAVES.
+- 00:18 `Bash`: Find waterline bubbles in liquid file
+- 00:18 `Bash`: Read liquid file header, settings and bubbles
+- 00:18 `Bash`: Read splash file header and exports
+- 00:18 `Bash`: Read buildSplashBank
+**Agent** (00:19 UTC):
 
-_51 tool steps._
+Now let me add the pass 4c code to `focusSwellGLSL` (gated by new setting keys, all inside the existing `FOCUS_ON`-only function).
+
+- 00:19 `Read`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:19 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:19 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:19 `Bash`: Rebuild with the new gated code
+- 00:20 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/batch.sh
+- 00:20 `Bash`: Capture three tune candidates at 3.0 s
+- 00:20 `Bash`: Find swell ellipse settings and uC
+- 00:21 `Bash`: Locate report plumbing and function list
+**Agent** (00:21 UTC):
+
+Now I'll add the front-bubble mesh (focus only) to the water file.
+
+- 00:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:21 `Bash`: Find hook points in splash file
+- 00:21 `Bash`: Hook front bubbles into the splash bank under FOCUS_ON
+- 00:21 `Bash`: Confirm three.js UUIDs use Math.random
+**Agent** (00:22 UTC):
+
+Confirmed: new three.js objects draw UUIDs from `Math.random`. I'll build the bubble mesh with a private generator swapped in so the game's seeded sequence is untouched.
+
+- 00:22 `Bash`: Wrap bubble creation in a private random and rebuild
+- 00:22 `Bash`: Check batch progress
+- 00:22 `Bash`: Check batch progress
+- 00:22 `Bash`: Side by side of original, base, cA, cB
+- 00:22 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b1/cmpAB.png
+- 00:22 `Bash`: Zoom on front region for cA, cB
+- 00:22 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b1/zoomA.png
+- 00:22 `Bash`: Measure base, cA, cB foreground
+
+_79 tool steps._
