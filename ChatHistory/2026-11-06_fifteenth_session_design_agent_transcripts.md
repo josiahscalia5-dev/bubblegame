@@ -132,5 +132,30 @@ Files are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f
 - `band_r6.png` (the water band: original, R6 at start, +1 s and +2 s)
 - `abl_T1/` and `abl2_T1/` (the raw layer-removal frames)
 
+**Lead → agent** (19:09 UTC):
 
-_44 tool steps._
+The coordinator sent a message while you were working:
+R7 is ready for your strict review: `?s3=intunnel,water7` = R6 + ONLY your recommended correction, the game's spray droplets (game.js `Particles`, `fx`) drawn no bigger than 12 px of the 1536 px canvas height (a uMaxPx cap in the drop vertex shader, scaled with the canvas, so on a Pixel 7 it is the same share of the screen). Emitters, counts, sizes, alpha, colours and random numbers are untouched, so the same droplets fly in the same places. Before choosing 12 px I tested caps at the +1 s and +2 s frames: 12 px white 23.4 / 23.5 % and saturated 17.4 / 17.5 %; 20 px 26.3 / 26.7 and 16.3 / 15.9; 30 px 30.0 / 30.6 and 15.0 / 14.5; no droplets at all 21.4 / 21.4 and 18.6 / 18.8 (original 18.6 white, 19.6 saturated). I did NOT change the rim colour or alpha (one change at a time).
+
+Proofs: R7's +1 s and +2 s frames are 0 differing pixels from the 12 px cap test; R6 and the accepted build are 0 pixels changed on the new bundle; no console errors.
+
+Files in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/49_water_r7/`:
+- `sheets/04_FULLRES_moving_1s.jpg` and `04_FULLRES_moving_2s.jpg` (ORIGINAL | ACCEPTED | R6 | R7, full resolution, at +1 s and +2 s);
+- `sheets/03_moving_closeup_x1.4.jpg` (ORIGINAL | R6 +1 s | R7 +1 s | R6 +2 s | R7 +2 s);
+- `sheets/01_FULLRES_ORIGINAL_ACCEPTED_R6_NEWR7.jpg`, `02_closeup_water_x1.6.jpg` (the start view; there only the small resting bubbles change);
+- frames `final/{start,T1.0,T2.0}/base_page.png`.
+Band (page frames): +1 s R6 31.1 / 12.1 / 9.6 / 32.3 / 9.0 → R7 31.8 / 15.6 / 12.6 / 22.2 / 10.4 (icy / saturated / mid / white / lavender). Start: R6 white 19.2, R7 19.5.
+
+Please answer concisely:
+1. Verdict, R7 vs R6 and R7 vs accepted, moving (+1 s, +2 s) and at the start: "clearly closer", "slightly closer", "about the same" or "worse".
+2. Do the remaining flecks read like the original's small white sparkles and splashes, or as noise? Any regression (e.g. lost splash energy, the water looking empty, the sparkle stars)?
+3. Should R7 replace R6 as THE candidate to present to the user?
+4. The next single correction for the water round her, ranked (your earlier list: the contact edge, the flat ragged cut instead of the original's scalloped lavender domes with white rims; softness; the remaining paleness).
+
+Address this before completing your current task.
+
+- 19:09 `Bash`: List R7 evidence folder
+- 19:09 `Bash`: Build R7 comparison crops and white shares
+- 19:09 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/r7_band.png
+
+_47 tool steps._

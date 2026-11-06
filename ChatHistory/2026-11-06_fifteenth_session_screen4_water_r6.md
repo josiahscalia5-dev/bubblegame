@@ -40,3 +40,13 @@ Candidates for the white blobs: two point-sprite systems (`Points`, 2200 and 700
 
 While that runs, looking at the art director's close-up of the contact under her:
 
+While R7 renders (about 15 minutes), I'm writing R6's README with the diagnosis.
+
+48_water_r6 has grown to 171 MB of raw ablation PNGs, too much for the repository. Checking what the autosave already committed before I slim it down:
+
+Down from 171 MB to 33 MB. Next, preparing R7's moving videos and gameplay tests to run once its frames are done. Checking how the recorder and the gameplay checks are invoked:
+
+At full size the difference shows at the bottom: R7's water beside her is blue with fine flecks where R6 has white piles. Sending R7 to the same art director, who already knows R6:
+
+While the art director reviews and the videos record, committing the tested R6 step, the diagnosis and R7's code and proofs with a named commit:
+
