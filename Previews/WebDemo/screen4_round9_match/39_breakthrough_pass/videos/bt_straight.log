@@ -1,0 +1,13 @@
+page.screenshot: Target page, context or browser has been closed
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/scripts/record_phone.cjs:80:36 {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ]
+}

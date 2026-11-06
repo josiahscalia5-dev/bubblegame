@@ -945,8 +945,8 @@ export function matchCollectibles({ coins, gems, socks }) {
     }
     report.sockPose = MATCH.sockPose;
   }
-  // ?s3=bt: the socks' purple recoloured as the original's (BT.sock, tunnel_s4_bt.js): the toe blue, the cuff stripes lilac,
-  // the white knit unchanged. Their one shared material is changed in place (no new object, so no UUID from the game's seeded
+  // ?s3=bt: the socks' purple toe recoloured as the original's blue (BT.sock, tunnel_s4_bt.js; the cuff's stripes only with
+  // BT.sock.stripe set), the white knit unchanged. Their one shared material is changed in place (no new object, so no UUID from the game's seeded
   // Math.random); the texture is a scattered atlas, so the toe and the cuff are told apart by the model's own height (the
   // decoded mesh: purple at the bottom, the toe, and at the top, the cuff, white between)
   if (BT_ON && socks[0] && socks[0].turn) {
@@ -956,7 +956,8 @@ export function matchCollectibles({ coins, gems, socks }) {
 vec3 btSock(vec3 c) {   // ?s3=bt: purple texels to the original's toe blue / cuff lilac, keeping their light and dark
   vec3 q = pow(max(c, 0.0), vec3(1.0 / 2.2));
   float pur = smoothstep(0.06, 0.2, q.b - q.g) * smoothstep(0.0, 0.08, q.r - q.g);
-  vec3 tgt = mix(${lin3(K.toe)}, ${lin3(K.stripe)}, smoothstep(-0.12, 0.12, vBtH - ${f4(K.split)}));
+  float up = smoothstep(-0.12, 0.12, vBtH - ${f4(K.split)});   // 0 the toe, 1 the cuff
+${K.stripe ? `  vec3 tgt = mix(${lin3(K.toe)}, ${lin3(K.stripe)}, up);` : `  vec3 tgt = ${lin3(K.toe)}; pur *= 1.0 - up;   // (the cuff's stripes kept: BT.sock.stripe null)`}
   float l = dot(c, vec3(0.2126, 0.7152, 0.0722)) / max(dot(tgt, vec3(0.2126, 0.7152, 0.0722)), 1e-3);
   return mix(c, tgt * clamp(l / 0.55, 0.35, 1.6), pur * ${f4(K.amount)});
 }

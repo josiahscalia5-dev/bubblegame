@@ -225,7 +225,7 @@ const MW_TUNE = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window
 if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r9_focus.js)
   restoreSettings(MATCH_WATER, PRE_FOCUSED_PASS.MATCH_WATER);   // (`match`'s water as it was at 9a95c06, tunnel_r9_focus_base.js)
   deepMerge(MATCH_WATER, FOCUS.water);
-  if (BT_ON) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js)
+  if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
   // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam. lift: the whole crest
@@ -453,7 +453,7 @@ function focusSwellGLSL() {
       mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
       mwCol = mix(mwCol, mtUndisplay(${v3s(B.col)}), clamp(fsRing * ${f4(B.amount)} + fsRingGl, 0.0, 1.0));
       mwCol = mix(mwCol, mtUndisplay(${v3s(F.white)}), clamp(max(max(fsRim * ${f4(R.amount)}, fsLace * ${f4(L.amount)}), fsSpark * ${f4(S.amount)}), 0.0, 1.0));
-${BT_ON ? btFrothGLSL() : ''}      mwA *= fsKeep;
+${BT_ON && MATCH_WATER.btFroth ? btFrothGLSL() : ''}      mwA *= fsKeep;
 ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stripes red / green, pd in 0.05 m steps of blue)
         mwCol = vec3(mod(floor(s / 0.05), 2.0), 1.0 - mod(floor(s / 0.05), 2.0), mod(floor(fsPd / 0.05), 2.0)); mwA = fsKeep;
       }
@@ -465,8 +465,8 @@ ${F.debug === 2 ? `      {   // (debug: the face's coordinates, s in 0.05 m stri
 ` : ''}    }
 `;
 }
-// ?s3=bt (the breakthrough pass, tunnel_s4_bt.js): bubbly white-aqua froth on the swell's face, in place of focus's white comma
-// arcs. The original's white there is froth made of small round bubbles in irregular patches, thickest along the crest,
+// ?s3=bt (the breakthrough pass, tunnel_s4_bt.js), only with MATCH_WATER.btFroth set (candidate 2's, REJECTED: none now):
+// bubbly white-aqua froth on the swell's face, in place of focus's white comma arcs. The original's white there is froth made of small round bubbles in irregular patches, thickest along the crest,
 // with vivid blue water between; noise patches (two octaves of the liquid's noise, flowing down the face), white inside
 // with small round light-sky bubble holes and a glint, aqua at the patch edge, and a white glint on top. (Inside
 // focusSwellGLSL's block: s, fsPd, fsE, fl, fsSpark and mwCol are its.)

@@ -222,3 +222,85 @@ Each of those three files is clean on its own (0 pixels). My earlier variant B h
 
 Rebuilt. Re-running the proof: plain `focus` on the new bundle, and the neutralised `bt`, both against the true step 8 frames at 3.0 and 4.0 s.
 
+While those run, writing the evidence README:
+
+The README is drafted; test results go in once the jobs finish. Waiting for the art director's review and the test jobs.
+
+While the tests run, here's the new comparison: ORIGINAL | CURRENT (step 8) | NEW (`bt`, candidate 2), same seed, camera and moment, plus close-ups.
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/sheets/01_original_current_new_T3.0.jpg, Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/sheets/02_closeup_water_T3.0.jpg, Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/sheets/04_moving_current_vs_new_T4_T5_T6.jpg]_
+
+Sent you the three comparison sheets. The 41-frame identity test, the gameplay checks, the two videos and the art director's review are still running. I'll report when they finish, and I won't start another feature first.
+
+---
+
+### Automatic check · 2026-11-06 12:30 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 12:30 UTC
+
+Saving the evidence so far, clearly labelled as a candidate under review with tests still running:
+
+I saved and pushed the work so far as commit `817e6f5` (GitHub has it). It's labelled as a candidate under your review: `focus`, the normal game and the older switches are unchanged.
+
+The fixes you asked about are done:
+- `?s3=bt` now loads the correct step 8 tunnel.
+- The duplicate `hole` setting is fixed.
+- A third bug is fixed: some of my lines landed in the wrong place in the brush code and moved plain `focus`'s hazard brushes.
+
+**Proof it keeps everything from step 8:** `bt` with my changes set to zero renders exactly the same as step 8, 0 differing pixels at 3.0 s and 4.0 s. Plain `focus` on the new build also matches step 8 exactly.
+
+The new comparison I sent you (same seed, camera and moment) changes only these four things:
+- **Her water contact:** she's a rounded pink dome sitting on top of bubbly white-aqua froth. Step 8 had her cut off flat by a pale water sheet with white commas.
+- **Brushes:** from 4 s they stay at the sides and the tunnel shows between them. Where they knock you is unchanged.
+- **Sock:** it has the original's blue toe and lilac stripes.
+- **Everything else** (the tunnel, cobalt rings, coins, gem, mission banner) is identical to step 8.
+
+One honest caveat: she now shows a little taller than in the original (her pink ends at 0.867 of the screen height against the original's 0.833).
+
+Still running: the 41-frame check on the normal game and older switches, the gameplay checks, the straight and steering videos, and the art director's review. If they show the candidate isn't clearly closer to your original, I'll revert it. I'm not starting another feature until you've seen the results.
+
+---
+
+### You · 2026-11-06 12:31 UTC
+
+Claude, I have seen your ORIGINAL | CURRENT STEP 8 | NEW CANDIDATE 1 comparison.
+
+I want to be extremely clear: the third image is MUCH WORSE than Step 8 and does not resemble my approved original.
+
+I understand you discovered that "?s3=bt" initially loaded the wrong tunnel, and that you found the duplicate "hole" setting. Please finish correcting those technical errors.
+
+BUT DO NOT ACCEPT OR COMMIT THE VISUAL CANDIDATE UNTIL YOU VERIFY THAT IT ACTUALLY USES ALL THE COMPLETED STEP 8 IMPROVEMENTS.
+
+After fixing the test mode, show me a NEW comparison at the exact same camera, seed, character position and gameplay moment.
+
+I specifically want to see whether the pink character is more clearly ON TOP of the blue water, without losing the correct original tunnel, cobalt-blue rings, brushes, coins, gem, sock, and mission interface.
+
+If the new candidate does not look clearly closer to my ORIGINAL APPROVED SCREEN, REVERT IT.
+
+I want real improvement, not a different-looking game.
+
+Do not proceed to another feature until the new visual comparison proves the correction actually works.
+
+---
+
+### Claude · 2026-11-06 12:31 UTC
+
+This looks like the same message as before, and I've already done what it asks. Two points on committing, to be clear:
+- The verification came first: `bt` with my changes set to zero is pixel-identical to step 8 (0 differing pixels).
+- The commits so far are your standing 5-minute autosave plus one evidence save. The candidate sits only behind the test switch `?s3=bt` and isn't accepted into `focus` or the normal game.
+
+Checking the remaining tests now:
+
+The gameplay check under `bt` has finished. Comparing it with step 8's report:
+
+The second check is still running (empty output so far). Checking that the identity and video jobs are still alive:
+
+Reverting the water and stripe changes in the settings. The rejected values are kept only as a not-applied record:
+
+That video notice is just the job I stopped on purpose. Rendering the reduced candidate (step 8 + brushes + blue toe) at 3, 4, 5 and 6 s, plus plain `focus` again to re-prove it's untouched:
+
