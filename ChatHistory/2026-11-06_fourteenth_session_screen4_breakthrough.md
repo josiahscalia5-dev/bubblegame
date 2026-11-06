@@ -1067,3 +1067,13 @@ The identity test is running on bundle `9d7f484f`, and the art director is revie
 Stop hook feedback:
 [command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
 
+---
+
+### Claude · 2026-11-06 14:07 UTC
+
+While those run, updating the records: the domes README with both verdicts, the in-tunnel README with the fixes, and the hand-off and `CLAUDE.md`.
+
+Now the in-tunnel README, the hand-off and `CLAUDE.md`:
+
+I committed and pushed the records as `cb69eac`. The identity test, the gameplay checks and the straight and steering videos are still running on the final `?s3=intunnel` build; I'll report when they finish.
+
