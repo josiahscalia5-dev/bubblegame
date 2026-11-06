@@ -27,6 +27,7 @@
 // Private random numbers only (the game's seeded Math.random is untouched).
 import * as THREE from 'three';
 import { NOISE } from './shaders.js';
+import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
 
 export const HERO_WATER = {
   // where the swell rises out of the water, in metres from the drum's mouth (the hero moment is at -3.27)
@@ -80,6 +81,10 @@ const D2R = Math.PI / 180;
 export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterSheets, drumSheet, fogAnchor }) {
   const TS = L.tunnelStart, TE = L.tunnelEnd, report = {};
   const half = Math.sqrt(Math.max(0.01, L.tunnelRadius * L.tunnelRadius - W.AXIS_H * W.AXIS_H));
+  // ?s3=intunnel,swim: the swell as a tight contact collar round her body (tunnel_s4_swim.js SWIM.collar), set here, after
+  // every module's settings and before the swell and the layers that follow its crest (splash bank, plumes) are built
+  if (SWIM_ON) { const Cc = SWIM.collar; Object.assign(HERO_WATER.swell, { ax: Cc.ax, au: Cc.au, out: Cc.out, inner: Cc.inner, dip: Cc.dip,
+    line: Cc.line.slice(), mounds: Cc.mounds.map((m) => m.slice()), swerve: Cc.swerve, air: Cc.air, land: Cc.land }); }
   // the character's frame at the water under it and its movement, worked out once a frame (first) for everything below
   const S = { k: 0, F: { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, C: new THREE.Vector3(),
     lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: mascot.visSpeed || 0, xMax: 3, wasAir: false };   // (visSpeed: ?s3=intunnel only)
@@ -88,7 +93,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     const z = mascot.z;
     S.k = THREE.MathUtils.smoothstep(z, TS + HERO_WATER.fade[0], TS + HERO_WATER.fade[1]);
     const e = (tau) => 1 - Math.exp(-dt / tau);
-    S.lagX += (mascot.x - S.lagX) * e(0.07);
+    S.lagX += (mascot.x - S.lagX) * e(SWIM_ON ? SWIM.collar.lag : 0.07);
     S.lat += ((mascot.xv || 0) - S.lat) * e(0.12);
     S.speed += ((mascot.visSpeed ?? (mascot.speed || 0)) - S.speed) * e(0.3);   // (?s3=intunnel: visSpeed at the start; undefined elsewhere)
     const ride = W.baseHeight(L, S.lagX, z);
@@ -100,7 +105,9 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     // the swell sits on the water under the character and sinks with it when it dips after a landing (so it never swallows
     // it); in the air it stays on the water
     const dip = mascot.air ? 0 : Math.min(0, mascot.yAbs - W.FLOAT_H - ride);
-    S.base += (ride + dip - S.base) * e(0.05);
+    // (?s3=...,swim: the collar sits on the water surface under her, not on her bob, so she bobs in it)
+    if (SWIM_ON) S.base += (W.surface(L, S.lagX, z, time.value) - S.base) * e(0.05);
+    else S.base += (ride + dip - S.base) * e(0.05);
     TR.frame(z, S.F); TR.map(S.lagX, S.base, z, S.C);
     const inside = THREE.MathUtils.clamp((z - TS) * 0.5, 0, 1) * THREE.MathUtils.clamp((TE - z) * 0.5, 0, 1);
     S.xMax = 3 + (half - 0.22 - 3) * inside;   // inside the drum: off the walls

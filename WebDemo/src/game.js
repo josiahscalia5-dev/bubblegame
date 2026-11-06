@@ -2,6 +2,7 @@
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
 import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
+import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1029,6 +1030,13 @@ function updateMascot(dt) {
   m.tilt.rotation.set(-m.pitch + (m.air ? -m.flip : 0) + Math.sin(t * 3.4) * 0.03 * (running ? 1 : 0.4), m.yaw + m.spin + lookYaw, m.lean + Math.sin(t * 2.2) * 0.04, 'YXZ');
   const st = 1 + m.sq * 0.25;
   m.squash.scale.set(1 / Math.sqrt(st), st, 1 / Math.sqrt(st));
+  if (SWIM_ON) {   // ?s3=intunnel,swim: her swim rhythm, drawn on her model only (her state m.yAbs, lanes and jumps untouched)
+    m.swimK = m.air ? 0 : Math.min(1, (m.swimK ?? 1) + dt / SWIM.motion.settle);
+    const sp = swimPose(t, m.swimK, m.air);
+    m.squash.position.y = sp.dy;
+    m.tilt.rotation.x += sp.pitch; m.tilt.rotation.z += sp.roll;
+    m.squash.scale.y *= sp.sy;
+  }
 
   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
   // side spray while changing lanes, gentle ripples while bobbing at the start.
@@ -1639,7 +1647,7 @@ async function main() {
   } else if (vKind < 0.5) {`);
       fx.points.material.needsUpdate = true;
     }
-    if (WATER7_ON) {   // ?s3=intunnel,water7 (R7): every spray droplet drawn no bigger than a small fleck (tunnel_s4_bt.js WATER7)
+    if (WATER7_ON || SWIM_ON) {   // ?s3=intunnel,water7 (R7) and ?s3=intunnel,swim: every spray droplet drawn no bigger than a small fleck (tunnel_s4_bt.js WATER7)
       fx.u.uMaxPx = { value: renderer.domElement.height * WATER7.maxPx };
       const dm = fx.points.material;
       dm.vertexShader = dm.vertexShader.replace('uniform float uScale;', 'uniform float uScale, uMaxPx;')

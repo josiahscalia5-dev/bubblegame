@@ -100,6 +100,11 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
+// ?s3=intunnel,swim (the sixteenth session's single candidate after the engineering diagnosis,
+// Previews/WebDemo/screen4_round9_match/52_diagnosis/README.md): the water touching her becomes part of the moving water
+// (a tight contact collar shaded as flowing water, the floor's wake made visible) and a calmer swim rhythm on her model.
+// Settings and shader code in tunnel_s4_swim.js; NOT on water2-9 (their pinned picture is the diagnosed cause).
+export const SWIM_ON = BT_ON && LIST.includes('swim');
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
 export const WATER8_ON = BT_ON && (LIST.includes('water8') || WATER9_ON);   // (R8, below: water7 with the face's edge in front of her following the original's outline)

@@ -39,6 +39,7 @@ import { DOMES_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,domes: bubble do
 import { buildBaseDomes } from './tunnel_s4_domes.js';
 import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swell's face takes the original's water
 import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
+import { swimWakeDecl, swimWakeGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the floor's wake coloured ('' without the switch)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -525,7 +526,7 @@ function floorFragment(GL, TS, haz) {
   return /* glsl */ `
 ${GL}
 ${MATCH_ON ? matchWallGLSL() + matchFloorDecl() : ''}uniform vec4 uTunnel; uniform vec3 uLqPlayer; uniform vec4 uLqMove;
-${haz ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;' : ''}
+${swimWakeDecl(RIPPLES)}${haz ? 'uniform vec4 uS4Haz[6]; uniform vec3 uS4Warn;' : ''}
 varying vec3 vW, vN, vTrk, vR, vT; varying float vA;
 void main() {
   vec2 xu = vTrk.xz;
@@ -555,7 +556,7 @@ void main() {
   // far away the floor joins the whirlpool's rings round the centre
   ${rampDecl()}
   col = mix(col, mix(bd, cr, lqBand(k) * 0.5), smoothstep(0.14, 0.04, rw) * 0.8);
-${MATCH_ON ? matchFloorApply() : ''}  float s4Haz = 0.0;
+${MATCH_ON ? matchFloorApply() : ''}${swimWakeGLSL(RIPPLES)}  float s4Haz = 0.0;
 ${haz ? `  if (inDrum > 0.0) {   // a brush's warning, as on the drum's own water (tunnel_s4.js): a pulsing pink glow down its lane
     float haz = 0.0;
     for (int i = 0; i < 6; i++) {

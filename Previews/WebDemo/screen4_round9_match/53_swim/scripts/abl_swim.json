@@ -1,0 +1,4 @@
+[
+ {"label": "soloSwell", "solo": ["^heroSwell$"], "post": {"bloom": false}},
+ {"label": "noSwell", "hide": ["^heroSwell$"]}
+]
