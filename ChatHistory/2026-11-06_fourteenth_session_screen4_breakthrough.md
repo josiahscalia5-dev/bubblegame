@@ -1656,3 +1656,7 @@ The comment at lines 126–128 gives the wrong reason the patch fill "changed no
 
 Built (bundle `9ed16b27`). Now R4's frames: the start view, then +1.0 s and +2.0 s moving. After that, the proofs that the accepted build and R3c are unchanged on this bundle:
 
+The bundle was rebuilt while the identity check was still running, so that run would mix two bundles. I'll stop it and rerun it once on the final bundle.
+
+Registration verified. R5's face, as drawn, matches the original's own water at NCC 0.954 with no shift; R4 needed a 22 px shift to reach that. Now the visual comparison:
+

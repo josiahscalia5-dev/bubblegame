@@ -1,0 +1,10 @@
+objects 244 canvas [ 768, 1536 ] post [{"type":"Zc","enabled":true},{"type":"n","enabled":true},{"type":"$o","enabled":true},{"type":"Jc","enabled":true}]
+swell_solo_nobloom hidden 243
+swell_solo_nobloom_nograde hidden 243
+no_overlays_nobloom hidden 16
+no_overlays hidden 16
+no_bloom hidden 0
+no_grade hidden 0
+no_swell hidden 1
+behind_swell hidden 17
+no console errors or warnings

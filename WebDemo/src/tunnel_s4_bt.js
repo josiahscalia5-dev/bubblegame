@@ -100,7 +100,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // frame (derive_water_map.py's Y0); flow / wobble: the slow animated distortion (texture units per s; how far); amount: how
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
-export const WATER4_ON = BT_ON && LIST.includes('water4');   // (R4, below: water3 with the exemplar-filled texture)
+export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
+export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON);   // (R4, below: water3 with the exemplar-filled texture)
 export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
 export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
 // (candidate c1: wobble 0.025, amount 0.92, the face's spiky crest, white rim pieces and sparkle unchanged; the art director:
@@ -147,6 +148,16 @@ if (WATER3_ON) {
 // Mapping, material, distortion, bloom and everything else as R3c.
 export const WATER4 = { file: 'foreground_water_original_r4.png' };
 if (WATER4_ON) WATER2.file = WATER4.file;
+// ?s3=intunnel,water5 (R5): R4 with ONLY the texture's registration corrected. The texture is pinned to her water frame
+// through the start camera captured at the first render (t 3.017 s). Her swell frame bobs against the camera, so at the
+// compared start frame (t 3.517 s) the face shows the original's water 22 px HIGHER than the original draws it: the
+// original's foam lobes, which sit at her base, are drawn partly behind her body. Measured on the face alone (no bloom, no
+// grade) against the original's own pixels: NCC 0.203 as drawn, 0.954 with the water 22 px lower; the probe of the two
+// matrices gives 15.6-16.9 px for points at the water's level (46_water_r4/diag/). shift: the texture read that many px
+// (of the 1536 frame) higher, so its water lands 22 px lower, where the original has it at that frame. It still rides with
+// her water (the same frame, so it bobs with the swell as before).
+export const WATER5 = { shift: -22 };
+if (WATER5_ON) WATER2.shift = WATER5.shift;
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

@@ -54,7 +54,8 @@ export function water2GLSL() {
         vec3 bwO = vW - uC;
         vec4 bwC = uBwRef * vec4(dot(bwO, uR), dot(bwO, uU), dot(bwO, uT), 1.0);
         vec2 bwS = vec2(bwC.x / bwC.w * 0.5 + 0.5, 0.5 - bwC.y / bwC.w * 0.5);       // the start view's screen place (y down)
-        vec2 bwQ = vec2(bwS.x, (bwS.y - ${f4(P.y0)}) / ${f4(1 - P.y0)});
+${P.shift ? `        bwS.y += ${f4(P.shift / 1536)};   // (R5) the registration: the original's water where the original has it at the start frame
+` : ''}        vec2 bwQ = vec2(bwS.x, (bwS.y - ${f4(P.y0)}) / ${f4(1 - P.y0)});
         vec2 bwD = vec2(texture2D(uLqTex, bwQ * vec2(2.1, 1.3) + vec2(0.13, -uTime * ${f4(P.flow)})).b,
                         texture2D(uLqTex, bwQ * vec2(1.7, 2.3) + vec2(0.57, -uTime * ${f4(P.flow * 1.3)})).b) - 0.5;
         vec3 bwT = texture2D(uBwTex, clamp(bwQ + bwD * ${f4(P.wobble)}, vec2(0.002), vec2(0.998))).rgb;
