@@ -158,8 +158,9 @@ Now the match water and water2, and the swim file.
 - 22:37 `Grep`: samples|antialias|EffectComposer\(|WebGLRenderTarget\(
 - 22:38 `Grep`: INTUNNEL\.(speed|u|clock)
 - 22:39 `Bash`: Check WATER constant, TR.map and uHeroTravel source
+- 22:41 `Bash`: Fit an absorption/scatter model to the original's heap colours
 
-_44 tool steps._
+_45 tool steps._
 
 ---
 
@@ -237,8 +238,29 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 22:39 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
 - 22:39 `Bash`
 - 22:39 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/floor2.png
+- 22:40 `Grep`: MATCH_UNIFORMS|matchFloorDecl\(\)|matchWallGLSL\(\)|focusFloorGLSL\(\)
+- 22:40 `Grep`: export function heroGrade|function heroGrade
+- 22:40 `Bash`
+- 22:40 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_s4.js
+- 22:40 `Bash`
+- 22:40 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r5.js
+- 22:41 `Bash`
+- 22:41 `Bash`
+- 22:41 `Bash`
+- 22:41 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/top.png
+- 22:41 `Bash`
+- 22:42 `Bash`
+- 22:42 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/heroWalls.frag
+- 22:42 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/colourmap.png
+- 22:42 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/heroWalls.frag
+- 22:43 `Bash`
+- 22:43 `Bash`
+- 22:44 `Bash`
+- 22:44 `Bash`
+- 22:44 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/relief_sim.png
+- 22:45 `Bash`
 
-_54 tool steps._
+_75 tool steps._
 
 ---
 
@@ -296,5 +318,14 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 22:40 `Bash`: Check whether later modules replace swell shaders
 - 22:40 `Bash`: Trace which updaters array the tunnel uses
 - 22:40 `Bash`: Confirm updaters come from opening
+- 22:40 `Bash`: Simulate candidate springs against trace data
+- 22:41 `Bash`: Look up her model dimensions in frame dump
+- 22:41 `Bash`: Print frame dump top-level keys
+- 22:41 `Bash`: Tune springs and evaluate vertical motion smoothing
+- 22:42 `Bash`: Rerun tuning simulation with fixes
+- 22:43 `Bash`: Find other per-frame readers of her state
+- 22:43 `Bash`: Inspect round6 motion state feeding water
+- 22:43 `Bash`: Check which water objects are hidden in later rounds
+- 22:43 `Bash`: Check test advance stepping
 
-_42 tool steps._
+_51 tool steps._
