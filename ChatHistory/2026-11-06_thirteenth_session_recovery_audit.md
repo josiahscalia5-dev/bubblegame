@@ -171,3 +171,34 @@ About 11% of the frame changed. I expected only the far bend to change, so let m
 
 Your brief also asks for the 3.0 s checkpoint at Pixel 7 resolution. Let me find how step 4 captured its Pixel 7 frame:
 
+The two log files landed inside the `WebDemo` folders (the subshell had changed directory). I'll move them into the evidence folder so no stray file gets autosaved into the game folder:
+
+The autosave had already committed that stray log once; its next round will record the deletion, and nothing else in `WebDemo` changed. Now the Pixel 7 sheet at 3.0 s:
+
+At phone size the difference is subtle but goes the same way: the pink-lavender smear above the centre is replaced by concentric blue rings. Step 6 itself is done; now the moving-game evidence.
+
+Seven of ten moving shots are done. Meanwhile I'll save the step 6 code changes as a patch in the evidence folder, so the autosave backs up the unfinished work too:
+
+Both runs are going in the background. Meanwhile I'll draft the step 6 record with the results so far:
+
+I'm waiting on the two background jobs: the moving-game captures and the 41-frame regression run. I'll continue as soon as they report.
+
+---
+
+### Automatic check · 2026-11-06 04:34 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 04:34 UTC
+
+Committing the work in progress now (evidence and draft record only; the game in the main tree is still step 4):
+
+Saved and verified on GitHub (`4b56f18`). The monitor flagged an error in the Pixel 7 motion log; checking it:
+
+At 7.7 s, where the path bends hardest, step 6 (right) shows the original's concentric vortex: rings and the rainbow arc around the far centre. Step 4 (left) shows broad bands smeared across the upper walls. At 5.5 s almost nothing changes (2% of pixels), and the bright pale disc at the centre that your kit points at is still there in both. It has a different cause, so I'll list it as remaining rather than call it fixed.
+
+The last moving shots, the step 4 re-check and the 41-frame regression run are still in the background; I'll pick up as soon as they report.
+
