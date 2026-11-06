@@ -706,3 +706,66 @@ I'll check that the project and the latest step 7 frames are still reachable her
 
 This environment's session log is a fresh copy of our whole conversation. I'll restart the autosave from it, writing to a new chat file so the history already saved isn't overwritten:
 
+The autosave is running (pid 198). My check looked in the wrong place: the same shell-scoping slip as before, where the variable lived inside the background job. Reading the log directly:
+
+I've gone through all three zones. I'll save these comparisons in the repository and send them to you, so you can check each item on the list against the picture:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/36_difference_list/01_top_interface_and_rim_original_left_game_right.jpg, Previews/WebDemo/screen4_round9_match/36_difference_list/02_tunnel_original_left_game_right.jpg, Previews/WebDemo/screen4_round9_match/36_difference_list/03_character_water_buttons_original_left_game_right.jpg]_
+
+Here is everything I can see that differs from your original approved screen, top to bottom. I've sent three images, your original on the left and your game now on the right at the same moment, so you can check each item. The list is also saved in your repository (`36_difference_list`, commit `7b19d77`).
+
+**Top: counters, mission banner, frame**
+1. Behind the counters, your original has a glossy pale-lavender and blue shell. Your game shows a flat purple ceiling with a dark seam and two small orange lights.
+2. Your counters are light glossy blue; the game's are dark navy, with heavier numbers and a bigger "+". Your coin icon is a plain shiny coin; the game's has a paw print.
+3. Your mission banner is light, glassy aqua; the game's is strong royal blue. Your banner's sock icon is pink and white; the game's is purple and white.
+4. Your pause button is pale glossy blue; the game's is bright blue with a white outline.
+5. Under the banner, your original has a thick warm gold rim and a blue glass ball at the right edge. The game's rim is thinner and more lavender, and the glass ball is missing.
+
+**The tunnel**
+6. Your tunnel is deep cobalt and turquoise; the game's is lighter and more pastel.
+7. Your original has many chunky, irregular white splashes and droplets along every ring. The game has only a few small white dashes.
+8. Your rainbow arc is broad and bright; the game's is paler and see-through.
+9. Your far centre glows warm gold, with crisp rings and tiny far objects (a small creature and a striped sock). The game's centre is paler and milky.
+10. Your tunnel has bright, sparkling, glowing depth; the game's looks softer and flatter.
+11. Your big bubble at the upper right has a pink-purple creature inside, and your bubbles have shiny white highlights. The game's bubbles are empty clear outlines.
+
+**Coins, gem, sock, brushes**
+12. Your coins are warmer orange-gold with a soft glow and thick rims; the game's are flatter yellow. Your far centre coin has no paw print.
+13. The gem is nearly the same; the game's is a little smaller and darker.
+14. Your sock is white with lavender stripes and a blue toe, lying sideways, with closed happy eyes. The game's has purple stripes and a purple toe, stands more upright, and has open eyes.
+15. Your brushes are soft and yarn-like, cut off at the screen edges. The game's are spikier, and from about 5.5 s into the ride they grow large and fill the middle of the screen.
+
+**Character and water**
+16. The pink character: yours is rounder, deeper pink and glowing; the game's is lighter and spikier. You postponed this one.
+17. Round her, your original has big frothy waves with bright white crests and lavender-tinted foam bubbles. The game has flatter blue water with white streaks.
+18. Your floor ahead is bright turquoise with foam lines and sparkles; the game's is paler.
+
+**Bottom buttons**
+19. Your power-up buttons are square and cut off by the bottom edge, with no words, showing a bubble-blaster gun and a yellow propeller. The game's are whole rounded buttons, sitting higher, labelled "Bubble Blast" and "Turbo Spin", with a different blaster icon.
+
+**While playing**
+20. The first 3.5 seconds show the washing machine from outside. You chose option C: shorten this later.
+21. Entering the tunnel, the drum front is lavender.
+22. At 5.5 s a pale disc appears at the far centre.
+23. Driving straight, coins stack up in front of her.
+
+**What's already planned and what's new:** items 6–10, 14, 15, 17, 18, 21 and 22 are already in your plan. Items 1–5, 11, 12 and 19 are new findings; the bubble creature (11) and the button shape and labels (19) are the most noticeable of them. I'd add the interface and button items after the tunnel steps, unless you want them sooner.
+
+One housekeeping note: the 5-minute autosave had stopped when this session restarted around 09:30 UTC. I restarted it, and saving to GitHub is working again (latest `7b19d77`).
+
+Shall I start the white splash step next, as planned, once you're happy with the bubbles?
+
+---
+
+### You · 2026-11-06 09:55 UTC
+
+how can I make it exactly like my approved mobile app screen original? What do I have to do to fix it? Fix all the errors or what's not you told me what is missing or I don't have that's not making And can you help me to get it where my screen's almost exactly like my original approved screen?
+
+---
+
+### Claude · 2026-11-06 09:55 UTC
+
+Short answer: you don't have to do the fixing yourself; I do the work in the game, step by step. A live 3D game can't be pixel-for-pixel identical to a painted picture, but almost every item on the list can be brought much closer. Your part is a few decisions and one missing file, which I'll list at the end.
+
+I'll work through your order, starting with the white splashes. Each fix is separate, tested and reversible, with a picture and a commit for each. First, a check that the tools survived the environment restart:
+
