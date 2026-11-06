@@ -287,3 +287,67 @@ Files are in `Previews/WebDemo/screen4_round9_match/49_water_r7/sheets/`:
 - 03_closeup_water_moving_T1.0.jpg
 - 03_closeup_water_moving_T2.0.jpg
 
+---
+
+### Automatic notice · 2026-11-06 19:49 UTC
+
+_Background command "Wait for the gameplay tests and compare their reports" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 19:49 UTC
+
+Without `NEWPAGE=1` the tool behaves exactly as before. I'll queue the reruns to start, alone and one after another, as soon as the recording finishes.
+
+The power-up test also timed out on the accepted `?s3=intunnel`, at the same step, so the problem is the test script, not R6 or R7. The hearts section, the part that finished, matches between the two builds.
+
+I gave the test tool an opt-in mode that opens a fresh page for each section instead of reloading the heavy one; without it, the tool behaves as before. Saved as commit `fc3ba87`.
+
+Still running, then saved to GitHub:
+- **R7 videos:** the straight run is 269 of 300 frames recorded; the steering run comes next, then the side-by-side videos with your original and the accepted build.
+- **Power-up test:** pause, Bubble Blast and Turbo Spin, rerun alone for the accepted build and R7, and the two reports compared line by line.
+
+---
+
+### You · 2026-11-06 19:50 UTC
+
+R7 looks promising. Please finish the remaining gameplay tests and recordings first.
+
+If those pass, I approve ONE isolated R8 experiment focused only on the excessive bloom, glow, and haze over the foreground water around the pink character.
+
+Your diagnosis says the underlying water already has much of the original's blue. Please reveal that existing deeper cobalt-blue water by adjusting only the responsible glow/haze layers, without globally darkening the tunnel or changing the water geometry.
+
+Preserve R7's rounded water contact, lavender domes, character, HUD, coins, brushes, camera, and all gameplay.
+
+Also avoid making the water too dark or losing its bright cyan-white highlights.
+
+Compare R8 with my ORIGINAL APPROVED image and R7 at the start, +1 second, and +2 seconds, seed 7, no steering. Show the full scene and close-ups.
+
+If R8 is not visibly better, revert to R7. Do not make R8 the default or begin another round without my approval.
+
+---
+
+### Claude · 2026-11-06 19:50 UTC
+
+Understood. I'll finish the recordings and gameplay tests first. Only if they pass will I start the one R8 experiment: glow and haze over the foreground water only, compared with your original and R7 at the start, +1 s and +2 s. R8 won't become the default either way, and nothing further starts without your approval. Checking the running jobs:
+
+I'm finishing R7's last checks before touching anything else:
+
+- **R7 recordings:** the straight run is nearly done. The steering run and the side-by-side videos with your original and the accepted build come next.
+- **Power-up test:** pause, Bubble Blast and Turbo Spin, rerun alone for the accepted build, then R7, and compared line by line.
+
+If those pass, I'll start R8, limited to the glow and haze over the foreground water. The first step is reading which glow settings are actually active over the water at the start, +1 s and +2 s. If they don't pass, R8 doesn't start and I'll tell you what failed.
+
+---
+
+### Automatic check · 2026-11-06 19:52 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 19:52 UTC
+
+The hook flagged the straight recording's log, which had just been written. It's committed and pushed as `f43414a`, and GitHub's branch is at that commit. The steering recording has started, and the power-up test reruns follow it.
+
