@@ -40,7 +40,7 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
 - **The user's briefs of 6 November** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`, `05_...` and
   `10_...`): one correction at a time, each compared original / previous / new at the checkpoint, at Pixel 7 and at moving
   moments; **revert anything that looks less like the original**; the tunnel is the hero, with a clear glowing centre, less
-  clutter and a clean coin / gem path. `focus` is at step 7 (step 6: the far rings follow the bent tube; step 7: the bubble veil); step 5 is held (see `HANDOFF.md`). Next, after the user's review: the original's white splash textures, then blue water and floor, brush sizes, the tunnel entry, the distant centre, sock colours, each stopped for review.
+  clutter and a clean coin / gem path. `focus` is at step 8 (the original's white splashes); step 5 is held (see `HANDOFF.md`). The 6 November breakthrough brief (`Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/`): the new `?s3=bt` (below) keeps the smaller brushes and the sock's blue toe; two water candidates were rejected (her model's silhouette is the limit) and 3D bubble domes at her base are proposed, waiting for the user's go.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
   scene. Never restart or rebuild the game from scratch.
 
@@ -57,7 +57,12 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
   - `match`: Round 9 art match (`tunnel_r9_match.js`, `tunnel_r9_match_water.js`), including the seventh session's focused
     pass from the 15:55 brief (larger character, tilted sock, aqua-white froth bank; evidence `13_...`, `14_...`,
     `20_focused_pass_merged/`). Its froth predates the 17:15 correction above.
-  - `focus` (newest, 5 November evening): `match` plus the user's focused correction pass (settings in
+  - `bt` (newest, 6 November, fourteenth session): `focus` plus the breakthrough pass (`WebDemo/src/tunnel_s4_bt.js`, code
+    gated on `BT_ON`; `?s3=bt` turns `focus` on under it): the hazard brushes drawn at 0.62 (their knock is the lane,
+    unchanged), the wall brushes 0.66, the sock's toe blue. Evidence and the proof that it is step 8 plus only these:
+    `Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/README.md`. Spector.js frame captures:
+    `WebDemo/tools/screen4/spector_capture.cjs` and `spector_report.py` (npm `spectorjs` in a scratch folder).
+  - `focus` (5 November evening onward): `match` plus the user's focused correction pass (settings in
     `WebDemo/src/tunnel_r9_focus.js`, code gated on `FOCUS_ON`). Evidence: `Previews/WebDemo/screen4_round9_match/15_focus_pass/`.
     It is built on `match` as it was at `9a95c06`: `tunnel_r9_focus_base.js` restores those settings under `FOCUS_ON`, and
     `match`-only code is gated `!FOCUS_ON`. Both lines merged on the tenth session's branch (`21_lines_merged/`).

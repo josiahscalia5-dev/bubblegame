@@ -1,4 +1,23 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 7, step 5 held; branch `ccr-d224d313-81g2dq`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 8, the new `?s3=bt` on top; branch `ccr-ea1aad4b-wq5nrm`)
+
+## Newest (6 November, about 11:40-13:00 UTC): fourteenth session, the breakthrough pass `?s3=bt`; STOPPED for the user's review
+
+- **The user's brief:** `Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/05_SOURCE_SPECIFIC_EXECUTION_PLAN.md`
+  plus the 11:33 and 12:20 UTC messages: one major visible improvement, at most two candidates per issue, verify that it
+  keeps step 8, revert it unless clearly closer. (The BWK_SCREEN4_BREAKTHROUGH_KIT.zip itself never arrived; its plan and
+  images did.)
+- **`?s3=bt`** = `focus` (step 8) + the hazard brushes drawn at 0.62 (the knock is the lane, unchanged) + the wall brushes
+  0.66 + the sock's toe blue. Proof: `focus` on the new build and `bt` with its changes at zero are 0 pixels from step 8.
+  Evidence: `Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/README.md`.
+- **Rejected (art director: further from the original), reverted:** the water round her lowered (0.36 m, then 0.20 m with
+  shader froth): her model then reads as a tall square block and the froth as a white strip; the sock's lilac stripes.
+  Stopped by the user's gate. Proposed, waiting for the user's go: real 3D lavender-blue bubble domes along her base, at
+  step 8's waterline.
+- **Spector.js** works here (npm `spectorjs` 0.9.33 injected into the page; `WebDemo/tools/screen4/spector_capture.cjs`,
+  `spector_report.py`); its MCP server cannot be added to a running session.
+- **Note:** the 5-minute autosave commits work in progress; step 8's own bundle is at `7b7a9e2` (`e6cd9334`).
+- **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_fourteenth_session_screen4_breakthrough.md`).
+
 
 ## Newest (6 November, about 06:05 UTC): thirteenth session, STEP 7 done, the bubble veil; STOPPED for the user's visual review
 
