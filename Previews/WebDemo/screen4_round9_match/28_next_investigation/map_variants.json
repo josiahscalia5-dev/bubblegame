@@ -1,0 +1,438 @@
+{
+ "clear_share": {
+  "whites_out": 0.29633522033691406,
+  "whites_kept": 0.4088735580444336
+ },
+ "original": {
+  "1_wall_rings": {
+   "sat_blue": 58.9,
+   "turquoise": 2.2,
+   "pale_blue": 12.2,
+   "periwinkle": 6.7,
+   "lavender": 10.0,
+   "white": 8.2,
+   "dark_cobalt": 0.1,
+   "chroma": 46.4,
+   "L_mean": 66.6,
+   "L_p5": 41.4,
+   "L_p95": 96.0,
+   "detail": 4.89,
+   "white_blobs": {
+    "count_per_10k": 3.45,
+    "mean_area": 236.6,
+    "solidity": 0.854,
+    "elongation": 2.16
+   },
+   "pixels": 113176,
+   "ring_breakup": 10.31
+  },
+  "2_distant_core": {
+   "sat_blue": 29.7,
+   "turquoise": 1.8,
+   "pale_blue": 20.6,
+   "periwinkle": 7.8,
+   "lavender": 16.0,
+   "white": 21.7,
+   "dark_cobalt": 0.1,
+   "chroma": 29.6,
+   "L_mean": 77.7,
+   "L_p5": 49.7,
+   "L_p95": 97.6,
+   "detail": 4.87,
+   "white_blobs": {
+    "count_per_10k": 5.25,
+    "mean_area": 413.8,
+    "solidity": 0.803,
+    "elongation": 1.97
+   },
+   "pixels": 60949
+  },
+  "3_floor_ahead": {
+   "sat_blue": 18.0,
+   "turquoise": 1.3,
+   "pale_blue": 34.5,
+   "periwinkle": 7.4,
+   "lavender": 11.1,
+   "white": 32.0,
+   "dark_cobalt": 0.0,
+   "chroma": 20.6,
+   "L_mean": 84.7,
+   "L_p5": 66.0,
+   "L_p95": 98.7,
+   "detail": 3.41,
+   "white_blobs": {
+    "count_per_10k": 2.7,
+    "mean_area": 1183.3,
+    "solidity": 0.8,
+    "elongation": 2.36
+   },
+   "pixels": 55513
+  },
+  "4_front_splash": {
+   "sat_blue": 9.6,
+   "turquoise": 0.0,
+   "pale_blue": 18.0,
+   "periwinkle": 19.9,
+   "lavender": 27.9,
+   "white": 28.9,
+   "dark_cobalt": 0.0,
+   "chroma": 25.2,
+   "L_mean": 81.7,
+   "L_p5": 59.8,
+   "L_p95": 98.3,
+   "detail": 3.73,
+   "white_blobs": {
+    "count_per_10k": 5.1,
+    "mean_area": 566.1,
+    "solidity": 0.793,
+    "elongation": 2.36
+   },
+   "pixels": 43119
+  },
+  "5_front_water": {
+   "sat_blue": 21.3,
+   "turquoise": 0.1,
+   "pale_blue": 41.3,
+   "periwinkle": 10.6,
+   "lavender": 9.7,
+   "white": 18.0,
+   "dark_cobalt": 0.0,
+   "chroma": 26.0,
+   "L_mean": 81.2,
+   "L_p5": 60.0,
+   "L_p95": 98.2,
+   "detail": 3.46,
+   "white_blobs": {
+    "count_per_10k": 5.25,
+    "mean_area": 342.4,
+    "solidity": 0.887,
+    "elongation": 1.96
+   },
+   "pixels": 60906
+  }
+ },
+ "M1_shipped_equivalent": {
+  "1_wall_rings": {
+   "sat_blue": 68.5,
+   "turquoise": 0.3,
+   "pale_blue": 7.5,
+   "periwinkle": 8.8,
+   "lavender": 8.9,
+   "white": 0.1,
+   "dark_cobalt": 0.0,
+   "chroma": 52.0,
+   "L_mean": 61.8,
+   "L_p5": 42.8,
+   "L_p95": 85.0,
+   "detail": 2.15,
+   "white_blobs": {
+    "count_per_10k": 0.27,
+    "mean_area": 27.7,
+    "solidity": 0.65,
+    "elongation": 1.67
+   },
+   "pixels": 113176,
+   "ring_breakup": 2.57
+  },
+  "2_distant_core": {
+   "sat_blue": 32.8,
+   "turquoise": 0.8,
+   "pale_blue": 28.3,
+   "periwinkle": 10.6,
+   "lavender": 15.3,
+   "white": 1.7,
+   "dark_cobalt": 0.0,
+   "chroma": 33.7,
+   "L_mean": 73.3,
+   "L_p5": 55.0,
+   "L_p95": 91.1,
+   "detail": 2.59,
+   "white_blobs": {
+    "count_per_10k": 1.8,
+    "mean_area": 85.3,
+    "solidity": 0.667,
+    "elongation": 4.77
+   },
+   "pixels": 60949
+  },
+  "3_floor_ahead": {
+   "sat_blue": 50.6,
+   "turquoise": 0.5,
+   "pale_blue": 39.4,
+   "periwinkle": 9.4,
+   "lavender": 0.6,
+   "white": 0.0,
+   "dark_cobalt": 0.0,
+   "chroma": 40.5,
+   "L_mean": 69.3,
+   "L_p5": 50.8,
+   "L_p95": 86.7,
+   "detail": 1.38,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 55513
+  },
+  "4_front_splash": {
+   "sat_blue": 86.9,
+   "turquoise": 0.0,
+   "pale_blue": 1.8,
+   "periwinkle": 11.3,
+   "lavender": 0.0,
+   "white": 0.0,
+   "dark_cobalt": 0.0,
+   "chroma": 49.3,
+   "L_mean": 63.3,
+   "L_p5": 58.7,
+   "L_p95": 70.0,
+   "detail": 0.44,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 43119
+  },
+  "5_front_water": {
+   "sat_blue": 97.7,
+   "turquoise": 0.0,
+   "pale_blue": 0.0,
+   "periwinkle": 2.0,
+   "lavender": 0.0,
+   "white": 0.0,
+   "dark_cobalt": 2.2,
+   "chroma": 48.7,
+   "L_mean": 61.5,
+   "L_p5": 50.9,
+   "L_p95": 63.5,
+   "detail": 0.82,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 60906
+  }
+ },
+ "M2_fill_only_whites_kept": {
+  "1_wall_rings": {
+   "sat_blue": 65.2,
+   "turquoise": 1.7,
+   "pale_blue": 9.0,
+   "periwinkle": 6.9,
+   "lavender": 8.1,
+   "white": 5.6,
+   "dark_cobalt": 0.0,
+   "chroma": 50.1,
+   "L_mean": 64.0,
+   "L_p5": 41.2,
+   "L_p95": 94.6,
+   "detail": 3.95,
+   "white_blobs": {
+    "count_per_10k": 2.39,
+    "mean_area": 232.8,
+    "solidity": 0.872,
+    "elongation": 1.85
+   },
+   "pixels": 113176,
+   "ring_breakup": 6.88
+  },
+  "2_distant_core": {
+   "sat_blue": 27.8,
+   "turquoise": 1.4,
+   "pale_blue": 22.4,
+   "periwinkle": 7.9,
+   "lavender": 14.8,
+   "white": 20.2,
+   "dark_cobalt": 0.0,
+   "chroma": 28.2,
+   "L_mean": 78.5,
+   "L_p5": 51.0,
+   "L_p95": 97.3,
+   "detail": 4.35,
+   "white_blobs": {
+    "count_per_10k": 5.25,
+    "mean_area": 384.3,
+    "solidity": 0.756,
+    "elongation": 2.58
+   },
+   "pixels": 60949
+  },
+  "3_floor_ahead": {
+   "sat_blue": 31.9,
+   "turquoise": 0.8,
+   "pale_blue": 34.2,
+   "periwinkle": 19.3,
+   "lavender": 5.5,
+   "white": 12.0,
+   "dark_cobalt": 0.0,
+   "chroma": 30.4,
+   "L_mean": 77.2,
+   "L_p5": 55.3,
+   "L_p95": 94.4,
+   "detail": 2.61,
+   "white_blobs": {
+    "count_per_10k": 2.7,
+    "mean_area": 442.3,
+    "solidity": 0.764,
+    "elongation": 2.38
+   },
+   "pixels": 55513
+  },
+  "4_front_splash": {
+   "sat_blue": 73.3,
+   "turquoise": 0.0,
+   "pale_blue": 3.6,
+   "periwinkle": 21.4,
+   "lavender": 0.0,
+   "white": 1.7,
+   "dark_cobalt": 0.0,
+   "chroma": 46.2,
+   "L_mean": 65.7,
+   "L_p5": 58.7,
+   "L_p95": 82.4,
+   "detail": 0.92,
+   "white_blobs": {
+    "count_per_10k": 0.46,
+    "mean_area": 377.0,
+    "solidity": 0.722,
+    "elongation": 6.1
+   },
+   "pixels": 43119
+  },
+  "5_front_water": {
+   "sat_blue": 36.3,
+   "turquoise": 0.0,
+   "pale_blue": 0.0,
+   "periwinkle": 62.4,
+   "lavender": 0.0,
+   "white": 0.0,
+   "dark_cobalt": 0.0,
+   "chroma": 45.5,
+   "L_mean": 64.8,
+   "L_p5": 59.4,
+   "L_p95": 68.0,
+   "detail": 0.64,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 60906
+  }
+ },
+ "M3_fill_only_whites_out": {
+  "1_wall_rings": {
+   "sat_blue": 66.6,
+   "turquoise": 1.8,
+   "pale_blue": 9.4,
+   "periwinkle": 8.4,
+   "lavender": 9.1,
+   "white": 0.1,
+   "dark_cobalt": 0.0,
+   "chroma": 52.5,
+   "L_mean": 61.9,
+   "L_p5": 41.2,
+   "L_p95": 87.5,
+   "detail": 3.6,
+   "white_blobs": {
+    "count_per_10k": 0.27,
+    "mean_area": 27.7,
+    "solidity": 0.65,
+    "elongation": 1.67
+   },
+   "pixels": 113176,
+   "ring_breakup": 6.03
+  },
+  "2_distant_core": {
+   "sat_blue": 32.0,
+   "turquoise": 1.7,
+   "pale_blue": 30.0,
+   "periwinkle": 9.8,
+   "lavender": 15.3,
+   "white": 1.7,
+   "dark_cobalt": 0.0,
+   "chroma": 34.0,
+   "L_mean": 73.4,
+   "L_p5": 50.9,
+   "L_p95": 92.4,
+   "detail": 3.78,
+   "white_blobs": {
+    "count_per_10k": 1.8,
+    "mean_area": 82.4,
+    "solidity": 0.667,
+    "elongation": 4.77
+   },
+   "pixels": 60949
+  },
+  "3_floor_ahead": {
+   "sat_blue": 50.2,
+   "turquoise": 0.8,
+   "pale_blue": 39.1,
+   "periwinkle": 10.0,
+   "lavender": 0.6,
+   "white": 0.0,
+   "dark_cobalt": 0.0,
+   "chroma": 40.6,
+   "L_mean": 69.4,
+   "L_p5": 50.8,
+   "L_p95": 87.8,
+   "detail": 2.04,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 55513
+  },
+  "4_front_splash": {
+   "sat_blue": 86.7,
+   "turquoise": 0.0,
+   "pale_blue": 1.9,
+   "periwinkle": 11.4,
+   "lavender": 0.0,
+   "white": 0.0,
+   "dark_cobalt": 0.0,
+   "chroma": 49.3,
+   "L_mean": 63.3,
+   "L_p5": 58.7,
+   "L_p95": 70.1,
+   "detail": 0.59,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 43119
+  },
+  "5_front_water": {
+   "sat_blue": 97.7,
+   "turquoise": 0.0,
+   "pale_blue": 0.0,
+   "periwinkle": 2.0,
+   "lavender": 0.0,
+   "white": 0.0,
+   "dark_cobalt": 2.2,
+   "chroma": 48.7,
+   "L_mean": 61.5,
+   "L_p5": 50.9,
+   "L_p95": 63.5,
+   "detail": 0.82,
+   "white_blobs": {
+    "count_per_10k": 0,
+    "mean_area": 0,
+    "solidity": null,
+    "elongation": null
+   },
+   "pixels": 60906
+  }
+ }
+}

@@ -135,3 +135,75 @@ Shall I apply it as a tested, committed step, including the gameplay checks and 
 
 Everything is in `Previews/WebDemo/screen4_round9_match/26_layer_diagnosis/`; the README has the full findings, and I sent you the four main images. The autosave is running.
 
+---
+
+### You · 2026-11-06 01:30 UTC
+
+I've reviewed your Screen 4 diagnosis and comparison.
+
+YES — proceed with the first correction, but do not consider the water finished.
+
+1. Set "floorFx.lift" from 0.55 to 0 in "?s3=focus" only.
+2. Preserve all other Screen 4 functionality and the approved Step 2 and Step 3 changes.
+3. Capture the same seed 7, 3.0-second, no-steering frame at 767 × 1536 and on Pixel 7.
+4. Test gameplay and compare the actual water against my ORIGINAL CLASSIC approved Screen 4.
+5. If the test passes, commit it separately with a rollback point and provide the commit hash.
+
+Then investigate the next correction, but do not implement it yet:
+
+I want the actual irregular white-and-aqua splashes from my approved image restored, alongside its vivid cobalt-blue currents. Do not replace them with uniform white dashes, confetti, pale-blue blending, or large solid foam cushions.
+
+Look at the texture derivation process that currently removes most fine detail and masks out the original whites. Determine how to retain those authentic patterns while reducing the duplicate procedural flecks.
+
+Also investigate the excess bubbles veiling the tunnel walls and the extra lavender tint in the distant core.
+
+Do not change the pink fluffy character at all.
+
+I want actual before-and-after visual evidence for every correction, not just a report saying it is fixed. The approved original is the only visual target.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-06 01:31 UTC
+
+Going ahead: first the lift correction as its own tested step, then the investigation, with nothing implemented for it. I'll do the code change in an isolated git worktree. The 5-minute autosave commits everything in the main checkout, and this way it can't sweep an untested edit into an autosave commit.
+
+Let me find exactly how step 3's identity proof, gameplay checks and Pixel 7 captures were produced, so I reuse the same procedures.
+
+First, confirm the committed bundle rebuilds byte-identically from source before changing anything:
+
+Byte-identical (`2619938c…`). Now the one-value change:
+
+The bundle changes in exactly one place: `lift:.55` becomes `lift:0` inside the `focus`-only settings block. Next, the tests. I'll replicate step 3's identity-proof switch list exactly:
+
+While that runs, the step's own captures: the seed 7, 3.0 s frame from the after bundle, plus Pixel 7 before and after, with the same scripts as step 3.
+
+The built step reproduces the diagnostic variant exactly (0 differing pixels), so every V1 measurement applies to the committed step. Now the gameplay checks on the after build, in the background:
+
+While those run, the before and after evidence sheets: full frames, colour-class maps, 2× zooms, and Pixel 7.
+
+The identity run finished with 41 frames per side, the same count as step 3. Comparing every frame pixel by pixel:
+
+All 41 frames are identical: the normal game, the ten older switches, `match` and `match,nofoam`, with no console messages. Now the `s3_func` gameplay result:
+
+While `r2_func` and the investigation runs proceed, I'll write the step 4 README.
+
+Confirming the pink character's own pixels are unchanged between before and after, using her exact mask from the layer ablation:
+
+Some of her pixels differ, so I need to know why before claiming she's untouched. Checking the size of those differences:
+
+Differences up to 84 levels on about 10% of her interior pixels need an explanation. Let me look at where they are:
+
+Object 196 is the character mesh in both builds. Waiting for `r2_func` to finish before adding more browser load:
+
+All 14 investigation runs finished without console errors. `r2_func` is still going: hearts are done, and pause and the boosts are in progress. Meanwhile, the solo-character proof on both builds:
+
+The calibration render succeeded (the exit code is only from the gameplay-done file not existing yet). Let me look at it and read off where the stripes land:
+
+The sparse checkout left the evidence folder out of that commit; only the code and bundle went in. It's a local, unpushed commit, so I'll amend it to include the evidence:
+
+Now onto the session branch as its own commit. The branch has moved on with autosaves, so I'll cherry-pick; the commit before it becomes the rollback point.
+
+The autosave process died after its 01:11 round; the log just stops, with no error. CLAUDE.md says to restart it when it's gone, so I'm restarting it detached, the same way as before:
+
