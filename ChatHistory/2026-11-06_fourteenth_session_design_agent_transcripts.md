@@ -255,5 +255,28 @@ Address this before completing your current task.
 
 3. **Yes, the start screen keeps the composition.** The sock faces forward with its face showing, and the pause, Bubble Blast and Turbo Spin buttons are back. Everything else matches the previous 3.0 s frame. The only addition is the small Tap to Start badge over the foreground water between the buttons.
 
+**Lead → agent** (14:18 UTC):
 
-_26 tool steps._
+The coordinator sent a message while you were working:
+New water candidate, a different technique (the user's brief of about 14:50 UTC asked for "broad, rounded, animated blue wave forms ... irregular white splash crests ... glossy"): the swell's own water face (heroSwell, focusSwellGLSL) now draws rounded glossy lobes itself, in place of its white comma arcs: a field of domes on the face's surface coordinates flowing down it, each shaded as a lit bulge (thin cobalt gaps, azure-to-pale bodies, white rims and glints, a fifth lavender bubbles), colours through the inverse display transform. Geometry, waterline and character unchanged. (Rejected before it: W1 / W1b, a bank of separate lobe objects: pale matte pillows.)
+Sheet: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/w2b.jpg (ORIGINAL | PREVIOUS intunnel | W2 | W2b, the bottom third). Full frames: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/42_water_bank/w2b/wave_start/base_page.png (W2b), .../40_intunnel_start/final/intunnel_start/base_page.png (previous).
+region_compare, foreground water (LPIPS / SSIM / dE / hist; saturated blue, white): previous 0.656 / 0.375 / 2.1 / 0.381, 18.7 % / 15.1 %; W2 0.708 / 0.391 / 4.5 / 0.416, 47.8 / 11.0; W2b 0.699 / 0.402 / 0.7 / 0.405, 29.2 / 17.4; original 24.6 / 16.8.
+In under 120 words, strictly against the original: is W2b CLEARLY closer than the previous build in the water round her? yes / no. Keep or revert? If no, the one main reason.
+
+Address this before completing your current task.
+
+- 14:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/w2b.jpg
+- 14:18 `Bash`: Zoom on the water round her in original, previous and W2b
+- 14:18 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/w2b_zoom.png
+**Agent** (14:18 UTC):
+
+1. **No.** W2b is not clearly closer to the original in the water round her.
+2. **Revert it.**
+3. **The main reason:** the lobes are smooth, evenly sized pale-blue pillows packed like cobblestones, with thin dark gaps between them. They read as a still pile of balloons, not splashing water.
+
+The original's water round her is irregular, broken splashing: sharp white crests curling up her sides, fine spray and small bubbles, and a few lavender domes with bright rims. W2b drops the white crests and the fine detail, the parts a viewer reads as water.
+
+Your colour numbers are closer (white 17.4% against the original's 16.8%; saturated blue 29.2% against 24.6%). But here the white is soft rims on each lobe, not crests, so the numbers don't show the main difference.
+
+
+_29 tool steps._

@@ -69,6 +69,8 @@ export const BANK = {
 export const DOMES_ON = BT_ON && (LIST.includes('domes') || BANK_ON);
 // (the bank, candidates W1 and W1b: REJECTED by eye: smooth pale matte blue pillows beside her, not the original's glossy
 // water; its lobes are lit and pass through the grade and tone mapping, which wash them out. Not part of ?s3=intunnel)
+// (REJECTED, 6 November, the art director: W2 too blue; W2b 'smooth, evenly sized pale-blue pillows packed like
+// cobblestones ... a still pile of balloons, not splashing water': not part of ?s3=intunnel; a record behind its flag)
 // ?s3=intunnel,wave: a DIFFERENT technique after the two failed lobe-object candidates: the swell's own water face
 // (heroSwell, focusSwellGLSL) draws the original's rounded water lobes itself, in place of its white comma arcs (`lace`):
 // a field of rounded domes on the face's surface coordinates (along the crest s, down the face), flowing down it, each

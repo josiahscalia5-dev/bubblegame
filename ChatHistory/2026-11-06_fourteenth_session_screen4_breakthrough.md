@@ -1123,3 +1123,32 @@ Now the water, your top priority. Your close-up shows rounded, glossy blue liqui
 
 The 2.0 s render timed out because the machine is busy with the video recording. The start frame rendered; looking at it:
 
+While it reviews, the gameplay checks for `?s3=intunnel` have finished. Reading them:
+
+All the gameplay checks pass under `?s3=intunnel`:
+
+| check | result |
+|---|---|
+| Pause | the game stands still, resumes, keyboard pause works |
+| Bubble Blast | clears the brushes ahead, no knock, runs down to 0 with the button disabled |
+| Turbo Spin | speed 6.7 → 8.8 m/s, no knock |
+| Console | no errors |
+
+Waiting for the art director's verdict on W2b; the videos are recording meanwhile.
+
+---
+
+### Automatic notice · 2026-11-06 14:18 UTC
+
+_Agent "Art director review of the domes" finished_
+
+---
+
+### Claude · 2026-11-06 14:18 UTC
+
+Verdict on W2b: **not clearly closer, revert**. The rounded lobes read as a still pile of pale balloons packed like cobblestones. The original's water round her is broken, splashing water: sharp white crests curling up her sides, fine spray and small bubbles, and only a few lavender domes. My colour numbers had matched, but the white sat in soft lobe rims, not crests, so the numbers missed the main difference.
+
+So both techniques have failed twice each, and per your rule I'm reverting all of it. `bank` and `wave` stay out of `?s3=intunnel`, recorded as rejected. Marking them in the source, then proving the final bundle draws `?s3=intunnel` exactly as tested:
+
+You've hit your 5-hour limit · resets 4pm (UTC)
+
