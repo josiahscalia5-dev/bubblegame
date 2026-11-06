@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => {
   const url = `http://localhost:${server.address().port}/index.html`;
   let loaded = false;
   const fresh = async () => {
-    if (process.env.NEWPAGE === '1' && loaded) { const old = page; page = await openPage(); old.context().close().catch(() => {}); }
+    if (process.env.NEWPAGE === '1' && loaded) { await page.context().close(); page = await openPage(); }   // (the old page closed FIRST: left open, its game loop starved the new load past 300 s; closed, the new one is ready in about 4 s)
     await page.goto(url, { timeout: 300000, waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 }); loaded = true;
   };
   const out = {};
