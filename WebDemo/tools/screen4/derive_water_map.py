@@ -17,7 +17,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')
 ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg')
 Y0 = 0.72
 ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(ROOT, 'WebDemo/textures/screen4'))
-ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])   # reflect (R3): the water below / above mirrored into the hole
+ap.add_argument('--fill', default='telea', choices=['telea', 'reflect', 'patch', 'exemplar'])
+ap.add_argument('--patch', type=int, default=21); ap.add_argument('--topk', type=int, default=1); ap.add_argument('--name', default=None)   # (exemplar)   # reflect (R3): the water below / above mirrored into the hole
 a = ap.parse_args()
 o = np.asarray(Image.open(ORIG).convert('RGB')); H, W = o.shape[:2]; y0 = int(Y0 * H)
 c = o[y0:].copy(); hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV).astype(int); h, s, v = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
@@ -46,11 +47,11 @@ if a.fill == 'exemplar':
     # below it the face shows this texture's Telea fill, a pale lavender-white blur where her body was and long vertical
     # streaks and a flat triangle where the buttons were, and in the game she sits higher and the buttons differ, so those
     # fills are what is seen under her.) Exemplar-based filling (Criminisi, Perez and Toyama 2004, confidence term only):
-    # from the hole's edge inward, each 15 x 15 window takes the best-matching real window of the original's own water
+    # from the hole's edge inward, each --patch x --patch window (21 by default) takes the best-matching real window of the original's own water
     # (sum of squared differences over its known texels, among sources within 120 rows so the water keeps its depth from
-    # top to bottom, one of the best 3 by a private seeded generator) and copies its texels into the hole unchanged. No
+    # top to bottom; --topk > 1 picks one of the best k by a private seeded generator) and copies its texels into the hole unchanged. No
     # smoothing: the bubbles, rims and sparkles are the original's own pixels.
-    P, R = 15, 7
+    P = a.patch | 1; R = P // 2
     rng = np.random.default_rng(7)
     img = c.astype(np.float32); hole = m.astype(bool); Hc = img.shape[0]
     valid = ~hole; vs = cv2.erode(valid.astype(np.uint8), np.ones((P, P), np.uint8)).astype(bool)
@@ -76,7 +77,7 @@ if a.fill == 'exemplar':
             d = ((src[np.ix_(idx, np.nonzero(kn)[0])] - win[kn][None]) ** 2).sum((1, 2))
         else:
             d = rng.random(len(idx))
-        best = idx[np.argsort(d)[:3]]; pick = best[rng.integers(len(best))]
+        best = idx[np.argsort(d)[:max(1, a.topk)]]; pick = best[rng.integers(len(best))]
         newp = ~kn
         win[newp] = src[pick][newp]
         img[ty - R:ty + R + 1, tx - R:tx + R + 1] = win.reshape(P, P, 3)
@@ -134,7 +135,7 @@ if a.fill == 'patch':
 soft = cv2.GaussianBlur(fill, (0, 0), 4)
 k = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3)[..., None]
 out = fill if a.fill == 'exemplar' else (fill * (1 - k * 0.6) + soft * k * 0.6).astype(np.uint8)
-name = {'telea': 'foreground_water_original.png', 'exemplar': 'foreground_water_original_r4.png'}.get(a.fill, 'foreground_water_original_r3.png')
+name = a.name or {'telea': 'foreground_water_original.png', 'exemplar': 'foreground_water_original_r4.png'}.get(a.fill, 'foreground_water_original_r3.png')
 Image.fromarray(out).save(os.path.join(a.out, name))
 json.dump({'source': os.path.relpath(ORIG, ROOT), 'y0': y0 / H, 'y1': 1.0, 'size': [W, H - y0], 'masked_share': round(float(m.mean()), 3)},
           open(os.path.join(a.out, name.replace('.png', '.json')), 'w'), indent=1)
