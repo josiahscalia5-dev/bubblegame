@@ -202,3 +202,15 @@ At 7.7 s, where the path bends hardest, step 6 (right) shows the original's conc
 
 The last moving shots, the step 4 re-check and the 41-frame regression run are still in the background; I'll pick up as soon as they report.
 
+---
+
+### Automatic notice · 2026-11-06 04:40 UTC
+
+_Background command "Capture step 6 motion moments and a step 4 recheck" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 04:41 UTC
+
+While those run, I'll find the recorder used for the step 4 video, since your brief asks for a video of the corrected tunnel:
+
