@@ -986,3 +986,9 @@ Same objects too. The scene state matches, but the pixels don't. Rendering a fra
 
 These hooks don't move the camera either. Viewing the probe's two renders side by side, full frame:
 
+Its switch is `S3.cine`, turned on for every pass from `round3` onward, which includes `focus` and `bt`. Turning it off under `intunnel` only:
+
+`bt` and `focus` are both still identical (0 differing pixels). Committing the in-tunnel start as a checkpoint before the visual correction, so there's a rollback point:
+
+Now the settings and the hook-up. First sampling the original's actual dome colours at her base, rather than guessing them:
+

@@ -35,6 +35,8 @@ import { HERO_WATER } from './tunnel_r7_hero_water.js';
 import { SPLASH_ON, SPLASH_FOAM, SPLASH, mergeSettings, splashWallGLSL, splashFloorGLSL, splashSwellGLSL, buildSplashBank } from './tunnel_r8_splash.js';   // ?s3=splash: Round 8 pass 2
 import { MATCH_ON, MATCH, deepMerge, MATCH_UNIFORMS, matchWallGLSL, matchWallApply, matchMouthGLSL, matchCollarGLSL } from './tunnel_r9_match.js';   // ?s3=match: Round 9
 import { matchFloorDecl, matchFloorApply, matchSwellGLSL } from './tunnel_r9_match_water.js';   // ?s3=match: Round 9's water (Water & VFX)
+import { DOMES_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,domes: bubble domes at her base
+import { buildBaseDomes } from './tunnel_s4_domes.js';
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -870,7 +872,8 @@ void main() {
     scene.add(mesh);
     report.bubbles = { count: n, drawCalls: 1, triangles: n * sphere.index.count / 3 };
   }
-  const meshes = ['lqSpraySheets', 'lqWaterlineBubbles'].map((nm) => scene.getObjectByName(nm));
+  if (DOMES_ON) report.domes = buildBaseDomes({ scene, crest, frame });   // ?s3=...,domes (tunnel_s4_domes.js)
+  const meshes = ['lqSpraySheets', 'lqWaterlineBubbles', ...(DOMES_ON ? ['btBaseDomes'] : [])].map((nm) => scene.getObjectByName(nm));
   updaters.push(() => { for (const m of meshes) m.visible = swell.visible; });   // with the swell
   if (SPLASH_FOAM) report.bank = buildSplashBank({ scene, updaters, time, tex, crest, frame, swell });   // ?s3=splash (tunnel_r8_splash.js)
   return report;

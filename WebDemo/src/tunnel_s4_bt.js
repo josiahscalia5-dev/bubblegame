@@ -36,6 +36,20 @@ if (INTUNNEL_ON) window.__BW_OPENING_OFF__ = [...new Set([...(window.__BW_OPENIN
 // (its blend ends at -0.4 m) and the hero water up (position-based). So the start screen is that composition, and she
 // moves on at once from it.
 export const INTUNNEL = { u: 1.592, speed: 7.21 };
+// ?s3=intunnel,domes (or bt,domes): real 3D translucent bubble domes along her base (tunnel_s4_domes.js), the visual
+// correction tested on top of the in-tunnel start. Colours sampled from the ORIGINAL at her base (y 1220-1340, x 120-680:
+// lavender 20 % of the zone, k-means #a295ee 34 %, #b9b6f2 27 %, #dcd2fa 26 %, #8879db 14 %; its aqua #a6d1f5, #c6e6fa,
+// #87b9ed, #5ea2eb). Sizes and places from the original's domes there (about 30-65 px radius, 0.07-0.15 m at the swell's
+// front): [phi round her (degrees, + screen-left), radius (m), out from the crest (m), sink (share of the radius below the
+// crest), kind (0 a lavender soap dome, 1 a light aqua water dome)]
+export const DOMES_ON = BT_ON && LIST.includes('domes');
+export const DOMES = {
+  list: [[16, 0.10, 0.03, 0.35, 0], [27, 0.06, 0.05, 0.3, 0], [2, 0.12, 0.05, 0.45, 1], [-9, 0.07, 0.05, 0.3, 0],
+    [-20, 0.09, 0.03, 0.35, 0], [-31, 0.065, 0.04, 0.3, 0], [37, 0.07, 0.02, 0.3, 0], [-43, 0.08, 0.02, 0.35, 1]],
+  look: { lavender: '#a295ee', top: '#dcd2fa', foot: '#87b9ed', aqua: '#a6d1f5', rim: '#f4f2ff', film: 0.35, rimPow: 2.2, rimAlpha: 0.55,
+    alpha: [0.42, 0.5], arc: [0.55, 0.85], arcK: 0.9, glintPow: 60 },
+};
+{ const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.domes; if (tune) for (const k of Object.keys(tune)) DOMES[k] = typeof tune[k] === 'object' && !Array.isArray(tune[k]) ? { ...DOMES[k], ...tune[k] } : tune[k]; }   // (test tunes only)
 
 export const BT = {
   // the hazard and wall brushes' DRAWN size (tunnel_s4.js; where they knock is the lane, unchanged): the brush scaled by
