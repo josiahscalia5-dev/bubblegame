@@ -78,3 +78,13 @@ That `bwD` rewrite is a hack. Restructuring so the mirrored coordinate is its ow
 
 The older candidates' shader text is byte-identical to before; only R7's (and so R8's) changes. Checking whether the gameplay tests have finished before starting more renders:
 
+While that renders, rebuilding the main bundle from the same source (nothing is running from it now):
+
+The main bundle is identical to the scratch build (`215f35c5`). Starting the steering video of the fixed R7 now, the run where the dark fin appeared:
+
+While those run, updating R7's README with the gameplay results and the dark-fin defect:
+
+Committing the tested R7 state (videos, gameplay tests, the dark-fin fix with its proof) plus the R8 work in progress:
+
+Saved as `b0aaf16` (verified on GitHub). Waiting for the fixed steering video and R8's final frames.
+
