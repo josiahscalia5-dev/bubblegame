@@ -452,5 +452,57 @@ I'll enlarge the diff map over the ramp and check the row-by-row luma for a step
 - 20:38 `Bash`: Check ramp profile and seam evidence
 - 20:39 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/diffzoom_start.png
 - 20:39 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/coin_start.png
+- 20:39 `Bash`: Zoom into the largest-change water area
+- 20:39 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/hot_start.png
+**Lead → agent** (20:39 UTC):
 
-_15 tool steps._
+[Image: original 2180x498, displayed at 2000x457. Multiply coordinates by 1.09 to map to original image.]
+
+- 20:39 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/hot_T2.0.png
+**Lead → agent** (20:39 UTC):
+
+[Image: original 2180x498, displayed at 2000x457. Multiply coordinates by 1.09 to map to original image.]
+
+- 20:39 `Bash`: List R8 folder and metric script
+- 20:39 `Bash`: Read region LPIPS and rerun haze metrics
+**Agent** (20:39 UTC):
+
+The regions table shows R8 slightly worse on LPIPS and SSIM in the water. Before the verdict, I'll read the R7 ablation summary to see where the haze really comes from.
+
+- 20:39 `Bash`: Read R7 haze ablation summary
+**Agent** (20:40 UTC):
+
+**Verdict: revert to R7.** By your rule R8 should go, because it is not visibly better. Even at 4x, flipping between R7 and R8 on the spots that changed most, I can only just tell them apart.
+
+**1. Is R8 visibly better?**
+- **Start:** no. R7 and R8 look the same at sheet scale and at 2x. At 4x, on the spot that changed most (about x 455, y 1357, under her right side), R8's blue troughs are a hair deeper and the white lobes a hair less milky. A viewer would not notice.
+- **+1 s:** no. It is the same picture.
+- **+2 s:** no, though this is the biggest change of the three. The water right of her is slightly less washed. The pink-white cross-shaped glints over the water there are still in R8, so they are not the bloom.
+- **Why so small:** the bloom only ever added about 2-3 levels out of 255 over the water. My own diff gives a mean of 1.3-3.2 levels per band, with only a few halo pixels changing by 25-50. So the "excessive bloom" was never the haze: the pale, milky look is in the water's own colour and the white layers. Your ablation file already shows this. Turning off the overlays raises the dark share about as much as turning off the bloom.
+
+**2. Anything worse?**
+- **Too dark, or lost highlights:** no. Mean brightness is 0.767 against the original's 0.773, and the crisp-highlight share is 0.55 -> 0.56 %, so the cyan-white highlights are still there.
+- **Seam near 0.74-0.80:** none. The first changed row is 1137. The darkening ramps smoothly from 0.02 to 2.6 levels, and the change in brightness from row to row there (0.26) is no bigger than the ordinary variation lower down (0.34). Her head, the lower-right coin (at most a few levels darker at its base) and the bubbles show no edge.
+- **Nothing above y 0.74 changed** (I confirmed 0 differing pixels).
+- **Measured slightly worse against the original** (these are numbers, not what I saw):
+  - The perceptual score (LPIPS, lower is closer) for the foreground water: 0.524 -> 0.526 at the start, 0.673 -> 0.675 at +1 s, 0.635 -> 0.639 at +2 s. The structural score (SSIM, higher is closer) drops 0.399 -> 0.388 at the start. The colour scores (dE, hist) improve slightly. The character-and-contact region shows the same split.
+  - Sharpness in the water band moves further from the original's soft, painted look: 33 -> 38 at the start, 37 -> 44 at +2 s (original 2.8).
+  - Saturated blue at the start overshoots the original: 13.3 -> 15.7 % (original 12.2).
+- **Risks if it were kept:**
+  - The fade is a fixed band of the screen, so a coin or jump halo would dim as it crosses y 0.74 during play.
+  - There is no Pixel 7 capture. On a different screen shape, 0.74-0.80 falls on a different part of the scene.
+
+**3. Verdict:** REVERT to R7. The change is too small to see at any of the three moments. Its numbers are mixed: darker tones get closer to the original, but LPIPS, SSIM, sharpness and saturated blue at the start move away.
+
+**4. For the next experiment (R8 is not kept),** what differs most in the water round her, ranked. The layer names are my best guess.
+1. **Hard white diagonal streaks behind and beside her** (about y 0.73-0.78). The original has soft rounded splash there. Likely the floor's white flecks and streaks: the floor in the walls' water, the flecks code in `tunnel_r9_match.js` and its hooks in `tunnel_r9_match_water.js`.
+2. **The front water is pastel periwinkle with soft, blurred lobes.** The original has sculpted, bubbly white crests over deep, saturated azure-cobalt pockets. This comes from the water face's own base colour and its white overlays, not the bloom (the overlays ablation moves the dark share as much as removing the bloom does).
+3. **The cross-shaped pink-white glints right of her at +2 s.** They read as the generic star sparkles you have rejected. Likely `focusSparkleGLSL` or the hero bubbles' glints, since they are still there with the bloom faded out.
+
+Files I used (I edited nothing):
+- `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_water_r8/regions/regions.md`
+- `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_water_r8/diag/haze_ablations.md`
+- My crops and diffs: `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/hot_start.png`, `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/hot_T2.0.png`, `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/diffzoom_start.png`, `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/coin_start.png`
+
+
+_21 tool steps._

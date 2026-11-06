@@ -488,3 +488,19 @@ Stop hook feedback:
 
 Commit `14cc9ea` saves the gameplay test reports written so far and is pushed. GitHub's branch is at the same commit. The rest of R8's checks are still running, and the autosave will pick up the files they write.
 
+---
+
+### Automatic notice · 2026-11-06 20:40 UTC
+
+_Agent "Strict verdict on R8 vs R7" finished_
+
+---
+
+### Claude · 2026-11-06 20:40 UTC
+
+The art director's verdict is **revert to R7**. Even zooming in 4x and flipping between them, R7 and R8 are barely distinguishable, at the start, +1 s and +2 s alike. No seam, nothing too dark, no lost highlights, but no visible gain either. The perceptual and structural scores even tick slightly away from your original.
+
+The key finding: the bloom only ever added 2-3 brightness levels over the water. It was never the main cause of the milky look.
+
+By your rule, R8 is reverted: R7 stays the candidate. As with earlier rejected experiments, R8 stays only as a record behind its own `water8` switch, and it can't affect R7, which is proven unchanged. I'll save the verdict and check R8's last gameplay results.
+
