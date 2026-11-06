@@ -1,6 +1,28 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-ea1aad4b-wq5nrm`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-99533f95-olruo6`)
 
-## Newest (6 November, about 13:20-14:45 UTC): fourteenth session continued, `?s3=intunnel`: the game STARTS inside the tunnel
+## Newest (6 November, about 14:28-15:45 UTC): fifteenth session, a NEW Claude account; the water candidate `mounds` REJECTED
+
+- **Branch `ccr-99533f95-olruo6`**, started at `91ecb57` (the same commit as the fourteenth session's `ccr-ea1aad4b-wq5nrm`).
+  No other branch holds newer Screen 4 work. (`ccr-d224d313-81g2dq`'s last two commits, 11:37 UTC, carry a HANDOFF
+  section, "step 8 done; S3-1 tested, NOT merged", that this branch's HANDOFF lacks; it is on GitHub there.)
+- **The accepted game is unchanged:** `?s3=intunnel` (accepted bundle `9d7f484f`, commit `cb69eac`). The old account hit
+  its limit at 14:18 UTC while reverting the rejected W1/W1b/W2/W2b water (`bank`, `wave` flags); its autosaves carried that
+  code into the source, gated on those flags. Proven inert: 15 frames identical to `cb69eac`.
+- **Candidate `?s3=intunnel,mounds`** (the swell's contact edge cut into a few large round mounds, shaded as glossy lobes):
+  REJECTED by comparison against the original (rounder contact, but matte gel water and less sparkle). Kept behind its flag
+  as a record. Limitation and next proposal (a real displaced bank MESH of connected lobes facing the camera, procedural,
+  not Tripo): `Previews/WebDemo/screen4_round9_match/43_water_mounds/README.md`. Waiting for the user's decision.
+- **Environment:** this account's personal environment `bubblegame` was created (package registries, MCP servers,
+  `download.blender.org`, `download.pytorch.org`), its setup script `if [ -d bubblegame ]; then bash
+  bubblegame/Tools/cloud_env_setup.sh; fi` (unproven until a fresh session starts on it). Every tool installed and checked
+  here. `cloud_env_setup.sh` now also installs Spector.js 0.9.33 (`$BW_SPECTOR`) and pins PyTorch 2.15.0 / torchvision
+  0.29.2 / LPIPS 0.1.4 / Optuna 5.0.0; `Tools/requirements/*.lock.txt` record the exact environments. No plugins, no
+  connectors, Tripo not signed in. After a container restart the working folder moves to `/workspace` (the repository stays
+  at `/home/user/bubblegame`), and the project's agents are not loaded until a new session.
+- **Autosave:** restarted after the 14:54 UTC container restart (detached, 288 rounds, session log under
+  `~/.claude/projects/-workspace/`).
+
+## Earlier (6 November, about 13:20-14:45 UTC): fourteenth session continued, `?s3=intunnel`: the game STARTS inside the tunnel
 
 - **The user's directive (13:30 UTC):** the playable level starts directly inside the blue laundry tunnel, her already on the
   water, moving forward when play starts. No girl scene, Laundry Toss, washing-machine cinematic, castle or swim section
