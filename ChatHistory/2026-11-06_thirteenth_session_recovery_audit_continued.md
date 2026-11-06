@@ -1062,3 +1062,48 @@ The remaining visible difference is the dark purple ring of the drum front aroun
 
 Still waiting on S3-1's regression and gameplay checks and the step 8 steering video. When they're done I'll commit S3-1 and send you the step 8 videos, the S3-1 images and the checklist.
 
+---
+
+### Automatic notice · 2026-11-06 11:04 UTC
+
+_Background command "Run the full step 8 test set" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 11:05 UTC
+
+All step 8 tests are done, and both videos recorded with no console errors. Updating the checklist: step 8 is done, S3-1 is in testing, and your Screen 3 items from the new directive are added.
+
+Pushed and confirmed on GitHub (`8bf30d9`). Sending you the step 8 videos, the checklist, and the first Screen 3 result:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/37_step8_white_splashes/videos/compare_straight_original_step7_step8_10s.mp4, Previews/WebDemo/screen4_round9_match/37_step8_white_splashes/videos/compare_steering_original_step7_step8_10s.mp4, Previews/WebDemo/screen4_round9_match/38_checklist_to_match_original/README.md, Previews/WebDemo/screen3_opening_authentic/02_S3-1_castle_visible/10_original_vs_previous_vs_S3-1_tap.jpg, Previews/WebDemo/screen3_opening_authentic/02_S3-1_castle_visible/11_approach_previous_over_S3-1.jpg]_
+
+I've sent the step 8 videos, the checklist, and the first Screen 3 result.
+
+**Step 8 is done and in the game (commit `2a5cda2`).** The tunnel walls now show your original's own white splash shapes, and the game's drawn-in white dashes and specks are off. Everything else was proven unchanged:
+
+- the normal game and all older versions (41 frames identical);
+- gameplay on `?s3=focus` and on the normal game;
+- the straight and steering videos, which recorded with no errors.
+
+**Screen 3, the opening.** I used only your authentic Screen 3 from the repository; the AI concept pictures in your kit are kept out as targets.
+
+- **Why the castle was missing:** a 14 m-wide lavender drum front, built for the tunnel scenes, stood in front of the opening and covered your castle model entirely.
+- **S3-1, the fix:** I cut that drum front down to 4.5 m. Your castle now shows from Tap to Start until she reaches the door: the lavender-pink facade with crowns, gold-capped towers and gold trim.
+- **Screen 4 untouched:** from 3.0 s on, inside the tunnel, the frames are pixel-identical to step 8.
+- **Still testing:** its regression and gameplay checks are running. I'll commit it with its hash once they pass.
+
+**One thing you should know:** the normal game (no `?s3` switch) doesn't show a 3D opening at Tap to Start. It shows your Screen 3 painting as a flat picture, and only `?s3=focus` shows the real 3D opening. Once the 3D opening matches well enough, you'll need to decide whether it should replace that picture in the normal game. It's on the checklist (S3-10).
+
+**What's next, in your order:**
+1. **S3-2, the gold washer doorway:** a large thick gold rim with strong blue depth through it, replacing the slim rim, the dark purple ring around it and the pale glass-ball look.
+2. **S3-3 to S3-5:** the slide water, the large blue brush at the left, and the gold machinery at the right.
+
+The checklist has every item and marks the ones that need your decision:
+- the button labels;
+- the creature inside the bubble;
+- brush size against its hit area;
+- when to start remodelling the character.
+
+It also asks you to re-send the Art Layer Extraction Kit, which never arrived.
+

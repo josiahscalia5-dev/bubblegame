@@ -1,0 +1,5 @@
+page.waitForFunction: Target page, context or browser has been closed
+    at fresh (/home/user/bw-s3a/WebDemo/tools/screen3/r2_func.cjs:24:116)
+    at async /home/user/bw-s3a/WebDemo/tools/screen3/r2_func.cjs:26:3 {
+  log: []
+}
