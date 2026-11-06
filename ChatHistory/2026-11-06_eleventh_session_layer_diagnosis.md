@@ -319,3 +319,9 @@ The derivation reads the original from the repository, and my sparse worktree di
 
 `fill_rings` takes several minutes per run; the 96-texel version is still going. Waiting for it:
 
+While the map regenerates, the game edits. First the texture loader: it should take the ring map's file name from the `focus` settings, falling back to the step 3 file:
+
+All the edits are in. Building:
+
+Comparing against step 4's bundle, token by token, to confirm only the intended values changed:
+
