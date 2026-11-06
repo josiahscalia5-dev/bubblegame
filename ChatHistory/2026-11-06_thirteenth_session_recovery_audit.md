@@ -54,3 +54,21 @@ Now the real picture. Five branches have a few commits not in the current line. 
 
 The side branches are older parallel attempts; the line ending at `d3a35aa` is clearly the newest. Now the very end of the last session's chat, to find exactly where it stopped.
 
+Autosave is running (pid 1045). Next: the tools documentation and setup script.
+
+The tools folder is missing on this new account, as expected. Running the repository's setup script in the background while I check plugins and connections:
+
+No plugins or connectors are enabled on this new account. Let me check which of the project's previous plugins are in this account's catalog.
+
+All the plugins the project used before are in this account's catalog but none is enabled; I can't enable them from inside a session. Now checking GitHub access and the cloud environment settings.
+
+The setup is nearly done. While `npm install` finishes, let me find how the last session captured its step 4 baseline frame, so I can prove the recovered build reproduces it exactly.
+
+Every tool installed except Blender. Now the decisive recovery test: rebuild the game from source and check it is byte-identical to the committed step 4 bundle.
+
+Approved and active. Re-running the setup script from the repositories' parent folder, exactly as a future session's setup script would:
+
+Every tool is now installed, Blender included. Saving that same one-line setup on the new environment means future sessions start with the tools already installed (one more approval prompt):
+
+Both environment changes are saved. Next, I'll make a side-by-side of where the game stands now: the original next to the recovered build at the checkpoint frame.
+

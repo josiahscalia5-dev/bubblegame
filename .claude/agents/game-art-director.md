@@ -57,7 +57,37 @@ Rules: Round 5 (`?s3=round5`) is the only place visual changes go. The normal ga
 pixel-identical. Controls, lanes, the tunnel route, the five-heart system, the sock mission and power-ups must not change. The
 fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and ranked.
 
-## Newest: tenth session, BOTH evening lines merged (5 November 2026, from 21:45 UTC; this section overrides the notes below)
+## Newest: eleventh to thirteenth sessions, where the work is now (6 November 2026; this section overrides the notes below)
+
+- **Repository:** `josiahscalia5-dev/bubblegame`. **Branch:** `ccr-d224d313-81g2dq` (the thirteenth session's, on a new Claude
+  account; it starts exactly at the eleventh session's last save `d3a35aa`, the same commit as `ccr-038551a2-x01b22`). The
+  lead merges and pushes; never push another branch, never force-push. Branches `ccr-8e0bc6eb-qmanjq` / `ccr-b10ee34b-rn9s7h`
+  (a parallel "eleventh/twelfth session" pass 4 with agents, 00:00-00:50 UTC) were left behind by the user's switch to the
+  developer-tools approach: do not build on them.
+- **Work only on `?s3=focus`.** `match` stays the unchanged comparison and rollback baseline. The game is at **step 4**
+  (`666905c`, bundle md5 `73ed2a8b...`): steps 2 (interface, `a715434`), 3 (the original's own rings, `13fccff`) and 4
+  (`floorFx.lift` 0.55 -> 0). Rollback checkpoint: `2f88104`.
+- **Step 5 was TESTED and HELD, not in the game** (`Previews/WebDemo/screen4_round9_match/30_step5_fill_map/README.md`,
+  `step5_game_changes_HELD.patch`): the fill-only ring map (`derive_ring_map.py --fill`, `textures/screen4/tunnel_rings_fill.png`)
+  restores the original's splashes on the walls, but the distant centre turned whiter (white 8.8 -> 29.4 %, original 21.7).
+  Cause: the core's ring placement assumes a straight tunnel while the path bends 15-30 m ahead, stretching the inner rings
+  4-5 x (`28_next_investigation/`). **Next is step 6, the centre placement, then step 5 re-tested on top of it.**
+- **The user's rules of 6 November** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`):
+  - `05_CLAUDE_STRICT_VISUAL_MATCH_BRIEF.md` (03:02 UTC): one meaningful correction at a time; after each, a REAL screenshot
+    comparison original / previous / new at seed 7, 3.0 s, no steering, 767 x 1536 AND Pixel 7, plus moving moments
+    (`WebDemo/tools/screen4/motion_shots.cjs`, `30_step5_fill_map/motion_capture.sh`); **if it looks less like the original,
+    REVERT it**; no blind experiments, no extra effects, no expensive agent fan-out without evidence; do not touch the pink
+    character yet; no new AI water art.
+  - `10_USER_COMPOSITION_DIRECTIVE.md` (03:47 UTC): the tunnel is the hero (bright blue vortex, layered rings in cyan,
+    turquoise, icy blue and soft purple, a clear glowing centre, strong depth); less clutter (no oversized fluffy brush
+    shapes); coins and gems in a clean runner path into depth; water splashy but not foamy enough to block the tunnel.
+- **Diagnosis tools (use them before changing anything):** `WebDemo/tools/screen4/layer_diag.cjs` (census, per-layer
+  ablation of the SAME frame, texture swap), `layer_metrics.py`, `motion_shots.cjs`; findings in `26_layer_diagnosis/`.
+- **Settings trap:** a `liquid.hide` list in `focus` REPLACES `match`'s (`['r6BowWave', 'lqSpraySheets']`); keep both entries.
+- **Recovery proof (thirteenth session):** the rebuilt bundle is byte-identical (`73ed2a8b...`) and the seed 7, 3.0 s frame
+  has 0 differing pixels against `30_step5_fill_map/layers_step4/base_canvas.png` (`31_recovery_audit/`).
+
+## Earlier: tenth session, BOTH evening lines merged (5 November 2026, from 21:45 UTC; this section overrides the notes below)
 
 - **Repository:** `josiahscalia5-dev/bubblegame`. **Branch:** `ccr-9f8e2c8d-0zg3mc` (the tenth session's). The lead merges every
   agent's work into it and pushes; never push another branch, never force-push. `HANDOFF.md` names the merge commit.
