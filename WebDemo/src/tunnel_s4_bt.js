@@ -44,10 +44,13 @@ export const INTUNNEL = { u: 1.592, speed: 7.21 };
 // crest), kind (0 a lavender soap dome, 1 a light aqua water dome)]
 export const DOMES_ON = BT_ON && LIST.includes('domes');
 export const DOMES = {
-  list: [[16, 0.10, 0.03, 0.35, 0], [27, 0.06, 0.05, 0.3, 0], [2, 0.12, 0.05, 0.45, 1], [-9, 0.07, 0.05, 0.3, 0],
-    [-20, 0.09, 0.03, 0.35, 0], [-31, 0.065, 0.04, 0.3, 0], [37, 0.07, 0.02, 0.3, 0], [-43, 0.08, 0.02, 0.35, 1]],
-  look: { lavender: '#a295ee', top: '#dcd2fa', foot: '#87b9ed', aqua: '#a6d1f5', rim: '#f4f2ff', film: 0.35, rimPow: 2.2, rimAlpha: 0.55,
-    alpha: [0.42, 0.5], arc: [0.55, 0.85], arcK: 0.9, glintPow: 60 },
+  // (first build: the radii below / 1.106, body alpha [0.42, 0.5], lavender #a295ee, highlight 0.9: too small and too faint by
+  // eye, glassy pale circles. Then 12 Optuna trials on the real game, tools/screen4/optuna_domes.py; LPIPS hardly moved, 0.567-
+  // 0.595 round her base, so the choice was by eye among the best-scored: trial 8, lavender round her base 6.7 % against the
+  // original's 6.5 %; trial 11's bigger domes hid her base, trial 4's were pale. Previews/WebDemo/screen4_round9_match/41_bubble_domes/)
+  list: [[16, 0.1106, 0.03, 0.35, 0], [27, 0.0664, 0.05, 0.3, 0], [2, 0.1328, 0.05, 0.45, 1], [-9, 0.0774, 0.05, 0.3, 0], [-20, 0.0996, 0.03, 0.35, 0], [-31, 0.0719, 0.04, 0.3, 0], [37, 0.0774, 0.02, 0.3, 0], [-43, 0.0885, 0.02, 0.35, 1]],
+  look: { lavender: '#8d7fdf', top: '#dcd2fa', foot: '#87b9ed', aqua: '#a6d1f5', rim: '#f4f2ff', film: 0.35, rimPow: 2.2, rimAlpha: 0.55,
+    alpha: [0.733, 0.813], arc: [0.55, 0.85], arcK: 0.912, glintPow: 60 },
 };
 { const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.domes; if (tune) for (const k of Object.keys(tune)) DOMES[k] = typeof tune[k] === 'object' && !Array.isArray(tune[k]) ? { ...DOMES[k], ...tune[k] } : tune[k]; }   // (test tunes only)
 

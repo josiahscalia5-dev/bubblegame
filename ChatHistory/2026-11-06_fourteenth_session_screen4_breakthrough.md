@@ -992,3 +992,9 @@ Its switch is `S3.cine`, turned on for every pass from `round3` onward, which in
 
 Now the settings and the hook-up. First sampling the original's actual dome colours at her base, rather than guessing them:
 
+The study is running: 12 trials, 3 at a time, each a real game render. Meanwhile, checking the phone recorder's script, because in the new mode the video must start at the in-tunnel start screen:
+
+The gameplay checks are mostly position-driven ("advance until she reaches 8.5 m", and so on), so they apply to the new start too. Checking the study's progress:
+
+Trials are running (about 1-1.5 minutes per batch of three). Writing the in-tunnel start's evidence README meanwhile:
+
