@@ -497,3 +497,17 @@ Hiding the droplets made a different layer **appear**: `lqSpraySheets`. Replacin
 
 The only visible-layer difference between the builds is now the droplets, as intended (bundle `22fa5a5a…`). Re-capturing step 5's layer sheet and motion moments:
 
+Now the step 5 evidence sheets: the layer isolation for both builds, the 3.0 s frame with zoomed zones, and every motion moment before and after. Measurements per zone go alongside.
+
+The numbers are mixed, so I'll judge by eye as your brief requires. Full frame first:
+
+Game files are back to step 4 (`73ed2a8b…`). Writing the step 5 record, then committing the tools and evidence, with no game change:
+
+---
+
+### You (sent while Claude was working) · 2026-11-06 03:47 UTC
+
+Build Screen 4 to match the approved reference as closely as possible. Do not redesign it. Do not make it generic. Keep it as a real playable 3D scene, but visually it must look like the approved image on the left. The tunnel must be a bright magical blue water vortex with layered circular rings in cyan, turquoise, icy blue, and soft purple, with a clear glowing center and strong depth. Reduce the current clutter and stop filling the screen with oversized fluffy brush shapes. The approved screen is more open and readable: the tunnel itself must be the hero. Keep the pink fluffy mascot running forward from the bottom foreground, viewed from behind, low in frame. Place gold paw-print coins and purple gems floating through the tunnel in a clean runner path, spaced naturally into depth. Add the cute sock collectible style from the approved image and make the mission panel feel visually consistent with the approved screen. The water at the bottom should feel splashy and magical, but not so foamy that it blocks the tunnel view. The scene should have more glowing bubbles, more luminous blue motion, and less random obstruction. Match the approved composition: a centered vortex, cleaner foreground, clearer tunnel rings, brighter blue water energy, fewer large foreground objects, and a more polished magical laundry-world look. Do not change the gameplay system, controls, collectibles logic, or protected tunnel functionality unless required visually. This is a visual correction task. Prioritize matching the approved image, especially the tunnel color, depth, ring structure, coin/gem placement, and overall composition.
+
+_[1 image attached]_
+
