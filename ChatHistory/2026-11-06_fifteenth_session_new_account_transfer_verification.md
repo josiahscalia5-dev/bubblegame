@@ -323,3 +323,14 @@ Make sure you save everything to my GitHub repository. Make sure everything's sa
 
 Exporting the chat right up to this message and saving now, rather than waiting for the next 5-minute round:
 
+Everything is saved to GitHub. Branch `ccr-99533f95-olruo6` is at **`ea48592`**; I checked GitHub's copy directly, and nothing on this machine is left unsaved.
+
+- **Chat history:** this whole session, up to and including your save request just now, is in `ChatHistory/2026-11-06_fifteenth_session_new_account_transfer_verification.md`. Earlier sessions' chats are in the same folder.
+- **The game:** your accepted Screen 4 (`?s3=intunnel`), unchanged. The rejected water candidate (`?s3=intunnel,mounds`) is kept only behind its own flag.
+- **Evidence and notes:** the comparison sheets in `Previews/WebDemo/screen4_round9_match/43_water_mounds/`, and the updated `HANDOFF.md`.
+- **Tools setup:** the setup scripts (now including Spector.js) and the lock files recording the exact tool versions.
+- **Design agents and Screen Matcher:** their definitions are in `.claude/`, unchanged.
+- **Autosave:** still running every 5 minutes, so anything new in this session keeps going to GitHub automatically.
+
+The installed tools on this machine and your account-level settings can't live in a repository. The `bubblegame` environment's setup script reinstalls the tools automatically in each new session.
+
