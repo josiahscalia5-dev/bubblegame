@@ -186,3 +186,27 @@ The alias now runs first in the bundle. Re-rendering candidate 1:
 
 Found it: my settings object had two keys named `hole` (a size range and a colour), so the size became a colour string. Renaming the colour:
 
+---
+
+### You (sent while Claude was working) · 2026-11-06 12:04 UTC
+
+Claude, I have seen your ORIGINAL | CURRENT STEP 8 | NEW CANDIDATE 1 comparison.
+
+I want to be extremely clear: the third image is MUCH WORSE than Step 8 and does not resemble my approved original.
+
+I understand you discovered that "?s3=bt" initially loaded the wrong tunnel, and that you found the duplicate "hole" setting. Please finish correcting those technical errors.
+
+BUT DO NOT ACCEPT OR COMMIT THE VISUAL CANDIDATE UNTIL YOU VERIFY THAT IT ACTUALLY USES ALL THE COMPLETED STEP 8 IMPROVEMENTS.
+
+After fixing the test mode, show me a NEW comparison at the exact same camera, seed, character position and gameplay moment.
+
+I specifically want to see whether the pink character is more clearly ON TOP of the blue water, without losing the correct original tunnel, cobalt-blue rings, brushes, coins, gem, sock, and mission interface.
+
+If the new candidate does not look clearly closer to my ORIGINAL APPROVED SCREEN, REVERT IT.
+
+I want real improvement, not a different-looking game.
+
+Do not proceed to another feature until the new visual comparison proves the correction actually works.
+
+_[1 image attached]_
+

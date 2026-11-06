@@ -27,8 +27,9 @@ export const BT = {
   water: {
     // 1. she sits ON TOP of the water: the swell's crest lowered in front of her body 0.36 m (focus: 0.08), fully within 26
     //    degrees of straight ahead, none beyond 56 (focus: 22, 48), so her round body shows down to her base and the water
-    //    meets her there; her sides keep their splash (measured by live tune at 3.0 s: dip 0.22 and 0.36)
-    swellFront: { dip: 0.36, full: 26, to: 56 },
+    //    meets her there; her sides keep their splash (live tunes at 3.0 s: 0.36 showed her down to 0.915 H, too tall; 0.26
+    //    0.885 H; 0.20 0.867 H, her round dome narrowing into the froth at her base, as the original at 0.833 with its froth)
+    swellFront: { dip: 0.2, full: 26, to: 56 },
     face: {
       // 2. the face's water two-tone like the original's (its zone, k-means: #e5effa 30 %, #acd4f5 24 %, #53aff0 18 %,
       //    #8fa6e9 17 %, #178ee8 9 %): vivid azure currents with light sky between, not one pale blue
