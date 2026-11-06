@@ -102,11 +102,17 @@ export const MOUNDS_ON = BT_ON && LIST.includes('mounds');
 export const MOUNDS = {
   water: {
     face: {
-      // (hi / lo about focus's own 0.56 / 0.49, so the waterline stays the approved one: the user's brief, 15:10 UTC)
-      teeth: { round: 1, per: 6.5, warp: 0.45, speed: 0.12, hi: 0.56, lo: 0.485, fine: 0.004, lobe: 0.0, bob: 0.15, tip: [0.55, 1.0] },
-      mound: { foot: 0.35, lav: 0.25, deep: '#2f86ea', body: '#5aaef2', light: '#b4dcf8', lavBody: '#93a6ec', white: '#f2f8ff',
-        rim: 0.9, rimPow: 2.5, glint: [0.06, 0.14], amount: 0.9 },
+      // (per 5.5 / lift 0.04 / lo 0.46: variant B of five tried by eye; the crest 2 cm up and the valleys down, so the
+      // waterline's average stays the approved one while the mounds' tops cover her base's square corners; A and C, 4 cm up,
+      // hid too much of her)
+      teeth: { round: 1, per: 5.5, warp: 0.45, speed: 0.12, hi: 0.56, lo: 0.46, fine: 0.004, lobe: 0.0, bob: 0.15, tip: [0.6, 1.0] },
+      // reach: m down the face a mound's body fills; rimW: m below its top edge its white rim runs; glintE: m below the edge
+      // its glint sits
+      mound: { reach: 0.3, side: 0.35, lav: 0.22, deep: '#1668dc', body: '#3f9cf0', light: '#86c6f7', lavBody: '#8f9fea', white: '#f2f8ff',
+        rim: 1.0, rimPow: 1.5, rimW: 0.03, glint: [0.06, 0.14], glintE: 0.04, amount: 0.7 },
+      lace: { share: 0.4 },   // (fewer of focus's thin white comma arcs: the user's "repetitive thin splashes")
     },
+    swellFront: { lift: 0.04 },
   },
 };
 export const DOMES = {

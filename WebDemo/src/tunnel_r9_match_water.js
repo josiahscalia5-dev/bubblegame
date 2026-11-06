@@ -504,20 +504,24 @@ function btFrothGLSL() {
 function moundGLSL() {
   const T = MATCH_WATER.face.teeth, M = MATCH_WATER.face.mound;
   return /* glsl */ `      {   // ?s3=...,mounds: the round mounds as glossy water domes
-        float mdH = max(${f4((T.hi - T.lo) * 1.9)} * fsTip, 1e-3);
-        float mdY = fsTooth - fsE / mdH;
-        float mdIn = smoothstep(${f4(-M.foot)}, 0.0, mdY);
+        // (each mound a lobe: its rounded top the cut outline, its body filling reach m down the face below it, whatever its
+        // outline's height there. A dome measured from the outline's own height covered only a thin band along the edge, the
+        // face being seen almost edge-on near the crest; stretched, it hung down as fingers: red-dome diagnostic renders)
+        float mdY = fsTooth * (1.0 - clamp(fsE / ${f4(M.reach)}, 0.0, 1.0));
+        float mdIn = 1.0 - smoothstep(${f4(M.reach * 0.55)}, ${f4(M.reach)}, fsE);
         float mdZ = sqrt(max(1.0 - fsMu * fsMu - mdY * mdY, 0.0));
-        vec3 mdN = normalize(vec3(fsMu, max(mdY, 0.0), mdZ + 0.05));
+        // (lit mostly from top to bottom: lit across alone, the lobes read as a curtain's vertical pleats)
+        vec3 mdN = normalize(vec3(fsMu * ${f4(M.side ?? 1)}, max(mdY, 0.0), mdZ + 0.05));
         float mdLit = clamp(dot(mdN, normalize(vec3(-0.45, 0.6, 0.66))), 0.0, 1.0);
         float mdLav = step(1.0 - ${f4(M.lav)}, lqHash(vec2(fsI, 17.3)));
         vec3 mdC = mix(${v3s(M.deep)}, ${v3s(M.body)}, smoothstep(0.1, 0.7, mdLit));
         mdC = mix(mdC, ${v3s(M.lavBody)}, mdLav * 0.7);
         mdC = mix(mdC, ${v3s(M.light)}, smoothstep(0.7, 0.95, mdLit));
         float mdRimN = texture2D(uLqTex, vec2(s * 4.3 + fl * 0.2, 0.71 + uTime * 0.03)).b;   // (broken, not a ring)
-        float mdRim = pow(1.0 - mdZ, ${f4(M.rimPow)}) * smoothstep(0.25, 0.55, mdRimN + 0.25 * mdY);
+        float mdRim = pow(1.0 - mdZ, ${f4(M.rimPow)}) * smoothstep(0.25, 0.55, mdRimN + 0.25 * mdY)
+          * (1.0 - smoothstep(${f4(M.rimW * 0.5)}, ${f4(M.rimW)}, fsE));   // (along the top edge only: the cusps stay dark blue)
         mdC = mix(mdC, ${v3s(M.white)}, clamp(mdRim * ${f4(M.rim)}, 0.0, 1.0));
-        float mdGl = 1.0 - smoothstep(${f4(M.glint[0])}, ${f4(M.glint[1])}, length(vec2(fsMu + 0.38, mdY - 0.55 * fsTooth) * vec2(1.0, 1.6)));
+        float mdGl = 1.0 - smoothstep(${f4(M.glint[0])}, ${f4(M.glint[1])}, length(vec2(fsMu + 0.38, (fsE - ${f4(M.glintE)}) / ${f4(M.reach)} * 3.0)));
         mdC = mix(mdC, ${v3s(M.white)}, mdGl);
         mwCol = mix(mwCol, mtUndisplay(mdC), mdIn * ${f4(M.amount)} * (1.0 - fsSpark * 0.6));
       }
