@@ -131,3 +131,22 @@ _Background command "Wait for the gameplay tests to finish" completed (exit code
 
 While those run, I'll write R5's README; the video and second test results get added when they land.
 
+R5's README is written. Meanwhile I'll update `HANDOFF.md` and `CLAUDE.md`, so the next session sees R3c, R4 and R5 and where they stand.
+
+`HANDOFF.md` and `CLAUDE.md` are updated, and the autosave pushes them within 5 minutes. The straight recording is at 205 of 300 frames; the steering recording, the video assembly and the rerun of the second gameplay test come after it. I'll continue when they finish.
+
+---
+
+### Automatic check · 2026-11-06 18:57 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 18:57 UTC
+
+Saved and pushed: commit `a8bb914`, and GitHub is at the same commit. The autosave's round just before had already picked up most of these files, so this commit held the last two.
+
+The R5 recordings and the second gameplay test are still running. I'll finish the report when they're done.
+
