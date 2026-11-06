@@ -1288,3 +1288,41 @@ I've documented the hook in `CLAUDE.md`. I'm waiting for the art director's verd
 Stop hook feedback:
 [command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
 
+---
+
+### Claude · 2026-11-06 16:35 UTC
+
+The normal game and `focus` are identical to step 8 on this bundle. Writing the experiment's README and the hand-off, then saving:
+
+Everything is saved (`a44a445`, GitHub matches). Sending you the experiment's comparison sheets:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/01_FULLRES_original_accepted_candidate.jpg, Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/02_closeup_water_contact.jpg, Previews/WebDemo/screen4_round9_match/43_curling_crests/sheets/03_moving_accepted_vs_candidate.jpg]_
+
+The curling-crest experiment didn't get the water closer to your original, so I reverted it. The accepted `?s3=intunnel` build with the in-tunnel start is unchanged, and everything is saved to GitHub (`a44a445`).
+
+**The crest experiment** (`?s3=intunnel,crest`, behind its own flag)
+- I reused the existing curling splash sheets: real 3D sheets that rise from the water beside her, curl over at a white lip, and move with the flow and her steering. Only their placement, size and colours changed.
+- **First try:** the crests curled toward the camera, so they showed only as thin slivers.
+- **Second try:** taller crests facing the camera. They follow her while moving, but they read as pale, frosted fins beside her, with no visible curl or bright white lip.
+- **Screen Matcher:** not closer. The pale milky blue rose from 17.1 % to 18.7 % of the play area (your original has 11.8 %), and the colour difference on the right side nearly doubled.
+- **Art director:** revert. "Your original's water there is low, bright-white broken crests, spray and bubbles hugging her base."
+
+**Checks after reverting:** the accepted build's start screen is pixel-identical to before. The normal game and `focus` are identical to step 8.
+
+**What these experiments add up to:** everything tried round her this session (domes, lobes, lobe shading, crests) read as an object placed beside her. Your original has no structure there. The real difference is fine, bright, broken white detail sitting low on saturated blue right at her base. Ours has too much pale milky blue there and flat white dashes. If you want another attempt, I'd work on those two things in the existing water at her base, rather than adding new shapes.
+
+**Session-start autosave:** done. A small start-up script in the repository restarts the 5-minute autosave after a restart or resume.
+- It starts it only when none is running, and never on `main` or another branch it would have to switch to.
+- It reuses the existing save scripts (the chat export already removes keys) and doesn't touch the game.
+- I tested it four ways: it skips when the autosave is running, skips outside the cloud, starts exactly one copy when stopped, and doesn't start a second. The copy it started pushed in its first round.
+- It runs in every session from now on that opens this branch, and in all others once you merge it into your main branch.
+- It runs before the session begins but only launches the autosave in the background, so it adds almost no delay.
+
+Your download pack is saved under `Design/ReferencePacks/` as comparison images; your original stays the only target.
+
+Files are in `Previews/WebDemo/screen4_round9_match/43_curling_crests/`:
+- README.md
+- sheets/01_FULLRES_original_accepted_candidate.jpg
+- sheets/02_closeup_water_contact.jpg
+- sheets/03_moving_accepted_vs_candidate.jpg
+
