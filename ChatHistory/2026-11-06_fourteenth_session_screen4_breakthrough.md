@@ -1164,3 +1164,17 @@ _Monitor event: "intunnel final tests: identity, gameplay, videos"_
 
 You've hit your 5-hour limit · resets 4pm (UTC)
 
+The session's worker restarted, so first checking what survived: the autosave, the video job and the branch.
+
+---
+
+### You (sent while Claude was working) · 2026-11-06 16:03 UTC
+
+Continue
+
+---
+
+### Claude · 2026-11-06 16:03 UTC
+
+The machine restarted again (up under a minute), which stopped the autosave. Its last save was 14:38 UTC. Restarting it first:
+
