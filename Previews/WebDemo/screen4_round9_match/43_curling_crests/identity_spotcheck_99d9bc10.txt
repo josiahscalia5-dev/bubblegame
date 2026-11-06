@@ -1,0 +1,7 @@
+focus_2.9.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_4.2.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+focus_tap.png                538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_2.9.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_4.2.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+normal_tap.png               538x1076  differing pixels 0  max channel difference 0  IDENTICAL
+ALL IDENTICAL

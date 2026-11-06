@@ -1,6 +1,22 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-ea1aad4b-wq5nrm`)
 
-## Newest (6 November, about 14:50-16:20 UTC): fourteenth session, the water round her: four candidates, ALL REJECTED
+## Newest (6 November, about 16:25-17:00 UTC): the curling-crest experiment (rejected) and the session-start autosave hook
+
+- **The user approved one experiment:** real curling crest geometry (`spCurls`) round her, `?s3=intunnel,crest`.
+  - C1: edge-on slivers. C2: standing frosted fins.
+  - Screen Matcher not closer; the art director said revert. Reverted; a record behind its flag
+    (`Previews/WebDemo/screen4_round9_match/43_curling_crests/README.md`).
+- **`?s3=intunnel` stays the accepted test mode,** 0 pixels changed (bundle `99d9bc10`).
+- **The session-start autosave hook** (`.claude/hooks/session-start.sh`, `.claude/settings.json`,
+  `Tools/autosave_sessions.json`): it restarts the 5-minute autosave after a restart or resume, only if it isn't running,
+  never on `main` / `master`.
+  - Validated: it skips when the autosave is running, skips outside the cloud, starts exactly one copy, which pushed in
+    its first round.
+- **The user's pack** `BWK_Screen4_WORKING_DOWNLOAD_PACK.zip` is saved in
+  `Design/ReferencePacks/2026-11-06_Screen4_Working_Download_Pack_from_user/` (comparison images only; the original stays the
+  authority).
+
+## Earlier (6 November, about 14:50-16:20 UTC): fourteenth session, the water round her: four candidates, ALL REJECTED
 
 - **The user's brief (14:50 UTC):** the water round her first. Rounded glossy cobalt-turquoise wave forms, cyan-white crests,
   a few clear lavender domes. Then the brushes and the diamond, only if the water got visibly closer.
