@@ -1338,3 +1338,21 @@ Save everything to my GitHub resporitory   and chat and chat history and my enti
 
 Checking what's already on GitHub, and finding anything not yet saved:
 
+Everything is saved to your GitHub repository: the latest commit is `2542d46`, GitHub shows the same commit, and nothing is left unsaved.
+
+**What's on GitHub:**
+- **Chat history:** every session's chat in `ChatHistory/`, including this session's chat up to your last message.
+- **Design agents:** your four design agents (art director, water and effects, tunnel and lighting, gameplay testing), the Screen Matcher skill and the new autosave start-up script, all in `.claude/`. The transcripts of everything the design agents did this session are in `ChatHistory/` too.
+- **Your uploads:** all 12 distinct files you sent in this chat, in `ChatHistory/2026-11-06_fourteenth_session_uploads/`. Your download pack is also unpacked under `Design/ReferencePacks/`.
+- **The game:** its full source and build in `WebDemo/`, with every test mode, including the in-tunnel start.
+- **Tools:** the project's tools in `Tools/` and `WebDemo/tools/` (Spector, region comparison, Optuna, test scripts), plus this session's helper scripts.
+- **Mobile app:** its source, icons, settings and build script in `Tools/android_apk/`.
+- **Evidence:** all comparison sheets, videos and reports in `Previews/`.
+
+**Saving every 5 minutes:** the autosave is running and each round checks that GitHub actually received the save. If the cloud machine restarts, the new start-up script starts the autosave again by itself. I've tested it.
+
+**Three things can't go on GitHub, and here's how each is covered:**
+- **The installed programs** (Blender, PyTorch, LPIPS, Optuna, more than 6 GB) are far over GitHub's file limits. `Tools/cloud_env_setup.sh` reinstalls all of them on a new machine.
+- **The built Android file (.apk) and its signing key** are deliberately left out because your repository is public; a published signing key would let anyone sign apps as you. The app's full source and build script are saved, so it rebuilds exactly.
+- **Plugins:** this account has no Claude plugins switched on. Your project's own design agents and Screen Matcher skill are all saved.
+
