@@ -8,7 +8,7 @@ Writes 01_FULLRES_<labels>.jpg (the start view with the HUD, the original first)
 import os, sys
 from PIL import Image, ImageDraw, ImageFont
 
-OUT = sys.argv[1]; RUNS = [a.split('=', 1) for a in sys.argv[2:]]
+OUT = sys.argv[1]; RUNS = [a.rsplit('=', 1) for a in sys.argv[2:]]   # (the label may hold '=', the path does not)
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), *['..'] * 5))
 ORIG = os.path.join(ROOT, 'Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg')
 os.makedirs(OUT, exist_ok=True)
