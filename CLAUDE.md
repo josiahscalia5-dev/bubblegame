@@ -37,6 +37,10 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
     irregular cobalt ribbons with turquoise currents, dark-blue gaps and curved, broken white streaks. Not smooth, even,
     wide pastel rings or a big peach band. Bubbles are secondary.
   - Commit and push each tested step and give the hash.
+- **The user's briefs of 6 November** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`, `05_...` and
+  `10_...`): one correction at a time, each compared original / previous / new at the checkpoint, at Pixel 7 and at moving
+  moments; **revert anything that looks less like the original**; the tunnel is the hero, with a clear glowing centre, less
+  clutter and a clean coin / gem path. `focus` is at step 4; step 5 is held (see `HANDOFF.md`).
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
   scene. Never restart or rebuild the game from scratch.
 

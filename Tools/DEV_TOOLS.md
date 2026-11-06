@@ -1,6 +1,25 @@
 # Development tools for Bubble Wash Kingdom
 
-## Newest check: 4 November 2026, 23:30 UTC, branch `ccr-aeee6378-mv5kot`, on the fourth Claude account
+## Newest check: 6 November 2026, 04:10 UTC, branch `ccr-d224d313-81g2dq`, on a new Claude account (thirteenth session)
+
+- **Cloud environment:** the account's Default environment allows package registries only, so `cloud_env_setup.sh`'s Blender
+  download was refused (403 from the proxy for `download.blender.org`). A personal environment **`bubblegame`** was created
+  with the user's approval: package registries, MCP servers and `download.blender.org`; its setup script is
+  `if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`. Re-run here, every step passed (Blender 5.2.3
+  checksum matched). The script runs in each NEW session started on `bubblegame` (pick it in the environment menu); it is
+  unproven until the first such session.
+- **Tools (all installed and checked):** Blender 5.2.3 LTS, OpenCV 5.0.0, scikit-image 0.26.0, glTF Transform 4.5.1, glTF
+  Validator 2.0.0-dev.3.10, Vite 8.3.5, Tripo CLI 0.11.2 (not signed in), Node 22.23.4, npm 10.9.9, Python 3.13.18,
+  ImageMagick 6.9.12, FFmpeg 6.1.1, Git LFS 3.4.1, Playwright 1.63.0 / Chromium 153. `node build.mjs` byte-identical.
+- **Claude Code plugins: none enabled; connectors: none.** In the account's catalog (Anthropic Directory), not enabled:
+  playwright (Microsoft), github (GitHub), context7 (Upstash), Superpowers (obra), frontend-design, code-simplifier,
+  claude-md-management, claude-code-setup, commit-commands, feature-dev, Security Guidance (Anthropic). No Chrome DevTools or
+  TypeScript LSP plugin found. Only the user can enable them (claude.ai), then a NEW session loads them.
+- **Working without plugins:** the session's GitHub tools (signed in as `josiahscalia5-dev`), Playwright through the
+  `playwright` package, the project skill and the four agents in `.claude/`, built-in skills (skill-creator, code-review,
+  security-review, simplify).
+
+## Earlier check: 4 November 2026, 23:30 UTC, branch `ccr-aeee6378-mv5kot`, on the fourth Claude account
 
 This account's cloud environment started empty: no `~/.bubblewash-tools` and no Setup script.
 `bash Tools/cloud_env_setup.sh` installed everything in about 2 minutes, exit 0. To make it lasting, paste

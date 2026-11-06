@@ -1,8 +1,38 @@
-# Hand-off: where Bubble Wash Kingdom stands (5 November 2026: Round 9, `?s3=match` and `?s3=focus` both merged, branch `ccr-9f8e2c8d-0zg3mc`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 4, step 5 held; branch `ccr-d224d313-81g2dq`)
 
 Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
 
-## Newest (6 November, about 02:30 UTC): eleventh session, step 4 done, the next corrections investigated
+## Newest (6 November, from 04:08 UTC): thirteenth session, a NEW Claude account, recovery audit (no game changes)
+
+- **Branch:** `ccr-d224d313-81g2dq`, starting exactly at the eleventh session's last save `d3a35aa` (03:53 UTC; the same
+  commit as `ccr-038551a2-x01b22`, left untouched). Every other branch was checked against it with the full history: none
+  holds newer Screen 4 work. `ccr-8e0bc6eb-qmanjq` / `ccr-b10ee34b-rn9s7h` are a parallel pass 4 (00:00-00:50 UTC, agents'
+  unfinished patches) that the user left for the developer-tools line; older branches' extra commits were restored here earlier.
+- **The game is at step 4** (`666905c`), rollback checkpoint `2f88104`. Recovery proof (`Previews/WebDemo/screen4_round9_match/31_recovery_audit/`):
+  - `node build.mjs` rebuilds `game.bundle.js` byte-identical (md5 `73ed2a8b...`);
+  - the seed 7, 3.0 s `focus` frame: 0 differing pixels against `30_step5_fill_map/layers_step4/base_canvas.png`; no console errors.
+- **Step 5 (the eleventh session, 02:19-03:45 UTC, after the user's "yes start step 5"): TESTED and HELD**, not in the game
+  (`30_step5_fill_map/README.md`, `step5_game_changes_HELD.patch`, commit `350c54d`). The fill-only map restores the
+  original's splashes on the walls, but the distant centre got whiter (white 8.8 -> 29.4 %, original 21.7), so by the user's
+  revert rule it was not applied. The cause is the core's ring placement on the bent path (rings stretched 4-5 x 15-30 m
+  ahead). **Next: step 6, the centre placement; then step 5 re-tested on top of it.** The step 5 report had not yet reached
+  the user when the old account stopped.
+- **The user's two newest briefs** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`):
+  `05_CLAUDE_STRICT_VISUAL_MATCH_BRIEF.md` (03:02 UTC: one correction at a time, original / previous / new comparisons at the
+  checkpoint, Pixel 7 and moving moments, revert anything that looks less like the original) and
+  `10_USER_COMPOSITION_DIRECTIVE.md` with `09_...jpg` (03:47 UTC: the tunnel is the hero, a clear glowing centre, less
+  clutter and no oversized brush shapes, a clean coin / gem runner path). The old account stopped at 03:48, just after saving them.
+- **This account:** no Claude plugins enabled and no connectors (all the project's earlier plugins are in its catalog;
+  `Tools/DEV_TOOLS.md`). GitHub works (`josiahscalia5-dev`). A personal cloud environment `bubblegame` was created
+  (approved by the user): package registries plus `download.blender.org`, and the setup script
+  `if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`. Every tool installed, Blender 5.2.3 included.
+  Tripo is not signed in (not needed; no credits spent).
+- **Design agents:** all four files have a new "Newest: eleventh to thirteenth sessions" section. This session's agents were
+  loaded before it was written, so brief them to read it first.
+- **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_thirteenth_session_recovery_audit.md`, agents
+  `..._thirteenth_session_design_agent_transcripts.md`).
+
+## Earlier (6 November, about 02:30-03:53 UTC): eleventh session, step 4 done, the next corrections investigated (step 5 and the 6 November briefs: see above)
 
 - **Step 4, committed `666905c` (rollback point `2babe4f`):** `?s3=focus` `floorFx.lift` 0.55 → 0, the user's approved
   first correction. Evidence and tests: `Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/README.md`.
