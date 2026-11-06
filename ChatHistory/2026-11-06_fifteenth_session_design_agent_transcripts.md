@@ -68,5 +68,69 @@ Please answer, concisely:
 - 18:58 `Bash`: Check layer_diag env options
 - 18:58 `Bash`: Prepare ablation list for T1.0
 - 18:58 `Bash`: Run layer ablations on R6 at +1 s
+- 19:00 `Bash`: Sheet and white share of ablations
+- 19:00 `Bash`: Build ablation sheet and verify base matches
+- 19:00 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/abl_sheet.png
+- 19:00 `Bash`: Split bubble layers ablation at +1 s
+- 19:01 `Bash`: Attribute side white to bubble layer
+- 19:01 `Bash`: Inspect census entries 1 and 199
+- 19:01 `Bash`: Find source of the Points particle system
+- 19:01 `Bash`: Find particle emitters in game.js
+- 19:02 `Bash`: Zoom left and right of her edges
+- 19:02 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/sides.png
+- 19:02 `Read`: /tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/under_acc.png
+- 19:02 `Bash`: Read drop shader and wake emitters
+**Agent** (19:03 UTC):
 
-_32 tool steps._
+1. **Verdicts** (judged by eye against the original only)
+
+| | Start | Moving (+1 s, +2 s) |
+|---|---|---|
+| R6 vs R4 | About the same | About the same |
+| R6 vs accepted | Clearly closer | Slightly closer |
+
+- **R6 vs R4:** at her lower left and right, R6 has removed the white fringe left over from the original's fur, and the water is bluer there. Directly under her centre, though, it has lost lavender the original has. In motion the area under her is a little less white, but the sides are unchanged.
+- **R6 vs accepted:** R6 uses the original's own bubbly blue, white and lavender water, while the accepted build has a flat pale sky-blue sheet with white brush strokes. In motion, the white piles at the sides look much the same in all three builds and dominate the picture.
+
+2. **Directly under her:** neither R4 nor R6 has the original's domes, so removing the lavender lost colour but no shape.
+   - **The original:** two large rounded periwinkle-lavender domes with bright white rims overlap her lower edge (about x 230-440, y 1225-1300), with a small lavender ring at about x 460. The top edge of the water is scalloped and rises in front of her.
+   - **R4:** lavender in that place, but as shapeless violet smears with no rims, below a flat, ragged, roughly horizontal cut across her body.
+   - **R6:** the same cut. The centre of that band is now periwinkle-blue and white, with a thin white lip along her edge; lavender remains only at her lower left.
+   - So R6 is cleaner but less like the original's colour there. Supporting numbers: lavender in the strip right under her is 28.8 % in R4 and 19.7 % in R6, and in the band 13.0 % and 9.9 %, against the original's 15.3 %.
+
+3. **Regressions and remaining differences**
+   - **Caused by R6:** less lavender (above), and slightly more icy-pale water (band 29.5 % to 31.6 %, original 27.5 %). Nothing else changed.
+   - **Already there in R4 and R6 alike:**
+     - In motion, matte white "cotton-ball" piles at both sides, the largest difference from the original.
+     - The flat cut across her body instead of the original's scalloped domes.
+     - The water looks soft and blurred, without the original's crisp white rims.
+     - At +2 s, pink four-point star sparkles over her body. These are the generic star sparkles the user dislikes, drawn as the "sparkle star" in the particle shader (`dropFragment` in `shaders.js`).
+
+4. **Recommendation: keep R6 as THE candidate.** It is a marginal step: the leftover fur fringe is gone and nothing new looks worse, apart from the lost lavender. Don't present it to the user as the fix.
+
+   **The most important next correction is the white in the moving frames, and it does not come from the water material.** I ran one diagnostic myself: a layer-removal test on R6's +1 s frame with `layer_diag.cjs`. My base render matches the delivered frame with 0 differing pixels. White share in y 1150-1400 (whole width / left / right):
+
+| What was hidden | Whole width | Left | Right |
+|---|---|---|---|
+| Nothing (R6 as is) | 26.7 % | 38.0 % | 44.1 % |
+| The game's spray particles (with one tiny brush-fringe plane) | 16.4 % | 22.9 % | 20.1 % |
+| Original, for comparison | 14.9 % | 21.4 % | 15.5 % |
+
+   - Other removals hardly change it: bloom off gives 26.7 to 25.8 %; hiding the splash bank (`heroSplash`, `spCurls`, `spLumps`, `lqWaterlineBubbles`) or the tunnel bubbles changes nothing.
+   - **Cause:** the game's own wake and bow spray. It is the `Particles` system in `game.js` (`fx.emitT`, about lines 1036-1050), drawn as water droplets by `dropFragment` in `WebDemo/src/shaders.js`. Each droplet has a rim brightened to 1.25, alpha up to about 0.87, and a size that grows the closer it is to the camera. So droplets thrown towards the camera turn into big white balls.
+   - **Fix, under `intunnel` only:** change how these droplets are drawn, not how many are made.
+     - Cap the drawn point size, as `tunnel_r5.js`'s drop shader already does with `uMaxPx`, so near droplets stay small speckles.
+     - Shift the rim's white towards the original's cyan and blue-white, and lower the droplets' alpha.
+     - Don't touch the emitters: they draw from the game's seeded `Math.random`, so changing the counts would shift the run.
+   - **Aim:** side white at +1 s and +2 s back to about 15-21 %.
+   - **After that:** the contact edge, giving the water's top contour the original's scalloped lavender domes with white rims, instead of the flat ragged cut.
+
+Files are in `/tmp/claude-0/-workspace-bubblegame/9c6fb324-0d45-5383-b759-baaa6f4cba10/scratchpad/`:
+- `abl_sheet.png` (the layer-removal test at +1 s)
+- `contact4.png` (the area right under her: original, accepted, R4, R6)
+- `sides.png` (her lower left and right: original, R4, R6)
+- `band_r6.png` (the water band: original, R6 at start, +1 s and +2 s)
+- `abl_T1/` and `abl2_T1/` (the raw layer-removal frames)
+
+
+_44 tool steps._

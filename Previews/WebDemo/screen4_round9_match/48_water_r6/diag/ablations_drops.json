@@ -1,0 +1,71 @@
+[
+{
+"label": "no_drops",
+"hide": [
+"^Points"
+]
+},
+{
+"label": "no_kind0",
+"drop": {
+"frag": [
+"a *= vAlpha;",
+"a *= vAlpha; if (abs(vKind - 0.0) < 0.5) a = 0.0;"
+]
+}
+},
+{
+"label": "no_kind1",
+"drop": {
+"frag": [
+"a *= vAlpha;",
+"a *= vAlpha; if (abs(vKind - 1.0) < 0.5) a = 0.0;"
+]
+}
+},
+{
+"label": "no_kind2",
+"drop": {
+"frag": [
+"a *= vAlpha;",
+"a *= vAlpha; if (abs(vKind - 2.0) < 0.5) a = 0.0;"
+]
+}
+},
+{
+"label": "no_kind3",
+"drop": {
+"frag": [
+"a *= vAlpha;",
+"a *= vAlpha; if (abs(vKind - 3.0) < 0.5) a = 0.0;"
+]
+}
+},
+{
+"label": "cap12px",
+"drop": {
+"vert": [
+"gl_PointSize = size * uScale / max(0.1, -mv.z);",
+"gl_PointSize = min(size * uScale / max(0.1, -mv.z), 12.0);"
+]
+}
+},
+{
+"label": "cap20px",
+"drop": {
+"vert": [
+"gl_PointSize = size * uScale / max(0.1, -mv.z);",
+"gl_PointSize = min(size * uScale / max(0.1, -mv.z), 20.0);"
+]
+}
+},
+{
+"label": "cap30px",
+"drop": {
+"vert": [
+"gl_PointSize = size * uScale / max(0.1, -mv.z);",
+"gl_PointSize = min(size * uScale / max(0.1, -mv.z), 30.0);"
+]
+}
+}
+]

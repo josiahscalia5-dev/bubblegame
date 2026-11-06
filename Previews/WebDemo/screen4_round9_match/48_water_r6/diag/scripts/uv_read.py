@@ -29,9 +29,18 @@ for arg in sys.argv[2:]:
     row = g / 255 * (TEX_H - 1); col = r / 255 * (TEX_W - 1)
 
     def slope(arr, axis, y0, y1):
-        d = np.diff(arr, axis=axis); m = face[1:, :] & face[:-1, :] if axis == 0 else face[:, 1:] & face[:, :-1]
-        sel = np.zeros_like(m); sel[y0:y1] = True; v = d[m & sel & (np.abs(d) < 20)]
-        return float(np.median(v)) if v.size else float('nan')
+        # least-squares slope of the texel coordinate along the screen axis, per column (rows) or per row (columns), the
+        # median over them: robust to the 8-bit quantization of the code
+        out = []
+        if axis == 0:
+            for x in range(0, 767, 4):
+                ys = np.arange(y0, y1); m = face[y0:y1, x]
+                if m.sum() > 40: out.append(np.polyfit(ys[m], arr[y0:y1, x][m], 1)[0])
+        else:
+            for y in range(y0, y1, 4):
+                xs = np.arange(767); m = face[y]
+                if m.sum() > 200: out.append(np.polyfit(xs[m], arr[y][m], 1)[0])
+        return float(np.median(out)) if out else float('nan')
 
     def at(y):
         v = row[y][face[y]]

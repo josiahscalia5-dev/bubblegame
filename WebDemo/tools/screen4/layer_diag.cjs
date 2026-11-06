@@ -116,7 +116,16 @@ const server = http.createServer((req, res) => {
         if (post.tone === 'none') R.toneMapping = 0;
         if (post.tone === 'linear') R.toneMapping = 1;
         if (post.exposure != null) R.toneMappingExposure = post.exposure;
-        window.__diagUndo = () => { undo.forEach(([o, v]) => { o.visible = v; }); R.toneMapping = saved.tm; R.toneMappingExposure = saved.ex; passes.forEach((p, k) => { p.enabled = saved.en[k]; }); };
+        // (fifteenth session) sp.drop: a test edit of the spray particles' shaders for this render only, then restored:
+        // {frag: [find, replace], vert: [find, replace]} on the drop material's fragment / vertex shader
+        const dm = d.particles && d.particles.material, dSaved = dm ? [dm.fragmentShader, dm.vertexShader] : null;
+        if (sp.drop && dm) {
+          if (sp.drop.frag) dm.fragmentShader = dm.fragmentShader.replace(sp.drop.frag[0], sp.drop.frag[1]);
+          if (sp.drop.vert) dm.vertexShader = dm.vertexShader.replace(sp.drop.vert[0], sp.drop.vert[1]);
+          dm.needsUpdate = true;
+        }
+        window.__diagUndo = () => { undo.forEach(([o, v]) => { o.visible = v; }); R.toneMapping = saved.tm; R.toneMappingExposure = saved.ex; passes.forEach((p, k) => { p.enabled = saved.en[k]; });
+          if (sp.drop && dm) { dm.fragmentShader = dSaved[0]; dm.vertexShader = dSaved[1]; dm.needsUpdate = true; } };
         return { hidden: undo.length };
       }, sp);
       await canvasShot(`abl_${sp.label}.png`);

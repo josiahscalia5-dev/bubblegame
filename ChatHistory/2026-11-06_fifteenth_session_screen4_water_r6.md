@@ -32,3 +32,11 @@ Writing the missing READMEs for R4 and R5 while the ablation runs.
 
 While the probe renders, updating `CLAUDE.md`'s switch list (it still stops at `water2`):
 
+A screenshot timeout from running three renders at once. Rerunning the two moving frames:
+
+Meanwhile, mapping where on screen the full frame is white but the face alone is not:
+
+Candidates for the white blobs: two point-sprite systems (`Points`, 2200 and 700 sprites), a screen quad and the `openingLook` quads. The group ablation will say which.
+
+While that runs, looking at the art director's close-up of the contact under her:
+

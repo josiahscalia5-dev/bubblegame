@@ -1,0 +1,93 @@
+[
+{
+"label": "hide_Points",
+"hide": [
+"^Points"
+]
+},
+{
+"label": "hide_LOD",
+"hide": [
+"^LOD"
+]
+},
+{
+"label": "hide_Mesh",
+"hide": [
+"^Mesh$"
+]
+},
+{
+"label": "hide_Group",
+"hide": [
+"^Group/(?!Group/Group/BubbleWash)"
+]
+},
+{
+"label": "hide_entranceDecor",
+"hide": [
+"^entranceDecor"
+]
+},
+{
+"label": "hide_heroWalls",
+"hide": [
+"^heroWalls"
+]
+},
+{
+"label": "hide_openingLook",
+"hide": [
+"^openingLook"
+]
+},
+{
+"label": "hide_r3Swirl",
+"hide": [
+"^r3Swirl"
+]
+},
+{
+"label": "hide_r3Whirlpool",
+"hide": [
+"^r3Whirlpool"
+]
+},
+{
+"label": "hide_r6Porthole",
+"hide": [
+"^r6Porthole"
+]
+},
+{
+"label": "hide_s4Brush",
+"hide": [
+"^s4Brush"
+]
+},
+{
+"label": "hide_scenery",
+"hide": [
+"^scenery"
+]
+},
+{
+"label": "hide_tunnelDecor",
+"hide": [
+"^tunnelDecor"
+]
+},
+{
+"label": "hide_lqFloor",
+"hide": [
+"^lqFloor"
+]
+},
+{
+"label": "face_and_her_only",
+"solo": [
+"heroSwell",
+"PinkFuzzyMascot"
+]
+}
+]

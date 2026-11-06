@@ -1,0 +1,17 @@
+objects 238 canvas [ 768, 1536 ] post [{"type":"Zc","enabled":true},{"type":"n","enabled":true},{"type":"$o","enabled":true},{"type":"Jc","enabled":true}]
+hide_Points hidden 2
+hide_LOD hidden 19
+hide_Mesh hidden 10
+hide_Group hidden 24
+hide_entranceDecor hidden 23
+hide_heroWalls hidden 1
+hide_openingLook hidden 2
+hide_r3Swirl hidden 1
+hide_r3Whirlpool hidden 1
+hide_r6Porthole hidden 4
+hide_s4Brush hidden 27
+hide_scenery hidden 14
+hide_tunnelDecor hidden 98
+hide_lqFloor hidden 1
+face_and_her_only hidden 236
+no console errors or warnings
