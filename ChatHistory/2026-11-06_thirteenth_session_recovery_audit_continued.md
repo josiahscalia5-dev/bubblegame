@@ -1273,3 +1273,31 @@ Saving everything first. I'll check that the autosave is still running, then sav
 
 The autosave last pushed at 11:17 and stopped there. I'll restart it and the snapshot jobs from a script file, which avoids the shell-scoping slip, then confirm they're running:
 
+Everything is saved to your GitHub repository, and I checked GitHub's own copy afterwards. The latest save is **`2e34cd2`**.
+
+**What's saved:**
+- **The newest chat history:** this conversation up to my last message, including the "what's next" list with S3-2 (the gold washer doorway) and the request to re-send the Extraction Kit. It's in `ChatHistory/2026-11-06_thirteenth_session_recovery_audit_continued.md`; the earlier part of today is in `..._recovery_audit.md`.
+- **Design agents:** all four agent files and your Bubble Wash Exact Screen Matcher skill. Your Claudia kit (16 files) is there too. No agent was launched this session, so there are no new agent transcripts yet.
+- **The work and what was built:**
+  - steps 6, 7 and 8, with their evidence, videos and checklist;
+  - the Screen 3 work: your castle made visible at the opening (S3-1), with its images and tests;
+  - snapshots of every unfinished working copy.
+- **Your files from today:**
+  - the Screen 3 true reference kit and checklist;
+  - the Screen 4 breakthrough plan and its images. The zip you mentioned, `BWK_SCREEN4_BREAKTHROUGH_KIT.zip`, didn't come through, only the plan and the two images (each sent three times).
+- **The hand-off notes,** updated so a new session knows exactly where things stand.
+
+**Something you should know:** this environment restarted twice today, around 09:30 and 11:20 UTC, and each restart stopped the 5-minute autosave. It had stopped again (last save 11:17). I've restarted it, it's pushing every 5 minutes, and I'll keep checking it's alive.
+
+**Where things stand:**
+- **Step 8** (your original's white splashes on the tunnel walls) is in the game.
+- **S3-1** (your castle at the opening) is tested and saved but not in the game. Its gameplay checks were cut off by the restart. Your newest message limits this round to the inside of the tunnel, so I've held S3-1 back.
+- **The Screen 4 breakthrough pass** hasn't started, because you asked me to save everything first. It covers three things:
+  - the foreground water and her water contact;
+  - the whole tunnel's composition;
+  - brushes, coins, gem and sock framing the tunnel rather than covering it.
+
+  At most two serious tries per problem, then the comparisons and videos, as you asked.
+
+Shall I start it now?
+
