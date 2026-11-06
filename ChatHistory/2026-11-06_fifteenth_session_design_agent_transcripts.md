@@ -356,3 +356,101 @@ My crops are in `/tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0
 
 
 _54 tool steps._
+
+---
+
+## Game Art Director: Strict verdict on R8 vs R7 (started 20:37 UTC)
+
+**Lead → agent** (20:37 UTC):
+
+You are the strict, independent art director for Bubble Wash Kingdom's Screen 4. Read `/workspace/bubblegame/CLAUDE.md` first. Do not edit any file.
+
+THE ONLY TARGET: the ORIGINAL approved Screen 4, `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536).
+
+THE USER'S RULE for this experiment: R8 is ONE isolated experiment on the excessive bloom / glow / haze over the foreground water round the pink character, revealing the existing deeper cobalt water, without globally darkening the tunnel, without changing geometry, keeping R7's rounded contact, lavender domes, character, HUD, coins, brushes, camera, and NOT making the water too dark or losing its bright cyan-white highlights. "If R8 is not visibly better, revert to R7."
+
+WHAT R8 IS (`?s3=intunnel,water8`) = R7 (`?s3=intunnel,water7`, your earlier pick) + ONLY the bloom pass's added glow faded out over the lower part of the screen (screen y 0.74 -> 0.80 from the top, glow fully off below 0.80). Proven: 0 differing pixels above y 0.74 (the tunnel, brushes, gem, sock, upper coins unchanged); below, on average 2.3 levels darker (the glow removed). The water's highlights are still drawn at full brightness, without their halo.
+
+EVIDENCE (real three.js gameplay, seed 7, no steering, same camera and moments), in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_water_r8/`:
+- `sheets/01_FULLRES_original_R7_R8.jpg`, `01_FULLRES_original_R7_R8_T1.0.jpg`, `01_FULLRES_original_R7_R8_T2.0.jpg` (the full scene with the HUD at the start, +1 s, +2 s);
+- `sheets/02_closeup_water_start_x1.4.jpg`, `03_closeup_water_moving_T1.0.jpg`, `03_closeup_water_moving_T2.0.jpg` (ORIGINAL | R7 | R8, the water round her);
+- raw canvases `final/{start,T1.0,T2.0}/base_canvas.png` (R8) and `../49_water_r7/final/...` (R7);
+- the diagnosis ablations of R7 (the same moments, one layer off at a time) are summarised in `../../../../WebDemo/src/tunnel_s4_bt.js` above `WATER8`;
+- measurements in the water band x 60-700, y 1250-1420 (pink, gold, buttons excluded; `scripts/haze_metrics.py`): start dark pixels (luma < 0.6) R7 12.1 % -> R8 15.8 % (original 14.6), saturated blue 13.3 -> 15.7 (12.2), white 22.5 -> 21.9 (20.7), mean luma 0.780 -> 0.767 (0.773), crisp highlights 0.55 -> 0.56 %; +1 s dark 10.1 -> 12.0, sat 6.4 -> 8.0; +2 s dark 7.2 -> 9.8, sat 3.9 -> 5.9. Region LPIPS may appear in `regions/regions.md` (do not wait for it).
+Look at the images yourself; crop, enlarge and flip between R7 and R8 with `$BW_PY` (after `source Tools/bw_tools_env.sh`) where useful.
+
+ANSWER strictly and briefly:
+1. Is R8 VISIBLY better (closer to the original) than R7 at the start? At +1 s? At +2 s? Name what you see, where.
+2. Anything worse: too dark, lost cyan-white highlights, a visible seam or band edge near y 0.74-0.80 (look at the brushes, coins, her body and the water there), anything else that changed that should not have?
+3. Verdict: KEEP R8 as the candidate to present, or REVERT to R7 (the user's rule: revert unless visibly better). One sentence why.
+4. If kept: what still differs most in the water round her after R8 (ranked, with the likely layer).
+
+**Agent** (20:37 UTC):
+
+I'll look at the evidence sheets first.
+
+- 20:37 `Bash`: List R8 evidence files
+- 20:37 `Bash`: List sheets and image sizes
+- 20:38 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/01_FULLRES_original_R7_R8.jpg
+**Lead → agent** (20:38 UTC):
+
+[Image: original 2317x1576, displayed at 2000x1360. Multiply coordinates by 1.16 to map to original image.]
+
+- 20:38 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/02_closeup_water_start_x1.4.jpg
+**Lead → agent** (20:38 UTC):
+
+[Image: original 2902x678, displayed at 2000x467. Multiply coordinates by 1.45 to map to original image.]
+
+**Agent** (20:38 UTC):
+
+The difference is subtle at sheet scale. I'll make a diff map and enlarged R7/R8 crops from the raw canvases.
+
+- 20:38 `Bash`: Compute R7 vs R8 diff per band
+**Agent** (20:38 UTC):
+
+Mean change is 1-3 levels; maxima of 25-50 sit in spots. I'll look at the diff map and enlarged crops.
+
+- 20:38 `Bash`: Build bottom-band comparison sheets with diff
+- 20:38 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/band_start.png
+**Lead → agent** (20:38 UTC):
+
+[Image: original 3102x486, displayed at 2000x313. Multiply coordinates by 1.55 to map to original image.]
+
+**Agent** (20:38 UTC):
+
+Too small to judge. I'll enlarge the water round her, R7 next to R8, at 2x.
+
+- 20:38 `Bash`: Make 2x zoom crops of water around character
+- 20:38 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/zoom_start_L.png
+**Lead → agent** (20:38 UTC):
+
+[Image: original 2180x660, displayed at 2000x606. Multiply coordinates by 1.09 to map to original image.]
+
+- 20:38 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/zoom_start_R.png
+**Lead → agent** (20:38 UTC):
+
+[Image: original 2180x660, displayed at 2000x606. Multiply coordinates by 1.09 to map to original image.]
+
+**Agent** (20:38 UTC):
+
+At 2x R7 and R8 look almost the same. I'll check the moving moments, then enlarge the diff map over the 0.74-0.80 ramp, where the coin, her head and the bubbles cross it.
+
+- 20:38 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/zoom_T1.0_L.png
+**Lead → agent** (20:38 UTC):
+
+[Image: original 2180x660, displayed at 2000x606. Multiply coordinates by 1.09 to map to original image.]
+
+- 20:38 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/zoom_T2.0_R.png
+**Lead → agent** (20:38 UTC):
+
+[Image: original 2180x660, displayed at 2000x606. Multiply coordinates by 1.09 to map to original image.]
+
+**Agent** (20:38 UTC):
+
+I'll enlarge the diff map over the ramp and check the row-by-row luma for a step.
+
+- 20:38 `Bash`: Check ramp profile and seam evidence
+- 20:39 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/diffzoom_start.png
+- 20:39 `Read`: /tmp/claude-0/-workspace-bubblegame/1cadc793-36fb-5fea-90e3-fc0c8f5efb1a/scratchpad/coin_start.png
+
+_15 tool steps._

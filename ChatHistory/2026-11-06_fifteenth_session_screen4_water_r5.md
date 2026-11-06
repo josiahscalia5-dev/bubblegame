@@ -444,3 +444,47 @@ The accepted build passes the full power-up test now. Next the same test on R7, 
 
 While those render, I'll check how the water face material is drawn (opaque or blended, and what it outputs), since that decides which glow fix is clean:
 
+While those run, I'll save R8's diagnosis into the evidence folder (the ablation measurements, the bloom-source split, the live settings) and commit.
+
+R7 passed every check, and R8 is built and measured. It's committed (`57181b0`) as a test switch only, and R7 is unchanged.
+
+**What R8 is:** the same-moment tests showed the bloom glow is what fills the water's dark pockets. Most of it is the water's own white highlights glowing over the darker water around them. The colour grade isn't the haze; with it off, the water gets paler. So R8 fades only the glow, and only over the lower part of the screen where the foreground water is.
+
+**What it changes:**
+- Nothing above the water band changed: 0 differing pixels above screen height 0.74. The tunnel, brushes, gem, sock and upper coins are exactly R7, and the accepted game and R7 stay identical.
+- Your bright cyan-white highlights keep their full brightness; only the soft halo round them goes.
+
+**Measured in the water round her:**
+
+| | dark pockets | saturated blue | white |
+|---|---|---|---|
+| original | 14.6 % | 12.2 % | 20.7 % |
+| R7 → R8, start | 12.1 → 15.8 % | 13.3 → 15.7 % | 22.5 → 21.9 % |
+| R7 → R8, +1 s | 10.1 → 12.0 % | 6.4 → 8.0 % | |
+| R7 → R8, +2 s | 7.2 → 9.8 % | 3.9 → 5.9 % | |
+
+By eye the change is real but subtle: slightly deeper blue in the lower water, with no glow fog round the white crests. It isn't too dark: average brightness is 0.767 against the original's 0.773.
+
+**Still running:** the art director's verdict on whether R8 is visibly better than R7 (if not, I revert to R7 as you asked), the region measurements, and R8's gameplay checks. R8 won't become the default, and nothing further starts without your approval.
+
+The comparison sheets (ORIGINAL | R7 | R8) are in `Previews/WebDemo/screen4_round9_match/50_water_r8/sheets/`:
+- 01_FULLRES_original_R7_R8.jpg
+- 01_FULLRES_original_R7_R8_T1.0.jpg
+- 01_FULLRES_original_R7_R8_T2.0.jpg
+- 02_closeup_water_start_x1.4.jpg
+- 03_closeup_water_moving_T1.0.jpg
+- 03_closeup_water_moving_T2.0.jpg
+
+---
+
+### Automatic check · 2026-11-06 20:38 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-06 20:38 UTC
+
+Commit `14cc9ea` saves the gameplay test reports written so far and is pushed. GitHub's branch is at the same commit. The rest of R8's checks are still running, and the autosave will pick up the files they write.
+
