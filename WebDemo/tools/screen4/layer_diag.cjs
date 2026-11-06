@@ -50,7 +50,7 @@ const server = http.createServer((req, res) => {
     await page.evaluate((t) => window.__bw.advance(t), +(process.env.T || 3.0));   // T: seconds after the tap (default the 3.0 s checkpoint)
   }
   await page.waitForTimeout(800);
-  await page.screenshot({ path: path.join(OUT, 'base_page.png'), clip: await page.locator('#stage').boundingBox() });
+  await page.screenshot({ path: path.join(OUT, 'base_page.png'), clip: await page.locator('#stage').boundingBox(), timeout: 300000 });   // (a long wait: software WebGL under load)
   const canvasShot = async (file) => { const url = await page.evaluate(() => { window.__bw.render(); return window.__bw.debug().renderer.domElement.toDataURL('image/png'); }); fs.writeFileSync(path.join(OUT, file), Buffer.from(url.split(',')[1], 'base64')); };
   await canvasShot('base_canvas.png');
   await canvasShot('base_again_canvas.png');

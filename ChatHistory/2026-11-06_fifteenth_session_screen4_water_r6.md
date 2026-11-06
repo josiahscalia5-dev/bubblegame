@@ -60,3 +60,7 @@ Only about 3 minutes in; the pair needs about 20 minutes. Meanwhile I'm reading 
 
 While the R8 texture generates, adding R8's shader change: the face drops a pixel where the texture's alpha says "her body", and nothing else changes.
 
+Ten-plus load on four cores (two video recordings and two R8 renders). Meanwhile, drafting R7's README:
+
+The R8 +1 s render timed out from CPU contention (the R8 +2 s and start renders are done). I'll make the diagnostic tool's screenshot wait longer, and render it once the R7 videos finish.
+
