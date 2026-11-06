@@ -1,0 +1,3 @@
+[{"label":"nobloom","post":{"bloom":false}},
+ {"label":"noswell","hide":["heroSwell"]},
+ {"label":"nobubbles","hide":["mwTunnelBubbles","s3Bubbles","openingLook","heroGlow"]}]
