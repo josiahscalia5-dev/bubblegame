@@ -185,7 +185,11 @@ if (WATER6_ON) Object.assign(WATER2, { file: WATER6.file, body: WATER6.body, cut
 // (glint, under 1 so it does not bloom), less opaque (body, rim, hl: the alpha of the body, the rim and the glint), and the
 // foam puffs fainter and blue (foam: colour, alpha). The emission, counts, sizes and the game's random sequence unchanged;
 // the sparkle stars (kind 2, the collect feedback) unchanged.
-export const WATER7 = { drop: [0.22, 0.55, 1.0], glint: [0.9, 0.96, 1.0], body: 0.22, rim: 0.3, hl: 0.45, foam: [0.7, 0.86, 1.0, 0.18] };
+// (R7 first drew only kinds 0 and 1 so: the band at +1 s white 37.1 -> 37.0 %, no change. The white beads are kind 3,
+// round3's "white spray droplet (bright white body, cyan edge)" that stepRound3 throws round her at ROUND5.spray's 450 a
+// second (game.js; its own random numbers), alpha 0.85 and a 1.25 glint. spray: kind 3 the same way, a clear blue drop.)
+export const WATER7 = { drop: [0.22, 0.55, 1.0], glint: [0.9, 0.96, 1.0], body: 0.22, rim: 0.3, hl: 0.45, foam: [0.7, 0.86, 1.0, 0.18],
+  spray: { drop: [0.25, 0.58, 1.0], glint: [0.88, 0.95, 1.0], body: 0.3, rim: 0.3, hl: 0.4 } };
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

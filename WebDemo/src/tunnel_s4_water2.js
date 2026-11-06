@@ -43,6 +43,13 @@ void main() {
   gl_FragColor = vec4(col * a, a);   // premultiplied
 }
 `;
+// (R7) round3's kind 3 white spray (game.js, the patch after `fx`): the same particles drawn as clear blue drops. Puts R7's
+// branch in front of round3's white one (which stays, unreached), so the shader is otherwise exactly round3's.
+export const water7Spray = (src) => { const S = WATER7.spray; return src.replace('if (vKind > 2.5) {', `if (vKind > 2.5) {   // (R7) a clear blue drop with a small blue-white glint
+    float hl = 1.0 - smoothstep(0.0, 0.3, length(p - vec2(-0.3, -0.3)));
+    a = (1.0 - smoothstep(0.75, 1.0, r)) * (${f4(S.body)} + ${f4(S.rim)} * smoothstep(0.5, 0.92, r)) + hl * ${f4(S.hl)};
+    col = mix(${v3(S.drop)}, ${v3(S.glint)}, clamp(hl + smoothstep(0.7, 0.98, r) * 0.3, 0.0, 1.0));
+  } else if (vKind > 2.5) {`); };
 // the uniforms added to the swell's material (tunnel_r8_liquid.js liquidSwell)
 export function water2Uniforms() {
   const u = { uBwRef: { value: new THREE.Matrix4() }, uBwOn: { value: 0 }, uBwTex: { value: null } };

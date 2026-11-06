@@ -196,3 +196,11 @@ While those render, I'll look at what draws the white diagonal dashes in the wat
 
 Identity holds on the R6 bundle: the accepted build at the start and +1 s, and R5, are all 0 differing pixels, with no console errors. Now the moving frames:
 
+Built (bundle `b529f401`). Now R7's frames at the same three moments. Alongside them, identity proofs on this final bundle that the accepted build, R5 and R6 are unchanged.
+
+While R7 renders, I'll save the R6 diagnosis into the evidence folder: the scripts, the measurements, and the key ablation crops as JPEGs.
+
+The autosave will pick this up, but I'll make a proper commit now that R6's code, textures and evidence are complete and its identity proofs pass.
+
+Pushed: commit `8854e02`, and GitHub is at the same commit. While R7 renders, I'll write the final sheet script, which compares any set of builds at the same moments.
+

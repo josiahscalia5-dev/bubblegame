@@ -2,7 +2,7 @@
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
 import { INTUNNEL_ON, INTUNNEL, WATER7_ON } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
-import { water7DropFragment } from './tunnel_s4_water2.js';   // ?s3=intunnel,water7: the spray drawn as blue drops (R7)
+import { water7DropFragment, water7Spray } from './tunnel_s4_water2.js';   // ?s3=intunnel,water7: the spray drawn as blue drops (R7)
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1637,6 +1637,7 @@ async function main() {
     a = (1.0 - smoothstep(0.7, 1.0, r)) * 0.85 + hl * 0.15;
     col = mix(vec3(0.8, 0.93, 1.0), vec3(1.25), clamp(hl + (1.0 - r) * 0.5, 0.0, 1.0));
   } else if (vKind < 0.5) {`);
+      if (WATER7_ON) fx.points.material.fragmentShader = water7Spray(fx.points.material.fragmentShader);   // ?s3=intunnel,water7: blue drops (R7)
       fx.points.material.needsUpdate = true;
     }
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
