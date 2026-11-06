@@ -212,5 +212,48 @@ You may use /root/.bubblewash-tools/visual/bin/python for crops or measurements.
 
 Files are in `/workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/`.
 
+**Lead → agent** (14:02 UTC):
 
-_21 tool steps._
+The coordinator sent a message while you were working:
+Thank you. I applied your advice as dome candidate 2 (the second and LAST controlled candidate for the domes; the user's rule: if not clearly closer, revert): body alpha 0.73 -> 0.38 (clear, violet-tinted centres), near-white Fresnel rims (#ffffff, alpha 0.85, power 3), the centre dome 30 % smaller, the lavender deepened at each foot (#7a6cd6). Also on the start screen: the game clock now starts at the approved moment (the sock faces forward in its approved pose) and the pause / Bubble Blast / Turbo Spin buttons are shown, the Tap to Start a small badge between them.
+
+Sheets in /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/cand2/sheets/: 01_closeup_base_cand1_cand2.jpg (ORIGINAL | PREVIOUS bt 3.0 s | cand 1 | cand 2), 02_FULLRES_original_previous_new.jpg, 03_moving.jpg (previous bt 4/5/6 s against the new build at the same places, +2.0 s without domes for reference). Frames: .../41_bubble_domes/cand2/domes_*/base_page.png.
+My base-band measures (your band y 0.80-0.90, x 0.25-0.75): original sat 0.45, contrast 0.18, white 13.4 %, pink 28.8 %, lavender 18.1 %; previous bt 0.39 / 0.11 / 11.3 / 25.9 / 0.6; cand 1 0.34 / 0.09 / 7.1 / 14.4 / 26.4; cand 2 0.36 / 0.10 / 10.3 / 19.9 / 9.0.
+
+In under 150 words: (1) is cand 2 CLEARLY closer to the original than the previous accepted build (no domes)? yes / no; (2) keep it or revert it; (3) does the start screen now keep the approved composition (sock, buttons)? Be strict.
+
+Address this before completing your current task.
+
+- 14:02 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/cand2/sheets/01_closeup_base_cand1_cand2.jpg
+**Lead → agent** (14:02 UTC):
+
+[Image: original 2618x476, displayed at 2000x364. Multiply coordinates by 1.31 to map to original image.]
+
+- 14:02 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/cand2/sheets/02_FULLRES_original_previous_new.jpg
+**Lead → agent** (14:02 UTC):
+
+[Image: original 2321x1572, displayed at 2000x1355. Multiply coordinates by 1.16 to map to original image.]
+
+- 14:02 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/41_bubble_domes/cand2/sheets/03_moving.jpg
+**Lead → agent** (14:02 UTC):
+
+[Image: original 4652x1572, displayed at 2000x676. Multiply coordinates by 2.33 to map to original image.]
+
+- 14:02 `Bash`: Zoom on candidate 2's base against original and previous
+- 14:02 `Read`: /tmp/claude-0/-workspace-bubblegame/9add4357-64e4-5c80-a01a-8b2e091ae619/scratchpad/rv/c2_zoom.png
+**Agent** (14:02 UTC):
+
+1. **No.** Candidate 2 is not clearly closer than the previous build without domes. Your numbers show only lavender improving: 9% against 0.6%, with the original at 18%. Everything else is still worse than the previous build:
+   - saturation 0.36 against 0.39;
+   - contrast 0.10 against 0.11;
+   - white 10.3% against 11.3%;
+   - visible pink 19.9% against 25.9% (original 28.8%).
+
+   By eye they now read as clear soap bubbles with faint rims. The original's domes are saturated violet with bright white highlights, merged into a white splash bank. Candidate 2 is less cluttered than candidate 1, but it adds a different element rather than the original's.
+
+2. **Revert the domes**, under the user's rule. Keep the in-tunnel start.
+
+3. **Yes, the start screen keeps the composition.** The sock faces forward with its face showing, and the pause, Bubble Blast and Turbo Spin buttons are back. Everything else matches the previous 3.0 s frame. The only addition is the small Tap to Start badge over the foreground water between the buttons.
+
+
+_26 tool steps._

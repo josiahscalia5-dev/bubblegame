@@ -1039,3 +1039,31 @@ I committed and pushed the README draft as `c209eb4`; nothing is left unsaved. T
 
 _Agent "Art director review of the domes" finished_
 
+---
+
+### Claude · 2026-11-06 13:58 UTC
+
+The art director's verdict on the domes is "about the same, not yet closer":
+- **Right:** they're in the original's places, and the lavender at her base rose from 0.3 % to 15 % (the original's is 21 %).
+- **Wrong:** they're milky and nearly opaque, they hide her fur (visible pink fell from 29 % to 17 %, while the original keeps 29 %), they have no bright white rims, and the large centre dome reads as a sticker.
+- **Advice:** adjust rather than revert. Clear violet centres so her fur shows through, near-white rims, and a centre dome about 30 % smaller.
+
+Two problems on the start screen as well:
+- The sock is turned side-on, because its rocking animation follows the clock.
+- The Bubble Blast / Turbo Spin buttons and the pause button aren't shown before the tap.
+
+The tests are still measuring the old build, so I'm stopping them first:
+
+The buttons sit at x 14-104 and 177-267 on the 270-unit stage, leaving a 73-unit gap. Making the pill a two-line badge that fits inside it:
+
+While it reviews, starting the 45-frame identity test on this exact bundle. The domes are gated behind their own `domes` flag, so keeping or reverting them won't change what the other modes draw:
+
+The identity test is running on bundle `9d7f484f`, and the art director is reviewing dome candidate 2. I'll keep the domes only if the verdict is "clearly closer"; otherwise I revert them and keep the in-tunnel start.
+
+---
+
+### Automatic check · 2026-11-06 14:02 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
