@@ -9,6 +9,7 @@ def satblue(im):
     h = cv2.cvtColor(im, cv2.COLOR_RGB2HSV_FULL).astype(float); H = h[..., 0] * 360 / 256; S = h[..., 1] / 255; V = h[..., 2] / 255
     return (H >= 190) & (H <= 235) & (S >= 0.5) & (V >= 0.35)
 out = {}
+if __name__ != "__main__": sys.argv = sys.argv[:1]
 for t in sys.argv[1:]:
     d = f'inventory/T{t}'; b = LM.load(f'{d}/base_canvas.png'); hh, ww = b.shape[:2]
     box = (slice(int(0.25 * hh), int(0.70 * hh)), slice(int(0.05 * ww), int(0.95 * ww)))
