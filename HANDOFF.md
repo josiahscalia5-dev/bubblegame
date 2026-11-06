@@ -12,6 +12,9 @@ Read this first when you continue in a new Claude conversation. `CLAUDE.md`, add
 - **Evidence and full findings:** `Previews/WebDemo/screen4_round9_match/26_layer_diagnosis/README.md`.
   - New diagnostic tools: `WebDemo/tools/screen4/layer_diag.cjs` (census, per-layer ablation of the SAME frame, test tunes,
     texture swap by request interception) and `layer_metrics.py`.
+- **What was measured:** `focus` = step 3 plus the tenth session's untested "pass 4a" autosave change (`fa55483`: the
+  brushes' floor warning stripes from magenta to aqua-white, `FOCUS.water.liquid.hazard`). That change is still in the
+  build.
 - **Diagnosis, in short:**
   - Post-processing is not the cause.
   - Floor: the floor ahead is `lqFloor`'s shader. `floorFx.lift` 0.55 mixes every floor pixel toward ONE pale blue

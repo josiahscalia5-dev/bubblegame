@@ -2,7 +2,13 @@
 
 - **Authority:** the ORIGINAL approved Screen 4 only
   (`Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`, 767 x 1536).
-- **Scope:** `?s3=focus` at step 3 (`13fccff`, bundle unchanged). Water floor and tunnel only; the pink character untouched.
+- **Scope:** `?s3=focus` as it stands on this branch, water floor and tunnel only; the pink character untouched.
+  - That is step 3 (`13fccff`) plus one change the tenth session left in its 23:45 UTC autosave (`fa55483`), never
+    reported as a tested step: "pass 4a". It turned the brushes' warning stripes on the floor from a magenta glow into
+    aqua-white (`FOCUS.water.liquid.hazard`: `#c4f2ff`, 0.3; `tunnel_r8_liquid.js`; bundle rebuilt).
+  - That magenta stripe was the floor's "pink-violet" in the user's step 3 review. It explains why the floor ahead here
+    measures only 0.9% lavender.
+  - The bundle is not changed by this session.
 - **Diagnosis only: no game code or setting was changed.** Every test is a runtime switch (layers hidden, post passes off),
   a test tune (`window.__BW_S3_TUNE__`), or a texture served in place of the shipped one through Playwright's request
   interception. `WebDemo/textures/` and `WebDemo/src/` are untouched.
@@ -136,7 +142,11 @@ shipped map byte-for-byte):
 | focus now (lift 0.55) | 11.5 | 74.5 | 9.0 | 2.29 | 81.4 | 69.7-95.9 (26.2) |
 | **V1: lift 0** | **28.2** | **53.9** | 9.9 | **3.09** | 78.8 | 62.3-96.1 (**33.8**) |
 | V2: lift 0 and the floor's streaks off | 34.9 | 51.6 | 4.2 | 2.57 | 76.7 | 59.9-94.0 |
+| V7: the warning stripe (pass 4a) at 0, lift kept | 13.6 | 72.0 | 9.3 | 2.46 | | |
+| V8: the warning stripe at 0 and lift 0 | 32.7 | 48.4 | 10.4 | 3.46 | | |
 
+- The aqua-white warning stripe adds only about 2.5 points of the pale blue (V7). The lift is the main cause (20.6
+  points, V1). The stripe is gameplay feedback and stays.
 - V1 also lifts the front splash's saturated blue from 16.3 to 23.1%.
 - V1 leaves the walls unchanged and the core within 0.1 point.
 

@@ -916,5 +916,239 @@
     -1.508
    ]
   ]
+ },
+ "V7_hazard0": {
+  "1_wall_rings": {
+   "sat_blue": 50.2,
+   "turquoise": 0.6,
+   "pale_blue": 11.7,
+   "periwinkle": 14.2,
+   "lavender": 13.5,
+   "white": 7.1,
+   "dark_cobalt": 0.0,
+   "chroma": 42.1,
+   "L_mean": 68.7,
+   "L_p5": 45.3,
+   "L_p95": 92.1,
+   "detail": 3.47,
+   "white_blobs": {
+    "count_per_10k": 9.45,
+    "mean_area": 69.6,
+    "solidity": 0.643,
+    "elongation": 3.79
+   },
+   "pixels": 113176,
+   "ring_breakup": 8.08
+  },
+  "2_distant_core": {
+   "sat_blue": 15.9,
+   "turquoise": 0.8,
+   "pale_blue": 31.0,
+   "periwinkle": 15.0,
+   "lavender": 21.1,
+   "white": 8.4,
+   "dark_cobalt": 0.0,
+   "chroma": 27.8,
+   "L_mean": 77.9,
+   "L_p5": 59.0,
+   "L_p95": 93.5,
+   "detail": 3.44,
+   "white_blobs": {
+    "count_per_10k": 14.44,
+    "mean_area": 53.5,
+    "solidity": 0.634,
+    "elongation": 3.62
+   },
+   "pixels": 60949
+  },
+  "3_floor_ahead": {
+   "sat_blue": 13.6,
+   "turquoise": 2.9,
+   "pale_blue": 72.0,
+   "periwinkle": 3.2,
+   "lavender": 0.9,
+   "white": 9.3,
+   "dark_cobalt": 0.0,
+   "chroma": 24.1,
+   "L_mean": 80.9,
+   "L_p5": 69.1,
+   "L_p95": 96.6,
+   "detail": 2.46,
+   "white_blobs": {
+    "count_per_10k": 5.04,
+    "mean_area": 182.9,
+    "solidity": 0.856,
+    "elongation": 3.33
+   },
+   "pixels": 55513
+  },
+  "4_front_splash": {
+   "sat_blue": 16.3,
+   "turquoise": 0.1,
+   "pale_blue": 64.2,
+   "periwinkle": 3.6,
+   "lavender": 0.3,
+   "white": 15.8,
+   "dark_cobalt": 0.0,
+   "chroma": 23.7,
+   "L_mean": 82.0,
+   "L_p5": 65.3,
+   "L_p95": 97.0,
+   "detail": 3.64,
+   "white_blobs": {
+    "count_per_10k": 18.32,
+    "mean_area": 83.7,
+    "solidity": 0.857,
+    "elongation": 2.14
+   },
+   "pixels": 43119
+  },
+  "5_front_water": {
+   "sat_blue": 27.3,
+   "turquoise": 0.0,
+   "pale_blue": 60.9,
+   "periwinkle": 2.3,
+   "lavender": 0.2,
+   "white": 9.4,
+   "dark_cobalt": 0.0,
+   "chroma": 27.1,
+   "L_mean": 79.8,
+   "L_p5": 61.3,
+   "L_p95": 97.0,
+   "detail": 3.29,
+   "white_blobs": {
+    "count_per_10k": 8.54,
+    "mean_area": 107.8,
+    "solidity": 0.791,
+    "elongation": 2.19
+   },
+   "pixels": 60906
+  },
+  "_state": [
+   3.517,
+   1.592,
+   [
+    -0.162,
+    1.599,
+    -1.508
+   ]
+  ]
+ },
+ "V8_hazard0_lift0": {
+  "1_wall_rings": {
+   "sat_blue": 50.2,
+   "turquoise": 0.6,
+   "pale_blue": 11.7,
+   "periwinkle": 14.2,
+   "lavender": 13.5,
+   "white": 7.1,
+   "dark_cobalt": 0.0,
+   "chroma": 42.1,
+   "L_mean": 68.7,
+   "L_p5": 45.3,
+   "L_p95": 92.1,
+   "detail": 3.47,
+   "white_blobs": {
+    "count_per_10k": 9.45,
+    "mean_area": 69.6,
+    "solidity": 0.643,
+    "elongation": 3.79
+   },
+   "pixels": 113176,
+   "ring_breakup": 8.08
+  },
+  "2_distant_core": {
+   "sat_blue": 15.9,
+   "turquoise": 0.8,
+   "pale_blue": 31.0,
+   "periwinkle": 15.0,
+   "lavender": 21.1,
+   "white": 8.4,
+   "dark_cobalt": 0.0,
+   "chroma": 27.8,
+   "L_mean": 77.8,
+   "L_p5": 59.0,
+   "L_p95": 93.4,
+   "detail": 3.44,
+   "white_blobs": {
+    "count_per_10k": 14.44,
+    "mean_area": 53.3,
+    "solidity": 0.634,
+    "elongation": 3.62
+   },
+   "pixels": 60949
+  },
+  "3_floor_ahead": {
+   "sat_blue": 32.7,
+   "turquoise": 8.0,
+   "pale_blue": 48.4,
+   "periwinkle": 3.9,
+   "lavender": 0.8,
+   "white": 10.4,
+   "dark_cobalt": 0.0,
+   "chroma": 26.9,
+   "L_mean": 77.8,
+   "L_p5": 59.4,
+   "L_p95": 96.6,
+   "detail": 3.46,
+   "white_blobs": {
+    "count_per_10k": 6.3,
+    "mean_area": 163.3,
+    "solidity": 0.862,
+    "elongation": 3.23
+   },
+   "pixels": 55513
+  },
+  "4_front_splash": {
+   "sat_blue": 23.1,
+   "turquoise": 0.7,
+   "pale_blue": 57.2,
+   "periwinkle": 3.6,
+   "lavender": 0.3,
+   "white": 15.6,
+   "dark_cobalt": 0.0,
+   "chroma": 24.9,
+   "L_mean": 81.0,
+   "L_p5": 62.6,
+   "L_p95": 97.0,
+   "detail": 4.07,
+   "white_blobs": {
+    "count_per_10k": 18.32,
+    "mean_area": 82.6,
+    "solidity": 0.857,
+    "elongation": 2.09
+   },
+   "pixels": 43119
+  },
+  "5_front_water": {
+   "sat_blue": 27.3,
+   "turquoise": 0.0,
+   "pale_blue": 60.9,
+   "periwinkle": 2.3,
+   "lavender": 0.2,
+   "white": 9.4,
+   "dark_cobalt": 0.0,
+   "chroma": 27.1,
+   "L_mean": 79.8,
+   "L_p5": 61.3,
+   "L_p95": 97.0,
+   "detail": 3.29,
+   "white_blobs": {
+    "count_per_10k": 8.54,
+    "mean_area": 107.8,
+    "solidity": 0.791,
+    "elongation": 2.19
+   },
+   "pixels": 60906
+  },
+  "_state": [
+   3.517,
+   1.592,
+   [
+    -0.162,
+    1.599,
+    -1.508
+   ]
+  ]
  }
 }
