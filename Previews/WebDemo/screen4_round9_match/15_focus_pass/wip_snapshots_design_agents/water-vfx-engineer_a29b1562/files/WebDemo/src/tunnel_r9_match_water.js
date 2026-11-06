@@ -305,8 +305,8 @@ function focusFloorAheadGLSL() {
       float faP = step(${f4(1 - P.share)}, lqHash(faI + 3.3)) * (1.0 - smoothstep(faR - 0.06, faR, min(length(faO), length(faO2) * 1.2)));
       float faC = smoothstep(${f4(A.crest[0])}, ${f4(A.crest[1])}, hDet + caus * 0.3) * step(${f4(1 - A.crest[2])}, lqHash(floor(faQ * vec2(0.5, 1.0)) + 9.7));
       mwCol = mix(mwCol, mtUndisplay(${v3s(A.white)}), clamp(max(faP, faC) * faK * ${f4(A.amount)}, 0.0, 1.0));
-${A.debug ? '      mwCol = mix(mwCol, vec3(0.0, 0.6, 0.0), faK);   // (debug: the zone in green)
-' : ''}    }
+${A.debug ? `      mwCol = mix(mwCol, vec3(0.0, 0.6, 0.0), faK);   // (debug: the zone in green)
+` : ''}    }
 `;
 }
 
@@ -599,7 +599,11 @@ void main() {
     // a streak along the band (its ring round the axis), bent toward the axis
     vec2 dirT = (viewMatrix * vec4(aT, 0.0)).xy, dirI = (viewMatrix * vec4(aN, 0.0)).xy;
     dirT = dirT / max(length(dirT), 1e-4);
-    vec2 dirR = vec2(-dirT.y, dirT.x);
+${FOCUS_ON ? `    {   // ?s3=focus: each streak turned a little off the band (some across it), so they read as splashes, not ring lines
+      float rt = (fract(aB.y * 7.31) - 0.5) * ${f4(FL.turn || 0)};
+      dirT = vec2(dirT.x * cos(rt) - dirT.y * sin(rt), dirT.x * sin(rt) + dirT.y * cos(rt));
+    }
+` : ''}    vec2 dirR = vec2(-dirT.y, dirT.x);
     dirR *= -sign(dot(dirR, dirI) + 1e-6);                     // across it, pointing away from the axis
     float hw = max(fract(aB.w) * 0.1, 0.9 / pxPerM);          // half width (m), at least about a pixel
     mv.xy += dirT * (position.x * 2.0 * r) + dirR * (position.y * 5.0 * hw);
@@ -617,8 +621,10 @@ void main() {
   if (vKind > 0.5) {   // a white streak: a tapered, slightly bent dash (y across it: 2.5 x its half width)
     float x = vQ.x;
     float y = vQ.y * 2.5 - vBend * (x * x - 0.35);
-    float body = exp(-y * y * 3.5) * (1.0 - smoothstep(0.5, 1.0, abs(x)));   // (crisp: the original's flecks are small sharp white bits)
-    float a = clamp(body * 1.7, 0.0, 1.0) * ${f4(FL.alpha)} * vA;
+${FOCUS_ON ? `    y -= (fract(vSeed * 13.7) - 0.5) * ${f4(FL.hook || 0)} * x * x * x;   // ?s3=focus: some hooked (an S or a curl at one end)
+    float body = exp(-y * y * ${f4(FL.soft || 3.5)}) * (1.0 - smoothstep(0.35, 1.0, abs(x))) * (0.75 + 0.25 * (1.0 - abs(x)));   // (softer, chunkier, thicker in the middle)
+` : `    float body = exp(-y * y * 3.5) * (1.0 - smoothstep(0.5, 1.0, abs(x)));   // (crisp: the original's flecks are small sharp white bits)
+`}    float a = clamp(body * 1.7, 0.0, 1.0) * ${f4(FL.alpha)} * vA;
     if (a < 0.004) discard;
     gl_FragColor = vec4(vec3(0.93, 0.98, 1.0) * a, a);
     return;

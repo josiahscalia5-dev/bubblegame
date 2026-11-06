@@ -97,3 +97,16 @@ More picks (probe2): left brush centre (0.06, 0.325): d 4.6 -> (u -1.2, x 1.25, 
 -> (-1.5, -0.85, 1.12); d 4.4 -> (-1.1, -0.91, 1.07); d 4.77 -> (-0.75, -0.98, 1.03). Small coin (0.152, 0.471) d 4.6 -> (-1.0, 1.03,
 1.94). Gem (0.326, 0.511) d 7.3 -> (1.8, 0.92, 1.77). Lower-right coin (0.893, 0.733) d 3.9 -> (-1.75, -1.0, 0.6) = lane 2.43.
 (Layout u = track u + 3.9; deco radius/angle round the axis at h 1.5.)
+
+Iterations (tune_cands, 3.0 s): ob1 (picks, h - 0.07 for the water level): small coin landed 0.024 H low, lower-right coin 0.014
+low, sock 0.23 W wide (too big; I misread its width at first), cuff opening visible. ob2a-c: sock poses [0.18,-0.8,-0.1],
+[0.18,-0.8,0.12], [0,-0.6,-0.25]: the second leaves the cuff about level with its opening hidden. ob3: sockScale 0.6 at u 2.40 h 1.2
+(needs a jump), ob4: u 2.83, h 1.14, scale 0.74 (0.81 m reach, no jump), cuff top 0.565.
+
+**Done (`f994933`)**, measured (objects.py) at 3.0 s: lower-right coin (0.894, 0.734) w 0.219; big left (0.195, 0.608) w 0.202; small
+left (0.151, 0.470) w 0.115, clear below the brush; centre coin area 0.37%; gem (0.324, 0.508) h 0.035; gold total 4.78%. Sock cuff top
+0.565, x 0.665-0.80. Brushes: left x 0-0.20, y 0.23-0.42; right x 0.81-1.0, y 0.41-0.62. s3_func (focus): 12 coins, 1 gem, 2 socks,
+no console errors. Pixel 7: objects in place, no seam (largest left-wall row jump 12.9, median 6.2).
+Remaining: the gem is narrower than the original's (w 0.076 vs 0.099; its shape); the centre coin sits 0.02 W right of the original's.
+
+## 4. Problem B: softer, broader flowing currents with a warm centre (next)

@@ -89,10 +89,11 @@ export const FOCUS = {
       // 1. less clean and perfect: the band spacing more irregular, the wobble from the variation map stronger (0.6 bent them
       //    into blobs at checkpoint 03; 0.3 keeps concentric rings), the bright rims more broken, more white water breaking
       //    over each band's crest
-      bands: { perLog: 4.3, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
-        // more, tighter rings with deeper cobalt between them (the original's layered drum rings; the nearer camera drew
-        // match's bands wider on screen)
-        gap: { from: [0.6, 0.86], amount: 0.95 }, edge: { amount: 0.2 }, rim: { broken: 0.8, amount: 0.4 } },
+      // (problem B: fewer, broader currents, 3.5 per ln r (the original's 3.8 per ln r measured by the Art Director; focus had
+      // 4.3, 4.5-4.9 measured); match's thin ring lines and rims off and its gap lines faint, so no outlines show under the
+      // currents)
+      bands: { perLog: 3.5, warp: 0.3, wobble: 0.3, splash: { from: [0.09, 0.14], to: [0.4, 0.75], amount: 1.0 },
+        gap: { from: [0.6, 0.86], amount: 0.3 }, edge: { amount: 0.0 }, rim: { broken: 0.8, amount: 0.0 } },
       trough: { amount: 0.42 },
       // 1. (the user's vortex kit, about 17:45 UTC) the water as broken, twisting ribbons (focusRibbonsGLSL): curl: two slow
       //    travelling twists of the band phase [amount (bands), waves round a turn, per ln r, speed (rad/s)]; wobble: from the
@@ -102,9 +103,14 @@ export const FOCUS = {
       //    light cyan leading edge), royal and turq (the bodies, turqShare of the arcs turquoise), peri (periShare
       //    periwinkle), deep (from deepFrom across the ribbon), gap (from gapFrom), the edge's width (edgeTo); keep: how much of the derived water's own
       //    light and dark stays as variation; amount: over the walls' water (not in the warm core, not on warm patches)
-      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.42,
-        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96', gapFrom: [0.86, 0.95], deepFrom: [0.68, 0.9], edgeTo: 0.26,
-        turqShare: 0.6, periShare: 0.2, keep: 0.24, amount: 0.8 },
+      //    (the user's kit, about 18:26 UTC, problem B: softly blended arcs, not outlined ribbons) arcBlend / bandBlend: over
+      //    the last part of each arc / band its offset and body blend into the next one's (no breaks); across each current a
+      //    soft periodic profile: the light crest fading over edgeTo (edgeAmount), the body deepening from deepFrom, a soft
+      //    darker core (gap) at gapAt, width gapW, gapAmount, and the next crest rising over the band's last `wrap`
+      ribbons: { curl: [[0.36, 2, 1.6, 0.35], [0.15, 5, 3.1, 0.6]], wobble: 0.4, arcs: [4, 8], offset: 0.35, arcBlend: 0.35, bandBlend: 0.3,
+        edge: '#86e2fb', royal: '#1a62e2', turq: '#18acf4', peri: '#5f74e0', deep: '#1c4fd2', gap: '#142f96',
+        edgeTo: 0.2, edgeAmount: 0.9, wrap: 0.14, deepFrom: [0.35, 0.75], gapAt: 0.75, gapW: 0.12, gapAmount: 0.35,
+        turqShare: 0.3, periShare: 0.2, keep: 0.12, amount: 0.95 },
       // match's hue pull (203-216 degrees toward royal 218) turned the turquoise currents royal: nearly off
       royal: { amount: 0.1 },
       // match's mid-vortex whitening (the brightest pale blue toward white, r 0.05-0.24 W) narrowed to the inner part, so it

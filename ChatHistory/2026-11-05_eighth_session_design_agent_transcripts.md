@@ -325,8 +325,30 @@ Address this before completing your current task.
 - 00:17 `Bash`: Build objects step, capture, verify against tune render
 - 00:18 `Bash`: Read s3_func header
 - 00:18 `Bash`: Run gameplay functional check under focus
+- 00:19 `Bash`: Pixel 7 capture after objects step
+- 00:20 `Bash`: Compare 1:2 and phone frames, seam check
+- 00:20 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/obj_phone.png
+- 00:20 `Bash`: Commit objects step
+- 00:20 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/NOTES.md
+- 00:20 `Bash`: Measure ring metrics after camera and objects
+- 00:21 `Bash`: Mid tunnel crop original vs current
+- 00:21 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/mid0.png
+- 00:22 `Bash`: Locate ribbon function references
+- 00:22 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 00:22 `Bash`: Rewrite focus ribbons as softly blended currents
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_match.js
+- 00:23 `Bash`: Locate ribbon and band settings
+- 00:23 `Read`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/WebDemo/src/tunnel_r9_focus.js
+- 00:23 `Write`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/b1/cands_in.json
+- 00:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-ae55466877e7d52cb/Previews/WebDemo/screen4_round9_match/17_tunnel_lighting_focus/scripts/b_metrics.sh
+- 00:24 `Bash`: Build, render B candidates, measure
 
-_149 tool steps._
+_171 tool steps._
 
 ---
 
@@ -630,5 +652,21 @@ Now update NOTES.md with the state before the WIP commit.
 - 00:18 `Bash`: Find warning range settings
 - 00:18 `Bash`: Check the floor's alpha uniform
 - 00:19 `Bash`: Add a floor zone debug view and capture it
+- 00:19 `Bash`: Show the build error
+- 00:19 `Bash`: Show the esbuild error message
+- 00:19 `Bash`: Fix the debug line and rebuild
+- 00:20 `Bash`: Capture the floor zone debug view
+- 00:20 `Bash`: Crop the floor debug view
+- 00:20 `Read`: /tmp/claude-0/-home-user-bubblegame/8c78cdea-9bde-5c76-a992-3bfd55a5d099/scratchpad/wv/c_fdbg.png
+- 00:21 `Bash`: Check the de-lilac block is in the bundle
+- 00:21 `Bash`: Check whether the warning glow is tunable
+- 00:21 `Bash`: Probe whether her fur tints the floor pink
+- 00:22 `Bash`: Add turned, hooked, softer streaks under focus
+- 00:22 `Bash`: Check the fur probe status
+- 00:22 `Bash`: Check probe files so far
+- 00:22 `Bash`: Compare floor lavender with her fur hidden
+- 00:23 `Bash`: Compare the patch colours before and after the floor change
+- 00:23 `Bash`: Sample the debug green zone for additive tints
+- 00:23 `Bash`: Rebuild and capture floor and streak/bubble trials
 
-_183 tool steps._
+_199 tool steps._
