@@ -103,7 +103,12 @@ closer, dE the mean-colour CIEDE2000):
   - `gameplay/s3_func_water7.txt` (Tap to Start, real swipes left, right and up, the jump, the ride into the tunnel, coins,
     the sock, keyboard start, console): identical to R3c's report, except 2 fewer draw calls and 168 fewer triangles (the
     two hidden suds and foam-bubble meshes); no console errors.
-  - `gameplay/r2_func_*.txt` (hearts, pause, Bubble Blast, Turbo Spin): see below.
+  - `gameplay/r2_func_water7.txt` (hearts, pause by button and keyboard, Bubble Blast clearing the brushes ahead and
+    disabled at 0, Turbo Spin 6.68 -> 8.78 m/s with no knocks, console): IDENTICAL to the accepted build's report
+    (`gameplay/r2_func_accepted_intunnel.txt`), which equals R3c's earlier one; no console errors.
+  - (`r2_func` timed out on its second page load here for every build, the accepted one included: the old page's game loop
+    starved the new load. `tools/screen3/r2_func.cjs` now has an opt-in `NEWPAGE=1`: the old page closed first, then a new
+    page per section; with it the second load is ready in about 4 s. Without it the tool is unchanged.)
 - **Videos** (`videos/`; a Pixel 7 screen, 412 x 839 at DPR 2, 30 frames per game second, seed 7):
   - `water7_straight.mp4` and `water7_steering.mp4`;
   - `compare_straight_original_accepted_water7.mp4` and `compare_steering_..._water7.mp4` (ORIGINAL | ACCEPTED | R7; the first
