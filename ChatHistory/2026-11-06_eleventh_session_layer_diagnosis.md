@@ -325,3 +325,163 @@ All the edits are in. Building:
 
 Comparing against step 4's bundle, token by token, to confirm only the intended values changed:
 
+---
+
+### You (sent while Claude was working) · 2026-11-06 03:02 UTC
+
+[attached file: BWK_Claude_Strict_Motion_Match_Kit.zip] [attached file: CLAUDE_SCREEN4_STRICT_VISUAL_MATCH_BRIEF-1.md] Continue what your doing but also do this and save everything to GitHub resporitory BUBBLE WASH KINGDOM — SCREEN 4
+
+STRICT VISUAL ACCURACY AND GAMEPLAY CORRECTION DIRECTIVE
+
+Claude, I need you to take this request extremely seriously.
+
+I have spent considerable time and money trying to reproduce my ORIGINAL, CLASSIC, APPROVED Screen 4. I am not asking you to create your own interpretation, improve its artistic direction, or make something that simply looks similar.
+
+My approved Screen 4 is the visual authority. Your responsibility is to make the EXISTING PLAYABLE 3D GAME resemble that approved screen as closely as technically possible, including while the character is moving through the laundry tunnel.
+
+I am attaching a reference kit containing the actual approved screenshot, gameplay video, comparison images, and detailed water reference crops.
+
+Study those files before changing any code.
+
+1. THE BLUE WATER MUST MATCH
+
+My approved screen has rich, saturated cobalt-blue and turquoise water with brilliant white reflections, beautiful circular vortex bands, and natural swirling currents.
+
+The current game still has these problems:
+
+- The center becomes too white, pink or lavender.
+- The floor looks too smooth and pale.
+- Some white streaks resemble repetitive painted dashes.
+- The water lacks the original's irregular, energetic splashes.
+- The tunnel sometimes loses its distinctive concentric circular structure.
+
+Correct these problems directly in the actual game engine.
+
+The original has vibrant blue water next to white highlights. Do not average those contrasting colors together into a washed-out light blue.
+
+2. RESTORE THE ORIGINAL TUNNEL STRUCTURE
+
+The approved tunnel contains recognizable blue circular bands, sparkling water, a carefully placed rainbow accent, and a bright but controlled center.
+
+Do not replace them with your own invented ring shapes.
+
+Inspect the tunnel geometry, shaders, texture mappings, lighting and curved tunnel path.
+
+Preserve the original ring structure while allowing it to animate naturally in 3D.
+
+The distant center must not turn into an enormous white or lavender circle.
+
+3. FIX THE WATER AROUND THE PINK CHARACTER
+
+The character should look like she is traveling through lively, splashing blue water.
+
+Reproduce the approved screen's irregular translucent blue waves, bright white splash crests, small bubble domes and sparkling currents.
+
+Do not create a solid white foam cushion or a flat pale-blue sheet beneath her.
+
+Keep her existing model and fur unchanged for now. I will deal with her appearance in a separate phase.
+
+4. REMOVE VISUAL OBSTRUCTIONS
+
+Inspect excessive transparent bubble overlays, white streaks, lighting effects and other visual layers that obscure the water.
+
+Reduce unnecessary bubble crowding where the approved original has a clear view of the blue rings.
+
+Preserve actual gameplay objects, their functionality and collision behavior.
+
+5. USE THE ORIGINAL ARTWORK MORE FAITHFULLY
+
+Your previous investigation discovered that the derived water texture blurred much of the original artwork and removed its distinctive white details.
+
+I want you to investigate the fill-only texture approach that preserves the approved original's visible pixels and fills missing areas without damaging the actual artwork.
+
+Remove duplicate procedural flecks where authentic texture details replace them.
+
+Fix seams or rectangular artifacts rather than hiding the problems with more blur.
+
+Do not use new AI-generated water artwork unless the existing original reference and game assets genuinely cannot achieve the result.
+
+6. THE RESULT MUST WORK WHILE PLAYING
+
+This is critical.
+
+I do not want one beautiful screenshot that falls apart when the character swims, turns, jumps or travels deeper into the machine.
+
+The same visual identity must survive actual gameplay.
+
+Capture and compare multiple moments from the moving game. Pay particular attention to the distant tunnel center, floor, swirling rings and foreground water.
+
+Do not solve this by placing one static screenshot over the game.
+
+7. STRICT WORKFLOW — NO MORE BLIND EXPERIMENTATION
+
+Before editing:
+
+1. Identify the latest actual working branch and build.
+2. Read the project's current handoff and previous successful experiments.
+3. Save a rollback checkpoint.
+4. Capture the present gameplay appearance.
+5. Inspect individual water, wall, bubble, lighting and floor layers to identify the actual causes.
+
+Then implement one meaningful correction at a time.
+
+Use the established comparison checkpoint: seed 7, 3.0 seconds after starting, no steering, the same camera, at 767 × 1536 and Pixel 7 resolution.
+
+Also capture additional moments during real gameplay.
+
+After every correction, produce a REAL screenshot comparison between my approved image, the previous build and your new build.
+
+If the correction makes the water look less like my original, REVERT IT.
+
+Do not continue making random color changes, adding effects, or launching multiple expensive agents without clear evidence that they will help.
+
+8. WHAT I EXPECT YOU TO DELIVER
+
+I require:
+
+- A working playable build with the actual corrections.
+- A full side-by-side image comparison.
+- Enlarged comparison images of the blue tunnel, distant center, floor and foreground water.
+- A video showing the character moving through the corrected tunnel.
+- A clear explanation of exactly which visual differences were fixed and which remain.
+- Confirmation that steering, jumping, coins, gems, socks, pause and both power-ups still work.
+- Tested Git commits and a rollback point.
+
+Do not tell me it is finished simply because code compiles, automated tests pass, or colors are statistically closer. I must see the result visually.
+
+9. MY APPROVAL STANDARD
+
+The goal is at least an 8.5/10 subjective visual resemblance to my approved original, without losing the game's real-time 3D functionality.
+
+Do not claim a numerical resemblance score unless you explain its basis.
+
+Do not promise pixel-perfect identity if the original's painterly effects cannot be reproduced exactly in real-time gameplay. If something is technically limiting the match, identify that specific obstacle and show the best tested solution.
+
+10. FINAL INSTRUCTION
+
+I am not asking for another long plan followed by unrelated improvements.
+
+Inspect the actual source, diagnose the specific remaining differences, implement the highest-impact fixes, and demonstrate the results using the real playable game.
+
+Preserve everything already correct.
+
+Do not redesign Screen 4.
+
+Do not modify the pink fluffy character yet.
+
+Do not spend additional credits on unnecessary 3D assets.
+
+Do not substitute a prettier but inaccurate version.
+
+My approved original is the target. Work toward that target until the remaining differences are clearly measured, visibly reduced and presented to me for approval.
+
+Start with the existing game and the supplied reference kit. Show me the real evidence, not assurances.
+
+---
+
+### Claude · 2026-11-06 03:05 UTC
+
+The rollback checkpoint is **`2f88104`**; the game there is step 4's build. This is now a multi-step job, so I'll track it:
+
+The tool checks out. Capturing the motion baseline (step 4 build) at video times 5.0 s (3.0 s after the tap, with steering), 5.5, 6.5, 7.7 and 9.0 s, on Pixel 7 and in the 1:2 frame:
+
