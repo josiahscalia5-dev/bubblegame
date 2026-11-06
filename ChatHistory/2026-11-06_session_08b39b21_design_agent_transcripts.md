@@ -72,8 +72,15 @@ Now the match water shading of the swell.
 - 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
 - 23:49 `Bash`: Measure per-column waterline on her fur
 - 23:49 `Bash`: Solve crest heights matching original waterline
+- 23:52 `Bash`: Check other uses of swell attributes and lane width
+- 23:53 `Bash`: Prototype heap silhouette at the start camera
+- 23:53 `Bash`: Rerun prototype with fixed column bins
+- 23:53 `Bash`: Tune designed heaps and base line
+- 23:53 `Bash`: Second tuning pass of designed heaps
+- 23:53 `Bash`: Check silhouette at start and while running
+- 23:53 `Bash`: Average running silhouette over travel values
 
-_47 tool steps._
+_54 tool steps._
 
 ---
 
@@ -163,8 +170,20 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 23:49 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/solofloor_crop.png
 - 23:49 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/orig_floorahead.png
 - 23:50 `Bash`
+- 23:51 `Bash`
+- 23:51 `Bash`
+- 23:51 `Bash`
+- 23:51 `Bash`
+- 23:52 `Bash`
+- 23:52 `Bash`
+- 23:52 `Bash`
+- 23:53 `Bash`
+- 23:54 `Bash`
+- 23:54 `Bash`
+- 23:54 `Bash`
+- 23:54 `Bash`
 
-_70 tool steps._
+_82 tool steps._
 
 ---
 
@@ -237,5 +256,8 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 23:48 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r8_liquid.js
 - 23:48 `Bash`: Check ripple count and the splash bank's use of swell uniforms
 - 23:49 `Bash`: Locate arm and foot vertex clusters on the model
+- 23:52 `Bash`: Simulate the proposed swerve and landing signals on the trace
+- 23:52 `Bash`: Simulate roll driven by lateral velocity and acceleration
+- 23:52 `Bash`: Tune the roll spring for a small counter-roll
 
-_53 tool steps._
+_56 tool steps._
