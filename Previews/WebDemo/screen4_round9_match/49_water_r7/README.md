@@ -32,8 +32,28 @@
   R6 (+1 s) and the accepted `?s3=intunnel` (start and +1 s) are 0 differing pixels on the new bundle (`identity/`); no
   console errors.
 - **Videos** (Pixel 7 screen, 10 s, seed 7, real pointer input; `scripts/record_videos.sh`): `videos/water7_straight.mp4`,
-  `water7_steering.mp4`, and the accepted build's `accepted_straight.mp4`, `accepted_steering.mp4`.
-- **Gameplay tests** (`scripts/gameplay.sh`): `gameplay/s3_func_*.txt`, `gameplay/r2_func_*.txt`, R7 against the
-  accepted build.
+  `water7_steering.mp4`, the accepted build's `accepted_straight.mp4`, `accepted_steering.mp4`, and side by side
+  `compare_straight_original_accepted_R7.mp4`, `compare_steering_original_accepted_R7.mp4` (`scripts/compare_video.sh`).
+  - Both runs have the same positions, lanes and hearts in every frame; the coin count differs from frame 82 by one edge
+    coin, the recorder's known inexactness (`../35_step7_bubble_veil/videos/determinism/`); the deterministic tests below
+    are identical.
+- **Gameplay tests** (`scripts/gameplay.sh`, bundle `5ae28f9f`): `gameplay/s3_func_water7.txt` is identical to the
+  accepted build's `s3_func_intunnel.txt` apart from the switch name (settings, Tap to Start, real swipes, jump, the ride,
+  keyboard start, console errors, draw calls and triangles); `r2_func_water7.txt` (hearts, knock-out, restart) is identical
+  to `r2_func_intunnel.txt`.
+
+## A defect found in the steering video, in every water candidate since R2, and fixed in R7
+
+- **What:** when she steers into the left lane, a dark grey "fin" appears at the lower left of the screen
+  (`water7_steering.mp4` from about 4 s; also in the fourteenth session's `../44_water_material/videos/water2_steering.mp4`
+  at 4 s). The accepted build does not have it.
+- **The cause:** the water face samples the texture left of its edge once the camera swings, and the lookup clamps to the
+  edge texel. The texture's first 4 columns are the original screenshot's own dark frame border (column 0 RGB 19 / 22 / 36,
+  column 1 57 / 61 / 73), so the clamp smears dark grey across the face. The same clamping of the last rows draws the
+  vertical streaks along the bottom 30 px of the start view (`../48_water_r6/diag/uv/uv_start.png`, red).
+- **The fix (`WATER7.mirror`):** beyond the texture's edges the original's water is mirrored back in (skipping the 4-px
+  border) instead of the edge texel being smeared. The older candidates' shader text is byte-identical (checked by
+  emitting it from the old and new files); the R7 frames the art director reviewed are reproduced by the tune
+  `{"water2": {"mirror": null}}` (`mirror_fix/`).
 - **Next (the art director's ranking):** 1. the contact edge (`../50_contact_edge/`, R8); 2. varied fleck sizes (the cap
   scaled with each droplet's own size); 3. the softness of the filled areas; 4. the remaining paleness.
