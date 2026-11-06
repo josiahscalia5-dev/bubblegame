@@ -150,3 +150,35 @@ Saved and pushed: commit `a8bb914`, and GitHub is at the same commit. The autosa
 
 The R5 recordings and the second gameplay test are still running. I'll finish the report when they're done.
 
+---
+
+### You · 2026-11-06 19:10 UTC
+
+Claude, I need you to make measurable visual progress on Bubble Wash Kingdom Screen 4 RIGHT NOW. We have spent several days working on the same foreground water around my pink fluffy character, and repeated experiments have failed to match my authentic original approved screenshot. I do not want another lengthy investigation, another collection of plugins, or another completely different water effect. I want you to use the tools we already have, identify the specific rendering problem, correct it, and show me the actual improvement.
+
+MY ORIGINAL APPROVED SCREEN IS THE ONLY VISUAL AUTHORITY. The pink fluffy character must sit ON TOP of rich, saturated, glossy blue water inside the existing laundry tunnel, viewed from behind. The water should flow naturally around its lower sides and base without covering too much of its pink fur. Study the original's actual shapes: deep royal-blue and cobalt shadows, luminous turquoise and cyan areas, irregular rounded water mounds, small sharp white highlights, and broken sparkling crests. Preserve the character's clearly visible rounded silhouette. The approved water has depth, definition, and contrast; our current water is too pale, blurry, stretched, and washed out. I want the existing water corrected to match the original's structure, not replaced with decorative objects.
+
+THE TECHNICAL PROBLEM MUST BE FIXED AT ITS SOURCE. Your previous investigations found that the existing "heroSwell" water face and its source texture were producing vertical smears, flat blue regions, poor texture registration, and a water position that shifted relative to the character when the camera and character bobbed. You also found that filling missing reference pixels with TeLea interpolation or repeating patches created unnatural stretching and artifacts. Resume from those specific findings. Inspect the latest R4/R6 experimental work and the current accepted version, establish which candidate actually works, and fix the underlying texture sampling, UV/projection alignment, camera-relative registration, alpha blending, filtering, and lighting as necessary. Do not hide the problem by adding more foam, bubbles, water meshes, splash sheets, particles, or other new objects.
+
+FOCUS ON THREE RESULTS: First, make the existing foreground water significantly richer and deeper blue instead of pale milky blue. Second, remove the streaked, blurry and blocky texture artifacts so the water has defined rounded and sharply highlighted details like my original. Third, make the water meet the character cleanly with an irregular flowing edge rather than a hard horizontal cut, a jagged white zigzag, or a separate foam cushion. The water must continue moving correctly during forward travel, steering, and character bobbing.
+
+Use our existing Spector.js diagnostics to inspect the actual WebGL materials and textures, Playwright to capture matching real gameplay frames, and OpenCV/scikit-image plus regional image comparisons to measure improvements. LPIPS can provide supporting evidence, but do not accept a result simply because it earns a better numerical score. Use the existing Screen Matcher and water-VFX/design agents if available. Do not spend time installing additional plugins or repeating environment audits. We already have enough tools to address this problem.
+
+WORK IN A CONTROLLED, LIMITED WAY. Preserve the currently accepted "?s3=intunnel" game and the latest experimental candidates as recoverable checkpoints. Make one focused, reversible correction to the existing water and capture the original, accepted build, and corrected candidate side by side at exactly the same camera, seed, screen size, and gameplay moment. Also capture the water around the character at the start, one second after movement, and two seconds after movement. If the first correction fails, make one evidence-based refinement. Do not keep launching endless variations. If neither is genuinely closer, preserve the accepted build and explain the exact remaining technical blocker.
+
+PRESERVE THE ACTUAL GAME. Do not change the character model, brushes, purple diamond, tunnel structure, camera framing, HUD, collectibles, controls, collisions, or gameplay mechanics. Do not create an outdoor starting area, swimming sequence, washing-machine introduction, or unrelated features. The character already begins inside the tunnel and automatically travels forward when gameplay starts. Keep that behavior.
+
+At the end, show me the real full-resolution original-versus-accepted-versus-new comparison and the foreground-water close-ups. State exactly what changed, what visually improved, what still differs, and whether the gameplay checks passed. Save the evidence and the candidate to the current GitHub branch without merging it into the accepted version until I approve it.
+
+I am not asking for perfect scientific pixel identity between a stylized reference painting and real-time gameplay. I am asking you to stop making changes that don't solve the visible problem. GET THE WATER DARKER, SHARPER, MORE ROUNDED, MORE NATURALLY STRUCTURED, AND CLEANLY CONTACTING THE PINK CHARACTER. THAT IS THE ONLY DEVELOPMENT PRIORITY RIGHT NOW.
+
+_[2 images attached]_
+
+---
+
+### Claude · 2026-11-06 19:11 UTC
+
+Understood: one focused fix to the existing water face, measured against your original at the same moment, and one refinement only if the evidence calls for it. I'll stop the leftover R5 steering recording to free the machine, keep R5's finished straight video, and go straight to the source.
+
+The steering recording is at 274 of 300 frames, so I'll let it finish (about two minutes). Meanwhile I'll read the water face code in full, since the fix goes there.
+
