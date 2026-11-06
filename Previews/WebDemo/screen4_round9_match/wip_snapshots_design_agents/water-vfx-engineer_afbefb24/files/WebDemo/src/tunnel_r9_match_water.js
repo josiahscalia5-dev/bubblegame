@@ -448,7 +448,15 @@ ${D ? `      // 7. (pass 4c, the user's step 3 review: "FRONT SPLASH: approved, 
       //    them (cl), thinning further down (reach: m from the cut edge [full to, none from])
       float fsDc = smoothstep(${f4(D.band[0])}, ${f4(D.band[1])}, texture2D(uLqTex, vec2(s * ${f4(D.band[2])} + fl * 0.12 + 0.37, fsPd * ${f4(D.band[2] * 1.3)} - fl * 0.5 + 0.61)).b);
       float fsDreach = 1.0 - smoothstep(${f4(D.reach[0])}, ${f4(D.reach[1])}, fsE);
-      float fsDots = 0.0;
+${D.rolls ? `      // rolls: the face broken into rows of curling crests running across it and down it (rows per m down the face,
+      // wobble, the crest's share of each row, the blue under each crest, speed down the face): the spray is gathered
+      // on each crest, and each crest's under-face is vivid blue (the original's rows of bubbly white crests over blue)
+      float fsRn = texture2D(uLqTex, vec2(s * 0.9 + fl * 0.05, 0.47)).b;
+      float fsRo = fract(fsPd * ${f4(D.rolls[0])} + (fsRn - 0.5) * ${f4(D.rolls[1])} + 0.12 * sin(s * 7.0 + fl * 0.3) - fl * ${f4(D.rolls[4])});
+      float fsRoll = 1.0 - smoothstep(${f4(D.rolls[2] * 0.55)}, ${f4(D.rolls[2])}, fsRo);
+      float fsRollB = smoothstep(${f4(D.rolls[2])}, ${f4(D.rolls[2] + 0.12)}, fsRo) * (1.0 - smoothstep(0.82, 1.0, fsRo));
+      fsDc = clamp(fsRoll * (0.45 + 0.9 * fsDc), 0.0, 1.0);
+` : ''}      float fsDots = 0.0;
       for (int j = 0; j < 2; j++) {
         float fsDk = j == 0 ? ${f4(D.cell)} : ${f4(D.cell * D.fine[0])};
         vec2 fsDq = vec2(s * fsDk + fl * 0.3 + float(j) * 0.43, fsPd * fsDk - fl * ${f4(D.flow)} + float(j) * 0.71), fsDi = floor(fsDq);
@@ -465,7 +473,7 @@ ${D ? `      // 7. (pass 4c, the user's step 3 review: "FRONT SPLASH: approved, 
       float fsC = texture2D(uLqTex, vec2(s * ${f4(Wt.scale[0])} + fl * 0.08, fsPd * ${f4(Wt.scale[1])} - fl * 0.45)).b;
       vec3 fsW = mix(${v3s(Wt.deep)}, ${v3s(Wt.mid)}, smoothstep(${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[0])}, ${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[1])}, fsC));
       fsW = mix(fsW, ${v3s(Wt.light)}, smoothstep(${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[2])}, ${f4((Wt.steps || [0.3, 0.55, 0.55, 0.8])[3])}, fsC));
-${D && D.blue ? `      fsW = mix(fsW, ${v3s(D.blue[0])}, fsDc * fsDreach * ${f4(D.blue[1])});   // (pass 4c) vivid blue under the spray patches, so the white reads crisp on it
+${D && D.blue ? `      fsW = mix(fsW, ${v3s(D.blue[0])}, ${D.rolls ? `clamp(fsRollB * ${f4(D.rolls[3])} + fsDc * ${f4(D.blue[1])}, 0.0, 1.0)` : `fsDc * ${f4(D.blue[1])}`} * fsDreach);   // (pass 4c) vivid blue under the spray patches, so the white reads crisp on it
 ` : ''}      mwCol = mix(mwCol, mtUndisplay(fsW), ${f4(Wt.amount)});
       mwCol += vec3(1.0) * mwSpec * ${f4(Wt.amount)};
 ${B.film ? `      mwCol = mix(mwCol, mtUndisplay(${v3s(B.body || '#c8c6f4')}), fsBin * ${f4(B.bodyK || 0)});

@@ -1,0 +1,14 @@
+diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
+index e3af1b5..ad10f49 100644
+--- a/WebDemo/src/tunnel_r9_match.js
++++ b/WebDemo/src/tunnel_r9_match.js
+@@ -342,7 +342,8 @@ if (FOCUS_ON) { restoreSettings(MATCH, PRE_FOCUSED_PASS.MATCH); deepMerge(MATCH,
+ const TEX = { colour: 'tunnel_colour.png', base: 'tunnel_base.png', detail: 'tunnel_detail.png', normal: 'tunnel_normal.png', variation: 'tunnel_var.png', rim: 'rim_ramp.png' };
+ // ?s3=focus with MATCH.walls.ringMap (step 3): the original's own rings (tools/screen4/derive_ring_map.py)
+ const FOCUS_RINGS = FOCUS_ON && !!MATCH.walls.ringMap;
+-if (FOCUS_RINGS) TEX.rings = 'tunnel_rings_original.png';
++// (pass 4b: the map's file is a setting, MATCH.walls.ringMap.file; step 3's tunnel_rings_original.png when it is not set)
++if (FOCUS_RINGS) TEX.rings = MATCH.walls.ringMap.file || 'tunnel_rings_original.png';
+ export const MATCH_UNIFORMS = {
+   uMatchOn: { value: 0 },   // 1 once every texture has loaded (otherwise the walls keep the Round 8 look)
+   uMatchCol: { value: null }, uMatchBase: { value: null }, uMatchDet: { value: null }, uMatchNrm: { value: null }, uMatchVar: { value: null }, uMatchRim: { value: null },

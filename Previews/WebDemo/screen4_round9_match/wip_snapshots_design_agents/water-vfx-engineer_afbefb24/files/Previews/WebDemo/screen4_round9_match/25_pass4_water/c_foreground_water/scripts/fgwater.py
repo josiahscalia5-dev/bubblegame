@@ -1,6 +1,6 @@
 # Pass 4c (Water & VFX): the foreground water round the pink character, measured in the ORIGINAL and in game frames.
 #   "$BW_PY" fgwater.py label=<frame.png> [label=<frame.png> ...]      (the original is always measured first)
-#   OVERLAY=<dir> also writes each frame's zone masks and detected bubble rims as pictures, to check the measure by eye.
+#   OVERLAY=<dir> also writes each frame's zone masks as pictures, to check the measure by eye.
 # Every frame is resized to the original's 767 x 1536 (game canvases are 807 x 1614, pages 807 x 1602).
 # Zones (shares of the frame): front = the water round and in front of her base, y 0.78-0.92, x 0.12-0.88; sides = up her
 # sides, x 0.06-0.30 and 0.70-0.94, y 0.68-0.84. Excluded everywhere: her pink (dilated 4 px, so fur edges do not count as
@@ -10,8 +10,8 @@
 # Measures: class shares (%); mean saturation and value; median colour; luminance std (contrast); fine and mid texture
 # (std of luminance minus its Gaussian blur at sigma 1.5 and 5 px); sparkle (small bright near-white specks, 1-12 px, % of
 # the zone); white pieces (connected white areas of 4 px or more, per 10k zone px, and the share of white in pieces of
-# 400 px or more = a white mass); saturation of the blue pixels only (h 185-245, not white); bubble rims (circles found on
-# the high-pass luminance, radius 7-60 px, with a bright rim against the inside; a rough count, see OVERLAY).
+# 400 px or more = a white mass); saturation of the blue pixels only (h 185-245, not white). Bubbles are counted by eye on the
+# enlarged crops (a Hough circle search on these textured frames found 140-250 false circles in the original as in ours).
 import os, sys, numpy as np, cv2
 from PIL import Image
 from scipy import ndimage as ndi
@@ -70,34 +70,6 @@ def zones():
     return {'front y.78-.92 x.12-.88': front, 'sides y.68-.84': sides, 'front+sides': front | sides}
 
 
-def rims(lum, m):
-    # bubble rims: circles with a bright thin outline (high-pass) and a darker inside; Hough on the high-pass, then each
-    # candidate checked: its ring's mean high-pass above its inside's and the zone's, and mostly in the zone
-    hp = lum - cv2.GaussianBlur(lum, (0, 0), 3)
-    g = np.clip((hp + 0.15) / 0.3 * 255, 0, 255).astype(np.uint8)
-    g = cv2.GaussianBlur(g, (0, 0), 1.2)
-    cs = cv2.HoughCircles(g, cv2.HOUGH_GRADIENT, dp=1.2, minDist=10, param1=60, param2=22, minRadius=7, maxRadius=60)
-    out = []
-    if cs is None:
-        return out
-    yy, xx = np.mgrid[0:H0, 0:W0]
-    for cx, cy, r in cs[0]:
-        x0, x1, y0, y1 = int(max(cx - r - 3, 0)), int(min(cx + r + 4, W0)), int(max(cy - r - 3, 0)), int(min(cy + r + 4, H0))
-        sub = np.hypot(xx[y0:y1, x0:x1] - cx, yy[y0:y1, x0:x1] - cy)
-        ring = (sub > r - 2) & (sub < r + 2)
-        inside = sub < r * 0.6
-        if ring.sum() < 10 or inside.sum() < 5:
-            continue
-        if m[y0:y1, x0:x1][ring].mean() < 0.7:
-            continue
-        hr, hi = hp[y0:y1, x0:x1][ring].mean(), hp[y0:y1, x0:x1][inside].mean()
-        # the rim is lit all round: most of its arc above the inside
-        frac = (hp[y0:y1, x0:x1][ring] > hi + 0.02).mean()
-        if hr - hi > 0.03 and frac > 0.6:
-            out.append((float(cx), float(cy), float(r)))
-    return out
-
-
 def measure(lab, p, overlay=None):
     im = load(p)
     cl, h, s, v = classes(im)
@@ -133,11 +105,6 @@ def measure(lab, p, overlay=None):
         print(f"  {k:24s} " + ' '.join(f"{c.split()[0][:5]} {r[c]:4.1f}" for c in KEYS) + f" oth {other:4.1f} | S {r['S']:.2f} V {r['V']:.2f} "
               f"blueS {r['blueS']:.2f} med {r['med']} Lstd {r['Lstd']:.3f} | hp1.5 {r['hp1.5']:.3f} hp5 {r['hp5']:.3f} | sparkle {r['sparkle']:4.2f}% "
               f"pieces/10k {r['pieces/10k']:4.1f} mass {r['mass%']:4.1f}% | masked {r['objects%']:.0f}%")
-    fz = zones()['front+sides'] & ~obj
-    bub = rims(lum, fz)
-    res['rims'] = len(bub)
-    radii = sorted(int(b[2]) for b in bub)
-    print(f"  bubble rims (front+sides): {len(bub)}  radii px: {radii}")
     if overlay:
         os.makedirs(overlay, exist_ok=True)
         o = im.copy()
@@ -147,8 +114,6 @@ def measure(lab, p, overlay=None):
             edge = m0 ^ ndi.binary_erosion(m0, iterations=2)
             o[edge] = (255, 255, 0)
         o[obj & zones()['front+sides']] = (o[obj & zones()['front+sides']] * 0.4).astype(np.uint8)
-        for cx, cy, r in bub:
-            cv2.circle(o, (int(cx), int(cy)), int(r), (255, 0, 0), 1)
         Image.fromarray(o).save(os.path.join(overlay, f'{lab}_zones.png'))
     return res
 

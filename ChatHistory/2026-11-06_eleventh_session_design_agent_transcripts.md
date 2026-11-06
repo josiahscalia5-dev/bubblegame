@@ -96,8 +96,32 @@ Good, playwright resolves. Now build.
 - 00:22 `Bash`: Generate sharper ring map variants
 - 00:22 `Bash`: Crop and measure sharper map variants
 - 00:22 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_maps3.png
+- 00:22 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/wallmap.py
+- 00:23 `Bash`: Compare walls-only render to map
+- 00:23 `Bash`: Read undisplay shader function
+- 00:23 `Bash`: Read texture loading and floor map usage
+- 00:23 `Bash`: Check map file sizes
+- 00:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-ac156d90628456587/WebDemo/src/tunnel_r9_match.js
+- 00:23 `Bash`: Copy candidate maps and rebuild
+- 00:23 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/batch.sh
+- 00:24 `Bash`: Capture batch of ring map candidates
+- 00:24 `Bash`: Check innerRings duplicate key in bundle and history
+- 00:24 `Bash`: Check batch 1 progress
+- 00:24 `Bash`: Check running browser processes and locks
+- 00:24 `Bash`: Read exit disc and centre code
+- 00:24 `Bash`: Read matchExit function
+- 00:24 `Bash`: Check batch 1 progress
+- 00:24 `Bash`: Wait for first batch capture
+- 00:25 `Bash`: Measure and crop first candidate
+- 00:25 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/c_b1.png
+- 00:25 `Edit`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/layer_probe.cjs
+- 00:25 `Bash`: Add output prefix option to probe
+- 00:25 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/tools/wbatch.sh
+- 00:25 `Bash`: Run walls-only probes for candidates
+- 00:25 `Bash`: Read ringprof script and step3 measures
+- 00:25 `Bash`: Wait for batch 1 and measure
 
-_58 tool steps._
+_82 tool steps._
 
 ---
 
@@ -225,5 +249,40 @@ Confirmed: new three.js objects draw UUIDs from `Math.random`. I'll build the bu
 - 00:22 `Bash`: Zoom on front region for cA, cB
 - 00:22 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b1/zoomA.png
 - 00:22 `Bash`: Measure base, cA, cB foreground
+- 00:23 `Bash`: Write candidate tune JSON files
+- 00:23 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/mk.py
+- 00:23 `Bash`: Generate candidate tune files
+- 00:23 `Bash`: Capture candidates dA and dB at 3.0 s
+- 00:23 `Bash`: Check how index.html references the bundle
+- 00:24 `Bash`: Create an old-bundle serving root for identity proof
+- 00:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Previews/WebDemo/screen4_round9_match/25_pass4_water/c_foreground_water/scripts/identity.sh
+- 00:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Previews/WebDemo/screen4_round9_match/25_pass4_water/c_foreground_water/scripts/identity_compare
+- 00:24 `Bash`: Check batch 2 progress
+- 00:24 `Bash`: Compare original vs dA foreground
+- 00:24 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b2/cmpA.png
+- 00:24 `Bash`: Zoom the dA canvas foreground
+- 00:24 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b2/zA.png
+- 00:25 `Bash`: Measure dA and dB
+- 00:25 `Bash`: Add batch 3 candidates
+- 00:25 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/mk.py
+- 00:25 `Edit`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/mk.py
+- 00:25 `Bash`: Generate batch 3 tune files and check batch 2
+- 00:25 `Bash`: Capture batch 3 candidates
+- 00:25 `Bash`: Check time and batch 2
+- 00:26 `Bash`: Zoom dB canvas foreground against original
+- 00:26 `Read`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/b2/zB.png
+- 00:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/WebDemo/src/tunnel_r9_match_water.js
+- 00:26 `Bash`: Rebuild with rolls code
+- 00:26 `Edit`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/mk.py
+- 00:26 `Bash`: Generate batch 4 tune files
+- 00:27 `Bash`: Capture batch 4 candidates
+- 00:27 `Write`: /tmp/claude-0/-home-user-bubblegame/347094d5-9e95-5072-8e5e-8989827969a0/scratchpad/wvfx4c/rimtest.py
+- 00:27 `Bash`: Test rim detector parameters
+- 00:27 `Read`: /home/user/bubblegame/.claude/worktrees/agent-afbefb24460e021ef/Previews/WebDemo/screen4_round9_match/25_pass4_water/c_foreground_water/scripts/fgwater.py
+- 00:27 `Bash`: Remove the unreliable rim counter from the measure script
+- 00:27 `Bash`: Check batch 3 progress
+- 00:27 `Bash`: See processes waiting on the browser lock
+- 00:27 `Bash`: Check batch 3 files
 
-_79 tool steps._
+_114 tool steps._

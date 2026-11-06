@@ -321,7 +321,7 @@ ${FOCUS_ON ? focusFloorGLSL() : ''}${FOCUS_ON && MATCH.walls.ringMap ? focusFloo
 // flow), one streak per cell, elongated along the circle, broken (a share of cells), thicker in the middle.
 function focusFloorGLSL() {
   const P = MATCH_WATER.floorFx, S = P.streak, M = MATCH.walls;
-  return /* glsl */ `  {   // ?s3=focus: the floor ahead as the original's pale blue-white water (tunnel_r9_match_water.js focusFloorGLSL)
+  return /* glsl */ `${P.overMap ? '  float ffSo = 0.0, ffDo = 0.0;   // the streak and dash shapes, redrawn over the ring map (floorFx.overMap)\n' : ''}  {   // ?s3=focus: the floor ahead as the original's pale blue-white water (tunnel_r9_match_water.js focusFloorGLSL)
     float ffK = fk * fx;
     float ffLil = clamp((c.r - c.g) * 20.0, 0.0, 1.0) * clamp((c.b - c.r) * 20.0, 0.0, 1.0);
     c.r = mix(c.r, c.g * 0.8, ffLil * ${f4(P.delilac)} * ffK);
@@ -342,7 +342,7 @@ function focusFloorGLSL() {
     float ffD = step(ffH, ${f4(S.blue.share)}) * ffShape;
     c = mix(c, ${v3s(S.blue.col)}, ffD * ${f4(S.blue.amount)} * ffK);
     c = mix(c, ${v3s(P.white)}, ffS * ${f4(S.amount)} * ffK);
-  }
+${P.overMap ? '    ffSo = ffS * ffK; ffDo = ffD * ffK;\n' : ''}  }
 `;
 }
 // ?s3=focus with the ring map (step 3 of the user's fidelity plan): the floor ahead takes the ORIGINAL's own rings and floor
@@ -351,11 +351,17 @@ function focusFloorGLSL() {
 // (MATCH.walls.ringMap.floor.r, in rw). Here c is already the screen colour (after the lift and saturation), so the map's
 // colour goes in as it is, with the derived relief's light and dark moving over it as on the walls.
 function focusFloorRingsGLSL() {
-  const R = MATCH.walls.ringMap, F = R.floor;
+  const R = MATCH.walls.ringMap, F = R.floor, P = MATCH_WATER.floorFx, S = P.streak, O = P.overMap;
   return /* glsl */ `  {   // ?s3=focus: the original's own floor water and rings (tunnel_r9_match_water.js focusFloorRingsGLSL)
     vec3 frS = clamp(textureGrad(uFocusRings, bv, dx, dy).rgb + dot(det, vec3(0.2126, 0.7152, 0.0722)) * ${f4(R.detail)}, 0.0, 1.0);
-    c = mix(c, frS, ${f4(F.amount)} * fx * (1.0 - smoothstep(${f4(F.r[0])}, ${f4(F.r[1])}, rw)));
-  }
+    float frK = ${f4(F.amount)} * fx * (1.0 - smoothstep(${f4(F.r[0])}, ${f4(F.r[1])}, rw));
+    c = mix(c, frS, frK);
+${O ? `    // (pass 4a: the map is smoothed round each ring, so on the floor it averaged the original's white flecks and cobalt
+    // streaks into a flat pale blue; the floor's own moving streaks and dashes, which the map covered, drawn again on top:
+    // MATCH_WATER.floorFx.overMap, how much; dash / white colours: overDash / overWhite, else the streaks' own)
+    c = mix(c, ${v3s(O.dash || S.blue.col)}, ffDo * ${f4(S.blue.amount * (O.dashK ?? 1))} * frK * ${f4(O.amount)});
+    c = mix(c, ${v3s(O.white || P.white)}, ffSo * ${f4(S.amount * (O.whiteK ?? 1))} * frK * ${f4(O.amount)});
+` : ''}  }
 `;
 }
 // in the floor's main, after its own colour (tunnel_r8_liquid.js floorFragment): the derived water replaces it once the

@@ -38,3 +38,9 @@ While the four captures run, looking at what the floor's own white dashes are:
 
 The machine has 4 cores and both agents are rendering too, so four browsers at once timed out. Re-running the captures one after another:
 
+The sharper maps bring the floor's white flecks back (white 9% → about 24%, your original 27%), but the floor's texture barely changes. Looking at the frames to see why:
+
+Now the edit: the streak masks are kept in variables, and the map block redraws them on top at a set strength (`floorFx.overMap`; absent = the current look exactly).
+
+Built. Capturing the unchanged default (to prove it's identical) and three strengths, one at a time:
+
