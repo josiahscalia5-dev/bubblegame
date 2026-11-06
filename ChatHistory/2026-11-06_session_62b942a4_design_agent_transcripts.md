@@ -159,8 +159,18 @@ Now the match water and water2, and the swim file.
 - 22:38 `Grep`: INTUNNEL\.(speed|u|clock)
 - 22:39 `Bash`: Check WATER constant, TR.map and uHeroTravel source
 - 22:41 `Bash`: Fit an absorption/scatter model to the original's heap colours
+- 22:48 `Bash`: Find other users of heroSplash and heroSwell by name
+- 22:48 `Bash`: Check which clock the hero time uniform carries
+- 22:48 `Bash`: Trace the time uniform passed to the hero build
+- 22:48 `Bash`: Trace time source in tunnel_s4.js and game.js
+- 22:48 `Bash`: Read where tunnel_s4.js time is updated
+- 22:48 `Bash`: Read the tunnel time update
+**Agent** (22:48 UTC):
 
-_45 tool steps._
+You've hit your 5-hour limit · resets 2:20am (UTC)
+
+
+_51 tool steps._
 
 ---
 
@@ -259,8 +269,19 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 22:44 `Bash`
 - 22:44 `Read`: /tmp/claude-0/-workspace-bubblegame/62b942a4-aa69-5385-baf7-492a86a446ba/scratchpad/ins/relief_sim.png
 - 22:45 `Bash`
+- 22:46 `Bash`
+- 22:47 `Bash`
+- 22:47 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:47 `Read`: /workspace/bubblegame/WebDemo/src/tunnel_r8_liquid.js
+- 22:47 `Bash`
+- 22:48 `Bash`
+- 22:48 `Bash`
+**Agent** (22:48 UTC):
 
-_75 tool steps._
+You've hit your 5-hour limit · resets 2:20am (UTC)
+
+
+_82 tool steps._
 
 ---
 
@@ -327,5 +348,14 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 22:43 `Bash`: Inspect round6 motion state feeding water
 - 22:43 `Bash`: Check which water objects are hidden in later rounds
 - 22:43 `Bash`: Check test advance stepping
+- 22:47 `Bash`: Check node and three availability for a harness
+- 22:47 `Bash`: Find layout L values
+- 22:47 `Bash`: Locate layout values for the harness
+- 22:47 `Bash`: Read tunnel layout values
+- 22:47 `Bash`: Print tunnel layout numbers
+**Agent** (22:48 UTC):
 
-_51 tool steps._
+You've hit your 5-hour limit · resets 2:20am (UTC)
+
+
+_56 tool steps._
