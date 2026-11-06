@@ -166,3 +166,7 @@ The build reproduces step 8 exactly (`e6cd9334`). Capturing the current game at 
 
 Spector didn't load in the first try; fixing the injection.
 
+Spector works here: it captured the real 3.0 s frame (96 MB of WebGL calls). Now reading the draw calls.
+
+Frames for 4-6 s are still rendering. Meanwhile, here is a close look at the original's foreground water so I can match what's actually there.
+
