@@ -101,7 +101,8 @@ export const CREST_ON = BT_ON && LIST.includes('crest');
 // much of the face's colour it is; water.face: the face's procedural comma arcs off (the original's own whites are in the
 // texture), its bubble rings lower
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
-export const WATER6_ON = BT_ON && LIST.includes('water6');   // (R6, below: water4 with the fill under her from the lower water)
+export const WATER7_ON = BT_ON && LIST.includes('water7');   // (R7, below: water6 with the spray droplets drawn no bigger than small flecks)
+export const WATER6_ON = BT_ON && (LIST.includes('water6') || WATER7_ON);   // (R6, below: water4 with the fill under her from the lower water)
 export const WATER4_ON = BT_ON && (LIST.includes('water4') || WATER5_ON || WATER6_ON);   // (R4, below: water3 with the exemplar-filled texture)
 export const WATER3_ON = BT_ON && (LIST.includes('water3') || WATER4_ON);   // (R3, below: water2 plus its corrections)
 export const WATER2_ON = BT_ON && (LIST.includes('water2') || WATER3_ON);
@@ -170,6 +171,18 @@ if (WATER5_ON) WATER2.shift = WATER5.shift;
 // derive_water_map.py --fill exemplar --body-grow 13 --body-src-row 140. R4's registration (no shift), material and all else.
 export const WATER6 = { file: 'foreground_water_original_r6.png' };
 if (WATER6_ON) WATER2.file = WATER6.file;
+// (R6, the art director: about the same as R4 at the start and moving, clearly closer than the accepted build; keep it as
+// the candidate, but it is not the fix. 48_water_r6/.)
+// ?s3=intunnel,water7 (R7, the fifteenth session): R6 with ONLY the drawing of the game's spray droplets changed. The
+// layer isolation of the moving frames (48_water_r6/diag/): the water face alone is 20.6 % white at +1 s, as its texels
+// (19.8 %; the original's band 18.6), but the full frame is 33-38 % white there. Hiding the splash bank, the bubbles, the
+// glow, bloom or any other group changes it by at most 1 point; hiding the spray particles (game.js Particles, `fx`) takes it
+// to 21.4 %, and nearly all of that is round3's white spray (kind 3; the sparkle stars, kind 2, add about 5 points at
+// +2 s). Each droplet's drawn size grows as 1 / distance, so the ones thrown towards the camera become 50-90 px matte white
+// balls: the "cotton-ball" piles beside her. The change: every droplet drawn no bigger than maxPx of the canvas height
+// (12 px of the 1536 px frame), so near ones stay small flecks. The emitters, their counts, sizes and random numbers are
+// untouched (the same droplets in the same places); code in game.js gated on WATER7_ON.
+export const WATER7 = { maxPx: 12 / 1536 };
 { const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.water2; if (t) Object.assign(WATER2, t); }   // (test tunes only)
 export const CREST = {
   water: { splash: {

@@ -1,7 +1,7 @@
 // Bubble Wash Kingdom: playable browser version of approved Screen 3 ("Let's go! Into the
 // washing machine!"), built from the user's Meshy models and the layout of the Unity project.
 // The Unity project stays the real game; this is a separate demonstration.
-import { INTUNNEL_ON, INTUNNEL } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
+import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1562,6 +1562,7 @@ function resize() {
   bloom.resolution.set(Math.round(w * 0.5), Math.round(h * 0.5));
   camera.aspect = w / h;
   if (fx) fx.u.uScale.value = (h * pixelRatio * 0.5) / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  if (fx && fx.u.uMaxPx) fx.u.uMaxPx.value = h * pixelRatio * WATER7.maxPx;   // (?s3=...,water7 only)
   stage.style.setProperty('--u', Math.min(h / 537, w / 269).toFixed(4) + 'px');   // approved board pixels
 }
 new ResizeObserver(resize).observe(stage);
@@ -1637,6 +1638,13 @@ async function main() {
     col = mix(vec3(0.8, 0.93, 1.0), vec3(1.25), clamp(hl + (1.0 - r) * 0.5, 0.0, 1.0));
   } else if (vKind < 0.5) {`);
       fx.points.material.needsUpdate = true;
+    }
+    if (WATER7_ON) {   // ?s3=intunnel,water7 (R7): every spray droplet drawn no bigger than a small fleck (tunnel_s4_bt.js WATER7)
+      fx.u.uMaxPx = { value: renderer.domElement.height * WATER7.maxPx };
+      const dm = fx.points.material;
+      dm.vertexShader = dm.vertexShader.replace('uniform float uScale;', 'uniform float uScale, uMaxPx;')
+        .replace('gl_PointSize = size * uScale / max(0.1, -mv.z);', 'gl_PointSize = min(size * uScale / max(0.1, -mv.z), uMaxPx);');
+      dm.needsUpdate = true;
     }
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
     repairNormals(castle.scene);
