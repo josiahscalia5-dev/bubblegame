@@ -186,3 +186,13 @@ My `sed` replaced that line with a placeholder. I'll write it back properly with
 
 Those two meshes are the old opening's soap bubbles and suds (`opening.js`, section 3), still drawn in the in-tunnel start. I'll check what exactly disappears with them before deciding.
 
+Now the shader side in `tunnel_s4_water2.js`: load the body mask (under the same private random generator, so the game's seeded `Math.random` is untouched), and cut the face there.
+
+While R6 renders, I'll check the existing sheet tools, so R6's sheets match the earlier ones exactly.
+
+Now the sheet script, saved in the evidence folder so the comparison can be reproduced:
+
+While those render, I'll look at what draws the white diagonal dashes in the water behind her, the main remaining pale area.
+
+Identity holds on the R6 bundle: the accepted build at the start and +1 s, and R5, are all 0 differing pixels, with no console errors. Now the moving frames:
+

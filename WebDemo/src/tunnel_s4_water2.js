@@ -21,15 +21,21 @@ const f4 = (x) => (+x).toFixed(5);
 // the uniforms added to the swell's material (tunnel_r8_liquid.js liquidSwell)
 export function water2Uniforms() {
   const u = { uBwRef: { value: new THREE.Matrix4() }, uBwOn: { value: 0 }, uBwTex: { value: null } };
+  if (WATER2.body) u.uBwBody = { value: null };   // (R6) her body as the original draws it: the face is cut there
   // the texture, loaded with a private random sequence (a new Texture draws a UUID from Math.random)
   const keep = Math.random; let a = 0xb2a7; Math.random = () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; };
   try {
     const blank = new THREE.DataTexture(new Uint8Array([90, 160, 240, 255]), 1, 1); blank.needsUpdate = true; u.uBwTex.value = blank;
-    new THREE.TextureLoader().load(`textures/screen4/${WATER2.file}`, (t) => {
+    const load = (file, key) => new THREE.TextureLoader().load(`textures/screen4/${file}`, (t) => {
       t.colorSpace = THREE.NoColorSpace; t.flipY = false; t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
       t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.needsUpdate = true;
-      u.uBwTex.value = t;
+      u[key].value = t;
     });
+    load(WATER2.file, 'uBwTex');
+    if (WATER2.body) {   // (R6) no cut until the mask has loaded
+      const none = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1); none.needsUpdate = true; u.uBwBody.value = none;
+      load(WATER2.body, 'uBwBody');
+    }
   } finally { Math.random = keep; }
   return u;
 }
@@ -46,7 +52,7 @@ export function installWater2({ scene, swell }) {
     U.uBwRef.value.copy(M); U.uBwOn.value = 1;
   };
 }
-export const water2Decl = () => WATER2_ON ? 'uniform mat4 uBwRef; uniform float uBwOn; uniform sampler2D uBwTex;\n' : '';
+export const water2Decl = () => WATER2_ON ? 'uniform mat4 uBwRef; uniform float uBwOn; uniform sampler2D uBwTex;\n' + (WATER2.body ? 'uniform sampler2D uBwBody;\n' : '') : '';
 // inside focusSwellGLSL's block (s, fsPd, fsE, fl, mwCol, vW and the swell's frame uniforms are in scope)
 export function water2GLSL() {
   const P = WATER2;
@@ -59,7 +65,10 @@ ${P.shift ? `        bwS.y += ${f4(P.shift / 1536)};   // (R5) the registration:
         vec2 bwD = vec2(texture2D(uLqTex, bwQ * vec2(2.1, 1.3) + vec2(0.13, -uTime * ${f4(P.flow)})).b,
                         texture2D(uLqTex, bwQ * vec2(1.7, 2.3) + vec2(0.57, -uTime * ${f4(P.flow * 1.3)})).b) - 0.5;
         vec3 bwT = texture2D(uBwTex, clamp(bwQ + bwD * ${f4(P.wobble)}, vec2(0.002), vec2(0.998))).rgb;
-${P.gain ? `        { float bwL = dot(bwT, vec3(0.2126, 0.7152, 0.0722));   // (R3) the colours lifted against the bloom's haze; white stays white
+${P.body ? `        // (R6) the contact edge: where the original draws her body the face is cut, so her own fur shows down to the
+        // original's lobe outline, which becomes the water's top edge in front of her (the same place and flow as the colour)
+        if (uBwOn > 0.5 && bwS.y > ${f4(P.y0)} && texture2D(uBwBody, clamp(bwQ + bwD * ${f4(P.wobble)}, vec2(0.002), vec2(0.998))).r > ${f4(P.cut)}) discard;
+` : ''}${P.gain ? `        { float bwL = dot(bwT, vec3(0.2126, 0.7152, 0.0722));   // (R3) the colours lifted against the bloom's haze; white stays white
           bwT = pow(clamp(bwL + (bwT - bwL) * ${f4(P.gain[0])}, 0.0, 1.0), vec3(${f4(P.gain[1])})); }
 ` : ''}        float bwK = ${f4(P.amount)} * uBwOn * smoothstep(${f4(P.y0)}, ${f4(P.y0 + 0.03)}, bwS.y);
         mwCol = mix(mwCol, mtUndisplay(bwT), bwK);

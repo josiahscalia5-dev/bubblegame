@@ -1,0 +1,4 @@
+objects 242 canvas [ 768, 1536 ] post [{"type":"Qc","enabled":true},{"type":"n","enabled":true},{"type":"$o","enabled":true},{"type":"eu","enabled":true}]
+swell_solo_nobloom hidden 241
+no_swell hidden 1
+no console errors or warnings

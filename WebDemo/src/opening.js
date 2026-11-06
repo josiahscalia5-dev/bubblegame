@@ -35,6 +35,7 @@ import { PHASE_A, applyPhaseA } from './phase_a.js';
 import { S3, S3_ON, loadScreen3Models } from './screen3_models.js';
 import { MATCH_ON } from './tunnel_r9_match.js';
 import { phoneRefFov } from './match_phone.js';   // ?s3=match only: the 1:2 reference camera under the phone framing
+import { WATER6_ON, WATER6 } from './tunnel_s4_bt.js';   // ?s3=intunnel,water6: the suds and foam bubbles round her hidden (R6)
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -313,6 +314,10 @@ export function buildOpening(ctx) {
     sd.push({ a, r: inner ? 0.47 + rand() * 0.05 : 0.6 + rand() * 0.08, s: inner ? 0.1 + rand() * 0.07 : 0.05 + rand() * 0.045,
       lift: inner ? 0.22 + rand() * 0.3 : 0.25 + rand() * 0.2, ph: rand() * 6.28, drift: rand(), inner });
   }
+  // ?s3=intunnel,water6 (R6): the foam bubbles and suds round her are drawn over the in-tunnel start's foreground water as
+  // milky rings (the bottom water 36.6 % saturated blue with them, 48.5 % without; the original 53.5). Hidden, not removed:
+  // they are still built and moved, with their own random sequence, so nothing else changes.
+  if (WATER6_ON && !WATER6.suds) { if (foamBubbles) foamBubbles.visible = false; if (suds) suds.visible = false; }
   updaters.push((dt, t, phase) => {
     bubbleU.uTime.value = t; bubbleU.uAvoid.value.copy(mascot.root.position);
     if (staticBubbles && !placed && phase === 'intro') {
