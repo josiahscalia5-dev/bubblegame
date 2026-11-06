@@ -99,8 +99,22 @@ closer, dE the mean-colour CIEDE2000):
 
 - **Identity:** see `identity_proof_raw.txt` (the accepted build at the start and +1 s, R6 at the start and +1 s, R5 at the
   start: 0 differing pixels; R7 rendered twice: 0; no console errors).
-- **Gameplay:** PENDING.
-- **Videos:** PENDING.
+- **Gameplay (frame-exact, the game's own stepping):**
+  - `gameplay/s3_func_water7.txt` (Tap to Start, real swipes left, right and up, the jump, the ride into the tunnel, coins,
+    the sock, keyboard start, console): identical to R3c's report, except 2 fewer draw calls and 168 fewer triangles (the
+    two hidden suds and foam-bubble meshes); no console errors.
+  - `gameplay/r2_func_*.txt` (hearts, pause, Bubble Blast, Turbo Spin): see below.
+- **Videos** (`videos/`; a Pixel 7 screen, 412 x 839 at DPR 2, 30 frames per game second, seed 7):
+  - `water7_straight.mp4` and `water7_steering.mp4`;
+  - `compare_straight_original_accepted_water7.mp4` and `compare_steering_..._water7.mp4` (ORIGINAL | ACCEPTED | R7; the first
+    two panels from `44_water_material/`'s run of the same script);
+  - no console errors.
+  - The summaries match R5's: straight identical; steering identical (lanes 1, 0, 2, height -0.22 to 1.49 m) except one
+    more sock picked up.
+  - The recorder lets the real clock into the particles: the two runs differ from frame 2 in the live particle count (15 /
+    16), and an edge pickup follows. The same happens between two runs of ONE build
+    (`35_step7_bubble_veil/videos/determinism/README.md`), so this is the tool, not R7; the frame-exact checks above are
+    the gameplay proof.
 
 ## Files
 
