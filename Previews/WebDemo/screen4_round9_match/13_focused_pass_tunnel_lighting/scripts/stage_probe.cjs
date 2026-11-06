@@ -9,7 +9,8 @@
 // Usage: S3=match T=3.0 ITEMS='[[l,u,h],...]' DELTA='[dx,dh,du]' node stage_probe.cjs <abs WebDemo> <out.json> ['<tune json>']
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
-const [ROOT, OUT, TUNE = '{}'] = process.argv.slice(2);
+const [ROOT, OUT, TUNE_ARG = '{}'] = process.argv.slice(2);
+const TUNE = TUNE_ARG.endsWith('.json') ? fs.readFileSync(TUNE_ARG, 'utf8') : TUNE_ARG;   // tune JSON, or a file holding it
 const S3 = (process.env.S3 || 'match').split(',').filter(Boolean), T = +(process.env.T || 3.0);
 const ITEMS = JSON.parse(process.env.ITEMS || '[]'), DELTA = JSON.parse(process.env.DELTA || '[0,0,0]');
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
@@ -61,14 +62,36 @@ const server = http.createServer((req, res) => {
       for (let i = 0; i < a.count; i++) { const sd = fr(a.getX(i) * 3.1 + a.getZ(i) * 7.7);
         const c = new V(a.getX(i) + Math.sin(t * 0.9 + sd * 6) * 0.04, a.getY(i) + fr(t * 0.12 + sd) * 0.3 - 0.15, a.getZ(i)), r = a.getW(i), p = c.clone().project(cam), q = c.clone().addScaledVector(right, r).project(cam);
         bubbles.push({ i, cx: +((p.x + 1) / 2).toFixed(3), cy: +((1 - p.y) / 2).toFixed(3), dW: +Math.abs(q.x - p.x).toFixed(3), dist: +c.distanceTo(cam.position).toFixed(2), r, seed: +sd.toFixed(3), inst: [a.getX(i), a.getY(i), a.getZ(i)].map((v) => +v.toFixed(3)) }); } }
+    // the socks (holders with a sock halo sprite): the screen box of their model's projected vertices, nearest first
+    const socks = [];
+    scene.traverse((o) => {
+      if (!o.isGroup || !o.children.some((c) => c.isSprite && c.name === 'r2Halo')) return;
+      let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; const v = new V();
+      o.traverse((q) => { if (!q.isMesh || !q.geometry || q.isSprite) return; const pos = q.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i += 2) { v.fromBufferAttribute(pos, i).applyMatrix4(q.matrixWorld).project(cam); const x = (v.x + 1) / 2, y = (1 - v.y) / 2; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } });
+      if (x0 < 1e9) socks.push({ box: [x0, x1, y0, y1].map((t) => +t.toFixed(3)), w: +(x1 - x0).toFixed(3), hH: +(y1 - y0).toFixed(3), dist: +o.getWorldPosition(new V()).distanceTo(cam.position).toFixed(2), track: toTrack(o.getWorldPosition(new V())), visible: o.visible });
+    });
+    socks.sort((a, b) => a.dist - b.dist);
+    // the vanishing point (the drum's axis, 1.5 m over the water, 30 m ahead of the camera, as MATCH.centre) and the gold
+    // rim's outer edge where it crosses x 0.5 (r6Bezel's local circle of its outer radius, from its geometry)
+    const camU = toTrack(cam.position.clone()).u + L.tunnelStart;
+    TR.frame(camU + 30, fr); const vpp = fr.P.clone().addScaledVector(fr.U, 1.5).project(cam);
+    const vp30 = [+((vpp.x + 1) / 2).toFixed(4), +((1 - vpp.y) / 2).toFixed(4)];
+    let rimTop = null; const bz = scene.getObjectByName('r6Bezel');
+    if (bz) { bz.geometry.computeBoundingBox(); const R = bz.geometry.boundingBox.max.x; let best = null;
+      for (let a = 0; a < 6.2832; a += 0.0005) { const p = new V(Math.cos(a) * R, Math.sin(a) * R, 0).applyMatrix4(bz.matrixWorld).project(cam); const x = (p.x + 1) / 2, y = (1 - p.y) / 2;
+        if (y < 0.5 && (!best || Math.abs(x - 0.5) < Math.abs(best[0] - 0.5))) best = [x, y]; }
+      rimTop = { outerR: +R.toFixed(3), atX: +best[0].toFixed(4), y: +best[1].toFixed(4) }; }
     const cr = cam.matrixWorld.elements;   // forward = -Z column
     return { state: window.__bw.state(), camera: { pos: r3(cam.position), track: toTrack(cam.position.clone()), quat: cam.quaternion.toArray().map((x) => +x.toFixed(5)), fwd: [-cr[8], -cr[9], -cr[10]].map((x) => +x.toFixed(5)), fov: cam.fov, aspect: cam.aspect, near: cam.near },
-      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles };
+      mascot: { z: +(d.mascotState.z - L.tunnelStart).toFixed(3), yAbs: d.mascotState.yAbs }, fuzz: foot, path, shifted, bubbles, socks: socks.slice(0, 2), vp30, rimTop };
   }, [ITEMS, DELTA]);
   fs.writeFileSync(OUT, JSON.stringify(info, null, 1));
   console.log(JSON.stringify({ camera: info.camera, mascot: info.mascot, fuzz: info.fuzz }));
   if (!process.env.NOPATH) console.log(JSON.stringify(info.path));
-  for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
+  if (!process.env.NOBUBBLES) for (const b of info.bubbles) console.log('bubble', JSON.stringify(b));
+  for (const s of info.socks) console.log('sock', JSON.stringify(s));
+  console.log('vp30', JSON.stringify(info.vp30), 'rimTop', JSON.stringify(info.rimTop));
   for (const s of info.shifted) console.log(JSON.stringify(s));
   console.log(logs.join(' | ') || 'no console errors');
   await browser.close(); server.close();
