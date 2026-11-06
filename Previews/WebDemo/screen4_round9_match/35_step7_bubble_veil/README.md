@@ -51,3 +51,51 @@ zone, bubbles floating inside the open tube over the centre rings, and the far-c
 | gameplay, the NORMAL game: `s3_func` | identical on step 6 and step 7; no console errors (the normal game has no hearts, pause or power-ups: `gameplay/README.md`) | `gameplay/` |
 | Pixel 7 (412 x 839) at 3, 4, 5 and 6 s | captured, no console errors | `frames/step7_pixel7_T*`, `11_pixel7_*.jpg` |
 | build | the main checkout rebuilds md5 `57b069116c2baf1b66644fba87c8fe14`, the tested build byte for byte | |
+
+## The result, by eye (the user's standard) and measured
+
+Sheets (ORIGINAL | STEP 6 | STEP 7, the same positions, seed 7, no steering):
+- `10_original_vs_step6_vs_step7_T3.0_767x1536.jpg` (and `_T4.0`, `_T5.0`, `_T6.0`): the full 1:2 frame;
+- `11_pixel7_original_vs_step6_vs_step7_T3.0_T4.0.jpg`, `..._T5.0_T6.0.jpg`: the Pixel 7 screen with the HUD;
+- `12_zoom_tunnel_T3.0_2x.jpg`: the tunnel enlarged.
+
+Real gameplay videos (Pixel 7, 10 s from Tap to Start, into the tunnel, through it and past the brushes):
+- `videos/compare_straight_original_step6_step7_10s.mp4`: straight down the middle lane (`STRAIGHT=1`);
+- `videos/compare_steering_original_step6_step7_10s.mp4`: the step 4 video's real swipes (step 6's half is the step 6
+  recording, `../32_step6_centre_placement/video/`);
+- `13_video_frames_straight_step6_over_step7.jpg`, `13_video_frames_steering_step6_over_step7.jpg`: their frames at
+  4.0-9.0 s (the tap at 2.0 s);
+- the recorder is not frame-exact (`videos/determinism/README.md`).
+
+**What changed, by eye:**
+- **3.0 s:** the cloud of small and medium bubbles over the middle rings, the left side and the centre is gone; the rings
+  read clearer and bluer. Kept: the large clear bubble upper right, a medium one upper middle, a few small ones by the walls,
+  close to the original's set.
+- **The entry (4.0-4.5 s, steering):** step 6's milky mass of bubbles filling the drum's mouth is gone; the blue rings show
+  through it.
+- **5.0-6.0 s:** a few fewer bubbles by the upper walls; otherwise the same (the tunnel bubbles sit mostly round the 3.0 s
+  stretch of the tunnel; the Screen 4 bubbles there, about 8-10 clear ones, were left as they are).
+- **Her water:** unchanged (waterline bubbles and splash untouched).
+
+Measured (`measured.md`; saturated blue: hue 190-235, s >= 0.5, v >= 0.35):
+
+| | original | step 6 | step 7 |
+|---|---|---|---|
+| walls, masked water, 3.0 s: saturated blue | 58.9 % | 51.8 % | **55.0 %** |
+| distant core, masked water, 3.0 s: saturated blue | 29.7 % | 20.3 % | **24.8 %** |
+| distant core: lavender | 16.0 % | 16.1 % | 15.7 % |
+| tunnel box (objects included) at 3.0 / 4.0 / 5.0 / 6.0 s | | 26.3 / 19.6 / 29.6 / 23.3 | 27.9 / 19.5 / 29.9 / 23.7 |
+
+No overall similarity percentage is claimed.
+
+## Remaining differences (for the next steps, in the user's order)
+
+- [ ] **White splash textures:** the original's chunky irregular white-aqua splashes (white pieces 237 px against 75 px); the
+  walls' procedural white dashes and the floating streaks are still the game's own (the held step 5 map is the source).
+- [ ] **Blue water and floor:** the walls' cobalt is still under the original's (55.0 against 58.9 %); the floor ahead and the
+  water in front paler and smoother.
+- [ ] **Brush sizes:** from 5.5 s the brushes fill the frame; the original shows two partly cropped at the edges.
+- [ ] **The tunnel entry (4.0-4.5 s):** the lavender drum face and ceiling.
+- [ ] **The distant centre:** the pale disc at 5.5 s (steering run).
+- [ ] **Sock colours:** purple stripes and toe against the original's white sock with a blue toe.
+- (postponed by the user: the pink character; the opening's shortening, option C)
