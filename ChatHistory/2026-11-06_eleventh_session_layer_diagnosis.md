@@ -489,3 +489,5 @@ The page screenshot hit Playwright's 30-second timeout. Two software-rendered br
 
 Before trusting the batched tool, an equivalence check: the same run to 3.0 s, frame by frame and batched, at the small 1× size for speed. The two frames must be identical:
 
+A shell scoping mistake: my variable definitions were swallowed into the first background job, so the other runs got empty paths. I'll put the runs in a small script instead:
+
