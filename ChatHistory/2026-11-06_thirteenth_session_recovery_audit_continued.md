@@ -842,3 +842,191 @@ The tests are still running: 7 of 8 still frames and 27 of 41 regression frames 
 
 When they finish I'll check the results. If step 8 passes, I'll put it in the game build and commit it. Then I'll send you the two videos and the full checklist together.
 
+---
+
+### You · 2026-11-06 10:22 UTC
+
+[attached file: 06_VERIFICATION_CHECKLIST.md] [attached file: BWK_SCREEN3_TRUE_REFERENCE_KIT.zip] Show me the videos and checklist when done BUBBLE WASH KINGDOM — STRICT ORIGINAL SCREEN 3 RECONSTRUCTION
+
+Claude, I need you to take this instruction extremely seriously. I have spent considerable time and credits trying to get my playable game to look like my ORIGINAL APPROVED artwork.
+
+I DO NOT WANT ANOTHER GENERIC IMPROVEMENT. I WANT MY ACTUAL APPROVED SCREEN REPRODUCED AS CLOSELY AS POSSIBLE IN MY PLAYABLE 3D GAME.
+
+FIRST — CORRECT THE REFERENCE MISTAKE
+
+The AI-generated illustration labeled "Target opening / tunnel entrance" and its version without text are NOT my original approved screenshots.
+
+Do not use them as exact visual targets.
+
+My actual approved Screen 3 opening is saved in my GitHub repository:
+
+"Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/01_APPROVED_SCREEN_3_OPENING.jpg"
+
+My actual approved Screen 4 tunnel is:
+
+"Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg"
+
+OPEN BOTH AUTHENTIC ORIGINALS. STUDY THEM. DO NOT SUBSTITUTE NEW AI-GENERATED REFERENCES.
+
+Screen 3 is the opening before entering the washing machine.
+
+Screen 4 is what the game must look like once my pink character travels inside the blue-water tunnel.
+
+These are two different approved scenes, and BOTH matter.
+
+SECOND — FIX THE OPENING SCENERY
+
+My authentic Screen 3 has a beautiful, colorful magical laundry castle.
+
+In my current game, the background is much too plain.
+
+I want you to investigate and correct:
+
+- The missing or poorly framed castle towers and decorative architecture.
+- The lavender-and-gold castle backdrop, lighting and depth.
+- The large, glowing gold washing-machine entrance.
+- The saturated blue and turquoise tunnel visible THROUGH the entrance.
+- The giant blue fluffy washing brush positioned on the left.
+- The gold-and-blue laundry machinery, rollers and water tubes on the right.
+- The scenery's proportions, positioning, materials and colors.
+
+I WANT YOU TO MEASURE THE ACTUAL ORIGINAL AGAINST MY CURRENT GAME.
+
+Do not invent new scenery arrangements. Do not add random decorative assets that were not requested.
+
+Look for the original models already in my repository before creating anything new.
+
+THIRD — FIX THE WATER SLIDE AND CHARACTER PRESENTATION
+
+My approved opening has vivid turquoise-blue, sparkling, energetic water.
+
+My existing game still looks too much like a smooth blue slide with a patterned surface.
+
+I want the same magical water appearance as my approved opening, including irregular white-aqua splashes, cyan currents, sparkling reflections, bubbling water and dynamic movement.
+
+My pink fluffy character must appear centered in the foreground, seen from behind, traveling ON TOP of the blue water.
+
+It must not be buried behind water or sitting inside an enormous white foam cushion.
+
+Do not remodel the character at this stage. Focus on its placement, camera framing, surrounding water and visual integration.
+
+FOURTH — MATCH THE ACTUAL WASHING-MACHINE ENTRANCE
+
+The washer entrance is one of the most important parts of the screen.
+
+The original has a prominent golden circular rim surrounding a luminous blue tunnel.
+
+In the current game, the tunnel entrance often appears smaller, paler and lavender-colored.
+
+I want you to inspect its geometry, camera framing, materials, reflections, lighting and inner tunnel appearance.
+
+Correct the live 3D structure rather than hiding it with a painted screenshot.
+
+FIFTH — PRESERVE AND CONNECT SCREEN 4
+
+The instant the character travels into the washing machine, the game must visually transition toward my authentic approved Screen 4.
+
+That means recognizable cobalt-blue concentric water rings, turquoise currents, bright irregular splash details, correctly scaled brushes, collectible coins, gem and sock, and believable water around the character.
+
+Do not undo our completed Screen 4 improvements, including Steps 6 and 7.
+
+Do not make the character pass through a long, empty lavender tunnel before the approved-looking blue-water scene appears.
+
+SIXTH — USE ALL EXISTING PROJECT RESOURCES
+
+Before deciding that an asset is missing, inspect:
+
+"WebDemo/src/opening.js"
+
+"WebDemo/src/tunnel_s4.js"
+
+"WebDemo/src/tunnel_r9_focus.js"
+
+"WebDemo/src/tunnel_r9_match.js"
+
+"WebDemo/src/tunnel_r9_match_water.js"
+
+"WebDemo/src/game.js"
+
+Also inspect the existing GLB models, textures, Meshy/Tripo deliveries, custom shaders, design references and project-specific Screen Matcher skill.
+
+Use Blender for existing 3D asset adjustments, Playwright for real game captures, OpenCV for visual comparisons and Three.js debugging for actual rendering problems.
+
+Do NOT use paid 3D generation unless you can first demonstrate that the existing assets are insufficient and get my permission.
+
+SEVENTH — MANDATORY VERIFICATION CHECKLIST
+
+You must verify all of the following:
+
+- [ ] Authentic original Screen 3 is loaded and verified.
+- [ ] The AI-generated concepts are excluded as exact targets.
+- [ ] Castle towers and background resemble the authentic original.
+- [ ] The entrance rim matches the original's size and location.
+- [ ] Strong blue and turquoise tunnel depth is visible through the entrance.
+- [ ] Left blue fluffy brush is correctly shaped, scaled and positioned.
+- [ ] Right-side gold-and-blue machinery matches the approved composition.
+- [ ] Water slide has animated blue-white waves and authentic splash detail.
+- [ ] Character is viewed from behind and sits on the surface of the water.
+- [ ] Bubbles do not obscure the main scenery.
+- [ ] Coins and objects have appropriate depth and scale.
+- [ ] Original HUD, banner, controls and gameplay remain functional.
+- [ ] Screen 3 transitions naturally into the approved Screen 4.
+- [ ] No previous Screen 4 fixes are accidentally lost.
+- [ ] The game runs correctly on a portrait phone screen without errors.
+
+EIGHTH — I WANT REAL EVIDENCE
+
+For the opening, give me a full-resolution comparison containing:
+
+LEFT: MY AUTHENTIC APPROVED SCREEN 3
+
+MIDDLE: MY PREVIOUS REAL GAME
+
+RIGHT: YOUR CORRECTED REAL GAME
+
+I want additional close-up comparisons of the castle background, gold washer doorway, left brush, right machinery, slide water and main character.
+
+Then provide a real gameplay recording showing the stationary opening, the character starting to travel, the washer entry and movement inside the tunnel.
+
+Do not claim visual success based solely on passing tests or numerical color measurements. Show me what actually changed.
+
+NINTH — DO THE ACTUAL IMPLEMENTATION
+
+I do not want another long proposal without changes.
+
+Recover the latest correct GitHub branch. Read the existing project handoff. Save a rollback checkpoint.
+
+Implement the opening's biggest visual corrections first: castle/background visibility and washer-entrance composition.
+
+Test and commit those corrections independently.
+
+After that, correct the opening water and surrounding brush/machinery composition in separate tested changes.
+
+Do not rebuild my game from scratch.
+
+Do not change the mascot model.
+
+Do not spend paid credits without permission.
+
+Do not remove existing gameplay.
+
+I want real working Three.js gameplay, real screenshots, real comparisons and verified commits.
+
+FINAL REQUIREMENT
+
+My desired quality target is at least 8/10 visual resemblance to my original approved artwork, with the ultimate goal of getting as close to the original as technically possible.
+
+If a change doesn't make the screen visibly more accurate, explain why and revert it.
+
+STOP MAKING YOUR OWN VERSION OF MY APPROVED SCENE. REPRODUCE THE ORIGINAL SCENERY, COMPOSITION, WATER, MATERIALS AND ATMOSPHERE AS FAITHFULLY AS POSSIBLE.
+
+Start the actual corrections using the authentic Screen 3 from my repository, and show me the resulting playable game.
+
+_[2 images attached]_
+
+---
+
+### Claude · 2026-11-06 10:22 UTC
+
+This changes the plan: you now want the opening (Screen 3) fixed as well, with your authentic Screen 3 from the repository as its only target, and never the AI concept. Before anything else I'll save your new kit to the repository. The zip goes into its own empty folder, and I'll only read it, never run anything from it:
+
