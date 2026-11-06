@@ -1,4 +1,20 @@
-# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 6, step 5 held; branch `ccr-d224d313-81g2dq`)
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=focus` at step 7, step 5 held; branch `ccr-d224d313-81g2dq`)
+
+## Newest (6 November, about 06:05 UTC): thirteenth session, STEP 7 done, the bubble veil; STOPPED for the user's visual review
+
+- **The user's plan (after the recovery audit), in order, each separately testable and reversible, each stopped for review:**
+  the bubble veil (done), then the original's white splash textures, blue water and floor, brush sizes, the tunnel entry, the
+  distant centre, the sock colours. The opening: option C (keep the exterior, shorten it later; NOT in this pass). The pink
+  character postponed. Comparisons at the same scene positions fully inside the tunnel (3-6 s after the tap; the course loops
+  back to the washing machine by 8 s), Pixel 7, the normal game tested, straight and steering MP4s.
+- **Step 7:** `FOCUS.water.bubbles` 160 -> 40 along the walls only (`bd8d49e`, bundle `57b06911...`); evidence
+  `Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/README.md`. Walls saturated blue 51.8 -> 55.0 % (58.9),
+  core 20.3 -> 24.8 % (29.7). Waiting for the user's review before the white splash step.
+- **Found:** the phone recorder is not frame-exact (particles and an edge coin differ between two runs of one build:
+  `35_.../videos/determinism/`); the normal game has no hearts, pause or power-ups (`r2_func` does not apply to it).
+- **New tool options:** `layer_diag.cjs` `T=` (seconds after the tap) and `VIEW=`; `35_.../scripts/record_phone.cjs`
+  `STRAIGHT=1`.
+
 
 ## Newest (6 November, about 04:55 UTC): thirteenth session, STEP 6 done (`?s3=focus` only)
 

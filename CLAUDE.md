@@ -40,7 +40,7 @@ Read `HANDOFF.md` first: its top section is the newest state, branch and commit.
 - **The user's briefs of 6 November** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`, `05_...` and
   `10_...`): one correction at a time, each compared original / previous / new at the checkpoint, at Pixel 7 and at moving
   moments; **revert anything that looks less like the original**; the tunnel is the hero, with a clear glowing centre, less
-  clutter and a clean coin / gem path. `focus` is at step 6 (the far rings follow the bent tube); step 5 is held, to be re-tested on top of it (see `HANDOFF.md`).
+  clutter and a clean coin / gem path. `focus` is at step 7 (step 6: the far rings follow the bent tube; step 7: the bubble veil); step 5 is held (see `HANDOFF.md`). Next, after the user's review: the original's white splash textures, then blue water and floor, brush sizes, the tunnel entry, the distant centre, sock colours, each stopped for review.
 - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
   scene. Never restart or rebuild the game from scratch.
 
