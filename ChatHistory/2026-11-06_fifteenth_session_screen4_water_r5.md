@@ -119,3 +119,15 @@ The straight recording is at 93 of 300 frames, running faster now, and the first
 
 The art director has reported, and all the identity checks passed and are saved (commit `eeb9069`). R5's steering recording and the last gameplay test are still running. The videos will assemble themselves when the recordings finish, and then I'll send you the full report.
 
+---
+
+### Automatic notice · 2026-11-06 18:56 UTC
+
+_Background command "Wait for the gameplay tests to finish" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-06 18:57 UTC
+
+While those run, I'll write R5's README; the video and second test results get added when they land.
+
