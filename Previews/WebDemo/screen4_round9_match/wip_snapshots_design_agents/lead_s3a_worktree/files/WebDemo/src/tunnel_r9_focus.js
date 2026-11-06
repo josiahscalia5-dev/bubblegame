@@ -64,9 +64,9 @@ export const FOCUS = {
         // SCREEN 3 step S3-1 (6 November 2026, the user's Screen 3 reconstruction directive; evidence
         // Previews/WebDemo/screen3_opening_authentic/): the drum's lavender face (round6's porthole, 14 m wide here) stood in
         // front of the castle and covered the whole opening view (Tap to Start), so the approved Screen 3's castle, its towers
-        // and the façade round the washer door never showed. Built only out to 4 m now (its shading unchanged): from inside
+        // and the façade round the washer door never showed. Built only out to 4.5 m now (its shading unchanged; 4.0 m let a sliver of the castle show above the counters at 3.0 s, 4.5 m is pixel-identical there): from inside
         // the tunnel nothing changes, from the opening the castle (models/s3_castle.glb) shows round the door. Rollback: no cut.
-        porthole: { bezel: { inner: 2.506, outer: 2.641 }, face: { inner: 2.59, cut: 4.0 }, rivets: { radius: 3.42 } },
+        porthole: { bezel: { inner: 2.506, outer: 2.641 }, face: { inner: 2.59, cut: 4.5 }, rivets: { radius: 3.42 } },
       },
       // (its centre 0.087 m higher and 0.019 m to the right, for the higher camera)
       rim: { centre: [-0.1155, 0.8415] },

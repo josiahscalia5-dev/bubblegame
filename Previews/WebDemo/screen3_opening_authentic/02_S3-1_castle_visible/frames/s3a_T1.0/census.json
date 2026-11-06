@@ -1215,13 +1215,13 @@
       "uLqSide"
      ],
      "tex": [
-      "uMatchCol=http://localhost:34607/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:34607/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:34607/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:34607/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:34607/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:34607/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:34607/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:45167/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:45167/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:45167/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:45167/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:45167/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:45167/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:45167/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(matchWall(cs, u, vMtW, -uLqFwd, uLqUp), 1.0)",
      "compiled": false
@@ -9678,13 +9678,13 @@
      ],
      "tex": [
       "uLqTex=256x256",
-      "uMatchCol=http://localhost:34607/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:34607/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:34607/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:34607/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:34607/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:34607/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:34607/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:45167/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:45167/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:45167/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:45167/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:45167/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:45167/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:45167/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(col, 1.0)",
      "compiled": false
@@ -9696,19 +9696,19 @@
    "path": "r6Porthole/r6Face",
    "type": "Mesh",
    "count": null,
-   "verts": 644,
+   "verts": 966,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     -0.013,
-     1.044
+     -0.08,
+     1.111
     ],
     "y": [
-     0.263,
-     0.789
+     0.231,
+     0.823
     ]
    },
    "mats": [
@@ -9795,13 +9795,13 @@
       "uMatchPathVP"
      ],
      "tex": [
-      "uMatchCol=http://localhost:34607/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:34607/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:34607/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:34607/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:34607/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:34607/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:34607/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:45167/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:45167/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:45167/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:45167/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:45167/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:45167/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:45167/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(mtUndisplay(min(c + vec3(0.12, 0.1, 0.06) * glint, 1.0)), 1.0)",
      "compiled": false
@@ -9961,13 +9961,13 @@
      ],
      "tex": [
       "uLqTex=256x256",
-      "uMatchCol=http://localhost:34607/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:34607/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:34607/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:34607/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:34607/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:34607/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:34607/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:45167/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:45167/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:45167/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:45167/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:45167/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:45167/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:45167/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(col, 1.0)",
      "compiled": false

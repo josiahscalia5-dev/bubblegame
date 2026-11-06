@@ -11,14 +11,14 @@
  "fog": null,
  "state": {
   "phase": "running",
-  "time": 2.517,
-  "z": -5.477,
+  "time": 3.517,
+  "z": 1.592,
   "x": 0,
-  "y": 0.857,
+  "y": 0.405,
   "world": [
    0,
-   0.857,
-   -5.477
+   0.405,
+   1.592
   ],
   "path": {
    "pitch": 0,
@@ -31,10 +31,10 @@
    0
   ],
   "lane": 1,
-  "speed": 6,
+  "speed": 7.21,
   "air": false,
-  "slope": 0.011,
-  "pitchDeg": 4.2,
+  "slope": 0,
+  "pitchDeg": -0.3,
   "leanDeg": 0,
   "coins": 1280,
   "gems": 36,
@@ -45,12 +45,12 @@
   },
   "laps": 0,
   "camera": [
-   0,
-   1.861,
-   -11.877
+   -0.162,
+   1.599,
+   -1.508
   ],
-  "cameraPitchDeg": -3.45,
-  "particles": 119,
+  "cameraPitchDeg": 2.17,
+  "particles": 136,
   "repairedNormals": 1002065,
   "machineryInnerX": 1.22,
   "decorClear": {
@@ -101,12 +101,12 @@
    "box": {
     "any": true,
     "x": [
-     -2.667,
-     3.667
+     -0.956,
+     2.162
     ],
     "y": [
-     -1.187,
-     1.795
+     -0.224,
+     1.327
     ]
    },
    "mats": [
@@ -150,12 +150,12 @@
    "box": {
     "any": true,
     "x": [
-     -2.42,
-     3.375
+     0.054,
+     1.076
     ],
     "y": [
-     -0.291,
-     0.82
+     0.416,
+     0.616
     ]
    },
    "mats": [
@@ -196,12 +196,12 @@
    "box": {
     "any": true,
     "x": [
-     -3.99,
-     4.99
+     -4.536,
+     6.974
     ],
     "y": [
-     0.343,
-     0.557
+     0.501,
+     0.7
     ]
    },
    "mats": [
@@ -259,79 +259,6 @@
   },
   {
    "id": 3,
-   "path": "Group/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 4669,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.082,
-     0.876
-    ],
-    "y": [
-     0.448,
-     0.618
-    ]
-   },
-   "mats": [
-    {
-     "type": "ShaderMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": false,
-     "vertexColors": false,
-     "color": null,
-     "map": null,
-     "uniforms": [
-      "uTime",
-      "uTunnel",
-      "uRipples",
-      "uPlayer",
-      "uPlayerMove",
-      "uFlow",
-      "uSlideHalf",
-      "uDeep",
-      "uShallow",
-      "uTurq",
-      "uGlow",
-      "uSky",
-      "uPink",
-      "uGold",
-      "uRingA",
-      "uRingB",
-      "uFog",
-      "uSunDir",
-      "uRings",
-      "uOpen",
-      "uS4Haz",
-      "uS4Warn",
-      "uHeroTime",
-      "uHeroTravel",
-      "uHeroTanW",
-      "uHeroCam",
-      "uHeroWater",
-      "uLqCut"
-     ],
-     "tex": [],
-     "fragOut": "gl_FragColor = vec4(lit, 1.0)",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 4,
    "path": "Mesh",
    "type": "Mesh",
    "count": 130,
@@ -342,12 +269,12 @@
    "box": {
     "any": true,
     "x": [
-     0.474,
-     0.526
+     0.214,
+     0.504
     ],
     "y": [
-     0.612,
-     0.651
+     1,
+     1.603
     ]
    },
    "mats": [
@@ -375,7 +302,7 @@
    ]
   },
   {
-   "id": 5,
+   "id": 4,
    "path": "Mesh",
    "type": "Mesh",
    "count": 130,
@@ -386,12 +313,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -419,6 +346,58 @@
    ]
   },
   {
+   "id": 5,
+   "path": "Group/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 351,
+   "geo": "BufferGeometry",
+   "renderOrder": 2,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -3.379,
+     0
+    ],
+    "y": [
+     -0.631,
+     0.097
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uLipSpeed",
+      "uStreakLen",
+      "uDeep",
+      "uBright",
+      "uSky",
+      "uPink"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(col, alpha)",
+     "compiled": false
+    }
+   ]
+  },
+  {
    "id": 6,
    "path": "Group/Mesh",
    "type": "Mesh",
@@ -430,12 +409,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.659,
+     -27.536,
      0
     ],
     "y": [
-     0.087,
-     0.272
+     -2.993,
+     7.639
     ]
    },
    "mats": [
@@ -475,6 +454,182 @@
    "path": "Group/Mesh",
    "type": "Mesh",
    "count": null,
+   "verts": 100,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -2.321,
+     0
+    ],
+    "y": [
+     -0.408,
+     0
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "path": "Group/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -4.689,
+     0
+    ],
+    "y": [
+     -0.267,
+     0.158
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "path": "Group/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 297,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -4.981,
+     0
+    ],
+    "y": [
+     -0.346,
+     0.137
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "path": "Group/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 100,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -2.76,
+     0
+    ],
+    "y": [
+     -0.011,
+     0.222
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "path": "Group/Mesh",
+   "type": "Mesh",
+   "count": null,
    "verts": 351,
    "geo": "BufferGeometry",
    "renderOrder": 2,
@@ -482,12 +637,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.857,
-     0
+     1,
+     5.159
     ],
     "y": [
-     0.194,
-     0.756
+     -0.812,
+     0.12
     ]
    },
    "mats": [
@@ -523,182 +678,6 @@
    ]
   },
   {
-   "id": 8,
-   "path": "Group/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 100,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.605,
-     0
-    ],
-    "y": [
-     0.064,
-     0.16
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffbf45",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 9,
-   "path": "Group/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.76,
-     0
-    ],
-    "y": [
-     0.255,
-     0.291
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffbf45",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 10,
-   "path": "Group/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 297,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.785,
-     0
-    ],
-    "y": [
-     0.245,
-     0.279
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffbf45",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 11,
-   "path": "Group/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 100,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.562,
-     0
-    ],
-    "y": [
-     0.267,
-     0.29
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffbf45",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
    "id": 12,
    "path": "Group/Mesh",
    "type": "Mesh",
@@ -710,12 +689,12 @@
    "box": {
     "any": true,
     "x": [
-     1,
-     1.674
+     -71.031,
+     197.564
     ],
     "y": [
-     0.104,
-     0.3
+     -32.884,
+     2.203
     ]
    },
    "mats": [
@@ -755,49 +734,41 @@
    "path": "Group/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 351,
-   "geo": "BufferGeometry",
-   "renderOrder": 2,
+   "verts": 100,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
      1,
-     1.878
+     3.668
     ],
     "y": [
-     0.225,
-     0.759
+     -0.495,
+     0
     ]
    },
    "mats": [
     {
-     "type": "ShaderMaterial",
+     "type": "MeshStandardMaterial",
      "name": "",
-     "transparent": true,
+     "transparent": false,
      "opacity": 1,
      "blending": 1,
      "blendSrc": 204,
      "blendDst": 205,
-     "depthWrite": false,
+     "depthWrite": true,
      "depthTest": true,
-     "side": 2,
+     "side": 0,
      "toneMapped": true,
-     "fog": false,
+     "fog": true,
      "vertexColors": false,
-     "color": null,
+     "color": "#ffbf45",
      "map": null,
-     "uniforms": [
-      "uTime",
-      "uLipSpeed",
-      "uStreakLen",
-      "uDeep",
-      "uBright",
-      "uSky",
-      "uPink"
-     ],
+     "uniforms": [],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(col, alpha)",
+     "fragOut": "",
      "compiled": false
     }
    ]
@@ -807,7 +778,7 @@
    "path": "Group/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 100,
+   "verts": 148,
    "geo": "CylinderGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
@@ -815,11 +786,11 @@
     "any": true,
     "x": [
      1,
-     1.617
+     7.419
     ],
     "y": [
-     0.076,
-     0.18
+     -0.364,
+     0.19
     ]
    },
    "mats": [
@@ -851,19 +822,19 @@
    "path": "Group/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
+   "verts": 297,
+   "geo": "TorusGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
      1,
-     1.782
+     7.955
     ],
     "y": [
-     0.286,
-     0.319
+     -0.478,
+     0.167
     ]
    },
    "mats": [
@@ -895,19 +866,19 @@
    "path": "Group/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 297,
-   "geo": "TorusGeometry",
+   "verts": 100,
+   "geo": "CylinderGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
      1,
-     1.807
+     4.223
     ],
     "y": [
-     0.275,
-     0.307
+     -0.003,
+     0.24
     ]
    },
    "mats": [
@@ -936,27 +907,27 @@
   },
   {
    "id": 17,
-   "path": "Group/Mesh",
+   "path": "Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 100,
-   "geo": "CylinderGeometry",
+   "verts": 657,
+   "geo": "TorusGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     1,
-     1.568
+     -0.158,
+     1.186
     ],
     "y": [
-     0.296,
-     0.318
+     0.211,
+     0.883
     ]
    },
    "mats": [
     {
-     "type": "MeshStandardMaterial",
+     "type": "MeshBasicMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -969,7 +940,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffbf45",
+     "color": "#fffffa",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -990,12 +961,12 @@
    "box": {
     "any": true,
     "x": [
-     0.067,
-     0.933
+     0.297,
+     0.759
     ],
     "y": [
-     0.232,
-     0.661
+     0.414,
+     0.644
     ]
    },
    "mats": [
@@ -1013,7 +984,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffffda",
+     "color": "#ffffff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -1034,12 +1005,12 @@
    "box": {
     "any": true,
     "x": [
-     0.229,
-     0.754
+     0.363,
+     0.63
     ],
     "y": [
-     0.3,
-     0.562
+     0.459,
+     0.592
     ]
    },
    "mats": [
@@ -1057,7 +1028,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffffff",
+     "color": "#ffffc9",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -1078,12 +1049,12 @@
    "box": {
     "any": true,
     "x": [
-     0.263,
-     0.623
+     0.405,
+     0.598
     ],
     "y": [
-     0.332,
-     0.512
+     0.486,
+     0.582
     ]
    },
    "mats": [
@@ -1101,7 +1072,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffffff",
+     "color": "#e4ffff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -1115,50 +1086,6 @@
    "path": "Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 657,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.301,
-     0.582
-    ],
-    "y": [
-     0.362,
-     0.503
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 22,
-   "path": "Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 4,
    "geo": "PlaneGeometry",
    "renderOrder": 0,
@@ -1166,12 +1093,12 @@
    "box": {
     "any": true,
     "x": [
-     0.046,
-     0.875
+     0.241,
+     0.794
     ],
     "y": [
-     0.222,
-     0.637
+     0.394,
+     0.674
     ]
    },
    "mats": [
@@ -1215,13 +1142,13 @@
       "uLqSide"
      ],
      "tex": [
-      "uMatchCol=http://localhost:41569/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:41569/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:41569/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:41569/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:41569/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:41569/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:41569/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:40301/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:40301/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:40301/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:40301/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:40301/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:40301/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:40301/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(matchWall(cs, u, vMtW, -uLqFwd, uLqUp), 1.0)",
      "compiled": false
@@ -1229,7 +1156,7 @@
    ]
   },
   {
-   "id": 23,
+   "id": 22,
    "path": "Mesh",
    "type": "Mesh",
    "count": null,
@@ -1240,12 +1167,12 @@
    "box": {
     "any": true,
     "x": [
-     0.257,
-     0.64
+     0.377,
+     0.637
     ],
     "y": [
-     0.336,
-     0.528
+     0.469,
+     0.599
     ]
    },
    "mats": [
@@ -1273,7 +1200,7 @@
    ]
   },
   {
-   "id": 24,
+   "id": 23,
    "path": "Group/Group/WashingRoller_RotateAroundLocalY/BubbleWash_SideWashingRoller_UltraLite",
    "type": "Mesh",
    "count": null,
@@ -1282,14 +1209,58 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     2.273
+     -0.766,
+     0.022
     ],
     "y": [
-     0.345,
-     0.803
+     0.229,
+     0.612
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": true,
+     "color": "#ffffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": true
+    }
+   ]
+  },
+  {
+   "id": 24,
+   "path": "Group/Group/WashingRoller_RotateAroundLocalY/BubbleWash_SideWashingRoller_UltraLite_1",
+   "type": "Mesh",
+   "count": null,
+   "verts": 406,
+   "geo": "BufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": false,
+    "x": [
+     -0.517,
+     0
+    ],
+    "y": [
+     0.251,
+     0.632
     ]
    },
    "mats": [
@@ -1318,50 +1289,6 @@
   },
   {
    "id": 25,
-   "path": "Group/Group/WashingRoller_RotateAroundLocalY/BubbleWash_SideWashingRoller_UltraLite_1",
-   "type": "Mesh",
-   "count": null,
-   "verts": 406,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     1,
-     2.016
-    ],
-    "y": [
-     0.334,
-     0.841
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 2,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": true,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": true
-    }
-   ]
-  },
-  {
-   "id": 26,
    "path": "scenery/Mesh",
    "type": "Mesh",
    "count": null,
@@ -1370,14 +1297,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.349,
-     16.54
+     0.884,
+     8.809
     ],
     "y": [
-     -6.679,
-     0.787
+     -2.163,
+     0.528
     ]
    },
    "mats": [
@@ -1405,6 +1332,50 @@
    ]
   },
   {
+   "id": 26,
+   "path": "scenery/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 189,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": false,
+    "x": [
+     0.935,
+     0.988
+    ],
+    "y": [
+     0.376,
+     0.4
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#1736b8",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
    "id": 27,
    "path": "scenery/Mesh",
    "type": "Mesh",
@@ -1414,14 +1385,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -1007.558,
-     131.754
+     0.942,
+     1.002
     ],
     "y": [
-     -46.787,
-     357.339
+     0.405,
+     0.432
     ]
    },
    "mats": [
@@ -1458,14 +1429,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -6.838,
-     0
+     1,
+     1.156
     ],
     "y": [
-     1,
-     2.684
+     0.394,
+     0.429
     ]
    },
    "mats": [
@@ -1502,14 +1473,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -2.059,
-     0
+     1,
+     1.421
     ],
     "y": [
-     0.959,
-     1.128
+     0.373,
+     0.421
     ]
    },
    "mats": [
@@ -1546,14 +1517,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -1.047,
-     0
+     1,
+     1.804
     ],
     "y": [
-     0.686,
-     0.78
+     0.378,
+     0.452
     ]
    },
    "mats": [
@@ -1590,14 +1561,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.543,
-     0
+     1,
+     3.116
     ],
     "y": [
-     0.536,
-     0.604
+     0.344,
+     0.491
     ]
    },
    "mats": [
@@ -1629,63 +1600,19 @@
    "path": "scenery/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 189,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.408,
-     0
-    ],
-    "y": [
-     0.472,
-     0.529
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#1736b8",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 33,
-   "path": "scenery/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 915,
    "geo": "TubeGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -15.54,
-     1.349
+     -4.998,
+     0.257
     ],
     "y": [
-     -6.679,
-     0.787
+     -1.609,
+     0.528
     ]
    },
    "mats": [
@@ -1713,6 +1640,50 @@
    ]
   },
   {
+   "id": 33,
+   "path": "scenery/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 189,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": false,
+    "x": [
+     0.16,
+     0.21
+    ],
+    "y": [
+     0.378,
+     0.403
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#1736b8",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
    "id": 34,
    "path": "scenery/Mesh",
    "type": "Mesh",
@@ -1722,14 +1693,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -130.754,
-     1008.558
+     0.152,
+     0.209
     ],
     "y": [
-     -46.787,
-     357.339
+     0.407,
+     0.434
     ]
    },
    "mats": [
@@ -1766,14 +1737,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     7.838
+     0.018,
+     0.088
     ],
     "y": [
-     1,
-     2.684
+     0.397,
+     0.432
     ]
    },
    "mats": [
@@ -1810,14 +1781,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     3.059
+     -0.206,
+     0
     ],
     "y": [
-     0.959,
-     1.128
+     0.378,
+     0.424
     ]
    },
    "mats": [
@@ -1854,14 +1825,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     2.047
+     -0.51,
+     0
     ],
     "y": [
-     0.686,
-     0.78
+     0.385,
+     0.456
     ]
    },
    "mats": [
@@ -1898,14 +1869,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     1.543
+     -1.526,
+     0
     ],
     "y": [
-     0.536,
-     0.604
+     0.36,
+     0.495
     ]
    },
    "mats": [
@@ -1934,50 +1905,6 @@
   },
   {
    "id": 39,
-   "path": "scenery/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 189,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     1,
-     1.408
-    ],
-    "y": [
-     0.472,
-     0.529
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#1736b8",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 40,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -1988,12 +1915,12 @@
    "box": {
     "any": true,
     "x": [
-     0.104,
-     0.896
+     -0.027,
+     1.064
     ],
     "y": [
-     0.248,
-     0.641
+     0.27,
+     0.816
     ]
    },
    "mats": [
@@ -2021,7 +1948,7 @@
    ]
   },
   {
-   "id": 41,
+   "id": 40,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2032,12 +1959,12 @@
    "box": {
     "any": true,
     "x": [
-     0.083,
-     0.917
+     -0.062,
+     1.099
     ],
     "y": [
-     0.238,
-     0.651
+     0.254,
+     0.833
     ]
    },
    "mats": [
@@ -2055,7 +1982,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#0083b0",
+     "color": "#00769f",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -2065,7 +1992,7 @@
    ]
   },
   {
-   "id": 42,
+   "id": 41,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -2076,12 +2003,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -2109,7 +2036,7 @@
    ]
   },
   {
-   "id": 43,
+   "id": 42,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2120,12 +2047,276 @@
    "box": {
     "any": true,
     "x": [
-     0.151,
-     0.849
+     0.119,
+     0.93
     ],
     "y": [
-     0.268,
-     0.615
+     0.336,
+     0.741
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#83ffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 43,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
+   "renderOrder": 3,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.095,
+     0.954
+    ],
+    "y": [
+     0.324,
+     0.753
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 2,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#0095c8",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 44,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": 28,
+   "verts": 63,
+   "geo": "SphereGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.319,
+     0.444
+    ],
+    "y": [
+     1,
+     1.409
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 45,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.206,
+     0.851
+    ],
+    "y": [
+     0.375,
+     0.697
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#00ffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 46,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
+   "renderOrder": 3,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.188,
+     0.869
+    ],
+    "y": [
+     0.366,
+     0.706
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 2,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#0085b3",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 47,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": 28,
+   "verts": 63,
+   "geo": "SphereGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.319,
+     0.444
+    ],
+    "y": [
+     1,
+     1.409
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 48,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.264,
+     0.8
+    ],
+    "y": [
+     0.4,
+     0.668
     ]
    },
    "mats": [
@@ -2153,7 +2344,7 @@
    ]
   },
   {
-   "id": 44,
+   "id": 49,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2164,12 +2355,12 @@
    "box": {
     "any": true,
     "x": [
-     0.133,
-     0.867
+     0.249,
+     0.814
     ],
     "y": [
-     0.259,
-     0.624
+     0.393,
+     0.676
     ]
    },
    "mats": [
@@ -2187,7 +2378,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#00678b",
+     "color": "#00688c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -2197,7 +2388,7 @@
    ]
   },
   {
-   "id": 45,
+   "id": 50,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -2208,12 +2399,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -2241,7 +2432,7 @@
    ]
   },
   {
-   "id": 46,
+   "id": 51,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2252,12 +2443,12 @@
    "box": {
     "any": true,
     "x": [
-     0.188,
-     0.812
+     0.301,
+     0.763
     ],
     "y": [
-     0.284,
-     0.594
+     0.416,
+     0.646
     ]
    },
    "mats": [
@@ -2285,7 +2476,7 @@
    ]
   },
   {
-   "id": 47,
+   "id": 52,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2296,12 +2487,12 @@
    "box": {
     "any": true,
     "x": [
-     0.172,
-     0.828
+     0.289,
+     0.775
     ],
     "y": [
-     0.276,
-     0.602
+     0.41,
+     0.652
     ]
    },
    "mats": [
@@ -2329,7 +2520,7 @@
    ]
   },
   {
-   "id": 48,
+   "id": 53,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -2340,12 +2531,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -2373,7 +2564,7 @@
    ]
   },
   {
-   "id": 49,
+   "id": 54,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2384,12 +2575,12 @@
    "box": {
     "any": true,
     "x": [
-     0.218,
-     0.782
+     0.306,
+     0.738
     ],
     "y": [
-     0.297,
-     0.577
+     0.416,
+     0.632
     ]
    },
    "mats": [
@@ -2407,7 +2598,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#75ffff",
+     "color": "#74ffff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -2417,7 +2608,7 @@
    ]
   },
   {
-   "id": 50,
+   "id": 55,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2428,12 +2619,12 @@
    "box": {
     "any": true,
     "x": [
-     0.204,
-     0.796
+     0.295,
+     0.749
     ],
     "y": [
-     0.29,
-     0.584
+     0.411,
+     0.638
     ]
    },
    "mats": [
@@ -2451,7 +2642,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#0079a3",
+     "color": "#0077a0",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -2461,7 +2652,7 @@
    ]
   },
   {
-   "id": 51,
+   "id": 56,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -2472,12 +2663,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -2505,7 +2696,7 @@
    ]
   },
   {
-   "id": 52,
+   "id": 57,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2516,12 +2707,12 @@
    "box": {
     "any": true,
     "x": [
-     0.237,
-     0.755
+     0.326,
+     0.709
     ],
     "y": [
-     0.304,
-     0.563
+     0.422,
+     0.614
     ]
    },
    "mats": [
@@ -2549,243 +2740,243 @@
    ]
   },
   {
-   "id": 53,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 3,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.224,
-     0.768
-    ],
-    "y": [
-     0.298,
-     0.569
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": true,
-     "opacity": 1,
-     "blending": 2,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": false,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#0096c9",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 54,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": 28,
-   "verts": 63,
-   "geo": "SphereGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     0.487,
-     0.513
-    ],
-    "y": [
-     0.624,
-     0.638
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 55,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.229,
-     0.738
-    ],
-    "y": [
-     0.297,
-     0.552
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#79ffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 56,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 3,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.216,
-     0.75
-    ],
-    "y": [
-     0.291,
-     0.558
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": true,
-     "opacity": 1,
-     "blending": 2,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": false,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#0082ae",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 57,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": 28,
-   "verts": 63,
-   "geo": "SphereGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     0.487,
-     0.513
-    ],
-    "y": [
-     0.624,
-     0.638
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
    "id": 58,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
    "verts": 1017,
    "geo": "TorusGeometry",
+   "renderOrder": 3,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.317,
+     0.718
+    ],
+    "y": [
+     0.418,
+     0.619
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 2,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#0096c8",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 59,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": 28,
+   "verts": 63,
+   "geo": "SphereGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.319,
+     0.444
+    ],
+    "y": [
+     1,
+     1.409
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 60,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.241,
-     0.711
+     0.348,
+     0.678
     ],
     "y": [
-     0.298,
-     0.534
+     0.434,
+     0.6
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#7affff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 61,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
+   "renderOrder": 3,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.34,
+     0.687
+    ],
+    "y": [
+     0.43,
+     0.604
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 2,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#0084b1",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 62,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": 28,
+   "verts": 63,
+   "geo": "SphereGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.319,
+     0.444
+    ],
+    "y": [
+     1,
+     1.409
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshBasicMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 63,
+   "path": "tunnelDecor/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1017,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.362,
+     0.651
+    ],
+    "y": [
+     0.446,
+     0.591
     ]
    },
    "mats": [
@@ -2813,7 +3004,7 @@
    ]
   },
   {
-   "id": 59,
+   "id": 64,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2824,12 +3015,12 @@
    "box": {
     "any": true,
     "x": [
-     0.23,
-     0.723
+     0.355,
+     0.659
     ],
     "y": [
-     0.293,
-     0.54
+     0.442,
+     0.594
     ]
    },
    "mats": [
@@ -2847,7 +3038,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#00678b",
+     "color": "#00678c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -2857,7 +3048,7 @@
    ]
   },
   {
-   "id": 60,
+   "id": 65,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -2868,12 +3059,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -2901,7 +3092,7 @@
    ]
   },
   {
-   "id": 61,
+   "id": 66,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2912,12 +3103,12 @@
    "box": {
     "any": true,
     "x": [
-     0.258,
-     0.679
+     0.365,
+     0.631
     ],
     "y": [
-     0.307,
-     0.519
+     0.459,
+     0.591
     ]
    },
    "mats": [
@@ -2945,7 +3136,7 @@
    ]
   },
   {
-   "id": 62,
+   "id": 67,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -2956,12 +3147,12 @@
    "box": {
     "any": true,
     "x": [
-     0.248,
-     0.69
+     0.358,
+     0.638
     ],
     "y": [
-     0.302,
-     0.524
+     0.455,
+     0.594
     ]
    },
    "mats": [
@@ -2989,7 +3180,7 @@
    ]
   },
   {
-   "id": 63,
+   "id": 68,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -3000,12 +3191,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -3033,7 +3224,7 @@
    ]
   },
   {
-   "id": 64,
+   "id": 69,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3044,12 +3235,12 @@
    "box": {
     "any": true,
     "x": [
-     0.268,
-     0.648
+     0.365,
+     0.625
     ],
     "y": [
-     0.318,
-     0.509
+     0.466,
+     0.596
     ]
    },
    "mats": [
@@ -3077,7 +3268,7 @@
    ]
   },
   {
-   "id": 65,
+   "id": 70,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3088,12 +3279,12 @@
    "box": {
     "any": true,
     "x": [
-     0.259,
-     0.657
+     0.358,
+     0.632
     ],
     "y": [
-     0.313,
-     0.514
+     0.462,
+     0.599
     ]
    },
    "mats": [
@@ -3111,7 +3302,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#007aa5",
+     "color": "#0078a2",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -3121,7 +3312,7 @@
    ]
   },
   {
-   "id": 66,
+   "id": 71,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -3132,12 +3323,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -3165,7 +3356,7 @@
    ]
   },
   {
-   "id": 67,
+   "id": 72,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3176,12 +3367,12 @@
    "box": {
     "any": true,
     "x": [
-     0.265,
-     0.623
+     0.371,
+     0.617
     ],
     "y": [
-     0.332,
-     0.511
+     0.473,
+     0.597
     ]
    },
    "mats": [
@@ -3209,7 +3400,7 @@
    ]
   },
   {
-   "id": 68,
+   "id": 73,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3220,12 +3411,12 @@
    "box": {
     "any": true,
     "x": [
-     0.257,
-     0.632
+     0.365,
+     0.623
     ],
     "y": [
-     0.328,
-     0.515
+     0.47,
+     0.599
     ]
    },
    "mats": [
@@ -3253,7 +3444,7 @@
    ]
   },
   {
-   "id": 69,
+   "id": 74,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -3264,12 +3455,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -3297,7 +3488,7 @@
    ]
   },
   {
-   "id": 70,
+   "id": 75,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3308,12 +3499,12 @@
    "box": {
     "any": true,
     "x": [
-     0.261,
-     0.619
+     0.381,
+     0.611
     ],
     "y": [
-     0.339,
-     0.519
+     0.477,
+     0.593
     ]
    },
    "mats": [
@@ -3341,7 +3532,7 @@
    ]
   },
   {
-   "id": 71,
+   "id": 76,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3352,12 +3543,12 @@
    "box": {
     "any": true,
     "x": [
-     0.253,
-     0.628
+     0.375,
+     0.617
     ],
     "y": [
-     0.334,
-     0.523
+     0.475,
+     0.595
     ]
    },
    "mats": [
@@ -3375,7 +3566,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#0080ac",
+     "color": "#0083af",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -3385,7 +3576,7 @@
    ]
   },
   {
-   "id": 72,
+   "id": 77,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": 28,
@@ -3396,12 +3587,12 @@
    "box": {
     "any": true,
     "x": [
-     0.487,
-     0.513
+     0.319,
+     0.444
     ],
     "y": [
-     0.624,
-     0.638
+     1,
+     1.409
     ]
    },
    "mats": [
@@ -3429,7 +3620,7 @@
    ]
   },
   {
-   "id": 73,
+   "id": 78,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3440,12 +3631,12 @@
    "box": {
     "any": true,
     "x": [
-     0.265,
-     0.609
+     0.395,
+     0.604
     ],
     "y": [
-     0.348,
-     0.521
+     0.482,
+     0.587
     ]
    },
    "mats": [
@@ -3463,7 +3654,7 @@
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#6cffff",
+     "color": "#6dffff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -3473,7 +3664,7 @@
    ]
   },
   {
-   "id": 74,
+   "id": 79,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3484,12 +3675,12 @@
    "box": {
     "any": true,
     "x": [
-     0.256,
-     0.617
+     0.39,
+     0.608
     ],
     "y": [
-     0.344,
-     0.525
+     0.48,
+     0.589
     ]
    },
    "mats": [
@@ -3517,261 +3708,41 @@
    ]
   },
   {
-   "id": 75,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": 28,
-   "verts": 63,
-   "geo": "SphereGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     0.487,
-     0.513
-    ],
-    "y": [
-     0.624,
-     0.638
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 76,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.274,
-     0.601
-    ],
-    "y": [
-     0.352,
-     0.516
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#00f8ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 77,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 3,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.266,
-     0.609
-    ],
-    "y": [
-     0.348,
-     0.52
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": true,
-     "opacity": 1,
-     "blending": 2,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": false,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#00668a",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 78,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": 28,
-   "verts": 63,
-   "geo": "SphereGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     0.487,
-     0.513
-    ],
-    "y": [
-     0.624,
-     0.638
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 79,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.29,
-     0.591
-    ],
-    "y": [
-     0.358,
-     0.509
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#76ffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
    "id": 80,
    "path": "tunnelDecor/Mesh",
    "type": "Mesh",
-   "count": null,
-   "verts": 1017,
-   "geo": "TorusGeometry",
-   "renderOrder": 3,
-   "frustumCulled": true,
+   "count": 28,
+   "verts": 63,
+   "geo": "SphereGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.282,
-     0.598
+     0.319,
+     0.444
     ],
     "y": [
-     0.354,
-     0.513
+     1,
+     1.409
     ]
    },
    "mats": [
     {
      "type": "MeshBasicMaterial",
      "name": "",
-     "transparent": true,
+     "transparent": false,
      "opacity": 1,
-     "blending": 2,
+     "blending": 1,
      "blendSrc": 204,
      "blendDst": 205,
-     "depthWrite": false,
+     "depthWrite": true,
      "depthTest": true,
      "side": 0,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#007ca6",
+     "color": "#ffffff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -3782,50 +3753,6 @@
   },
   {
    "id": 81,
-   "path": "tunnelDecor/Mesh",
-   "type": "Mesh",
-   "count": 28,
-   "verts": 63,
-   "geo": "SphereGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     0.487,
-     0.513
-    ],
-    "y": [
-     0.624,
-     0.638
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshBasicMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 82,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -3836,12 +3763,12 @@
    "box": {
     "any": true,
     "x": [
-     0.163,
-     0.267
+     0.1,
+     0.262
     ],
     "y": [
-     0.305,
-     0.378
+     0.369,
+     0.464
     ]
    },
    "mats": [
@@ -3860,6 +3787,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 82,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.147,
+     0.216
+    ],
+    "y": [
+     0.397,
+     0.436
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -3873,50 +3844,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.193,
-     0.237
-    ],
-    "y": [
-     0.327,
-     0.357
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 84,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -3924,12 +3851,12 @@
    "box": {
     "any": true,
     "x": [
-     0.211,
-     0.237
+     0.174,
+     0.21
     ],
     "y": [
-     0.338,
-     0.352
+     0.411,
+     0.429
     ]
    },
    "mats": [
@@ -3957,7 +3884,7 @@
    ]
   },
   {
-   "id": 85,
+   "id": 84,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -3968,12 +3895,12 @@
    "box": {
     "any": true,
     "x": [
-     0.21,
-     0.22
+     0.174,
+     0.189
     ],
     "y": [
-     0.339,
-     0.345
+     0.413,
+     0.42
     ]
    },
    "mats": [
@@ -4001,7 +3928,7 @@
    ]
   },
   {
-   "id": 86,
+   "id": 85,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -4012,12 +3939,12 @@
    "box": {
     "any": true,
     "x": [
-     0.743,
-     0.827
+     0.795,
+     0.929
     ],
     "y": [
-     0.312,
-     0.371
+     0.377,
+     0.454
     ]
    },
    "mats": [
@@ -4036,6 +3963,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 86,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.833,
+     0.889
+    ],
+    "y": [
+     0.399,
+     0.43
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -4049,50 +4020,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.767,
-     0.803
-    ],
-    "y": [
-     0.33,
-     0.354
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 88,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -4100,12 +4027,12 @@
    "box": {
     "any": true,
     "x": [
-     0.767,
-     0.788
+     0.837,
+     0.867
     ],
     "y": [
-     0.339,
-     0.35
+     0.41,
+     0.425
     ]
    },
    "mats": [
@@ -4133,7 +4060,7 @@
    ]
   },
   {
-   "id": 89,
+   "id": 88,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -4144,12 +4071,12 @@
    "box": {
     "any": true,
     "x": [
-     0.781,
-     0.789
+     0.855,
+     0.867
     ],
     "y": [
-     0.339,
-     0.344
+     0.412,
+     0.418
     ]
    },
    "mats": [
@@ -4177,7 +4104,7 @@
    ]
   },
   {
-   "id": 90,
+   "id": 89,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -4188,12 +4115,12 @@
    "box": {
     "any": true,
     "x": [
-     0.249,
-     0.335
+     0.292,
+     0.368
     ],
     "y": [
-     0.323,
-     0.365
+     0.419,
+     0.466
     ]
    },
    "mats": [
@@ -4212,6 +4139,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 90,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.314,
+     0.346
+    ],
+    "y": [
+     0.433,
+     0.453
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -4225,50 +4196,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.274,
-     0.31
-    ],
-    "y": [
-     0.335,
-     0.352
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 92,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -4276,12 +4203,12 @@
    "box": {
     "any": true,
     "x": [
-     0.288,
-     0.307
+     0.326,
+     0.344
     ],
     "y": [
-     0.341,
-     0.35
+     0.44,
+     0.45
     ]
    },
    "mats": [
@@ -4309,7 +4236,7 @@
    ]
   },
   {
-   "id": 93,
+   "id": 92,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -4320,12 +4247,12 @@
    "box": {
     "any": true,
     "x": [
-     0.289,
-     0.296
+     0.327,
+     0.333
     ],
     "y": [
-     0.342,
-     0.345
+     0.441,
+     0.445
     ]
    },
    "mats": [
@@ -4353,7 +4280,7 @@
    ]
   },
   {
-   "id": 94,
+   "id": 93,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -4364,12 +4291,12 @@
    "box": {
     "any": true,
     "x": [
-     0.655,
-     0.762
+     0.679,
+     0.777
     ],
     "y": [
-     0.318,
-     0.37
+     0.412,
+     0.471
     ]
    },
    "mats": [
@@ -4388,6 +4315,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 94,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.708,
+     0.75
+    ],
+    "y": [
+     0.43,
+     0.454
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -4401,50 +4372,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.685,
-     0.73
-    ],
-    "y": [
-     0.333,
-     0.354
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 96,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -4452,12 +4379,12 @@
    "box": {
     "any": true,
     "x": [
-     0.689,
-     0.713
+     0.712,
+     0.734
     ],
     "y": [
-     0.341,
-     0.352
+     0.439,
+     0.451
     ]
    },
    "mats": [
@@ -4485,7 +4412,7 @@
    ]
   },
   {
-   "id": 97,
+   "id": 96,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -4496,12 +4423,12 @@
    "box": {
     "any": true,
     "x": [
-     0.703,
-     0.712
+     0.725,
+     0.734
     ],
     "y": [
-     0.341,
-     0.346
+     0.44,
+     0.445
     ]
    },
    "mats": [
@@ -4529,7 +4456,7 @@
    ]
   },
   {
-   "id": 98,
+   "id": 97,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -4540,12 +4467,12 @@
    "box": {
     "any": true,
     "x": [
-     0.247,
-     0.329
+     0.317,
+     0.388
     ],
     "y": [
-     0.337,
-     0.395
+     0.45,
+     0.498
     ]
    },
    "mats": [
@@ -4564,6 +4491,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 98,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.337,
+     0.367
+    ],
+    "y": [
+     0.464,
+     0.484
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -4577,50 +4548,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.27,
-     0.305
-    ],
-    "y": [
-     0.355,
-     0.378
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 100,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -4628,12 +4555,12 @@
    "box": {
     "any": true,
     "x": [
-     0.284,
-     0.304
+     0.349,
+     0.366
     ],
     "y": [
-     0.363,
-     0.374
+     0.471,
+     0.48
     ]
    },
    "mats": [
@@ -4661,7 +4588,7 @@
    ]
   },
   {
-   "id": 101,
+   "id": 100,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -4672,12 +4599,12 @@
    "box": {
     "any": true,
     "x": [
-     0.284,
-     0.292
+     0.349,
+     0.356
     ],
     "y": [
-     0.364,
-     0.369
+     0.472,
+     0.476
     ]
    },
    "mats": [
@@ -4705,7 +4632,7 @@
    ]
   },
   {
-   "id": 102,
+   "id": 101,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -4716,12 +4643,12 @@
    "box": {
     "any": true,
     "x": [
-     0.635,
-     0.71
+     0.649,
+     0.715
     ],
     "y": [
-     0.332,
-     0.376
+     0.445,
+     0.481
     ]
    },
    "mats": [
@@ -4740,6 +4667,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 102,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.668,
+     0.695
+    ],
+    "y": [
+     0.455,
+     0.47
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -4753,50 +4724,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.656,
-     0.688
-    ],
-    "y": [
-     0.345,
-     0.363
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 104,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -4804,12 +4731,12 @@
    "box": {
     "any": true,
     "x": [
-     0.659,
-     0.676
+     0.67,
+     0.684
     ],
     "y": [
-     0.351,
-     0.36
+     0.461,
+     0.468
     ]
    },
    "mats": [
@@ -4837,7 +4764,7 @@
    ]
   },
   {
-   "id": 105,
+   "id": 104,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -4848,12 +4775,12 @@
    "box": {
     "any": true,
     "x": [
-     0.669,
-     0.676
+     0.678,
+     0.684
     ],
     "y": [
-     0.352,
-     0.355
+     0.461,
+     0.464
     ]
    },
    "mats": [
@@ -4881,7 +4808,7 @@
    ]
   },
   {
-   "id": 106,
+   "id": 105,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -4892,12 +4819,12 @@
    "box": {
     "any": true,
     "x": [
-     0.284,
-     0.343
+     0.364,
+     0.414
     ],
     "y": [
-     0.332,
-     0.367
+     0.452,
+     0.481
     ]
    },
    "mats": [
@@ -4916,6 +4843,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 106,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.379,
+     0.4
+    ],
+    "y": [
+     0.461,
+     0.472
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -4929,50 +4900,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.301,
-     0.326
-    ],
-    "y": [
-     0.342,
-     0.357
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 108,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -4980,12 +4907,12 @@
    "box": {
     "any": true,
     "x": [
-     0.311,
-     0.324
+     0.387,
+     0.398
     ],
     "y": [
-     0.348,
-     0.355
+     0.465,
+     0.47
     ]
    },
    "mats": [
@@ -5013,7 +4940,7 @@
    ]
   },
   {
-   "id": 109,
+   "id": 108,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -5024,12 +4951,12 @@
    "box": {
     "any": true,
     "x": [
-     0.311,
-     0.316
+     0.387,
+     0.392
     ],
     "y": [
-     0.348,
-     0.351
+     0.465,
+     0.467
     ]
    },
    "mats": [
@@ -5057,7 +4984,7 @@
    ]
   },
   {
-   "id": 110,
+   "id": 109,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -5068,12 +4995,12 @@
    "box": {
     "any": true,
     "x": [
-     0.574,
-     0.646
+     0.589,
+     0.658
     ],
     "y": [
-     0.32,
-     0.36
+     0.443,
+     0.475
     ]
    },
    "mats": [
@@ -5092,6 +5019,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 110,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.609,
+     0.638
+    ],
+    "y": [
+     0.452,
+     0.466
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -5105,50 +5076,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.595,
-     0.626
-    ],
-    "y": [
-     0.332,
-     0.348
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 112,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -5156,12 +5083,12 @@
    "box": {
     "any": true,
     "x": [
-     0.598,
-     0.614
+     0.613,
+     0.627
     ],
     "y": [
-     0.338,
-     0.347
+     0.457,
+     0.464
     ]
    },
    "mats": [
@@ -5189,7 +5116,7 @@
    ]
   },
   {
-   "id": 113,
+   "id": 112,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -5200,12 +5127,12 @@
    "box": {
     "any": true,
     "x": [
-     0.607,
-     0.614
+     0.621,
+     0.626
     ],
     "y": [
-     0.338,
-     0.342
+     0.458,
+     0.46
     ]
    },
    "mats": [
@@ -5233,7 +5160,7 @@
    ]
   },
   {
-   "id": 114,
+   "id": 113,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -5244,12 +5171,12 @@
    "box": {
     "any": true,
     "x": [
-     0.275,
-     0.334
+     0.372,
+     0.415
     ],
     "y": [
-     0.35,
-     0.385
+     0.469,
+     0.499
     ]
    },
    "mats": [
@@ -5268,6 +5195,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 114,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.384,
+     0.403
+    ],
+    "y": [
+     0.478,
+     0.49
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -5281,50 +5252,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.292,
-     0.317
-    ],
-    "y": [
-     0.361,
-     0.375
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 116,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -5332,12 +5259,12 @@
    "box": {
     "any": true,
     "x": [
-     0.302,
-     0.316
+     0.392,
+     0.402
     ],
     "y": [
-     0.366,
-     0.373
+     0.483,
+     0.488
     ]
    },
    "mats": [
@@ -5365,7 +5292,7 @@
    ]
   },
   {
-   "id": 117,
+   "id": 116,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -5376,12 +5303,12 @@
    "box": {
     "any": true,
     "x": [
-     0.302,
-     0.307
+     0.391,
+     0.395
     ],
     "y": [
-     0.366,
-     0.369
+     0.483,
+     0.485
     ]
    },
    "mats": [
@@ -5409,7 +5336,7 @@
    ]
   },
   {
-   "id": 118,
+   "id": 117,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -5420,12 +5347,12 @@
    "box": {
     "any": true,
     "x": [
-     0.563,
-     0.616
+     0.589,
+     0.62
     ],
     "y": [
-     0.354,
-     0.382
+     0.473,
+     0.497
     ]
    },
    "mats": [
@@ -5444,6 +5371,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 118,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.598,
+     0.612
+    ],
+    "y": [
+     0.48,
+     0.49
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -5457,50 +5428,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.578,
-     0.601
-    ],
-    "y": [
-     0.362,
-     0.374
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 120,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -5508,12 +5435,12 @@
    "box": {
     "any": true,
     "x": [
-     0.58,
-     0.592
+     0.598,
+     0.606
     ],
     "y": [
-     0.367,
-     0.372
+     0.483,
+     0.488
     ]
    },
    "mats": [
@@ -5541,7 +5468,7 @@
    ]
   },
   {
-   "id": 121,
+   "id": 120,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -5552,12 +5479,12 @@
    "box": {
     "any": true,
     "x": [
-     0.587,
-     0.592
+     0.603,
+     0.606
     ],
     "y": [
-     0.367,
-     0.369
+     0.484,
+     0.486
     ]
    },
    "mats": [
@@ -5585,7 +5512,7 @@
    ]
   },
   {
-   "id": 122,
+   "id": 121,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -5596,12 +5523,12 @@
    "box": {
     "any": true,
     "x": [
-     0.303,
-     0.359
+     0.401,
+     0.438
     ],
     "y": [
-     0.363,
-     0.389
+     0.485,
+     0.501
     ]
    },
    "mats": [
@@ -5620,6 +5547,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 122,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.412,
+     0.427
+    ],
+    "y": [
+     0.489,
+     0.496
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -5633,50 +5604,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.32,
-     0.343
-    ],
-    "y": [
-     0.371,
-     0.382
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 124,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -5684,12 +5611,12 @@
    "box": {
     "any": true,
     "x": [
-     0.329,
-     0.34
+     0.418,
+     0.425
     ],
     "y": [
-     0.375,
-     0.38
+     0.492,
+     0.496
     ]
    },
    "mats": [
@@ -5717,7 +5644,7 @@
    ]
   },
   {
-   "id": 125,
+   "id": 124,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -5728,12 +5655,12 @@
    "box": {
     "any": true,
     "x": [
-     0.329,
-     0.334
+     0.418,
+     0.421
     ],
     "y": [
-     0.375,
-     0.377
+     0.492,
+     0.493
     ]
    },
    "mats": [
@@ -5761,7 +5688,7 @@
    ]
   },
   {
-   "id": 126,
+   "id": 125,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -5772,12 +5699,12 @@
    "box": {
     "any": true,
     "x": [
-     0.531,
-     0.592
+     0.563,
+     0.605
     ],
     "y": [
-     0.368,
-     0.405
+     0.489,
+     0.511
     ]
    },
    "mats": [
@@ -5796,6 +5723,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 126,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.575,
+     0.593
+    ],
+    "y": [
+     0.496,
+     0.505
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -5809,50 +5780,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.549,
-     0.574
-    ],
-    "y": [
-     0.379,
-     0.394
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 128,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -5860,12 +5787,12 @@
    "box": {
     "any": true,
     "x": [
-     0.551,
-     0.564
+     0.576,
+     0.586
     ],
     "y": [
-     0.385,
-     0.392
+     0.499,
+     0.503
     ]
    },
    "mats": [
@@ -5893,7 +5820,7 @@
    ]
   },
   {
-   "id": 129,
+   "id": 128,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -5904,12 +5831,12 @@
    "box": {
     "any": true,
     "x": [
-     0.559,
-     0.564
+     0.582,
+     0.586
     ],
     "y": [
-     0.385,
-     0.388
+     0.499,
+     0.501
     ]
    },
    "mats": [
@@ -5937,7 +5864,7 @@
    ]
   },
   {
-   "id": 130,
+   "id": 129,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -5948,12 +5875,12 @@
    "box": {
     "any": true,
     "x": [
-     0.309,
-     0.354
+     0.404,
+     0.444
     ],
     "y": [
-     0.374,
-     0.402
+     0.492,
+     0.514
     ]
    },
    "mats": [
@@ -5972,6 +5899,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 130,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.416,
+     0.433
+    ],
+    "y": [
+     0.498,
+     0.507
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -5985,50 +5956,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.322,
-     0.341
-    ],
-    "y": [
-     0.382,
-     0.394
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 132,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -6036,12 +5963,12 @@
    "box": {
     "any": true,
     "x": [
-     0.33,
-     0.34
+     0.422,
+     0.431
     ],
     "y": [
-     0.387,
-     0.392
+     0.502,
+     0.506
     ]
    },
    "mats": [
@@ -6069,7 +5996,7 @@
    ]
   },
   {
-   "id": 133,
+   "id": 132,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -6080,12 +6007,12 @@
    "box": {
     "any": true,
     "x": [
-     0.33,
-     0.334
+     0.423,
+     0.426
     ],
     "y": [
-     0.387,
-     0.389
+     0.502,
+     0.504
     ]
    },
    "mats": [
@@ -6113,7 +6040,7 @@
    ]
   },
   {
-   "id": 134,
+   "id": 133,
    "path": "tunnelDecor/Group/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -6124,12 +6051,12 @@
    "box": {
     "any": true,
     "x": [
-     0.544,
-     0.578
+     0.57,
+     0.597
     ],
     "y": [
-     0.385,
-     0.409
+     0.499,
+     0.519
     ]
    },
    "mats": [
@@ -6148,6 +6075,50 @@
      "fog": true,
      "vertexColors": false,
      "color": "#ffbf45",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 134,
+   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 148,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.577,
+     0.589
+    ],
+    "y": [
+     0.505,
+     0.513
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#14808c",
      "map": null,
      "uniforms": [],
      "tex": [],
@@ -6161,50 +6132,6 @@
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 148,
-   "geo": "CylinderGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.554,
-     0.569
-    ],
-    "y": [
-     0.392,
-     0.402
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#14808c",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 136,
-   "path": "tunnelDecor/Group/Group/Mesh/Mesh",
-   "type": "Mesh",
-   "count": null,
    "verts": 165,
    "geo": "SphereGeometry",
    "renderOrder": 0,
@@ -6212,12 +6139,12 @@
    "box": {
     "any": true,
     "x": [
-     0.554,
-     0.563
+     0.578,
+     0.584
     ],
     "y": [
-     0.396,
-     0.401
+     0.508,
+     0.511
     ]
    },
    "mats": [
@@ -6245,7 +6172,7 @@
    ]
   },
   {
-   "id": 137,
+   "id": 136,
    "path": "tunnelDecor/Group/Group/Mesh/Mesh",
    "type": "Mesh",
    "count": 6,
@@ -6256,12 +6183,12 @@
    "box": {
     "any": true,
     "x": [
-     0.56,
-     0.563
+     0.582,
+     0.585
     ],
     "y": [
-     0.396,
-     0.398
+     0.508,
+     0.51
     ]
    },
    "mats": [
@@ -6289,7 +6216,7 @@
    ]
   },
   {
-   "id": 138,
+   "id": 137,
    "path": "entranceDecor/Group/Group/world/geometry_0",
    "type": "Mesh",
    "count": null,
@@ -6300,12 +6227,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.919,
-     0.07
+     -6.242,
+     4.999
     ],
     "y": [
-     -0.46,
-     0.523
+     -3.16,
+     3.305
     ]
    },
    "mats": [
@@ -6333,7 +6260,7 @@
    ]
   },
   {
-   "id": 139,
+   "id": 138,
    "path": "entranceDecor/Group/Sprite",
    "type": "Sprite",
    "count": null,
@@ -6342,14 +6269,14 @@
    "renderOrder": 3,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.71,
-     0.005
+     1,
+     34.702
     ],
     "y": [
-     -0.147,
-     0.211
+     1,
+     16.823
     ]
    },
    "mats": [
@@ -6357,7 +6284,7 @@
      "type": "SpriteMaterial",
      "name": "",
      "transparent": true,
-     "opacity": 0.3440157779706393,
+     "opacity": 0.5756264142732859,
      "blending": 2,
      "blendSrc": 204,
      "blendDst": 205,
@@ -6377,7 +6304,7 @@
    ]
   },
   {
-   "id": 140,
+   "id": 139,
    "path": "entranceDecor/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -6388,12 +6315,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.735,
-     0.002
+     -10.607,
+     5.043
     ],
     "y": [
-     0.501,
-     0.816
+     -0.675,
+     4.088
     ]
    },
    "mats": [
@@ -6421,6 +6348,50 @@
    ]
   },
   {
+   "id": 140,
+   "path": "entranceDecor/Group/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 451,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -9.561,
+     5.058
+    ],
+    "y": [
+     0.211,
+     1.323
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
    "id": 141,
    "path": "entranceDecor/Group/Mesh",
    "type": "Mesh",
@@ -6432,12 +6403,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.73,
-     0
+     -10.195,
+     4.94
     ],
     "y": [
-     0.507,
-     0.548
+     -0.283,
+     2.765
     ]
    },
    "mats": [
@@ -6466,50 +6437,6 @@
   },
   {
    "id": 142,
-   "path": "entranceDecor/Group/Mesh",
-   "type": "Mesh",
-   "count": null,
-   "verts": 451,
-   "geo": "TorusGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.722,
-     0
-    ],
-    "y": [
-     0.627,
-     0.693
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 143,
    "path": "entranceDecor/Group/Group/world/geometry_0",
    "type": "Mesh",
    "count": null,
@@ -6520,12 +6447,12 @@
    "box": {
     "any": true,
     "x": [
-     0.93,
-     1.919
+     -2.924,
+     9.3
     ],
     "y": [
-     -0.46,
-     0.523
+     -3.932,
+     2.985
     ]
    },
    "mats": [
@@ -6553,7 +6480,7 @@
    ]
   },
   {
-   "id": 144,
+   "id": 143,
    "path": "entranceDecor/Group/Sprite",
    "type": "Sprite",
    "count": null,
@@ -6562,14 +6489,14 @@
    "renderOrder": 3,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     0.995,
-     1.71
+     -12.533,
+     0
     ],
     "y": [
-     -0.147,
-     0.211
+     1,
+     8.676
     ]
    },
    "mats": [
@@ -6577,7 +6504,7 @@
      "type": "SpriteMaterial",
      "name": "",
      "transparent": true,
-     "opacity": 0.5694227447073996,
+     "opacity": 0.3631040861336128,
      "blending": 2,
      "blendSrc": 204,
      "blendDst": 205,
@@ -6597,7 +6524,7 @@
    ]
   },
   {
-   "id": 145,
+   "id": 144,
    "path": "entranceDecor/Group/Mesh",
    "type": "Mesh",
    "count": null,
@@ -6608,12 +6535,12 @@
    "box": {
     "any": true,
     "x": [
-     0.998,
-     1.735
+     -2.949,
+     19.669
     ],
     "y": [
-     0.501,
-     0.816
+     -0.535,
+     6.373
     ]
    },
    "mats": [
@@ -6641,6 +6568,50 @@
    ]
   },
   {
+   "id": 145,
+   "path": "entranceDecor/Group/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 451,
+   "geo": "TorusGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -2.959,
+     16.562
+    ],
+    "y": [
+     0.25,
+     1.752
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#2457ff",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
    "id": 146,
    "path": "entranceDecor/Group/Mesh",
    "type": "Mesh",
@@ -6652,12 +6623,12 @@
    "box": {
     "any": true,
     "x": [
-     1,
-     1.73
+     -2.883,
+     18.381
     ],
     "y": [
-     0.507,
-     0.548
+     -0.186,
+     4.108
     ]
    },
    "mats": [
@@ -6686,22 +6657,22 @@
   },
   {
    "id": 147,
-   "path": "entranceDecor/Group/Mesh",
+   "path": "entranceDecor/Group/Group/Group/world/geometry_0",
    "type": "Mesh",
    "count": null,
-   "verts": 451,
-   "geo": "TorusGeometry",
+   "verts": 17031,
+   "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     1,
-     1.722
+     -29.929,
+     55.686
     ],
     "y": [
-     0.627,
-     0.693
+     -12.474,
+     6.498
     ]
    },
    "mats": [
@@ -6715,12 +6686,12 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#2457ff",
-     "map": null,
+     "color": "#ffffff",
+     "map": "1024x1024",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
@@ -6738,14 +6709,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.108,
-     0.182
+     1,
+     5.989
     ],
     "y": [
-     0.456,
-     0.598
+     -1.339,
+     0.033
     ]
    },
    "mats": [
@@ -6782,14 +6753,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.27,
-     0.117
+     1,
+     2.551
     ],
     "y": [
-     0.527,
-     0.716
+     -0.31,
+     0.094
     ]
    },
    "mats": [
@@ -6828,12 +6799,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.071,
-     0.119
+     -35.854,
+     202.21
     ],
     "y": [
-     0.619,
-     0.714
+     -14.92,
+     18.046
     ]
    },
    "mats": [
@@ -6870,14 +6841,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     0.798,
-     1.095
+     -3.025,
+     0
     ],
     "y": [
-     0.461,
-     0.607
+     -0.841,
+     0.211
     ]
    },
    "mats": [
@@ -6914,14 +6885,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     0.884,
-     1.282
+     -0.922,
+     0
     ],
     "y": [
-     0.519,
-     0.714
+     -0.226,
+     0.128
     ]
    },
    "mats": [
@@ -6958,14 +6929,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     0.887,
-     1.076
+     1,
+     5.347
     ],
     "y": [
-     0.627,
-     0.722
+     1,
+     3.247
     ]
    },
    "mats": [
@@ -6994,22 +6965,22 @@
   },
   {
    "id": 154,
-   "path": "entranceDecor/Group/Group/Group/world/geometry_0",
+   "path": "entranceDecor/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 17031,
-   "geo": "BufferGeometry",
+   "verts": 124,
+   "geo": "CylinderGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.355,
-     0.127
+     1,
+     9.543
     ],
     "y": [
-     0.101,
-     0.341
+     1,
+     5.095
     ]
    },
    "mats": [
@@ -7023,12 +6994,12 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 2,
+     "side": 0,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffffff",
-     "map": "1024x1024",
+     "color": "#ffbf45",
+     "map": null,
      "uniforms": [],
      "tex": [],
      "fragOut": "",
@@ -7038,22 +7009,22 @@
   },
   {
    "id": 155,
-   "path": "entranceDecor/Mesh",
+   "path": "entranceDecor/Group/Group/world/geometry_0",
    "type": "Mesh",
    "count": null,
-   "verts": 124,
-   "geo": "CylinderGeometry",
+   "verts": 33331,
+   "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.13,
-     0
+     1,
+     72.026
     ],
     "y": [
-     0.111,
-     0.178
+     1,
+     49.861
     ]
    },
    "mats": [
@@ -7067,12 +7038,12 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffbf45",
-     "map": null,
+     "color": "#ffffff",
+     "map": "1024x1024",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
@@ -7082,50 +7053,6 @@
   },
   {
    "id": 156,
-   "path": "entranceDecor/Group/Group/world/geometry_0",
-   "type": "Mesh",
-   "count": null,
-   "verts": 33331,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     -0.327,
-     0
-    ],
-    "y": [
-     -0.029,
-     0.131
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 2,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": "1024x1024",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 157,
    "path": "entranceDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -7134,14 +7061,14 @@
    "renderOrder": 2,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -0.532,
-     0
+     1,
+     6.79
     ],
     "y": [
-     -0.062,
-     0.809
+     -1.297,
+     3.91
     ]
    },
    "mats": [
@@ -7177,7 +7104,7 @@
    ]
   },
   {
-   "id": 158,
+   "id": 157,
    "path": "entranceDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -7186,14 +7113,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     1.103
+     -26.6,
+     0
     ],
     "y": [
-     0.124,
-     0.188
+     1,
+     18.18
     ]
    },
    "mats": [
@@ -7221,7 +7148,7 @@
    ]
   },
   {
-   "id": 159,
+   "id": 158,
    "path": "entranceDecor/Group/Group/world/geometry_0",
    "type": "Mesh",
    "count": null,
@@ -7232,12 +7159,12 @@
    "box": {
     "any": true,
     "x": [
-     0.931,
-     1.246
+     -161.817,
+     171.169
     ],
     "y": [
-     -0.02,
-     0.137
+     -154.763,
+     110.021
     ]
    },
    "mats": [
@@ -7265,7 +7192,7 @@
    ]
   },
   {
-   "id": 160,
+   "id": 159,
    "path": "entranceDecor/Mesh",
    "type": "Mesh",
    "count": null,
@@ -7274,14 +7201,14 @@
    "renderOrder": 2,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     1.447
+     -4.942,
+     0
     ],
     "y": [
-     -0.05,
-     0.8
+     -1.395,
+     4.15
     ]
    },
    "mats": [
@@ -7317,7 +7244,7 @@
    ]
   },
   {
-   "id": 161,
+   "id": 160,
    "path": "Mesh",
    "type": "Mesh",
    "count": null,
@@ -7328,12 +7255,12 @@
    "box": {
     "any": true,
     "x": [
-     0.269,
-     0.731
+     -0.642,
+     1.451
     ],
     "y": [
-     0.517,
-     0.744
+     0.82,
+     1.924
     ]
    },
    "mats": [
@@ -7357,8 +7284,52 @@
       "uTime"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(col * alpha, alpha)",
+     "fragOut": "gl_FragColor = r7Bubble(p, vPhase * 0.159, uTime, 0.1)",
      "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 161,
+   "path": "LOD/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 7253,
+   "geo": "BufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.089,
+     0.303
+    ],
+    "y": [
+     0.546,
+     0.673
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "tripo_material_c80a02b4-f15c-4333-a896-2789cdb6c55f",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffff90",
+     "map": "1024x1024",
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": true
     }
    ]
   },
@@ -7367,19 +7338,19 @@
    "path": "LOD/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 1624,
+   "verts": 7253,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.053,
-     0.216
+     0.09,
+     0.214
     ],
     "y": [
-     0.492,
-     0.572
+     0.436,
+     0.506
     ]
    },
    "mats": [
@@ -7411,19 +7382,19 @@
    "path": "LOD/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 1624,
+   "verts": 7253,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.72,
-     0.882
+     0.476,
+     0.581
     ],
     "y": [
-     0.636,
-     0.717
+     0.542,
+     0.595
     ]
    },
    "mats": [
@@ -7455,19 +7426,19 @@
    "path": "LOD/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 1624,
+   "verts": 7253,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.272,
-     0.404
+     0.782,
+     1.009
     ],
     "y": [
-     0.458,
-     0.523
+     0.674,
+     0.802
     ]
    },
    "mats": [
@@ -7506,12 +7477,12 @@
    "box": {
     "any": true,
     "x": [
-     0.261,
-     0.341
+     0.581,
+     0.609
     ],
     "y": [
-     0.386,
-     0.425
+     0.571,
+     0.585
     ]
    },
    "mats": [
@@ -7550,12 +7521,12 @@
    "box": {
     "any": true,
     "x": [
-     0.489,
-     0.525
+     0.495,
+     0.564
     ],
     "y": [
-     0.462,
-     0.481
+     0.551,
+     0.585
     ]
    },
    "mats": [
@@ -7594,12 +7565,12 @@
    "box": {
     "any": true,
     "x": [
-     0.652,
-     0.766
+     0.5,
+     0.561
     ],
     "y": [
-     0.527,
-     0.585
+     0.546,
+     0.579
     ]
    },
    "mats": [
@@ -7638,12 +7609,12 @@
    "box": {
     "any": true,
     "x": [
-     0.57,
-     0.57
+     0.502,
+     0.562
     ],
     "y": [
-     0.485,
-     0.485
+     0.545,
+     0.576
     ]
    },
    "mats": [
@@ -7682,12 +7653,12 @@
    "box": {
     "any": true,
     "x": [
-     0.5,
-     0.5
+     0.517,
+     0.546
     ],
     "y": [
-     0.47,
-     0.47
+     0.558,
+     0.572
     ]
    },
    "mats": [
@@ -7726,12 +7697,12 @@
    "box": {
     "any": true,
     "x": [
-     0.5,
-     0.5
+     0.503,
+     0.556
     ],
     "y": [
-     0.463,
-     0.463
+     0.547,
+     0.573
     ]
    },
    "mats": [
@@ -7770,12 +7741,12 @@
    "box": {
     "any": true,
     "x": [
-     0.5,
-     0.5
+     0.51,
+     0.547
     ],
     "y": [
-     0.462,
-     0.462
+     0.55,
+     0.567
     ]
    },
    "mats": [
@@ -7814,12 +7785,12 @@
    "box": {
     "any": true,
     "x": [
-     0.498,
-     0.498
+     0.573,
+     0.583
     ],
     "y": [
-     0.469,
-     0.469
+     0.545,
+     0.55
     ]
    },
    "mats": [
@@ -7858,12 +7829,12 @@
    "box": {
     "any": true,
     "x": [
-     0.495,
-     0.495
+     0.572,
+     0.572
     ],
     "y": [
-     0.47,
-     0.47
+     0.539,
+     0.539
     ]
    },
    "mats": [
@@ -7902,12 +7873,12 @@
    "box": {
     "any": true,
     "x": [
-     0.493,
-     0.493
+     0.565,
+     0.565
     ],
     "y": [
-     0.463,
-     0.463
+     0.537,
+     0.537
     ]
    },
    "mats": [
@@ -7946,12 +7917,12 @@
    "box": {
     "any": true,
     "x": [
-     0.551,
-     0.552
+     0.508,
+     0.508
     ],
     "y": [
-     0.45,
-     0.45
+     0.543,
+     0.543
     ]
    },
    "mats": [
@@ -7990,12 +7961,12 @@
    "box": {
     "any": true,
     "x": [
-     0.544,
-     0.544
+     0.504,
+     0.504
     ],
     "y": [
-     0.444,
-     0.444
+     0.545,
+     0.545
     ]
    },
    "mats": [
@@ -8034,12 +8005,12 @@
    "box": {
     "any": true,
     "x": [
-     0.536,
-     0.536
+     0.5,
+     0.5
     ],
     "y": [
-     0.438,
-     0.438
+     0.545,
+     0.545
     ]
    },
    "mats": [
@@ -8078,12 +8049,12 @@
    "box": {
     "any": true,
     "x": [
-     0.461,
-     0.461
+     0.497,
+     0.497
     ],
     "y": [
-     0.444,
-     0.444
+     0.548,
+     0.548
     ]
    },
    "mats": [
@@ -8122,12 +8093,12 @@
    "box": {
     "any": true,
     "x": [
-     0.455,
-     0.455
+     0.495,
+     0.495
     ],
     "y": [
-     0.452,
-     0.452
+     0.548,
+     0.548
     ]
    },
    "mats": [
@@ -8166,12 +8137,12 @@
    "box": {
     "any": true,
     "x": [
-     0.449,
-     0.449
+     0.459,
+     0.459
     ],
     "y": [
-     0.453,
-     0.453
+     0.55,
+     0.55
     ]
    },
    "mats": [
@@ -8210,12 +8181,12 @@
    "box": {
     "any": true,
     "x": [
-     0.443,
-     0.443
+     0.459,
+     0.459
     ],
     "y": [
-     0.451,
-     0.451
+     0.555,
+     0.555
     ]
    },
    "mats": [
@@ -8254,12 +8225,12 @@
    "box": {
     "any": true,
     "x": [
-     0.44,
-     0.44
+     0.46,
+     0.46
     ],
     "y": [
-     0.452,
-     0.452
+     0.552,
+     0.552
     ]
    },
    "mats": [
@@ -8288,28 +8259,28 @@
   },
   {
    "id": 183,
-   "path": "LOD/Mesh",
+   "path": "Group/Group/world/0",
    "type": "Mesh",
    "count": null,
-   "verts": 1624,
+   "verts": 9616,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.387,
-     0.387
+     0.258,
+     0.39
     ],
     "y": [
-     0.459,
-     0.459
+     0.495,
+     0.533
     ]
    },
    "mats": [
     {
      "type": "MeshStandardMaterial",
-     "name": "tripo_material_c80a02b4-f15c-4333-a896-2789cdb6c55f",
+     "name": "",
      "transparent": false,
      "opacity": 1,
      "blending": 1,
@@ -8317,43 +8288,43 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffff90",
-     "map": "1024x1024",
+     "color": "#dab3ff",
+     "map": "512x512",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
-     "compiled": true
+     "compiled": false
     }
    ]
   },
   {
    "id": 184,
-   "path": "LOD/Mesh",
+   "path": "Group/Group/world/0",
    "type": "Mesh",
    "count": null,
-   "verts": 1624,
+   "verts": 9616,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.387,
-     0.387
+     0.501,
+     0.561
     ],
     "y": [
-     0.463,
-     0.463
+     0.545,
+     0.57
     ]
    },
    "mats": [
     {
      "type": "MeshStandardMaterial",
-     "name": "tripo_material_c80a02b4-f15c-4333-a896-2789cdb6c55f",
+     "name": "",
      "transparent": false,
      "opacity": 1,
      "blending": 1,
@@ -8361,43 +8332,43 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffff90",
-     "map": "1024x1024",
+     "color": "#dab3ff",
+     "map": "512x512",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
-     "compiled": true
+     "compiled": false
     }
    ]
   },
   {
    "id": 185,
-   "path": "LOD/Mesh",
+   "path": "Group/Group/world/0",
    "type": "Mesh",
    "count": null,
-   "verts": 1624,
+   "verts": 9616,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.387,
-     0.387
+     0.468,
+     0.468
     ],
     "y": [
-     0.46,
-     0.46
+     0.541,
+     0.541
     ]
    },
    "mats": [
     {
      "type": "MeshStandardMaterial",
-     "name": "tripo_material_c80a02b4-f15c-4333-a896-2789cdb6c55f",
+     "name": "",
      "transparent": false,
      "opacity": 1,
      "blending": 1,
@@ -8405,153 +8376,21 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
-     "color": "#ffff90",
-     "map": "1024x1024",
+     "color": "#dab3ff",
+     "map": "512x512",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
-     "compiled": true
+     "compiled": false
     }
    ]
   },
   {
    "id": 186,
-   "path": "Group/Group/world/0",
-   "type": "Mesh",
-   "count": null,
-   "verts": 9616,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.313,
-     0.4
-    ],
-    "y": [
-     0.4,
-     0.435
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 2,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#dab3ff",
-     "map": "512x512",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 187,
-   "path": "Group/Group/world/0",
-   "type": "Mesh",
-   "count": null,
-   "verts": 9616,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.499,
-     0.499
-    ],
-    "y": [
-     0.465,
-     0.465
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 2,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#dab3ff",
-     "map": "512x512",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 188,
-   "path": "Group/Group/world/0",
-   "type": "Mesh",
-   "count": null,
-   "verts": 9616,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.396,
-     0.396
-    ],
-    "y": [
-     0.443,
-     0.443
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshStandardMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 2,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#dab3ff",
-     "map": "512x512",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 189,
    "path": "Group/Group/focusSockPose/Group/mesh_0",
    "type": "Mesh",
    "count": null,
@@ -8562,12 +8401,12 @@
    "box": {
     "any": true,
     "x": [
-     0.548,
-     0.724
+     0.615,
+     0.845
     ],
     "y": [
-     0.443,
-     0.517
+     0.539,
+     0.659
     ]
    },
    "mats": [
@@ -8595,7 +8434,7 @@
    ]
   },
   {
-   "id": 190,
+   "id": 187,
    "path": "Group/r2Halo",
    "type": "Sprite",
    "count": null,
@@ -8606,12 +8445,12 @@
    "box": {
     "any": true,
     "x": [
-     0.522,
-     0.746
+     0.536,
+     0.912
     ],
     "y": [
-     0.428,
-     0.539
+     0.513,
+     0.7
     ]
    },
    "mats": [
@@ -8639,7 +8478,7 @@
    ]
   },
   {
-   "id": 191,
+   "id": 188,
    "path": "Group/Group/focusSockPose/Group/mesh_0",
    "type": "Mesh",
    "count": null,
@@ -8650,12 +8489,12 @@
    "box": {
     "any": true,
     "x": [
-     0.608,
-     0.743
+     0.637,
+     0.827
     ],
     "y": [
-     0.47,
-     0.528
+     0.566,
+     0.638
     ]
    },
    "mats": [
@@ -8683,7 +8522,7 @@
    ]
   },
   {
-   "id": 192,
+   "id": 189,
    "path": "Group/r2Halo",
    "type": "Sprite",
    "count": null,
@@ -8694,11 +8533,187 @@
    "box": {
     "any": true,
     "x": [
-     0.583,
-     0.762
+     0.618,
+     0.832
     ],
     "y": [
-     0.455,
+     0.548,
+     0.654
+    ]
+   },
+   "mats": [
+    {
+     "type": "SpriteMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 0.7,
+     "blending": 2,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": "128x128",
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 190,
+   "path": "Group/Group/focusSockPose/Group/mesh_0",
+   "type": "Mesh",
+   "count": null,
+   "verts": 13015,
+   "geo": "BufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.523,
+     0.595
+    ],
+    "y": [
+     0.518,
+     0.543
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshLambertMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": "1024x1024",
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 191,
+   "path": "Group/r2Halo",
+   "type": "Sprite",
+   "count": null,
+   "verts": 4,
+   "geo": "BufferGeometry",
+   "renderOrder": 4,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.516,
+     0.596
+    ],
+    "y": [
+     0.512,
+     0.552
+    ]
+   },
+   "mats": [
+    {
+     "type": "SpriteMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 0.7,
+     "blending": 2,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": "128x128",
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 192,
+   "path": "Group/Group/focusSockPose/Group/mesh_0",
+   "type": "Mesh",
+   "count": null,
+   "verts": 13015,
+   "geo": "BufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.494,
+     0.494
+    ],
+    "y": [
+     0.544,
+     0.544
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshLambertMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffffff",
+     "map": "1024x1024",
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 193,
+   "path": "Group/r2Halo",
+   "type": "Sprite",
+   "count": null,
+   "verts": 4,
+   "geo": "BufferGeometry",
+   "renderOrder": 4,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.494,
+     0.494
+    ],
+    "y": [
+     0.544,
      0.544
     ]
    },
@@ -8727,7 +8742,7 @@
    ]
   },
   {
-   "id": 193,
+   "id": 194,
    "path": "Group/Group/focusSockPose/Group/mesh_0",
    "type": "Mesh",
    "count": null,
@@ -8738,12 +8753,12 @@
    "box": {
     "any": true,
     "x": [
-     0.527,
-     0.528
+     0.464,
+     0.464
     ],
     "y": [
-     0.434,
-     0.434
+     0.549,
+     0.549
     ]
    },
    "mats": [
@@ -8763,50 +8778,6 @@
      "vertexColors": false,
      "color": "#ffffff",
      "map": "1024x1024",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 194,
-   "path": "Group/r2Halo",
-   "type": "Sprite",
-   "count": null,
-   "verts": 4,
-   "geo": "BufferGeometry",
-   "renderOrder": 4,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.527,
-     0.528
-    ],
-    "y": [
-     0.434,
-     0.434
-    ]
-   },
-   "mats": [
-    {
-     "type": "SpriteMaterial",
-     "name": "",
-     "transparent": true,
-     "opacity": 0.7,
-     "blending": 2,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": false,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": "128x128",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
@@ -8816,41 +8787,41 @@
   },
   {
    "id": 195,
-   "path": "Group/Group/focusSockPose/Group/mesh_0",
-   "type": "Mesh",
+   "path": "Group/r2Halo",
+   "type": "Sprite",
    "count": null,
-   "verts": 13015,
+   "verts": 4,
    "geo": "BufferGeometry",
-   "renderOrder": 0,
+   "renderOrder": 4,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.438,
-     0.438
+     0.464,
+     0.464
     ],
     "y": [
-     0.45,
-     0.45
+     0.549,
+     0.549
     ]
    },
    "mats": [
     {
-     "type": "MeshLambertMaterial",
+     "type": "SpriteMaterial",
      "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
+     "transparent": true,
+     "opacity": 0.7,
+     "blending": 2,
      "blendSrc": 204,
      "blendDst": 205,
-     "depthWrite": true,
+     "depthWrite": false,
      "depthTest": true,
      "side": 0,
      "toneMapped": true,
      "fog": true,
      "vertexColors": false,
      "color": "#ffffff",
-     "map": "1024x1024",
+     "map": "128x128",
      "uniforms": [],
      "tex": [],
      "fragOut": "",
@@ -8860,138 +8831,6 @@
   },
   {
    "id": 196,
-   "path": "Group/r2Halo",
-   "type": "Sprite",
-   "count": null,
-   "verts": 4,
-   "geo": "BufferGeometry",
-   "renderOrder": 4,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.438,
-     0.438
-    ],
-    "y": [
-     0.45,
-     0.45
-    ]
-   },
-   "mats": [
-    {
-     "type": "SpriteMaterial",
-     "name": "",
-     "transparent": true,
-     "opacity": 0.7,
-     "blending": 2,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": false,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": "128x128",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 197,
-   "path": "Group/Group/focusSockPose/Group/mesh_0",
-   "type": "Mesh",
-   "count": null,
-   "verts": 13015,
-   "geo": "BufferGeometry",
-   "renderOrder": 0,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.391,
-     0.391
-    ],
-    "y": [
-     0.455,
-     0.455
-    ]
-   },
-   "mats": [
-    {
-     "type": "MeshLambertMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": "1024x1024",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 198,
-   "path": "Group/r2Halo",
-   "type": "Sprite",
-   "count": null,
-   "verts": 4,
-   "geo": "BufferGeometry",
-   "renderOrder": 4,
-   "frustumCulled": true,
-   "box": {
-    "any": true,
-    "x": [
-     0.391,
-     0.391
-    ],
-    "y": [
-     0.455,
-     0.455
-    ]
-   },
-   "mats": [
-    {
-     "type": "SpriteMaterial",
-     "name": "",
-     "transparent": true,
-     "opacity": 0.7,
-     "blending": 2,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": false,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": true,
-     "vertexColors": false,
-     "color": "#ffffff",
-     "map": "128x128",
-     "uniforms": [],
-     "tex": [],
-     "fragOut": "",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 199,
    "path": "Group/Group/Group/Group/BubbleWash_PinkFuzzyMascot_Small",
    "type": "Mesh",
    "count": null,
@@ -9002,12 +8841,12 @@
    "box": {
     "any": true,
     "x": [
-     0.267,
-     0.729
+     0.169,
+     0.746
     ],
     "y": [
-     0.507,
-     0.77
+     0.665,
+     1.023
     ]
    },
    "mats": [
@@ -9049,53 +8888,7 @@
    ]
   },
   {
-   "id": 200,
-   "path": "openingLook/mascotFoam",
-   "type": "Mesh",
-   "count": 64,
-   "verts": 1500,
-   "geo": "IcosahedronGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     0.228,
-     0.766
-    ],
-    "y": [
-     0.501,
-     0.776
-    ]
-   },
-   "mats": [
-    {
-     "type": "ShaderMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 0,
-     "toneMapped": true,
-     "fog": false,
-     "vertexColors": false,
-     "color": null,
-     "map": null,
-     "uniforms": [
-      "uTime"
-     ],
-     "tex": [],
-     "fragOut": "gl_FragColor = vec4(col * 0.97, 1.0)",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 201,
+   "id": 197,
    "path": "openingLook/Mesh",
    "type": "Mesh",
    "count": null,
@@ -9106,12 +8899,12 @@
    "box": {
     "any": true,
     "x": [
-     0.269,
-     0.731
+     -0.642,
+     1.451
     ],
     "y": [
-     0.517,
-     0.744
+     0.82,
+     1.924
     ]
    },
    "mats": [
@@ -9142,7 +8935,7 @@
    ]
   },
   {
-   "id": 202,
+   "id": 198,
    "path": "openingLook/Mesh",
    "type": "Mesh",
    "count": null,
@@ -9153,12 +8946,12 @@
    "box": {
     "any": true,
     "x": [
-     0.269,
-     0.731
+     -0.642,
+     1.451
     ],
     "y": [
-     0.517,
-     0.744
+     0.82,
+     1.924
     ]
    },
    "mats": [
@@ -9189,7 +8982,7 @@
    ]
   },
   {
-   "id": 203,
+   "id": 199,
    "path": "Points",
    "type": "Points",
    "count": null,
@@ -9200,12 +8993,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.039,
-     1.026
+     0.041,
+     0.936
     ],
     "y": [
-     -0.222,
-     0.669
+     0.425,
+     1.012
     ]
    },
    "mats": [
@@ -9235,7 +9028,7 @@
    ]
   },
   {
-   "id": 204,
+   "id": 200,
    "path": "s3Castle/Scene/output_unwrapped",
    "type": "Mesh",
    "count": null,
@@ -9246,12 +9039,12 @@
    "box": {
     "any": true,
     "x": [
-     -1.463,
-     2.462
+     -2.891,
+     4.447
     ],
     "y": [
-     -0.574,
-     0.915
+     -1.244,
+     1.547
     ]
    },
    "mats": [
@@ -9279,7 +9072,7 @@
    ]
   },
   {
-   "id": 205,
+   "id": 201,
    "path": "s3Machinery/Scene/output_unwrapped",
    "type": "Mesh",
    "count": null,
@@ -9288,14 +9081,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     1,
-     3.573
+     -0.786,
+     0.307
     ],
     "y": [
-     0.374,
-     1.476
+     0.072,
+     0.592
     ]
    },
    "mats": [
@@ -9323,7 +9116,7 @@
    ]
   },
   {
-   "id": 206,
+   "id": 202,
    "path": "s3Brush/Group/BubbleWashBrush",
    "type": "Mesh",
    "count": null,
@@ -9332,14 +9125,14 @@
    "renderOrder": 0,
    "frustumCulled": true,
    "box": {
-    "any": true,
+    "any": false,
     "x": [
-     -1.462,
-     0.109
+     0.971,
+     3.784
     ],
     "y": [
-     0.45,
-     1.142
+     -0.495,
+     0.552
     ]
    },
    "mats": [
@@ -9367,7 +9160,7 @@
    ]
   },
   {
-   "id": 207,
+   "id": 203,
    "path": "s3Bubbles",
    "type": "Mesh",
    "count": null,
@@ -9378,12 +9171,12 @@
    "box": {
     "any": true,
     "x": [
-     0.248,
-     0.752
+     -3.303,
+     3.808
     ],
     "y": [
-     0.509,
-     0.774
+     0.704,
+     5.566
     ]
    },
    "mats": [
@@ -9412,138 +9205,352 @@
      ],
      "tex": [],
      "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 204,
+   "path": "s3Bubbles",
+   "type": "Mesh",
+   "count": null,
+   "verts": 1025,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 5,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -3.303,
+     3.808
+    ],
+    "y": [
+     0.704,
+     5.566
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uMotion",
+      "uAvoid",
+      "uCentreAlpha",
+      "uFilm"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 205,
+   "path": "s3IcyEdge",
+   "type": "Mesh",
+   "count": null,
+   "verts": 966,
+   "geo": "BufferGeometry",
+   "renderOrder": 2,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.499,
+     3.417
+    ],
+    "y": [
+     0.473,
+     3.799
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uAlpha",
+      "uFoam"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 206,
+   "path": "s3IcyEdge",
+   "type": "Mesh",
+   "count": null,
+   "verts": 966,
+   "geo": "BufferGeometry",
+   "renderOrder": 2,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     -2.601,
+     0.608
+    ],
+    "y": [
+     0.473,
+     3.452
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uAlpha",
+      "uFoam"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 207,
+   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
+   "type": "Mesh",
+   "count": null,
+   "verts": 2025,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -0.025,
+     0.307
+    ],
+    "y": [
+     0.498,
+     0.662
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
      "compiled": false
     }
    ]
   },
   {
    "id": 208,
-   "path": "s3Bubbles",
+   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
    "type": "Mesh",
-   "count": null,
-   "verts": 1025,
-   "geo": "InstancedBufferGeometry",
-   "renderOrder": 5,
+   "count": 240,
+   "verts": 10,
+   "geo": "PlaneGeometry",
+   "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.248,
-     0.752
+     0.067,
+     0.239
     ],
     "y": [
-     0.509,
-     0.774
+     0.566,
+     0.655
     ]
    },
    "mats": [
     {
      "type": "ShaderMaterial",
      "name": "",
-     "transparent": true,
+     "transparent": false,
      "opacity": 1,
-     "blending": 5,
-     "blendSrc": 201,
+     "blending": 1,
+     "blendSrc": 204,
      "blendDst": 205,
-     "depthWrite": false,
+     "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
      "fog": false,
      "vertexColors": false,
      "color": null,
      "map": null,
      "uniforms": [
-      "uTime",
-      "uMotion",
-      "uAvoid",
-      "uCentreAlpha",
-      "uFilm"
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
      "compiled": false
     }
    ]
   },
   {
    "id": 209,
-   "path": "s3IcyEdge",
+   "path": "s4Brush/Mesh",
    "type": "Mesh",
    "count": null,
-   "verts": 966,
-   "geo": "BufferGeometry",
-   "renderOrder": 2,
+   "verts": 100,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
    "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.363,
-     0.85
+     0.103,
+     0.147
     ],
     "y": [
-     0.265,
-     0.8
+     0.565,
+     0.581
     ]
    },
    "mats": [
     {
-     "type": "ShaderMaterial",
+     "type": "MeshStandardMaterial",
      "name": "",
-     "transparent": true,
+     "transparent": false,
      "opacity": 1,
-     "blending": 5,
-     "blendSrc": 201,
+     "blending": 1,
+     "blendSrc": 204,
      "blendDst": 205,
-     "depthWrite": false,
+     "depthWrite": true,
      "depthTest": true,
-     "side": 2,
+     "side": 0,
      "toneMapped": true,
-     "fog": false,
+     "fog": true,
      "vertexColors": false,
-     "color": null,
+     "color": "#ffc552",
      "map": null,
-     "uniforms": [
-      "uTime",
-      "uAlpha",
-      "uFoam"
-     ],
+     "uniforms": [],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "fragOut": "",
      "compiled": false
     }
    ]
   },
   {
    "id": 210,
-   "path": "s3IcyEdge",
+   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
    "type": "Mesh",
    "count": null,
-   "verts": 966,
-   "geo": "BufferGeometry",
-   "renderOrder": 2,
-   "frustumCulled": true,
+   "verts": 2025,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.15,
-     0.637
+     0.826,
+     1.099
     ],
     "y": [
-     0.265,
-     0.8
+     0.511,
+     0.645
     ]
    },
    "mats": [
     {
      "type": "ShaderMaterial",
      "name": "",
-     "transparent": true,
+     "transparent": false,
      "opacity": 1,
-     "blending": 5,
-     "blendSrc": 201,
+     "blending": 1,
+     "blendSrc": 204,
      "blendDst": 205,
-     "depthWrite": false,
+     "depthWrite": true,
      "depthTest": true,
      "side": 2,
      "toneMapped": true,
@@ -9552,34 +9559,47 @@
      "color": null,
      "map": null,
      "uniforms": [
-      "uTime",
-      "uAlpha",
-      "uFoam"
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
      "compiled": false
     }
    ]
   },
   {
    "id": 211,
-   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
+   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
    "type": "Mesh",
-   "count": null,
-   "verts": 2025,
-   "geo": "InstancedBufferGeometry",
+   "count": 240,
+   "verts": 10,
+   "geo": "PlaneGeometry",
    "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     -0.12,
-     0.22
+     0.895,
+     1.036
     ],
     "y": [
-     0.398,
-     0.561
+     0.572,
+     0.644
     ]
    },
    "mats": [
@@ -9618,34 +9638,34 @@
       "uStrands"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
      "compiled": false
     }
    ]
   },
   {
    "id": 212,
-   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
+   "path": "s4Brush/Mesh",
    "type": "Mesh",
-   "count": 240,
-   "verts": 10,
-   "geo": "PlaneGeometry",
+   "count": null,
+   "verts": 100,
+   "geo": "CylinderGeometry",
    "renderOrder": 0,
-   "frustumCulled": false,
+   "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     -0.106,
-     0.071
+     0.956,
+     0.999
     ],
     "y": [
-     0.422,
-     0.511
+     0.564,
+     0.579
     ]
    },
    "mats": [
     {
-     "type": "ShaderMaterial",
+     "type": "MeshStandardMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -9654,59 +9674,42 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 2,
+     "side": 0,
      "toneMapped": true,
-     "fog": false,
+     "fog": true,
      "vertexColors": false,
-     "color": null,
+     "color": "#ffc552",
      "map": null,
-     "uniforms": [
-      "uLight",
-      "uCol",
-      "uEdges",
-      "uAmb",
-      "uDif",
-      "uSheen",
-      "uTip",
-      "uAo",
-      "uGlow",
-      "uFur",
-      "uLean",
-      "uDensity",
-      "uClumpSize",
-      "uClump",
-      "uTaper",
-      "uStrands"
-     ],
+     "uniforms": [],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
+     "fragOut": "",
      "compiled": false
     }
    ]
   },
   {
    "id": 213,
-   "path": "s4Brush/Mesh",
+   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
    "type": "Mesh",
    "count": null,
-   "verts": 100,
-   "geo": "CylinderGeometry",
+   "verts": 2025,
+   "geo": "InstancedBufferGeometry",
    "renderOrder": 0,
-   "frustumCulled": true,
+   "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     -0.006,
-     0.051
+     0.698,
+     0.934
     ],
     "y": [
-     0.47,
-     0.485
+     0.483,
+     0.596
     ]
    },
    "mats": [
     {
-     "type": "MeshStandardMaterial",
+     "type": "ShaderMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -9715,37 +9718,54 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
-     "fog": true,
+     "fog": false,
      "vertexColors": false,
-     "color": "#ffc552",
+     "color": null,
      "map": null,
-     "uniforms": [],
+     "uniforms": [
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
+     ],
      "tex": [],
-     "fragOut": "",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
      "compiled": false
     }
    ]
   },
   {
    "id": 214,
-   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
+   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
    "type": "Mesh",
-   "count": null,
-   "verts": 2025,
-   "geo": "InstancedBufferGeometry",
+   "count": 240,
+   "verts": 10,
+   "geo": "PlaneGeometry",
    "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.762,
-     1.111
+     0.79,
+     0.914
     ],
     "y": [
-     0.394,
-     0.562
+     0.494,
+     0.556
     ]
    },
    "mats": [
@@ -9784,34 +9804,34 @@
       "uStrands"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
      "compiled": false
     }
    ]
   },
   {
    "id": 215,
-   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
+   "path": "s4Brush/Mesh",
    "type": "Mesh",
-   "count": 240,
-   "verts": 10,
-   "geo": "PlaneGeometry",
+   "count": null,
+   "verts": 100,
+   "geo": "CylinderGeometry",
    "renderOrder": 0,
-   "frustumCulled": false,
+   "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     0.903,
-     1.085
+     0.813,
+     0.847
     ],
     "y": [
-     0.412,
-     0.504
+     0.529,
+     0.541
     ]
    },
    "mats": [
     {
-     "type": "ShaderMaterial",
+     "type": "MeshStandardMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -9820,59 +9840,42 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 2,
+     "side": 0,
      "toneMapped": true,
-     "fog": false,
+     "fog": true,
      "vertexColors": false,
-     "color": null,
+     "color": "#ffc552",
      "map": null,
-     "uniforms": [
-      "uLight",
-      "uCol",
-      "uEdges",
-      "uAmb",
-      "uDif",
-      "uSheen",
-      "uTip",
-      "uAo",
-      "uGlow",
-      "uFur",
-      "uLean",
-      "uDensity",
-      "uClumpSize",
-      "uClump",
-      "uTaper",
-      "uStrands"
-     ],
+     "uniforms": [],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
+     "fragOut": "",
      "compiled": false
     }
    ]
   },
   {
    "id": 216,
-   "path": "s4Brush/Mesh",
+   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
    "type": "Mesh",
    "count": null,
-   "verts": 100,
-   "geo": "CylinderGeometry",
+   "verts": 2025,
+   "geo": "InstancedBufferGeometry",
    "renderOrder": 0,
-   "frustumCulled": true,
+   "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.935,
-     0.991
+     0.17,
+     0.364
     ],
     "y": [
-     0.469,
-     0.482
+     0.506,
+     0.601
     ]
    },
    "mats": [
     {
-     "type": "MeshStandardMaterial",
+     "type": "ShaderMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -9881,37 +9884,54 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
-     "fog": true,
+     "fog": false,
      "vertexColors": false,
-     "color": "#ffc552",
+     "color": null,
      "map": null,
-     "uniforms": [],
+     "uniforms": [
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
+     ],
      "tex": [],
-     "fragOut": "",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
      "compiled": false
     }
    ]
   },
   {
    "id": 217,
-   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
+   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
    "type": "Mesh",
-   "count": null,
-   "verts": 2025,
-   "geo": "InstancedBufferGeometry",
+   "count": 240,
+   "verts": 10,
+   "geo": "PlaneGeometry",
    "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     -0.031,
-     0.175
+     0.2,
+     0.299
     ],
     "y": [
-     0.295,
-     0.395
+     0.508,
+     0.559
     ]
    },
    "mats": [
@@ -9950,34 +9970,34 @@
       "uStrands"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
      "compiled": false
     }
    ]
   },
   {
    "id": 218,
-   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
+   "path": "s4Brush/Mesh",
    "type": "Mesh",
-   "count": 240,
-   "verts": 10,
-   "geo": "PlaneGeometry",
+   "count": null,
+   "verts": 100,
+   "geo": "CylinderGeometry",
    "renderOrder": 0,
-   "frustumCulled": false,
+   "frustumCulled": true,
    "box": {
     "any": true,
     "x": [
-     -0.017,
-     0.09
+     0.232,
+     0.267
     ],
     "y": [
-     0.307,
-     0.362
+     0.545,
+     0.555
     ]
    },
    "mats": [
     {
-     "type": "ShaderMaterial",
+     "type": "MeshStandardMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -9986,59 +10006,42 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 2,
+     "side": 0,
      "toneMapped": true,
-     "fog": false,
+     "fog": true,
      "vertexColors": false,
-     "color": null,
+     "color": "#ffc552",
      "map": null,
-     "uniforms": [
-      "uLight",
-      "uCol",
-      "uEdges",
-      "uAmb",
-      "uDif",
-      "uSheen",
-      "uTip",
-      "uAo",
-      "uGlow",
-      "uFur",
-      "uLean",
-      "uDensity",
-      "uClumpSize",
-      "uClump",
-      "uTaper",
-      "uStrands"
-     ],
+     "uniforms": [],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
+     "fragOut": "",
      "compiled": false
     }
    ]
   },
   {
    "id": 219,
-   "path": "s4Brush/Mesh",
+   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
    "type": "Mesh",
    "count": null,
-   "verts": 100,
-   "geo": "CylinderGeometry",
+   "verts": 2025,
+   "geo": "InstancedBufferGeometry",
    "renderOrder": 0,
-   "frustumCulled": true,
+   "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.038,
-     0.072
+     -0.233,
+     0.223
     ],
     "y": [
-     0.343,
-     0.351
+     0.212,
+     0.433
     ]
    },
    "mats": [
     {
-     "type": "MeshStandardMaterial",
+     "type": "ShaderMaterial",
      "name": "",
      "transparent": false,
      "opacity": 1,
@@ -10047,37 +10050,54 @@
      "blendDst": 205,
      "depthWrite": true,
      "depthTest": true,
-     "side": 0,
+     "side": 2,
      "toneMapped": true,
-     "fog": true,
+     "fog": false,
      "vertexColors": false,
-     "color": "#ffc552",
+     "color": null,
      "map": null,
-     "uniforms": [],
+     "uniforms": [
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
+     ],
      "tex": [],
-     "fragOut": "",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
      "compiled": false
     }
    ]
   },
   {
    "id": 220,
-   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
+   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
    "type": "Mesh",
-   "count": null,
-   "verts": 2025,
-   "geo": "InstancedBufferGeometry",
+   "count": 240,
+   "verts": 10,
+   "geo": "PlaneGeometry",
    "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     0.989,
-     1.298
+     -0.189,
+     0.059
     ],
     "y": [
-     0.349,
-     0.497
+     0.296,
+     0.411
     ]
    },
    "mats": [
@@ -10116,74 +10136,13 @@
       "uStrands"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
      "compiled": false
     }
    ]
   },
   {
    "id": 221,
-   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
-   "type": "Mesh",
-   "count": 240,
-   "verts": 10,
-   "geo": "PlaneGeometry",
-   "renderOrder": 0,
-   "frustumCulled": false,
-   "box": {
-    "any": true,
-    "x": [
-     1,
-     1.279
-    ],
-    "y": [
-     0.367,
-     0.448
-    ]
-   },
-   "mats": [
-    {
-     "type": "ShaderMaterial",
-     "name": "",
-     "transparent": false,
-     "opacity": 1,
-     "blending": 1,
-     "blendSrc": 204,
-     "blendDst": 205,
-     "depthWrite": true,
-     "depthTest": true,
-     "side": 2,
-     "toneMapped": true,
-     "fog": false,
-     "vertexColors": false,
-     "color": null,
-     "map": null,
-     "uniforms": [
-      "uLight",
-      "uCol",
-      "uEdges",
-      "uAmb",
-      "uDif",
-      "uSheen",
-      "uTip",
-      "uAo",
-      "uGlow",
-      "uFur",
-      "uLean",
-      "uDensity",
-      "uClumpSize",
-      "uClump",
-      "uTaper",
-      "uStrands"
-     ],
-     "tex": [],
-     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
-     "compiled": false
-    }
-   ]
-  },
-  {
-   "id": 222,
    "path": "s4Brush/Mesh",
    "type": "Mesh",
    "count": null,
@@ -10194,12 +10153,12 @@
    "box": {
     "any": true,
     "x": [
-     1,
-     1.182
+     -0.023,
+     0.015
     ],
     "y": [
-     0.418,
-     0.428
+     0.325,
+     0.357
     ]
    },
    "mats": [
@@ -10227,7 +10186,7 @@
    ]
   },
   {
-   "id": 223,
+   "id": 222,
    "path": "s4Brush/Group/fluffyBrush/fluffyShells",
    "type": "Mesh",
    "count": null,
@@ -10238,12 +10197,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.02,
-     0.285
+     0.742,
+     1.291
     ],
     "y": [
-     0.273,
-     0.418
+     0.369,
+     0.629
     ]
    },
    "mats": [
@@ -10288,7 +10247,7 @@
    ]
   },
   {
-   "id": 224,
+   "id": 223,
    "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
    "type": "Mesh",
    "count": 240,
@@ -10299,12 +10258,12 @@
    "box": {
     "any": true,
     "x": [
-     0.032,
-     0.187
+     0.941,
+     1.24
     ],
     "y": [
-     0.277,
-     0.356
+     0.464,
+     0.603
     ]
    },
    "mats": [
@@ -10349,7 +10308,7 @@
    ]
   },
   {
-   "id": 225,
+   "id": 224,
    "path": "s4Brush/Mesh",
    "type": "Mesh",
    "count": null,
@@ -10360,12 +10319,12 @@
    "box": {
     "any": true,
     "x": [
-     0.077,
-     0.133
+     0.996,
+     1.051
     ],
     "y": [
-     0.342,
-     0.355
+     0.492,
+     0.511
     ]
    },
    "mats": [
@@ -10393,7 +10352,173 @@
    ]
   },
   {
+   "id": 225,
+   "path": "s4Brush/Group/fluffyBrush/fluffyShells",
+   "type": "Mesh",
+   "count": null,
+   "verts": 2025,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.049,
+     0.298
+    ],
+    "y": [
+     0.384,
+     0.503
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, h, smoothstep(0.55, 1.0, h / max(len, 0.05)), ao), 1.0)",
+     "compiled": false
+    }
+   ]
+  },
+  {
    "id": 226,
+   "path": "s4Brush/Group/fluffyBrush/fluffyFringe",
+   "type": "Mesh",
+   "count": 240,
+   "verts": 10,
+   "geo": "PlaneGeometry",
+   "renderOrder": 0,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.041,
+     0.174
+    ],
+    "y": [
+     0.415,
+     0.477
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uLight",
+      "uCol",
+      "uEdges",
+      "uAmb",
+      "uDif",
+      "uSheen",
+      "uTip",
+      "uAo",
+      "uGlow",
+      "uFur",
+      "uLean",
+      "uDensity",
+      "uClumpSize",
+      "uClump",
+      "uTaper",
+      "uStrands"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(fbShade(base, N, V, y, smoothstep(0.5, 1.0, y / len), mix(uAo, 1.0, smooths",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 227,
+   "path": "s4Brush/Mesh",
+   "type": "Mesh",
+   "count": null,
+   "verts": 100,
+   "geo": "CylinderGeometry",
+   "renderOrder": 0,
+   "frustumCulled": true,
+   "box": {
+    "any": true,
+    "x": [
+     0.137,
+     0.177
+    ],
+    "y": [
+     0.441,
+     0.457
+    ]
+   },
+   "mats": [
+    {
+     "type": "MeshStandardMaterial",
+     "name": "",
+     "transparent": false,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": true,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": true,
+     "vertexColors": false,
+     "color": "#ffc552",
+     "map": null,
+     "uniforms": [],
+     "tex": [],
+     "fragOut": "",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 228,
    "path": "s4Bubbles",
    "type": "Mesh",
    "count": null,
@@ -10404,12 +10529,12 @@
    "box": {
     "any": true,
     "x": [
-     0.248,
-     0.752
+     -3.241,
+     3.747
     ],
     "y": [
-     0.509,
-     0.774
+     0.705,
+     5.472
     ]
    },
    "mats": [
@@ -10437,13 +10562,13 @@
       "uFilm"
      ],
      "tex": [],
-     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "fragOut": "gl_FragColor = r7Bubble(p, vPhase * 0.159, uTime, 0.09) * vFade",
      "compiled": false
     }
    ]
   },
   {
-   "id": 227,
+   "id": 229,
    "path": "heroWalls",
    "type": "Mesh",
    "count": null,
@@ -10454,12 +10579,12 @@
    "box": {
     "any": true,
     "x": [
-     -0.05,
-     0.861
+     -0.398,
+     1.108
     ],
     "y": [
-     0.227,
-     0.623
+     0.179,
+     0.841
     ]
    },
    "mats": [
@@ -10508,13 +10633,13 @@
      ],
      "tex": [
       "uLqTex=256x256",
-      "uMatchCol=http://localhost:41569/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:41569/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:41569/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:41569/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:41569/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:41569/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:41569/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:40301/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:40301/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:40301/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:40301/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:40301/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:40301/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:40301/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(col, 1.0)",
      "compiled": false
@@ -10522,23 +10647,23 @@
    ]
   },
   {
-   "id": 228,
+   "id": 230,
    "path": "r6Porthole/r6Face",
    "type": "Mesh",
    "count": null,
-   "verts": 644,
+   "verts": 966,
    "geo": "BufferGeometry",
    "renderOrder": 0,
    "frustumCulled": false,
    "box": {
     "any": true,
     "x": [
-     -0.242,
-     1.286
+     -1.079,
+     2.264
     ],
     "y": [
-     0.132,
-     0.882
+     -0.134,
+     1.54
     ]
    },
    "mats": [
@@ -10573,7 +10698,7 @@
    ]
   },
   {
-   "id": 229,
+   "id": 231,
    "path": "r6Porthole/r6Bezel",
    "type": "Mesh",
    "count": null,
@@ -10584,12 +10709,12 @@
    "box": {
     "any": true,
     "x": [
-     0.018,
-     1.027
+     -0.426,
+     1.53
     ],
     "y": [
-     0.262,
-     0.76
+     0.189,
+     1.171
     ]
    },
    "mats": [
@@ -10625,13 +10750,13 @@
       "uMatchPathVP"
      ],
      "tex": [
-      "uMatchCol=http://localhost:41569/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:41569/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:41569/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:41569/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:41569/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:41569/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:41569/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:40301/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:40301/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:40301/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:40301/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:40301/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:40301/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:40301/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(mtUndisplay(min(c + vec3(0.12, 0.1, 0.06) * glint, 1.0)), 1.0)",
      "compiled": false
@@ -10639,7 +10764,7 @@
    ]
   },
   {
-   "id": 230,
+   "id": 232,
    "path": "r6Porthole/Mesh",
    "type": "Mesh",
    "count": 16,
@@ -10650,12 +10775,12 @@
    "box": {
     "any": true,
     "x": [
-     0.321,
-     0.725
+     0.067,
+     0.996
     ],
     "y": [
-     0.419,
-     0.62
+     0.472,
+     0.941
     ]
    },
    "mats": [
@@ -10683,7 +10808,7 @@
    ]
   },
   {
-   "id": 231,
+   "id": 233,
    "path": "r6Porthole/Mesh",
    "type": "Mesh",
    "count": 24,
@@ -10694,12 +10819,12 @@
    "box": {
     "any": true,
     "x": [
-     0.321,
-     0.725
+     0.067,
+     0.996
     ],
     "y": [
-     0.419,
-     0.62
+     0.472,
+     0.941
     ]
    },
    "mats": [
@@ -10727,7 +10852,7 @@
    ]
   },
   {
-   "id": 232,
+   "id": 234,
    "path": "heroCollar",
    "type": "Mesh",
    "count": null,
@@ -10738,12 +10863,12 @@
    "box": {
     "any": true,
     "x": [
-     0.051,
-     0.993
+     -0.35,
+     1.449
     ],
     "y": [
-     0.259,
-     0.743
+     0.189,
+     1.127
     ]
    },
    "mats": [
@@ -10791,13 +10916,13 @@
      ],
      "tex": [
       "uLqTex=256x256",
-      "uMatchCol=http://localhost:41569/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:41569/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:41569/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:41569/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:41569/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:41569/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:41569/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:40301/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:40301/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:40301/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:40301/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:40301/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:40301/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:40301/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(col, 1.0)",
      "compiled": false
@@ -10805,7 +10930,250 @@
    ]
   },
   {
-   "id": 233,
+   "id": 235,
+   "path": "heroGlow",
+   "type": "Mesh",
+   "count": null,
+   "verts": 4,
+   "geo": "PlaneGeometry",
+   "renderOrder": 3,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     0.39,
+     0.651
+    ],
+    "y": [
+     0.471,
+     0.601
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uCore",
+      "uHalo",
+      "uAlpha"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(min(col, vec3(1.25)), al)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 236,
+   "path": "heroBubbles",
+   "type": "Mesh",
+   "count": null,
+   "verts": 693,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 6,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -3.303,
+     3.808
+    ],
+    "y": [
+     0.704,
+     5.566
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(col + vec3(1.0) * spec * 1.2, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 237,
+   "path": "heroSwell",
+   "type": "Mesh",
+   "count": null,
+   "verts": 6944,
+   "geo": "BufferGeometry",
+   "renderOrder": 5,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -8.195,
+     10.805
+    ],
+    "y": [
+     0.896,
+     11.861
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 1,
+     "blendSrc": 204,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uFade",
+      "uC",
+      "uR",
+      "uU",
+      "uT",
+      "uLat",
+      "uAir",
+      "uLand",
+      "uPX",
+      "uXMax",
+      "uFlow",
+      "uKcrest",
+      "uKturq",
+      "uKazure",
+      "uKelectric",
+      "uKdeep",
+      "uKpale",
+      "uKwhite",
+      "uKsky",
+      "uHeroTime",
+      "uHeroTravel",
+      "uHeroTanW",
+      "uHeroCam",
+      "uLqTex",
+      "uLqGlow",
+      "uLqKey",
+      "uLqFwd",
+      "uLqUp",
+      "uLqSide",
+      "uLqObj",
+      "uMatchOn",
+      "uMatchCol",
+      "uMatchBase",
+      "uMatchDet",
+      "uMatchNrm",
+      "uMatchVar",
+      "uMatchRim",
+      "uMatchVP",
+      "uMatchRes"
+     ],
+     "tex": [
+      "uLqTex=256x256",
+      "uMatchCol=http://localhost:40301/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:40301/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:40301/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:40301/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:40301/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:40301/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:40301/textures/screen4/tunnel_rings_fill.png"
+     ],
+     "fragOut": "gl_FragColor = vec4(col, a * step(0.001, uFade))",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 238,
+   "path": "heroSplash",
+   "type": "Mesh",
+   "count": null,
+   "verts": 4,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 8,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -0.128,
+     0.904
+    ],
+    "y": [
+     1,
+     1.627
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uTime",
+      "uFade",
+      "uC",
+      "uR",
+      "uU",
+      "uT",
+      "uLat",
+      "uAir",
+      "uLand"
+     ],
+     "tex": [],
+     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 239,
    "path": "lqFloor",
    "type": "Mesh",
    "count": null,
@@ -10816,12 +11184,12 @@
    "box": {
     "any": true,
     "x": [
-     -1.642,
-     2.642
+     -0.08,
+     1.266
     ],
     "y": [
-     0.449,
-     1.19
+     0.31,
+     0.56
     ]
    },
    "mats": [
@@ -10876,13 +11244,13 @@
      ],
      "tex": [
       "uLqTex=256x256",
-      "uMatchCol=http://localhost:41569/textures/screen4/tunnel_colour.png",
-      "uMatchBase=http://localhost:41569/textures/screen4/tunnel_base.png",
-      "uMatchDet=http://localhost:41569/textures/screen4/tunnel_detail.png",
-      "uMatchNrm=http://localhost:41569/textures/screen4/tunnel_normal.png",
-      "uMatchVar=http://localhost:41569/textures/screen4/tunnel_var.png",
-      "uMatchRim=http://localhost:41569/textures/screen4/rim_ramp.png",
-      "uFocusRings=http://localhost:41569/textures/screen4/tunnel_rings_fill.png"
+      "uMatchCol=http://localhost:40301/textures/screen4/tunnel_colour.png",
+      "uMatchBase=http://localhost:40301/textures/screen4/tunnel_base.png",
+      "uMatchDet=http://localhost:40301/textures/screen4/tunnel_detail.png",
+      "uMatchNrm=http://localhost:40301/textures/screen4/tunnel_normal.png",
+      "uMatchVar=http://localhost:40301/textures/screen4/tunnel_var.png",
+      "uMatchRim=http://localhost:40301/textures/screen4/rim_ramp.png",
+      "uFocusRings=http://localhost:40301/textures/screen4/tunnel_rings_fill.png"
      ],
      "fragOut": "gl_FragColor = vec4(col, vA)",
      "compiled": false
@@ -10890,7 +11258,178 @@
    ]
   },
   {
-   "id": 234,
+   "id": 240,
+   "path": "lqWaterlineBubbles",
+   "type": "Mesh",
+   "count": null,
+   "verts": 165,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 7,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -3.099,
+     3.608
+    ],
+    "y": [
+     0.706,
+     5.257
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uC",
+      "uR",
+      "uU",
+      "uT",
+      "uFade",
+      "uLat",
+      "uAir",
+      "uLand",
+      "uTime",
+      "uLqTex"
+     ],
+     "tex": [
+      "uLqTex=256x256"
+     ],
+     "fragOut": "gl_FragColor = vec4((col + vec3(1.0) * spec) * vA, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 241,
+   "path": "spCurls",
+   "type": "Mesh",
+   "count": null,
+   "verts": 780,
+   "geo": "BufferGeometry",
+   "renderOrder": 7,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -1.525,
+     2.127
+    ],
+    "y": [
+     1,
+     1.561
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 2,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uC",
+      "uR",
+      "uU",
+      "uT",
+      "uFade",
+      "uLat",
+      "uAir",
+      "uLand",
+      "uTime",
+      "uLqTex"
+     ],
+     "tex": [
+      "uLqTex=256x256"
+     ],
+     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 242,
+   "path": "spLumps",
+   "type": "Mesh",
+   "count": null,
+   "verts": 960,
+   "geo": "InstancedBufferGeometry",
+   "renderOrder": 6,
+   "frustumCulled": false,
+   "box": {
+    "any": true,
+    "x": [
+     -3.303,
+     3.808
+    ],
+    "y": [
+     0.704,
+     5.566
+    ]
+   },
+   "mats": [
+    {
+     "type": "ShaderMaterial",
+     "name": "",
+     "transparent": true,
+     "opacity": 1,
+     "blending": 5,
+     "blendSrc": 201,
+     "blendDst": 205,
+     "depthWrite": false,
+     "depthTest": true,
+     "side": 0,
+     "toneMapped": true,
+     "fog": false,
+     "vertexColors": false,
+     "color": null,
+     "map": null,
+     "uniforms": [
+      "uC",
+      "uR",
+      "uU",
+      "uT",
+      "uFade",
+      "uLat",
+      "uAir",
+      "uLand",
+      "uTime",
+      "uLqTex"
+     ],
+     "tex": [
+      "uLqTex=256x256"
+     ],
+     "fragOut": "gl_FragColor = vec4(col * a, a)",
+     "compiled": false
+    }
+   ]
+  },
+  {
+   "id": 243,
    "path": "mwTunnelBubbles",
    "type": "Mesh",
    "count": null,
@@ -10901,12 +11440,12 @@
    "box": {
     "any": true,
     "x": [
-     0.385,
-     0.615
+     -0.128,
+     0.904
     ],
     "y": [
-     0.574,
-     0.688
+     1,
+     1.627
     ]
    },
    "mats": [
