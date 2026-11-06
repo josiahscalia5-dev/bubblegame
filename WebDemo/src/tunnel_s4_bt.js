@@ -35,7 +35,9 @@ if (INTUNNEL_ON) window.__BW_OPENING_OFF__ = [...new Set([...(window.__BW_OPENIN
 // old start on the slide, she was at 1.592 m going 7.21 m/s (layer_diag.cjs state), with the camera at its drum framing
 // (its blend ends at -0.4 m) and the hero water up (position-based). So the start screen is that composition, and she
 // moves on at once from it.
-export const INTUNNEL = { u: 1.592, speed: 7.21 };
+// clock: the game clock at the start (s): the approved moment's (the old start's 3.0 s after the tap), so the sock's rocking,
+// the brushes' turning and the water's flow are in its pose on the start screen (the art director's review: the sock was side-on)
+export const INTUNNEL = { u: 1.592, speed: 7.21, clock: 3.0 };
 // ?s3=intunnel,domes (or bt,domes): real 3D translucent bubble domes along her base (tunnel_s4_domes.js), the visual
 // correction tested on top of the in-tunnel start. Colours sampled from the ORIGINAL at her base (y 1220-1340, x 120-680:
 // lavender 20 % of the zone, k-means #a295ee 34 %, #b9b6f2 27 %, #dcd2fa 26 %, #8879db 14 %; its aqua #a6d1f5, #c6e6fa,
@@ -48,9 +50,13 @@ export const DOMES = {
   // eye, glassy pale circles. Then 12 Optuna trials on the real game, tools/screen4/optuna_domes.py; LPIPS hardly moved, 0.567-
   // 0.595 round her base, so the choice was by eye among the best-scored: trial 8, lavender round her base 6.7 % against the
   // original's 6.5 %; trial 11's bigger domes hid her base, trial 4's were pale. Previews/WebDemo/screen4_round9_match/41_bubble_domes/)
-  list: [[16, 0.1106, 0.03, 0.35, 0], [27, 0.0664, 0.05, 0.3, 0], [2, 0.1328, 0.05, 0.45, 1], [-9, 0.0774, 0.05, 0.3, 0], [-20, 0.0996, 0.03, 0.35, 0], [-31, 0.0719, 0.04, 0.3, 0], [37, 0.0774, 0.02, 0.3, 0], [-43, 0.0885, 0.02, 0.35, 1]],
-  look: { lavender: '#8d7fdf', top: '#dcd2fa', foot: '#87b9ed', aqua: '#a6d1f5', rim: '#f4f2ff', film: 0.35, rimPow: 2.2, rimAlpha: 0.55,
-    alpha: [0.733, 0.813], arc: [0.55, 0.85], arcK: 0.912, glintPow: 60 },
+  // (candidate 2, the art director's review of trial 8: 'about the same, not yet closer': milky, nearly opaque balloons hiding
+  // her fur (visible pink 29 -> 17 %, the original's 29), no bright rims, the big centre dome a sticker. So: clear violet-tinted
+  // centres (body alpha 0.73 -> 0.38), near-white Fresnel rims (rim #ffffff, alpha 0.55 -> 0.85, thinner: power 2.2 -> 3), the
+  // centre dome (index 2) 30 % smaller, the lavender deepened at each dome's foot (foot #87b9ed -> #7a6cd6))
+  list: [[16, 0.1106, 0.03, 0.35, 0], [27, 0.0664, 0.05, 0.3, 0], [2, 0.093, 0.05, 0.45, 1], [-9, 0.0774, 0.05, 0.3, 0], [-20, 0.0996, 0.03, 0.35, 0], [-31, 0.0719, 0.04, 0.3, 0], [37, 0.0774, 0.02, 0.3, 0], [-43, 0.0885, 0.02, 0.35, 1]],
+  look: { lavender: '#8d7fdf', top: '#dcd2fa', foot: '#7a6cd6', aqua: '#a6d1f5', rim: '#ffffff', film: 0.35, rimPow: 3.0, rimAlpha: 0.85,
+    alpha: [0.38, 0.46], arc: [0.55, 0.85], arcK: 0.912, glintPow: 60 },
 };
 { const tune = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.domes; if (tune) for (const k of Object.keys(tune)) DOMES[k] = typeof tune[k] === 'object' && !Array.isArray(tune[k]) ? { ...DOMES[k], ...tune[k] } : tune[k]; }   // (test tunes only)
 

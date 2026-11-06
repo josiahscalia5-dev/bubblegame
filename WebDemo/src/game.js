@@ -158,7 +158,7 @@ let L; // exported Unity layout
 let TR; // the run's 3D path (track.js)
 const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };   // scratch frame
 const state = {
-  phase: 'loading', time: 0, coins: 1280, gems: 36, socks: 0, sound: true,
+  phase: 'loading', time: INTUNNEL_ON ? INTUNNEL.clock : 0, coins: 1280, gems: 36, socks: 0, sound: true,   // (?s3=intunnel: the clock of the approved moment, so the start screen's animations are in its pose)
   collected: { coins: 0, gems: 0 }, laps: 0,
 };
 if (R2) Object.assign(state, { hearts: R2_RULES.hearts, blasts: R2_RULES.blasts, turbos: R2_RULES.turbos, paused: false, blastT: 0, turboT: 0, guardT: 0, outT: -1, knocks: 0, restarts: 0 });
@@ -1341,7 +1341,7 @@ function fadeStartPanels() {
   // round2: once the run starts, the gameplay gear gives way to the pause button and the Bubble Blast and Turbo Spin buttons
   // come up at the bottom (the Tap to Start screen keeps the approved gear).
   if (R2) {
-    const g = since < 0 ? 0 : THREE.MathUtils.smoothstep(since, 0.1, 0.55);
+    const g = INTUNNEL_ON ? 1 : since < 0 ? 0 : THREE.MathUtils.smoothstep(since, 0.1, 0.55);   // (?s3=intunnel: the approved screen's buttons from the start)
     document.body.classList.toggle('r2Play', g > 0);
     const artOn = document.body.classList.contains('openingArt');
     $('soundBtn').style.opacity = String(artOn ? k * (1 - g) : 1 - g);

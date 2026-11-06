@@ -216,9 +216,10 @@
   body.intunnel #banner { display: none !important; }
   /* (and its Tap to Start is a small pill at the bottom, under her, so the start screen is the approved view: the swipe
      lines, arrows and hand are left out; the steering hint still shows after the tap) */
-  body.intunnel #startPanel { bottom: calc(var(--u) * 10); width: calc(var(--u) * 120); height: calc(var(--u) * 30); }
+  /* (two lines, 62 u wide, in the 73 u gap between the Bubble Blast and Turbo Spin buttons, x 104-177 of the 270 u stage) */
+  body.intunnel #startPanel { bottom: calc(var(--u) * 9 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 62); height: calc(var(--u) * 42); margin-left: calc(var(--u) * 5.5); }
   body.intunnel #startPanel .l:not(.tap), body.intunnel #startPanel img { display: none; }
-  body.intunnel #startPanel .tap { top: calc(var(--u) * 2) !important; font-size: calc(var(--u) * 17); }
+  body.intunnel #startPanel .tap { top: calc(var(--u) * 4) !important; font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 17); white-space: normal; }
   /* the sound button on Tap to Start (hidden while running): under the gem counter, where the pause button shows in the run */
   body.s4focus #soundBtn { top: calc(var(--u) * 52 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 236); width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
   #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
