@@ -31,12 +31,12 @@ secret. It supersedes the older handoff files for the CURRENT state; they stay a
 |---|---|---|
 | `index.html?s3=intunnel` | **the ACCEPTED Screen 4** (starts inside the blue tunnel; includes swim2) | the user's accepted baseline, unchanged (0 px) by everything below |
 | `?s3=intunnel,structmatch` | **the current candidate**: her rounder magenta shape and shell fur, the swell's water in the original's deeper blues without white comma arcs, the swim rhythm, the original's banded washer rim on the tunnel's upper wall through the whole run, cobalt tunnel rings | waiting for the user's verdict |
-| `?s3=intunnel,structmatch,nomatch4` / `,noswim3` | the candidate one / two steps back (0 px against their own earlier bundles) | rollbacks |
+| `?s3=intunnel,structmatch,nomatch5` / `,nomatch4` / `,noswim3` | the candidate one / two / three steps back (0 px against their own earlier bundles) | rollbacks |
 | `?s3=intunnel,structmatch,home` (or `?s3=intunnel,home`) | **Screens 1-2** (Home, Laundry Toss) in front of the game, then the live Screen 4 | new, waiting for the user |
 | no switch | the normal game | unchanged |
 
 - Code of the candidate: `WebDemo/src/tunnel_s4_struct.js` (settings `STRUCT`, `HOUSING`, `SHELL_FUR`; parts `STRUCT_PARTS` in
-  `WebDemo/src/tunnel_s4_bt.js`: `hero`, `swell`, `housing`, `swim3`, `match4`; opt-in `mounds`, `tunnel2`, `props2`, `hud2`).
+  `WebDemo/src/tunnel_s4_bt.js`: `hero`, `swell`, `housing`, `swim3`, `match4`, `match5` (longer combed fur, `SHELL_FUR5`); opt-in `mounds`, `tunnel2`, `props2`, `hud2`).
   Screens 1-2: `WebDemo/src/screens12.js`, assets `WebDemo/ui/screens12/`.
 - **Android preview APK:** `ANDROID_HOME=~/android-sdk bash Tools/android_apk/build_apk.sh <out.apk>` (start page
   `Tools/android_apk/start.html`). The SDK is NOT in the setup script; install it once per machine:
@@ -83,7 +83,9 @@ Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_
   It is the intended jump, not a contact fault. Use a recording without the jump to judge contact.
 - **NOT done (the user's open requests, in priority order):**
   1. The user's verdict on `?s3=intunnel,structmatch` (match4) and on Screens 1-2.
-  2. **Her silhouette:** the user still sees a flatter mound with shorter fur than the original's taller dome with long strands.
+  2. **Her silhouette:** after match4 the user still saw a flatter mound with shorter fur. match5 (`67_match5/README.md`) answers it
+     first: strands 2.2 x longer, finer and combed down her dome, her body narrowed under them (outline 0.519 x 0.178 of the frame,
+     the ORIGINAL 0.513 x 0.167). Still open if the user wants more:
      Measured at Tap to Start her pink box is 0.530 x 0.170 of the frame, the ORIGINAL 0.513 x 0.167 (similar size); the
      difference the user sees is the dome's profile and the fur's length and direction. Next: longer shells with directional
      lean and pale tips, and the crown profile (`structCrown`, `STRUCT.hero.crown`), compared at the same frame.

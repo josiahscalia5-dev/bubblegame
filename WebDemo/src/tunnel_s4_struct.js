@@ -106,6 +106,9 @@ export const STRUCT = {
     // quartiles 0.38 / 0.49 / 0.61; with the shells at swim3's grade 320 / 0.54 / 0.50-0.65: lighter, paler, flatter) and her
     // size (the shells widen her outline: her pink 54 % of the region against the ORIGINAL's 49 %)
     fur: { sat: 1.6, gain: 0.74 }, scale: [1.0, 0.995, 1.0],
+    // match5: the longer strands widen her outline (0.578 of the frame against the ORIGINAL's 0.513): her body narrower and a
+    // little taller under them, so the outline matches and the dome reads taller
+    scale5: [0.89, 0.985, 0.89],
     tunnel: { pull: 0.6, sat: 1.32, satAdd: 0.05, warmSat: 1.0, core: { r: [0.03, 0.09], k: 0.0, tint: [1, 1, 1], add: [0, 0, 0] } } },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
@@ -222,15 +225,19 @@ export function structFill(model, furUniforms, furVertex, furFragment) {
 // normals with a little outward lean; each shell keeps only the strands' cross-sections (roots scattered over her surface in
 // her model's own space, tapering, each its own length), shaded by her own fur shader (so the strands are her colour) and a
 // little paler toward their tips. Drawn only; one draw call per mesh (instanced shells).
+// match5: longer, finer strands (the ORIGINAL's stand out of her outline by about a tenth of her width), combed down and out
+// over her dome (comb), more and thinner (density, thick), with paler tips; 8 shells so the long strands do not terrace
+export const SHELL_FUR5 = { layers: 8, len: 0.22, lean: 0.5, comb: 0.45, density: 74, thick: 0.3, tip: 0.18, root: 0.62 };
 export const SHELL_FUR = { layers: 6, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
 const SHELL_VERTEX = /* glsl */ `
 attribute float aLayer;
-uniform float uShLen, uShLean;
+uniform float uShLen, uShLean, uShComb;
 varying vec2 vUv; varying vec3 vN; varying vec3 vWorld; varying vec3 vRoot; varying vec3 vRootN; varying float vH;
 void main() {
   vUv = uv; vH = aLayer;
   vec3 n = normalize(normal), r = normalize(position + vec3(0.0, 0.0, 1e-4));
-  vec3 p = position + normalize(n + r * uShLean) * uShLen * aLayer;
+  vec3 dn = vec3(0.0, -1.0, 0.0) - n * dot(vec3(0.0, -1.0, 0.0), n);   // down along her surface (combed fur)
+  vec3 p = position + normalize(n + r * uShLean + dn * uShComb) * uShLen * aLayer;
   vRoot = position; vRootN = n;
   vec4 w = modelMatrix * vec4(p, 1.0); vWorld = w.xyz;
   vN = normalize(mat3(modelMatrix) * n);
@@ -238,7 +245,7 @@ void main() {
 }
 `;
 function shellFragment(furFragment) {
-  const F = SHELL_FUR;
+  const F = STRUCT_PARTS.match5 ? SHELL_FUR5 : SHELL_FUR;
   return furFragment.replace('varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;', `varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
 varying vec3 vRoot; varying vec3 vRootN; varying float vH;
 float shH3(vec3 p) { p = fract(p * 0.1031); p += dot(p, p.zyx + 31.32); return fract((p.x + p.y) * p.z); }
@@ -259,14 +266,14 @@ vec3 shH33(vec3 p) { p = fract(p * vec3(0.1031, 0.1030, 0.0973)); p += dot(p, p.
   gl_FragColor = vec4(c, 1.0);`);
 }
 export function structShellFur(model, furUniforms, furFragment) {
-  const F = SHELL_FUR, made = [];
+  const F = STRUCT_PARTS.match5 ? SHELL_FUR5 : SHELL_FUR, made = [];
   model.traverse((o) => {
     if (!o.isMesh || o.name === 'structFill' || o.name === 'structShellFur' || !o.geometry.attributes.normal) return;
     const g0 = o.geometry, g = new THREE.InstancedBufferGeometry();
     g.index = g0.index; for (const k of ['position', 'normal', 'uv']) if (g0.attributes[k]) g.setAttribute(k, g0.attributes[k]);
     const h = new Float32Array(F.layers); for (let i = 0; i < F.layers; i++) h[i] = (i + 1) / F.layers;
     g.setAttribute('aLayer', new THREE.InstancedBufferAttribute(h, 1)); g.instanceCount = F.layers;
-    const m = new THREE.ShaderMaterial({ uniforms: { map: o.material.uniforms.map, ...furUniforms, uShLen: { value: F.len }, uShLean: { value: F.lean } },
+    const m = new THREE.ShaderMaterial({ uniforms: { map: o.material.uniforms.map, ...furUniforms, uShLen: { value: F.len }, uShLean: { value: F.lean }, uShComb: { value: F.comb || 0 } },
       vertexShader: SHELL_VERTEX, fragmentShader: shellFragment(furFragment), side: THREE.DoubleSide });
     made.push([o, new THREE.Mesh(g, m)]);
   });
@@ -276,7 +283,7 @@ export function structShellFur(model, furUniforms, furFragment) {
 
 // her drawn size once Screen 3's stretch is off (round her centre, as opening.js applies the stretch)
 export function structScale(model) {
-  const k = new THREE.Vector3(...(STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
+  const k = new THREE.Vector3(...(STRUCT_PARTS.match5 ? STRUCT.match4.scale5 : STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
   model.scale.multiply(k); model.position.multiply(k);
   model.position.y += STRUCT.hero.lift;
 }
