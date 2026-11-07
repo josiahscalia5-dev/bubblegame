@@ -1,0 +1,10 @@
+band y .80-.93 (her base and the water in front of her)
+ORIGINAL  white 20.0%  blue 63.3%  pink 14.9% | blue: lum p25/p50/p75 0.60/0.71/0.81  sat med 0.41  hue med 210
+ACC_t0    white 13.8%  blue 71.2%  pink 12.3% | blue: lum p25/p50/p75 0.66/0.74/0.81  sat med 0.43  hue med 205
+PREV_t0   white 12.8%  blue 71.5%  pink 13.8% | blue: lum p25/p50/p75 0.62/0.71/0.77  sat med 0.46  hue med 211
+NEW_t0    white  6.5%  blue 77.8%  pink 13.8% | blue: lum p25/p50/p75 0.54/0.67/0.79  sat med 0.52  hue med 211
+PREV_+1   white 14.3%  blue 63.3%  pink 20.4% | blue: lum p25/p50/p75 0.65/0.73/0.78  sat med 0.44  hue med 210
+NEW_+1    white  8.9%  blue 68.8%  pink 20.4% | blue: lum p25/p50/p75 0.58/0.72/0.80  sat med 0.46  hue med 209
+PREV_+3   white 14.7%  blue 69.8%  pink 13.3% | blue: lum p25/p50/p75 0.62/0.71/0.78  sat med 0.46  hue med 212
+NEW_+3    white 10.1%  blue 74.4%  pink 13.3% | blue: lum p25/p50/p75 0.54/0.68/0.80  sat med 0.50  hue med 212
+NEW_+5    white  5.7%  blue 75.3%  pink 16.0% | blue: lum p25/p50/p75 0.53/0.64/0.77  sat med 0.56  hue med 212
