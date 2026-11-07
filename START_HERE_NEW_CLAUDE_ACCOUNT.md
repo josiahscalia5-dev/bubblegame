@@ -20,17 +20,23 @@ so check them once per account. The full details are in `CLAUDE_ACCOUNT_TRANSFER
    - **Network:** Limited, with **package managers** and **MCP servers** switched on.
    - **Allowed hosts:** `download.blender.org` and `download.pytorch.org`.
    - **Repository:** `josiahscalia5-dev/bubblegame`.
-   - **Setup script:** paste the three lines below.
+   - **Setup script:** paste the lines below (7 November version: it never blocks a session from starting).
    - No environment variables and no secrets are needed.
    - Or simply ask Claude to create it: you will see an approval card.
 
 ```
 #!/bin/bash
-# Bubble Wash Kingdom dev tools (Blender, OpenCV, glTF tools, Vite, Tripo CLI, game npm deps); skips what is installed.
-if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi
+# Bubble Wash Kingdom dev tools (Blender, OpenCV, PyTorch/LPIPS, Optuna, glTF tools, Vite, Tripo CLI, game npm deps).
+# Runs the repository's own Tools/cloud_env_setup.sh, which skips what is installed. Only when the checkout has it (the
+# default branch does not); a failed step is reported in the log and never stops the session from starting.
+if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then
+  bash bubblegame/Tools/cloud_env_setup.sh || echo "Bubble Wash setup: a step failed (above); run bash Tools/verify_restore.sh"
+fi
 ```
 
-**Current state:**
+**Current state:** (the latest: section 0 of `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`)
+- **The account of the eighteenth session (7 November):** its `bubblegame` environment was created at about 00:40 UTC
+  (`env_016qrkLt8s9RU8tVo9qEp8qo`), with the script above.
 - **This (second) account:** got its `bubblegame` environment and the plugin on 6 November, about 23:37 UTC.
 - **The other account (the one the sixteenth session used):** had both as of 6 November 22:50 UTC
   (`ACCOUNT_SWITCH_HANDOFF.md`, sections 7-8).

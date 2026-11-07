@@ -9,6 +9,57 @@ session's version, kept as a record). Nothing in this file is a secret.
 
 ---
 
+## 0. LATEST STATE (7 November, about 10:35 UTC, eighteenth session `4fd798d9`): read this first; sections 1-13 are the 00:15 UTC record
+
+- **Branch:** `ccr-10503be1-pnv5vq` (unchanged; never force-pushed). Latest commit: run `git log -1`; at the time of
+  writing the autosave had verified `5a28812` (10:26 UTC) and keeps adding a commit every 5 minutes.
+- **Accepted Screen 4: `?s3=intunnel` INCLUDES `swim2`** (the user's approval, commit `9dee8c4`; bundle md5
+  `ea0c833c45667e1894fbdc2cc98a28dd`). The tunnel stays cobalt while she swims, the water at her flows with her travel,
+  the spray is capped at 12 px. Proofs: `Previews/WebDemo/screen4_round9_match/58_swim2_accepted/README.md` (11 frame
+  pairs, 0 px; `r2_func`/`s3_func` identical).
+  - **Rollback:** `?s3=intunnel,noswim2` = the previous accepted look (0 px); commit `920531d` = the game before the
+    acceptance; `0f7121f` = the 6 November checkpoint. (Tag pushes are refused by this session's git proxy: the hashes are
+    the checkpoints.)
+- **Experiment in progress: `?s3=intunnel,blend`** (NOT in the game; the user's brief of 7 November about 09:50-10:05 UTC:
+  her round body visibly above the water, cobalt/turquoise waves of the original's size round her lower body, connected
+  colours, the water flowing past her in moves, swipes, jumps and landings; no white film, no extra bubbles, no tunnel
+  redesign; one candidate, then the art director's verdict, then the user's approval).
+  - Built by `screen4-water-motion-engineer` in the local worktree `.claude/worktrees/agent-a19467485d7ab6a56` (branch
+    `worktree-agent-a19467485d7ab6a56`, from `c4d84e3`; not pushed: worktrees never are).
+  - **Saved to GitHub every 5 minutes as a snapshot:**
+    `Previews/WebDemo/screen4_round9_match/wip_snapshots_design_agents/screen4-water-motion-engineer_a1946748/`
+    (`changes.patch`, full copies in `files/`, `README.md` with the restore steps). Its brief, steps and report so far:
+    `ChatHistory/2026-11-07_session_4fd798d9_design_agent_transcripts.md`.
+  - **To continue it on another account:** copy the snapshot's `files/` over a checkout of `c4d84e3` in a new worktree,
+    `cd WebDemo && npm install && node build.mjs`, then brief `screen4-water-motion-engineer` with the brief in the
+    transcripts file and the snapshot's state. An agent's live internal state cannot be transferred; its files can.
+  - Its planned evidence folder: `59_blend/`. Then: `game-art-director` judges ORIGINAL | accepted | blend; the user decides.
+- **Done this session:** `r2_func` passes with `VW=135 VH=270` (section 10.1, resolved); the `bubblegame` cloud
+  environment on this account (`env_016qrkLt8s9RU8tVo9qEp8qo`: limited network, package registries and MCP servers on,
+  `download.blender.org`, `download.pytorch.org`); `Tools/cloud_env_setup.sh` gives the optional PyTorch/LPIPS/Optuna
+  step a 10-minute limit (a fresh session once hung there 1 h 39 min) and keeps every run's log in
+  `~/.bubblewash-tools/setup_logs/`; `Tools/save_now.sh` now merges another session's newer commits with a normal merge and
+  pushes again (a conflicting merge is undone and reported as FAILED; never a rebase or force-push). Evidence:
+  `56_bubblegame_environment/`, `57_swim2/`, `58_swim2_accepted/`.
+- **The environment's setup script now (exactly):**
+  ```
+  #!/bin/bash
+  # Bubble Wash Kingdom dev tools (Blender, OpenCV, PyTorch/LPIPS, Optuna, glTF tools, Vite, Tripo CLI, game npm deps).
+  # Runs the repository's own Tools/cloud_env_setup.sh, which skips what is installed. Only when the checkout has it (the
+  # default branch does not); a failed step is reported in the log and never stops the session from starting.
+  if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then
+    bash bubblegame/Tools/cloud_env_setup.sh || echo "Bubble Wash setup: a step failed (above); run bash Tools/verify_restore.sh"
+  fi
+  ```
+- **Does NOT travel through GitHub (redo on each account):** the claude.ai GitHub connection; the parallax-threejs plugin
+  (enable it in the plugin directory: 0.4.12, chrome-devtools-mcp 1.6.0, threejs-devtools-mcp 0.2.1 with `DEV_PORT=3000`,
+  playwright-mcp 0.0.78, Spector skipped: section 7); the `bubblegame` cloud environment and its setup script (above);
+  permissions; any Tripo key (environment settings only, never the repository); running sessions and agents (their files
+  are saved, their live state is not); local worktrees (only their snapshots).
+- **What travels (in the repository):** the game source, builds and assets; the ORIGINAL and all reference packs; the five
+  project agents, the skill, the SessionStart hook and `.claude/settings.json`; all tools and setup scripts; every report,
+  comparison, screenshot, recording and test result; the chat histories and agent transcripts; this handoff.
+
 ## 1. Repository and branch
 
 | item | value |
@@ -296,7 +347,8 @@ Continue my Bubble Wash Kingdom project from the account transfer handoff. This 
 1. Repository https://github.com/josiahscalia5-dev/bubblegame, branch ccr-10503be1-pnv5vq ONLY. Check it out (if this
    session started on another branch, switch to ccr-10503be1-pnv5vq; create no replacement branch), pull it, and run
    git log -1.
-2. Read CLAUDE.md, the top section of HANDOFF.md, then CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md in full.
+2. Read CLAUDE.md, the top section of HANDOFF.md, then CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md in full (its section 0 is the
+   latest state: the accepted swim2, the blend experiment's snapshot and how to continue it).
 3. Start or confirm the 5-minute autosave per CLAUDE.md (the SessionStart hook may have started it) and add this session
    to Tools/autosave_sessions.json. Its first save must say "Push: VERIFIED".
 4. Run: source Tools/bw_tools_env.sh; bash Tools/verify_restore.sh --build. If ~/.bubblewash-tools is missing, tell me and
