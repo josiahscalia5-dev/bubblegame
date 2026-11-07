@@ -1,0 +1,27 @@
+(1) page captures with the HUD | lavender housing y .16-.36 | her pink box | her width at 8/16/25/50 % below her top
+  ORIGINAL      housing 21.3 % | box x 0.25-0.73 y 0.70-0.86 | widths 0.19 / 0.27 / 0.32 / 0.41
+  ACCEPTED t0   housing 16.3 % | box x 0.23-0.72 y 0.68-0.85 | widths 0.09 / 0.20 / 0.23 / 0.45
+  ACCEPTED +1 s housing  1.7 % | box x 0.22-0.71 y 0.71-0.87 | widths 0.09 / 0.18 / 0.24 / 0.45
+  ACCEPTED +2 s housing  1.3 % | box x 0.23-0.72 y 0.71-0.86 | widths 0.06 / 0.22 / 0.26 / 0.42
+  ACCEPTED +3 s housing  0.7 % | box x 0.32-0.72 y 0.69-0.86 | widths 0.10 / 0.20 / 0.24 / 0.34
+  NEW t0        housing 16.3 % | box x 0.23-0.72 y 0.68-0.87 | widths 0.10 / 0.22 / 0.27 / 0.48
+  NEW +1 s      housing 35.9 % | box x 0.22-0.71 y 0.70-0.88 | widths 0.12 / 0.21 / 0.26 / 0.46
+  NEW +2 s      housing 32.1 % | box x 0.24-0.72 y 0.72-0.88 | widths 0.08 / 0.19 / 0.24 / 0.46
+  NEW +3 s      housing 49.7 % | box x 0.23-0.71 y 0.69-0.87 | widths 0.11 / 0.21 / 0.29 / 0.47
+(2) canvas renders: blue-family share by hue (cyan | azure | periwinkle-violet), mean blue hue and saturation, white/pale share
+ == foreground water y .80-.84
+  ORIGINAL      cyan   0.2 azure  16.7 peri/violet  12.7 | blue hue 223.0 sat 0.47 | white/pale  22.8
+  ACCEPTED start cyan   0.8 azure  50.4 peri/violet   0.3 | blue hue 208.2 sat 0.47 | white/pale  19.9
+  ACCEPTED +1 s cyan   3.4 azure  32.1 peri/violet   0.3 | blue hue 208.0 sat 0.47 | white/pale  20.0
+  ACCEPTED +2 s cyan   2.6 azure  23.5 peri/violet   0.7 | blue hue 207.3 sat 0.41 | white/pale  29.1
+  NEW start     cyan   0.0 azure  49.3 peri/violet   1.3 | blue hue 211.2 sat 0.58 | white/pale   6.9
+  NEW +1 s      cyan   3.6 azure  26.8 peri/violet   0.1 | blue hue 207.7 sat 0.48 | white/pale  17.5
+  NEW +2 s      cyan   0.6 azure  21.1 peri/violet   1.3 | blue hue 211.2 sat 0.48 | white/pale  28.7
+ == water round her y .78-.92
+  ORIGINAL      cyan   5.9 azure  27.3 peri/violet   9.4 | blue hue 213.8 sat 0.49 | white/pale  23.3
+  ACCEPTED start cyan   0.9 azure  64.5 peri/violet   0.5 | blue hue 207.2 sat 0.46 | white/pale  15.9
+  ACCEPTED +1 s cyan   2.2 azure  53.6 peri/violet   0.3 | blue hue 206.5 sat 0.45 | white/pale  17.9
+  ACCEPTED +2 s cyan   1.4 azure  47.3 peri/violet   0.6 | blue hue 207.6 sat 0.45 | white/pale  25.7
+  NEW start     cyan   0.0 azure  41.9 peri/violet   7.7 | blue hue 214.9 sat 0.51 | white/pale  17.3
+  NEW +1 s      cyan   2.2 azure  37.0 peri/violet   0.7 | blue hue 209.1 sat 0.49 | white/pale  21.7
+  NEW +2 s      cyan   0.8 azure  34.2 peri/violet   3.1 | blue hue 211.9 sat 0.48 | white/pale  26.4

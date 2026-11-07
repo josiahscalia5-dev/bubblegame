@@ -41,6 +41,7 @@ import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swe
 import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
 import { swimWakeDecl, swimWakeGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the floor's wake coloured ('' without the switch)
 import { SWIM2_ON } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's face flows with her travel (uSwim2Fl)
+import { STRUCT_PARTS, structHousingGLSL } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -695,7 +696,7 @@ void main() {
   vec3 col = lqWall(vW, normalize(vN), normalize(vT), cs, a, u, a * ${f3(radius)});
   col = mix(col, ${v3(HERO.collar.edge)}, exp(-pow((u - uStart - 0.1) / 0.07, 2.0)) * 0.9);   // the thin navy edge of the mouth
   col = mix(col, ${v3('#c4b8f0')}, 1.0 - smoothstep(uStart - 0.06, uStart + 0.06, u));   // the washer's lavender shell before the mouth
-${MATCH_ON ? matchMouthGLSL(HERO, axisH, radius) : ''}  gl_FragColor = vec4(col, 1.0);
+${MATCH_ON ? matchMouthGLSL(HERO, axisH, radius) : ''}${STRUCT_PARTS.housing ? structHousingGLSL(radius) : ''}  gl_FragColor = vec4(col, 1.0);
 }
 `;
 }

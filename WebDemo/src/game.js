@@ -5,6 +5,7 @@ import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   
 import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
 import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
 import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
+import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -882,6 +883,7 @@ function buildMascot(gltf) {
   const s = MASCOT_WIDTH / size.x;                      // arms-to-arms, matched to the approved Screen 3
   model.position.copy(centre).multiplyScalar(-s);
   model.scale.setScalar(s);
+  if (STRUCT_PARTS.hero) structPrivately(0x57a0, () => structCrown(model));   // ?s3=intunnel,structmatch,hero2: her crown as a smooth arc (drawn only; her size and fit unchanged)
   // Fur: the Meshy colour with soft round light (a blend of the fur's own normals and the body's
   // sphere), strand-by-strand light and shade, glowing pink fur tips around the silhouette, deeper
   // magenta toward the water and droplets twinkling in the fur (shaders.js furFragment).
@@ -895,8 +897,10 @@ function buildMascot(gltf) {
   model.traverse((o) => {
     if (!o.isMesh) return;
     o.material = new THREE.ShaderMaterial({ uniforms: { map: { value: o.material.map }, ...mats.fur },
-      vertexShader: SH.furVertex, fragmentShader: SH.furFragment, side: THREE.DoubleSide });
+      vertexShader: SH.furVertex, fragmentShader: STRUCT_PARTS.hero ? structFurFragment(SH.furFragment) : SH.furFragment, side: THREE.DoubleSide });   // (?s3=...,structmatch,hero2: Screen 4's fur)
   });
+  if (STRUCT_PARTS.hero) structFurUniforms(mats.fur);   // ?s3=intunnel,structmatch,hero2: a whiter rim
+  if (STRUCT_PARTS.water) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
   const squash = new THREE.Group(); squash.add(model);
   const tilt = new THREE.Group(); tilt.add(squash);
   const root = new THREE.Group(); root.add(tilt);

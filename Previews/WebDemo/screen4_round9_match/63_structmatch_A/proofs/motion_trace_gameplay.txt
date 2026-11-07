@@ -1,0 +1,3 @@
+motion trace gameplay fields (63_structmatch_A/motion/trace_accepted_swipejump.json vs 63_structmatch_A/motion/trace_structmatch_swipejump.json): 152 vs 152 frames x 17 fields (t, phase, x, xv, lane, air, yAbs, surf, speed, hearts, coins, gems, socks, knocks, bumps, z, cam): 0 differences []
+  drawn only, for information: drawn largest change 0.0000
+  drawn only, for information: squashY largest change 0.0000
