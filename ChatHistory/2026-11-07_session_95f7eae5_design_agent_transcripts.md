@@ -424,5 +424,13 @@ While that runs (one browser at a time, within the machine limit), I'll prepare 
 Waiting for the identity run to finish before starting the next browser job.
 
 - 14:24 `Bash`: Wait until four identity moments are done
+- 14:28 `Bash`: Wait until all identity moments are done
+**Agent** (14:31 UTC):
 
-_191 tool steps._
+All eight identity moments: 0 pixels differ (committed 38466b67 vs rebuilt cede5683). Now the gameplay proofs and the evidence captures, chained in one background job (one browser at a time).
+
+- 14:31 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/evidence.sh
+- 14:31 `Bash`: Run evidence captures and gameplay proofs
+- 14:31 `Bash`: Wait for the captures to finish
+
+_195 tool steps._
