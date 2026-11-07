@@ -1,3 +1,5 @@
+> **Newest (7 November 2026, 23:10 UTC): read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first; it has the current branch, state and steps. This file is older.**
+
 # Start here: continuing Bubble Wash Kingdom on another Claude account
 
 You keep ONE project on GitHub and switch between two Claude accounts. The project, its rules, its five AI agents, its

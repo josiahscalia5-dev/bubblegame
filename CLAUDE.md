@@ -1,6 +1,6 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-Read `HANDOFF.md` first: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
+**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first (7 November, 23:10 UTC: the current state).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
 On a different Claude account, read `START_HERE_NEW_CLAUDE_ACCOUNT.md`, then `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (7 November;
 it replaces `ACCOUNT_SWITCH_HANDOFF.md`): the branch, the accepted checkpoint, the agents, the plugin and environment
 inventory, how to restore and verify (`bash Tools/verify_restore.sh --build`), and the continuation prompt. Before
