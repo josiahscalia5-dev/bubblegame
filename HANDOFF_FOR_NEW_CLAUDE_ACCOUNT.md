@@ -95,6 +95,21 @@ Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_
   4. The water's SHAPES (the original's layered curling ribbons and lavender glass bubbles at her lower left) and the user's
      water dimension spec (`..._Exact_Water_Size_3D_Spec_Pack/`): not yet applied. Calibrate it to the game's real scale first
      (her width in the game is `MASCOT_WIDTH` 1.04 m in `game.js`, not the spec's example 1.5 m).
+- **NEWEST REQUEST (7 November, about 23:50 UTC): `Design/ReferencePacks/2026-11-07_Animation_and_Movement_Mandate_from_user/`**
+  (the mandate, the user's phone recording of the APK, the 12-screen Level 1 flow board). Diagnosis done, NOT implemented yet:
+  1. **"She does not travel":** she does (the recorded state: z 1.8 m -> 34.3 m in 5 s, about 7 m/s), but the drum is only
+     about 35 m long, so every ~5 s the run LOOPS back to its start (`loopRun` in `game.js`, `if (running && m.z > L.tunnelEnd - 2.0)`),
+     and the camera follows at a fixed distance (normal for a runner). So Level 1 is one ~35 m section repeating: she never
+     reaches anywhere. The fix is a longer Level 1 route with connected sections in the board's order (brush zone, side paths /
+     jumps, drops, collect zone, enemies, the Bubble Kingdom, Level Complete) instead of the loop: a large engineering task
+     (the track `TR`, the layout `L`, the tunnel's lining / rings / water built along `L`, the collectible placement, the camera).
+  2. **"The girl must really move":** no 3D girl exists in the project (`Design/LAUNDRY_TOSS_INTRO_ASSETS.md`); Screens 1-2 use
+     the user's 2D artwork. A rigged, animated 3D girl needs Tripo (PAID): image-to-model + rig + animation retarget. Free dry run
+     (`tripo make <girl crop> --for anim --dry-run`): 110 credits for the model, plus the rig and per-animation retarget (not
+     estimated; presets idle / walk; a throw is not a listed preset). The artwork shows her only from the waist up behind the
+     basket, so Tripo must invent her lower body. **Ask the user before any paid job** (balance 640).
+  3. The opening sequence (girl throws laundry, the character swept along, tumbling into the washer, the camera following into
+     the drum, the hand-over) then builds on 2 in `WebDemo/src/screens12.js` (today a 2D toss + dive into the live game).
 - **Running at handoff:** the match4 Pixel 7 recording (`66_match4/videos/swim_steer_coins_new.mp4`) was still being written;
   the 5-minute autosave commits it if it finished. If it is missing, rerun:
   `bash Previews/WebDemo/screen4_round9_match/66_match4/scripts/chain.sh` (its header has the arguments) or only the clip part.
