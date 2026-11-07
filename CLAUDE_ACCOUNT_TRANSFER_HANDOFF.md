@@ -351,8 +351,11 @@ Continue my Bubble Wash Kingdom project from the account transfer handoff. This 
    latest state: the accepted swim2, the blend experiment's snapshot and how to continue it).
 3. Start or confirm the 5-minute autosave per CLAUDE.md (the SessionStart hook may have started it) and add this session
    to Tools/autosave_sessions.json. Its first save must say "Push: VERIFIED".
-4. Run: source Tools/bw_tools_env.sh; bash Tools/verify_restore.sh --build. If ~/.bubblewash-tools is missing, tell me and
-   run bash Tools/cloud_env_setup.sh only after I approve. Check ListPlugins (parallax-threejs), ToolSearch for
+4. Set up this account FOR ME (I am not technical; I only click Approve): if this account has no cloud environment named
+   bubblegame, create it with your environment tools exactly as CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md section 0 describes
+   (network, the two hosts, the repository and the setup script), moving this session onto it; if the parallax-threejs
+   plugin is missing, show me the install card. If ~/.bubblewash-tools is missing, run bash Tools/cloud_env_setup.sh.
+   Then run: source Tools/bw_tools_env.sh; bash Tools/verify_restore.sh --build. Check ToolSearch for
    chrome-devtools-mcp, threejs-devtools-mcp and playwright-mcp, and the DevTools bridge per section 9. Spector is
    skipped on purpose.
 5. Confirm the five project agents (screen4-water-motion-engineer, water-vfx-engineer, lighting-visual-matching,

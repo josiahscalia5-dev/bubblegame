@@ -7,7 +7,17 @@ so check them once per account. The full details are in `CLAUDE_ACCOUNT_TRANSFER
 **Repository:** https://github.com/josiahscalia5-dev/bubblegame
 **Branch:** `ccr-10503be1-pnv5vq`
 
-## One-time setup per account (skip what is already done)
+## The easy way (7 November): three things only you can do, Claude does the rest
+
+1. **Sign in to GitHub on claude.ai** (only you can sign in): https://claude.ai/connect-github, with access to
+   `josiahscalia5-dev/bubblegame`.
+2. **Start a new Claude Code session** with that repository (any cloud environment is fine the first time).
+3. **Paste the continuation message** from section 13 of `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` as your first message, then
+   click **Approve** on the cards Claude shows you: it creates the `bubblegame` cloud environment, offers the
+   parallax-threejs plugin, installs the tools, starts the 5-minute autosave and checks everything. If the plugin card
+   appears, approve it and start one more new session afterwards (plugins load when a session starts).
+
+## One-time setup per account by hand (only if you prefer; skip what is already done)
 
 1. **GitHub:**
    - On claude.ai, connect GitHub: https://claude.ai/connect-github.
