@@ -200,5 +200,16 @@ Both clips done. Building the side-by-side and key-moments sheet, and running th
 - 01:41 `Bash`: Re-record the swim2 clip on the final build
 - 01:41 `Bash`: Run identity renders on the final bundle
 - 01:41 `Bash`: Wait for the identity renders
+- 01:49 `Bash`: Render swim2 start and +1 s on the final build and diff
+- 01:50 `Bash`: Run s3_func, motion trace and r2_func
+**Agent** (01:50 UTC):
 
-_133 tool steps._
+Meanwhile, the sheets on the final frames and the silhouette check.
+
+- 01:50 `Bash`: Build final sheets and zone and silhouette metrics
+- 01:50 `Bash`: Downscale the final +1 s sheet
+- 01:50 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/T1_sheet_s.jpg
+- 01:50 `Bash`: Check clip and gameplay test progress
+- 01:50 `Bash`: Wait for the swim2 clip re-record
+
+_140 tool steps._
