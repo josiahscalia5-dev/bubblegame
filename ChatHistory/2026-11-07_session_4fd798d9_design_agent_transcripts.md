@@ -1018,5 +1018,55 @@ The foam band should follow each cap's sink line; I'll pass the sink per cap.
 - 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
 - 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
 - 11:22 `Bash`: Rebuild with the repositioned caps
+- 11:22 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:22 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:22 `Bash`: Decode start/+1/+2 s and build a close-up sheet
+- 11:23 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid3.jpg
+**Lead → agent** (11:23 UTC):
 
-_132 tool steps._
+[Image: original 2112x432, displayed at 2000x409. Multiply coordinates by 1.06 to map to original image.]
+
+- 11:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:23 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:23 `Bash`: Rebuild with bigger caps and ragged foam
+- 11:23 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:23 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:23 `Bash`: Decode and compare the second cap iteration
+- 11:24 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid4.jpg
+**Lead → agent** (11:24 UTC):
+
+[Image: original 2112x432, displayed at 2000x409. Multiply coordinates by 1.06 to map to original image.]
+
+- 11:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:24 `Bash`: Rebuild with the settings exposed
+- 11:24 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:25 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:25 `Bash`: Compare cap colour variants at the start
+- 11:25 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid5.jpg
+**Lead → agent** (11:25 UTC):
+
+[Image: original 2632x320, displayed at 2000x243. Multiply coordinates by 1.32 to map to original image.]
+
+**Agent** (11:25 UTC):
+
+Too small to judge. Let me look at ORIGINAL, A and C larger.
+
+- 11:25 `Bash`: Larger comparison of colour variants
+- 11:25 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid5b.jpg
+- 11:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:26 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:26 `Bash`: Rebuild with tuned caps
+- 11:26 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:26 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:26 `Bash`: Decode and compare the third cap iteration
+- 11:27 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid6.jpg
+**Lead → agent** (11:27 UTC):
+
+[Image: original 2112x432, displayed at 2000x409. Multiply coordinates by 1.06 to map to original image.]
+
+
+_162 tool steps._

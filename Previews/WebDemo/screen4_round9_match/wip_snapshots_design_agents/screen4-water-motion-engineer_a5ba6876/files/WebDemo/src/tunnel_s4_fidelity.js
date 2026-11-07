@@ -34,16 +34,16 @@ export const FIDELITY = {
   // (sizes and places from the ORIGINAL at her base: a dome about 55 px in radius left of her centre, one of about 40 px just
   // right of it, a small one further right; at the crest 439 px per m across and 470 up)
   caps: {
-    list: [[12, 0.13, 0.2, 0.3], [-3, 0.095, 0.3, -0.3], [-17, 0.065, 0.25, -0.3], [30, 0.07, 0.65, 0.3], [-32, 0.075, 0.8, -0.3], [3, 0.06, 0.95, 0.2]],
+    list: [[12, 0.18, 0.2, 0.5], [-3, 0.13, 0.3, -0.5], [-17, 0.09, 0.25, -0.5], [30, 0.1, 0.65, 0.5], [-32, 0.1, 0.8, -0.5], [3, 0.085, 0.95, 0.5]],
     squash: 0.72,                      // their height / width
-    sink: [0.1, 0.6],                  // share of the half-height below the crest, at birth and at the end of a life
-    out: [-0.03, 0.17],                // m out from the crest toward the camera over a life (- toward her)
+    sink: [0.0, 0.8],                  // share of the half-height below the crest, at birth and at the end of a life
+    out: [-0.03, 0.08],                // m out from the crest toward the camera over a life (- toward her)
     life: 3.2,                         // m swum per life (about 0.45 s at her 7.2 m/s); plus `idle` per second at the start
     idle: 0.04,
     wobble: 0.1,                       // surface wobble (share of the radius)
     // transmission (multiply, linear): what is behind is multiplied by tint; scatter / sky (sRGB): light added inside / reflected
-    tint: '#6f86ff', tintK: 0.85,
-    scatter: '#4c3fb0', scatterK: 0.55, sky: '#d8ecff', skyK: 0.9, spec: 1.6, rim: 0.9, foam: 0.85,
+    tint: '#6f86ff', tintK: 0.6,
+    scatter: '#8a7ee6', scatterK: 0.9, sky: '#d8ecff', skyK: 0.8, spec: 2.0, rim: 2.0, foam: 0.8,
   },
   teethFront: 0.35,                    // focus's spiky teeth: the valleys' depth in front of her (1 = as accepted)
 };
@@ -51,8 +51,9 @@ export const FIDELITY = {
   const t = typeof window !== 'undefined' && window.__BW_S3_TUNE__ && window.__BW_S3_TUNE__.fidelity;
   if (t) for (const k of Object.keys(t)) FIDELITY[k] = t[k] && typeof t[k] === 'object' && !Array.isArray(t[k]) ? { ...FIDELITY[k], ...t[k] } : t[k];
 }
-// blend's pose with fidelity's proportions (blendPose reads BLEND.body; BLEND_ON stays off under fidelity alone)
-if (FIDELITY_ON) Object.assign(BLEND.body, FIDELITY.body);
+// blend's pose with fidelity's proportions (blendPose reads BLEND.body; BLEND_ON stays off under fidelity alone); the
+// settings readable from the page for inspection (window.__BW_FIDELITY__, live DevTools)
+if (FIDELITY_ON) { Object.assign(BLEND.body, FIDELITY.body); window.__BW_FIDELITY__ = FIDELITY; }
 // the face's water settings for tunnel_r9_match_water.js (deepMerge'd after focus's under FIDELITY_ON)
 export const FIDELITY_WATER = { face: { teeth: { front: FIDELITY.teethFront } } };
 
@@ -131,23 +132,24 @@ void main() {
   float ndv = clamp(dot(N, V), 0.0, 1.0), fr = pow(1.0 - ndv, 2.5);
   float edge = smoothstep(0.0, 0.25, ndv);                     // soft at the silhouette
 ${pass === 0 ? `  // transmission: what is behind, multiplied (her pink -> violet, the water -> deeper blue); thinner at the silhouette
-  float k = uTintK * uK * edge * (1.0 - 0.6 * fr);
+  // (thinner toward its base, so it merges into the swell instead of sitting on it)
+  float k = uTintK * uK * edge * (1.0 - 0.6 * fr) * (0.35 + 0.65 * smoothstep(0.0, 0.55, vH));
   gl_FragColor = vec4(mix(vec3(1.0), uTint, k), 1.0);
 ` : `  // the lit edge: the key light from the upper left (the original's white rims), the sky reflected at grazing angles
   vec3 L = normalize(uU * 0.75 + uR * 0.45 - uT * 0.35);
   float lit = clamp(dot(N, L), 0.0, 1.0);
   float spec = pow(clamp(dot(reflect(-V, N), L), 0.0, 1.0), 28.0) * uSpec;
-  float rim = fr * smoothstep(0.2, 0.9, lit) * uRim;
+  float rim = smoothstep(0.55, 0.85, 1.0 - ndv) * smoothstep(0.35, 0.85, lit) * uRim;   // a bright arc on the lit upper-left edge
   vec3 col = uScatter * uScatterK * (1.0 - fr) * edge;
-  col += uSky * (fr * uSkyK * (0.35 + 0.65 * lit) + rim);
+  col += uSky * (fr * uSkyK * (0.25 + 0.75 * lit) + rim);
   col += vec3(1.0) * spec;
-  // broken white foam where the cap meets the swell (its lowest visible band), and a few bubbles in it
-  float ang = atan(N.x, N.z) * 4.0 + vI * 3.7;
-  float brk = fdH(vec2(floor(ang * 1.6 + uTime * 0.7), vI));
-  float foam = (1.0 - smoothstep(0.08, 0.3, vH)) * step(0.35, brk) * uFoam;
+  // a thin, ragged band of white foam where the cap meets the swell, and a few small bubbles high on it
+  float ang = atan(dot(N, uR), dot(N, -uT)) * 3.0 + vI * 3.7;
+  float rag = 0.5 * sin(ang * 3.0 + uTime * 1.3) + 0.3 * sin(ang * 7.0 - uTime * 2.1 + vI) + 0.2 * sin(ang * 13.0 + vI * 5.0);
+  float foam = (1.0 - smoothstep(0.03, 0.09 + 0.05 * rag, abs(vH + 0.02 * rag))) * smoothstep(-0.3, 0.2, rag) * uFoam;
   vec2 bq = vec2(ang * 2.2, vH * 9.0 - uTime * 0.8); vec2 bi = floor(bq);
-  float bub = step(0.86, fdH(bi + vI * 7.0)) * (1.0 - smoothstep(0.12, 0.2, length(fract(bq) - 0.5))) * smoothstep(0.2, 0.6, vH);
-  col = mix(col, vec3(1.0), clamp(foam + bub * 0.8, 0.0, 1.0));
+  float bub = step(0.9, fdH(bi + vI * 7.0)) * (1.0 - smoothstep(0.1, 0.17, length(fract(bq) - 0.5))) * smoothstep(0.25, 0.6, vH);
+  col = mix(col, vec3(1.0), clamp(foam + bub * 0.7, 0.0, 1.0));
   gl_FragColor = vec4(col * uK, 1.0);
 `}}
 `;
@@ -182,7 +184,7 @@ export function buildFidelityCaps({ scene, updaters, time, S, P, crestAt }) {
       const [phi0, r0, c0, drift] = K.list[i];
       const p = (((c0 + flow) % 1) + 1) % 1;
       const env = sm(0, 0.18, p) * Math.pow(1 - p, 0.8) / 0.853 * (1 - 0.85 * S.air) * (1 + 0.35 * S.land);   // grows at her base, then sinks as it rolls back
-      const phi = phi0 + drift * Math.abs(phi0 + 6) * p, a = phi * D2R;
+      const phi = phi0 + drift * (12 + Math.abs(phi0)) * p, a = phi * D2R;   // outward along her base
       const [H] = crestAt(P, phi);
       let nx = Math.sin(a) / P.ax, nu = -Math.cos(a) / P.au; const nl = Math.hypot(nx, nu); nx /= nl; nu /= nl;
       const o = K.out[0] + (K.out[1] - K.out[0]) * p, wo = P.out;
