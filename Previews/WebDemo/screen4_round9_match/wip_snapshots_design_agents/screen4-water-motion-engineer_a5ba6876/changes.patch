@@ -1,0 +1,112 @@
+diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
+index ebe4862..37466ac 100644
+--- a/WebDemo/src/game.js
++++ b/WebDemo/src/game.js
+@@ -5,6 +5,7 @@ import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';
+ import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
+ import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
+ import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
++import { FIDELITY_ON, fidelityCrown } from './tunnel_s4_fidelity.js';   // ?s3=intunnel,fidelity: her crown's envelope, plus blend's pose (visual only)
+ import * as THREE from 'three';
+ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+@@ -882,6 +883,7 @@ function buildMascot(gltf) {
+   const s = MASCOT_WIDTH / size.x;                      // arms-to-arms, matched to the approved Screen 3
+   model.position.copy(centre).multiplyScalar(-s);
+   model.scale.setScalar(s);
++  if (FIDELITY_ON) fidelityCrown(model);   // ?s3=intunnel,fidelity: her crown's envelope as the original's dome (drawn only; her size and fit unchanged)
+   // Fur: the Meshy colour with soft round light (a blend of the fur's own normals and the body's
+   // sphere), strand-by-strand light and shade, glowing pink fur tips around the silhouette, deeper
+   // magenta toward the water and droplets twinkling in the fur (shaders.js furFragment).
+@@ -1039,7 +1041,7 @@ function updateMascot(dt) {
+     m.tilt.rotation.x += sp.pitch; m.tilt.rotation.z += sp.roll;
+     m.squash.scale.y *= sp.sy;
+   }
+-  if (BLEND_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend: drawn only (tunnel_s4_blend.js); her state is untouched
++  if (BLEND_ON || FIDELITY_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend (and fidelity): drawn only (tunnel_s4_blend.js); her state is untouched
+ 
+   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
+   // side spray while changing lanes, gentle ripples while bobbing at the start.
+@@ -1081,7 +1083,7 @@ function updateMascot(dt) {
+   m.lastSlope = slopeAll;
+   mats.fur.uTime.value = t;
+   mats.fur.uCentre.value.copy(m.root.position);
+-  if (BLEND_ON) blendFurCentre(mats.fur.uCentre.value, m);   // ?s3=intunnel,blend: the fur's light centre on her drawn body
++  if (BLEND_ON || FIDELITY_ON) blendFurCentre(mats.fur.uCentre.value, m);   // ?s3=intunnel,blend (and fidelity): the fur's light centre on her drawn body
+   TR.frame(m.z, F); mats.fur.uUp.value.copy(F.U);
+ 
+   document.body.classList.toggle('inDrum', (running || INTUNNEL_ON && state.phase === 'intro') && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // (?s3=intunnel: the tunnel's HUD from Tap to Start)   // round7: the mission card at the hero moment
+diff --git a/WebDemo/src/tunnel_r7_hero_water.js b/WebDemo/src/tunnel_r7_hero_water.js
+index 3d5941d..afc0921 100644
+--- a/WebDemo/src/tunnel_r7_hero_water.js
++++ b/WebDemo/src/tunnel_r7_hero_water.js
+@@ -30,6 +30,7 @@ import { NOISE } from './shaders.js';
+ import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
+ import { SWIM2_ON, swim2Travel, swim2FlowPhase } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's water flows with her travel
+ import { BLEND_ON, blendSwell } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the crest round her lower and domed (nothing changes without it)
++import { FIDELITY_ON, fidelitySwell, buildFidelityCaps } from './tunnel_s4_fidelity.js';   // ?s3=intunnel,fidelity: the crest lower, glassy water caps at her base
+ 
+ export const HERO_WATER = {
+   // where the swell rises out of the water, in metres from the drum's mouth (the hero moment is at -3.27)
+@@ -88,6 +89,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
+   if (SWIM_ON) { const Cc = SWIM.collar; Object.assign(HERO_WATER.swell, { ax: Cc.ax, au: Cc.au, out: Cc.out, inner: Cc.inner, dip: Cc.dip,
+     line: Cc.line.map((h) => +(h + (Cc.lift || 0)).toFixed(4)), mounds: Cc.mounds.map((m) => m.slice()), swerve: Cc.swerve, air: Cc.air, land: Cc.land }); }
+   if (BLEND_ON) blendSwell(HERO_WATER.swell);   // ?s3=intunnel,blend (tunnel_s4_blend.js)
++  if (FIDELITY_ON) fidelitySwell(HERO_WATER.swell);   // ?s3=intunnel,fidelity (tunnel_s4_fidelity.js)
+   // the character's frame at the water under it and its movement, worked out once a frame (first) for everything below
+   const S = { k: 0, F: { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, C: new THREE.Vector3(),
+     lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: mascot.visSpeed || 0, xMax: 3, wasAir: false };   // (visSpeed: ?s3=intunnel only)
+@@ -108,7 +110,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
+     S.wasAir = !!mascot.air; S.land = Math.max(0, S.land - dt * 2.0);
+     // the swell sits on the water under the character and sinks with it when it dips after a landing (so it never swallows
+     // it); in the air it stays on the water
+-    const dip = mascot.air ? 0 : Math.min(0, (BLEND_ON ? (mascot.blendY ?? mascot.yAbs) : mascot.yAbs) - W.FLOAT_H - ride);   // (?s3=intunnel,blend: her drawn dip)
++    const dip = mascot.air ? 0 : Math.min(0, (BLEND_ON || FIDELITY_ON ? (mascot.blendY ?? mascot.yAbs) : mascot.yAbs) - W.FLOAT_H - ride);   // (?s3=intunnel,blend and fidelity: her drawn dip)
+     // (?s3=...,swim: the collar sits on the water surface under her, not on her bob, so she bobs in it)
+     if (SWIM_ON) S.base += (W.surface(L, S.lagX, z, time.value) - S.base) * e(0.05);
+     else S.base += (ride + dip - S.base) * e(0.05);
+@@ -117,6 +119,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
+     S.xMax = 3 + (half - 0.22 - 3) * inside;   // inside the drum: off the walls
+   });
+   report.swell = heroSwell({ scene, updaters, time, S });
++  if (FIDELITY_ON) report.fidelityCaps = buildFidelityCaps({ scene, updaters, time, S, P: HERO_WATER.swell, crestAt });   // ?s3=intunnel,fidelity
+   report.splash = heroSplash({ scene, updaters, time, S });
+   report.floor = heroFloor({ waterSheets, drumSheet, fogAnchor, updaters, S });
+   // the white blanket: round7's foam lumps and the opening's foam round the mascot, hidden while the swell is up
+diff --git a/WebDemo/src/tunnel_r9_match_water.js b/WebDemo/src/tunnel_r9_match_water.js
+index 951ba12..0a10e40 100644
+--- a/WebDemo/src/tunnel_r9_match_water.js
++++ b/WebDemo/src/tunnel_r9_match_water.js
+@@ -37,6 +37,7 @@ import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE, CREST_ON, CREST, WATER2_ON, WA
+ import { water2GLSL, water2Decl } from './tunnel_s4_water2.js';   // ?s3=...,water2   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
+ import { swimCollarGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar's water ('' without the switch)
+ import { BLEND_ON, blendSwellGLSL } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the face's colours round her
++import { FIDELITY_ON, FIDELITY_WATER } from './tunnel_s4_fidelity.js';   // ?s3=intunnel,fidelity: the face's teeth in front of her
+ 
+ const f4 = (x) => (+x).toFixed(5);
+ export const MATCH_WATER = {
+@@ -232,6 +233,7 @@ if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r
+   if (CREST_ON) deepMerge(MATCH_WATER, CREST.water);
+   if (WATER2_ON) deepMerge(MATCH_WATER, WATER2.water);   // ?s3=...,water2: the face's comma arcs off (tunnel_s4_water2.js)   // ?s3=...,crest: the curling crests (tunnel_s4_bt.js)   // ?s3=...,bank: the bank of rounded blue lobes (tunnel_s4_bt.js)
+   if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
++  if (FIDELITY_ON) deepMerge(MATCH_WATER, FIDELITY_WATER);   // ?s3=intunnel,fidelity: the teeth softened in front of her (tunnel_s4_fidelity.js)
+   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
+   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
+   // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam. lift: the whole crest
+diff --git a/WebDemo/src/tunnel_s4_bt.js b/WebDemo/src/tunnel_s4_bt.js
+index 3dc9056..7cf5465 100644
+--- a/WebDemo/src/tunnel_s4_bt.js
++++ b/WebDemo/src/tunnel_s4_bt.js
+@@ -113,7 +113,11 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
+ // ?s3=intunnel,blend (7 November, the candidate on top of the accepted look): her drawn proportions and ride height, the
+ // water's proportions and colours round her, and a damped landing. Settings and code in tunnel_s4_blend.js; swim2 stays on.
+ export const BLEND_ON = BT_ON && LIST.includes('blend');
+-export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
++// ?s3=intunnel,fidelity (7 November, the one reference-driven pass on her and the water, on top of the accepted look): her
++// crown's envelope, low glassy water caps at her base and blend's ride height and landing. Settings and code in
++// tunnel_s4_fidelity.js; swim2 stays on.
++export const FIDELITY_ON = BT_ON && LIST.includes('fidelity');
++export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('fidelity') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
+ export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
+ export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
+ export const WATER8_ON = BT_ON && (LIST.includes('water8') || WATER9_ON);   // (R8, below: water7 with the face's edge in front of her following the original's outline)

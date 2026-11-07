@@ -899,5 +899,52 @@ A=0.9 overshoots (187/261/293 vs the ORIGINAL's 151/209/241). Let me try gentler
 - 11:11 `Grep`: export function matchSwellGLSL|mwFront|swimCollarGLSL|focusSwellGLSL\(\)|uMatchOn|float d =|mtUndisplay\(
 - 11:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
 - 11:12 `Bash`: List rejected-candidate sheets
+- 11:12 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/41_bubble_domes/sheets/02_closeup_character_water_domes.jp
+- 11:13 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_swim2.js
+**Agent** (11:13 UTC):
 
-_65 tool steps._
+Now the teeth settings that make the sawtooth, so I can soften them in front of her under the flag.
+
+- 11:13 `Grep`: teeth:|rim: \{ cell|lace: \{|export const MATCH_WATER|MATCH_WATER\.face =|face: \{
+- 11:13 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_focus.js
+- 11:13 `Grep`: FOCUS\.water|MATCH_WATER\[|Object\.assign\(MATCH_WATER|deepMerge|merge\(MATCH_WATER
+- 11:13 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
+- 11:13 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_bt.js
+- 11:14 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/game.js
+- 11:14 `Grep`: buildMascot\(|report\.splash = heroSplash|^import .*tunnel_s4_bt
+**Agent** (11:15 UTC):
+
+Now I'll write the fidelity module.
+
+- 11:15 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+**Agent** (11:16 UTC):
+
+I'll turn the colours and strengths into uniforms so I can tune them live with `set_uniform`, and fix the envelope normalization.
+
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+**Agent** (11:16 UTC):
+
+Now the minimal hooks: the flag in `tunnel_s4_bt.js`, then game.js, the hero water and the face settings.
+
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_bt.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/game.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/game.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/game.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/game.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r7_hero_water.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r7_hero_water.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r7_hero_water.js
+- 11:16 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r7_hero_water.js
+- 11:16 `Grep`: liquidSwell|heroSwell'\)
+- 11:17 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r8_liquid.js
+- 11:17 `Grep`: old\.uniforms|uniforms: \{ \.\.\.old
+**Agent** (11:17 UTC):
+
+Its replacement material spreads the same uniform objects, so reading them after heroSwell's updater is current. Now the face hook for the teeth.
+
+- 11:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
+- 11:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
+
+_92 tool steps._
