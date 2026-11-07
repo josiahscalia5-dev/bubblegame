@@ -107,8 +107,49 @@ Now update the white logic in the fragment block (froth caps on every heap excep
 - 00:02 `Bash`: Regenerate GLSL after edits
 - 00:03 `Bash`: Running silhouette stats and heap screen speeds
 - 00:04 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+- 00:06 `Write`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/water_vfx_engineer.md
+- 00:06 `Bash`: Count prose words and confirm only report changed
+- 00:06 `Bash`: Tighten report prose under word limit
+- 00:06 `Bash`: Verify report structure and repository state
+**Agent** (00:07 UTC):
 
-_78 tool steps._
+I've written the report (about 1,180 words plus code). Nothing in the game was edited, built or rendered; the report is the only file added to the repository. The start-frame numbers below come from an offline Python copy of heroSwell's geometry projected through the real start camera (`53_swim/solve/frame_start.json`), not from game frames.
+
+1. **Why the footprint stays:** at the start camera, the bottom edge of the screen is water only 0.6 m in front of her, and the screen sides are 0.95 m beside her. The original's full-width foreground is therefore the water within about 1 m of her. heroSwell's footprint is right; what is wrong is that the water on it is rigid and pinned. That is also why the tight collar (`swim`) lost the full-width spread.
+2. **The correction:** heroSwell's own mesh (same draw call) becomes a field of rounded heaps, lit in the fragment shader by the same height function.
+   - The crest is lowered to the troughs' level (0.40-0.48 m), the seven baked mounds go, and the face gets 54 rows instead of 30 (13.4k → 23.8k triangles).
+   - Heaps are 0.16-0.30 m long and 0.04-0.12 m high, raised along the surface's normal in the vertex shader.
+3. **Motion is tied to the distance she swims, not the clock:** per metre travelled, the heaps move 0.055 m outward and 0.07 m down the face toward the camera. At 7.21 m/s that is about 220-360 px/s on screen; the brief's minimum is 100.
+4. **Swerve, jump, landing:**
+   - **Swerve:** the side she moves to piles to ×1.5 and the far side drops to ×0.45, leaving open water behind her.
+   - **Jump:** heaps collapse and the ring pulls 30 % inward, so the water closes under her.
+   - **Landing:** the water is thrown up and out and the heaps rush outward.
+   - **Bob:** the swell sits on the water surface, so she bobs in it.
+5. **Shading and contact edge:**
+   - Cobalt #1a5fd6 creases between heaps, azure and periwinkle heap bodies, turquoise on the lit side, darker cores.
+   - Crisp broken white rims on each heap's upper outline, plus froth and foam patches that stream down the face.
+   - Heap tops directly in front of her body are 62 % opaque, so her fur shows through as the original's lavender domes. Her contact edge is the heaps' own rimmed outline, with no pinned cut and no halo.
+6. **Pinned picture and rigid layers:**
+   - `swim2` is off whenever `swim` or water2-9 is in the switch list, so the pinned picture never loads.
+   - spLumps, spCurls and lqWaterlineBubbles are hidden but still built, so the game's seeded random sequence does not shift.
+   - heroSplash stays, and the floor's wake is reused with its arms starting where the swell ends.
+7. **Start frame:** four placed heaps (the left dome, the broad right dome, one splash heap per side) collapse after 6-12 m of travel while the travelling heaps take over. In the offline copy, her start waterline is within 8.2 px on average (21 max) of the original's over x 230-545. While she runs it moves between y 1234 and 1316 (original 1240-1324).
+8. **Code:** the report has a complete new `tunnel_s4_swim2.js` and line-numbered hooks in `tunnel_s4_bt.js:110`, `tunnel_r7_hero_water.js`, `tunnel_r8_liquid.js`, `tunnel_r9_match_water.js:585`, `tunnel_s4_swim.js` and `game.js:1650`. The JavaScript loads in Node and generates the shader code, but the shader code itself has not been compiled.
+9. **Main risk:** the heaps read as pillows or cobblestones, the look rejected three times, or as fins at the sides. A rough flat-colour mock of my first heap sizes did show side fins and rows of blobs, so the final sizes are broad and low.
+   - **Checks on real frames** (start, +1 s, +2 s, and Pixel 7):
+     - her waterline within 12 px of the original's on average;
+     - at most 10 heap bodies across the band, with varied sizes;
+     - white in the band at most 19-24 %;
+     - flow past her of at least 100 px/s and more than the wobble;
+     - an ablation of the heaps on the same frame, and the draw-call and triangle report from `s3_func.cjs`.
+10. **Secondary risk:** the placed heaps are timed for the game clock at the start capture (3.517 s), so `SWIM2.startClock` must change if that capture moment changes.
+
+The offline scripts (`proto.py`, `mock.py`, `speed.py`) are only in the scratchpad at `/tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/` and will not survive the session.
+
+Report: `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/water_vfx_engineer.md`
+
+
+_82 tool steps._
 
 ---
 
