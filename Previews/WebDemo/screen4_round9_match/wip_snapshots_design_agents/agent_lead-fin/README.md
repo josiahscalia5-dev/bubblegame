@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: agent ()
 
-- **Taken:** 2026-11-07 15:44 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 15:49 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `lead-final-s4` (local only), started from `8343381`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (64; full copies in `files/`)
+## Files (76; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/README.md (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_committed_now.log (new)`
@@ -64,6 +64,18 @@
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/09_subswitch_nowater_t0_plus1s.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/10_subswitch_nohousing_plus1s_plus2s.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/11_optin_deferred_hero2_tunnel2_props2_hud2_t0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new.log (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new/t1.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new/t2.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new/t3.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new/t5.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/identity.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/scripts/chain.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/scripts/gameplay.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/scripts/her_box.py (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/scripts/identity_all.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/scripts/sheet.py (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/opening.js`
 - `WebDemo/src/tunnel_r7_hero_water.js`

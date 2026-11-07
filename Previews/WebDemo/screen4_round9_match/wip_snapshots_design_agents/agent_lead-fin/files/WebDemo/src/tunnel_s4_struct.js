@@ -367,17 +367,23 @@ export function buildStructWater({ scene, TR, L, W, mascot, updaters, time, S, u
 // the drum, so they stream past as she travels. Screen colours (sRGB, sampled from the ORIGINAL's housing y .22-.36:
 // #6961ca, #b191bc, #654d8b, #b494da, #f3daf3, the rim's #de9e8d) written through mtUndisplay.
 export const HOUSING = {
-  arc: [0.35, 0.75],         // sin(angle round the tube): from about 20 degrees above the axis, full from 49
-  near: [1.2, 2.6],          // m ahead of the camera where it begins (behind the top of the frame)
-  far: [4.3, 5.3],           // m ahead where it gives way to the blue water (a band at the top, not a roof; shorter down the sides)
-  sideK: 2.4,
+  // (the user's clarification of 7 November ~16:00 UTC: the ACCEPTED Tap to Start's balance kept through the whole run: a
+  // curved silver / lavender / purple lining round the upper tunnel, the vivid blue tunnel inside and beneath it; not plain
+  // blue after a second, not a solid ceiling)
+  arc: [-0.2, 0.12],         // sin(angle round the tube): the upper half and down the sides to just under the axis
+  near: [-1.0, 0.0],         // m ahead of the camera where it begins (from the camera: it reaches the top of the frame)
+  far: [4.6, 5.7],           // m ahead where it gives way to the blue tunnel, the same all round, so its edge is a curved
+                             // arc round the tunnel's centre as the ACCEPTED rim (5.0-6.3 with the sides shortened read as
+                             // a flat ceiling; 4.3-5.3 left only a strip under the HUD)
+  sideK: 0.0,
   fadeIn: [-4.7, -2.9],      // the camera's place relative to the drum's mouth over which it fades in (the start is -5.41)
-  col: { deep: '#56448c', mid: '#6c66cf', lav: '#b39ad8', silver: '#e9e2f8', pink: '#efd3ef', gold: '#e2a68e' },   // (deep purple, periwinkle, lavender, silver, pink, gold)
-  streaks: 0.07, seams: 2.3, perf: 0.62, perfK: 0.45, lip: 0.85, sheen: 0.5,
+  col: { deep: '#56448c', mid: '#6c66cf', lav: '#b39ad8', silver: '#e9e2f8', pink: '#efd3ef', gold: '#e2a68e', glow: '#c9b8ff' },
+  ribs: 3.2,                 // m between the drum's ribs (fixed to the drum: they stream past; one or two in view)
+  streaks: 0.06, perf: 0.62, perfK: 0.0, rivets: 0.55, lip: 0.6, sheen: 0.55,
 };
 export function structHousingGLSL(radius) {
   const H = HOUSING, C = H.col;
-  return /* glsl */ `  {   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera (tunnel_s4_struct.js HOUSING)
+  return /* glsl */ `  {   // ?s3=intunnel,structmatch: the washer drum's metal lining on the tunnel's upper wall (tunnel_s4_struct.js HOUSING)
     float stD = u - uHeroCam.z, stUp = sin(a);
     float stFar = ${f4(H.far[1])} - ${f4(H.sideK)} * (1.0 - stUp);
     float stE = stFar - stD;   // m to its far edge
@@ -385,29 +391,29 @@ export function structHousingGLSL(radius) {
       * smoothstep(0.0, ${f4(H.far[1] - H.far[0])}, stE) * smoothstep(${f4(H.fadeIn[0])}, ${f4(H.fadeIn[1])}, uHeroCam.z - uStart);
     if (stK > 0.001) {
       float stX = a * ${f4(radius)};   // m round the drum
-      // brushed metal: lavender at the top to deeper violet down the sides, fine streaks along the drum
-      float stS = sin(stX * 61.0 + sin(stX * 7.0) * 2.0) * 0.5 + sin(stX * 23.0 + 1.7) * 0.35 + sin(stX * 141.0) * 0.15;
-      vec3 stC = mix(${hx(C.deep)}, ${hx(C.mid)}, smoothstep(0.25, 0.75, stUp));
-      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.55, 0.95, stUp) * smoothstep(0.8, 2.0, stE) * 0.8);   // lavender up near the camera, periwinkle toward the lip
-      stC = mix(stC, ${hx(C.deep)}, (1.0 - smoothstep(0.3, 1.2, stE)) * 0.4);   // deeper violet toward its lip, as the ORIGINAL's housing
+      // brushed metal: lavender over the top, periwinkle then deep violet down the sides (its curvature), fine streaks round it
+      float stS = sin(u * 37.0 + sin(stX * 3.0) * 1.5) * 0.5 + sin(u * 13.0 + 1.7) * 0.35 + sin(u * 91.0) * 0.15;
+      vec3 stC = mix(${hx(C.deep)}, ${hx(C.mid)}, smoothstep(-0.1, 0.45, stUp));
+      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.4, 0.9, stUp) * 0.85);
       stC *= 1.0 + ${f4(H.streaks)} * stS;
-      // a soft sheen band running round it (the centre's light on curved metal), silver and a pink reflection
-      float stSh = exp(-pow((stE - 1.25) / 0.6, 2.0)) * smoothstep(0.4, 0.9, stUp);
-      stC = mix(stC, ${hx(C.silver)}, stSh * ${f4(H.sheen)} * (0.75 + 0.25 * stS));
-      stC = mix(stC, ${hx(C.pink)}, exp(-pow((stE - 1.9) / 0.45, 2.0)) * smoothstep(0.6, 0.95, stUp) * 0.35);
-      // the drum's panel seams (fixed to the drum: they stream past) and its rows of perforations
-      float stQ = fract(u / ${f4(H.seams)});
-      float stW = fwidth(u / ${f4(H.seams)}) * 1.5 + 0.004;
-      stC *= 1.0 - 0.32 * (1.0 - smoothstep(0.0, 0.02 + stW, abs(stQ - 0.5) - 0.0)) ;
-      stC = mix(stC, ${hx(C.silver)}, 0.45 * (1.0 - smoothstep(0.0, 0.015 + stW, abs(stQ - 0.53))));
-      vec2 stP = vec2(stX, u) / ${f4(H.perf)}; vec2 stF = fract(stP + vec2(0.5 * step(0.5, fract(floor(stP.y) * 0.5)), 0.0)) - 0.5;
-      float stAA = fwidth(stP.x) * 1.5 + 0.02, stR = length(stF);
-      float stHole = (1.0 - smoothstep(0.11, 0.11 + stAA, stR)) * (1.0 - smoothstep(0.3, 0.8, stAA * 4.0));
-      stC = mix(stC, ${hx(C.deep)}, stHole * 0.3 * ${f4(H.perfK)});
-      stC = mix(stC, ${hx(C.silver)}, (1.0 - smoothstep(0.0, stAA, abs(stR - 0.14))) * step(0.0, stF.y) * 0.4 * ${f4(H.perfK)} * (1.0 - smoothstep(0.3, 0.8, stAA * 4.0)));
-      // its lip where the water begins: a warm gold-lavender highlight over a dark violet line
-      stC = mix(stC, ${hx(C.gold)}, exp(-pow((stE - 0.55) / 0.22, 2.0)) * ${f4(H.lip)} * smoothstep(0.5, 0.9, stUp));
-      stC = mix(stC, ${hx(C.deep)} * 0.75, exp(-pow((stE - 0.15) / 0.12, 2.0)) * 0.6);
+      // the centre's light on the curved metal: a broad silver sheen arc and a softer pink reflection inside it (they depend
+      // on the view, as reflections do)
+      stC = mix(stC, ${hx(C.silver)}, exp(-pow((stE - 1.5) / 0.75, 2.0)) * smoothstep(0.0, 0.6, stUp) * ${f4(H.sheen)} * (0.8 + 0.2 * stS));
+      stC = mix(stC, ${hx(C.pink)}, exp(-pow((stE - 0.75) / 0.35, 2.0)) * smoothstep(0.2, 0.8, stUp) * 0.3);
+      // the drum's ribs (fixed to the drum): a raised band with a silver upper edge, a gold-peach line and a shadow under it
+      float stR = u / ${f4(H.ribs)}, stQ = fract(stR) - 0.5, stW = fwidth(stR) + 0.002, stHalf = 0.09 / ${f4(H.ribs)};
+      float stIn = 1.0 - smoothstep(stHalf - stW, stHalf + stW, abs(stQ));
+      stC = mix(stC, mix(${hx(C.mid)}, ${hx(C.lav)}, 0.6), stIn * 0.7);
+      stC = mix(stC, ${hx(C.silver)}, (1.0 - smoothstep(0.0, stW * 1.5 + 0.004, abs(stQ + stHalf))) * 0.85);
+      stC = mix(stC, ${hx(C.gold)}, (1.0 - smoothstep(0.0, stW * 1.5 + 0.004, abs(stQ - stHalf * 0.2))) * 0.7 * smoothstep(0.1, 0.6, stUp));
+      stC *= 1.0 - 0.35 * (1.0 - smoothstep(0.0, stW * 3.0 + 0.008, abs(stQ - stHalf - 0.012)));
+      // rivets along each rib (round the drum)
+      vec2 stP = vec2(stX / 0.42, 0.0); float stRf = fract(stP.x) - 0.5;
+      float stRv = length(vec2(stRf * 0.42, stQ * ${f4(H.ribs)})), stAA = fwidth(stP.x) * 0.42 + 0.004;
+      float stDot = (1.0 - smoothstep(0.035, 0.035 + stAA, stRv)) * (1.0 - smoothstep(0.02, 0.12, stAA));
+      stC = mix(stC, ${hx(C.silver)}, stDot * ${f4(H.rivets)});
+      // its far edge: a soft lavender glow giving way to the blue tunnel (no ring: nothing floats in front of the camera)
+      stC = mix(stC, ${hx(C.glow)}, exp(-pow((stE - 0.25) / 0.3, 2.0)) * ${f4(H.lip)} * smoothstep(-0.1, 0.5, stUp));
       col = mix(col, mtUndisplay(clamp(stC, 0.0, 1.0)), stK);
     }
   }
