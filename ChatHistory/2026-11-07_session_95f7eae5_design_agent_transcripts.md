@@ -114,3 +114,91 @@ RETURN (about 40 lines, plain language the non-technical user can read):
 - 12:38 `SubagentHandback`
 
 _38 tool steps._
+
+---
+
+## screen4-water-motion-engineer: Build structmatch Checkpoint A (started 13:48 UTC)
+
+_Worked in its own worktree, branch `worktree-agent-afb9a08171d189776`._
+
+**Lead → agent** (13:48 UTC):
+
+IMPLEMENTATION MANDATE (the user's approval, 7 November ~13:45 UTC): build CHECKPOINT A of ONE integrated candidate `?s3=intunnel,structmatch` for Bubble Wash Kingdom Screen 4: the TAP TO START OPENING FRAME made substantially and obviously closer to the ORIGINAL. You are the only implementer. Work in your worktree (a copy of the session branch); do not touch the main checkout. The user is cost-sensitive: be economical (no broad parameter sweeps, at most about two refinement iterations per part, low-resolution renders while exploring, one final evidence set; aim for well under 250 tool steps). Read `CLAUDE.md` first (its rules apply).
+
+AUTHORITY: ONLY the ORIGINAL `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536). Crops for detail: `Design/ReferencePacks/2026-11-07_Screen4_Structural_Repair_Kit_from_user/02_..`, `03_..`, `04_..`. The user's priority board (art direction, not a target): `Design/ReferencePacks/2026-11-07_CheckpointA_Brief_from_user/`.
+
+READ FIRST (the diagnosis you implement; do not re-investigate what is measured there):
+- `Previews/WebDemo/screen4_round9_match/62_opening_mandate_audit/README.md` (the table; rows 2-7 are Checkpoint A) and its `ORIGINAL_vs_ACCEPTED_opening_t0_t1_t2_t3.jpg`, `scripts/measure_opening.py`, `frames_accepted/t0.png`.
+- `Previews/WebDemo/screen4_round9_match/61_structural_audit/README.md` and `scripts/measure.py` (fur, water, tunnel colour, coin measurements).
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/README.md` and `60_fidelity_review/ART_DIRECTOR_VERDICT.md` (what failed: purple multiply caps = balloons, the exposed dark gap between her legs, a square loaf-topped crown). The fidelity code (reference only; never import its caps) is in `Previews/WebDemo/screen4_round9_match/wip_snapshots_design_agents/screen4-water-motion-engineer_a5ba6876/files/WebDemo/src/tunnel_s4_fidelity.js` (its crown-envelope method may be reused, refitted).
+
+THE FLAG: in `WebDemo/src/tunnel_s4_bt.js` add `export const STRUCT_ON = BT_ON && LIST.includes('structmatch');` and add `|| LIST.includes('structmatch')` to the `SWIM2_ON` condition so swim2 stays on under it. New file `WebDemo/src/tunnel_s4_struct.js` holds the settings and code; hooks elsewhere are minimal and gated on `STRUCT_ON`. Sub-switches for per-part comparison: `structmatch,nohero`, `,nowater`, `,notunnel`, `,nohud`. Everything without the flag must stay pixel-identical. Gameplay state (x, yAbs, lanes, air, speed, collisions, pickups, hearts, abilities) and the game's seeded Math.random are never touched (private random numbers only). three.js stays r170.
+
+CHECKPOINT A, in this order (the user's priorities):
+1. HER (row 4): a broad, rounded MAGENTA dome above the water with side tufts; accurate fur look.
+   - Off on Screen 4 under the flag: Screen 3's presentation stretch `MASCOT_PRESENTATION.stretch [0.95,1.07,0.95]` (`opening.js:580`, applied `:430-431`) and its `uSpike` droplets (`shaders.js:593-595`, the square pale flecks). Keep crisp fine strands if they read as the original's needle fur.
+   - Crown reshaped once at load (drawn model only; collider and ride height unchanged) to a SMOOTH ARC fitted to the ORIGINAL's measured widths: 0.19 / 0.27 / 0.32 / 0.41 of the frame width at 8 / 16 / 25 / 50 % below her top (now 0.09 / 0.20 / 0.23 / 0.45; `measure_opening.py`). Not a flat or square top, not a low mound, not a tall egg.
+   - Close the dark gap between her legs (geometry: e.g. a fur-shaded inner fill), never visible.
+   - Fur colour: the ORIGINAL's measured hue 317 deg, saturation 0.68, value 0.92 in her pink (now 327 / 0.51 / 0.97: violet ambient `uGround` and a key light near white, desaturated by Neutral tone mapping; `game.js:888-893`, `shaders.js:581-583`); keep it under the white point (compensate for the tone mapping and grade as `tunnel_r9_match.js:27-30` does for the walls); a whiter glowing rim edge as in the original.
+2. THE WATER (row 5, the biggest part): rich, dimensional cobalt/azure/turquoise water SURROUNDING her and flowing past her, with separate irregular rounded GLASSY wave forms (the ORIGINAL: azure bodies, a few pale lavender-blue glassy mounds mainly at her lower left, darker cores, crisp white rims and highlights, small clear bubbles). Measured foreground y .80-.84: ORIGINAL azure 16.7 % / lavender 12.7 % / white 22.8 % in separate forms; now azure 50 % / lavender 0.3 % / white 20 % in one flat surface (`61_structural_audit/scripts/measure.py`).
+   - Cause: `heroSwell` (`tunnel_r7_hero_water.js`, `tunnel_r9_match_water.js`) is one transparent 2.6 m pad built in HER frame and carried with her. Under the flag replace it (hide it) with water that belongs to the water (world / water space, so it flows past her as she swims), arranged at the start like the ORIGINAL; her lower body must still be hidden naturally by the water surface where the ORIGINAL hides it (she sits ON TOP of the water, broad dome clearly above it), with a low contact line that follows the water surface, not her bob.
+   - NEVER: a flat pale pad, a white film or sheet, oversized white foam over her, purple/violet balloons or jelly beans, a multiply tint, flat lavender washes, forms glued to her body, a dark hole.
+3. THE TUNNEL (row 2): luminous deep cobalt/cyan concentric rings with a warm GOLDEN centre (now a pastel rainbow band mid-tunnel and a weak warm core). Confirm the cause with ONE hide-render first (`tools/screen4/layer_diag.cjs`; hypothesis: the colour map `tunnel_colour.png` / `uFocusRings` mid band and `MATCH.centre`), then grade that band to the ORIGINAL's colours (tunnel zone x .30-.70 y .30-.52: ORIGINAL mean blue hue 214.6 deg, saturation 0.71, periwinkle/violet 18.7 %) and warm the core. No ring motion work (that is Checkpoint B).
+4. THE RIM (row 3): a thicker lavender-to-gold metallic washer lip and bevel (now `r6Bezel`, a 0.135 m band, inner 2.506 / outer 2.641 m, `tunnel_r6.js`, `rim_ramp.png`): a thicker bevelled profile with the original's sheen, sitting under the mission card as in the original.
+5. PROPS (row 6, drawn only, pickups unchanged): the staged sock (`MATCH.sockPose`, `tunnel_r9_match.js:942`) lying diagonally and smiling as in the ORIGINAL; the gem a little larger and brighter; the four staged coins drawn at the ORIGINAL's sizes (now 7-23 % larger: d 166/165/96/81 px against 153/155/78/73 of 768).
+6. HUD (row 7; the user's approval: functional, readable, easy to tap on mobile): under the flag (a body class set from JS, CSS in `index.html`), the bottom Bubble Blast / Turbo Spin buttons as the ORIGINAL's corner cards (lower, in the corners, partly off the frame edge, icon + "3" badge; a small readable label is allowed), and a smaller, lower Tap to Start pill that does not cover her or the water. Tap targets at least 44 CSS px on a Pixel 7. Every button keeps its function.
+
+Do NOT: build Checkpoint B (no carried stage, no ring streaming, no motion polish); run the game-art-director; change gameplay, the camera, the tunnel geometry outside the rim, or any older switch; use any piece of the ORIGINAL (or any approved image) as a texture, backdrop or overlay in the game (look-and-finish textures derived from the user's supporting references are allowed as the walls already do); install plugins; start other agents.
+
+PROOF (evidence folder `Previews/WebDemo/screen4_round9_match/63_structmatch_A/` in your worktree):
+- Build: `cd WebDemo && (ln -s /workspace/bubblegame/WebDemo/node_modules node_modules || npm install) && node build.mjs`; record the new bundle md5.
+- THE COMPARISON: Tap to Start with the HUD, the SAME viewport and seed as the accepted capture: `SETTLE=900 S3=intunnel,structmatch TIMES=0,1 node tools/screen3/s3_shot.cjs "$PWD" <dir>` (the +1 s frame only as a sanity check that the run still works). Sheet ORIGINAL (scaled UNIFORMLY to 537 x 1076, never stretched) | ACCEPTED (`62_opening_mandate_audit/frames_accepted/t0.png`) | NEW at full 538 x 1076 per panel, labelled. Close-ups at 2x: her and the water (y .60-.95), the rim and tunnel (y .12-.55). Also one sheet per sub-switch (`nohero`, `nowater`, `notunnel`, `nohud`) at Tap to Start, so each part's effect is visible.
+- MEASURED: `measure_opening.py` and `61_structural_audit/scripts/measure.py` on NEW (canvas renders at the original's framing via `layer_diag.cjs` for the latter), ORIGINAL | ACCEPTED | NEW table, saying what each number measures.
+- IDENTITY: 0 px against the committed bundle (md5 38466b67) for `intunnel` (start, +1 s, +2 s), `intunnel,noswim2`, `intunnel,blend`, `intunnel,water9` (+1 s) and the normal game (start, +1 s) (the scripts in `60_fidelity/scripts/identity*.sh` show how), and the accepted Tap to Start PAGE capture with HUD identical to `frames_accepted/t0.png`.
+- GAMEPLAY: `S3=intunnel,structmatch node tools/screen3/s3_func.cjs $PWD` and `S3=intunnel,structmatch VW=135 VH=270 node tools/screen3/r2_func.cjs $PWD` equal to the accepted `intunnel` in every gameplay field (compare as `60_fidelity/proofs/` did); the motion trace's gameplay and camera fields identical (`tools/screen4/motion_trace.cjs`, `60_fidelity/scripts/trace_compare.py`); the restyled buttons' boxes and a click on each that fires its ability; no console errors; draw calls and triangles reported.
+- README (about 40 lines): what changed and why (per part), files, the evidence, the measured table, the test results, and your candid judgement: is the Tap to Start improvement SUBSTANTIAL AND OBVIOUS when looking at the sheet? What still differs?
+- Commit your work in the worktree (one or a few commits, game.bundle.js with its source).
+
+STOP RULE: if, after one honest attempt per part, the Tap to Start frame is NOT substantially and obviously closer (or a part regresses), stop and report the specific blocker per part (e.g. her mesh needs a new sculpted model; the water needs painted wave art) with what it would take, instead of tuning further. Return a short summary: per-part changes, files, bundle md5, evidence paths, proof results, judgement, your worktree path and branch, and your commit hashes.
+
+**Agent** (13:49 UTC):
+
+I'll start by reading the diagnosis files and the current state of the worktree.
+
+- 13:49 `Bash`: Show worktree branch state and bundle md5
+- 13:49 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/62_opening_mandate_audit/README.md
+- 13:49 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/62_opening_mandate_audit/ORIGINAL_vs_ACCEPTED_opening_t0_t
+**Lead → agent** (13:49 UTC):
+
+[Image: original 2730x1110, displayed at 2000x813. Multiply coordinates by 1.36 to map to original image.]
+
+- 13:49 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/60_fidelity_review/ART_DIRECTOR_VERDICT.md
+- 13:49 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/61_structural_audit/README.md
+- 13:49 `Bash`: List audit folders, kits and file sizes
+- 13:49 `Bash`: Find the Checkpoint A brief folder in main checkout
+- 13:49 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/wip_snapshots_design_agents/screen4-water-motion-engineer_
+- 13:49 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-07_CheckpointA_Brief_from_user/01_CHECKPOINT_A_VISUAL_TARGET_board.png
+- 13:49 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-07_CheckpointA_Brief_from_user/README.md
+- 13:50 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Design/ReferencePacks/2026-11-07_Screen4_Structural_Repair_Kit_from_user/02_Character_And_Water_
+- 13:50 `Bash`: Show flags exported by tunnel_s4_bt.js
+- 13:50 `Bash`: List fidelity snapshot files and identity script
+- 13:50 `Bash`: Show which files the fidelity patch touched
+- 13:50 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/wip_snapshots_design_agents/screen4-water-motion-engineer_
+- 13:50 `Bash`: Find stretch and fur shader uniforms
+- 13:50 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/shaders.js
+- 13:50 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/opening.js
+- 13:50 `Bash`: Show game.js imports
+- 13:50 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/game.js
+- 13:50 `Bash`: List tools and show cdp_inspect setup
+- 13:50 `Bash`: Check node_modules and listening ports
+- 13:50 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 13:50 `Bash`: Check node_modules and what serves port 3000
+- 13:50 `Bash`: List running node/python/chrome processes
+- 13:50 `Bash`: Link node_modules and rebuild bundle to check reproducibility
+- 13:51 `Bash`: Serve the worktree WebDemo on port 3000
+- 13:51 `Bash`: Serve the worktree WebDemo on port 3000
+- 13:51 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 13:51 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:51 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+
+_31 tool steps._
