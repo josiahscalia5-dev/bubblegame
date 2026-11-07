@@ -15,9 +15,10 @@
 //      now also advances with the distance she swims (perM per metre along the path), so the same water streams down the face
 //      toward the camera and out along the bank at a pace tied to her travel; at the start view (no travel yet) it is the
 //      accepted frame. The swell's shape, size and colours are unchanged (never a collar, container or pedestal).
-//   3. maxPx: R7's droplet cap (tunnel_s4_bt.js WATER7, game.js): the game's spray droplets drawn no bigger than 12 px of the
-//      canvas height, so the wake spray no longer piles up as white cotton balls in front of her while she moves (the water
-//      report keeps it on).
+//   3. cap: R7's droplet cap (tunnel_s4_bt.js WATER7, game.js): the game's spray droplets, foam puffs and bubbles drawn no
+//      bigger than 12 px of the canvas height, so the wake spray no longer piles up as white cotton balls in front of her while
+//      she moves (the water report keeps it on). It eases in over her first metres (capRamp), so the start view's resting
+//      bubbles keep their size; the sparkles (kind 2) are not capped.
 import { SWIM2_ON } from './tunnel_s4_bt.js';
 export { SWIM2_ON };
 
@@ -40,6 +41,9 @@ export function swim2Travel(S, z) {
   S.sw2Z = z; SW2.T = S.sw2T;
 }
 export const swim2FlowPhase = (S) => (S.sw2T || 0) * SWIM2.flow.perM;
+// the droplets' size with the cap (shaders.js PARTICLE vertex shader); the sparkles (kind 2: pickups, the drum's twinkles)
+// are not water and keep their size
+export const SWIM2_POINT = 'gl_PointSize = min(size * uScale / max(0.1, -mv.z), abs(kind - 2.0) < 0.5 ? 1e5 : uMaxPx);';
 const SW2 = { T: 0 };   // the distance swum, shared with game.js's droplet cap
 export function swim2CapPx(H, maxPx) {   // the droplets' largest size (px) for a canvas H px high
   const r = SWIM2.capRamp, x = Math.min(Math.max((SW2.T - r[0]) / (r[1] - r[0]), 0), 1), k = x * x * (3 - 2 * x);

@@ -192,5 +192,13 @@ Both clips done. Building the side-by-side and key-moments sheet, and running th
 - 01:40 `Bash`: Read the particle vertex shader
 - 01:40 `Bash`: Check the particle kind attribute name
 - 01:40 `Grep`: vKind|uScale /
+- 01:40 `Bash`: Exempt sparkles from the swim2 cap and rebuild
+- 01:41 `Bash`: Check identity job progress
+- 01:41 `Bash`: Stop the stale identity job
+- 01:41 `Bash`: Re-render swim2 +2 s with sparkles exempt
+- 01:41 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/T2_final.jpg
+- 01:41 `Bash`: Re-record the swim2 clip on the final build
+- 01:41 `Bash`: Run identity renders on the final bundle
+- 01:41 `Bash`: Wait for the identity renders
 
-_125 tool steps._
+_133 tool steps._

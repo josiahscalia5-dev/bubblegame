@@ -3,7 +3,7 @@
 // The Unity project stays the real game; this is a separate demonstration.
 import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
 import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
-import { SWIM2_ON, SWIM2, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
+import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1653,7 +1653,7 @@ async function main() {
       fx.u.uMaxPx = { value: renderer.domElement.height * WATER7.maxPx };
       const dm = fx.points.material;
       dm.vertexShader = dm.vertexShader.replace('uniform float uScale;', 'uniform float uScale, uMaxPx;')
-        .replace('gl_PointSize = size * uScale / max(0.1, -mv.z);', 'gl_PointSize = min(size * uScale / max(0.1, -mv.z), uMaxPx);');
+        .replace('gl_PointSize = size * uScale / max(0.1, -mv.z);', WATER7_ON || SWIM_ON ? 'gl_PointSize = min(size * uScale / max(0.1, -mv.z), uMaxPx);' : SWIM2_POINT);   // (swim2: the sparkles, kind 2, keep their size)
       dm.needsUpdate = true;
     }
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.
