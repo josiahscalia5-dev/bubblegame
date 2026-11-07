@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Decisive Screen 4 fidelity pass)
 
-- **Taken:** 2026-11-07 11:27 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 11:32 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a5ba6876e8752066d` (local only), started from `f71e130`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (23; full copies in `files/`)
+## Files (24; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/clip_compare.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/contact_band.py (new)`
@@ -25,6 +25,7 @@
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/sheets768.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/trace_compare.py (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/zone_water.py (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_fidelity.log (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/tunnel_r7_hero_water.js`
 - `WebDemo/src/tunnel_r9_match_water.js`

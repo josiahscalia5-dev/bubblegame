@@ -1068,5 +1068,36 @@ Too small to judge. Let me look at ORIGINAL, A and C larger.
 
 [Image: original 2112x432, displayed at 2000x409. Multiply coordinates by 1.06 to map to original image.]
 
+- 11:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:27 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:27 `Bash`: Rebuild with the plateau envelope
+- 11:27 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:27 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:27 `Bash`: Decode and compare the fourth iteration
+- 11:28 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid7.jpg
+**Lead → agent** (11:28 UTC):
 
-_162 tool steps._
+[Image: original 2112x432, displayed at 2000x409. Multiply coordinates by 1.06 to map to original image.]
+
+- 11:28 `Bash`: Profile silhouettes and read the gesture API
+- 11:28 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:28 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:28 `Bash`: Decode the swipe/jump/landing frames
+- 11:29 `Bash`: Read the recording, identity and sheet scripts
+**Agent** (11:30 UTC):
+
+The identity proof needs a scratch copy of WebDemo serving the committed bundle (38466b67). Let me check what my build changes besides the bundle, and the size.
+
+- 11:30 `Bash`: Check changed files, WebDemo size and disk
+**Agent** (11:30 UTC):
+
+The build only changes the bundle (index.html is regenerated identically). I'll build a symlinked scratch tree with the committed bundle in place, to save disk.
+
+- 11:30 `Bash`: Create a symlinked scratch WebDemo with the committed bundle
+**Agent** (11:30 UTC):
+
+Now the Pixel 7 swipe-and-jump recording of the candidate (one recorder alongside the DevTools browser, two browsers at most).
+
+- 11:30 `Bash`: Record the 7 s Pixel 7 swipe-and-jump clip of fidelity
+
+_177 tool steps._

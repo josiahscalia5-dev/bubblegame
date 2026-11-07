@@ -42,8 +42,8 @@ export const FIDELITY = {
     idle: 0.04,
     wobble: 0.1,                       // surface wobble (share of the radius)
     // transmission (multiply, linear): what is behind is multiplied by tint; scatter / sky (sRGB): light added inside / reflected
-    tint: '#6f86ff', tintK: 0.6,
-    scatter: '#8a7ee6', scatterK: 0.9, sky: '#d8ecff', skyK: 0.8, spec: 2.0, rim: 2.0, foam: 0.8,
+    tint: '#6f86ff', tintK: 0.75,
+    scatter: '#7d6be0', scatterK: 0.75, sky: '#d8ecff', skyK: 0.75, spec: 2.0, rim: 2.2, foam: 0.8,
   },
   teethFront: 0.35,                    // focus's spiky teeth: the valleys' depth in front of her (1 = as accepted)
 };
@@ -183,7 +183,7 @@ export function buildFidelityCaps({ scene, updaters, time, S, P, crestAt }) {
     for (let i = 0; i < NC; i++) {
       const [phi0, r0, c0, drift] = K.list[i];
       const p = (((c0 + flow) % 1) + 1) % 1;
-      const env = sm(0, 0.18, p) * Math.pow(1 - p, 0.8) / 0.853 * (1 - 0.85 * S.air) * (1 + 0.35 * S.land);   // grows at her base, then sinks as it rolls back
+      const env = sm(0, 0.12, p) * (1 - 0.6 * sm(0.55, 1.0, p)) * (1 - 0.85 * S.air) * (1 + 0.35 * S.land);   // rises at her base, then sinks as it rolls back
       const phi = phi0 + drift * (12 + Math.abs(phi0)) * p, a = phi * D2R;   // outward along her base
       const [H] = crestAt(P, phi);
       let nx = Math.sin(a) / P.ax, nu = -Math.cos(a) / P.au; const nl = Math.hypot(nx, nu); nx /= nl; nu /= nl;
