@@ -856,5 +856,48 @@ Let me make a close-up of the contact region, ORIGINAL vs accepted vs blend, to 
 
 [Image: original 2728x507, displayed at 2000x372. Multiply coordinates by 1.36 to map to original image.]
 
+- 11:08 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+**Agent** (11:08 UTC):
 
-_46 tool steps._
+The live canvas is 1027 x 2053 at aspect 0.5, the same framing as the original. Let me read the fur vertex shader to understand what a position warp would affect.
+
+- 11:08 `Bash`: Show the fur vertex shader
+- 11:08 `Grep`: furVertex|furFragment
+- 11:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/shaders.js
+- 11:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+**Agent** (11:09 UTC):
+
+The positions are quantized Int16 (normalized). I'll use the attribute accessors and, in the code, swap in a Float32 copy. Profile again with proper decoding.
+
+- 11:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+**Agent** (11:10 UTC):
+
+It's an InterleavedBufferAttribute; I'll borrow a plain Float32BufferAttribute constructor from heroSwell's geometry.
+
+- 11:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+**Agent** (11:11 UTC):
+
+Now a small decoder for these grabs, then profile both.
+
+- 11:11 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/grab_decode.py
+- 11:11 `Bash`: Decode the grabs and profile the silhouettes
+- 11:11 `Bash`: Decode grabs and profile silhouettes
+**Agent** (11:11 UTC):
+
+A=0.9 overshoots (187/261/293 vs the ORIGINAL's 151/209/241). Let me try gentler values and look at them.
+
+- 11:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:11 `Bash`: Profile trials and build a crown comparison sheet
+- 11:11 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/crown.jpg
+**Lead → agent** (11:11 UTC):
+
+[Image: original 2104x360, displayed at 2000x342. Multiply coordinates by 1.05 to map to original image.]
+
+- 11:11 `Grep`: export function matchSwellGLSL|mwFront|swimCollarGLSL|focusSwellGLSL\(\)|uMatchOn|float d =|mtUndisplay\(
+- 11:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
+- 11:12 `Bash`: List rejected-candidate sheets
+
+_65 tool steps._
