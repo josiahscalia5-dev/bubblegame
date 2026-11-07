@@ -222,7 +222,7 @@ export function structFill(model, furUniforms, furVertex, furFragment) {
 // normals with a little outward lean; each shell keeps only the strands' cross-sections (roots scattered over her surface in
 // her model's own space, tapering, each its own length), shaded by her own fur shader (so the strands are her colour) and a
 // little paler toward their tips. Drawn only; one draw call per mesh (instanced shells).
-export const SHELL_FUR = { layers: 10, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
+export const SHELL_FUR = { layers: 6, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
 const SHELL_VERTEX = /* glsl */ `
 attribute float aLayer;
 uniform float uShLen, uShLean;

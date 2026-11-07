@@ -3963,7 +3963,7 @@ ${n.deepK>0?`      mwCol = mix(mwCol, mwCol * mtUndisplay(vec3(${n.deep.map(bs).
     float stL = dot(c, vec3(0.2126, 0.7152, 0.0722));
     c = max(stL + (c - stL) * ${et(t.sat)}, 0.0) * ${et(t.gain)};
   }
-  gl_FragColor = vec4(c, 1.0);`),e&&(r=r.replace("vec3 base = texture2D(map, vUv).rgb;",`vec3 base = vec3(${e.map(et).join(", ")});`)),r):e?r.replace("vec3 base = texture2D(map, vUv).rgb;",`vec3 base = vec3(${e.map(et).join(", ")});`):r}function Hg(n,e,t,i){let s=Xt.hero.fill,r=null;if(n.traverse(c=>{!r&&c.isMesh&&(r=c)}),!r)return null;let o=new Jt(1,28,18);o.scale(s.r[0],s.r[1],s.r[2]),o.translate(s.c[0],s.c[1],s.c[2]);let a=new Ce({uniforms:{map:{value:null},...e},vertexShader:t,fragmentShader:xu(i,s.col)}),l=new ye(o,a);return l.name="structFill",r.add(l),{drawCalls:1,triangles:o.index.count/3}}var Ug={layers:10,len:.1,lean:.35,density:52,thick:.34,tip:.08,root:.7},tM=`
+  gl_FragColor = vec4(c, 1.0);`),e&&(r=r.replace("vec3 base = texture2D(map, vUv).rgb;",`vec3 base = vec3(${e.map(et).join(", ")});`)),r):e?r.replace("vec3 base = texture2D(map, vUv).rgb;",`vec3 base = vec3(${e.map(et).join(", ")});`):r}function Hg(n,e,t,i){let s=Xt.hero.fill,r=null;if(n.traverse(c=>{!r&&c.isMesh&&(r=c)}),!r)return null;let o=new Jt(1,28,18);o.scale(s.r[0],s.r[1],s.r[2]),o.translate(s.c[0],s.c[1],s.c[2]);let a=new Ce({uniforms:{map:{value:null},...e},vertexShader:t,fragmentShader:xu(i,s.col)}),l=new ye(o,a);return l.name="structFill",r.add(l),{drawCalls:1,triangles:o.index.count/3}}var Ug={layers:6,len:.1,lean:.35,density:52,thick:.34,tip:.08,root:.7},tM=`
 attribute float aLayer;
 uniform float uShLen, uShLean;
 varying vec2 vUv; varying vec3 vN; varying vec3 vWorld; varying vec3 vRoot; varying vec3 vRootN; varying float vH;

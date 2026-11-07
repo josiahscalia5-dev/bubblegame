@@ -19,7 +19,7 @@ WORK_BRANCH=ccr-10503be1-pnv5vq
 ACCEPTED_BUNDLE_MD5=5bb24e2828a6f2ef17146252c69b413a          # ?s3=intunnel and the normal game (accepted build)
 SWIM2_BUNDLE_MD5=1199348a80352be29327134230a1b6a1            # the same + ?s3=intunnel,swim2 behind its flag (7 November, user-approved)
 BLEND_BUNDLE_MD5=38466b676bd36b05568023b5240818dd            # the accepted ?s3=intunnel (swim2) + ?s3=intunnel,blend behind its flag (7 November; accepted frames 0 px: 59_blend/proofs/)
-STRUCT_BUNDLE_MD5=236b581159c3499b421db566d7d84250           # + swim3 and match4 (66_match4/proofs/)
+STRUCT_BUNDLE_MD5=bb2cffb83c6d7048344dda20d721c075           # + swim3 and match4 (66_match4/proofs/)
 STRUCT_OLD_MD5=452f9568b76767a960645bbd538e18a2           # the accepted ?s3=intunnel + ?s3=intunnel,structmatch behind its flag (7 November, session 398ed88c; accepted frames 0 px: 64_final_pass/proofs/)
 ACCEPTED_SWIM2_MD5=ea0c833c45667e1894fbdc2cc98a28dd          # ?s3=intunnel INCLUDES swim2 (7 November, accepted; rollback ?s3=intunnel,noswim2 / 920531d)
 ACCEPTED_INDEX_MD5=cb40534c45b7c50ff95194088db5a79c
