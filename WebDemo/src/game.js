@@ -5,7 +5,7 @@ import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   
 import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
 import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
 import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
-import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
+import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately, structShellFur } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -901,6 +901,7 @@ function buildMascot(gltf) {
   });
   if (STRUCT_PARTS.hero) structFurUniforms(mats.fur);   // ?s3=intunnel,structmatch,hero2: a whiter rim
   if (STRUCT_PARTS.water || STRUCT_PARTS.hero) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
+  if (STRUCT_PARTS.match4) state.structShellFur = structPrivately(0x57a4, () => structShellFur(model, mats.fur, structFurFragment(SH.furFragment)));   // ?s3=intunnel,structmatch (match4): her fur as long fine strands (drawn only)
   const squash = new THREE.Group(); squash.add(model);
   const tilt = new THREE.Group(); tilt.add(squash);
   const root = new THREE.Group(); root.add(tilt);

@@ -807,7 +807,7 @@ ${FOCUS_ON ? '' : `  {   // the walls' pale mid blues toward saturated electric 
 `}${FOCUS_RINGS ? focusRingMapGLSL(M) : ''}  c = clamp((c - ${f4(FOCUS_ON ? M.lift : M.liftWall)}) / ${f4(1 - (FOCUS_ON ? M.lift : M.liftWall))}, 0.0, 1.0);   // (focus: match's one lift at 9a95c06)
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
-${STRUCT_PARTS.tunnel ? structTunnelGLSL() : ''}  vec3 col = mtUndisplay(c);
+${STRUCT_PARTS.tunnel || STRUCT_PARTS.match4 ? structTunnelGLSL() : ''}  vec3 col = mtUndisplay(c);
   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
 ${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)

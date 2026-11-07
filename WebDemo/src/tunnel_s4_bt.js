@@ -127,7 +127,10 @@ export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LI
   hud: STRUCT_ON && LIST.includes('hud2'),
   // the user's correction mandate of 7 November ~16:40 UTC (deep blue water meeting her lower fur, no pale icy band, swimming,
   // the metal refined): ,noswim3 draws the previous candidate (452f9568) exactly
-  swim3: STRUCT_ON && !LIST.includes('noswim3') };
+  swim3: STRUCT_ON && !LIST.includes('noswim3'),
+  // the user's exact-match execution order and reference packs (7 November ~21:15-21:45 UTC): the ORIGINAL's banded washer rim
+  // in place of the lilac plane, the tunnel rings' cobalt saturation, her shell fur: ,nomatch4 draws the swim3 look (9566f7b)
+  match4: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4') };
 export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)

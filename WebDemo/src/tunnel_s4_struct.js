@@ -99,6 +99,14 @@ export const STRUCT = {
     },
     grade: { hue: 3, sat: 1.08, deep: 0.86 },   // the swell's grade (STRUCT.swell) eased: the face's own colours are now right
   },
+  // match4: the tunnel rings' saturation (measured y .30-.60: pixels above saturation 0.75 are 24.5 % of the ORIGINAL's blue,
+  // 5.5-7.6 % of ours) through the walls' own grade (structTunnelGLSL, the opt-in ,tunnel2's), without its warm core
+  match4: {
+    // her fur under the shells (measured, her region y .66-.86 at Tap to Start: the ORIGINAL hue 317, saturation 0.66, luminance
+    // quartiles 0.38 / 0.49 / 0.61; with the shells at swim3's grade 320 / 0.54 / 0.50-0.65: lighter, paler, flatter) and her
+    // size (the shells widen her outline: her pink 54 % of the region against the ORIGINAL's 49 %)
+    fur: { sat: 1.6, gain: 0.74 }, scale: [1.0, 0.995, 1.0],
+    tunnel: { pull: 0.6, sat: 1.32, satAdd: 0.05, warmSat: 1.0, core: { r: [0.03, 0.09], k: 0.0, tint: [1, 1, 1], add: [0, 0, 0] } } },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
     pull: 0.55,             // periwinkle / violet (hue 226-266) pulled this share toward azure 214
@@ -183,7 +191,7 @@ function hueMatrix(deg) {   // rotation round the grey axis (rows)
   return [[c + k, k - q, k + q], [k + q, c + k, k - q], [k - q, k + q, c + k]];
 }
 export function structFurFragment(src, constBase) {
-  const F = STRUCT.hero.fur, M = hueMatrix(F.hue);
+  const F = STRUCT_PARTS.match4 ? { ...STRUCT.hero.fur, ...STRUCT.match4.fur } : STRUCT.hero.fur, M = hueMatrix(F.hue);
   const col = (j) => `vec3(${f4(M[0][j])}, ${f4(M[1][j])}, ${f4(M[2][j])})`;   // GLSL mat3 is column-major
   let s = src;
   if (!STRUCT_PARTS.hero) return constBase ? s.replace('vec3 base = texture2D(map, vUv).rgb;', `vec3 base = vec3(${constBase.map(f4).join(', ')});`) : s;   // (the accepted fur: only the fill's constant colour)
@@ -209,9 +217,66 @@ export function structFill(model, furUniforms, furVertex, furFragment) {
   host.add(o);
   return { drawCalls: 1, triangles: g.index.count / 3 };
 }
+// match4: her fur as long, fine, separate strands standing out of her silhouette (the ORIGINAL's; the user's character
+// mandate of 7 November ~21:45 UTC). Shells of her own mesh (the brushes' technique, fluffy_brush.js), offset along its
+// normals with a little outward lean; each shell keeps only the strands' cross-sections (roots scattered over her surface in
+// her model's own space, tapering, each its own length), shaded by her own fur shader (so the strands are her colour) and a
+// little paler toward their tips. Drawn only; one draw call per mesh (instanced shells).
+export const SHELL_FUR = { layers: 10, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
+const SHELL_VERTEX = /* glsl */ `
+attribute float aLayer;
+uniform float uShLen, uShLean;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWorld; varying vec3 vRoot; varying vec3 vRootN; varying float vH;
+void main() {
+  vUv = uv; vH = aLayer;
+  vec3 n = normalize(normal), r = normalize(position + vec3(0.0, 0.0, 1e-4));
+  vec3 p = position + normalize(n + r * uShLean) * uShLen * aLayer;
+  vRoot = position; vRootN = n;
+  vec4 w = modelMatrix * vec4(p, 1.0); vWorld = w.xyz;
+  vN = normalize(mat3(modelMatrix) * n);
+  gl_Position = projectionMatrix * viewMatrix * w;
+}
+`;
+function shellFragment(furFragment) {
+  const F = SHELL_FUR;
+  return furFragment.replace('varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;', `varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
+varying vec3 vRoot; varying vec3 vRootN; varying float vH;
+float shH3(vec3 p) { p = fract(p * 0.1031); p += dot(p, p.zyx + 31.32); return fract((p.x + p.y) * p.z); }
+vec3 shH33(vec3 p) { p = fract(p * vec3(0.1031, 0.1030, 0.0973)); p += dot(p, p.yxz + 33.33); return fract((p.xxy + p.yxx) * p.zyx); }`)
+    .replace('void main() {', `void main() {
+  {   // the strands' cross-sections on this shell (match4, tunnel_s4_struct.js SHELL_FUR)
+    vec3 q = vRoot * ${f4(F.density)}, b = floor(q - 0.5);
+    float best = 9.0, bl = 1.0;
+    for (int i = 0; i < 2; i++) for (int j = 0; j < 2; j++) for (int k = 0; k < 2; k++) {
+      vec3 c = b + vec3(float(i), float(j), float(k)), pt = c + 0.2 + 0.6 * shH33(c), d = q - pt;
+      d -= vRootN * dot(d, vRootN);
+      float dl = length(d);
+      if (dl < best) { best = dl; bl = 0.45 + 0.55 * shH3(c + 7.0); }
+    }
+    if (vH > bl || best > mix(${f4(F.thick)}, ${f4(F.thick * 0.22)}, vH / bl)) discard;
+  }`)
+    .replace(/gl_FragColor = vec4\(c, 1\.0\);(?![\s\S]*gl_FragColor = vec4\(c, 1\.0\);)/, `c *= mix(${f4(F.root)}, 1.0 + ${f4(F.tip)}, vH);   // deeper between the strands' roots, a little paler at their tips
+  gl_FragColor = vec4(c, 1.0);`);
+}
+export function structShellFur(model, furUniforms, furFragment) {
+  const F = SHELL_FUR, made = [];
+  model.traverse((o) => {
+    if (!o.isMesh || o.name === 'structFill' || o.name === 'structShellFur' || !o.geometry.attributes.normal) return;
+    const g0 = o.geometry, g = new THREE.InstancedBufferGeometry();
+    g.index = g0.index; for (const k of ['position', 'normal', 'uv']) if (g0.attributes[k]) g.setAttribute(k, g0.attributes[k]);
+    const h = new Float32Array(F.layers); for (let i = 0; i < F.layers; i++) h[i] = (i + 1) / F.layers;
+    g.setAttribute('aLayer', new THREE.InstancedBufferAttribute(h, 1)); g.instanceCount = F.layers;
+    const m = new THREE.ShaderMaterial({ uniforms: { map: o.material.uniforms.map, ...furUniforms, uShLen: { value: F.len }, uShLean: { value: F.lean } },
+      vertexShader: SHELL_VERTEX, fragmentShader: shellFragment(furFragment), side: THREE.DoubleSide });
+    made.push([o, new THREE.Mesh(g, m)]);
+  });
+  for (const [o, s] of made) { s.name = 'structShellFur'; s.frustumCulled = false; o.add(s); }
+  return { meshes: made.length, layers: F.layers };
+}
+
 // her drawn size once Screen 3's stretch is off (round her centre, as opening.js applies the stretch)
 export function structScale(model) {
-  const k = new THREE.Vector3(...STRUCT.hero.scale);
+  const k = new THREE.Vector3(...(STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
   model.scale.multiply(k); model.position.multiply(k);
   model.position.y += STRUCT.hero.lift;
 }
@@ -412,7 +477,7 @@ export function structHousingGLSL(radius) {
     float stFar = ${f4(H.far[1])} - ${f4(H.sideK)} * (1.0 - stUp);
     float stE = stFar - stD;   // m to its far edge
     float stK = smoothstep(${f4(H.arc[0])}, ${f4(H.arc[1])}, stUp) * smoothstep(${f4(H.near[0])}, ${f4(H.near[1])}, stD)
-      * smoothstep(0.0, ${f4(H.far[1] - H.far[0])}, stE) * smoothstep(${f4(H.fadeIn[0])}, ${f4(H.fadeIn[1])}, uHeroCam.z - uStart);
+      * smoothstep(0.0, ${f4(STRUCT_PARTS.match4 ? 0.12 : H.far[1] - H.far[0])}, stE) * smoothstep(${f4(H.fadeIn[0])}, ${f4(H.fadeIn[1])}, uHeroCam.z - uStart);
     if (stK > 0.001) {
       float stX = a * ${f4(radius)};   // m round the drum
       // brushed metal: lavender over the top, periwinkle then deep violet down the sides (its curvature), fine streaks round it
@@ -449,7 +514,23 @@ ${STRUCT_PARTS.swim3 ? `      {   // swim3: brushed metal's contrast (deeper vio
         stC = mix(stC, ${hx(C.deep)} * 0.8, exp(-pow((stE - 0.42) / 0.07, 2.0)) * 0.5);
       }
 ` : ''}
-      col = mix(col, mtUndisplay(clamp(stC, 0.0, 1.0)), stK);
+${STRUCT_PARTS.match4 ? `      {   // match4: the ORIGINAL's banded washer rim (sampled at x .86-.93, y .15-.39 of the ORIGINAL: from the tunnel outward
+        // periwinkle, light lavender, violet, a dark mauve groove, the gold-peach band, the pink-lavender face), one band per
+        // distance to the lining's edge, so perspective draws them as the ORIGINAL's curved arcs; the face beyond keeps the drum
+        float e = stE, w = 0.06;
+        vec3 rb = ${hx('#7d9ee8')};
+        rb = mix(rb, mix(${hx('#c099df')}, ${hx('#d1b0ed')}, smoothstep(0.3, 0.6, e) * (1.0 - smoothstep(0.6, 0.8, e))), smoothstep(0.28 - w, 0.28 + w, e));
+        rb = mix(rb, mix(${hx('#9775d0')}, ${hx('#7c60ae')}, smoothstep(0.85, 1.2, e)), smoothstep(0.8 - w, 0.8 + w, e));
+        rb = mix(rb, ${hx('#825a8c')}, smoothstep(1.25 - w, 1.25 + w, e));
+        float gq = clamp((e - 1.5) / 0.6, 0.0, 1.0);   // across the gold band: 0 its lower edge, 1 its upper
+        vec3 gold = mix(${hx('#e5957c')}, ${hx('#eea78e')}, smoothstep(0.0, 0.7, gq));
+        gold = mix(gold, ${hx('#ffe0c6')}, exp(-pow((gq - 0.62) / 0.12, 2.0)) * 0.75 * smoothstep(0.1, 0.6, stUp));   // the bevel's highlight
+        gold *= 0.88 + 0.12 * smoothstep(0.0, 0.25, gq);
+        rb = mix(rb, gold, smoothstep(1.5 - w, 1.5 + w, e));
+        rb = mix(rb, mix(${hx('#e4b4c6')}, ${hx('#dab0d6')}, smoothstep(2.1, 2.5, e)), smoothstep(2.1 - w, 2.1 + w, e));
+        stC = mix(rb, stC, smoothstep(2.45, 2.85, e));
+      }
+` : ''}      col = mix(col, mtUndisplay(clamp(stC, 0.0, 1.0)), stK);
     }
   }
 `;
@@ -481,7 +562,7 @@ export function structSwellGLSL() {
 // ================================================================ 4. the tunnel (opt-in ,tunnel2)
 // at the end of matchWall's screen colour c (tunnel_r9_match.js; rw: the screen radius round the centre, in widths)
 export function structTunnelGLSL() {
-  const T = STRUCT.tunnel, C = T.core;
+  const T = STRUCT_PARTS.match4 && !STRUCT_PARTS.tunnel ? { ...STRUCT.tunnel, ...STRUCT.match4.tunnel } : STRUCT.tunnel, C = T.core;
   return /* glsl */ `  {   // ?s3=intunnel,structmatch: the ORIGINAL's blues (periwinkle toward azure, richer) and a warmer golden core
     vec4 stK = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
     vec4 stP = mix(vec4(c.bg, stK.wz), vec4(c.gb, stK.xy), step(c.b, c.g));
