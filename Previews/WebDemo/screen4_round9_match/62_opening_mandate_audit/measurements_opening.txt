@@ -1,0 +1,5 @@
+ORIGINAL  | lavender housing y .16-.36: 21.3 % | her box x 0.25-0.73 y 0.70-0.86 (w 0.48), width at 8/16/25/50 % below her top 0.19 / 0.27 / 0.32 / 0.41
+ACC t0    | lavender housing y .16-.36: 16.3 % | her box x 0.23-0.72 y 0.68-0.85 (w 0.48), width at 8/16/25/50 % below her top 0.09 / 0.20 / 0.23 / 0.45
+ACC +1s   | lavender housing y .16-.36:  1.7 % | her box x 0.22-0.71 y 0.71-0.87 (w 0.49), width at 8/16/25/50 % below her top 0.09 / 0.18 / 0.24 / 0.45
+ACC +2s   | lavender housing y .16-.36:  1.3 % | her box x 0.23-0.72 y 0.71-0.86 (w 0.48), width at 8/16/25/50 % below her top 0.06 / 0.22 / 0.26 / 0.42
+ACC +3s   | lavender housing y .16-.36:  0.7 % | her box x 0.32-0.72 y 0.69-0.86 (w 0.39), width at 8/16/25/50 % below her top 0.10 / 0.20 / 0.24 / 0.34
