@@ -315,5 +315,33 @@ The forms read as smooth eggs. I'll make them broader, lumpier mounds with a foa
 - 14:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
 - 14:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 14:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:12 `Bash`: Compare original and v3 lower zone
+- 14:12 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c3.png
+- 14:12 `Bash`: Make the water shading more saturated and tunable; rebuild
+- 14:13 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 14:13 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:13 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:13 `Bash`: Compare original and v4 lower zone
+- 14:13 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c4.png
+- 14:13 `Bash`: Sample rendered lobe colours
+- 14:14 `Bash`: Zoom into the v4 waterline
+- 14:14 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/v4_zoom.png
+- 14:14 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_struct.js
+- 14:14 `Bash`: Locate water section bounds
+- 14:15 `Write`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/tools/water_section.js
+- 14:15 `Bash`: Splice the height-field water in and rebuild
+- 14:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 14:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:16 `Bash`: Compare original, accepted and v5
+- 14:16 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c5.png
+**Agent** (14:16 UTC):
 
-_126 tool steps._
+The mounds peak like hills (a cusp from the angular wobble at their centre). I'll give them a rounded glass-dome profile, a centre-safe wobble, more froth and bubbles, and move the front ones closer.
+
+- 14:17 `Bash`: Round the mounds, add froth and bubbles; rebuild
+- 14:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 14:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+
+_150 tool steps._

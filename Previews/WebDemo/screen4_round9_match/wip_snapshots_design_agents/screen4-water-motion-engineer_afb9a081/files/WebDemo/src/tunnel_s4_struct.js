@@ -38,33 +38,33 @@ export const STRUCT = {
     idle: 0.05,             // m/s they drift back while she waits at the start
     du: 0.34, dx: 0.33,     // grid cells (m along the path, m across), world (water) anchored
     rel: [-1.3, 1.3],       // the window round her (m along the path; - toward the camera: beyond -1.3 is under the frame)
-    xr: 1.6,                // its half width (m)
+    xr: 1.3,                // its half width (m)
     // amplitude along the path round her and across ([inner, outer] m from her)
-    env: [[-1.3, 0], [-1.0, 0.8], [-0.4, 1], [0.2, 1], [0.7, 0.55], [1.3, 0]], envX: [0.75, 1.4],
+    env: [[-1.3, 0], [-1.0, 0.8], [-0.4, 1], [0.2, 1], [0.7, 0.55], [1.3, 0]], envX: [0.7, 1.3],
     // their height (m) along the path round her (taller toward the camera: they make her waterline seen from above)
-    height: [[-1.3, 0.4], [-0.8, 0.38], [-0.45, 0.34], [0.0, 0.28], [0.4, 0.2], [0.8, 0.12], [1.3, 0.06]],
-    r: [0.22, 0.38],        // radius range (m)
+    height: [[-1.3, 0.48], [-0.8, 0.46], [-0.45, 0.42], [0.0, 0.38], [0.4, 0.28], [0.8, 0.16], [1.3, 0.06]],
+    r: [0.26, 0.42],        // radius range (m)
     types: [0.7, 0.84],     // shares: < azure, < lavender glass, else froth
-    startMix: [0.7, 0.4, 2.5],   // the field's amplitude at the start, eased to 1 over these metres swum (the staged forms lead)
-    // the staged forms at the start (the ORIGINAL's arrangement): [m along the path from her, m across (+ screen-left),
-    // rx, height, rz, type (0 azure, 1 lavender glass, 2 froth), yaw (rad)]
+    startMix: [0.7, 0.4, 2.5],   // the field's amplitude at the start, eased to 1 over these metres swum (the staged mounds lead)
+    // the staged mounds at the start (the ORIGINAL's arrangement): [m along the path from her, m across (+ screen-left),
+    // radius, height (m), type (0 azure, 1 lavender glass, 2 froth)]
     stage: [
-      [-0.45, 0.36, 0.3, 0.4, 0.27, 1, 0.3],      // the lavender glass dome at her lower left
-      [-0.58, 0.02, 0.24, 0.36, 0.22, 1, -0.4],   // a smaller lavender dome under her centre
-      [-0.2, 0.82, 0.36, 0.4, 0.3, 0, 0.5],       // the left bank
-      [-0.78, 0.62, 0.34, 0.42, 0.3, 2, 0.0],
-      [-0.5, -0.4, 0.32, 0.37, 0.28, 0, -0.3],    // her lower right
-      [-0.15, -0.86, 0.38, 0.42, 0.32, 0, 0.2],   // the right bank
-      [-0.82, -0.6, 0.35, 0.42, 0.3, 2, 0.6],
-      [0.28, 0.64, 0.28, 0.3, 0.24, 0, 0.0],      // beside her
-      [0.32, -0.64, 0.28, 0.3, 0.24, 0, 0.9],
+      [-0.36, 0.36, 0.32, 0.42, 1],    // the lavender glass mound at her lower left
+      [-0.45, 0.02, 0.28, 0.4, 1],     // a smaller lavender one under her centre
+      [-0.12, 0.86, 0.45, 0.5, 0],     // the left bank
+      [-0.78, 0.66, 0.42, 0.5, 2],
+      [-0.4, -0.42, 0.36, 0.42, 0],    // her lower right
+      [-0.08, -0.9, 0.46, 0.5, 0],     // the right bank
+      [-0.82, -0.62, 0.42, 0.5, 2],
+      [0.3, 0.68, 0.34, 0.38, 0],      // beside her
+      [0.35, -0.68, 0.34, 0.38, 0],
     ],
     // sRGB screen colours (written through the inverse of the grade and tone mapping, as the walls)
     col: {
       azure: ['#1648c0', '#2f86ea', '#7cc6ff'], lav: ['#5d55cf', '#8f8ceb', '#cfd0ff'], froth: ['#4b9ae8', '#a9d8ff', '#eef8ff'],
       sky: '#e2f4ff', white: '#ffffff', foam: '#f4fbff',
     },
-    rimK: 0.95, specK: 0.9, foamK: 0.8, bubbleK: 0.8, coreK: 0.6, laceK: 0.75,
+    rimK: 0.95, specK: 0.9, foamK: 0.85, bubbleK: 0.85, coreK: 0.5, frothK: 0.8, skyK: 0.4,
   },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
@@ -170,85 +170,90 @@ export function structFurUniforms(fur) {
 }
 
 // ================================================================ 2. the water round her, in water space
-const NU = 11, NX = 10;   // the field's grid instances (along the path x across)
-const domeGeometry = (U = 20, V = 10, thMax = 1.85) => {   // a unit dome down a little past its equator (it sinks into the floor)
-  const pos = [], idx = [];
-  for (let j = 0; j <= V; j++) for (let i = 0; i <= U; i++) {
-    const th = thMax * j / V, ph = 2 * Math.PI * i / U;
-    pos.push(Math.sin(th) * Math.cos(ph), Math.cos(th), Math.sin(th) * Math.sin(ph));
-  }
-  for (let j = 0; j < V; j++) for (let i = 0; i < U; i++) { const a = j * (U + 1) + i, d = a + U + 1; idx.push(a, a + 1, d, a + 1, d + 1, d); }
-  return { pos, idx };
-};
+// One continuous water surface round her (a height field on a patch in her track frame, opaque, depth-written), shaped as
+// separate rounded wave mounds whose places are fixed in the WATER: the water flows forward at a share of her speed, so the
+// mounds stream back past her as she swims (the patch is only where they are drawn; nothing on it is pinned to her). Each
+// mound rises as it nears her and sinks away behind (its amplitude), so her lower body is in the water while her dome stays
+// clear above it. Creases where two mounds meet carry white foam, crests a crisp white rim; colours from the ORIGINAL's
+// foreground (azure bodies, darker cores, pale lavender-blue glass mounds mainly at her lower left), screen colours through
+// the walls' inverse grade and tone mapping.
+const NU = 9, NX = 8, NS = STRUCT.water.stage.length, NM = NU * NX + NS;   // the mounds: grid cells and the staged ones
+const PATCH = { x: [-1.7, 1.7], u: [-1.35, 1.35], nx: 112, nu: 88 };
 const waterVertex = /* glsl */ `
-attribute vec3 iC; attribute vec4 iR, iK;   // centre (world, on the water); rx, height, rz, sink (m); type, seed, -, yaw
-uniform vec3 uR, uU, uT; uniform float uTime;
-varying vec3 vW, vN, vP; varying vec4 vK; varying float vHm;
+uniform vec4 uM[${NM}];   // mound: x across (+ screen-left, m), along the path from her (m), radius (m), height (m)
+uniform vec4 uMK[${NM}];  // mound: type (0 azure, 1 lavender glass, 2 froth), seed, -, -
+uniform vec3 uC, uR, uU, uT; uniform float uTime, uBack, uBase, uPX;
+varying vec3 vW, vN; varying vec4 vS;   // vS: share of its mound's height, crease, height (m), type
+varying vec2 vQ; varying float vSeed;
 void main() {
-  vec3 n = position;
-  float c = cos(iK.w), s = sin(iK.w);
-  // a slow irregular wobble of its surface (the water's own motion)
-  float wob = 1.0 + 0.08 * sin(n.x * 3.1 + n.z * 2.3 + iK.y * 6.28 + uTime * 1.6) + 0.06 * sin(n.y * 4.3 - n.x * 2.0 + iK.y * 17.0 - uTime * 2.2)
-    + 0.035 * sin(n.x * 9.0 - n.z * 7.0 + n.y * 5.0 + iK.y * 31.0 + uTime * 2.9);   // (lumpy: water, not a balloon)
-  vec3 q = vec3(n.x * c - n.z * s, n.y, n.x * s + n.z * c) * wob;
-  vec3 p = vec3(q.x * iR.x, q.y * iR.y - iR.w, q.z * iR.z);
-  vW = iC + uR * p.x + uU * p.y + uT * p.z;
-  vec3 nl = vec3(q.x / max(iR.x, 1e-3), q.y / max(iR.y, 1e-3), q.z / max(iR.z, 1e-3));
-  vN = normalize(uR * nl.x + uU * nl.y + uT * nl.z);
-  vP = n; vK = iK; vHm = p.y;   // (vHm: m above the water)
+  vec2 p = position.xz + vec2(uPX, 0.0);   // x across (the patch follows her lane), u along the path (m, her frame)
+  float h1 = 0.0, h2 = 0.0, hs = 0.0; vec2 g1 = vec2(0.0), gs = vec2(0.0); float a1 = 1.0, t1 = 0.0, s1 = 0.0;
+  for (int i = 0; i < ${NM}; i++) {
+    vec4 m = uM[i];
+    if (m.w <= 0.001) continue;
+    vec2 d = p - m.xy;
+    // a slightly irregular round mound (its outline wobbles with its seed and the clock)
+    float an = atan(d.y, d.x), dl = length(d);
+    float rr = m.z * (1.0 + (0.1 * sin(an * 3.0 + uMK[i].y * 40.0 + uTime * 0.9) + 0.05 * sin(an * 5.0 - uMK[i].y * 17.0 - uTime * 1.3)) * smoothstep(0.2, 0.7, dl / m.z));
+    float t2 = dl * dl / (rr * rr);
+    if (t2 >= 1.0) continue;
+    // a rounded glass dome (steep at its foot, round on top)
+    float b = max(1.0 - t2, 1e-3); float h = m.w * pow(b, 0.6);
+    vec2 g = m.w * 0.6 * pow(b, -0.4) * (-2.0 * d / (rr * rr));
+    hs += h; gs += g;
+    if (h > h1) { h2 = h1; h1 = h; g1 = g; a1 = m.w; t1 = uMK[i].x; s1 = uMK[i].y; } else if (h > h2) h2 = h;
+  }
+  // separate forms (the highest mound wins) with a little of the others' swell under them
+  float H = h1 + 0.12 * (hs - h1); vec2 G = g1 + 0.12 * (gs - g1);
+  float hb = H - 0.035;   // (the patch rests just under the floor's water where there is no mound)
+  vW = uC + uR * p.x + uU * (uBase + hb) + uT * p.y;
+  vN = normalize(uU - uR * G.x - uT * G.y);
+  vS = vec4(h1 / max(a1, 1e-3), 1.0 - smoothstep(0.0, 0.05, h1 - h2) * 1.0, hb, t1);
+  vS.y *= smoothstep(0.03, 0.08, h2);   // (a crease only where two raised mounds meet)
+  vQ = vec2(p.x, p.y + uBack); vSeed = s1;   // (water coordinates: they stream past her)
   gl_Position = projectionMatrix * viewMatrix * vec4(vW, 1.0);
 }
 `;
 const waterFragment = (undisplay) => /* glsl */ `
 uniform vec3 uR, uU, uT; uniform float uTime;
-uniform vec3 uCol[9]; uniform vec3 uSky, uWhite, uFoam; uniform float uRimK, uSpecK, uFoamK, uBubK, uCoreK, uLaceK;
-varying vec3 vW, vN, vP; varying vec4 vK; varying float vHm;
+uniform vec3 uCol[9]; uniform vec3 uSky, uWhite, uFoam; uniform float uRimK, uSpecK, uFoamK, uBubK, uCoreK, uSkyK, uFrothK;
+varying vec3 vW, vN; varying vec4 vS; varying vec2 vQ; varying float vSeed;
 ${undisplay}
 float stH(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-vec2 stH2(vec2 p) { return fract(sin(vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)))) * 43758.5453); }
-float stCell(vec2 p) {   // F2 - F1 of a cell pattern: 0 on the foam's web
-  vec2 i = floor(p), f = fract(p); float d1 = 8.0, d2 = 8.0;
-  for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) {
-    vec2 g = vec2(float(x), float(y)), r = g + stH2(i + g) - f; float d = dot(r, r);
-    if (d < d1) { d2 = d1; d1 = d; } else if (d < d2) d2 = d;
-  }
-  return sqrt(d2) - sqrt(d1);
-}
 void main() {
+  if (vS.z < -0.02) discard;   // (under the floor's water)
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
-  float ndv = clamp(dot(N, V), 0.0, 1.0), up = dot(N, uU);
-  vec3 L = normalize(uU * 0.55 + uR * 0.6 - uT * 0.35);   // the key light from the upper left
-  float lit = dot(N, L) * 0.5 + 0.5;
-  int ty = int(vK.x + 0.5);
+  float ndv = clamp(dot(N, V), 0.0, 1.0), up = clamp(dot(N, uU), 0.0, 1.0);
+  vec3 L = normalize(uU * 0.6 + uR * 0.55 - uT * 0.3);   // the key light from the upper left
+  float lit = dot(N, L) * 0.5 + 0.5, hN = clamp(vS.x, 0.0, 1.0);
+  int ty = int(vS.w + 0.5);
   vec3 deep = ty == 0 ? uCol[0] : ty == 1 ? uCol[3] : uCol[6];
   vec3 body = ty == 0 ? uCol[1] : ty == 1 ? uCol[4] : uCol[7];
   vec3 hi = ty == 0 ? uCol[2] : ty == 1 ? uCol[5] : uCol[8];
-  // glass: a deeper core where the eye looks through most water, lighter toward the lit side, sky at grazing angles
-  vec3 col = mix(deep, body, smoothstep(0.18, 0.62, lit));
-  col = mix(col, hi, smoothstep(0.66, 0.95, lit) * 0.75);
-  col = mix(col, deep, smoothstep(0.55, 0.98, ndv) * (1.0 - smoothstep(0.35, 0.9, vP.y)) * uCoreK);
-  // currents inside (they belong to the form: they move with it)
-  float cur = sin(vP.x * 7.0 + vP.y * 5.0 + vK.y * 30.0 + uTime * 0.9) * sin(vP.z * 6.0 - vP.y * 4.0 + vK.y * 11.0 - uTime * 0.7);
-  col = mix(col, hi, smoothstep(0.55, 0.95, cur) * 0.35 * (1.0 - smoothstep(0.7, 1.0, ndv)));
-  float fr = pow(1.0 - ndv, 3.0);
-  col = mix(col, uSky, fr * 0.55);
-  // a crisp white rim on its upper, lit edge, and a highlight
-  float rim = smoothstep(0.78, 0.93, 1.0 - ndv) * smoothstep(-0.1, 0.45, up) * smoothstep(0.35, 0.7, lit);
+  // glass: deeper at its foot and where the eye looks into it, lighter up its lit side, pale at its crest
+  vec3 col = mix(deep, body, smoothstep(0.05, 0.5, hN) * (0.55 + 0.45 * lit));
+  col = mix(col, hi, smoothstep(0.55, 0.95, hN) * smoothstep(0.55, 0.9, lit) * 0.8);
+  col = mix(col, deep, smoothstep(0.6, 0.98, ndv) * (1.0 - hN) * uCoreK);
+  // currents running through it (water coordinates)
+  float cur = sin(vQ.x * 9.0 + vQ.y * 4.0 + sin(vQ.y * 3.0) * 2.0 + uTime * 0.8) * sin(vQ.y * 11.0 - vQ.x * 3.0 - uTime * 0.6);
+  col = mix(col, hi, smoothstep(0.7, 0.98, cur) * 0.3 * smoothstep(0.15, 0.6, hN));
+  col = mix(col, uSky, pow(1.0 - ndv, 3.0) * uSkyK);
+  // a crisp white rim along its crest's edge, white highlights, white foam in the creases and where it meets the water
+  float rim = smoothstep(0.82, 0.95, 1.0 - ndv) * smoothstep(0.45, 0.8, hN);
   col = mix(col, uWhite, clamp(rim * uRimK, 0.0, 1.0));
-  float sp = pow(clamp(dot(reflect(-L, N), V), 0.0, 1.0), 36.0);
+  float sp = pow(clamp(dot(reflect(-L, N), V), 0.0, 1.0), 40.0);
   col = mix(col, uWhite, clamp(sp * uSpecK, 0.0, 1.0));
-  // broken foam where it meets the water, and a few small clear bubbles on it
-  float ang = atan(vP.z, vP.x);
-  float rag = 0.5 * sin(ang * 5.0 + vK.y * 20.0 + uTime * 1.2) + 0.5 * sin(ang * 11.0 - vK.y * 9.0 - uTime * 1.9);
-  float foam = (1.0 - smoothstep(0.0, 0.045 + 0.03 * rag, vHm)) * smoothstep(-0.4, 0.3, rag);
+  float rag = 0.5 + 0.5 * sin(vQ.x * 23.0 + sin(vQ.y * 17.0) * 2.0 + uTime * 1.5) * sin(vQ.y * 19.0 - uTime * 1.1);
+  float foam = vS.y * smoothstep(0.25, 0.75, rag + 0.25);
+  foam = max(foam, (1.0 - smoothstep(0.0, 0.03 + 0.025 * rag, vS.z)) * smoothstep(0.3, 0.7, rag));
+  // froth on the crests: broken white patches (water coordinates)
+  float fr2 = sin(vQ.x * 31.0 + sin(vQ.y * 13.0) * 3.0 - uTime * 0.7) * sin(vQ.y * 27.0 + sin(vQ.x * 11.0) * 2.0 + uTime * 0.9);
+  foam = max(foam, smoothstep(0.35, 0.8, fr2) * smoothstep(0.7, 0.95, hN) * smoothstep(0.4, 0.8, lit) * uFrothK);
   col = mix(col, uFoam, clamp(foam * uFoamK, 0.0, 1.0));
-  // a lace of white foam over its top (the ORIGINAL's frothy surf), thin lines that drift with the form
-  vec2 lq = vec2(vP.x + 0.45 * vP.z, vP.y * 1.4 - 0.3 * vP.z) * 3.2 + vK.y * 9.0 + vec2(uTime * 0.05, -uTime * 0.08);
-  float lace = (1.0 - smoothstep(0.03, 0.1, stCell(lq))) * smoothstep(0.1, 0.75, vP.y) * smoothstep(0.3, 0.75, lit);
-  col = mix(col, uFoam, clamp(lace * uLaceK, 0.0, 1.0));
-  vec2 bq = vec2(ang * 2.4, vP.y * 7.0); vec2 bi = floor(bq); vec2 bf = fract(bq) - 0.5;
-  float br = 0.18 + 0.12 * stH(bi + 3.1 + vK.y * 5.0), bd = length(bf);
-  float bub = step(0.86, stH(bi + vK.y * 7.0)) * (smoothstep(br - 0.07, br - 0.02, bd) * (1.0 - smoothstep(br, br + 0.04, bd))) * smoothstep(0.15, 0.5, vP.y);
+  // small clear bubbles on the water (they flow with it)
+  vec2 bq = vQ * vec2(9.0, 9.0); vec2 bi = floor(bq), bf = fract(bq) - 0.5;
+  float br = 0.2 + 0.14 * stH(bi + 3.1), bd = length(bf);
+  float bub = step(0.78, stH(bi)) * smoothstep(br - 0.08, br - 0.02, bd) * (1.0 - smoothstep(br, br + 0.05, bd)) * smoothstep(0.2, 0.6, hN);
   col = mix(col, uWhite, clamp(bub * uBubK, 0.0, 1.0));
   gl_FragColor = vec4(mtUndisplay(clamp(col, 0.0, 1.0)), 1.0);
 }
@@ -258,64 +263,58 @@ const hash = (a, b, k) => { let h = (Math.imul(a | 0, 374761393) + Math.imul(b |
 // S: the hero water's frame of her (tunnel_r7_hero_water.js buildHeroWater), undisplay: the walls' inverse display GLSL
 export function buildStructWater({ scene, TR, L, W, mascot, updaters, time, S, undisplay }) {
   return structPrivately(0x57a1, () => {
-    const K = STRUCT.water, NS = K.stage.length, N = NU * NX + NS;
-    const { pos, idx } = domeGeometry();
-    const g = new THREE.InstancedBufferGeometry();
-    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx);
-    const aC = new THREE.InstancedBufferAttribute(new Float32Array(N * 3), 3), aR = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4), aK = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4);
-    for (const a of [aC, aR, aK]) a.setUsage(THREE.DynamicDrawUsage);
-    g.setAttribute('iC', aC); g.setAttribute('iR', aR); g.setAttribute('iK', aK); g.instanceCount = N;
-    const C = K.col, cols = [...C.azure, ...C.lav, ...C.froth].map((h) => new THREE.Color(h));   // (sRGB values read as written: undisplayed in the shader)
-    const raw = (hex) => { const n = parseInt(hex.slice(1), 16); return new THREE.Vector3((n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255); };
-    const u = { uR: { value: new THREE.Vector3(1, 0, 0) }, uU: { value: new THREE.Vector3(0, 1, 0) }, uT: { value: new THREE.Vector3(0, 0, 1) }, uTime: time,
+    const K = STRUCT.water;
+    const g = new THREE.PlaneGeometry(PATCH.x[1] - PATCH.x[0], PATCH.u[1] - PATCH.u[0], PATCH.nx, PATCH.nu);
+    g.rotateX(-Math.PI / 2); g.translate((PATCH.x[0] + PATCH.x[1]) / 2, 0, (PATCH.u[0] + PATCH.u[1]) / 2);   // (x across, z = u along the path)
+    const raw = (hex) => { const n = parseInt(hex.slice(1), 16); return new THREE.Vector3((n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255); };   // (sRGB as written: undisplayed in the shader)
+    const C = K.col;
+    const u = { uM: { value: Array.from({ length: NM }, () => new THREE.Vector4()) }, uMK: { value: Array.from({ length: NM }, () => new THREE.Vector4()) },
+      uC: { value: new THREE.Vector3() }, uR: { value: new THREE.Vector3(1, 0, 0) }, uU: { value: new THREE.Vector3(0, 1, 0) }, uT: { value: new THREE.Vector3(0, 0, 1) },
+      uTime: time, uBack: { value: 0 }, uBase: { value: 0 }, uPX: { value: 0 },
       uCol: { value: [...C.azure, ...C.lav, ...C.froth].map(raw) }, uSky: { value: raw(C.sky) }, uWhite: { value: raw(C.white) }, uFoam: { value: raw(C.foam) },
-      uRimK: { value: K.rimK }, uSpecK: { value: K.specK }, uFoamK: { value: K.foamK }, uBubK: { value: K.bubbleK }, uCoreK: { value: K.coreK }, uLaceK: { value: K.laceK } };
-    void cols;
+      uRimK: { value: K.rimK }, uSpecK: { value: K.specK }, uFoamK: { value: K.foamK }, uBubK: { value: K.bubbleK }, uCoreK: { value: K.coreK }, uSkyK: { value: K.skyK }, uFrothK: { value: K.frothK } };
     const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: waterVertex, fragmentShader: waterFragment(undisplay) });
     const mesh = new THREE.Mesh(g, mat); mesh.name = 'structWater'; mesh.frustumCulled = false; mesh.renderOrder = 5; mesh.visible = false;
     scene.add(mesh);
-    const P = new THREE.Vector3(), F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
-    let idle = 0;
+    let idle = 0; const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
     updaters.push((dt) => {
       mesh.visible = S.k > 0.01; if (!mesh.visible) return;
       dt = Math.min(dt || 0, 0.1);
       const Kw = STRUCT.water, z = mascot.z, D = S.sw2T || 0;
       if (D < 0.01) idle += dt * Kw.idle;   // (only while she waits)
-      const back = (1 - Kw.k) * D + idle;   // how far the water's forms have streamed back past her (m)
-      TR.frame(z, F); u.uR.value.copy(F.R); u.uU.value.copy(F.U); u.uT.value.copy(F.T);
-      u.uRimK.value = Kw.rimK; u.uSpecK.value = Kw.specK; u.uFoamK.value = Kw.foamK; u.uBubK.value = Kw.bubbleK; u.uCoreK.value = Kw.coreK; u.uLaceK.value = Kw.laceK;
+      const back = (1 - Kw.k) * D + idle;   // how far the water's mounds have streamed back past her (m)
+      // the patch: her track frame on the water under her (the water's level, not her bob)
+      TR.frame(z, F); TR.map(0, 0, z, u.uC.value);
+      u.uR.value.copy(F.R); u.uU.value.copy(F.U); u.uT.value.copy(F.T);
+      u.uBase.value = S.base; u.uBack.value = back; u.uPX.value = S.lagX;
+      u.uRimK.value = Kw.rimK; u.uSpecK.value = Kw.specK; u.uFoamK.value = Kw.foamK; u.uBubK.value = Kw.bubbleK; u.uCoreK.value = Kw.coreK; u.uSkyK.value = Kw.skyK; u.uFrothK.value = Kw.frothK;
+      [...Kw.col.azure, ...Kw.col.lav, ...Kw.col.froth].forEach((hh, c) => u.uCol.value[c].copy(raw(hh)));
       const mix0 = Kw.startMix[0] + (1 - Kw.startMix[0]) * sm(Kw.startMix[1], Kw.startMix[2], D);
       const lift = (1 - 0.35 * S.air) * (1 + 0.3 * S.land) * S.k;
       const ex = (x) => 1 - sm(Kw.envX[0], Kw.envX[1], Math.abs(x - S.lagX));
-      const put = (i, rel, x, rx, ry, rz, ty, seed, yaw, amp) => {
+      const M = u.uM.value, MK = u.uMK.value;
+      const put = (i, rel, x, r, h, ty, seed, amp) => {
         const a = Math.max(0, amp) * lift;
-        if (a < 0.02) { aR.setXYZW(i, 0, 0, 0, 0); return; }
-        const zz = z + rel, h = W.surface(L, x, zz, time.value);
-        TR.map(x, h, zz, P); aC.setXYZ(i, P.x, P.y, P.z);
-        const k = 0.55 + 0.45 * a;
-        aR.setXYZW(i, rx * k, ry * a, rz * k, ry * a * 0.3 * (1 - a) + 0.02);   // (rising out of the water as it nears her)
-        aK.setXYZW(i, ty, seed, 0, yaw);
+        if (a < 0.02) { M[i].set(0, 0, 0, 0); return; }
+        M[i].set(x, rel, r * (0.6 + 0.4 * a), h * a); MK[i].set(ty, seed, 0, 0);
       };
-      // the field: grid cells fixed in the water (they stream back with `back`), jittered, sized and typed per cell
+      // the grid: cells fixed in the water (they stream back with `back`), jittered, sized and typed per cell
       const q0 = Math.floor((Kw.rel[0] + back) / Kw.du), j0 = Math.floor((S.lagX - Kw.xr) / Kw.dx);
       let i = 0;
       for (let a = 0; a < NU; a++) for (let b = 0; b < NX; b++, i++) {
         const iu = q0 + a, jx = j0 + b, h1 = hash(iu, jx, 1), h2 = hash(iu, jx, 2), h3 = hash(iu, jx, 3), h4 = hash(iu, jx, 4), h5 = hash(iu, jx, 5);
         const rel = (iu + 0.5 + 0.75 * (h1 - 0.5)) * Kw.du - back, x = (jx + 0.5 + 0.75 * (h2 - 0.5)) * Kw.dx;
-        if (rel < Kw.rel[0] || rel > Kw.rel[1]) { aR.setXYZW(i, 0, 0, 0, 0); continue; }
+        if (rel < Kw.rel[0] || rel > Kw.rel[1]) { M[i].set(0, 0, 0, 0); continue; }
         const r = Kw.r[0] + (Kw.r[1] - Kw.r[0]) * h3, ty = h4 < Kw.types[0] ? 0 : h4 < Kw.types[1] ? 1 : 2;
-        put(i, rel, x, r, pl(Kw.height, rel) * (0.72 + 0.4 * h5), r * (0.8 + 0.3 * h1), ty, h5, h2 * 6.28, pl(Kw.env, rel) * ex(x) * mix0);
+        put(i, rel, x, r, pl(Kw.height, rel) * (0.75 + 0.35 * h5), ty, h5, pl(Kw.env, rel) * ex(x) * mix0);
       }
-      // the staged forms (water-fixed as well: they stream back from where they stand at the start)
+      // the staged mounds (water-fixed as well: they stream back from where they stand at the start)
       for (let s = 0; s < NS; s++, i++) {
-        const [r0, x, rx, ry, rz, ty, yaw] = Kw.stage[s], rel = r0 - back;
-        if (rel < Kw.rel[0]) { aR.setXYZW(i, 0, 0, 0, 0); continue; }
-        const env = rel < -0.45 ? pl(Kw.env, rel) : 1;
-        put(i, rel, x, rx, ry, rz, ty, 0.13 + 0.17 * s, yaw, env * (1 - 0.0 * D));
+        const [r0, x, r, h, ty] = Kw.stage[s], rel = r0 - back;
+        put(i, rel, x, r, h, ty, 0.13 + 0.17 * s, rel < -0.45 ? pl(Kw.env, rel) : 1);
       }
-      aC.needsUpdate = aR.needsUpdate = aK.needsUpdate = true;
     });
-    return { drawCalls: 1, instances: N, triangles: N * idx.length / 3 };
+    return { drawCalls: 1, mounds: NM, triangles: PATCH.nx * PATCH.nu * 2 };
   });
 }
 
