@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: agent ()
 
-- **Taken:** 2026-11-07 16:14 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 16:19 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `lead-final-s4` (local only), started from `8343381`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (124; full copies in `files/`)
+## Files (127; full copies in `files/`)
 
 - `BUBBLE_WASH_ACCOUNT_HANDOFF.md (new)`
 - `CLAUDE.md`
@@ -101,6 +101,7 @@
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_compare.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_structmatch.err (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_structmatch.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/recordings_gameplay_compare.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_accepted.err (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_accepted.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_compare.txt (new)`
@@ -122,7 +123,9 @@
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/08_recording_NEW_contact_sheet.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/clip_accepted.log (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/clip_new.log (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/swim_steer_coins_accepted.mp4 (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/swim_steer_coins_new.mp4 (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/track_accepted.json (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/track_new.json (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/opening.js`
