@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Build swim2 water candidate)
 
-- **Taken:** 2026-11-07 01:25 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 01:30 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-adb55eb6aad0cc08b` (local only), started from `b5d6e59`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (42; full copies in `files/`)
+## Files (46; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/57_swim2/frames/accepted_T1.0.log (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/frames/accepted_T1.0/base_again_canvas.png (new)`
@@ -38,10 +38,14 @@
 - `Previews/WebDemo/screen4_round9_match/57_swim2/frames/swim2_start/base_page.png (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/frames/swim2_start/census.json (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/clip_compare.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/flow_metric.py (new)`
+- `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/gameplay.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/identity.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/pink_silhouette.py (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/record_clip.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/render.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/sheet3.py (new)`
+- `Previews/WebDemo/screen4_round9_match/57_swim2/scripts/zone_water.py (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/videos/clip_accepted.log (new)`
 - `Previews/WebDemo/screen4_round9_match/57_swim2/videos/clip_swim2.log (new)`
 - `WebDemo/src/game.js`
