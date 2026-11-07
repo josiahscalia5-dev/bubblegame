@@ -1,0 +1,22 @@
+3c3,4
+<   "intunnel"
+---
+>   "intunnel",
+>   "fidelity"
+227a229,232
+>       "fidelityCaps": {
+>        "drawCalls": 2,
+>        "triangles": 3360
+>       },
+401,402c406,407
+<   "drawCalls": 209,
+<   "triangles": 1420197
+---
+>   "drawCalls": 211,
+>   "triangles": 1423557
+491,492c496,497
+<   "drawCalls": 189,
+<   "triangles": 1292344
+---
+>   "drawCalls": 191,
+>   "triangles": 1295704

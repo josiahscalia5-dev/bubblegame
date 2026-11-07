@@ -1,0 +1,8 @@
+intunnel,fidelity: 25 frame pairs, 2.1-2.95 s | her own screen motion: median |v| 108 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +61, down  +263 =  271 px/s | oscillation about it (rms)  162 px/s | median speed  302 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +135, down  +294 =  324 px/s | oscillation about it (rms)  157 px/s | median speed  340 px/s
+  below    relative to her: STREAMING (time-mean vector) outward   +45, down  +380 =  382 px/s | oscillation about it (rms)  190 px/s | median speed  372 px/s
+intunnel,fidelity, landing 5.55-6.2 s: 19 frame pairs, 5.55-6.2 s | her own screen motion: median |v| 162 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +86, down   +67 =  109 px/s | oscillation about it (rms)  219 px/s | median speed  291 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +232, down   +52 =  238 px/s | oscillation about it (rms)  236 px/s | median speed  332 px/s
+  below    relative to her: STREAMING (time-mean vector) outward   +41, down  +151 =  156 px/s | oscillation about it (rms)  209 px/s | median speed  272 px/s
