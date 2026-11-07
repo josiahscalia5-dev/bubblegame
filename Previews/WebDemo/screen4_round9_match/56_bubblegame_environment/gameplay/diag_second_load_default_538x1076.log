@@ -1,0 +1,32 @@
+[    0.0 s] viewport 538x1076, S3=intunnel
+[    0.1 s] request document http://localhost:38215/index.html
+[    0.1 s] response document 200
+[    0.1 s] event framenavigated http://localhost:38215/index.html
+[    0.8 s] event domcontentloaded
+[    0.8 s] goto reached domcontentloaded after 0.7 s
+[    0.9 s] event load
+[    5.3 s] game ready after 5.2 s
+[    5.3 s] after the first load: page answers a script call in 0.00 s
+[    8.3 s] after the first load: the page's own animation loop runs at 57.72 frames/s
+[    8.3 s] one advance() (one game step + one render) took 0.01 s of script time
+[    8.3 s] request document http://localhost:38215/index.html
+[    8.3 s] response document 200
+[   11.4 s] event framenavigated http://localhost:38215/index.html
+[   11.4 s] event domcontentloaded
+[   11.6 s] event load
+[   15.1 s] reloaded for the hearts run (same starting state as r2_func)
+[   91.0 s] hearts loop: 277 advance() calls in 75.9 s; knocks 5, back at t=12.25
+[   91.0 s] right after the hearts loop: page answers a script call in 0.01 s
+[  109.5 s] right after the hearts loop: the page's own animation loop runs at 0.05 frames/s
+[  109.5 s] 10 s later: page answers a script call in 0.01 s
+[  109.5 s] second load starts (r2_func gives it 300 s)
+[  109.5 s] request document http://localhost:38215/index.html
+[  109.5 s] response document 200
+[  353.2 s] event framenavigated http://localhost:38215/index.html
+[  353.3 s] event domcontentloaded
+[  353.3 s] goto reached domcontentloaded after 243.8 s
+[  353.3 s] event load
+[  356.5 s] game ready after 247.0 s
+[  356.5 s] after the second load: page answers a script call in 0.00 s
+[  359.5 s] after the second load: the page's own animation loop runs at 60.23 frames/s
+[  359.8 s] done

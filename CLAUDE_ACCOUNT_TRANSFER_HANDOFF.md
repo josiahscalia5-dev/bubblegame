@@ -204,13 +204,22 @@ bash Tools/verify_restore.sh --build      # read-only: branch, push state, accep
 - `bash Previews/WebDemo/screen4_round9_match/55_account_restore/scripts/identity_restore.sh <rebuilt WebDemo copy>`;
 - from `WebDemo/`:
   - `S3=intunnel node tools/screen3/s3_func.cjs $PWD`;
-  - `S3=intunnel node tools/screen3/r2_func.cjs $PWD`;
+  - `S3=intunnel VW=135 VH=270 node tools/screen3/r2_func.cjs $PWD` (ALWAYS with `VW=135 VH=270`: the accepted report
+    was made at that size, R7's `49_water_r7/scripts/gameplay.sh`; at the full default size it times out, section 10.1);
   - `S3=intunnel SCRIPT=swipejump node tools/screen4/motion_trace.cjs $PWD <out.json>`.
 - Compare each with `53_swim/gameplay/*_intunnel.txt` and `53_swim/motion/trace_accepted_swipejump.json`.
 
 ## 10. Outstanding errors, diagnostics and background tasks (7 November, about 00:15 UTC)
 
-1. **`r2_func` (hearts, pause, Bubble Blast, Turbo Spin) is NOT verified on this account.**
+1. **RESOLVED on 7 November (eighteenth session, about 00:56 UTC): `r2_func` PASSES.** Run as the accepted report was
+   made, `S3=intunnel VW=135 VH=270 node tools/screen3/r2_func.cjs $PWD` (the script unchanged), its report is
+   byte-identical to `53_swim/gameplay/r2_func_intunnel.txt` (hearts, pause, Bubble Blast, Turbo Spin, no console
+   errors; 2 min 35 s). Evidence: `Previews/WebDemo/screen4_round9_match/56_bubblegame_environment/README.md`.
+   - **The cause of the timeouts, measured:** this handoff's command left out `VW=135 VH=270`, so the test ran at the
+     full 538 x 1076 viewport. The hearts loop then queues 277 software-rendered frames; after it the page's own loop runs
+     at 0.05 frames/s (58 before), and the second load waits for that backlog: 243.8 s to `domcontentloaded` in the
+     diagnostic (`56_.../scripts/diag_r2_reload.cjs`), over r2_func's fixed 300 s in the real run. Not a game fault.
+   - The record of the seventeenth session's attempt follows.
    - Its hearts section matches the accepted report exactly.
    - It then timed out twice at its second page load (`page.goto` waiting for `domcontentloaded`, 300 s;
      `55_account_restore/gameplay/r2_func_intunnel_run1_timeout.txt` and `r2_func_intunnel.txt`).
@@ -220,8 +229,8 @@ bash Tools/verify_restore.sh --build      # read-only: branch, push state, accep
      INCONCLUSIVE: its time limit (1000 s) stopped it before it printed anything.
      - It asks for about three times the frames the hearts test runs, so slow software rendering alone may explain that.
      - Its first version was invalid: it served files without a content type.
-   - **Next steps to try (read-only):**
-     - run `S3=intunnel node tools/screen3/r2_func.cjs $PWD` again on a quiet machine;
+   - **Next steps it listed (done by the eighteenth session; the third one was the answer):**
+     - run `S3=intunnel node tools/screen3/r2_func.cjs $PWD` again on a quiet machine (timed out again);
      - if it still times out, log `page.goto`'s events at the second load (the corrected diagnostic with `RUN=370`, the
        hearts test's length);
      - or try `VW=135 VH=270` (the script's own small-viewport option for software rendering, same game logic). Only a
