@@ -1,0 +1,40 @@
+CLAUDE CODE — MANDATORY BUBBLE WASH KINGDOM INTRO + REAL TRAVEL CORRECTION
+
+Use both attachments I provide: (1) my 12-panel Bubble Wash Kingdom reference board, showing the intended order and visual direction from opening through completion, and (2) my 34-second recording of the CURRENT build, showing the Laundry Toss! intro screen and tunnel gameplay. The board is the creative/sequence target; the recording is evidence of what needs correction. The original approved Classic Screen 4 remains the authoritative detailed tunnel visual target; do not silently substitute a newer board or screenshot for it.
+
+This is an implementation request in my EXISTING playable Three.js/WebGL game, NOT a redesign, new demo, static illustration, fake video, or proposal. Preserve the existing repository and development branch, working controls, coins, socks, hazards, HUD, camera and game systems. Make a safe checkpoint first. Do not reset or overwrite unrelated work.
+
+THE TWO MAIN FAILURES TO FIX:
+1. The current "Laundry Toss!" girl/washer opening reads like a static illustrated poster. The girl is not visibly performing a proper animated laundry-loading action, and the pink fluffy character is not convincingly entering the washer.
+2. The tunnel gameplay does not convincingly communicate that the pink character is progressing through the washing machine. He appears stuck near the bottom while a tunnel pattern scrolls. Water and character motion feel disconnected. Fix the underlying gameplay staging and real movement/progression, not just add screen shake or a looping texture.
+
+IMPLEMENT AN ACTUAL ANIMATED OPENING:
+- Replace the static-looking opening with a real-time 3D scene in the same premium, joyful cartoon visual language. The girl must be a truly animated character with articulated body, head and arms, facial reactions, and believable timing. Do not pass off a panning static image, flat sprite or pre-rendered poster as animation.
+- Tell this short, readable story: the girl approaches/turns to the washing machine with laundry; she picks up and tosses socks/clothes into its open drum; the small pink fluffy mascot is near the laundry and accidentally gets mixed into the toss; the mascot reacts, flips/bounces/tumbles naturally with physically readable motion, and is carried into the real washer opening; the camera follows or clearly tracks his entry through the glowing washer rim into the magical blue tunnel. The accident must read as playful, not violent.
+- Keep the girl visibly active and expressive. Animate laundry pieces separately, with convincing arcs and timing. Provide continuity from girl's toss -> mascot's accidental tumble -> actual drum crossing -> tunnel entry. Do not teleport the mascot, hide the entire transition behind a cut, or use a static still as the scene.
+- Prefer reusing valid existing models and rigs. If a girl's rig/model does not exist, state that and create or source an appropriate game-ready animated asset with clear provenance; do not claim a static image is a rigged model.
+
+IMPLEMENT GENUINE TUNNEL TRAVEL + SWIMMING:
+- After entry, smoothly settle into the existing rear-view playable tunnel camera. The pink character must be visibly carried forward deeper through changing 3D tunnel geometry, approaching and passing coins, smiling socks, brushes, obstacles, side-paths and later level sections in the visual board's order. Progress must be observable in the game state and in scenery relative to the character—not just through a spinning/scrolled background.
+- The camera may follow behind the mascot to keep him legible on mobile; that does not mean he must slide off screen. But his world/path progress, approaching scenery, passed landmarks and dynamic water interactions must prove he's truly moving through the level. Use proper forward velocity/track progression and synchronized camera movement, with parallax and spatial depth.
+- Give him an identifiable swimming/current-carried motion: rhythmic up/down buoyancy, gentle body pitch/roll and directional lean responding to swipe steering, small paddling or struggle/recovery where appropriate, responsive speed/wake feedback, and water displacement around his lower fur. He must remain clearly ON/in contact with saturated dimensional blue water, not behind a transparent white film, white cloud, or flat foam strip. Do not conceal the pink fur.
+- Keep left/right swipe controls (and existing supported controls), meaningful hitboxes, collectible pickup, sock rescue counter, hazards, gameplay scoring and progression working. Validate movement while steering, collecting and hitting obstacles, not just in an idle cutscene.
+- Preserve the approved original Classic Screen 4 composition and key details, including silver/lavender/purple metallic washer housing/rim, pink and blue brushes, dimensional saturated blue water, coins, socks, bubbles and camera perspective. Respect the supplied 12-panel sequence for side-paths, encounters and the eventual ending; do not skip straight to the completion screen.
+
+WORK IN STAGES, VERIFY, SHOW EVIDENCE:
+A. Inspect current code, assets, state machine and current intro/tunnel transition; identify why the opening is static-looking and why progress reads as stationary. Report exact causes, not guesses.
+B. Make a reversible checkpoint; implement and test the animated girl, laundry toss and continuous washer entry.
+C. Implement and test physically/spatially credible forward travel, dynamic swim/water contact and camera continuity. Do not degrade the existing approved tunnel visuals or gameplay.
+D. Play through the REAL build on a mobile viewport, not a mockup. Capture a continuous recording showing girl moving + throwing laundry, pink mascot accidentally entering washer, camera transitioning into tunnel, swipe-controlled swimming, collectible pickup, travel through distinct sections and continued forward progress. Include before/after captures at comparable camera/time/seed (seed 7 and about 3 seconds into tunnel if still supported).
+E. Run existing build/tests and basic input/collectible/regression checks. Report changed files, test results, any missing asset or blocker, and actual project/branch/commit. Do not falsely claim that something worked if not tested. Keep scope limited to this specific intro and gameplay-motion correction.
+
+NON-NEGOTIABLE ACCEPTANCE CHECKS:
+[ ] Girl demonstrably moves in real-time 3D, interacts with laundry and throws socks/clothes.
+[ ] Pink mascot visibly reacts, accidentally travels into washer, and crosses the actual drum opening.
+[ ] The entry into the tunnel reads as one connected action, not a poster then unexplained jump cut.
+[ ] In playable Screen 4, mascot is visibly progressing deeper through the level while maintaining steering/collection.
+[ ] Mascot has responsive swimming/bobbing/body tilt and believable blue-water contact with no white film.
+[ ] Known approved visual elements and existing game mechanics remain intact.
+[ ] I receive an authentic after-video plus exact test evidence and changed-file list.
+
+Do not spend time giving me another generic concept or redesign. Inspect the real project, implement these corrections, and show me proof in the running game. If any essential part cannot be completed, name that exact blocker and preserve the current working build rather than pretending it's done.
