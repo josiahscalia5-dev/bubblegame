@@ -1,0 +1,3 @@
+?s3=intunnel start: bb2cffb8 vs 3fff8982: 0 pixels differ
+?s3=intunnel,structmatch T3.0: bb2cffb8 vs 3fff8982: 0 pixels differ
+?s3=, T1.0: bb2cffb8 vs 3fff8982: 0 pixels differ

@@ -1,0 +1,21 @@
+{
+ "view": "412x839",
+ "s3": "intunnel,structmatch,home",
+ "sound": [
+  "On",
+  "Off"
+ ],
+ "before": {
+  "phase": "intro",
+  "overlay": true
+ },
+ "after": {
+  "phase": "intro"
+ },
+ "run": {
+  "phase": "running",
+  "z": 5.685,
+  "coins": 1280
+ },
+ "logs": []
+}
