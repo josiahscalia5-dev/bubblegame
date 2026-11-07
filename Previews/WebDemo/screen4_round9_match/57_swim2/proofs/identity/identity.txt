@@ -1,0 +1,7 @@
+accepted_intunnel start: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)
+accepted_intunnel T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)
+accepted_intunnel T2.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)
+R9 start: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)
+R9 T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)
+normal_game start: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)
+normal_game T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 1199348a)

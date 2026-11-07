@@ -1,6 +1,23 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
-## Newest (6 November 23:10 to 7 November about 00:20 UTC): seventeenth session, the SECOND Claude account, restoration and account-transfer backup; NO game changes
+## Newest (7 November, about 00:30-02:20 UTC): eighteenth session (session `4fd798d9`), the `bubblegame` environment and `?s3=intunnel,swim2`
+
+- **Branch:** `ccr-10503be1-pnv5vq` (the session started on `ccr-312c8679-hmvgmy`; one chat auto-save there, left alone).
+- **Cloud environment `bubblegame` created on this account** (`env_016qrkLt8s9RU8tVo9qEp8qo`; limited network, package
+  registries and MCP servers on, `download.blender.org`, `download.pytorch.org`). Its setup script runs
+  `Tools/cloud_env_setup.sh` only if the checkout has it, never blocking the start (`56_bubblegame_environment/environment/`).
+  - In this session the installer passed every step (PyTorch 2.15, Optuna 5.0, LPIPS 0.1.4, Blender 5.2.3, OpenCV 5.0.0).
+  - **A fresh test session (`session_013kxR3NwDzeVN7p4AeFLoUM`) ran it by itself:** Blender, Mesa and OpenCV installed,
+    then it hung over an hour on the PyTorch step (no time limit). Proposed fix, waiting for the user: a time limit on it.
+- **`r2_func` PASSES** with `VW=135 VH=270`, byte-identical to the accepted report. The full-size timeout was measured: queued
+  software rendering (`56_bubblegame_environment/`). `verify_restore.sh --build`: 27 passed, 0 failed (before swim2).
+- **`?s3=intunnel,swim2` committed behind its flag at the user's approval** (`57_swim2/README.md`), not part of `intunnel`:
+  the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px. The accepted
+  `intunnel`, R9 and the normal game 0 px different; gameplay tests identical. Bundle md5 `1199348a`. Built by
+  `screen4-water-motion-engineer` alone (no art-director review: the user asked to save credits).
+- **Next:** the user decides on further experiments; one at a time.
+
+## Earlier (6 November 23:10 to 7 November about 00:20 UTC): seventeenth session, the SECOND Claude account, restoration and account-transfer backup; NO game changes
 
 - **Branch:** `ccr-10503be1-pnv5vq` (the session started on `ccr-38535f0b-o7euxq`; its chat-log commits were merged in with
   a normal merge, nothing rewritten). Session `08b39b21` is in `Tools/autosave_sessions.json`; the autosave runs detached.

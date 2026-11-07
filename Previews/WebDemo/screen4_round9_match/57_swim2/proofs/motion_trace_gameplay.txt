@@ -1,0 +1,1 @@
+motion trace gameplay fields (53_swim/motion/trace_accepted_swipejump.json vs 57_swim2/motion/trace_swim2_swipejump.json): 152 vs 152 frames x 16 fields (t, phase, x, xv, lane, air, yAbs, surf, speed, hearts, coins, gems, socks, knocks, bumps, z): 0 differences []

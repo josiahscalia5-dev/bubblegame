@@ -28,6 +28,7 @@
 import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
+import { SWIM2_ON, swim2Travel, swim2FlowPhase } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's water flows with her travel
 
 export const HERO_WATER = {
   // where the swell rises out of the water, in metres from the drum's mouth (the hero moment is at -3.27)
@@ -92,6 +93,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     dt = Math.min(dt || 0, 0.1);
     const z = mascot.z;
     S.k = THREE.MathUtils.smoothstep(z, TS + HERO_WATER.fade[0], TS + HERO_WATER.fade[1]);
+    if (SWIM2_ON) swim2Travel(S, z);   // ?s3=intunnel,swim2: the distance she has swum (read only)
     const e = (tau) => 1 - Math.exp(-dt / tau);
     S.lagX += (mascot.x - S.lagX) * e(SWIM_ON ? SWIM.collar.lag : 0.07);
     S.lat += ((mascot.xv || 0) - S.lat) * e(0.12);
@@ -170,6 +172,7 @@ function heroSwell({ scene, updaters, time, S }) {
   const g = swellGeometry(P);
   const u = { uTime: time, uFade: { value: 0 }, uC: { value: new THREE.Vector3() }, uR: { value: new THREE.Vector3(1, 0, 0) }, uU: { value: new THREE.Vector3(0, 1, 0) },
     uT: { value: new THREE.Vector3(0, 0, 1) }, uLat: { value: 0 }, uAir: { value: 0 }, uLand: { value: 0 }, uPX: { value: 0 }, uXMax: { value: 3 }, uFlow: { value: P.flow } };
+  if (SWIM2_ON) u.uSwim2Fl = { value: 0 };   // ?s3=intunnel,swim2: the face's flow phase from her travel (tunnel_r8_liquid.js liquidSwell)
   for (const [k, v] of Object.entries(K)) u['uK' + k] = { value: lin(v) };
   const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: swellVertex(P), fragmentShader: swellFragment(Wt), transparent: true, depthWrite: true });
   const mesh = new THREE.Mesh(g, mat); mesh.name = 'heroSwell'; mesh.frustumCulled = false; mesh.renderOrder = 5; mesh.visible = false;
@@ -179,6 +182,7 @@ function heroSwell({ scene, updaters, time, S }) {
     u.uFade.value = S.k; u.uC.value.copy(S.C); u.uR.value.copy(S.F.R); u.uU.value.copy(S.F.U); u.uT.value.copy(S.F.T);
     u.uLat.value = THREE.MathUtils.clamp(S.lat, -6, 6); u.uAir.value = S.air; u.uLand.value = S.land; u.uPX.value = S.lagX; u.uXMax.value = S.xMax;
     u.uFlow.value = P.flow * (0.6 + 0.4 * THREE.MathUtils.clamp(S.speed / 7, 0, 1.5));
+    if (SWIM2_ON) u.uSwim2Fl.value = swim2FlowPhase(S);
   });
   return { drawCalls: 1, triangles: g.index.count / 3 };
 }

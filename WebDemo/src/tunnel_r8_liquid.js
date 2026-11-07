@@ -40,6 +40,7 @@ import { buildBaseDomes } from './tunnel_s4_domes.js';
 import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swell's face takes the original's water
 import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
 import { swimWakeDecl, swimWakeGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the floor's wake coloured ('' without the switch)
+import { SWIM2_ON } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's face flows with her travel (uSwim2Fl)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -722,7 +723,7 @@ function liquidSwell({ scene, GL, LU }) {
   const old = s.material, C = LIQUID.swell.clear, Fm = LIQUID.foam, K = LIQUID.colours, Wv = LIQUID.waves;
   const fs = /* glsl */ `
 ${GL}
-${MATCH_ON ? matchWallGLSL() + matchFloorDecl() : ''}uniform float uFade, uFlow, uLand;
+${MATCH_ON ? matchWallGLSL() + matchFloorDecl() : ''}uniform float uFade, uFlow, uLand${SWIM2_ON ? ', uSwim2Fl' : ''};
 uniform vec3 uC, uR, uU, uT;
 varying vec3 vW, vN; varying vec4 vS;
 void main() {
@@ -732,7 +733,7 @@ void main() {
   if (dot(N0, V) < 0.0) N0 = -N0;
   // its tangents: along the crest and down the face (the water runs down the face toward the camera and out along the bank)
   vec3 along = normalize(cross(uU, N0) + 1e-4), down = normalize(cross(N0, along));
-  float fl = uTime * uFlow;
+  float fl = uTime * uFlow${SWIM2_ON ? ' + uSwim2Fl' : ''};
   vec2 uv = vec2(as, d * 1.6);
   vec2 flow = vec2(0.4, 0.6);
   vec2 scroll = vec2(-fl * 0.3, -fl * 1.1);

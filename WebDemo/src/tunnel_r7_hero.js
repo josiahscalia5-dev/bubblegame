@@ -26,6 +26,7 @@ import { LIQUID_ON, buildLiquid } from './tunnel_r8_liquid.js';   // ?s3=liquid:
 import { MATCH_ON, MATCH, deepMerge, buildMatch } from './tunnel_r9_match.js';   // ?s3=match: Round 9's art-match pass
 import { buildMatchWater } from './tunnel_r9_match_water.js';
 import { phoneTanW } from './match_phone.js';   // ?s3=match only: the phone framing
+import { SWIM2_ON, SWIM2 } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: round3's swirl, whirlpool and inner bubbles kept hidden
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -294,7 +295,7 @@ export function buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets
   }
 
   // 7. what the hero scene replaces
-  const hidden = HERO.hide.map((n) => scene.getObjectByName(n)).filter(Boolean);
+  const hidden = (SWIM2_ON ? [...HERO.hide, ...SWIM2.hide] : HERO.hide).map((n) => scene.getObjectByName(n)).filter(Boolean);
   updaters.push(() => { for (const o of hidden) o.visible = false; });
   report.hidden = hidden.map((o) => o.name);
   return report;

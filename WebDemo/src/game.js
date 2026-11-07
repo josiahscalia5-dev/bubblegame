@@ -3,6 +3,7 @@
 // The Unity project stays the real game; this is a separate demonstration.
 import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
 import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
+import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1595,6 +1596,7 @@ function step(dt) {
   decor.update(dt, state.time);
   for (const ring of mats.rings) ring.material.color.copy(ring.userData.base).multiplyScalar(0.8 + 0.25 * Math.sin(state.time * 2.4 + ring.userData.pulse));
   fx.update(dt);
+  if (SWIM2_ON && fx.u.uMaxPx) fx.u.uMaxPx.value = swim2CapPx(renderer.domElement.height, WATER7.maxPx);   // ?s3=intunnel,swim2: the cap eases in as she starts
   updateCamera(dt);
   fadeStartPanels();
   if (opening) opening.update(dt, state.time, state.phase);
@@ -1647,11 +1649,11 @@ async function main() {
   } else if (vKind < 0.5) {`);
       fx.points.material.needsUpdate = true;
     }
-    if (WATER7_ON || SWIM_ON) {   // ?s3=intunnel,water7 (R7) and ?s3=intunnel,swim: every spray droplet drawn no bigger than a small fleck (tunnel_s4_bt.js WATER7)
+    if (WATER7_ON || SWIM_ON || (SWIM2_ON && SWIM2.cap)) {   // ?s3=intunnel,water7 (R7), ?s3=intunnel,swim and ?s3=intunnel,swim2: every spray droplet drawn no bigger than a small fleck (tunnel_s4_bt.js WATER7)
       fx.u.uMaxPx = { value: renderer.domElement.height * WATER7.maxPx };
       const dm = fx.points.material;
       dm.vertexShader = dm.vertexShader.replace('uniform float uScale;', 'uniform float uScale, uMaxPx;')
-        .replace('gl_PointSize = size * uScale / max(0.1, -mv.z);', 'gl_PointSize = min(size * uScale / max(0.1, -mv.z), uMaxPx);');
+        .replace('gl_PointSize = size * uScale / max(0.1, -mv.z);', WATER7_ON || SWIM_ON ? 'gl_PointSize = min(size * uScale / max(0.1, -mv.z), uMaxPx);' : SWIM2_POINT);   // (swim2: the sparkles, kind 2, keep their size)
       dm.needsUpdate = true;
     }
     // Lavender, white and gold as in the approved Screen 3 (shaders.js CASTLE_GRADE), softened by haze.

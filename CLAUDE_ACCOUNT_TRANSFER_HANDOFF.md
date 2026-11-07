@@ -82,7 +82,7 @@ the session lives. `bash Tools/verify_restore.sh` checks that the local head equ
 | `intunnel,water2` .. `water8` (R2-R8) | experiments behind flags in `WebDemo/src/tunnel_s4_bt.js`; not merged |
 | `intunnel,water9` (R9) | **rejected by the user** (a pale white-blue band travels with her); kept behind its flag |
 | `intunnel,swim` | **rejected by the art director** ("a frilled glass bowl on blue pillows"); its motion parts measured well |
-| `intunnel,swim2` | **NOT BUILT.** `SWIM2_ON` is exported in `tunnel_s4_bt.js` but nothing reads it and the committed bundle does not contain it. Reserved for the next correction |
+| `intunnel,swim2` | **BUILT and committed behind its flag on 7 November (eighteenth session), at the user's approval; NOT part of `?s3=intunnel`.** The tunnel stays cobalt while moving (`r3Swirl`/`r3Whirlpool`/`r3Bubbles` kept hidden), the water at her flows with her travel, spray capped at 12 px. Bundle md5 `1199348a`: the accepted `intunnel`, R9 and the normal game 0 px different; `s3_func`, `r2_func`, the motion trace identical. Code `WebDemo/src/tunnel_s4_swim2.js`; evidence `57_swim2/README.md`. Not reviewed by the art director |
 | `domes`, `bank`, `wave`, `crest` | rejected earlier; records behind their flags |
 | `screen4-water-motion-engineer` agent | **activated** on 6 November 23:39 UTC (commit `8157579`), at the user's approval; it loads in new sessions (verified) |
 | Specialist inspections (water, lighting, animation) | **finished** 7 November (section 4) |

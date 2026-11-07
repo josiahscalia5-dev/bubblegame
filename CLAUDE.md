@@ -64,7 +64,10 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
   - `match`: Round 9 art match (`tunnel_r9_match.js`, `tunnel_r9_match_water.js`), including the seventh session's focused
     pass from the 15:55 brief (larger character, tilted sock, aqua-white froth bank; evidence `13_...`, `14_...`,
     `20_focused_pass_merged/`). Its froth predates the 17:15 correction above.
-  - `intunnel` (newest, 6 November, fourteenth session, the user's directive: "start directly inside this blue laundry
+  - `intunnel,swim2` (7 November, eighteenth session, the user's approval to commit it behind its flag; NOT part of
+    `intunnel`): the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px
+    (`WebDemo/src/tunnel_s4_swim2.js`, `SWIM2_ON`; evidence `Previews/WebDemo/screen4_round9_match/57_swim2/`).
+  - `intunnel` (6 November, fourteenth session, the user's directive: "start directly inside this blue laundry
     tunnel ... no girl scene, no extra opening, no separate swimming sequence"): `bt` plus the run STARTING inside the tunnel
     at the approved viewpoint (`INTUNNEL` in `WebDemo/src/tunnel_s4_bt.js`, code gated on `INTUNNEL_ON` in `game.js`; the
     opening camera `S3.cine` off). Evidence: `Previews/WebDemo/screen4_round9_match/40_intunnel_start/README.md`. The bubble
