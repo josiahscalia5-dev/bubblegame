@@ -491,5 +491,28 @@ The transition holds: the rim hands over to the drum's metal between +0.25 s and
 The water part is a mixed result, and I'll report it as such under the stop rule. Waiting for the final gameplay proofs.
 
 - 14:58 `Bash`: Wait for the final gameplay proofs
+- 15:08 `Bash`: Check progress and measure the final frames
+- 15:08 `Bash`: Diff the old and new index.html
+**Agent** (15:09 UTC):
 
-_218 tool steps._
+Only my inactive `body.s4struct` CSS block differs in the page. Let me see what actually differs in the top 100 px.
+
+- 15:09 `Bash`: Visualise the HUD-area difference
+- 15:09 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/hud_diff.png
+- 15:09 `Bash`: Move the hud2 CSS from page.html into a JS-injected style
+- 15:09 `Bash`: Rebuild and confirm index.html is byte-identical
+**Agent** (15:09 UTC):
+
+`index.html` is now byte-identical to the committed page; final bundle 2c9edf60. I'll save the work in progress now, then re-run the whole proof chain on this final bundle.
+
+- 15:09 `Bash`: Save the work in progress to GitHub
+- 15:09 `Bash`: Final proof chain on the final bundle
+- 15:10 `Bash`: Show the WIP commit hash
+**Agent** (15:10 UTC):
+
+While the final chain runs, I'll write the README; I'll check its numbers against the final outputs afterwards.
+
+- 15:10 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/README.md
+- 15:10 `Bash`: Wait for the final proof chain
+
+_229 tool steps._

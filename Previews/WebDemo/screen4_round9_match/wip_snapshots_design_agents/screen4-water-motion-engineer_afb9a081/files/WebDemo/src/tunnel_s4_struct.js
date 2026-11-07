@@ -85,7 +85,25 @@ export const STRUCT = {
   if (t) for (const k of Object.keys(t)) STRUCT[k] = t[k] && typeof t[k] === 'object' && !Array.isArray(t[k]) ? { ...STRUCT[k], ...t[k] } : t[k];
 }
 if (STRUCT_ON && typeof window !== 'undefined') window.__BW_STRUCT__ = STRUCT;   // (live DevTools inspection)
-if (STRUCT_PARTS.hud && typeof document !== 'undefined') document.body.classList.add('s4struct');   // (page.html)
+// ,hud2 (opt-in, deferred by the user): the power buttons as the ORIGINAL's corner cards (low, in the corners, running off
+// the frame's bottom; icon, "3" badge, a small label) and a small, low Tap to Start pill; the visible card 50 u tall (at
+// least 44 CSS px on a Pixel 7); every button keeps its function. Injected only with the switch, so the page (index.html) is
+// byte-identical without it (a stylesheet change alone shifted the HUD icons' rasterization by a few levels).
+const HUD2_CSS = `
+  body.s4struct .power { bottom: calc(var(--u) * -16 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 92); height: calc(var(--u) * 66); border-radius: calc(var(--u) * 20); }
+  body.s4struct #blastBtn { left: calc(var(--u) * 6); }
+  body.s4struct #turboBtn { right: calc(var(--u) * -8); }
+  body.s4struct .power svg { left: calc(var(--u) * 22); top: calc(var(--u) * 2); width: calc(var(--u) * 42); height: calc(var(--u) * 42); }
+  body.s4struct .power .lbl { bottom: auto; top: calc(var(--u) * 40); font-size: calc(var(--u) * 8); }
+  body.s4struct .power .badge { right: calc(var(--u) * 6); top: calc(var(--u) * -7); width: calc(var(--u) * 27); height: calc(var(--u) * 27); font-size: calc(var(--u) * 16); }
+  body.s4struct #turboBtn .badge { right: calc(var(--u) * 14); }
+  body.s4struct #startPanel { bottom: calc(var(--u) * 4 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 60); height: calc(var(--u) * 21); margin-left: calc(var(--u) * 3); }
+  body.s4struct #startPanel .tap { top: calc(var(--u) * 2.5) !important; font-size: calc(var(--u) * 10.5); line-height: calc(var(--u) * 16); white-space: nowrap; }
+`;
+if (STRUCT_PARTS.hud && typeof document !== 'undefined') {
+  document.body.classList.add('s4struct');
+  const st = document.createElement('style'); st.textContent = HUD2_CSS; document.head.appendChild(st);
+}
 
 // a private random sequence for every object made here (three.js draws UUIDs from Math.random)
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
