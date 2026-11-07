@@ -1,0 +1,3 @@
+accepted_intunnel start: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 3fcf55d8)
+accepted_intunnel T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 3fcf55d8)
+accepted_intunnel T2.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 5bb24e28 vs rebuilt 3fcf55d8)

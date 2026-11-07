@@ -172,5 +172,25 @@ Now write the identity script while the clips record.
 - 01:26 `Bash`: Check clip recording progress
 - 01:26 `Bash`: Look for an existing accepted intunnel clip
 - 01:26 `Bash`: Wait for the swim2 clip to finish
+- 01:36 `Bash`: Wait for both clips to finish
+- 01:37 `Bash`: Wait for the accepted clip
+- 01:37 `Bash`: Run identity renders old vs new bundle
+**Agent** (01:37 UTC):
 
-_109 tool steps._
+Both clips done. Building the side-by-side and key-moments sheet, and running the flow metric.
+
+- 01:38 `Bash`: Build the side-by-side clip and key moments sheet
+- 01:38 `Bash`: Downscale the key-moments sheet for viewing
+- 01:38 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/km_s.jpg
+- 01:38 `Bash`: Crop lower halves of clip frames for a close look
+- 01:38 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/contact_rows.jpg
+- 01:38 `Bash`: Run the flow metric on both clips
+- 01:39 `Bash`: Re-render swim2 +1 s and +2 s on the final build
+- 01:40 `Bash`: Build ORIGINAL/accepted/swim2 sheets per moment
+- 01:40 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/T2_low.jpg
+- 01:40 `Bash`: Find particle kind meanings
+- 01:40 `Bash`: Read the particle vertex shader
+- 01:40 `Bash`: Check the particle kind attribute name
+- 01:40 `Grep`: vKind|uScale /
+
+_125 tool steps._
