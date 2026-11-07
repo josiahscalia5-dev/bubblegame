@@ -1,8 +1,190 @@
+diff --git a/WebDemo/artifact.html b/WebDemo/artifact.html
+index d88b044..d284844 100644
+--- a/WebDemo/artifact.html
++++ b/WebDemo/artifact.html
+@@ -222,6 +222,18 @@
+   body.intunnel #startPanel .tap { top: calc(var(--u) * 4) !important; font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 17); white-space: normal; }
+   /* the sound button on Tap to Start (hidden while running): under the gem counter, where the pause button shows in the run */
+   body.s4focus #soundBtn { top: calc(var(--u) * 52 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 236); width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
++  /* ?s3=intunnel,structmatch,hud2 only (opt-in, deferred by the user): the power buttons as the ORIGINAL's corner cards (low,
++     in the corners, running off the frame's bottom; icon, "3" badge, a small label) and a small, low Tap to Start pill.
++     Visible card 50 u tall (at least 44 CSS px on a Pixel 7); every button keeps its function */
++  body.s4struct .power { bottom: calc(var(--u) * -16 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 92); height: calc(var(--u) * 66); border-radius: calc(var(--u) * 20); }
++  body.s4struct #blastBtn { left: calc(var(--u) * 6); }
++  body.s4struct #turboBtn { right: calc(var(--u) * -8); }
++  body.s4struct .power svg { left: calc(var(--u) * 22); top: calc(var(--u) * 2); width: calc(var(--u) * 42); height: calc(var(--u) * 42); }
++  body.s4struct .power .lbl { bottom: auto; top: calc(var(--u) * 40); font-size: calc(var(--u) * 8); }
++  body.s4struct .power .badge { right: calc(var(--u) * 6); top: calc(var(--u) * -7); width: calc(var(--u) * 27); height: calc(var(--u) * 27); font-size: calc(var(--u) * 16); }
++  body.s4struct #turboBtn .badge { right: calc(var(--u) * 14); }
++  body.s4struct #startPanel { bottom: calc(var(--u) * 4 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 60); height: calc(var(--u) * 21); margin-left: calc(var(--u) * 3); }
++  body.s4struct #startPanel .tap { top: calc(var(--u) * 2.5) !important; font-size: calc(var(--u) * 10.5); line-height: calc(var(--u) * 16); white-space: nowrap; }
+   #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
+   #pausePanel .card { position: absolute; top: calc(var(--u) * 160); width: calc(var(--u) * 190); padding: calc(var(--u) * 14) calc(var(--u) * 18) calc(var(--u) * 18); box-sizing: border-box;
+     display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
+diff --git a/WebDemo/index.html b/WebDemo/index.html
+index 023d3c3..b47118e 100644
+--- a/WebDemo/index.html
++++ b/WebDemo/index.html
+@@ -229,6 +229,18 @@
+   body.intunnel #startPanel .tap { top: calc(var(--u) * 4) !important; font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 17); white-space: normal; }
+   /* the sound button on Tap to Start (hidden while running): under the gem counter, where the pause button shows in the run */
+   body.s4focus #soundBtn { top: calc(var(--u) * 52 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 236); width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
++  /* ?s3=intunnel,structmatch,hud2 only (opt-in, deferred by the user): the power buttons as the ORIGINAL's corner cards (low,
++     in the corners, running off the frame's bottom; icon, "3" badge, a small label) and a small, low Tap to Start pill.
++     Visible card 50 u tall (at least 44 CSS px on a Pixel 7); every button keeps its function */
++  body.s4struct .power { bottom: calc(var(--u) * -16 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 92); height: calc(var(--u) * 66); border-radius: calc(var(--u) * 20); }
++  body.s4struct #blastBtn { left: calc(var(--u) * 6); }
++  body.s4struct #turboBtn { right: calc(var(--u) * -8); }
++  body.s4struct .power svg { left: calc(var(--u) * 22); top: calc(var(--u) * 2); width: calc(var(--u) * 42); height: calc(var(--u) * 42); }
++  body.s4struct .power .lbl { bottom: auto; top: calc(var(--u) * 40); font-size: calc(var(--u) * 8); }
++  body.s4struct .power .badge { right: calc(var(--u) * 6); top: calc(var(--u) * -7); width: calc(var(--u) * 27); height: calc(var(--u) * 27); font-size: calc(var(--u) * 16); }
++  body.s4struct #turboBtn .badge { right: calc(var(--u) * 14); }
++  body.s4struct #startPanel { bottom: calc(var(--u) * 4 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 60); height: calc(var(--u) * 21); margin-left: calc(var(--u) * 3); }
++  body.s4struct #startPanel .tap { top: calc(var(--u) * 2.5) !important; font-size: calc(var(--u) * 10.5); line-height: calc(var(--u) * 16); white-space: nowrap; }
+   #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
+   #pausePanel .card { position: absolute; top: calc(var(--u) * 160); width: calc(var(--u) * 190); padding: calc(var(--u) * 14) calc(var(--u) * 18) calc(var(--u) * 18); box-sizing: border-box;
+     display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
+diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
+index ebe4862..1df208e 100644
+--- a/WebDemo/src/game.js
++++ b/WebDemo/src/game.js
+@@ -5,6 +5,7 @@ import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';
+ import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
+ import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
+ import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
++import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
+ import * as THREE from 'three';
+ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+@@ -882,6 +883,7 @@ function buildMascot(gltf) {
+   const s = MASCOT_WIDTH / size.x;                      // arms-to-arms, matched to the approved Screen 3
+   model.position.copy(centre).multiplyScalar(-s);
+   model.scale.setScalar(s);
++  if (STRUCT_PARTS.hero) structPrivately(0x57a0, () => structCrown(model));   // ?s3=intunnel,structmatch,hero2: her crown as a smooth arc (drawn only; her size and fit unchanged)
+   // Fur: the Meshy colour with soft round light (a blend of the fur's own normals and the body's
+   // sphere), strand-by-strand light and shade, glowing pink fur tips around the silhouette, deeper
+   // magenta toward the water and droplets twinkling in the fur (shaders.js furFragment).
+@@ -895,8 +897,10 @@ function buildMascot(gltf) {
+   model.traverse((o) => {
+     if (!o.isMesh) return;
+     o.material = new THREE.ShaderMaterial({ uniforms: { map: { value: o.material.map }, ...mats.fur },
+-      vertexShader: SH.furVertex, fragmentShader: SH.furFragment, side: THREE.DoubleSide });
++      vertexShader: SH.furVertex, fragmentShader: STRUCT_PARTS.hero ? structFurFragment(SH.furFragment) : SH.furFragment, side: THREE.DoubleSide });   // (?s3=...,structmatch,hero2: Screen 4's fur)
+   });
++  if (STRUCT_PARTS.hero) structFurUniforms(mats.fur);   // ?s3=intunnel,structmatch,hero2: a whiter rim
++  if (STRUCT_PARTS.water) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
+   const squash = new THREE.Group(); squash.add(model);
+   const tilt = new THREE.Group(); tilt.add(squash);
+   const root = new THREE.Group(); root.add(tilt);
+diff --git a/WebDemo/src/opening.js b/WebDemo/src/opening.js
+index ff53be6..a9e77a8 100644
+--- a/WebDemo/src/opening.js
++++ b/WebDemo/src/opening.js
+@@ -35,6 +35,7 @@ import { PHASE_A, applyPhaseA } from './phase_a.js';
+ import { S3, S3_ON, loadScreen3Models } from './screen3_models.js';
+ import { MATCH_ON } from './tunnel_r9_match.js';
+ import { phoneRefFov } from './match_phone.js';   // ?s3=match only: the 1:2 reference camera under the phone framing
++import { STRUCT_PARTS, structScale } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch,hero2: her Screen 4 presentation
+ 
+ export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
+ 
+@@ -426,7 +427,8 @@ export function buildOpening(ctx) {
+   // ---------------------------------------------------------------- 4c. the pink mascot's presentation
+   // The same Meshy mascot, mesh, controller and animation: only how it is drawn. The approved mascot is a
+   // little more upright, with crisper spiky strands and water droplets on its fur tips.
+-  if (OPENING_PARTS.mascot && mascotModel) {
++  if (STRUCT_PARTS.hero && mascotModel) structScale(mascotModel);   // ?s3=intunnel,structmatch,hero2: Screen 3's presentation off on Screen 4 (tunnel_s4_struct.js)
++  else if (OPENING_PARTS.mascot && mascotModel) {
+     const k = new THREE.Vector3(...MASCOT_PRESENTATION.stretch);
+     mascotModel.scale.multiply(k); mascotModel.position.multiply(k);   // about the body's centre (the model is centred on it)
+     if (fur) fur.uSpike.value = MASCOT_PRESENTATION.spike;
+diff --git a/WebDemo/src/page.html b/WebDemo/src/page.html
+index d23f278..54cc5af 100644
+--- a/WebDemo/src/page.html
++++ b/WebDemo/src/page.html
+@@ -222,6 +222,18 @@
+   body.intunnel #startPanel .tap { top: calc(var(--u) * 4) !important; font-size: calc(var(--u) * 14); line-height: calc(var(--u) * 17); white-space: normal; }
+   /* the sound button on Tap to Start (hidden while running): under the gem counter, where the pause button shows in the run */
+   body.s4focus #soundBtn { top: calc(var(--u) * 52 + env(safe-area-inset-top, 0px)); left: calc(var(--u) * 236); width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
++  /* ?s3=intunnel,structmatch,hud2 only (opt-in, deferred by the user): the power buttons as the ORIGINAL's corner cards (low,
++     in the corners, running off the frame's bottom; icon, "3" badge, a small label) and a small, low Tap to Start pill.
++     Visible card 50 u tall (at least 44 CSS px on a Pixel 7); every button keeps its function */
++  body.s4struct .power { bottom: calc(var(--u) * -16 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 92); height: calc(var(--u) * 66); border-radius: calc(var(--u) * 20); }
++  body.s4struct #blastBtn { left: calc(var(--u) * 6); }
++  body.s4struct #turboBtn { right: calc(var(--u) * -8); }
++  body.s4struct .power svg { left: calc(var(--u) * 22); top: calc(var(--u) * 2); width: calc(var(--u) * 42); height: calc(var(--u) * 42); }
++  body.s4struct .power .lbl { bottom: auto; top: calc(var(--u) * 40); font-size: calc(var(--u) * 8); }
++  body.s4struct .power .badge { right: calc(var(--u) * 6); top: calc(var(--u) * -7); width: calc(var(--u) * 27); height: calc(var(--u) * 27); font-size: calc(var(--u) * 16); }
++  body.s4struct #turboBtn .badge { right: calc(var(--u) * 14); }
++  body.s4struct #startPanel { bottom: calc(var(--u) * 4 + env(safe-area-inset-bottom, 0px)); width: calc(var(--u) * 60); height: calc(var(--u) * 21); margin-left: calc(var(--u) * 3); }
++  body.s4struct #startPanel .tap { top: calc(var(--u) * 2.5) !important; font-size: calc(var(--u) * 10.5); line-height: calc(var(--u) * 16); white-space: nowrap; }
+   #pausePanel { inset: 0; pointer-events: auto; background: rgba(28, 18, 86, 0.45); z-index: 5; }
+   #pausePanel .card { position: absolute; top: calc(var(--u) * 160); width: calc(var(--u) * 190); padding: calc(var(--u) * 14) calc(var(--u) * 18) calc(var(--u) * 18); box-sizing: border-box;
+     display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
+diff --git a/WebDemo/src/tunnel_r7_hero_water.js b/WebDemo/src/tunnel_r7_hero_water.js
+index 3d5941d..29feeab 100644
+--- a/WebDemo/src/tunnel_r7_hero_water.js
++++ b/WebDemo/src/tunnel_r7_hero_water.js
+@@ -30,6 +30,8 @@ import { NOISE } from './shaders.js';
+ import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
+ import { SWIM2_ON, swim2Travel, swim2FlowPhase } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's water flows with her travel
+ import { BLEND_ON, blendSwell } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the crest round her lower and domed (nothing changes without it)
++import { STRUCT_PARTS, buildStructWater } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the water round her in water space (the swell hidden)
++import { undisplayGLSL } from './tunnel_r9_match.js';   // (its screen colours, as the walls')
+ 
+ export const HERO_WATER = {
+   // where the swell rises out of the water, in metres from the drum's mouth (the hero moment is at -3.27)
+@@ -117,6 +119,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
+     S.xMax = 3 + (half - 0.22 - 3) * inside;   // inside the drum: off the walls
+   });
+   report.swell = heroSwell({ scene, updaters, time, S });
++  if (STRUCT_PARTS.water) report.structWater = buildStructWater({ scene, TR, L, W, mascot, updaters, time, S, undisplay: undisplayGLSL() });   // ?s3=intunnel,structmatch
+   report.splash = heroSplash({ scene, updaters, time, S });
+   report.floor = heroFloor({ waterSheets, drumSheet, fogAnchor, updaters, S });
+   // the white blanket: round7's foam lumps and the opening's foam round the mascot, hidden while the swell is up
+@@ -180,7 +183,7 @@ function heroSwell({ scene, updaters, time, S }) {
+   const mesh = new THREE.Mesh(g, mat); mesh.name = 'heroSwell'; mesh.frustumCulled = false; mesh.renderOrder = 5; mesh.visible = false;
+   scene.add(mesh);
+   updaters.push(() => {
+-    mesh.visible = S.k > 0.01; if (!mesh.visible) return;
++    mesh.visible = S.k > 0.01 && !STRUCT_PARTS.water; if (!mesh.visible) return;   // (?s3=intunnel,structmatch: hidden, its followers with it)
+     u.uFade.value = S.k; u.uC.value.copy(S.C); u.uR.value.copy(S.F.R); u.uU.value.copy(S.F.U); u.uT.value.copy(S.F.T);
+     u.uLat.value = THREE.MathUtils.clamp(S.lat, -6, 6); u.uAir.value = S.air; u.uLand.value = S.land; u.uPX.value = S.lagX; u.uXMax.value = S.xMax;
+     u.uFlow.value = P.flow * (0.6 + 0.4 * THREE.MathUtils.clamp(S.speed / 7, 0, 1.5));
+diff --git a/WebDemo/src/tunnel_r8_liquid.js b/WebDemo/src/tunnel_r8_liquid.js
+index 6378beb..c069c38 100644
+--- a/WebDemo/src/tunnel_r8_liquid.js
++++ b/WebDemo/src/tunnel_r8_liquid.js
+@@ -41,6 +41,7 @@ import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swe
+ import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
+ import { swimWakeDecl, swimWakeGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the floor's wake coloured ('' without the switch)
+ import { SWIM2_ON } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's face flows with her travel (uSwim2Fl)
++import { STRUCT_PARTS, structHousingGLSL } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera
+ 
+ const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
+ const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+@@ -695,7 +696,7 @@ void main() {
+   vec3 col = lqWall(vW, normalize(vN), normalize(vT), cs, a, u, a * ${f3(radius)});
+   col = mix(col, ${v3(HERO.collar.edge)}, exp(-pow((u - uStart - 0.1) / 0.07, 2.0)) * 0.9);   // the thin navy edge of the mouth
+   col = mix(col, ${v3('#c4b8f0')}, 1.0 - smoothstep(uStart - 0.06, uStart + 0.06, u));   // the washer's lavender shell before the mouth
+-${MATCH_ON ? matchMouthGLSL(HERO, axisH, radius) : ''}  gl_FragColor = vec4(col, 1.0);
++${MATCH_ON ? matchMouthGLSL(HERO, axisH, radius) : ''}${STRUCT_PARTS.housing ? structHousingGLSL(radius) : ''}  gl_FragColor = vec4(col, 1.0);
+ }
+ `;
+ }
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
-index 6c2b6ff..85cd620 100644
+index 6c2b6ff..523e18a 100644
 --- a/WebDemo/src/tunnel_r9_match.js
 +++ b/WebDemo/src/tunnel_r9_match.js
-@@ -424,7 +424,7 @@ vec3 mtRimS(vec2 d, float rho) {
+@@ -34,6 +34,7 @@ import * as THREE from 'three';
+ import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
+ import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
+ import { BT_ON, BT } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus)
++import { STRUCT_PARTS, structTunnelGLSL, structRim, structProps } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: ,tunnel2 and ,props2 (opt-in)
+ 
+ const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
+ const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+@@ -424,7 +425,7 @@ vec3 mtRimS(vec2 d, float rho) {
  `;
  // the value to draw so that it shows on screen as the sRGB colour c: the inverse of the output's Neutral tone mapping
  // (exposure 1.05) and of the hero grade's contrast and saturation (whites capped just under the bloom's threshold)
@@ -11,6 +193,32 @@ index 6c2b6ff..85cd620 100644
    const M = MATCH.walls, G = M.grade;
    return /* glsl */ `
  vec3 mtLin(vec3 c) { return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c)); }
+@@ -806,7 +807,7 @@ ${FOCUS_ON ? '' : `  {   // the walls' pale mid blues toward saturated electric
+ `}${FOCUS_RINGS ? focusRingMapGLSL(M) : ''}  c = clamp((c - ${f4(FOCUS_ON ? M.lift : M.liftWall)}) / ${f4(1 - (FOCUS_ON ? M.lift : M.liftWall))}, 0.0, 1.0);   // (focus: match's one lift at 9a95c06)
+   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
+   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
+-  vec3 col = mtUndisplay(c);
++${STRUCT_PARTS.tunnel ? structTunnelGLSL() : ''}  vec3 col = mtUndisplay(c);
+   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
+   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
+ ${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)
+@@ -987,6 +988,7 @@ ${K.stripe ? `  vec3 tgt = mix(${lin3(K.toe)}, ${lin3(K.stripe)}, up);` : `  vec
+     for (const lv of c.obj.levels) lv.object.scale.multiplyScalar(s);
+     report.coinScales++;
+   }
++  if (STRUCT_PARTS.props) report.structProps = structProps({ coins, gems, socks });   // ?s3=intunnel,structmatch,props2 (tunnel_s4_struct.js)
+   if (MATCH_BARE) { for (const it of [...coins, ...gems, ...socks]) hideFromCamera(it.obj); report.bare = coins.length + gems.length + socks.length; }
+   // the paw coins' look (one shared material): the approved's yellow gold, shinier and more dimensional (the Art Director:
+   // hue 46, brightness range 0.34-0.42, lemon highlights #fff188, shade #d67c02; ours hue 39-41, range 0.18-0.21). The coin's
+@@ -1079,7 +1081,7 @@ export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, w
+   }
+   // the rim takes the approved rim ramp once the textures are in (game.js waits for them before the first frame); without
+   // them it keeps the hero rim
+-  MATCH_READY.then((ok) => { if (ok) privately(0x9a73, () => { report.bezel = matchBezel(scene, HERO); const b = scene.getObjectByName('r6Bezel'); if (b && b.material.uniforms) b.material.uniforms.uTime = time; }); });
++  MATCH_READY.then((ok) => { if (ok) privately(0x9a73, () => { report.bezel = matchBezel(scene, HERO); const b = scene.getObjectByName('r6Bezel'); if (b && b.material.uniforms) b.material.uniforms.uTime = time; if (STRUCT_PARTS.tunnel) report.structRim = structRim(scene, HERO.round6.porthole.bezel); }); });
+   // the tube's far end: the lining ends 38 m ahead and, through its open end, the centre showed Screen 4's exit portal
+   // (tunnel_s4.js round2Light: violet, pink and lavender spiral arms round a white heart, 42.6 m ahead at 3.0 s; the ray
+   // probe), the centre's lilac. It draws the walls' own map instead, placed on the screen round the same centre (mtPlace),
 diff --git a/WebDemo/src/tunnel_s4_bt.js b/WebDemo/src/tunnel_s4_bt.js
 index 3dc9056..6ec410c 100644
 --- a/WebDemo/src/tunnel_s4_bt.js

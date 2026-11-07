@@ -34,6 +34,7 @@ import * as THREE from 'three';
 import { FOCUS_ON, FOCUS } from './tunnel_r9_focus.js';   // ?s3=focus (the focused correction pass)
 import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';   // ?s3=focus: `match`'s settings as they were at 9a95c06
 import { BT_ON, BT } from './tunnel_s4_bt.js';   // ?s3=bt (the breakthrough pass, on top of focus)
+import { STRUCT_PARTS, structTunnelGLSL, structRim, structProps } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: ,tunnel2 and ,props2 (opt-in)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -806,7 +807,7 @@ ${FOCUS_ON ? '' : `  {   // the walls' pale mid blues toward saturated electric 
 `}${FOCUS_RINGS ? focusRingMapGLSL(M) : ''}  c = clamp((c - ${f4(FOCUS_ON ? M.lift : M.liftWall)}) / ${f4(1 - (FOCUS_ON ? M.lift : M.liftWall))}, 0.0, 1.0);   // (focus: match's one lift at 9a95c06)
   float cl = dot(c, vec3(0.2126, 0.7152, 0.0722));
   c = clamp(cl + (c - cl) * ${f4(M.sat)}, 0.0, 1.0);
-  vec3 col = mtUndisplay(c);
+${STRUCT_PARTS.tunnel ? structTunnelGLSL() : ''}  vec3 col = mtUndisplay(c);
   // the thin ice-blue ring lines, a little over the whites' cap so they are the brightest texels (as the approved's)
   col = mix(col, mtUndisplay(${hx(M.bands.edge.col)}) * ${f4(M.bands.edge.boost)}, mtEdge);
 ${FOCUS_ON ? `  col = mix(col, mtUndisplay(${hx(M.flecks.col)}), mtFleck);   // ?s3=focus: the white splashes (focusFlecksGLSL, late)
@@ -987,6 +988,7 @@ ${K.stripe ? `  vec3 tgt = mix(${lin3(K.toe)}, ${lin3(K.stripe)}, up);` : `  vec
     for (const lv of c.obj.levels) lv.object.scale.multiplyScalar(s);
     report.coinScales++;
   }
+  if (STRUCT_PARTS.props) report.structProps = structProps({ coins, gems, socks });   // ?s3=intunnel,structmatch,props2 (tunnel_s4_struct.js)
   if (MATCH_BARE) { for (const it of [...coins, ...gems, ...socks]) hideFromCamera(it.obj); report.bare = coins.length + gems.length + socks.length; }
   // the paw coins' look (one shared material): the approved's yellow gold, shinier and more dimensional (the Art Director:
   // hue 46, brightness range 0.34-0.42, lemon highlights #fff188, shade #d67c02; ours hue 39-41, range 0.18-0.21). The coin's
@@ -1079,7 +1081,7 @@ export function buildMatch({ scene, TR, L, W, mascot, updaters, time, U, HERO, w
   }
   // the rim takes the approved rim ramp once the textures are in (game.js waits for them before the first frame); without
   // them it keeps the hero rim
-  MATCH_READY.then((ok) => { if (ok) privately(0x9a73, () => { report.bezel = matchBezel(scene, HERO); const b = scene.getObjectByName('r6Bezel'); if (b && b.material.uniforms) b.material.uniforms.uTime = time; }); });
+  MATCH_READY.then((ok) => { if (ok) privately(0x9a73, () => { report.bezel = matchBezel(scene, HERO); const b = scene.getObjectByName('r6Bezel'); if (b && b.material.uniforms) b.material.uniforms.uTime = time; if (STRUCT_PARTS.tunnel) report.structRim = structRim(scene, HERO.round6.porthole.bezel); }); });
   // the tube's far end: the lining ends 38 m ahead and, through its open end, the centre showed Screen 4's exit portal
   // (tunnel_s4.js round2Light: violet, pink and lavender spiral arms round a white heart, 42.6 m ahead at 3.0 s; the ray
   // probe), the centre's lilac. It draws the walls' own map instead, placed on the screen round the same centre (mtPlace),

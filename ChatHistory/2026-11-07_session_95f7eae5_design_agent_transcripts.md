@@ -272,5 +272,48 @@ Now I'll add the washer-housing GLSL (priority 1) to the struct module and gate 
 
 - 14:06 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_struct.js
 - 14:07 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_struct.js
+**Agent** (14:07 UTC):
 
-_95 tool steps._
+Now the hooks. game.js:
+
+- 14:07 `Bash`: Insert gated hooks in game.js and opening.js
+- 14:07 `Bash`: Insert gated hooks in water, liquid and match modules
+- 14:07 `Bash`: Check what was written before the failed assertion
+- 14:07 `Bash`: Show the exact lines for the swell visibility
+- 14:07 `Bash`: Insert remaining gated hooks
+- 14:08 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/page.html
+- 14:08 `Bash`: Build the bundle
+**Agent** (14:08 UTC):
+
+Built. Let me load `?s3=intunnel,structmatch` live and look at the Tap to Start frame.
+
+- 14:08 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 14:08 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:08 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:08 `Bash`: Compare original and new lower zone
+- 14:08 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/cmp_v1.png
+- 14:08 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:08 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__list_console_messages`
+- 14:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:09 `Bash`: Downscale the solo render
+- 14:09 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/solo_s.png
+- 14:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:10 `Bash`: Write a comparison helper and compare v2
+- 14:11 `Write`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/tools/cmp.py
+- 14:11 `Bash`: Compare original and v2 lower zone
+- 14:11 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c2.png
+**Agent** (14:11 UTC):
+
+The forms read as smooth eggs. I'll make them broader, lumpier mounds with a foam lace, crisper rims and deeper cores (shader change, so rebuild).
+
+- 14:11 `Bash`: Revise lobe shape, foam lace, colours; rebuild
+- 14:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 14:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+
+_126 tool steps._
