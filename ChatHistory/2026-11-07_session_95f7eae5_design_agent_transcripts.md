@@ -244,5 +244,33 @@ I'll start by reading the diagnosis files and the current state of the worktree.
 - 13:59 `Bash`: Read game load sequence around buildMascot
 - 13:59 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 14:01 `Bash`: Check start panel markup and tap handlers
+**Agent** (14:02 UTC):
 
-_75 tool steps._
+Now I have enough understanding to write the module. Let me export `undisplayGLSL` (no runtime change) and write `tunnel_s4_struct.js`.
+
+- 14:02 `Bash`: Check imports for circularity and helpers
+- 14:02 `Bash`: Check the import graph of the match modules
+- 14:02 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r9_match.js
+- 14:04 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_struct.js
+- 14:04 `Bash`: Read the narrowed Checkpoint A brief
+- 14:04 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-07_CheckpointA_Brief_from_user/02_KEEP_START_FIX_WATER_AND_WASHER_RIM_board.png
+- 14:04 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_bt.js
+- 14:04 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:04 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:04 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:05 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:05 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:05 `Bash`: Sheet of +1 s with and without flanges
+- 14:05 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/t1_pair.png
+- 14:05 `Bash`: Find the walls' main shader generator
+- 14:05 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r8_liquid.js
+- 14:05 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r8_liquid.js
+- 14:06 `Bash`: Sample the original's housing colours by band
+**Agent** (14:06 UTC):
+
+Now I'll add the washer-housing GLSL (priority 1) to the struct module and gate the fur grade on `hero2`.
+
+- 14:06 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_struct.js
+- 14:07 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_struct.js
+
+_95 tool steps._

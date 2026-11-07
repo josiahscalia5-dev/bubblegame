@@ -1,19 +1,34 @@
+diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
+index 6c2b6ff..85cd620 100644
+--- a/WebDemo/src/tunnel_r9_match.js
++++ b/WebDemo/src/tunnel_r9_match.js
+@@ -424,7 +424,7 @@ vec3 mtRimS(vec2 d, float rho) {
+ `;
+ // the value to draw so that it shows on screen as the sRGB colour c: the inverse of the output's Neutral tone mapping
+ // (exposure 1.05) and of the hero grade's contrast and saturation (whites capped just under the bloom's threshold)
+-function undisplayGLSL() {
++export function undisplayGLSL() {   // (exported for ?s3=intunnel,structmatch's water, tunnel_s4_struct.js)
+   const M = MATCH.walls, G = M.grade;
+   return /* glsl */ `
+ vec3 mtLin(vec3 c) { return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c)); }
 diff --git a/WebDemo/src/tunnel_s4_bt.js b/WebDemo/src/tunnel_s4_bt.js
-index 3dc9056..0547d7b 100644
+index 3dc9056..6ec410c 100644
 --- a/WebDemo/src/tunnel_s4_bt.js
 +++ b/WebDemo/src/tunnel_s4_bt.js
-@@ -113,7 +113,14 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
+@@ -113,7 +113,16 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
  // ?s3=intunnel,blend (7 November, the candidate on top of the accepted look): her drawn proportions and ride height, the
  // water's proportions and colours round her, and a damped landing. Settings and code in tunnel_s4_blend.js; swim2 stays on.
  export const BLEND_ON = BT_ON && LIST.includes('blend');
 -export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
-+// ?s3=intunnel,structmatch (7 November, Checkpoint A of the user's mandate: the Tap to Start frame closer to the ORIGINAL):
-+// her drawn shape and fur, the water round her in water space, the tunnel's grade and rim, the staged props' drawn sizes and
-+// the bottom HUD. Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,nowater
-+// ,notunnel ,noprops ,nohud.
++// ?s3=intunnel,structmatch (7 November, Checkpoint A as narrowed by the user at about 14:00 UTC: the accepted Tap to Start
++// kept as the base; ONLY the washer's metal housing at the top kept while moving, the opening water round her, and her
++// swim through the water). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nowater
++// ,nohousing. Deferred by the user, kept as opt-in sub-switches (off by default): ,hero2 (her crown, fur colour, stretch
++// off) ,tunnel2 (the walls' grade, the thicker rim) ,props2 (staged coins, gem, sock) ,hud2 (corner cards).
 +export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
-+export const STRUCT_PARTS = { hero: STRUCT_ON && !LIST.includes('nohero'), water: STRUCT_ON && !LIST.includes('nowater'),
-+  tunnel: STRUCT_ON && !LIST.includes('notunnel'), props: STRUCT_ON && !LIST.includes('noprops'), hud: STRUCT_ON && !LIST.includes('nohud') };
++export const STRUCT_PARTS = { water: STRUCT_ON && !LIST.includes('nowater'), housing: STRUCT_ON && !LIST.includes('nohousing'),
++  hero: STRUCT_ON && LIST.includes('hero2'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
++  hud: STRUCT_ON && LIST.includes('hud2') };
 +export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
  export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
  export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
