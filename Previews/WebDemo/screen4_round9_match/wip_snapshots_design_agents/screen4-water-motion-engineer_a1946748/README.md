@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Build blend character-water candidate)
 
-- **Taken:** 2026-11-07 10:51 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 10:57 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a19467485d7ab6a56` (local only), started from `c4d84e3`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
