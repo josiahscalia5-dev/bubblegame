@@ -236,5 +236,13 @@ I'll start by reading the diagnosis files and the current state of the worktree.
 - 13:56 `Bash`: Check how index.html is built and HUD selectors
 - 13:56 `Bash`: Read HUD CSS in page.html
 - 13:56 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:57 `Bash`: Prepare the art director's hole image
+- 13:57 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/hole.png
+- 13:59 `Bash`: Read bezel material and geometry build code
+- 13:59 `Bash`: Read buildMatch tail and collectibles call site
+- 13:59 `Bash`: Read private random helpers and call sites
+- 13:59 `Bash`: Read game load sequence around buildMascot
+- 13:59 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:01 `Bash`: Check start panel markup and tap handlers
 
-_67 tool steps._
+_75 tool steps._
