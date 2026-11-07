@@ -1,0 +1,36 @@
+
+== Blender 5.2.3
+  already installed
+
+== Mesa EGL (lets Blender's Eevee render without a GPU; Cycles does not need it)
+  already installed
+
+== Python visual tools (OpenCV, scikit-image, NumPy, Pillow, SciPy)
+  already installed
+
+== Python metrics tools (PyTorch on CPU, LPIPS with its AlexNet weights, Optuna) in their own environment
+  FAILED: Python metrics tools (stopped or failed within the 2 s limit; optional: run bash Tools/cloud_env_setup.sh again later)
+
+== Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI)
+  installed
+
+== Git LFS
+  git-lfs/3.4.1 (GitHub; linux amd64; go 1.22.2)
+
+== Game dependencies (WebDemo: three and esbuild, pinned in its package.json)
+  installed in bubblegame/WebDemo
+
+== Checks
+  Blender 5.2.3 LTS
+  OpenCV 5.0.0 | scikit-image 0.26.0
+  glTF Transform 4.5.1
+  glTF Validator 2.0.0-dev.3.10
+  vite/8.3.5 linux-x64 node-v22.23.4
+  Tripo CLI 0.11.2 (sign-in: see Tools/DEV_TOOLS.md)
+  Node.js v22.23.4, npm 10.9.9, Python 3.13.18
+  Version: ImageMagick 6.9.12-98 Q16 x86_64 18038 https://legacy.imagemagick.org
+  ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+  git-lfs/3.4.1 (GitHub; linux amd64; go 1.22.2)
+  Playwright 1.63.0 / Chromium 153.0.8010.12
+
+FAILED steps: Python metrics tools (stopped or failed within the 2 s limit; optional: run bash Tools/cloud_env_setup.sh again later)

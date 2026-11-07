@@ -1,0 +1,27 @@
+Fresh-session test of the `bubblegame` cloud environment (7 November 2026, eighteenth session)
+Test session: session_013kxR3NwDzeVN7p4AeFLoUM, environment env_016qrkLt8s9RU8tVo9qEp8qo, started from commit 0071012.
+Copied from its environment log (list_events, env_manager_log), times in UTC. Claude never started in it.
+
+00:46:35  Allocating sandbox (steps expected: provision, clone, setup_script, start_cc)
+00:46:36  Environment runner started
+00:46:36  Cloning repository josiahscalia5-dev/bubblegame
+00:50:52  Clone completed (about 4 minutes 16 s)
+00:50:52  Running setup script
+          == Blender 5.2.3
+00:51:12    installed (checksum matches blender.org)
+          == Mesa EGL (lets Blender's Eevee render without a GPU; Cycles does not need it)
+00:51:22  debconf: delaying package configuration, since apt-utils is not installed
+00:51:27    installed
+          == Python visual tools (OpenCV, scikit-image, NumPy, Pillow, SciPy)
+00:51:42    installed
+          == Python metrics tools (PyTorch on CPU, LPIPS with its AlexNet weights, Optuna) in their own environment
+          ... no further output. Still on this step at 02:31 (1 h 39 min), when the session was archived at the user's request.
+          The steps after it (Node tools, Git LFS, the game's npm packages, the checks) never ran.
+
+The same script in the eighteenth session's own container: every step passed in 1 min 20 s (PyTorch's 5.8 GB download
+included), `cloud_env_setup_run_this_session.log`.
+
+Fix (the user's approval, 7 November): `Tools/cloud_env_setup.sh` gives this step a 10-minute limit
+(`BW_METRICS_TIMEOUT`, default 600 s), and every run's output is also kept in ~/.bubblewash-tools/setup_logs/.
+Tested here: with the limit forced to 2 s the step stopped, the later steps ran and the session's setup script still
+exits 0 (`setup_stall_test.txt`); the normal run skips every installed step and exits 0 (`setup_normal.txt`).

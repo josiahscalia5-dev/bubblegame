@@ -27,6 +27,8 @@ NODE_PACKAGES="@gltf-transform/cli@4.5.1 @gltf-transform/core@4.5.1 @gltf-transf
 @gltf-transform/functions@4.5.1 gltf-validator@2.0.0-dev.3.10 vite@8.3.5 tripo-cli@0.11.2"
 
 failed=()
+mkdir -p "$T/setup_logs"   # every run's output is also kept in ~/.bubblewash-tools/setup_logs/ (7 November, the user's request)
+exec > >(tee -a "$T/setup_logs/setup_$(date -u +%Y%m%dT%H%M%SZ).log") 2>&1
 step() { printf '\n== %s\n' "$*"; }
 fail() { echo "  FAILED: $*"; failed+=("$*"); }
 mkdir -p "$T"
@@ -79,10 +81,13 @@ if "$T/metrics/bin/python" -c "import torch, lpips, optuna, skimage, cv2" 2>/dev
   echo "  already installed"
 else
   UV="$(command -v uv || true)"; [ -z "$UV" ] && [ -x "$HOME/.local/bin/uv" ] && UV="$HOME/.local/bin/uv"
+  # (7 November, the user's request: a 10-minute limit, so a fresh session still starts if this optional download stalls;
+  # it hung for over an hour once. On a stop, the next run of this script tries again: the check above fails.)
   if [ -n "$UV" ]; then
-    "$UV" venv -q --python "$(command -v python3)" "$T/metrics" && "$UV" pip install -q --python "$T/metrics/bin/python" \
+    "$UV" venv -q --python "$(command -v python3)" "$T/metrics" && timeout "${BW_METRICS_TIMEOUT:-600}" "$UV" pip install -q --python "$T/metrics/bin/python" \
       torch torchvision lpips optuna scikit-image opencv-python-headless pillow scipy \
-      && "$T/metrics/bin/python" -c "import lpips; lpips.LPIPS(net='alex', verbose=False)" > /dev/null 2>&1 && echo "  installed" || fail "Python metrics tools"
+      && timeout 300 "$T/metrics/bin/python" -c "import lpips; lpips.LPIPS(net='alex', verbose=False)" > /dev/null 2>&1 && echo "  installed" \
+      || fail "Python metrics tools (stopped or failed within the ${BW_METRICS_TIMEOUT:-600} s limit; optional: run bash Tools/cloud_env_setup.sh again later)"
   else fail "Python metrics tools (needs uv)"; fi
 fi
 
