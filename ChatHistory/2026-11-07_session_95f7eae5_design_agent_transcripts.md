@@ -440,5 +440,23 @@ The page capture differs by 4029 px while the canvas renders are identical, so I
 - 14:35 `Bash`: Measure ORIGINAL, ACCEPTED and NEW
 - 14:35 `Bash`: Fix the canvas paths and re-measure
 - 14:35 `Bash`: Wait for the gameplay proofs
+- 14:45 `Bash`: Inspect the s3_func comparison
+- 14:46 `Bash`: Retune the housing colours, rebuild, capture +1/+2 s
+- 14:46 `Bash`: Measure and compare the retuned housing
+- 14:46 `Bash`: Fill the frame names the measure script expects
+- 14:46 `Bash`: Measure the retuned housing share
+- 14:46 `Bash`: Sheet of the housing before and after the retune
+- 14:46 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/housing2.jpg
+**Lead → agent** (14:46 UTC):
 
-_199 tool steps._
+[Image: original 2175x465, displayed at 2000x428. Multiply coordinates by 1.09 to map to original image.]
+
+- 14:47 `Bash`: Record final md5 and extend the page identity check
+- 14:47 `Bash`: Re-run identity, evidence and gameplay on the final bundle
+**Agent** (14:47 UTC):
+
+While the final proofs run, I'll wait on the job.
+
+- 14:47 `Bash`: Wait for the final proofs
+
+_209 tool steps._

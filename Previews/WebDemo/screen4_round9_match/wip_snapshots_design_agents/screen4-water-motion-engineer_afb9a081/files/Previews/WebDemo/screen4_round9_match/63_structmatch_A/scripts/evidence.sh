@@ -14,9 +14,14 @@ for M in start T1.0 T2.0; do
   if [ $M = start ]; then EX="NOTAP=1"; else EX="T=${M#T}"; fi
   env S3=intunnel,structmatch $EX node tools/screen4/layer_diag.cjs $D $SP/identity/structmatch_${M}_new > $SP/identity/structmatch_${M}_new.log 2>&1; echo "layer_diag structmatch $M: exit $?"
 done
-~/.bubblewash-tools/visual/bin/python - $R/Previews/WebDemo/screen4_round9_match/62_opening_mandate_audit/frames_accepted/t0.png $E/frames_accepted_rebuilt/t0.png <<'PY' | tee $E/proofs/identity_page_t0.txt
+# the same page capture from the COMMITTED bundle and page (the scratch copy made by identity_all.sh), now, for the HUD's timing
+SETTLE=900 S3=intunnel TIMES=0 node tools/screen3/s3_shot.cjs "$SP/webdemo_old" $E/frames_accepted_committed_now > $E/frames_accepted_committed_now.log 2>&1
+~/.bubblewash-tools/visual/bin/python - $R/Previews/WebDemo/screen4_round9_match/62_opening_mandate_audit/frames_accepted/t0.png $E/frames_accepted_rebuilt/t0.png $E/frames_accepted_committed_now/t0.png <<'PY' | tee $E/proofs/identity_page_t0.txt
 import sys, numpy as np; from PIL import Image
-a, b = (np.asarray(Image.open(p).convert('RGB')).astype(int) for p in sys.argv[1:3])
-print(f'accepted ?s3=intunnel Tap to Start PAGE capture with the HUD (s3_shot.cjs, {a.shape[1]} x {a.shape[0]}): frames_accepted/t0.png (bundle 38466b67) vs this build: {int((np.abs(a - b).sum(-1) > 0).sum())} pixels differ')
+a, b, c = (np.asarray(Image.open(p).convert('RGB')).astype(int) for p in sys.argv[1:4])
+n = lambda x, y: int((np.abs(x - y).sum(-1) > 0).sum())
+print(f'accepted ?s3=intunnel Tap to Start PAGE captures with the HUD (s3_shot.cjs, {a.shape[1]} x {a.shape[0]}):')
+print(f'  committed bundle 38466b67 captured now vs this build captured now: {n(c, b)} pixels differ')
+print(f'  62_/frames_accepted/t0.png (captured earlier) vs this build: {n(a, b)}; vs the committed bundle captured now: {n(a, c)} (the HUD counters animate in real time)')
 PY
 bash $E/scripts/gameplay.sh $R

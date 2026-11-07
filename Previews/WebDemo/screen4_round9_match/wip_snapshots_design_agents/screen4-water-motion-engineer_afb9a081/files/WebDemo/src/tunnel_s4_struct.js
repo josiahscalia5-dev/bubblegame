@@ -335,7 +335,7 @@ export const HOUSING = {
   far: [8.6, 10.4],          // m ahead where it gives way to the water (shorter down the sides: sideK m per unit below the top)
   sideK: 5.5,
   fadeIn: [-4.7, -2.9],      // the camera's place relative to the drum's mouth over which it fades in (the start is -5.41)
-  col: { deep: '#5c4a92', mid: '#8a7fd6', lav: '#b39ad8', silver: '#ece4fa', pink: '#efd3ef', gold: '#e2a68e' },
+  col: { deep: '#56448c', mid: '#6c66cf', lav: '#b39ad8', silver: '#e9e2f8', pink: '#efd3ef', gold: '#e2a68e' },   // (deep purple, periwinkle, lavender, silver, pink, gold)
   streaks: 0.07, seams: 2.3, perf: 0.62, lip: 0.85, sheen: 0.5,
 };
 export function structHousingGLSL(radius) {
@@ -351,7 +351,7 @@ export function structHousingGLSL(radius) {
       // brushed metal: lavender at the top to deeper violet down the sides, fine streaks along the drum
       float stS = sin(stX * 61.0 + sin(stX * 7.0) * 2.0) * 0.5 + sin(stX * 23.0 + 1.7) * 0.35 + sin(stX * 141.0) * 0.15;
       vec3 stC = mix(${hx(C.deep)}, ${hx(C.mid)}, smoothstep(0.25, 0.75, stUp));
-      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.55, 0.95, stUp) * 0.85);
+      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.55, 0.95, stUp) * smoothstep(3.0, 5.5, stE) * 0.8);   // lavender up near the camera, periwinkle toward the lip
       stC = mix(stC, ${hx(C.deep)}, (1.0 - smoothstep(0.6, 2.6, stE)) * 0.45);   // deeper violet toward its lip, as the ORIGINAL's housing
       stC *= 1.0 + ${f4(H.streaks)} * stS;
       // a soft sheen band running round it (the centre's light on curved metal), silver and a pink reflection
