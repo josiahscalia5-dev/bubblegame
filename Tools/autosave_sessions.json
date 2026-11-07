@@ -16,5 +16,11 @@
     "agents": "ChatHistory/2026-11-06_session_08b39b21_design_agent_transcripts.md",
     "title": "Seventeenth session (6 November, second account): account restoration",
     "url": "https://claude.ai/code/session_019Rgj5j972EGfpaim3TnBha"
+  },
+  "4fd798d9-8469-584c-9cb4-d91fe93a1905": {
+    "chat": "ChatHistory/2026-11-07_session_4fd798d9.md",
+    "agents": "ChatHistory/2026-11-07_session_4fd798d9_design_agent_transcripts.md",
+    "title": "Eighteenth session (7 November, second account): account transfer continuation",
+    "url": "https://claude.ai/code/session_013kxR3MQKMNKd97WASrysYD"
   }
 }
