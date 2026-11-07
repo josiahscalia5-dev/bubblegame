@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: agent ()
 
-- **Taken:** 2026-11-07 16:09 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 16:14 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `lead-final-s4` (local only), started from `8343381`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (120; full copies in `files/`)
+## Files (124; full copies in `files/`)
 
 - `BUBBLE_WASH_ACCOUNT_HANDOFF.md (new)`
 - `CLAUDE.md`
@@ -119,7 +119,11 @@
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/05_closeup_washer_lining_y08-55_plus1_plus3_plus8_plus14.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/06_closeup_lining_ACCEPTED_vs_NEW_y08-55_plus1_plus8.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/07_closeup_water_round_her_y60-95_t0_plus1_plus2.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/08_recording_NEW_contact_sheet.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/clip_accepted.log (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/clip_new.log (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/swim_steer_coins_new.mp4 (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/track_new.json (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/opening.js`
 - `WebDemo/src/tunnel_r7_hero_water.js`
