@@ -113,14 +113,14 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
 // ?s3=intunnel,blend (7 November, the candidate on top of the accepted look): her drawn proportions and ride height, the
 // water's proportions and colours round her, and a damped landing. Settings and code in tunnel_s4_blend.js; swim2 stays on.
 export const BLEND_ON = BT_ON && LIST.includes('blend');
-// ?s3=intunnel,structmatch (7 November, Checkpoint A as narrowed by the user at about 14:00 UTC: the accepted Tap to Start
-// kept as the base; ONLY the washer's metal housing at the top kept while moving, the opening water round her, and her
-// swim through the water). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nowater
-// ,nohousing. Deferred by the user, kept as opt-in sub-switches (off by default): ,hero2 (her crown, fur colour, stretch
-// off) ,tunnel2 (the walls' grade, the thicker rim) ,props2 (staged coins, gem, sock) ,hud2 (corner cards).
+// ?s3=intunnel,structmatch (7 November, Checkpoint A, the user's final mandate of about 15:15 UTC: the accepted Tap to Start
+// kept as the base; her shape and fur, the water round her, her swim through it, the washer's metal kept recognisable while
+// moving). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,nowater ,nohousing.
+// Kept as opt-in sub-switches (off by default): ,tunnel2 (the walls' grade, the thicker rim) ,props2 (staged coins, gem,
+// sock) ,hud2 (corner cards). (,hero2 is accepted as a no-op: her part is in the default.)
 export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
 export const STRUCT_PARTS = { water: STRUCT_ON && !LIST.includes('nowater'), housing: STRUCT_ON && !LIST.includes('nohousing'),
-  hero: STRUCT_ON && LIST.includes('hero2'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
+  hero: STRUCT_ON && !LIST.includes('nohero'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
   hud: STRUCT_ON && LIST.includes('hud2') };
 export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)

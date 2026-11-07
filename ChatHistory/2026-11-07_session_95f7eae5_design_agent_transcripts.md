@@ -1,4 +1,4 @@
-# Nineteenth session (7 November, account transfer): restoration on branch claude/bubble-wash-transfer-tcgbof, design agents
+# Nineteenth session (7 November, account transfer), design agents
 
 Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
@@ -520,5 +520,11 @@ A final mandate supersedes the narrowed scope. The running proof chain is for a 
 
 - 15:17 `Bash`: Stop the obsolete proof chain and read the final pack
 - 15:17 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-07_Final_Screen4_Reference_Pack_from_user/04_gameplay_comparison_at_1_and_2_seconds.jpg
+- 15:18 `Bash`: Read the clip recording scripts
+**Agent** (15:18 UTC):
 
-_231 tool steps._
+Now the code: hero into the default, the water reworked (smaller irregular blue/turquoise mounds, one uniform per mound, lavender only as a tint, sparkle), and the moving metal narrowed.
+
+- 15:19 `Bash`: Apply hero default, water rework and narrower housing
+
+_233 tool steps._
