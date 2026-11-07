@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Build structmatch Checkpoint A)
 
-- **Taken:** 2026-11-07 14:52 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 14:57 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-afb9a08171d189776` (local only), started from `1bbd811`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (52; full copies in `files/`)
+## Files (63; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_rebuilt.log (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_rebuilt/t0.png (new)`
@@ -49,6 +49,17 @@
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/identity_all.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/measure_A.py (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheet.py (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheets.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/01_TAP_TO_START_ORIGINAL_ACCEPTED_NEW.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/02_PLUS1S_PLUS2S_ORIGINAL_ACCEPTED_NEW.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/03_closeup_water_round_her_y60-95_2x_t0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/04_closeup_water_round_her_y60-95_2x_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/05_closeup_top_washer_band_y12-50_2x_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/06_closeup_top_washer_band_y12-50_2x_plus2s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/08_plus3s_ORIGINAL_ACCEPTED_NEW.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/09_subswitch_nowater_t0_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/10_subswitch_nohousing_plus1s_plus2s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/11_optin_deferred_hero2_tunnel2_props2_hud2_t0.jpg (new)`
 - `WebDemo/artifact.html`
 - `WebDemo/index.html`
 - `WebDemo/src/game.js`

@@ -458,5 +458,12 @@ The page capture differs by 4029 px while the canvas renders are identical, so I
 While the final proofs run, I'll wait on the job.
 
 - 14:47 `Bash`: Wait for the final proofs
+- 14:57 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/tasks/b5aypjwa7.output
+**Agent** (14:57 UTC):
 
-_209 tool steps._
+Identity on the final bundle (fa0768de): 0 pixels differ at all eight moments. The page frames are captured, so I'll build the sheets while the canvas renders and gameplay proofs finish.
+
+- 14:57 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheets.sh
+- 14:57 `Bash`: Build all evidence sheets
+
+_212 tool steps._
