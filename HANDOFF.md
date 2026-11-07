@@ -1,5 +1,20 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
+## Newest (7 November, about 13:00-13:50 UTC): nineteenth session, the structural audit and Checkpoint A of `?s3=intunnel,structmatch`
+
+- **Fidelity:** NOT accepted (the art director: 64 against 60, an exposed dark gap, purple balloon caps; `60_fidelity_review/`).
+- **Audits (read-only):** `61_structural_audit/` (live scene: the stage is built for ONE camera position; the rim
+  `r6Porthole` is behind the camera 0.5 s after the tap; Screen 3's stretch and droplets on her; `heroSwell` a pad carried
+  with her) and `62_opening_mandate_audit/` (the user's mandate: real captures with the HUD at Tap to Start, +1, +2, +3 s,
+  the diagnosis table and the plan). Kits: `Design/ReferencePacks/2026-11-07_Screen4_Structural_Repair_Kit_from_user/`,
+  `..._Opening_Visual_Mandate_Kit_from_user/`, `..._CheckpointA_Brief_from_user/`.
+- **The user approved (about 13:45 UTC) CHECKPOINT A ONLY**, plus restyling the bottom HUD buttons (functional, readable,
+  easy to tap): `screen4-water-motion-engineer` builds `?s3=intunnel,structmatch` in its own worktree (her shape and fur,
+  the water, the tunnel's grade and warm centre, a thicker rim, props, HUD), evidence `63_structmatch_A/`; its unfinished
+  work is snapshotted every 5 minutes in `wip_snapshots_design_agents/`. **Checkpoint B (carried stage, motion) and the
+  art-director review need the user's separate approval.** Nothing is merged into the accepted build.
+- **Branch:** `claude/bubble-wash-transfer-tcgbof`; pull request #2 into `ccr-10503be1-pnv5vq` waits for the user.
+
 ## Newest (7 November, about 12:20-12:45 UTC): nineteenth session (`95f7eae5`, account transfer), restoration only; NO game changes
 
 - **Branch:** this session is restricted to `claude/bubble-wash-transfer-tcgbof` (a copy of `ccr-10503be1-pnv5vq` at
