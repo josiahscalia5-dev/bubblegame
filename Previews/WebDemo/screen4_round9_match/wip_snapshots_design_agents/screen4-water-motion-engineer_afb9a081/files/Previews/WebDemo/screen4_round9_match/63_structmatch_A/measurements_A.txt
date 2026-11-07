@@ -1,0 +1,13 @@
+(1) page captures with the HUD | lavender housing y .16-.36 | her pink box | her width at 8/16/25/50 % below her top
+  ORIGINAL      housing 21.3 % | box x 0.25-0.73 y 0.70-0.86 | widths 0.19 / 0.27 / 0.32 / 0.41
+  ACCEPTED t0   housing 16.3 % | box x 0.23-0.72 y 0.68-0.85 | widths 0.09 / 0.20 / 0.23 / 0.45
+  ACCEPTED +1 s housing  1.7 % | box x 0.22-0.71 y 0.71-0.87 | widths 0.09 / 0.18 / 0.24 / 0.45
+  ACCEPTED +2 s housing  1.3 % | box x 0.23-0.72 y 0.71-0.86 | widths 0.06 / 0.22 / 0.26 / 0.42
+  ACCEPTED +3 s housing  0.7 % | box x 0.32-0.72 y 0.69-0.86 | widths 0.10 / 0.20 / 0.24 / 0.34
+  NEW t0        housing 16.3 % | box x 0.23-0.72 y 0.68-0.87 | widths 0.10 / 0.22 / 0.27 / 0.48
+  NEW +1 s      housing 59.8 % | box x 0.22-0.71 y 0.70-0.88 | widths 0.12 / 0.21 / 0.26 / 0.46
+  NEW +2 s      housing 71.7 % | box x 0.24-0.72 y 0.72-0.88 | widths 0.08 / 0.19 / 0.24 / 0.46
+  NEW +3 s      housing 62.1 % | box x 0.23-0.71 y 0.69-0.87 | widths 0.11 / 0.21 / 0.29 / 0.47
+(2) canvas renders: blue-family share by hue (cyan | azure | periwinkle-violet), mean blue hue and saturation, white/pale share
+ == foreground water y .80-.84
+  ORIGINAL      cyan   0.2 azure  16.7 peri/violet  12.7 | blue hue 223.0 sat 0.47 | white/pale  22.8

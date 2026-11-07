@@ -432,5 +432,13 @@ All eight identity moments: 0 pixels differ (committed 38466b67 vs rebuilt cede5
 - 14:31 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/evidence.sh
 - 14:31 `Bash`: Run evidence captures and gameplay proofs
 - 14:31 `Bash`: Wait for the captures to finish
+**Agent** (14:35 UTC):
 
-_195 tool steps._
+The page capture differs by 4029 px while the canvas renders are identical, so I'll check where the difference sits.
+
+- 14:35 `Bash`: Locate the page capture differences
+- 14:35 `Bash`: Measure ORIGINAL, ACCEPTED and NEW
+- 14:35 `Bash`: Fix the canvas paths and re-measure
+- 14:35 `Bash`: Wait for the gameplay proofs
+
+_199 tool steps._

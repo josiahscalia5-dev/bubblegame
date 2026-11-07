@@ -29,8 +29,8 @@ for k, p in rows:
     print(f'  {k:13s} housing {lavp:4.1f} % | box x {x/Ww:.2f}-{(x+w)/Ww:.2f} y {y/Hh:.2f}-{(y+h)/Hh:.2f} | widths {" / ".join(f"{q:.2f}" for q in prof)}')
 def canvas(p): return cv2.resize(cv2.imread(p), (768, 1536), interpolation=cv2.INTER_AREA)
 print('(2) canvas renders: blue-family share by hue (cyan | azure | periwinkle-violet), mean blue hue and saturation, white/pale share')
-crows = [('ORIGINAL', O)] + [(f'ACCEPTED {t}', f'{AC}_{m}/base_canvas.png') for t, m in (('start', 'start'), ('+1 s', 'T1.0'), ('+2 s', 'T2.0'))] \
-      + [(f'NEW {t}', f'{NC}_{m}/base_canvas.png') for t, m in (('start', 'start'), ('+1 s', 'T1.0'), ('+2 s', 'T2.0'))]
+crows = [('ORIGINAL', O)] + [(f'ACCEPTED {t}', f'{AC}_{m}_new/base_canvas.png') for t, m in (('start', 'start'), ('+1 s', 'T1.0'), ('+2 s', 'T2.0'))] \
+      + [(f'NEW {t}', f'{NC}_{m}_new/base_canvas.png') for t, m in (('start', 'start'), ('+1 s', 'T1.0'), ('+2 s', 'T2.0'))]
 for zone, (y0, y1) in {'foreground water y .80-.84': (0.80, 0.84), 'water round her y .78-.92': (0.78, 0.92)}.items():
     print(' ==', zone)
     for k, p in crows:

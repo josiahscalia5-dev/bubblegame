@@ -1,0 +1,1 @@
+accepted ?s3=intunnel Tap to Start PAGE capture with the HUD (s3_shot.cjs, 538 x 1076): frames_accepted/t0.png (bundle 38466b67) vs this build: 4029 pixels differ
