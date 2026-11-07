@@ -393,5 +393,36 @@ The live server stopped (background time limit). I'll continue with `s3_shot.cjs
 That pass turned the mounds into white puffs (a "white cloud", which the brief forbids), so I'm reverting its crest-white and pale highlight colours while keeping the deeper cores and sparse bubbles.
 
 - 14:21 `Bash`: Revert the white crest, rebuild and recapture
+- 14:22 `Bash`: Sheet of the water zone after the revert
+- 14:22 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/try3_water.jpg
+**Lead → agent** (14:22 UTC):
 
-_176 tool steps._
+[Image: original 2175x411, displayed at 2000x378. Multiply coordinates by 1.09 to map to original image.]
+
+- 14:22 `Bash`: Sheet of the moving frames
+- 14:22 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/try3_moving.jpg
+**Lead → agent** (14:22 UTC):
+
+[Image: original 2721x1110, displayed at 2000x816. Multiply coordinates by 1.36 to map to original image.]
+
+- 14:23 `Bash`: Make a scratch WebDemo with the committed bundle
+- 14:23 `Bash`: Extract the committed bundle and page
+- 14:23 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/identity_all.sh
+- 14:23 `Bash`: Run the identity proof for all older switches
+**Agent** (14:23 UTC):
+
+While that runs (one browser at a time, within the machine limit), I'll prepare the measurement and gameplay comparisons.
+
+- 14:23 `Bash`: Read how fidelity compared gameplay and traces
+- 14:23 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/gameplay.sh
+- 14:23 `Bash`: Check identity progress
+- 14:24 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/measure_A.py
+- 14:24 `Bash`: Wait for identity progress
+- 14:24 `Bash`: Show branch and the save script header
+**Agent** (14:24 UTC):
+
+Waiting for the identity run to finish before starting the next browser job.
+
+- 14:24 `Bash`: Wait until four identity moments are done
+
+_191 tool steps._
