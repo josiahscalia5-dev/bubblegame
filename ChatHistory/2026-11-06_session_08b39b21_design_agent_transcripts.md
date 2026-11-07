@@ -79,8 +79,18 @@ Now the match water shading of the swell.
 - 23:53 `Bash`: Second tuning pass of designed heaps
 - 23:53 `Bash`: Check silhouette at start and while running
 - 23:53 `Bash`: Average running silhouette over travel values
+- 23:56 `Bash`: Check for a GLSL validator
+- 23:57 `Bash`: Inspect original edge columns brightness
+- 23:57 `Bash`: Prototype silhouette across full width
+- 23:58 `Bash`: Final prototype check of start silhouette
+- 23:59 `Bash`: Check spray cap context and uniform name clashes
+- 23:59 `Write`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+- 00:00 `Bash`: Generate swim2 GLSL with node to check syntax
+- 00:00 `Bash`: Inspect generated fragment block
+- 00:00 `Bash`: Get triangle counts of hidden layers
+- 00:00 `Bash`: Check mascot materials transparency and order
 
-_54 tool steps._
+_64 tool steps._
 
 ---
 
@@ -182,8 +192,33 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 23:54 `Bash`
 - 23:54 `Bash`
 - 23:54 `Bash`
+- 23:57 `Bash`
+- 23:58 `Write`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/lighting_visual_matching.md
+- 23:58 `Bash`
+- 23:58 `Write`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/lighting_visual_matching.md
+- 23:58 `Bash`
+**Agent** (23:59 UTC):
 
-_82 tool steps._
+I've written the report. The pale wash and missing lavender in the moving tunnel come from three old Round 3/4 layers that turn on 0.2 s after the tap and are never in the start frame. All numbers below come from the existing same-frame ablations. The predicted improvements are estimates made by summing those ablations, not new renders. Nothing in the game was edited, no browser or build was run, and the only file written is the report.
+
+1. **The cause.** The start and +1 s object lists differ by exactly three layers: `r3Swirl`, `r3Whirlpool` and `r3Bubbles`. Each one's own updater (`tunnel_r3.js:286`, `:358`, `:388`) turns it on once she passes u 3.0 m, so from +0.20 s, full by +0.38 s. Round 4's hide at `tunnel_r4.js:65` runs only once at build and covers only the swirl. Every comparison since R4 was taken at u 1.592 m, so none of them included these layers.
+2. **The fix (S1).** Add the three names to the hero's per-frame hide list behind `SWIM2_ON`, after `tunnel_r9_match.js:339`. That list (`tunnel_r7_hero.js:297-298`) already runs after round3's updaters, so `tunnel_r3.js` needs no edit. The start frame cannot change, because the three layers are already off there.
+3. **Predicted effect.** In the tunnel zone at +1 s: pale 23.0 → about 9-10, cobalt 10.8 → 14-15, turquoise 5.5 → 9-10, white 14.0 → 7-11, saturation 0.46 → 0.55-0.58. At +2 s the existing overlay ablation already shows pale 26.3 → 11.1.
+4. **Lavender is not a flow, travel or delilac problem.** 20 of the original's 28.5 points sit in y 0.22-0.30, which is 74.7 % lavender: the washer's bevel and housing, behind the camera once she moves. On the band that is comparable in a moving frame (y 0.30-0.52) the original has 11.1 %. R9 at +1 s has 6.9 %, and after S1 the estimate is about 11 %.
+5. **Why the walls can't lose lavender themselves.** The ring map replaces the walls' colour at rw 0.005-0.46 and is sampled at a fixed place with no time or travel term (`tunnel_r9_match.js:642`). That overwrites the flow terms (`:689-699`) and the walls' delilac (`:713-714`). The floor's delilac only acts where the original has 1.5 % lavender. The remaining cobalt gap is the same in the start frame, so fixing it is a separate step that would move the start frame.
+6. **A second moving-only fault (S3).** Two cream-yellow radial bars appear at 65 and 110 degrees in the top fifth of the frame. The colour map is clamped at its edge, and its last row has cream columns at those angles, so every near-wall point repeats them. The fix mirrors the map's outer 0.30 ln r instead, ramped in after the start. Predicted: bright-pale in the top 22 % drops from 14.0 % to about 2-4 %.
+7. **Floor dashes (S2).** `focusFloorGLSL` draws opaque white dashes on a screen-locked grid. They drift at about 0.29 ln r/s while the floor under them streams at 0.7-1.4, so they ride along with her. The replacement uses the floor's own moving waves: a thin broken rim along height contour 0.74, 1-2.2 px wide at any distance, rounded caps at 0.86-0.95, lit faces #62b5eb, and the original's floor white #e9f1f8. No cobalt is added, because the original's floor ahead is light.
+8. **Bloom, grade and tone mapping: no change.** Turning bloom off moves the zone by about 1 point and the grade by about 2, against -11.4 pale for the swirl alone. The materials are already pre-inverted through grade and tone mapping, so retuning either would move the start frame.
+9. **Also found, off by default (S4).** Inside rw 0.46 the walls are a still image fixed on screen while she travels: the tunnel's version of the still picture on heroSwell. S4 adds a travel-driven flow, but it is a later step because the cross-fade could blur the original's splashes.
+10. **Code and checks.** The report has ready-to-paste code for a new `tunnel_s4_swim2.js` (imports only `tunnel_s4_bt.js`) and a table of nine hook points. Each step has a check: start frame 0 px changed, zone table with the y 0.30-0.52 band, bar-sector count, floor-alone frame and optical flow. Test them one at a time and revert any step that looks less like the original.
+
+Files are in /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists:
+- lighting_visual_matching.md (the report, 968 words of prose, uncommitted for your autosave)
+
+The scratch scripts and image composites are in /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/ins/ and are not part of the repository.
+
+
+_87 tool steps._
 
 ---
 
@@ -259,5 +294,11 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 23:52 `Bash`: Simulate the proposed swerve and landing signals on the trace
 - 23:52 `Bash`: Simulate roll driven by lateral velocity and acceleration
 - 23:52 `Bash`: Tune the roll spring for a small counter-roll
+- 23:57 `Bash`: Simulate the dive-arc pitch spring over the jump
+- 23:59 `Bash`: Check the import lines of the two water modules
+- 23:59 `Bash`: List imports of the liquid module
+- 00:00 `Write`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md
+- 00:00 `Bash`: Count prose words and confirm only the report changed
+- 00:00 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md
 
-_56 tool steps._
+_62 tool steps._
