@@ -1,5 +1,37 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
+## Newest (6 November 23:10 to 7 November about 00:20 UTC): seventeenth session, the SECOND Claude account, restoration and account-transfer backup; NO game changes
+
+- **Branch:** `ccr-10503be1-pnv5vq` (the session started on `ccr-38535f0b-o7euxq`; its chat-log commits were merged in with
+  a normal merge, nothing rewritten). Session `08b39b21` is in `Tools/autosave_sessions.json`; the autosave runs detached.
+- **Account transfer files (new):**
+  - `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (the full state, inventories, restore steps and the continuation prompt);
+  - `START_HERE_NEW_CLAUDE_ACCOUNT.md`;
+  - `SAVE_BEFORE_ACCOUNT_SWITCH.md`;
+  - `Tools/verify_restore.sh` (a read-only check; `--build` re-proves the accepted bundle).
+- **Restored on this account (the user's approvals):**
+  - the cloud environment `bubblegame` (package registries, MCP servers, `download.blender.org`,
+    `download.pytorch.org`, the setup script; every step passed);
+  - the parallax-threejs plugin (0.4.12): chrome-devtools-mcp, threejs-devtools-mcp and playwright-mcp work; Spector
+    skipped (its MCP fails: not built);
+  - the `screen4-water-motion-engineer` agent activated (`8157579`, the draft minus its two-line note); it loads in a new
+    session.
+- **The accepted build is unchanged** (`Previews/WebDemo/screen4_round9_match/55_account_restore/README.md`):
+  - `WebDemo/` identical to `0f7121f`;
+  - bundle `5bb24e28` rebuilds byte-identically from its source `c4072c9`;
+  - 0 px at four moments (accepted start and +1 s, normal game, R9) against a rebuild and the previous machine's frames;
+  - `s3_func` identical (507 lines); the motion trace identical in every field of 152 frames;
+  - **`r2_func` NOT verified:** hearts identical, then it timed out twice at its second page load in this container.
+    Cause not yet found; see the new handoff, section 10.
+- **The three specialist inspections finished** (read-only; `54_specialists/water_vfx_engineer.md`,
+  `lighting_visual_matching.md`, `animation_review.md`; their scripts in `54_specialists/scratch/`).
+  - New finding: the moving tunnel's paleness is `r3Swirl` AND `r3Whirlpool` AND `r3Bubbles`, all re-shown by their own
+    updaters after u 3.0 m.
+- **Next:**
+  - with the user's go, finish `r2_func`;
+  - then the ONE correction the user approved in principle: `screen4-water-motion-engineer` behind `?s3=intunnel,swim2`,
+    judged by the art director, with full evidence before any merge. Not started.
+
 ## Newest (6 November, about 21:20-22:50 UTC): sixteenth session, the engineering diagnosis; NOT merged
 
 - **Branch:** `ccr-10503be1-pnv5vq`, started from the fifteenth session's R9 work.

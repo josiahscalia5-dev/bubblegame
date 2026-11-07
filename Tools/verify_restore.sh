@@ -32,7 +32,9 @@ elif git merge-base --is-ancestor "$lh" "$rh" 2>/dev/null; then note "GitHub is 
 elif git merge-base --is-ancestor "$rh" "$lh" 2>/dev/null; then note "local is ahead of GitHub (${lh:0:7} vs ${rh:0:7}); run: bash Tools/save_now.sh \"<message>\""
 else fail "local ${lh:0:7} and GitHub ${rh:0:7} have diverged: do NOT force-push; ask the user"; fi
 n="$(git status --porcelain | wc -l)"; [ "$n" = 0 ] && pass "working tree clean" || note "$n uncommitted change(s) (the autosave saves them every 5 minutes)"
-git log --oneline -1 -- ACCOUNT_SWITCH_HANDOFF.md > /dev/null 2>&1 && pass "handoff files present: $(ls CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md START_HERE_NEW_CLAUDE_ACCOUNT.md SAVE_BEFORE_ACCOUNT_SWITCH.md 2>/dev/null | tr '\n' ' ')"
+for h in CLAUDE.md HANDOFF.md CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md START_HERE_NEW_CLAUDE_ACCOUNT.md SAVE_BEFORE_ACCOUNT_SWITCH.md; do
+  [ -f "$h" ] && pass "handoff file $h" || fail "handoff file $h missing"
+done
 
 echo "== The accepted game (must be unchanged)"
 m() { md5sum < "$1" 2>/dev/null | cut -c1-32; }

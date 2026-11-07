@@ -1,5 +1,9 @@
 # Account-switch handoff: Bubble Wash Kingdom, Screen 4
 
+> **Superseded on 7 November 2026 by `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`** (and `START_HERE_NEW_CLAUDE_ACCOUNT.md`). This
+> file is kept unchanged below as the sixteenth session's record. Its section 5 (the unfinished specialist inspections
+> and the agent activation) is done: see the new file.
+
 Written on 6 November 2026, about 22:50 UTC, by the sixteenth session (session id `62b942a4`), so another Claude account
 can continue exactly where this one stopped. Nothing in it is a secret. The second account does NOT automatically have
 the first account's plugins, cloud environment, chat, connectors or credentials: verify each item in section 7.

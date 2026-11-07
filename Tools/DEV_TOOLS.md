@@ -1,5 +1,23 @@
 # Development tools for Bubble Wash Kingdom
 
+## Newest check: 6-7 November 2026, about 23:20-00:20 UTC, branch `ccr-10503be1-pnv5vq`, the second Claude account (seventeenth session)
+
+- **Cloud environment:** this account started on its Default environment (no extra hosts, no setup script). With the
+  user's approval, a personal environment `bubblegame` was created:
+  - package registries and MCP servers on; hosts `download.blender.org` and `download.pytorch.org`; the repository;
+  - the setup script `if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`.
+  - `cloud_env_setup.sh` run here: every step installed, exit 0.
+- **Tools (checked):** Blender 5.2.3 LTS, OpenCV 5.0.0, scikit-image 0.26.0, PyTorch 2.15 / LPIPS / Optuna 5.0, glTF
+  Transform 4.5.1, glTF Validator 2.0.0-dev.3.10, Vite 8.3.5, Tripo CLI 0.11.2 (not signed in), Git LFS 3.4.1, Node
+  22.23.4, Python 3.13.18, Playwright 1.63.0 / Chromium 153, ImageMagick 6.9.12, FFmpeg 6.1.1. Game: three 0.170.0,
+  esbuild 0.24.0.
+- **Plugin:** parallax-threejs 0.4.12 is loaded:
+  - chrome-devtools-mcp 1.6.0, threejs-devtools-mcp 0.2.1 (bridge through port 9222 -> 3000) and playwright-mcp 0.0.78
+    work;
+  - the Spector MCP fails (not built; skipped by the user's decision).
+- **New:** `Tools/verify_restore.sh` (read-only restore check). The full inventory and the steps for another account are
+  in `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, section 7.
+
 ## Newest check: 6 November 2026, 04:10 UTC, branch `ccr-d224d313-81g2dq`, on a new Claude account (thirteenth session)
 
 - **Cloud environment:** the account's Default environment allows package registries only, so `cloud_env_setup.sh`'s Blender

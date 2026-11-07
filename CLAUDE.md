@@ -1,8 +1,10 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
 Read `HANDOFF.md` first: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
-On a different Claude account, read `ACCOUNT_SWITCH_HANDOFF.md` first: the branch, the tool inventory and how to restore
-it, the specialist agents and the first steps.
+On a different Claude account, read `START_HERE_NEW_CLAUDE_ACCOUNT.md`, then `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (7 November;
+it replaces `ACCOUNT_SWITCH_HANDOFF.md`): the branch, the accepted checkpoint, the agents, the plugin and environment
+inventory, how to restore and verify (`bash Tools/verify_restore.sh --build`), and the continuation prompt. Before
+switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
 
 ## What the user wants now
 
@@ -94,6 +96,8 @@ it, the specialist agents and the first steps.
 - **Tools:** run `source Tools/bw_tools_env.sh` in every shell. If `~/.bubblewash-tools` is missing (a new account or
   environment), run `bash Tools/cloud_env_setup.sh`. Status and sign-ins: `Tools/DEV_TOOLS.md`.
 - **Design agents** (`.claude/agents/`):
+  - `screen4-water-motion-engineer` (activated 6 November at the user's approval): one owner for the water touching her,
+    the tunnel water, overlays and post as they affect it, transparency and her drawn swim motion, with live DevTools;
   - `game-art-director`: read-only reviewer;
   - `water-vfx-engineer`;
   - `lighting-visual-matching`: tunnel architecture and lighting;
