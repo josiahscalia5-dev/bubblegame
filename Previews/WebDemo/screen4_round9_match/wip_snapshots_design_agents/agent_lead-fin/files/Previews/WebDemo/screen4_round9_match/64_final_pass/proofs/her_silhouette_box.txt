@@ -1,0 +1,7 @@
+2026-11-04_Round6_Constructi: area 4.9% of frame, x 0.216-0.729 (w 0.513), y 0.697-0.864 (h 0.167), max row width 0.489
+frames_accepted/t0.png      : area 4.6% of frame, x 0.234-0.714 (w 0.480), y 0.685-0.847 (h 0.162), max row width 0.474
+frames_new/t0.png           : area 5.5% of frame, x 0.217-0.734 (w 0.517), y 0.682-0.847 (h 0.164), max row width 0.511
+frames_accepted/t1.0.png    : area 4.2% of frame, x 0.225-0.708 (w 0.483), y 0.713-0.864 (h 0.151), max row width 0.480
+frames_new/t1.0.png         : area 5.0% of frame, x 0.208-0.729 (w 0.520), y 0.709-0.865 (h 0.156), max row width 0.517
+frames_accepted/t2.0.png    : area 4.2% of frame, x 0.232-0.714 (w 0.481), y 0.709-0.862 (h 0.152), max row width 0.474
+frames_new/t2.0.png         : area 5.1% of frame, x 0.210-0.730 (w 0.520), y 0.700-0.862 (h 0.162), max row width 0.511
