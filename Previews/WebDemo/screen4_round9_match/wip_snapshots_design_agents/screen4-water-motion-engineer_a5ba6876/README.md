@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Decisive Screen 4 fidelity pass)
 
-- **Taken:** 2026-11-07 12:02 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 12:07 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a5ba6876e8752066d` (local only), started from `f71e130`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (78; full copies in `files/`)
+## Files (81; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/README.md (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_T1.0/base_canvas.png (new)`
@@ -40,6 +40,7 @@
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/6_landing_previous_f0168.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/motion/trace_fidelity.log (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/motion/trace_fidelity_swipejump.json (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/flow_metric.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/identity/identity.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/motion_trace_gameplay.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/r2_func_fidelity.err (new)`
@@ -78,8 +79,10 @@
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_4_swipe_right.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_5_jump.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_6_landing.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_compare_ORIGINAL_ACCEPTED_fidelity.mp4 (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_fidelity.log (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_fidelity.mp4 (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_key_moments_ACCEPTED_fidelity.jpg (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/tunnel_r7_hero_water.js`
 - `WebDemo/src/tunnel_r9_match_water.js`

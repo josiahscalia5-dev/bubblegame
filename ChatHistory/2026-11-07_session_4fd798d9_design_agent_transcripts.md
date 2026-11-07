@@ -1283,5 +1283,16 @@ While the clip records, I'll write the README; the flow numbers go in once the c
 - 11:57 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/README.md
 - 11:57 `Grep`: float fsCutT
 - 11:57 `Bash`: Wait for the clip to finish
+**Agent** (12:03 UTC):
 
-_261 tool steps._
+The final clip is recorded (no console errors). Regenerating the Pixel 7 sheets from it, then the comparison video and the flow metric.
+
+- 12:03 `Bash`: Rebuild the Pixel 7 sheets from the final clip
+- 12:03 `Bash`: Build the side-by-side comparison video
+- 12:03 `Bash`: Measure the water streaming past her
+**Agent** (12:04 UTC):
+
+You've hit your 5-hour limit · resets 2:50pm (UTC)
+
+
+_264 tool steps._
