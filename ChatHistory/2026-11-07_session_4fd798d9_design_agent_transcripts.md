@@ -567,5 +567,150 @@ Meanwhile, the clip key moments (CPU-only work).
 - 10:46 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/README.md
 - 10:46 `Bash`: Tidy, stop server, check browsers
 - 10:46 `Bash`: List main browser processes
+**Agent** (10:46 UTC):
 
-_180 tool steps._
+The README is 67 lines; the brief asks for about 40. Let me tighten it.
+
+- 10:47 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/README.md
+- 10:47 `Bash`: Show working tree status
+**Agent** (10:47 UTC):
+
+I've built `?s3=intunnel,blend`. All three proofs pass, and in my own judgement it is closer to the ORIGINAL, most clearly at the landing. No art-director review was run, as you asked. Nothing is committed or pushed.
+
+**Analysis** (seed 7, no steering, at the ORIGINAL's 767 x 1536 framing; "previous" is the accepted `?s3=intunnel`, bundle ea0c833c):
+
+| measure | ORIGINAL | previous start / +1 s | NEW start / +1 s |
+|---|---|---|---|
+| her visible height (px) | 258 | 246 / 232 | 273 / 256 |
+| crown width 20 / 40 / 60 px below her top (roundness) | 151 / 209 / 241 | 87 / 164 / 193 | 98 / 173 / 206 |
+| her centre above the middle waterline (px) | about 64 | about 15 | about 60 |
+| water 4-64 px under her: lavender / pale / white % | 41 / 29 / 20 | 0.4 / 52 / 17 | 9 / 64 / 20 |
+| landing: her drawn one-frame drop | none | 59 px | 0 px |
+| water streaming past her (`flow_metric.py`, 2.1-2.95 s) | | 343 px/s against a 167 wobble | 310 px/s against a 162 wobble |
+
+The cause: in the previous build the top of the water round her was level with her centre, so only a narrow-topped, flat upper half showed.
+
+**The change** (visual only; swim2 stays on):
+1. **Her drawn body** is 12 % less tall, which gives a rounder crown, and is drawn 5 cm higher. The fur's lighting follows her.
+2. **The water round her** is lowered to 84 % of its height, with two rounded domes like the ORIGINAL's: a higher one at her front-left and a broad low one at her front-right. Same mesh and footprint.
+3. **At the contact** the water gets a lavender tint along her waterline in front of her body, as if her pink shows through it. Its white pieces stay white; no foam, bubbles or extra white.
+4. **The landing**: the one-frame 17 cm drop that buried her is no longer drawn. A damped dip of at most 5 cm replaces it, and the water follows her drawn dip.
+
+I also tried deepening the lower water toward turquoise. It turned the white highlights pale, so it is off.
+
+**Proofs:**
+- **(a) Nothing else changed:** 0 px different between the committed bundle and my rebuild for `intunnel` (start, +1 s, +2 s), `intunnel,noswim2` (+1 s), `intunnel,water9` (+1 s) and the normal game (start, +1 s).
+- **(b) Gameplay tests:** `s3_func` differs only in the switch list. `r2_func` at VW=135 VH=270 is byte-identical to the accepted report.
+- **(c) Motion trace:** 152 frames x 17 fields (the gameplay fields plus the camera), 0 differences. The HUD coin count in the two clips is 1-2 apart. Coins are picked up from her gameplay position, which this change never moves, so that gap is recorder frame timing, as found in `53_swim`.
+
+**Judgement:** her round body now shows above the water with her arms clear. The water is a lower, rounded band round her lower body, and she is no longer swallowed for about 0.3 s after the jump.
+
+**Still different:**
+- Her waterline is still a fairly even line rather than distinct glassy domes.
+- The lavender under her is much weaker than the ORIGINAL's (9 % against 41 %) and reads as pale periwinkle.
+- The water lower down is still pale blue; the turquoise right under her fell from 4 % to 0.
+- At the start she stands about 15 px taller above the water than in the ORIGINAL.
+- The jump is still the game's back somersault.
+
+**Files changed** (in `/home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/`):
+- `src/tunnel_s4_blend.js` (new: the settings and code)
+- `src/tunnel_s4_bt.js` (`BLEND_ON`, and the `SWIM2_ON` line as briefed)
+- `src/game.js`, `src/tunnel_r7_hero_water.js`, `src/tunnel_r9_match_water.js` (short hooks gated on `BLEND_ON`)
+- `game.bundle.js` (rebuilt, md5 38466b67)
+
+The HTTP server is stopped and the DevTools page is on about:blank. Two idle browsers belonging to the DevTools plugin are still running; I had no tool to close them.
+
+Everything is in `/home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/`:
+- `README.md`
+- `sheets/` (six Pixel 7 moments: start, +1 s, swipe left, swipe right, jump, landing; plus start, +1 s and +2 s at the ORIGINAL's framing)
+- `frames/` (full-resolution frames)
+- `videos/clip_compare_ORIGINAL_previous_blend.mp4`
+- `proofs/` and `motion/` (the proofs and the motion trace)
+- `scripts/` (the measuring scripts)
+
+
+_182 tool steps._
+
+---
+
+## Game Art Director: Judge blend against the ORIGINAL (started 10:47 UTC)
+
+**Lead → agent** (10:47 UTC):
+
+Judge ONE candidate for Bubble Wash Kingdom Screen 4, read-only. The user watches Claude usage: be efficient, look at the evidence below, do not render new captures unless something essential is missing, keep the answer short.
+
+THE ONLY TARGET: the ORIGINAL `/home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536). For close inspection only: the user's enlarged copy `/home/user/bubblegame/Design/ReferencePacks/2026-11-07_Character_Water_Relationship_from_user/01_ORIGINAL_full_as_sent.png`.
+
+THE USER'S GOAL (their words, condensed): "not a different water effect, but the exact artistic relationship between my character and water shown in the ORIGINAL". There her round fluffy body sits visibly ABOVE the water, with well-proportioned cobalt-blue and turquoise waves surrounding her lower body; wave size, colours, her height and the reflections look naturally connected. In the accepted game she was too flat and too low, and the water round her too large, too pale or disconnected. Rules: never hide her behind white foam, a white film or oversized water; the water must flow past her as she moves, swipes, jumps and lands; she must not be redesigned (fur, colours, face), only her proportions/height as drawn to match the original.
+
+COMPARE: ORIGINAL | PREVIOUS (the accepted `?s3=intunnel`, which is swim2) | NEW (`?s3=intunnel,blend`). Evidence, all real three.js gameplay captures, in `/home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/`: `sheets/` (Pixel 7: start, +1 s, swipe left, swipe right, jump, landing; and start / +1 s / +2 s at the ORIGINAL's own framing), full-resolution `frames/`, the clip `videos/clip_compare_ORIGINAL_previous_blend.mp4` (extract a few frames with ffmpeg if useful), and the engineer's `README.md` with its measurements (treat those as the engineer's claims to check, not as your verdict).
+
+The engineer's change: her drawn body 12 % less tall and 5 cm higher; the water round her lowered to 84 % with two rounded domes; a lavender tint at her waterline; the one-frame landing drop replaced by a damped dip.
+
+ANSWER, briefly (at most about 25 lines):
+1. VERDICT: is NEW genuinely closer to the ORIGINAL than PREVIOUS in the character-water relationship? One of: clearly closer / slightly closer / no better / worse. Separately for the start, moving (+1 s, swipes) and jump/landing.
+2. Does anything look like a redesign of her, a white film, oversized water, or water that no longer flows past her? Any regression versus PREVIOUS?
+3. The 3-5 most important remaining differences from the ORIGINAL, ranked.
+4. RECOMMENDATION to the user: accept as is / accept with reservations / do not accept, in one sentence.
+
+- 10:47 `Bash`: List the evidence folder contents
+- 10:47 `Bash`: Read engineer README and list sheets/videos
+- 10:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/framing768_ORIGINAL_previous_blend_start.j
+**Lead → agent** (10:47 UTC):
+
+[Image: original 2317x1582, displayed at 2000x1366. Multiply coordinates by 1.16 to map to original image.]
+
+- 10:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/framing768_ORIGINAL_previous_blend_T1.0.jp
+**Lead → agent** (10:47 UTC):
+
+[Image: original 2317x1582, displayed at 2000x1366. Multiply coordinates by 1.16 to map to original image.]
+
+- 10:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_6_landing.jpg
+**Lead → agent** (10:47 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 10:47 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_3_swipe_left.jpg
+**Lead → agent** (10:47 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 10:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_5_jump.jpg
+**Lead → agent** (10:48 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 10:48 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_4_swipe_right.jpg
+**Lead → agent** (10:48 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 10:48 `Bash`: Build a close-up crop sheet of the contact zone
+- 10:48 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/contact_crop.png
+**Agent** (10:48 UTC):
+
+1. **Verdict: slightly closer overall.**
+   - **Start: slightly closer.** More of her round body shows above the water and both arm pom-poms are clear, as in the ORIGINAL. The water's shape and colour at her base have barely changed.
+   - **Moving (+1 s, both swipes): slightly closer.** She reads rounder and sits on the water every time, where before the crest cut her at mid-body.
+   - **Jump: no better.** The airborne frame is practically the same somersault in both builds.
+   - **Landing: clearly closer.** She is no longer swallowed after the jump.
+
+2. **Redesign, film, oversized water, flow:**
+   - **No redesign:** her fur, colours and face are unchanged, and the 0.88 squash reads as rounder, not as a different character.
+   - **No white film and no oversized water:** the water band is lower than before.
+   - **One mild regression:** the lavender tint in front of her lower body is a flat, even periwinkle wash. It flattens the white curl detail there and edges towards a coloured film. The ORIGINAL's lavender comes from bubbly foam domes, not a tint.
+   - **Flow:** the stills show the water texture still streaming past her. I did not check motion myself; the engineer's figure is 310 px/s against 343 before, about 10 % less movement.
+
+3. **Remaining differences from the ORIGINAL, ranked:**
+   1. **Her waterline:** the ORIGINAL has irregular glassy, bubbly lavender-white domes overlapping her base. NEW has a fairly even line with a jagged sawtooth edge, and the two new domes barely read.
+   2. **Foreground water colour:** the ORIGINAL is saturated cobalt and turquoise with lavender-white foam. Both builds are still pale sky blue across the lower third.
+   3. **Her crown:** still narrow and peaked, where the ORIGINAL is a broad round dome. The engineer measures 98 px wide 20 px below her top, against the ORIGINAL's 151.
+   4. **Soft contact and reflections:** in the ORIGINAL her lower fur glows softly into the foam. In the game, the fur stops at a hard cut line, with no reflection or tint picked up from the water.
+   5. **The jump:** still the game's somersault (outside this change).
+
+4. **Recommendation: accept with reservations.** It is genuinely closer, above all at landing, with no clear regression. The flat lavender wash should be replaced by real waterline domes in the next single correction, not tuned further.
+
+I judged from the engineer's sheets plus one close-up crop of the start (ORIGINAL / PREVIOUS / NEW), saved at `/tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/contact_crop.png`. I did not watch the comparison clip.
+
+
+_10 tool steps._
