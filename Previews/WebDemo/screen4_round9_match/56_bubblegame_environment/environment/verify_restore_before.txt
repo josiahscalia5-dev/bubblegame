@@ -1,0 +1,34 @@
+== Git
+  PASS  on the work branch ccr-10503be1-pnv5vq
+  PASS  local head f74629b = GitHub's ccr-10503be1-pnv5vq
+  NOTE  1 uncommitted change(s) (the autosave saves them every 5 minutes)
+  PASS  handoff file CLAUDE.md
+  PASS  handoff file HANDOFF.md
+  PASS  handoff file CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md
+  PASS  handoff file START_HERE_NEW_CLAUDE_ACCOUNT.md
+  PASS  handoff file SAVE_BEFORE_ACCOUNT_SWITCH.md
+== The accepted game (must be unchanged)
+  PASS  WebDemo/game.bundle.js md5 5bb24e2828a6f2ef17146252c69b413a (the accepted bundle)
+  PASS  WebDemo/index.html unchanged
+  PASS  WebDemo/artifact.html unchanged
+  PASS  package.json pins three 0.170.0 and esbuild 0.24.0
+  PASS  installed three 0.170.0
+== The ONLY visual target
+  PASS  ORIGINAL approved Screen 4 present, sha256 matches (Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg)
+== Project agents, skill, hook (travel with the repository)
+  PASS  agent screen4-water-motion-engineer (.claude/agents/screen4-water-motion-engineer.md)
+  PASS  agent water-vfx-engineer (.claude/agents/water-vfx-engineer.md)
+  PASS  agent lighting-visual-matching (.claude/agents/lighting-visual-matching.md)
+  PASS  agent game-art-director (.claude/agents/game-art-director.md)
+  PASS  agent gameplay-visual-testing (.claude/agents/gameplay-visual-testing.md)
+  PASS  skill bubble-wash-screen-matcher
+  PASS  SessionStart autosave hook registered
+== Development tools (outside the repository; installed by Tools/cloud_env_setup.sh)
+  FAIL  /root/.bubblewash-tools missing: run  bash Tools/cloud_env_setup.sh  (or start a session on the 'bubblegame' environment, whose setup script runs it)
+  PASS  Playwright 1.63.0
+== Autosave
+  PASS  5-minute autosave running
+== Reproducible build (scratch folder; the repository is not touched)
+  PASS  the bundle's own source (c4072c9) rebuilds byte-identically (5bb24e2828a6f2ef17146252c69b413a)
+
+Summary: 23 passed, 1 notes, 1 failed.

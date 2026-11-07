@@ -1,0 +1,46 @@
+00:43:38
+
+== Blender 5.2.3
+  installed (checksum matches blender.org)
+
+== Mesa EGL (lets Blender's Eevee render without a GPU; Cycles does not need it)
+debconf: delaying package configuration, since apt-utils is not installed
+  installed
+
+== Python visual tools (OpenCV, scikit-image, NumPy, Pillow, SciPy)
+  installed
+
+== Python metrics tools (PyTorch on CPU, LPIPS with its AlexNet weights, Optuna) in their own environment
+  installed
+
+== Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI)
+  installed
+
+== Git LFS
+  git-lfs/3.4.1 (GitHub; linux amd64; go 1.22.2)
+
+== Game dependencies (WebDemo: three and esbuild, pinned in its package.json)
+  installed in bubblegame/WebDemo
+
+== Checks
+  Blender 5.2.3 LTS
+  OpenCV 5.0.0 | scikit-image 0.26.0
+  glTF Transform 4.5.1
+  glTF Validator 2.0.0-dev.3.10
+  vite/8.3.5 linux-x64 node-v22.23.4
+  Tripo CLI 0.11.2 (sign-in: see Tools/DEV_TOOLS.md)
+  Node.js v22.23.4, npm 10.9.9, Python 3.13.18
+  Version: ImageMagick 6.9.12-98 Q16 x86_64 18038 https://legacy.imagemagick.org
+  ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+  git-lfs/3.4.1 (GitHub; linux amd64; go 1.22.2)
+  Playwright 1.63.0 / Chromium 153.0.8010.12
+
+All Bubble Wash Kingdom tools are installed. In each shell: source Tools/bw_tools_env.sh
+
+real	1m20.426s
+user	0m50.376s
+sys	0m46.493s
+EXIT CODE: 0
+00:44:58
+
+[exited with code 0]
