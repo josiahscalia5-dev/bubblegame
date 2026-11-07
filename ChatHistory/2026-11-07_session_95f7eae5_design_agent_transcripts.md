@@ -514,5 +514,11 @@ While the final chain runs, I'll write the README; I'll check its numbers agains
 
 - 15:10 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/README.md
 - 15:10 `Bash`: Wait for the final proof chain
+**Agent** (15:17 UTC):
 
-_229 tool steps._
+A final mandate supersedes the narrowed scope. The running proof chain is for a bundle that is about to change, so I'll stop it, then read the final reference pack.
+
+- 15:17 `Bash`: Stop the obsolete proof chain and read the final pack
+- 15:17 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-07_Final_Screen4_Reference_Pack_from_user/04_gameplay_comparison_at_1_and_2_seconds.jpg
+
+_231 tool steps._
