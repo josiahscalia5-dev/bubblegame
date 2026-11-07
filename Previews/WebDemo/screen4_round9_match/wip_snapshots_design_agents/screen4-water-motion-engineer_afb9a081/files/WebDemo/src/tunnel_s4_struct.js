@@ -377,13 +377,13 @@ export function structHousingGLSL(radius) {
       // brushed metal: lavender at the top to deeper violet down the sides, fine streaks along the drum
       float stS = sin(stX * 61.0 + sin(stX * 7.0) * 2.0) * 0.5 + sin(stX * 23.0 + 1.7) * 0.35 + sin(stX * 141.0) * 0.15;
       vec3 stC = mix(${hx(C.deep)}, ${hx(C.mid)}, smoothstep(0.25, 0.75, stUp));
-      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.55, 0.95, stUp) * smoothstep(3.0, 5.5, stE) * 0.8);   // lavender up near the camera, periwinkle toward the lip
+      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.55, 0.95, stUp) * smoothstep(2.0, 4.0, stE) * 0.8);   // lavender up near the camera, periwinkle toward the lip
       stC = mix(stC, ${hx(C.deep)}, (1.0 - smoothstep(0.6, 2.6, stE)) * 0.45);   // deeper violet toward its lip, as the ORIGINAL's housing
       stC *= 1.0 + ${f4(H.streaks)} * stS;
       // a soft sheen band running round it (the centre's light on curved metal), silver and a pink reflection
-      float stSh = exp(-pow((stE - 3.2) / 1.4, 2.0)) * smoothstep(0.4, 0.9, stUp);
+      float stSh = exp(-pow((stE - 2.1) / 1.0, 2.0)) * smoothstep(0.4, 0.9, stUp);
       stC = mix(stC, ${hx(C.silver)}, stSh * ${f4(H.sheen)} * (0.75 + 0.25 * stS));
-      stC = mix(stC, ${hx(C.pink)}, exp(-pow((stE - 5.6) / 0.7, 2.0)) * smoothstep(0.6, 0.95, stUp) * 0.35);
+      stC = mix(stC, ${hx(C.pink)}, exp(-pow((stE - 3.7) / 0.6, 2.0)) * smoothstep(0.6, 0.95, stUp) * 0.35);
       // the drum's panel seams (fixed to the drum: they stream past) and its rows of perforations
       float stQ = fract(u / ${f4(H.seams)});
       float stW = fwidth(u / ${f4(H.seams)}) * 1.5 + 0.004;
