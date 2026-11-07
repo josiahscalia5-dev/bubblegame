@@ -18,6 +18,7 @@ note() { printf '  NOTE  %s\n' "$*"; warn=$((warn + 1)); }
 WORK_BRANCH=ccr-10503be1-pnv5vq
 ACCEPTED_BUNDLE_MD5=5bb24e2828a6f2ef17146252c69b413a          # ?s3=intunnel and the normal game (accepted build)
 SWIM2_BUNDLE_MD5=1199348a80352be29327134230a1b6a1            # the same + ?s3=intunnel,swim2 behind its flag (7 November, user-approved)
+BLEND_BUNDLE_MD5=38466b676bd36b05568023b5240818dd            # the accepted ?s3=intunnel (swim2) + ?s3=intunnel,blend behind its flag (7 November; accepted frames 0 px: 59_blend/proofs/)
 ACCEPTED_SWIM2_MD5=ea0c833c45667e1894fbdc2cc98a28dd          # ?s3=intunnel INCLUDES swim2 (7 November, accepted; rollback ?s3=intunnel,noswim2 / 920531d)
 ACCEPTED_INDEX_MD5=cb40534c45b7c50ff95194088db5a79c
 ACCEPTED_ARTIFACT_MD5=1bc90e0da16ba552b0141158c52bc75f
@@ -43,8 +44,9 @@ m() { md5sum < "$1" 2>/dev/null | cut -c1-32; }
 bm="$(m WebDemo/game.bundle.js)"
 if [ "$bm" = "$ACCEPTED_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $ACCEPTED_BUNDLE_MD5 (the accepted bundle)"
 elif [ "$bm" = "$ACCEPTED_SWIM2_MD5" ]; then pass "WebDemo/game.bundle.js md5 $ACCEPTED_SWIM2_MD5 (the accepted Screen 4: ?s3=intunnel includes swim2; 58_swim2_accepted/)"
+elif [ "$bm" = "$BLEND_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $BLEND_BUNDLE_MD5 (the accepted Screen 4 + ?s3=intunnel,blend behind its flag; accepted frames 0 px: 59_blend/proofs/)"
 elif [ "$bm" = "$SWIM2_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $SWIM2_BUNDLE_MD5 (accepted + ?s3=intunnel,swim2 behind its flag; accepted frames 0 px different: 57_swim2/proofs/)"
-else fail "WebDemo/game.bundle.js md5 $bm, expected $ACCEPTED_SWIM2_MD5, $SWIM2_BUNDLE_MD5 or $ACCEPTED_BUNDLE_MD5: the accepted bundle changed"; fi
+else fail "WebDemo/game.bundle.js md5 $bm, expected $BLEND_BUNDLE_MD5, $ACCEPTED_SWIM2_MD5, $SWIM2_BUNDLE_MD5 or $ACCEPTED_BUNDLE_MD5: the accepted bundle changed"; fi
 [ "$(m WebDemo/index.html)" = "$ACCEPTED_INDEX_MD5" ] && pass "WebDemo/index.html unchanged" || fail "WebDemo/index.html changed"
 [ "$(m WebDemo/artifact.html)" = "$ACCEPTED_ARTIFACT_MD5" ] && pass "WebDemo/artifact.html unchanged" || fail "WebDemo/artifact.html changed"
 pin="$(python3 -c "import json;d=json.load(open('WebDemo/package.json'));print(d['devDependencies']['three'],d['devDependencies']['esbuild'])")"

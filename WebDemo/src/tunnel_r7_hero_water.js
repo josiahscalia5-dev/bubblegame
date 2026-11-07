@@ -29,6 +29,7 @@ import * as THREE from 'three';
 import { NOISE } from './shaders.js';
 import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
 import { SWIM2_ON, swim2Travel, swim2FlowPhase } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's water flows with her travel
+import { BLEND_ON, blendSwell } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the crest round her lower and domed (nothing changes without it)
 
 export const HERO_WATER = {
   // where the swell rises out of the water, in metres from the drum's mouth (the hero moment is at -3.27)
@@ -86,6 +87,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
   // every module's settings and before the swell and the layers that follow its crest (splash bank, plumes) are built
   if (SWIM_ON) { const Cc = SWIM.collar; Object.assign(HERO_WATER.swell, { ax: Cc.ax, au: Cc.au, out: Cc.out, inner: Cc.inner, dip: Cc.dip,
     line: Cc.line.map((h) => +(h + (Cc.lift || 0)).toFixed(4)), mounds: Cc.mounds.map((m) => m.slice()), swerve: Cc.swerve, air: Cc.air, land: Cc.land }); }
+  if (BLEND_ON) blendSwell(HERO_WATER.swell);   // ?s3=intunnel,blend (tunnel_s4_blend.js)
   // the character's frame at the water under it and its movement, worked out once a frame (first) for everything below
   const S = { k: 0, F: { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, C: new THREE.Vector3(),
     lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: mascot.visSpeed || 0, xMax: 3, wasAir: false };   // (visSpeed: ?s3=intunnel only)
@@ -106,7 +108,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     S.wasAir = !!mascot.air; S.land = Math.max(0, S.land - dt * 2.0);
     // the swell sits on the water under the character and sinks with it when it dips after a landing (so it never swallows
     // it); in the air it stays on the water
-    const dip = mascot.air ? 0 : Math.min(0, mascot.yAbs - W.FLOAT_H - ride);
+    const dip = mascot.air ? 0 : Math.min(0, (BLEND_ON ? (mascot.blendY ?? mascot.yAbs) : mascot.yAbs) - W.FLOAT_H - ride);   // (?s3=intunnel,blend: her drawn dip)
     // (?s3=...,swim: the collar sits on the water surface under her, not on her bob, so she bobs in it)
     if (SWIM_ON) S.base += (W.surface(L, S.lagX, z, time.value) - S.base) * e(0.05);
     else S.base += (ride + dip - S.base) * e(0.05);

@@ -4,6 +4,7 @@
 import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';   // first: ?s3=bt (the breakthrough pass) hands `focus` on to every switch module; ?s3=intunnel: the run starts inside the tunnel
 import { SWIM_ON, SWIM, swimPose } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: her swim rhythm (visual only) and R7's droplet cap
 import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: R7's droplet cap once she swims (visual only)
+import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1038,6 +1039,7 @@ function updateMascot(dt) {
     m.tilt.rotation.x += sp.pitch; m.tilt.rotation.z += sp.roll;
     m.squash.scale.y *= sp.sy;
   }
+  if (BLEND_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend: drawn only (tunnel_s4_blend.js); her state is untouched
 
   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
   // side spray while changing lanes, gentle ripples while bobbing at the start.
@@ -1079,6 +1081,7 @@ function updateMascot(dt) {
   m.lastSlope = slopeAll;
   mats.fur.uTime.value = t;
   mats.fur.uCentre.value.copy(m.root.position);
+  if (BLEND_ON) blendFurCentre(mats.fur.uCentre.value, m);   // ?s3=intunnel,blend: the fur's light centre on her drawn body
   TR.frame(m.z, F); mats.fur.uUp.value.copy(F.U);
 
   document.body.classList.toggle('inDrum', (running || INTUNNEL_ON && state.phase === 'intro') && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // (?s3=intunnel: the tunnel's HUD from Tap to Start)   // round7: the mission card at the hero moment

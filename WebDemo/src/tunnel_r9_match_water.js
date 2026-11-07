@@ -36,6 +36,7 @@ import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';  
 import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE, CREST_ON, CREST, WATER2_ON, WATER2 } from './tunnel_s4_bt.js';
 import { water2GLSL, water2Decl } from './tunnel_s4_water2.js';   // ?s3=...,water2   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
 import { swimCollarGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar's water ('' without the switch)
+import { BLEND_ON, blendSwellGLSL } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the face's colours round her
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -582,7 +583,7 @@ ${FOCUS_ON ? '' : `    {   // (focused pass) a band of opaque white-aqua froth a
       mwCol = mix(mwCol, mtUndisplay(mfC), mfZ); mwA = max(mwA, mfZ);
     }
 `}#endif
-${FOCUS_ON ? focusSwellGLSL() : ''}${swimCollarGLSL()}    col = mix(col, mwCol, uMatchOn);
+${FOCUS_ON ? focusSwellGLSL() : ''}${swimCollarGLSL()}${BLEND_ON ? blendSwellGLSL() : ''}    col = mix(col, mwCol, uMatchOn);
     a = mix(a, mwA * smoothstep(-0.06, 0.06, hUp + 0.02), uMatchOn);
   }
 `;

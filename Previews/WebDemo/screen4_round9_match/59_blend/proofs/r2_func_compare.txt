@@ -1,0 +1,4 @@
+r2_func (S3=intunnel,blend VW=135 VH=270, rebuilt bundle 38466b67) vs 58_swim2_accepted/gameplay/r2_func_intunnel_accepted_swim2.txt
+(S3=intunnel, bundle ea0c833c): `diff` exit 0, byte-identical (155 lines each).
+s3_func (S3=intunnel,blend) vs 58_swim2_accepted/gameplay/s3_func_intunnel_accepted_swim2.txt: only the switch list differs
+(s3_func_compare.txt); every gameplay field, the hidden layers and the draw calls are equal.
