@@ -41,7 +41,7 @@ import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swe
 import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
 import { swimWakeDecl, swimWakeGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the floor's wake coloured ('' without the switch)
 import { SWIM2_ON } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's face flows with her travel (uSwim2Fl)
-import { STRUCT_PARTS, structHousingGLSL } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera
+import { STRUCT_PARTS, structHousingGLSL, structSwellGLSL } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -756,7 +756,7 @@ void main() {
     col = mix(col, ${v3(K.foam)}, white * 0.8); a = max(a, white * 0.8);   // translucent: blue shows through
   }
 ${SPLASH_FOAM ? splashSwellGLSL() : ''}#endif
-${MATCH_ON ? matchSwellGLSL() : ''}${water9GLSL()}  gl_FragColor = vec4(col, a * step(0.001, uFade));
+${MATCH_ON ? matchSwellGLSL() : ''}${water9GLSL()}${STRUCT_PARTS.swell ? structSwellGLSL() : ''}  gl_FragColor = vec4(col, a * step(0.001, uFade));
 ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : LIQUID.debug === 2 ? '  gl_FragColor = vec4(d * 2.0, a, hUp * 2.0, 1.0);' : ''}
 }
 `;

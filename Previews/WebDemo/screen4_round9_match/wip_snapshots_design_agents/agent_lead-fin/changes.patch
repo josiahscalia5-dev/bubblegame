@@ -1,5 +1,5 @@
 diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
-index ebe4862..1df208e 100644
+index ebe4862..280af5f 100644
 --- a/WebDemo/src/game.js
 +++ b/WebDemo/src/game.js
 @@ -5,6 +5,7 @@ import { INTUNNEL_ON, INTUNNEL, WATER7_ON, WATER7 } from './tunnel_s4_bt.js';
@@ -26,7 +26,7 @@ index ebe4862..1df208e 100644
 +      vertexShader: SH.furVertex, fragmentShader: STRUCT_PARTS.hero ? structFurFragment(SH.furFragment) : SH.furFragment, side: THREE.DoubleSide });   // (?s3=...,structmatch,hero2: Screen 4's fur)
    });
 +  if (STRUCT_PARTS.hero) structFurUniforms(mats.fur);   // ?s3=intunnel,structmatch,hero2: a whiter rim
-+  if (STRUCT_PARTS.water) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
++  if (STRUCT_PARTS.water || STRUCT_PARTS.hero) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
    const squash = new THREE.Group(); squash.add(model);
    const tilt = new THREE.Group(); tilt.add(squash);
    const root = new THREE.Group(); root.add(tilt);
@@ -83,14 +83,14 @@ index 3d5941d..29feeab 100644
      u.uLat.value = THREE.MathUtils.clamp(S.lat, -6, 6); u.uAir.value = S.air; u.uLand.value = S.land; u.uPX.value = S.lagX; u.uXMax.value = S.xMax;
      u.uFlow.value = P.flow * (0.6 + 0.4 * THREE.MathUtils.clamp(S.speed / 7, 0, 1.5));
 diff --git a/WebDemo/src/tunnel_r8_liquid.js b/WebDemo/src/tunnel_r8_liquid.js
-index 6378beb..c069c38 100644
+index 6378beb..8a689df 100644
 --- a/WebDemo/src/tunnel_r8_liquid.js
 +++ b/WebDemo/src/tunnel_r8_liquid.js
 @@ -41,6 +41,7 @@ import { WATER2_ON } from './tunnel_s4_bt.js';   // ?s3=intunnel,water2: the swe
  import { water2Uniforms, installWater2, water9GLSL } from './tunnel_s4_water2.js';   // (water9GLSL: '' unless ?s3=...,water9)
  import { swimWakeDecl, swimWakeGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the floor's wake coloured ('' without the switch)
  import { SWIM2_ON } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's face flows with her travel (uSwim2Fl)
-+import { STRUCT_PARTS, structHousingGLSL } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera
++import { STRUCT_PARTS, structHousingGLSL, structSwellGLSL } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the washer drum's metal on its upper wall near the camera
  
  const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
  const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -103,6 +103,15 @@ index 6378beb..c069c38 100644
  }
  `;
  }
+@@ -755,7 +756,7 @@ void main() {
+     col = mix(col, ${v3(K.foam)}, white * 0.8); a = max(a, white * 0.8);   // translucent: blue shows through
+   }
+ ${SPLASH_FOAM ? splashSwellGLSL() : ''}#endif
+-${MATCH_ON ? matchSwellGLSL() : ''}${water9GLSL()}  gl_FragColor = vec4(col, a * step(0.001, uFade));
++${MATCH_ON ? matchSwellGLSL() : ''}${water9GLSL()}${STRUCT_PARTS.swell ? structSwellGLSL() : ''}  gl_FragColor = vec4(col, a * step(0.001, uFade));
+ ${LIQUID.debug === 1 || LIQUID.debug === 3 ? '  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);' : LIQUID.debug === 2 ? '  gl_FragColor = vec4(d * 2.0, a, hUp * 2.0, 1.0);' : ''}
+ }
+ `;
 diff --git a/WebDemo/src/tunnel_r9_match.js b/WebDemo/src/tunnel_r9_match.js
 index 6c2b6ff..523e18a 100644
 --- a/WebDemo/src/tunnel_r9_match.js
@@ -151,21 +160,24 @@ index 6c2b6ff..523e18a 100644
    // (tunnel_s4.js round2Light: violet, pink and lavender spiral arms round a white heart, 42.6 m ahead at 3.0 s; the ray
    // probe), the centre's lilac. It draws the walls' own map instead, placed on the screen round the same centre (mtPlace),
 diff --git a/WebDemo/src/tunnel_s4_bt.js b/WebDemo/src/tunnel_s4_bt.js
-index 3dc9056..cbdf460 100644
+index 3dc9056..6b4db22 100644
 --- a/WebDemo/src/tunnel_s4_bt.js
 +++ b/WebDemo/src/tunnel_s4_bt.js
-@@ -113,7 +113,16 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
+@@ -113,7 +113,19 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
  // ?s3=intunnel,blend (7 November, the candidate on top of the accepted look): her drawn proportions and ride height, the
  // water's proportions and colours round her, and a damped landing. Settings and code in tunnel_s4_blend.js; swim2 stays on.
  export const BLEND_ON = BT_ON && LIST.includes('blend');
 -export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 +// ?s3=intunnel,structmatch (7 November, Checkpoint A, the user's final mandate of about 15:15 UTC: the accepted Tap to Start
 +// kept as the base; her shape and fur, the water round her, her swim through it, the washer's metal kept recognisable while
-+// moving). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,nowater ,nohousing.
++// moving). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,noswellgrade ,nohousing.
++// The water round her (8th of the final pass, 7 November ~16:30 UTC): the accepted swell (it flows with her travel, swim2) kept
++// with a richer-blue grade (,noswellgrade without it); the engineer's water-space mounds are opt-in (,mounds), since they read
++// as ice / gumdrops next to the ORIGINAL's surf.
 +// Kept as opt-in sub-switches (off by default): ,tunnel2 (the walls' grade, the thicker rim) ,props2 (staged coins, gem,
 +// sock) ,hud2 (corner cards). (,hero2 is accepted as a no-op: her part is in the default.)
 +export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
-+export const STRUCT_PARTS = { water: STRUCT_ON && !LIST.includes('nowater'), housing: STRUCT_ON && !LIST.includes('nohousing'),
++export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LIST.includes('nowater'), swell: STRUCT_ON && !LIST.includes('mounds') && !LIST.includes('noswellgrade'), housing: STRUCT_ON && !LIST.includes('nohousing'),
 +  hero: STRUCT_ON && !LIST.includes('nohero'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
 +  hud: STRUCT_ON && LIST.includes('hud2') };
 +export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));

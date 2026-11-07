@@ -900,7 +900,7 @@ function buildMascot(gltf) {
       vertexShader: SH.furVertex, fragmentShader: STRUCT_PARTS.hero ? structFurFragment(SH.furFragment) : SH.furFragment, side: THREE.DoubleSide });   // (?s3=...,structmatch,hero2: Screen 4's fur)
   });
   if (STRUCT_PARTS.hero) structFurUniforms(mats.fur);   // ?s3=intunnel,structmatch,hero2: a whiter rim
-  if (STRUCT_PARTS.water) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
+  if (STRUCT_PARTS.water || STRUCT_PARTS.hero) state.structFill = structPrivately(0x57a2, () => structFill(model, mats.fur, SH.furVertex, SH.furFragment));   // ?s3=intunnel,structmatch: the gap between her legs closed (drawn only)
   const squash = new THREE.Group(); squash.add(model);
   const tilt = new THREE.Group(); tilt.add(squash);
   const root = new THREE.Group(); root.add(tilt);

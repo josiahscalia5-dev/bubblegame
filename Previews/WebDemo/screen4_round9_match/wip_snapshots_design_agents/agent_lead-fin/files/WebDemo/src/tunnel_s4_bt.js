@@ -115,11 +115,14 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
 export const BLEND_ON = BT_ON && LIST.includes('blend');
 // ?s3=intunnel,structmatch (7 November, Checkpoint A, the user's final mandate of about 15:15 UTC: the accepted Tap to Start
 // kept as the base; her shape and fur, the water round her, her swim through it, the washer's metal kept recognisable while
-// moving). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,nowater ,nohousing.
+// moving). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,noswellgrade ,nohousing.
+// The water round her (8th of the final pass, 7 November ~16:30 UTC): the accepted swell (it flows with her travel, swim2) kept
+// with a richer-blue grade (,noswellgrade without it); the engineer's water-space mounds are opt-in (,mounds), since they read
+// as ice / gumdrops next to the ORIGINAL's surf.
 // Kept as opt-in sub-switches (off by default): ,tunnel2 (the walls' grade, the thicker rim) ,props2 (staged coins, gem,
 // sock) ,hud2 (corner cards). (,hero2 is accepted as a no-op: her part is in the default.)
 export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
-export const STRUCT_PARTS = { water: STRUCT_ON && !LIST.includes('nowater'), housing: STRUCT_ON && !LIST.includes('nohousing'),
+export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LIST.includes('nowater'), swell: STRUCT_ON && !LIST.includes('mounds') && !LIST.includes('noswellgrade'), housing: STRUCT_ON && !LIST.includes('nohousing'),
   hero: STRUCT_ON && !LIST.includes('nohero'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
   hud: STRUCT_ON && LIST.includes('hud2') };
 export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));

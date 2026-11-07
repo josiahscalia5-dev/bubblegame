@@ -26,7 +26,8 @@ export const STRUCT = {
     // radius R (wt = sqrt(2 R h - h^2)), fully above h0, none below h1; the tuft's tip lowered by tip (smooth over tipH)
     crown: { R: 0.8, h0: 0.26, h1: 0.44, tip: 0.07, tipH: 0.2, smin: 0.85, smax: 1.9, kz: 0.85 },
     // her drawn size after the presentation stretch is off (x, y, z), round her centre
-    scale: [0.97, 0.97, 0.97],
+    scale: [1.025, 1.02, 1.025],
+    lift: 0.07,             // m her drawn body rides higher in the water (the ORIGINAL shows more of her above it; drawn only)   // (measured at Tap to Start: 0.97 drew her 0.487 wide and 0.143 tall, the ORIGINAL 0.513 / 0.167)
     // the fill closing the gap between her legs (glTF units: centre, radii) and its colour (the fur texture's mean pink)
     fill: { c: [0, -0.6, 0.02], r: [0.5, 0.34, 0.46], col: [0.62, 0.11, 0.34] },
     // the fur (linear, before the tone mapping): crisper strands (Screen 3's spike shading at this share), hue turned
@@ -72,6 +73,11 @@ export const STRUCT = {
     },
     rimK: 0.45, specK: 1.0, foamK: 0.9, bubbleK: 0.85, coreK: 0.25, frothK: 0.6, skyK: 0.18, sparkK: 1.0, turqK: 0.8,
   },
+  // the accepted swell's own colour graded (linear, before the tone mapping): measured on the page at Tap to Start, y .70-.92,
+  // its blue has the ORIGINAL's saturation and value (median 0.42-0.46 / 0.96) but a greener hue (205 against 207-212) and
+  // less depth; the hue turned toward the ORIGINAL's azure, the blues a little richer and their darker parts deeper (the
+  // whites, its foam, untouched)
+  swell: { hue: 8, sat: 1.3, deep: 0.7, deepL: [0.2, 0.62] },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
     pull: 0.55,             // periwinkle / violet (hue 226-266) pulled this share toward azure 214
@@ -186,6 +192,7 @@ export function structFill(model, furUniforms, furVertex, furFragment) {
 export function structScale(model) {
   const k = new THREE.Vector3(...STRUCT.hero.scale);
   model.scale.multiply(k); model.position.multiply(k);
+  model.position.y += STRUCT.hero.lift;
 }
 // her rim colour (the fur's uniform)
 export function structFurUniforms(fur) {
@@ -403,6 +410,22 @@ export function structHousingGLSL(radius) {
       stC = mix(stC, ${hx(C.deep)} * 0.75, exp(-pow((stE - 0.15) / 0.12, 2.0)) * 0.6);
       col = mix(col, mtUndisplay(clamp(stC, 0.0, 1.0)), stK);
     }
+  }
+`;
+}
+
+// ================================================================ 2b. the accepted swell, its blue richer (default)
+export function structSwellGLSL() {
+  const W = STRUCT.swell, M = hueMatrix(W.hue);
+  const col = (j) => `vec3(${f4(M[0][j])}, ${f4(M[1][j])}, ${f4(M[2][j])})`;
+  return /* glsl */ `  {   // ?s3=intunnel,structmatch: the swell's blue toward the ORIGINAL's (tunnel_s4_struct.js STRUCT.swell)
+    float swMx = max(col.r, max(col.g, col.b)), swMn = min(col.r, min(col.g, col.b));
+    float swK = smoothstep(0.06, 0.22, (swMx - swMn) / max(swMx, 1e-4));   // blue water only (its white foam kept)
+    vec3 swC = mat3(${col(0)}, ${col(1)}, ${col(2)}) * col;
+    float swL = dot(swC, vec3(0.2126, 0.7152, 0.0722));
+    swC = max(swL + (swC - swL) * ${f4(W.sat)}, 0.0);
+    swC *= mix(${f4(W.deep)}, 1.0, smoothstep(${f4(W.deepL[0])}, ${f4(W.deepL[1])}, swL));   // deeper darker parts: depth
+    col = mix(col, swC, swK);
   }
 `;
 }
