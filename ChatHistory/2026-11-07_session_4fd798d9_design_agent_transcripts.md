@@ -125,5 +125,38 @@ Now a quick look at the accepted moving frames next to the ORIGINAL (adapted she
 - 01:20 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_r7_hero_water.js
 - 01:20 `Bash`: Check build order and imports
 - 01:20 `Bash`: Check where the hero scene is built
+- 01:20 `Write`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_s4_swim2.js
+- 01:20 `Bash`: Insert gated SWIM2 hooks in four files
+- 01:21 `Bash`: Rebuild the bundle with swim2 hooks
+**Agent** (01:21 UTC):
 
-_70 tool steps._
+Now render swim2 at the three moments.
+
+- 01:21 `Bash`: Render swim2 at start, +1 s, +2 s
+- 01:22 `Bash`: Diff swim2 vs accepted frames and build sheet
+- 01:23 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/cmp_T1_s.jpg
+- 01:23 `Bash`: Inspect start frame difference
+- 01:23 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/start_pair.jpg
+- 01:23 `Bash`: Inspect particle kinds and emitters
+- 01:23 `Bash`: Find particle update and cap settings
+- 01:23 `Bash`: View the step function around fx.update
+- 01:23 `Bash`: Ease in the droplet cap with travel and rebuild
+- 01:24 `Bash`: Re-render swim2 start and compare with accepted
+- 01:24 `Write`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/Previews/WebDemo/screen4_round9_match/57_swim2/scripts/record_clip.sh
+- 01:24 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 01:24 `Bash`: Record the accepted intunnel swipe-and-jump clip
+- 01:24 `Bash`: Record the swim2 swipe-and-jump clip
+- 01:24 `Bash`: Inspect gameplay test reports and tool usage
+- 01:25 `Bash`: Find motion trace gameplay fields
+- 01:25 `Bash`: Read the motion report's gameplay comparison
+**Agent** (01:25 UTC):
+
+Now write the identity script while the clips record.
+
+- 01:25 `Write`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/Previews/WebDemo/screen4_round9_match/57_swim2/scripts/identity.sh
+- 01:25 `Bash`: Adapt the clip compare script for accepted vs swim2
+- 01:25 `Bash`: Fix comment and check clip progress
+- 01:25 `Bash`: Read zone_water and silhouette usage
+- 01:25 `Bash`: Measure tunnel and foreground water classes
+
+_95 tool steps._
