@@ -1,0 +1,11 @@
+accepted_now_is_swim2 start: old ?s3=intunnel,swim2 vs new ?s3=intunnel: 768 x 1536, 0 pixels differ
+accepted_now_is_swim2 T1.0: old ?s3=intunnel,swim2 vs new ?s3=intunnel: 768 x 1536, 0 pixels differ
+accepted_now_is_swim2 T2.0: old ?s3=intunnel,swim2 vs new ?s3=intunnel: 768 x 1536, 0 pixels differ
+rollback_noswim2 start: old ?s3=intunnel vs new ?s3=intunnel,noswim2: 768 x 1536, 0 pixels differ
+rollback_noswim2 T1.0: old ?s3=intunnel vs new ?s3=intunnel,noswim2: 768 x 1536, 0 pixels differ
+rollback_noswim2 T2.0: old ?s3=intunnel vs new ?s3=intunnel,noswim2: 768 x 1536, 0 pixels differ
+normal_game start: old ?s3=, vs new ?s3=,: 768 x 1536, 0 pixels differ
+normal_game T1.0: old ?s3=, vs new ?s3=,: 768 x 1536, 0 pixels differ
+R9 T1.0: old ?s3=intunnel,water9 vs new ?s3=intunnel,water9: 768 x 1536, 0 pixels differ
+swim T1.0: old ?s3=intunnel,swim vs new ?s3=intunnel,swim: 768 x 1536, 0 pixels differ
+swim2_explicit T1.0: old ?s3=intunnel,swim2 vs new ?s3=intunnel,swim2: 768 x 1536, 0 pixels differ

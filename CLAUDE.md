@@ -64,8 +64,8 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
   - `match`: Round 9 art match (`tunnel_r9_match.js`, `tunnel_r9_match_water.js`), including the seventh session's focused
     pass from the 15:55 brief (larger character, tilted sock, aqua-white froth bank; evidence `13_...`, `14_...`,
     `20_focused_pass_merged/`). Its froth predates the 17:15 correction above.
-  - `intunnel,swim2` (7 November, eighteenth session, the user's approval to commit it behind its flag; NOT part of
-    `intunnel`): the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px
+  - `intunnel,swim2` (7 November, eighteenth session): **ACCEPTED, the bare `?s3=intunnel` now includes it** (the user's
+    approval; the previous look is `?s3=intunnel,noswim2`, or commit `920531d`; `58_swim2_accepted/`): the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px
     (`WebDemo/src/tunnel_s4_swim2.js`, `SWIM2_ON`; evidence `Previews/WebDemo/screen4_round9_match/57_swim2/`).
   - `intunnel` (6 November, fourteenth session, the user's directive: "start directly inside this blue laundry
     tunnel ... no girl scene, no extra opening, no separate swimming sequence"): `bt` plus the run STARTING inside the tunnel

@@ -27,6 +27,8 @@ the session lives. `bash Tools/verify_restore.sh` checks that the local head equ
 
 ## 3. The accepted gameplay checkpoint and how to roll back
 
+- **7 November update:** `swim2` was ACCEPTED into `?s3=intunnel` (bundle `ea0c833c`; rollback `?s3=intunnel,noswim2` or
+  commit `920531d`; `Previews/WebDemo/screen4_round9_match/58_swim2_accepted/`). The lines below describe the 6 November checkpoint.
 - **Accepted (never change without the user's approval):** `?s3=intunnel` (the game starts inside the blue tunnel at the
   approved viewpoint) and the normal game (no switch).
 - **Its files:** `WebDemo/game.bundle.js` md5 **`5bb24e2828a6f2ef17146252c69b413a`**, built at commit

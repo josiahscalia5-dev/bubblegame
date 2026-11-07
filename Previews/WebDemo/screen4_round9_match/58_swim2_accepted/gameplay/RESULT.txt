@@ -1,0 +1,2 @@
+r2_func (S3=intunnel VW=135 VH=270, the new bundle): byte-identical to 53_swim/gameplay/r2_func_intunnel.txt.
+s3_func (S3=intunnel, the new bundle): identical to 57_swim2/proofs/s3_func_swim2.txt except the switch list ("intunnel" vs "intunnel","swim2"); every gameplay field, the hidden layers and the draw calls equal.

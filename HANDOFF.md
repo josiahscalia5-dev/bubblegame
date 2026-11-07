@@ -15,7 +15,11 @@
   the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px. The accepted
   `intunnel`, R9 and the normal game 0 px different; gameplay tests identical. Bundle md5 `1199348a`. Built by
   `screen4-water-motion-engineer` alone (no art-director review: the user asked to save credits).
-- **Next:** the user decides on further experiments; one at a time.
+- **`swim2` ACCEPTED (about 10:20 UTC, the user's approval):** the bare `?s3=intunnel` includes it (bundle `ea0c833c`).
+  Rollback: `?s3=intunnel,noswim2` (0 px from the previous look) or commit `920531d`. Proofs: `58_swim2_accepted/README.md`.
+- **Next (the user's brief of about 09:50 UTC):** one correction behind its own flag on top of the accepted version: her
+  rounded silhouette and height above the water, the water's proportions and colours round her, and her motion through it;
+  no white film, no extra bubbles, no tunnel redesign; reviewed by the art director before any recommendation.
 
 ## Earlier (6 November 23:10 to 7 November about 00:20 UTC): seventeenth session, the SECOND Claude account, restoration and account-transfer backup; NO game changes
 
