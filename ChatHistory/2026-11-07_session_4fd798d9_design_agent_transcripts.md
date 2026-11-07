@@ -397,5 +397,44 @@ Now the measured analysis on the existing accepted frames (swim2 frames = the ac
 - 10:16 `Grep`: mascotModel
 - 10:16 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/opening.js
 - 10:16 `Grep`: stretch:|spike:
+- 10:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:16 `Bash`: Verify restored try equals accepted
+- 10:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:16 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:17 `Bash`: Crop and profile tries 4 and 5
+- 10:17 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/cmp_try45.png
+**Lead → agent** (10:17 UTC):
 
-_66 tool steps._
+[Image: original 2600x576, displayed at 2000x443. Multiply coordinates by 1.30 to map to original image.]
+
+- 10:18 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r9_match_water.js
+- 10:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__list_console_messages`
+- 10:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:19 `Bash`: Crop compare shader tint try
+- 10:19 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/cmp_try6.png
+**Lead → agent** (10:19 UTC):
+
+[Image: original 2600x576, displayed at 2000x443. Multiply coordinates by 1.30 to map to original image.]
+
+- 10:19 `Write`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/py/zoom.py
+- 10:19 `Bash`: Zoomed compare of try6
+- 10:19 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/z6.png
+- 10:19 `Grep`: uCentre\.value|uRadius\.value
+- 10:20 `Bash`: Inspect flag definitions and imports
+- 10:20 `Grep`: \.line\b|crestAt|swell\.mounds
+- 10:20 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r8_liquid.js
+**Agent** (10:20 UTC):
+
+Runtime previews show the direction (rounder crown, her body higher, crest lower, lavender at the contact). Now writing the flagged code.
+
+- 10:20 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_bt.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_bt.js
+- 10:21 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_blend.js
+- 10:21 `Grep`: const v3s|function v3s|v3s =
+
+_93 tool steps._
