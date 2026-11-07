@@ -1,4 +1,4 @@
-# Nineteenth session (7 November, account transfer), design agents
+# Nineteenth session (7 November, account transfer): restoration on branch claude/bubble-wash-transfer-tcgbof, design agents
 
 Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
@@ -526,5 +526,11 @@ A final mandate supersedes the narrowed scope. The running proof chain is for a 
 Now the code: hero into the default, the water reworked (smaller irregular blue/turquoise mounds, one uniform per mound, lavender only as a tint, sparkle), and the moving metal narrowed.
 
 - 15:19 `Bash`: Apply hero default, water rework and narrower housing
+- 15:19 `Bash`: Fit the housing bands, rebuild and capture
+- 15:19 `Bash`: Measure and sheet the first final-pass capture
+**Agent** (15:19 UTC):
 
-_233 tool steps._
+You've hit your 5-hour limit · resets 5:20pm (UTC)
+
+
+_235 tool steps._
