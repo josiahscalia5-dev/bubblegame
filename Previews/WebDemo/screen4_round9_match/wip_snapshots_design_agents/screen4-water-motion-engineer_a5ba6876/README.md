@@ -1,12 +1,13 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Decisive Screen 4 fidelity pass)
 
-- **Taken:** 2026-11-07 11:52 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 11:57 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a5ba6876e8752066d` (local only), started from `f71e130`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (69; full copies in `files/`)
+## Files (78; full copies in `files/`)
 
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/README.md (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_T1.0/base_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_T2.0/base_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_start/base_canvas.png (new)`
@@ -37,7 +38,15 @@
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/5_jump_previous_f0152.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/6_landing_fidelity_f0168.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/6_landing_previous_f0168.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/motion/trace_fidelity.log (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/motion/trace_fidelity_swipejump.json (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/identity/identity.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/motion_trace_gameplay.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/r2_func_fidelity.err (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/r2_func_fidelity.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/s3_func_compare.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/s3_func_fidelity.err (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/s3_func_fidelity.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/chain.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/clip_compare.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/contact_band.py (new)`

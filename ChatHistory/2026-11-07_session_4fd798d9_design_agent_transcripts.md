@@ -1260,5 +1260,28 @@ Identity renders are about 30 s each, so roughly 9 minutes remain. I'll draft th
 [Image: original 2317x1582, displayed at 2000x1366. Multiply coordinates by 1.16 to map to original image.]
 
 - 11:50 `Bash`: Wait for the identity and s3_func steps
+**Agent** (11:56 UTC):
 
-_254 tool steps._
+All eight identity renders are 0 px differing. Comparing s3_func and r2_func against the accepted baselines:
+
+- 11:56 `Bash`: Compare s3_func and r2_func with the accepted
+- 11:56 `Bash`: Wait for the trace and compare gameplay fields
+**Agent** (11:56 UTC):
+
+Motion trace: 152 frames x 17 gameplay and camera fields, 0 differences. Let me confirm the landing kept blend's behaviour (no one-frame drawn drop) from the trace's drawn-only fields.
+
+- 11:56 `Bash`: Check the landing's drawn drop in the traces
+**Agent** (11:57 UTC):
+
+The landing is blend's: no one-frame drop (the accepted build jumps 59 px down then 80 px back up), and she stays 0.39-0.45 m above the swell base. Waiting for the final clip recording.
+
+- 11:57 `Bash`: Wait for the final clip recording
+**Agent** (11:57 UTC):
+
+While the clip records, I'll write the README; the flow numbers go in once the clip exists.
+
+- 11:57 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/README.md
+- 11:57 `Grep`: float fsCutT
+- 11:57 `Bash`: Wait for the clip to finish
+
+_261 tool steps._

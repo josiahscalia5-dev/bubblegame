@@ -4,3 +4,5 @@ intunnel T2.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 38466b67 vs 
 noswim2 T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 38466b67 vs rebuilt 092bbd05)
 water9 T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 38466b67 vs rebuilt 092bbd05)
 blend T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 38466b67 vs rebuilt 092bbd05)
+normal start: 768 x 1536 canvas, 0 pixels differ (committed bundle 38466b67 vs rebuilt 092bbd05)
+normal T1.0: 768 x 1536 canvas, 0 pixels differ (committed bundle 38466b67 vs rebuilt 092bbd05)
