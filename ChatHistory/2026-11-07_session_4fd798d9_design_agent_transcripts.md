@@ -88,5 +88,42 @@ Now setup: npm install, build, keep the committed bundle as "old" copy, serve.
 - 01:15 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_r8_liquid.js
 - 01:15 `Bash`: Read lqShade's flow handling
 - 01:15 `Grep`: vec3 lqShade\(
+- 01:15 `Bash`: Find the swell face settings
+- 01:16 `Bash`: Read layer_diag usage header
+- 01:16 `Bash`: Check 53_swim render sizes
+- 01:16 `Bash`: Render accepted intunnel start frame
+- 01:16 `Bash`: Create evidence folders
+- 01:16 `Bash`: Read the tools env script
+**Agent** (01:16 UTC):
 
-_41 tool steps._
+Let me write an adapted render script for this worktree.
+
+- 01:16 `Write`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/Previews/WebDemo/screen4_round9_match/57_swim2/scripts/render.sh
+- 01:16 `Bash`: Render accepted intunnel at +1 s with committed bundle
+- 01:17 `Bash`: Render accepted start and +2 s frames
+- 01:17 `Bash`: Render accepted start and +2 s frames
+**Agent** (01:17 UTC):
+
+Now a quick look at the accepted moving frames next to the ORIGINAL (adapted sheet script).
+
+- 01:17 `Bash`: Build an ORIGINAL vs accepted look sheet
+- 01:17 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/acc_look_s.jpg
+- 01:18 `Grep`: WATER7_ON|SWIM_ON
+- 01:18 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/game.js
+- 01:18 `Bash`: Read flow metric and recorder headers
+- 01:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 01:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 01:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 01:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 01:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 01:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 01:19 `Bash`: Crop runtime test screenshots for viewing
+- 01:19 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/rt_pair.jpg
+- 01:20 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md
+- 01:20 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md
+- 01:20 `Bash`: Read the landing code proposal and updateMascot
+- 01:20 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_r7_hero_water.js
+- 01:20 `Bash`: Check build order and imports
+- 01:20 `Bash`: Check where the hero scene is built
+
+_70 tool steps._
