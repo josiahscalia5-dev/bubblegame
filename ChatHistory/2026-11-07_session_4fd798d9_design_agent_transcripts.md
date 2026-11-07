@@ -73,5 +73,20 @@ Now setup: npm install, build, keep the committed bundle as "old" copy, serve.
 - 01:09 `Bash`: Serve WebDemo on port 3000 and read init script
 - 01:09 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
 - 01:09 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 01:13 `Bash`: Read the CDP inspect flow and test API
+- 01:13 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 01:14 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 01:14 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 01:14 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 01:14 `Bash`: Crop live screenshots into a pair
+- 01:14 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/live_T1_pair.jpg
+- 01:14 `Bash`: Find time and travel uniforms in hero water
+- 01:14 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_r7_hero_water.js
+- 01:14 `Bash`: Map the swell shading chain in R9 water
+- 01:14 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_r9_match_water.js
+- 01:15 `Bash`: Locate the swell's flow variable in the liquid pass
+- 01:15 `Read`: /home/user/bubblegame/.claude/worktrees/agent-adb55eb6aad0cc08b/WebDemo/src/tunnel_r8_liquid.js
+- 01:15 `Bash`: Read lqShade's flow handling
+- 01:15 `Grep`: vec3 lqShade\(
 
-_26 tool steps._
+_41 tool steps._
