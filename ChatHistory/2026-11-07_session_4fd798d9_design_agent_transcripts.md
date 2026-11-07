@@ -288,3 +288,80 @@ The dev server is stopped and the browser page is on about:blank.
 
 
 _158 tool steps._
+
+---
+
+## screen4-water-motion-engineer: Build blend character-water candidate (started 10:07 UTC)
+
+_Worked in its own worktree, branch `worktree-agent-a19467485d7ab6a56`._
+
+**Lead → agent** (10:07 UTC):
+
+You are building ONE Screen 4 candidate for Bubble Wash Kingdom, behind a NEW flag `?s3=intunnel,blend`. The user has approved exactly one candidate, then stops for their approval. They watch Claude usage closely: be efficient, reuse existing tools and findings, do not start other agents, keep reports short. If it turns unusually expensive or complicated, STOP early and explain why.
+
+Context you need (read briefly): `CLAUDE.md`; `HANDOFF.md` top section; `Previews/WebDemo/screen4_round9_match/57_swim2/README.md` (your own previous candidate, now ACCEPTED: the bare `?s3=intunnel` includes swim2 since commit 9dee8c4, see `58_swim2_accepted/README.md`); the finished specialist reports `54_specialists/water_vfx_engineer.md` and `animation_review.md` and `52_diagnosis/README.md` (known findings: do not redo them). `53_swim/README.md` shows what was rejected (a tight collar read as "a frilled glass bowl").
+
+THE ONLY TARGET: the ORIGINAL `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536). For close inspection only (not separate designs): the user's enlarged copy `/home/user/bubblegame/Design/ReferencePacks/2026-11-07_Character_Water_Relationship_from_user/01_ORIGINAL_full_as_sent.png` (2244 x 4608), `Design/ReferencePacks/2026-11-04_Tripo_Reference_Kit/09_APPROVED_CHARACTER_WATER_CONTACT.png` and the precision kit `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/`.
+
+THE USER'S GOAL (their words, condensed): not a different water effect, but the exact artistic relationship between the pink character and the water in the ORIGINAL. There her round fluffy body sits visibly ABOVE the water, with well-proportioned cobalt-blue and turquoise waves surrounding her lower body; wave size, colours, her height and the reflections look naturally connected. In the accepted game she is too flat and too low, and the water round her sometimes looks too large, too pale or disconnected from her body.
+
+STEP 1, ANALYSIS (short, measured, at the original's framing; your DevTools tools on the live scene): compare the ORIGINAL and the accepted `?s3=intunnel` at the start for (a) her silhouette: width, height, height/width ratio, roundness of the top, (b) her waterline: how much of her body shows above the water, (c) the waves round her: their size and extent relative to her, (d) the colour transitions water -> her (cobalt, turquoise, highlights, reflections), (e) movement: does the water flow past her while moving, swiping, jumping, landing. Existing scripts help: `57_swim2/scripts/pink_silhouette.py`, `zone_water.py`, `flow_metric.py`, `WebDemo/tools/screen4/layer_diag.cjs` (768 x 1536 renders at the original's framing), `frame_dump.cjs`. Write the numbers in a small table.
+
+STEP 2, ONE CORRECTION addressing those differences TOGETHER (silhouette, height above the water, the water's proportions and colour transitions round her, natural flowing motion), the smallest set of changes that moves the start frame AND the moving frames visibly toward the ORIGINAL. Candidates from the existing reports: her drawn model's proportions / ride height so her round body shows above the water as in the original (visual only: her drawn scale, pose or offset, never her gameplay state, hit box, lanes, jump physics or the camera); the water face round her sized and shaped to the original's (rounded cobalt/turquoise waves round her lower body, not a large mound in front of her); the animation report's damped landing dip instead of the one-frame 17 cm drop that buries her. Keep the water flowing past her as she moves (swim2's flow stays). Rules from the user: no white foam, white film or excessive spray over her; do NOT add bubbles; do NOT redesign the tunnel; do not redesign her (fur, colours, face stay): only her proportions/height as drawn, to match the original.
+
+Code rules: settings and code in a new file `WebDemo/src/tunnel_s4_blend.js`, with minimal hooks gated `if (BLEND_ON)`. Define `BLEND_ON` in `WebDemo/src/tunnel_s4_bt.js` (`BT_ON && LIST.includes('blend')`), and make swim2 stay ON under it: change the SWIM2_ON line to `BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')))`. Visual only: lanes, jump, spin, coins, gem, socks, hearts, pause, Bubble Blast, Turbo Spin, the mission, the camera and physics untouched; never touch the seeded Math.random; three.js stays r170. Try values at runtime in the live scene first (serve your worktree's WebDemo with `python3 -m http.server 3000` in the background; `http://localhost:9222/index.html?s3=intunnel,blend`), then write code. Close browser pages and stop the server when done (an open page keeps a CPU core busy). Setup: `cd WebDemo && npm install && node build.mjs`; `source Tools/bw_tools_env.sh`. `r2_func` ONLY with `VW=135 VH=270`. Do NOT commit, push, merge or switch branches; do not edit `.claude/agents/`. At most a few internal look-and-adjust rounds; then deliver.
+
+DELIVERABLES in `Previews/WebDemo/screen4_round9_match/59_blend/` in your worktree, lean:
+1. Pixel 7 gameplay comparisons, ORIGINAL | previous (the accepted `?s3=intunnel`, i.e. swim2) | NEW `?s3=intunnel,blend`, one sheet per moment: start, +1 s moving, and from the swipe-and-jump clip (`51_swim/scripts/record_phone.cjs` with `ART_OFF=1 SWIPEJUMP=1`, as in `57_swim2/scripts/record_clip.sh`): swipe left, swipe right, jump, landing. Also the same start and +1 s at the ORIGINAL's own framing (768 x 1536 layer_diag renders), since those compare exactly. Full-resolution frames kept.
+2. A short video, ORIGINAL (still) | previous | NEW, the 7 s swipe-and-jump run, MP4.
+3. Proofs as plain text: (a) 0 px different between the committed bundle (md5 ea0c833c) and your rebuilt bundle for `?s3=intunnel` (start, +1 s, +2 s), `?s3=intunnel,noswim2` (+1 s), `intunnel,water9` (+1 s) and the normal game (start, +1 s); (b) `s3_func` and `r2_func` for `intunnel,blend` equal to the accepted `intunnel` in every gameplay field; (c) the motion trace's gameplay fields identical (`tools/screen4/motion_trace.cjs`, SCRIPT=swipejump, against `53_swim/motion/trace_accepted_swipejump.json`).
+4. README of at most about 40 lines: the analysis table, what changed and why, files changed, evidence list, your honest judgement, what still differs.
+
+Return a short summary: the analysis numbers, the change, files, evidence paths, proof results, judgement.
+
+**Agent** (10:08 UTC):
+
+I'll start by reading the key context files briefly.
+
+- 10:08 `Bash`: Check branch state and handoff top
+- 10:08 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/57_swim2/README.md
+- 10:08 `Bash`: Read accepted readme and list scripts
+- 10:08 `Bash`: List report headings and swim README
+- 10:08 `Bash`: Read specialist report key sections
+- 10:08 `Bash`: Read render and clip scripts
+- 10:08 `Bash`: Install deps, build and check bundle md5
+- 10:08 `Bash`: Install deps, build and check bundle md5
+- 10:08 `Bash`: Read layer_diag header and WebDemo size
+- 10:08 `Bash`: Copy committed WebDemo and adapt scripts
+- 10:08 `Bash`: Copy committed WebDemo to scratchpad
+- 10:08 `Bash`: Copy committed WebDemo to scratchpad via tar
+**Agent** (10:08 UTC):
+
+Now adapt the previous candidate's scripts to this worktree.
+
+- 10:08 `Bash`: Copy scripts with worktree path substitution
+- 10:09 `Bash`: Read zone_water, flow_metric, gameplay scripts
+**Agent** (10:09 UTC):
+
+Now the measured analysis on the existing accepted frames (swim2 frames = the accepted `intunnel`, proved 0 px).
+
+- 10:09 `Bash`: Measure pink silhouette original vs accepted
+- 10:09 `Bash`: Measure pink silhouette original vs accepted
+- 10:09 `Bash`: Build crop comparison of character area
+- 10:09 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/crop_cmp.png
+- 10:09 `Bash`: Profile width per row and waterline per column
+- 10:10 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/scripts/profile.py
+- 10:10 `Bash`: Run silhouette profile script
+- 10:10 `Bash`: Start http server and inspect init script
+- 10:10 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 10:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 10:10 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:10 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__scene_tree`
+- 10:11 `Grep`: function updateMascot|SWIM2_ON|mascot\.(scale|position)|m\.squash|m\.flip|bob
+- 10:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+- 10:11 `Grep`: squash = |squash\.add|tilt\.add|heroScale|charScale|mascotScale|model\.scale|FLOAT_H
+- 10:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+- 10:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
+- 10:11 `Bash`: Inspect frame_dump and swell settings
+
+_32 tool steps._
