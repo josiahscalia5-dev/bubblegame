@@ -1,0 +1,21 @@
+zone: blue-family pixels (sat>0.25) by hue: cyan-turquoise 170-200 | azure 200-222 | periwinkle-violet 222-265 ; mean sat; white/pale (sat<0.18,val>0.8) %
+== tunnel x.30-.70 y.30-.52
+  ORIGINAL   cyan  10.2 azure  38.8 peri/violet  18.7 | blue mean hue 214.6 sat 0.71 | white/pale  13.6
+  ACC start  cyan   8.4 azure  32.3 peri/violet  26.4 | blue mean hue 217.5 sat 0.63 | white/pale  16.7
+  ACC +1s    cyan   7.1 azure  28.8 peri/violet  28.3 | blue mean hue 218.4 sat 0.64 | white/pale  17.0
+  ACC +2s    cyan   8.3 azure  37.7 peri/violet  27.9 | blue mean hue 216.5 sat 0.62 | white/pale  12.8
+== foreground water y.80-.84 (above HUD)
+  ORIGINAL   cyan   0.2 azure  16.7 peri/violet  12.7 | blue mean hue 223.0 sat 0.47 | white/pale  22.8
+  ACC start  cyan   0.8 azure  50.4 peri/violet   0.3 | blue mean hue 208.2 sat 0.47 | white/pale  19.9
+  ACC +1s    cyan   3.4 azure  32.1 peri/violet   0.3 | blue mean hue 208.0 sat 0.47 | white/pale  20.0
+  ACC +2s    cyan   2.6 azure  23.5 peri/violet   0.7 | blue mean hue 207.3 sat 0.41 | white/pale  29.1
+== pink fur (hue 300-350 or <10, sat>0.35, val>0.45; lower half y.62-.90)
+  ORIGINAL   pink px  56141  hue 317.4  sat 0.68  val 0.92
+  ACC start  pink px  46932  hue 327.4  sat 0.51  val 0.97
+  ACC +1s    pink px  76895  hue 327.1  sat 0.52  val 0.94
+  ACC +2s    pink px  66327  hue 327.1  sat 0.51  val 0.94
+== gold coins (hue 35-55, sat>0.55, val>0.6; blobs > 300 px, y .17-.85): centre x,y (fraction) and diameter (px of 768)
+  ORIGINAL   (0.20,0.60) d155 ; (0.88,0.73) d153 ; (0.15,0.47) d78 ; (0.52,0.55) d73 ; (0.59,0.58) d20
+  ACC start  (0.89,0.73) d166 ; (0.20,0.60) d165 ; (0.15,0.47) d96 ; (0.53,0.56) d81
+  ACC +1s    (0.53,0.59) d134 ; (0.63,0.61) d36
+  ACC +2s    (0.54,0.64) d208
