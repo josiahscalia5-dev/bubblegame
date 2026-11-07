@@ -1,0 +1,20 @@
+diff --git a/WebDemo/src/tunnel_s4_bt.js b/WebDemo/src/tunnel_s4_bt.js
+index 3dc9056..0547d7b 100644
+--- a/WebDemo/src/tunnel_s4_bt.js
++++ b/WebDemo/src/tunnel_s4_bt.js
+@@ -113,7 +113,14 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
+ // ?s3=intunnel,blend (7 November, the candidate on top of the accepted look): her drawn proportions and ride height, the
+ // water's proportions and colours round her, and a damped landing. Settings and code in tunnel_s4_blend.js; swim2 stays on.
+ export const BLEND_ON = BT_ON && LIST.includes('blend');
+-export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
++// ?s3=intunnel,structmatch (7 November, Checkpoint A of the user's mandate: the Tap to Start frame closer to the ORIGINAL):
++// her drawn shape and fur, the water round her in water space, the tunnel's grade and rim, the staged props' drawn sizes and
++// the bottom HUD. Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,nowater
++// ,notunnel ,noprops ,nohud.
++export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
++export const STRUCT_PARTS = { hero: STRUCT_ON && !LIST.includes('nohero'), water: STRUCT_ON && !LIST.includes('nowater'),
++  tunnel: STRUCT_ON && !LIST.includes('notunnel'), props: STRUCT_ON && !LIST.includes('noprops'), hud: STRUCT_ON && !LIST.includes('nohud') };
++export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
+ export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
+ export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
+ export const WATER8_ON = BT_ON && (LIST.includes('water8') || WATER9_ON);   // (R8, below: water7 with the face's edge in front of her following the original's outline)

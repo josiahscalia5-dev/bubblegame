@@ -200,5 +200,41 @@ I'll start by reading the diagnosis files and the current state of the worktree.
 - 13:51 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
 - 13:51 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 13:51 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:52 `Bash`: Show layer_diag and s3_shot usage headers
+- 13:52 `Bash`: Crop tunnel zone original vs accepted for inspection
+- 13:52 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/tunnel_cmp.png
+- 13:52 `Bash`: Find tunnel colour/rings/centre code locations
+- 13:52 `Bash`: Locate heroWalls creation and centre uniforms
+- 13:52 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r9_match.js
+- 13:52 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:53 `Bash`: Find mtUndisplay definition and exports
+- 13:53 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r9_match.js
+- 13:53 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r9_match.js
+- 13:53 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:53 `Bash`: Show ring map GLSL function
+- 13:53 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:53 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 13:53 `Bash`: Downscale hide-render screenshot
+- 13:53 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/hide_walls_only_s.png
+- 13:53 `Bash`: Read structural measure script and its output
+- 13:54 `Bash`: Read measure_opening.py and presentation usages
+- 13:54 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:54 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 13:54 `Bash`: Crop lower half of the hide-swell render
+- 13:54 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/hide_swell_s.png
+- 13:54 `Bash`: Crop lower zone original vs accepted
+- 13:54 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/lower_cmp.png
+- 13:55 `Bash`: Read buildHeroWater setup and frame
+- 13:55 `Bash`: Find visibility toggles of the hero swell
+- 13:55 `Bash`: Inspect swell followers and swell updater
+- 13:55 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_bt.js
+- 13:55 `Edit`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_s4_bt.js
+- 13:55 `Bash`: Locate rim objects and staged props settings
+- 13:55 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/WebDemo/src/tunnel_r9_match.js
+- 13:55 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 13:56 `Bash`: Find focus sock pose and gem settings
+- 13:56 `Bash`: Check how index.html is built and HUD selectors
+- 13:56 `Bash`: Read HUD CSS in page.html
+- 13:56 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 
-_31 tool steps._
+_67 tool steps._
