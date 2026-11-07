@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: agent ()
 
-- **Taken:** 2026-11-07 15:59 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 16:04 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `lead-final-s4` (local only), started from `8343381`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (113; full copies in `files/`)
+## Files (120; full copies in `files/`)
 
 - `BUBBLE_WASH_ACCOUNT_HANDOFF.md (new)`
 - `CLAUDE.md`
@@ -70,6 +70,7 @@
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/09_subswitch_nowater_t0_plus1s.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/10_subswitch_nohousing_plus1s_plus2s.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/11_optin_deferred_hero2_tunnel2_props2_hud2_t0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/README.md (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_accepted.log (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_accepted/t0.png (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_accepted/t1.0.png (new)`
@@ -90,14 +91,19 @@
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/frames_new/t8.0.png (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/motion/trace_accepted.log (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/motion/trace_accepted_swipejump.json (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/motion/trace_structmatch.log (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/motion/trace_structmatch_swipejump.json (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/her_silhouette_box.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/identity.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/motion_trace_gameplay.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_accepted.err (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_accepted.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_compare.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_structmatch.err (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/r2_func_structmatch.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_accepted.err (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_accepted.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_compare.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_structmatch.err (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/proofs/s3_func_structmatch.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/scripts/chain.sh (new)`
@@ -113,6 +119,7 @@
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/05_closeup_washer_lining_y08-55_plus1_plus3_plus8_plus14.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/06_closeup_lining_ACCEPTED_vs_NEW_y08-55_plus1_plus8.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/64_final_pass/sheets/07_closeup_water_round_her_y60-95_t0_plus1_plus2.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/64_final_pass/videos/clip_new.log (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/opening.js`
 - `WebDemo/src/tunnel_r7_hero_water.js`
