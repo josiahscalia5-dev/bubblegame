@@ -1,3 +1,51 @@
+diff --git a/CLAUDE.md b/CLAUDE.md
+index f743a89..29d17b7 100644
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -45,6 +45,9 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
+   `10_...`): one correction at a time, each compared original / previous / new at the checkpoint, at Pixel 7 and at moving
+   moments; **revert anything that looks less like the original**; the tunnel is the hero, with a clear glowing centre, less
+   clutter and a clean coin / gem path. `focus` is at step 8 (the original's white splashes); step 5 is held (see `HANDOFF.md`). The 6 November breakthrough brief (`Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/`): the new `?s3=bt` (below) keeps the smaller brushes and the sock's blue toe; two water candidates were rejected (her model's silhouette is the limit). Then `?s3=intunnel`: the game starts INSIDE the tunnel at the approved view (the user's directive of 6 November, 13:30 UTC); the bubble domes tried on it were rejected twice.
++- **The user's washer-interior clarification (7 November, about 16:00 UTC):** the ACCEPTED Tap to Start's silver / lavender /
++  purple metal round the upper tunnel is the target for the WHOLE run (not plain blue after a second, not an oversized
++  ceiling; `Design/ReferencePacks/2026-11-07_Washer_Interior_Continuity_from_user/`; its concept image is a guide only).
+ - **Real three.js rendering in the playable game.** Never a static screenshot or a painted background in place of the 3D
+   scene. Never restart or rebuild the game from scratch.
+ 
+@@ -64,6 +67,12 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
+   - `match`: Round 9 art match (`tunnel_r9_match.js`, `tunnel_r9_match_water.js`), including the seventh session's focused
+     pass from the 15:55 brief (larger character, tilted sock, aqua-white froth bank; evidence `13_...`, `14_...`,
+     `20_focused_pass_merged/`). Its froth predates the 17:15 correction above.
++  - `intunnel,structmatch` (7 November, session `398ed88c`, the user's FINAL mandate and washer-interior clarification;
++    NOT accepted, waiting for the user): on top of the accepted look, her rounder, larger magenta silhouette, the accepted
++    surf's blue graded richer, and a curved silver / lavender / purple drum lining on the tunnel's own upper wall through the
++    whole run (`WebDemo/src/tunnel_s4_struct.js`, `STRUCT_PARTS` in `tunnel_s4_bt.js`; off: `,nohero`, `,noswellgrade`,
++    `,nohousing`; opt-in: `,mounds`, `,tunnel2`, `,props2`, `,hud2`). Evidence and proofs:
++    `Previews/WebDemo/screen4_round9_match/64_final_pass/README.md`. Account handoff: `BUBBLE_WASH_ACCOUNT_HANDOFF.md`.
+   - `intunnel,swim2` (7 November, eighteenth session): **ACCEPTED, the bare `?s3=intunnel` now includes it** (the user's
+     approval; the previous look is `?s3=intunnel,noswim2`, or commit `920531d`; `58_swim2_accepted/`): the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px
+     (`WebDemo/src/tunnel_s4_swim2.js`, `SWIM2_ON`; evidence `Previews/WebDemo/screen4_round9_match/57_swim2/`).
+diff --git a/HANDOFF.md b/HANDOFF.md
+index bbe1b9a..c24c260 100644
+--- a/HANDOFF.md
++++ b/HANDOFF.md
+@@ -1,5 +1,16 @@
+ # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
+ 
++## Newest (7 November, about 15:35-16:40 UTC): session `398ed88c` (the account with usage), restoration and the final Screen 4 pass
++
++- **Read first:** `BUBBLE_WASH_ACCOUNT_HANDOFF.md` (the whole state, what to reconnect, the continuation prompt).
++- **Branch:** `claude/bubble-wash-account-handoff-yhk8dy`; the old account's transfer branch merged in up to `0c76b4d` (its
++  engineer `afb9a081` had stopped at 15:19 UTC on that account's 5-hour limit; its snapshot was restored and continued).
++- **Candidate `?s3=intunnel,structmatch`** (the user's final mandate, then the washer-interior clarification): her rounder,
++  larger magenta silhouette; the accepted surf kept with a richer blue; a curved silver / lavender / purple drum lining on
++  the tunnel's upper wall through the whole run. The engineer's water-space mounds read as ice next to the ORIGINAL: opt-in
++  `,mounds` only. Evidence and proofs: `Previews/WebDemo/screen4_round9_match/64_final_pass/README.md`. The accepted
++  `?s3=intunnel` and the normal game: 0 px different. Waiting for the user's verdict.
++
+ ## Newest (7 November, about 13:00-13:50 UTC): nineteenth session, the structural audit and Checkpoint A of `?s3=intunnel,structmatch`
+ 
+ - **Fidelity:** NOT accepted (the art director: 64 against 60, an exposed dark gap, purple balloon caps; `60_fidelity_review/`).
 diff --git a/WebDemo/src/game.js b/WebDemo/src/game.js
 index ebe4862..280af5f 100644
 --- a/WebDemo/src/game.js

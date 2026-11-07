@@ -1,0 +1,1222 @@
+# Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
+
+## Newest (7 November, about 15:35-16:40 UTC): session `398ed88c` (the account with usage), restoration and the final Screen 4 pass
+
+- **Read first:** `BUBBLE_WASH_ACCOUNT_HANDOFF.md` (the whole state, what to reconnect, the continuation prompt).
+- **Branch:** `claude/bubble-wash-account-handoff-yhk8dy`; the old account's transfer branch merged in up to `0c76b4d` (its
+  engineer `afb9a081` had stopped at 15:19 UTC on that account's 5-hour limit; its snapshot was restored and continued).
+- **Candidate `?s3=intunnel,structmatch`** (the user's final mandate, then the washer-interior clarification): her rounder,
+  larger magenta silhouette; the accepted surf kept with a richer blue; a curved silver / lavender / purple drum lining on
+  the tunnel's upper wall through the whole run. The engineer's water-space mounds read as ice next to the ORIGINAL: opt-in
+  `,mounds` only. Evidence and proofs: `Previews/WebDemo/screen4_round9_match/64_final_pass/README.md`. The accepted
+  `?s3=intunnel` and the normal game: 0 px different. Waiting for the user's verdict.
+
+## Newest (7 November, about 13:00-13:50 UTC): nineteenth session, the structural audit and Checkpoint A of `?s3=intunnel,structmatch`
+
+- **Fidelity:** NOT accepted (the art director: 64 against 60, an exposed dark gap, purple balloon caps; `60_fidelity_review/`).
+- **Audits (read-only):** `61_structural_audit/` (live scene: the stage is built for ONE camera position; the rim
+  `r6Porthole` is behind the camera 0.5 s after the tap; Screen 3's stretch and droplets on her; `heroSwell` a pad carried
+  with her) and `62_opening_mandate_audit/` (the user's mandate: real captures with the HUD at Tap to Start, +1, +2, +3 s,
+  the diagnosis table and the plan). Kits: `Design/ReferencePacks/2026-11-07_Screen4_Structural_Repair_Kit_from_user/`,
+  `..._Opening_Visual_Mandate_Kit_from_user/`, `..._CheckpointA_Brief_from_user/`.
+- **The user approved (about 13:45 UTC) CHECKPOINT A ONLY**, plus restyling the bottom HUD buttons (functional, readable,
+  easy to tap): `screen4-water-motion-engineer` builds `?s3=intunnel,structmatch` in its own worktree (her shape and fur,
+  the water, the tunnel's grade and warm centre, a thicker rim, props, HUD), evidence `63_structmatch_A/`; its unfinished
+  work is snapshotted every 5 minutes in `wip_snapshots_design_agents/`. **Checkpoint B (carried stage, motion) and the
+  art-director review need the user's separate approval.** Nothing is merged into the accepted build.
+- **Branch:** `claude/bubble-wash-transfer-tcgbof`; pull request #2 into `ccr-10503be1-pnv5vq` waits for the user.
+
+## Newest (7 November, about 12:20-12:45 UTC): nineteenth session (`95f7eae5`, account transfer), restoration only; NO game changes
+
+- **Branch:** this session is restricted to `claude/bubble-wash-transfer-tcgbof` (a copy of `ccr-10503be1-pnv5vq` at
+  `5d8c185`; its 12:17 autosave `5d21931` merged in with a normal merge). Nothing was pushed to `ccr-10503be1-pnv5vq`: the
+  eighteenth session's container (`4fd798d9`) was still alive and autosaving there, so it stays the only writer of it.
+- **Checks:** `verify_restore.sh --build` 26 passed, 1 note, 1 failed (only the branch-name check); the committed bundle
+  `38466b67` rebuilds byte-identically; the ORIGINAL's sha256 matches; the five agents, the skill and the hook are present.
+  parallax-threejs 0.4.12: chrome-devtools-mcp, threejs-devtools-mcp (bridge connected, `renderer_info` read the live
+  `?s3=intunnel` scene) and playwright-mcp work; Spector fails to connect (skipped by the user).
+- **Cloud environment:** this account's `bubblegame` (`env_01AHWQCELWvVDE14Rabq7bfr`) now has the guarded setup script of
+  7 November (the user's approval); it was run by hand here: every step passed, exit 0, 12 s.
+- **Autosave:** this session is in `Tools/autosave_sessions.json`; one detached writer; first save `306e98c`, Push: VERIFIED.
+- **The fidelity pass (`?s3=intunnel,fidelity`, agent `a5ba6876`, snapshot
+  `wip_snapshots_design_agents/screen4-water-motion-engineer_a5ba6876/`): STOPPED at 12:04 UTC** by the old account's
+  5-hour limit, after all its proofs (identity 0 px, `s3_func`, `r2_func`, motion trace equal), the final clip, the Pixel 7
+  sheets, the comparison video and the flow metric (all saved at 12:07). Left: the `FLOW_NEW` and `JUDGEMENT` placeholders
+  in its README, then the art director's review, then the user's decision. Its snapshot over `f71e130` rebuilds to md5
+  `092bbd05`, as the agent reported (checked in a scratch worktree, removed). Not merged, not restarted.
+
+## Newest (7 November, about 00:30-02:20 UTC): eighteenth session (session `4fd798d9`), the `bubblegame` environment and `?s3=intunnel,swim2`
+
+- **Branch:** `ccr-10503be1-pnv5vq` (the session started on `ccr-312c8679-hmvgmy`; one chat auto-save there, left alone).
+- **Cloud environment `bubblegame` created on this account** (`env_016qrkLt8s9RU8tVo9qEp8qo`; limited network, package
+  registries and MCP servers on, `download.blender.org`, `download.pytorch.org`). Its setup script runs
+  `Tools/cloud_env_setup.sh` only if the checkout has it, never blocking the start (`56_bubblegame_environment/environment/`).
+  - In this session the installer passed every step (PyTorch 2.15, Optuna 5.0, LPIPS 0.1.4, Blender 5.2.3, OpenCV 5.0.0).
+  - **A fresh test session (`session_013kxR3NwDzeVN7p4AeFLoUM`) ran it by itself:** Blender, Mesa and OpenCV installed,
+    then it hung over an hour on the PyTorch step (no time limit). Proposed fix, waiting for the user: a time limit on it.
+- **`r2_func` PASSES** with `VW=135 VH=270`, byte-identical to the accepted report. The full-size timeout was measured: queued
+  software rendering (`56_bubblegame_environment/`). `verify_restore.sh --build`: 27 passed, 0 failed (before swim2).
+- **`?s3=intunnel,swim2` committed behind its flag at the user's approval** (`57_swim2/README.md`), not part of `intunnel`:
+  the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px. The accepted
+  `intunnel`, R9 and the normal game 0 px different; gameplay tests identical. Bundle md5 `1199348a`. Built by
+  `screen4-water-motion-engineer` alone (no art-director review: the user asked to save credits).
+- **`swim2` ACCEPTED (about 10:20 UTC, the user's approval):** the bare `?s3=intunnel` includes it (bundle `ea0c833c`).
+  Rollback: `?s3=intunnel,noswim2` (0 px from the previous look) or commit `920531d`. Proofs: `58_swim2_accepted/README.md`.
+- **Next (the user's brief of about 09:50 UTC):** one correction behind its own flag on top of the accepted version: her
+  rounded silhouette and height above the water, the water's proportions and colours round her, and her motion through it;
+  no white film, no extra bubbles, no tunnel redesign; reviewed by the art director before any recommendation.
+
+## Earlier (6 November 23:10 to 7 November about 00:20 UTC): seventeenth session, the SECOND Claude account, restoration and account-transfer backup; NO game changes
+
+- **Branch:** `ccr-10503be1-pnv5vq` (the session started on `ccr-38535f0b-o7euxq`; its chat-log commits were merged in with
+  a normal merge, nothing rewritten). Session `08b39b21` is in `Tools/autosave_sessions.json`; the autosave runs detached.
+- **Account transfer files (new):**
+  - `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (the full state, inventories, restore steps and the continuation prompt);
+  - `START_HERE_NEW_CLAUDE_ACCOUNT.md`;
+  - `SAVE_BEFORE_ACCOUNT_SWITCH.md`;
+  - `Tools/verify_restore.sh` (a read-only check; `--build` re-proves the accepted bundle).
+- **Restored on this account (the user's approvals):**
+  - the cloud environment `bubblegame` (package registries, MCP servers, `download.blender.org`,
+    `download.pytorch.org`, the setup script; every step passed);
+  - the parallax-threejs plugin (0.4.12): chrome-devtools-mcp, threejs-devtools-mcp and playwright-mcp work; Spector
+    skipped (its MCP fails: not built);
+  - the `screen4-water-motion-engineer` agent activated (`8157579`, the draft minus its two-line note); it loads in a new
+    session.
+- **The accepted build is unchanged** (`Previews/WebDemo/screen4_round9_match/55_account_restore/README.md`):
+  - `WebDemo/` identical to `0f7121f`;
+  - bundle `5bb24e28` rebuilds byte-identically from its source `c4072c9`;
+  - 0 px at four moments (accepted start and +1 s, normal game, R9) against a rebuild and the previous machine's frames;
+  - `s3_func` identical (507 lines); the motion trace identical in every field of 152 frames;
+  - **`r2_func` NOT verified:** hearts identical, then it timed out twice at its second page load in this container.
+    Cause not yet found; see the new handoff, section 10.
+- **The three specialist inspections finished** (read-only; `54_specialists/water_vfx_engineer.md`,
+  `lighting_visual_matching.md`, `animation_review.md`; their scripts in `54_specialists/scratch/`).
+  - New finding: the moving tunnel's paleness is `r3Swirl` AND `r3Whirlpool` AND `r3Bubbles`, all re-shown by their own
+    updaters after u 3.0 m.
+- **Next:**
+  - with the user's go, finish `r2_func`;
+  - then the ONE correction the user approved in principle: `screen4-water-motion-engineer` behind `?s3=intunnel,swim2`,
+    judged by the art director, with full evidence before any merge. Not started.
+
+## Newest (6 November, about 21:20-22:50 UTC): sixteenth session, the engineering diagnosis; NOT merged
+
+- **Branch:** `ccr-10503be1-pnv5vq`, started from the fifteenth session's R9 work.
+- **Account switch:** `ACCOUNT_SWITCH_HANDOFF.md` has the full state, the verified tool inventory and the first message
+  for another account.
+- **The diagnosis** (`Previews/WebDemo/screen4_round9_match/52_diagnosis/README.md`):
+  - the pale travelling mound is `heroSwell` (a 1.9 m pad in her frame carrying a still picture pinned to her);
+  - the moving tunnel's paleness is `r3Swirl`, re-shown every frame by its own updater despite Round 4's hide;
+  - the floor's white dashes are `focusFloorGLSL`;
+  - her bob, lean, somersault and squash exist, but the water touching her moves with her.
+- **`?s3=intunnel,swim`** (`53_swim/`): REJECTED by the art director (a tight collar reads as a glass bowl). Its motion
+  parts measured well.
+- **Specialist inspections** (water, tunnel lighting, swim animation): `54_specialists/`. They inspect only.
+- **Waiting on the user:** whether to activate the proposed `screen4-water-motion-engineer` agent, and whether to build
+  `?s3=intunnel,swim2`. No game-code changes until then.
+- **The accepted `?s3=intunnel`:** 0 pixels changed (the old bundle `7402397a` against the current `5bb24e28`).
+
+## Newest (6 November, about 18:50-19:40 UTC): fifteenth session (a new Claude account), the water candidates R6 and R7; NOT merged
+
+- **Branch:** `ccr-1535d773-7e5f95`, started from the fourteenth session's last save `7cbc014` (branch
+  `ccr-ea1aad4b-wq5nrm`, left untouched). Autosave: detached, 288 rounds; this session is in `Tools/autosave_sessions.json`
+  (chat `ChatHistory/2026-11-06_fifteenth_session_screen4_water_r6.md`).
+- **The user's open brief (17:49 UTC, the R3c review kit):** the water round her is "too soft, stretched and pale"; fix the
+  actual mapping / distortion / transparency / sampling / bloom cause; one reversible step at a time; compare at the start
+  and at +1 s / +2 s moving; R3c and later candidates stay experimental until the evidence and the gameplay tests are done.
+- **The water candidates so far, each on the previous one** (switches in `WebDemo/src/tunnel_s4_bt.js`):
+  - `water4` R4 (`46_water_r4/`): the texture's holes filled with exemplar patches of the original's water.
+  - `water5` R5 (`47_water_r5/`): REJECTED (registered 22 px lower; the lavender domes then sit below her).
+  - `water6` R6 (`48_water_r6/`): the fill under her from the original's lower water only. The art director: about the same
+    as R4, clearly closer than the accepted build at the start, slightly closer moving; "not the fix".
+  - `water7` R7 (`49_water_r7/`), THE CANDIDATE: R6 + the game's spray droplets drawn no bigger than 12 px of the
+    1536 px canvas + mirrored sampling beyond the texture's edges. The art director: clearly closer than R6 and the
+    accepted build while moving, the white "cotton-ball" piles gone. Gameplay tests identical to the accepted build.
+    Videos, straight and steering, with side-by-side ORIGINAL | ACCEPTED | R7.
+  - **A defect found and fixed:** a dark grey fin at the lower left when she steers left, in every water candidate since
+    R2. The texture's clamp smeared the original screenshot's own dark frame border; the mirrored edge sampling removes it.
+  - `water8` R8 (`50_contact_edge/`): R7 + the face's edge in front of her following the original's own outline (an alpha
+    channel from the original's body silhouette, cut only within her model's span). The first R8: slightly closer than
+    R7; its see-through notches fixed in R8b (the final `water8`).
+- **The diagnosis (`48_water_r6/README.md`, `48_water_r6/diag/`):**
+  - The texture mapping is exact (a coordinate-coded texture via `layer_diag.cjs ROUTE_WATER=`): 0.94-1.00 texture rows per
+    screen pixel; about 45 % of the band under her is filled hole; at the start the bottom 30 px are a clamped smear.
+  - The moving frames' extra white (33-38 % against the original's 18.6) is NOT the water: the face alone is 20.6 % white.
+    It is the game's own spray particles (`game.js` `Particles`, nearly all round3's white spray, kind 3), drawn 50-90 px
+    wide near the camera: the "cotton-ball" piles. The art director found the same cause independently.
+- **R7 measured:** band white at +1 s 32.3 -> 22.2 %, saturated blue 12.1 -> 15.6 (original 18.6 / 19.6); foreground water
+  LPIPS at +2 s accepted 0.647, R6 0.602, R7 0.586. The accepted build is 0 pixels changed (final bundle `215f35c5`).
+- **Remaining differences (the art director):** the left dome (x 230-340), where the face's top edge is lower than the
+  original's outline, so her fur covers the dome's top and white rim; varied fleck sizes; the softness of the fill; some
+  paleness.
+- **The art director's latest verdicts:** the final R8 is slightly closer than the fixed R7 (start and moving), notches
+  gone; R8 is to be presented as the candidate. The mirror now skips 13 px (the original's whole frame bevel), after the
+  art director found a thin pale stripe with the first 5-px skip.
+- **Android preview APK (about 20:25 UTC, the user's request):** the SDK reinstalled in `~/android-sdk` (`dl.google.com`
+  added to the `bubblegame` environment, approved by the user); `Tools/android_apk/start.html` now opens
+  `?s3=intunnel,water7`, `intunnel,water8`, `intunnel`, `match` and the normal game. `BubbleWashKingdom_preview.apk`
+  (75 MB, bundle `3dac5847`) was sent to the user; not committed. Its debug key is new on this machine, so a phone with
+  the 5 November APK must uninstall that first.
+- **Tools added (diagnostic only):** `layer_diag.cjs` `ROUTE_WATER=` (serve another face texture, e.g. a coordinate-coded
+  one) and per-ablation `drop` shader edits; `48_water_r6/diag/scripts/uv_texture.py`, `uv_read.py`, `white_trace.py`;
+  `50_contact_edge/scripts/edge_profile.py`; `derive_water_map.py --alpha-body --alpha-x`.
+- **Tripo / Meshy:** not used, no credits.
+
+## Newest (6 November, about 17:00-17:40 UTC): `?s3=intunnel,water2`, the existing water's material corrected; FOR THE USER'S APPROVAL
+
+- **The user's brief:** stop adding objects; correct the existing water itself.
+- **The investigation:** `heroSwell`'s own face material makes the pale flat water. Its palette is the game's two biggest
+  clusters at her base; hiding it halves the icy pale blue; our white is its comma arcs. Bloom, grade, floor and extras are
+  1-2.5 points each.
+- **The candidate:** the face takes the ORIGINAL's foreground water as a texture in her water frame (projected through the
+  start camera, so it rides with her), the comma arcs off. No new objects.
+  - Measured closer: lavender 0.3 -> 10.7 % (15.3), white 14.2 -> 18.7 (18.6), LPIPS 0.656 -> 0.613 and 0.593 -> 0.557.
+  - The art director: "moderately closer, visible by eye"; present for approval, judged in the video.
+  - Remaining: the bank's shape (the crest geometry); the icy pale blue still 38.7 %.
+  - Evidence: `Previews/WebDemo/screen4_round9_match/44_water_material/README.md`.
+  - NOT merged into `?s3=intunnel` until the user approves.
+- **Tripo / Meshy:** not used, no credits (not suited to animated water).
+
+## Earlier (6 November, about 16:25-17:00 UTC): the curling-crest experiment (rejected) and the session-start autosave hook
+
+- **The user approved one experiment:** real curling crest geometry (`spCurls`) round her, `?s3=intunnel,crest`.
+  - C1: edge-on slivers. C2: standing frosted fins.
+  - Screen Matcher not closer; the art director said revert. Reverted; a record behind its flag
+    (`Previews/WebDemo/screen4_round9_match/43_curling_crests/README.md`).
+- **`?s3=intunnel` stays the accepted test mode,** 0 pixels changed (bundle `99d9bc10`).
+- **The session-start autosave hook** (`.claude/hooks/session-start.sh`, `.claude/settings.json`,
+  `Tools/autosave_sessions.json`): it restarts the 5-minute autosave after a restart or resume, only if it isn't running,
+  never on `main` / `master`.
+  - Validated: it skips when the autosave is running, skips outside the cloud, starts exactly one copy, which pushed in
+    its first round.
+- **The user's pack** `BWK_Screen4_WORKING_DOWNLOAD_PACK.zip` is saved in
+  `Design/ReferencePacks/2026-11-06_Screen4_Working_Download_Pack_from_user/` (comparison images only; the original stays the
+  authority).
+
+## Earlier (6 November, about 14:50-16:20 UTC): fourteenth session, the water round her: four candidates, ALL REJECTED
+
+- **The user's brief (14:50 UTC):** the water round her first. Rounded glossy cobalt-turquoise wave forms, cyan-white crests,
+  a few clear lavender domes. Then the brushes and the diamond, only if the water got visibly closer.
+- **Technique 1** (`?s3=intunnel,bank`): a bank of the splash bank's instanced lobes. W1 and W1b: pale matte pillows.
+- **Technique 2** (`?s3=intunnel,wave`): the swell's face drawing rounded lobes. W2 too blue; W2b matched the colours but
+  read as "a still pile of balloons" (the art director).
+- All four reverted, gated behind their flags; `?s3=intunnel` is unchanged (0 pixels). Evidence:
+  `Previews/WebDemo/screen4_round9_match/42_water_bank/README.md`.
+- **The limitation:** the original draws splashing CRESTS curling up her sides; neither technique makes crests.
+- **Proposed next, for the user:** real curling crest meshes (Blender) at her sides, from the existing `spCurls`.
+- **The brushes and the diamond:** not started (the user's order).
+- **The machine restarted twice** (13:21 and about 16:00 UTC). The autosave was restarted each time; it had stopped at 14:38
+  the second time.
+
+## Earlier (6 November, about 13:20-14:45 UTC): fourteenth session continued, `?s3=intunnel`: the game STARTS inside the tunnel
+
+- **The user's directive (13:30 UTC):** the playable level starts directly inside the blue laundry tunnel, her already on the
+  water, moving forward when play starts. No girl scene, Laundry Toss, washing-machine cinematic, castle or swim section
+  (those come later).
+- **`?s3=intunnel`** = `bt` + the run starting at the approved viewpoint (1.592 m, the old 3.0 s moment's spot):
+  - on the tap she rides on at 7.21 m/s, and every lap and restart begins there;
+  - the Screen 3 opening camera (`S3.cine`, which zoomed the start screen in 1.25 x), its banner and its painted picture
+    are off;
+  - the clock starts at the approved moment's 3.0 s (the sock's pose); the buttons are up from the start; a small Tap to
+    Start badge.
+  - Proof: `bt` and `focus` are 0 pixels changed. Evidence: `Previews/WebDemo/screen4_round9_match/40_intunnel_start/README.md`.
+- **The bubble domes** (`?s3=intunnel,domes`, real 3D, colours from the original, size and opacity from 12 Optuna trials):
+  two candidates, both rejected by the art director, reverted (`41_bubble_domes/README.md`). Proposed next, for the user: a
+  sculpted splash-bank mesh at her base (Blender), the original's merged white-lavender bank.
+- **Tools installed:** PyTorch 2.15 (CPU), LPIPS 0.1.4, Optuna 5.0 in `~/.bubblewash-tools/metrics`. `download.pytorch.org`
+  was added to the bubblegame environment, approved by the user. New: `region_compare.py`, `optuna_domes.py`,
+  `spector_capture.cjs` / `spector_report.py`.
+- **Autosave:** restarted after the machine restart at 13:21 UTC (detached, 288 rounds).
+
+## Earlier (6 November, about 11:40-13:00 UTC): fourteenth session, the breakthrough pass `?s3=bt`; STOPPED for the user's review
+
+- **The user's brief:** `Design/ReferencePacks/2026-11-06_Screen4_Breakthrough_Kit_from_user/05_SOURCE_SPECIFIC_EXECUTION_PLAN.md`
+  plus the 11:33 and 12:20 UTC messages: one major visible improvement, at most two candidates per issue, verify that it
+  keeps step 8, revert it unless clearly closer. (The BWK_SCREEN4_BREAKTHROUGH_KIT.zip itself never arrived; its plan and
+  images did.)
+- **`?s3=bt`** = `focus` (step 8) + the hazard brushes drawn at 0.62 (the knock is the lane, unchanged) + the wall brushes
+  0.66 + the sock's toe blue. Proof: `focus` on the new build and `bt` with its changes at zero are 0 pixels from step 8.
+  Evidence: `Previews/WebDemo/screen4_round9_match/39_breakthrough_pass/README.md`.
+- **Rejected (art director: further from the original), reverted:** the water round her lowered (0.36 m, then 0.20 m with
+  shader froth): her model then reads as a tall square block and the froth as a white strip; the sock's lilac stripes.
+  Stopped by the user's gate. Proposed, waiting for the user's go: real 3D lavender-blue bubble domes along her base, at
+  step 8's waterline.
+- **Spector.js** works here (npm `spectorjs` 0.9.33 injected into the page; `WebDemo/tools/screen4/spector_capture.cjs`,
+  `spector_report.py`); its MCP server cannot be added to a running session.
+- **Note:** the 5-minute autosave commits work in progress; step 8's own bundle is at `7b7a9e2` (`e6cd9334`).
+- **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_fourteenth_session_screen4_breakthrough.md`).
+
+
+## Newest (6 November, about 06:05 UTC): thirteenth session, STEP 7 done, the bubble veil; STOPPED for the user's visual review
+
+- **The user's plan (after the recovery audit), in order, each separately testable and reversible, each stopped for review:**
+  the bubble veil (done), then the original's white splash textures, blue water and floor, brush sizes, the tunnel entry, the
+  distant centre, the sock colours. The opening: option C (keep the exterior, shorten it later; NOT in this pass). The pink
+  character postponed. Comparisons at the same scene positions fully inside the tunnel (3-6 s after the tap; the course loops
+  back to the washing machine by 8 s), Pixel 7, the normal game tested, straight and steering MP4s.
+- **Step 7:** `FOCUS.water.bubbles` 160 -> 40 along the walls only (`bd8d49e`, bundle `57b06911...`); evidence
+  `Previews/WebDemo/screen4_round9_match/35_step7_bubble_veil/README.md`. Walls saturated blue 51.8 -> 55.0 % (58.9),
+  core 20.3 -> 24.8 % (29.7). Waiting for the user's review before the white splash step.
+- **Found:** the phone recorder is not frame-exact (particles and an edge coin differ between two runs of one build:
+  `35_.../videos/determinism/`); the normal game has no hearts, pause or power-ups (`r2_func` does not apply to it).
+- **New tool options:** `layer_diag.cjs` `T=` (seconds after the tap) and `VIEW=`; `35_.../scripts/record_phone.cjs`
+  `STRAIGHT=1`.
+
+
+## Newest (6 November, about 04:55 UTC): thirteenth session, STEP 6 done (`?s3=focus` only)
+
+- **The user's go-ahead:** "Yes start step 6". Evidence, tests and the corrected / remaining checklist:
+  `Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/README.md`.
+- **The change:** `mtPlace` (`tunnel_r9_match.js`) works out each wall and floor point's ring place from its REAL position
+  seen from the camera, in the camera's own track frame (`FOCUS.match.centre.bend`, `MT_BEND`), not from its own
+  cross-section, which assumed a straight tube. The far rings now stay concentric where the path bends 15-30 m ahead.
+- **Measured:** stripe calibration stretch 1.36-1.56 / 0.72 -> 1.0 in every band; core lavender 21.1 -> 16.1 % (original
+  16.0); wall ring breakup 8.08 -> 10.62 (10.31); core saturated blue 15.8 -> 20.3 % (29.7). By eye closer at 3.0, 7.7 and
+  9.0 s; unchanged at 5.5 s (the pale far disc there has another cause).
+- **Tests:** switch off = step 4 exactly; 41 identity frames identical; `s3_func` and `r2_func` reports identical to step 4's;
+  bundle md5 `1784ffd7...`. Before step 6: step 4 (`666905c`); the commit hash of step 6 is in the git log ("Screen 4 step 6").
+- **Next:** step 5 (the fill-only map) re-tested ON TOP of step 6; then step 7 (the bubble overlays).
+- **Saving:** the autosave plus `Tools/snapshot_lead_worktree.sh` (new, the user's request: the lead's test worktree outside
+  the repository copied into `wip_snapshots_design_agents/lead_<name>/` every 5 minutes), both detached for 24 hours.
+
+
+Read this first when you continue in a new Claude conversation. `CLAUDE.md`, added 4 November, holds the standing rules.
+
+## Newest (6 November, from 04:08 UTC): thirteenth session, a NEW Claude account, recovery audit (no game changes)
+
+- **Branch:** `ccr-d224d313-81g2dq`, starting exactly at the eleventh session's last save `d3a35aa` (03:53 UTC; the same
+  commit as `ccr-038551a2-x01b22`, left untouched). Every other branch was checked against it with the full history: none
+  holds newer Screen 4 work. `ccr-8e0bc6eb-qmanjq` / `ccr-b10ee34b-rn9s7h` are a parallel pass 4 (00:00-00:50 UTC, agents'
+  unfinished patches) that the user left for the developer-tools line; older branches' extra commits were restored here earlier.
+- **The game is at step 4** (`666905c`), rollback checkpoint `2f88104`. Recovery proof (`Previews/WebDemo/screen4_round9_match/31_recovery_audit/`):
+  - `node build.mjs` rebuilds `game.bundle.js` byte-identical (md5 `73ed2a8b...`);
+  - the seed 7, 3.0 s `focus` frame: 0 differing pixels against `30_step5_fill_map/layers_step4/base_canvas.png`; no console errors.
+- **Step 5 (the eleventh session, 02:19-03:45 UTC, after the user's "yes start step 5"): TESTED and HELD**, not in the game
+  (`30_step5_fill_map/README.md`, `step5_game_changes_HELD.patch`, commit `350c54d`). The fill-only map restores the
+  original's splashes on the walls, but the distant centre got whiter (white 8.8 -> 29.4 %, original 21.7), so by the user's
+  revert rule it was not applied. The cause is the core's ring placement on the bent path (rings stretched 4-5 x 15-30 m
+  ahead). **Next: step 6, the centre placement; then step 5 re-tested on top of it.** The step 5 report had not yet reached
+  the user when the old account stopped.
+- **The user's two newest briefs** (`Design/ReferencePacks/2026-11-06_Strict_Motion_Match_Kit_from_user/`):
+  `05_CLAUDE_STRICT_VISUAL_MATCH_BRIEF.md` (03:02 UTC: one correction at a time, original / previous / new comparisons at the
+  checkpoint, Pixel 7 and moving moments, revert anything that looks less like the original) and
+  `10_USER_COMPOSITION_DIRECTIVE.md` with `09_...jpg` (03:47 UTC: the tunnel is the hero, a clear glowing centre, less
+  clutter and no oversized brush shapes, a clean coin / gem runner path). The old account stopped at 03:48, just after saving them.
+- **This account:** no Claude plugins enabled and no connectors (all the project's earlier plugins are in its catalog;
+  `Tools/DEV_TOOLS.md`). GitHub works (`josiahscalia5-dev`). A personal cloud environment `bubblegame` was created
+  (approved by the user): package registries plus `download.blender.org`, and the setup script
+  `if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`. Every tool installed, Blender 5.2.3 included.
+  Tripo is not signed in (not needed; no credits spent).
+- **Design agents:** all four files have a new "Newest: eleventh to thirteenth sessions" section. This session's agents were
+  loaded before it was written, so brief them to read it first.
+- **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_thirteenth_session_recovery_audit.md`, agents
+  `..._thirteenth_session_design_agent_transcripts.md`).
+
+## Earlier (6 November, about 02:30-03:53 UTC): eleventh session, step 4 done, the next corrections investigated (step 5 and the 6 November briefs: see above)
+
+- **Step 4, committed `666905c` (rollback point `2babe4f`):** `?s3=focus` `floorFx.lift` 0.55 → 0, the user's approved
+  first correction. Evidence and tests: `Previews/WebDemo/screen4_round9_match/27_step4_floor_lift/README.md`.
+  - Floor ahead: saturated blue 11.5 → 28.2 %, pale blue 74.5 → 53.9 %, detail 2.29 → 3.09.
+  - Tests:
+    - 41 frames of every other switch identical;
+    - the character drawn alone identical;
+    - `s3_func` and `r2_func` identical to step 3;
+    - Pixel 7 captured.
+- **Investigated, NOT implemented** (`28_next_investigation/README.md`):
+  - the walls lose the original's splashes in `derive_tunnel_textures._lowfreq`, which blurs every texel. A fill-only map
+    keeps them;
+  - the tunnel bubbles and other overlays cover 35 % of the tunnel and cut its saturation from 0.47 to 0.32;
+  - the core's lavender band is the walls' ring placement stretched 4-5 x where the path bends 15-30 m ahead
+    (calibration map).
+- **Recommended step 5, waiting for the user:** the fill-only ring map with the original's whites, and the walls' duplicate
+  procedural flecks and the tunnel streaks removed.
+- **Autosave:** restarted at about 02:07 UTC; it had stopped after its 01:11 round without an error.
+
+## Earlier (6 November, about 01:00 UTC): eleventh session, branch `ccr-038551a2-x01b22`, the layer diagnosis (no game changes)
+
+- **The user's request:** use real developer tools, not visual trial and error.
+  - Inventory the tools.
+  - Capture the seed 7, 3.0 s, no-steering frame at 767 x 1536.
+  - Compare by region and find which texture, material, layer, shader or pass causes each difference.
+  - Give ONE correction for review before any large change. Do not add more white streaks first.
+- **Evidence and full findings:** `Previews/WebDemo/screen4_round9_match/26_layer_diagnosis/README.md`.
+  - New diagnostic tools: `WebDemo/tools/screen4/layer_diag.cjs` (census, per-layer ablation of the SAME frame, test tunes,
+    texture swap by request interception) and `layer_metrics.py`.
+- **What was measured:** `focus` = step 3 plus the tenth session's untested "pass 4a" autosave change (`fa55483`: the
+  brushes' floor warning stripes from magenta to aqua-white, `FOCUS.water.liquid.hazard`). That change is still in the
+  build.
+- **Diagnosis, in short:**
+  - Post-processing is not the cause.
+  - Floor: the floor ahead is `lqFloor`'s shader. `floorFx.lift` 0.55 mixes every floor pixel toward ONE pale blue
+    (#b6dcf6), turning the original's white-plus-cobalt water into a flat mid-tone.
+  - Texture: the ring map loses 56-60% of the original's texture and all its white in `derive_ring_map.py` (`WHITE_OUT`
+    mask, 6° blur). The whites come back as procedural "confetti".
+  - Tunnel: the bubble overlays veil the walls.
+- **Proposed single correction (applied as step 4, `666905c`, after the user's approval):** `floorFx.lift` 0.55 → 0 in `tunnel_r9_focus.js`
+  (`?s3=focus` only). Measured on the floor ahead: saturated blue 11.5 → 28.2% (original 18.0), pale blue 74.5 → 53.9%
+  (34.5), detail 2.29 → 3.09 (3.41).
+- **Autosave:** detached, 288 rounds (chat `ChatHistory/2026-11-06_eleventh_session_layer_diagnosis.md`).
+
+## Newest (5 November, 22:40 UTC onward): tenth session, the user's fidelity plan, steps 2 and 3 done (`?s3=focus`)
+
+- **The user's decisions** (kit `Design/ReferencePacks/2026-11-05_Screen4_Complete_Kit_from_user/`, `CLAUDE_SCREEN4_INSTRUCTIONS.txt`):
+  - continue from `focus`; `match` stays unchanged as the comparison and rollback baseline;
+  - water: blue water with white-aqua splash crests and clear bubble domes, NO foam cushion;
+  - steps 2 and 3 approved: one at a time, test and commit each, then STOP and ask for visual acceptance;
+  - no agents, no paid assets, no redesign.
+- **Checkpoint:** `d84aee5` (GitHub refuses tag pushes here).
+- **Step 2, interface and framing:** `a715434`, `Previews/WebDemo/screen4_round9_match/23_step2_interface/README.md`.
+  - The counters and banner sit at the original's measured places (offsets in `offsets.md`). Pause and the power buttons are
+    whole. The hint is hidden in the drum.
+  - Only `focus` changed (`page.html`, `body.s4focus`).
+- **Step 3, tunnel rings:** `13fccff`, `24_step3_tunnel_rings/README.md`.
+  - The walls draw the ORIGINAL's own rings (`tools/screen4/derive_ring_map.py`), centred round its centre.
+  - Ring profile vs the original, up / left / right: +0.61 / +0.26 / +0.24 → +0.79 / +0.56 / +0.67.
+  - Wall correlation: −0.05 → +0.22.
+  - Every other switch is pixel-identical; gameplay passes.
+- **Waiting for the user's visual acceptance of steps 2 and 3.** Next (plan step D, only after that):
+  - the water and splash round her (blue water, clear domes, no cushion);
+  - the pale lavender middle and floor ahead: objects over the centre, and the floor's transparency over the lavender shell;
+  - then promote `focus` to the normal game and rebuild the APK (plan step F).
+
+## Earlier (5 November, about 22:10 UTC): tenth session, branch `ccr-9f8e2c8d-0zg3mc`, BOTH evening lines merged
+
+- **Two lines of work ran in parallel this evening from `9a95c06` (16:29 UTC):**
+  - `?s3=match`: the seventh session (`ccr-1f9da4c9-e0yrsc`) and its focused pass from the 15:55 brief. Merged here first as
+    `68c8c40` (see the next section).
+  - `?s3=focus`: the eighth and ninth sessions (`ccr-3d8a1ae9-hhgml1`, then `ccr-de8d9670-2ohd5t`, final `b2a5b6e`), with
+    the user's later corrections (17:15 UTC blue water round her, no foam cushion; 17:45 the vortex kit; 18:26 the
+    Tunnel Correction ESSENTIAL kit), the Art Director's review and both specialists' focus passes.
+- **The user asked (about 22:00 UTC)** that the design agents they were chatting with on that branch be here and working,
+  so `ccr-de8d9670-2ohd5t` is merged into this branch (no branch was changed or force-pushed). Both switches stay exactly
+  as tested on their own branches:
+  - `focus` is built on `match` as it was at `9a95c06`. Under `FOCUS_ON`, `WebDemo/src/tunnel_r9_focus_base.js` (generated)
+    puts back the 46 changed, 80 added and 33 removed `MATCH` / `MATCH_WATER` settings. The seventh session's `match`-only
+    code is gated `!FOCUS_ON` in `tunnel_r9_match.js`, `tunnel_r9_match_water.js` and `tunnel_r8_splash.js`.
+  - **Proof** (`Previews/WebDemo/screen4_round9_match/21_lines_merged/`):
+    - settings key by key: merged `match` equals `68c8c40`'s, merged `focus` equals line B's;
+    - pixels, 49 raw-canvas frames, all 0 differing:
+      - the normal game and 10 older switches against `68c8c40`;
+      - `match` and `match,nofoam` against `68c8c40`;
+      - `focus` and `focus,nofoam` against `b2a5b6e`.
+    - Merged bundle md5 `e9412484...`.
+  - **Design agents:** the four agent files are line B's (its "ninth session" and "focused correction pass" sections) plus
+    a new "tenth session, both lines merged" section; `CLAUDE.md` has line B's corrections and the two switches.
+- **Which look continues is the user's choice:** `focus` follows their latest corrections; `match`'s froth bank predates them.
+  - The Art Director (this session, eye judgement at 3.0 s) judges `focus` closer to the original's water round her; its
+    three largest remaining differences for `focus`:
+    - the walls: darker cobalt ribbons, a lilac-white centre;
+    - the water in front: paler periwinkle, meeting her in a straight line;
+    - the fur and the sock.
+  - `match` at the new framing (`20_focused_pass_merged/README.md`): her waterline is 0.867-0.873 against the original's
+    0.836 (the closer camera lowered her base), so its froth sits low.
+- **Design agents in a session load their files when the session STARTS.** This session's agents ran from the pre-merge
+  text (they reported "Round 9 ART MATCH" as their newest section) but worked correctly, with the repository, tools and
+  `CLAUDE.md`. A new session loads the merged files. Until then, tell each agent to read the "Newest: tenth session"
+  section of its own `.claude/agents/<name>.md` first.
+- **Autosave (the user's standing request, 22:25 UTC: everything to GitHub every 5 minutes):** running DETACHED for 24 hours
+  (288 rounds; `CLAUDE.md`, Safety, has the command). The earlier background autosaves were cut at 30 minutes by the
+  session's job limit. In a new session, start it first.
+- **The verification audit (22:30 UTC, no game changes):** `Previews/WebDemo/screen4_round9_match/22_verification_audit/README.md`.
+  - The phone video was `edf84f5` `?s3=match` with steering. The normal game has none of the Screen 4 work.
+  - The five differences (interface, composition, ring pattern, water, the character's look), their files, and the plan.
+  - Waiting for the user's three decisions: `focus`? how much white splash? may steps 2-3 start?
+- **Session naming:** this is the TENTH session (chat `ChatHistory/2026-11-05_tenth_session_both_lines_merged.md`, agents
+  `..._tenth_session_design_agent_transcripts.md`); the eighth and ninth are line B's.
+
+## Earlier (5 November, 21:45 UTC onward): tenth session, `match`'s focused pass restored and merged
+
+- **Recovered from:** `6b96449`, the seventh session's last autosave (the same commit on `ccr-1f9da4c9-e0yrsc`, left
+  untouched). Both specialists had FINISHED their focused-pass work at about 21:06 UTC and stopped at the usage limit
+  just before committing; their worktrees were lost with the old container.
+- **Restored exactly from the 21:32 UTC snapshots** (`wip_snapshots_design_agents/`):
+  - Tunnel & Lighting (`lighting-visual-matching_a1aff7a0`, from `9a95c06`): `tunnel_r9_match.js` and one gated line in
+    `game.js`. Rebuilt alone: md5 `17101d7a...`, the final md5 its README reports. Evidence: `13_focused_pass_tunnel_lighting/`.
+  - Water & VFX follow-up (`water-vfx-engineer_a6a478aa`, from `b0e1f07`): `tunnel_r9_match_water.js`. Rebuilt alone: md5
+    `0f6f7d22...`, the md5 in its identity file. Evidence: `14_focused_pass_water_vfx/followup/`.
+  - Merged as `68c8c40` (different files, no conflict). Merged bundle md5 `e74ba8c9...`.
+- **The phone video** recorded at 21:11 UTC (`16_phone_video_into_the_machine/`) was sent to the user in this session.
+- **Checks and the merged comparison:** `Previews/WebDemo/screen4_round9_match/20_focused_pass_merged/` (README there).
+- **Autosave:** running, with `ChatHistory/2026-11-05_tenth_session_both_lines_merged.md` and
+  `..._tenth_session_design_agent_transcripts.md` ("tenth": branches `ccr-3d8a1ae9-hhgml1` and `ccr-de8d9670-2ohd5t`
+  already call themselves the eighth and ninth sessions).
+
+## Earlier (5 November, 19:00 UTC onward): ninth session, branch `ccr-de8d9670-2ohd5t`, the focused pass CONTINUED
+
+- **Repository and branch:** `josiahscalia5-dev/bubblegame`, branch `ccr-de8d9670-2ohd5t`. It started exactly at the eighth
+  session's last autosave `182ad19` (`ccr-3d8a1ae9-hhgml1`, left untouched). Rebuilt bundle byte-identical (md5 `94c50cad...`).
+  `bash Tools/cloud_env_setup.sh` installed every tool.
+- **Why:** both specialists stopped at 18:57 UTC on a rate limit. Their 18:58 snapshots are in
+  `Previews/WebDemo/screen4_round9_match/15_focus_pass/wip_snapshots_design_agents/` (`lighting-visual-matching_ae554668`,
+  `water-vfx-engineer_a29b1562`).
+- **Commits:**
+  - `0ff0d0b`: Tunnel & Lighting's four tested commits restored (the focus camera at the original's size with the rim
+    restaged; the user's problem A, the lower-left lavender-grey wedge, drawn as wall water; the left-wall seam removed).
+    The focus 3.0 s frame is identical to its last tested frame; `?s3=match` identical to `182ad19`.
+  - `71f7fa7`: all four agent files name this repository and branch (section "Newest: ninth session").
+- **Running (from 19:06 UTC), each in its own worktree from `71f7fa7`:**
+  - Tunnel & Lighting: objects onto the original's spots, then the kit's problem B (broader, softly blended cobalt and
+    turquoise bands), the wall streaks, the warm centre, the left wall. Evidence: `17_tunnel_lighting_focus/`.
+  - Water & VFX: its uncommitted work restored from the snapshot patch, then the water round her, the floor ahead, the
+    flying streaks, the bubbles near the centre. Evidence: `18_water_vfx_focus/`.
+- **Autosave** every 5 minutes (chat `ChatHistory/2026-11-05_ninth_session_focus_continued.md`, agents
+  `..._ninth_session_design_agent_transcripts.md`, WIP snapshots in `15_focus_pass/wip_snapshots_design_agents/`).
+- **Both finished and merged (20:20 UTC):** Water & VFX as `5462f30`, Tunnel & Lighting as `a78a143` (bundle rebuilt after
+  the merge). Checks all pass on the merged build: `?s3=match` identical, `s3_func`, `r2_func`, Pixel 7 at two framings.
+  Evidence, the kit's checklist and what still differs: `Previews/WebDemo/screen4_round9_match/19_ninth_session_merged/README.md`.
+- **Next, if the user wants another pass:** blue saturation in the rings (0.71 against 0.83), fewer small streaks and
+  bubbles over the rings, the left wall's crisp cyan sparkle instead of a milky smoothness, the floor behind her 4 L*
+  brighter, her base 0.20 W.
+
+## Earlier (5 November, 16:50 UTC onward): eighth session, branch `ccr-3d8a1ae9-hhgml1`, the FOCUSED CORRECTION PASS
+
+- **Recovered from:** `9a95c06` (the seventh session's last autosave; both specialists had stopped on a rate limit at 16:00
+  without saving game code, so the pass was redone directly). Rebuilt bundle byte-identical (md5 `811c6977...`).
+- **New switch `?s3=focus`** = `match` + this pass. Settings: `WebDemo/src/tunnel_r9_focus.js`; code gated on `FOCUS_ON` in
+  `tunnel_r9_match.js` (`focusRibbonsGLSL`, `focusFlecksGLSL`, the sock pose) and `tunnel_r9_match_water.js`
+  (`focusLumpGLSL`, `swellFront`, `focusSparkleGLSL`). `match` and all older switches stay pixel-identical.
+- **The user's corrections during the pass (they supersede the earlier foam requests; see `CLAUDE.md`):**
+  - about 17:15 UTC: sparkling BLUE water round the character, not a white foam cushion;
+  - about 17:45 UTC: the vortex kit (`Design/ReferencePacks/2026-11-05_Vortex_Exact_Match_Kit/`), the tunnel water as
+    twisting broken cobalt ribbons.
+  - Also: commit and push each tested step, with the hash.
+- **Commits:** `9bbcfa8`, `492fb7a`, `b03d160`, `6f6bbb0`, `56d76d2`, `229eecb`, `5170d12`, then this hand-off.
+- **Evidence and checklist:** `Previews/WebDemo/screen4_round9_match/15_focus_pass/README.md` (`final/` has the 3.0 s
+  sheets).
+- **Open, by the numbers:**
+  - The tunnel's deep blue is now above the original's (7.0% against 3.9%), and pastel below it (24.5% against 29.2%).
+  - The per-pixel tunnel difference rose (51.1 against match's 46.6).
+  - The character is drawn slightly larger than the original (pink 4.94% against 4.16%).
+  - The original has more white splash texture at her base.
+  - The original's white streaks are chunkier.
+- **Tools added:**
+  - `WebDemo/tools/screen4/cam_sweep.cjs` (camera candidates from one load);
+  - `r2_func.cjs` takes `VW`/`VH` (a smaller viewport: at full size the `match`/`focus` hearts loop outlasts 20 minutes in
+    software rendering);
+  - `15_focus_pass/scripts/` (`pink.py`, `tunnel_palette.py`, `final_sheets.py`, `identity_shots.sh`, which includes
+    `match`).
+
+## Earlier (5 November, 14:34 UTC onward): seventh session, branch `ccr-1f9da4c9-e0yrsc`, Round 9 ART MATCH continued
+
+- **Recovered from:** `36c8676`, the sixth session's last autosave (on both `ccr-4aef2c77-0cdeu2` and this branch; left
+  untouched). The rebuilt bundle matched it byte for byte (md5 `ba0c7f6c...`). `bash Tools/cloud_env_setup.sh` installed
+  every tool.
+- **The two specialists, resumed from their 14:30 WIP snapshots** (`wip_snapshots_design_agents/*_af500937`, `*_ada634b5`),
+  each in a new worktree, with their original gate briefs plus the user's fidelity brief:
+  - Tunnel & Lighting finished: `e490836`, merged as `648d47f`. Evidence: `06_tunnel_lighting_gate_fixes/`.
+  - Water & VFX: running when this was written; evidence will go to `07_water_vfx_gate_fixes/`.
+- **The phone fix** (approved by the user at 14:29), `833f471`, `?s3=match` only: `WebDemo/src/match_phone.js`. The
+  original's vertical framing on phones down to aspect 0.45 (sides trimmed, at most 5% each); `uHeroTanW` and the 1:2
+  reference cameras use the 1:2 width; the stage fills the phone edge to edge. Evidence: `10_phone_fix/`.
+- **The user's evidence kit (14:43 UTC):** `Design/ReferencePacks/2026-11-05_Screen4_Visual_Evidence_and_Assets/`: seven
+  annotated checkpoints, `04_Instructions/PASTE_INTO_CLAUDE.txt` and `VERIFY_CHECKLIST.md` (the acceptance criteria;
+  verify at the Pixel 7 framing too), optional bubble sprites and a placeholder GLB. The original stays the only target.
+  - 01 deep tunnel bubbles, 02 waterline, 04 foam bank: Water & VFX.
+  - 03 vortex, 05 coins/gem/sock: Tunnel & Lighting.
+  - 06 upper frame and 07 white rectangle: the lead (`10_phone_fix/`). 07's cause was `r6Face`'s "light panel above the
+    door" (`tunnel_r6.js`, from the Round 6 guide), removed under `match`.
+- **Later (15:40-16:00 UTC):** Water & VFX finished (`97c5d58`, merged as `b91e952`): 132 tunnel bubbles at three depths,
+  white streaks, opaque froth lobes, the character ON TOP of the water (waterline 0.835; the user's correction at about
+  15:20 UTC, now in `CLAUDE.md`). Pixel identity after the full merge: all 33 frames identical to `36c8676`
+  (`11_merged_final/pixel_identity_after_full_merge_b91e952.txt`); `s3_func` under match passed (lanes, jump, 12 coins,
+  1 gem, 2 socks, no errors). `r2_func` under match passed the hearts part, then was cut off by a 15-minute `timeout`
+  (CPU contention), not a game error: re-run it without a timeout.
+- **The user's focused pass (about 15:55 UTC):** `Design/ReferencePacks/2026-11-05_Screen4_Focused_Correction_Pass_Brief/`:
+  tunnel energy (flecks, streaks, bubbles, irregular walls), thick aqua-white froth (not glassy lavender), the character
+  larger in frame and on top of the water, the sock tilted sideways, a fuller composition. Both specialists stopped at the
+  5-hour usage limit (16:10 UTC, before any change); restarted at 19:40 UTC: Tunnel & Lighting (framing, sock, walls,
+  near bubbles) into `13_focused_pass_tunnel_lighting/`, Water & VFX (froth, flecks, bubbles) into
+  `14_focused_pass_water_vfx/`. The lead forwards Tunnel & Lighting's framing checkpoint to Water & VFX.
+- **Next (before the focused pass):** merge Water & VFX; the pixel-identity proof against `36c8676` (`11_merged_final/scripts/identity_shots.sh`
+  and `identity_compare.py`; the baseline frames are in the session scratchpad and must be re-made in a new session);
+  `s3_func` and `r2_func`; the seven-checkpoint table with Pixel 7 and 1:2 close-ups in `11_merged_final/`; a video.
+- **Autosave:** running as described below, with `ChatHistory/2026-11-05_seventh_session_round9_continue.md` and
+  `..._seventh_session_design_agent_transcripts.md`.
+
+## Earlier (5 November, 13:21 UTC onward): sixth session, branch `ccr-4aef2c77-0cdeu2`, Round 9 ART MATCH continued
+
+- **Recovered from:** `a5be95c`, the fifth session's last autosave of `ccr-b41bbe83-3fbhkr` (left untouched).
+  `ccr-4aef2c77-0cdeu2` starts exactly there. Every other branch holds only older work.
+- **Environment:** started empty; `bash Tools/cloud_env_setup.sh` installed every tool.
+- **The merge, checked:** the Water & VFX stage (`15acbc8`) merged as `2a6ab30`. Rebuilding from source gives a bundle
+  byte-identical to the committed one (md5 `ba0c7f6c...`). Merged frames at 2.85, 3.0 and 3.1 s and the comparison:
+  `Previews/WebDemo/screen4_round9_match/04_merged/`.
+- **Design agents updated for Round 9:** all four agent files have a "Newest: Round 9 ART MATCH" section (code,
+  textures, capture tools, what is done, what is open with numbers, and each agent's own next job). The Water & VFX
+  agent's description now names `?s3=match`. Its final results are in the fifth session's reports file, section 4; its
+  transcript after 12:50 UTC was lost with the old container, but its commit message and README hold its full report.
+- **The Art Director's six-area gate (done):** `Previews/WebDemo/screen4_round9_match/05_art_director_gate/`. Scores:
+  housing 7, deep blue tunnel 5, light 4, immersion 6, foreground waves 4, objects 7, with ten ranked fixes. The centre's
+  lilac is confirmed as `heroWalls`' track-frame screen radius.
+- **Running when last saved:** Tunnel & Lighting (fixes 1, 3-7, 10) and Water & VFX (fixes 2 and 8), in parallel, each in
+  its own worktree. Evidence will go to `06_tunnel_lighting_gate_fixes/` and `07_water_vfx_gate_fixes/`. A live snapshot at
+  13:57 UTC: `08_progress_snapshot_1357utc/`.
+- **Automatic save, the user's standing request (every 5 minutes, including the design agents and what they built):**
+
+  ```
+  CLAUDE_SESSION_URL=<session link> \
+  BW_AGENT_TRANSCRIPTS=ChatHistory/<date>_<session>_design_agent_transcripts.md \
+  BW_AGENT_TITLE="<title>" BW_WIP_DIR=Previews/WebDemo/<round folder>/wip_snapshots_design_agents \
+  bash Tools/autosave.sh ~/.claude/projects/<project>/<session-id>.jsonl ChatHistory/<chat>.md "<title>" 5 23
+  ```
+
+  Run it in the background. Each round saves:
+  - the chat;
+  - every agent's brief, steps and report (`Tools/export_agent_transcripts.py`);
+  - each agent worktree's unfinished work, a readable patch plus full copies of every file it changed or made
+    (`Tools/snapshot_agent_worktrees.py`; copying `files/` over the starting commit restores it).
+
+  `Tools/save_now.sh` now skips a round during a merge, so the autosave no longer has to be paused for merges. It stops
+  after 23 rounds (about 2 hours): start it again.
+- **Next:** merge both specialists, then the final checks (pixel identity against the `2a6ab30` baseline, `s3_func`,
+  `r2_func`), the comparisons at 2.85, 3.0 and 3.1 s with a 50% blend, and a gameplay video.
+- **Chat:** `ChatHistory/2026-11-05_sixth_session_round9_continue.md`; agents: `..._sixth_session_design_agent_reports.md`
+  and `..._transcripts.md`.
+
+## Earlier (5 November, 10:00 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 9 ART MATCH (`?s3=match`), in progress
+
+- **One reference everywhere:** the ORIGINAL CLASSIC APPROVED Screen 4 is the only target in `CLAUDE.md`, the
+  screen-matcher skill, the four agent files and the sheet tools (`4df5860`).
+  - Detail close-ups: the verified crops of it, including the user's precision kit
+    `Design/ReferencePacks/2026-11-05_Classic_Screen4_Precision_Kit/` (`6b81c38`).
+  - The user's five AI-generated supporting MATERIAL references (look and finish only; the original wins) and their
+    rendering requirements: `Design/ReferencePacks/2026-11-05_Screen4_Supporting_Material_References/` (`5a47318`,
+    `31a5349`).
+- **`?s3=match`:** everything `splash` does, plus Round 9. `match,bare` (diagnostic) hides the collectibles, brushes and
+  bubbles.
+  - Files: `WebDemo/src/tunnel_r9_match.js` (Tunnel & Lighting) and `tunnel_r9_match_water.js` (Water & VFX).
+  - Hooks elsewhere are gated on `MATCH_ON`.
+  - Textures: `WebDemo/textures/screen4/`, made by `WebDemo/tools/screen4/derive_ref5_water.py`. The APK build script
+    copies this folder.
+- **Done:**
+  1. The Art Director's five largest mismatches at 3.0 s: `Previews/WebDemo/screen4_round9_match/01_art_director/`.
+  2. The Tunnel & Lighting wall-material checkpoint (`25a65ab`, merged as `f042ab5`): Reference 5 water on the walls,
+     graded to the original; the rim from the original; camera pitch +1.5 degrees; staging +0.95 m; objects resized.
+     Evidence: `02_tunnel_lighting/`. The user saw its 3.0 s comparison.
+  3. Lead fixes (`9b7527d`): the left brush made the original's round pom-pom; the star glints removed; the relief period
+     corrected.
+- **In progress when saved:** the Water & VFX stage, in the worktree `.claude/worktrees/agent-a60ed7c5dde43df5d`, based on
+  `f042ab5`.
+  - The brief: continuous water from the walls into the channel; Reference 3 waves round the hero; an irregular
+    waterline; the fur visible through the water.
+  - The WIP snapshot: `03_water_vfx_wip_snapshot/`.
+- **Next:**
+  1. Merge it, rebuilding the bundle after the merge because both sides change it.
+  2. The Art Director's six-area quality gate.
+  3. One focused Tunnel & Lighting pass: less lavender round the opening, a more immersive opening, cobalt contrast, the
+     sock and the lower-right coin.
+  4. Prove every older switch pixel-identical, including `splash`, against `9b7527d` or later; run `s3_func` and
+     `r2_func`.
+  5. Captures at 2.85, 3.0 and 3.1 s, the three-way comparison, a 50% blend, and a gameplay video.
+- **The user's target:** about 90-95% resemblance. Never claim a percentage without evidence.
+- **Android:** `Tools/android_apk/` builds the preview APK. It needs the Android SDK in `~/android-sdk`; the user approved
+  installing it.
+- **Agents' reports and transcripts:** `ChatHistory/2026-11-05_fifth_session_design_agent_reports.md` and
+  `..._transcripts.md`. Chat: `ChatHistory/2026-11-05_fifth_session_round8_splash_pass.md`.
+
+## Newest (5 November, 01:30 UTC onward): branch `ccr-b41bbe83-3fbhkr`, Round 8 pass 2 SPLASH (`?s3=splash`)
+
+- **Android preview APK (5 November, ~02:50 UTC), at the user's request:**
+  - Source: `Tools/android_apk/` (a full-screen WebView that serves the game packed in `assets/www/`, plus a start page
+    with one button per version). Build it with `ANDROID_HOME=~/android-sdk bash Tools/android_apk/build_apk.sh`.
+  - It needs the Android SDK's `platforms;android-34` and `build-tools;34.0.0`. In this session they were installed in
+    `~/android-sdk` with the user's approval; a new session must install them again.
+  - The first build gave `BubbleWashKingdom_preview.apk` (65 MB, debug-signed v2 and v3, game bundle `1f045f85`). It was
+    sent to the user and is not committed (`*.apk` is ignored).
+  - The debug key lives in `~/.bubblewash-android/`, outside the repository.
+  - Not run on a real phone or emulator here.
+  - A live preview of the same game was also served on port 8080 while the session was open.
+
+- **Recovered from:** `eca999e`, the last autosave of `ccr-aeee6378-mv5kot`; `ccr-b41bbe83-3fbhkr` starts exactly there.
+  - The previous session's splash pass and gameplay tests both stopped at the 5-hour usage limit (00:57 UTC) before
+    saving anything, so this pass was rebuilt from the saved Round 8 water (`87aee11`).
+  - The environment started empty; `bash Tools/cloud_env_setup.sh` installed every tool. The rebuilt bundle matched
+    `87aee11` byte for byte (md5 `05ba504c...`).
+- **New switch `?s3=splash`:** everything `liquid` does, plus the visible translucent splashes round the character and a
+  deeper swirl. `?s3=splash,nofoam` is the deeper swirl and warmer core with no white.
+  - **Code:** `WebDemo/src/tunnel_r8_splash.js` (new). Hooks: `|| LIST.includes('splash')` on the hero switch in
+    `screen3_models.js`, `tunnel_r6.js` and `tunnel_r7_hero.js`; gated lines in `tunnel_r8_liquid.js`.
+  - **Built:**
+    - curling see-through water sheets either side of the body, the biggest just right of it (`spCurls`);
+    - rounded foam lumps on the waterline, white where lit and see-through blue in shade (`spLumps`);
+    - spray: 900 droplets, round, 92% opaque, beside the body only; 46 waterline bubbles;
+    - a broken foam crest beside the body, with none in front, so the fur shows through violet;
+    - foam clumps on the floor beside the swell;
+    - deep cobalt in the wall bands' troughs;
+    - a pastel pink-lavender ring round a bigger warm core.
+  - **Measured (Art Director's classes, at 2.85 / 3.0 / 3.1 s):**
+    - white in the band beside and under the character: 27 / 30 / 34% (approved 35%; Round 8 had 5-19%);
+    - contact strip white: 9 / 19 / 15% (approved 19%);
+    - lower-third white: 13.7 / 16.1 / 16.8%, under the approved's 16.9%;
+    - side-wall deep cobalt: 7 / 4 / 5% (approved 6%).
+  - **Pixel identity, PROVEN** against `87aee11`: normal, `hero`, `round7`, `round6`, `round6,rich`, `round5`, `round4`,
+    `liquid` and `liquid,nofoam`, each at Tap to Start, 2.85 s and 4.2 s. All 27 pairs have 0 differing pixels
+    (`Previews/WebDemo/screen4_round8_splash/pixel_identity_vs_87aee11.txt`).
+  - **Still open:**
+    - the splash is softer and less sculpted than the approved bank;
+    - the left side at 3.0 s has 37% white against 23%;
+    - the core's warm share is 6-10% against 27%, partly because the coins and the sock cover the vanishing point.
+  - **Evidence and README:** `Previews/WebDemo/screen4_round8_splash/`.
+- **Agents:** all four agent files have a "Round 8 pass 2 SPLASH" section. This pass was done in the main session, with no
+  subagents.
+- **Gameplay, PASSED:**
+  - `s3_func.cjs`: the same states as `hero` for `splash` and `splash,nofoam` (lanes, jump, tunnel z 20.561, 12 coins,
+    2 socks), with no console errors.
+  - `r2_func.cjs`: hearts, pause, Bubble Blast and Turbo Spin give the same full report for `splash` as for `liquid`.
+  - Video: `splash_gameplay_9s.mp4`. Frame cost +1% over `liquid` (209 against 207 draw calls).
+- **Next pass, QUEUED by the user** (message "SCREEN 4 EXACT ART-MATCH RECONSTRUCTION"):
+  - the scope: match the approved tunnel lighting (deep cobalt shadows, brilliant cyan reflections, white sparkle, swirling
+    streaks, a warm and pink luminous centre), the gold rim and lavender housing, and the coins, gem, socks, brushes and
+    bubbles (size and position), while keeping the blue water;
+  - planned as a new switch `?s3=match` on top of `splash`, using the agents in order: Art Director, Tunnel & Lighting,
+    Water & VFX, Gameplay & Visual Testing;
+  - the user then asked to see the finished splash comparison and video before it starts, so the Art Director's first
+    run was stopped. Its partial probe output was not saved.
+
+## Newest (4–5 November, 23:30 UTC onward): fourth Claude account, branch `ccr-aeee6378-mv5kot`, Round 8 LIQUID
+
+- **Recovered from:** `06b9805`, the tip of `claude/screen-4-art-rebuild-69gb2p` and the newest Screen 4 work.
+  `ccr-aeee6378-mv5kot` starts exactly there.
+  - Every other branch is either contained in it or holds only older work: chat autosaves (`ccr-3876cb6e`,
+    `ccr-8ca1fe92`), Round 5 evidence (`ccr-4bb5eb4c`), or the separate early Unity line (`claude/new-session-oth0dd`).
+  - No branch was changed or force-pushed.
+- **Environment:** this account's environment started empty. `bash Tools/cloud_env_setup.sh` installed every tool.
+  Versions, plugins and the Tripo state are in `Tools/DEV_TOOLS.md` ("Newest check").
+  - The rebuilt bundle is byte-identical to `06b9805`.
+  - No plugins are enabled on this account yet; the list to enable is in `Tools/DEV_TOOLS.md`.
+  - Tripo is not signed in, so it has no balance reading yet.
+- **`CLAUDE.md` (new):** the standing rules, loaded automatically by every session.
+  - Screen 4 only; the original approved Screen 4 is the authority.
+  - Blue water first, foam only as an accent.
+  - Real three.js only; never restart the game.
+  - Pixel-identical older switches; no keys in the repository; ask before spending Tripo credits.
+- **Round 8, `?s3=liquid` (in progress):** the real animated water body the user asked for.
+  - **Code:** `WebDemo/src/tunnel_r8_liquid.js`, by the Water & VFX specialist. One custom `ShaderMaterial` water model:
+    - a generated normal texture, flow-mapped with the two-phase crossfade borrowed from three.js's `Water2.js`;
+    - analytic reflection of the tunnel's glow, colour by water depth, a sun-glint and cyan highlights.
+  - **It shades:** a new water ribbon along the track; the hero walls' rings, as bands of water; and the reshaped,
+    translucent swell round the character.
+  - **Switches:** `?s3=liquid,nofoam` shows the liquid alone.
+  - **Why not three.js's own water:** `Water` and `Water2` were rejected. They render the scene again into mirror
+    targets every frame and only work on flat planes.
+  - **Saved:**
+    - Checkpoint 1, `f1fb2fc`: the user called it "a real improvement, preserve it".
+    - Checkpoint 2, `8ddca5e`: a stronger swirl and a deeper centre.
+    - The final pass, `01cdcde`: merged as `0c52227`; the rebuilt bundle matches its source.
+  - **Pixel identity, PROVEN:** the normal game, `hero`, `round7`, `round6`, `round6,rich`, `round5` and `round4`,
+    each at Tap to Start, 2.85 s and 4.2 s, against `06b9805`. All 21 pairs have 0 differing pixels
+    (`Previews/WebDemo/screen4_round8_liquid/pixel_identity_vs_06b9805.txt`).
+  - **Still to do:**
+    - Make the translucent white splashes round the character visible. Foam on still looks almost the same as foam
+      off: the white beside the character is 5–19%, against about 35% approved.
+    - Add more cobalt between the bands (1–3% against 6%) and make the core warmer.
+    - Run the Gameplay & Visual Testing specialist's checks on `?s3=liquid`; not run yet.
+  - **Design agents' log:** `ChatHistory/2026-11-05_fourth_account_design_agent_reports.md`. The four agent files have
+    a Round 8 section.
+  - **Evidence:** `Previews/WebDemo/screen4_round8_liquid/`.
+- **Art Director's baseline review**, with measured water targets: `Previews/WebDemo/screen4_round8_art_director_baseline/`.
+- **Water look references** sent by the user (secondary to the approved Screen 4):
+  `Design/ReferencePacks/2026-11-05_Water_Look_References/`.
+- **Chat history:** `ChatHistory/2026-11-04_fourth_account_recovery_round8_liquid_session.md`.
+
+## Newest (4–5 November, 22:00 UTC onward): original account, branch `claude/screen-4-art-rebuild-69gb2p`, Round 7 HERO SCENE
+
+- **Recovered from** `33da0e2`, the newest saved work on `ccr-72e53d86-v6gks7`, left untouched. The other branches only
+  hold older chat autosaves and Round 5 evidence; no newer Screen 4 code was found.
+- **Hero scene:** `?s3=hero` (it also turns `round7` on).
+  - It is a dedicated, playable reconstruction of the ORIGINAL APPROVED Screen 4, staged from the Art Director's
+    measurements.
+  - Code: `WebDemo/src/tunnel_r7_hero.js` (camera, whirlpool shader on the walls and water, rim and lavender collar, hero
+    grade, staging, bubbles) and `WebDemo/src/tunnel_r7_hero_water.js` (the Water & VFX specialist's blue water swell
+    round the character, and splashes).
+  - **Hero moment: 2.85 s.**
+  - Evidence and README: `Previews/WebDemo/screen4_round7_hero/`.
+  - Everything older is pixel-identical to `33da0e2`: the normal game, round7, round6, round6,rich, round5 and round4, at
+    Tap to Start, 2.85, 4.2 and 6.0 s.
+- **Pale lavender haze, solved cause:** it is in the 3D render, not CSS (`WebDemo/tools/screen4/haze_check.cjs`).
+  - Shaders wrote sRGB colours into linear light.
+  - The drum grade turned saturated blues violet (#045ee7 to #645cf3).
+  - Bloom added more wash.
+  - The hero scene uses `THREE.Color('#hex')` colours and its own grade (`heroGrade`).
+- **New tools:**
+  - `WebDemo/tools/screen4/hero_probe.cjs`: hero frame, camera, object footprints, and `PICKS` to solve where an object
+    must stand to land on an approved spot.
+  - `hero_shares.py`: the Art Director's colour classes.
+  - `hero_sheet.py`: labelled side-by-sides.
+  - `haze_check.cjs`: raw canvas vs page screenshot, and the HTML layers.
+- **Tripo:** signed in on that session's machine (key in `~/.tripo`, outside the repo). Balance 760, nothing spent. The key
+  was pasted into the chat again: make a new key on Tripo's site and delete that one.
+- **In progress when saved:** the user asked for real animated water rendering through the tunnel. Planned approach:
+  - a custom `ShaderMaterial` ribbon along the track, with a generated tileable normal map scrolled along a flow field;
+  - fresnel reflection of the tunnel glow, cyan specular, depth colour, a wake, and caustics on the walls;
+  - foam as a separate layer that can be switched off, shown first with the foam off.
+
+  Not started in code yet. Why not Water.js / Water2.js: they are planar mirrors that render the scene once or twice more
+  per frame, and the tunnel's water curves. The gameplay tests, the Art Director's final review and a gameplay video were
+  running when this was saved.
+
+## Newest (4 November, 18:30 UTC onward): third Claude account, branch `ccr-3876cb6e-qwegol`, Round 6
+
+- **Recovered from:** `5586dc6` ("Save everything: Round 5 passes 4, 5 and A ..."), the newest saved work (also on
+  `ccr-4bb5eb4c-md7eyt`, left untouched). Rebuilding from source gives a bundle identical to the committed one, so Pass A's
+  code is complete. Merged in (documentation only, no code): Round 4's results and checks from `ccr-b6199007-gvhqim`, the
+  last chat-history autosave from `ccr-8ca1fe92-d6t2bm`. Nothing from the previous session was found missing.
+- **Round 6 (`?s3=round6`, test, not approved):** `Previews/WebDemo/screen4_round6_reconstruction/README.md`. The porthole
+  entrance as geometry (lavender drum face with panels and a light panel, thick riveted gold bezel, bronze step, blue seal),
+  layered flanges instead of thin neon rings, a turquoise bow wave wrapping the character, pale bubble clusters and foam
+  cards removed, saturated blue light with controlled bloom, and the camera re-aimed. **Hero moment 3.1 s.** Round 5, Round 4
+  and the normal game are pixel-identical to `8e4aa53`.
+- **Construction guide** from the user (the approved Screen 4 stays the authority):
+  `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/`.
+- **Agents:** four project agents in `.claude/agents/`: `game-art-director` (read-only reviewer), `water-vfx-engineer`,
+  `lighting-visual-matching` (now also owns the tunnel architecture), and the new `gameplay-visual-testing`.
+- **Plugins in this cloud session** (what this session could actually see): Playwright MCP (working), GitHub MCP (working),
+  Frontend Design (skill working), Claude Code Setup (skill working), TypeScript LSP (synced, but no LSP tool surfaced);
+  Skill Creator, Code Review, Security Review and Simplify are available as built-in skills. Not present in this session:
+  Context7, Superpowers, Chrome DevTools, CLAUDE.md Management, Security Guidance (plugin), Commit Commands, Feature Dev,
+  Pyright LSP, Code Simplifier (plugin). Account-level installs could not be inspected from here.
+- **Tools:** all present (`source Tools/bw_tools_env.sh`): Node 22, npm 10, Python 3.13, OpenCV 5.0, scikit-image 0.26,
+  Blender 5.2.3 (bpy), glTF Transform 4.5.1, glTF Validator, Playwright 1.64 with Chromium, Tripo CLI 0.11.2, FFmpeg 6.1,
+  ImageMagick 6.9, Git LFS 3.4. Vite is not installed in this environment; the game builds with esbuild (`node build.mjs`).
+- **Tripo:** signed in on this machine (key in `~/.tripo`, outside the repository); balance **760 credits**, nothing spent.
+  The key was pasted into this chat: the chat exporter redacts it, but creating a new key on Tripo's site and deleting that
+  one is safer, since the repository is public.
+- **Round 6 passes 2 and 3** (after the user's reviews; README sections "Pass 2" and "Pass 3"): pass 2 `7fddb79`
+  (washer-drum walls, turquoise water under the white, reactive wake and waterline, smaller bubbles); pass 3 `94e0bba`
+  (the user's **exact target board** `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/03_SCREEN4_EXACT_TARGET_BOARD.png`
+  is now the target: camera further back with a smaller character, hero moment **3.0 s**, glowing water-vortex walls,
+  hue matched to the board, collectibles at the mouth arranged as on the board, bigger splashes, and a NaN fix that had
+  blanked whole frames to lavender). Closest to the board: pass 3 (see the README's "Which version is closest").
+- **Combined preview `?s3=round6,rich`** (the user's latest direction: the board's entrance, architecture, brush placement
+  and water composition + the original approved Screen 4's sparkling water, glowing light and bubbles). Pass 3 stays as
+  `?s3=round6`, unchanged to the pixel. The original's richness was measured as local contrast, sparkle and tonal range;
+  the preview raises all three (most deeper in the tunnel). Not yet: the character's soft fur halo
+  (`models/mascot_furshell.glb` exists, not wired). README section "Combined preview".
+- **Saving:** `Tools/autosave.sh` runs every 5 minutes (chat history exported with keys redacted, then commit, push and a
+  GitHub check). Restart it in a new session: `bash Tools/autosave.sh ~/.claude/projects/<project>/<session>.jsonl
+  ChatHistory/<file>.md "<title>" 5 23` (in the background).
+- **Next:** toward the board: more vivid deep electric blue at the entry moment (saturation 0.57 against 0.70), bigger
+  turquoise water with tall white splash walls in the foreground (white 7% against 13%, turquoise 2.6% against 9.8%), and
+  bigger brushes and coins nearer the screen edges.
+
+## Newest (4 November, 15:00 UTC onward): the new Claude account, branch `ccr-4bb5eb4c-md7eyt`
+
+- **Starts from** the earlier account's last save, `1199d7b` on `ccr-8ca1fe92-d6t2bm` (merged in; that session stopped at
+  its usage limit at about 14:33, partway through Round 5). The latest finished Round 4 is `21c054c`.
+- **Tools:** `Tools/cloud_env_setup.sh` installs everything (paste it into the environment's Setup script). Plugin and tool
+  status, and Tripo: `Tools/DEV_TOOLS.md`.
+- **Tripo is connected** on this session's machine: region ov. Two jobs so far (paw coin used; brush tested, not used; 120 credits each); **balance 760**. Ask before generating.
+- **Round 5 (`?s3=round5`, test, not approved), first frame pass:** the washed-out look is fixed (its cause was the
+  vortex glowing from 9 units ahead into the bloom), the tunnel's centre is luminous and centred with its ring frames back,
+  the camera is further back, and the foam is white over turquoise. Evidence, honest numbers and what is still different:
+  `Previews/WebDemo/screen4_round5_reconstruction/README.md`. Round 4 and the normal game are pixel-identical to `21c054c`.
+- **Pass 2 (evening):** Tripo P2 paw coin in the game (120 credits; balance 880), water rebuilt around blue, splash crests.
+- **Passes 3 to A (night, saved at 18:20 UTC at the user's request):** wet contact and soap bubbles, rushing turquoise water,
+  the structured drum wall, the washing-machine entrance (lavender shell, champagne-gold rim) and a closer camera; new hero
+  moment 3.3 s. Passes 4 to A are **not yet re-tested** (the check run was stopped): run Round 4/normal pixel regression,
+  controls, mechanics and a recording first. Subagents: `.claude/agents/`. Chat: `ChatHistory/2026-11-04_new_account_tools_tripo_round5_session.md`.
+- **Next:** stage the hero moment (coins, gem, sock, brushes) as in the approved picture, more splashes and sparkles in the
+  tunnel, and the pink character's soft fur edge.
+
+## Newest (4 November, 12:30 UTC onward): restored on the second Claude account, branch `ccr-8ca1fe92-d6t2bm`
+
+- **Recovered:** `ccr-b6199007-gvhqim` at `fa4e2fc` ("Chat history: latest export (round 4 reconstruction session)"),
+  the newest work on GitHub. `ccr-8ca1fe92-d6t2bm` starts exactly there. `ccr-00ffba88-l1mwa0`, not listed below, is an
+  older parallel attempt from 3 November evening (a painted-layer test, `painted_layer.js`) that the `?s3=paint` work
+  replaced; nothing in it is newer.
+- **The rebuild matches the commit:** `cd WebDemo && npm install && node build.mjs` gives a `game.bundle.js` identical
+  to the committed one.
+- **Tools:** installed by the user's environment setup script in `~/.bubblewash-tools/`. Run
+  `source Tools/bw_tools_env.sh` first. Status of each tool, sign-ins and plugins: `Tools/DEV_TOOLS.md`.
+- **Saving:** `bash Tools/save_now.sh "<message>"` after each finished task; `Tools/autosave.sh` every 5 minutes in the
+  background. Both print the branch, commit, whether GitHub really has it, and the files saved.
+- **This session's chat history:** `ChatHistory/2026-11-04_round4_restore_and_continue_session.md`.
+- **Round 4, second pass (`?s3=round4`, test, not approved):** your three priorities, in order.
+  - Water and splashes: real 3D soap bubbles on the foam heaps, thick irregular splash sheets, heavier spray, turquoise water.
+  - Brushes: Round 4's brushes are now the fluffy shell-fur brushes (`WebDemo/src/fluffy_brush.js`); same places, spin
+    and knocks. `?s3=round4,fluffy` was the first trial switch and is now the same as `?s3=round4`.
+  - Tunnel: a deeper blue lining and softer ring glow.
+  - Evidence, numbers and the honest score (about 7.5/10; the composition is the biggest remaining gap):
+    `Previews/WebDemo/screen4_round4_water_brushes/README.md`.
+  - The normal game, Round 2 and Round 3 are pixel-identical to `fa4e2fc`.
+- **3D generators: Tripo only** (your decision, 4 November).
+  - Meshy is not used: removed from `.mcp.json`, never call its tools, never ask for its key. No Meshy credits were spent.
+  - Tripo is installed but not signed in yet; sign-in steps and dry-run cost estimates are in `Tools/DEV_TOOLS.md`.
+  - Ask before spending any credits.
+- **img2threejs (a Claude Code skill) was tried on the brush and stopped:** it produced smooth rings. Why, and what replaced it:
+  `Design/Img2ThreejsTrials/README.md`. Reinstall in a new session only if wanted:
+  `npx --yes img2threejs@latest install`.
+- **Next, if you want it:** the composition. The approved picture looks straight into a centred bright vortex with the
+  coins, gem and sock round it; the game camera rides behind the character. Changing that means changing the Round 4
+  camera and the collectible layout, which needs your go-ahead.
+
+## Where everything is
+
+- **Repository:** `josiahscalia5-dev/bubblegame`. It is **public**: anyone can read it, including the chat history.
+- **Branches:**
+
+  | Branch | What it holds |
+  |---|---|
+  | `ccr-8ca1fe92-d6t2bm` | **Newest (4 November, second account):** `ccr-b6199007-gvhqim` plus the tool restore for this environment and the continued round 4. Not merged. |
+  | `ccr-b6199007-gvhqim` | **4 November (first account):** `ccr-4e2b86d7-kqpei8` plus the finished round 2, and then **round 3** (`?s3=round3`) and **round 4** (`?s3=round4`, the scenery reconstruction), the tools (Blender, OpenCV, scikit-image, glTF Transform, validator, Tripo CLI, Meshy MCP config), the comparison workflow and the project skill. Not merged. |
+  | `ccr-4e2b86d7-kqpei8` | **Test versions for review (3–4 November):** the approved Screen 3 artwork as the Tap to Start screen, then every `?s3=` test below (newest: `?s3=round2`, work in progress there), on top of `ccr-68cd26f5-4t8etp`. Not merged. |
+  | `ccr-68cd26f5-4t8etp` | **Test version for review (3 November, morning):** the Screen 3 opening look (`WebDemo/src/opening.js`) on top of `ccr-590365bd-e5p8xt`. Not merged; see `Design/SCREEN3_OPENING_MATCH.md`. |
+  | `ccr-590365bd-e5p8xt` | **The working original** (untouched by the test version). Everything below, plus the four Meshy entrance decorations (water towers, gear wheels, pipe elbows, crown trim), the duck helper removed, and the previous tunnel restored with cyan rings and pink panels. The Meshy tunnel liner was tried and is disabled; commit `46c034c` is the backup with it in place. |
+  | `ccr-052e5531-zna8s3` | This evening's Screen 3 polish (castle colours, brushes, rails, tunnel, exit light, camera, duck helper, side machinery). The branch above builds on it. |
+  | `ccr-ce4e9217-j1l0vl` | The afternoon session's work (3D path, water, fur, socks, recordings, Meshy asset review). The branch above builds on it. |
+  | `ccr-e6a125ac-2krpmp` | The head of **PR #1** (draft, do not merge yet). It holds the afternoon work, **not** this evening's commits. Moving them there needs the user's go-ahead. |
+  | `claude/new-session-oth0dd` | PR #1's base. At 20:17 on 2 November another session pushed "Build Screens 1-2 and 5-12" (`ea70999`) here. PR #1 **conflicts** with it in 9 files: `CloudBuild.cs`, `Level1SceneBuilder.cs`, `MaterialSet.cs`, `ScreenComposition.cs`, `Collectible.cs`, `GameHud.cs`, `Waterfall.shader` (both sides added one), `Design/VISUAL_DIFFERENCES.md` and `README.md`. The conflicts are not resolved: that needs the user's go-ahead. `WebDemo/` does not conflict. |
+
+- **Reference packs:** [`Design/ReferencePacks/`](Design/ReferencePacks). What you sent for a round of work, as delivered: the approved and current frames, the annotated differences and your prompts.
+- **Chat history:** [`ChatHistory/`](ChatHistory), one file per session, exported with `Tools/export_chat_history.py`.
+  - Newest: `2026-11-04_screen4_round2_and_round3_session.md` (4 November: finishing round 2, then round 3, the tools, the model checks and the screen-matcher skill).
+  - Before it: `2026-11-03_screen3_models_and_scenery_session.md` (3–4 November, second session, which also holds round 2's start):
+    - the approved-artwork opening and Phase A;
+    - the five Screen 3 models, the slide edges and the cinematic camera;
+    - the A2 tunnel inspection and the painted-layer start.
+  - Before it: `2026-11-03_screen3_opening_and_rollers_session.md` (3 November: the opening look, the soap suds and the roller candidates).
+  - The exporter now also keeps messages sent with pictures attached, which it used to skip.
+  - Before it, `2026-11-02_decor_and_tunnel_session.md` (2–3 November: the entrance decorations, the tunnel liner and its diagnosis, the restored tunnel). Before it, `2026-11-02_screen3_polish_session.md` (castle colours, machinery, the duck helper and the side machinery).
+- **Not in the repository on purpose:** `WebDemo/node_modules/` (run `npm install`), `WebDemo/artifact-models/` (rebuilt by `node build.mjs`) and `WebDemo/package-lock.json` (the two packages are pinned in `package.json`).
+- **Visual target:** [`Design/ApprovedScreens/`](Design/ApprovedScreens), the 12 approved screens (`x3_` files are 3× crops of Screens 3 and 4).
+- **Meshy models as delivered:** [`Design/MeshyDeliveries/`](Design/MeshyDeliveries), with an index of where each is used.
+- **Two Claude accounts:** the user works from two accounts. Each published page is private to the account that published it.
+
+## Latest (4 November, afternoon): round 4, the approved Screen 4's scenery reconstructed in 3D, `?s3=round4` (test, not approved)
+
+- **What the user asked,** after watching the round 3 video:
+  - small tweaks are not enough: rebuild the scenery toward the approved Screen 4 as real moving 3D, never a flat
+    picture;
+  - the tunnel geometry, light and depth;
+  - thick white splashes and rich turquoise water;
+  - big fluffy brushes framing the sides;
+  - the camera composition, and the coins, gem and bubbles;
+  - a separate switch, a video and comparisons with the existing version;
+  - save to GitHub very often, chat history included.
+- **Round 4** (`WebDemo/src/tunnel_r4.js`, on top of round 3, which is unchanged):
+  - a new deep electric-blue tunnel lining with real 3D cyan rings and gold trims, and a 4 m straighter start to the path
+    (`track.js` `opts.straight`);
+  - pom-pom brushes (`tunnel_s4.js` `r4PomPom`) that slide out of the walls as you approach;
+  - a splash crown of curving water sheets;
+  - rebuilt water (no tile pattern: turquoise, rolling crests, white froth);
+  - a whirlpool at the tunnel's heart and a richer drum grade.
+- Evidence and honest numbers: `Previews/WebDemo/screen4_round4_reconstruction/README.md`.
+- **Checks:** controls, rules, ride-through (all lanes reach the end) and frame cost all pass, and the tunnel costs less
+  than round 3.
+- **Saving:** `Tools/autosave.sh` exports the chat history (`ChatHistory/2026-11-04_screen4_round2_and_round3_session.md`)
+  and commits and pushes every 5 minutes. The cloud environment stops background jobs after 2 hours, so restart it then.
+
+## Earlier (4 November, day): round 3, toward the approved Screen 4 in the real 3D game, `?s3=round3` (test, not approved)
+
+- **What the user asked:**
+  - match the approved Screen 4 (and Screen 3) as closely as possible in the real, playable 3D game, aiming at 90–95%
+    where achievable, with evidence;
+  - **never** use the approved pictures as flat backdrops;
+  - keep the pink character, controls, mission, opening and gameplay;
+  - set up and verify Blender, OpenCV, scikit-image, ImageMagick, glTF Transform, the Khronos validator, Tripo CLI and
+    Meshy MCP;
+  - check A1 and A2, and that the tunnel can really be ridden through;
+  - save a project skill;
+  - spend no credits without asking.
+- **The user's reference package** (approved targets, crops, current-game diagnosis, asset sheets):
+  `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/`. Read its `00_READ_ME_FIRST.txt`.
+- **Round 3** (on top of round 2):
+  - foam heaps and white spray round the character;
+  - white-water bands round a deep royal-blue drum;
+  - cyan, blue, pink and lavender rings;
+  - azure-turquoise foamy water;
+  - pink-white brushes with royal-blue centres;
+  - purple gem;
+  - coins, gem and sock arranged as in the approved picture;
+  - soap bubbles streaming past;
+  - the drum camera aimed a little higher;
+  - a live-3D opening (the five Meshy opening models, icy edges, cinematic camera) instead of round 2's painted picture.
+  - Settings: `ROUND3` in `WebDemo/src/tunnel_r3.js`.
+  - Evidence and measures: `Previews/WebDemo/screen4_round3_test/README.md`.
+- **Unchanged:** the normal game, `?s3=round2` and `?s3=paint,tunnel` render pixel-identical to the build before
+  round 3. This was checked on the 3D canvas, because page screenshots differ run to run in the HUD's CSS fades.
+- **Note for the user's decision:** the normal game on this test branch still shows the approved Screen 3 picture at Tap
+  to Start (`#openingArt`, from the 3 November test). Round 3 does not. Ask whether to remove it from the normal game too.
+- **Models:**
+  - A1 (`s3_entrance.glb`) had 48 validator errors (non-unit normals). It is repaired: 0 errors, same mesh.
+  - `s3_brush.glb` had one alignment error; it is repaired.
+  - A2 (Tripo) is valid but forced-perspective and closed at the back (9% of rays get through). It is not used.
+  - The drum is truly traversable: no geometry in the ride space, and all lanes and weaving runs reach the end.
+  - Everything is in `screen4_round3_test/model_checks/`.
+- **Tools:** status by account, session, signed in and working is in `Tools/DEV_TOOLS.md`. Install them in a fresh
+  session with `bash Tools/dev_tools_setup.sh`.
+  - Tripo is waiting for the user's browser sign-in.
+  - Meshy needs `MESHY_API_KEY` as an environment secret, then a new session.
+- **Skill:** `.claude/skills/bubble-wash-screen-matcher/SKILL.md` ("Bubble Wash Exact Screen Matcher") holds the whole
+  capture, measure, fix, check and evidence loop.
+
+## Earlier (4 November, night): round 2, the tunnel polished and the Screen 4 controls, `?s3=round2` (test, not approved)
+
+- **What the user asked:** keep the painted opening and the new tunnel as the foundation and polish the inside tunnel:
+  - colour and light that is never washed out;
+  - golden paw coins;
+  - Bubble Blast, Turbo Spin and pause;
+  - hearts that brushes take;
+  - neat, readable collectibles, clean brushes and less clutter.
+  - Then the Laundry Toss intro, but only after evidence and a list of missing assets. **The intro is not started.**
+- **`?s3=round2`** turns on the painted opening, the tunnel and this round. `?s3=paint,tunnel` is still exactly last round, and the normal game is unchanged.
+- **Code:**
+  - `tunnel_s4.js` (the `ROUND2` settings and `round2Light`): ring colours with gold, an exit vortex shader instead of the white rays, a tunnel-only grade (vibrance and highlight roll-off), lace foam and lane guides on the water, a pink warning glow down a brush's lane, brush colour smoothing and sheen, fewer bubbles, gold gears that glow.
+  - `game.js` (`R2`, `R2_RULES`, `stepRound2`, `useBlast`, `useTurbo`, `setPaused`, `restartRound2`): hearts, the power-ups, pause, the tidy collectible layout, halos on socks, collectibles shrinking once passed, the old drum rollers hidden.
+  - `paw_coin.js`: the 3D embossed paw coin.
+  - `page.html`: the `#r2Hud` template, added to the page only with the switch.
+- **Rules:**
+  - A knock takes one heart, with a 1 s guard. At 0 hearts the game shows "Out of hearts!" and returns to Tap to Start after 1.4 s, with 5 hearts and 3 of each power-up.
+  - Bubble Blast (3): for 3 s, brushes up to 13 m ahead are pushed back to the wall.
+  - Turbo Spin (3): 2.5 s at ×1.45 speed, spinning, and brushes cannot knock the mascot.
+  - Pause button, or the P or Escape key. B is Bubble Blast and T is Turbo Spin.
+- **The end of a run** still loops back to the slide (`loopRun`), because Screens 5 onward are not built. It is not a test reset.
+- **Evidence:** `Previews/WebDemo/screen4_round2_test/` (final video, sheets 01–05, checks, frame cost, score).
+- **Finished on 4 November, night (branch `ccr-b6199007-gvhqim`):**
+  - **The brush warning now shows.** It had three faults: it was full only where the brush hides it, it was mixed in under the reflections and foam (it came out lavender), and the slide's water sheet covered the drum's over the first brushes. The fix starts it 7.5 m before a brush (full from 3 m), lays the pink on last, and gives the drum's water a polygon offset. Details in that folder's README.
+  - **Final video** `bubblewash_round2_tunnel_final.mp4` and **sheets** 01–05 from its real frames.
+  - **Functional checks** all pass (`checks_functional.txt`); no console errors.
+  - **Unchanged:** the normal game and `?s3=paint,tunnel` render pixel-identical to the build before the fix (at 2, 11 and 20 m).
+  - **Frame cost** (`frame_cost.json`): 190 draw calls and 1.04 M triangles at Tap to Start, at most 181 calls and 1.27 M in the tunnel. That is 13–54 fewer calls than last round, and still below the normal game's Tap to Start (322, 1.91 M). Frame times could not be measured with software WebGL.
+  - **Against the approved Screen 4:** structure is the closest yet (SSIM 0.087, edges 0.125, against 0.075 and 0.103 last round). The rings' colour is closer (ΔE 11.7 against 15.5); the right brush is further off (26.8 against 19.3), because it was made lighter periwinkle and the approved one is royal blue.
+  - **Honest score: about 7/10** (last round 6.5–7). Still missing against the painting: the dense sparkly foam swirl, the near-camera coin, spray and big bubbles, the left mop brush's size and place, and whiter churned water.
+  - **Possible next steps (not started, waiting on the user):** the right brushes back toward royal blue; more foam spray and near bubbles; then the Laundry Toss intro once its reference pictures arrive.
+- **Missing assets for the intro:** `Design/LAUNDRY_TOSS_INTRO_ASSETS.md`. The intro reference pictures were never uploaded to this session; ask for them.
+- **Auto-save:** `Tools/autosave.sh` (started at the user's request) exports the chat history and commits and pushes every 5 minutes while a session is running.
+
+## Earlier (4 November): the inside tunnel rebuilt toward the approved Screen 4, `?s3=tunnel` (test, not approved)
+
+- **The user likes the painted opening (`?s3=paint`)** but wants the inside tunnel matched to Screen 4 before anything becomes permanent. Nothing is merged.
+- **`?s3=tunnel` (`WebDemo/src/tunnel_s4.js`)**; combine as `?s3=paint,tunnel` for the full run.
+  - **Scenery:** a ring vortex (38 glowing rings), deep blue and violet drum walls, the pink panels and frames hidden, 46 soap-film bubbles, and foam around the mascot in the drum.
+  - **Brushes:** nine spinning brushes from the Number 1 brush model. The bracket is left out, the mesh is simplified to 51.5 k triangles, the left ones are pink, and each is drawn only near the mascot.
+  - **Hazard:** the six low brushes knock a mascot in their outer lane back to the middle (`game.js` `bumpMascot`, used only by this switch).
+- **Evidence:** `Previews/WebDemo/screen4_tunnel_test/` (comparisons with Screen 3 and Screen 4, through the portal, 11 s video, measurements).
+  - Honest score about 6.5–7 against Screen 4 (protected tunnel about 5).
+- **Checks:** before the tunnel identical; in the tunnel, knocks change the route as designed; normal game pixel-identical to `591db28`; no console errors; tunnel 1.12 M triangles and 142 calls.
+
+## Earlier (3 November, night): the approved painting as the real game's scenery, `?s3=paint` (test, not approved)
+
+- **The user wants the opening's scenery to look exactly like the approved screen while the character heads into the washing machine.**
+- **`?s3=paint` does that with the painting itself**, projected into 3D at several depths (castle and door, brush, machinery, towers, side water on the ground under the slide's hills). The pink character, slide, water under it, foam, coins and icy edges are live in front, and the door's centre shows the real tunnel.
+  - Painting pixels skip the game's grade and tone mapping (an alpha mark read by patched grade and output passes, only with this switch), so their colours are exact.
+  - The banner and panel areas fade with the HTML ones. The painting hands over to the code-built washer door and the Number 4 castle at camera z −12 → −6. Stretched cells over the slide's crest are torn instead of stretched.
+- **Evidence:** `Previews/WebDemo/screen3_paint_test/` (comparison, first two seconds, through the door, video, region measurements).
+  - About 9/10 at Tap to Start, about 8 in the first two seconds.
+  - Average structural similarity 0.56, against 0.09 for the 3D version.
+- **Checks:** controls, collectibles and the 13 s seeded run identical; tunnel unchanged; normal game pixel-identical to `591db28`.
+
+## Earlier (3 November, end of the second session): where things stood
+
+- **The game is as it was at `2e11011`.** The normal game, with no switches, is the approved-artwork opening of `591db28`.
+  - What it looks like now: `Previews/WebDemo/bubblewash_game_now.png` and `bubblewash_game_now.mp4` (9 s of real gameplay).
+- **Saved test switches, none approved as final:** `?s3=all` (`ad518e3`), `?s3=all,edges` (`4711680`), `?s3=all,edges,cine` (`2e11011`). The user approved the first two as checkpoints only.
+- **A2 tunnel (Tripo):** received, then the request was withdrawn. The models are kept in `Design/TripoDeliveries/A2Tunnel/` with the inspection notes; they are forced-perspective and not traversable as delivered.
+- **The user asked whether the exact approved screen can be built.**
+  - The answer given: a live 3D game cannot match a painting exactly, and this session cannot generate 3D models or images.
+  - The recommendation: painted far layers (castle, towers, door) in the 3D scene, with the near scenery staying real 3D. The user said yes.
+- **Painted-layer test (`?s3=paint`): started, not finished, not in the game.**
+  - Done so far: the backdrop texture `WebDemo/ui/s3_paint_backdrop.png`, made by `WebDemo/tools/screen3/make_paint_backdrop.py` from the approved image (the original untouched). The texture fills the spots behind the 3D brush, machinery and big bubble, opens the door's centre, and clears under the HUD.
+  - **Problem:** the colour pre-inversion for the game's grade and tone mapping is wrong for some bright and saturated pixels (99th percentile error about 105 levels). Fix it before use, for example by inverting the grade in the shader instead.
+  - **Plan:** a camera-projected grid at the door's depth (z ≈ 2.35), depth-tested, behind the 3D slide, water and mascot; the banner area fades with the HTML banner; the painting fades out as the camera nears the door (camera z −12 → −6), revealing the code-built washer door and the Number 4 castle; the brush, machinery and bubbles stay 3D.
+- **Test tools:** `WebDemo/tools/screen3/` (see its README).
+- **Chat history:** `ChatHistory/2026-11-03_screen3_models_and_scenery_session.md`.
+
+## Earlier (3 November, late night): opening-only cinematic camera behind `?s3=all,edges,cine` (test, not approved)
+
+- **The user approved `4711680` (`?s3=all,edges`, 6.5/10) as a saved experimental checkpoint only.** No new Meshy models yet.
+- **`cine`:** a separate render camera fitted to the approved perspective, the gameplay pose plus 0.10 m up, 0.82 m forward, 0.3° down and a 41.5° view. It blends back to the untouched gameplay camera over 0.9 s after the tap.
+  - Code: `setupCine` in `screen3_models.js`. `game.js` passes its render pass to the opening layer.
+- **Result:** about 7/10, against 6.5. The mascot, slide and door now line up structurally (edge correlation in that region 0.115 → 0.295).
+- **Finding:** the camera was not the main barrier. The remaining gaps are the castle's narrow arch (towers off-screen), the entrance's small opening, its colours and the protected tunnel's curve, plus painted effects and the removed duck.
+- **Evidence:** `Previews/WebDemo/screen3_cine_test/`.
+- **Checks:** controls, collectibles and the 13 s seeded run identical; tunnel pixel-identical; `?s3=all,edges` unchanged.
+
+## Earlier (3 November, night): slide-edge restyle behind `?s3=all,edges` (test, not approved)
+
+- **The user approved `ad518e3` (`?s3=all`, the five assets) as a saved experimental checkpoint only.** It is not the final Screen 3, and nothing is merged.
+- **`edges`** (not part of `all`):
+  - the tall pale slide walls and the gold tube rail become low icy rims with foam spilling over;
+  - the brush stands at the approved size and place (scale 1.51 at z −4.9);
+  - the bubble film is stronger;
+  - the opening-only scenery is hidden inside the tunnel.
+- **Not adopted:** `?phaseA` measured worse in the slide region.
+- **Evidence:** `Previews/WebDemo/screen3_edges_test/` (region-by-region colour and structure, scores, checks, tools).
+- **Honest score:** the whole opening is about 6.5/10, against 6 for the five-asset version.
+  - Blocked from about 8 by the protected camera and narrow slide, the tunnel's curve, and the castle's narrow arch and the entrance's small opening.
+  - A castle variant (arch about 0.75 of the tower spacing) and an entrance variant (opening at least 70 % of the frame) would give about 7–7.5. Beyond that, the opening camera would have to change, which needs the user's explicit decision.
+
+## Earlier (3 November, evening): the five Screen 3 assets in the real 3D opening behind `?s3` (saved, not approved)
+
+- **Code:** `WebDemo/src/screen3_models.js`, called from `opening.js` loadExtras.
+  - Switches: `?s3=castle,entrance,machinery,brush,bubbles`, or `?s3=all`.
+  - Without them nothing is downloaded and the page is unchanged.
+  - Models: `WebDemo/models/s3_*.glb`, byte-identical to `Design/MeshyDeliveries/Screen3Models/`. The castle is the newest delivery.
+- **Evidence:**
+  - `Previews/WebDemo/screen3_five_assets/` (approved, previous and new, plus the first 2 s);
+  - `Previews/WebDemo/screen3_castle_test/` (stage 1).
+- **Honest score:** the whole opening is about 6/10, against 5/10 before.
+  - Limits: lane clearance on the narrow slide, the slide's tall walls, the protected tunnel's curve, and the castle's narrow arch and the entrance's small opening.
+  - The README lists what would raise it.
+- **Checks:**
+  - same seed and inputs as `591db28`: controls, swipes, jump, collectibles and the 13 s seeded run identical;
+  - tunnel 3D pixel-identical;
+  - no console errors.
+- **Waiting on the user:** approval, and whether to order the castle and entrance variants or restyle the slide's walls.
+
+## Earlier (3 November, midday): Phase A castle-and-water test behind `?phaseA` (saved, not approved, not merged)
+
+- **Code:** `WebDemo/src/phase_a.js`, called from `opening.js`. The game passes it the castle and the water sheets.
+  - It runs only with `?phaseA`. Without it the page is pixel-identical to `591db28` (the approved-artwork opening).
+- **Evidence:** see `Previews/WebDemo/phase_a_castle_water/README.md`.
+  - Castle colour difference to the approved image: 11.2 → 3.5.
+  - Water: white lines and foam 2 % → 27 % (approved 27 %).
+- **Paused and not built:** the `?polish` work (live water band below the artwork, door-opens reveal), saved as a git stash in that session. The user redirected to scene structure.
+- **Next, at the user's request:** rebuild the opening's scenery structure (rollers, machinery, door, castle, bubbles) with existing Meshy assets, in a separate test switch.
+
+## Earlier (3 November, late morning): the approved artwork as the opening screen, test version waiting for approval
+
+- **Branch `ccr-4e2b86d7-kqpei8`** (this session). It starts from the test version below (`6116703`), which stays on `ccr-68cd26f5-4t8etp` as the restore point.
+  - The tag `checkpoint/before-opening-artwork` is local only; GitHub refused tag pushes from this session.
+  - The working original (`ccr-590365bd-e5p8xt`) is untouched. Nothing is merged.
+- **What it is:** the approved Screen 3 (`BWK_01`, unedited, duck included) shown as the Tap to Start screen.
+  - It fades into the live 3D game with the existing 0.45 s fade.
+  - Taps pass through it, and the settings button stays clickable over the painted gear.
+  - `?classic` shows the original opening.
+- **Read:** section 2c of `Design/SCREEN3_OPENING_MATCH.md`. Evidence is in `Previews/WebDemo/opening_artwork/`.
+- **Duck:** you declined the patch-filled copies (blurry, patchy). Do not retry patch-based removal.
+- **Phones taller than 1:2:** the whole artwork shows from the top, with a band in its border colour below it.
+- **The published page:** not republished. `artifact.html` now references `ui/approved_screen3.png`, so a republish must include that file.
+- **Waiting on the user:** approval of this test before anything further.
+
+## Earlier (3 November, morning): Screen 3 opening look, test version waiting for approval
+
+- **Branch `ccr-68cd26f5-4t8etp`** (this session). It starts from `ccr-590365bd-e5p8xt` (`b75f88c`), which stays as the working original. Nothing is merged.
+- **What it is:** one cosmetic module, `WebDemo/src/opening.js`, plus small additive hooks in `game.js` and `shaders.js`.
+  - The gold washer-door rim, violet seal and cyan rings at the portal, with a lavender wall facing over the castle's pastel funnel.
+  - Bubbly foam, splashes and glossy bubbles around the mascot; bubble-lace foam and whitewater on the slide.
+  - Soap bubbles at three depths.
+  - Brushes: the extra roller beside the portal hidden, the right roller turned to show its fluffy side, the side machinery larger (1.22 m from the lanes).
+  - Glassy aqua flume walls, a slightly more upright mascot with crisper fur, and an opening-only grade.
+- **Proof:** a seeded run is frame-for-frame identical (position, lane, speed, jumps, camera, pickups). The tunnel renders pixel-identical with the mascot presentation off, and `?classic` is pixel-identical to the original.
+- **Read:** `Design/SCREEN3_OPENING_MATCH.md`, which has the checklist, the roller answers, the asset inventory, what could not be matched, and the tests. Evidence is in `Previews/WebDemo/opening_match/`.
+- **Second round, same branch:**
+  - **Soap suds** against the mascot's lower body, matched to the user's approved close-up (section 2b of the write-up).
+  - **Two Meshy roller candidates** (`Design/MeshyDeliveries/CompactRollers/`), tested one at a time in the right-hand slot with `?roller=1` or `?roller=2`. They are off by default.
+    - Recommended: No. 1.
+    - Neither can spin safely as delivered (gold welded to the drum), so both stand still in the test.
+    - Before using No. 1: a 1024 px web copy, because it adds 42.7 MB of GPU texture memory.
+    - See `Design/SCREEN3_ROLLER_CANDIDATES.md`.
+- **Waiting on the user:**
+  - approval or changes;
+  - whether to use roller No. 1 still, or wait for the separated Meshy parts;
+  - whether to bring the duck helper back (still removed, as asked);
+  - whether to tint the coins;
+  - whether to order the optional left-brush Meshy model described in the write-up.
+
+## Current focus: Screen 3, browser demo (`WebDemo/`)
+
+The user wants Screen 3 to look and move right before the remaining screens. The approved Screen 3 is the target.
+
+- **Play:** https://claude.ai/artifact/1zbgcsX6AF7HTNJMesKmiX (version 3, 3 November: the restored tunnel with cyan rings and pink panels, no helper, the Meshy entrance decor). It was published from the account that ran tonight's session, as an update of that account's earlier Bubble Wash Kingdom page, so the link stayed the same.
+  - Older versions: https://claude.ai/artifact/F27yfpA3Fp5a1mJWbDCTkb (this evening) and https://claude.ai/artifact/Nq5qbxwgsk5jKEMnX6ESKC (afternoon).
+  - All are private until shared from their Share menu.
+  - Locally: `cd WebDemo && python3 -m http.server`.
+- **Latest round (3 November): the previous tunnel restored, with cyan rings and pink panels**
+  - At the user's request the Meshy tunnel liner is disabled. Its files stay. The tunnel is the Meshy drum over its full length again, with its light rings and gold wall gears (as in `d44d687`).
+  - **Added in code** (`WebDemo/src/scenery.js`):
+    - Glowing rings in electric cyan, two tones, with bulbs and soft halos.
+    - 98 glowing pink light panels in gold frames on the upper walls, clear of the water and the gears.
+    - A slow wave of light running down the tunnel.
+  - **Kept:** no helper; the start panels fade after the tap; the four entrance decorations.
+  - **The ride is unchanged.** Played with the same seed on this build and on `d44d687`, every frame's position, height, lane, speed, jumps and camera are identical. Only which coins get picked up varies: three.js uses the random-number generator for object IDs, so adding or removing objects shifts the coins' random bobbing.
+  - **Clearance:** the mascot's body reaches 1.98 m from the axis at most, even jumping in every lane. The drum's ribs are at 2.1 m, the panels at 2.3 m.
+- **The round before (night of 2–3 November): the Meshy tunnel interior liner (since disabled), and no helper**
+  - **The liner:** four copies of the Recommended liner (`Design/MeshyDeliveries/TunnelInterior/`, `WebDemo/src/liner.js`) line the drum, bent along the ride's path. The castle, portal and the drum's mouth are unchanged. That folder's README explains the radius remap.
+  - **The old drum:** not drawn behind the liner (`trimDrum`). Its ribs and walls cut through the liner and caused the dark, broken-looking patches.
+  - **Cracks:** the Meshy model has cracks of its own. A deep-blue backing shows through them.
+  - **Lights:** the liner's painted cyan bands and pink panels really glow (`LINER_GLOW`), plus emissive cyan and white rings every 2 m, fading into deep blue with distance. The walls are dimmer than outdoors, so the blue and gold are not washed out.
+  - **Clearance:** the nearest liner surface is 2.06 m from the axis. The mascot's body reaches 1.98 m at most, even jumping in every lane (`window.__bw.clearanceTrace`).
+  - **Load:** fewer triangles and draw calls than before. At Tap to Start, 1.82 M triangles and 219 draw calls, against 1.92 M and 287.
+  - **Duck helper:** removed at the user's request (model, code, splashes, foam ring, goggles shader). Do not bring it back.
+  - **Start panels:** the "Let's go!" banner and Tap to Start panel fade out over 0.45 s of game time after the tap.
+  - **The ride is unchanged.** With the same random seed, the old and new builds end in the same place and collect the same coins, gems and socks.
+- **Earlier that night: the four Meshy entrance decorations** (`Design/MeshyDeliveries/EntranceDecor/`, placed and animated by `WebDemo/src/decor.js`):
+  - **Glowing water towers:** one on each side of the castle, where the approved image has its tall gold-and-blue columns. Each stands on a gold plinth.
+    - The fluid glows and swirls in the shader (`TOWER_FLUID`), with bubbles rising and a pulsing light.
+    - They replace the code-built machinery towers.
+  - **Blue-and-gold gear wheels:** six at the portal mouth and one high on the left, each turning about its axle. They replace the seven code-built gears there.
+  - **Golden pipe elbows:** water spouts on the towers' own pipe stubs, pouring into the moat.
+  - **Crown and curved trim:** the keystone on the portal arch. The "Let's go!" banner covers it at Tap to Start, and it shows during the run.
+  - Every decoration stays at least 1.25 m from the slide's middle up to the highest jump (the mascot reaches 1.10 m).
+  - Web copies come from the Balanced files, simplified within a small error, with their metal/roughness and normal maps kept. The Small files have stray sliver triangles and are not used.
+  - **Tried and dropped:** extra elbows at the lower corners. On the left they would only cover the side machinery; on the right the bubbles and gold wheel hid them.
+  - **Evidence** in `Previews/WebDemo/`: a new gameplay video, `entrance_decor_before_after.png`, `entrance_decor_closeups.png`, and the start frame beside and blended with the approved screen.
+    - The ride is unchanged: every recorded frame matches the build before this round (position, height, lane, speed, jumps, path, camera).
+    - The coin count can differ by one between unseeded runs, because coins bob with a random phase. `WebDemo/tools/seeded_run.cjs` shows both builds collect the same with the same seed.
+  - **Known differences from the approved image:**
+    - The crown keystone is hidden by the "Let's go!" banner at Tap to Start. The approved arch top has no crown; it was added because the user asked for it.
+    - The approved portal-mouth gears are chunkier and sit right at the water's edge. Ours are a little smaller and further out, to stay clear of the lanes, and partly behind the side machinery and the right brush.
+    - Pipe elbows appear only as the two tower spouts.
+- **Before that (Screen 3 completion), all in code, no new Meshy models:**
+  - **Framing:** measured against the approved image. A 36° lens from further back keeps the mascot's size and place, and the portal arch now fills the approved 64 % of the width.
+  - **Slide:** narrower, as in the approved image (2.2 m, lanes 0.70 m apart). It is a flume with lavender walls, thick gold rails and chunky gold segments.
+  - **Machinery** (`WebDemo/src/scenery.js`):
+    - the huge gold washing wheel (lower right) and a blue-and-gold wheel (upper left)
+    - a cream-and-gold housing
+    - gold machinery towers with water tubes and waterfalls on both sides of the castle
+    - six gold gears with teal and navy hubs at the portal mouth
+    - curved gold pipes, pink fluffy trim and glowing bulbs
+    - Wheels, gears and collars turn.
+  - **Duck helper (removed since, at the user's request):** the user's Meshy duck on its pink float (`Design/MeshyDeliveries/DuckHelper/`, Balanced copy in `WebDemo/models/duck.glb`). It replaced the code-built helper. `WebDemo/src/helper.js` places it ahead of the mascot, facing it, with gentle splashes and softened goggles. It leads the way into the washing machine.
+  - **Brushes:** a 3 m Meshy brush turns end-on at the lower left; a second one shows its pink fringe on the right.
+  - **Water:** a soft, wavy caustic shimmer and twinkling sparkles instead of the polygon grid. Foam only where water churns, including a foam collar around the mascot. Fewer droplets.
+- **Giant side machinery (Meshy):** the user's model (`Design/MeshyDeliveries/SideMachinery/`, Medium copy in `WebDemo/models/machinery.glb`) stands at the lower left of the slide, matched to the approved screen.
+  - It stays 1.18 m from the slide's middle, so it never blocks the lanes.
+  - It is one combined mesh, so it stands still. Turning only its bristle wheel would need the wheel delivered as a separate mesh centred on its axle.
+  - The Balanced copy showed thin gold cracks across the bristles at game size; the Medium copy mostly closes them.
+  - It replaced the code-built blue-and-gold wheel on the upper left, and the Meshy roller moved up there.
+- **Fix:** every baked Meshy material shared one compiled shader (three.js caches by the `onBeforeCompile` source), so materials could render with another's settings. The duck first showed all pink from the brushes' recolour. Each now has its own `customProgramCacheKey`. This also corrected the left brush's gold-and-blue hub.
+- **Visual-fidelity round (after the user's review of the side-by-side):**
+  - glossier lighting: studio reflections, a rim light, and shading on the Meshy models
+  - raised water mound and V ridges around the mascot (visual only), deeper troughs, clear bow spray
+  - tunnel rings in gold, pink, cyan and lavender with bulbs, and turning wall gears
+  - a broader helper with a wider pink float, placed nearer the mascot
+  - glossy jelly tutorial panels
+  - sharper fur tips
+  - framing checked at an exact 1:2 stage (40° lens)
+- **Earlier this evening:** castle colour grade (lavender, white and gold), brush recolour, lighter tunnel with a light at its end, camera follow over the crest, coins gold from the first frame.
+- **Done in the afternoon session:** the real 3D path (climb, crest, drop, banked turns), electric-blue water with caustics and foam, the fur shader, the Meshy lost socks with the "Rescue 5 lost socks" panel, the touch overlay (`?touches`) and the side view (`?side`).
+- **Evidence:** [`Previews/WebDemo/`](Previews/WebDemo): this evening's gameplay and side-view recordings, the height chart, the start frame beside the approved screen, and the per-frame game state. Recorded in headless Chromium with software WebGL. **Not tried on a real phone.**
+- **Known differences from the approved Screen 3:**
+  - The approved vortex inside the portal is whiter and pinker than ours.
+  - In the approved image the left brush overlaps the slide's edge. Ours stays just clear of the left lane, so it sits a little further left and is cut by the screen edge.
+  - The approved image shows a small yellow helper in front of the mascot; at the user's request the game has none.
+  - The code-built machinery is simpler than hand-sculpted models. `Design/MESHY_ASSET_REVIEW.md` lists the one optional Meshy upgrade left (the machinery tower).
+- **Build and record:**
+  - Build: `cd WebDemo && npm install && node build.mjs`.
+  - Play-test: `node tools/playtest.cjs "$PWD" <out> quick`.
+  - Record: `node tools/record.cjs "$PWD" <out> 13 game|side|dry`, then `python3 -I tools/evidence_images.py <game dir> <side dir> ../Design/ApprovedScreens/x3_03_Lets_Go_Washer_Entry.png <out dir>`. The ffmpeg commands are in `Previews/WebDemo/README.md`.
+  - Compare with the approved screen at the same 1:2 size: `tools/start_frame.cjs`, `tools/beats.cjs`, `tools/try_settings.cjs`, `tools/compare_approved.py`, `tools/overlay_approved.py` (see `WebDemo/README.md`).
+  - Republish the page: `artifact.html` with `game.bundle.js`, `models/layout.json`, `artifact-models/*.glb.json` (published as `models/*.glb.json`) and `ui/*.png`. From a different account, publish it as a new page.
+
+## Unity project (unchanged since the afternoon)
+
+- Screens 3–4 are playable in Unity and wait for the first real Unity capture and compare (see `README.md`).
+- None of the demo-only changes have been ported to Unity: the 3D path, narrower slide and flume, machinery, helper, fur shader, castle grade, brush recolour, water shimmer, exit light and camera framing.
+- **Pink mascot:** not yet in Unity. Copy `Design/MeshyDeliveries/PinkMascot/BubbleWash_Pink_Mascot_Claudia_4MB_ColorSafe.glb` into `Assets/BubbleWash/Models/Mascot/` and rebuild. It is a static mesh (no rig) with an unlit, double-sided material, facing +Z.
+- **Lost sock:** not yet in Unity. Copy `Design/MeshyDeliveries/LostSock/BubbleWash_Lost_Sock_Claudia_Small.glb` into `Assets/BubbleWash/Models/RescueSock/`. Its face is on +Z, and its material is fully metallic, so it needs a non-metallic material.
+
+## Open requests from the user
+
+1. Keep polishing Screen 3 until it looks and moves right, then move on to the remaining screens. The four entrance decorations are in. The user asked to be told which model looks wrong, and why, before regenerating anything in Meshy.
+2. **Meshy asset review:** done. See [`Design/MESHY_ASSET_REVIEW.md`](Design/MESHY_ASSET_REVIEW.md). The three models it first listed as missing are now built in code. No new Meshy model is required. The duck helper has been delivered and is in use, and one optional upgrade (the machinery tower) is listed there.
+3. Keep PR #1 as a draft. Do not merge it.
+4. Not yet asked: whether to move this evening's commits onto PR #1's branch, and how to resolve PR #1's conflicts with its base.
+
+## How the user likes to work
+
+- The approved screens are the visual target: preserve composition, character, camera and lighting as closely as possible, and compare side by side.
+- Use the existing Meshy assets. Do not substitute unrelated designs or create duplicate assets, and keep Meshy credits for what is really missing.
+- Improve what exists. Do not rebuild from scratch.
+- Show real gameplay recordings, not simulated screenshots, and say plainly what was actually run and what was not.
+- Save everything to the repository, including the chat history, so work can continue from the other account.

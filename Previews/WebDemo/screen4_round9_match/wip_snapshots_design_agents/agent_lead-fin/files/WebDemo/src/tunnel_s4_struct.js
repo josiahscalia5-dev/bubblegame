@@ -358,14 +358,17 @@ export function buildStructWater({ scene, TR, L, W, mascot, updaters, time, S, u
   });
 }
 
-// ================================================================ 3. the washer's metal housing at the top (priority 1)
-// The drum's upper wall near the camera drawn as the washer's brushed silver / lavender / purple metal (existing geometry:
-// heroWalls, its main, tunnel_r8_liquid.js wallFragment). At Tap to Start the rim, its face and the collar show the housing
-// (none of this: it fades in only once the camera has moved toward the rim); as the camera passes the rim the drum's own
-// metal takes over, so the top band stays the washer's metal while she swims. Its extent is measured from the camera (the
-// part of the upper wall seen at the top of the frame, about 3-10 m ahead); its streaks, seams and perforations are fixed to
-// the drum, so they stream past as she travels. Screen colours (sRGB, sampled from the ORIGINAL's housing y .22-.36:
-// #6961ca, #b191bc, #654d8b, #b494da, #f3daf3, the rim's #de9e8d) written through mtUndisplay.
+// ================================================================ 3. the washer drum's metal lining, through the whole run
+// The tunnel's own upper wall (existing geometry: heroWalls, round 4's lining tube along the whole drum; its fragment,
+// tunnel_r8_liquid.js wallFragment) drawn as the washer drum's brushed silver / lavender / purple metal: lavender over the
+// top, periwinkle then deep violet down the sides, deeper purple nearest the camera, a silver sheen arc and a pink reflection
+// (view dependent, as reflections are), raised ribs with silver and gold-peach edges and rivets every HOUSING.ribs m, and
+// broad brushed streaks; the ribs, rivets and streaks are FIXED TO THE DRUM, so they stream past as she swims. It covers the
+// upper half and the sides from the camera to HOUSING.far ahead, the same distance all round, so its edge is a curved arc
+// round the tunnel's centre like the ACCEPTED Tap to Start rim; there it gives way to the blue tunnel through a soft lavender
+// glow (no ring: nothing floats in front of the camera). At Tap to Start the accepted rim and housing show (it fades in only
+// once the camera has moved toward the rim). Colours sampled from the ORIGINAL's housing (y .22-.36: #6961ca, #b191bc,
+// #654d8b, #b494da, #f3daf3, the rim's #de9e8d), written through mtUndisplay.
 export const HOUSING = {
   // (the user's clarification of 7 November ~16:00 UTC: the ACCEPTED Tap to Start's balance kept through the whole run: a
   // curved silver / lavender / purple lining round the upper tunnel, the vivid blue tunnel inside and beneath it; not plain
@@ -379,7 +382,7 @@ export const HOUSING = {
   fadeIn: [-4.7, -2.9],      // the camera's place relative to the drum's mouth over which it fades in (the start is -5.41)
   col: { deep: '#56448c', mid: '#6c66cf', lav: '#b39ad8', silver: '#e9e2f8', pink: '#efd3ef', gold: '#e2a68e', glow: '#c9b8ff' },
   ribs: 3.2,                 // m between the drum's ribs (fixed to the drum: they stream past; one or two in view)
-  streaks: 0.06, perf: 0.62, perfK: 0.0, rivets: 0.55, lip: 0.6, sheen: 0.55,
+  streaks: 0.05, perf: 0.62, perfK: 0.0, rivets: 0.55, lip: 0.6, sheen: 0.55,
 };
 export function structHousingGLSL(radius) {
   const H = HOUSING, C = H.col;
@@ -392,13 +395,14 @@ export function structHousingGLSL(radius) {
     if (stK > 0.001) {
       float stX = a * ${f4(radius)};   // m round the drum
       // brushed metal: lavender over the top, periwinkle then deep violet down the sides (its curvature), fine streaks round it
-      float stS = sin(u * 37.0 + sin(stX * 3.0) * 1.5) * 0.5 + sin(u * 13.0 + 1.7) * 0.35 + sin(u * 91.0) * 0.15;
+      float stS = sin(u * 5.0 + sin(stX * 2.0) * 1.2) * 0.6 + sin(u * 11.0 + stX * 0.7 + 1.7) * 0.4;   // (broad, soft: no fine record grooves)
       vec3 stC = mix(${hx(C.deep)}, ${hx(C.mid)}, smoothstep(-0.1, 0.45, stUp));
-      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.4, 0.9, stUp) * 0.85);
+      stC = mix(stC, ${hx(C.lav)}, smoothstep(0.4, 0.9, stUp) * 0.75 * smoothstep(1.2, 3.2, stD));
+      stC = mix(stC, ${hx(C.deep)}, (1.0 - smoothstep(0.5, 2.6, stD)) * 0.45);   // deeper purple nearest the camera (the frame's top), as the ACCEPTED housing
       stC *= 1.0 + ${f4(H.streaks)} * stS;
       // the centre's light on the curved metal: a broad silver sheen arc and a softer pink reflection inside it (they depend
       // on the view, as reflections do)
-      stC = mix(stC, ${hx(C.silver)}, exp(-pow((stE - 1.5) / 0.75, 2.0)) * smoothstep(0.0, 0.6, stUp) * ${f4(H.sheen)} * (0.8 + 0.2 * stS));
+      stC = mix(stC, ${hx(C.silver)}, exp(-pow((stE - 1.45) / 0.5, 2.0)) * smoothstep(0.0, 0.6, stUp) * ${f4(H.sheen)} * (0.8 + 0.2 * stS));
       stC = mix(stC, ${hx(C.pink)}, exp(-pow((stE - 0.75) / 0.35, 2.0)) * smoothstep(0.2, 0.8, stUp) * 0.3);
       // the drum's ribs (fixed to the drum): a raised band with a silver upper edge, a gold-peach line and a shadow under it
       float stR = u / ${f4(H.ribs)}, stQ = fract(stR) - 0.5, stW = fwidth(stR) + 0.002, stHalf = 0.09 / ${f4(H.ribs)};

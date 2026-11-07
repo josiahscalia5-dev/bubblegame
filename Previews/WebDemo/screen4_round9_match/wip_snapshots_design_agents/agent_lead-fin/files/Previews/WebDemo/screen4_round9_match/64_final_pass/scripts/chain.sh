@@ -4,7 +4,9 @@
 R="$1"; SP="$2"; E=$R/Previews/WebDemo/screen4_round9_match/64_final_pass; D=$R/WebDemo
 source $R/Tools/bw_tools_env.sh > /dev/null 2>&1
 echo "== identity $(date -u +%H:%M:%S)"; bash $E/scripts/identity_all.sh $R $SP $3 $4
-echo "== accepted captures $(date -u +%H:%M:%S)"; (cd $D && SETTLE=900 S3=intunnel TIMES=0,1,2,3,5 node tools/screen3/s3_shot.cjs "$D" $E/frames_accepted > $E/frames_accepted.log 2>&1; tail -1 $E/frames_accepted.log)
+for L in new accepted; do S=intunnel,structmatch; [ $L = accepted ] && S=intunnel
+  echo "== $L captures $(date -u +%H:%M:%S)"; (cd $D && SETTLE=900 S3=$S TIMES=0,1,2,3,4,5,8,14 node tools/screen3/s3_shot.cjs "$D" $E/frames_$L > $E/frames_$L.log 2>&1; tail -1 $E/frames_$L.log)
+done
 echo "== gameplay $(date -u +%H:%M:%S)"; bash $E/scripts/gameplay.sh $R
 for L in new accepted; do
   S=intunnel,structmatch; [ $L = accepted ] && S=intunnel
