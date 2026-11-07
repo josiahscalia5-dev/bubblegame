@@ -1,0 +1,59 @@
+MANDATORY IMPLEMENTATION ORDER — BUBBLE WASH KINGDOM SCREEN 4
+ORIGINAL-APPROVED VISUAL MATCH + REAL SWIMMING GAMEPLAY
+
+CLAUDE CODE: READ THIS ENTIRE ORDER BEFORE MAKING CHANGES. EXECUTE THE WORK; DO NOT RESPOND WITH JUST A PLAN, ANOTHER GENERAL PROMPT, A NEW DESIGN CONCEPT, OR A CLAIM THAT IT LOOKS BETTER.
+
+I have spent five days trying to match this screen. I am NOT commissioning another interpretation. I want the EXISTING playable 3D Screen 4 to reproduce the ORIGINAL APPROVED Screen 4 as faithfully as technically possible, including its visual composition, rich blue water, pink fluffy mascot, metallic washer rim, glowing nested laundry tunnel, brush placement, socks, bubbles, gold coins, HUD and overall sharp, magical finish. It must remain a REAL working interactive game. Stop optimizing for incremental improvement over the previous render; optimize for the APPROVED ORIGINAL.
+
+REFERENCE AUTHORITY (STRICT):
+1. 'Screen4_APPROVED_ORIGINAL_MASTER_FROM_COMPARISON.png' is the visual master. It is a crop of the approved ORIGINAL from the user's supplied comparison, NOT a newly invented design.
+2. 'Screen4_approved_vs_latest_3p5s.png' exposes exact differences against the existing implementation.
+3. '12595.mp4' shows recent genuine moving gameplay for checking motion and water behavior.
+The original approved artwork outranks accepted/previous/new experimental renders. 'Accepted 3.0 s' is not permission to change the approved target. Treat 2D reference details as composition and art-direction targets to reproduce with actual 3D assets and live rendering, not as a backdrop or screenshot pasted into gameplay.
+
+STEP 0 — SECURE THE PROJECT AND FINISH/RECORD IN-FLIGHT TESTS.
+Inspect git status, current branch, recent commits and current running proof/test processes. Do not overwrite or discard a live proof run. Let it finish when possible; otherwise record its status and preserve the recoverable output. Create a rollback-safe checkpoint of the current working code before edits. Stay on the existing intended development branch; do not force-push or reset history. Protect working movement, rendering, collisions, power-ups, collection, score, socks, pause and mobile swipe support. Save this order and the reference files in an appropriate project evidence/handoff location when safe; do not commit large video media blindly if the repo has size rules.
+
+STEP 1 — INVESTIGATE THE REAL VISUAL MISMATCH BEFORE TUNING ANYTHING.
+Capture the REAL rendered baseline from the current build at a documented viewport/camera/seed/progression point, including the seed-7 approx. 3.0 s frame where available. Also examine the ~3.5 s video capture, but DO NOT compare two different gameplay states and call that a precise match. Identify the exact scene objects, camera values, geometry, materials, shader passes, transparency, layering, water meshes, bloom/postprocessing and animation code responsible for the differences. Make a concise ranked mismatch list based on the image, then FIX the ranked differences rather than spending another day tweaking one water parameter in isolation.
+
+STEP 2 — MATCH THE ORIGINAL SCREEN'S COMPOSITION AND CAMERA.
+The original is full of scene detail beneath the HUD: its prominent curved silver/lavender/golden metallic washer housing arcs across the upper gameplay field; beneath it, tight layered blue/cyan concentric water-tunnel rings spiral inward toward a bright center. The CURRENT screenshot has a large mostly empty pale-lavender region between the HUD and tunnel, and a different-looking, oversized/low-positioned tunnel mouth. This must be corrected, not preserved. Adjust camera position, pitch, FOV, tunnel scale/depth, rim meshes and object placement as needed to reproduce the original vertical composition WITHOUT breaking perspective or gameplay. The original rim must be recognizable and remain visible as the scene moves. Match the framing of the pink fur, side brushes, coins, floating smiling sock, bubbles, and distant tunnel centerpiece as closely as real motion permits. Restore the large colorful brush forms at the left/right scene edges, not just tiny floating brushes deep in the tunnel. The visible collectible scene should feel as densely, deliberately staged as the original; preserve the functional collection logic and use the correct object types at runtime.
+
+STEP 3 — CORRECT THE MASCOT AND WATER AS ONE INTERACTING SYSTEM.
+The original pink mascot is a vivid, rounded, densely fluffy creature viewed from behind in the lower foreground. Preserve its recognizable silhouette, pink color, fur detail, appropriate screen size, rear-facing pose, and coherent contact with the water. It must not look like an unrelated replacement character, a giant shapeless pink mound, or a floating sticker. The lower fur meets the blue water; its visible body rides ABOVE the contact zone while it travels THROUGH the tunnel water. Do not submerge it under a transparent sheet. Do not place a flat white film, crescent streak, white cloud, giant foam ring, false horizon or separate opaque splash slab in front of/behind it.
+
+Rebuild or correct only the actual offending water elements so the original's saturated cobalt-blue/turquoise dimensional waves, rounded forms, highlights, transparency/refraction where appropriate, and lively sense of forward flow are represented by real geometry/shading. The current lower screen contains pale/white diagonal crescent streaks and a noisy milky-looking foreground: eliminate their root cause and restore rich blue depth and contrast. Small water crests and bubbles can exist where physically/visually justified, but avoid an artificial white border around the pink mascot. Water displacement/wake must connect visually to the mascot's lower fur and travel direction. Validate the result across multiple frames, not one carefully staged still.
+
+STEP 4 — ACTUAL SWIMMING AND SWIPE RESPONSE, NOT FAKE MOTION.
+Keep continuous forward tunnel travel and current gameplay/controls, but make the mascot visibly swim/ride through moving water. Give it gentle rhythmic vertical bobbing, subtle forward/back body pitch or roll as appropriate, momentum/easing when swiping sideways, and coherent contact ripples and a trailing wake. Motion must be subtle, deliberate, stable, and synced to travel speed; it should not jitter, pogo-stick, randomly jump, tilt excessively, or clip through water or obstacles. Swipe left/right must produce clear responsive movement and corresponding water interaction. Keep intentional jump/tap/spin behavior and collectible/collision alignment intact. Test rest, left steering, right steering, transitions, and obstacle/coin encounters on an actual running mobile-sized build.
+
+STEP 5 — REPRODUCE THE ORIGINAL'S VISUAL POLISH, NOT JUST ITS COLOR.
+Match as closely as possible the original's deep luminous cyan/royal-blue spiral rings, purple/lavender reflective-metal accents, warm gold paw coins, crisp purple gem, iridescent bubbles, pink/white/blue fluffy brushes, cheerful sock face, glossy HUD panels and readable typography. Fix scaling, occlusion and staging if the foreground coin hides the sock or the brushes appear in the wrong area. Match the high-quality contrast and controlled highlights. Avoid the washed-out lavender upper field, overblown white surfaces, generic rainbow blur, smear, noise and excessive glow. Do NOT change legitimate in-game coin/gem/sock values merely to imitate the reference snapshot: compare HUD layout/style while keeping current true game state. Preserve all working gameplay features.
+
+IMPLEMENTATION DISCIPLINE — NO EXCEPTIONS:
+- Work in the CURRENT project. No static image replacement, fullscreen backplate, pre-rendered video, CSS overlay pretending to be 3D, or mock playable screen.
+- You MAY adjust the camera, scale, scene composition, object placement, housing geometry, water system and materials where required. DO NOT follow old instructions that freeze mismatched layout or camera parameters.
+- Do not rewrite the entire engine or swap frameworks. Make focused code changes, with reversible checkpoints and a narrow impact surface.
+- Keep the original approved image as the sole visual target; experiments, accepted control renders and previous screenshots are diagnostics only.
+- Do not silently add new asset/tool subscriptions or download dependencies unnecessarily. Use current project tools and assets first; state any genuinely essential missing asset or limitation.
+- If an exact 2D stylized detail is impossible in moving real-time 3D, give the nearest verifiable 3D solution and explicitly name the remaining limitation, without claiming a literal 100% pixel match.
+- Avoid endless trial-and-error: solve composition first, then character-water contact, then motion, then final polish. If a change fails two controlled comparisons, stop blind parameter tweaking and inspect the underlying geometry/render path.
+
+VERIFICATION GATES (PASS/FAIL; NO EMPTY SELF-PRAISE):
+A. The original-style metallic washer arc/rim is plainly visible below the HUD. No unexplained large blank lavender region dominates the upper gameplay view.
+B. Tunnel depth, concentric rings, brush positions, major objects, and mascot framing correspond closely to the original master at comparable runtime conditions.
+C. The water reads as saturated three-dimensional blue around the pink fur; no white milky plane, oversized foam skirt, or repeating harsh crescent strips.
+D. Mascot silhouette/fur stays legible and physically connected to the water in moving footage, with controlled bobbing, left/right steering and water reaction.
+E. HUD, power-ups, coins, socks, obstacles, collisions and gameplay continue functioning. No runtime errors, serious clipping or mobile performance regression.
+F. Original-vs-new comparison is shown at matching orientation/viewport, with camera/progression/seed and any differences stated. Do not present mismatched timestamps as a validated quantitative test.
+
+REQUIRED FINAL EVIDENCE:
+1) Current source branch, checkpoint SHA and final commit SHA, plus push confirmation only if actually pushed.
+2) Side-by-side image of ORIGINAL MASTER vs NEW REAL RENDER at comparable view, plus at least one detail crop around mascot/water and one around rim/tunnel.
+3) Short UNEDITED recording of actual playable 3D movement showing forward progression, gentle swimming bob, swipe left/right, and responsive water. Include controls/HUD in the video.
+4) A short PASS/FAIL checklist for the six verification gates, including remaining visible deviations. Do not invent a 90%, 95%, or 100% score.
+5) A concise changed-files summary, exact run/test commands, pass/fail test results, and straightforward rollback instructions.
+6) A concise handoff update that lets a different Claude account continue this exact branch and design direction. Save project-specific instructions/configs/agents that can safely be committed. Never commit secrets, tokens, or personal account credentials; account-specific plugins or MCP connections may need reauthorization.
+
+EXECUTION ORDER: Protect -> inspect -> correct COMPOSITION -> correct WATER/CHARACTER -> implement SWIMMING -> run gameplay + visual tests -> capture proofs -> commit and document. DO THE IMPLEMENTATION, NOT JUST AN ANALYSIS. Do not stop after one isolated water tweak or report that 'NEW looks better than PREVIOUS' as completion. It is complete only when the playable result materially matches the ORIGINAL APPROVED screen and the verification gates have been genuinely checked. If gates fail, identify the precise unresolved blocker rather than declaring success.
