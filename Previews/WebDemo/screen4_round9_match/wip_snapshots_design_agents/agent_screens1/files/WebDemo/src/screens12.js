@@ -112,10 +112,10 @@ function build() {
   root.append(art);
   // the live top bar (both screens)
   const top = el('div', 'top');
-  const pill = (x, w, icon, id) => { const p = el('div', 'pill'); Object.assign(p.style, { left: `calc(var(--a) * ${x})`, width: `calc(var(--a) * ${w})` }); p.innerHTML = `<img src="ui/${icon}.png" alt=""><span data-src="${id}"></span>`; return p; };
-  const hp = pill(46, 230, 'heart', 'hearts'); hp.insertAdjacentHTML('beforeend', '<b class="plus">+</b>');
-  top.append(hp, pill(318, 200, 'coin', 'coins'), pill(560, 170, 'gem', 'gems'));
-  const gear = el('button', 'gear', '<img src="ui/gear.png" alt="">'); gear.setAttribute('aria-label', 'Settings'); gear.style.left = 'calc(var(--a) * 750)';
+  const pill = (x, w, icon, id) => { const p = el('div', 'pill'); Object.assign(p.style, { left: `${x / 864 * 100}%`, width: `${w / 864 * 100}%` }); p.innerHTML = `<img src="ui/${icon}.png" alt=""><span data-src="${id}"></span>`; return p; };
+  const hp = pill(40, 236, 'heart', 'hearts'); hp.insertAdjacentHTML('beforeend', '<b class="plus">+</b>');
+  top.append(hp, pill(318, 206, 'coin', 'coins'), pill(566, 166, 'gem', 'gems'));
+  const gear = el('button', 'gear', '<img src="ui/gear.png" alt="">'); gear.setAttribute('aria-label', 'Settings'); gear.style.left = `${756 / 864 * 100}%`;
   top.appendChild(gear);
   // Screen 1: Home
   const s1 = el('div', 'screen');
@@ -145,8 +145,8 @@ function build() {
     const vw = window.innerWidth, vh = window.innerHeight, s = Math.max(vw / ART.w, vh / ART.h), w = ART.w * s, h = ART.h * s;
     Object.assign(art.style, { width: `${w}px`, height: `${h}px`, left: `${(vw - w) * 0.42}px`, top: `${(vh - h) * 0.5}px` });
     root.style.setProperty('--a', `${s}px`);
-    // the top bar and the title follow the artwork horizontally
-    top.style.left = art.style.left; top.style.width = `${w}px`;
+    // the top bar spans the visible width (the painted HUD is repaired out of the artwork, so it need not follow it)
+    top.style.left = `${Math.max(0, (vw - w) * 0.42)}px`; top.style.width = `${Math.min(vw, w)}px`;
   };
   layout(); window.addEventListener('resize', layout);
 

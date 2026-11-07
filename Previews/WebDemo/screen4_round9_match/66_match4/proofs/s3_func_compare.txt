@@ -8,10 +8,10 @@
 <   "triangles": 1420197
 ---
 >   "drawCalls": 211,
->   "triangles": 2792259
+>   "triangles": 2243815
 491,492c492,493
 <   "drawCalls": 189,
 <   "triangles": 1292344
 ---
 >   "drawCalls": 191,
->   "triangles": 2664406
+>   "triangles": 2115962
