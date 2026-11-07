@@ -1,0 +1,25 @@
+SCREEN 4 — EXACT APPROVED WATER + TUNNEL HANDOFF
+
+These images are crops of the user's ACTUAL approved Screen 4, not newly generated concepts. Use the full original as the master. The close-ups are for detailed inspection, not alternate designs.
+
+REFERENCE FILES:
+- Screen4_APPROVED_ORIGINAL_MASTER_FROM_COMPARISON.png: original approved image
+- Screen4_APPROVED_MASTER_VISUAL_WATER_AND_TUNNEL.png: all-in-one visual guide
+- Screen4_WATER_SIZE_SHAPE_COLOR_REFERENCE.png: water/color/detail callouts
+- Screen4_TUNNEL_CIRCLE_SIZE_SHAPE_REFERENCE.png: rim/rings/tunnel geometry callouts
+- Screen4_WATER_AUTHENTIC_APPROVED_CROP.png: completely unannotated raw water crop
+- Screen4_TUNNEL_AUTHENTIC_APPROVED_CROP.png: completely unannotated raw tunnel crop
+
+VISUAL REGIONS (APPROXIMATE SCREEN SPACE IN SOURCE 628 x 1157 PX; NOT PHYSICAL 3D DIMENSIONS):
+- Metallic washer rim forms an arc immediately below the HUD, especially y≈225–370. Keep broad and prominent rather than replacing with plain lilac upper scene.
+- Concentric blue ring tunnel dominates from roughly y≈315 to y≈750, spiraling inward toward a bright center around (320,575). Its outer blue shape fills most of the viewport width and gradually narrows.
+- Pink mascot occupies a large lower-center rounded shape approximately x≈110–470, y≈765–967.
+- Blue rolling water/ribbons are visible below and around the character, growing visually dominant throughout the lower part of the scene (roughly from y≈690 onward). The foreground water reaches nearly the full screen width.
+- Dynamic blue highlights make contact with the mascot's LOWER fur at roughly y≈910–960; the visible back of the mascot must stay above the water rather than behind a pale film. Wave/water boundaries are highly irregular, not a straight horizontal line.
+- The original has small blue-white sparkle/splash accents, NOT a continuous opaque white wall or repeated regular crescent marks.
+
+WATER SOURCE PIXEL SAMPLES (colors taken from individual pixels of this image, illustrative rather than exact material constants):
+Cobalt #005BFE; Blue #0078FB; Azure #048BFE; Cyan #0DD0F0; pale blue highlight #73B7F6. These colors vary due to lighting, reflections, and layering. Avoid making the entire water uniform.
+
+CRITICAL IMPLEMENTATION INSTRUCTIONS:
+The target is matching the screenshot's visual proportions and texture WHILE implementing actual controllable real-time swimming. Adjust camera/FOV/geometry/water shaders and layered materials where needed. Don't fake the result by displaying these crops as an image overlay. Don't use a static image for the water or tunnel. Show the same 3.0 s seed-7 screenshot when supported plus a moving mobile gameplay clip with bobbing, steering and water interaction. Be explicit about any mismatch that remains.
