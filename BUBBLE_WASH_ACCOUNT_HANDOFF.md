@@ -96,8 +96,9 @@ Page captures: `SETTLE=900 S3=intunnel,structmatch TIMES=0,1,2,3,5 node tools/sc
 ## 8. Latest safe commits
 
 - Before this pass: `0c76b4d` (the old account's last autosave, transfer branch), merged here as `8343381`.
-- This pass: see the final report of session `398ed88c` and `git log` on the working branch (the commit message starts
-  "Screen 4 final pass").
+- This pass: `e2b5750` ("Screen 4 final pass: ?s3=intunnel,structmatch ..."), merged into the working branch; bundle md5
+  `452f9568b76767a960645bbd538e18a2` (known to `Tools/verify_restore.sh`). Later commits on the branch are autosaves (chat
+  history and snapshots) and this handoff.
 
 ## 9. Next steps (in order; no repeated investigations)
 
