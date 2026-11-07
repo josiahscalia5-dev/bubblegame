@@ -113,7 +113,19 @@ export const SWIM_ON = BT_ON && LIST.includes('swim');
 // ?s3=intunnel,blend (7 November, the candidate on top of the accepted look): her drawn proportions and ride height, the
 // water's proportions and colours round her, and a damped landing. Settings and code in tunnel_s4_blend.js; swim2 stays on.
 export const BLEND_ON = BT_ON && LIST.includes('blend');
-export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
+// ?s3=intunnel,structmatch (7 November, Checkpoint A, the user's final mandate of about 15:15 UTC: the accepted Tap to Start
+// kept as the base; her shape and fur, the water round her, her swim through it, the washer's metal kept recognisable while
+// moving). Settings and code in tunnel_s4_struct.js; swim2 stays on. Parts off for comparison: ,nohero ,noswellgrade ,nohousing.
+// The water round her (8th of the final pass, 7 November ~16:30 UTC): the accepted swell (it flows with her travel, swim2) kept
+// with a richer-blue grade (,noswellgrade without it); the engineer's water-space mounds are opt-in (,mounds), since they read
+// as ice / gumdrops next to the ORIGINAL's surf.
+// Kept as opt-in sub-switches (off by default): ,tunnel2 (the walls' grade, the thicker rim) ,props2 (staged coins, gem,
+// sock) ,hud2 (corner cards). (,hero2 is accepted as a no-op: her part is in the default.)
+export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
+export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LIST.includes('nowater'), swell: STRUCT_ON && !LIST.includes('mounds') && !LIST.includes('noswellgrade'), housing: STRUCT_ON && !LIST.includes('nohousing'),
+  hero: STRUCT_ON && !LIST.includes('nohero'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
+  hud: STRUCT_ON && LIST.includes('hud2') };
+export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
 export const WATER8_ON = BT_ON && (LIST.includes('water8') || WATER9_ON);   // (R8, below: water7 with the face's edge in front of her following the original's outline)

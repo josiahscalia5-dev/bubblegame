@@ -1,0 +1,8 @@
+recordings: 270 vs 270 frames; differences in ['z', 'x', 'lane', 'speed', 'air', 'coins', 'gems', 'socks', 'laps']: 59
+In detail: z, x, y, lane, speed, air, world position, path, slope, pitch, lean and camera are identical in all 270 frames.
+Only the pickup counters differ in timing: coins at frames 131 vs 130 and 144 vs 143, the gem at 209 vs 210, and one sock
+collected at frame 158 in the NEW run only; final totals are equal (1297 coins, 37 gems, one lap). Cause: the recorder
+(51_swim/scripts/record_phone.cjs) does not seed the game's Math.random, and each coin / gem / sock takes its bob phase from
+Math.random when it is built (game.js lines 689, 734, 784), so the collectibles bob differently on every page load, in
+any two recordings, even of the same build. The controlled test is the SEEDED motion trace (motion_trace.cjs seeds
+Math.random with 7): 0 differences in 152 frames x 17 fields, coins, gems and socks included (motion_trace_gameplay.txt).

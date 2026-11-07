@@ -1,5 +1,16 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
+## Newest (7 November, about 15:35-16:40 UTC): session `398ed88c` (the account with usage), restoration and the final Screen 4 pass
+
+- **Read first:** `BUBBLE_WASH_ACCOUNT_HANDOFF.md` (the whole state, what to reconnect, the continuation prompt).
+- **Branch:** `claude/bubble-wash-account-handoff-yhk8dy`; the old account's transfer branch merged in up to `0c76b4d` (its
+  engineer `afb9a081` had stopped at 15:19 UTC on that account's 5-hour limit; its snapshot was restored and continued).
+- **Candidate `?s3=intunnel,structmatch`** (the user's final mandate, then the washer-interior clarification): her rounder,
+  larger magenta silhouette; the accepted surf kept with a richer blue; a curved silver / lavender / purple drum lining on
+  the tunnel's upper wall through the whole run. The engineer's water-space mounds read as ice next to the ORIGINAL: opt-in
+  `,mounds` only. Evidence and proofs: `Previews/WebDemo/screen4_round9_match/64_final_pass/README.md`. The accepted
+  `?s3=intunnel` and the normal game: 0 px different. Waiting for the user's verdict.
+
 ## Newest (7 November, about 13:00-13:50 UTC): nineteenth session, the structural audit and Checkpoint A of `?s3=intunnel,structmatch`
 
 - **Fidelity:** NOT accepted (the art director: 64 against 60, an exposed dark gap, purple balloon caps; `60_fidelity_review/`).

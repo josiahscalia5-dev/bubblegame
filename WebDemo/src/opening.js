@@ -35,6 +35,7 @@ import { PHASE_A, applyPhaseA } from './phase_a.js';
 import { S3, S3_ON, loadScreen3Models } from './screen3_models.js';
 import { MATCH_ON } from './tunnel_r9_match.js';
 import { phoneRefFov } from './match_phone.js';   // ?s3=match only: the 1:2 reference camera under the phone framing
+import { STRUCT_PARTS, structScale } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch,hero2: her Screen 4 presentation
 
 export const OPENING_ON = !(typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search)));
 
@@ -426,7 +427,8 @@ export function buildOpening(ctx) {
   // ---------------------------------------------------------------- 4c. the pink mascot's presentation
   // The same Meshy mascot, mesh, controller and animation: only how it is drawn. The approved mascot is a
   // little more upright, with crisper spiky strands and water droplets on its fur tips.
-  if (OPENING_PARTS.mascot && mascotModel) {
+  if (STRUCT_PARTS.hero && mascotModel) structScale(mascotModel);   // ?s3=intunnel,structmatch,hero2: Screen 3's presentation off on Screen 4 (tunnel_s4_struct.js)
+  else if (OPENING_PARTS.mascot && mascotModel) {
     const k = new THREE.Vector3(...MASCOT_PRESENTATION.stretch);
     mascotModel.scale.multiply(k); mascotModel.position.multiply(k);   // about the body's centre (the model is centred on it)
     if (fur) fur.uSpike.value = MASCOT_PRESENTATION.spike;
