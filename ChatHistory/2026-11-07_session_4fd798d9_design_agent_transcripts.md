@@ -436,5 +436,57 @@ Runtime previews show the direction (rounder crown, her body higher, crest lower
 - 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_bt.js
 - 10:21 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_blend.js
 - 10:21 `Grep`: const v3s|function v3s|v3s =
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_blend.js
+**Agent** (10:21 UTC):
 
-_93 tool steps._
+Now the hooks: game.js.
+
+- 10:21 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+**Agent** (10:21 UTC):
+
+Now the hero water hooks.
+
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r9_match_water.js
+- 10:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r9_match_water.js
+- 10:22 `Grep`: tilt\.position|\.blend\b
+**Agent** (10:22 UTC):
+
+Build, then render the start and +1 s at the original's framing.
+
+- 10:22 `Bash`: Rebuild bundle
+- 10:22 `Bash`: Render blend start and +1s frames
+- 10:22 `Bash`: Render blend +1s frame
+- 10:23 `Bash`: Profile and zoom compare blend A
+- 10:23 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/zA.png
+**Lead → agent** (10:23 UTC):
+
+[Image: original 2640x536, displayed at 2000x406. Multiply coordinates by 1.32 to map to original image.]
+
+- 10:23 `Bash`: Zoom compare blend A start
+- 10:23 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/zA2.png
+- 10:23 `Bash`: Zone water metrics blend A
+- 10:23 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/scripts/contact_band.py
+- 10:23 `Bash`: Contact band colour metrics
+- 10:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_blend.js
+- 10:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_blend.js
+- 10:24 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_s4_blend.js
+- 10:24 `Bash`: Rebuild and render blend B start
+- 10:24 `Bash`: Measure and zoom blend B start
+- 10:25 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/scripts/measure.sh
+- 10:25 `Bash`: Measure blend B start
+- 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/zoom_blendB.png
+- 10:25 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 10:25 `Bash`: Render blend B +1s and +2s
+- 10:25 `Bash`: Render blend B +1s and +2s in parallel
+- 10:26 `Bash`: Measure blend B moving frames
+- 10:26 `Bash`: Stack T1 and T2 zooms
+- 10:26 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/zoom_B_T12.png
+
+_129 tool steps._

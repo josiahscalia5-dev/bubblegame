@@ -13,8 +13,9 @@
 //      domes at her base (a higher one at her front-left, a broad low one at her front-right) as two more crest mounds. The
 //      same mesh, footprint and draw call; the layers that follow its crest (splash bank, waterline foam) follow it.
 //   3. look: on the swell's face, a lavender tint along the waterline in front of her body (her pink seen through the
-//      water: the original's #a294ee domes) and the pale face lower down deepened toward the original's azure / turquoise
-//      (#79c9f6 / #47abf1). No white, no bubbles added.
+//      water: the original's #a294ee domes; under her the original is 41 % lavender, the accepted 0.4 %), its white pieces
+//      kept white. No white, no bubbles added. (A deepening of the lower face, deep / deepK, was tried and is off: it turned
+//      the face's whites pale.)
 //   4. land: the landing's one-frame drop (yAbs one frame below the ride height) not drawn; a damped dip and resurface
 //      (the animation report, 54_specialists/animation_review.md section 4, depth capped smaller) in its place, and the swell
 //      sinks with her drawn dip as it did with her drop (so the water never swallows her).
@@ -23,9 +24,11 @@ import { BLEND_ON } from './tunnel_s4_bt.js';
 export { BLEND_ON };
 
 export const BLEND = {
-  body: { ky: 0.88, dy: 0.06 },                       // vertical stretch factor (about her centre); drawn lift (m)
-  swell: { scale: 0.84, mounds: [[16, 0.1, 12], [-12, 0.03, 14]] },   // crest heights x scale; [phi (deg), height (m), half width (deg)]
-  look: { lav: '#a69af0', lavK: 0.5, lavD: 0.08, deep: [0.74, 0.92, 1.0], deepK: 0.7, deepD: [0.05, 0.25] },
+  body: { ky: 0.88, dy: 0.05 },                       // vertical stretch factor (about her centre); drawn lift (m)
+  swell: { scale: 0.84, mounds: [[6, 0.11, 11], [-12, 0.03, 14]] },   // crest heights x scale; [phi (deg), height (m), half width (deg)]
+  // lav: the tint (sRGB), its strength and depth below the crest (m); white: linear min(r, g) range over which the face's
+  // white pieces keep their white; deep: a multiply (sRGB) deepening the face below deepD (m), deepK its strength
+  look: { lav: '#9c8cec', lavK: 0.75, lavD: 0.12, white: [0.55, 0.85], deep: [0.74, 0.92, 1.0], deepK: 0.0, deepD: [0.05, 0.25] },
   land: { omega: 14, zeta: 0.45, perV: 0.008, min: 0.025, max: 0.05, hold: 1.0 },   // damped dip: peak depth clamp(perV |vy|, min, max) m
 };
 
@@ -60,14 +63,15 @@ export function blendFurCentre(c, m) {   // the fur's light centre on her drawn 
 }
 
 // 3. the swell's face colours, last in matchSwellGLSL (its block: d = m below the crest, mwFront = 1 in front of her body)
-const lin = (h) => new THREE.Color(h).toArray().map((v) => v.toFixed(5)).join(', ');
 const f = (v) => (+v).toFixed(5);
+const lin = (hex) => { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255].map((c) => f(c / 255)).join(', '); };   // sRGB as written
 export function blendSwellGLSL() {
   const K = BLEND.look;
   return /* glsl */ `    {   // ?s3=intunnel,blend: lavender where her body shows through at the waterline, the pale face deepened (tunnel_s4_blend.js)
-      float blE = (1.0 - smoothstep(${f(K.lavD * 0.4)}, ${f(K.lavD)}, d)) * mwFront;
-      mwCol = mix(mwCol, mtUndisplay(vec3(${lin(K.lav)})), blE * ${f(K.lavK)});
-      mwCol = mix(mwCol, mwCol * mtUndisplay(vec3(${K.deep.map(f).join(', ')})), smoothstep(${f(K.deepD[0])}, ${f(K.deepD[1])}, d) * ${f(K.deepK)});
-    }
+      float blE = (1.0 - smoothstep(${f(K.lavD * 0.3)}, ${f(K.lavD)}, d)) * mwFront;
+      float blW = smoothstep(${f(K.white[0])}, ${f(K.white[1])}, min(mwCol.r, mwCol.g));   // its white pieces stay white
+      mwCol = mix(mwCol, mtUndisplay(vec3(${lin(K.lav)})), blE * ${f(K.lavK)} * (1.0 - blW));
+${K.deepK > 0 ? `      mwCol = mix(mwCol, mwCol * mtUndisplay(vec3(${K.deep.map(f).join(', ')})), smoothstep(${f(K.deepD[0])}, ${f(K.deepD[1])}, d) * ${f(K.deepK)});
+` : ''}    }
 `;
 }
