@@ -1,5 +1,18 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
+## Newest (7 November, about 20:40-22:10 UTC): session `398ed88c`, the user's correction mandates: `swim3` and `match4`
+
+- **Branch:** `claude/bubble-wash-account-handoff-yhk8dy`. In `?s3=intunnel,structmatch` by default (the accepted `?s3=intunnel`
+  and the normal game 0 px different throughout):
+  - `swim3` (`9566f7b`, `Previews/WebDemo/screen4_round9_match/65_swim3/README.md`): the pale icy band was `heroSwell`'s own
+    face (light colours, white comma arcs); corrected at its source; her swim rhythm. Rollback `,noswim3` = bundle 452f9568.
+  - `match4` (`66_match4/README.md`): the user's exact-match order and reference packs
+    (`Design/ReferencePacks/2026-11-07_Exact_Match_Execution_Order_from_user/`, `..._Water_Tunnel_and_Character_References_from_user/`):
+    the original's banded washer rim through the whole run (no empty lilac area), the tunnel's cobalt saturation, her shell
+    fur. Rollback `,nomatch4` = the swim3 build.
+- **Android preview:** `ANDROID_HOME=~/android-sdk bash Tools/android_apk/build_apk.sh <out>` (start page: NEW, previous step,
+  accepted, normal game).
+
 ## Newest (7 November, about 15:35-16:40 UTC): session `398ed88c` (the account with usage), restoration and the final Screen 4 pass
 
 - **Read first:** `BUBBLE_WASH_ACCOUNT_HANDOFF.md` (the whole state, what to reconnect, the continuation prompt).

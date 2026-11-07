@@ -1,0 +1,5 @@
+accepted start: 0 pixels differ (38466b67 ?s3=intunnel vs 236b5811 ?s3=intunnel)
+accepted T1.0: 0 pixels differ (38466b67 ?s3=intunnel vs 236b5811 ?s3=intunnel)
+accepted T3.0: 0 pixels differ (38466b67 ?s3=intunnel vs 236b5811 ?s3=intunnel)
+noswim2 T1.0: 0 pixels differ (38466b67 ?s3=intunnel,noswim2 vs 236b5811 ?s3=intunnel,noswim2)
+blend T1.0: 0 pixels differ (38466b67 ?s3=intunnel,blend vs 236b5811 ?s3=intunnel,blend)

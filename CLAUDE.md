@@ -73,6 +73,10 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     whole run (`WebDemo/src/tunnel_s4_struct.js`, `STRUCT_PARTS` in `tunnel_s4_bt.js`; off: `,nohero`, `,noswellgrade`,
     `,nohousing`; opt-in: `,mounds`, `,tunnel2`, `,props2`, `,hud2`). Evidence and proofs:
     `Previews/WebDemo/screen4_round9_match/64_final_pass/README.md`. Account handoff: `BUBBLE_WASH_ACCOUNT_HANDOFF.md`.
+    Then, in it by default: `swim3` (`9566f7b`, `65_swim3/`: the swell's comma arcs off, its face the original's deeper blues,
+    the swim rhythm; `,noswim3` = bundle 452f9568) and `match4` (`66_match4/`, the user's exact-match order and reference
+    packs of 7 November evening: the original's banded washer rim through the whole run, the tunnel's cobalt saturation, her
+    shell fur of fine fuchsia strands; `,nomatch4` = the swim3 build).
   - `intunnel,swim2` (7 November, eighteenth session): **ACCEPTED, the bare `?s3=intunnel` now includes it** (the user's
     approval; the previous look is `?s3=intunnel,noswim2`, or commit `920531d`; `58_swim2_accepted/`): the tunnel stays cobalt while moving, the water at her flows with her travel, spray capped at 12 px
     (`WebDemo/src/tunnel_s4_swim2.js`, `SWIM2_ON`; evidence `Previews/WebDemo/screen4_round9_match/57_swim2/`).

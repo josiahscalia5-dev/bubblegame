@@ -36,6 +36,9 @@ Built on the accepted version, behind its flag (`STRUCT_ON` / `STRUCT_PARTS` in 
 | the water round her (`swell`) | the accepted flowing surf kept (it flows with her travel, swim2), its blue graded toward the ORIGINAL's azure, richer, with deeper cores; its white foam untouched | `,noswellgrade` |
 | the washer lining (`housing`) | the user's 7 November clarification: a curved silver / lavender / purple drum lining on the tunnel's own upper wall through the whole run (ribs, rivets and streaks fixed to the drum; a silver sheen; its edge a soft glow into the blue tunnel, one distance all round so it is an arc as the accepted rim); fades in after the tap, so Tap to Start is the accepted frame | `,nohousing` |
 
+| swim3 (7 November ~21:00, `9566f7b`) | the swell's white comma arcs off, its face the original's deeper blues with crisp splash accents, the swim rhythm (`swimPose`), the lining refined (`65_swim3/`) | `,noswim3` (= bundle 452f9568, 0 px) |
+| match4 (7 November ~21:45) | the original's banded washer rim (periwinkle, lavender, violet, mauve groove, gold-peach, pink-lavender face) on the lining through the whole run; the tunnel rings' cobalt saturation; her shell fur (fine fuchsia strands), her fur colour and size measured to the original (`66_match4/`) | `,nomatch4` (= the swim3 build, 0 px) |
+
 Opt-in only (off by default, kept so no work is lost): `,mounds` (the engineer's water-space wave mounds; they read as ice
 or gumdrops next to the ORIGINAL), `,tunnel2` (wall grade and thicker rim), `,props2` (staged coin sizes), `,hud2` (corner
 power cards).
