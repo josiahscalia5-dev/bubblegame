@@ -89,8 +89,26 @@ Now the match water shading of the swell.
 - 00:00 `Bash`: Inspect generated fragment block
 - 00:00 `Bash`: Get triangle counts of hidden layers
 - 00:00 `Bash`: Check mascot materials transparency and order
+- 00:01 `Bash`: Recheck silhouette with narrower designed zone
+- 00:01 `Bash`: Render a rough mock of the heap field
+- 00:01 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/mock.png
+- 00:01 `Bash`: Tune heaps broader and lower, re-mock
+- 00:01 `Bash`: Fix mock output path and render two moments
+- 00:02 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/mock_g.png
+- 00:02 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+- 00:02 `Edit`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+- 00:02 `Edit`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+- 00:02 `Edit`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+**Agent** (00:02 UTC):
 
-_64 tool steps._
+Now update the white logic in the fragment block (froth caps on every heap except the glassy domes in front of her, plus broken foam patches streaming down the face).
+
+- 00:02 `Edit`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+- 00:02 `Bash`: Regenerate GLSL after edits
+- 00:03 `Bash`: Running silhouette stats and heap screen speeds
+- 00:04 `Read`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/wv/tunnel_s4_swim2.js
+
+_78 tool steps._
 
 ---
 
@@ -300,5 +318,25 @@ Write the report to /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/
 - 00:00 `Write`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md
 - 00:00 `Bash`: Count prose words and confirm only the report changed
 - 00:00 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md
+- 00:01 `Bash`: Save the code section to scratchpad before rewriting prose
+- 00:01 `Write`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/prose_part.md
+- 00:01 `Bash`: Assemble the trimmed report and recount prose words
+- 00:02 `Write`: /tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/prose_part.md
+- 00:02 `Bash`: Assemble the final report and recount prose words
+**Agent** (00:02 UTC):
 
-_62 tool steps._
+I wrote the report to `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/54_specialists/animation_review.md` (990 words of prose plus paste-ready code). Nothing else in the repository changed; frames and scratch files are in `/tmp/claude-0/-home-user-bubblegame/08b39b21-0dec-5ec1-bc99-07d34f97f077/scratchpad/frames/`. The code is untested: I did not build or run it, and all the expected numbers below come from replaying my formulas on the accepted trace.
+
+1. **What she does now:** she rises and falls 73 px on screen with the waves and the game's 1.7 Hz bob, with no stroke rhythm of her own. When she swerves, the water mound trails her by up to 12.5 cm, so she slides off it. The jump is a full back somersault (`clip_R9` n149-n154 shows her face and feet upside down). On landing she drops 17 cm for exactly one frame, so both clips show her buried to her back for about 0.3 s (n165-n172), which breaks the "never sunk" rule.
+2. **Forward swim:** an alternating paddle at 1.25 Hz (a 24-frame cycle), well apart from the water's own rhythms (0.5, 0.95, 1.7 and 4 Hz). The main cue is a ±6° roll toward the pulling arm, which water alone never produces. Each pull adds a 2 cm lift, a ripple at her side and four tiny droplets. The game's bob is removed from the drawing only.
+3. **Arms:** her model has no skeleton, so a small paddle motion of the arm nubs (positions measured on `mascot.glb`) is done in the shader. It is a secondary detail: set its two values to 0 if the art director reads it as waving.
+4. **Swerve:** no sideways offset from her real position. The bank leads instead, about 20° two frames before the game's current lean peaks, then rocks back 3°. The water's lean signal now peaks on the same frame as her sideways speed. The side she moves toward piles up 21 % and the side she leaves drops 21 %. The mound stays within 4.4 cm of her.
+5. **Jump:** a dolphin arc instead of the somersault: about 21° nose-up at take-off, level at the top, 21° nose-down at entry. The game still computes its flip value; it is just not drawn. The water is thrown up with her for 0.12 s, closes under her, and leaves a ring where she left it at 0.27 s.
+6. **Landing (0.5 s):** the one-frame drop is no longer drawn. She dips 8 cm on a damped curve, rebounds 1.3 cm and settles by +15 frames, while her nose comes up as she resurfaces. The squash pivots at her waterline (deepest 0.90 instead of 0.836). The water round her lowers about 17 % while she dips, so her waterline holds; a 0.4 s splash and the floor ring follow.
+7. **Sync with the water:** `updateMascot` stores one swim state on her each frame. The water's updaters already run later in the same frame and copy it into `uLat`, `uAir`, `uLand`, `uPX`, the swell's base and the floor's `uLqMove`, so there is no one-frame lag.
+8. **Code:** the new `tunnel_s4_swim2.js` (settings, `swim2Pose`, the arm shader) plus small gated edits at named lines in `game.js`, `tunnel_r7_hero_water.js` and `tunnel_r8_liquid.js`. It uses the existing `SWIM2_ON` flag, a private random generator, and only reads her gameplay state. Her Tap to Start pose is untouched.
+9. **Checks in `motion_trace.cjs` (`S3=intunnel,swim2`):** all gameplay fields identical to the accepted trace in all 152 rows, with a `Math.random` call count added to the trace's setup script that must match. Expected drawn values per row are listed in the report, for example `rollDeg` at +20° on rows 62-63 and `pitchDeg` at -21/0/+21 through the jump.
+10. **Risks:** the arm bend on the bristly fur mesh needs a look at four points in the stroke. The new fur shader also has to be checked for 0 differing pixels against `?s3=intunnel` at the start frame.
+
+
+_67 tool steps._
