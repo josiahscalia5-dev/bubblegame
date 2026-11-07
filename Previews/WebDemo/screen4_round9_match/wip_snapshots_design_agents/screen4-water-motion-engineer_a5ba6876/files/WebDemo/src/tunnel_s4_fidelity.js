@@ -31,11 +31,13 @@ export const FIDELITY = {
   body: { ky: 0.88, dy: 0.05 },        // blend's: her drawn vertical stretch and lift (m)
   swell: { scale: 0.84 },              // blend's: the swell's crest heights scaled (its two extra crest mounds not used)
   // the water caps: [phi round her (degrees, + screen-left), peak radius (m), phase at the start, side drift (share)]
+  // (sizes and places from the ORIGINAL at her base: a dome about 55 px in radius left of her centre, one of about 40 px just
+  // right of it, a small one further right; at the crest 439 px per m across and 470 up)
   caps: {
-    list: [[17, 0.15, 0.3, 0.25], [-4, 0.11, 0.42, -0.2], [-19, 0.075, 0.55, -0.3], [33, 0.08, 0.72, 0.3], [-33, 0.085, 0.12, -0.3], [4, 0.07, 0.9, 0.2]],
+    list: [[12, 0.13, 0.2, 0.3], [-3, 0.095, 0.3, -0.3], [-17, 0.065, 0.25, -0.3], [30, 0.07, 0.65, 0.3], [-32, 0.075, 0.8, -0.3], [3, 0.06, 0.95, 0.2]],
     squash: 0.72,                      // their height / width
-    sink: 0.42,                        // share of the radius below the crest at the peak
-    out: [0.0, 0.26],                  // m out from the crest toward the camera over a life
+    sink: [0.1, 0.6],                  // share of the half-height below the crest, at birth and at the end of a life
+    out: [-0.03, 0.17],                // m out from the crest toward the camera over a life (- toward her)
     life: 3.2,                         // m swum per life (about 0.45 s at her 7.2 m/s); plus `idle` per second at the start
     idle: 0.04,
     wobble: 0.1,                       // surface wobble (share of the radius)
@@ -95,7 +97,7 @@ function capsGeometry() {   // NC unit spheres (14 x 10), each vertex with its c
     }
     for (let j = 0; j < V; j++) for (let i = 0; i < U; i++) {
       const a = b + j * (U + 1) + i, d = a + U + 1;
-      idx.push(a, d, a + 1, a + 1, d, d + 1);
+      idx.push(a, a + 1, d, a + 1, d + 1, d);   // (outward-facing for this parametrisation)
     }
   }
   const g = new THREE.BufferGeometry();
@@ -106,6 +108,7 @@ function capsGeometry() {   // NC unit spheres (14 x 10), each vertex with its c
 const capVertex = /* glsl */ `
 attribute float aCap;
 uniform vec4 uCap[${NC}];   // centre in her frame (x screen-left, height, u along the path), radius
+uniform float uSink[${NC}];   // share of the half-height below the crest (vH = 0 where the cap meets the swell)
 uniform vec3 uC, uR, uU, uT; uniform float uTime;
 varying vec3 vW, vN; varying float vH, vI;
 void main() {
@@ -115,7 +118,7 @@ void main() {
   vec3 p = c.xyz + vec3(n.x, n.y * ${f(FIDELITY.caps.squash)}, n.z) * c.w * wob;
   vec3 w = uC + uR * p.x + uU * p.y + uT * p.z;
   vW = w; vN = normalize(uR * n.x + uU * (n.y / ${f(FIDELITY.caps.squash)}) + uT * n.z);
-  vH = n.y; vI = aCap;
+  vH = n.y - uSink[int(aCap + 0.5)]; vI = aCap;   // (the crest is sink half-heights above the centre)
   gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
 }
 `;
@@ -141,9 +144,9 @@ ${pass === 0 ? `  // transmission: what is behind, multiplied (her pink -> viole
   // broken white foam where the cap meets the swell (its lowest visible band), and a few bubbles in it
   float ang = atan(N.x, N.z) * 4.0 + vI * 3.7;
   float brk = fdH(vec2(floor(ang * 1.6 + uTime * 0.7), vI));
-  float foam = (1.0 - smoothstep(-0.25, 0.05, vH - ${f(-FIDELITY.caps.sink)})) * step(0.35, brk) * uFoam;
+  float foam = (1.0 - smoothstep(0.08, 0.3, vH)) * step(0.35, brk) * uFoam;
   vec2 bq = vec2(ang * 2.2, vH * 9.0 - uTime * 0.8); vec2 bi = floor(bq);
-  float bub = step(0.86, fdH(bi + vI * 7.0)) * (1.0 - smoothstep(0.12, 0.2, length(fract(bq) - 0.5))) * smoothstep(-0.2, 0.4, vH);
+  float bub = step(0.86, fdH(bi + vI * 7.0)) * (1.0 - smoothstep(0.12, 0.2, length(fract(bq) - 0.5))) * smoothstep(0.2, 0.6, vH);
   col = mix(col, vec3(1.0), clamp(foam + bub * 0.8, 0.0, 1.0));
   gl_FragColor = vec4(col * uK, 1.0);
 `}}
@@ -152,7 +155,7 @@ ${pass === 0 ? `  // transmission: what is behind, multiplied (her pink -> viole
 export function buildFidelityCaps({ scene, updaters, time, S, P, crestAt }) {
   const K = FIDELITY.caps, D2R = Math.PI / 180;
   const g = capsGeometry();
-  const u = { uCap: { value: Array.from({ length: NC }, () => new THREE.Vector4()) }, uC: { value: new THREE.Vector3() }, uR: { value: new THREE.Vector3(1, 0, 0) },
+  const u = { uCap: { value: Array.from({ length: NC }, () => new THREE.Vector4()) }, uSink: { value: new Array(NC).fill(0) }, uC: { value: new THREE.Vector3() }, uR: { value: new THREE.Vector3(1, 0, 0) },
     uU: { value: new THREE.Vector3(0, 1, 0) }, uT: { value: new THREE.Vector3(0, 0, 1) }, uTime: time, uK: { value: 0 },
     uTint: { value: srgb(K.tint) }, uScatter: { value: srgb(K.scatter) }, uSky: { value: srgb(K.sky) }, uTintK: { value: K.tintK }, uScatterK: { value: K.scatterK },
     uSkyK: { value: K.skyK }, uSpec: { value: K.spec }, uRim: { value: K.rim }, uFoam: { value: K.foam } };
@@ -183,9 +186,9 @@ export function buildFidelityCaps({ scene, updaters, time, S, P, crestAt }) {
       const [H] = crestAt(P, phi);
       let nx = Math.sin(a) / P.ax, nu = -Math.cos(a) / P.au; const nl = Math.hypot(nx, nu); nx /= nl; nu /= nl;
       const o = K.out[0] + (K.out[1] - K.out[0]) * p, wo = P.out;
-      const fh = P.foot + (H - P.foot) * Math.sqrt(Math.max(0, 1 - (o / wo) * (o / wo)));   // the outer face's height there
-      const r = r0 * Math.max(env, 0);
-      u.uCap.value[i].set(P.ax * Math.sin(a) + nx * o, fh * lift - K.sink * r * K.squash - 0.015 * p, -P.au * Math.cos(a) + nu * o, r);
+      const fh = P.foot + (H - P.foot) * Math.sqrt(Math.max(0, 1 - (Math.max(o, 0) / wo) ** 2));   // the outer face's height there (the crest's inside it)
+      const r = r0 * Math.max(env, 0), sink = K.sink[0] + (K.sink[1] - K.sink[0]) * p;
+      u.uCap.value[i].set(P.ax * Math.sin(a) + nx * o, fh * lift - sink * r * K.squash, -P.au * Math.cos(a) + nu * o, r); u.uSink.value[i] = sink;
     }
   });
   return { drawCalls: 2, triangles: g.index.count / 3 * 2 };

@@ -946,5 +946,77 @@ Its replacement material spreads the same uniform objects, so reading them after
 
 - 11:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
 - 11:17 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r9_match_water.js
+- 11:17 `Bash`: Rebuild the bundle with the fidelity flag
+- 11:17 `Bash`: Show the build warning
+**Agent** (11:17 UTC):
 
-_92 tool steps._
+Pre-existing warnings only. Let me load `?s3=intunnel,fidelity` in the live page and look at the start frame.
+
+- 11:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:17 `Bash`: Decode the first fidelity frame and build a close-up
+- 11:17 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid1.jpg
+**Lead → agent** (11:17 UTC):
+
+[Image: original 2044x546, displayed at 2000x534. Multiply coordinates by 1.02 to map to original image.]
+
+**Agent** (11:17 UTC):
+
+The crown is now a broad dome, and the softened teeth give a smoother, rounded crest. But the water caps don't show at all. Let me debug them live: enlarge them and make them obvious.
+
+- 11:17 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__list_console_messages`
+- 11:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:18 `Bash`: Decode the debug render
+- 11:18 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid_dbg.jpg
+**Agent** (11:18 UTC):
+
+The caps do render (enlarged here as a debug check), so at their real size they are hidden or too faint. A colour-coded check: multiply by pure red to see exactly where they cover.
+
+- 11:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:18 `Bash`: Decode the red coverage check
+- 11:18 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid_red.jpg
+**Agent** (11:18 UTC):
+
+Fully hidden at their real size. A quick test with the depth test off shows whether they are occluded or misplaced.
+
+- 11:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:18 `Bash`: Decode the no-depth-test coverage check
+- 11:19 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid_nd.jpg
+**Agent** (11:19 UTC):
+
+Still nothing, even without the depth test, so the tint pass isn't drawing at all. Let me check its visibility and layers right after a render.
+
+- 11:19 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+**Agent** (11:19 UTC):
+
+The cap uniforms only update on `advance()`, so my debug sizes stuck. The red multiply still showed nothing, which points at the blend factors. Let me test the tint pass with normal blending.
+
+- 11:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:19 `Bash`: Decode the blending test
+- 11:19 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid_bl.jpg
+- 11:19 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:19 `Bash`: Rebuild after the winding fix
+- 11:20 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:20 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:20 `Bash`: Decode and compare after the winding fix
+- 11:20 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/fid2.jpg
+- 11:20 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+**Agent** (11:21 UTC):
+
+The foam band should follow each cap's sink line; I'll pass the sink per cap.
+
+- 11:21 `Bash`: Locate the cap uniforms and varyings
+- 11:21 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:22 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:22 `Bash`: Rebuild with the repositioned caps
+
+_132 tool steps._
