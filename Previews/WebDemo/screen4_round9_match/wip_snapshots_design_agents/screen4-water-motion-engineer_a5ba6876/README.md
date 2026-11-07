@@ -1,12 +1,15 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Decisive Screen 4 fidelity pass)
 
-- **Taken:** 2026-11-07 11:47 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 11:52 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a5ba6876e8752066d` (local only), started from `f71e130`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (61; full copies in `files/`)
+## Files (69; full copies in `files/`)
 
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_T1.0/base_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_T2.0/base_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/accepted_start/base_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0.log (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0/base_again_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0/base_canvas.png (new)`
@@ -55,6 +58,11 @@
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/trace_compare.py (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/waterline_shape.py (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/zone_water.py (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/closeup_contact_03region_ORIGINAL_accepted_fidelity_T1.0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/closeup_contact_03region_ORIGINAL_accepted_fidelity_start.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/framing768_ORIGINAL_accepted_fidelity_T1.0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/framing768_ORIGINAL_accepted_fidelity_T2.0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/framing768_ORIGINAL_accepted_fidelity_start.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_1_start.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_2_moving_plus1s.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_3_swipe_left.jpg (new)`

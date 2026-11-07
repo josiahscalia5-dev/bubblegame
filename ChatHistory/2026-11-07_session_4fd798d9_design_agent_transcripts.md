@@ -1220,5 +1220,45 @@ While the chain runs, a small measurement script for the waterline's shape and t
 
 - 11:47 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/waterline_shape.py
 - 11:47 `Bash`: Test the waterline measure on existing frames
+- 11:47 `Bash`: Point clip_compare at the accepted clip copy
+- 11:47 `Bash`: Check chain progress
+- 11:47 `Bash`: Check the machine load
+- 11:47 `Bash`: Check chain progress
+- 11:48 `Bash`: Check chain progress
+- 11:48 `Bash`: Check chain progress and load
+- 11:48 `Bash`: Check chain progress
+**Agent** (11:48 UTC):
 
-_234 tool steps._
+Renders done. I'll measure them while the identity renders continue.
+
+- 11:48 `Bash`: Measure the final candidate frames
+- 11:48 `Bash`: Foreground and tunnel colour zones
+- 11:48 `Bash`: Check identity results so far
+- 11:48 `Bash`: Check identity results
+- 11:48 `Bash`: Check identity progress timestamps
+**Agent** (11:48 UTC):
+
+Identity renders are about 30 s each, so roughly 9 minutes remain. I'll draft the README meanwhile and fill in the proof results at the end.
+
+- 11:48 `Bash`: Show the hook diff summary and line positions
+- 11:48 `Bash`: Wait, then read identity results
+- 11:48 `Bash`: Wait until four identity results are written
+- 11:49 `Bash`: Wait for the three intunnel identity results
+**Agent** (11:50 UTC):
+
+`intunnel` start, +1 s and +2 s: 0 pixels differ on the final bundle (092bbd05). Now the 768 sheets and the contact close-up from those committed-bundle renders.
+
+- 11:50 `Bash`: Build the 768 sheets and the contact close-ups
+- 11:50 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/closeup_contact_03region_ORIGINAL_accep
+**Lead → agent** (11:50 UTC):
+
+[Image: original 3355x543, displayed at 2000x324. Multiply coordinates by 1.68 to map to original image.]
+
+- 11:50 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/framing768_ORIGINAL_accepted_fidelity_s
+**Lead → agent** (11:50 UTC):
+
+[Image: original 2317x1582, displayed at 2000x1366. Multiply coordinates by 1.16 to map to original image.]
+
+- 11:50 `Bash`: Wait for the identity and s3_func steps
+
+_254 tool steps._

@@ -5,11 +5,11 @@ O=$R/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Appr
 FONT=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
 lab() { echo "drawtext=fontfile=$FONT:text='$1':x=14:y=14:fontsize=30:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8"; }
 ev() { echo "drawtext=fontfile=$FONT:text='%{eif\:t\:d}.%{eif\:mod(t*10\,10)\:d} s':x=14:y=h-60:fontsize=28:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8"; }
-ffmpeg -v error -y -loop 1 -framerate 30 -i "$O" -i "$V/clip_accepted.mp4" -i "$V/clip_fidelity.mp4" -filter_complex \
+ffmpeg -v error -y -loop 1 -framerate 30 -i "$O" -i /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/clip_accepted.mp4 -i "$V/clip_fidelity.mp4" -filter_complex \
   "[0:v]scale=-2:1258,pad=628:1258:(ow-iw)/2:0,$(lab ORIGINAL)[a];[1:v]scale=618:1258,$(lab 'ACCEPTED intunnel'),$(ev)[b];[2:v]scale=618:1258,$(lab 'NEW fidelity')[c];[a][b][c]hstack=inputs=3[v]" \
   -map "[v]" -t 7 -c:v libx264 -pix_fmt yuv420p -crf 23 -movflags +faststart "$V/clip_compare_ORIGINAL_ACCEPTED_fidelity.mp4"
 # key moments (the 51_swim strip's): forward, swipe left, swipe right, jump, landing, 0.4 s after landing: accepted row, swim2 row
-python3 - "$V/clip_accepted.mp4" "$V/clip_fidelity.mp4" "$V/clip_key_moments_ACCEPTED_fidelity.jpg" <<'PY'
+python3 - /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/clip_accepted.mp4 "$V/clip_fidelity.mp4" "$V/clip_key_moments_ACCEPTED_fidelity.jpg" <<'PY'
 import sys, subprocess, io
 from PIL import Image, ImageDraw, ImageFont
 r9, sw, out = sys.argv[1:4]
