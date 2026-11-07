@@ -30,6 +30,8 @@ import { NOISE } from './shaders.js';
 import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
 import { SWIM2_ON, swim2Travel, swim2FlowPhase } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's water flows with her travel
 import { BLEND_ON, blendSwell } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the crest round her lower and domed (nothing changes without it)
+import { STRUCT_PARTS, buildStructWater } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the water round her in water space (the swell hidden)
+import { undisplayGLSL } from './tunnel_r9_match.js';   // (its screen colours, as the walls')
 
 export const HERO_WATER = {
   // where the swell rises out of the water, in metres from the drum's mouth (the hero moment is at -3.27)
@@ -117,6 +119,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
     S.xMax = 3 + (half - 0.22 - 3) * inside;   // inside the drum: off the walls
   });
   report.swell = heroSwell({ scene, updaters, time, S });
+  if (STRUCT_PARTS.water) report.structWater = buildStructWater({ scene, TR, L, W, mascot, updaters, time, S, undisplay: undisplayGLSL() });   // ?s3=intunnel,structmatch
   report.splash = heroSplash({ scene, updaters, time, S });
   report.floor = heroFloor({ waterSheets, drumSheet, fogAnchor, updaters, S });
   // the white blanket: round7's foam lumps and the opening's foam round the mascot, hidden while the swell is up
@@ -180,7 +183,7 @@ function heroSwell({ scene, updaters, time, S }) {
   const mesh = new THREE.Mesh(g, mat); mesh.name = 'heroSwell'; mesh.frustumCulled = false; mesh.renderOrder = 5; mesh.visible = false;
   scene.add(mesh);
   updaters.push(() => {
-    mesh.visible = S.k > 0.01; if (!mesh.visible) return;
+    mesh.visible = S.k > 0.01 && !STRUCT_PARTS.water; if (!mesh.visible) return;   // (?s3=intunnel,structmatch: hidden, its followers with it)
     u.uFade.value = S.k; u.uC.value.copy(S.C); u.uR.value.copy(S.F.R); u.uU.value.copy(S.F.U); u.uT.value.copy(S.F.T);
     u.uLat.value = THREE.MathUtils.clamp(S.lat, -6, 6); u.uAir.value = S.air; u.uLand.value = S.land; u.uPX.value = S.lagX; u.uXMax.value = S.xMax;
     u.uFlow.value = P.flow * (0.6 + 0.4 * THREE.MathUtils.clamp(S.speed / 7, 0, 1.5));
