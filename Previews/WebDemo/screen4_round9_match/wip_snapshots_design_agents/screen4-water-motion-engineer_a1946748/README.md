@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Build blend character-water candidate)
 
-- **Taken:** 2026-11-07 10:36 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 10:41 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a19467485d7ab6a56` (local only), started from `c4d84e3`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (44; full copies in `files/`)
+## Files (71; full copies in `files/`)
 
 - `Previews/WebDemo/screen4_round9_match/59_blend/frames/blendA_T1.0.log (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/frames/blendA_T1.0/base_again_canvas.png (new)`
@@ -32,20 +32,47 @@
 - `Previews/WebDemo/screen4_round9_match/59_blend/frames/blendB_start/base_canvas.png (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/frames/blendB_start/base_page.png (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/frames/blendB_start/census.json (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/1_start_blend_f0057.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/1_start_previous_f0057.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/2_moving_plus1s_blend_f0088.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/2_moving_plus1s_previous_f0088.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/3_swipe_left_blend_f0096.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/3_swipe_left_previous_f0096.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/4_swipe_right_blend_f0123.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/4_swipe_right_previous_f0123.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/5_jump_blend_f0152.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/5_jump_previous_f0152.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/6_landing_blend_f0168.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/frames/pixel7/6_landing_previous_f0168.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/proofs/flow_metric.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/proofs/identity/identity.txt (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/clip_compare.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/contact_band.py (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/flow_metric.py (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/gameplay.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/identity.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/scripts/identity_all.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/measure.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/pink_silhouette.py (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/profile.py (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/record_clip.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/render.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/sheet3.py (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/scripts/sheet_p7.py (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/scripts/trace_compare.py (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/scripts/zone_water.py (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_1_start.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_2_moving_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_3_swipe_left.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_4_swipe_right.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_5_jump.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_6_landing.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/videos/clip_blend.log (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/videos/clip_blend.mp4 (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/videos/clip_compare_ORIGINAL_previous_blend.mp4 (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/videos/clip_key_moments_previous_blend.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/59_blend/videos/clip_previous.log (new)`
+- `Previews/WebDemo/screen4_round9_match/59_blend/videos/clip_previous.mp4 (new)`
 - `WebDemo/src/game.js`
 - `WebDemo/src/tunnel_r7_hero_water.js`
 - `WebDemo/src/tunnel_r9_match_water.js`
