@@ -1,5 +1,24 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
+## Newest (7 November, about 12:20-12:45 UTC): nineteenth session (`95f7eae5`, account transfer), restoration only; NO game changes
+
+- **Branch:** this session is restricted to `claude/bubble-wash-transfer-tcgbof` (a copy of `ccr-10503be1-pnv5vq` at
+  `5d8c185`; its 12:17 autosave `5d21931` merged in with a normal merge). Nothing was pushed to `ccr-10503be1-pnv5vq`: the
+  eighteenth session's container (`4fd798d9`) was still alive and autosaving there, so it stays the only writer of it.
+- **Checks:** `verify_restore.sh --build` 26 passed, 1 note, 1 failed (only the branch-name check); the committed bundle
+  `38466b67` rebuilds byte-identically; the ORIGINAL's sha256 matches; the five agents, the skill and the hook are present.
+  parallax-threejs 0.4.12: chrome-devtools-mcp, threejs-devtools-mcp (bridge connected, `renderer_info` read the live
+  `?s3=intunnel` scene) and playwright-mcp work; Spector fails to connect (skipped by the user).
+- **Cloud environment:** this account's `bubblegame` (`env_01AHWQCELWvVDE14Rabq7bfr`) now has the guarded setup script of
+  7 November (the user's approval); it was run by hand here: every step passed, exit 0, 12 s.
+- **Autosave:** this session is in `Tools/autosave_sessions.json`; one detached writer; first save `306e98c`, Push: VERIFIED.
+- **The fidelity pass (`?s3=intunnel,fidelity`, agent `a5ba6876`, snapshot
+  `wip_snapshots_design_agents/screen4-water-motion-engineer_a5ba6876/`): STOPPED at 12:04 UTC** by the old account's
+  5-hour limit, after all its proofs (identity 0 px, `s3_func`, `r2_func`, motion trace equal), the final clip, the Pixel 7
+  sheets, the comparison video and the flow metric (all saved at 12:07). Left: the `FLOW_NEW` and `JUDGEMENT` placeholders
+  in its README, then the art director's review, then the user's decision. Its snapshot over `f71e130` rebuilds to md5
+  `092bbd05`, as the agent reported (checked in a scratch worktree, removed). Not merged, not restarted.
+
 ## Newest (7 November, about 00:30-02:20 UTC): eighteenth session (session `4fd798d9`), the `bubblegame` environment and `?s3=intunnel,swim2`
 
 - **Branch:** `ccr-10503be1-pnv5vq` (the session started on `ccr-312c8679-hmvgmy`; one chat auto-save there, left alone).
