@@ -216,7 +216,16 @@ bash Tools/verify_restore.sh --build      # read-only: branch, push state, accep
      `55_account_restore/gameplay/r2_func_intunnel_run1_timeout.txt` and `r2_func_intunnel.txt`).
    - The game files are byte-identical to the build whose `r2_func` passed on the first account, so a game change is
      ruled out. The cause is not yet found: a container or harness timing difference is likely, not proven.
-   - A diagnostic that reproduces the sequence (`55_account_restore/README.md`) was still running when this was written.
+   - **The diagnostic** (`55_account_restore/scratch_diag/reload_diag.cjs`: load, tap, 1,200 frames, reload) was
+     INCONCLUSIVE: its time limit (1000 s) stopped it before it printed anything.
+     - It asks for about three times the frames the hearts test runs, so slow software rendering alone may explain that.
+     - Its first version was invalid: it served files without a content type.
+   - **Next steps to try (read-only):**
+     - run `S3=intunnel node tools/screen3/r2_func.cjs $PWD` again on a quiet machine;
+     - if it still times out, log `page.goto`'s events at the second load (the corrected diagnostic with `RUN=370`, the
+       hearts test's length);
+     - or try `VW=135 VH=270` (the script's own small-viewport option for software rendering, same game logic). Only a
+       report identical to the accepted one counts.
    - **Do not mark it passed until a full run matches** `53_swim/gameplay/r2_func_intunnel.txt`.
 2. **Spector MCP:** "Connection closed" (section 7); skipped by the user.
 3. **Two autosaves on one branch:**

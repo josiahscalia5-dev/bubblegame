@@ -45,7 +45,9 @@ Tools: three 0.170.0, esbuild 0.24.0 (`npm install`, pinned); Node 22.23.4. esbu
 - `scratch_diag/reload_diag.cjs` reproduces the sequence (load, tap, 1,200 frames, reload) with timings.
 - Its first version served files without a content type, so the module never ran; that run proved nothing and is
   disregarded.
-- The corrected run's result is recorded in `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, section 10.
+- The corrected run (`RUN=1200`) was INCONCLUSIVE: its 1000 s limit stopped it before it printed anything. That is three
+  times the hearts test's frames, so software-rendering speed alone may explain it.
+- Next steps: `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, section 10.1.
 
 ## 5. Tools verified live (6 November, about 23:22 UTC)
 
