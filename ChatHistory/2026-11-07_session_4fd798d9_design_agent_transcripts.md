@@ -363,5 +363,39 @@ Now the measured analysis on the existing accepted frames (swim2 frames = the ac
 - 10:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
 - 10:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
 - 10:11 `Bash`: Inspect frame_dump and swell settings
+- 10:11 `Grep`: focusSwellGLSL|function matchSwellGLSL|teeth
+- 10:11 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 10:11 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 10:11 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 10:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:11 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 10:11 `Grep`: window\.__bw[A-Za-z_]* =|__THREE_DEVTOOLS__|window\.__bw\b
+- 10:11 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/game.js
+- 10:12 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:12 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/tunnel_r7_hero_water.js
+- 10:12 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:13 `Bash`: Run zone water metrics and view swell line
+- 10:13 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:14 `Write`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/py/live_crop.py
+- 10:14 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:14 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:14 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:14 `Bash`: Crop live shots and profile them
+- 10:14 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/cmp_try1.png
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:15 `Bash`: Crop and profile tries 2 and 3
+- 10:15 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/cmp_try23.png
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 10:15 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 10:15 `Bash`: Check restored try equals accepted
+- 10:16 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/cmp_try0.png
+- 10:16 `Grep`: squash\.(position|scale)|mascot\.(squash|tilt|root)\.|\.model\b.*scale
+- 10:16 `Grep`: mascotModel
+- 10:16 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/WebDemo/src/opening.js
+- 10:16 `Grep`: stretch:|spike:
 
-_32 tool steps._
+_66 tool steps._
