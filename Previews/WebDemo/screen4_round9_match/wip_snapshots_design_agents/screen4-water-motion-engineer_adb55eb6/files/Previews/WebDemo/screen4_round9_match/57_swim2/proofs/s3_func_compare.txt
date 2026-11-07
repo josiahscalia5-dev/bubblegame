@@ -1,0 +1,21 @@
+s3_func, rebuilt bundle 1199348a (tools/screen3/s3_func.cjs, seed 7)
+intunnel: BYTE-IDENTICAL to 53_swim/gameplay/s3_func_intunnel.txt
+intunnel,swim2 against 53_swim/gameplay/s3_func_intunnel.txt (diff; every gameplay field identical, only the switch list, the hidden-layer list and the draw-call / triangle count differ):
+3c3,4
+<   "intunnel"
+---
+>   "intunnel",
+>   "swim2"
+378c379,382
+<       "r7Bubbles"
+---
+>       "r7Bubbles",
+>       "r3Swirl",
+>       "r3Whirlpool",
+>       "r3Bubbles"
+488,489c492,493
+<   "drawCalls": 192,
+<   "triangles": 1396096
+---
+>   "drawCalls": 189,
+>   "triangles": 1292344

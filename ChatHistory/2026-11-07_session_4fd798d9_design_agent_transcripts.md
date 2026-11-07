@@ -211,5 +211,25 @@ Meanwhile, the sheets on the final frames and the silhouette check.
 - 01:50 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/T1_sheet_s.jpg
 - 01:50 `Bash`: Check clip and gameplay test progress
 - 01:50 `Bash`: Wait for the swim2 clip re-record
+**Agent** (01:52 UTC):
 
-_140 tool steps._
+Clip done; rebuild the comparison video and sheet, rerun the flow metric, and compare s3_func and the trace.
+
+- 01:52 `Bash`: Build compare video and rerun the flow metric
+- 01:52 `Bash`: Build the side-by-side compare video
+- 01:53 `Bash`: Rerun the flow metric on final clips
+**Agent** (01:53 UTC):
+
+Now the gameplay comparisons (s3_func vs accepted reports, trace gameplay fields).
+
+- 01:53 `Bash`: Compare s3_func reports with accepted
+- 01:53 `Bash`: Compare motion trace gameplay fields
+- 01:53 `Bash`: Save s3_func comparison and downscale key moments
+- 01:53 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/km2_s.jpg
+- 01:54 `Bash`: Crop consecutive swim2 clip frames at the contact
+- 01:54 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/consec.jpg
+- 01:54 `Bash`: Check evidence folder sizes
+- 01:54 `Bash`: Trim duplicate frame files from evidence
+- 01:54 `Bash`: Wait for the r2_func runs
+
+_152 tool steps._

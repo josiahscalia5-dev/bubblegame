@@ -1,0 +1,8 @@
+accepted intunnel (5bb24e28): 25 frame pairs, 2.1-2.95 s | her own screen motion: median |v| 110 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +10, down  +106 =  107 px/s | oscillation about it (rms)  163 px/s | median speed  180 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +101, down   +72 =  124 px/s | oscillation about it (rms)  176 px/s | median speed  216 px/s
+  below    relative to her: STREAMING (time-mean vector) outward    +5, down  +178 =  178 px/s | oscillation about it (rms)  201 px/s | median speed  218 px/s
+intunnel,swim2 (1199348a): 25 frame pairs, 2.1-2.95 s | her own screen motion: median |v| 116 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +57, down  +341 =  346 px/s | oscillation about it (rms)  166 px/s | median speed  347 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +144, down  +382 =  408 px/s | oscillation about it (rms)  163 px/s | median speed  390 px/s
+  below    relative to her: STREAMING (time-mean vector) outward   +41, down  +415 =  417 px/s | oscillation about it (rms)  210 px/s | median speed  388 px/s
