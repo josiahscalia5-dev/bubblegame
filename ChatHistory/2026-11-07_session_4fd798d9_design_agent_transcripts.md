@@ -714,3 +714,147 @@ I judged from the engineer's sheets plus one close-up crop of the start (ORIGINA
 
 
 _10 tool steps._
+
+---
+
+## screen4-water-motion-engineer: Decisive Screen 4 fidelity pass (started 11:03 UTC)
+
+_Worked in its own worktree, branch `worktree-agent-a5ba6876e8752066d`._
+
+**Lead → agent** (11:03 UTC):
+
+ONE DECISIVE, REFERENCE-DRIVEN FIDELITY PASS for Bubble Wash Kingdom Screen 4: the relationship between the pink character and the water. You are the single implementation specialist; one candidate, behind a new flag `?s3=intunnel,fidelity`; then the main session runs one art-director review and the user decides. The user has spent five days on this screen and is tired of small corrections that barely change the result: the goal is an OBVIOUS visual improvement toward the ORIGINAL in the pictures, not a small numerical one. Be efficient; reuse existing reports and scripts; do not start other agents. Disk note: this session's disk allowance is limited (about 12 GB free when you start): delete your own large temporary renders when you no longer need them, and keep the evidence lean (JPEG sheets; PNG only for the frames the proofs need).
+
+STOP RULE: if, after the structural diagnosis (or during the build), the current approach cannot convincingly reproduce the ORIGINAL's character-water relationship, STOP and return: the specific structural limitation, what alternative asset or rendering approach would be needed (e.g. a new mascot model or fur shell, a sculpted water-contact mesh, a different technique), its rough cost, and whether further work is worth it. Do not start a second revision.
+
+TARGET: the ORIGINAL `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` (767 x 1536), the only authority. Magnified crops of it for close inspection (not separate designs): `Design/ReferencePacks/2026-11-07_One_Final_Pass_Reference_Set_from_user/` (`03_ORIGINAL_CHARACTER_WATER_CONTACT_and_FOREGROUND_WAVES_3X.png` is the key one; read its `READ_ME.txt`, the user's own notes).
+
+THE VISUAL REQUIREMENT (the user's): the pink mascot is a full, BROAD, fluffy rounded dome standing clearly above the water surface. Around and behind her base: blue/turquoise currents; at her lower edge irregular, flowing, rounded, glassy lavender / pale-blue water mounds, properly sized, with natural reflections and translucency; turquoise, rich blue, pale blue and translucent lavender-white highlights blending through real water shapes and depth. The original's foreground intentionally contains pale/lavender whites: do NOT make it uniformly cobalt. NOT: a flat or uniform lavender film, a transparent bowl around her, a static collar attached to her, a stiff straight contact line, a large white foam layer or giant opaque white spray. She must visibly travel THROUGH the water (currents flowing relative to her as she moves); her shape and scale consistent through swipes, jumps and landings; keep blend's better landing (no one-frame drop).
+
+STATE: commit `dc11eaf` (or later autosaves) on the work branch. The accepted Screen 4 is the bare `?s3=intunnel` (it includes swim2: `58_swim2_accepted/`). `?s3=intunnel,blend` is the last candidate (your own: `Previews/WebDemo/screen4_round9_match/59_blend/README.md`, code `WebDemo/src/tunnel_s4_blend.js`): her drawn body 0.88 tall and 5 cm higher, the water at 84 % with two domes, a lavender waterline tint, the damped landing dip. The art director (`59_blend_review/ART_DIRECTOR_VERDICT.md`): slightly closer, landing clearly closer; the lavender tint is a flat periwinkle wash (a mild regression); remaining, ranked: (1) waterline an even sawtooth line, not irregular glassy bubbly lavender-white mounds over her base; (2) foreground still pale sky blue, not saturated cobalt/turquoise with lavender-white foam; (3) her crown narrow and peaked (98 px wide 20 px below her top vs the original's 151) where the original is a broad round dome; (4) a hard cut where her fur meets the water, no soft contact or reflection; (5) the jump's somersault. Finished investigations to reuse, not repeat: `52_diagnosis/README.md`, `54_specialists/`, `57_swim2/`, `59_blend/`.
+
+FIRST, the structural diagnosis (short): inspect the live three.js scene (your threejs-devtools and chrome-devtools tools; serve your worktree's WebDemo with `python3 -m http.server 3000`, `http://localhost:9222/index.html?s3=intunnel,blend`) and decide where the mismatch really comes from: the mascot's 3D silhouette (her mesh / fur shell, why the crown reads narrow and peaked), the water geometry (heroSwell and the layers following its crest), mesh displacement, transparency and render order, layering, reflections, wave positioning, or the camera framing. Do not assume a shader colour change or more water effects is the answer. If the current water mesh cannot make the original's shapes, build a carefully constructed replacement water-contact geometry or material instead of another minor shader tweak: whichever has the strongest chance of matching the artwork while staying lightweight and playable.
+
+THE CORRECTION: one coherent change, starting from the accepted Screen 4 and incorporating only blend's proven useful parts (the damped landing; her ride height / proportions if they help; NOT its flat lavender tint). Code: a new file `WebDemo/src/tunnel_s4_fidelity.js` plus minimal hooks gated on `FIDELITY_ON` (define it in `tunnel_s4_bt.js` as `BT_ON && LIST.includes('fidelity')`; add `LIST.includes('fidelity')` to the SWIM2_ON line so swim2 stays on under it; reuse blend's code by importing it rather than copying where practical). Visual only: do not alter the camera behaviour, controls, lanes, jump physics, collectibles, the sock rescue, the HUD, game physics, or the seeded Math.random (private generators only). three.js r170. No open-ended tweaking: a few internal look-and-adjust rounds at most. Setup: `cd WebDemo && npm install && node build.mjs`; `source Tools/bw_tools_env.sh`; `r2_func` ONLY with `VW=135 VH=270`. Do NOT commit, push, merge or switch branches; do not edit `.claude/agents/`. Close browser pages and stop your server when done.
+
+PROOF (in `Previews/WebDemo/screen4_round9_match/60_fidelity/` in your worktree):
+1. Real mobile-framed gameplay at the established seed (7) and camera (Pixel 7, `51_swim/scripts/record_phone.cjs` with ART_OFF=1 SWIPEJUMP=1 as in `59_blend/scripts`, plus `layer_diag.cjs` 768 x 1536 renders at the original's framing): start, +1 s, +2 s, swipe left, swipe right, jump, landing. ORIGINAL | ACCEPTED (`?s3=intunnel`) | NEW, one sheet per moment, at READABLE resolution (full-height panels, labelled), plus one close-up sheet of her contact with the water (the region of the 03 crop) for ORIGINAL | ACCEPTED | NEW.
+2. A short gameplay recording, ORIGINAL (still) | ACCEPTED | NEW, the 7 s swipe-and-jump run, MP4.
+3. An evaluation table, ORIGINAL vs ACCEPTED vs NEW: character roundness (crown widths), how much of her shows above the water, waterline shape, relative wave size, colour blending, transparency, swimming motion (water flow past her, `flow_metric.py`), with what each number measures.
+4. Regression and identity: 0 px between the committed bundle (md5 38466b67) and your rebuild for `?s3=intunnel` (start, +1 s, +2 s), `intunnel,noswim2` (+1 s), `intunnel,blend` (+1 s), `intunnel,water9` (+1 s) and the normal game (start, +1 s); `s3_func` and `r2_func` for `intunnel,fidelity` equal to the accepted `intunnel` in every gameplay field; the motion trace's gameplay and camera fields identical (`tools/screen4/motion_trace.cjs`, SCRIPT=swipejump, against `53_swim/motion/trace_accepted_swipejump.json`).
+5. README (at most about 45 lines): the structural diagnosis, the approach chosen and why, files changed, evidence, the evaluation table, and your candid judgement: is the improvement OBVIOUS when looking at the pictures, and what still differs.
+
+Return a short summary: the diagnosis, the approach, files, evidence paths, proof results, judgement (or, under the stop rule, the limitation, the alternative and its cost).
+
+**Agent** (11:03 UTC):
+
+I'll start by orienting myself in the worktree and reading the key reports.
+
+- 11:03 `Bash`: Show branch state, disk and evidence folders
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/59_blend/README.md
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/59_blend_review/ART_DIRECTOR_VERDICT.md
+**Agent** (11:03 UTC):
+
+Disk is at 6.8 GB free, so I'll keep renders lean. Let me look at the user's reference set and the original.
+
+- 11:03 `Bash`: List the user's final-pass reference set and its notes
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Design/ReferencePacks/2026-11-07_One_Final_Pass_Reference_Set_from_user/03_ORIGINAL_CHARACTER_WA
+**Lead → agent** (11:03 UTC):
+
+[Image: original 2244x1095, displayed at 2000x976. Multiply coordinates by 1.12 to map to original image.]
+
+- 11:03 `Bash`: Read reference README and list blend evidence folder
+**Agent** (11:03 UTC):
+
+Now let me see the current state of blend vs accepted against the original.
+
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/59_blend/sheets/framing768_ORIGINAL_previous_blend_start.j
+**Lead → agent** (11:03 UTC):
+
+[Image: original 2317x1582, displayed at 2000x1366. Multiply coordinates by 1.16 to map to original image.]
+
+- 11:03 `Bash`: Read blend's render and sheet scripts
+**Agent** (11:03 UTC):
+
+The key differences are visible: her crown is conical, the waterline is a flat sawtooth band. Let me read the diagnosis and the blend code before going live.
+
+- 11:03 `Bash`: Read the measured diagnosis README
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_blend.js
+**Agent** (11:03 UTC):
+
+Now the mascot's construction: why does her crown read narrow and peaked?
+
+- 11:03 `Grep`: BODY_R|function buildMascot|makeMascot|furShell|fur shell|squash\.scale|presentation stretch|0\.95, 1\.07
+- 11:03 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/game.js
+**Agent** (11:03 UTC):
+
+Let me set up the live inspection: server, bridge, and the seed-7 init script.
+
+- 11:04 `Bash`: Check node_modules, ports and the seed-7 init script
+- 11:04 `Bash`: Check listening ports and node_modules presence
+**Agent** (11:04 UTC):
+
+No node_modules here; to save disk I'll symlink the main checkout's (same lockfile) and verify a rebuild reproduces md5 38466b67.
+
+- 11:04 `Bash`: Symlink node_modules, rebuild, check bundle md5
+- 11:04 `Bash`: Symlink node_modules, rebuild, check bundle md5
+- 11:04 `Bash`: Inspect package files and main node_modules versions
+- 11:04 `Bash`: Symlink node_modules, rebuild, verify md5
+**Agent** (11:04 UTC):
+
+The rebuild reproduces md5 38466b67 exactly. Now the server and the live scene.
+
+- 11:04 `Bash`: Start the static server on port 3000
+- 11:04 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 11:04 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:04 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:04 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 11:04 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+**Agent** (11:04 UTC):
+
+The mascot looks like `output_unwrapped` (147k vertices). Let me list the named objects near her and their render settings.
+
+- 11:04 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:04 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:05 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:05 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+**Agent** (11:05 UTC):
+
+The mascot is `BubbleWash_PinkFuzzyMascot_Small` (61k vertices, stretched 0.521/0.587/0.521). Let me measure its own silhouette profile (width vs. depth below the crown) in model space.
+
+- 11:05 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:05 `Bash`: Read layer_diag.cjs header and options
+**Agent** (11:05 UTC):
+
+Let me look at her unoccluded silhouette from the existing ablation (heroSwell hidden) to separate mesh shape from water occlusion.
+
+- 11:05 `Bash`: List diagnosis ablation frames and profile script
+- 11:05 `Bash`: Profile the silhouettes of original, unoccluded and current frames
+- 11:05 `Bash`: Profile the silhouettes of original and current frames
+**Agent** (11:05 UTC):
+
+The scripts hard-code blend's worktree path. I'll copy them into `60_fidelity/scripts` and repoint them.
+
+- 11:05 `Bash`: Copy and repoint blend's analysis scripts
+- 11:05 `Bash`: Copy and repoint blend's analysis scripts
+- 11:05 `Bash`: Profile silhouettes of original and current frames
+- 11:06 `Bash`: List the rejected dome/bank/crest evidence
+- 11:06 `Bash`: Read the rejection reasons for domes, bank, crests
+- 11:06 `Bash`: Size the water modules and find blend hooks
+- 11:06 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_bt.js
+- 11:06 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_r7_hero_water.js
+**Agent** (11:06 UTC):
+
+Let me make a close-up of the contact region, ORIGINAL vs accepted vs blend, to see the exact differences.
+
+- 11:06 `Bash`: Build a contact close-up of original, accepted, blend
+- 11:06 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/crop_sheet.py
+- 11:07 `Bash`: Render the contact close-up sheet
+- 11:07 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/contact_now.jpg
+**Lead → agent** (11:07 UTC):
+
+[Image: original 2728x507, displayed at 2000x372. Multiply coordinates by 1.36 to map to original image.]
+
+
+_46 tool steps._
