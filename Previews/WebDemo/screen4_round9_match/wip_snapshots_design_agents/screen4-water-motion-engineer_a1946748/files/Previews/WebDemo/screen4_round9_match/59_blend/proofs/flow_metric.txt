@@ -1,0 +1,16 @@
+previous intunnel (ea0c833c): 25 frame pairs, 2.1-2.95 s | her own screen motion: median |v| 142 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +57, down  +339 =  343 px/s | oscillation about it (rms)  167 px/s | median speed  344 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +143, down  +382 =  407 px/s | oscillation about it (rms)  168 px/s | median speed  406 px/s
+  below    relative to her: STREAMING (time-mean vector) outward   +40, down  +414 =  415 px/s | oscillation about it (rms)  215 px/s | median speed  412 px/s
+intunnel,blend: 25 frame pairs, 2.1-2.95 s | her own screen motion: median |v| 110 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +41, down  +307 =  310 px/s | oscillation about it (rms)  162 px/s | median speed  327 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +125, down  +288 =  314 px/s | oscillation about it (rms)  156 px/s | median speed  362 px/s
+  below    relative to her: STREAMING (time-mean vector) outward   +42, down  +399 =  401 px/s | oscillation about it (rms)  199 px/s | median speed  430 px/s
+previous intunnel, landing 5.55-6.2 s: 19 frame pairs, 5.55-6.2 s | her own screen motion: median |v| 142 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward  +108, down  +135 =  173 px/s | oscillation about it (rms)  279 px/s | median speed  310 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +226, down   +85 =  241 px/s | oscillation about it (rms)  241 px/s | median speed  329 px/s
+  below    relative to her: STREAMING (time-mean vector) outward   +45, down  +173 =  179 px/s | oscillation about it (rms)  189 px/s | median speed  279 px/s
+intunnel,blend, landing 5.55-6.2 s: 19 frame pairs, 5.55-6.2 s | her own screen motion: median |v| 205 px/s
+  contact  relative to her: STREAMING (time-mean vector) outward   +71, down  +129 =  147 px/s | oscillation about it (rms)  198 px/s | median speed  283 px/s
+  beside   relative to her: STREAMING (time-mean vector) outward  +170, down   +65 =  182 px/s | oscillation about it (rms)  229 px/s | median speed  305 px/s
+  below    relative to her: STREAMING (time-mean vector) outward    -9, down  +162 =  163 px/s | oscillation about it (rms)  218 px/s | median speed  247 px/s

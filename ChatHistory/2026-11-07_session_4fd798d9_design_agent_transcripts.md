@@ -545,5 +545,27 @@ Meanwhile, the clip key moments (CPU-only work).
 - 10:40 `Bash`: Check identity proof progress
 - 10:40 `Bash`: Build side-by-side video and key moments
 - 10:41 `Bash`: Run flow metric on clips
+- 10:42 `Bash`: Wait for all seven identity pairs
+- 10:43 `Bash`: Run s3_func and motion trace for blend
+- 10:44 `Bash`: Compare trace and s3_func, start r2_func
+- 10:44 `Bash`: Run r2_func at VW=135 VH=270 for blend
+- 10:44 `Bash`: Compare trace and s3_func outputs
+- 10:44 `Bash`: Build 768 framing sheets and tidy frames
+- 10:44 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/scripts/sheets768.sh
+- 10:44 `Bash`: Build the 768 framing sheets
+- 10:44 `Bash`: Remove superseded blend A frames
+- 10:44 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/sheets/pixel7_3_swipe_left.jpg
+**Lead → agent** (10:44 UTC):
 
-_162 tool steps._
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 10:45 `Bash`: Read drawn fields at key trace rows
+- 10:45 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/README.md
+- 10:45 `Bash`: Wait for r2_func to finish
+- 10:46 `Bash`: Compare r2_func and s3_func reports
+- 10:46 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/proofs/r2_func_compare.txt
+- 10:46 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a19467485d7ab6a56/Previews/WebDemo/screen4_round9_match/59_blend/README.md
+- 10:46 `Bash`: Tidy, stop server, check browsers
+- 10:46 `Bash`: List main browser processes
+
+_180 tool steps._
