@@ -1,6 +1,6 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Build swim2 water candidate)
 
-- **Taken:** 2026-11-07 02:32 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 02:37 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-adb55eb6aad0cc08b` (local only), started from `b5d6e59`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
