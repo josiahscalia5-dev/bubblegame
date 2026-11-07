@@ -1,0 +1,45 @@
+# BUBBLE WASH KINGDOM — MANDATORY MASCOT + WATER CORRECTION
+
+Claude Code: This is a precise implementation request for the EXISTING playable Screen 4. Read the attached reference board, authentic approved image, and the latest 2–8-second gameplay frame strip before changing code. This is not a new screen design, a request for a proposal, or a request to change unrelated gameplay.
+
+## NON-NEGOTIABLE SOURCE OF TRUTH
+The file Screen4_APPROVED_ORIGINAL_MASTER_FROM_COMPARISON.png is the visual master. The new annotated comparison explains what is wrong but does not override the original. The image 12825.jpg is real current gameplay at 2, 3, 4, 5, 6 and 8 seconds. The ORIGINAL approved pink mascot must be replicated as faithfully as real-time 3D permits, not replaced by another generically pink furry blob.
+
+## THE ACTUAL PROBLEM TO FIX
+The latest Screen 4 water, circular blue tunnel, coins, bubbles and brushes have improved. KEEP them. However, the current pink character is a flatter, shorter-looking mound with short/chunky-looking fur relative to the original's much fuller, rounded dome with visibly longer, fine directional pink strands and small side appendages. Its relationship to the water varies, and around 6 s it can look suspended or separated from the wave surface. Broad pale-white spray, crescents, or hard water highlights make the contact ambiguous. A bright blue color alone does not solve this.
+
+## TASK A — MATCH THE CHARACTER IDENTITY BEFORE WATER EFFECTS
+1. Inspect the current mascot mesh, silhouette, pivot/origin, world-space scale, fur shells, fur material/shader and existing character assets. Look for the approved source model first.
+2. With matched camera framing, adjust the underlying rounded dome profile, visible character height-to-width ratio, curvature, side nubs and base shape to match the original approved art. Do not simply enlarge the current flattened mound indiscriminately.
+3. Make fur LOOK like the original's fine, longer, directional, distinct pink strands, with controlled glossy pale tips. The current recent build uses a reduced shell count for mobile performance; assess the actual bottleneck and use a performant fur solution rather than blindly increasing shells, triangle count, overdraw, or costly transparency. Keep character identity consistent in side movement and bobbing.
+4. I have already instructed you to USE Tripo image-to-3D via my API key for this mascot. After checking the existing model and the official API documentation, generate ONE Tripo candidate BASE MESH from the tightly cropped ORIGINAL APPROVED pink mascot reference, with safe secret handling. Do not treat Tripo as a fur generator: refine the shape and fur in the game. Compare Tripo vs. existing character at the SAME camera angle, position and scale, then integrate whichever best matches the original without degrading mobile performance. Do not substitute an unrelated character or spend credits on repeated unverified generations.
+
+## TASK B — WATER CONTACT MUST BE PHYSICALLY/GEOMETRICALLY COHERENT
+1. The character rides ON the blue water. It is not underwater, not floating above it and not hidden behind an opaque/transparent water layer. Its upper pink dome stays visible; its lowest body/fur meets the blue wave surface naturally.
+2. Identify the SAME continuous moving water surface that the player is riding. Use the water's actual height or a consistent matching height function at the character's X/Z position and time to drive contact. Set the model's vertical anchor/contact offset so the base stays at the local waterline during forward travel, swipes and bobbing.
+3. Bobbing should be small and smoothed, largely following the wave's motion—not an independent sine wave that causes the body to hover or sink. Keep existing intentional jump mechanics separate from normal floating/swimming state.
+4. Put small, directional ripples and localized splash/wake effects where the lower body actually touches moving water, following the same world-space position and velocity. White is limited to occasional fine glints, not broad pale foam/crescent bands or white clouds behind the mascot. Keep saturated cobalt/cyan/turquoise volume visible.
+5. Check transparency, depth, render order, surface intersections, shader normals and water-lift tuning for false gaps and white streak artifacts. Fix ROOT CAUSES instead of painting over them with extra layers.
+
+## TASK C — SWIMMING IN ACTION
+The pink hero travels forward through a genuine 3D circular washing-machine tunnel. Under ordinary swimming it subtly rises and settles with water, keeps the same silhouette and water contact, and responds smoothly to left/right swipes. Add slight controllable lean/yaw, damping and a coherent ripple/wake response; avoid stiff sliding, abrupt snaps, mechanical bouncing, clipping or floating. Preserve the tunnel geometry, washer rim, coins, sock pickups, brushes, HUD, abilities, existing physics, seed-based test behavior and mobile controls. Do not change the entire camera or composition to conceal a faulty character model.
+
+## REQUIRED STEP-BY-STEP IMPLEMENTATION
+1. Inspect the repository and any running proof jobs; preserve unfinished work. Record branch, clean/dirty status, and create a rollback-safe checkpoint.
+2. Capture the existing baseline. At least use seed 7 if supported; show 2, 3, 4, 5, 6 and 8 s frames and a short real steering recording.
+3. Write the root cause in specific code terms: which mesh/fur system gives the flattened silhouette, and which water height/contact/shader/effect makes the mascot appear detached or creates white streaks.
+4. Correct character geometry/fur before changing camera. Then fix the waterline coupling and local effects. Keep edits narrowly scoped and reversible.
+5. Render new frames at matching viewport, camera, seed and progression position. Produce a TRUE original-vs-new comparison as well as previous-vs-new comparisons (these are different tests).
+6. Run continuous moving gameplay on a mobile-size viewport: forward travel, up/down movement, left/right steering, jumping and pickups, with no regressions or excessive rendering cost.
+7. Commit/push the approved safe changes to the existing development branch, preserving source assets and handoff instructions; report exact commit and rollback.
+
+## PASS / FAIL: DO NOT DECLARE COMPLETE UNLESS ALL PASS
+PASS 1: The official mascot is visibly a round, full pink dome with finer directional strands, small side nubs and the original rear-view profile at normal gameplay size—not merely a pink object.
+PASS 2: The pink dome remains clearly ABOVE the rich dimensional BLUE water while its lower fur actually CONTACTS the moving waves; no persistent gap, flattening or blanket white foam.
+PASS 3: At 2, 3, 4, 5, 6 and 8 s the same contact principle holds, including the problematic 6 s moment. During swipes and bobbing the wake moves with the mascot; no detached surface effects.
+PASS 4: No excessive white crescent streaks, blown-out pale layer, material clipping or transparency/sorting artifacts.
+PASS 5: Tunnel, brushes, sock, gold coins, abilities, HUD, responsiveness, collisions and mobile performance remain functional.
+PASS 6: Evidence includes matched original/current/new crops, a playable video with steering and bobbing, actual test results, changed files and Git commit. Do not invent a visual match score or declare success merely because the scene is more colorful.
+
+## FINAL ORDER
+IMPLEMENT the mascot silhouette/fur + REAL water-contact correction in the existing game. Preserve improvements elsewhere. SHOW the unedited gameplay proof. If anything fails, state precisely what remains wrong and do not mark it approved.
