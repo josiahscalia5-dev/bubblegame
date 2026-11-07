@@ -1,182 +1,119 @@
-# Swim animation review: her swimming as a drawn layer (`?s3=intunnel,swim2`)
+# Swim animation review (`?s3=intunnel,swim2`)
 
-The swim-animation reviewer, sixteenth session, 6 November 2026. This is a rerun of the 22:30 UTC inspection, which was lost
-to a usage limit. It was read-only: no browser, no build and no game file changed.
+The swim-animation reviewer, sixteenth session: a read-only rerun of the lost 22:30 UTC run.
 
-**What I read:**
-- `game.js` 971-1086 and 1195-1240;
-- `tunnel_r7_hero_water.js` 81-210;
-- `tunnel_r8_liquid.js` 385-503;
-- `tunnel_r8_splash.js` 155-165;
+**Read:**
+- `game.js` 971-1240;
+- the hero-water, liquid and splash updaters;
 - `tunnel_s4_swim.js`;
-- `mascot.glb` (decoded vertices);
-- `trace_accepted|swim_swipejump.json` and `trace_R9_swipejump.json` (rows at 30 fps);
-- `clip_R9.mp4` and `clip_swim.mp4`, as frames.
+- `mascot.glb` (decoded);
+- the three traces and both clips.
 
-Row numbers refer to the accepted trace:
-- the swipe left at row 31;
-- the swipe right at row 58;
-- the jump at row 85;
-- the landing at row 107;
-- brush knocks at rows 36 and 112.
+Rows are the accepted trace's: swipes at rows 31 and 58, jump 85, landing 107, knocks at 36 and 112.
 
-## What she does now (measured)
+## Measured now
 
-- **Straight running (rows 2-30):**
-  - Her root heaves 73 px peak to peak on the 1536-px screen. That heave is the water's waves (0.5, 1.7 and 4 Hz) plus
-    the 1.7 Hz bob of ±5 cm, both inside `yAbs`.
-  - Against the swell's base she moves 9.9 cm peak to peak.
-  - Her only rotation is the idle sway: ±2.3° at 0.35 Hz.
-  - Nothing has the rhythm of a stroke. She is a floating toy.
+- **Straight:**
+  - Her root heaves 73 px peak to peak: the waves plus the 1.7 Hz ±5 cm bob, all in `yAbs`.
+  - That is 9.9 cm against the swell's base.
+  - Her only rotation is a ±2.3° sway. No stroke rhythm.
 - **Swerve:**
-  - Her sideways speed `xv` peaks at row +3 (2.85 m/s). The lean peaks at row +5 or +6 (22-24°).
-  - The swell's `uLat` peaks at 1.87, two to three rows after `xv`.
-  - The swell trails her sideways by up to 12.5 cm (`x - swellLagX`, row 36): she slides off her own mound, which reads as
-    the pedestal.
-- **Jump:**
-  - 21 airborne rows, with the apex 1.03 m up.
-  - `rotation.x = -flip` turns her a full 360° nose-up: a back somersault in 0.62 s.
-  - In `clip_R9` frames n149-n154 her face, belly and blue feet show upside down.
-- **Landing (row 107):**
-  - `yAbs` sits 17 cm below her float line for exactly one row, because the game resets it only on the next frame.
-  - Then the squash goes to 0.836 about her centre, which lifts her bottom out of the water while her top drops.
-  - `uLand` raises the swell by 12 % (swim: 25 %).
-  - `clip_R9` and `clip_swim` frames n165-n172 show her buried to the top of her back for about 0.3 s. That breaks the
-    "never sunk" rule.
-- **Gameplay is safe to draw over:** the accepted, swim and R9 traces have identical gameplay fields in all 152 rows.
+  - `xv` peaks at +3 rows; the lean (22-24°) at +5/+6; `uLat` (1.87) 2-3 rows after `xv`.
+  - The swell trails her by up to 12.5 cm, so she slides off her own mound: the pedestal read.
+- **Jump:** `rotation.x = -flip` is a 360° back somersault in 0.62 s. `clip_R9` n149-n154 shows her face and feet upside
+  down.
+- **Landing:**
+  - `yAbs` dips 17 cm for one row.
+  - The squash is 0.836 about her centre.
+  - `uLand` raises the swell 12 % (swim: 25 %).
+  - Both clips, n165-n172: she is buried to her back for about 0.3 s.
+- **Safe to draw over:** the gameplay fields are identical across the three traces.
 
 ## Decisions
 
-### 1. The forward swim cycle: an alternating paddle at 1.25 Hz
+### 1. Forward cycle: an alternating paddle at 1.25 Hz
 
-The cycle is 24 frames at 30 fps. It is scaled down to 0.6x when she is slowed, for example after a knock.
+24 frames at 30 fps, scaled x0.6-1 with her speed. It sits apart from every heave line (0.5, 0.95, 1.7, 4 Hz), so it
+reads as her own action.
+- **Roll:** ±6° toward the pulling arm, about her centre (a floating sphere's metacentre). It is the main cue from
+  behind: waves never rotate her.
+- **Lift and breath:** 2 cm and 1.2 % per pull (2.5 Hz). Surge pitch ±1.5°.
+- **The game's bob** is cancelled in the drawing only; the camera is unchanged.
+- **Arms (secondary):**
+  - a paddle wheel on the measured nubs (|x| 0.42-0.52 m), flap ±18°, sweep ±24°, the two arms half a cycle apart;
+  - in the vertex shader, because the model has no rig;
+  - set both to 0 if they read as waving.
+- **Each pull:** a ripple at her side (replacing the bob ripple) and 4 small private-random droplets.
+- **Envelopes:** 0 at Tap to Start (the start frame unchanged), in over 0.3 s, out in the air.
 
-**Why 1.25 Hz:**
-- It sits apart from every heave line (0.5, 0.95, 1.7 and 4 Hz), so it reads as her own action, not the water's.
-- The swim candidate's 1.2 Hz measured well.
+### 2. Swerve: no body offset
 
-**The parts of the cycle:**
-- **Roll toward the pulling arm, ±6° at 1.25 Hz, about her centre.**
-  - This is the main cue from behind, because the waves never rotate her.
-  - About her centre, because a floating sphere's metacentre is its centre. Her crown moves about 15 px.
-- **Lift (2 cm) and breath (1.2 %), once per pull,** 0.6 rad after the pull. A surge pitch of ±1.5°.
-- **The game's 1.7 Hz bob is taken out of the drawing only.** It stays in `yAbs` and in the camera's 35 %.
-- **Arms (secondary action):**
-  - Measured on the model: nubs at |x| 0.42-0.52 m, y 0.09-0.22, |z| < 0.1.
-  - A paddle wheel: the arm goes up and forward over the top, then down and back. Flap ±18°, sweep ±24°, the two arms
-    half a cycle apart.
-  - Done in the vertex shader, because the model has no rig.
-  - If the art director reads them as waving, set both to 0: the shader then takes the plain path.
-- **At each pull's deepest point:**
-  - a ripple at her side, which replaces the game's 0.45 s bob ripple while running;
-  - four small droplets from a private generator, under R7's 12-px cap.
-- **Envelopes:**
-  - 0 at Tap to Start, so the start frame stays the accepted one;
-  - in over 0.3 s after the tap;
-  - out over 0.08 s in the air.
+The drawn x is the gameplay x: pickups use her root.
+- **Bank:** `spring(-(0.12·xv + 0.0105·dxv/dt))`, ω 16, ζ 0.4, cap 24°.
+  - About 20° at +4 rows: it leads the game's lean.
+  - It rocks back 3° at +11/+12.
+  - The stroke's roll falls to 30 % while banking.
+- **Water:**
+  - `lat` follows `xv` with a 0.03 s attack and a 0.15 s release, so `uLat` (2.67) peaks with `xv` at +3.
+  - The swell's `swerve` goes 0.05 -> 0.08: the leading side +21 %, the trailing side -21 % (open water), ±5 % alternating
+    with the strokes.
+  - The swell stays centred within 4.4 cm.
 
-### 2. The swerve: no sideways body offset; the lead is in the bank and the water
+### 3. Jump: a dolphin arc, not a somersault
 
-The drawn x equals the gameplay x. Pickups and brush hits use her root, and the player steers her lane.
+A swimmer leaves the water head first along her path; the flip reads as a toy.
+- **Pitch:** `-0.55·atan2(vy, max(speed, 3))` through a spring (ω 20, ζ 0.5): -21° at take-off, 0 at the apex, +21° at
+  entry.
+- **`m.flip`:** still computed, only not drawn.
+- **Arms:** they rise.
+- **Water:**
+  - a `uLand` pulse of 0.5 (0.12 s) throws the crest up with her;
+  - the slump closes the water under her by +8 rows;
+  - a closing ring where she left it, at +0.27 s.
 
-**The bank:**
-- A damped spring driven by her sideways speed and its change: `spring(-(0.12·xv + 0.0105·ẍ))`, with ω 16, ζ 0.4 and a cap
-  of 24°.
-- It peaks at about 20° at row +4. The game's lean peaks at 22° at row +6.
-- Then it rocks back about 3° at rows +11/+12 (follow-through) and settles by row +18.
-- During the bank the stroke's roll drops to 30 %.
+### 4. Landing: a dip and a resurface, 0.5 s
 
-**The water:**
-- `lat` is a fast-attack (0.03 s) / slow-release (0.15 s) copy of `xv`. `uLat` therefore peaks at 2.67 on row +3, the
-  same row as `xv`.
-- The swell's `swerve` goes from 0.05 to 0.08:
-  - the leading side piles up 21 %;
-  - the trailing side drops 21 %, the open water she leaves behind;
-  - the sides alternate ±5 % with the strokes.
-- The swell stays centred on her: a 0.03 s lag, at most 4.4 cm.
-- The far ends still drag behind, through the existing `p.x -= uLat·0.025`.
+- **The one-row drop:** not drawn.
+- **Dip:** a damped sine (ω 14, ζ 0.45), depth `clamp(0.013·|vy|, 0.03, 0.08)`:
+  - -6 cm on the contact row, -8 cm at +1/+2;
+  - 0 at +7, a +1.3 cm rebound at +9;
+  - settled by +15.
+- **Pitch:** from +21° to about -4° nose-up at +9 (she resurfaces).
+- **Squash:** 0.15 per unit about her waterline (minimum 0.90).
+- **Water:**
+  - **Crater:** `uAir = max(slump, 0.45·dip)` lowers the crest about 17 % while she dips, so her waterline holds: never
+    buried.
+  - `uLand = 1` for 0.4 s: the crown splash.
+  - The floor's ring as now.
 
-### 3. The jump: not a somersault, a dolphin arc
+## The water's inputs, each frame
 
-A swimmer leaves the water head first along her path. A back somersault reads as a gymnast or a toy, and shows her face
-and feet to the camera.
-
-**The drawn pitch:**
-- `-0.55·atan2(vy, max(speed, 3))`, through a spring (ω 20, ζ 0.5).
-- About -21° (nose up) at row +3, about 0° at the apex, about +21° (nose down) at the entry.
-
-**Unchanged:** `m.flip` is still computed (`flipDeg` identical); it is only not drawn.
-
-**The arms** rise to an "open wings" pose (flap +24°, sweep -16°) with the slump signal.
-
-**The water:**
-- At take-off a `uLand` pulse of 0.5, decaying at 4/s (0.12 s), throws the crest and its spray up with her.
-- The accepted slump then closes the water under her by row +8.
-- A closing ring (strength 0.7) appears where she left the water, 0.27 s after take-off.
-
-### 4. The landing: a dip and a resurface, 0.5 s in all
-
-**Her body:**
-- The one-row drop of 17 cm is not drawn (`comp = rideY - yAbs`).
-- The dip is a damped sine keyed on the time since landing (ω 14, ζ 0.45, a 0.04 s lead), with depth
-  `A = clamp(0.013·|vy|, 0.03, 0.08)`:
-
-  | rows after landing | 0 | +1 / +2 | +7 | +9 | +15 |
-  |---|---|---|---|---|---|
-  | dip | -6 cm | -8 cm | 0 | +1.3 cm (rebound) | settled |
-
-- **Pitch:** the spring on the water (ω 12, ζ 0.45) brings her from +21° (nose down) to about -4° (nose up) near row +9,
-  which is the resurfacing. She is level by row +15.
-- **Squash:** 0.15 per unit (the game uses 0.25), about her waterline. The deepest squash is 0.90.
-
-**The water:**
-- **Crater:** `uAir = max(slump, 0.45·dip)` lowers the crest about 17 % while she dips, so her waterline stays put. She
-  stays on top, never buried.
-- **Crown splash:** `uLand = 1`, decaying at 2.5/s (0.4 s): the crown splash and the outward push.
-- **The floor's ring:** `uLqMove.w`, 0.55 m out to 3.15 m over 0.7 s (as now).
-
-## What the water receives each frame
-
-`updateMascot` computes `m.sw2`. The water's updaters (`opening.update`, `game.js:1600`) run later in the same frame and
-copy it, so there is no one-frame lag.
+`updateMascot` writes `m.sw2`; the updaters copy it later in the same frame (`game.js:1600`).
 
 | layer | uniform | value |
 |---|---|---|
-| heroSwell, heroSplash, splash bank, waterline plumes (shared objects) | `uLat` | `sw2.swellLat` = lat ± 0.6·(pull L - pull R) |
-| | `uAir` | `sw2.swellAir` = max(slump, crater) |
-| | `uLand` | `sw2.land`: 0.5 at take-off, 1 at landing |
-| | `uPX` / `uC` | `sw2.waterX`; the base blends from the accepted `ride + dip` to the water surface by `sw2.run` |
-| lqFloor | `uLqPlayer.x` | `sw2.waterX` |
-| | `uLqMove` | (`sw2.lat`, speed share, `sw2.air` (no crater), `sw2.ring`) |
-| ripples | `uRipples` | stroke rings, take-off closing ring (via `addRipple`) |
-| fur | `uSw2Arm` | flap L, flap R, sweep L, sweep R (rad) |
+| heroSwell and its followers | `uLat` / `uAir` / `uLand` | `sw2.swellLat` / `sw2.swellAir` / `sw2.land` |
+| | `uPX`, base | `sw2.waterX`; from `ride + dip` to the water surface by `sw2.run` |
+| lqFloor | `uLqPlayer.x`, `uLqMove` | `sw2.waterX`; (`lat`, speed, `air`, `ring`) |
+| water | `uRipples` | strokes, closing ring |
+| fur | `uSw2Arm` | flaps, sweeps (rad) |
 
-## How to verify with `motion_trace.cjs` (`S3=intunnel,swim2 SCRIPT=swipejump`)
+## Verify with `motion_trace.cjs` (`S3=intunnel,swim2`)
 
-1. **Gameplay:** these fields must match `trace_accepted` in all 152 rows: `t`, `x`, `xv`, `lane`, `air`, `yAbs`, `z`,
-   `speed`, `coins`, `gems`, `socks`, `hearts`, `knocks`, `bumps`, `flipDeg`, `her` and `cam`. To prove that
-   `Math.random` is untouched, add one line to the init script that counts its calls; the count must be equal.
-2. **Rows 0-1:** every field identical, so the start frame is unchanged.
-3. **Straight running (rows 2-30, 125-150):**
-   - `rollDeg - 2.29·sin(2.2t)`: a 1.25 Hz line of ±6°.
-   - `drawnAboveSwellBase`: a 2.5 Hz line of about 2 cm; the 1.7 Hz line under 0.5 cm.
-4. **Swerve, right (rows 58-76):**
-   - `rollDeg` peaks at +20 ±2° at row 62 or 63, then about -3° at rows 69-70.
-   - `swellLat` reaches about -2.67 at row 61.
-   - `|x - swellLagX|` ≤ 0.05 on every row.
-5. **Jump (rows 86-106):** `pitchDeg` is about -21 at row 88, |pitchDeg| ≤ 4 at rows 95-96, about +21 at row 106, and
-   never beyond ±30 (tolerance ±2° for the idle pitch). `swellLand` is about 0.5 at row 86 and 0 by row 90.
+1. **Gameplay** (`x`, `xv`, `lane`, `air`, `yAbs`, `z`, `speed`, pickups, `flipDeg`, `her`, `cam`): identical in all
+   152 rows. A `Math.random` call counter must give equal counts.
+2. **Rows 0-1:** all fields identical.
+3. **Straight:** `rollDeg` carries a 1.25 Hz ±6° line; `drawnAboveSwellBase` a 2.5 Hz line of about 2 cm, with no 1.7 Hz.
+4. **Swerve right:**
+   - `rollDeg` +20 ±2° at rows 62-63, -3° at rows 69-70;
+   - `swellLat` -2.67 at row 61;
+   - `|x - swellLagX|` ≤ 0.05.
+5. **Jump:** `pitchDeg` -21 at row 88, ≤ 4 at rows 95-96, +21 at row 106.
 6. **Landing:**
-   - `drawnAboveSwellBase - 0.34` follows the dip table above.
-   - `drawn[1]` changes direction only once between rows 104 and 112.
-   - `squashY` ≥ 0.89.
-   - `swellAir` is about 0.44 at rows 108-109 and ≤ 0.05 by row 114.
-   - `swellLand` falls from 0.92 at row 107 to 0 by row 118.
-7. **By eye:** `clip_swim2` against `clip_R9` at n149-n154 (no face showing) and n165-n172 (her back stays above the
-   water). Optionally log `m.sw2` in the trace.
-
-**Risk:** the arm deformation of the bristled Meshy mesh must be checked at four phases. The four uniform-gated paths
-must still give 0 differing pixels against `?s3=intunnel` at the start frame.
+   - `drawnAboveSwellBase - 0.34` follows the dip;
+   - `squashY` ≥ 0.89;
+   - `swellAir` about 0.44 at rows 108-109.
+7. **By eye:** the clip at n149-n154 and n165-n172. Check the arm bend at four phases.
 
 ## Code
 
