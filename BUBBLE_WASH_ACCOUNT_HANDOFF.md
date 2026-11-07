@@ -93,6 +93,14 @@ Page captures: `SETTLE=900 S3=intunnel,structmatch TIMES=0,1,2,3,5 node tools/sc
   - any Tripo key (environment settings only; never in the repository; Tripo jobs cost credits: ask first);
   - running agents' live state (only their files are saved, as worktree snapshots every 5 minutes).
 
+- **Android preview APK (7 November, about 16:25 UTC, the user's request):** `dl.google.com` added to this account's
+  `bubblegame` environment (the user's approval); the Android SDK (`platforms;android-34`, `build-tools;34.0.0`) installed
+  in `~/android-sdk` (outside the repository: a new machine must install it again with `sdkmanager`); built with
+  `ANDROID_HOME=~/android-sdk bash Tools/android_apk/build_apk.sh <out.apk>` (75 MB, bundle `452f9568`, debug key in
+  `~/.bubblewash-android/`, new on this machine: a phone with an older preview APK must uninstall it first). Its start page
+  (`Tools/android_apk/start.html`) opens the NEW `?s3=intunnel,structmatch`, the accepted `?s3=intunnel`, NEW without the
+  lining and the normal game. The APK itself is not committed (`*.apk` is ignored).
+
 ## 8. Latest safe commits
 
 - Before this pass: `0c76b4d` (the old account's last autosave, transfer branch), merged here as `8343381`.
