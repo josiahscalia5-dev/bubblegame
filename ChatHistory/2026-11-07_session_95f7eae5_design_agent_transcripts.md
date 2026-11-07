@@ -465,5 +465,31 @@ Identity on the final bundle (fa0768de): 0 pixels differ at all eight moments. T
 
 - 14:57 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheets.sh
 - 14:57 `Bash`: Build all evidence sheets
+- 14:57 `Bash`: List the new frame names
+- 14:57 `Bash`: Fix frame names and build the transition sheet
+**Agent** (14:58 UTC):
 
-_212 tool steps._
+Let me look at the main deliverable sheet and the transition sheet.
+
+- 14:58 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/01_TAP_TO_START_ORIGINAL_ACCEPTED_
+- 14:58 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/07_transition_rim_to_drum_NEW_t0_0
+**Lead → agent** (14:58 UTC):
+
+[Image: original 3267x1110, displayed at 2000x680. Multiply coordinates by 1.63 to map to original image.]
+
+**Agent** (14:58 UTC):
+
+The transition holds: the rim hands over to the drum's metal between +0.25 s and +0.5 s with no pop. Let me check the moving close-up of the water round her.
+
+- 14:58 `Read`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/04_closeup_water_round_her_y60-95_
+**Lead → agent** (14:58 UTC):
+
+[Image: original 3242x788, displayed at 2000x486. Multiply coordinates by 1.62 to map to original image.]
+
+**Agent** (14:58 UTC):
+
+The water part is a mixed result, and I'll report it as such under the stop rule. Waiting for the final gameplay proofs.
+
+- 14:58 `Bash`: Wait for the final gameplay proofs
+
+_218 tool steps._
