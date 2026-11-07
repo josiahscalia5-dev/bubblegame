@@ -1,5 +1,5 @@
 // Screens 1-2 (?s3=...,home) driven like a phone user, recorded unedited (Playwright video), with the game's state checked.
-//   node tools/screens12/screens12_check.cjs <abs WebDemo> <out dir> [s3=intunnel,structmatch,home] [view=412x839]
+//   [QUICK=1: Screens 1-2 only] [VIDEO=0] [DPR=1] node tools/screens12/screens12_check.cjs <abs WebDemo> <out dir> [s3=intunnel,structmatch,home] [view=412x839]
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const [ROOT, OUT, S3 = 'intunnel,structmatch,home', VIEW = '412x839'] = process.argv.slice(2);
@@ -34,6 +34,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   await page.screenshot({ path: `${OUT}/04_screen2_laundry_toss_loading.png` });
   await page.waitForFunction(() => document.body.classList.contains('ready') && !document.querySelector('#bwHome .go[aria-label="Start the adventure"]').disabled, null, { timeout: 300000 });
   await sleep(400); await page.screenshot({ path: `${OUT}/05_screen2_laundry_toss.png` }); mark('the game has loaded underneath: START enabled');
+  if (process.env.QUICK === '1') { await ctx.close(); await browser.close(); server.close(); console.log(JSON.stringify({ quick: true, logs })); return; }
   const before = await page.evaluate(() => ({ phase: window.__bw.state().phase, overlay: !!document.getElementById('bwHome') }));
   await page.tap('#bwHome .go[aria-label="Start the adventure"]'); mark('START tapped: the toss');
   for (const [ms, name] of [[350, '06_toss_a'], [450, '07_toss_b'], [450, '08_dive']]) { await sleep(ms); await page.screenshot({ path: `${OUT}/${name}.png` }); }

@@ -197,11 +197,15 @@ function build() {
     const p0 = { x: S.x + S.w / 2, y: S.y + S.h / 2 }, p1 = ART.arrow, p2 = ART.tunnel;
     sprite.style.animation = 'none'; sprite.style.transformOrigin = '50% 50%';
     // a puff of soap bubbles where she was
-    for (let i = 0; i < 14; i++) {
-      const b = el('div', 'fx'), a = i / 14 * Math.PI * 2, r = 40 + (i % 3) * 18, sz = 26 + (i % 4) * 12;
+    const halo = el('div', 'fx');   // a soft burst of light where she was (over the repaired wall), fading as she flies
+    Object.assign(halo.style, { left: `${p0.x * k}px`, top: `${p0.y * k}px`, width: `${S.w * 1.25 * k}px`, height: `${S.w * 1.25 * k}px`, transform: 'translate(-50%,-50%) scale(.8)',
+      background: 'radial-gradient(circle, rgba(255,255,255,.95) 0 18%, rgba(255,200,245,.75) 40%, rgba(220,190,255,.35) 62%, rgba(220,190,255,0) 72%)', transition: 'transform 1.6s ease-out, opacity 1.6s ease-in', opacity: '1' });
+    art.appendChild(halo); requestAnimationFrame(() => requestAnimationFrame(() => { halo.style.transform = 'translate(-50%,-50%) scale(1.25)'; halo.style.opacity = '0'; }));
+    for (let i = 0; i < 22; i++) {
+      const b = el('div', 'fx'), a = i / 22 * Math.PI * 2, r = 50 + (i % 3) * 26, sz = 30 + (i % 4) * 16;
       Object.assign(b.style, { left: `${(p0.x + Math.cos(a) * r * 0.4) * k}px`, top: `${(p0.y + Math.sin(a) * r * 0.4) * k}px`, width: `${sz * k}px`, height: `${sz * k}px`,
         background: 'radial-gradient(circle at 35% 30%, #fff 0 10%, rgba(255,255,255,.35) 25%, rgba(200,170,255,.35) 60%, rgba(255,190,240,.8) 100%)',
-        transition: 'transform 1.1s cubic-bezier(.2,.7,.3,1), opacity 1.1s ease-in', transform: 'translate(-50%,-50%) scale(.6)', opacity: '1' });
+        transition: 'transform 1.5s cubic-bezier(.2,.7,.3,1), opacity 1.5s ease-in', transform: 'translate(-50%,-50%) scale(.6)', opacity: '1' });
       art.appendChild(b);
       requestAnimationFrame(() => requestAnimationFrame(() => { b.style.transform = `translate(calc(-50% + ${Math.cos(a) * r * k}px), calc(-50% + ${Math.sin(a) * r * k}px)) scale(1.5)`; b.style.opacity = '0'; }));
     }

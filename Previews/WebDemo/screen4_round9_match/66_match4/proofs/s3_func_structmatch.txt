@@ -400,7 +400,7 @@
  },
  "costAtTapToStart": {
   "drawCalls": 211,
-  "triangles": 2792259
+  "triangles": 2243815
  },
  "afterSettingsClick": {
   "phase": "intro",
@@ -490,7 +490,7 @@
  },
  "costInTunnel": {
   "drawCalls": 191,
-  "triangles": 2664406
+  "triangles": 2115962
  },
  "logs": [],
  "keyboardStart": {
