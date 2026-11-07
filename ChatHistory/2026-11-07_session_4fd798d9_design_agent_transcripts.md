@@ -488,5 +488,6 @@ Build, then render the start and +1 s at the original's framing.
 - 10:26 `Bash`: Measure blend B moving frames
 - 10:26 `Bash`: Stack T1 and T2 zooms
 - 10:26 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/zoom_B_T12.png
+- 10:26 `Bash`: Record swipe-and-jump clips previous and blend
 
-_129 tool steps._
+_130 tool steps._

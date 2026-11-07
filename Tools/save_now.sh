@@ -41,6 +41,20 @@ if [ "$remote" != "$HEAD_SHA" ]; then
     git push -q -u origin "$BRANCH" 2>/dev/null && break
   done
   remote="$(git ls-remote origin "refs/heads/$BRANCH" 2>/dev/null | cut -f1)"
+  # (7 November, the user's request) Another Claude session pushed to this branch first, so the push was rejected: fetch
+  # and merge GitHub's commits with a normal merge (never a rebase, never a force-push; each session's chat files differ,
+  # so it is normally clean), then push again. A conflicting merge is undone and reported; nothing is lost either way.
+  if [ "$remote" != "$HEAD_SHA" ] && [ -n "$remote" ] && ! git merge-base --is-ancestor "$remote" "$HEAD_SHA" 2>/dev/null; then
+    if git pull -q --no-rebase --no-edit origin "$BRANCH" > /dev/null 2>&1; then
+      merged="yes: GitHub had newer commits from another session, merged in with a normal merge"
+      HEAD_SHA="$(git rev-parse HEAD)"
+      for wait in 0 2 4 8; do sleep "$wait"; git push -q -u origin "$BRANCH" 2>/dev/null && break; done
+      remote="$(git ls-remote origin "refs/heads/$BRANCH" 2>/dev/null | cut -f1)"
+    else
+      git merge --abort > /dev/null 2>&1
+      merged="NO: GitHub's newer commits conflict with this session's; the merge was undone (local work kept). Fix by hand: CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md section 10.3"
+    fi
+  fi
 fi
 
 # Files this save carries to GitHub: everything between what GitHub had before and now.
@@ -54,6 +68,7 @@ echo "=== Save report, $NOW ==="
 echo "Branch:    $BRANCH"
 echo "Commit:    $HEAD_SHA  ($(git log -1 --format=%s "$HEAD_SHA"))"
 echo "Committed: $committed"
+[ -n "${merged:-}" ] && echo "Merged:    $merged"
 if [ "$remote" = "$HEAD_SHA" ]; then
   echo "Push:      VERIFIED, GitHub's $BRANCH is at ${HEAD_SHA:0:7}"
 else
