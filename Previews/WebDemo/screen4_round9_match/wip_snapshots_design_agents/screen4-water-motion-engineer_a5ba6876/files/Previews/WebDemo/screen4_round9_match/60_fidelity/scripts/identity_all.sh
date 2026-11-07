@@ -4,5 +4,5 @@ S=/home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDe
 if [ "$1" = a ]; then
   bash "$S" intunnel intunnel start; bash "$S" intunnel intunnel T1.0; bash "$S" intunnel intunnel T2.0; bash "$S" noswim2 intunnel,noswim2 T1.0
 else
-  bash "$S" water9 intunnel,water9 T1.0; bash "$S" normal , start; bash "$S" normal , T1.0
+  bash "$S" water9 intunnel,water9 T1.0; bash "$S" blend intunnel,blend T1.0; bash "$S" normal , start; bash "$S" normal , T1.0
 fi

@@ -1141,5 +1141,84 @@ Meanwhile, I'll locate the 03 close-up's region in the ORIGINAL (template match)
 The 03 close-up is the ORIGINAL's region x 0-742, y 1123-1485 (score 0.998). I'll use that box for the contact sheet.
 
 - 11:42 `Bash`: Check recording progress
+- 11:42 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/chain.sh
+- 11:42 `Bash`: Add the blend moment to the identity chain
+- 11:42 `Bash`: Run the render, identity and gameplay chain
+**Agent** (11:42 UTC):
 
-_195 tool steps._
+While that runs, the CPU-only work: the Pixel 7 sheets (the accepted frames from 59_blend's identical-bundle recording), the comparison video and the flow metric.
+
+- 11:42 `Bash`: Link the accepted Pixel 7 frames for the sheets
+- 11:43 `Bash`: Build the Pixel 7 comparison sheets
+- 11:43 `Bash`: Copy the accepted clip to the scratchpad
+- 11:43 `Bash`: Build the Pixel 7 comparison sheets
+- 11:43 `Read`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_1_start.jpg
+**Lead → agent** (11:43 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 11:43 `Bash`: Stack the lower halves of four Pixel 7 sheets
+- 11:43 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/p7lower.jpg
+- 11:43 `Bash`: Check the chain progress
+- 11:43 `Bash`: Zoom on the dark spot at her base
+- 11:43 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/dark.jpg
+- 11:43 `Bash`: Zoom the Pixel 7 start frames at her base
+- 11:43 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/dark_p7.jpg
+- 11:44 `Bash`: Zoom blend's Pixel 7 start at her base
+- 11:44 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/dark_blend.jpg
+- 11:44 `Bash`: Check chain and identity results so far
+**Agent** (11:44 UTC):
+
+While the identity renders run, the measurements on the 768 frames (accepted renders from 59_blend's identical-bundle set until mine finish).
+
+- 11:44 `Bash`: Silhouette profiles and contact-band colours
+- 11:44 `Bash`: Compare moving moments at the original's framing
+- 11:44 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/mov.jpg
+**Lead → agent** (11:44 UTC):
+
+[Image: original 2432x338, displayed at 2000x278. Multiply coordinates by 1.22 to map to original image.]
+
+- 11:45 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:45 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:45 `Bash`: Compare the tuned cap placement
+- 11:46 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/mov2.jpg
+- 11:46 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:46 `Bash`: Compare white rim strengths
+- 11:46 `Bash`: Check the chain before stopping it
+**Agent** (11:46 UTC):
+
+The identity so far: `intunnel` start, +1 s and +2 s are 0 px differing. I'll stop the chain (only its own processes, not the DevTools browser) and finalize.
+
+- 11:46 `Bash`: Find the chain's processes
+**Agent** (11:46 UTC):
+
+Renders are fast (about 20 s each), so a full rerun is cheap. Stopping the chain's process group.
+
+- 11:46 `Bash`: Stop the chain's process group
+- 11:46 `Bash`: Confirm no chain processes remain
+**Agent** (11:46 UTC):
+
+Now the final placement in the module.
+
+- 11:46 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/WebDemo/src/tunnel_s4_fidelity.js
+- 11:46 `Bash`: Rebuild the final candidate bundle
+**Agent** (11:47 UTC):
+
+Parking the DevTools page, then one chain on the final bundle: renders, identity, gameplay tests and the Pixel 7 recording.
+
+- 11:47 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:47 `Edit`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/chain.sh
+- 11:47 `Bash`: Run the full proof chain on the final bundle
+**Agent** (11:47 UTC):
+
+While the chain runs, I'll clear my large temporary grabs and check the trace comparison script's usage.
+
+- 11:47 `Bash`: Delete temporary grabs and read trace_compare usage
+**Agent** (11:47 UTC):
+
+While the chain runs, a small measurement script for the waterline's shape and the size of the lavender water domes, defined so the table can state exactly what it measures.
+
+- 11:47 `Write`: /home/user/bubblegame/.claude/worktrees/agent-a5ba6876e8752066d/Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/waterline_shape.py
+- 11:47 `Bash`: Test the waterline measure on existing frames
+
+_234 tool steps._

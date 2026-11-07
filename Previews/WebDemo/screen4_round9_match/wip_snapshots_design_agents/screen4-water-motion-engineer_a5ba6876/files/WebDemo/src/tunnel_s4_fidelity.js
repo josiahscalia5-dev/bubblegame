@@ -36,8 +36,9 @@ export const FIDELITY = {
   caps: {
     list: [[12, 0.18, 0.2, 0.5], [-3, 0.13, 0.3, -0.5], [-17, 0.09, 0.25, -0.5], [30, 0.1, 0.65, 0.5], [-32, 0.1, 0.8, -0.5], [3, 0.085, 0.95, 0.5]],
     squash: 0.72,                      // their height / width
-    sink: [0.0, 0.8],                  // share of the half-height below the crest, at birth and at the end of a life
-    out: [-0.03, 0.08],                // m out from the crest toward the camera over a life (- toward her)
+    // (born on her side of the crest, over her base, and rolled out over it: the ORIGINAL's domes overlap her lower edge)
+    sink: [-0.1, 0.7],                 // share of the half-height below the crest, at birth and at the end of a life
+    out: [-0.1, 0.04],                 // m out from the crest toward the camera over a life (- toward her)
     life: 3.2,                         // m swum per life (about 0.45 s at her 7.2 m/s); plus `idle` per second at the start
     idle: 0.04,
     wobble: 0.1,                       // surface wobble (share of the radius)

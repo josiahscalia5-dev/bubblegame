@@ -1,12 +1,41 @@
 # Work-in-progress snapshot: screen4-water-motion-engineer (Decisive Screen 4 fidelity pass)
 
-- **Taken:** 2026-11-07 11:42 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 11:47 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `worktree-agent-a5ba6876e8752066d` (local only), started from `f71e130`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (25; full copies in `files/`)
+## Files (61; full copies in `files/`)
 
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0.log (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0/base_again_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0/base_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0/base_page.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T1.0/census.json (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T2.0.log (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T2.0/base_again_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T2.0/base_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T2.0/base_page.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_T2.0/census.json (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_start.log (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_start/base_again_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_start/base_canvas.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_start/base_page.png (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/fidelity_start/census.json (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/1_start_fidelity_f0057.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/1_start_previous_f0057.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/2_moving_plus1s_fidelity_f0088.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/2_moving_plus1s_previous_f0088.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/3_swipe_left_fidelity_f0096.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/3_swipe_left_previous_f0096.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/4_swipe_right_fidelity_f0123.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/4_swipe_right_previous_f0123.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/5_jump_fidelity_f0152.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/5_jump_previous_f0152.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/6_landing_fidelity_f0168.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/frames/pixel7/6_landing_previous_f0168.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/proofs/identity/identity.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/chain.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/clip_compare.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/contact_band.py (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/crop_sheet.py (new)`
@@ -24,7 +53,14 @@
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/sheet_p7.py (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/sheets768.sh (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/trace_compare.py (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/waterline_shape.py (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/scripts/zone_water.py (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_1_start.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_2_moving_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_3_swipe_left.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_4_swipe_right.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_5_jump.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_6_landing.jpg (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_fidelity.log (new)`
 - `Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_fidelity.mp4 (new)`
 - `WebDemo/src/game.js`
