@@ -38,13 +38,13 @@ export const STRUCT = {
     idle: 0.05,             // m/s they drift back while she waits at the start
     du: 0.34, dx: 0.33,     // grid cells (m along the path, m across), world (water) anchored
     rel: [-1.3, 1.3],       // the window round her (m along the path; - toward the camera: beyond -1.3 is under the frame)
-    xr: 1.3,                // its half width (m)
+    xr: 1.45,               // its half width (m)
     // amplitude along the path round her and across ([inner, outer] m from her)
-    env: [[-1.3, 0], [-1.0, 0.8], [-0.4, 1], [0.2, 1], [0.7, 0.55], [1.3, 0]], envX: [0.7, 1.3],
+    env: [[-1.3, 0], [-1.0, 0.8], [-0.4, 1], [0.2, 1], [0.7, 0.6], [1.3, 0]], envX: [0.95, 1.45],
     // their height (m) along the path round her (taller toward the camera: they make her waterline seen from above)
-    height: [[-1.3, 0.48], [-0.8, 0.46], [-0.45, 0.42], [0.0, 0.38], [0.4, 0.28], [0.8, 0.16], [1.3, 0.06]],
+    height: [[-1.3, 0.48], [-0.8, 0.46], [-0.45, 0.42], [0.0, 0.4], [0.4, 0.32], [0.8, 0.18], [1.3, 0.06]],
     r: [0.26, 0.42],        // radius range (m)
-    types: [0.7, 0.84],     // shares: < azure, < lavender glass, else froth
+    types: [0.74, 0.79],    // shares: < azure, < lavender glass, else froth (the lavender glass mainly the staged ones at her lower left)
     startMix: [0.7, 0.4, 2.5],   // the field's amplitude at the start, eased to 1 over these metres swum (the staged mounds lead)
     // the staged mounds at the start (the ORIGINAL's arrangement): [m along the path from her, m across (+ screen-left),
     // radius, height (m), type (0 azure, 1 lavender glass, 2 froth)]
@@ -61,10 +61,10 @@ export const STRUCT = {
     ],
     // sRGB screen colours (written through the inverse of the grade and tone mapping, as the walls)
     col: {
-      azure: ['#1648c0', '#2f86ea', '#7cc6ff'], lav: ['#5d55cf', '#8f8ceb', '#cfd0ff'], froth: ['#4b9ae8', '#a9d8ff', '#eef8ff'],
+      azure: ['#1244b8', '#2a88ee', '#7fc8ff'], lav: ['#5a52c8', '#9c9cf0', '#d4d6ff'], froth: ['#3f92e6', '#9fd4ff', '#e6f5ff'],
       sky: '#e2f4ff', white: '#ffffff', foam: '#f4fbff',
     },
-    rimK: 0.95, specK: 0.9, foamK: 0.85, bubbleK: 0.85, coreK: 0.5, frothK: 0.8, skyK: 0.4,
+    rimK: 0.9, specK: 1.0, foamK: 0.9, bubbleK: 0.7, coreK: 0.65, frothK: 0.6, skyK: 0.3,
   },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
@@ -177,7 +177,7 @@ export function structFurUniforms(fur) {
 // clear above it. Creases where two mounds meet carry white foam, crests a crisp white rim; colours from the ORIGINAL's
 // foreground (azure bodies, darker cores, pale lavender-blue glass mounds mainly at her lower left), screen colours through
 // the walls' inverse grade and tone mapping.
-const NU = 9, NX = 8, NS = STRUCT.water.stage.length, NM = NU * NX + NS;   // the mounds: grid cells and the staged ones
+const NU = 9, NX = 9, NS = STRUCT.water.stage.length, NM = NU * NX + NS;   // the mounds: grid cells and the staged ones
 const PATCH = { x: [-1.7, 1.7], u: [-1.35, 1.35], nx: 112, nu: 88 };
 const waterVertex = /* glsl */ `
 uniform vec4 uM[${NM}];   // mound: x across (+ screen-left, m), along the path from her (m), radius (m), height (m)
@@ -208,7 +208,7 @@ void main() {
   float hb = H - 0.035;   // (the patch rests just under the floor's water where there is no mound)
   vW = uC + uR * p.x + uU * (uBase + hb) + uT * p.y;
   vN = normalize(uU - uR * G.x - uT * G.y);
-  vS = vec4(h1 / max(a1, 1e-3), 1.0 - smoothstep(0.0, 0.05, h1 - h2) * 1.0, hb, t1);
+  vS = vec4(h1 / max(a1, 1e-3), 1.0 - smoothstep(0.0, 0.08, h1 - h2), hb, t1);
   vS.y *= smoothstep(0.03, 0.08, h2);   // (a crease only where two raised mounds meet)
   vQ = vec2(p.x, p.y + uBack); vSeed = s1;   // (water coordinates: they stream past her)
   gl_Position = projectionMatrix * viewMatrix * vec4(vW, 1.0);
@@ -223,6 +223,9 @@ float stH(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); 
 void main() {
   if (vS.z < -0.02) discard;   // (under the floor's water)
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
+  // fine ripples on its surface (water coordinates: they flow with it), for glints
+  vec2 rq = vQ * 14.0;
+  N = normalize(N + (uR * (sin(rq.x + sin(rq.y * 1.3) + uTime * 2.0) * 0.5) + uT * (sin(rq.y * 1.2 - uTime * 1.7 + cos(rq.x)) * 0.5)) * 0.18 * smoothstep(0.1, 0.5, vS.x));
   float ndv = clamp(dot(N, V), 0.0, 1.0), up = clamp(dot(N, uU), 0.0, 1.0);
   vec3 L = normalize(uU * 0.6 + uR * 0.55 - uT * 0.3);   // the key light from the upper left
   float lit = dot(N, L) * 0.5 + 0.5, hN = clamp(vS.x, 0.0, 1.0);
@@ -232,28 +235,28 @@ void main() {
   vec3 hi = ty == 0 ? uCol[2] : ty == 1 ? uCol[5] : uCol[8];
   // glass: deeper at its foot and where the eye looks into it, lighter up its lit side, pale at its crest
   vec3 col = mix(deep, body, smoothstep(0.05, 0.5, hN) * (0.55 + 0.45 * lit));
-  col = mix(col, hi, smoothstep(0.55, 0.95, hN) * smoothstep(0.55, 0.9, lit) * 0.8);
+  col = mix(col, hi, smoothstep(0.55, 0.95, hN) * smoothstep(0.6, 0.92, lit) * 0.7);
   col = mix(col, deep, smoothstep(0.6, 0.98, ndv) * (1.0 - hN) * uCoreK);
   // currents running through it (water coordinates)
   float cur = sin(vQ.x * 9.0 + vQ.y * 4.0 + sin(vQ.y * 3.0) * 2.0 + uTime * 0.8) * sin(vQ.y * 11.0 - vQ.x * 3.0 - uTime * 0.6);
   col = mix(col, hi, smoothstep(0.7, 0.98, cur) * 0.3 * smoothstep(0.15, 0.6, hN));
   col = mix(col, uSky, pow(1.0 - ndv, 3.0) * uSkyK);
   // a crisp white rim along its crest's edge, white highlights, white foam in the creases and where it meets the water
-  float rim = smoothstep(0.82, 0.95, 1.0 - ndv) * smoothstep(0.45, 0.8, hN);
+  float rim = smoothstep(0.7, 0.9, 1.0 - ndv) * smoothstep(0.35, 0.75, hN);
   col = mix(col, uWhite, clamp(rim * uRimK, 0.0, 1.0));
-  float sp = pow(clamp(dot(reflect(-L, N), V), 0.0, 1.0), 40.0);
+  float sp = pow(clamp(dot(reflect(-L, N), V), 0.0, 1.0), 28.0);
   col = mix(col, uWhite, clamp(sp * uSpecK, 0.0, 1.0));
   float rag = 0.5 + 0.5 * sin(vQ.x * 23.0 + sin(vQ.y * 17.0) * 2.0 + uTime * 1.5) * sin(vQ.y * 19.0 - uTime * 1.1);
   float foam = vS.y * smoothstep(0.25, 0.75, rag + 0.25);
   foam = max(foam, (1.0 - smoothstep(0.0, 0.03 + 0.025 * rag, vS.z)) * smoothstep(0.3, 0.7, rag));
   // froth on the crests: broken white patches (water coordinates)
   float fr2 = sin(vQ.x * 31.0 + sin(vQ.y * 13.0) * 3.0 - uTime * 0.7) * sin(vQ.y * 27.0 + sin(vQ.x * 11.0) * 2.0 + uTime * 0.9);
-  foam = max(foam, smoothstep(0.35, 0.8, fr2) * smoothstep(0.7, 0.95, hN) * smoothstep(0.4, 0.8, lit) * uFrothK);
+  foam = max(foam, smoothstep(0.3, 0.8, fr2) * smoothstep(0.5, 0.9, hN) * smoothstep(0.35, 0.75, lit) * uFrothK * (vS.w > 0.5 && vS.w < 1.5 ? 0.35 : 1.0));
   col = mix(col, uFoam, clamp(foam * uFoamK, 0.0, 1.0));
   // small clear bubbles on the water (they flow with it)
-  vec2 bq = vQ * vec2(9.0, 9.0); vec2 bi = floor(bq), bf = fract(bq) - 0.5;
+  vec2 bq = vQ * vec2(13.0, 13.0); vec2 bi = floor(bq), bf = fract(bq) - 0.5;
   float br = 0.2 + 0.14 * stH(bi + 3.1), bd = length(bf);
-  float bub = step(0.78, stH(bi)) * smoothstep(br - 0.08, br - 0.02, bd) * (1.0 - smoothstep(br, br + 0.05, bd)) * smoothstep(0.2, 0.6, hN);
+  float bub = step(0.93, stH(bi)) * smoothstep(br - 0.08, br - 0.02, bd) * (1.0 - smoothstep(br, br + 0.05, bd)) * smoothstep(0.2, 0.6, hN);
   col = mix(col, uWhite, clamp(bub * uBubK, 0.0, 1.0));
   gl_FragColor = vec4(mtUndisplay(clamp(col, 0.0, 1.0)), 1.0);
 }
@@ -333,7 +336,7 @@ export const HOUSING = {
   sideK: 5.5,
   fadeIn: [-4.7, -2.9],      // the camera's place relative to the drum's mouth over which it fades in (the start is -5.41)
   col: { deep: '#5c4a92', mid: '#8a7fd6', lav: '#b39ad8', silver: '#ece4fa', pink: '#efd3ef', gold: '#e2a68e' },
-  streaks: 0.16, seams: 2.3, perf: 0.5, lip: 0.85, sheen: 0.55,
+  streaks: 0.07, seams: 2.3, perf: 0.62, lip: 0.85, sheen: 0.5,
 };
 export function structHousingGLSL(radius) {
   const H = HOUSING, C = H.col;
@@ -349,6 +352,7 @@ export function structHousingGLSL(radius) {
       float stS = sin(stX * 61.0 + sin(stX * 7.0) * 2.0) * 0.5 + sin(stX * 23.0 + 1.7) * 0.35 + sin(stX * 141.0) * 0.15;
       vec3 stC = mix(${hx(C.deep)}, ${hx(C.mid)}, smoothstep(0.25, 0.75, stUp));
       stC = mix(stC, ${hx(C.lav)}, smoothstep(0.55, 0.95, stUp) * 0.85);
+      stC = mix(stC, ${hx(C.deep)}, (1.0 - smoothstep(0.6, 2.6, stE)) * 0.45);   // deeper violet toward its lip, as the ORIGINAL's housing
       stC *= 1.0 + ${f4(H.streaks)} * stS;
       // a soft sheen band running round it (the centre's light on curved metal), silver and a pink reflection
       float stSh = exp(-pow((stE - 3.2) / 1.4, 2.0)) * smoothstep(0.4, 0.9, stUp);
@@ -362,7 +366,7 @@ export function structHousingGLSL(radius) {
       vec2 stP = vec2(stX, u) / ${f4(H.perf)}; vec2 stF = fract(stP + vec2(0.5 * step(0.5, fract(floor(stP.y) * 0.5)), 0.0)) - 0.5;
       float stAA = fwidth(stP.x) * 1.5 + 0.02, stR = length(stF);
       float stHole = (1.0 - smoothstep(0.11, 0.11 + stAA, stR)) * (1.0 - smoothstep(0.3, 0.8, stAA * 4.0));
-      stC = mix(stC, ${hx(C.deep)} * 0.8, stHole * 0.55);
+      stC = mix(stC, ${hx(C.deep)}, stHole * 0.3);
       stC = mix(stC, ${hx(C.silver)}, (1.0 - smoothstep(0.0, stAA, abs(stR - 0.14))) * step(0.0, stF.y) * 0.4 * (1.0 - smoothstep(0.3, 0.8, stAA * 4.0)));
       // its lip where the water begins: a warm gold-lavender highlight over a dark violet line
       stC = mix(stC, ${hx(C.gold)}, exp(-pow((stE - 0.55) / 0.22, 2.0)) * ${f4(H.lip)} * smoothstep(0.5, 0.9, stUp));

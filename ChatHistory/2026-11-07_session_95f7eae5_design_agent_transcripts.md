@@ -343,5 +343,55 @@ The mounds peak like hills (a cusp from the angular wobble at their centre). I'l
 - 14:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
 - 14:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 14:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:17 `Bash`: Compare original, accepted and v6
+- 14:17 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c6.png
+- 14:18 `Bash`: Add ripples, wider white rims and creases; rebuild
+- 14:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 14:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:18 `Bash`: Compare original, accepted and v7
+- 14:18 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c7.png
+**Agent** (14:19 UTC):
 
-_150 tool steps._
+Visibly closer at her base now. Before more look tuning, let me check the moving frames (+1 s, +2 s) for priority 3 and the housing for priority 1.
+
+- 14:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 14:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 14:19 `Bash`: Sheet: original, accepted +1 s, new +1 s, new +2 s
+- 14:19 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/c7m.png
+**Agent** (14:19 UTC):
+
+Priority 1 works in motion (the top stays washer metal), but the perforations and streaks are too strong; at +2 s she sits on glossy domes with little water at her sides. One refinement for each.
+
+- 14:19 `Bash`: Refine housing contrast and water sides/froth; rebuild
+- 14:20 `Bash`: Widen the mound grid and rebuild
+**Agent** (14:20 UTC):
+
+Now the real captures with `s3_shot.cjs` (same viewport and seed as the accepted capture).
+
+- 14:20 `Bash`: Capture Tap to Start, +1 s, +2 s for the new build
+- 14:20 `Write`: /workspace/bubblegame/.claude/worktrees/agent-afb9a08171d189776/Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheet.py
+- 14:20 `Bash`: Build trial sheets for Tap to Start and +1/+2 s
+- 14:20 `Bash`: Build the Tap to Start trial sheet
+- 14:20 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/try_t0.jpg
+- 14:21 `Bash`: Raise the water's contrast and thin the bubbles; rebuild
+**Agent** (14:21 UTC):
+
+The live server stopped (background time limit). I'll continue with `s3_shot.cjs`, which serves the build itself.
+
+- 14:21 `Bash`: Recapture the new build's frames
+- 14:21 `Bash`: Sheet of the water zone after the contrast pass
+- 14:21 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/v/try2_water.jpg
+**Lead → agent** (14:21 UTC):
+
+[Image: original 2175x411, displayed at 2000x378. Multiply coordinates by 1.09 to map to original image.]
+
+**Agent** (14:21 UTC):
+
+That pass turned the mounds into white puffs (a "white cloud", which the brief forbids), so I'm reverting its crest-white and pale highlight colours while keeping the deeper cores and sparse bubbles.
+
+- 14:21 `Bash`: Revert the white crest, rebuild and recapture
+
+_176 tool steps._
