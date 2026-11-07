@@ -1,0 +1,73 @@
+# Work-in-progress snapshot: agent ()
+
+- **Taken:** 2026-11-07 15:39 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Worktree branch:** `lead-final-s4` (local only), started from `8343381`.
+- **Its own commits so far:** none yet
+- **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
+
+## Files (64; full copies in `files/`)
+
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/README.md (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_committed_now.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_committed_now/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_rebuilt.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_accepted_rebuilt/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t0.3.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t0.5.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t0.8.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t1.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t2.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_new/t3.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nohousing.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nohousing/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nohousing/t1.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nohousing/t2.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nowater.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nowater/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_nowater/t1.0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_optin_all.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/frames_optin_all/t0.png (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/measurements_A.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/motion/trace_accepted.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/motion/trace_accepted_swipejump.json (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/motion/trace_structmatch.log (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/motion/trace_structmatch_swipejump.json (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/identity.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/identity_page_t0.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/motion_trace_gameplay.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/r2_func_accepted.err (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/r2_func_accepted.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/r2_func_compare.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/r2_func_structmatch.err (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/r2_func_structmatch.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/s3_func_accepted.err (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/s3_func_accepted.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/s3_func_compare.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/s3_func_structmatch.err (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/proofs/s3_func_structmatch.txt (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/evidence.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/gameplay.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/identity_all.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/measure_A.py (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheet.py (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/scripts/sheets.sh (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/01_TAP_TO_START_ORIGINAL_ACCEPTED_NEW.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/02_PLUS1S_PLUS2S_ORIGINAL_ACCEPTED_NEW.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/03_closeup_water_round_her_y60-95_2x_t0.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/04_closeup_water_round_her_y60-95_2x_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/05_closeup_top_washer_band_y12-50_2x_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/06_closeup_top_washer_band_y12-50_2x_plus2s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/07_transition_rim_to_drum_NEW_t0_025_05_075_1.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/08_plus3s_ORIGINAL_ACCEPTED_NEW.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/09_subswitch_nowater_t0_plus1s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/10_subswitch_nohousing_plus1s_plus2s.jpg (new)`
+- `Previews/WebDemo/screen4_round9_match/63_structmatch_A/sheets/11_optin_deferred_hero2_tunnel2_props2_hud2_t0.jpg (new)`
+- `WebDemo/src/game.js`
+- `WebDemo/src/opening.js`
+- `WebDemo/src/tunnel_r7_hero_water.js`
+- `WebDemo/src/tunnel_r8_liquid.js`
+- `WebDemo/src/tunnel_r9_match.js`
+- `WebDemo/src/tunnel_s4_bt.js`
+- `WebDemo/src/tunnel_s4_struct.js (new)`
