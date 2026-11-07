@@ -62,5 +62,55 @@ RETURN (about 40 lines, plain language the non-technical user can read):
 - 12:34 `Bash`: Zoom on contact zone, stacked
 - 12:35 `Bash`: Zoom on contact zone, stacked
 - 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/contact_zoom.png
+- 12:35 `Bash`: Build character grid across moments
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/char_grid.png
+**Lead → agent** (12:35 UTC):
 
-_12 tool steps._
+[Image: original 2110x930, displayed at 2000x882. Multiply coordinates by 1.05 to map to original image.]
+
+- 12:35 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_1_start.jpg
+**Lead → agent** (12:35 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 12:35 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_2_moving_plus1s.jpg
+**Lead → agent** (12:35 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 12:35 `Bash`: Crop Pixel 7 character zone for all moments
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_1_start.png
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_2_moving_plus1s.png
+- 12:35 `Bash`: Zoom on dark spot in fidelity start
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_hole.png
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_3_swipe_left.png
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_4_swipe_right.png
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_5_jump.png
+- 12:35 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/p7_6_landing.png
+- 12:36 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_5_jump.jpg
+**Lead → agent** (12:36 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 12:36 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/60_fidelity/sheets/pixel7_6_landing.jpg
+**Lead → agent** (12:36 UTC):
+
+[Image: original 2291x1582, displayed at 2000x1381. Multiply coordinates by 1.15 to map to original image.]
+
+- 12:36 `Bash`: Zoom on character during jump
+- 12:36 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/jump_zoom.png
+- 12:36 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/60_fidelity/videos/clip_key_moments_ACCEPTED_fidelity.jpg
+- 12:36 `Bash`: Probe video and extract a few frames
+- 12:36 `Bash`: Stack video frames of contact zone
+- 12:36 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/vid/f_1.4.png
+- 12:36 `Bash`: Extract more frames, build fidelity contact strip
+- 12:37 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/vid/fid_strip.png
+**Lead → agent** (12:37 UTC):
+
+[Image: original 3110x716, displayed at 2000x460. Multiply coordinates by 1.55 to map to original image.]
+
+- 12:37 `Bash`: Zoom accepted vs fidelity at 0.7 and 1.0 s
+- 12:37 `Read`: /tmp/claude-0/-workspace-bubblegame/95f7eae5-6a2e-5c67-b077-0b0e896bba45/scratchpad/r/vid/eye.png
+- 12:38 `SubagentHandback`
+
+_38 tool steps._
