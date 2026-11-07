@@ -1036,7 +1036,7 @@ function updateMascot(dt) {
   m.tilt.rotation.set(-m.pitch + (m.air ? -m.flip : 0) + Math.sin(t * 3.4) * 0.03 * (running ? 1 : 0.4), m.yaw + m.spin + lookYaw, m.lean + Math.sin(t * 2.2) * 0.04, 'YXZ');
   const st = 1 + m.sq * 0.25;
   m.squash.scale.set(1 / Math.sqrt(st), st, 1 / Math.sqrt(st));
-  if (SWIM_ON) {   // ?s3=intunnel,swim: her swim rhythm, drawn on her model only (her state m.yAbs, lanes and jumps untouched)
+  if (SWIM_ON || STRUCT_PARTS.swim3) {   // ?s3=intunnel,swim and ?s3=intunnel,structmatch (swim3): her swim rhythm, drawn on her model only (her state m.yAbs, lanes and jumps untouched)
     m.swimK = m.air ? 0 : Math.min(1, (m.swimK ?? 1) + dt / SWIM.motion.settle);
     const sp = swimPose(t, m.swimK, m.air);
     m.squash.position.y = sp.dy;

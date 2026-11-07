@@ -124,7 +124,10 @@ export const BLEND_ON = BT_ON && LIST.includes('blend');
 export const STRUCT_ON = BT_ON && LIST.includes('structmatch');
 export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LIST.includes('nowater'), swell: STRUCT_ON && !LIST.includes('mounds') && !LIST.includes('noswellgrade'), housing: STRUCT_ON && !LIST.includes('nohousing'),
   hero: STRUCT_ON && !LIST.includes('nohero'), tunnel: STRUCT_ON && LIST.includes('tunnel2'), props: STRUCT_ON && LIST.includes('props2'),
-  hud: STRUCT_ON && LIST.includes('hud2') };
+  hud: STRUCT_ON && LIST.includes('hud2'),
+  // the user's correction mandate of 7 November ~16:40 UTC (deep blue water meeting her lower fur, no pale icy band, swimming,
+  // the metal refined): ,noswim3 draws the previous candidate (452f9568) exactly
+  swim3: STRUCT_ON && !LIST.includes('noswim3') };
 export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)

@@ -78,6 +78,27 @@ export const STRUCT = {
   // less depth; the hue turned toward the ORIGINAL's azure, the blues a little richer and their darker parts deeper (the
   // whites, its foam, untouched)
   swell: { hue: 8, sat: 1.3, deep: 0.7, deepL: [0.2, 0.62] },
+  // swim3 (the user's correction mandate, 7 November ~16:40 UTC). Diagnosis (layer isolation at +3 s, seed 7,
+  // Previews/WebDemo/screen4_round9_match/65_swim3/): the pale icy band round her is heroSwell itself: a mound that covers
+  // the lower half of her body (hidden, the band's pink rises from 15 % to 34 %; the ORIGINAL 21 %), its face light
+  // (#acdffc / #78c4f8 / #3f8cf0) and printed with white comma arcs (`lace`); the floor round it carries focus's white
+  // streaks (0.95). Corrected at the source: the crest lowered, the arcs off, the face's own colours the ORIGINAL's
+  // foreground blues, the floor's streaks to accents; her swim rhythm (swimPose, tunnel_s4_swim.js, drawn only).
+  swim3: {
+    // the swell's crest heights (HERO_WATER.swell line and mounds) x this. Measured (her visible pink box, her_box.py): the
+    // previous candidate's waterline already matches the ORIGINAL (visible height 0.156-0.178 of the frame through the run,
+    // the ORIGINAL 0.167); 0.6 showed her as a tall egg (0.245). So the height stays; the pale icy look is the face's colour.
+    crest: 1.0,
+    water: {                // merged into MATCH_WATER (tunnel_r9_match_water.js)
+      // (measured, y .80-.93 of the page: the ORIGINAL's blue median luminance 0.71, saturation 0.41, quartiles 0.60-0.81,
+      // white 20 %; the previous candidate 0.71 / 0.45 but a flat 0.62-0.77 and 13 % white: it lacks CONTRAST, not darkness.
+      // So deeper cores with crisp white splash accents at the crest (rim, small bubble rings, glints), not comma arcs)
+      face: { lace: { amount: 0 }, rim: { amount: 0.95 }, rings: { amount: 0.95, share: 0.38 }, spark: { amount: 1.0 },
+        water: { light: '#a6defd', mid: '#4a9ff0', deep: '#2577e2', amount: 0.9 } },
+      floorFx: { streak: { amount: 0.55, blue: { share: 0.5, amount: 0.9 } } },
+    },
+    grade: { hue: 3, sat: 1.08, deep: 0.86 },   // the swell's grade (STRUCT.swell) eased: the face's own colours are now right
+  },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
     pull: 0.55,             // periwinkle / violet (hue 226-266) pulled this share toward azure 214
@@ -417,16 +438,33 @@ export function structHousingGLSL(radius) {
       float stDot = (1.0 - smoothstep(0.035, 0.035 + stAA, stRv)) * (1.0 - smoothstep(0.02, 0.12, stAA));
       stC = mix(stC, ${hx(C.silver)}, stDot * ${f4(H.rivets)});
       // its far edge: a soft lavender glow giving way to the blue tunnel (no ring: nothing floats in front of the camera)
-      stC = mix(stC, ${hx(C.glow)}, exp(-pow((stE - 0.25) / 0.3, 2.0)) * ${f4(H.lip)} * smoothstep(-0.1, 0.5, stUp));
+      stC = mix(stC, ${hx(C.glow)}, exp(-pow((stE - 0.25) / 0.3, 2.0)) * ${f4(STRUCT_PARTS.swim3 ? 0.35 : H.lip)} * smoothstep(-0.1, 0.5, stUp));
+${STRUCT_PARTS.swim3 ? `      {   // swim3: brushed metal's contrast (deeper violet shade, a crisp silver highlight) and the ORIGINAL's thin gold-peach lip
+        float s3L = dot(stC, vec3(0.2126, 0.7152, 0.0722));
+        stC = clamp(s3L + (stC - s3L) * 1.15, 0.0, 1.0) * (0.86 + 0.14 * smoothstep(0.2, 0.9, stUp));
+        stC = mix(stC, ${hx(C.deep)}, exp(-pow((stE - 1.95) / 0.3, 2.0)) * smoothstep(0.2, 0.8, stUp) * 0.45);   // the shade under the highlight
+        stC = mix(stC, ${hx(C.silver)}, exp(-pow((stE - 2.35) / 0.22, 2.0)) * smoothstep(0.3, 0.8, stUp) * 0.85);
+        stC = mix(stC, ${hx(C.gold)}, exp(-pow((stE - 0.62) / 0.14, 2.0)) * smoothstep(0.05, 0.5, stUp) * 0.95);
+        stC = mix(stC, vec3(1.0, 0.9, 0.82), exp(-pow((stE - 0.7) / 0.05, 2.0)) * smoothstep(0.2, 0.7, stUp) * 0.5);   // its bright edge
+        stC = mix(stC, ${hx(C.deep)} * 0.8, exp(-pow((stE - 0.42) / 0.07, 2.0)) * 0.5);
+      }
+` : ''}
       col = mix(col, mtUndisplay(clamp(stC, 0.0, 1.0)), stK);
     }
   }
 `;
 }
 
+// ================================================================ 2c. swim3: the swell's crest lowered (before it and its followers are built)
+export function structSwellShape(P) {
+  const k = STRUCT.swim3.crest;
+  P.line = P.line.map((h) => +(h * k).toFixed(4));
+  P.mounds = P.mounds.map(([c, a, w]) => [c, +(a * k).toFixed(4), w]);
+}
+
 // ================================================================ 2b. the accepted swell, its blue richer (default)
 export function structSwellGLSL() {
-  const W = STRUCT.swell, M = hueMatrix(W.hue);
+  const W = STRUCT_PARTS.swim3 ? { ...STRUCT.swell, ...STRUCT.swim3.grade } : STRUCT.swell, M = hueMatrix(W.hue);
   const col = (j) => `vec3(${f4(M[0][j])}, ${f4(M[1][j])}, ${f4(M[2][j])})`;
   return /* glsl */ `  {   // ?s3=intunnel,structmatch: the swell's blue toward the ORIGINAL's (tunnel_s4_struct.js STRUCT.swell)
     float swMx = max(col.r, max(col.g, col.b)), swMn = min(col.r, min(col.g, col.b));

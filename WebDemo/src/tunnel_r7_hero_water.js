@@ -30,7 +30,7 @@ import { NOISE } from './shaders.js';
 import { SWIM_ON, SWIM } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar (nothing changes without it)
 import { SWIM2_ON, swim2Travel, swim2FlowPhase } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: the swell's water flows with her travel
 import { BLEND_ON, blendSwell } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the crest round her lower and domed (nothing changes without it)
-import { STRUCT_PARTS, buildStructWater } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the water round her in water space (the swell hidden)
+import { STRUCT_PARTS, buildStructWater, structSwellShape } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the water round her in water space (the swell hidden)
 import { undisplayGLSL } from './tunnel_r9_match.js';   // (its screen colours, as the walls')
 
 export const HERO_WATER = {
@@ -90,6 +90,7 @@ export function buildHeroWater({ scene, TR, L, W, mascot, updaters, time, waterS
   if (SWIM_ON) { const Cc = SWIM.collar; Object.assign(HERO_WATER.swell, { ax: Cc.ax, au: Cc.au, out: Cc.out, inner: Cc.inner, dip: Cc.dip,
     line: Cc.line.map((h) => +(h + (Cc.lift || 0)).toFixed(4)), mounds: Cc.mounds.map((m) => m.slice()), swerve: Cc.swerve, air: Cc.air, land: Cc.land }); }
   if (BLEND_ON) blendSwell(HERO_WATER.swell);   // ?s3=intunnel,blend (tunnel_s4_blend.js)
+  if (STRUCT_PARTS.swim3) structSwellShape(HERO_WATER.swell);   // ?s3=intunnel,structmatch (swim3): the crest lowered (tunnel_s4_struct.js)
   // the character's frame at the water under it and its movement, worked out once a frame (first) for everything below
   const S = { k: 0, F: { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() }, C: new THREE.Vector3(),
     lagX: mascot.x || 0, base: 0, lat: 0, air: 0, land: 0, speed: mascot.visSpeed || 0, xMax: 3, wasAir: false };   // (visSpeed: ?s3=intunnel only)

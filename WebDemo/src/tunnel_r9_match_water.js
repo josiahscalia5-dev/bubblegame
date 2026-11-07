@@ -36,7 +36,8 @@ import { PRE_FOCUSED_PASS, restoreSettings } from './tunnel_r9_focus_base.js';  
 import { BT_ON, BT, BANK_ON, BANK, WAVE_ON, WAVE, CREST_ON, CREST, WATER2_ON, WATER2 } from './tunnel_s4_bt.js';
 import { water2GLSL, water2Decl } from './tunnel_s4_water2.js';   // ?s3=...,water2   // ?s3=bt (the breakthrough pass, on top of focus); ?s3=...,bank
 import { swimCollarGLSL } from './tunnel_s4_swim.js';   // ?s3=intunnel,swim: the contact collar's water ('' without the switch)
-import { BLEND_ON, blendSwellGLSL } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: the face's colours round her
+import { BLEND_ON, blendSwellGLSL } from './tunnel_s4_blend.js';
+import { STRUCT, STRUCT_PARTS } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch (swim3): the face's and floor's water   // ?s3=intunnel,blend: the face's colours round her
 
 const f4 = (x) => (+x).toFixed(5);
 export const MATCH_WATER = {
@@ -231,7 +232,8 @@ if (FOCUS_ON) {   // ?s3=focus: the focused correction pass's settings (tunnel_r
   if (BANK_ON) deepMerge(MATCH_WATER, BANK.water);
   if (CREST_ON) deepMerge(MATCH_WATER, CREST.water);
   if (WATER2_ON) deepMerge(MATCH_WATER, WATER2.water);   // ?s3=...,water2: the face's comma arcs off (tunnel_s4_water2.js)   // ?s3=...,crest: the curling crests (tunnel_s4_bt.js)   // ?s3=...,bank: the bank of rounded blue lobes (tunnel_s4_bt.js)
-  if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
+  if (BT_ON && BT.water) deepMerge(MATCH_WATER, BT.water);
+  if (STRUCT_PARTS.swim3) deepMerge(MATCH_WATER, STRUCT.swim3.water);   // ?s3=intunnel,structmatch (swim3, tunnel_s4_struct.js)   // ?s3=bt: the breakthrough pass's water (tunnel_s4_bt.js; none since candidate 2 was rejected)
   if (MW_TUNE) deepMerge(MATCH_WATER, MW_TUNE);   // (focus: the test tune first, so swellFront and the crest can be tried too)
   // the swell's crest lowered in front of her body (frontDip m, fully within `full` degrees of straight ahead, none beyond
   // `to`), so the water meets her at her base with the new, lower camera; her sides keep their foam. lift: the whole crest
