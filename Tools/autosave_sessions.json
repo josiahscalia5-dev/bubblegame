@@ -28,5 +28,11 @@
     "agents": "ChatHistory/2026-11-07_session_95f7eae5_design_agent_transcripts.md",
     "title": "Nineteenth session (7 November, account transfer): restoration on branch claude/bubble-wash-transfer-tcgbof",
     "url": "https://claude.ai/code/session_01L8bvJgHqB9KziNd3i9K2wk"
+  },
+  "dbccb9a3-629b-597a-9b61-b85cecff5ee3": {
+    "chat": "ChatHistory/2026-11-07_session_dbccb9a3.md",
+    "agents": "ChatHistory/2026-11-07_session_dbccb9a3_design_agent_transcripts.md",
+    "title": "Session dbccb9a3 (7 November, new account): first-session checklist on branch ccr-76d4bc77-rqhl8o",
+    "url": "https://claude.ai/code/session_01CUAtW4EmBf6vbP6Vos5gB2"
   }
 }
