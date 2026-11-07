@@ -9,8 +9,8 @@ font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 for arg in sys.argv[4:]:
     name, t = arg.split('='); i = round(float(t) * 30)
     tiles = []
-    for lab, p in [('ORIGINAL', O), (f'PREVIOUS intunnel ({t} s)', f'{prev}/f{i:04d}.jpg'), (f'NEW intunnel,blend ({t} s)', f'{new}/f{i:04d}.jpg')]:
-        if p != O: shutil.copy(p, f"{out}/frames/pixel7/{name}_{'previous' if p.startswith(prev) else 'blend'}_f{i:04d}.jpg")
+    for lab, p in [('ORIGINAL', O), (f'ACCEPTED intunnel ({t} s)', f'{prev}/f{i:04d}.jpg'), (f'NEW intunnel,fidelity ({t} s)', f'{new}/f{i:04d}.jpg')]:
+        if p != O: shutil.copy(p, f"{out}/frames/pixel7/{name}_{'previous' if p.startswith(prev) else 'fidelity'}_f{i:04d}.jpg")
         im = Image.open(p).convert('RGB'); im = im.resize((round(im.width * 1536 / im.height), 1536), Image.LANCZOS)
         tl = Image.new('RGB', (im.width, 1582), (12, 14, 28)); tl.paste(im, (0, 46)); ImageDraw.Draw(tl).text((12, 7), lab, font=font, fill='white'); tiles.append(tl)
     s = Image.new('RGB', (sum(x.width for x in tiles) + 16, 1582)); x = 0

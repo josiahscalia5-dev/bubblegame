@@ -1099,5 +1099,47 @@ The build only changes the bundle (index.html is regenerated identically). I'll 
 Now the Pixel 7 swipe-and-jump recording of the candidate (one recorder alongside the DevTools browser, two browsers at most).
 
 - 11:30 `Bash`: Record the 7 s Pixel 7 swipe-and-jump clip of fidelity
+**Agent** (11:40 UTC):
 
-_177 tool steps._
+While it records, I'll repoint the sheet and clip scripts to the fidelity candidate.
+
+- 11:40 `Bash`: Repoint sheet and clip scripts to fidelity
+- 11:40 `Bash`: Check the recording progress
+- 11:40 `Bash`: Read the metric scripts' usage
+- 11:40 `Bash`: Check recording progress
+- 11:40 `Bash`: Check recording progress again
+**Agent** (11:41 UTC):
+
+While the last frames record, let me look at the key moments already captured (start, swipes, jump, landing).
+
+- 11:41 `Bash`: Strip of key moments from the fidelity clip
+- 11:41 `Read`: /tmp/claude-0/-home-user-bubblegame/4fd798d9-8469-584c-9cb4-d91fe93a1905/scratchpad/p7strip.jpg
+**Lead → agent** (11:41 UTC):
+
+[Image: original 2106x387, displayed at 2000x368. Multiply coordinates by 1.05 to map to original image.]
+
+- 11:41 `Bash`: Inspect blend's proof baselines
+- 11:41 `Bash`: Check recording progress
+- 11:41 `Bash`: Check recording progress and disk
+**Agent** (11:41 UTC):
+
+The DevTools page is still running the game loop in software WebGL and competing for CPU. I'll park it on about:blank.
+
+- 11:41 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:41 `Bash`: Check recording progress and load
+- 11:41 `Bash`: List the top CPU processes
+- 11:42 `Bash`: Check recording progress
+- 11:42 `Bash`: Check recording progress
+- 11:42 `Bash`: Check recording progress
+**Agent** (11:42 UTC):
+
+Meanwhile, I'll locate the 03 close-up's region in the ORIGINAL (template match), so the contact sheet uses exactly that crop.
+
+- 11:42 `Bash`: Locate the 03 crop region in the original
+**Agent** (11:42 UTC):
+
+The 03 close-up is the ORIGINAL's region x 0-742, y 1123-1485 (score 0.998). I'll use that box for the contact sheet.
+
+- 11:42 `Bash`: Check recording progress
+
+_195 tool steps._
