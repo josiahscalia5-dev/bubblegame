@@ -1,11 +1,11 @@
 # Work-in-progress snapshot: agent ()
 
-- **Taken:** 2026-11-07 22:47 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
+- **Taken:** 2026-11-07 22:53 UTC, by `Tools/snapshot_agent_worktrees.py` during the automatic save. Unfinished work: it is not in the playable game until the lead merges it.
 - **Worktree branch:** `screens12` (local only), started from `e7c7953`.
 - **Its own commits so far:** none yet
 - **To restore it:** copy `files/` over a checkout of the starting commit, then `cd WebDemo && node build.mjs`. `changes.patch` is the same change as a readable diff.
 
-## Files (41; full copies in `files/`)
+## Files (42; full copies in `files/`)
 
 - `Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/11109.jpg (new)`
 - `Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/8410.png (new)`
@@ -14,6 +14,7 @@
 - `Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/Bubble_Wash_First_Two_Screens_Side_by_Side.png (new)`
 - `Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/Bubble_Wash_Screen_01_Home_PREVIEW.png (new)`
 - `Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/Bubble_Wash_Screen_02_Laundry_Toss_PREVIEW.png (new)`
+- `Previews/WebDemo/screens12_first_two_screens/identity_screen4_unchanged.txt (new)`
 - `Previews/WebDemo/screens12_first_two_screens/layout_360x740/01_screen1_home.png (new)`
 - `Previews/WebDemo/screens12_first_two_screens/layout_360x740/02_levels_panel.png (new)`
 - `Previews/WebDemo/screens12_first_two_screens/layout_360x740/03_settings_panel.png (new)`
