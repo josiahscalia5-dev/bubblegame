@@ -1,0 +1,14 @@
+{
+  "objectName": "output_unwrapped",
+  "path": "scale.x",
+  "min": 0.9,
+  "max": 1.1,
+  "steps": 3,
+  "cols": 2,
+  "rows": 2,
+  "values": [
+    0.9,
+    1,
+    1.1
+  ]
+}
