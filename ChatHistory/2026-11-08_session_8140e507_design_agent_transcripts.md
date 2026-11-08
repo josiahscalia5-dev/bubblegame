@@ -283,5 +283,44 @@ Be concrete and honest; do not grade with a percentage.
 - 11:41 `Bash`: Side-by-side OLD/NEW at 22 and 42 s
 - 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/t22_42.png
 - 11:42 `Bash`: Zoom crops of NEW frames at areas of interest
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/z5.png
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/z40.png
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/z26.png
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/z10.png
+- 11:42 `Bash`: Compare 46 and 48 s and zoom NEW 46 s
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/t46_48.png
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/z46.png
+- 11:43 `Bash`: Pixel diff OLD vs NEW early frames, show identity proof
+- 11:43 `Bash`: Locate pixel differences at t0 and t3
+- 11:43 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/diff_t0.png
+- 11:43 `Bash`: Compare OLD/NEW t5 and OLD t38, t50
+- 11:43 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/t5_old.png
+**Agent** (11:44 UTC):
 
-_39 tool steps._
+I opened all 24 NEW full-size frames and compared the key moments with OLD. Every NEW frame from t3.0 on passes the rule: she is on blue water inside a connected tunnel or chamber, with no gaps, dark holes or dry road. Open sky shows only through the end portal (t44-t48). Gem and late-coin pickups differ slightly from OLD (point 4).
+
+**1. Per-frame check:** no frame fails. Notes:
+- **t22:** she is in mid-jump over a soap bar. A flat pale-lavender band runs across the bottom (y about 760-830). OLD has the same band, so it is not new.
+- **t26:** a dark speckled leaf shape and faded sign text in the far tunnel. Both are in OLD too.
+
+**2. Transitions:**
+- **Drum hand-off (t5-t7): pass.** She stays visible; OLD hid her behind the painted vortex at t6. There is a seam at t5: the course tube shows as a pipe inside the drum with a paler round rim, and its cobalt floor has a straight front edge sitting over the drum's turquoise water.
+- **The drop (t26-t28): pass.** A deep cobalt water ramp, with walls continuous.
+- **Gate into the chamber (t36-t38): pass.** OLD opened onto the open-sky slide; NEW continues the arches over full-width water.
+- **Chamber to finish (t40-t48): pass.** The castle appears only through the portal. The dark brown band OLD had at t48 is gone.
+- **Level Complete (t50): pass.** It appears over the chamber with her on blue water.
+
+**3. Worse in NEW, or still weak:**
+- **Pink banner (t46):** a flat, untextured pink bar crosses the chamber. Its left end is cut off at x about 70, and it is larger than OLD's.
+- **Two water layers:** the course water now reads as a darker, hard-edged cobalt slab behind her lighter surf (t6, t10, t14, t28, t36, t38). The step between them is sharper than before.
+- **Lagoon (t44-t48):** the water seen through the portal is pale lilac-cyan with a dark green island.
+
+**4. Gameplay state:**
+- Position (u), sections, socks and hearts match at every moment.
+- **Coins:** the coin counts differ in both directions, not just the extra coin at 7 s that the README mentions. NEW is +1 from 7 s, but misses one coin between 44 and 46 s that OLD collects, so both end at 91.
+- **Gems:** OLD's gem counter goes 37 to 38 at 18 s; NEW stays at 37 to the end. The route table has no gem column, so this is not recorded. Both still show "special gem 1/1". So the claim in the README that her route is identical does not fully hold.
+
+Files are in `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/`. My comparison crops are in `/tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/` (`gems.png`, `t46_48.png`, `z5.png`).
+
+
+_51 tool steps._

@@ -98,6 +98,11 @@ const f4 = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const lin = (hex) => new THREE.Color(hex);   // three.js converts hex to linear working colour
 const v3 = (c) => `vec3(${f4(c.r)}, ${f4(c.g)}, ${f4(c.b)})`;
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+// (wet) what only the wet build makes is made on its own random sequence (three.js draws one for every object's id), and what only
+// the previous build made is still made (then thrown away), so the course's shared sequence reaches the collectibles exactly as
+// before: their bob and spin phases (game.js addCoin / addGem: Math.random) and so every pickup stay the same
+function privately(seed, fn) { const keep = Math.random; Math.random = mulberry(seed); try { return fn(); } finally { Math.random = keep; } }
+const discard = (o) => o.traverse((c) => { if (c.geometry) c.geometry.dispose(); });
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
 const NOISE = /* glsl */ `
@@ -230,7 +235,12 @@ const WATER_VERT_WET = WATER_VERT.replace('varying vec2 vXU; varying vec3 vW; va
 // changes faster than a pixel (fwidth), its colour goes to its mean blue and its flecks fade; the waves' shade fades with distance)
 const waterFragWet = () => waterFrag().replace(' uniform float uHalf;', '').replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
   .replaceAll('uHalf', 'vHalf')
-  .replace('col *= 0.86 + 1.6 * clamp(vH, -0.05, 0.12);', 'float aaW = clamp(fwidth(uf) * 0.9 - 0.12, 0.0, 1.0); col = mix(col, vec3(0.012, 0.1, 0.7), aaW);\n  col *= mix(0.86 + 1.6 * clamp(vH, -0.05, 0.12), 1.0, smoothstep(9.0, 26.0, length(vW - uCam)));')
+  .replace('col *= 0.86 + 1.6 * clamp(vH, -0.05, 0.12);', 'float aaW = clamp(fwidth(uf) * 0.9 - 0.12, 0.0, 1.0); col = mix(col, vec3(0.012, 0.1, 0.7), aaW);\n'
+    // its first metres take the Screen 4 drum's turquoise (no hard cobalt edge at the hand-off), and just ahead of her it is a
+    // little lighter, so it meets the lighter surf round her without a step
+    + '  col = mix(col, vec3(0.06, 0.5, 0.95), (1.0 - smoothstep(41.5, 50.0, u)) * 0.55);\n'
+    + '  { float ahd = u - uRider.y; col = mix(col, vec3(0.05, 0.42, 1.0), smoothstep(-1.0, 1.5, ahd) * (1.0 - smoothstep(3.0, 10.0, ahd)) * (1.0 - smoothstep(1.4, 2.6, abs(x))) * 0.35); }\n'
+    + '  col *= mix(0.86 + 1.6 * clamp(vH, -0.05, 0.12), 1.0, smoothstep(9.0, 26.0, length(vW - uCam)));')
   .replace('* (0.35 + 0.65 * side);', '* (0.35 + 0.65 * side) * (1.0 - aaW);')
   .replace('float glint = smoothstep(0.82, 0.9, l1n(vec2(x * 11.0, uf * 5.0 + t))) * 0.6;', 'float glint = smoothstep(0.82, 0.9, l1n(vec2(x * 11.0, uf * 5.0 + t))) * 0.6 * (1.0 - aaW);');
 
@@ -286,7 +296,7 @@ export function buildLevel1(ctx) {
     const m = new THREE.Mesh(g, wallMat); m.name = 'l1Wall'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
   };
   const tubeEnd = WET ? K.end : C.tube[1];   // (wet: on past the gate, through the chamber to its end wall)
-  for (let u = C.tube[0]; u < tubeEnd; u += 15) tubeChunk(u, Math.min(tubeEnd, u + 15));
+  for (let u = C.tube[0]; u < tubeEnd; u += 15) { const mk = () => tubeChunk(u, Math.min(tubeEnd, u + 15)); if (u >= C.tube[1]) privately(0x7e70 + Math.round(u), mk); else mk(); }   // (wet: the chunks past the previous end on their own sequence)
   report.parts.push(WET ? 'tube+chamber' : 'tube');
 
   // ---------------- the water (chunks of 15 m)
@@ -308,10 +318,13 @@ export function buildLevel1(ctx) {
     g.setAttribute('aUp', new THREE.BufferAttribute(up, 3)); g.setIndex(idx); g.computeBoundingSphere(); g.boundingSphere.radius += 0.3;
     const m = new THREE.Mesh(g, mat); m.name = 'l1Water'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
   };
-  if (!WET) {
-    for (let u = C.water[0]; u < C.gate + 1; u += 15) waterChunk(u, Math.min(C.gate + 1, u + 15), 2.2, waterMat);
-    for (let u = C.gate - 1; u < C.water[1]; u += 15) waterChunk(u, Math.min(C.water[1], u + 15), 1.45, kWaterMat);
-  } else {
+  {   // the previous build's water (wet: made and thrown away, so the shared random sequence stays as before; see privately())
+    const made = [];
+    for (let u = C.water[0]; u < C.gate + 1; u += 15) made.push(waterChunk(u, Math.min(C.gate + 1, u + 15), 2.2, waterMat));
+    for (let u = C.gate - 1; u < C.water[1]; u += 15) made.push(waterChunk(u, Math.min(C.water[1], u + 15), 1.45, kWaterMat));
+    if (WET) for (const m of made) { root.remove(m); chunks.splice(chunks.indexOf(m), 1); m.geometry.dispose(); }
+  }
+  if (WET) privately(0x7e71, () => {
     // (wet) one water, its half width following the drum and the chamber to their walls, then out through the portal into the
     // castle's lagoon (seen only through the portal)
     // (double-sided: over the chamber's long far water, seen at a grazing angle, the wave faces leaning away were culled and
@@ -336,7 +349,7 @@ export function buildLevel1(ctx) {
     };
     const wEnd = K.castle.u + 20;
     for (let u = C.water[0]; u < wEnd; u += 15) wetChunk(u, Math.min(wEnd, u + 15));
-  }
+  });
   report.parts.push('water');
 
   // ---------------- the washer's hoops: silver-lavender bands with a gold edge and small lights, round the drum's upper wall
@@ -457,22 +470,24 @@ export function buildLevel1(ctx) {
     vertexShader: 'varying vec3 vD; void main() { vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }', fragmentShader: SKY_FRAG }));
   sky.renderOrder = -9; sky.frustumCulled = false; sky.name = 'l1Sky'; sky.visible = false; scene.add(sky);
   // the slide's rails on both sides of the kingdom water, with pillars down into the clouds (wet: none; she stays in the
-  // chamber's water, and the open slide was the dry-road look)
-  if (!WET) {
+  // chamber's water, and the open slide was the dry-road look: made and thrown away, see privately())
+  const ghost = WET ? privately(0x7e73, () => new THREE.Group()) : null;
+  {
+    const kg = WET ? ghost : kingdom;   // (wet: into the group thrown away)
     const railM = new THREE.MeshStandardMaterial({ color: 0xf3ecff, roughness: 0.35, metalness: 0.2, envMap: env, emissive: 0x6a5aa0, emissiveIntensity: 0.25 });
     for (const s of [-1, 1]) {
       const pts = []; for (let u = C.gate - 1; u <= C.water[1]; u += 1) pts.push(TR.map(s * 1.55, 0.12, u));
-      const tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, 0.16, 10), railM); tube.name = 'l1Rail'; kingdom.add(tube);
+      const tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, 0.16, 10), railM); tube.name = 'l1Rail'; kg.add(tube);
       const pts2 = pts.map((p, i) => TR.map(s * 1.55, -0.3, C.gate - 1 + i));
-      kingdom.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts2), pts2.length * 2, 0.22, 10), violM));
+      kg.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts2), pts2.length * 2, 0.22, 10), violM));
     }
-    for (let u = C.gate + 6; u < C.water[1]; u += 9) { TR.frame(u, F); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.32, 14, 12), railM); p.position.copy(F.P).addScaledVector(F.U, -7.4); kingdom.add(p); }
+    for (let u = C.gate + 6; u < C.water[1]; u += 9) { TR.frame(u, F); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.32, 14, 12), railM); p.position.copy(F.P).addScaledVector(F.U, -7.4); kg.add(p); }
     // the slide's underside
     const under = []; for (let u = C.gate - 1; u <= C.water[1]; u += 1) under.push(u);
     const g = new THREE.BufferGeometry(), pos = []; const idx = [];
     under.forEach((u, i) => { TR.frame(u, F); for (const [x, h] of [[-1.6, -0.3], [-1.2, -0.75], [1.2, -0.75], [1.6, -0.3]]) { const p = F.P.clone().addScaledVector(F.R, x).addScaledVector(F.U, h); pos.push(p.x, p.y, p.z); } if (i) for (let j = 0; j < 3; j++) { const a = (i - 1) * 4 + j, b = i * 4 + j; idx.push(a, b, a + 1, b, b + 1, a + 1); } });
     g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
-    kingdom.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xb79cf0, roughness: 0.5, metalness: 0.3, envMap: env, side: THREE.DoubleSide, emissive: 0x3a2a70, emissiveIntensity: 0.3 })));
+    kg.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xb79cf0, roughness: 0.5, metalness: 0.3, envMap: env, side: THREE.DoubleSide, emissive: 0x3a2a70, emissiveIntensity: 0.3 })));
   }
   // floating islands with pastel towers and waterfalls either side
   {
@@ -484,21 +499,25 @@ export function buildLevel1(ctx) {
       vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
       fragmentShader: `uniform float uTime; varying vec2 vUv; ${NOISE} void main() { float n = l1f(vec2(vUv.x * 6.0, vUv.y * 3.0 + uTime * 1.6)); vec3 c = mix(vec3(0.3, 0.7, 1.0), vec3(0.95, 0.99, 1.0), smoothstep(0.45, 0.75, n));
         float a = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x) * (0.75 + 0.25 * n); gl_FragColor = vec4(c * 1.15, a); }` });
-    const islands = WET ? K.islands : [[284, -9, 1, 4.5], [300, 11, 2, 5.5], [318, -13, 0, 6], [336, 10, -1, 5], [352, -8, 3, 4], [366, 15, 1, 6]];   // (wet: beyond the portal, round the castle's lagoon)
-    for (const [u, x, h, r] of islands) {
+    const islandsInto = (islands, target, rr) => { for (const [u, x, h, r] of islands) {
       TR.frame(u, F); const base = F.P.clone().addScaledVector(F.R, x).addScaledVector(F.U, h);
-      const isl = new THREE.Group(); isl.position.copy(base); kingdom.add(isl);
+      const isl = new THREE.Group(); isl.position.copy(base); target.add(isl);
       const top = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 0.92, 0.6, 24), grass); isl.add(top);
       const under = new THREE.Mesh(new THREE.ConeGeometry(r * 0.95, r * 1.6, 9), rock); under.rotation.x = Math.PI; under.position.y = -r * 0.8 - 0.3; isl.add(under);
-      const nT = 1 + Math.floor(rnd() * 3);
+      const nT = 1 + Math.floor(rr() * 3);
       for (let k = 0; k < nT; k++) {
-        const th = 2.5 + rnd() * 4, tr = 0.5 + rnd() * 0.5, ox = (rnd() - 0.5) * r, oz = (rnd() - 0.5) * r;
+        const th = 2.5 + rr() * 4, tr = 0.5 + rr() * 0.5, ox = (rr() - 0.5) * r, oz = (rr() - 0.5) * r;
         const tw = new THREE.Mesh(new THREE.CylinderGeometry(tr, tr * 1.1, th, 16), towerM); tw.position.set(ox, th / 2 + 0.3, oz); isl.add(tw);
         const roof = new THREE.Mesh(new THREE.ConeGeometry(tr * 1.35, tr * 2.4, 16), roofM); roof.position.set(ox, th + 0.3 + tr * 1.2, oz); isl.add(roof);
       }
       const fall = new THREE.Mesh(new THREE.PlaneGeometry(r * 0.6, r * 2.6), fallM); fall.position.set(Math.sign(x) * r * 0.75, -r * 1.2, 0); fall.lookAt(isl.position.clone().sub(F.T.clone().multiplyScalar(30)).sub(base).add(fall.position)); isl.add(fall);
-    }
+    } };
+    // the previous islands (wet: made and thrown away); then (wet) the islands round the castle's lagoon beyond the portal, on
+    // their own sequences
+    islandsInto([[284, -9, 1, 4.5], [300, 11, 2, 5.5], [318, -13, 0, 6], [336, 10, -1, 5], [352, -8, 3, 4], [366, 15, 1, 6]], WET ? ghost : kingdom, rnd);
+    if (WET) privately(0x7e74, () => islandsInto(K.islands, kingdom, mulberry(0x7e75)));
   }
+  if (ghost) discard(ghost);
   // the castle at the end of the slide (the game's own castle model)
   if (ctx.castleModel) {
     const c = ctx.castleModel.clone(true); const holder = new THREE.Group(); holder.add(c);
@@ -514,6 +533,7 @@ export function buildLevel1(ctx) {
     const fr = WET ? 3.4 : 2.0;   // (wet: an arch to the chamber's size, its ribbon above the camera's line of sight at the finish)
     const archG = new THREE.TorusGeometry(fr, WET ? 0.2 : 0.16, 12, 64, Math.PI); const arch = new THREE.Mesh(archG, goldM); arch.position.y = 0.1; finish.add(arch);
     const ribbon = new THREE.Mesh(new THREE.PlaneGeometry(fr * 1.6, 0.42), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.4, 0.45, 1.0), side: THREE.DoubleSide })); ribbon.position.y = fr; finish.add(ribbon);
+    if (WET) ribbon.visible = false;   // (wet: the flat pink band read as a "huge pink band" across the chamber; the arch stays)
     for (const s of [-1, 1]) { const st = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.5, 0.6) })); st.position.set(s * fr, 0.2, 0); finish.add(st); }
     TR.map(0, 0, C.finish, finish.position); TR.quaternion(C.finish, finish.quaternion); root.add(finish);
   }
@@ -522,7 +542,7 @@ export function buildLevel1(ctx) {
   // ---------------- (wet) the chamber's end wall with the portal to the Bubble Kingdom, its waterfalls, its wall brushes
   const decor = [];
   let endWall = null;
-  if (WET) {
+  if (WET) privately(0x7e72, () => {   // (on its own random sequence, see privately())
     endWall = new THREE.Group(); endWall.name = 'l1ChamberEnd';
     const P = K.portal, Rk = radiusAt(K.end);
     // the end wall: the drum's lavender metal round the portal (it reaches past the chamber's walls; below the water it is hidden)
@@ -561,7 +581,7 @@ export function buildLevel1(ctx) {
       decor.push({ o: holder, u, spinner, dir: side });
     }
     report.parts.push('chamber');
-  }
+  });
 
   // ---------------- collectibles: added to the game's own lists (collect(), resetRun())
   const nBefore = { coins: ctx.counts().coins, gems: ctx.counts().gems, socks: ctx.counts().socks };
