@@ -187,5 +187,53 @@ Compare the ARCHITECTURE of NEW against the ORIGINAL (not a generic art opinion)
 - 20:39 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/zA.png
 - 20:40 `Bash`
 - 20:40 `Bash`
+**Agent** (20:40 UTC):
+
+**Screen 09, pass 16 (NEW) against the original master, at u 229.5, centre lane. The screen positions below are fractions of the frame width (W) and height (H).**
+
+**Zone A, the distant machine world.** NEW is slightly closer than BEFORE, but it still doesn't read as the original.
+- **What matches:** the far end now holds machinery: columns, gantries and units mounted high up. BEFORE had a spiral portal and a pink wall of windows there. The hero enemy is in the right place and size: (0.74, 0.38) at 0.34 W, against the original's (0.73, 0.38) at 0.33 W.
+- **What's wrong:** the original is a light, pastel, cluttered street of machines that keeps going into a bright glow at about (0.50, 0.43). NEW has rows of identical pink washer boxes under a dark violet ceiling. The repaired scenery shows as a hot rainbow disc at about (0.45, 0.44), 0.14 W across. It caps the corridor, so the depth looks short and the disc catches the eye more than anything else.
+- **The big gear:** it sits at about (0.92, 0.20), but it's pale lavender and mostly hidden behind the mission panel. The original's is saturated cobalt with a cyan rim at (0.92, 0.24).
+- **Brightness:** the original's enemy is the darkest thing against a light background. In NEW it doesn't stand out against mid-violet.
+
+**Zone B, the left architecture.** Clearly closer than BEFORE.
+- **What matches:** the drum is in the right place, x 0–0.26 W, y 0.23–0.42 H (original x 0–0.30, y 0.19–0.43). The pink and gold ring and the lavender window with the paw bubble are right. BEFORE's orange crab ornament is gone.
+- **What's wrong, the drum:** it's a thin, flat pink ring. The original is a chunky cylinder: a fat rim with a darker magenta inner lip, and a gold drum body visibly running back toward the centre (x 0.20–0.35).
+- **What's wrong, the ledge:** NEW's ledge reads as a magenta fence with slats, and its pink wall runs on down to about 0.62 H. The original's ledge is a solid cream-gold counter top at y 0.43–0.46, with a light peach front and stars, a coin and a green blob below it.
+
+**Zone C, the right architecture.** Closer in shape than BEFORE, but the stars are a step back.
+- **What matches:** a curved tub now stands where BEFORE had a square pillar. Its rim is at 0.49 H (original 0.48) and its left edge at 0.69 W (original 0.70).
+- **What's wrong:**
+  - The body is too short: 0.49–0.59 H, against the original's 0.49–0.65, which reaches the water near 0.70 H at the right edge.
+  - It reads as pale columns, not solid pink panels with big gold stars. BEFORE at least showed the stars.
+  - It stands on a lavender base. The original stands in white-foamed water.
+
+**Zone D, the water and the player.** Unchanged from BEFORE (my four measurements of this zone are identical).
+- **What matches:** the foreground surf round her.
+- **What's wrong:** the middle of the channel (0.45–0.65 H) is deep indigo with white flecks. The original's is light azure, with white crests along both banks. Three gameplay enemies sit on the lane right over the vanishing point and hide the distance. The original shows only the one enemy.
+
+**Measured (my own quick script on the four zone boxes; colour shares only, not a similarity score; original / BEFORE / NEW):**
+- Brightness, A: 0.58 / 0.51 / 0.53.
+- Share of near-white pixels, A: 30 / 12 / 16 %.
+- Share of saturated violet and magenta, B: 13 / 30 / 45 %. NEW moved further from the original here.
+- Same share, C: 13 / 29 / 15 %.
+- Caveat: the game's Avoid Enemies banner sits inside zone A, which skews the A numbers a little.
+
+**The three most important corrections, ranked:**
+1. **Zone A, the far end.**
+   - Delete the rainbow disc, or push it much further back, smaller and paler, so it no longer caps the corridor.
+   - Lift the far wall and ceiling to pastel periwinkle, cyan and lilac, with warm white glints. Aim for about 30 % near-white pixels there, so the navy enemy is the darkest thing in the upper half.
+   - Replace the repeated pink washer boxes with varied gears, pipes and tanks that converge on a pale cyan-white glow at (0.50, 0.43).
+   - Make the big gear saturated cobalt with a cyan rim, radius about 0.15 W, and lower it to y 0.20–0.34 so the mission panel doesn't cover it.
+2. **Zone B, the drum and the ledge.**
+   - Rebuild the drum as a thick cylinder: a fat pink rim with a darker inner lip, and a gold drum body visible running back toward the centre (x 0.20–0.35, y 0.25–0.42).
+   - Replace the slatted fence with a solid cream-gold counter: its top at y 0.43–0.46, angled toward (0.40, 0.42), with a light peach front and stars.
+   - Remove the tall magenta wall below it.
+3. **Zone C, the tub wall.**
+   - Extend the body down to about 0.65 H, reaching about 0.70 H at the right edge.
+   - Make it solid pink panels with three or four large gold stars, each about 0.05 W wide.
+   - Thin the cream-gold rim and drop the lavender base so the tub rises out of foam-edged water.
+
 
 _15 tool steps._
