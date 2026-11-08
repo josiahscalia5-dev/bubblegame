@@ -39,7 +39,7 @@ export const SCENE07 = {
   // pass 6 (the user's environment correction: "not another pass that only adds decorations to the wrong tunnel"): the tube is OPENED
   // above the water in this stretch (level1.js's wall shader patched at run time, its hoops hidden here) into one large, open laundry
   // CHAMBER: a pink-lavender facade shell, platforms either side of the water, gold-pink portal rings where the tube enters and leaves
-  chamber: { u0: 218, u1: 270, halfW: 7.2, height: 6.2, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25 },
+  chamber: { u0: 218, u1: 270, halfW: 7.2, height: 8.5, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0xbfb2ff },   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
   // the original's LEFT big circular washer housing [u, x, h, ring radius] and RIGHT curved pink-gold star tubs [u, inner x, radius, height]
   housings: [[239, 3.7, 2.35, 1.75], [257, 3.7, 2.35, 1.6]],
   tubs: [[234, 2.35, 2.1, 1.45], [249, 2.35, 1.9, 1.35], [263, 2.35, 2.0, 1.4]],
@@ -149,12 +149,15 @@ function buildChamber(root, TR, env) {
   const shellM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15, envMap: env || null, envMapIntensity: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.45, side: THREE.DoubleSide });
   // the shell: a half-ellipse over the stretch, from the deck on one side over the top to the other
   const pos = [], uv = [], idx = [], nA = 36, step = 1; let rows = 0;
+  const col = [], vc = new THREE.Color(Ch.vault), cc = new THREE.Color();
   for (let u = Ch.u0 - 1; u <= Ch.u1 + 1 + 1e-6; u += step, rows++) {
-    for (let j = 0; j <= nA; j++) { const a = -Math.PI / 2 + Math.PI * j / nA; TR.map(Math.sin(a) * Ch.halfW, Ch.deck + Math.cos(a) * Ch.height, u, P); pos.push(P.x, P.y, P.z); uv.push((u - Ch.u0) / 4, j / nA * 6); }
+    for (let j = 0; j <= nA; j++) { const a = -Math.PI / 2 + Math.PI * j / nA, hgt = Math.cos(a) * Ch.height; TR.map(Math.sin(a) * Ch.halfW, Ch.deck + hgt, u, P); pos.push(P.x, P.y, P.z);
+      uv.push((u - Ch.u0) / 4, Math.min(hgt, 3.6) / 1.8);   // the windows on the side walls only (two rows up to 3.6 m)
+      const k = THREE.MathUtils.smoothstep(hgt, 2.6, 6.0); cc.setRGB(1, 1, 1).lerp(vc, k); col.push(cc.r, cc.g, cc.b); }
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
-  const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setIndex(idx); sg.computeVertexNormals();
-  const shell = new THREE.Mesh(sg, shellM); shell.name = 'scene07_chamberShell'; root.add(shell);
+  const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
+  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
   // the decks either side of the water: lavender with a gold edge at the water
   const deckM = new THREE.MeshStandardMaterial({ color: 0xc7a2f0, roughness: 0.45, metalness: 0.2, envMap: env || null, envMapIntensity: 0.6, emissive: 0x6a4aa8, emissiveIntensity: 0.45, side: THREE.DoubleSide });
   const goldM = new THREE.MeshStandardMaterial({ color: 0xffdc7a, metalness: 1, roughness: 0.22, envMap: env || null, envMapIntensity: 1.4, emissive: 0x7a5a1c, emissiveIntensity: 0.55 });
