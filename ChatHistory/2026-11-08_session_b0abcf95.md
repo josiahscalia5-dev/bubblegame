@@ -175,3 +175,9 @@ The page is free and the CPU load has dropped. All five specialists and the plug
 
 The autosave pushes every 5 minutes and each push is checked against GitHub. Checking that it's still alive now:
 
+The recorder is running (158 frames in the first 90 seconds). Meanwhile, the identity proofs. Reading the previous session's identity script to reuse it:
+
+The recording has slowed now that the run frames (and the identity browser) compete for CPU. Meanwhile, the ledge-route frames, the alternative branch:
+
+The recording has slowed to a crawl at the hand-over into the game (frame 173). Checking what is using the CPU:
+
