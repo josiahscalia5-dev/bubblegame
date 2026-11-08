@@ -47,6 +47,11 @@ pleats most: a texture metric, which is why the art director's judgement against
 - Identity (`proofs/identity.txt`, `scripts/identity.sh`): the previous bundle 92bd9272 against match6's for the accepted
   `?s3=intunnel` (start, 3.0 s), the normal game (1.0 s) and `?s3=intunnel,structmatch,nomatch6` against the previous candidate
   (start, 3.0 s).
+- Result (`proofs/identity.txt`, final bundle **b5f69217**): **0 pixels differ in all five** (the last two by `scripts/identity_resume.sh`
+  after a container restart). `Tools/verify_restore.sh --build`: 28 passed, 0 failed; the bundle rebuilds byte-identically.
+- The full app on this branch (`fullapp_probe/`, the same probe as `ccr_branch_verification_2026-11-08/`): the opening with the Tripo
+  girl is number-for-number the same as on `ccr-76d4bc77-rqhl8o` (17 bones, blinks, the basket, the laundry, the mascot's path into
+  the washer, the camera, Tap to Start, 3 s of play); only her drawn look differs.
 - Through the run (`motion/`, `sheets/05_motion_ORIGINAL_MATCH5_MATCH6_same_run.jpg`, `scripts/motion.sh`): the same seeded run with
   real swipes and a jump for match5 and match6: 0 gameplay state fields differ at 4, 5, 5.5, 6, 7.7 and 10 s; her strands stay on
   her as she swims and steers. (Made on try m6e; the later tries changed only her drawn nubs and fur colour.)
