@@ -377,6 +377,10 @@ Reply in under 250 words: the tools you had, the test inventory, last recorded s
 Running the live test now: `s3_func` on the current build (md5 d2a666bd), using the shared browser lock and a 6-minute limit.
 
 - 18:01 `Bash`: Run s3_func live gameplay check under browser lock
+**Lead → agent** (18:04 UTC):
+
+[Request interrupted by user for tool use]
+
 
 _10 tool steps._
 
@@ -407,8 +411,16 @@ Report in under 300 words: (1) the tools you had; (2) the 3-4 largest lighting /
 - 18:02 `Bash`
 - 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/sbs.png
 - 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/game_portal.png
+- 18:02 `Bash`
+- 18:02 `Bash`
+- 18:03 `Bash`
+- 18:03 `Bash`
+**Lead → agent** (18:04 UTC):
 
-_13 tool steps._
+[Request interrupted by user]
+
+
+_17 tool steps._
 
 ---
 
@@ -443,8 +455,23 @@ Report in under 250 words: (1) the tools you had; (2) the water shaders/effects 
 - 18:02 `Bash`: Make gridded side-by-side of both images
 - 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/grid.png
 - 18:02 `Bash`: Measure water colour classes in both images
+- 18:02 `Bash`: Crop zoomed lower water regions of both images
+- 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/p8_lower.png
+- 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/app_lower.png
+- 18:03 `Bash`: Measure clean course-water regions
+- 18:03 `Grep`: ^const lin|function lin|const v3|colorspace_fragment|tonemapping_fragment
+- 18:03 `Grep`: openTube|uChamber|scene07.*wall|wallMat|l1Water
+- 18:03 `Grep`: heroGrade|round2Light|gradePass|GradeShader|uGrade
+- 18:03 `Grep`: heroGrade|round2Light
+- 18:03 `Grep`: Grade|grade
+- 18:03 `Grep`: GradeShader = |GradeShader:|export const GradeShader
+- 18:04 `Grep`: toneMapping\s*=|toneMappingExposure\s*=
+**Lead → agent** (18:04 UTC):
 
-_19 tool steps._
+[Request interrupted by user]
+
+
+_30 tool steps._
 
 ---
 
@@ -512,3 +539,34 @@ All three only change how she is drawn; her gameplay state is untouched.
 
 
 _20 tool steps._
+
+---
+
+## Game Art Director: Art director verdict on pass 9 (started 18:07 UTC)
+
+**Lead → agent** (18:07 UTC):
+
+Verdict needed (READ-ONLY; do not edit or create repository files). One correction was made to the opt-in "Avoid Enemies!" scene: the chamber's walls and vault (`scene07_chamberShell`), which pass 8 never drew because of a `//` comment bug, are now drawn. Nothing else changed.
+
+Compare at the same checkpoint (u 233, same seed, route and inputs):
+- APPROVED (the only authority): `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png`
+- pass 8: `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg`
+- pass 9: `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass9/upper_u233.0.jpg`
+- the side-by-side: `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/01_original_pass8_pass9.jpg`
+- also u 230: `.../74_scene07_avoid_enemies/frames/pass8/upper_u230.0.jpg` vs `.../75_scene07_pass9_shell/frames/pass9/upper_u230.0.jpg`
+
+Measured (original resized to 412 x 915; lower is closer): upper band 0.18-0.50 of the height: LPIPS 0.792 -> 0.710, mean ΔE2000 30.2 -> 30.6, saturation 95 -> 144 (original 115), value 246 -> 243 (original 213); lower band unchanged (LPIPS 0.835 -> 0.838); play area LPIPS 0.821 -> 0.782.
+
+The user's rule: revert anything that looks less like the original. Reply in under 200 words: KEEP or REVERT pass 9, why, and the single next correction in the upper half (with the number you would change, e.g. the vault colour `SCENE07.chamber.vault` or the vault glow `vaultM.emissiveIntensity` 0.42 in `/home/user/bubblegame/WebDemo/src/tripo_l1.js`), given the original's upper half is dense, bright, varied machinery rather than a plain surface.
+
+- 18:07 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/01_original_pass8_pass9.jpg
+- 18:07 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:07 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass9/upper_u230.0.jpg
+- 18:07 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u230.0.jpg
+- 18:07 `Grep`: chamber|vaultM|vault
+- 18:07 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:07 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:07 `Bash`
+- 18:07 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/upper3.png
+
+_9 tool steps._
