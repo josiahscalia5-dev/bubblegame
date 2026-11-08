@@ -9,7 +9,7 @@ session left nothing uncommitted). Both sub-switches are on by default under `le
 previous level1 and opening exactly. NOT accepted by the user yet. `match6` (her silhouette) is NOT part of this: it is opt-in
 (`,match6`), a candidate, by the user's order.
 
-Build: bundle **2f5e7987** (commit `debab7e`), on top of `ccr-76d4bc77-rqhl8o` `7e5dd685` (bundle 92bd9272), on branch
+Build: bundle **89e89f18** (commit `03e8455`), on top of `ccr-76d4bc77-rqhl8o` `7e5dd685` (bundle 92bd9272), on branch
 `claude/bubble-wash-kingdom-continue-z9nmm1`. Full app: `index.html?s3=intunnel,structmatch,home,level1`.
 
 ## What every transition looked like before (`sheets/00_every_transition_OLD_NEW_24_moments.jpg`, top row; seed 7, 412 x 915, autopilot)

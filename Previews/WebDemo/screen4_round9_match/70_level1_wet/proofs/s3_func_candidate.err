@@ -1,0 +1,6 @@
+browser.newContext: Protocol error (Browser.setDownloadBehavior): Failed to find browser context for id 4C6558FE2D60A10D9556BF876A849551
+    at async open (/home/user/bubblegame/WebDemo/tools/screen3/s3_func.cjs:16:23)
+    at async /home/user/bubblegame/WebDemo/tools/screen3/s3_func.cjs:63:10 {
+  log: [],
+  name: 'Error'
+}
