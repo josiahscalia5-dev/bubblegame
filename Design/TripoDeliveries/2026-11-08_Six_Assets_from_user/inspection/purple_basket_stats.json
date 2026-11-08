@@ -1,0 +1,25 @@
+{
+ "file": "purple basket 3d model.glb",
+ "meshes": 1,
+ "triangles": 9679,
+ "vertices": 9895,
+ "loose_parts": 572,
+ "materials": [
+  "tripo_mat_1098cfad-ddac-407f-a5b8-91d28650e772"
+ ],
+ "textures": [
+  [
+   "tripo_rgb_8ef733c6-3e4c-43fd-bfe8-fa0851c1ac16",
+   4096,
+   4096
+  ]
+ ],
+ "armatures": 0,
+ "actions": 0,
+ "skinned": false,
+ "size_xyz_blender": [
+  0.9995,
+  0.9263,
+  0.6665
+ ]
+}

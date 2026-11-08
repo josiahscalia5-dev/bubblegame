@@ -1,0 +1,25 @@
+{
+ "file": "sock character 3d model.glb",
+ "meshes": 1,
+ "triangles": 10244,
+ "vertices": 7416,
+ "loose_parts": 176,
+ "materials": [
+  "tripo_mat_a88f2eab-5bd9-4156-a65c-abdebf25228b"
+ ],
+ "textures": [
+  [
+   "tripo_rgb_4884ee68-9a4c-41e1-a678-96b0d1a3c750",
+   4096,
+   4096
+  ]
+ ],
+ "armatures": 0,
+ "actions": 0,
+ "skinned": false,
+ "size_xyz_blender": [
+  0.6812,
+  0.4097,
+  0.9995
+ ]
+}
