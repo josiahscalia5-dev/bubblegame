@@ -56,6 +56,10 @@ const server = http.createServer((req, res) => {
       const re = new RegExp(NAMES);
       d.scene.traverse((o) => { if (o.name && re.test(o.name)) { const r = rectOf(o); if (r) out.objects.push([o.name, ...r]); } });
       for (const [label, x, h, u] of PTS) { const p = d.track.map(x, h, u, new V()); p.project(d.camera); out.points.push([label, r3((p.x + 1) / 2), r3((1 - p.y) / 2)]); }
+      // the 3D scene's own cost in this view (the post passes' info shows only their last full-screen pass): one plain render, counted
+      const R = d.renderer, ar = R.info.autoReset; R.info.autoReset = false; R.info.reset(); R.render(d.scene, d.camera);
+      out.perf = { drawCalls: R.info.render.calls, triangles: R.info.render.triangles, geometries: R.info.memory.geometries, textures: R.info.memory.textures, programs: R.info.programs ? R.info.programs.length : null };
+      R.info.autoReset = ar;
       return out;
     }, { Z, LANE, NAMES, PTS: JSON.parse(PTS || '[]'), cam });
     const png = CAMS.length > 1 ? `${OUT}_${i}.png` : `${OUT}.png`;

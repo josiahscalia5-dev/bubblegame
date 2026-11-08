@@ -1,1 +1,2 @@
 accepted start: 0 pixels differ (d2a666bd vs 24160bb1, ?s3=intunnel)
+normal T1.0: 0 pixels differ (d2a666bd vs 24160bb1, ?s3=,)
