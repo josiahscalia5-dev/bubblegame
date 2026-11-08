@@ -680,3 +680,9 @@ One check run at small size finished at the castle with 5/5 socks, 3 stars and n
 
 The existing proofs are still running and come first: 9 of 12 identity checks are done, all 0 pixels different, and the recording is at frame 353. When they finish I'll take short captures of both candidates at matching points beside your original crops, and run one check that nothing changes with the switches off. Then I'll show you the screenshots and what still doesn't match.
 
+---
+
+### Automatic notice · 2026-11-08 14:17 UTC
+
+_Background command "Run identity proofs and the remaining evidence on the final build" completed (exit code 0)_
+
