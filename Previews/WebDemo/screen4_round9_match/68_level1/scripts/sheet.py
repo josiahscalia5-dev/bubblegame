@@ -19,6 +19,13 @@ s = Image.new('RGB', (768 * 3 + 40, 1536), (240, 236, 250))
 for i, (im, t) in enumerate([(orig, 'ORIGINAL approved Screen 4'), (old, 'BEFORE: ?s3=intunnel,structmatch'), (new, 'AFTER: ...,level1')]):
     s.paste(label(im.copy(), t), (i * (768 + 20), 0))
 s.resize((s.width // 2, s.height // 2)).save(f'{E}/seed7_3.0s_ORIGINAL_BEFORE_AFTER.jpg', quality=88)
+# the same at Tap to Start (with ?s3=intunnel the start IS the approved moment)
+old0 = Image.open(f'{SP}/identity68/level1_vs_candidate_start_old/base_canvas.png').convert('RGB')
+new0 = Image.open(f'{SP}/identity68/level1_vs_candidate_start_new/base_canvas.png').convert('RGB')
+s0 = Image.new('RGB', (768 * 3 + 40, 1536), (240, 236, 250))
+for i, (im, t) in enumerate([(orig, 'ORIGINAL approved Screen 4'), (old0, 'BEFORE (Tap to Start)'), (new0, 'AFTER level1 (Tap to Start)')]):
+    s0.paste(label(im.copy(), t), (i * (768 + 20), 0))
+s0.resize((s0.width // 2, s0.height // 2)).save(f'{E}/seed7_TapToStart_ORIGINAL_BEFORE_AFTER.jpg', quality=88)
 F = f'{SP}/rec_frames'
 if os.path.isdir(F):
     fr = sorted(glob.glob(f'{F}/f*.jpg'))

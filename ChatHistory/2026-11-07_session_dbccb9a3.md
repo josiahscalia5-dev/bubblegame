@@ -960,3 +960,7 @@ _[1 image attached]_
 
 The identity checks keep coming back clean: the candidate is 0 px at Tap to Start and +1 s too. Now implementing the Screen 1-2 corrections in `opening3d.js`:
 
+Committed and verified on GitHub: **`7a5f7db`** on `ccr-76d4bc77-rqhl8o` (final build `992bd377`). Starting the continuous phone recording of the corrected sequence and the gameplay tests:
+
+While those run, the Screen 3 side by side at the established moment (seed 7, 3.0 s): the ORIGINAL approved Screen 4, the candidate before, and the new build.
+
