@@ -9,3 +9,5 @@ level1_noflow T3.0: 0 pixels differ (a62848a0 ?s3=intunnel,structmatch,level1 vs
 level1_noflow T8.0: 0 pixels differ (a62848a0 ?s3=intunnel,structmatch,level1 vs 4d46f2d2 ?s3=intunnel,structmatch,level1,noflow)
 level1_noflow T20.0: 0 pixels differ (a62848a0 ?s3=intunnel,structmatch,level1 vs 4d46f2d2 ?s3=intunnel,structmatch,level1,noflow)
 level1_noflow T38.0: 0 pixels differ (a62848a0 ?s3=intunnel,structmatch,level1 vs 4d46f2d2 ?s3=intunnel,structmatch,level1,noflow)
+level1_flow_tap start: 20827 pixels differ (a62848a0 ?s3=intunnel,structmatch,level1 vs 4d46f2d2 ?s3=intunnel,structmatch,level1)
+== done 13:17:55

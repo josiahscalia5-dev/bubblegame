@@ -381,3 +381,15 @@ I'm finishing the current proof work first and won't start a redesign until it's
 
 Your later items will come after that, as small, separately proven steps behind the same switch: Bubble Kingdom arrival, golder coins in the Level 1 sections only, the mascot's celebration, and a clear "Level 2 coming soon" button. Your approved Screen 4 stays untouched, and no Tripo credits will be spent without your yes.
 
+---
+
+### Automatic notice · 2026-11-08 13:17 UTC
+
+_Background command "Wait until the identity proofs finish" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-08 13:18 UTC
+
+The differences are faint (mean 10 out of 765) and concentrated in the far centre of the tunnel, consistent with a small change deep in the view, spread by bloom. Looking at it:
+

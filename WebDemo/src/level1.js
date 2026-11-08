@@ -658,6 +658,13 @@ export function buildLevel1(ctx) {
   // drum are drawn exactly as without level1)
   const myGems = ctx.gemsList ? ctx.gemsList.splice(nBefore.gems) : [];
   const myItems = [...(ctx.coinsList ? ctx.coinsList.slice(nBefore.coins) : []), ...(ctx.socksList ? ctx.socksList.slice(nBefore.socks) : []), ...myGems];
+  // (flow) the course's coins only, toward the original's lemon gold: their own copy of the coin material (same shader program), so
+  // the Screen 4 drum's coins (and the accepted picture) are untouched
+  if (FLOW && ctx.coinsList) {
+    const tinted = new Map(), tint = (mt) => { if (!tinted.has(mt)) { const c = mt.clone(); c.onBeforeCompile = mt.onBeforeCompile; c.customProgramCacheKey = mt.customProgramCacheKey;
+      c.color.multiply(new THREE.Color().setRGB(...C.coinTint)); tinted.set(mt, c); } return tinted.get(mt); };
+    for (const it of ctx.coinsList.slice(nBefore.coins)) it.obj.traverse((o) => { if (o.isMesh) o.material = Array.isArray(o.material) ? o.material.map(tint) : tint(o.material); });
+  }
   let gemsIn = false;
 
   // ---------------- the HUD: section banner, progress bar, Level Complete
@@ -697,17 +704,20 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   // the art director's colours sampled from board 12; the course strip under the sock panel is not in the original: hidden)
   if (FLOW) css.textContent += `
 #l1Prog { display: none !important; }
-#l1Done.flow { background: rgba(20, 60, 170, 0.28); }
-#l1Done.flow .card { width: 86%; background: linear-gradient(#f3f8fe, #e2edf9); border-color: #ffffff; box-shadow: 0 calc(var(--u, 2px) * 5) 0 #148ff0, 0 0 calc(var(--u, 2px) * 30) rgba(140, 210, 255, .8); color: #202e83; }
+#l1Done.flow { background: rgba(20, 60, 170, 0.18); align-items: flex-start; padding-top: calc(var(--u, 2px) * 64); }   /* (the card above her: she celebrates below it, as on board 10) */
+#l1Done.flow .card { width: 80%; padding-top: calc(var(--u, 2px) * 6); padding-bottom: calc(var(--u, 2px) * 8); background: linear-gradient(#f3f8fe, #e2edf9); border-color: #ffffff; box-shadow: 0 calc(var(--u, 2px) * 5) 0 #148ff0, 0 0 calc(var(--u, 2px) * 30) rgba(140, 210, 255, .8); color: #202e83; }
 #l1Done.flow .stars { font-size: calc(var(--u, 2px) * 34); color: #fad928; text-shadow: 0 calc(var(--u, 2px) * 2.5) 0 #d48f23; }
 #l1Done.flow h2 { background: linear-gradient(#3aa0ff, #1578d0); }
-#l1Done.flow .row { background: #ffffff; border-radius: calc(var(--u, 2px) * 9); margin: calc(var(--u, 2px) * 3) 0; padding: calc(var(--u, 2px) * 4) calc(var(--u, 2px) * 7); }
+#l1Done.flow .row { background: #ffffff; border-radius: calc(var(--u, 2px) * 9); margin: calc(var(--u, 2px) * 2.5) 0; padding: calc(var(--u, 2px) * 3) calc(var(--u, 2px) * 7); font-size: calc(var(--u, 2px) * 11); }
+#l1Done.flow .stars { font-size: calc(var(--u, 2px) * 28); } #l1Done.flow h2 { margin: 0 0 calc(var(--u, 2px) * 5); font-size: calc(var(--u, 2px) * 19); }
 #l1Done.flow .row i { color: #4ca439; } #l1Done.flow .row i.no { color: #c0406a; }
 #l1Done .rewards { margin-top: calc(var(--u, 2px) * 7); border: calc(var(--u, 2px) * 2.5) solid #148ff0; border-radius: calc(var(--u, 2px) * 12); background: #dbe8fa; padding: calc(var(--u, 2px) * 4) calc(var(--u, 2px) * 6) calc(var(--u, 2px) * 6); }
 #l1Done .rewards b { display: block; font-size: calc(var(--u, 2px) * 13); color: #1578d0; margin-bottom: calc(var(--u, 2px) * 3); }
 #l1Done .rewards .rw { display: flex; justify-content: space-around; font-size: calc(var(--u, 2px) * 13); font-weight: 700; color: #202e83; }
 #l1Done .rewards .rw span { display: flex; flex-direction: column; align-items: center; } #l1Done .rewards .rw em { font-style: normal; font-size: calc(var(--u, 2px) * 20); }
-#l1Done.flow button { background: linear-gradient(#74f029, #0eb31c); }`;
+#l1Done.flow button { background: linear-gradient(#74f029, #0eb31c); }
+#l1Done.flow button.again { margin-top: calc(var(--u, 2px) * 4); height: calc(var(--u, 2px) * 26); font-size: calc(var(--u, 2px) * 12); background: linear-gradient(#5aa8ff, #2f6ff0); box-shadow: 0 calc(var(--u, 2px) * 3) 0 #1a3f9e; }
+#l1Done.flow #l1Soon { min-height: calc(var(--u, 2px) * 11); font-weight: 700; color: #1578d0; } #l1Done.flow #l1Soon.on { animation: l1pop .4s cubic-bezier(.3,1.6,.5,1); }`;
   document.head.appendChild(css);
   const stage = ctx.stage;
   const banner = document.createElement('div'); banner.id = 'l1Banner'; stage.appendChild(banner);
@@ -730,7 +740,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   let hintCool = 0;
   const hint = (lines) => { if (hintCool > 0) return; hintCool = 1.2; showBanner({ banner: lines }); bannerT = 1.4; };
   const GOALS = { socks: 5, coins: 50, gems: 1 }, REWARDS = { coins: 300, gems: 10, socks: 5 };
-  let rewarded = false;
+  let rewarded = false, celebT = 1.15;
   const showCompleteFlow = () => {
     const socks = Math.min(5, state.socks), gemsGot = state.level1Gems || 0, coinsGot = state.coins - (state.level1Coins0 ?? state.coins);
     const ok = [socks >= GOALS.socks, coinsGot >= GOALS.coins, gemsGot >= GOALS.gems], stars = Math.max(1, ok.filter(Boolean).length);
@@ -743,8 +753,10 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     done.innerHTML = `<div class="card"><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div><h2>Level Complete!</h2>
       ${row('🧦 Rescue 5 lost socks', socks, 5, ok[0])}${row('🪙 Collect 50 coins', Math.min(coinsGot, GOALS.coins), GOALS.coins, ok[1])}${row('💎 Find 1 special gem', Math.min(1, gemsGot), 1, ok[2])}
       <div class="rewards"><b>Rewards</b><div class="rw"><span><em>🪙</em>+${REWARDS.coins}</span><span><em>💎</em>+${REWARDS.gems}</span><span><em>🧦</em>+${REWARDS.socks}</span></div></div>
-      <button type="button" id="l1Again">Play Level 1 again ▶</button></div>`;
+      <button type="button" id="l1Next">Next Level ▶</button><small id="l1Soon">&nbsp;</small><button type="button" id="l1Again" class="again">↻ Play Level 1 again</button></div>`;
     done.classList.add('show', 'flow');
+    // (Level 2 is not built: the button says so plainly instead of starting a fake level)
+    done.querySelector('#l1Next').addEventListener('click', (e) => { e.stopPropagation(); const n = done.querySelector('#l1Soon'); n.textContent = 'Level 2, Soap Lagoon, is coming soon!'; n.classList.add('on'); });
     done.querySelector('#l1Again').addEventListener('click', (e) => { e.stopPropagation(); done.classList.remove('show'); if (ctx.restart) ctx.restart(); });
   };
   const showComplete = FLOW ? showCompleteFlow : () => {
@@ -889,6 +901,11 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // the finish
     if (running && !complete && u >= C.finish) { complete = true; completeT = 0; ctx.sfx && ctx.sfx('gem'); ctx.finish(); }
     if (complete) { completeT += dt; if (completeT > 1.1 && !done.classList.contains('show')) showComplete(); }
+    // (flow) board 10's celebration: she turns to the player (the game's own look-back pose) and bounces happily on the water
+    if (FLOW && complete) {
+      if (completeT > 0.6 && completeT - dt <= 0.6) m.lookT = 0.05;
+      if (completeT > 0.9 && !m.air && (celebT += dt) > 1.15) { celebT = 0; m.air = true; m.vy = 4.4; m.falling = true; m.sqV += 5; }
+    }
     window.__bwLevel1 = { u: +u.toFixed(2), section: C.sections[k].name, progress: +p.toFixed(4), complete, socks: state.socks, report,
       ...(FLOW ? { lane: m.lane, lift: +flowLift(m.x, u).toFixed(3), route: m.lane === -1 ? 'side path' : u > 111 && u < 136 ? (Math.abs(m.x) < 0.5 ? 'lower path' : 'upper ledge') : 'main',
         popped: state.level1Popped || 0, result: state.level1Result || null } : {}) };
@@ -901,7 +918,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     for (const e of enemies) { e.u = e.u0; e.hit = false; }
     shown = -1; complete = false; completeT = 0; bannerT = 0; banner.classList.remove('show'); done.classList.remove('show');
     state.level1Coins0 = undefined;
-    if (FLOW) { flow.reset(); park(); for (const e of enemies) e.dead = false; rewarded = false; lastSocks = 0; hintCool = 0; done.classList.remove('flow'); }
+    if (FLOW) { flow.reset(); park(); for (const e of enemies) e.dead = false; rewarded = false; celebT = 1.15; lastSocks = 0; hintCool = 0; done.classList.remove('flow'); }
   }
   // her swimming, drawn on her model only: a stroke rhythm (alternating roll and a forward surge with each stroke), small
   // paddle splashes at her sides, and a stronger lean and turn into each swipe

@@ -8,9 +8,10 @@
 //   05 spinning brushes   06 coins, gems and socks   07 grime balls that roll at her and patrol across lanes; a tap-spin,
 //      Turbo Spin or Bubble Blast pops them   08 the Bubble Kingdom inside the wet washer chamber   09 rescue progress 4/5 -> 5/5
 //   10 Level Complete with the board's goals and rewards (+300 coins, +10 gems, +5 socks), still on the blue water.
-// Exactly five lost socks can be rescued on ANY route: the Screen 4 drum's first two (the ones in the accepted picture; its three
-// far ones are parked, not removed, so the game's seeded random sequence is unchanged), one on each route of the side paths, one
-// on each route of the drop, and the last one in the Kingdom.
+// Exactly five lost socks can be rescued on ANY route, the fifth near the end: the Screen 4 drum's first three (the ones in the accepted
+// Tap to Start picture: 3/5 by the drum's end; its two far ones, not in view, are parked, not removed, so the game's seeded random
+// sequence is unchanged), one on each route of the drop (4/5), and the last one in the Kingdom (5/5). The side path rewards its
+// riders with the special gem and a coin arc instead.
 // Heights: the routes are shaped by one height offset in track space, flowLift(x, u) (>= 0), added to world.js baseHeight through
 // its HOOK only with this switch, so her riding height, the camera, the spray, the water mesh and the water pad round her all agree.
 // ,noflow draws the previous level1 exactly.
@@ -95,12 +96,14 @@ export function flowCourse(B) {
       [1, 189, 7, 1.3, 0.55, 0.9], [0, 197, 6, 1.3, 0.55, 0], [2, 205, 6, 1.3, 0.55, 0.7],
       [0, 216, 3, 1.4, 0.55, 0], [2, 224, 3, 1.4, 0.55, 0], [1, 231, 3, 1.4, 0.55, 0], [0, 237, 3, 1.4, 0.55, 0], [1, 243, 3, 1.4, 0.55, 0], [1, 250, 4, 1.4, 0.55, 0],
       [1, 262, 5, 1.5, 0.55, 0], [0, 280, 6, 1.4, 0.55, 0.8], [2, 296, 6, 1.4, 0.55, 0], [1, 312, 8, 1.3, 0.55, 0.6]],
-    // [lane, height, u]: one sock on each route of the side paths and of the drop, the last one in the Kingdom
-    socks: [[-1, 0.85, 78], [2, 0.85, 78.5], [1, 0.9, 127], [0, 0.85, 124], [2, 0.85, 125], [1, 0.9, 304]],
+    // [lane, height, u]: one sock on each route of the drop (4/5), the last one in the Kingdom (5/5)
+    // (the side paths had one per route too; with the drum's third sock kept in the accepted picture that made 5/5 before the Kingdom)
+    socks: [[1, 0.9, 127], [0, 0.85, 124], [2, 0.85, 125], [1, 0.9, 304]],
     gems: [[-1, 0.85, 82], [1, 0.8, 201]],
     // (the islands beyond the portal were at eye height and read as green slabs edge-on: lowered)
     chamber: { ...B.chamber, islands: B.chamber.islands.map(([u, x, h, r]) => [u, x, h - 2.4, r]) },
-    parkDrumSocks: [18, 37],   // the Screen 4 drum's socks between these u are parked (see the top)
+    parkDrumSocks: [25, 37],   // the Screen 4 drum's socks between these u are parked (see the top; the one at 21.8 is in the Tap to Start picture)
+    coinTint: [1.0, 1.5, 0.42],   // the course's coins toward the original's lemon gold (#f7c826; they measured #f69c3a); the drum's coins untouched
   };
 }
 
