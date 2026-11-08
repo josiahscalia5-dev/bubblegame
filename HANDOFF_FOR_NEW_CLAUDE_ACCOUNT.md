@@ -18,7 +18,7 @@ Session link: https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP. Nothing h
 | Its head | moves with the 5-minute autosave; read it with `git ls-remote origin claude/bubble-wash-kingdom-continue-z9nmm1`. At this writing: `05a3461bd903397db14687fde7cd34e0ead27b47` (11:18 UTC, verified on GitHub). |
 | The candidate build | commit `03e8455` (bundle `89e89f18829eb4145da2237f3838a033`): level1 `wet` + `port`, match6 opt-in |
 | `ccr-76d4bc77-rqhl8o` | `7e5dd685cc541be0ea614d0ca0dd9dd0ccd7a77c` (the old session `dbccb9a3`, idle since 02:56 UTC; its last code commit `890167c`, the Tripo girl rigged and the course culled; bundle `92bd9272`). Not written by session `8140e507`. |
-| Review route | a pull request from `claude/bubble-wash-kingdom-continue-z9nmm1` into `ccr-76d4bc77-rqhl8o` (see the session's final report for its link); nothing is merged into `ccr-76d4bc77-rqhl8o` without the user's approval |
+| Review route | **pull request #3** (draft): https://github.com/josiahscalia5-dev/bubblegame/pull/3, from `claude/bubble-wash-kingdom-continue-z9nmm1` into `ccr-76d4bc77-rqhl8o`; nothing is merged into `ccr-76d4bc77-rqhl8o` without the user's approval |
 | File ownership | `SESSION_FILE_RESERVATIONS.md`: since 10:40 UTC session `8140e507` owns `level1.js`, `opening3d.js` and the tunnel files |
 | Git LFS | not used; the largest tracked file is 29 MB (a video); GitHub's limit is 100 MB |
 | Ignored on purpose | `WebDemo/node_modules/` (`npm ci`), `WebDemo/artifact-models/` (made by the build) |
