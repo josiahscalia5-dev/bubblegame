@@ -1708,3 +1708,80 @@ Checking the state first. This looks like a restarted session, so I'm confirming
 
 The accepted Screen 4, the normal game and the candidate are still 0 pixels different after the culling. Recording both changes in the evidence README and committing this step:
 
+_[Sent you files: Previews/WebDemo/screen4_round9_match/68_level1/screens/girl2_tripo_girl_APPROVED_vs_NEW.jpg, Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/rig/girl_test_pose.png]_
+
+The proofs and the recording were finished and verified on GitHub before I started (`940a720`). Since then I've completed two of your five priorities: the rendering cost (5) and the girl (1). Both are committed and verified on GitHub as **`890167c`** on `ccr-76d4bc77-rqhl8o`. Newer autosaves follow on top of it.
+
+**Priority 5, rendering cost:** far parts of the course are no longer drawn. Pieces, coins, socks, gems, brushes, soap bars and enemies now draw only from 6 m behind her to 45 m ahead.
+
+| Moment | Before | After | Candidate without `level1` |
+|---|---|---|---|
+| Tap to Start | 322 draw calls | **222** | 211 |
+| +3 s | 270 | **167** | 131 |
+| +20 s | 186 | **105** | – |
+
+- Triangles at Tap to Start fell from 3.13 M to 2.76 M.
+- The whole level still plays to Level Complete with every coin and sock.
+- The accepted Screen 4, the normal game and the candidate are still 0 pixels different.
+- The remaining big cost belongs to the candidate itself: about 2.5 M triangles, mostly her shell fur and the fluffy brushes. Making those lighter would change how the candidate looks, so that's your call.
+
+**Priority 1, your Tripo girl, now in the opening:**
+- I rigged her in Blender with a skeleton placed from her own measured proportions: hips, spine, chest, neck, head, shoulders, arms, hands and legs.
+- Every vertex is bound to a bone, and the test pose (arms raised to toss, head turned) deforms cleanly.
+- Her texture is reduced to 2048 for phones, so the model is 1.1 MB.
+- In the opening she runs the same timeline as before, on her own bones:
+  - her hands follow the basket's handles;
+  - she leans into the toss and turns her head to follow the flight, then waves;
+  - eyelids on her head bone close over her painted eyes when she blinks.
+- She stands on a small step stool by the washer, with her face at the upper left as in your art.
+- The washer entry is unchanged.
+- `,nogirl2` brings back the old code-built girl for comparison.
+
+**parallax-threejs** now loads in this session:
+- chrome-devtools and playwright are connected, and its 3 agents and 9 commands are available.
+- threejs-devtools timed out at session start, but started by hand it works and provides all 51 of its tools. Reconnecting it from the MCP menu should now succeed.
+- spector fails, as on your old account.
+
+**Next, in your order:**
+- **Priority 2:** use your Tripo basket, socks and towels in the toss. The towels split into three pieces; textures get shrunk.
+- **Priority 3:** her rear-view silhouette against the ORIGINAL classic Screen 4. Your current mascot stays; the rejected Tripo creature is not used.
+- **Priority 4:** the water, the metal housing, the brushes and the lighting, with side by sides against the original artwork.
+
+The Tripo washer stays out until its porthole is cut open.
+
+---
+
+### Automatic check · 2026-11-08 02:52 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-08 02:52 UTC
+
+I committed and pushed the only uncommitted file: GitHub now matches locally at `d65bd6a`, with nothing left uncommitted.
+
+That file is `68_level1/proofs/identity.txt`. It's from a background identity run that is still going, so the committed copy is partial. Every check in it so far shows 0 pixels different for the accepted Screen 4, the normal game and the candidate. I'll commit the complete file when the run finishes.
+
+---
+
+### Automatic notice · 2026-11-08 02:56 UTC
+
+_Background command "Run the identity proofs on the culled build" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-08 02:56 UTC
+
+The identity check run has finished and is committed: GitHub matches the local copy at `7fe91d3`, with nothing left uncommitted.
+
+Compared with the build before this work, nothing you had already approved changed:
+- **Accepted Screen 4 (`?s3=intunnel`):** 0 pixels different at Tap to Start, +1 s and +3 s.
+- **Normal game:** 0 pixels different at Tap to Start and +1 s.
+- **Candidate (`?s3=intunnel,structmatch`):** 0 pixels different at Tap to Start, +1 s and +3 s.
+- **`noswim2` and `blend`:** 0 pixels different at +1 s.
+- **With `level1`:** Tap to Start is 0 pixels different from the candidate. At +3 s about 317,000 pixels differ, which is intended: the drum's rings now stream past at her speed and she makes swim strokes.
+
+The last bundles in this run (`92bd9272`) include the course culling and your Tripo girl in the opening. That build shows only the final blink tweak to her eyelids, which runs only in the opening.
+
