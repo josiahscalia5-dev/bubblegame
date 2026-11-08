@@ -12,7 +12,8 @@
 import * as THREE from 'three';
 import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): opt-in `,norecon16,wall15` only
 import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16, FAR16_ON, applyFar16, MACH16 } from './scene07_recon16.js';
-import { RECON17_ON, JEWEL17_ON, R17, jewelFacadeTexture, prepRecon17, buildRecon17, patchShaders17 } from './scene07_recon17.js';   // scene07 pass 17 (session bb87ba9f): receding rows, a machinery far end, the stretch's lighter water; `,norecon17` = pass 16 v5   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
+import { RECON17_ON, JEWEL17_ON, R17, jewelFacadeTexture, prepRecon17, buildRecon17, patchShaders17 } from './scene07_recon17.js';
+import { BUILD18_ON, prepBuild18, buildBuild18 } from './scene07_build18.js';   // scene07 pass 18 (session bb87ba9f): the six-zone 3D construction; `,nobuild18` = pass 17c   // scene07 pass 17 (session bb87ba9f): receding rows, a machinery far end, the stretch's lighter water; `,norecon17` = pass 16 v5   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -330,7 +331,9 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   let art16 = null;
   if (ART16_ON) { art16 = await applyArt16(root, TR, SCENE07.chamber, camera); if (SCENE07._glow) SCENE07._glow.opacity = 0.3; }
   if (FAR16_ON) { art16 = await applyFar16(root, TR, SCENE07.chamber, camera); }
-  if (RECON17_ON) { const r = buildRecon17(root, TR, env, goldM, SCENE07.chamber, items); sh17 = patchShaders17(scene, TR, SCENE07.chamber); recon17 = { parts: r.parts, glints: r.glintCount || 0, triangles: r.triangles, droppedMounted: dropped17, shaders: sh17.report }; }   // pass 17 (scene07_recon17.js)   // pass 16: the master's distant scenery on the far end wall only   // pass 16: the master's distant scenery, projected (scene07_recon16.js)
+  let build18 = null; if (BUILD18_ON) prepBuild18();
+  if (RECON17_ON) { const r = buildRecon17(root, TR, env, goldM, SCENE07.chamber, items); sh17 = patchShaders17(scene, TR, SCENE07.chamber); recon17 = { parts: r.parts, glints: r.glintCount || 0, triangles: r.triangles, droppedMounted: dropped17, shaders: sh17.report }; }
+  if (BUILD18_ON) build18 = buildBuild18(root, TR, env, goldM, SCENE07.chamber, items);   // pass 18 (scene07_build18.js)   // pass 17 (scene07_recon17.js)   // pass 16: the master's distant scenery on the far end wall only   // pass 16: the master's distant scenery, projected (scene07_recon16.js)
   let wall15 = null;
   if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, SCENE07.ledge, items); }   // pass 15 (scene07_wall15.js)
   buildArchitecture(root, TR, env, items);
@@ -375,7 +378,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
       body.scene07 #l1Banner.warn span { display: none; }`;
     document.head.appendChild(st);
   }
-  report.scene07 = { recon16, recon17, art16: art16 && { cards: art16.cards, hidden: art16.hidden, farWall: art16.wall }, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
+  report.scene07 = { recon16, recon17, build18, art16: art16 && { cards: art16.cards, hidden: art16.hidden, farWall: art16.wall }, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {

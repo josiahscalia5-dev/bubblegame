@@ -255,3 +255,45 @@ Environment-restore verification task (do NOT write or change any file; answer i
 
 
 _2 tool steps._
+
+---
+
+## Game Art Director: Art director review of pass 18b (started 22:57 UTC)
+
+**Lead → agent** (22:57 UTC):
+
+Structural review (read-only; at most 18 lines). Bubble Wash Kingdom, Screen 09 "Avoid Enemies!" background ONLY (ignore HUD, banner, mission panel, mascot, enemies, collectible coins and the water: the user forbids changing those). All frames 412 x 915 at the same checkpoint (u 229.5, centre lane).
+- APPROVED (the only target): /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/original_master_frame.png
+- the user's six-zone map: /root/.claude/uploads/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/2ec967e1-image.png (1 left washer portal, 2 upper-right cobalt gear, 3 deep machine interior, 4 left rail/ledge, 5 right pink machine wall, 6 decorative gold / bubbles / sparkle)
+- BEFORE (v5): /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/78_scene07_pass17/frames/pass16_v5_rerender_u229.5_centre.png
+- AFTER (pass 18b, new real 3D construction): /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/78_scene07_pass17/frames/pass18b_u229.5_centre.png
+The user's demand: recognisably the SAME background objects, structures and depth as the approved image; real 3D; structures before colour.
+For each zone 1-6 give one line: closer / same / worse than v5, and the single biggest remaining STRUCTURAL difference (shape, size, position, depth; screen x/y fractions). Then rank the 3 largest remaining structural fixes with a concrete 3D geometry instruction each. Then a one-line overall judgement of how recognisable the background is now versus v5 (state it is a judgement, not a measurement). End with the tools you used.
+
+- 22:57 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/original_master_frame.png
+- 22:57 `Read`: /root/.claude/uploads/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/2ec967e1-image.png
+**Lead → agent** (22:57 UTC):
+
+[Image: original 2360x1550, displayed at 2000x1314. Multiply coordinates by 1.18 to map to original image.]
+
+- 22:57 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/78_scene07_pass17/frames/pass16_v5_rerender_u229.5_centre.png
+- 22:57 `Read`: /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/78_scene07_pass17/frames/pass18b_u229.5_centre.png
+- 22:57 `Bash`
+- 22:57 `Bash`
+- 22:57 `Bash`
+- 22:57 `Bash`
+- 22:57 `Bash`
+- 22:57 `Bash`
+- 22:58 `Bash`
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/full_grid.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/z1.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/z2.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/z3.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/z4.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/z5.png
+- 22:58 `Bash`
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/up_A.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/up_C.png
+- 22:58 `Read`: /tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/rev18b/up_B.png
+
+_21 tool steps._

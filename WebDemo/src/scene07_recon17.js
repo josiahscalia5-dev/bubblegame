@@ -218,7 +218,7 @@ export function buildRecon17(root, TR, env, goldM, Ch, items) {
   }
   // ---- JEWEL17: the master's cobalt gear (camera-facing) and the counter's portholes ------------------------------------------------------------
   if (JEWEL17_ON) {
-    const t = new THREE.Group(), Gr = R17.gear, R = Gr.R, q = at(TR, new THREE.Group(), Gr.x, Gr.h, Gr.u, camYaw(Gr.x, Gr.u)); t.add(q);
+    const t = new THREE.Group(), Gr = R17.gear, R = Gr.R, q = at(TR, new THREE.Group(), Gr.x, Gr.h, Gr.u, camYaw(Gr.x, Gr.u)); if (!Gr.hide) t.add(q);   // (pass 18 GEAR sets hide: its full gear assembly)
     const cob = (c, e, ei, extra = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.34, metalness: 0.15, envMap: env || null, envMapIntensity: 0.35, emissive: e, emissiveIntensity: ei, ...extra });
     const ext = (sh, d) => new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: true, bevelThickness: d * 0.2, bevelSize: d * 0.12, bevelSegments: 2, curveSegments: 5 });
     add(q, ext(gearShape(R * 1.42, 30, 0.9, true), R * 0.08), cob(0xc9b0f0, 0x8a6ad0, 0.32), 0, 0, -R * 0.16);   // the lilac frill

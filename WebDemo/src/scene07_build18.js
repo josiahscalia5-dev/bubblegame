@@ -26,8 +26,8 @@ export const BUILD18_ON = RECON17_ON && !LIST.includes('nobuild18');
 const on = (k) => BUILD18_ON && !LIST.includes('no' + k + '18');
 export const B18 = { housing: on('housing'), gear: on('gear'), dense: on('dense'), rail: on('rail'), wall: on('wall'), deco: on('deco') };
 export const P18 = {
-  housing: { hw: 1.8, top: 2.35, depth: 1.5 },                                 // in the drum's own frame (RECON16.drum): half width, top, body depth (m)
-  gear: { u: 238.0, x: -3.0, h: 4.15, R: 1.0 },                                // centre ~(0.95, 0.31) of the screen at the checkpoint
+  housing: { len: 1.5, body: 1.25, green: { u: 241.3, x: 2.2, h: 4.25, r: 0.5, hh: 1.0 } },   // the drum body (in the drum's frame): length, radius (in R); the green-topped machine
+  gear: { u: 238.0, x: -2.78, h: 4.0, R: 1.0 },                                // centre ~(0.92, 0.31) of the screen at the checkpoint (right of the game's banner)
   rail: { skip: [236.4, 239.6], step: { x: 2.0, h: 1.15 }, post: 0.8, railX: 2.42, top: 2.72 },
   dense: { seed: 18 },
   deco: { medallions: [[244.2, 1.97, 3.55, 1], [247.4, 1.97, 3.3, 1], [250.6, 1.67, 5.0, 1], [244.6, -1.77, 5.0, -1], [249.0, -1.77, 5.9, -1], [250.2, -0.3, 6.35, 0], [252.15, 1.55, 3.37, 0], [252.15, -1.55, 3.37, 0]] },
@@ -52,27 +52,29 @@ export function buildBuild18(root, TR, env, goldM, Ch, items) {
   const camYaw = (x, u) => Math.atan2(-0.62 - x, 226.7 - u);
   const glows = [];   // [x, h, u, 'warm' | 'cool' | 'pink'] for the lamp glows (DECO)
 
-  // ---- 1. HOUSING: the left washer portal as a machine body ------------------------------------------------------------------------------------
+  // ---- 1. HOUSING: the left washer portal as the master draws it (its zone 1 at full resolution): a huge drum seen three-quarters on: the thick
+  // pink rim with gold bolt studs and layered rings, the lilac interior with the crystal paw bubble (pass 16's), and a LONG lavender-silver drum body
+  // running back toward the channel with gold bands and bolt rows; the master's green-topped machine on its far end; a pipe up into the machinery
   if (B18.housing) {
-    const D = RECON16.drum, L = RECON16.ledge, R = D.R, H = P18.housing, t = new THREE.Group(), g = at(TR, new THREE.Group(), D.x, D.h, D.u, Math.PI - D.yaw); t.add(g);
-    const yb = L.h - D.h, hw = H.hw, yt = H.top, sh = new THREE.Shape();
-    sh.moveTo(-hw, yb); sh.lineTo(hw, yb); sh.lineTo(hw, yt - hw * 0.7); sh.quadraticCurveTo(hw, yt, 0, yt); sh.quadraticCurveTo(-hw, yt, -hw, yt - hw * 0.7); sh.lineTo(-hw, yb);
-    const hole = new THREE.Path(); hole.absarc(0, 0, R * 0.82, 0, Math.PI * 2, true); sh.holes.push(hole);
-    add(g, new THREE.ExtrudeGeometry(sh, { depth: H.depth, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.12, bevelSegments: 3, curveSegments: 36 }), M.pink, 0, 0, -H.depth - 0.12);
-    const outline = sh.extractPoints(24).shape, cy = (yb + yt) / 2;
-    const loop = (k, z) => new THREE.CatmullRomCurve3(outline.map((p) => new THREE.Vector3(p.x * k, cy + (p.y - cy) * k, z)), true);
-    add(g, new THREE.TubeGeometry(loop(1.0, 0.04), 160, 0.07, 8, true), M.gold, 0, 0, 0);          // gold piping round the housing's face
-    add(g, new THREE.TubeGeometry(loop(0.88, 0.05), 160, 0.04, 6, true), M.silver, 0, 0, 0);       // an inset silver trim
-    add(g, new THREE.TorusGeometry(R * 1.32, 0.08, 10, 72), M.magenta, 0, 0, 0.05);                  // layered rings round the porthole
-    add(g, new THREE.TorusGeometry(R * 1.05, 0.05, 8, 72), M.silver, 0, 0, 0.26);
-    for (let k = 0; k < 14; k++) { const a = (k / 14) * Math.PI * 2; add(g, new THREE.SphereGeometry(0.065, 10, 8), M.gold, Math.cos(a) * R * 1.55, Math.sin(a) * R * 1.55, 0.08); }   // bolt studs
-    for (const y of [0.55, -0.55]) add(g, new THREE.CylinderGeometry(0.12, 0.12, 0.42, 14), M.gold, -R * 1.56, y, 0.12);   // the hinge
-    add(g, new RoundedBoxGeometry(0.18, 1.5, 0.16, 2, 0.05), M.silver, -R * 1.56, 0, 0.05);
-    add(g, new RoundedBoxGeometry(2.2, 0.42, 0.18, 2, 0.08), M.violet, 0, yt - 0.62, 0.08);         // the control strip with knobs and lights
-    for (const x of [-0.62, 0, 0.62]) add(g, new THREE.CylinderGeometry(0.09, 0.09, 0.14, 16), M.gold, x, yt - 0.62, 0.22, Math.PI / 2);
-    [GL.pink, GL.cool, GL.warm, GL.lilac].forEach((m, i) => add(g, new THREE.SphereGeometry(0.06, 10, 8), m, -0.9 + i * 0.6, yt - 0.3, 0.1));
-    add(g, new THREE.CylinderGeometry(0.12, 0.12, 2.8, 14), M.gold, 0.95, yt + 1.2, -0.7);              // a pipe up into the machinery
-    add(g, new THREE.TorusGeometry(0.16, 0.05, 8, 18), M.gold, 0.95, yt + 0.3, -0.7, Math.PI / 2);
+    const D = RECON16.drum, R = D.R, H = P18.housing, t = new THREE.Group(), g = at(TR, new THREE.Group(), D.x, D.h, D.u, Math.PI - D.yaw); t.add(g);
+    const zb = -0.25, len = H.len, rb = R * H.body;
+    const bodyM = std(0xd8c6f2, 0.18, { metalness: 0.6, roughness: 0.28 });
+    add(g, new THREE.CylinderGeometry(rb, rb, len, 64, 1, true), bodyM, 0, 0, zb - len / 2, Math.PI / 2);
+    add(g, new THREE.CircleGeometry(rb, 64), bodyM, 0, 0, zb - len, 0, Math.PI);
+    for (const z of [zb - 0.12, zb - len * 0.5, zb - len + 0.1]) add(g, new THREE.TorusGeometry(rb + 0.01, 0.055, 8, 72), M.gold, 0, 0, z);
+    for (let k = 0; k < 18; k++) { const a = (k / 18) * Math.PI * 2; add(g, new THREE.SphereGeometry(0.05, 8, 6), M.gold, Math.cos(a) * (rb + 0.02), Math.sin(a) * (rb + 0.02), zb - len * 0.27); }
+    add(g, new THREE.TorusGeometry(R * 1.38, 0.05, 8, 80), M.gold, 0, 0, 0.02);                    // layered rings round the rim
+    add(g, new THREE.TorusGeometry(R * 1.27, 0.07, 8, 80), M.lilac, 0, 0, -0.02);
+    for (let k = 0; k < 16; k++) { const a = (k / 16) * Math.PI * 2; add(g, new THREE.SphereGeometry(0.06, 10, 8), M.gold, Math.cos(a) * R, Math.sin(a) * R, R * 0.33); }   // bolt studs on the rim's face
+    add(g, new THREE.SphereGeometry(R * 0.08, 12, 8), GL.hi, -R * 0.2, R * 0.22, -R * 0.05);       // a highlight on the paw bubble
+    add(g, new THREE.CylinderGeometry(0.11, 0.11, 2.6, 14), M.gold, rb * 0.3, rb + 1.2, zb - len * 0.7);   // a pipe up into the machinery
+    add(g, new THREE.TorusGeometry(0.15, 0.045, 8, 18), M.gold, rb * 0.3, rb + 0.15, zb - len * 0.7, Math.PI / 2);
+    // the master's green-topped machine on the drum body's far end: a pink tank with a broad mint dome and gold bands
+    const Gm = H.green, q = at(TR, new THREE.Group(), Gm.x, Gm.h, Gm.u, camYaw(Gm.x, Gm.u)); t.add(q);
+    add(q, new THREE.CylinderGeometry(Gm.r, Gm.r * 1.08, Gm.hh, 28), M.pink, 0, Gm.hh / 2, 0);
+    for (const f of [0.12, 0.6, 0.95]) add(q, new THREE.TorusGeometry(Gm.r * 1.05, 0.04, 6, 28), M.gold, 0, Gm.hh * f, 0, Math.PI / 2);
+    add(q, new THREE.SphereGeometry(Gm.r * 1.25, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2), std(0x7fdcae, 0.25), 0, Gm.hh, 0).scale.set(1, 0.55, 1);
+    add(q, new THREE.TorusGeometry(Gm.r * 0.42, 0.05, 8, 24), M.gold, 0, Gm.hh * 0.42, Gm.r * 0.98); add(q, new THREE.CircleGeometry(Gm.r * 0.38, 20), GL.cool, 0, Gm.hh * 0.42, Gm.r * 0.97);
     out.housing = bake(t, root, 'scene07_b18_housing'); out.parts.push('housing');
   }
 
@@ -265,12 +267,30 @@ export function buildBuild18(root, TR, env, goldM, Ch, items) {
     if (pos.length) { const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); gg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
       const pts = new THREE.Points(gg, new THREE.PointsMaterial({ size: 0.42, map: glowTex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true }));
       pts.name = 'scene07_b18_glows'; root.add(pts); out.glows = pts; out.glowCount = pos.length / 3; }
+    // reflective sparkle at many depths (the master's white glints: its background has 10-15 % near-white against the game's 1-3 %): two layers
+    // of four-point glints, white-dominant, densest round the far cluster, the drum and the right cabinet; never over the right lane's play space
+    const starTex = canvasTex(64, 64, (c, w) => { const m = w / 2, gr = c.createRadialGradient(m, m, 0, m, m, m * 0.45); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = gr; c.fillRect(0, 0, w, w); c.fillStyle = 'rgba(255,255,255,0.95)';
+      c.beginPath(); c.moveTo(m, 1); c.lineTo(m + 2.5, m); c.lineTo(m, w - 1); c.lineTo(m - 2.5, m); c.closePath(); c.fill(); c.beginPath(); c.moveTo(1, m); c.lineTo(m, m + 2.5); c.lineTo(w - 1, m); c.lineTo(m, m - 2.5); c.closePath(); c.fill(); });
+    const SPK = [[1, 0.5, 0.17, 700], [2, 0.28, 0.3, 260]];   // [seed, white share inverse, size, count]
+    for (const [sd, , size, cnt] of SPK) {
+      const sp = [], sc = [];
+      for (let k = 0, c = 0; c < cnt && k < cnt * 5; k++) {
+        const z = hash(k, 300 + sd), x = z < 0.35 ? -2.4 + 4.8 * hash(k, 310 + sd) : (hash(k, 320 + sd) < 0.6 ? 1 : -1) * (1.5 + 2.4 * hash(k, 330 + sd));
+        const h = 2.2 + 5.6 * hash(k, 340 + sd), u = z < 0.35 ? 246 + 8 * hash(k, 350 + sd) : 236 + 18 * hash(k, 360 + sd);
+        if (Math.abs(x) < 1.5 && h < 4.4) continue; if (x < -1.2 && h < 4.2 && u > 238) continue;
+        TR.map(x, h, u, P); sp.push(P.x, P.y, P.z); const w = hash(k, 370 + sd); sc.push(...(w < 0.7 ? [1, 1, 1] : w < 0.85 ? [1, 0.9, 0.65] : [0.7, 0.9, 1])); c++;
+      }
+      const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3)); gg.setAttribute('color', new THREE.Float32BufferAttribute(sc, 3));
+      const pts = new THREE.Points(gg, new THREE.PointsMaterial({ size, map: starTex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true }));
+      pts.name = 'scene07_b18_sparkle' + sd; root.add(pts); out['sparkle' + sd] = pts; out.sparkles = (out.sparkles || 0) + sp.length / 3;
+    }
     out.parts.push('deco');
   }
 
   const mid = TR.map(0, 2, 246, new THREE.Vector3());
-  for (const k of ['housing', 'gear', 'dense', 'rail', 'wall', 'deco', 'bubbles', 'glows']) if (out[k]) items.push({ holder: out[k], turn: null, spin: 0, pos: mid });
+  for (const k of ['housing', 'gear', 'dense', 'rail', 'wall', 'deco', 'bubbles', 'glows', 'sparkle1', 'sparkle2']) if (out[k]) items.push({ holder: out[k], turn: null, spin: 0, pos: mid });
   let tris = 0; root.traverse((o) => { if (o.isMesh && /^scene07_b18/.test(o.name)) tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3 * (o.isInstancedMesh ? o.count : 1); });
   out.triangles = Math.round(tris);
-  return { parts: out.parts, instances: out.instances, denseParts: out.denseParts || 0, glows: out.glowCount || 0, triangles: out.triangles };
+  return { parts: out.parts, instances: out.instances, denseParts: out.denseParts || 0, glows: out.glowCount || 0, sparkles: out.sparkles || 0, triangles: out.triangles };
 }

@@ -642,3 +642,15 @@ All of it sits behind a new `build18` switch inside `scene07`, never in the acce
 
 The map is set. Writing pass 18, all six groups in one new module.
 
+Now the hooks: gear17 is skipped when pass 18 builds the full assembly, and pass 18 is wired in after pass 17.
+
+Bundle `bf2fce94` builds. Capturing pass 18 at the checkpoint, with its build report.
+
+Bundle `0a1e0a81`. Capturing 18b.
+
+While the art director reviews, I'll add the sparkle layer from your zone 6, real 3D glints at many depths, which is what the master's white highlights are.
+
+Bundle `3950385c` (18b plus sparkle). Capturing it while the review runs.
+
+While the review runs, I'll prepare the moving-recording tool the previous session used, so the playable recording is ready to run on the final build.
+
