@@ -122,3 +122,11 @@ Restore is essentially complete. Now I'll set up task tracking and then do the l
 
 Game served on :3000, autosave running. Now the live MCP checks.
 
+Restore is done: 28 checks passed with 0 failures, and every MCP server answers. I'm now studying where the Screen 09 v5 candidate differs from your master, so I can plan the next real 3D pass.
+
+I'll read the chamber builder in `tripo_l1.js` to see what forms the "ring tunnel" at the vanishing point.
+
+The vanishing-point "ring tunnel" comes from the level tube's own wall (`l1Wall`), which is visible through the far portal. I'll check the capture tooling and how long one checkpoint render takes.
+
+I'll freeze the v5 build (bundle `a359dad4`) in the scratchpad for side-by-side comparisons, then time one checkpoint capture with a variant that hides the level tube.
+
