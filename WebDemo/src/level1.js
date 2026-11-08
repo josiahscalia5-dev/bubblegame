@@ -32,7 +32,7 @@ import { makeFluffyBrush } from './fluffy_brush.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const LEVEL1_ON = LIST.includes('level1');
-export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), opening: LEVEL1_ON && !LIST.includes('noopening3d') };
+export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), opening: LEVEL1_ON && !LIST.includes('noopening3d'), girl2: LEVEL1_ON && !LIST.includes('nogirl2') };   // girl2: the user's Tripo girl, rigged (8 November)
 
 // The course (u = metres along the path; the Screen 4 drum is 3.9-37.2). Turns are radians per metre (+ to screen-left),
 // pitch radians (+ climbs); both are bumps that are zero before the drum's end.
