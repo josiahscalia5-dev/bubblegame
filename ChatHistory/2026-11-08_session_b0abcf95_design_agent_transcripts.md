@@ -742,3 +742,36 @@ The three tools you asked me to probe aren't available in this session, so I cou
 
 
 _1 tool steps._
+
+---
+
+## Gameplay & Visual Testing specialist: Probe Tripo access from an agent (started 12:51 UTC)
+
+**Lead → agent** (12:51 UTC):
+
+Tool probe only, finish in under 2 minutes, edit nothing. In Bash run exactly:
+cd /home/user/bubblegame && source Tools/bw_tools_env.sh >/dev/null 2>&1; which tripo; TRIPO_API_KEY=tsk_proxy-injected timeout 60 tripo balance
+(tsk_proxy-injected is a placeholder the network proxy replaces; it is not a real key.) Do NOT run tripo make, tripo ai, tripo redo or any other Tripo command: they spend credits. Report the exact output lines (the CLI path and the balance JSON) and whether it succeeded.
+
+- 12:51 `Bash`: Locate the Tripo CLI and check the free account balance
+**Agent** (12:51 UTC):
+
+PASS: the Tripo CLI works and the balance request went through.
+
+I ran this command exactly as given:
+`cd /home/user/bubblegame && source Tools/bw_tools_env.sh >/dev/null 2>&1; which tripo; TRIPO_API_KEY=tsk_proxy-injected timeout 60 tripo balance`
+
+Exact output:
+```
+/root/.bubblewash-tools/node/node_modules/.bin/tripo
+{"balance":640,"frozen":0}
+```
+
+- **CLI path:** `/root/.bubblewash-tools/node/node_modules/.bin/tripo`
+- **Balance:** 640 credits, 0 frozen.
+- **Result:** it finished well inside the 60 s timeout and printed no errors. The proxy put the real key in place of the placeholder, so the account accepted the request.
+
+No other Tripo command was run, so no credits were spent. Nothing in the repository was edited.
+
+
+_1 tool steps._

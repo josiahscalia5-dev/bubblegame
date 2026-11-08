@@ -181,3 +181,119 @@ The recording has slowed now that the run frames (and the identity browser) comp
 
 The recording has slowed to a crawl at the hand-over into the game (frame 173). Checking what is using the CPU:
 
+The cost probe counts every WebGL draw in one real frame. After the identity proofs I'll run it on both builds at the same moments, including the side-path and drop stretches. Checking progress:
+
+Rendering is still running. Meanwhile I'll write the newest-state handoff section; the final commit hash gets filled in at the end.
+
+Rather than waiting idle, I'll draft the evidence README now and fill in the numbers as the results arrive. First I'm loading the Monitor tool so I can wait on the background jobs properly:
+
+While that waits, the README draft (results to be filled in):
+
+Draft written. Checking how the background renders are going:
+
+The renders need roughly 40 more minutes. Here is the status so far; I'll continue automatically when the proof run finishes.
+
+## Status so far
+
+**Branch and repository**
+- I'm working on this session's own branch, `ccr-50c66592-kcnqoy`, in `josiahscalia5-dev/bubblegame`.
+- Another session (`8140e507`, on your previous account) is still pushing proof logs to `claude/bubble-wash-kingdom-continue-z9nmm1`, though no game code since 11:52 UTC. Following your instruction, I didn't make competing changes there. I merged that branch into mine with normal merges; it was at `16e4ade` then and has moved to `358247b6` since, so I'll merge again before the final push.
+- `ccr-76d4bc77-rqhl8o` is proven fully contained in my branch.
+- Pull request #3 is untouched and not merged.
+- The latest pushed commit is `dd84a4f`, verified on GitHub.
+
+**Restoration check (tested live this session)**
+
+| Item | Status |
+|---|---|
+| `verify_restore.sh --build` | VERIFIED: 28 passed, 0 failed; the bundle rebuilds byte-identically |
+| Five project agents | All invoked with real, separate tasks in parallel; all reported (the water-motion engineer only partly, see below). Reports are in `Previews/WebDemo/screen4_round9_match/71_level1_flow/agents/` |
+| parallax-threejs MCP: threejs-devtools, chrome-devtools, playwright | VERIFIED WORKING in this session (bridge connected, live scene inspected) |
+| parallax-threejs spector | DISCONNECTED (fails to connect) |
+| parallax-threejs plugin agents | PARTIALLY WORKING: they run, but get only Bash, because of the plugin's tool-naming defect (probed this session) |
+| Plugin checkpoint / diff / sweep | Need Deno, which is not installed |
+| Tripo | VERIFIED: authenticated through the proxy, 640 credits, nothing spent |
+| Blender 5.2.3, OpenCV, PyTorch, LPIPS, Optuna, Playwright | VERIFIED |
+| 5-minute autosave | RUNNING as one process; every push checked against GitHub |
+
+The water-motion engineer measured the drum and the brushes live. Then the shared browser page hung under the 4-core load, so it didn't reach the drop or the chamber.
+
+**The 10-beat Level 1 (`flow`, a candidate, not accepted)**
+- The course now follows the board's order.
+- **A real raised side path:** a bounce pad, then a swipe in the air puts her on a gold-rimmed water flume 0.9 m up. She can't get on from the water.
+- **A real lower path:** the middle lane drops 1.2 m into a channel, with raised ledges beside it. She can't climb back up.
+- **Grime balls:** some patrol across lanes, and a spin attack pops them.
+- **Socks:** exactly five can be rescued on any route.
+- **Level Complete:** the board's three goals and the rewards.
+- **Tested:** three driven routes (side path then lower path, main route then ledge, forbidden moves) all reach Level Complete with 5/5 socks and 3 stars, and no console errors.
+- **Proven so far:** the accepted Screen 4 is 0 pixels changed at Tap to Start and at 3 s; the normal game is 0 pixels changed.
+
+**Still running:** the rest of the pixel-identity proofs, the full recording from the girl to Level Complete, then the second-route clip, performance numbers and the side-by-side sheets. After that comes the final report with the verified commit.
+
+---
+
+### Automatic check · 2026-11-08 12:50 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-08 12:50 UTC
+
+The work so far is saved on GitHub (`b4a6c97`, branch `ccr-50c66592-kcnqoy`), but the evidence isn't finished yet. Two jobs are still running: the remaining pixel-identity proofs and the full recording from the girl's opening through Level Complete. I'll be notified when the proof run ends and will carry on with the second-route clip, the performance comparison, the side-by-side sheets and the final report with the verified commit.
+
+**Done so far:**
+- **Restoration:** `verify_restore.sh --build` passes all 28 checks. Tripo connects (640 credits, nothing spent), Blender 5.2.3 runs, and the 5-minute autosave runs as one process with every push checked against GitHub.
+- **Specialists:** all five ran in parallel on separate read-only tasks, and their reports are saved. The water-motion engineer only partly finished because its shared browser page hung under the 4-core load.
+- **Plugin:** the three live inspection tools work in this session. Spector still fails to connect. The plugin's own agents get only basic shell access, a defect in the plugin itself. Its checkpoint and diff commands need Deno, which isn't installed.
+- **Level 1 (a candidate, not approved):** the course now follows your board's order. There is a real raised side path, reached from a bounce pad plus a swipe, and a real lower path with raised ledges beside it. Grime balls patrol, and a spin attack pops them. Exactly five socks can be rescued on any route. Level Complete shows the three goals and the rewards.
+- **Tests:** three driven runs (side path then lower path, main route then ledge, and the moves that should be refused) all reach Level Complete with 5/5 socks, 3 stars and no console errors.
+- **Proofs so far:** the approved Classic Screen 4 is 0 pixels changed at Tap to Start and at 3 s, and the normal game is 0 pixels changed.
+- **Pull request #3** is untouched and not merged, and Match6 stays opt-in only.
+
+**Already known to be wrong or missing:**
+- The Bubble Kingdom castle is still only seen through the portal at the end of the chamber, not up close as on the board.
+- Coins look orange rather than the original's gold. The coin model is shared with Screen 4, so changing it would alter the approved screen; I'll only do it with your yes.
+- She doesn't do a celebration animation at Level Complete, and there is no "Next Level" button because Level 2 isn't built.
+
+---
+
+### You · 2026-11-08 12:50 UTC
+
+Claudia, I need you to verify whether my Tripo AI API key is successfully connected and working in THIS Claude Code session.
+
+I can already see "openapi.tripo3d.ai" listed under Network secrets in my Claude cloud environment.
+
+Do not ask me to add the key again unless you confirm there is actually a problem.
+
+Please check whether the Tripo CLI is installed, whether the saved network secret is accessible through the secure network proxy, and whether Tripo API authentication succeeds.
+
+Run "tripo doctor" if available, and perform a safe, free authentication or account-balance check.
+
+I want you to verify:
+
+1. Whether Tripo AI is CONNECTED or NOT CONNECTED.
+2. Whether my API key is accepted by Tripo.
+3. Whether the Tripo CLI can communicate with the API.
+4. Whether my current Tripo credit balance is accessible.
+5. Whether my Bubble Wash Kingdom development agents can use Tripo when I authorize a 3D generation task.
+
+Do not expose, print, log, or commit my API key.
+
+Do not generate any 3D models or spend Tripo credits without my explicit approval.
+
+If everything works, clearly tell me TRIPO CONNECTED — VERIFIED WORKING.
+
+If it does not work, explain the exact error and what I need to fix in Network secrets.
+
+Please verify the real API connection, not just whether the host appears in my settings.
+
+---
+
+### Claude · 2026-11-08 12:50 UTC
+
+I'll check this live: the CLI install, a direct API call through the proxy, `tripo doctor`, and the balance. All of them are free, and no key value is printed.
+
+The CLI calls `/v3/account/balance`, not the `/v2` path I guessed. Repeating the direct call through the proxy on the correct endpoint, with only a placeholder key and with no key header at all:
+
