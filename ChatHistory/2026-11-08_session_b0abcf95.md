@@ -141,3 +141,29 @@ Tools folder exists and Blender is installed. The hook already started the autos
 
 Bridge connected. `renderer_info` timed out on its first call while the game was still loading on the software renderer. Checking the page state, then retrying once:
 
+Now the `world.js` height hook (inert unless the flow switch sets it):
+
+Now `level1.js`: the flag, the course swap and the hook:
+
+Now the wall shader's flow variant. To keep the non-flow shader byte-identical, flow applies checked string replacements to the generated source (lighting specialist's fixes A, B, D, E, F):
+
+Mark task 3 in progress, then the `buildLevel1` changes: wall shader, widening, constant column count.
+
+Brushes on the route-aware lane positions and heights, with the axle reaching the tunnel wall (lighting fix C), under flow only:
+
+Enemies: patrol amplitude, the board-07 look and a hit width under flow:
+
+Collectibles on route-aware positions, socks moved onto their routes, the far drum socks parked:
+
+Now the HUD: hide the course strip, add the board-12 rewards card styles, banner substitution and hints (flow only):
+
+Now build the flow structures and add the per-frame rules (start banner, rescue progress, patrols, spin attack):
+
+Now `reset()`, the hooks `game.js` will call, and the finish:
+
+Expose the route in the test state, so the branch tests can assert which route she is on:
+
+Now the gated hooks in `game.js`: lanes, the fall-off rule, the camera, the pad jump and the context:
+
+Checking that `fx` exists before the Level 1 build (the context captures it by value), then building:
+

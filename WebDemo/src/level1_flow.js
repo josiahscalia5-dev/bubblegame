@@ -78,10 +78,11 @@ export function flowCourse(B) {
       { u: 256, name: 'Bubble Kingdom', short: 'Kingdom', banner: ['Enter the', 'Bubble Kingdom!'] },
       { u: 294, name: 'Rescue progress', short: 'Rescue', banner: ['Rescue 5 lost socks', '{socks}/5'] },
     ],
-    // [u, lane]: the side paths' main route (the raised path avoids them), one on each upper ledge of the drop, then the brushes
-    brushes: [[68, 1], [74, 2], [80, 1], [86, 2], [116, 2], [119, 0],
+    // [u, lane]: the side paths' main route (the raised path avoids them), then the brushes
+    brushes: [[68, 1], [74, 2], [80, 1], [86, 2],
       [148, 0], [154, 2], [160, 0], [160, 1], [167, 1], [167, 2], [174, 0], [174, 2], [181, 1]],
-    bars: [],
+    // [u, lane]: a short soap bar on each upper ledge of the drop (a ledge is one lane wide: a bar can be jumped, a brush could not be dodged)
+    bars: [[117, 2], [118.5, 0]],
     // [u, lane, patrol]: patrol (m) = how far it sways across the lanes
     enemies: [[222, 1], [228, 0, 0.7], [234, 2], [240, 1, 0.75], [246, 0], [246, 2]],
     // [lane, u0, count, step, height, arc] (lane -1: the raised side path)

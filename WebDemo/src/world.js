@@ -43,6 +43,10 @@ export function hills(z) {
   return 0;
 }
 
+// ?s3=...,level1 + flow only (level1_flow.js flowLift): Level 1's raised side path and the drop's ledges, as a height offset in
+// track space. null otherwise, and then baseHeight is exactly as before.
+export const HOOK = { lift: null };
+
 /** Everything except the moving waves: raised slide with crown and hills, moat, drum swells, wall curl. */
 export function baseHeight(L, x, z) {
   const before = clamp01((L.tunnelStart - z) * 0.5);
@@ -54,7 +58,8 @@ export function baseHeight(L, x, z) {
   const swell = inside * SWELL.amp * Math.sin(((z - L.tunnelStart) * 2 * Math.PI) / SWELL.wavelength);
   const half = Math.sqrt(Math.max(0.01, L.tunnelRadius * L.tunnelRadius - AXIS_H * AXIS_H));
   const u = clamp01((ax - (half - 0.45)) / 0.45);
-  return WATER + slide + swell + inside * 0.45 * u * u;
+  const b = WATER + slide + swell + inside * 0.45 * u * u;
+  return HOOK.lift === null ? b : b + HOOK.lift(x, z);
 }
 
 export function waves(x, z, t) {

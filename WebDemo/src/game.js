@@ -7,7 +7,8 @@ import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';
 import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
 import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately, structShellFur } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
 import { HOME_ON, homeHolds } from './screens12.js';   // ?s3=...,home: Screen 1 (Home) and Screen 2 (Laundry Toss) in front of the live game
-import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
+import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
+import { flowCamX } from './level1_flow.js';   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -938,7 +939,8 @@ function resetRun() {
 
 function changeLane(dir) {
   if (state.phase !== 'running') return;
-  const lane = Math.max(0, Math.min(2, mascot.lane + dir));
+  // (?s3=...,level1 flow: Level 1's routes decide: onto the raised side path only from the air, never back up from the lower path)
+  const lane = level1 && level1.flow ? level1.flow.changeLane(dir) : Math.max(0, Math.min(2, mascot.lane + dir));
   if (lane === mascot.lane) { mascot.sqV += 2; return; }
   mascot.lane = lane;
   const m = mascot;
@@ -994,7 +996,7 @@ function updateMascot(dt) {
   // Lane change: Unity's Mathf.SmoothDamp with the runner's 0.18 s lane-change time.
   {
     const omega = 2 / 0.18, k = omega * dt, ex = 1 / (1 + k + 0.48 * k * k + 0.235 * k * k * k);
-    const target = W.laneX(m.lane), change = m.x - target, temp = (m.xv + omega * change) * dt;
+    const target = level1 && level1.flow ? level1.flow.laneTarget() : W.laneX(m.lane), change = m.x - target, temp = (m.xv + omega * change) * dt;   // (flow: the routes' lanes)
     m.xv = (m.xv - omega * temp) * ex;
     m.x = target + (change + temp) * ex;
   }
@@ -1004,12 +1006,14 @@ function updateMascot(dt) {
   const rideY = surf + W.FLOAT_H + bob;
   if (m.air) {
     m.vy -= W.GRAVITY * dt; m.yAbs += m.vy * dt;
-    m.flip = Math.min(Math.PI * 2, m.flip + dt * (Math.PI * 2) / 0.62);
+    if (!m.falling) m.flip = Math.min(Math.PI * 2, m.flip + dt * (Math.PI * 2) / 0.62);   // (flow: no somersault when she drops off a ledge)
     if (m.yAbs <= rideY && m.vy < 0) {
-      m.air = false; m.flip = 0; m.sqV -= 9 + Math.min(8, -m.vy);
+      m.air = false; m.flip = 0; m.falling = false; m.sqV -= 9 + Math.min(8, -m.vy);
       fx.burstT(m.x, surf + 0.05, m.z, 34, 1.4, { vz: m.speed * 0.5 }); fx.burstT(m.x, surf + 0.05, m.z, 6, 0.8, { kind: 1, size: 0.22, grav: 0.15, up: 0.5 });
       addRipple(m.x, m.z, 1.6); sfx('splash');
     }
+  } else if (level1 && level1.flow && running && rideY < m.yAbs - 0.2) {
+    m.air = true; m.vy = 0; m.falling = true;   // (flow: off the raised side path or a ledge, she really falls to the water below)
   } else {
     m.yAbs = rideY;
   }
@@ -1216,7 +1220,7 @@ function updateCamera(dt) {
   const fovV = THREE.MathUtils.lerp(S3.fov, S4.fov, k);
   // Follow: 55 % of lane moves, the ride height fully (smoothed), 35 % of jumps and bobbing.
   const rideY = W.baseHeight(L, m.x, m.z) + W.FLOAT_H;
-  const targetX = m.x * 0.55, targetY = rideY + (m.yAbs - rideY) * 0.35;
+  const targetX = level1 && level1.flow ? flowCamX(m.x) : m.x * 0.55, targetY = rideY + (m.yAbs - rideY) * 0.35;   // (flow: more of a move onto a side path or ledge)
   // Tilt with the path: look along the average slope of the next few metres (only once running,
   // so the Tap-to-Start view is exactly the approved framing).
   let ahead = 0; for (let d = 1; d <= 6; d++) ahead += W.slopeAt(L, m.x, m.z + d * 1.2); ahead /= 6;
@@ -1712,6 +1716,7 @@ async function main() {
         counts: () => ({ coins: coins.length, gems: gems.length, socks: socks.length }), gemsList: gems, coinsList: coins, socksList: socks,
         bumpMascot: (s) => withPrivateRandom(makeRandom(0x1e72 + (state.bumps || 0)), () => bumpMascot(s)),
         finish: () => { state.phase = 'complete'; },
+        fx, refreshHud, padJump: (vy) => { if (mascot.air) return; jump(); mascot.vy = vy; },   // (flow: the pops, the rewards, the bounce pad)
         restart: () => { if (R2) restartRound2(); else { resetRun(); state.phase = 'intro'; document.body.classList.remove('running', 'inDrum'); refreshHud(); } } }));
     }
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)

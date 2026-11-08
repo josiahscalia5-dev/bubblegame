@@ -28,6 +28,8 @@
 // (the game's seeded Math.random is never used here).
 import * as THREE from 'three';
 import { makeFluffyBrush } from './fluffy_brush.js';
+import { HOOK as W_HOOK } from './world.js';
+import { flowCourse, flowLift, flowLaneX, buildFlow, widen as flowWiden } from './level1_flow.js';   // flow (session b0abcf95)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -46,12 +48,17 @@ export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), open
   // in the opening, the washer's inside water starts at its far end while waiting (so the porthole shows the glowing blue spiral,
   // not the water's flat near edge) and floods in as the toss begins; its foam a few small pale-aqua bits at the lower left
   // (the approved art's), not a white mass. ,noport draws the previous opening exactly
-  port: LEVEL1_ON && !LIST.includes('noport') };
-const WET = LEVEL1_PARTS.wet;
+  port: LEVEL1_ON && !LIST.includes('noport'),
+  // flow (8 November ~12:30 UTC, session b0abcf95, the user's 10-beat Level 1 gameplay blueprint and strict prompt): the course in
+  // the board's order with a real raised side path, a real lower path, patrolling grime balls a spin pops, exactly five lost socks
+  // on any route, Level Complete with the board's goals and rewards (level1_flow.js). Needs wet. ,noflow draws the previous level1 exactly
+  flow: LEVEL1_ON && !LIST.includes('nowet') && !LIST.includes('noflow') };
+const WET = LEVEL1_PARTS.wet, FLOW = LEVEL1_PARTS.flow;
+if (FLOW) W_HOOK.lift = flowLift;   // (world.js baseHeight: her riding height, the camera, the spray, the water all see the routes)
 
 // The course (u = metres along the path; the Screen 4 drum is 3.9-37.2). Turns are radians per metre (+ to screen-left),
-// pitch radians (+ climbs); both are bumps that are zero before the drum's end.
-export const COURSE = {
+// pitch radians (+ climbs); both are bumps that are zero before the drum's end. (flow: COURSE is level1_flow.js flowCourse of it)
+const COURSE0 = {
   length: 400,
   tube: [35.6, 270],          // the drum tunnel goes on from the Screen 4 drum to the kingdom gate
   water: [40.6, 392],
@@ -93,6 +100,7 @@ export const COURSE = {
     islands: [[372, -11, 0.4, 3.6], [380, 12, 0.6, 4.2], [390, -16, 0.8, 4.6], [402, 15, 0.5, 4.0], [410, -8, 1.0, 3.4]],
     brushes: [[296, 1], [306, -1], [318, 1], [330, -1], [348, 1], [356, -1]], exit: [30.5, 35.5] },
 };
+export const COURSE = FLOW ? flowCourse(COURSE0) : COURSE0;
 
 const f4 = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const lin = (hex) => new THREE.Color(hex);   // three.js converts hex to linear working colour
@@ -123,9 +131,38 @@ void main() { vTU = aTU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz;
 // (wet: the chamber's radius varies along it, so its patterns use each point's own radius, vR, keeping the drum's scale)
 const WALL_VERT_WET = WALL_VERT.replace('attribute vec2 aTU; varying vec2 vTU; varying vec3 vW;', 'attribute vec2 aTU; attribute float aR; varying vec2 vTU; varying vec3 vW; varying float vR;')
   .replace('void main() { vTU = aTU;', 'void main() { vTU = aTU; vR = aR;');
-function wallFrag(R, wet = false) {
+function wallFrag(R, wet = false, flow = false) {
   const C = { deep: lin('#1838c8'), cobalt: lin('#2f66f4'), azure: lin('#4fa8ff'), turq: lin('#3fe0ff'), white: lin('#f4fbff'), lav: lin('#cbb8f4'), silver: lin('#f1ecfd'),
     purple: lin('#7a5ac8'), hole: lin('#5a46a8'), glow: lin('#e6f8ff'), gold: lin('#ffcf7a'), pink: lin('#ffb4e6'), lilac: lin('#b9a4ff') };
+  const src = wallFragSrc(R, wet, C);
+  if (!flow) return src;
+  // (flow, from the lighting-visual-matching review of 8 November: the metal crown was a fixed +/-45 degree wedge, which on a portrait
+  // screen filled the whole upper half with lilac (measured 59-75 % against the original's 22-26 %): it is now a fixed arc length
+  // of about 1.2 m each side, with soft edges and faint outlines (no wavy cut-out line), faded in after the Screen 4 drum's hand-off;
+  // the ribbons, streaks and rings fade where they change faster than a pixel (fine stripes toward the centre); the far centre azure)
+  const rep = (s, a, b) => { if (!s.includes(a)) throw new Error(`level1 flow wall shader: ${a.slice(0, 48)}`); return s.replace(a, b); };
+  const Rr = wet ? 'vR' : f4(R);
+  let s = rep(src, '  float rib2 = sin((u * 1.1 - ca * 0.35 + w * 2.2 + t * 0.8) * 6.2832);\n',
+    '  float rib2 = sin((u * 1.1 - ca * 0.35 + w * 2.2 + t * 0.8) * 6.2832);\n  float aaR = clamp(fwidth(u) * 1.4 - 0.1, 0.0, 1.0); rib *= 1.0 - aaR; rib2 *= 1.0 - aaR;\n');
+  s = rep(s, '  float rg = fract(u / 2.6), ring = exp(-pow((rg - 0.5) / 0.07, 2.0));\n', '  float rg = fract(u / 2.6), ring = exp(-pow((rg - 0.5) / 0.07, 2.0)) * (1.0 - aaR);\n');
+  s = rep(s, `  float edge = 0.78 + 0.07 * sin(u * 1.1 + t * 1.6) + 0.04 * sin(ca * 3.0 - u * 0.7);
+  float metal = 1.0 - smoothstep(edge - 0.05, edge + 0.05, abs(a));
+  vec3 mc = mix(${v3(C.purple)}, ${v3(C.lav)}, smoothstep(edge, 0.3, abs(a)));
+  mc = mix(mc, ${v3(C.silver)}, (1.0 - smoothstep(0.0, 0.32, abs(a))) * 0.6);`,
+  `  float edge = 1.2 / ${Rr} + 0.025 * sin(u * 0.45 + t * 0.8), ra = abs(a) / edge, hand = smoothstep(41.0, 52.0, u);
+  float metal = (1.0 - smoothstep(0.82, 1.08, ra)) * hand;
+  vec3 mc = mix(${v3(C.purple)}, ${v3(C.lav)}, 1.0 - smoothstep(0.38, 1.0, ra));
+  mc = mix(mc, ${v3(C.silver)}, (1.0 - smoothstep(0.0, 0.41, ra)) * 0.6);`);
+  s = rep(s, `  float wl = abs(abs(a) - edge);
+  col = mix(col, ${v3(C.white)}, (1.0 - smoothstep(0.0, 0.06, wl)) * (0.55 + 0.45 * l1n(vec2(u * 3.0 - t * 4.0, a * 9.0))));
+  col = mix(col, ${v3(C.gold)}, (1.0 - smoothstep(0.0, 0.022, abs(abs(a) - edge + 0.08))) * 0.55);`,
+  `  float wl = abs(ra - 1.0) * edge;
+  col = mix(col, ${v3(C.white)}, (1.0 - smoothstep(0.0, 0.05, wl)) * 0.25 * hand * (0.55 + 0.45 * l1n(vec2(u * 3.0 - t * 4.0, a * 9.0))));
+  col = mix(col, ${v3(C.gold)}, (1.0 - smoothstep(0.0, 0.02, abs(ra - 0.88) * edge)) * 0.35 * hand);`);
+  s = rep(s, `  col = mix(col, ${v3(C.glow)} * 1.3, smoothstep(10.0, 55.0, d) * 0.92);`, `  col = mix(col, mix(${v3(C.azure)}, ${v3(C.glow)}, 0.6) * 1.2, smoothstep(12.0, 60.0, d) * 0.7);`);
+  return s;
+}
+function wallFragSrc(R, wet, C) {
   return /* glsl */ `
 uniform float uTime; uniform vec3 uCam; uniform float uFade;
 varying vec2 vTU; varying vec3 vW;${wet ? ' varying float vR;' : ''}
@@ -274,12 +311,14 @@ export function buildLevel1(ctx) {
   const riderU = { value: new THREE.Vector4() };
 
   // ---------------- the drum tunnel (chunks of 15 m, each culled by the camera on its own)
-  const wallMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uFade: { value: 1 } }, vertexShader: WET ? WALL_VERT_WET : WALL_VERT, fragmentShader: wallFrag(C.radius, WET), side: THREE.DoubleSide });
-  // (wet) the drum's radius along the path: C.radius, then widening into the chamber between K.u0 and K.u1
-  const K = C.chamber, radiusAt = (u) => (WET ? C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) : C.radius);
+  const wallMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uFade: { value: 1 } }, vertexShader: WET ? WALL_VERT_WET : WALL_VERT, fragmentShader: wallFrag(C.radius, WET, FLOW), side: THREE.DoubleSide });
+  // (wet) the drum's radius along the path: C.radius, then widening into the chamber between K.u0 and K.u1 (flow: and round the
+  // side paths and the drop)
+  const K = C.chamber, radiusAt = FLOW ? (u) => C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) + flowWiden(u)
+    : (u) => (WET ? C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) : C.radius);
   const halfAt = (u) => Math.sqrt(Math.max(0.01, radiusAt(u) ** 2 - C.axisH ** 2)) + 0.15;   // the water reaches the wall
   const tubeChunk = (u0, u1) => {
-    const nA = WET && u1 > K.u0 ? 112 : 64, rows = Math.max(2, Math.ceil((u1 - u0) / 0.5) + 1), cols = nA + 1;
+    const nA = FLOW || (WET && u1 > K.u0) ? 112 : 64, rows = Math.max(2, Math.ceil((u1 - u0) / 0.5) + 1), cols = nA + 1;
     const pos = new Float32Array(rows * cols * 3), tu = new Float32Array(rows * cols * 2), rr = WET ? new Float32Array(rows * cols) : null, idx = [];
     for (let i = 0; i < rows; i++) {
       const u = u0 + (u1 - u0) * i / (rows - 1), R = radiusAt(u); TR.frame(u, F);
@@ -409,12 +448,13 @@ export function buildLevel1(ctx) {
   const brushes = [];
   const brushHub = new THREE.MeshStandardMaterial({ color: 0xffc552, metalness: 1, roughness: 0.2, envMap: env, emissive: 0x4a2a00, emissiveIntensity: 0.5 });
   for (const [u, lane] of C.brushes) {
-    const x = W.laneX(lane), left = lane === 0 || (lane === 1 && rnd() < 0.5);
+    const x = FLOW ? flowLaneX(lane, u) : W.laneX(lane), left = lane === 0 || (lane === 1 && rnd() < 0.5);
     const holder = new THREE.Group(), spinner = new THREE.Group();
     const look = makeFluffyBrush(left, { balls: true }); look.scale.setScalar(0.62 / 0.9); spinner.add(look); holder.add(spinner);
-    // a gold axle up to the drum's wall
-    const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.0, 12), brushHub); arm.position.set(0, 0.95, -0.25); holder.add(arm);
-    TR.map(x, 0.74, u, holder.position); TR.quaternion(u, holder.quaternion); holder.rotateY(Math.PI);
+    // a gold axle up to the drum's wall (flow: all the way up to it; it stopped about 2 m above the water and floated)
+    const hb = FLOW ? 0.74 + flowLift(x, u) : 0.74, armLen = FLOW ? Math.max(1.0, C.axisH + Math.sqrt(Math.max(0, radiusAt(u) ** 2 - x * x)) - hb - 0.45) : 1.0;
+    const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, armLen, 12), brushHub); arm.position.set(0, FLOW ? 0.45 + armLen / 2 : 0.95, -0.25); holder.add(arm);
+    TR.map(x, hb, u, holder.position); TR.quaternion(u, holder.quaternion); holder.rotateY(Math.PI);
     holder.name = 'l1Brush'; root.add(holder);
     brushes.push({ holder, spinner, u, x, lane, dir: left ? 1 : -1, hit: false, bonk: 0 });
   }
@@ -424,13 +464,15 @@ export function buildLevel1(ctx) {
   const bars = [];
   const barMat = new THREE.MeshStandardMaterial({ color: 0xffb3e0, roughness: 0.25, metalness: 0.05, envMap: env, envMapIntensity: 0.9, emissive: 0x7a2a6a, emissiveIntensity: 0.35 });
   const barMat2 = new THREE.MeshStandardMaterial({ color: 0xb6a8ff, roughness: 0.25, metalness: 0.05, envMap: env, envMapIntensity: 0.9, emissive: 0x3a2a7a, emissiveIntensity: 0.35 });
-  for (const [i, u] of C.bars.entries()) {
-    const g = new THREE.CapsuleGeometry(0.2, 2.3, 6, 16); g.rotateZ(Math.PI / 2); g.scale(1, 1, 1.35);
+  for (const [i, e] of C.bars.entries()) {
+    const [u, lane] = FLOW ? e : [e, null];   // (flow: [u, lane], a short bar on one ledge)
+    const short = lane !== null, x = short ? flowLaneX(lane, u) : 0;
+    const g = new THREE.CapsuleGeometry(0.2, short ? 0.8 : 2.3, 6, 16); g.rotateZ(Math.PI / 2); g.scale(1, 1, 1.35);
     const holder = new THREE.Group(); const bar = new THREE.Mesh(g, i % 2 ? barMat2 : barMat); holder.add(bar);
     // a few foam bubbles on top of the bar
-    for (let k = 0; k < 6; k++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.06 + rnd() * 0.06, 10, 8), bubbleMat); s.position.set(-1 + k * 0.4 + rnd() * 0.1, 0.2, (rnd() - 0.5) * 0.2); holder.add(s); }
-    TR.map(0, 0.22, u, holder.position); TR.quaternion(u, holder.quaternion); holder.name = 'l1Bar'; root.add(holder);
-    bars.push({ holder, u, hit: false });
+    for (let k = 0; k < (short ? 3 : 6); k++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.06 + rnd() * 0.06, 10, 8), bubbleMat); s.position.set((short ? -0.4 : -1) + k * 0.4 + rnd() * 0.1, 0.2, (rnd() - 0.5) * 0.2); holder.add(s); }
+    TR.map(x, short ? 0.22 + flowLift(x, u) : 0.22, u, holder.position); TR.quaternion(u, holder.quaternion); holder.name = 'l1Bar'; root.add(holder);
+    bars.push({ holder, u, hit: false, x: short ? x : null });
   }
 
   // ---------------- grime balls (enemies): dark fuzzy balls with angry eyes, rolling toward her in a lane
@@ -439,7 +481,7 @@ export function buildLevel1(ctx) {
   { const p = ballG.attributes.position, v = new THREE.Vector3(); for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); const k = 1 + 0.16 * Math.pow(rnd(), 3) + 0.03 * rnd(); p.setXYZ(i, v.x * k, v.y * k, v.z * k); } ballG.computeVertexNormals(); }
   const ballM = new THREE.MeshStandardMaterial({ color: 0x23285a, roughness: 0.95, metalness: 0, flatShading: true, emissive: 0x0a0c2a, emissiveIntensity: 0.6 });
   const eyeW = new THREE.MeshBasicMaterial({ color: 0xffffff }), eyeR = new THREE.MeshBasicMaterial({ color: 0xd81b46 }), browM = new THREE.MeshBasicMaterial({ color: 0x0b0d22 });
-  for (const [u, lane] of C.enemies) {
+  for (const [u, lane, patrol] of C.enemies) {
     const holder = new THREE.Group(), body = new THREE.Group(); holder.add(body);
     body.add(new THREE.Mesh(ballG, ballM));
     for (const s of [-1, 1]) {
@@ -448,9 +490,13 @@ export function buildLevel1(ctx) {
       const brow = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.035, 0.04), browM); brow.position.set(s * 0.12, 0.17, 0.35); brow.rotation.z = s * -0.45; body.add(brow);
     }
     holder.name = 'l1Enemy'; root.add(holder);
-    enemies.push({ holder, body, u0: u, u, lane, x: W.laneX(lane), hit: false, ph: rnd() * 6.3 });
+    enemies.push({ holder, body, u0: u, u, lane, x: W.laneX(lane), hit: false, ph: rnd() * 6.3, patrol: patrol || 0, k: 1, hw: 0.48 });
   }
   report.drawn.enemies = enemies.length;
+  if (FLOW) {   // (flow: board 07's bigger navy grime ball with angry pink eyes; a little wider to hit)
+    ballM.color.set(0x24307e); ballM.emissive.set(0x10184a); eyeR.color.set(0xff2f8f);
+    for (const e of enemies) { e.k = 1.3; e.hw = 0.56; }
+  }
 
   // ---------------- the golden gate out into the Bubble Kingdom, the kingdom itself and the finish arch
   const gate = new THREE.Group(); gate.name = 'l1Gate';
@@ -587,10 +633,23 @@ export function buildLevel1(ctx) {
   const nBefore = { coins: ctx.counts().coins, gems: ctx.counts().gems, socks: ctx.counts().socks };
   if (ctx.addCoin) for (const [lane, u0, n, step, h0, arcH] of C.coins) for (let i = 0; i < n; i++) {
     const u = u0 + i * step, h = h0 + arcH * Math.sin(Math.PI * i / Math.max(1, n - 1));
-    ctx.addCoin(new THREE.Vector3(W.laneX(lane), W.baseHeight(L, W.laneX(lane), u) + h, u));
+    const x = FLOW ? flowLaneX(lane, u) : W.laneX(lane);   // (flow: on the route's own lane, raised side path included)
+    ctx.addCoin(new THREE.Vector3(x, W.baseHeight(L, x, u) + h, u));
   }
-  if (ctx.addGem) for (const [lane, h, u] of C.gems) ctx.addGem(new THREE.Vector3(W.laneX(lane), W.baseHeight(L, W.laneX(lane), u) + h, u));
-  if (ctx.addSock) for (const [lane, h, u] of C.socks) ctx.addSock(lane, h, u);
+  if (ctx.addGem) for (const [lane, h, u] of C.gems) { const x = FLOW ? flowLaneX(lane, u) : W.laneX(lane); ctx.addGem(new THREE.Vector3(x, W.baseHeight(L, x, u) + h, u)); }
+  if (ctx.addSock) for (const [lane, h, u] of C.socks) {
+    ctx.addSock(lane, h, u);
+    if (FLOW && ctx.socksList) {   // (flow: moved onto its route: the side path, a ledge or the lower path)
+      const s = ctx.socksList[ctx.socksList.length - 1], x = flowLaneX(lane, u);
+      TR.map(x, W.baseHeight(L, x, u) + h, u, s.obj.position); s.home.copy(s.obj.position);
+    }
+  }
+  // (flow) the Screen 4 drum's far socks are parked (kept in the game's list, so its seeded random sequence is unchanged): with
+  // them the goal was reached inside the drum; now two drum socks + one per route of the side paths and the drop + the Kingdom's = 5
+  const parked = FLOW && ctx.socksList ? ctx.socksList.filter((s) => s.u > C.parkDrumSocks[0] && s.u < C.parkDrumSocks[1]) : [];
+  const park = () => { for (const s of parked) { s.live = false; s.pop = -1; s.obj.visible = false; } };
+  park();
+  report.parkedDrumSocks = parked.map((s) => s.u);
   const nAfter = ctx.counts();
   report.drawn.coins = nAfter.coins - nBefore.coins; report.drawn.gems = nAfter.gems - nBefore.gems; report.drawn.socks = nAfter.socks - nBefore.socks;
   // the game's own loop draws a random number for every gem on the list each frame (its sparkles): the course's gems join the
@@ -633,6 +692,21 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
 #l1Done button { margin-top: calc(var(--u, 2px) * 10); width: 100%; height: calc(var(--u, 2px) * 36); border: 0; border-radius: 99px; font: 700 calc(var(--u, 2px) * 17) var(--display, 'Fredoka', system-ui, sans-serif); color: #fff;
   background: linear-gradient(#5fe36a, #22b53a); box-shadow: 0 calc(var(--u, 2px) * 4) 0 #13782a; cursor: pointer; }
 #l1Done small { display: block; margin-top: calc(var(--u, 2px) * 6); font-size: calc(var(--u, 2px) * 8.5); color: #5a4aa0; }`;
+  // (flow: the board's Level Complete card: big stars, the blue title, the three goals with green checks, the rewards panel;
+  // the art director's colours sampled from board 12; the course strip under the sock panel is not in the original: hidden)
+  if (FLOW) css.textContent += `
+#l1Prog { display: none !important; }
+#l1Done.flow { background: rgba(20, 60, 170, 0.28); }
+#l1Done.flow .card { width: 86%; background: linear-gradient(#f3f8fe, #e2edf9); border-color: #ffffff; box-shadow: 0 calc(var(--u, 2px) * 5) 0 #148ff0, 0 0 calc(var(--u, 2px) * 30) rgba(140, 210, 255, .8); color: #202e83; }
+#l1Done.flow .stars { font-size: calc(var(--u, 2px) * 34); color: #fad928; text-shadow: 0 calc(var(--u, 2px) * 2.5) 0 #d48f23; }
+#l1Done.flow h2 { background: linear-gradient(#3aa0ff, #1578d0); }
+#l1Done.flow .row { background: #ffffff; border-radius: calc(var(--u, 2px) * 9); margin: calc(var(--u, 2px) * 3) 0; padding: calc(var(--u, 2px) * 4) calc(var(--u, 2px) * 7); }
+#l1Done.flow .row i { color: #4ca439; } #l1Done.flow .row i.no { color: #c0406a; }
+#l1Done .rewards { margin-top: calc(var(--u, 2px) * 7); border: calc(var(--u, 2px) * 2.5) solid #148ff0; border-radius: calc(var(--u, 2px) * 12); background: #dbe8fa; padding: calc(var(--u, 2px) * 4) calc(var(--u, 2px) * 6) calc(var(--u, 2px) * 6); }
+#l1Done .rewards b { display: block; font-size: calc(var(--u, 2px) * 13); color: #1578d0; margin-bottom: calc(var(--u, 2px) * 3); }
+#l1Done .rewards .rw { display: flex; justify-content: space-around; font-size: calc(var(--u, 2px) * 13); font-weight: 700; color: #202e83; }
+#l1Done .rewards .rw span { display: flex; flex-direction: column; align-items: center; } #l1Done .rewards .rw em { font-style: normal; font-size: calc(var(--u, 2px) * 20); }
+#l1Done.flow button { background: linear-gradient(#74f029, #0eb31c); }`;
   document.head.appendChild(css);
   const stage = ctx.stage;
   const banner = document.createElement('div'); banner.id = 'l1Banner'; stage.appendChild(banner);
@@ -647,10 +721,32 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   let shown = -1, bannerT = 0, complete = false, completeT = 0, lastLbl = '';
   const sectionAt = (u) => { let k = 0; for (let i = 0; i < C.sections.length; i++) if (u >= C.sections[i].u) k = i; return k; };
   const showBanner = (s) => {
-    banner.className = s.warn ? 'warn' : ''; banner.innerHTML = `<b>${s.banner[0]}</b><span>${s.banner[1]}</span>`;
+    const tx = FLOW ? (x) => x.replace('{socks}', String(Math.min(5, state.socks))) : (x) => x;   // (flow: the rescue progress)
+    banner.className = s.warn ? 'warn' : ''; banner.innerHTML = `<b>${tx(s.banner[0])}</b><span>${tx(s.banner[1])}</span>`;
     void banner.offsetWidth; banner.classList.add('show'); bannerT = 2.4;
   };
-  const showComplete = () => {
+  // (flow) a short hint (a blocked move, the bounce pad), and the board's goals and rewards at the finish
+  let hintCool = 0;
+  const hint = (lines) => { if (hintCool > 0) return; hintCool = 1.2; showBanner({ banner: lines }); bannerT = 1.4; };
+  const GOALS = { socks: 5, coins: 50, gems: 1 }, REWARDS = { coins: 300, gems: 10, socks: 5 };
+  let rewarded = false;
+  const showCompleteFlow = () => {
+    const socks = Math.min(5, state.socks), gemsGot = state.level1Gems || 0, coinsGot = state.coins - (state.level1Coins0 ?? state.coins);
+    const ok = [socks >= GOALS.socks, coinsGot >= GOALS.coins, gemsGot >= GOALS.gems], stars = Math.max(1, ok.filter(Boolean).length);
+    if (!rewarded) {   // the rewards go into the game's own totals (the HUD shows them); the sock reward is recorded (no sock shop yet)
+      rewarded = true; state.coins += REWARDS.coins; state.gems += REWARDS.gems; state.rewardSocks = (state.rewardSocks || 0) + REWARDS.socks;
+      state.level1Result = { socks, coins: coinsGot, gems: gemsGot, stars, rewards: { ...REWARDS } };
+      if (ctx.refreshHud) ctx.refreshHud();
+    }
+    const row = (label, have, need, good) => `<div class="row"><span>${label}</span><span>${have}/${need} <i class="${good ? '' : 'no'}">${good ? '✔' : '✖'}</i></span></div>`;
+    done.innerHTML = `<div class="card"><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div><h2>Level Complete!</h2>
+      ${row('🧦 Rescue 5 lost socks', socks, 5, ok[0])}${row('🪙 Collect 50 coins', Math.min(coinsGot, GOALS.coins), GOALS.coins, ok[1])}${row('💎 Find 1 special gem', Math.min(1, gemsGot), 1, ok[2])}
+      <div class="rewards"><b>Rewards</b><div class="rw"><span><em>🪙</em>+${REWARDS.coins}</span><span><em>💎</em>+${REWARDS.gems}</span><span><em>🧦</em>+${REWARDS.socks}</span></div></div>
+      <button type="button" id="l1Again">Play Level 1 again ▶</button></div>`;
+    done.classList.add('show', 'flow');
+    done.querySelector('#l1Again').addEventListener('click', (e) => { e.stopPropagation(); done.classList.remove('show'); if (ctx.restart) ctx.restart(); });
+  };
+  const showComplete = FLOW ? showCompleteFlow : () => {
     const socks = Math.min(5, state.socks), gemsGot = state.level1Gems || 0, coinsGot = state.coins - (state.level1Coins0 ?? state.coins);
     const stars = 1 + (socks >= 5 ? 1 : 0) + (gemsGot >= 1 ? 1 : 0);
     done.innerHTML = `<div class="card"><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div><h2>Level Complete!</h2>
@@ -668,6 +764,11 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   const exitPlanes = WET && ctx.mats && ctx.mats.exitLight ? ctx.mats.exitLight.filter(Boolean).map((m) => ({ m, base: m.matrix.clone(), k: 1 })) : [];
   const exitS = new THREE.Matrix4();
 
+  // ---------------- (flow) the raised side path, the lower path's walls, the bounce pad and the arrows; the routes' rules
+  const flow = FLOW ? buildFlow({ root, TR, L, W, mascot, timeU, radiusAt, mats: { goldM, silverM, violM, env }, fx: ctx.fx, sfx: ctx.sfx, padJump: ctx.padJump, hint }) : null;
+  if (flow) report.flow = flow.report;
+  let lastSocks = 0;
+
   // ---------------- per frame
   const tmpP = new THREE.Vector3();
   let lastPhase = '';
@@ -675,6 +776,17 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     timeU.value = t; ctx.camera.getWorldPosition(camU.value);
     const m = mascot, u = m.z, running = phase === 'running';
     riderU.value.set(m.x, u, Math.min(1, (m.speed || 0) / W.CRUISE) * (m.air ? 0.2 : 1), m.xv);
+    if (FLOW) {
+      hintCool = Math.max(0, hintCool - dt);
+      flow.update(dt, t, running);
+      // board 01: "Let's go! Into the washing machine!" as the run starts; board 09: the rescue progress as each sock is rescued
+      if (running && lastPhase !== 'running') { showBanner({ banner: ["Let's go!", 'Into the washing machine!'] }); bannerT = 2.0; lastSocks = state.socks; }
+      if (running && state.socks !== lastSocks) {
+        const n = Math.min(5, state.socks);
+        if (state.socks > lastSocks && n >= 3) showBanner({ banner: n >= 5 ? ['All 5 socks rescued!', 'Swim to the finish'] : [`${n}/5 socks rescued!`, n === 4 ? 'The last one is in the Kingdom' : 'Keep swimming!'] });
+        lastSocks = state.socks;
+      }
+    }
     if (phase === 'running' && lastPhase !== 'running') { state.level1Coins0 = state.coins; state.level1Gems = 0; state.level1Gems0 = state.gems; }
     if (running) state.level1Gems = state.gems - (state.level1Gems0 ?? state.gems);
     if (!gemsIn && u > C.tube[0] + 2.4) { ctx.gemsList.push(...myGems); gemsIn = true; }
@@ -736,25 +848,34 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
       if (!running) continue;
       if (Math.abs(ahead) > 0.42) { if (ahead < -1.5) b.hit = false; continue; }
       if (b.hit || m.yAbs - W.surface(L, m.x, m.z, t) > 0.5) continue;
+      if (b.x !== null && Math.abs(m.x - b.x) > 0.62) continue;   // (flow: a short bar on one ledge)
       b.hit = true; ctx.bumpMascot(m.x >= 0 ? 1 : -1);
     }
     // grime balls roll toward her once she is near, bobbing and turning to face her
     for (const e of enemies) {
       const near = e.u0 - u;
       if (running && near < 26 && near > -6) e.u = Math.max(e.u0 - 9, e.u - dt * 1.6);
+      if (e.patrol) e.x = THREE.MathUtils.clamp(W.laneX(e.lane) + Math.sin(t * 1.5 + e.ph) * e.patrol, -0.75, 0.75);   // (flow: patrolling across the lanes)
       const ahead = e.u - u;
-      e.holder.visible = ahead > -1.8 && ahead < DRAW_AHEAD;
+      e.holder.visible = !e.dead && ahead > -1.8 && ahead < DRAW_AHEAD;
       if (!e.holder.visible) continue;
       const bob = Math.abs(Math.sin(t * 4.2 + e.ph)) * 0.16;
       TR.map(e.x + Math.sin(t * 1.3 + e.ph) * 0.08, 0.36 + bob, e.u, e.holder.position); TR.quaternion(e.u, e.holder.quaternion); e.holder.rotateY(Math.PI);
       // the fuzzy ball rolls toward her under its eyes, which stay on her, wobbling
       e.body.children[0].rotation.x = -t * 2.5;
       e.body.rotation.set(Math.sin(t * 5.0 + e.ph) * 0.12, 0, Math.sin(t * 2.0 + e.ph) * 0.15);
-      e.holder.scale.setScalar(1 - 0.95 * smooth(-0.3, -1.6, ahead));
+      e.holder.scale.setScalar((1 - 0.95 * smooth(-0.3, -1.6, ahead)) * e.k);
       if (!running) continue;
       if (Math.abs(ahead) > 0.6) { if (ahead < -1.5) e.hit = false; continue; }
-      if (e.hit || Math.abs(m.x - e.x) > 0.48) continue;
+      if (e.hit || Math.abs(m.x - e.x) > e.hw) continue;
       if (m.air && m.yAbs - W.surface(L, m.x, m.z, t) > 0.75) continue;
+      // (flow: board 07's enemy interaction: a tap-spin, Turbo Spin or Bubble Blast pops it for 5 coins; otherwise it knocks her)
+      if (FLOW && (m.spinLeft > 0 || state.turboT > 0 || state.blastT > 0)) {
+        e.dead = true; e.hit = true; e.holder.visible = false; state.coins += 5; state.level1Popped = (state.level1Popped || 0) + 1;
+        if (ctx.fx) ctx.fx.sparkle(e.holder.getWorldPosition(tmpP).clone(), 22);
+        if (ctx.sfx) ctx.sfx('gem'); if (ctx.refreshHud) ctx.refreshHud();
+        continue;
+      }
       e.hit = true; ctx.bumpMascot(m.x >= e.x ? 1 : -1);
     }
     // banners and progress
@@ -767,7 +888,9 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // the finish
     if (running && !complete && u >= C.finish) { complete = true; completeT = 0; ctx.sfx && ctx.sfx('gem'); ctx.finish(); }
     if (complete) { completeT += dt; if (completeT > 1.1 && !done.classList.contains('show')) showComplete(); }
-    window.__bwLevel1 = { u: +u.toFixed(2), section: C.sections[k].name, progress: +p.toFixed(4), complete, socks: state.socks, report };
+    window.__bwLevel1 = { u: +u.toFixed(2), section: C.sections[k].name, progress: +p.toFixed(4), complete, socks: state.socks, report,
+      ...(FLOW ? { lane: m.lane, lift: +flowLift(m.x, u).toFixed(3), route: m.lane === -1 ? 'side path' : u > 111 && u < 136 ? (Math.abs(m.x) < 0.5 ? 'lower path' : 'upper ledge') : 'main',
+        popped: state.level1Popped || 0, result: state.level1Result || null } : {}) };
   }
   function reset() {
     if (gemsIn) { for (const g of myGems) { const i = ctx.gemsList.indexOf(g); if (i >= 0) ctx.gemsList.splice(i, 1); } gemsIn = false; }
@@ -777,6 +900,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     for (const e of enemies) { e.u = e.u0; e.hit = false; }
     shown = -1; complete = false; completeT = 0; bannerT = 0; banner.classList.remove('show'); done.classList.remove('show');
     state.level1Coins0 = undefined;
+    if (FLOW) { flow.reset(); park(); for (const e of enemies) e.dead = false; rewarded = false; lastSocks = 0; hintCool = 0; done.classList.remove('flow'); }
   }
   // her swimming, drawn on her model only: a stroke rhythm (alternating roll and a forward surge with each stroke), small
   // paddle splashes at her sides, and a stronger lean and turn into each swipe
@@ -801,6 +925,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   }
   // (tests only: where the obstacles and socks are now, for the recording's steering)
   if (typeof window !== 'undefined') window.__bwLevel1Plan = () => ({ brushes: brushes.map((b) => [b.u, b.lane]), bars: C.bars.slice(),
-    enemies: enemies.map((e) => [+e.u.toFixed(2), e.lane]), socks: C.socks.map(([lane, , u]) => [u, lane]) });
-  return { update, reset, swim, report, finished: () => complete };
+    enemies: enemies.map((e) => [+e.u.toFixed(2), e.lane, +e.x.toFixed(2), !!e.dead]), socks: C.socks.map(([lane, , u]) => [u, lane]) });   // (x, dead: flow's patrols and pops)
+  // (flow) the hooks game.js uses for her lanes on the routes (null without flow: the game's own lanes)
+  return { update, reset, swim, report, finished: () => complete, flow: flow ? { changeLane: flow.changeLane, laneTarget: flow.laneTarget } : null };
 }

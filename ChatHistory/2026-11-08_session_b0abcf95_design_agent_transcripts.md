@@ -619,8 +619,18 @@ Deliver as your final message (under 800 words): first a table of every MCP tool
 - 12:24 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 12:25 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 12:26 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:27 `Bash`: Check browser CPU load
+- 12:27 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:28 `Grep`: l1Water|l1Wall|l1Hoops|l1Bubbles|fluffyShells|renderOrder|frustumCulled
+- 12:28 `Grep`: fluffyShells|fluffyFringe
+- 12:28 `Read`: /home/user/bubblegame/WebDemo/src/level1.js
+- 12:28 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:29 `Bash`: Recheck browser CPU load
+- 12:29 `Grep`: advance\s*[:(=]
+- 12:29 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:30 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
 
-_32 tool steps._
+_42 tool steps._
 
 ---
 
