@@ -9,7 +9,7 @@ session left nothing uncommitted). Both sub-switches are on by default under `le
 previous level1 and opening exactly. NOT accepted by the user yet. `match6` (her silhouette) is NOT part of this: it is opt-in
 (`,match6`), a candidate, by the user's order.
 
-Build: bundle **89e89f18** (commit `03e8455`), on top of `ccr-76d4bc77-rqhl8o` `7e5dd685` (bundle 92bd9272), on branch
+Build: bundle **a62848a0** (commit `6b5d46fd`), on top of `ccr-76d4bc77-rqhl8o` `7e5dd685` (bundle 92bd9272), on branch
 `claude/bubble-wash-kingdom-continue-z9nmm1`. Full app: `index.html?s3=intunnel,structmatch,home,level1`.
 
 ## What every transition looked like before (`sheets/00_every_transition_OLD_NEW_24_moments.jpg`, top row; seed 7, 412 x 915, autopilot)
@@ -37,16 +37,17 @@ Build: bundle **89e89f18** (commit `03e8455`), on top of `ccr-76d4bc77-rqhl8o` `
 - Gameplay code is untouched: her lanes, speed, jumps, hit tests, collectibles, hearts, power-ups, the finish trigger and the
   progress bar are the same code; the chamber is drawn only.
 
-## Results (filled from `proofs/`; all on the frozen final build 89e89f18)
+## Results (filled from `proofs/`; all on the frozen final build a62848a0)
 - **Identity** (`proofs/identity.txt`, `scripts/identity.sh`, layer_diag.cjs canvases 768 x 1536, seed 7): **0 pixels differ in every
   check**: the accepted `?s3=intunnel` (start, 3 s), the normal game (1 s) and the candidate `?s3=intunnel,structmatch` (start, 3 s)
   against `ccr`'s build 92bd9272; `,match6` against match6's own build b5f69217 (start, 3 s: the candidate kept exactly); level1 with
   `,nowet,noport` against the previous level1 (start, 3 s: the rollback is exact); the new level1's Tap to Start against the previous.
-- **The route** (`proofs/route_old_new_24_moments.md`, `frames/old_ccr_92bd9272/`, `frames/new_89e89f18/`, `sheets/00_...`): at all 24
-  moments of the same autopiloted run (Tap to Start to 50 s), her place along the course, the section, the socks (6 by the end) and the
-  hearts (5) are the same, and Level Complete comes at the same moment (341.7 m, between 46 and 48 s). Coins: one coin is collected
-  earlier in the new build (from 7 s to 44 s the new run is one coin ahead); at Level Complete both have 1,371 (91 in the run). The
-  coins' bob phases come from the course's private random sequence, which the chamber's extra objects advance.
+- **The route** (`proofs/route_old_new_24_moments.md`, `frames/old_ccr_92bd9272/`, `frames/new_final/`, `sheets/00_...`): at all 24
+  moments of the same autopiloted run (Tap to Start to 50 s), her place along the course, the section, the coins, the GEMS, the socks
+  (6 by the end) and the hearts (5) are the same, and Level Complete comes at the same moment (341.7 m, between 46 and 48 s). (An
+  earlier build of this pass collected one coin earlier and missed the gem at 18 s, found by the independent review: the chamber's extra
+  objects advanced the course's private random sequence, which sets the coins' and gems' bob phases. Fixed at the root: the wet-only
+  objects are made on their own sequence and the previous build's own pieces are still made and thrown away.)
 - **Gameplay tests** (`proofs/`, `motion/`, `scripts/tests.sh`): the seeded motion trace (swipes and a jump) 152 frames x 17 gameplay and
   camera fields, candidate against level1: **0 differences**; `s3_func` exit 0 for both (the candidate's output identical to the `ccr`
   build's; with level1 only draw counts differ: more water triangles, 2 fewer calls at 41 m where the drum's end planes have shrunk);
@@ -73,7 +74,11 @@ Build: bundle **89e89f18** (commit `03e8455`), on top of `ccr-76d4bc77-rqhl8o` `
   approved art: she is cut by the left edge; not changed in this pass).
 - The porthole is closer to the approved art (no white foam mass, a cobalt spiral) but still paler and less luminous than its deep vortex.
 - The castle is the game's own castle model; the chamber is code-built (no new Tripo assets, nothing spent).
-- One coin is collected earlier than before (see the route); the totals at Level Complete are the same.
+- The independent review (gameplay-visual-testing, read-only) also noted, and these were fixed before the final build: a flat pink
+  finish ribbon across the chamber (hidden; the arch stays), a hard cobalt edge of the course water at the hand-off (its first metres now
+  take the drum's turquoise) and a sharper step between the deep course water and her lighter surf (lighter just ahead of her). Still
+  open from it: at 22 s a flat pale-lavender band at the bottom during a soap-bar jump, and at 26 s faint far shapes (both in the previous
+  build too); the lagoon seen through the portal reads pale lilac-cyan.
 - The user's 10-beat gameplay mandate (functional branching side paths, a drop to a lower path, patrolling enemies) is NOT built: the
   course is one path (the soap bars are jumps on it, "the drop" is a slope on it). It is the next task.
 - Real phone frame rates were not measured (software rendering here); draw calls and triangles are counted.

@@ -78,4 +78,4 @@ Session link: https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP. Nothing i
   the Screen 4 drum no longer hides her; the course's water double-sided, deep blue to the end) and `port` (the opening's porthole shows
   the blue spiral). Rollback `,nowet` / `,noport`. Evidence: `Previews/WebDemo/screen4_round9_match/70_level1_wet/README.md`.
 - `match6` is now opt-in (`,match6`): a candidate until the user approves it (the user's order); the default candidate look is match5.
-- Final candidate bundle 89e89f18 (commit `03e8455`); a pull request from this branch into `ccr-76d4bc77-rqhl8o` is the review route.
+- Final candidate bundle a62848a0 (commit `6b5d46fd`); a pull request from this branch into `ccr-76d4bc77-rqhl8o` is the review route.
