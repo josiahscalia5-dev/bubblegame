@@ -39,5 +39,15 @@ normal and metal / roughness maps to 512 px; the model turned -90 degrees about 
 Geometry unchanged (4,903 triangles). glTF Validator: 0 errors, 1 warning (tangents generated at runtime, harmless).
 `02_enemy_prepared_for_game.png` (front, three-quarter, side). Contact sheets: `WebDemo/tools/tripo/glb_sheet.cjs`.
 
+## The user's own six Tripo models, reused (no credits), 8 November about 15:10 UTC
+| Model | Decision | Where |
+|---|---|---|
+| purple basket | KEEP, its violet lifted to the approved girl art's basket (measured), texture 1024 px | `WebDemo/models/opening/basket_tripo.glb`, `tripo2` (`Previews/WebDemo/screen4_round9_match/73_tripo2_opening_basket_towels/`) |
+| soft plush towels | KEEP, split into its three towels (Blender), texture 1024 px | `WebDemo/models/opening/towels_tripo.glb`, `tripo2` (flying and in the basket) |
+| sock character | not used yet: a face character with a blue cuff; the art's flying socks are plain striped socks and Level 1's socks are `sock.glb` | - |
+| cartoon girl | in use (rigged, `girl_rigged.glb`) | the opening |
+| washing machine | not used: the opening's code washer already has the art's open golden porthole and blue swirl | - |
+| pink fluffy creature | REJECTED earlier by the user as her replacement; unchanged | - |
+
 In the game: `WebDemo/src/tripo_l1.js` (looks only; hit boxes, lanes, patrols, pops untouched). Evidence and proofs:
 `Previews/WebDemo/screen4_round9_match/72_tripo1_enemy/README.md`.

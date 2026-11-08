@@ -102,6 +102,10 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     board panel 09's grime ball as a Tripo P2 model made from the original board's crop (`WebDemo/src/tripo_l1.js`,
     `models/l1_enemy_tripo.glb`), looks only; the castle Tripo made from board panel 02 was rejected. Evidence:
     `Previews/WebDemo/screen4_round9_match/72_tripo1_enemy/README.md`; jobs and credits: `Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/`.
+  - `tripo2` (8 November, session `57091b57`, opt-in on the 3D opening: `?s3=intunnel,structmatch,home,level1,tripo2`; NOT accepted):
+    the user's OWN Tripo basket (its violet lifted to the approved girl art's) and towels (split into three) in the Laundry Toss, looks
+    only, no credits (`WebDemo/src/opening_tripo.js`, `models/opening/basket_tripo.glb`, `towels_tripo.glb`). Evidence:
+    `Previews/WebDemo/screen4_round9_match/73_tripo2_opening_basket_towels/README.md`.
   - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
     opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the

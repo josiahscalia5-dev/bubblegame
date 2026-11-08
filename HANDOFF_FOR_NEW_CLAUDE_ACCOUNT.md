@@ -51,8 +51,8 @@ continue from the newer; otherwise merge both into your own branch with normal m
   flat card; the board's castle has no clean silhouette at 1536 x 1024; a clean, larger castle view is needed first).
 - Asset decisions so far (`Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/README.md`): `sock.glb` KEEP (matches the
   board's socks); board 05's wall brushes = the game's own wheel brush (`machinery.glb`, "big blue wheel with pink, white and blue
-  bristles") placed large on Level 1's walls (code, no credits); the opening's basket = the user's Tripo basket recoloured from plum to
-  the approved art's lavender, with the user's Tripo towels (colours already match): no new job needed. None of these three done yet.
+  bristles") placed large on Level 1's walls (code, no credits); the opening's basket = the user's Tripo basket recoloured to the approved
+  art's violet, with the user's Tripo towels (colours already match): no new job needed; done as `tripo2`. The brushes are not done yet.
 
 ### 0000.4 Plugin, MCP and tools in session `57091b57` (checked live)
 - parallax-threejs 0.4.12 enabled on this account: threejs-devtools 0.2.1 answers (no page attached), playwright-mcp 0.0.78 and
@@ -70,7 +70,9 @@ continue from the newer; otherwise merge both into your own branch with normal m
 | MUST BE RECONNECTED ON THE OTHER ACCOUNT | the parallax-threejs plugin (enable, new session), the Tripo network secret, the cloud environment (hosts incl. `openapi-dl.data.tripo3d.com`, setup script), Deno if wanted |
 
 ### 0000.6 Next (in the user's order: Home, Laundry Toss, Screen 4, Level 1)
-1. The opening: the user's Tripo basket (lavender) and towels in the toss, compared at the same frames with the approved girl art.
+1. DONE as `tripo2` (opt-in, waiting for the user): the user's Tripo basket (the art's violet) and towels in the toss
+   (`73_tripo2_opening_basket_towels/README.md`). Remaining in the opening: the basket bigger and higher as in the art, the flight's
+   diagonal, the flying socks (placement / animation in `opening3d.js`).
 2. Level 1 board 05: the wheel brushes large on the walls; board 07: the enemy higher and larger (in `level1.js`: coordinate with `b0abcf95`).
 3. The castle: a clean castle reference, then one Tripo job; finale2 (session `b0abcf95`) places it.
 4. A full phone recording only after these.

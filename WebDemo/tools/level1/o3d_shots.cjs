@@ -26,6 +26,7 @@ const server = http.createServer((req, res) => {
   }, S3);
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready') && window.__bwO3D && window.__bwO3D.state().heroReady, null, { timeout: 300000 });
+  if (process.env.WAIT) await page.waitForFunction(process.env.WAIT, null, { timeout: 120000 });   // optional (session 57091b57): e.g. WAIT='window.__bwTripo2 && window.__bwTripo2.ready'
   const shot = (f) => page.screenshot({ path: path.join(OUT, f), timeout: 240000 });
   for (const t of IDLE) { await page.evaluate((x) => window.__bwO3D.seek(x, -1), t); await page.waitForTimeout(400); await shot(`home_idle_${t.toFixed(1)}.png`); }
   await page.click('#bwHome .screen:not(.off) .go'); await page.waitForTimeout(500);

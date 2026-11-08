@@ -13,7 +13,10 @@ round whether `ccr-50c66592-kcnqoy` has commits not merged here yet (merge by ha
 - new only: `WebDemo/src/tripo_l1.js` (`tripo1`, opt-in), `WebDemo/tools/tripo/`, `WebDemo/models/l1_enemy_tripo.glb`,
   `Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/`, `Previews/WebDemo/screen4_round9_match/72_tripo1_enemy/`;
 - `WebDemo/src/game.js`: ONE import line and ONE call after `buildLevel1(...)`, both inert without `tripo1`.
-It does NOT edit `level1.js`, `level1_flow.js`, `world.js`, `opening3d.js` (session `b0abcf95`'s roof2 / finale2 / flow work).
+- `WebDemo/src/opening3d.js`: ONE import line and ONE call after the laundry is built, both inert without `tripo2`; new
+  `WebDemo/src/opening_tripo.js`, `WebDemo/models/opening/basket_tripo.glb`, `towels_tripo.glb`; `WebDemo/tools/level1/o3d_shots.cjs`:
+  an optional `WAIT` (off by default); `Tools/tripo_job.sh`, `Design/TripoDeliveries/TRIPO_JOBS_LOG.md`.
+It does NOT edit `level1.js`, `level1_flow.js`, `world.js` (session `b0abcf95`'s roof2 / finale2 / flow work); `opening3d.js` only as above.
 On merging `ccr-50c66592-kcnqoy` again: keep both sides of `game.js`; rebuild `game.bundle.js` (never hand-merge it).
 
 ## UPDATE 8 November, about 12:50 UTC: session `b0abcf95` (the user's new account), branch `ccr-50c66592-kcnqoy`

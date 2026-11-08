@@ -21,6 +21,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { LEVEL1_PARTS } from './level1.js';
+import { TRIPO2_ON, applyTripo2 } from './opening_tripo.js';   // ?s3=...,level1,tripo2 (session 57091b57): the user's Tripo basket and towels, looks only
 // girl2 (8 November, the user's priority 1): the user's Tripo girl (Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/,
 // "cartoon girl 3d model.glb"), rigged in Blender by rig/rig_girl.py (hips, spine, chest, neck, head, shoulders, arms, hands,
 // legs; automatic weights; texture 2048) -> models/opening/girl_rigged.glb. Driven here by the same timeline as the code-built
@@ -486,6 +487,7 @@ export function mountOpening3D(container, opts = {}) {
     laundry.push({ o, t0: 0.42 + i * 0.06, t1: 1.45 + i * 0.1, from: (LEVEL1_PARTS.girl2 ? V([-0.16, 1.25, 0.06]) : V([-0.02, 1.35, 0.15])).add(V([(rnd() - 0.5) * 0.08, 0, 0])), apex: V([0.32 + rnd() * 0.35, 2.3 + rnd() * 0.25, 0.45 + rnd() * 0.2]),
       to: V([OPENING3D.porthole.x + (rnd() - 0.5) * 0.15, OPENING3D.porthole.y + (rnd() - 0.5) * 0.12, OPENING3D.porthole.z - 0.2]), spin: V([rnd() * 9 - 4.5, rnd() * 9 - 4.5, rnd() * 9 - 4.5]) });
   }
+  if (TRIPO2_ON) applyTripo2({ basket, laundry, loader: new GLTFLoader(), env });   // (tripo2: opening_tripo.js)
   // bubbles: a heap in the foreground and some floating up through the room
   const bubM = bubbleMaterial(), nb = 46;
   const bubbles = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 24, 16), bubM, nb); bubbles.frustumCulled = false; scene.add(bubbles);
