@@ -27,11 +27,15 @@ mask = np.zeros((H, W), np.uint8)
 cv2.circle(mask, (fx(0.725), fy(0.384)), int(0.172 * W) + 8, 255, -1)
 b, g, r = [im[:, :, i].astype(int) for i in range(3)]
 box = np.zeros((H, W), bool); box[fy(0.10):fy(0.27), fx(0.15):fx(0.87)] = True
-banner = ((r > 120) & (r - g > 45) & box).astype(np.uint8) * 255
-banner = cv2.morphologyEx(banner, cv2.MORPH_CLOSE, np.ones((41, 41), np.uint8))
-cnts, _ = cv2.findContours(banner, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-if cnts: cv2.drawContours(banner, [max(cnts, key=cv2.contourArea)], -1, 255, -1)
-banner = cv2.dilate(banner, np.ones((33, 33), np.uint8))          # its outline, drop shadow and glow too
+red = ((r > 150) & (r - g > 70) & box).astype(np.uint8) * 255
+red = cv2.morphologyEx(red, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+n, lab, stats, _ = cv2.connectedComponentsWithStats(red)
+banner = np.zeros((H, W), np.uint8)
+if n > 1:                                                           # the banner = the convex hull of the single largest red region
+    big = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+    pts = cv2.findNonZero((lab == big).astype(np.uint8))
+    cv2.fillConvexPoly(banner, cv2.convexHull(pts), 255)
+banner = cv2.dilate(banner, np.ones((19, 19), np.uint8))          # its outline and drop shadow
 mask |= banner
 mask[0:fy(0.092), :] = 255
 
