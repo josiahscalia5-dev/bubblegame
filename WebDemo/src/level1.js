@@ -89,8 +89,8 @@ export const COURSE = {
   // end wall at end with the portal (radius, centre height above the water) the castle is seen through; beyond it the kingdom's
   // lagoon (half width) with the castle (place, size, height) and islands [u, x, h, r]; decorative wall brushes [u, side];
   // the drum's far-end light planes shrink away over exit (her u)
-  chamber: { u0: 266, u1: 292, R: 5.6, end: 366, portal: { r: 3.1, h: 2.1 }, lagoon: 14, castle: { u: 410, size: 19, h: -0.3 },
-    islands: [[384, -10, 0.4, 3.6], [392, 11, 0.6, 4.2], [402, -15, 0.8, 4.6], [414, 14, 0.5, 4.0], [424, -7, 1.0, 3.4]],
+  chamber: { u0: 266, u1: 292, R: 5.6, end: 360, portal: { r: 4.0, h: 2.4 }, lagoon: 14, castle: { u: 392, size: 24, h: -0.3 },
+    islands: [[372, -11, 0.4, 3.6], [380, 12, 0.6, 4.2], [390, -16, 0.8, 4.6], [402, 15, 0.5, 4.0], [410, -8, 1.0, 3.4]],
     brushes: [[296, 1], [306, -1], [318, 1], [330, -1], [348, 1], [356, -1]], exit: [30.5, 35.5] },
 };
 
