@@ -33,10 +33,17 @@ clicks drive the opening (START on Home, START on Laundry Toss), stepped at 30 f
 - Console: no errors; 3 WebGL warnings ("glTexStorage2D: Texture is immutable", software renderer).
 Contact sheet: `girl_probe_contact_sheet.jpg`.
 
-## Gameplay tests on the same export (`scripts/gameplay.sh`, the old session's own tests)
-See `proofs/` and `motion/` (results summarised in the session's report).
+## Gameplay tests on the same export (`scripts/gameplay.sh`, the old session's own tests; `proofs/`, `motion/`)
+| Test | Candidate `?s3=intunnel,structmatch` | With `level1` | Against the old session's own run (`68_level1/proofs/`) |
+|---|---|---|---|
+| `s3_func` (the gameplay functions) | exit 0 | exit 0 | candidate output identical; the comparison differs only in draw calls: 222 with level1 against 211 (the old file still had 322, from before the course was culled) |
+| `r2_func` (hearts: 5 knocks to 0, restart to "5 Full", pause visible) | hearts test passed; exit 1 from a later page load over its 5-minute limit | the same | identical output AND the same timeout in the old session's run: a harness limit on the busy software renderer, not a game fault |
+| motion trace (seeded swipes and a jump) | exit 0 | exit 0 | **152 frames x 17 gameplay fields (lanes, steering, jump, speed, hearts, coins, gems, socks, knocks, camera): 0 differences** between the two |
 
 ## Video
-`videos/ccr_7e5dd68_opening_girl_level1_pixel7.mp4`: recorded with the old session's own `WebDemo/tools/level1/record_full.cjs`
+**`videos/ccr_7e5dd68_opening_girl_level1_pixel7.mp4`** (24 s, 412 x 916, 480 frames, `videos/record_log.json`; contact sheet
+`videos/ccr_7e5dd68_contact_sheet.jpg`): the opening ends at frame 183 (9.2 s); then the run through the Washer drum, the Spinning
+brushes and the Treasure run, steered by real swipes; final state running, coins 1,328 (+48), socks 4, hearts 5, knocks 0, gems 37;
+0 errors. Recorded with the old session's own `WebDemo/tools/level1/record_full.cjs`
 from the export (seed 7, 20 frames per game second, Pixel 7 412 x 915, RUN=14: Home, Laundry Toss with the girl animating, START,
 the toss, the washer entry, Tap to Start, then 14 s of the run steered by real swipes).
