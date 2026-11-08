@@ -51,18 +51,18 @@ export const RECON16 = {
   // the left drum: face centre (x, h, u), outer ring radius R, body depth (in R), yaw: how far the face turns from facing straight back
   // down the track toward the left wall (radians; the drum's body then shows on the face's right, as in the original)
   // (fitted with a projection grid of the real camera at the u 229.5 checkpoint, 77_.../scripts: centre (0.075, 0.30), gold band radius 0.125 H)
-  drum: { u: 238, x: 3.15, h: 3.55, R: 1.2, depth: 0.3, yaw: 0.5 },   // (v2 of MACH16: the master's footprint, ring right edge ~0.21-0.25 of the screen)   // (v3: R 1.52, depth 0.45, yaw 0.62: its body showed as extra rings to x 0.30; the master's ring ends at 0.21)
+  drum: { u: 238, x: 3.15, h: 3.55, R: 1.2, depth: 0.75, yaw: 0.5 },   // (v3: the gold drum body visibly runs back toward the centre)   // (v2 of MACH16: the master's footprint, ring right edge ~0.21-0.25 of the screen)   // (v3: R 1.52, depth 0.45, yaw 0.62: its body showed as extra rings to x 0.30; the master's ring ends at 0.21)
   ledge: { u: [232.2, 253.2], x: 2.25, h: 1.95 },
   // a long gentle curve (radius 5 m) whose face runs 1.3 m from the centre line (as close as the right lane allows; the master's wall would
   // stand at 0.5 m, inside the lane): from the right screen edge (u 234) to x 0.70 (u 240)
-  right: { u: 237, inner: 1.3, R: 5.0, H: 0.85 },
+  right: { u: 235.8, inner: 1.3, R: 5.5, H: 0.95 },   // (v3: reaches nearer the camera, so it runs down to the water at the right edge)
   towers: [[239.6, -3.35, 0.72, 2.8, 'pink'], [244.2, -3.4, 0.9, 3.4, 'mint'], [249.5, -3.2, 0.75, 3.0, 'pink']],   // [u, x, radius, height, dome] behind the right wall
   // the tiers of machinery beyond the drum on the ledge (master: the green-topped machine at (0.31, 0.29), which this low camera puts ~5.3 m up)
   leftTiers: [[242.6, 2.85, 0.72, 3.3, 'mint'], [245.8, 3.15, 0.8, 2.6, 'pink'], [248.6, 2.85, 0.66, 3.1, 'mint'], [251.4, 3.2, 0.75, 2.4, 'pink']],
-  gear: { u: 237, x: -2.5, h: 5.0, R: 0.72 },   // master: centre (0.93, 0.205), the frill's radius 0.16 W
+  gear: { u: 237, x: -2.5, h: 4.15, R: 0.75 },   // (art director, v3: saturated cobalt with a cyan rim, centre ~(0.92, 0.27), clear of the mission panel)
   arches: [],   // (v1-v2 had three; with the portal they read as a tunnel of rings, the look the user rejected)
   endWall: { gap: 3.05, ds: 0.72 },   // machinery on the far end wall round the opening (radius gap m round its centre)
-  glow: { r: 4.2, opacity: 1.0, du: 2.5, fade: [8, 16] },   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
+  glow: { r: 3.4, opacity: 1.0, du: 2.5, fade: [8, 16], rgb: [225, 245, 255] },   // (v3: the master's pale cyan-white far glow)   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
 };
 // MACH16 placements, fitted with the projection grid of the real camera at the u 229.5 checkpoint (77_.../scripts): the screen positions of
@@ -85,13 +85,13 @@ export const MACH16 = {
   // mounted machines: [u, x, centre height, module list (as towers), hung from the gantry above (true) or standing on a bracket]
   mounted: [
     [244.4, 2.35, 4.4, [['t', 1.5, 0.6, 'pink', 'mint']]],                                     // the master's green-topped machine
-    [247.2, 1.7, 5.6, [['w', 1.4, 1.5, 'cream', 'c']]],
-    [248.8, 1.45, 4.4, [['w', 1.15, 1.3, 'pink', 'p']]],
+    [247.2, 1.7, 5.6, [['t', 1.2, 0.6, 'cyan', 'gold']]],
+    [248.8, 1.45, 4.6, [['g', 0.55]]],
     [251.2, 0.6, 5.1, [['w', 1.35, 1.4, 'blue', 'c']]],
-    [252.5, -0.5, 6.0, [['w', 1.15, 1.2, 'lav', 'p']]],
-    [244.0, -1.9, 5.7, [['w', 1.35, 1.4, 'pink', 'c']]],
+    [252.5, -0.5, 6.0, [['t', 0.9, 0.5, 'lav', 'cyan']]],
+    [244.0, -1.9, 5.7, [['w', 1.35, 1.4, 'blue', 'c']]],
     [246.6, -1.45, 6.4, [['g', 0.62]]],
-    [249.6, -1.3, 4.8, [['w', 1.15, 1.2, 'cream', 'p']]],
+    [249.6, -1.3, 4.8, [['t', 1.0, 0.5, 'cyan', 'pink']]],
     [237.6, 1.8, 6.5, [['w', 1.45, 1.5, 'lav', 'c']]],
     [238.6, -1.2, 6.8, [['w', 1.3, 1.4, 'blue', 'p']]],
     [250.4, -0.1, 6.9, [['g', 0.5]]],
@@ -113,13 +113,13 @@ function canvasTex(w, h, draw, repeat) {
 // the chamber's own surface behind the machinery: deep lavender-blue recesses with faint panels (it shows only in the gaps)
 export function reconFacadeTexture() {
   return canvasTex(512, 256, (g, w, h) => {
-    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#5f68b5'); gr.addColorStop(0.5, '#8a72b6'); gr.addColorStop(1, '#c47aa8');   // deep recesses (the master's darker tones)
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#a9b4f0'); gr.addColorStop(0.5, '#c9c2f2'); gr.addColorStop(1, '#ead4ee');   // (art director, pass 16 v3: pastel periwinkle / lilac, the master's light background)
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
     for (let i = 0; i < 40; i++) {
       const x = (i * 97) % w, y = (i * 53) % h, rw = 30 + (i * 37) % 60, rh = 24 + (i * 29) % 50;
       g.fillStyle = i % 3 ? 'rgba(255,240,255,0.12)' : 'rgba(60,40,140,0.16)'; g.beginPath(); g.roundRect(x, y, rw, rh, 8); g.fill();
     }
-    for (let i = 0; i < 24; i++) { g.fillStyle = 'rgba(255,226,150,0.55)'; g.beginPath(); g.arc((i * 71) % w, (i * 43) % h, 3, 0, Math.PI * 2); g.fill(); }
+    for (let i = 0; i < 60; i++) { g.fillStyle = i % 3 ? 'rgba(255,240,200,0.8)' : 'rgba(210,245,255,0.85)'; g.beginPath(); g.arc((i * 71) % w, (i * 43 + (i * i) % 17) % h, 2 + (i % 3), 0, Math.PI * 2); g.fill(); }   // warm white and cyan glints
   }, true);
 }
 function starPanelTexture() {   // the right wall's pink star panels (master crop 04): pink-magenta panels, gold stars, lavender seams
@@ -134,8 +134,9 @@ function starPanelTexture() {   // the right wall's pink star panels (master cro
 }
 function ledgeTexture() {   // the left ledge's front (master: pink panels with gold trim lines under a cream top)
   return canvasTex(256, 128, (g, w, h) => {
-    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#ffc2e0'); gr.addColorStop(1, '#e978c4'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
-    g.fillStyle = '#c9a8f4'; for (const x of [0, 128]) g.fillRect(x, 0, 14, h);
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#ffe6d2'); gr.addColorStop(1, '#f6bcae'); g.fillStyle = gr; g.fillRect(0, 0, w, h);   // (art director, v3: a light peach front with stars, no slats)
+    const star = (cx, cy, r) => { g.beginPath(); for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r; g.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } g.closePath(); g.fillStyle = '#ffd36a'; g.fill(); };
+    star(64, 72, 16); star(192, 80, 12);
     g.fillStyle = '#ffd36a'; g.fillRect(0, 22, w, 6); g.fillRect(0, h - 18, w, 5);
     g.fillStyle = 'rgba(255,255,255,0.3)'; g.fillRect(0, 34, w, 3);
   }, true);
@@ -191,7 +192,8 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
   // ---- 1. LEFT: the circular washer housing on its ledge ------------------------------------------------------------------------
   {
     const D = R16.drum, R = D.R, t = new THREE.Group(), g = at(TR, new THREE.Group(), D.x, D.h, D.u, Math.PI - D.yaw); t.add(g);
-    mesh(new THREE.TorusGeometry(R, 0.2 * R, 20, 72), M.pink, g);                                                       // the thick pink door ring
+    mesh(new THREE.TorusGeometry(R, 0.3 * R, 22, 72), M.pink, g);                                                       // the thick pink door ring (v3: fatter)
+    mesh(new THREE.TorusGeometry(R * 0.74, 0.08 * R, 10, 64), std(0xb0307f, 0x6a1050, 0.4), g, (m) => { m.position.z = 0.1 * R; });   // its darker magenta inner lip
     mesh(new THREE.TorusGeometry(R * 1.2, 0.05 * R, 10, 80), M.gold, g, (m) => { m.position.z = 0.04 * R; });           // gold outer band
     mesh(new THREE.TorusGeometry(R * 0.8, 0.045 * R, 10, 72), M.gold, g, (m) => { m.position.z = 0.12 * R; });          // gold inner band
     const intM = new THREE.MeshStandardMaterial({ map: interiorTexture(), emissive: 0xffffff, emissiveMap: null, emissiveIntensity: 0.0, roughness: 0.5, metalness: 0.1, envMap: env || null, envMapIntensity: 0.6 });
@@ -203,7 +205,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     mesh(new THREE.CircleGeometry(0.15 * R, 24), M.white, paw, (m) => { m.scale.set(1.15, 0.9, 1); m.position.y = -0.06 * R; });
     for (const [x, y, r] of [[-0.17, 0.08, 0.06], [-0.07, 0.16, 0.065], [0.07, 0.16, 0.065], [0.17, 0.08, 0.06]]) mesh(new THREE.CircleGeometry(r * R, 18), M.white, paw, (m) => m.position.set(x * R, y * R, 0));
     const dep = D.depth * R;
-    mesh(new THREE.CylinderGeometry(R * 1.2, R * 1.2, dep, 64, 1, true), M.cream, g, (m) => { toZ(m); m.position.z = -dep / 2; });   // the drum's body
+    mesh(new THREE.CylinderGeometry(R * 1.2, R * 1.2, dep, 64, 1, true), std(0xf2c46a, 0x8a5a10, 0.45, { metalness: 0.55, roughness: 0.3 }), g, (m) => { toZ(m); m.position.z = -dep / 2; });   // the drum's gold body
     for (const z of [-0.18 * R, -dep + 0.06 * R]) mesh(new THREE.TorusGeometry(R * 1.21, 0.035 * R, 8, 72), M.gold, g, (m) => { m.position.z = z; });
     mesh(new THREE.CylinderGeometry(R * 1.205, R * 1.205, 0.16 * R, 64, 1, true), M.lav, g, (m) => { toZ(m); m.position.z = -dep * 0.55; });   // a lavender band
     mesh(new THREE.CircleGeometry(R * 1.2, 64), M.lav, g, (m) => { m.position.z = -dep; m.rotation.y = Math.PI; });
@@ -239,20 +241,20 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
   // ---- 2. RIGHT: the curved pink-and-gold wall round the water, towers behind it ------------------------------------------------------
   {
     const W = R16.right, t = new THREE.Group(), g = at(TR, new THREE.Group(), -(W.inner + W.R), 0, W.u); t.add(g);
-    const tex = starPanelTexture(); tex.repeat.set(Math.round(2 * Math.PI * W.R / 1.15), 1);
+    const tex = starPanelTexture(); tex.repeat.set(Math.round(2 * Math.PI * W.R / 1.9), 1);   // (v3: bigger stars)
     const wallM = std(0xffffff, 0xffffff, 0.34, { map: tex, side: THREE.DoubleSide }); wallM.emissiveMap = tex;
     mesh(new THREE.CylinderGeometry(W.R, W.R, W.H + 0.3, 96, 1, true), wallM, g, (m) => { m.position.y = (W.H - 0.3) / 2; });
-    for (let a = -44; a <= 44; a += 8) {   // lavender pilasters with gold caps on the face toward the channel (+x)
+    for (let a = -44; a <= 44 && false; a += 8) {   // (v3: no pilasters: solid pink star panels)   // lavender pilasters with gold caps on the face toward the channel (+x)
       const r = (a * Math.PI) / 180, p = new THREE.Group(); p.position.set(Math.cos(r) * (W.R + 0.04), 0, -Math.sin(r) * (W.R + 0.04)); p.rotation.y = r; g.add(p);
       mesh(new RoundedBoxGeometry(0.12, W.H + 0.2, 0.2, 1, 0.04), M.lav, p, (m) => { m.position.y = W.H / 2 - 0.05; });
       mesh(new THREE.BoxGeometry(0.16, 0.08, 0.26), M.gold, p, (m) => { m.position.y = W.H - 0.12; });
     }
     const flat = (m, y) => { m.rotation.x = Math.PI / 2; m.position.y = y; };
-    mesh(new THREE.TorusGeometry(W.R, 0.17, 12, 112), M.cream, g, (m) => flat(m, W.H));                  // the thick cream rim
+    mesh(new THREE.TorusGeometry(W.R, 0.11, 12, 112), M.cream, g, (m) => flat(m, W.H));                  // the cream rim (v3: thinner)
     mesh(new THREE.TorusGeometry(W.R + 0.07, 0.04, 6, 112), M.gold, g, (m) => flat(m, W.H - 0.2));        // a gold line under it
     mesh(new THREE.TorusGeometry(W.R - 0.2, 0.05, 6, 112), M.gold, g, (m) => flat(m, W.H + 0.17));        // the gold rail on top
     mesh(ART16_ON ? new THREE.RingGeometry(W.R - 1.1, W.R, 96, 1) : new THREE.CircleGeometry(W.R, 72), M.cream, g, (m) => { m.rotation.x = -Math.PI / 2; m.position.y = W.H + 0.06; });   // (ART16: a cream ledge 1.1 m wide)
-    mesh(new THREE.TorusGeometry(W.R + 0.05, 0.12, 8, 112), M.blueL, g, (m) => flat(m, 0.02));            // the lavender-blue base band
+    // (v3: no lavender-blue base band: the wall rises out of the water)
     mesh(new THREE.TorusGeometry(W.R + 0.08, 0.035, 6, 112), M.gold, g, (m) => flat(m, 0.17));
     const cx = -(W.inner + W.R);
     for (const [u, x, r, h, dome] of ART16_ON || MACH16_ON ? [] : R16.towers) {
@@ -266,7 +268,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     // the big blue gear with its lavender frilled ring, high on the right (master: the upper right corner)
     const G = R16.gear, q = at(TR, new THREE.Group(), G.x, G.h, G.u, Math.PI / 2 + 0.75); if (!ART16_ON) t.add(q);   // (ART16: the master's own gear, in the artwork)
     const ext = (sh, d) => new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: true, bevelThickness: d * 0.2, bevelSize: d * 0.15, bevelSegments: 2, curveSegments: 4 });
-    mesh(ext(gearShape(G.R * 1.38, 22, 0.86, true), G.R * 0.12), M.lav, q, (m) => { m.position.z = -G.R * 0.2; });
+    mesh(ext(gearShape(G.R * 1.38, 22, 0.86, true), G.R * 0.12), std(0x8fe0ff, 0x2a8ac0, 0.55), q, (m) => { m.position.z = -G.R * 0.2; });
     const blueG = ext(gearShape(G.R, 12, 0.8), G.R * 0.26); mesh(blueG, M.blue, q);
     mesh(new THREE.TorusGeometry(G.R * 0.55, G.R * 0.07, 8, 40), M.lav, q, (m) => { m.position.z = G.R * 0.36; });
     mesh(new THREE.CylinderGeometry(G.R * 0.3, G.R * 0.3, G.R * 0.4, 24), M.blueL, q, (m) => { m.rotation.x = Math.PI / 2; m.position.z = G.R * 0.25; });
@@ -429,7 +431,7 @@ export async function applyArt16(root, TR, Ch, camera) {
 function buildMachines16(root, TR, env, M, std, Ch) {
   const K = MACH16, t = new THREE.Group(), P = new THREE.Vector3();
   const B = { blue: std(0x6f7fe0, 0x24308a, 0.45, { metalness: 0.35, roughness: 0.32 }), deep: std(0x4a56c0, 0x1a2280, 0.42, { metalness: 0.4, roughness: 0.3 }),
-    lav: M.lav, pink: M.pink, rose: M.rose, cream: M.cream, mint: M.mint, gold: M.gold };
+    lav: M.lav, pink: M.pink, rose: M.rose, cream: M.cream, mint: M.mint, gold: M.gold, cyan: std(0x9fe2ff, 0x2f86b8, 0.5, { metalness: 0.3, roughness: 0.3 }) };
   const G = { c: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.7, 1.15, 1.6) }), p: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.95, 1.35) }) };
   const lamp = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.3, 0.85) });
   const add = (g, geo, mat, x, y, z, rx = 0, ry = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); g.add(m); return m; };
@@ -522,5 +524,6 @@ export async function applyFar16(root, TR, Ch, camera) {
   const cardM = projMaterial(art, PV, null, { transparent: true });
   const card = new THREE.Mesh(new THREE.CircleGeometry(Ch.portalR + 0.05, 64), cardM); card.name = 'scene07_far16_card';
   TR.map(0, 1.5, Ch.u1 - 0.03, card.position); TR.quaternion(Ch.u1, card.quaternion); card.renderOrder = 2; root.add(card);
-  return { wall: !!wall, update: () => { cardM.uniforms.uOpacity.value = THREE.MathUtils.smoothstep(card.getWorldPosition(W).distanceTo(camera.position), FAR16.fade[0], FAR16.fade[1]); } };
+  card.visible = false;   // (art director, v3: the disc in the opening read as a hot rainbow disc capping the corridor; the pale glow replaces it)
+  return { wall: !!wall, update: () => {} };
 }

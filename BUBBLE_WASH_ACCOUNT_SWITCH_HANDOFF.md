@@ -11,7 +11,7 @@ each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; i
 |---|---|
 | Repository / branch | `josiahscalia5-dev/bubblegame`, branch **`claude/bubble-wash-account-switch-e1nndb`** (contains every earlier work branch; `git ls-remote origin claude/bubble-wash-account-switch-e1nndb` gives its head, which moves with the 5-minute autosave) |
 | Approved | ONLY the Classic Screen 4 look `?s3=intunnel` (with swim2). Everything else is a candidate waiting for the user |
-| Current task | Screen 09 "Avoid Enemies!" (`scene07`, opt-in), pass 16 MACH16 v1, UNFINISHED: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md` (state, what failed and was rejected, next steps) |
+| Current task | Screen 09 "Avoid Enemies!" (`scene07`, opt-in), pass 16 v3 (bundle `1db26fd8`), NOT approved, unfinished: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md` (state, what failed and was rejected, next steps) |
 | Rules | `CLAUDE.md`; the user's Screen 09 mandates: `Design/ReferencePacks/2026-11-08_Screen09_Strict_Handoff_from_user/00_ONE_SHOT_STRICT_PROMPT_FOR_CLAUDE.txt` and `.../2026-11-08_Screen09_Approved_Reference_Kit_from_user/README.md` |
 | Tools / agents / plugins | `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` (section 12: the latest live results) |
 
@@ -164,12 +164,15 @@ fixed; Parallax init / checkpoint / diff / export-report / sweep / memcheck / sy
 
 ## 9. EXACT GAME STATE AND NEXT TASK
 **Update 8 November ~20:40 UTC, session f70c9bd1 (branch `claude/bubble-wash-account-switch-e1nndb`):** Screen 09 (`scene07`, opt-in)
-is at **pass 16 MACH16 v1** (bundle `5ab92333`; NOT approved; it does NOT yet resemble the original's upper background). The user sent two
+is at **pass 16 v3** (bundle `1db26fd8`; NOT approved; closer than pass 13b on the left and right per the art director, the upper area now real 3D
+machinery on columns and gantries, but the vanishing point still shows the level's tube and the hall still reads lavender, not the master's
+bright pastel street). The user sent two
 kits this session (saved unchanged in `Design/ReferencePacks/2026-11-08_Screen09_Approved_Reference_Kit_from_user/` and
 `.../2026-11-08_Screen09_Strict_Handoff_from_user/`) and rejected: wall-hugging machinery bands, a rib ceiling, generic arches, small
 "greeble" blocks, projecting the master onto the chamber, inpainted fills (Telea, mirrored, tiled, LaMa) and depth cards for nearby
 scenery. Kept (in scene07): the round drum housing on a raised cream-gold ledge (left), the curved pink star wall (right), one hero enemy,
-the big blue gear, real 3D machine towers and pipes (MACH16; too small and hidden from the checkpoint so far). Opt-in for the record:
+the big cobalt gear, real 3D machine columns, gantries and mounted machinery (MACH16 v2), the master's distant scenery (LaMa only where
+its enemy / banner / HUD hid it) on the far end wall only (FAR16, `,nofar16` = off). Opt-in for the record:
 `,art16` (cards), `,norecon16` (= pass 13b), `,norecon16,wall15` (pass 15), `,nomach16`. Evidence, tried/failed table, tools (the
 projection grid of the checkpoint camera, the variant probe) and the NEXT STEPS: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md`.
 

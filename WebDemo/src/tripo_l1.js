@@ -192,7 +192,7 @@ function buildChamber(root, TR, env) {
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nS; j++) { const a = i * (nS + 1) + j, b = a + nS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
-  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = RECON16_ON ? 0.22 : 0.42;   // (pass 16: the master's deeper blue-violet recesses) vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
+  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
   // (pass 9, session ce30359f: in pass 8 the next statement sat inside the comment above, so the walls and vault were never drawn)
   const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
   // the decks either side of the water: lavender with a gold edge at the water
@@ -294,7 +294,7 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
   const soft = (r, g, b) => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const gr = x.createRadialGradient(32, 32, 2, 32, 32, 32);
     gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
   const GL = RECON16_ON ? RECON16.glow : U.glow;   // (pass 16: the original's luminous far end, larger and brighter)
-  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(255, 248, 230), transparent: true, opacity: GL.opacity, depthWrite: false, blending: THREE.AdditiveBlending }));
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(...(GL.rgb || [255, 248, 230])), transparent: true, opacity: GL.opacity, depthWrite: false, blending: THREE.AdditiveBlending }));
   glow.scale.setScalar(GL.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + (GL.du || 0.5), glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
   if (GL.fade) SCENE07._glow = { sprite: glow, ...GL };
   const cols = [[255, 170, 230], [150, 210, 255], [255, 230, 140], [200, 170, 255]];
@@ -327,7 +327,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   if (RECON16_ON) { SCENE07.portholes.length = 0; SCENE07.gears.length = 0; }   // (pass 16 builds its own portholes and gears)
   let art16 = null;
   if (ART16_ON) { art16 = await applyArt16(root, TR, SCENE07.chamber, camera); if (SCENE07._glow) SCENE07._glow.opacity = 0.3; }
-  if (FAR16_ON) { art16 = await applyFar16(root, TR, SCENE07.chamber, camera); if (SCENE07._glow) SCENE07._glow.opacity = 0.35; }   // pass 16: the master's distant scenery on the far end wall only   // pass 16: the master's distant scenery, projected (scene07_recon16.js)
+  if (FAR16_ON) { art16 = await applyFar16(root, TR, SCENE07.chamber, camera); }   // pass 16: the master's distant scenery on the far end wall only   // pass 16: the master's distant scenery, projected (scene07_recon16.js)
   let wall15 = null;
   if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, SCENE07.ledge, items); }   // pass 15 (scene07_wall15.js)
   buildArchitecture(root, TR, env, items);
