@@ -142,10 +142,23 @@ node -e "require('playwright').chromium.launch().then(async (b) => { console.log
 # package, 2.x), and its Spector MCP server, which the plugin ships without (its own scripts/setup-spector.sh clones Spector.js and
 # builds vendor/spector/mcp; the server joins a session at the next session start, or after /mcp reconnect).
 command -v deno > /dev/null 2>&1 || npm install -g deno@2 --no-audit --no-fund > /dev/null 2>&1 || echo "  Deno: install failed (optional)"
-for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do
+# (8 November 2026, session ce30359f) Spector is built HERE, in $T/spector, because this script runs before Claude starts and the
+# plugin's folder (~/.claude/plugins/synced/...) is only synced when the session starts; .claude/hooks/session-start-spector.sh then
+# links $T/spector into the plugin's vendor/ folder. Two fixes over the plugin's own scripts/setup-spector.sh: npm's install scripts
+# are skipped (upstream Spector.js now pulls unrs-resolver, whose postinstall needs a missing napi-postinstall: exit 127), and
+# Playwright is pinned to the version of the image's pre-installed Chromium (Spector's own 1.59 looks for a browser build the image
+# does not have, so load_url failed; `playwright install` must never run here).
+if [ ! -f "$T/spector/mcp/dist/index.js" ]; then
+  pwv="$(node -p "require('playwright/package.json').version" 2>/dev/null || echo 1.63.0)"
+  { [ -d "$T/spector/.git" ] || git clone -q --depth 1 https://github.com/BabylonJS/Spector.js.git "$T/spector"; } \
+    && (cd "$T/spector/mcp" && npm install --ignore-scripts --no-audit --no-fund --loglevel=error > /dev/null \
+        && npm install --ignore-scripts --no-audit --no-fund --loglevel=error "playwright@$pwv" > /dev/null && npm run -s build > /dev/null) \
+    && echo "  Spector MCP built in $T/spector (Playwright $pwv)" || echo "  Spector MCP build failed (optional)"
+fi
+for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do   # a plugin folder already synced (a re-run in a session)
   [ -f "$pj" ] || continue; pr="$(dirname "$(dirname "$pj")")"
-  grep -q '"parallax-threejs"' "$pj" && [ ! -f "$pr/vendor/spector/mcp/dist/index.js" ] && [ -f "$pr/scripts/setup-spector.sh" ] \
-    && { sh "$pr/scripts/setup-spector.sh" > /dev/null 2>&1 && echo "  Spector MCP built for parallax-threejs" || echo "  Spector MCP build failed (optional)"; }
+  grep -q '"parallax-threejs"' "$pj" && [ ! -e "$pr/vendor/spector" ] && [ -f "$T/spector/mcp/dist/index.js" ] \
+    && ln -s "$T/spector" "$pr/vendor/spector" && echo "  Spector linked into the parallax-threejs plugin (reconnect: /mcp)"
 done
 echo "  $(deno --version 2>/dev/null | sed -n 1p || echo 'Deno: MISSING (optional)')"
 
