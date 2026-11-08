@@ -34,7 +34,15 @@ Code: `WebDemo/src/tripo_l1.js` (`SCENE07`, `buildArchitecture`, `applyScene07`)
    exit portal sits at the vanishing point; soft coloured lights; a light lavender vault (no hot pink); the original-style red warning
    banner styled (title only, warning icon) while scene07 is on. Gameplay identical, no console errors; identity `proofs/identity.txt`.
 
-**Still NOT the original (honest):** the vault still reads as a big lavender dome above the window band, where the original is a busy,
+8. **current** (after the environment audit; the art director's and lighting specialist's live reviews of pass 7: "a flat pink dotted back
+   wall ends the depth ... a large empty lavender vault ... line both sides ... rows of glowing bulbs"): the chamber reshaped into a
+   CORRIDOR (vertical windowed walls to 3.6 m, a lower vault 5.4 m high whose glow is dimmed to periwinkle, 9.2 m wide instead of 14.4);
+   two tiers of the game's own machines, towers and pipes on both walls, closer in; pink rings; rows of warm bulbs along both walls; 30
+   coloured lights; a tighter portal glow; smaller star tubs. Frames `frames/pass8/`, `05_original_before_pass7_pass8.jpg`. Gameplay
+   identical (`proofs/route_upper_scene07_pass8.json.log`), no console errors. Still: airier and less dense than the original; the enemy
+   in the left lane (`level1.js`); the banner not yet caught in a frame; the water and the coins unchanged. NOT approved by the user.
+
+**Still NOT the original (honest, as of pass 7):** the vault still reads as a big lavender dome above the window band, where the original is a busy,
 bright, layered corridor; the enemy is in the left lane (the original's is right of centre: its lane is gameplay, in `level1.js`); the
 restyled banner was not caught in a frame yet (it did not show at u 205-233 in these captures: not verified); the coins and the water are
 unchanged; the HUD's mission panel is the game's own. The user has NOT approved passes 6 or 7.
