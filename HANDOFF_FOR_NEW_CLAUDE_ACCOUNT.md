@@ -5,6 +5,90 @@ Written 7 November 2026, about 23:10 UTC, by session `398ed88c`, at the user's h
 secret. It supersedes the older handoff files for the CURRENT state; they stay as history (`BUBBLE_WASH_ACCOUNT_HANDOFF.md`,
 `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, `START_HERE_NEW_CLAUDE_ACCOUNT.md`, `HANDOFF.md`). The project rules are `CLAUDE.md`.
 
+## 0. CURRENT STATE AND RESTORATION MANUAL (8 November 2026, about 02:00 UTC, session `dbccb9a3`): READ THIS FIRST
+
+Sections 1-8 below are the 7 November handoff (kept as history); where they differ, THIS section is right.
+
+### 0.1 Where everything is
+| | |
+|---|---|
+| Repository | https://github.com/josiahscalia5-dev/bubblegame |
+| **Development branch** | **`ccr-76d4bc77-rqhl8o`** (it carries all of `claude/bubble-wash-account-handoff-yhk8dy`, merged up to `2c72c2f`) |
+| Verified commit | the commit that adds this section and every later one on that branch (`git log -1`; the session's final report names it) |
+| Rollback checkpoints | `2be9200` (before the level1 / opening work), `15b3a66` (before the old account's last commits were merged), `3e5c5a3` (that merge), `7a5f7db` (the first 3 screens corrected) |
+| Git LFS | NOT used; no tracked file is above 26 MB; everything is ordinary Git (the tree is 6.2 GB: clone with `--branch ccr-76d4bc77-rqhl8o --single-branch`, or a sparse clone, see 0.7) |
+| Ignored on purpose | `WebDemo/node_modules/` (npm install), `WebDemo/artifact-models/` (made by the build); `WebDemo/package-lock.json` is tracked (force-added 8 November) |
+
+### 0.2 The game and its progress
+- Three.js r170 game in `WebDemo/` (esbuild): `cd WebDemo && npm ci && node build.mjs`; open `WebDemo/index.html` from any static server.
+- Accepted Screen 4: `?s3=intunnel`. Candidate (waiting for the user): `?s3=intunnel,structmatch`. **Newest, waiting for the user:**
+  `?s3=intunnel,structmatch,home,level1`: Home and Laundry Toss as a live 3D scene (`WebDemo/src/opening3d.js`: a code-built,
+  jointed, animated girl, the basket, socks and towels flying, the pink character carried along a curve into the washer, one
+  camera move through the door into the glowing tunnel, cross-fade into the live Tap to Start), then the whole of Level 1 without
+  looping (`WebDemo/src/level1.js`, `track.js` COURSE) to Level Complete. Evidence: `Previews/WebDemo/screen4_round9_match/68_level1/`.
+- Proven: the accepted `?s3=intunnel`, the candidate, the normal game, `noswim2`, `blend` 0 px against the build before this work;
+  with `level1` Tap to Start 0 px; the seeded motion trace 0 differences (152 frames x 17 gameplay fields); `s3_func` / `r2_func`
+  differ only where the run no longer loops.
+- Open: the user's verdicts (candidate, level1); the girl's look (code-built, plainer than the art; see the six Tripo models);
+  the course's draw calls at Tap to Start (322 against 211); the six Tripo models' rework (0.5); the parallax-threejs check (0.4).
+- The continuous phone recording of the corrected sequence: `68_level1/videos/` if it finished in session `dbccb9a3`; else rerun
+  `cd WebDemo && S3=intunnel,structmatch,home,level1 FPS=20 VW=412 VH=915 RUN=56 node tools/level1/record_full.cjs "$PWD" <frames dir>`
+  (about an hour on software rendering), then `ffmpeg -framerate 20 -i <dir>/f%05d.jpg -c:v libx264 -pix_fmt yuv420p -crf 22 <out.mp4>`.
+
+### 0.3 The visual authorities (in this order; never replace one with a newer generated image)
+1. ORIGINAL approved Screen 3: `Design/ReferencePacks/2026-11-04_Approved_Screen4_Package/01_APPROVED_TARGETS/01_APPROVED_SCREEN_3_OPENING.jpg`.
+2. ORIGINAL CLASSIC approved Screen 4 (the ONLY Screen 4 target): `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`
+   (767 x 1536, sha256 starts `b30dc6a1794213be`).
+3. The girl and Laundry Toss reference: `Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/11109.jpg` (+ the two phone previews for the UI).
+4. The 12-screen Level 1 board: `Design/ApprovedScreens/00_ORIGINAL_COMPLETE_12_SCREEN_BOARD.jpg` (and its panels `01_...`-`12_...`);
+   also `Design/ReferencePacks/2026-11-07_Animation_and_Movement_Mandate_from_user/Level1_12_screen_flow_board.jpg`.
+5. Explanation and animation storyboards (guides, not targets): `Design/ReferencePacks/2026-11-08_Motion_Instructions_from_user/`,
+   `..._2026-11-07_Animation_and_Movement_Mandate_from_user/` (the mandate and the user's phone recording).
+6. The latest real gameplay captures: `Previews/WebDemo/screen4_round9_match/68_level1/` (sheets, `screens/`, proofs).
+Requirements, in short: the same pink fluffy rear-view character, a full round fuchsia dome with long fine fur, sitting ON saturated
+cobalt / cyan water, no white film or foam blanket; a circular glowing blue tunnel with depth; gold paw coins, smiling socks,
+bubbles; the silver / lavender / purple / gold washer; the cartoon girl with curly brown hair, pink bow, lavender and purple
+clothes; bright premium mobile-game polish; real 3D gameplay, never a static poster.
+
+### 0.4 Agents, skills, commands, plugins, MCP (what travels and what does not)
+| Item | Saved in GitHub | Transfers automatically | Manual step on a new account |
+|---|---|---|---|
+| Agents `game-art-director`, `gameplay-visual-testing`, `lighting-visual-matching`, `water-vfx-engineer`, `screen4-water-motion-engineer` (`.claude/agents/`) | yes (full files) | yes, in any session on this branch | none; `screen4-water-motion-engineer` also needs the plugin's 13 live-scene tools |
+| Skill `bubble-wash-screen-matcher` (`.claude/skills/`) | yes | yes | none |
+| Hook (`.claude/hooks/session-start.sh`, `.claude/settings.json`): restarts the 5-minute autosave | yes | yes (cloud sessions) | add the new session id to `Tools/autosave_sessions.json` |
+| `.mcp.json` | yes (empty on purpose: the MCP servers come from the plugin) | yes | none |
+| Custom slash commands (`.claude/commands/`) | none ever existed | - | - |
+| **parallax-threejs 0.4.12** (Anthropic Directory, plugin id `plugin_01SJe4pCHfcPHj3rpJyyMMBf`, by Sean Corbett O'Donnell, MIT): MCP servers chrome-devtools-mcp, threejs-devtools-mcp, playwright-mcp, spector (spector failed on the old account too); agents scenario-author, shader-reviewer, visual-debugger; commands checkpoint, diff, export-report, init, memcheck, replay, ship-check, sweep, sync-view; skill qa-visual-test-harness | NO (account-level) | NO | on claude.ai (the account you will use), enable parallax-threejs from the Anthropic Directory; then start a NEW cloud session (plugins are copied in only when a session starts). Check with `ListPlugins` (must list it) and ToolSearch `mcp__plugin_parallax-threejs`. Session `dbccb9a3` could not verify it: its account catalog still read `"enabled": false` |
+| GitHub connection | n/a | NO | connect GitHub on claude.ai; the Claude GitHub App must reach `josiahscalia5-dev/bubblegame` |
+| Cloud environment `bubblegame` | its setup script is `Tools/cloud_env_setup.sh` | NO (per account) | create a personal environment `bubblegame`: limited network, package registries + MCP servers allowed, hosts `download.blender.org`, `download.pytorch.org`, `dl.google.com`, `openapi-dl.data.tripo3d.com`; setup script: `if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then bash bubblegame/Tools/cloud_env_setup.sh \|\| echo "Bubble Wash setup: a step failed"; fi` |
+| Tripo key | NEVER in Git | NO | in the environment's settings, Network secrets, host `openapi.tripo3d.ai`, Authorization: Bearer, the key (`tsk_...`); or ask Claude to open the secure form. Run `tripo` with `TRIPO_API_KEY=tsk_proxy-injected`; free check: `tripo balance` (640 credits on 8 November) |
+
+### 0.5 Tools (installed by `bash Tools/cloud_env_setup.sh`; checked 8 November; then `source Tools/bw_tools_env.sh` in every shell)
+Blender 5.2.3 LTS (download.blender.org, sha256-checked; headless Cycles and Eevee render), Tripo CLI 0.11.2, Node 22.23.4, Python
+3.13, Playwright 1.63.0 with its Chromium (pre-installed in cloud sessions), glTF Transform 4.5.1, glTF Validator 2.0.0-dev.3.10,
+Vite 8.3.5, OpenCV 5.0.0, scikit-image 0.26.0, NumPy 2.5.4, Pillow 13.0.0, SciPy 1.18.1, PyTorch 2.15.0, LPIPS (AlexNet weights),
+Optuna 5.0.0; the game: three 0.170.0, esbuild 0.24.0 (pinned in `WebDemo/package.json` and `package-lock.json`).
+Not installed until needed: Spector.js (`npm i spectorjs` in a scratch folder for `WebDemo/tools/screen4/spector_capture.cjs`);
+Android SDK (command-line tools from dl.google.com, then `sdkmanager --sdk_root=$HOME/android-sdk "platforms;android-34" "build-tools;34.0.0"`;
+build: `ANDROID_HOME=~/android-sdk bash Tools/android_apk/build_apk.sh <out.apk>`). Restore check: `bash Tools/verify_restore.sh --build`.
+
+### 0.6 The user's six Tripo models (8 November)
+`Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/`: the six GLBs unchanged (girl, pink creature, basket, sock, towels,
+washer; sha256 in the manifest), the user's review and import prompt, and `inspection/README.md` (renders, statistics, the washer's
+depth map, KEEP / REJECT / REWORK). None is in the game yet; nothing spent.
+
+### 0.7 First message for the next account (copy and paste)
+> Continue my Bubble Wash Kingdom game: repository josiahscalia5-dev/bubblegame, branch `ccr-76d4bc77-rqhl8o` (if this session
+> is given its own branch, merge `ccr-76d4bc77-rqhl8o` into it with a normal merge first; never force-push). Read `CLAUDE.md`, then
+> section 0 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`, and follow them. Do not reset, redesign or rebuild anything. Run
+> `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing, `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci && node build.mjs`,
+> `bash Tools/verify_restore.sh --build`; check the autosave runs and add this session to `Tools/autosave_sessions.json`. Verify, do not
+> assume: `ListPlugins` and the parallax-threejs tools (threejs-devtools `bridge_status` and a read-only `scene_tree` of
+> `index.html?s3=intunnel,structmatch`), a one-line ping of each project agent and of scenario-author / shader-reviewer /
+> visual-debugger, `tripo doctor` (free), `blender --version`. Report what works and what I must reconnect. Then continue from section
+> 0.2: the level1 opening and course are waiting for my verdict; the six Tripo models wait for my KEEP / REJECT / REWORK decisions;
+> spend no Tripo credits without my yes for a named job and cost.
+
 ## 1. Where the project is
 
 | | |
