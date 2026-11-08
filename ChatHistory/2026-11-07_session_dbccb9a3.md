@@ -1678,3 +1678,31 @@ The final game state: 6 socks rescued, 89 coins collected, the gem found, all 5 
 
 The other items from the transfer report haven't changed: the plugin still needs checking in a session started after it was enabled, and the six Tripo models wait for your keep / reject / rework decisions. Section 0 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` already points to this video.
 
+---
+
+### You · 2026-11-08 02:35 UTC
+
+Claudia, I've reviewed the updated Bubble Wash Kingdom gameplay recording.
+
+The washer entry, forward progression, collectibles, and Level 1 completion are improving. However, the first three screens still do not visually match my approved artwork closely enough.
+
+After finishing and saving the current recording and tests, prioritize:
+
+1. Improving the cartoon girl's appearance to match my approved Laundry Toss reference, evaluating the supplied Tripo girl model.
+2. Preserving the now-working washer-entry animation while improving the girl's movements, basket, laundry toss, and visual presentation.
+3. Correcting the pink mascot's rear-view silhouette so it looks full, round, and fluffy like ORIGINAL CLASSIC Screen 4.
+4. Matching the approved rich blue water, metallic tunnel housing, fluffy brushes, lighting, and dimensional appearance.
+5. Reducing unnecessary rendering costs to keep the game responsive on mobile.
+
+Do not replace my existing mascot with the rejected Tripo model. Do not integrate the closed Tripo washer without correcting the porthole.
+
+Keep the actual gameplay working. Use side-by-side comparisons with my original artwork, not just newer generated storyboard images.
+
+Finish the current proofs, preserve my progress, and verify the final GitHub commit before beginning another major correction.
+
+---
+
+### Claude · 2026-11-08 02:35 UTC
+
+Checking the state first. This looks like a restarted session, so I'm confirming the branch, the latest commit on GitHub, the autosave and the tools. Then I'll check parallax-threejs, which is now loading in this session.
+
