@@ -1,0 +1,308 @@
+# Baseline of ?s3=intunnel,structmatch,level1 on the frozen snapshot baseline_demo_5f57c76 (game.bundle.js md5 a62848a060079f447f2c86173aae2d97), seed 7, SwiftShader, 8 Nov 2026
+# command: node scripts/hit_probe.cjs <snapshot>  (scratch probe, viewport 135x270: brushes kept in the middle lane u 56-75, soap bars not jumped u 140-160, grime balls in the middle lane u 205-250)
+{
+ "log": [
+  {
+   "tag": "drum:start",
+   "t": 3.52,
+   "u": 1.59,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 0,
+   "speed": 7.21,
+   "phase": "running",
+   "socks": 0,
+   "sec": "Washer drum"
+  },
+  {
+   "tag": "drum:end",
+   "t": 10.12,
+   "u": 48.24,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 0,
+   "speed": 7.01,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes"
+  },
+  {
+   "tag": "brushes-middle:start",
+   "t": 10.12,
+   "u": 48.24,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 0,
+   "speed": 7.01,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes"
+  },
+  {
+   "tag": "brushes-middle:end",
+   "t": 11.32,
+   "u": 56.65,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 0,
+   "speed": 7,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes"
+  },
+  {
+   "tag": "brushes-middle2:start",
+   "t": 11.32,
+   "u": 56.65,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 0,
+   "speed": 7,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes"
+  },
+  {
+   "tag": "brushes-middle2",
+   "t": 12.32,
+   "u": 63.46,
+   "lane": 1,
+   "hearts": 4,
+   "knocks": 1,
+   "speed": 4.3,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes",
+   "event": "hearts/knocks changed",
+   "speedBefore": 7
+  },
+  {
+   "tag": "brushes-middle2",
+   "t": 13.52,
+   "u": 70.61,
+   "lane": 1,
+   "hearts": 3,
+   "knocks": 2,
+   "speed": 4.2,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes",
+   "event": "hearts/knocks changed",
+   "speedBefore": 6.78
+  },
+  {
+   "tag": "brushes-middle2:end",
+   "t": 14.32,
+   "u": 75.22,
+   "lane": 1,
+   "hearts": 3,
+   "knocks": 2,
+   "speed": 6.55,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes"
+  },
+  {
+   "tag": "avoid:start",
+   "t": 14.32,
+   "u": 75.22,
+   "lane": 1,
+   "hearts": 3,
+   "knocks": 2,
+   "speed": 6.55,
+   "phase": "running",
+   "socks": 1,
+   "sec": "Spinning brushes"
+  },
+  {
+   "tag": "avoid:end",
+   "t": 23.62,
+   "u": 140.13,
+   "lane": 1,
+   "hearts": 3,
+   "knocks": 2,
+   "speed": 7,
+   "phase": "running",
+   "socks": 2,
+   "sec": "Soap bars"
+  },
+  {
+   "tag": "bars-nojump:start",
+   "t": 23.62,
+   "u": 140.13,
+   "lane": 1,
+   "hearts": 3,
+   "knocks": 2,
+   "speed": 7,
+   "phase": "running",
+   "socks": 2,
+   "sec": "Soap bars"
+  },
+  {
+   "tag": "bars-nojump",
+   "t": 24.42,
+   "u": 145.73,
+   "lane": 1,
+   "hearts": 2,
+   "knocks": 3,
+   "speed": 3.85,
+   "phase": "running",
+   "socks": 2,
+   "sec": "Soap bars",
+   "event": "hearts/knocks changed",
+   "speedBefore": 7
+  },
+  {
+   "tag": "bars-nojump",
+   "t": 26.02,
+   "u": 155.64,
+   "lane": 1,
+   "hearts": 1,
+   "knocks": 4,
+   "speed": 3.81,
+   "phase": "running",
+   "socks": 2,
+   "sec": "Soap bars",
+   "event": "hearts/knocks changed",
+   "speedBefore": 6.9
+  },
+  {
+   "tag": "bars-nojump:end",
+   "t": 26.82,
+   "u": 160.11,
+   "lane": 1,
+   "hearts": 1,
+   "knocks": 4,
+   "speed": 6.49,
+   "phase": "running",
+   "socks": 2,
+   "sec": "Soap bars"
+  },
+  {
+   "tag": "avoid2:start",
+   "t": 26.82,
+   "u": 160.11,
+   "lane": 1,
+   "hearts": 1,
+   "knocks": 4,
+   "speed": 6.49,
+   "phase": "running",
+   "socks": 2,
+   "sec": "Soap bars"
+  },
+  {
+   "tag": "avoid2:end",
+   "t": 32.62,
+   "u": 205.19,
+   "lane": 0,
+   "hearts": 1,
+   "knocks": 4,
+   "speed": 7.02,
+   "phase": "running",
+   "socks": 3,
+   "sec": "Grime balls"
+  },
+  {
+   "tag": "enemies-middle:start",
+   "t": 32.62,
+   "u": 205.19,
+   "lane": 0,
+   "hearts": 1,
+   "knocks": 4,
+   "speed": 7.02,
+   "phase": "running",
+   "socks": 3,
+   "sec": "Grime balls"
+  },
+  {
+   "tag": "enemies-middle",
+   "t": 33.22,
+   "u": 209.21,
+   "lane": 1,
+   "hearts": 0,
+   "knocks": 5,
+   "speed": 4.3,
+   "phase": "running",
+   "socks": 3,
+   "sec": "Grime balls",
+   "event": "hearts/knocks changed",
+   "speedBefore": 7.01
+  },
+  {
+   "tag": "enemies-middle",
+   "t": 34.62,
+   "u": 1.59,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 5,
+   "speed": 0,
+   "phase": "intro",
+   "socks": 0,
+   "sec": "Washer drum",
+   "event": "hearts/knocks changed",
+   "speedBefore": 6.86
+  },
+  {
+   "tag": "enemies-middle:end",
+   "t": 34.62,
+   "u": 1.59,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 5,
+   "speed": 0,
+   "phase": "intro",
+   "socks": 0,
+   "sec": "Washer drum"
+  },
+  {
+   "tag": "to-finish:start",
+   "t": 34.62,
+   "u": 1.59,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 5,
+   "speed": 0,
+   "phase": "intro",
+   "socks": 0,
+   "sec": "Washer drum"
+  },
+  {
+   "tag": "to-finish:end",
+   "t": 34.62,
+   "u": 1.59,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 5,
+   "speed": 0,
+   "phase": "intro",
+   "socks": 0,
+   "sec": "Washer drum"
+  },
+  {
+   "tag": "after-finish",
+   "t": 36.12,
+   "u": 1.59,
+   "lane": 1,
+   "hearts": 5,
+   "knocks": 5,
+   "speed": 0,
+   "phase": "intro",
+   "socks": 0,
+   "sec": "Washer drum"
+  }
+ ],
+ "l1": {
+  "u": 1.59,
+  "section": "Washer drum",
+  "complete": false,
+  "socks": 0
+ },
+ "doneShown": false,
+ "doneText": "",
+ "errors": []
+}
+
+real	1m46.047s
+user	0m0.822s
+sys	0m0.360s
+exit 0

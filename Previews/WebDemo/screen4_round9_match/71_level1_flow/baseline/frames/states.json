@@ -1,0 +1,596 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1"
+ ],
+ "frames": [
+  [
+   "tap",
+   {
+    "l1": {
+     "u": 1.59,
+     "section": "Washer drum",
+     "progress": 0,
+     "complete": false,
+     "socks": 0,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 1,
+    "speed": 0,
+    "air": false,
+    "coins": 1280,
+    "socks": 0,
+    "hearts": 5,
+    "phase": "intro",
+    "z": 1.592,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 124,
+     "textures": 36
+    }
+   }
+  ],
+  [
+   3,
+   {
+    "l1": {
+     "u": 22.16,
+     "section": "Washer drum",
+     "progress": 0.0607,
+     "complete": false,
+     "socks": 0,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 1,
+    "speed": 6.67,
+    "air": false,
+    "coins": 1290,
+    "socks": 0,
+    "hearts": 5,
+    "phase": "running",
+    "z": 22.156,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 134,
+     "textures": 36
+    }
+   }
+  ],
+  [
+   8,
+   {
+    "l1": {
+     "u": 58.05,
+     "section": "Spinning brushes",
+     "progress": 0.1668,
+     "complete": false,
+     "socks": 1,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 1,
+    "speed": 7,
+    "air": false,
+    "coins": 1307,
+    "socks": 1,
+    "hearts": 5,
+    "phase": "running",
+    "z": 58.046,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 148,
+     "textures": 36
+    }
+   }
+  ],
+  [
+   15,
+   {
+    "l1": {
+     "u": 107.05,
+     "section": "Treasure run",
+     "progress": 0.3116,
+     "complete": false,
+     "socks": 2,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 2,
+    "speed": 7,
+    "air": false,
+    "coins": 1321,
+    "socks": 2,
+    "hearts": 5,
+    "phase": "running",
+    "z": 107.046,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 155,
+     "textures": 36
+    }
+   }
+  ],
+  [
+   22,
+   {
+    "l1": {
+     "u": 156.05,
+     "section": "Soap bars",
+     "progress": 0.4564,
+     "complete": false,
+     "socks": 3,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 1,
+    "speed": 7,
+    "air": true,
+    "coins": 1336,
+    "socks": 3,
+    "hearts": 5,
+    "phase": "running",
+    "z": 156.046,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 168,
+     "textures": 36
+    }
+   }
+  ],
+  [
+   28,
+   {
+    "l1": {
+     "u": 202.73,
+     "section": "The drop",
+     "progress": 0.5944,
+     "complete": false,
+     "socks": 4,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 1,
+    "speed": 7.04,
+    "air": false,
+    "coins": 1346,
+    "socks": 4,
+    "hearts": 5,
+    "phase": "running",
+    "z": 202.732,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 211,
+     "textures": 36
+    }
+   }
+  ],
+  [
+   34,
+   {
+    "l1": {
+     "u": 244.75,
+     "section": "Grime balls",
+     "progress": 0.7185,
+     "complete": false,
+     "socks": 4,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 2,
+    "speed": 7,
+    "air": false,
+    "coins": 1355,
+    "socks": 4,
+    "hearts": 5,
+    "phase": "running",
+    "z": 244.75,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 291,
+     "textures": 37
+    }
+   }
+  ],
+  [
+   40,
+   {
+    "l1": {
+     "u": 287.08,
+     "section": "Bubble Kingdom",
+     "progress": 0.8436,
+     "complete": false,
+     "socks": 5,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 0,
+    "speed": 7.49,
+    "air": false,
+    "coins": 1368,
+    "socks": 5,
+    "hearts": 5,
+    "phase": "running",
+    "z": 287.079,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 296,
+     "textures": 37
+    }
+   }
+  ],
+  [
+   46,
+   {
+    "l1": {
+     "u": 332.41,
+     "section": "Bubble Kingdom",
+     "progress": 0.9776,
+     "complete": false,
+     "socks": 6,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 0,
+    "speed": 7.54,
+    "air": false,
+    "coins": 1371,
+    "socks": 6,
+    "hearts": 5,
+    "phase": "running",
+    "z": 332.408,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 299,
+     "textures": 37
+    }
+   }
+  ],
+  [
+   52,
+   {
+    "l1": {
+     "u": 341.74,
+     "section": "Bubble Kingdom",
+     "progress": 1,
+     "complete": true,
+     "socks": 6,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 0,
+    "speed": 0,
+    "air": false,
+    "coins": 1371,
+    "socks": 6,
+    "hearts": 5,
+    "phase": "complete",
+    "z": 341.739,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 299,
+     "textures": 37
+    }
+   }
+  ],
+  [
+   58,
+   {
+    "l1": {
+     "u": 341.74,
+     "section": "Bubble Kingdom",
+     "progress": 1,
+     "complete": true,
+     "socks": 6,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 0,
+    "speed": 0,
+    "air": false,
+    "coins": 1371,
+    "socks": 6,
+    "hearts": 5,
+    "phase": "complete",
+    "z": 341.739,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 299,
+     "textures": 37
+    }
+   }
+  ],
+  [
+   64,
+   {
+    "l1": {
+     "u": 341.74,
+     "section": "Bubble Kingdom",
+     "progress": 1,
+     "complete": true,
+     "socks": 6,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 0,
+    "speed": 0,
+    "air": false,
+    "coins": 1371,
+    "socks": 6,
+    "hearts": 5,
+    "phase": "complete",
+    "z": 341.739,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 299,
+     "textures": 37
+    }
+   }
+  ],
+  [
+   70,
+   {
+    "l1": {
+     "u": 341.74,
+     "section": "Bubble Kingdom",
+     "progress": 1,
+     "complete": true,
+     "socks": 6,
+     "report": {
+      "parts": [
+       "tube+chamber",
+       "water",
+       "hoops",
+       "bubbles",
+       "castle",
+       "kingdom",
+       "chamber"
+      ],
+      "drawn": {
+       "hoops": 39,
+       "brushes": 11,
+       "enemies": 6,
+       "coins": 114,
+       "gems": 2,
+       "socks": 5
+      }
+     }
+    },
+    "lane": 0,
+    "speed": 0,
+    "air": false,
+    "coins": 1371,
+    "socks": 6,
+    "hearts": 5,
+    "phase": "complete",
+    "z": 341.739,
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 299,
+     "textures": 37
+    }
+   }
+  ]
+ ],
+ "logs": [],
+ "note": "l1_run.cjs, seed 7, AUTO=1, VW=412 VH=915 SETTLE=300, snapshot baseline_demo_5f57c76 (bundle md5 a62848a060079f447f2c86173aae2d97). Frames 58/64/70 s were identical in state to 52 s (Level Complete) and are not kept."
+}

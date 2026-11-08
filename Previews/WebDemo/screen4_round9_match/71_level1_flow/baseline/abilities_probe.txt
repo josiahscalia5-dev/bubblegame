@@ -1,0 +1,30 @@
+# Baseline of ?s3=intunnel,structmatch,level1 on the frozen snapshot baseline_demo_5f57c76 (game.bundle.js md5 a62848a060079f447f2c86173aae2d97), seed 7, SwiftShader, 8 Nov 2026
+# command: node Previews/WebDemo/ccr_branch_verification_2026-11-08/scripts/abilities_probe.cjs <snapshot>  (viewport 135x270)
+{
+ "running": "running",
+ "pausePanel": true,
+ "timeFrozenWhilePaused": true,
+ "runsAfterResume": true,
+ "bubbleBlast": {
+  "before": 3,
+  "after": 2
+ },
+ "turboSpin": {
+  "before": 3,
+  "after": 2,
+  "speed": 8.45
+ },
+ "final": {
+  "phase": "running",
+  "hearts": 5,
+  "coins": 1287,
+  "socks": 0,
+  "gems": 37
+ },
+ "errors": []
+}
+
+real	0m19.985s
+user	0m0.764s
+sys	0m0.312s
+exit 0

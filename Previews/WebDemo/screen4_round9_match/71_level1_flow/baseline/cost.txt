@@ -1,0 +1,10 @@
+# Baseline of ?s3=intunnel,structmatch,level1 on the frozen snapshot baseline_demo_5f57c76 (game.bundle.js md5 a62848a060079f447f2c86173aae2d97), seed 7, SwiftShader, 8 Nov 2026
+# command: S3=intunnel,structmatch,level1 TIMES=0,3,20,38 node tools/level1/cost_probe.cjs <snapshot>  (viewport 412x915, its own avoid-autopilot)
+# one render's WebGL draw calls and triangles (drawElements/drawArrays wrapped)
+moment            u (m)  draw calls   triangles
+Tap to Start       1.59         222     2816420
+3 s               22.16         167     2711064
+20 s             142.05         105     1817797
+38 s             272.75         154     2340692
+
+raw: {"s3": ["intunnel", "structmatch", "level1"], "cost": [["tap", {"calls": 222, "tris": 2816420, "z": 1.592}], [3, {"calls": 167, "tris": 2711064, "z": 22.156}], [20, {"calls": 105, "tris": 1817797, "z": 142.046}], [38, {"calls": 154, "tris": 2340692, "z": 272.75}]]}
