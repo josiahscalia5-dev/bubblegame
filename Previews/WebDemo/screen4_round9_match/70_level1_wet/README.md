@@ -61,8 +61,9 @@ Build: bundle **a62848a0** (commit `6b5d46fd`), on top of `ccr-76d4bc77-rqhl8o` 
   | Tap to Start | 222 / 2.76 M | 222 / 2.82 M (finer water mesh) |
   | +3, +8, +20 s | 167, 119, 105 | the same calls (+0.06-0.08 M triangles) |
   | +30 s (217 m) | 179 / 1.88 M | 120 / 1.79 M |
-  | in the chamber (+38 to +46 s) | 141-91 / 1.71-1.65 M (the open slide) | 159-139 / 2.34-2.15 M |
-  Highest anywhere in the new late level: 190 calls (+32 s); every moment stays under the level's own Tap to Start peak (222 / 2.82 M).
+  | in the chamber (+38, +42, +46 s) | 141, 117, 91 / 1.71-1.65 M (the open slide) | 154, 156, 132 / 2.34, 2.40, 2.15 M |
+  (Measured on the final build a62848a0.) Every moment stays under the level's own Tap to Start peak (222 / 2.82 M); in an earlier
+  measurement of this pass the highest late value was 190 calls at +32 s, as the whole chamber begins to be drawn.
   Real phone frame rates were not measured here (software rendering).
 - **The opening** (`sheets/01_...`, `02_...`, `03_...`; the girl probe's numbers in `../../ccr_branch_verification_2026-11-08/`): the rigged
   girl, her blinks, the basket, the toss, the mascot through the porthole and the camera into the water are unchanged in timing and
