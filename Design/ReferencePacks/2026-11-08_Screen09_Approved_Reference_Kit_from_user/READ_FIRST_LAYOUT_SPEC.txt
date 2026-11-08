@@ -1,0 +1,25 @@
+BUBBLE WASH KINGDOM — SCREEN 09 AUTHENTIC ARTWORK REFERENCE KIT
+Created from the user's authentic approved reference image and previously uploaded pass-14 comparison. No artwork has been redesigned or invented. All crops are portions of the original approved art, NOT clean isolated 3D model inputs.
+
+MASTER: 00_AUTHENTIC_APPROVED_SCREEN09.png
+CURRENT COMPARISON: 01_ACTUAL_PASS14_CROP.png and 02_SIDE_BY_SIDE_AUTHENTIC.png
+REFERENCE MAP: 09_ANNOTATED_MASTER_LAYOUT.png
+
+PRIORITY ART ELEMENTS
+1. Left foreground: large glowing, round, gold-rimmed purple-lavender washer housing with a circular emblem; behind it tiers of machinery.
+2. Right foreground: pink/lavender and gold curving machinery structure, a rounded elevated wall around the blue water, gold trim and stars; NOT a simple railing.
+3. Background: densely layered luminous multicolored mechanical structures, portholes, arcade/towers/arches, blue gears, and receding golden coins. NO large empty gradient purple wall or roof.
+4. Enemy: one hero-sized glossy navy angry floating sphere upper right at the target screenshot camera checkpoint; other gameplay enemies may still exist outside the snapshot.
+5. Foreground: pink fuzzy mascot riding/swimming in continuous saturated blue water, with natural dimensional splashes and NO exposed rectangular water slab.
+
+RECOMMENDED IMPLEMENTATION & ACCEPTANCE
+A. First align camera, enemy, mascot and foreground silhouettes at exact stable checkpoint, and retain the good gameplay camera motion.
+B. Build left and right 3D architecture as separate modular objects/GLBs with depth, correct scale and recognizable contour. Use existing assets only if they genuinely match an element; small washer models are background props, not substitutes for structures.
+C. Build dense far/midground layers using repeated real geometry, with 2.5D backdrop detail only at sufficient distance that parallax is appropriate, not as an unchanging screenshot of gameplay.
+D. Do an ORIGINAL vs BASELINE vs EXPERIMENT screenshot at matching phone resolution and camera + a 5–10-second moving camera clip. Test different lanes, steering, movement and occlusion. Preserve Classic Screen 4 with opt-in switch and automated regression checks.
+E. Reject if architecture still differs in silhouette, scene upper half is empty, enemy arrangement is wrong for selected checkpoint, water slab visible or models become scattered props. No automatic approval based solely on LPIPS/color scores.
+F. Get user approval before promoting the new pass into main gameplay. Save reversible GitHub commits and files.
+
+TRIPO RULE: The supplied crops include partial machinery and overlapping objects; feeding them directly into image-to-3D can yield a painted flat card or a guessed structure. First prepare clean isolated ORTHOGRAPHIC single-object references, then use Tripo image-to-3D for ONE asset at a time. Inspect output from front/side/back; reject inaccurate geometry and integrate only proven useful models. Existing purchased API credit authorization applies only to available credits. No new purchases.
+
+SOURCE IMAGE WARNING: The original approved image is concept art; exact pixel identity under a moving camera is not guaranteed. Aim for recognizable 3D architectural reconstruction and visual fidelity with functioning gameplay.
