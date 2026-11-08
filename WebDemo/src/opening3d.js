@@ -215,7 +215,11 @@ function buildWasher(env) {
   const hole = new THREE.Path(); hole.absarc(P.x - x0, P.y, OPENING3D.rOpen + 0.02, 0, Math.PI * 2, true); sh.holes.push(hole);
   const front = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: 0.06, bevelEnabled: true, bevelSize: 0.025, bevelThickness: 0.025, bevelSegments: 3, curveSegments: 48 }), silver);
   front.position.set(x0, 0, zf - 0.06); g.add(front);
-  const box = new THREE.Mesh(new RoundedBoxGeometry(W, H, D - 0.06, 4, 0.07), silver); box.position.set(x0, H / 2, zf - 0.06 - (D - 0.06) / 2); g.add(box);
+  // the body behind the front panel is hollow (its front would close the opening): top, bottom, sides and back
+  const zb = zf - 0.06 - (D - 0.06) / 2, dd = D - 0.06;
+  for (const [w, h, d, x, y, z] of [[W, 0.06, dd, x0, H - 0.03, zb], [W, 0.06, dd, x0, 0.03, zb], [0.06, H, dd, x0 - W / 2 + 0.03, H / 2, zb], [0.06, H, dd, x0 + W / 2 - 0.03, H / 2, zb], [W, H, 0.06, x0, H / 2, zb - dd / 2 + 0.03]]) {
+    const b = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 3, 0.025), silver); b.position.set(x, y, z); g.add(b);
+  }
   // the gold rim, a silver lip inside it and a silver bezel outside
   const rim = new THREE.Mesh(new THREE.TorusGeometry(OPENING3D.rOpen + 0.07, 0.065, 20, 64), goldM); rim.position.copy(P).setZ(zf + 0.03); g.add(rim);
   const lip = new THREE.Mesh(new THREE.TorusGeometry(OPENING3D.rOpen + 0.005, 0.022, 12, 64), silver); lip.position.copy(P).setZ(zf + 0.02); g.add(lip);
@@ -240,7 +244,7 @@ function buildWasher(env) {
 // widens behind the door, its far end a bright heart; blue water along its floor
 function buildVortex() {
   const P = OPENING3D.porthole, len = 9, n = 90, nA = 48;
-  const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.85, sm(0.0, 1.2, d));
+  const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);   // (hidden behind the washer and the wall until the camera is inside)
   const pos = [], uv = [], idx = [];
   for (let i = 0; i <= n; i++) { const d = (i / n) * len; for (let j = 0; j <= nA; j++) { const a = (j / nA) * Math.PI * 2, r = rad(d); pos.push(P.x + Math.sin(a) * r, P.y + Math.cos(a) * r, P.z - d); uv.push(a, d); } }
   for (let i = 0; i < n; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
@@ -385,14 +389,14 @@ export function mountOpening3D(container, opts = {}) {
   const room = buildRoom(env, rnd); scene.add(room);
   const washer = buildWasher(env); scene.add(washer.g);
   const vortex = buildVortex(); scene.add(vortex.tube, vortex.cap, vortex.water);
-  const girl = buildGirl(rnd); girl.root.position.set(-0.26, 0.38, -0.32); girl.root.rotation.y = 0.32; girl.root.scale.setScalar(1.05); scene.add(girl.root);
+  const girl = buildGirl(rnd); girl.root.position.set(-0.27, 0.38, -0.3); girl.root.rotation.y = 0.1; girl.root.scale.setScalar(1.05); scene.add(girl.root);
   const basket = buildBasket(); scene.add(basket);
   // laundry that flies: two socks, three towels
   const laundry = [];
   for (let i = 0; i < 5; i++) {
     const o = i < 2 ? buildSock(rnd) : buildTowel([0xffd34d, 0x6fb6ff, 0xff8ccf][i - 2]);
     o.visible = false; scene.add(o);
-    laundry.push({ o, t0: 0.55 + i * 0.07, t1: 1.55 + i * 0.12, from: V([-0.12 + (rnd() - 0.5) * 0.12, 1.42, 0.02]), apex: V([0.0 + rnd() * 0.3, 1.62 + rnd() * 0.18, 0.3 + rnd() * 0.2]),
+    laundry.push({ o, t0: 0.42 + i * 0.06, t1: 1.45 + i * 0.1, from: V([-0.02 + (rnd() - 0.5) * 0.08, 1.35, 0.15]), apex: V([0.32 + rnd() * 0.35, 2.3 + rnd() * 0.25, 0.45 + rnd() * 0.2]),
       to: V([OPENING3D.porthole.x + (rnd() - 0.5) * 0.15, OPENING3D.porthole.y + (rnd() - 0.5) * 0.12, OPENING3D.porthole.z - 0.2]), spin: V([rnd() * 9 - 4.5, rnd() * 9 - 4.5, rnd() * 9 - 4.5]) });
   }
   // bubbles: a heap in the foreground and some floating up through the room
@@ -446,26 +450,26 @@ export function mountOpening3D(container, opts = {}) {
   const P = OPENING3D.porthole;
   const blinkAt = (t, every, off) => { const k = ((t + off) % every); return k < 0.13 ? Math.sin(k / 0.13 * Math.PI) : 0; };
   const basketHome = V([-0.2, 1.1, 0.04]);
-  const heroLaunch = V([-0.12, 1.62, 0.08]), heroApex = V([0.3, 1.72, 0.55]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
+  const heroLaunch = V([0.0, 1.55, 0.18]), heroApex = V([0.55, 2.15, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
   const heroIn = V([P.x, P.y - 0.02, P.z - 1.3]), heroLand = V([P.x, OPENING3D.waterY + 0.1, P.z - 2.8]);
   let seq = -1, idle = 0, landed = false, fadeStarted = false, doneCalled = false, sparkCarry = 0;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
   function pose(it, st) {
     const s = st < 0 ? -1 : st;
     // ---- basket (both hands on its handles)
-    const lift = key(s, [[0, 0], [0.45, 1], [0.8, 1.6], [1.4, 1.5], [2.2, 0.4]]);
-    const tip = key(s, [[0, 0], [0.45, -0.15], [0.75, 1.1], [1.4, 1.0], [2.4, 0.3]]);
-    const bx = key(s, [[0, 0], [0.45, -0.06], [0.8, 0.12], [1.5, 0.08], [2.4, 0]]);
-    basket.position.copy(basketHome).add(V([bx, 0.012 * Math.sin(it * 2.1) + lift * 0.16, lift * 0.05]));
+    const lift = key(s, [[0, 0], [0.32, 0.6], [0.55, 1.0], [1.3, 0.9], [2.2, 0.2]]);
+    const tip = key(s, [[0, 0], [0.32, -0.25], [0.6, 1.15], [1.3, 1.0], [2.4, 0.3]]);
+    const bx = key(s, [[0, 0], [0.32, -0.05], [0.6, 0.2], [1.5, 0.15], [2.4, 0.02]]);
+    basket.position.copy(basketHome).add(V([bx, 0.012 * Math.sin(it * 2.1) + lift * 0.12, lift * 0.1]));
     basket.rotation.set(0.05 + tip * 0.35, 0.3, -tip * 0.85 + 0.03 * Math.sin(it * 1.7));
     // ---- girl: breathing, sway, lean into the toss, reaction
-    const lean = key(s, [[0, 0], [0.45, -0.18], [0.8, 0.28], [1.4, 0.2], [2.4, 0.05]]);
+    const lean = key(s, [[0, 0], [0.32, -0.15], [0.6, 0.22], [1.4, 0.15], [2.4, 0.05]]);
     girl.hips.rotation.z = 0.03 * Math.sin(it * 1.1); girl.hips.position.y = 0.56 + 0.006 * Math.sin(it * 2.2);
-    girl.spine.rotation.set(lean + 0.03 * Math.sin(it * 1.3), -0.1 + key(s, [[0, 0], [0.8, 0.25], [2, 0.1]]), 0.04 * Math.sin(it * 0.9));
+    girl.spine.rotation.set(lean + 0.03 * Math.sin(it * 1.3), 0.05 + key(s, [[0, 0], [0.6, 0.3], [2, 0.15]]), 0.04 * Math.sin(it * 0.9));
     girl.chest.scale.set(1, 1 + 0.015 * Math.sin(it * 2.2), 1);
     const lookUp = key(s, [[0, 0], [0.45, 0.2], [0.9, 0.1], [1.6, -0.1], [2.4, -0.2]]);
-    const lookSide = key(s, [[0, 0], [0.6, 0.15], [1.2, 0.45], [2.0, 0.6]]);
-    girl.head.rotation.set(-lookUp + 0.05 * Math.sin(it * 0.8), 0.15 + lookSide + 0.08 * Math.sin(it * 0.6), 0.1 * Math.sin(it * 0.7) - 0.08);
+    const lookSide = key(s, [[0, 0], [0.6, 0.12], [1.2, 0.3], [2.0, 0.4]]);
+    girl.head.rotation.set(-lookUp + 0.05 * Math.sin(it * 0.8), 0.12 + lookSide + 0.08 * Math.sin(it * 0.6), 0.1 * Math.sin(it * 0.7) - 0.08);
     for (let i = 0; i < girl.curls.length; i += 3) girl.curls[i].position.y += Math.sin(it * 3 + i) * 0.0003;   // a little bounce in the curls
     const blink = Math.max(blinkAt(it, 3.1, 0.4), s > 0 ? blinkAt(s, 1.7, 1.2) : 0);
     girl.setFace({ open: key(s, [[0, 0.25], [0.45, 0.45], [0.8, 0.7], [1.1, 0.3], [1.6, 0.85], [2.4, 0.7]]), smile: 1,
@@ -480,14 +484,14 @@ export function mountOpening3D(container, opts = {}) {
     reach(girl.armR, hr.lerp(hrW, wave), chestW.clone().add(V([0.4, -0.3 + wave * 0.5, -0.1])));
     // ---- the pink character
     let hp, spin = new THREE.Euler(), sq = 1, surprise = 0, faceAway = 0;
-    if (s < 0.5) {   // sitting on the laundry, bouncing; hops as the basket lifts
-      hp = basket.position.clone().add(V([0.02, 0.28 + Math.abs(Math.sin(it * 3.4)) * 0.025 + key(s, [[0, 0], [0.3, 0.04], [0.5, 0.1]]), 0]));
-      spin.set(0, 0.3 * Math.sin(it * 0.7), 0.06 * Math.sin(it * 1.9)); sq = 1 + 0.05 * Math.sin(it * 6.8);
-      surprise = sm(0.35, 0.5, s);
+    if (s < 0.55) {   // sitting on the laundry, bouncing; hops in surprise as the basket swings
+      hp = basket.position.clone().add(V([0.02, 0.28 + Math.abs(Math.sin(it * 3.4)) * 0.025 + key(s, [[0, 0], [0.3, 0.05], [0.55, 0.12]]), 0]));
+      spin.set(0, 0.3 * Math.sin(it * 0.7), 0.06 * Math.sin(it * 1.9) - sm(0.3, 0.55, s) * 0.4); sq = 1 + 0.05 * Math.sin(it * 6.8) + sm(0.3, 0.5, s) * 0.12;
+      surprise = sm(0.25, 0.4, s);
     } else if (s < 2.05) {   // caught in the toss: a curved path to the washer's door, tumbling with the laundry
-      const k = sm(0.5, 2.05, s), e = k;
+      const x = clamp01((s - 0.55) / 1.5), e = 1 - (1 - x) * (1 - x) * (1 - 0.35 * x);
       hp = bez(heroLaunch, heroApex, heroRim, e);
-      spin.set(-e * Math.PI * 2.0, e * 0.8, Math.sin(e * 6) * 0.3); sq = 1 + 0.12 * Math.sin(s * 14) * (1 - e);
+      spin.set(-e * Math.PI * 2.0 + (e > 0.75 ? 0 : 0), 0.4 * Math.sin(e * 5), -0.4 * (1 - e) + Math.sin(e * 6) * 0.3); sq = 1 + 0.12 * Math.sin(s * 14) * (1 - e);
       surprise = s < 1.6 ? 1 : 0;
     } else if (s < 3.1) {   // at the rim: pulled in by the glow, turning to face into the drum
       const k = sm(2.05, 3.1, s);
@@ -556,7 +560,7 @@ export function mountOpening3D(container, opts = {}) {
     if (seq >= OPENING3D.seqEnd && !doneCalled) { doneCalled = true; if (opts.onDone) opts.onDone(); }
   }
   if (!opts.test) raf = requestAnimationFrame(frame);
-  if (typeof window !== 'undefined') window.__bwO3D = { seek: (it, st, dt = 1 / 30) => { idle = it; seq = st; tick(dt); }, state: () => ({ idle, seq, landed, heroReady: heroFace.ready }) };
+  if (typeof window !== 'undefined') window.__bwO3D = { seek: (it, st, dt = 1 / 30) => { idle = it; seq = st; tick(dt); }, state: () => ({ idle, seq, landed, heroReady: heroFace.ready, laundry: laundry.map((L) => [L.o.visible, L.o.position.toArray().map((v) => +v.toFixed(2)), L.o.children.length]), cam: camera.position.toArray().map((v) => +v.toFixed(2)) }) };
   return {
     play() { if (seq < 0) { seq = 0; landed = false; } },
     playing: () => seq >= 0,
