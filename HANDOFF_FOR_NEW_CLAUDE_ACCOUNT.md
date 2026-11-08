@@ -69,6 +69,11 @@ HUD and every gameplay system unchanged; about 90 % visual similarity (never cla
   was created with the hosts above and the guarded setup script (unproven until a fresh session starts on it); the Tripo key
   was saved as a network secret for `openapi.tripo3d.ai` but Tripo refuses it (401 "Invalid API key"): a new key is needed;
   the parallax-threejs plugin is NOT installed on this account (install card offered).
+- **Restoration of 8 November, about 01:10 UTC (the user's approval):** the old account's last three commits (`2f7977e`, `afd0ee6`,
+  `2c72c2f`) merged into `ccr-76d4bc77-rqhl8o` (merge `3e5c5a3`, checked on GitHub; checkpoint before it `15b3a66`; no game
+  code in them); Blender 5.2.3 installed by `Tools/cloud_env_setup.sh` (checksum matches blender.org; Cycles and Eevee render
+  headless); the new Tripo key works (free balance check: 640 credits, 0 frozen; nothing generated). Still needs the user:
+  enabling the parallax-threejs plugin on this account, then a NEW session to load its servers, agents and commands.
 - The user's ANIMATION AND MOVEMENT MANDATE: `?s3=...,level1` (see `CLAUDE.md` and
   `Previews/WebDemo/screen4_round9_match/68_level1/README.md`): the real-time 3D Laundry Toss opening and real travel through
   Level 1 to Level Complete. Accepted `?s3=intunnel`, the candidate and the normal game: 0 px different.
@@ -107,7 +112,8 @@ Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_
      water dimension spec (`..._Exact_Water_Size_3D_Spec_Pack/`): not yet applied. Calibrate it to the game's real scale first
      (her width in the game is `MASCOT_WIDTH` 1.04 m in `game.js`, not the spec's example 1.5 m).
 - **NEWEST REQUEST (7 November, about 23:50 UTC): `Design/ReferencePacks/2026-11-07_Animation_and_Movement_Mandate_from_user/`**
-  (the mandate, the user's phone recording of the APK, the 12-screen Level 1 flow board). Diagnosis done, NOT implemented yet:
+  (the mandate, the user's phone recording of the APK, the 12-screen Level 1 flow board). The old account's diagnosis below;
+  **superseded on 8 November: implemented behind `?s3=...,level1` (section 4a)**:
   1. **"She does not travel":** she does (the recorded state: z 1.8 m -> 34.3 m in 5 s, about 7 m/s), but the drum is only
      about 35 m long, so every ~5 s the run LOOPS back to its start (`loopRun` in `game.js`, `if (running && m.z > L.tunnelEnd - 2.0)`),
      and the camera follows at a fixed distance (normal for a runner). So Level 1 is one ~35 m section repeating: she never

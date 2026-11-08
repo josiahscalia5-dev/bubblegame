@@ -687,3 +687,9 @@ Starting the restoration. First the GitHub part: inspecting the three commits an
 
 GitHub verified: the branch is at `3e5c5a3` both locally and on GitHub, and contains all three commits. Next, Blender: inspecting the setup script's Blender step before running it.
 
+The user saved a key in the form. Testing Tripo right away (free) and checking the Blender install:
+
+Card shown above. While you enable it, I'm resuming the unfinished work on the final build (`06f8e1b9`): the continuous phone recording, and the identity proofs in parallel.
+
+While those run, I'm recording the restoration in the handoff file: what was restored and what still needs you. I'm also marking the old account's "not implemented yet" note as superseded.
+
