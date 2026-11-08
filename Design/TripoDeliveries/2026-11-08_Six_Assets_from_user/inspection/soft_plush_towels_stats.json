@@ -1,0 +1,25 @@
+{
+ "file": "soft plush towels 3d model.glb",
+ "meshes": 1,
+ "triangles": 10076,
+ "vertices": 8335,
+ "loose_parts": 347,
+ "materials": [
+  "tripo_mat_d04c0849-2693-46d3-a894-d5aa1bb13254"
+ ],
+ "textures": [
+  [
+   "tripo_rgb_bab181dc-d00e-4df8-afed-2604e6a7f04e",
+   4096,
+   4096
+  ]
+ ],
+ "armatures": 0,
+ "actions": 0,
+ "skinned": false,
+ "size_xyz_blender": [
+  0.9995,
+  0.4575,
+  0.4966
+ ]
+}
