@@ -865,3 +865,1066 @@ New direction understood: build all six storyboard scenes as one connected, anim
 
 On reflection the metal should be applied after the swirl's own streaks, then the bright far heart re-applied over it. I'll swap where the two snippets go.
 
+Bundle `76581f46` builds cleanly. Next I need a capture tool for the opening; I'll check whether the repository already has one that drives `__bwO3D.seek`.
+
+---
+
+### You (sent while Claude was working) · 2026-11-08 23:34 UTC
+
+[attached file: BubbleWash_STRICT_Six_Scene_Master_Kit.zip] BUBBLE WASH KINGDOM — FINAL SIX-SCENE 3D IMPLEMENTATION MANDATE
+
+PROJECT: "josiahscalia5-dev/bubblegame"
+
+PRIORITY: IMPLEMENT ALL SIX SCENES IN THE EXISTING PLAYABLE GAME.
+
+THIS IS AN IMPLEMENTATION ORDER, NOT A REQUEST FOR ANOTHER DESIGN PROPOSAL.
+
+Claude, I have chosen the new six-scene artwork for Bubble Wash Kingdom. I am attaching the complete storyboard and six individual reference images.
+
+I want you to turn those images into an actual, connected, animated, playable 3D experience inside my EXISTING Bubble Wash Kingdom game.
+
+My objective is to see these six scenes come to life, matching my references as closely as technically possible.
+
+Do not start a new project. Do not build six static images. Do not replace my playable game with a video or mockup. Do not waste another entire session correcting one gear, background color, or small decorative object.
+
+Build the actual six-scene experience.
+
+---
+
+1. THE NEW OFFICIAL VISUAL DIRECTION
+
+The six uploaded pictures are now my visual source of truth for this Level 1 opening and swimming sequence.
+
+They supersede the previous attempts to replicate the old Classic Screen 4 or earlier “Avoid Enemies!” artwork for this particular implementation.
+
+Study each reference individually.
+
+Match the recognizable characters, pink-and-gold washing machine, purple laundry basket, clothing, circular drum, machinery, water tunnel, colorful lighting, materials, and overall premium 3D cartoon appearance.
+
+Aim for the closest practical visual match, not merely similar colors.
+
+However, these pictures are reference keyframes, not ready-made 3D assets. Create actual geometry, materials, animations, and camera movement. Preserve the game's existing mobile portrait presentation.
+
+2. CRITICAL STORY REQUIREMENT
+
+THE GIRL MUST NEVER NOTICE THE PINK FLUFFY CHARACTER.
+
+Although the first reference image appears to show him looking at the girl, I want this one story detail corrected.
+
+He is hiding underneath or inside the blue towel among the clothes in the purple laundry basket.
+
+The girl believes she is doing normal laundry.
+
+She picks up the clothes without realizing the character is inside the bundle.
+
+She accidentally tosses him into the washing machine with the laundry.
+
+He reacts with surprise when he realizes what is happening.
+
+She closes the door, still unaware that he is inside.
+
+The magical washing-machine adventure begins.
+
+This must feel natural, charming, and cinematic.
+
+3. SCREEN-BY-SCREEN IMPLEMENTATION
+
+SCREEN 1 — HIDDEN IN THE LAUNDRY BASKET
+
+Build the 3D laundry-room scene shown in Image 1.
+
+The girl has curly brown hair, a pink bow/headband, and her recognizable pink outfit. She stands beside the purple laundry basket filled with colorful towels and clothes.
+
+The pink fluffy character is partially concealed under the blue towel.
+
+The washing machine is large, glossy, pink and gold, with a lavender circular drum, decorative lights, metallic accents, and a rounded door.
+
+Animate the girl breathing, blinking, naturally moving her arms, and preparing laundry.
+
+The pink character may peek out toward the player when she looks away, but she must never see him.
+
+Match the image's characters, composition, and visual quality.
+
+SCREEN 2 — THE GIRL LOADS THE LAUNDRY
+
+Continue naturally from Screen 1.
+
+The girl picks up the blue towel or clothing bundle containing the hidden pink character.
+
+Animate her hands gripping the fabric, her body turning toward the washer, and the clothing moving naturally.
+
+The washer door remains open.
+
+The girl places or tosses the bundle inside, unaware of the creature.
+
+Do not make the character jump in voluntarily.
+
+The animation needs to show how he gets carried into the washing machine accidentally.
+
+SCREEN 3 — THE ACCIDENTAL TUMBLE
+
+Recreate the third reference.
+
+The pink character slips out of the clothing bundle and tumbles into the circular metal drum with the towels and socks.
+
+He reacts with surprise.
+
+Use believable 3D movement, character rotation, cloth animation, and camera movement.
+
+The washer's interior should visibly match the outside machine from Screens 1 and 2.
+
+The character must not teleport or suddenly appear in a different environment.
+
+SCREEN 4 — THE WASHING MACHINE STARTS
+
+Recreate the fourth reference.
+
+The girl closes the washer door without noticing the character.
+
+The camera shows him through the rounded glass window.
+
+The machine activates with colorful lights, a magical blue-water swirl, bubbles, and softly glowing lavender metal.
+
+Give the character a surprised reaction as the magical washing cycle begins.
+
+The machine should feel playful and fantastical rather than frightening.
+
+Keep this scene visually continuous with Screens 1–3.
+
+SCREEN 5 — INTO THE MAGICAL WASHING-MACHINE TUNNEL
+
+This is where I want you to use the existing 3D environment you have already built.
+
+Recreate the fifth reference as closely as possible.
+
+The character moves from the washing-machine drum into a water-filled interior tunnel.
+
+The tunnel should have:
+
+- Rounded lavender-silver metallic walls and drum perforations.
+- Pink-and-gold mechanical housings and glowing circular structures.
+- Cobalt-blue gears, metallic pipes, gold railings, and colorful machine parts.
+- Rich blue moving water, small bubbles, illuminated surfaces, and reflective materials.
+- A beautiful sense of depth and forward movement.
+
+The environment must feel like the inside of the SAME washing machine shown in Screens 1–4.
+
+There must be a natural, continuous transition from the closed washer into the swimming gameplay.
+
+Do not abruptly replace the world or teleport the character.
+
+SCREEN 6 — ACTUAL PLAYABLE SWIMMING GAMEPLAY
+
+Reuse the existing gameplay system.
+
+The pink fluffy character swims forward through the magical laundry tunnel.
+
+Preserve the established blue water, natural swimming movement, swiping controls, enemies, gold coins, sock-rescue mission, brushes, obstacles, and powers.
+
+The character should visibly sit on and move through the blue water. Do not add a white foam cloud behind him or replace working swimming animations.
+
+Match Image 6's rich, colorful 3D style while maintaining the existing real gameplay.
+
+Keep the existing HUD, including the sock-rescue objective, hearts, coin and gem counters, Bubble Blast, and Turbo Spin.
+
+This scene must be playable, not just visually animated.
+
+---
+
+4. REUSE THE EXISTING PROJECT AND ASSETS
+
+Before creating anything new, inspect the actual current GitHub branch, game files, latest Pass 18 changes, working assets, and saved progress.
+
+Relevant existing source files include:
+
+"WebDemo/src/opening3d.js"
+
+"WebDemo/src/level1.js"
+
+"WebDemo/src/game.js"
+
+"WebDemo/src/opening.js"
+
+"WebDemo/src/track.js"
+
+"WebDemo/src/tunnel_s4.js"
+
+"WebDemo/src/tunnel_s4_swim.js"
+
+"WebDemo/src/tunnel_s4_swim2.js"
+
+Also inspect the current Pass 18 scene files in the active branch. Do not rely on old branch names or overwrite newer work.
+
+My project already contains an existing rigged girl model:
+
+"WebDemo/models/opening/girl_rigged.glb"
+
+It also contains six Tripo assets in:
+
+"Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/"
+
+These include the cartoon girl, pink fluffy creature, purple basket, plush towels, sock character, and washing machine.
+
+INSPECT AND REUSE THESE BEFORE GENERATING REPLACEMENTS.
+
+Some models may not include embedded animations. Verify this properly, and add skeletal animation, rigging, facial movement, or controlled procedural animation wherever necessary.
+
+Use the existing code and game systems as the foundation.
+
+Do not destroy or replace working features just because a new implementation would be easier.
+
+5. USE THE PROPER AI AGENTS AND DEVELOPMENT TOOLS
+
+I want you to coordinate the strongest relevant tools and specialists available in this actual Claude Code session.
+
+Check which are truly installed and operational.
+
+Lead Claude Code Agent
+
+You own the implementation, integration, builds, verification, commits, and final delivery.
+
+Game Art Director
+
+Use the existing "game-art-director" agent to evaluate the new six-scene artwork against real gameplay renders.
+
+IMPORTANT: Its older instructions may reference the Classic Screen 4 artwork. For this new assignment, explicitly use my uploaded six-scene storyboard instead.
+
+3D Character and Animation Specialist
+
+Assign an agent to the girl, basket, towel, pink character, and their coordinated animation. If no appropriate specialist exists, create a scoped subagent.
+
+Prioritize character identity, facial animation, eye direction, convincing movements, and the accidental-toss story.
+
+Lighting and Visual Matching
+
+Use "lighting-visual-matching" for scene continuity, materials, reflections, lighting, and the consistent pink-gold-lavender color palette.
+
+Do not waste time endlessly adjusting minor colors while scenes are incomplete.
+
+Water VFX Engineer
+
+Use "water-vfx-engineer" where needed for the transition from the washing machine into the existing blue-water tunnel.
+
+Preserve the established water behavior and character interaction. Use "screen4-water-motion-engineer" only if its required tools are actually connected.
+
+Gameplay and Visual Testing
+
+Use "gameplay-visual-testing" to check actual gameplay functionality, capture screenshots, record video, and verify the transition from cinematic opening to playable Level 1.
+
+Parallax Three.js Specialists
+
+If installed and functional, use appropriate Parallax Three.js specialists such as:
+
+- "scenario-author"
+- "shader-reviewer"
+- "visual-debugger"
+
+Use Chrome DevTools, Three.js DevTools, Playwright, or Spector where available and useful.
+
+If a plugin or MCP server is missing or broken, use the existing working development tools instead.
+
+Do not repeatedly spend time troubleshooting optional plugins at the expense of implementing the game.
+
+Assign agents separate responsibilities and avoid conflicting changes to shared files.
+
+6. USE TRIPO WHEN NECESSARY
+
+You have my permission to use my available Tripo credits to produce missing 3D assets needed for these six scenes.
+
+However, examine the existing six GLB models before creating anything new.
+
+Use Blender or the existing optimization/rigging tools where appropriate.
+
+If an important asset cannot be corrected or reused, generate that individual model.
+
+Do not generate a completely new six-scene environment when the existing project already contains useful geometry.
+
+Before making a paid generation, verify that the Tripo API, authentication, credit balance, and model download connection work.
+
+Previous sessions encountered blocked download hosts and API authentication problems. Do not conceal those issues or claim an asset was generated when it wasn't.
+
+Never expose or commit my API key.
+
+Track credit usage and avoid unnecessary repeat generations. Do not purchase new credit packages without authorization.
+
+7. VISUAL FIDELITY AND PERFORMANCE
+
+I want the new artwork to look as close to my six uploaded references as technically possible.
+
+Prioritize:
+
+1. Recognizable character models.
+2. Accurate washing-machine design.
+3. Convincing animation and scene transitions.
+4. Matching major background geometry.
+5. Premium 3D materials, lighting, and textures.
+6. Consistent colors and style across all six scenes.
+7. Smooth, responsive mobile gameplay.
+
+Do not confuse additional geometry with improved visual accuracy.
+
+Every object must belong naturally in the world.
+
+Keep the water path and gameplay collision areas clear.
+
+Optimize meshes, textures, draw calls, and effects so the experience remains suitable for a mobile game.
+
+The opening must use the same characters and machine design as the later tunnel scene.
+
+8. REQUIRED DEVELOPMENT ORDER
+
+Follow this execution sequence:
+
+PHASE A — VERIFY EXISTING WORK
+
+Inspect the actual active branch, current opening code, available character rigs, existing Tripo models, and current playable scenes.
+
+Preserve a verified rollback point.
+
+Briefly identify what is already working and what must still be created.
+
+Then begin implementation.
+
+PHASE B — COMPLETE SCREENS 1–4
+
+Prioritize the girl, concealed pink character, laundry basket, clothing animation, accidental entry, and washer activation.
+
+Create a fully animated sequence.
+
+Do not stop after producing a static preview.
+
+PHASE C — CONNECT SCREENS 4 AND 5
+
+Create the continuous camera and character transition from the washer into the water tunnel.
+
+Ensure the same machine geometry, colors, materials, and visual identity carry through.
+
+PHASE D — REUSE AND UPGRADE SCREENS 5 AND 6
+
+Improve the existing tunnel scenery and connect it to the completed opening.
+
+Preserve the real gameplay systems.
+
+PHASE E — TEST AND RECORD
+
+Capture real screenshots from the running 3D game.
+
+Record one continuous sequence showing the girl and basket, accidental toss, washer activation, tunnel entry, and playable swimming.
+
+Test touch controls, collectible behavior, enemies, HUD, and movement.
+
+PHASE F — SAVE AND DELIVER
+
+Save the actual completed code and assets to GitHub, preserving the previous playable build.
+
+Provide the exact branch, commit, playable preview instructions, screenshots, and recording.
+
+9. MANDATORY DELIVERABLES
+
+Do not report this assignment as finished without providing:
+
+1. Six authentic screenshots from the actual running game, corresponding to my six references.
+2. A full visual comparison between the six uploaded images and the implemented 3D scenes.
+3. A continuous gameplay recording showing the entire sequence.
+4. Proof that the girl never notices the pink character.
+5. Proof that the character accidentally enters the machine with the clothing.
+6. Proof that the washing machine connects naturally to the water tunnel.
+7. Proof that the existing swimming, controls, collectibles, enemies, and mission objectives still function.
+8. A committed, restorable project with clear GitHub branch and commit information.
+
+Do not substitute AI-generated images for actual gameplay proof.
+
+Do not claim perfect visual fidelity without evidence.
+
+If anything remains incomplete, tell me exactly what it is. Do not call it approved without my confirmation.
+
+---
+
+10. FINAL NON-NEGOTIABLE MANDATE
+
+Claude, I have spent too much time repeatedly correcting individual background details.
+
+I have now chosen a complete six-scene direction.
+
+I am not asking you to explain how this could be built. I am asking you to actually build it in my existing Bubble Wash Kingdom game.
+
+Do not restart the game.
+
+Do not replace real 3D scenes with screenshots.
+
+Do not make the girl aware of the character.
+
+Do not create an unrelated washing-machine world.
+
+Do not abandon existing gameplay and models.
+
+Do not spend the entire session on another small visual correction.
+
+I WANT ALL SIX SCENES IMPLEMENTED AS ONE CONTINUOUS, COHESIVE, PREMIUM 3D GAME EXPERIENCE.
+
+Prioritize completing the actual scenes over endless planning, auditing, or polishing one decorative object.
+
+Use the real development tools, existing models, relevant AI agents, and available Tripo resources to make the implementation as strong as possible.
+
+Show me real rendered and playable results.
+
+BUILD THE SIX SCENES. CONNECT THEM. TEST THEM. SAVE THE WORK. SHOW ME THE RESULT.
+
+I will personally decide whether the finished work is approved.BUBBLE WASH KINGDOM — EMERGENCY COMPLETE GITHUB BACKUP AND CLAUDE ACCOUNT TRANSFER
+
+PRIORITY: CRITICAL
+
+Claude, I am preparing to switch to another Claude account because my current account may run out of usage credits.
+
+I need you to immediately preserve EVERYTHING necessary to continue my existing Bubble Wash Kingdom game on another account.
+
+THIS IS A COMPLETE PROJECT BACKUP AND RECOVERY MANDATE. DO NOT JUST SAVE THE MAIN GAME FILES.
+
+Repository:
+
+"https://github.com/josiahscalia5-dev/bubblegame"
+
+My next Claude account must be able to recover the exact project, latest development progress, agents, specialists, tools, 3D assets, configurations, visual references, and unfinished work without restarting.
+
+1. IMMEDIATELY PRESERVE MY CURRENT WORK
+
+First, inspect the actual Git repository, active branch, current HEAD commit, running agent tasks, Git worktrees, and uncommitted changes.
+
+Do not assume the default branch is the newest version.
+
+My repository contains multiple Claude development branches from previous sessions. Identify the branch containing the newest legitimate Bubble Wash Kingdom work, including the six-scene implementation.
+
+Before making any other changes:
+
+- Preserve all current source files and modified assets.
+- Capture any unsaved changes made by background agents.
+- Record the current branch name and full commit SHA.
+- Create a named recovery checkpoint.
+- Save and push the latest recoverable state to GitHub.
+- Verify that the remote branch contains the pushed commit.
+
+Never force-push, delete an existing development branch, overwrite previous work, or discard uncommitted changes.
+
+If parallel agents are actively editing files, checkpoint their independent work safely before integration.
+
+Do not wait until all development work is finished to make the first backup. Save the current state immediately.
+
+2. BACK UP THE ENTIRE EXISTING GAME
+
+Preserve all necessary files for my actual game, including:
+
+- The complete Three.js/WebGL game.
+- Existing Unity project files and assets, if relevant.
+- All JavaScript, shaders, materials, textures, models, and dependencies.
+- Game scenes and level progression.
+- The latest Pass 18 work and subsequent development.
+- The latest six-scene opening implementation.
+- The pink character and its animations.
+- The existing girl character and her rigging.
+- The washing machine and laundry room.
+- Laundry basket, towels, socks, coins, and enemies.
+- Water movement and swimming systems.
+- Mobile controls, HUD, abilities, and gameplay mechanics.
+- All current game-specific tools and scripts.
+
+Include necessary files from:
+
+"WebDemo/"
+
+"Assets/"
+
+"Design/"
+
+"Previews/"
+
+"Tools/"
+
+"Packages/"
+
+"ProjectSettings/"
+
+Include any other directories needed for the project.
+
+Preserve the build system and dependency manifests.
+
+Do not commit temporary dependency caches such as "node_modules" unless there is an exceptional documented requirement.
+
+Use Git LFS appropriately for supported large binary assets, and verify that the actual binary objects are uploaded—not just their pointer files.
+
+3. SAVE EVERY 3D ASSET AND CHARACTER MODEL
+
+Audit and preserve all existing GLB, GLTF, FBX, Blender, texture, animation, and rigging files required to reproduce the current game.
+
+Important existing asset location:
+
+"Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/"
+
+This includes the previously provided Tripo assets:
+
+- Cartoon girl.
+- Pink fluffy creature.
+- Purple laundry basket.
+- Plush towels.
+- Sock character.
+- Washing machine.
+
+Also preserve the existing rigged girl:
+
+"WebDemo/models/opening/girl_rigged.glb"
+
+Include the associated rigging scripts, optimized web models, materials, textures, animation controllers, and import instructions.
+
+Record which assets are working, which require improvement, and which are currently unused.
+
+Do not regenerate models that already exist.
+
+4. SAVE ALL AI AGENTS AND SPECIALISTS
+
+I want every relevant existing Claude agent configuration and specialist workflow preserved.
+
+Inspect and back up:
+
+".claude/agents/"
+
+".claude/skills/"
+
+".claude/hooks/"
+
+".claude/settings.json"
+
+Any project-specific commands, scripts, instructions, skill files, or agent configurations.
+
+At minimum, document the status of:
+
+- "game-art-director"
+- "gameplay-visual-testing"
+- "lighting-visual-matching"
+- "water-vfx-engineer"
+- "screen4-water-motion-engineer"
+- "bubble-wash-screen-matcher"
+
+Also preserve available Parallax Three.js specialists, including scenario-author, shader-reviewer, and visual-debugger, where applicable.
+
+For each agent or specialist, document:
+
+1. Its exact name.
+2. Its purpose.
+3. Its configuration or instructions.
+4. The tools it requires.
+5. Whether it works in the current account.
+6. How it should be restored in the next account.
+7. Any known errors or limitations.
+
+If an agent exists only in the Claude account's installed plugin environment, document its provider, version if known, installation procedure, dependencies, and required permissions.
+
+Do not falsely claim that plugin-managed agents have been transferred merely because their names were written in a document.
+
+5. PRESERVE ALL DEVELOPMENT TOOLS AND PLUGINS
+
+Audit the currently available development environment.
+
+Document the actual installed and working status of:
+
+- GitHub access and GitHub MCP.
+- Parallax Three.js.
+- Chrome DevTools MCP.
+- Three.js DevTools MCP.
+- Playwright MCP and Chromium.
+- Spector or the project's working Spector server.
+- Node.js and npm.
+- Python and the project's Python environment.
+- Blender, where installed.
+- FFmpeg.
+- OpenCV and scikit-image.
+- PyTorch, LPIPS, and Optuna where available.
+- glTF Transform and glTF Validator.
+- Tripo CLI.
+- Git LFS.
+- The existing visual-comparison tools.
+- Project-specific gameplay recording and testing tools.
+- All other relevant installed or configured development tools.
+
+Preserve the exact project-owned configurations and setup scripts.
+
+Inspect and retain relevant files including:
+
+"Tools/cloud_env_setup.sh"
+
+"Tools/dev_tools_setup.sh"
+
+"Tools/bw_tools_env.sh"
+
+"Tools/verify_restore.sh"
+
+"Tools/autosave.sh"
+
+"Tools/save_now.sh"
+
+"Tools/autosave_sessions.json"
+
+".mcp.json"
+
+"CLAUDE.md"
+
+And all existing account-transfer and handoff documents.
+
+Record which tools are genuinely operational, which have only been partially verified, and which need reinstallation.
+
+IMPORTANT: GitHub cannot directly preserve the active Claude account's installed plugins, OAuth connections, cloud-environment permissions, or secret values.
+
+Create precise instructions for the next account to restore those independently.
+
+Do not store API keys, access tokens, passwords, or other credentials in GitHub.
+
+Record only the required environment-variable names, host requirements, and setup instructions.
+
+6. BACK UP THE NEW SIX-SCENE GAME DIRECTION
+
+This is extremely important.
+
+I have approved a NEW six-scene visual direction for Bubble Wash Kingdom.
+
+Preserve the six reference images and the full storyboard.
+
+If they are currently available only as Claude chat attachments or local temporary files, copy the authorized reference files into the project repository.
+
+Create a clearly named reference directory such as:
+
+"Design/ReferencePacks/Six_Scene_New_Direction/"
+
+Include the six individual images and a visual guide.
+
+The intended sequence is:
+
+Scene 1: Pink character secretly hiding in the laundry basket.
+
+Scene 2: Girl unknowingly picks up the laundry containing the hidden character.
+
+Scene 3: Pink character accidentally gets tossed into the washing-machine drum.
+
+Scene 4: Girl closes the washing machine without noticing him, and the magical wash begins.
+
+Scene 5: Pink character enters the water-filled machinery tunnel.
+
+Scene 6: Actual playable swimming gameplay with enemies, coins, socks, and obstacles.
+
+The girl NEVER realizes the pink character is inside the clothing.
+
+THE NEW SIX-SCENE ARTWORK IS THE CURRENT VISUAL DIRECTION FOR THIS SEQUENCE.
+
+Some older ".claude" agents and handoff documents reference the Classic blue-tunnel artwork as their primary visual target.
+
+Preserve those historical references, but explicitly document that they do not override the newer six-scene instruction.
+
+Do not let the next Claude account accidentally resume the abandoned background-matching cycle instead of the new six-scene build.
+
+7. PRESERVE DEVELOPMENT PROGRESS AND UNFINISHED TASKS
+
+Document exactly what has been completed and what remains.
+
+For each of the six scenes, record:
+
+- Current implementation status.
+- Working files.
+- Existing models and animations.
+- Completed features.
+- Missing functionality.
+- Known bugs.
+- Visual differences.
+- Relevant Git commits.
+- Next specific implementation step.
+
+Do not mark a scene finished simply because a concept image exists or a screenshot was generated.
+
+Separate genuine playable 3D implementation from experimental, incomplete, or static work.
+
+Record the active gameplay switches and any currently unfinished changes.
+
+Export concise project progress notes, decisions, and relevant agent reports where accessible and permitted.
+
+Do not attempt to export inaccessible private Claude internals.
+
+8. CREATE A COMPLETE TRANSFER HANDOFF
+
+Create or update a definitive document:
+
+"START_HERE_NEXT_CLAUDE_ACCOUNT.md"
+
+Also create:
+
+"CURRENT_PROJECT_STATUS.md"
+
+"AGENTS_AND_SPECIALISTS_INVENTORY.md"
+
+"TOOLS_AND_PLUGINS_RESTORE.md"
+
+"SIX_SCENE_IMPLEMENTATION_STATUS.md"
+
+"ASSET_AND_MODEL_INVENTORY.md"
+
+"BACKUP_VERIFICATION.md"
+
+These documents should explain everything the next Claude account needs to continue.
+
+Avoid unnecessary duplication, but make the instructions self-contained.
+
+The main START HERE document must include:
+
+- Repository URL.
+- Exact latest working branch.
+- Full verified remote commit SHA.
+- Last known playable build and rollback checkpoint.
+- Local development and build instructions.
+- How to verify all required models and assets.
+- How to enable or restore agents and plugins.
+- Which credentials must be reconnected through secure account settings.
+- Current six-scene progress.
+- Known blockers.
+- The exact next development task.
+- Commands for testing and capturing real gameplay.
+- The location of all new visual references.
+
+9. VERIFY AUTOSAVE AND BACKUP RECOVERY
+
+Check that my existing autosave system is functioning.
+
+Verify the autosave script, process, session registry, and last successful push.
+
+Check for multiple conflicting autosave processes.
+
+Make sure the backup does not depend on the current Claude session staying alive.
+
+Run the existing restore verification script where appropriate.
+
+Perform a clean-clone or equivalent independent GitHub restore check.
+
+Verify that the new clone can access the actual game files, agent configurations, required assets, Git LFS objects, and reference images.
+
+Confirm that the project can be built from the saved revision, or report precisely why it cannot.
+
+If repository permissions or external services prevent verification, clearly identify the limitation.
+
+Do not say "everything is backed up" until you verify that the necessary files really exist on GitHub.
+
+10. FINAL BACKUP REQUIREMENTS
+
+Before finishing, provide a clear backup report containing:
+
+REPOSITORY: Full URL.
+
+WORKING BRANCH: Exact branch name.
+
+BACKUP COMMIT: Full SHA.
+
+REMOTE VERIFIED: Yes or no, with evidence.
+
+PLAYABLE BUILD: Exact checkpoint and testing status.
+
+3D ASSETS: Verified complete or list of missing files.
+
+AGENTS: Saved configuration files and account-level restoration requirements.
+
+PLUGINS: Documented installation and connection requirements.
+
+AUTOSAVE: Verified status.
+
+SIX-SCENE ARTWORK: Exact saved paths.
+
+SIX-SCENE PROGRESS: Completed and unfinished work.
+
+NEXT TASK: Exact instruction for the next Claude account.
+
+RESTORE TEST: Pass, fail, or not run, with explanation.
+
+Do not change the project's artistic direction or start unrelated development during this backup operation.
+
+FINAL MANDATE: SAVE, VERIFY, AND DOCUMENT THE COMPLETE RECOVERABLE PROJECT BEFORE MY CREDITS RUN OUT.
+
+If the session is interrupted, the remote GitHub checkpoint and existing handoff must already be usable.
+
+I need to resume the SAME game on my next Claude account—not restart it.BUBBLE WASH KINGDOM — RESTORE COMPLETE PROJECT FROM PREVIOUS CLAUDE ACCOUNT
+
+PRIORITY: CRITICAL — CONTINUE EXISTING WORK, DO NOT RESTART
+
+Claude, I am transferring my existing Bubble Wash Kingdom game from another Claude account because I ran out of usage credits.
+
+My previous Claude account was instructed to preserve the entire project, agents, specialists, tools, plugins, 3D assets, visual references, and development progress on GitHub.
+
+Your job is to recover that existing project and continue exactly where the other account stopped.
+
+THIS IS NOT A NEW GAME PROJECT.
+
+Repository:
+
+"https://github.com/josiahscalia5-dev/bubblegame"
+
+1. RECOVER THE CORRECT LATEST VERSION
+
+Connect to my GitHub repository using the authorized GitHub connection.
+
+Do not assume the default branch is the correct working version.
+
+Locate and read:
+
+"START_HERE_NEXT_CLAUDE_ACCOUNT.md"
+
+"CURRENT_PROJECT_STATUS.md"
+
+"BACKUP_VERIFICATION.md"
+
+"SIX_SCENE_IMPLEMENTATION_STATUS.md"
+
+And the existing project handoff documents, where available.
+
+These documents may be on the latest development branch rather than the repository's default branch.
+
+Find the latest verified backup branch and full commit SHA recorded by the previous Claude account.
+
+Restore that exact revision first.
+
+If several branches appear to contain newer work, compare their commits, handoff reports, and six-scene implementation progress. Do not blindly merge or discard any branch.
+
+THE VERIFIED PREVIOUS SESSION CHECKPOINT IS THE SOURCE OF TRUTH.
+
+2. RESTORE ALL GAME FILES AND MODELS
+
+Recover the existing Three.js/WebGL game and all necessary supporting project files.
+
+Verify the presence of the pink character, girl, washing machine, laundry basket, towels, socks, enemies, coins, water effects, textures, materials, shaders, and animations.
+
+Check:
+
+"WebDemo/"
+
+"Assets/"
+
+"Design/"
+
+"Tools/"
+
+"Previews/"
+
+And all other required project directories.
+
+Inspect the existing Tripo models and the rigged girl.
+
+Do not replace them with new models unless there is a documented reason.
+
+Confirm that the game can build and launch.
+
+Preserve the current playable experience.
+
+3. RESTORE ALL CLAUDE AGENTS AND SPECIALISTS
+
+Inspect the project's saved ".claude" configurations and the agent inventory.
+
+Recover the existing specialist instructions, including:
+
+- game-art-director
+- gameplay-visual-testing
+- lighting-visual-matching
+- water-vfx-engineer
+- screen4-water-motion-engineer
+- bubble-wash-screen-matcher
+
+Also recover or reinstall the appropriate Parallax Three.js specialists and relevant development agents if available.
+
+Check the actual tool access required by each specialist.
+
+Do not merely claim an agent exists because a configuration file has been restored.
+
+Verify that the agent can actually execute its intended workflow in this new Claude account.
+
+Where account-specific plugin installation or permission is required, tell me exactly what I must enable.
+
+Preserve the existing specialist definitions rather than recreating them from memory.
+
+4. RESTORE DEVELOPMENT TOOLS AND PLUGINS
+
+Read:
+
+"TOOLS_AND_PLUGINS_RESTORE.md"
+
+"Tools/DEV_TOOLS.md"
+
+And the project's environment setup scripts.
+
+Verify the actual working state of GitHub, Parallax Three.js, Playwright, Chrome DevTools, Three.js DevTools, Spector, Blender, Python, Node.js, FFmpeg, OpenCV, PyTorch, glTF utilities, and Tripo CLI where relevant.
+
+Use the existing automated setup scripts to restore missing project dependencies when permitted.
+
+Do not assume plugins or credentials automatically transferred between accounts.
+
+For external plugins or connections that require my permission, identify the exact steps I need to perform.
+
+Do not repeatedly attempt installations that fail because of network restrictions.
+
+If a tool is unavailable, determine whether an already installed alternative can accomplish the same task.
+
+Prioritize restoring the tools needed to build and test the game.
+
+5. RESTORE TRIPO SAFELY
+
+I have previously used Tripo to generate 3D models for this game.
+
+Check the existing Tripo assets before generating anything.
+
+Verify whether the Tripo CLI is installed and whether the API host and model-download host are accessible from this new Claude environment.
+
+Do not assume the previous account's API credentials are available.
+
+If authentication is needed, explain how I should securely reconnect my Tripo API key through the environment's secret settings.
+
+Do not ask me to paste an API key into source files or commit credentials to GitHub.
+
+If the download host is blocked, tell me exactly which host requires permission.
+
+Do not spend credits on unnecessary duplicate models.
+
+6. RESTORE THE NEW SIX-SCENE ARTWORK DIRECTION
+
+This part is extremely important.
+
+My most recent design choice is the new six-scene Bubble Wash Kingdom storyboard.
+
+Find the saved reference images and implementation brief in the handoff.
+
+The new story is:
+
+1. Pink character secretly hiding in a laundry basket.
+2. Girl unknowingly loading clothing containing the hidden character.
+3. Character accidentally tumbling into the washing machine.
+4. Girl closing the machine without noticing him; magical wash begins.
+5. Character entering the moving blue-water laundry tunnel.
+6. Playable swimming gameplay with enemies, coins, socks, and obstacles.
+
+THE GIRL MUST NEVER KNOW THE CHARACTER IS THERE.
+
+The new storyboard is the visual target for this sequence.
+
+Historical Classic Screen 4 references remain part of the project's history but must not replace the current six-scene direction.
+
+Do not return to endlessly reconstructing the previous “Avoid Enemies!” background unless I explicitly request it.
+
+7. CONTINUE THE ACTUAL SIX-SCENE BUILD
+
+Once the verified project and essential tools are restored, continue from the precise unfinished task described in:
+
+"SIX_SCENE_IMPLEMENTATION_STATUS.md"
+
+Do not rebuild a scene that is already implemented and working.
+
+Prioritize completing Screens 1–4 and connecting them naturally with the already-developed washing-machine tunnel and playable gameplay in Screens 5–6, unless the handoff shows more recent progress.
+
+Maintain visual continuity between the girl, laundry basket, machine exterior, drum interior, and water-filled tunnel.
+
+All scenes must be real animated 3D game content.
+
+Reuse the existing source code, assets, rigged characters, and gameplay systems.
+
+Do not produce six static illustrations and call them implemented.
+
+8. PRESERVE THE GAME'S EXISTING FUNCTIONALITY
+
+Protect the existing:
+
+- Pink fluffy character.
+- Swimming and water interaction.
+- Mobile touch controls.
+- Enemy behavior.
+- Coins, gems, and collectibles.
+- Five-sock rescue mission.
+- HUD and player abilities.
+- Level progression.
+- Working animations and camera movement.
+
+Do not silently disable working features.
+
+Implement changes on an appropriately isolated branch or checkpoint.
+
+Test for regressions before integrating new work.
+
+9. CONTINUE GITHUB BACKUPS
+
+Verify that the previous account's GitHub backup actually restored.
+
+Create a new safe checkpoint for this account's work.
+
+Restore or reconfigure autosave in this new environment, ensuring that it doesn't conflict with other active sessions.
+
+Do not create multiple autosave processes pushing conflicting branches.
+
+Preserve all new commits and assets as development continues.
+
+Never force-push over a verified older checkpoint.
+
+10. REAL VERIFICATION REQUIREMENTS
+
+After recovery, run the real game.
+
+Verify the existing scene and controls.
+
+Then continue implementing the unfinished six-scene work.
+
+Capture real screenshots and playable recordings.
+
+Compare actual renders against the new storyboard.
+
+Do not substitute image-generation previews for working game footage.
+
+Report which scenes are finished, which are incomplete, and what you implemented during this session.
+
+11. FIRST RESPONSE REQUIREMENT
+
+Do not reply with a generic plan or a request for me to explain the game again.
+
+Inspect the repository and available handoff immediately.
+
+Then give me a concise recovery report showing:
+
+REPOSITORY FOUND: Yes or no.
+
+CORRECT BRANCH: Exact branch.
+
+RECOVERED COMMIT: Full SHA.
+
+GAME BUILDS: Pass, fail, or not yet tested.
+
+3D ASSETS: Available or missing.
+
+AGENTS: Operational, requires setup, or unavailable.
+
+PLUGINS AND MCP SERVERS: Verified status.
+
+TRIPO: Connected, needs authentication, or network-blocked.
+
+AUTOSAVE: Actual status.
+
+SIX-SCENE PROGRESS: Current state.
+
+NEXT IMPLEMENTATION TASK: Exactly what you will build.
+
+After that, proceed with the next development task using the working tools.
+
+Don't spend the entire session repeating setup checks that are already proven.
+
+12. FINAL MANDATE
+
+I do not want to restart Bubble Wash Kingdom every time I switch Claude accounts.
+
+RESTORE THE SAME PROJECT, THE SAME 3D ASSETS, THE SAME AGENTS, THE SAME TOOLS AND SPECIALIST WORKFLOWS, AND THE SAME DEVELOPMENT PROGRESS.
+
+Treat the previous account's verified GitHub checkpoint and handoff as the project state to recover.
+
+I want you to continue implementing the six scenes I selected, with the same characters, environment, and playable game systems.
+
+Do not restart.
+
+Do not redesign.
+
+Do not lose the reference artwork.
+
+Do not abandon existing work.
+
+RECOVER THE PROJECT. VERIFY THE ENVIRONMENT. CONTINUE BUILDING WHERE THE PREVIOUS ACCOUNT STOPPED.
+

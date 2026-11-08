@@ -582,6 +582,43 @@ export function mountOpening3D(container, opts = {}) {
     heroFace.mouth.scale.y = 0.4 + open; heroFace.O.scale.set(0.9, 1.15 + surprise * 0.3, 0.35);
   }
 
+
+  // ------------------------------------------------ SIX: the storyboard's props: the pink-and-gold washer (its body, a gold paw medallion, three control
+  // lights and a dial, a visible glass door), the basket's stand, and the blue towel that hides him (a draped cap; a lower cap closes it into a bundle)
+  const six = SIX_ON ? (() => {
+    const P = OPENING3D.porthole, zf = P.z - 0.01, rO = OPENING3D.rOpen;
+    const pinkM = new THREE.MeshStandardMaterial({ color: 0xf27ab8, metalness: 0.5, roughness: 0.28, envMap: env, envMapIntensity: 1.2, emissive: 0x6a1050, emissiveIntensity: 0.32 });
+    washer.g.traverse((o) => { if (o.isMesh && o.material === washer.silver && (o.geometry.type === 'ExtrudeGeometry' || o.geometry instanceof RoundedBoxGeometry)) o.material = pinkM; });
+    washer.crown.visible = false;
+    const med = new THREE.Group(); med.position.copy(washer.crown.position).add(V([0, 0.02, 0.01])); washer.g.add(med);
+    const pawM = new THREE.MeshStandardMaterial({ color: 0xffe08a, metalness: 0.8, roughness: 0.25, envMap: env, emissive: 0x8a5a10, emissiveIntensity: 0.5 });
+    const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.035, 36), washer.goldM); disc.rotation.x = Math.PI / 2; med.add(disc);
+    const pad = new THREE.Mesh(new THREE.SphereGeometry(0.028, 16, 10), pawM); pad.scale.set(1.2, 0.95, 0.5); pad.position.set(0, -0.012, 0.02); med.add(pad);
+    for (const [x, y] of [[-0.034, 0.018], [-0.012, 0.038], [0.012, 0.038], [0.034, 0.018]]) { const t = new THREE.Mesh(new THREE.SphereGeometry(0.011, 10, 8), pawM); t.scale.set(1, 1, 0.5); t.position.set(x, y, 0.02); med.add(t); }
+    const lights6 = [[0.4, 1.6, 1.8], [1.8, 1.5, 0.4], [1.8, 0.5, 1.4]].map((c, i) => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.024, 14, 10), new THREE.MeshBasicMaterial({ color: new THREE.Color(...c) }));
+      m.userData.c = new THREE.Color(...c); m.position.set(P.x - rO - 0.15, P.y + 0.06 - i * 0.1, zf + 0.04); washer.g.add(m);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.03, 0.008, 8, 20), washer.goldM); r.position.copy(m.position); r.position.z -= 0.01; washer.g.add(r); return m; });
+    const dial = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.03, 28), washer.goldM); dial.rotation.x = Math.PI / 2; dial.position.set(P.x - rO - 0.15, P.y + 0.2, zf + 0.03); washer.g.add(dial);
+    washer.glass.material.opacity = 0.2;
+    const hl = new THREE.Mesh(new THREE.TorusGeometry(rO * 0.72, 0.007, 6, 24, 1.1), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.4, 1.5, 1.6), transparent: true, opacity: 0.75 }));
+    hl.position.copy(washer.glass.position).add(V([0, 0, 0.004])); hl.rotation.z = 1.9; washer.door.add(hl);
+    const stand = new THREE.Group(); stand.name = 'six_stand'; scene.add(stand);
+    const st = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.19, 0.84, 32), toon(0xff9fd6, { glow: 0.3 })); st.position.y = 0.42; stand.add(st);
+    for (const y of [0.83, 0.05]) { const b = new THREE.Mesh(new THREE.TorusGeometry(y > 0.5 ? 0.165 : 0.195, 0.014, 8, 36), washer.goldM); b.rotation.x = Math.PI / 2; b.position.y = y; stand.add(b); }
+    // the blue towel: terry texture, folds; the cap is tilted back so its front edge sits above his eyes (he peeks out)
+    const tc = document.createElement('canvas'); tc.width = tc.height = 128; const tg = tc.getContext('2d'); tg.fillStyle = '#7fbcff'; tg.fillRect(0, 0, 128, 128);
+    for (let i = 0; i < 900; i++) { tg.fillStyle = i % 3 ? 'rgba(255,255,255,0.22)' : 'rgba(30,80,170,0.25)'; tg.fillRect((i * 37) % 128, (i * 61 + (i * i) % 13) % 128, 2, 2); }
+    tg.fillStyle = 'rgba(255,255,255,0.55)'; tg.fillRect(0, 104, 128, 8); tg.fillRect(0, 116, 128, 3);   // its woven border
+    const tt = new THREE.CanvasTexture(tc); tt.colorSpace = THREE.SRGBColorSpace; tt.wrapS = tt.wrapT = THREE.RepeatWrapping; tt.repeat.set(3, 1.5);
+    const towelM = new THREE.MeshStandardMaterial({ color: SIX.towel, map: tt, roughness: 0.95, metalness: 0, envMap: env, envMapIntensity: 0.4, emissive: 0x1a4aa0, emissiveIntensity: 0.28, side: THREE.DoubleSide });
+    const fold = (geo, amt) => { const p = geo.attributes.position; for (let i = 0; i < p.count; i++) { const x = p.getX(i), y = p.getY(i), z = p.getZ(i), a = Math.atan2(x, z);
+      const k = 1 + amt * Math.sin(a * 6 + y * 3) * (0.6 - y * 0.5); p.setXYZ(i, x * k, y, z * k); } geo.computeVertexNormals(); return geo; };
+    const towel = new THREE.Group(); towel.name = 'six_towel'; scene.add(towel);
+    const cap = new THREE.Mesh(fold(new THREE.SphereGeometry(1, 48, 24, 0, Math.PI * 2, 0, Math.PI * 0.62), 0.07), towelM); towel.add(cap);
+    const low = new THREE.Mesh(fold(new THREE.SphereGeometry(1.02, 40, 12, 0, Math.PI * 2, Math.PI * 0.6, Math.PI * 0.4), 0.05), towelM); towel.add(low);
+    return { pinkM, lights6, dial, med, stand, towel, cap, low };
+  })() : null;
+
   // ------------------------------------------------ the timeline
   const P = OPENING3D.porthole;
   const blinkAt = (t, every, off) => { const k = ((t + off) % every); return k < 0.13 ? Math.sin(k / 0.13 * Math.PI) : 0; };
@@ -591,6 +628,7 @@ export function mountOpening3D(container, opts = {}) {
   let seq = -1, idle = 0, landed = false, fadeStarted = false, doneCalled = false, sparkCarry = 0;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
   function pose(it, st) {
+    if (six) return poseSix(it, st);
     const s = st < 0 ? -1 : st;
     // ---- basket (both hands on its handles)
     const lift = key(s, [[0, 0], [0.32, 0.6], [0.55, 1.0], [1.3, 0.9], [2.2, 0.2]]);
@@ -687,9 +725,108 @@ export function mountOpening3D(container, opts = {}) {
     const inDrum = camera.position.z < P.z - 0.05;
     room.visible = washer.g.visible = basket.visible = !inDrum; girl.root.visible = !inDrum && !g2.ready; if (g2.ready) g2.root.visible = g2.stool.visible = !inDrum; bubbles.visible = front.visible = foam.visible = !inDrum;
   }
+
+  // ------------------------------------------------ SIX: the storyboard's timeline (seconds after START)
+  const sixC = (() => { const hk = OPENING3D.heroW / 0.34, camZ = V([heroLand.x, heroLand.y + 0.33 * hk, heroLand.z + 1.17 * hk]), tgtZ = V([heroLand.x, heroLand.y + 0.12 * hk, heroLand.z - 2.1 * hk]);
+    // [t, camera, target, fov]: (1) the girl, basket and washer; (2) closer on her lifting the bundle; (3) following it into the drum; (4) back out to see
+    // her shut the door and turn away, then the porthole close-up while the wash begins; (5) through the glass into the drum tunnel, ending at the
+    // game's Tap to Start framing
+    return [[0, [0.04, 1.02, 4.0], [0.04, 1.02, 0.2], 35], [1.2, [-0.02, 1.1, 3.3], [-0.1, 1.08, 0.1], 35], [2.0, [0.22, 1.0, 2.6], [0.2, 0.85, 0.2], 35],
+      [2.7, [0.32, 0.78, 1.65], [P.x, P.y, P.z - 0.3], 36], [3.2, [0.12, 1.02, 2.9], [-0.02, 0.86, 0.2], 35], [3.95, [0.12, 1.0, 2.8], [0.05, 0.84, 0.2], 35],
+      [4.6, [P.x, P.y + 0.03, P.z + 0.95], [P.x, P.y - 0.03, P.z - 0.3], 36], [5.8, [P.x, P.y + 0.02, P.z + 0.85], [P.x, P.y - 0.03, P.z - 0.3], 36],
+      [6.5, [P.x, P.y, P.z - 0.06], [P.x, P.y - 0.05, P.z - 1.4], 46], [7.5, camZ.toArray(), tgtZ.toArray(), 60]]; })();
+  function poseSix(it, st) {
+    const s = st < 0 ? -1 : st, hk = OPENING3D.heroW / 0.34;
+    // ---- the basket rests on its stand; the bundle's path: in the basket -> lifted to her chest -> turned to the washer -> tossed into the drum
+    const bR = V([-0.32, 0.84, 0.08]); basket.position.copy(bR); basket.rotation.set(0.04, 0.3, 0); six.stand.position.set(bR.x, 0, bR.z);
+    const inB = bR.clone().add(V([0.03, 0.2, 0.05])), held = V([-0.16, 1.24, 0.16]), turned = V([-0.04, 1.28, 0.22]), rel = V([0.04, 1.3, 0.3]), apex = V([0.22, 1.42, 0.62]);
+    const inDoor = V([P.x, P.y + 0.02, P.z - 0.05]), floor = V([P.x, P.y - 0.08, P.z - 0.5]), heroSit = V([P.x + 0.02, OPENING3D.waterY + 0.1 * hk + 0.02, P.z - 0.34]);
+    let bp;
+    if (s < 0.45) bp = inB.clone();
+    else if (s < 1.05) bp = inB.clone().lerp(held, sm(0.45, 1.05, s));
+    else if (s < 1.6) bp = held.clone().lerp(turned, sm(1.05, 1.5, s)).lerp(rel, sm(1.45, 1.6, s));
+    else if (s < 2.3) { const x = clamp01((s - 1.6) / 0.7); bp = bez(rel, apex, inDoor, 0.45 * x * x * (3 - 2 * x) + 0.55 * x); }
+    else bp = inDoor.clone().lerp(floor, sm(2.3, 2.7, s));
+    // ---- the girl: looks at the washer the whole time (NEVER at him), lifts the bundle, turns, tosses it in, pushes the door shut, turns away
+    const turn = key(s, [[-1, 0.05], [0, 0.05], [1.0, 0.1], [1.5, 0.45], [2.2, 0.5], [3.3, 0.55], [3.9, 0.35], [4.6, -0.6]]);
+    const headYaw = key(s, [[-1, 0.6], [0, 0.6], [1.5, 0.75], [2.4, 0.7], [3.9, 0.6], [4.6, -0.75]]);
+    const headDown = key(s, [[-1, 0.02], [0.45, 0.12], [1.0, 0.0], [2.0, -0.05]]);
+    const lean = key(s, [[-1, 0], [0.45, 0.12], [1.0, -0.05], [1.6, 0.1], [1.8, 0.2], [2.4, 0.05], [3.6, 0.15], [4.2, 0]]);
+    const blink = blinkAt(it, 3.1, 0.4), hum = 0.03 * Math.sin(it * 1.4);
+    basket.updateMatrixWorld(true);
+    const rimR = V([0.17, 0.19, 0.02]).applyMatrix4(basket.matrixWorld), rimL = V([-0.17, 0.19, 0.0]).applyMatrix4(basket.matrixWorld), pat = 0.012 * Math.sin(it * 3.1);
+    const targets = (cw) => {   // [the hand on the washer's side (screen right), the other]
+      const rest = [cw.clone().add(V([0.16, -0.42, 0.12])), cw.clone().add(V([-0.2, -0.42, 0.1]))], fwd = [cw.clone().add(V([0.42, -0.02, 0.42])), cw.clone().add(V([0.1, -0.12, 0.38]))];
+      if (s < 0.3) return [rimR.clone().add(V([0, pat, 0])), rimL.clone().add(V([0, -pat, 0]))];
+      if (s < 1.75) { const k = sm(0.3, 0.5, s); return [rimR.clone().lerp(bp.clone().add(V([0.15, 0, 0])), k), rimL.clone().lerp(bp.clone().add(V([-0.15, 0, 0])), k)]; }
+      if (s < 2.3) { const k = sm(1.75, 2.1, s); return [rel.clone().add(V([0.14, 0, 0])).lerp(fwd[0], k), rel.clone().add(V([-0.14, 0, 0])).lerp(fwd[1], k)]; }
+      if (s < 3.25) { const k = sm(2.3, 2.9, s); return [fwd[0].lerp(rest[0], k), fwd[1].lerp(rest[1], k)]; }
+      if (s < 4.1) { const k = sm(3.25, 3.65, s), b = sm(3.85, 4.1, s); return [rest[0].clone().lerp(cw.clone().add(V([0.5, -0.12, 0.48])), k).lerp(rest[0], b), rest[1]]; }   // the push that shuts the door
+      return rest;
+    };
+    if (g2.ready) {
+      const B = g2.B; for (const b of Object.values(B)) b.quaternion.copy(b.userData.rest);
+      g2.root.position.y = GIRL2.pos[1] + 0.006 * Math.sin(it * 2.2); g2.root.updateMatrixWorld(true);
+      rotateBoneWorld(B.hips, V([0, 0, 1]), 0.03 * Math.sin(it * 1.1));
+      rotateBoneWorld(B.spine, V([1, 0, 0]), lean * 0.8 + 0.03 * Math.sin(it * 1.3));
+      rotateBoneWorld(B.chest, V([0, 1, 0]), turn);
+      rotateBoneWorld(B.head, V([0, 1, 0]), headYaw * 0.8 + hum);
+      rotateBoneWorld(B.head, V([1, 0, 0]), headDown * 0.8 + 0.03 * Math.sin(it * 0.8));
+      rotateBoneWorld(B.head, V([0, 0, 1]), -0.06 + 0.06 * Math.sin(it * 0.7));
+      const cw = B.chest.getWorldPosition(new THREE.Vector3()), [tR, tL] = targets(cw);
+      reachBones(B.upperarmL, B.forearmL, B.handL, tR, cw.clone().add(V([0.45, -0.35, -0.15])));
+      reachBones(B.upperarmR, B.forearmR, B.handR, tL, cw.clone().add(V([-0.45, -0.35, -0.15])));
+      for (const l of g2.lids) { l.visible = blink > 0.04; l.scale.set(1.08, 0.04 + blink * 1.02, 0.5); }
+    } else {
+      girl.hips.rotation.z = 0.03 * Math.sin(it * 1.1); girl.spine.rotation.set(lean, turn, 0.04 * Math.sin(it * 0.9)); girl.head.rotation.set(headDown, headYaw + hum, -0.06);
+      girl.setFace({ open: 0.6, smile: 1, O: 0, lid: blink, browUp: 0.2, look: [0.6, -0.1] });
+      girl.root.updateMatrixWorld(true); const cw = girl.chest.getWorldPosition(new THREE.Vector3()), [tR, tL] = targets(cw);
+      reach(girl.armR, tR, cw.clone().add(V([0.4, -0.3, -0.1]))); reach(girl.armL, tL, cw.clone().add(V([-0.4, -0.3, -0.1])));
+    }
+    // ---- the pink character: hidden under the towel and peeking; caught in the bundle; tumbling into the drum (growing to his game size); sitting
+    // in the drum looking out (surprised, then delighted as the magic water rises); carried into the tunnel, turning to face into it
+    let hp, scl = SIX.inBasket, surprise = 0; const rot = new THREE.Euler();
+    if (s < 0) { hp = inB.clone().add(V([0, 0.012 * Math.abs(Math.sin(it * 1.6)), 0])); rot.set(0, -0.15 + 0.1 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); }
+    else if (s < 2.4) { hp = bp.clone(); surprise = sm(0.5, 0.65, s); rot.set(0.15 * Math.sin(s * 5), -0.2, 0.1 * Math.sin(s * 4)); if (s > 1.6) rot.set(-(s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
+    else if (s < 3.0) { const k = sm(2.4, 3.0, s); hp = bp.clone().lerp(heroSit, k); hp.y += Math.sin(k * Math.PI) * 0.06; rot.set(-(1 - k) * 4.2 - 4.8, (1 - k) * 0.8, 0); scl += (1 - scl) * k; surprise = 1; }
+    else if (s < 5.9) { const wet = sm(4.4, 5.2, s); hp = heroSit.clone(); hp.y += wet * 0.03 + wet * 0.014 * Math.sin((s - 4.4) * 6.5);
+      rot.set(0.04 * Math.sin(s * 3), 0.35 * Math.sin((s - 3) * 1.6) * (s < 4.6 ? 1 : 0.5), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 4.7 ? 1 : 0; }
+    else { const k = sm(5.9, 7.2, s), tn = sm(5.9, 6.5, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 5.9) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
+    hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
+    heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) });
+    if (!landed && s >= 4.75) { landed = true; for (let i = 0; i < 70; i++) { const a = rnd() * Math.PI * 2, v = 0.3 + rnd() * 0.7; splash.emit(V([hp.x + Math.cos(a) * 0.12, OPENING3D.waterY + 0.02, hp.z + Math.sin(a) * 0.1]), V([Math.cos(a) * v * 0.5, 0.6 + rnd() * 0.9, Math.sin(a) * v * 0.3]), 0.5 + rnd() * 0.4); } vortex.WU.uHit.value.set(hp.x - P.x, 1, P.z - hp.z); }
+    if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
+    // ---- the towel: over him in the basket, wrapped into the bundle, then falling off him in the drum and settling on its floor
+    const T = six.towel, rT = OPENING3D.heroW * SIX.inBasket * 0.64;
+    T.visible = s < 6.3;
+    if (s < 2.45) { const wrap = sm(0.5, 1.0, s); T.position.copy(s < 0 ? inB : bp).add(V([0, 0.03, 0])); T.rotation.set(-0.6, 0, 0); T.scale.setScalar(rT * (1 + wrap * 0.1)); six.low.scale.setScalar(Math.max(0.001, wrap));
+      if (s > 1.6) T.rotation.set(-0.6 - (s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
+    else { const k = sm(2.45, 3.1, s); T.position.copy(bp).add(V([-0.12 * k, -0.14 * k, -0.08 * k])); T.rotation.set(-1.4 - k * 0.6, 0.5, 0.3 * k); T.scale.set(rT, rT * (1 - 0.55 * k), rT); six.low.scale.setScalar(Math.max(0.001, 1 - k)); }
+    // ---- the rest of the laundry follows the bundle in
+    laundry.forEach((L, i) => { const t0 = 1.62 + i * 0.05, t1 = t0 + 0.65, k = (s - t0) / (t1 - t0); L.o.visible = s >= t0 && s < t1 + 0.9; if (!L.o.visible) return;
+      const from = rel.clone().add(V([(i - 2) * 0.05, -0.04 * i, 0])), p = k <= 1 ? bez(from, L.apex, L.to, clamp01(k)) : L.to.clone().add(V([0, 0, -(k - 1) * 1.3]));
+      L.o.position.copy(p); L.o.rotation.set(L.spin.x * s, L.spin.y * s, L.spin.z * s); L.o.scale.setScalar(L.o.userData.k * (k > 1 ? Math.max(0.01, 1 - (k - 1) * 0.6) : 1)); });
+    // ---- the washer: the door swings shut (with a little bounce), its lights come on, the water floods in round him and starts to flow
+    const close = sm(3.3, 3.85, s), bounce = s > 3.85 ? 0.08 * Math.exp(-(s - 3.85) * 9) * Math.sin((s - 3.85) * 30) : 0;
+    washer.door.rotation.y = 1.95 * (1 - close) + bounce;
+    const on = sm(4.05, 4.4, s);
+    six.lights6.forEach((l, i) => l.material.color.copy(l.userData.c).multiplyScalar(0.3 + on * (1.0 + 0.3 * Math.sin(it * 5 + i * 2))));
+    six.dial.rotation.y = on * (s - 4.05) * 3;
+    glowL.intensity = 2.0 + on * 4.0 + 0.6 * Math.sin(it * 2.0);
+    vortex.U.uTime.value = it; vortex.U.uGlow.value = 0.55 + 0.45 * on; vortex.U.uFlow.value = s > 0 ? Math.max(0, s - 4.05) * on * 1.8 + sm(5.9, 7.5, s) * 6 : 0;
+    vortex.WU.uFrom.value = s < 4.3 ? 9.5 : 9.5 * (1 - sm(4.3, 5.1, s));
+    // ---- the camera
+    if (s < 0) { camPos.set(0.04 + 0.02 * Math.sin(it * 0.3), 1.02 + 0.01 * Math.sin(it * 0.4), 4.0); camTgt.set(0.04, 1.02, 0.2); camera.fov = 35; }
+    else { camPos.fromArray(key(s, sixC.map(([t, c]) => [t, c]))); camTgt.fromArray(key(s, sixC.map(([t, , g]) => [t, g]))); camera.fov = key(s, sixC.map(([t, , , f]) => [t, f]));
+      if (s > 3.85 && s < 4.1) camPos.y += 0.006 * Math.sin((s - 3.85) * 60) * (1 - sm(3.85, 4.1, s)); }   // the door's thunk
+    camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix();
+    const inDrum = camera.position.z < P.z - 0.05;
+    room.visible = washer.g.visible = basket.visible = six.stand.visible = !inDrum; if (inDrum) T.visible = false;
+    girl.root.visible = !inDrum && !g2.ready; if (g2.ready) g2.root.visible = g2.stool.visible = !inDrum; bubbles.visible = front.visible = foam.visible = !inDrum;
+  }
   function stepFx(dt, s) {
     sparks.update(dt, 0.15); splash.update(dt, 2.6);
-    if (s > 0.5 && s < 2.4) { sparkCarry += dt * 70; for (; sparkCarry >= 1; sparkCarry--) sparks.emit(hero.position.clone().add(V([(rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1])), V([(rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2]), 0.5 + rnd() * 0.4); }
+    if (s > (six ? 1.6 : 0.5) && s < 2.4) { sparkCarry += dt * 70; for (; sparkCarry >= 1; sparkCarry--) sparks.emit(hero.position.clone().add(V([(rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1])), V([(rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2]), 0.5 + rnd() * 0.4); }
     const M = new THREE.Matrix4(), Q = new THREE.Quaternion();
     bub.forEach((b, i) => { const y = b.rise ? (b.p.y + ((idle * b.rise + b.ph * 0.2) % 1.8)) : b.p.y + 0.01 * Math.sin(idle * 1.5 + b.ph); const s2 = b.s * (1 + 0.04 * Math.sin(idle * 3 + b.ph));
       M.compose(V([b.p.x + 0.02 * Math.sin(idle + b.ph), y, b.p.z]), Q, V([s2, s2, s2])); bubbles.setMatrixAt(i, M); });
@@ -702,6 +839,7 @@ export function mountOpening3D(container, opts = {}) {
     // the toss arrow: shown while waiting (pulsing), gone as the toss begins
     const ak = s < 0 ? 1 : 1 - sm(0.0, 0.35, s); arrow.visible = ak > 0.01;
     for (const m of arrow.userData.mats) m.opacity = ak * (0.85 + 0.15 * Math.sin(idle * 4));
+    if (six) arrow.visible = false;   // (six: no toss arrow in the storyboard)
   }
   const resize = () => { const w = container.clientWidth || window.innerWidth, h = container.clientHeight || window.innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
   resize(); window.addEventListener('resize', resize);
