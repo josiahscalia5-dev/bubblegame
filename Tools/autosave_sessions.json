@@ -53,5 +53,12 @@
     "title": "Session 57091b57 (8 November, account transfer): autosave verification and Tripo asset pass on branch ccr-b67aeffb-d94mmq",
     "url": "https://claude.ai/code/session_013kxR3NgrYJJC9HLHZ7n41J",
     "parent": "ccr-50c66592-kcnqoy"
+  },
+  "ce30359f-7fd9-55e1-9a74-76ff9b96318f": {
+    "chat": "ChatHistory/2026-11-08_session_ce30359f.md",
+    "agents": "ChatHistory/2026-11-08_session_ce30359f_design_agent_transcripts.md",
+    "title": "Session ce30359f (8 November, account transfer): full agent, plugin and tool inventory and restoration on branch ccr-8cd911d8-0m96gr",
+    "url": "https://claude.ai/code/session_01CUAtW4nh4Z5qW7Dm1JTSCB",
+    "parent": "ccr-b67aeffb-d94mmq"
   }
 }

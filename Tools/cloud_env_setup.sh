@@ -84,7 +84,9 @@ else
   # (7 November, the user's request: a 10-minute limit, so a fresh session still starts if this optional download stalls;
   # it hung for over an hour once. On a stop, the next run of this script tries again: the check above fails.)
   if [ -n "$UV" ]; then
-    "$UV" venv -q --python "$(command -v python3)" "$T/metrics" && timeout "${BW_METRICS_TIMEOUT:-600}" "$UV" pip install -q --python "$T/metrics/bin/python" \
+    # (8 November, session ce30359f: --allow-existing, so a run stopped by the time limit, which leaves an empty venv behind, is retried
+    # by the next run instead of failing at once on "A virtual environment already exists")
+    "$UV" venv -q --allow-existing --python "$(command -v python3)" "$T/metrics" && timeout "${BW_METRICS_TIMEOUT:-600}" "$UV" pip install -q --python "$T/metrics/bin/python" \
       torch torchvision lpips optuna scikit-image opencv-python-headless pillow scipy \
       && timeout 300 "$T/metrics/bin/python" -c "import lpips; lpips.LPIPS(net='alex', verbose=False)" > /dev/null 2>&1 && echo "  installed" \
       || fail "Python metrics tools (stopped or failed within the ${BW_METRICS_TIMEOUT:-600} s limit; optional: run bash Tools/cloud_env_setup.sh again later)"
