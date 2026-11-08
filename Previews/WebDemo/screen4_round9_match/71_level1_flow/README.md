@@ -5,7 +5,9 @@
 - Switch: `index.html?s3=intunnel,structmatch,home,level1` (the full app). `flow` is on by default with `level1`; `,noflow` draws the previous
   Level 1 exactly (proven below). The accepted `?s3=intunnel` and every older switch are unchanged (proven below).
 - Branch: `ccr-50c66592-kcnqoy` (this session's own branch; it contains all of `claude/bubble-wash-kingdom-continue-z9nmm1` and
-  `ccr-76d4bc77-rqhl8o`). Build tested here: `game.bundle.js` md5 `4d46f2d2ff79f276ff48113aae0d2d0d` (first pushed in autosave commit `dd84a4f`).
+  `ccr-76d4bc77-rqhl8o`). Final build tested here: `game.bundle.js` md5 `8363541c3cff0474bc2bbc3cdcf97732` (source pushed in `ee65035`). An earlier flow build
+  (`4d46f2d2`) parked a drum sock that is visible at Tap to Start (20,827 px of the canvas differed there); the final build keeps it, and its Tap to
+  Start is 0 px against the previous Level 1.
 - The user's references: `Design/ReferencePacks/2026-11-08_Level1_Blueprint_and_Strict_Prompt_from_user/` (the strict prompt, the annotated
   10-panel blueprint, the generated preview, the original 12-screen board). Visual authority: the ORIGINAL approved Screen 4 only.
 
@@ -14,20 +16,20 @@
 | Beat (board panel) | What is built | Tested result |
 |---|---|---|
 | 01 Washer entry | the existing opening is kept: Home, the rigged Tripo girl, the Laundry Toss, the mascot through the porthole, the camera into the tunnel; then "Let's go! Into the washing machine!" as the run starts | recording frames 0-190; banner in `frames/upper_route/upper_u003.5.jpg` |
-| 02 Start swimming, rescue 5 lost socks | the sock panel 0/5; banner "Rescue 5 lost socks!" after the drum | 0/5 at Tap to Start, 1/5 at u 3, 2/5 at u 6.6 |
-| 03 Jump to side paths | **a real raised side path**: a bounce pad in the left lane launches her; a left swipe in the air lands her on a golden-rimmed water flume 0.9 m above the main water (u 62-91) with its own coins, sock and gem; it ramps back into the main water. From the water she cannot get on ("Jump first!") | upper route: swipe at u 56.6, riding it at u 66-78 at lift 0.90, its sock at u 77.4 (3/5) and its gem; blocked route: the swipe from the water refused (lane 0 stays 0) |
-| 04 Drop to a lower path | **a real lower path**: at u 112 the middle lane falls 1.2 m down a chute into a channel between gold-railed water walls; the side lanes stay up on ledges (each with a soap bar to jump and its own sock); from the lower path she cannot climb back ("Too high!"); from a ledge she can drop in; the routes rejoin at u 135 | upper route: lower path u 113.5-135, its sock at u 126.6; ledge route: on the left ledge at lift 1.25, bar jumped, its sock at u 123.5; blocked route: lower path -> ledge refused (lane 1 stays 1) |
+| 02 Start swimming, rescue 5 lost socks | the sock panel 0/5; banner "Rescue 5 lost socks!" after the drum | 0/5 at Tap to Start; 1/5, 2/5, 3/5 at u 3, 6.6, 21.5 (the drum's three socks in the accepted picture) |
+| 03 Jump to side paths | **a real raised side path**: a bounce pad in the left lane launches her; a left swipe in the air lands her on a golden-rimmed water flume 0.9 m above the main water (u 62-91) with its own coin arc and the special gem; it ramps back into the main water. From the water she cannot get on ("Jump first!") | upper route: swipe at u 56.6, riding it at u 66-78 at lift 0.90, its gem collected; blocked route: the swipe from the water refused (lane 0 stays 0) |
+| 04 Drop to a lower path | **a real lower path**: at u 112 the middle lane falls 1.2 m down a chute into a channel between gold-railed water walls; the side lanes stay up on ledges (each with a soap bar to jump and its own sock); from the lower path she cannot climb back ("Too high!"); from a ledge she can drop in; the routes rejoin at u 135 | upper route: lower path u 113.5-135, its sock at u 126.6 (4/5); ledge route: on the left ledge at lift 1.25, bar jumped, its sock (4/5); blocked route: lower path -> ledge refused (lane 1 stays 1) |
 | 05 Spinning brushes | the brush section moved to its board place (u 141-186); a brush in her lane knocks her (a heart, slowed, middle lane) | knocks logged at brushes in her lane (`route_test_*`), none when she dodges |
-| 06 Coins, gems, socks | the treasure run (u 186-212), coin arcs and a gem | coins 110-130 per run (goal 50), gems 1-2 (goal 1) |
+| 06 Coins, gems, socks | the treasure run (u 186-212), coin arcs and a gem; the course's coins tinted toward the original's lemon gold (their own copy of the coin material; the drum's coins untouched) | coins 110-130 per run (goal 50), gems 1-2 (goal 1); coin colour at u 197 (median of gold pixels, 412 x 915): `#f7ad41` before, `#f6c63b` after; the original Screen 4's coins `#f6c426` |
 | 07 Avoid enemies | grime balls (board 07's bigger navy ball with pink eyes), some patrolling across lanes; a tap-spin, Turbo Spin or Bubble Blast pops one (+5 coins), otherwise it knocks her | 2-3 popped per run by tap-spins; one collision traced frame by frame (her in lane 2 meeting the lane-2 ball at u 241: heart lost, knocked to lane 1) |
 | 08 Bubble Kingdom | the existing wet chamber (from session `8140e507`): the drum widens into one wet washer chamber with the castle seen through a glowing portal; never a dry road | banners and frames at u 258 and 285 |
-| 09 Rescue progress | banners "3/5 socks rescued!", "4/5 ... The last one is in the Kingdom", "All 5 socks rescued!"; the last sock is in the chamber (u 304) | 5/5 at u 304 on every route |
-| 10 Level Complete | the board's card: stars (one per goal met), the three goals (5 socks, 50 coins, 1 special gem), the rewards (+300 coins, +10 gems, +5 socks) added to the game's totals, "Play Level 1 again" | 3 stars, socks 5/5, coins 50/50, gem 1/1 on the upper, ledge and blocked routes; the coin total rises by 300 and gems by 10 |
+| 09 Rescue progress | banners "3/5 socks rescued!", "4/5 ... The last one is in the Kingdom", "All 5 socks rescued!"; the last sock is in the chamber (u 304), so 5/5 is never reached before the Kingdom | 4/5 after the drop, 5/5 at u 304 on every route |
+| 10 Level Complete | the board's card above her: stars (one per goal met), the three goals (5 socks, 50 coins, 1 special gem), the rewards (+300 coins, +10 gems, +5 socks) added to the game's totals; "Next Level" says "Level 2, Soap Lagoon, is coming soon!" (no fake level), "Play Level 1 again" restarts; she turns to face the player and bounces on the water | 3 stars, socks 5/5, coins 50/50, gem 1/1 on the upper, ledge and blocked routes; the coin total rises by 300 and gems by 10 |
 
-**Exactly five lost socks on any route.** Before, the Screen 4 drum alone held five socks, so the goal was complete before Level 1 began
-(the tester's baseline: 5/5 at u 287 with six pickups). Now the drum keeps its first two (the ones in the accepted picture); its three far
-socks (u 21.8, 28.6, 33.0) are parked: kept in the game's list so its seeded random sequence is unchanged. Each branch has one sock on
-each of its routes, and the last is in the Kingdom.
+**Exactly five lost socks on any route, the fifth near the end.** Before, the Screen 4 drum alone held five socks and the course five more
+(the tester's baseline: 5/5 at u 287, six pickups). Now the drum keeps the three in the accepted Tap to Start picture (u 3.2, 7.0, 21.8); its two
+far socks (u 28.6, 33.0, not in view) are parked: kept in the game's list so its seeded random sequence is unchanged. The drop has one sock
+on each route (4/5) and the last is in the Kingdom (5/5).
 
 ## Proofs that nothing older changed (WebGL canvas, seed 7, 768 x 1536; `proofs/identity.txt`, script `scripts/identity.sh`)
 (pending)
