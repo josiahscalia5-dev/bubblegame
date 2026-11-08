@@ -1,8 +1,10 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first: its section 000 (8 November, about 13:30 UTC, session
-`b0abcf95`) is the current state; continue on branch `ccr-50c66592-kcnqoy` (it contains all of
-`claude/bubble-wash-kingdom-continue-z9nmm1` and `ccr-76d4bc77-rqhl8o`; merge the newest of both first, normal merges only).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
+**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first: its section 0000 (8 November, about 14:50 UTC, session
+`57091b57`, branch `ccr-b67aeffb-d94mmq`) and section 000 (13:30 UTC, session `b0abcf95`) are the current state. Two sessions were live
+at once: `b0abcf95` on `ccr-50c66592-kcnqoy` (Level 1 flow, roof2, finale2) and `57091b57` on `ccr-b67aeffb-d94mmq` (save system,
+Tripo). Check both heads with `git ls-remote`; continue from the one that contains the other, else merge both into your own branch
+(it contains all of `claude/bubble-wash-kingdom-continue-z9nmm1` and `ccr-76d4bc77-rqhl8o`; normal merges only, never force).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
 On a different Claude account, read `START_HERE_NEW_CLAUDE_ACCOUNT.md`, then `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (7 November;
 it replaces `ACCOUNT_SWITCH_HANDOFF.md`): the branch, the accepted checkpoint, the agents, the plugin and environment
 inventory, how to restore and verify (`bash Tools/verify_restore.sh --build`), and the continuation prompt. Before

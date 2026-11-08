@@ -3,6 +3,19 @@
 Two Claude sessions work on the SAME game. To avoid conflicting edits, each session edits only its own files.
 Neither session resets, overwrites or force-pushes either branch.
 
+## UPDATE 8 November, about 14:45 UTC: session `57091b57` (the user's other account), branch `ccr-b67aeffb-d94mmq`
+Checked at its start (14:18 UTC): session `b0abcf95` is STILL LIVE on `ccr-50c66592-kcnqoy` (its autosave pushed `fc57eba2` at 14:17:45,
+Level 1 route frames from its running jobs). So this session never writes `ccr-50c66592-kcnqoy`: it works on its own branch
+`ccr-b67aeffb-d94mmq`, which contains all of `ccr-50c66592-kcnqoy` up to `fc57eba2` (normal merge `24ca897b`); its autosave reports each
+round whether `ccr-50c66592-kcnqoy` has commits not merged here yet (merge by hand, normal merges only). Edited by this session:
+- the save system: `Tools/autosave.sh` (the parent-branch report), `Tools/save_now.sh` (one message), `Tools/save_guard.py` (files over
+  95 MB held back), `.claude/hooks/session-start.sh` (pins the branch, passes the parent), `Tools/autosave_sessions.json` (its entry);
+- new only: `WebDemo/src/tripo_l1.js` (`tripo1`, opt-in), `WebDemo/tools/tripo/`, `WebDemo/models/l1_enemy_tripo.glb`,
+  `Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/`, `Previews/WebDemo/screen4_round9_match/72_tripo1_enemy/`;
+- `WebDemo/src/game.js`: ONE import line and ONE call after `buildLevel1(...)`, both inert without `tripo1`.
+It does NOT edit `level1.js`, `level1_flow.js`, `world.js`, `opening3d.js` (session `b0abcf95`'s roof2 / finale2 / flow work).
+On merging `ccr-50c66592-kcnqoy` again: keep both sides of `game.js`; rebuild `game.bundle.js` (never hand-merge it).
+
 ## UPDATE 8 November, about 12:50 UTC: session `b0abcf95` (the user's new account), branch `ccr-50c66592-kcnqoy`
 The user moved to another Claude account and asked this session to continue from the latest work and to build the 10-beat Level 1
 gameplay (`Design/ReferencePacks/2026-11-08_Level1_Blueprint_and_Strict_Prompt_from_user/`), and: "If another Claude session is
