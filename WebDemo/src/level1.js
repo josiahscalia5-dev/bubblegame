@@ -41,7 +41,12 @@ export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), open
   // Complete comes while she floats in the chamber. Also the hand-off out of the Screen 4 drum: the drum's far-end light planes
   // (game.js exitLight, one an opaque painted vortex) shrink away before she reaches them, instead of hiding her for 0.3 s.
   // ,nowet draws the previous level1 exactly
-  wet: LEVEL1_ON && !LIST.includes('nowet') };
+  wet: LEVEL1_ON && !LIST.includes('nowet'),
+  // port (8 November, session 8140e507, the user's board 01: "a real hollow circular porthole with the blue interior visible"):
+  // in the opening, the washer's inside water starts at its far end while waiting (so the porthole shows the glowing blue spiral,
+  // not the water's flat near edge) and floods in as the toss begins; its foam a few small pale-aqua bits at the lower left
+  // (the approved art's), not a white mass. ,noport draws the previous opening exactly
+  port: LEVEL1_ON && !LIST.includes('noport') };
 const WET = LEVEL1_PARTS.wet;
 
 // The course (u = metres along the path; the Screen 4 drum is 3.9-37.2). Turns are radians per metre (+ to screen-left),
