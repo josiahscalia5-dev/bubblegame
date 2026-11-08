@@ -86,7 +86,7 @@ export const COURSE = {
   // the drum's far-end light planes shrink away over exit (her u)
   chamber: { u0: 266, u1: 292, R: 5.6, end: 366, portal: { r: 3.1, h: 2.1 }, lagoon: 14, castle: { u: 410, size: 19, h: -0.3 },
     islands: [[384, -10, 0.4, 3.6], [392, 11, 0.6, 4.2], [402, -15, 0.8, 4.6], [414, 14, 0.5, 4.0], [424, -7, 1.0, 3.4]],
-    brushes: [[296, 1], [306, -1], [318, 1], [330, -1], [348, 1], [356, -1]], exit: [27, 39.5] },
+    brushes: [[296, 1], [306, -1], [318, 1], [330, -1], [348, 1], [356, -1]], exit: [30.5, 35.5] },
 };
 
 const f4 = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
@@ -221,8 +221,11 @@ void main() {
 // and its far sheen use each point's own half width, vHalf)
 const WATER_VERT_WET = WATER_VERT.replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'attribute float aHalf; varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
   .replace('vXU = aXU; float h', 'vXU = aXU; vHalf = aHalf; float h');
+// (the waves' crest-and-trough shade fades out with distance: over the chamber's long, grazing far water it aliased into thin
+// dark lines across it)
 const waterFragWet = () => waterFrag().replace(' uniform float uHalf;', '').replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
-  .replaceAll('uHalf', 'vHalf');
+  .replaceAll('uHalf', 'vHalf')
+  .replace('col *= 0.86 + 1.6 * clamp(vH, -0.05, 0.12);', 'col *= mix(0.86 + 1.6 * clamp(vH, -0.05, 0.12), 1.0, smoothstep(9.0, 26.0, length(vW - uCam)));');
 
 // ---------------------------------------------------------------- the Bubble Kingdom's sky (follows the camera)
 const SKY_FRAG = /* glsl */ `
@@ -307,7 +310,7 @@ export function buildLevel1(ctx) {
     const wetWaterMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uRider: riderU }, vertexShader: WATER_VERT_WET, fragmentShader: waterFragWet() });
     const wHalf = (u) => (u <= K.end ? halfAt(u) : halfAt(K.end) + (K.lagoon - halfAt(K.end)) * smooth(K.end, K.end + 12, u));
     const wetChunk = (u0, u1) => {
-      const hmax = Math.max(wHalf(u0), wHalf(u1)), nx = Math.min(120, Math.max(28, Math.ceil(2 * hmax / 0.16))), rows = Math.max(2, Math.ceil((u1 - u0) / 0.4) + 1), cols = nx + 1;
+      const nx = 96, rows = Math.max(2, Math.ceil((u1 - u0) / 0.4) + 1), cols = nx + 1;   // (one column count for every chunk: their edges meet exactly, no cracks)
       const pos = new Float32Array(rows * cols * 3), xu = new Float32Array(rows * cols * 2), up = new Float32Array(rows * cols * 3), hf = new Float32Array(rows * cols), idx = [];
       for (let i = 0; i < rows; i++) {
         const u = u0 + (u1 - u0) * i / (rows - 1), half = wHalf(u); TR.frame(u, F);
@@ -499,9 +502,10 @@ export function buildLevel1(ctx) {
   // the finish: a gold and pink arch with a ribbon
   const finish = new THREE.Group(); finish.name = 'l1Finish';
   {
-    const archG = new THREE.TorusGeometry(2.0, 0.16, 12, 64, Math.PI); const arch = new THREE.Mesh(archG, goldM); arch.position.y = 0.1; finish.add(arch);
-    const ribbon = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 0.42), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.4, 0.45, 1.0), side: THREE.DoubleSide })); ribbon.position.y = 2.0; finish.add(ribbon);
-    for (const s of [-1, 1]) { const st = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.5, 0.6) })); st.position.set(s * 2.0, 0.2, 0); finish.add(st); }
+    const fr = WET ? 3.4 : 2.0;   // (wet: an arch to the chamber's size, its ribbon above the camera's line of sight at the finish)
+    const archG = new THREE.TorusGeometry(fr, WET ? 0.2 : 0.16, 12, 64, Math.PI); const arch = new THREE.Mesh(archG, goldM); arch.position.y = 0.1; finish.add(arch);
+    const ribbon = new THREE.Mesh(new THREE.PlaneGeometry(fr * 1.6, 0.42), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.4, 0.45, 1.0), side: THREE.DoubleSide })); ribbon.position.y = fr; finish.add(ribbon);
+    for (const s of [-1, 1]) { const st = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.5, 0.6) })); st.position.set(s * fr, 0.2, 0); finish.add(st); }
     TR.map(0, 0, C.finish, finish.position); TR.quaternion(C.finish, finish.quaternion); root.add(finish);
   }
   report.parts.push('kingdom');
