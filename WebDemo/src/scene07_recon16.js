@@ -64,10 +64,10 @@ export const RECON16 = {
   towers: [[239.6, -3.35, 0.72, 2.8, 'pink'], [244.2, -3.4, 0.9, 3.4, 'mint'], [249.5, -3.2, 0.75, 3.0, 'pink']],   // [u, x, radius, height, dome] behind the right wall
   // the tiers of machinery beyond the drum on the ledge (master: the green-topped machine at (0.31, 0.29), which this low camera puts ~5.3 m up)
   leftTiers: [[242.6, 2.85, 0.72, 3.3, 'mint'], [245.8, 3.15, 0.8, 2.6, 'pink'], [248.6, 2.85, 0.66, 3.1, 'mint'], [251.4, 3.2, 0.75, 2.4, 'pink']],
-  gear: { u: 237, x: -2.5, h: 4.15, R: 0.75 },   // (art director, v3: saturated cobalt with a cyan rim, centre ~(0.92, 0.27), clear of the mission panel)
+  gear: { u: 237, x: -2.7, h: 4.3, R: 0.9 },   // (v5: larger, saturated cobalt, centre ~(0.93, 0.26), below the mission panel)   // (art director, v3: saturated cobalt with a cyan rim, centre ~(0.92, 0.27), clear of the mission panel)
   arches: [],   // (v1-v2 had three; with the portal they read as a tunnel of rings, the look the user rejected)
   endWall: { gap: 3.05, ds: 0.72 },   // machinery on the far end wall round the opening (radius gap m round its centre)
-  glow: { r: 4.6, opacity: 1.0, du: 3.0, fade: [8, 16], rgb: [232, 246, 255] },   // (v4: larger: the luminous far end once the tube's hoops are gone)   // (v3: the master's pale cyan-white far glow)   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
+  glow: { r: 6.0, opacity: 1.0, du: 3.5, fade: [8, 16], rgb: [236, 248, 255] },   // (v5: larger)   // (v4: larger: the luminous far end once the tube's hoops are gone)   // (v3: the master's pale cyan-white far glow)   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
 };
 // MACH16 placements, fitted with the projection grid of the real camera at the u 229.5 checkpoint (77_.../scripts): the screen positions of
@@ -102,9 +102,18 @@ export const MACH16 = {
     [250.4, -0.1, 6.9, [['g', 0.5]]],
     [242.2, 0.4, 6.7, [['t', 1.0, 0.55, 'blue', 'pink']]],
     [253.2, 1.4, 6.2, [['g', 0.55]]],
+    // v5 (the user's v4 comparison: the upper middle must be dense machinery): a second layer in the gaps the master fills (grid-checked rects)
+    [241.5, 1.3, 7.15, [['w', 1.1, 1.3, 'blue', 'w']]], [243.6, 0.2, 7.4, [['t', 0.6, 0.6, 'gold2', 'pink']]], [245.8, 1.6, 6.75, [['g', 0.55]]],
+    [242.4, -1.4, 7.4, [['w', 1.0, 1.2, 'pink', 'c']]], [251.6, 1.35, 3.85, [['w', 1.1, 1.0, 'cyan', 'w']]], [252.2, -1.2, 4.0, [['t', 0.6, 0.5, 'blue', 'gold']]],
+    [248.0, -0.6, 7.1, [['g', 0.5]]], [246.2, -2.3, 6.8, [['t', 0.7, 0.55, 'mint', 'pink']]], [250.6, 2.0, 6.1, [['w', 1.0, 1.0, 'pink', 'w']]],
+    [253.4, 0.0, 4.8, [['w', 0.8, 1.2, 'blue', 'w']]],
   ],
-  far: { u: 253.45, arch: [2.72, 3.4], door: { h: 5.3, r: 0.95 },
-    stacks: [[3.55, [['w', 1.4, 1.5, 'lav', 'c'], ['w', 1.3, 1.4, 'blue', 'p'], ['d', 0.55, 'pink']]], [-3.55, [['t', 2.3, 0.62, 'pink', 'mint'], ['w', 1.0, 1.2, 'cream', 'c']]]] },
+  // (v5: no arch round the opening: with the portal ring it read as concentric rings; machine stacks hug the opening and a machinery lintel
+  // spans it, so the channel runs between machines into the glow, as in the master)
+  far: { u: 253.45, arch: null, door: { h: 5.6, r: 0.9 },
+    stacks: [[2.95, [['w', 1.4, 1.5, 'lav', 'c'], ['w', 1.3, 1.4, 'blue', 'w'], ['d', 0.55, 'pink']]], [-2.95, [['t', 2.3, 0.62, 'pink', 'mint'], ['w', 1.0, 1.2, 'cream', 'c']]],
+      [3.9, [['t', 2.6, 0.5, 'blue', 'gold']]], [-3.9, [['w', 1.3, 1.3, 'lav', 'w'], ['w', 1.2, 1.2, 'blue', 'c']]]],
+    lintel: [[-1.3, 4.15, [['w', 1.1, 1.3, 'blue', 'c']]], [0.0, 4.25, [['t', 0.7, 0.5, 'pink', 'gold']]], [1.3, 4.1, [['w', 1.0, 1.2, 'cream', 'w']]]] },
   bankBubbles: 48,   // (v4: the master's many bubbles along both banks; scene07's 18 -> 48)
   bubbles: [[-2.5, 3.6, 241.5, 0.55], [-3.1, 4.7, 243.0, 0.42], [-2.1, 2.5, 245.2, 0.35], [2.3, 4.9, 242.2, 0.4], [1.8, 3.3, 248.2, 0.3], [-1.9, 4.2, 249.5, 0.3]],
 };
@@ -278,8 +287,8 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     // the big blue gear with its lavender frilled ring, high on the right (master: the upper right corner)
     const G = R16.gear, q = at(TR, new THREE.Group(), G.x, G.h, G.u, Math.PI / 2 + 0.75); if (!ART16_ON) t.add(q);   // (ART16: the master's own gear, in the artwork)
     const ext = (sh, d) => new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: true, bevelThickness: d * 0.2, bevelSize: d * 0.15, bevelSegments: 2, curveSegments: 4 });
-    mesh(ext(gearShape(G.R * 1.38, 22, 0.86, true), G.R * 0.12), std(0x8fe0ff, 0x2a8ac0, 0.55), q, (m) => { m.position.z = -G.R * 0.2; });
-    const blueG = ext(gearShape(G.R, 12, 0.8), G.R * 0.26); mesh(blueG, M.blue, q);
+    mesh(ext(gearShape(G.R * 1.38, 22, 0.86, true), G.R * 0.12), std(0x8fe0ff, 0x2a8ac0, 0.55, {}, 0), q, (m) => { m.position.z = -G.R * 0.2; });
+    const blueG = ext(gearShape(G.R, 12, 0.8), G.R * 0.26); mesh(blueG, std(0x1f46ff, 0x0a1f9a, 0.55, { metalness: 0.45, roughness: 0.3 }, 0), q);
     mesh(new THREE.TorusGeometry(G.R * 0.55, G.R * 0.07, 8, 40), M.lav, q, (m) => { m.position.z = G.R * 0.36; });
     mesh(new THREE.CylinderGeometry(G.R * 0.3, G.R * 0.3, G.R * 0.4, 24), M.blueL, q, (m) => { m.rotation.x = Math.PI / 2; m.position.z = G.R * 0.25; });
     mesh(new THREE.CylinderGeometry(G.R * 0.36, G.R * 0.36, G.R * 0.4, 6), M.gold, q, (m) => { m.rotation.x = Math.PI / 2; m.position.z = G.R * 0.12; });
@@ -440,8 +449,10 @@ export async function applyArt16(root, TR, Ch, camera) {
 // ---- MACH16 builder ------------------------------------------------------------------------------------------------------------------------
 function buildMachines16(root, TR, env, M, std, Ch) {
   const K = MACH16, t = new THREE.Group(), P = new THREE.Vector3();
-  const B = { blue: std(0x6f7fe0, 0x24308a, 0.45, { metalness: 0.35, roughness: 0.32 }), deep: std(0x4a56c0, 0x1a2280, 0.42, { metalness: 0.4, roughness: 0.3 }),
-    lav: M.lav, pink: M.pink, rose: M.rose, cream: M.cream, mint: M.mint, gold: M.gold, cyan: std(0x9fe2ff, 0x2f86b8, 0.5, { metalness: 0.3, roughness: 0.3 }) };
+  const kM = 0.08;   // (v5: the machines keep their saturated cobalt / pink / gold / cyan contrast against the pale hall; v4's pastel washed them out)
+  const B = { blue: std(0x4f6cf0, 0x1a2a9a, 0.45, { metalness: 0.35, roughness: 0.32 }, kM), deep: std(0x3a48c8, 0x141c80, 0.42, { metalness: 0.4, roughness: 0.3 }, kM),
+    lav: std(0xb7a0f2, 0x5a40b0, 0.45, {}, kM), pink: std(0xff7cc4, 0xff3fa0, 0.42, {}, kM), rose: std(0xff9fd0, 0xff5fb0, 0.4, {}, kM), cream: std(0xfbe6c8, 0x9a7a52, 0.5, {}, kM),
+    mint: std(0x8fe3b0, 0x2a8a5a, 0.42, {}, kM), gold: M.gold, gold2: std(0xffcf5a, 0x9a6a10, 0.5, { metalness: 0.5 }, 0), cyan: std(0x8fdcff, 0x2a80c0, 0.5, { metalness: 0.3, roughness: 0.3 }, kM) };
   const G = { c: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.7, 1.15, 1.6) }), p: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.95, 1.35) }), w: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.65, 1.3, 0.8) }) };
   const lamp = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.3, 0.85) });
   const add = (g, geo, mat, x, y, z, rx = 0, ry = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); g.add(m); return m; };
@@ -513,13 +524,14 @@ function buildMachines16(root, TR, env, M, std, Ch) {
     for (const [x, h, u] of [[xa, ha, ua], [xb, hb, ub]]) { const c = at(TR, new THREE.Group(), x, h, u); t.add(c); add(c, new THREE.CylinderGeometry(0.24, 0.24, 0.22, 16), M.gold, 0, 0, 0); }
   }
   // the far end: an arch round the opening (blue-lavender, gold edged), stacks either side, a big glowing washer door above
-  { const F = K.far, g = at(TR, new THREE.Group(), 0, 1.5, F.u); t.add(g); const [ri, ro] = F.arch;
-    const sh = new THREE.Shape(); sh.absarc(0, 0, ro, -0.25, Math.PI + 0.25, false); sh.absarc(0, 0, ri, Math.PI + 0.25, -0.25, true);
+  { const F = K.far, g = at(TR, new THREE.Group(), 0, 1.5, F.u); t.add(g); const [ri, ro] = F.arch || [0, 0];
+    if (F.arch) { const sh = new THREE.Shape(); sh.absarc(0, 0, ro, -0.25, Math.PI + 0.25, false); sh.absarc(0, 0, ri, Math.PI + 0.25, -0.25, true);
     add(g, new THREE.ExtrudeGeometry(sh, { depth: 0.45, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.06, bevelSegments: 2, curveSegments: 40 }), B.blue, 0, 0, -0.3);
-    for (const r of [ro + 0.04, ri - 0.04]) add(g, new THREE.TorusGeometry(r, 0.06, 6, 64, Math.PI + 0.5), M.gold, 0, 0, 0.18, 0, 0).rotation.z = -0.25;
+    for (const r of [ro + 0.04, ri - 0.04]) add(g, new THREE.TorusGeometry(r, 0.06, 6, 64, Math.PI + 0.5), M.gold, 0, 0, 0.18, 0, 0).rotation.z = -0.25; }
     door(g, F.door.h - 1.5, 0.2, F.door.r, 'c');
     add(g, new RoundedBoxGeometry(F.door.r * 2.6, F.door.r * 2.6, 0.5, 2, 0.3), B.lav, 0, F.door.h - 1.5, -0.1);
-    for (const [x, mods] of F.stacks) stack(x, Ch.deck, F.u - 0.6, mods); }
+    for (const [x, mods] of F.stacks) stack(x, Ch.deck, F.u - 0.6, mods);
+    for (const [x, h, mods] of F.lintel || []) stack(x, h, F.u - 0.9, mods); }
   for (const [x, h, u, r] of K.bubbles) { const b = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), M.glass); TR.map(x, h, u, b.position); t.add(b); }
   return bake(t, root, 'scene07_r16_machines');
 }

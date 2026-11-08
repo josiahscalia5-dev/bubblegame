@@ -217,7 +217,7 @@ function buildChamber(root, TR, env) {
     const hole = new THREE.Path(); hole.absarc(0, 1.5, Ch.portalR, 0, Math.PI * 2, true); sh.holes.push(hole);
     const wall = new THREE.Mesh(new THREE.ShapeGeometry(sh, 48), shellM); const ring = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.12, 0.26, 16, 72), goldM);
     const ring2 = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.62, 0.3, 14, 72), pinkM); ring.position.y = ring2.position.y = 1.5;
-    const g = new THREE.Group(); g.add(wall, ring); if (!RECON16_ON) g.add(ring2); g.name = 'scene07_portal';   // (pass 16: no thick pink outer ring; with the gold one it read as a ring tunnel)
+    const g = new THREE.Group(); g.add(wall); if (!RECON16_ON) g.add(ring, ring2); g.name = 'scene07_portal';   // (pass 16 v5: no portal rings either: concentric rings)   // (pass 16: no thick pink outer ring; with the gold one it read as a ring tunnel)
     TR.map(0, 0, u, g.position); TR.quaternion(u, g.quaternion); root.add(g);
   }
   return goldM;
