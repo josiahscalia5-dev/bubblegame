@@ -15,7 +15,14 @@ pass() { printf '  PASS  %s\n' "$*"; ok=$((ok + 1)); }
 fail() { printf '  FAIL  %s\n' "$*"; bad=$((bad + 1)); }
 note() { printf '  NOTE  %s\n' "$*"; warn=$((warn + 1)); }
 
-WORK_BRANCH=ccr-10503be1-pnv5vq
+# The work branch: this session's own branch (each cloud session gets one); the development line it must contain is
+# DEV_LINE (merged into it with a normal merge, never force-pushed). Override with BW_WORK_BRANCH=<branch>.
+WORK_BRANCH="${BW_WORK_BRANCH:-$(git -C "$(dirname "$0")/.." branch --show-current)}"
+DEV_LINE=ccr-76d4bc77-rqhl8o
+LEVEL1_BUNDLE_MD5=992bd37776941daee153a944a60c818c          # + ?s3=...,home,level1 behind its flags (8 November, session dbccb9a3; accepted frames 0 px: 68_level1/)
+GIRL2_BUNDLE_MD5=92bd9272a90407a75b64198e5a4c343b           # + the course culled and the rigged Tripo girl (ccr-76d4bc77-rqhl8o 890167c..7e5dd68; 0 px: 68_level1/proofs/)
+MATCH6_BUNDLE_MD5=b5f69217                                  # (first 8) + match6, her rear silhouette (session 8140e507; 0 px: 69_match6/proofs/identity.txt)
+WET_BUNDLE_MD5=a62848a060079f447f2c86173aae2d97             # + level1's wet chamber and port, match6 opt-in (session 8140e507; 70_level1_wet/proofs/identity.txt)
 ACCEPTED_BUNDLE_MD5=5bb24e2828a6f2ef17146252c69b413a          # ?s3=intunnel and the normal game (accepted build)
 SWIM2_BUNDLE_MD5=1199348a80352be29327134230a1b6a1            # the same + ?s3=intunnel,swim2 behind its flag (7 November, user-approved)
 BLEND_BUNDLE_MD5=38466b676bd36b05568023b5240818dd            # the accepted ?s3=intunnel (swim2) + ?s3=intunnel,blend behind its flag (7 November; accepted frames 0 px: 59_blend/proofs/)
@@ -29,7 +36,10 @@ ORIGINAL_SHA256=b30dc6a1794213be663b38d709c41994f9b90fbdff1606eb034310c4cab8ff16
 
 echo "== Git"
 br="$(git branch --show-current)"
-[ "$br" = "$WORK_BRANCH" ] && pass "on the work branch $br" || fail "on branch '$br', expected $WORK_BRANCH (git checkout $WORK_BRANCH)"
+[ -n "$br" ] && [ "$br" = "$WORK_BRANCH" ] && pass "on the work branch $br" || fail "on branch '$br', expected $WORK_BRANCH (git checkout $WORK_BRANCH)"
+git fetch -q origin "$DEV_LINE" 2>/dev/null
+if git merge-base --is-ancestor "origin/$DEV_LINE" HEAD 2>/dev/null; then pass "the development line $DEV_LINE is merged into $br"
+else note "GitHub's $DEV_LINE has commits not in $br: git merge --no-edit origin/$DEV_LINE (a normal merge; never force-push)"; fi
 git fetch -q origin "$WORK_BRANCH" 2>/dev/null
 lh="$(git rev-parse HEAD)"; rh="$(git rev-parse "origin/$WORK_BRANCH" 2>/dev/null || echo none)"
 if [ "$lh" = "$rh" ]; then pass "local head ${lh:0:7} = GitHub's $WORK_BRANCH"
@@ -44,12 +54,16 @@ done
 echo "== The accepted game (must be unchanged)"
 m() { md5sum < "$1" 2>/dev/null | cut -c1-32; }
 bm="$(m WebDemo/game.bundle.js)"
-if [ "$bm" = "$STRUCT_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $STRUCT_BUNDLE_MD5 (the accepted Screen 4 + ?s3=intunnel,structmatch behind its flag; accepted frames 0 px: 64_final_pass/proofs/)"
+if [ "$bm" = "$WET_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 wet + port on the ccr build, match6 opt-in; 70_level1_wet/)"
+elif [ "${bm:0:8}" = "$MATCH6_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (match6 on the ccr build: accepted, normal and ,nomatch6 0 px; 69_match6/)"
+elif [ "$bm" = "$GIRL2_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (ccr-76d4bc77-rqhl8o: the culled course and the Tripo girl; 68_level1/)"
+elif [ "$bm" = "$LEVEL1_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $LEVEL1_BUNDLE_MD5 (the level1 build: accepted ?s3=intunnel, the candidate and the normal game 0 px; 68_level1/)"
+elif [ "$bm" = "$STRUCT_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $STRUCT_BUNDLE_MD5 (the accepted Screen 4 + ?s3=intunnel,structmatch behind its flag; accepted frames 0 px: 64_final_pass/proofs/)"
 elif [ "$bm" = "$ACCEPTED_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $ACCEPTED_BUNDLE_MD5 (the accepted bundle)"
 elif [ "$bm" = "$ACCEPTED_SWIM2_MD5" ]; then pass "WebDemo/game.bundle.js md5 $ACCEPTED_SWIM2_MD5 (the accepted Screen 4: ?s3=intunnel includes swim2; 58_swim2_accepted/)"
 elif [ "$bm" = "$BLEND_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $BLEND_BUNDLE_MD5 (the accepted Screen 4 + ?s3=intunnel,blend behind its flag; accepted frames 0 px: 59_blend/proofs/)"
 elif [ "$bm" = "$SWIM2_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $SWIM2_BUNDLE_MD5 (accepted + ?s3=intunnel,swim2 behind its flag; accepted frames 0 px different: 57_swim2/proofs/)"
-else fail "WebDemo/game.bundle.js md5 $bm, expected $STRUCT_BUNDLE_MD5, $BLEND_BUNDLE_MD5, $ACCEPTED_SWIM2_MD5, $SWIM2_BUNDLE_MD5 or $ACCEPTED_BUNDLE_MD5: the accepted bundle changed"; fi
+else fail "WebDemo/game.bundle.js md5 $bm, expected $MATCH6_BUNDLE_MD5..., $GIRL2_BUNDLE_MD5, $LEVEL1_BUNDLE_MD5, $STRUCT_BUNDLE_MD5, $BLEND_BUNDLE_MD5, $ACCEPTED_SWIM2_MD5, $SWIM2_BUNDLE_MD5 or $ACCEPTED_BUNDLE_MD5: the accepted bundle changed"; fi
 [ "$(m WebDemo/index.html)" = "$ACCEPTED_INDEX_MD5" ] && pass "WebDemo/index.html unchanged" || fail "WebDemo/index.html changed"
 [ "$(m WebDemo/artifact.html)" = "$ACCEPTED_ARTIFACT_MD5" ] && pass "WebDemo/artifact.html unchanged" || fail "WebDemo/artifact.html changed"
 pin="$(python3 -c "import json;d=json.load(open('WebDemo/package.json'));print(d['devDependencies']['three'],d['devDependencies']['esbuild'])")"

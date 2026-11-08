@@ -1,0 +1,23 @@
+{
+ "running": "running",
+ "pausePanel": true,
+ "timeFrozenWhilePaused": true,
+ "runsAfterResume": true,
+ "bubbleBlast": {
+  "before": 3,
+  "after": 2
+ },
+ "turboSpin": {
+  "before": 3,
+  "after": 2,
+  "speed": 8.45
+ },
+ "final": {
+  "phase": "running",
+  "hearts": 5,
+  "coins": 1287,
+  "socks": 0,
+  "gems": 37
+ },
+ "errors": []
+}

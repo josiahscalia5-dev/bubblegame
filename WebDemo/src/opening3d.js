@@ -287,13 +287,13 @@ function buildVortex() {
         float a2 = a - 6.2832 * sign(a), bw = 0.5 * smoothstep(1.9, 3.1416, abs(a));
         float w = mix(o3f(vec2(a * 1.2 + t * 0.4, d * 0.9 - uFlow)), o3f(vec2(a2 * 1.2 + t * 0.4, d * 0.9 - uFlow)), bw);
         float sw = sin((d * 2.2 + a * 0.15915 + w * 1.5 - uFlow * 1.4 - t * 0.6) * 6.2832);
-        vec3 c = mix(vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0), smoothstep(-0.7, 0.3, sw));
-        c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * 0.75);
-        c = mix(c, vec3(1.0), smoothstep(0.9, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
+        vec3 c = mix(${LEVEL1_PARTS.port ? 'vec3(0.02, 0.1, 0.78), vec3(0.08, 0.4, 1.0)' : 'vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0)'}, smoothstep(-0.7, 0.3, sw));   // (port: the approved porthole's deeper cobalt)
+        c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * ${LEVEL1_PARTS.port ? '0.6' : '0.75'});
+        c = mix(c, vec3(1.0), smoothstep(${LEVEL1_PARTS.port ? '0.95' : '0.9'}, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
         c = mix(c, vec3(0.75, 0.6, 1.0), smoothstep(0.65, 0.9, mix(o3f(vec2(a * 0.8 + 3.0, d * 0.5)), o3f(vec2(a2 * 0.8 + 3.0, d * 0.5)), bw)) * 0.35);
         float ring = exp(-pow((fract(d * 0.8 - uFlow * 0.5) - 0.5) / 0.08, 2.0));
-        c = mix(c, vec3(0.75, 0.95, 1.0), ring * 0.4);
-        c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(1.6, 8.0, d) * 0.9 * uGlow);
+        c = mix(c, vec3(0.75, 0.95, 1.0), ring * ${LEVEL1_PARTS.port ? '0.22' : '0.4'});
+        c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(${LEVEL1_PARTS.port ? '3.4, 8.6' : '1.6, 8.0'}, d) * ${LEVEL1_PARTS.port ? '0.85' : '0.9'} * uGlow);   // (port: deep blue spiral, the bright heart only at its far end)
         gl_FragColor = vec4(c, 1.0);
       }` });
   const tube = new THREE.Mesh(g, mat); tube.name = 'vortex';
@@ -502,9 +502,12 @@ export function mountOpening3D(container, opts = {}) {
   const fb = []; for (let i = 0; i < nf; i++) { fb.push({ p: V([-0.72 + rnd() * 1.6, 0.0 + rnd() * 0.16, 0.6 + rnd() * 0.5]), s: 0.07 + rnd() * 0.12, ph: rnd() * 6 }); front.setColorAt(i, new THREE.Color(fcols[i % fcols.length])); }
   front.instanceColor.needsUpdate = true;
   // white foam and little bubbles along the lower inner rim of the washer's opening (the approved art's foam in the vortex)
-  const foamM = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.25, metalness: 0, envMap: env, emissive: 0xbfe8ff, emissiveIntensity: 0.55 });
+  const foamM = new THREE.MeshStandardMaterial({ color: LEVEL1_PARTS.port ? 0xe2f6ff : 0xffffff, roughness: 0.25, metalness: 0, envMap: env, emissive: LEVEL1_PARTS.port ? 0x6fc8ff : 0xbfe8ff, emissiveIntensity: 0.55 });
   const nfo = 70, foam = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 12, 8), foamM, nfo); foam.frustumCulled = false; scene.add(foam);
-  const fo = []; for (let i = 0; i < nfo; i++) { const a = Math.PI * (1.08 + rnd() * 0.84), r = OPENING3D.rOpen * (0.72 + rnd() * 0.24); fo.push({ x: Math.cos(a) * r, y: Math.sin(a) * r, z: -0.03 - rnd() * 0.18, s: 0.012 + rnd() * 0.028, ph: rnd() * 6 }); }
+  // (port: the same random draws, so everything after is unchanged; 52 of the 70 bits hidden, the rest small and at the lower left)
+  const fo = []; for (let i = 0; i < nfo; i++) { const a = Math.PI * (1.08 + rnd() * 0.84), r = OPENING3D.rOpen * (0.72 + rnd() * 0.24); const f = { x: Math.cos(a) * r, y: Math.sin(a) * r, z: -0.03 - rnd() * 0.18, s: 0.012 + rnd() * 0.028, ph: rnd() * 6 };
+    if (LEVEL1_PARTS.port) { if (i >= 18) f.s = 0; else { const a2 = Math.PI * (1.12 + (i / 18) * 0.36); f.x = Math.cos(a2) * r; f.y = Math.sin(a2) * r; f.s *= 0.55; } }
+    fo.push(f); }
   // the pink toss arrow (as in the approved Screens 1 and 2): from the character's perch, curving down into the opening
   const arrow = new THREE.Group(); arrow.name = 'tossArrow'; scene.add(arrow);
   {
@@ -640,7 +643,7 @@ export function mountOpening3D(container, opts = {}) {
       L.o.position.copy(p); L.o.rotation.set(L.spin.x * s, L.spin.y * s, L.spin.z * s); L.o.scale.setScalar(L.o.userData.k * (k > 1 ? Math.max(0.01, 1 - (k - 1) * 0.6) : 1));
     }
     // ---- the washer's glow and the tunnel's flow (it speeds up as he is pulled in)
-    vortex.U.uGlow.value = 0.62 + 0.38 * sm(3.0, 4.4, s); vortex.WU.uFrom.value = s < 0 ? 2.4 : 2.4 * (1 - sm(1.4, 2.4, s)); vortex.U.uTime.value = it; vortex.U.uFlow.value = s > 0 ? key(s, [[0, 0], [2, 1.5], [3.2, 5.0], [5, 8.0]]) + s * 0.4 : 0;
+    vortex.U.uGlow.value = 0.62 + 0.38 * sm(3.0, 4.4, s); vortex.WU.uFrom.value = LEVEL1_PARTS.port ? (s < 0 ? 9.5 : 9.5 * (1 - sm(0.6, 2.3, s))) : (s < 0 ? 2.4 : 2.4 * (1 - sm(1.4, 2.4, s)));   // (port: the water floods in from the far end as the toss begins) vortex.U.uTime.value = it; vortex.U.uFlow.value = s > 0 ? key(s, [[0, 0], [2, 1.5], [3.2, 5.0], [5, 8.0]]) + s * 0.4 : 0;
     glowL.intensity = 2.5 + 1.5 * Math.sin(it * 2.0) * 0.3 + sm(1.5, 2.6, s) * 3.0;
     // ---- the camera: one continuous move, following him through the door into the tunnel
     // (its end: the game's Tap to Start framing at her scale: 1.03 m above her and 3.58 m behind for a 1.04 m body, looking

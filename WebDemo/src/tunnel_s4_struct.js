@@ -109,6 +109,8 @@ export const STRUCT = {
     // match5: the longer strands widen her outline (0.578 of the frame against the ORIGINAL's 0.513): her body narrower and a
     // little taller under them, so the outline matches and the dome reads taller
     scale5: [0.89, 0.985, 0.89],
+    // match6: her nubs' fur shorter, so her outline narrower than match5's at the same body: the body a little wider again
+    scale6: [0.93, 0.985, 0.93],
     tunnel: { pull: 0.6, sat: 1.32, satAdd: 0.05, warmSat: 1.0, core: { r: [0.03, 0.09], k: 0.0, tint: [1, 1, 1], add: [0, 0, 0] } } },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
@@ -161,7 +163,7 @@ const hx = (hex) => { const n = parseInt(hex.slice(1), 16); return `vec3(${f4((n
 // (opening.js 4c skips Screen 3's presentation when STRUCT_PARTS.hero; game.js calls these from buildMascot)
 // the crown's envelope: x and z scaled per height toward the circle, the tuft's tip lowered (drawn model only)
 export function structCrown(model) {
-  const C = STRUCT.hero.crown, report = { meshes: 0 };
+  const C = STRUCT_PARTS.match6 ? { ...STRUCT.hero.crown, ...SHELL_FUR6.crown } : STRUCT.hero.crown, report = { meshes: 0 };
   model.traverse((o) => {
     if (!o.isMesh) return;
     const A = o.geometry.attributes.position, n = A.count, out = new Float32Array(n * 3);
@@ -180,6 +182,17 @@ export function structCrown(model) {
       const s0 = Math.min(C.smax, Math.max(C.smin, wt / prof(h)));
       const s = 1 + (s0 - 1) * (1 - sm(C.h0, C.h1, h));
       out[i * 3] = x * s; out[i * 3 + 1] = y - drop; out[i * 3 + 2] = z * (1 + (s - 1) * C.kz);
+      if (STRUCT_PARTS.match6) {   // match6: her side nubs as round lobes on a narrow neck (the ORIGINAL's: the screen-left one
+        // higher, the screen-right one lower and further out; her back faces +z, so screen-left is her -x), the body below slimmer
+        const N = SHELL_FUR6.push, sd = x < 0 ? N.left : N.right, sg = Math.sign(x) || 1;
+        const w = sm(N.x0, N.x0 + N.xw, Math.abs(x)) * Math.exp(-(((y - sd.yc) / N.sig) ** 2));
+        const px = out[i * 3], py = out[i * 3 + 1], cx = sg * sd.cx;
+        out[i * 3] = cx + (px - cx) * (1 + sd.grow * w) + sg * sd.out * w;
+        out[i * 3 + 1] = sd.yc + (py - sd.yc) * (1 + sd.grow * w) + sd.up * w;
+        out[i * 3 + 2] *= 1 + sd.grow * w * 0.6;
+        const lo = sm(N.lower.y0, N.lower.y1, y) * (1 - w);   // (y1 < y0: 1 below the nubs)
+        out[i * 3] *= 1 - N.lower.k * lo;
+      }
     }
     o.geometry.setAttribute('position', new THREE.BufferAttribute(out, 3));   // (the glTF's is quantized and interleaved)
     o.geometry.computeBoundingBox(); o.geometry.computeBoundingSphere();
@@ -203,10 +216,37 @@ export function structFurFragment(src, constBase) {
     c = mat3(${col(0)}, ${col(1)}, ${col(2)}) * c;
     float stL = dot(c, vec3(0.2126, 0.7152, 0.0722));
     c = max(stL + (c - stL) * ${f4(F.sat)}, 0.0) * ${f4(F.gain)};
-  }
+  }${STRUCT_PARTS.match6 ? match6FurGLSL() : ''}
   gl_FragColor = vec4(c, 1.0);`);
   if (constBase) s = s.replace('vec3 base = texture2D(map, vUv).rgb;', `vec3 base = vec3(${constBase.map(f4).join(', ')});`);
   return s;
+}
+// match6: the ORIGINAL's fur look (measured in five height bands of her dome at Tap to Start: the ORIGINAL's crown paler, G / B
+// 0.50 / 0.90 against match5's 0.42 / 0.79; its lower half darker, luminance medians 0.42 / 0.37 against 0.47 / 0.43; and more
+// contrast between strands, quartile spread 0.25-0.29 against 0.17-0.19): strand bundles radiating from the whorl high on her
+// back (seen from the camera), dark grooves between them, a paler backlit crown and a deeper base. Her own frame: her centre and
+// up (the fur's uniforms) and the camera's side, so the bundles stay on her as she swims.
+function match6FurGLSL() {
+  const K = SHELL_FUR6.look;
+  return `
+  {   // ?s3=intunnel,structmatch (match6): radiating strand bundles, paler crown, deeper base (tunnel_s4_struct.js SHELL_FUR6.look)
+    vec3 toCam = cameraPosition - uCentre, Vh = normalize(toCam - uUp * dot(toCam, uUp) + vec3(1e-4, 0.0, 0.0));
+    vec3 A = normalize(uUp * ${f4(K.whorl[0])} + Vh * ${f4(K.whorl[1])}), e1 = normalize(cross(uUp, Vh)), e2 = normalize(cross(A, e1));
+    vec3 d = Ns - A * dot(Ns, A); float sd = length(d), phi = atan(dot(d, e2), dot(d, e1));
+    // short tufts in irregular cells round the whorl (each its own place, width and strength; tapering to a point outward)
+    vec2 tg = vec2(phi * ${f4(K.bundles / (2 * Math.PI))} + ${f4(K.wave)} * sin(sd * 7.0 + phi * 2.0), sd * ${f4(K.rings)});
+    vec2 ti = floor(tg), tf = fract(tg);
+    float th1 = bwHash(ti + 1.7), th2 = bwHash(ti + 17.3), th3 = bwHash(ti + 5.1);
+    float tdx = abs(tf.x - (0.25 + 0.5 * th1)) / (0.22 + 0.3 * th2), tap = mix(1.0, 0.3, tf.y);
+    float tuft = (1.0 - smoothstep(0.55 * tap, tap, tdx)) * step(${f4(K.tuftShare)}, th3);
+    c *= mix(vec3(1.0), mix(vec3(${K.groove.map(f4).join(', ')}), vec3(1.0 + ${f4(K.lift)} * th2), tuft), smoothstep(0.06, 0.3, sd));   // (crimson grooves)
+    // white droplet specks over her fur (the ORIGINAL's)
+    vec2 sq = floor(vec2(phi * ${f4(K.specks / (2 * Math.PI))}, sd * ${f4(K.specks / 3)}));
+    c = mix(c, vec3(1.0, 0.95, 1.0), step(${f4(1 - K.speckShare)}, bwHash(sq + 3.7)) * ${f4(K.speckK)} * smoothstep(-0.4, 0.2, hgt));
+    float bw6 = 1.0 - smoothstep(${f4(K.baseH[0])}, ${f4(K.baseH[1])}, hgt);   // a rosier base (the ORIGINAL's: less violet, a little lighter)
+    c = c * mix(vec3(1.0), vec3(${K.baseMul.map(f4).join(', ')}), bw6) + vec3(${K.baseAdd.map(f4).join(', ')}) * bw6;
+    c = mix(c, c * ${f4(K.crownMul)} + vec3(${K.crownAdd.map(f4).join(', ')}), smoothstep(${f4(K.crownH[0])}, ${f4(K.crownH[1])}, hgt) * smoothstep(0.2, 0.9, 1.0 - sd * 0.6));
+  }`;
 }
 // the fill between her legs: an ellipsoid inside her lower body, drawn with her fur's light (a constant fur colour)
 export function structFill(model, furUniforms, furVertex, furFragment) {
@@ -228,6 +268,21 @@ export function structFill(model, furUniforms, furVertex, furFragment) {
 // match5: longer, finer strands (the ORIGINAL's stand out of her outline by about a tenth of her width), combed down and out
 // over her dome (comb), more and thinner (density, thick), with paler tips; 8 shells so the long strands do not terrace
 export const SHELL_FUR5 = { layers: 8, len: 0.22, lean: 0.5, comb: 0.45, density: 74, thick: 0.3, tip: 0.18, root: 0.62 };
+// match6 (session 8140e507, the user's priority 3 of 8 November): the match5 strands swallowed her side nubs (the shells grew
+// out of the nubs and the crease above them alike, so her outline read as one lumpy, flat-topped polygon) and were combed straight
+// down, while the ORIGINAL's radiate from a whorl high on her back. Here: the strands short on the nubs and in the crease round
+// them (nub: |x| from x0 to x1, y from y0 to y1 of her model, len x nubK), radiating from the whorl (her model's own point;
+// her back faces +z) with a little gravity (grav), shorter where they part at the whorl (part)
+export const SHELL_FUR6 = { layers: 8, len: 0.2, lean: 0.4, comb: 0.6, grav: 0.35, whorl: [0.0, 0.62, 0.55], part: 0.4,
+  nub: { x0: 0.66, x1: 0.84, y0: 0.02, y1: 0.66, k: 0.22 }, density: 56, thick: 0.34, tip: 0.24, root: 0.6,
+  push: { x0: 0.7, xw: 0.16, sig: 0.17, left: { yc: 0.42, cx: 0.9, grow: 0.08, out: 0.07, up: 0.08 },
+    right: { yc: 0.24, cx: 0.9, grow: 0.12, out: 0.24, up: -0.1 }, lower: { y0: 0.12, y1: -0.12, k: 0.07 } },
+  crown: { R: 0.98, h0: 0.34, h1: 0.56 },
+  // her fur's look (match6FurGLSL): the whorl's direction (up, toward the camera), bundles round it, rows of them outward,
+  // their wobble, the grooves' and the bundles' shade, the base's shade over height (hgt -1 at the water .. +1 on top), the crown
+  look: { whorl: [0.85, 0.5], bundles: 46, rings: 13, wave: 0.25, groove: [0.76, 0.76, 0.64], lift: 0.25, tuftShare: 0.3, specks: 150, speckShare: 0.012,
+    speckK: 0.7, baseMul: [0.88, 1.0, 0.95], baseAdd: [0.0, 0.09, 0.0], baseH: [-0.6, 0.6],
+    crownMul: 0.72, crownAdd: [0.2, 0.16, 0.3], crownH: [0.35, 0.95] } };   // (structCrown: her crown a broader arc, as the ORIGINAL's dome)   // (structCrown: the nubs' drawn mesh moved out and down)
 export const SHELL_FUR = { layers: 6, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
 const SHELL_VERTEX = /* glsl */ `
 attribute float aLayer;
@@ -244,8 +299,30 @@ void main() {
   gl_Position = projectionMatrix * viewMatrix * w;
 }
 `;
+const SHELL_VERTEX6 = /* glsl */ `
+attribute float aLayer;
+uniform float uShLen, uShLean, uShComb, uShGrav, uShPart, uShNubK;
+uniform vec3 uShWhorl; uniform vec4 uShNub;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWorld; varying vec3 vRoot; varying vec3 vRootN; varying float vH;
+void main() {
+  vUv = uv; vH = aLayer;
+  vec3 n = normalize(normal), r = normalize(position + vec3(0.0, 0.0, 1e-4));
+  vec3 dw = position - uShWhorl; dw -= n * dot(dw, n); float dwl = length(dw);   // away from the whorl, along her surface
+  vec3 dg = vec3(0.0, -1.0, 0.0) - n * dot(vec3(0.0, -1.0, 0.0), n);           // down along her surface
+  vec3 comb = dw / max(dwl, 1e-4) * smoothstep(0.0, 0.25, dwl) + dg * uShGrav;
+  float nub = smoothstep(uShNub.x, uShNub.y, abs(position.x)) * smoothstep(uShNub.z - 0.14, uShNub.z, position.y)
+    * (1.0 - smoothstep(uShNub.w, uShNub.w + 0.14, position.y));
+  float k = mix(1.0, uShNubK, nub) * mix(uShPart, 1.0, smoothstep(0.0, 0.35, dwl));
+  vec3 p = position + normalize(n + r * uShLean + comb * uShComb) * uShLen * k * aLayer;
+  vRoot = position; vRootN = n;
+  vec4 w = modelMatrix * vec4(p, 1.0); vWorld = w.xyz;
+  vN = normalize(mat3(modelMatrix) * n);
+  gl_Position = projectionMatrix * viewMatrix * w;
+}
+`;
+const shellSet = () => (STRUCT_PARTS.match6 ? SHELL_FUR6 : STRUCT_PARTS.match5 ? SHELL_FUR5 : SHELL_FUR);
 function shellFragment(furFragment) {
-  const F = STRUCT_PARTS.match5 ? SHELL_FUR5 : SHELL_FUR;
+  const F = shellSet();
   return furFragment.replace('varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;', `varying vec2 vUv; varying vec3 vN; varying vec3 vWorld;
 varying vec3 vRoot; varying vec3 vRootN; varying float vH;
 float shH3(vec3 p) { p = fract(p * 0.1031); p += dot(p, p.zyx + 31.32); return fract((p.x + p.y) * p.z); }
@@ -266,15 +343,17 @@ vec3 shH33(vec3 p) { p = fract(p * vec3(0.1031, 0.1030, 0.0973)); p += dot(p, p.
   gl_FragColor = vec4(c, 1.0);`);
 }
 export function structShellFur(model, furUniforms, furFragment) {
-  const F = STRUCT_PARTS.match5 ? SHELL_FUR5 : SHELL_FUR, made = [];
+  const F = shellSet(), made = [];
   model.traverse((o) => {
     if (!o.isMesh || o.name === 'structFill' || o.name === 'structShellFur' || !o.geometry.attributes.normal) return;
     const g0 = o.geometry, g = new THREE.InstancedBufferGeometry();
     g.index = g0.index; for (const k of ['position', 'normal', 'uv']) if (g0.attributes[k]) g.setAttribute(k, g0.attributes[k]);
     const h = new Float32Array(F.layers); for (let i = 0; i < F.layers; i++) h[i] = (i + 1) / F.layers;
     g.setAttribute('aLayer', new THREE.InstancedBufferAttribute(h, 1)); g.instanceCount = F.layers;
-    const m = new THREE.ShaderMaterial({ uniforms: { map: o.material.uniforms.map, ...furUniforms, uShLen: { value: F.len }, uShLean: { value: F.lean }, uShComb: { value: F.comb || 0 } },
-      vertexShader: SHELL_VERTEX, fragmentShader: shellFragment(furFragment), side: THREE.DoubleSide });
+    const u6 = STRUCT_PARTS.match6 ? { uShGrav: { value: F.grav }, uShPart: { value: F.part }, uShNubK: { value: F.nub.k },
+      uShWhorl: { value: new THREE.Vector3(...F.whorl) }, uShNub: { value: new THREE.Vector4(F.nub.x0, F.nub.x1, F.nub.y0, F.nub.y1) } } : {};
+    const m = new THREE.ShaderMaterial({ uniforms: { map: o.material.uniforms.map, ...furUniforms, uShLen: { value: F.len }, uShLean: { value: F.lean }, uShComb: { value: F.comb || 0 }, ...u6 },
+      vertexShader: STRUCT_PARTS.match6 ? SHELL_VERTEX6 : SHELL_VERTEX, fragmentShader: shellFragment(furFragment), side: THREE.DoubleSide });
     made.push([o, new THREE.Mesh(g, m)]);
   });
   for (const [o, s] of made) { s.name = 'structShellFur'; s.frustumCulled = false; o.add(s); }
@@ -283,7 +362,7 @@ export function structShellFur(model, furUniforms, furFragment) {
 
 // her drawn size once Screen 3's stretch is off (round her centre, as opening.js applies the stretch)
 export function structScale(model) {
-  const k = new THREE.Vector3(...(STRUCT_PARTS.match5 ? STRUCT.match4.scale5 : STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
+  const k = new THREE.Vector3(...(STRUCT_PARTS.match6 ? STRUCT.match4.scale6 : STRUCT_PARTS.match5 ? STRUCT.match4.scale5 : STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
   model.scale.multiply(k); model.position.multiply(k);
   model.position.y += STRUCT.hero.lift;
 }

@@ -1,13 +1,101 @@
-# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST)
+# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST: section 00 is the newest, 8 November 11:20 UTC)
 
 Written 7 November 2026, about 23:10 UTC, by session `398ed88c`, at the user's handoff order
 (`Design/ReferencePacks/2026-11-07_Full_Screen4_Brief_from_user/User_GitHub_Handoff_Order.md`). Nothing in this file is a
 secret. It supersedes the older handoff files for the CURRENT state; they stay as history (`BUBBLE_WASH_ACCOUNT_HANDOFF.md`,
 `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, `START_HERE_NEW_CLAUDE_ACCOUNT.md`, `HANDOFF.md`). The project rules are `CLAUDE.md`.
 
-## 0. CURRENT STATE AND RESTORATION MANUAL (8 November 2026, about 02:00 UTC, session `dbccb9a3`): READ THIS FIRST
+## 00. NEWEST STATE (8 November 2026, about 11:20 UTC, session `8140e507`): READ THIS FIRST
 
-Sections 1-8 below are the 7 November handoff (kept as history); where they differ, THIS section is right.
+Section 0 below (02:00 UTC, session `dbccb9a3`) and sections 1-8 are history; where they differ, THIS section is right.
+Session link: https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP. Nothing here is a secret.
+
+### 00.1 Where everything is
+| | |
+|---|---|
+| Repository | https://github.com/josiahscalia5-dev/bubblegame |
+| **Continue on** | **`claude/bubble-wash-kingdom-continue-z9nmm1`** (session `8140e507`): it contains ALL of `ccr-76d4bc77-rqhl8o` (merged with normal merges) plus everything below. A new cloud session gets its own branch: merge `origin/claude/bubble-wash-kingdom-continue-z9nmm1` into it with a normal merge first (and `origin/ccr-76d4bc77-rqhl8o`, already contained). Never force-push. |
+| Its head | moves with the 5-minute autosave; read it with `git ls-remote origin claude/bubble-wash-kingdom-continue-z9nmm1`. At this writing: `05a3461bd903397db14687fde7cd34e0ead27b47` (11:18 UTC, verified on GitHub). |
+| The candidate build | commit `6b5d46fd` (bundle `a62848a060079f447f2c86173aae2d97`): level1 `wet` + `port`, match6 opt-in |
+| `ccr-76d4bc77-rqhl8o` | `7e5dd685cc541be0ea614d0ca0dd9dd0ccd7a77c` (the old session `dbccb9a3`, idle since 02:56 UTC; its last code commit `890167c`, the Tripo girl rigged and the course culled; bundle `92bd9272`). Not written by session `8140e507`. |
+| Review route | **pull request #3** (draft): https://github.com/josiahscalia5-dev/bubblegame/pull/3, from `claude/bubble-wash-kingdom-continue-z9nmm1` into `ccr-76d4bc77-rqhl8o`; nothing is merged into `ccr-76d4bc77-rqhl8o` without the user's approval |
+| File ownership | `SESSION_FILE_RESERVATIONS.md`: since 10:40 UTC session `8140e507` owns `level1.js`, `opening3d.js` and the tunnel files |
+| Git LFS | not used; the largest tracked file is 29 MB (a video); GitHub's limit is 100 MB |
+| Ignored on purpose | `WebDemo/node_modules/` (`npm ci`), `WebDemo/artifact-models/` (made by the build) |
+
+### 00.2 The game and what waits for the user (all real three.js gameplay)
+- Accepted: `?s3=intunnel` (proven 0 px against `ccr`'s build). Candidate: `?s3=intunnel,structmatch` (the match5 look; 0 px against `ccr`).
+- **Full app, waiting for the user: `index.html?s3=intunnel,structmatch,home,level1`**: Home and the Laundry Toss with the rigged Tripo
+  girl (live 3D, 17 bones, blinks, basket, toss, wave), the mascot carried through the open porthole, the camera into the tunnel, Tap to
+  Start, then Level 1 (drum, brushes, treasure run, soap-bar jumps, the drop, grime balls, the golden gate) and, NEW (`wet`, on by
+  default; `,nowet` = before): the drum widens into one wet washer chamber, continuous deep-blue water to its walls, the castle framed by a
+  glowing portal in its end wall, Level Complete on the water in the chamber. The hand-off out of the Screen 4 drum no longer hides her.
+  NEW (`port`; `,noport` = before): the porthole shows the blue spiral, not a white foam mass. Evidence:
+  `Previews/WebDemo/screen4_round9_match/70_level1_wet/README.md`; branch check of `ccr`: `Previews/WebDemo/ccr_branch_verification_2026-11-08/`.
+- **Candidate, NOT merged into the default look (the user's order): `,match6`** (her rear silhouette: round dome, pom-pom side nubs,
+  radiating strands; `69_match6/README.md`). Opt in: `?s3=intunnel,structmatch,match6`.
+- The six Tripo models (`Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/`, sha256 in its manifest, verified 8 November 11:17
+  UTC): the girl is rigged and in the opening; the pink creature is REJECTED as her replacement (the user, 02:35 UTC); the washer is not
+  used until its porthole is cut open (the user); basket, sock and towels wait for KEEP / REJECT / REWORK. Nothing spent (640 credits).
+- **Next major task: the user's 10-beat Level 1 gameplay mandate** (`Design/ReferencePacks/2026-11-08_Level1_Gameplay_Flow_and_Account_Transfer_from_user/`):
+  FUNCTIONAL jump to upper side paths and drop to lower paths (branching wet routes that rejoin), brushes, collectibles, patrolling
+  enemies, the watery kingdom, the final sock, Level Complete; one continuous phone recording plus each branch. Today the course is ONE
+  path: soap bars to jump, a drop that is a slope on the same path, brushes and grime balls that knock her, coins / gems / socks, the
+  wet chamber and Level Complete. Branching routes are NOT built yet.
+
+### 00.3 Never replace
+The ORIGINAL approved Screen 4 (`Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg`, sha256
+`b30dc6a1794213be...`), the approved Screen 3, the girl art (`.../2026-11-07_First_Two_Screens_Girl_Laundry_from_user/11109.jpg`), the
+12-screen board (`Design/ApprovedScreens/00_ORIGINAL_COMPLETE_12_SCREEN_BOARD.jpg`), the six Tripo GLBs, `WebDemo/models/opening/girl_rigged.glb`,
+the accepted `?s3=intunnel` (prove 0 px for every change). Unapproved candidates: `structmatch`, `match6`, `level1` (with `wet`, `port`).
+
+### 00.4 Agents, plugin, tools: what travels and what to restore (tested in session `8140e507`; details `RESTORATION_REPORT_2026-11-08_session_8140e507.md`)
+- In GitHub and loaded automatically on this branch: the five agents (`.claude/agents/`), the skill `bubble-wash-screen-matcher`,
+  `CLAUDE.md`, `.claude/settings.json` + `.claude/hooks/session-start.sh` (restarts the autosave), `.mcp.json` (empty on purpose).
+- **parallax-threejs 0.4.12 is per ACCOUNT, not in Git.** On claude.ai (the account in use) enable it from the Anthropic Directory, then
+  start a NEW cloud session (plugins load at session start). Check: ToolSearch `mcp__plugin_parallax-threejs`. On the account of session
+  `8140e507` it loaded: threejs-devtools, chrome-devtools and playwright-mcp WORK (threejs-devtools' scene pick lands on the post pass:
+  set `window.__THREE_SCENE__` / `__THREE_CAMERA__` / `__THREE_RENDERER__` at runtime; use a 412 x 915 page); **spector does not**
+  (the plugin ships without its server file); its agents scenario-author / shader-reviewer / visual-debugger run but get no MCP tools
+  (their tool names lack the `plugin_parallax-threejs_` prefix: a plugin defect); `memcheck` works; `checkpoint` / `diff` / `sweep` /
+  `replay` / `export-report` need Deno + `/parallax-threejs:init` (asks the user first; not done).
+- Tools: `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing, then `source Tools/bw_tools_env.sh` in every shell;
+  `cd WebDemo && npm ci && node build.mjs`; `bash Tools/verify_restore.sh --build` (28 passed, 0 failed on 8 November).
+- Cloud environment (per account): a personal environment `bubblegame` with limited network, package registries + MCP servers
+  allowed, hosts `download.blender.org`, `download.pytorch.org` (+ `openapi-dl.data.tripo3d.com` before a paid Tripo download,
+  `dl.google.com` only for the Android SDK); setup script `if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then bash bubblegame/Tools/cloud_env_setup.sh || echo "Bubble Wash setup: a step failed"; fi`.
+- **Tripo key: NEVER in Git.** On a new account/environment ask Claude to open the secure credential form for host
+  `openapi.tripo3d.ai` (Authorization: Bearer, the user's `tsk_...` key), or add it in the environment's settings, Network secrets.
+  Run `tripo` with `TRIPO_API_KEY=tsk_proxy-injected` (a placeholder the proxy replaces). Free checks: `tripo doctor`, `tripo balance`.
+  Every paid job needs the user's yes with the job and its cost.
+
+### 00.5 Saving: the autosave and save-now (and their limit)
+- The 5-minute autosave (`Tools/autosave.sh`, started by the SessionStart hook, one process per session; names from
+  `Tools/autosave_sessions.json`) commits the chat history, the agents' transcripts and all work in progress, pushes, and checks that
+  GitHub has the commit (log: `~/.bubblewash-autosave/`). Check: `ps -eo pid,etime,cmd | grep '[a]utosave.sh'`.
+- **Save now, before closing a session or switching accounts:** `bash Tools/save_now.sh "<what was done>"`: commits everything, pushes
+  with retries and prints a save report whose "Push: VERIFIED" line names the commit GitHub really has (tested 8 November 11:18 UTC).
+- **Limit:** the autosave runs only while the cloud session's container runs. When the session ends, is paused or the container is
+  reclaimed, it stops (the hook restarts it when a session resumes on this branch). Work done after the last save exists only in that
+  container until the next save. Not in Git by design: `node_modules`, `~/.bubblewash-tools` (rebuilt by the setup script), keys and
+  network secrets, account plugins, scratch files in the session's scratchpad (recordings' raw frames; finished videos are committed).
+
+### 00.6 First message for the other account (copy and paste)
+> Continue my Bubble Wash Kingdom game: repository josiahscalia5-dev/bubblegame, branch `claude/bubble-wash-kingdom-continue-z9nmm1`
+> (it contains all of `ccr-76d4bc77-rqhl8o`). If this session is given its own branch, merge `origin/claude/bubble-wash-kingdom-continue-z9nmm1`
+> into it with a normal merge first; never force-push, reset or merge an unapproved candidate. Read `CLAUDE.md`, then section 00 of
+> `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`, and follow them. Do not rebuild or redesign anything. Run `bash Tools/cloud_env_setup.sh` if
+> `~/.bubblewash-tools` is missing, `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci && node build.mjs`, `bash Tools/verify_restore.sh --build`;
+> check the autosave runs (one process) and add this session to `Tools/autosave_sessions.json`. Verify, do not assume: ToolSearch
+> `mcp__plugin_parallax-threejs` (if missing, tell me to enable parallax-threejs on this account and start a new session), a one-line ping of
+> the five project agents, `tripo doctor` (free; if the key is missing, open the secure credential form for openapi.tripo3d.ai),
+> `blender --version`. Report what works and what I must reconnect. Then continue: my verdicts are pending on `level1` (the wet chamber,
+> `port`), `structmatch` and `match6` (opt-in, not merged); the next task is my 10-beat Level 1 gameplay mandate in
+> `Design/ReferencePacks/2026-11-08_Level1_Gameplay_Flow_and_Account_Transfer_from_user/`. Spend no Tripo credits without my yes for a named job and cost.
+
+## 0. CURRENT STATE AND RESTORATION MANUAL (8 November 2026, about 02:00 UTC, session `dbccb9a3`)
+
+Sections 1-8 below are the 7 November handoff (kept as history); where they differ, section 00 above and then THIS section are right.
 
 ### 0.1 Where everything is
 | | |

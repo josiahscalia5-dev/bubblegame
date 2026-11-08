@@ -1,0 +1,2060 @@
+{
+ "build": [
+  "http://localhost:37987/game.bundle.js"
+ ],
+ "samples": [
+  {
+   "label": "a_home_idle_0.00",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.119,
+    1.018,
+    -0.084
+   ],
+   "handR": [
+    -0.523,
+    1.165,
+    0.048
+   ],
+   "head": [
+    -0.399,
+    1.348,
+    -0.183
+   ],
+   "headQ": [
+    0.005,
+    0.169,
+    -0.03,
+    0.985
+   ],
+   "spineQ": [
+    0,
+    0.12,
+    0,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     -0.16,
+     1.23,
+     0.04
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.04,
+    1.02,
+    4
+   ],
+   "idle": 0,
+   "seq": -1,
+   "landed": false
+  },
+  {
+   "label": "a_home_idle_1.00",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.121,
+    1.036,
+    -0.083
+   ],
+   "handR": [
+    -0.529,
+    1.171,
+    0.05
+   ],
+   "head": [
+    -0.411,
+    1.352,
+    -0.172
+   ],
+   "headQ": [
+    0.03,
+    0.188,
+    0.006,
+    0.982
+   ],
+   "spineQ": [
+    0.013,
+    0.119,
+    0.015,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     -0.16,
+     1.247,
+     0.04
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.05,
+    1.02,
+    4
+   ],
+   "idle": 1,
+   "seq": -1,
+   "landed": false
+  },
+  {
+   "label": "a_home_idle_2.76",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.117,
+    1.004,
+    -0.085
+   ],
+   "handR": [
+    -0.516,
+    1.165,
+    0.046
+   ],
+   "head": [
+    -0.4,
+    1.346,
+    -0.188
+   ],
+   "headQ": [
+    0.01,
+    0.203,
+    0.003,
+    0.979
+   ],
+   "spineQ": [
+    -0.007,
+    0.12,
+    0.001,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": true,
+     "sy": 1.053
+    },
+    {
+     "visible": true,
+     "sy": 1.053
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     -0.16,
+     1.225,
+     0.04
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.05,
+    1.03,
+    4
+   ],
+   "idle": 2.76,
+   "seq": -1,
+   "landed": false
+  },
+  {
+   "label": "b_toss_screen_idle_4.50",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.121,
+    1.025,
+    -0.083
+   ],
+   "handR": [
+    -0.529,
+    1.16,
+    0.05
+   ],
+   "head": [
+    -0.385,
+    1.345,
+    -0.188
+   ],
+   "headQ": [
+    -0.009,
+    0.184,
+    -0.046,
+    0.982
+   ],
+   "spineQ": [
+    -0.005,
+    0.12,
+    -0.015,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     -0.16,
+     1.24,
+     0.04
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.06,
+    1.03,
+    4
+   ],
+   "idle": 4.5,
+   "seq": -1,
+   "landed": false
+  },
+  {
+   "label": "c_seq_0.30",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.177,
+    1.12,
+    -0.029
+   ],
+   "handR": [
+    -0.596,
+    1.228,
+    0.097
+   ],
+   "head": [
+    -0.41,
+    1.352,
+    -0.216
+   ],
+   "headQ": [
+    -0.107,
+    0.24,
+    -0.066,
+    0.963
+   ],
+   "spineQ": [
+    -0.046,
+    0.12,
+    0.004,
+    0.992
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     -0.209,
+     1.372,
+     0.099
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.04,
+    1.02,
+    4
+   ],
+   "idle": 6.3,
+   "seq": 0.3,
+   "landed": false
+  },
+  {
+   "label": "c_seq_0.60",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.004,
+    1.049,
+    -0.064
+   ],
+   "handR": [
+    -0.288,
+    1.283,
+    0.122
+   ],
+   "head": [
+    -0.398,
+    1.346,
+    -0.108
+   ],
+   "headQ": [
+    0.036,
+    0.307,
+    -0.079,
+    0.948
+   ],
+   "spineQ": [
+    0.097,
+    0.118,
+    0.024,
+    0.988
+   ],
+   "lids": [
+    {
+     "visible": true,
+     "sy": 0.716
+    },
+    {
+     "visible": true,
+     "sy": 0.716
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.115,
+     1.53,
+     0.207
+    ]
+   },
+   "laundry": [
+    [
+     true,
+     [
+      0.03,
+      1.58,
+      0.21
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.02,
+      1.48,
+      0.16
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      -0.08,
+      1.37,
+      0.1
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      -0.18,
+      1.25,
+      0.06
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0,
+      0,
+      0
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.04,
+    1.02,
+    4
+   ],
+   "idle": 6.6,
+   "seq": 0.6,
+   "landed": false
+  },
+  {
+   "label": "c_seq_1.00",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.01,
+    1.047,
+    -0.062
+   ],
+   "handR": [
+    -0.301,
+    1.283,
+    0.12
+   ],
+   "head": [
+    -0.404,
+    1.345,
+    -0.122
+   ],
+   "headQ": [
+    0.055,
+    0.341,
+    -0.067,
+    0.936
+   ],
+   "spineQ": [
+    0.076,
+    0.118,
+    0.024,
+    0.99
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.347,
+     1.5,
+     0.477
+    ]
+   },
+   "laundry": [
+    [
+     true,
+     [
+      0.26,
+      1.65,
+      0.32
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.35,
+      1.69,
+      0.31
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.22,
+      1.74,
+      0.26
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.18,
+      1.73,
+      0.31
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.17,
+      1.68,
+      0.3
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.05,
+    1.02,
+    3.88
+   ],
+   "idle": 7,
+   "seq": 0.9999999999999999,
+   "landed": false
+  },
+  {
+   "label": "c_seq_1.40",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.019,
+    1.037,
+    -0.057
+   ],
+   "handR": [
+    -0.318,
+    1.277,
+    0.12
+   ],
+   "head": [
+    -0.407,
+    1.342,
+    -0.139
+   ],
+   "headQ": [
+    0.093,
+    0.335,
+    -0.039,
+    0.937
+   ],
+   "spineQ": [
+    0.055,
+    0.119,
+    0.021,
+    0.991
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.338,
+     1.041,
+     0.51
+    ]
+   },
+   "laundry": [
+    [
+     true,
+     [
+      0.31,
+      0.82,
+      0.12
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.38,
+      1.05,
+      0.19
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.31,
+      1.31,
+      0.21
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.33,
+      1.47,
+      0.3
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.39,
+      1.55,
+      0.34
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.11,
+    1.04,
+    3.22
+   ],
+   "idle": 7.4,
+   "seq": 1.4,
+   "landed": false
+  },
+  {
+   "label": "c_seq_1.80",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.016,
+    1.395,
+    -0.054
+   ],
+   "handR": [
+    -0.327,
+    1.245,
+    0.122
+   ],
+   "head": [
+    -0.407,
+    1.341,
+    -0.155
+   ],
+   "headQ": [
+    0.097,
+    0.339,
+    -0.026,
+    0.935
+   ],
+   "spineQ": [
+    0.034,
+    0.119,
+    0.015,
+    0.992
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.298,
+     0.724,
+     0.494
+    ]
+   },
+   "laundry": [
+    [
+     true,
+     [
+      0.3,
+      0.65,
+      -0.37
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.31,
+      0.59,
+      -0.23
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.26,
+      0.64,
+      -0.11
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.3,
+      0.64,
+      0.01
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.39,
+      0.75,
+      0.12
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.15,
+    1.04,
+    2.77
+   ],
+   "idle": 7.8,
+   "seq": 1.8,
+   "landed": false
+  },
+  {
+   "label": "c_seq_2.40",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.03,
+    1.422,
+    -0.077
+   ],
+   "handR": [
+    -0.47,
+    1.194,
+    0.084
+   ],
+   "head": [
+    -0.401,
+    1.346,
+    -0.179
+   ],
+   "headQ": [
+    0.103,
+    0.344,
+    -0.006,
+    0.933
+   ],
+   "spineQ": [
+    0.005,
+    0.12,
+    0.003,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.329,
+     0.643,
+     0.096
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0.3,
+      0.65,
+      -1.04
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.31,
+      0.59,
+      -0.96
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.26,
+      0.64,
+      -0.81
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.3,
+      0.64,
+      -0.66
+     ],
+     2
+    ],
+    [
+     true,
+     [
+      0.37,
+      0.6,
+      -0.53
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.23,
+    0.83,
+    1.86
+   ],
+   "idle": 8.399999999999999,
+   "seq": 2.399999999999999,
+   "landed": false
+  },
+  {
+   "label": "c_seq_3.00",
+   "girl2": true,
+   "visible": true,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.024,
+    1.426,
+    -0.075
+   ],
+   "handR": [
+    -0.466,
+    1.208,
+    0.083
+   ],
+   "head": [
+    -0.392,
+    1.352,
+    -0.177
+   ],
+   "headQ": [
+    0.108,
+    0.351,
+    -0.001,
+    0.93
+   ],
+   "spineQ": [
+    0.009,
+    0.12,
+    -0.006,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": true,
+     "sy": 0.716
+    },
+    {
+     "visible": true,
+     "sy": 0.716
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.3,
+     0.603,
+     -0.991
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0.3,
+      0.65,
+      -1.04
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.31,
+      0.59,
+      -1
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.26,
+      0.64,
+      -0.96
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.3,
+      0.64,
+      -0.93
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.37,
+      0.6,
+      -0.89
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.3,
+    0.65,
+    1.09
+   ],
+   "idle": 8.999999999999996,
+   "seq": 2.999999999999997,
+   "landed": false
+  },
+  {
+   "label": "c_seq_3.60",
+   "girl2": true,
+   "visible": false,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.02,
+    1.426,
+    -0.073
+   ],
+   "handR": [
+    -0.459,
+    1.223,
+    0.081
+   ],
+   "head": [
+    -0.385,
+    1.352,
+    -0.169
+   ],
+   "headQ": [
+    0.116,
+    0.362,
+    0.004,
+    0.925
+   ],
+   "spineQ": [
+    0.02,
+    0.12,
+    -0.011,
+    0.993
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.3,
+     0.605,
+     -2.055
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0.3,
+      0.65,
+      -1.04
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.31,
+      0.59,
+      -1
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.26,
+      0.64,
+      -0.96
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.3,
+      0.64,
+      -0.93
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.37,
+      0.6,
+      -0.89
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.3,
+    0.78,
+    0.02
+   ],
+   "idle": 9.599999999999994,
+   "seq": 3.5999999999999948,
+   "landed": false
+  },
+  {
+   "label": "c_seq_4.40",
+   "girl2": true,
+   "visible": false,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.037,
+    1.424,
+    -0.055
+   ],
+   "handR": [
+    -0.457,
+    1.214,
+    0.081
+   ],
+   "head": [
+    -0.384,
+    1.342,
+    -0.159
+   ],
+   "headQ": [
+    0.122,
+    0.378,
+    0.015,
+    0.917
+   ],
+   "spineQ": [
+    0.034,
+    0.12,
+    -0.01,
+    0.992
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.3,
+     0.507,
+     -2.53
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0.3,
+      0.65,
+      -1.04
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.31,
+      0.59,
+      -1
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.26,
+      0.64,
+      -0.96
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.3,
+      0.64,
+      -0.93
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.37,
+      0.6,
+      -0.89
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.3,
+    0.92,
+    -1.08
+   ],
+   "idle": 10.399999999999991,
+   "seq": 4.399999999999992,
+   "landed": true
+  },
+  {
+   "label": "c_seq_5.20",
+   "girl2": true,
+   "visible": false,
+   "skinned": [
+    {
+     "name": "tripo_node_a28868ff-1f00-42e3-8330-eea598f64e90",
+     "bones": 17,
+     "verts": 13274
+    }
+   ],
+   "boneCount": 17,
+   "boneNames": [
+    "hips",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "shoulderL",
+    "upperarmL",
+    "forearmL",
+    "handL",
+    "shoulderR",
+    "upperarmR",
+    "forearmR",
+    "handR",
+    "thighL",
+    "shinL",
+    "thighR",
+    "shinR"
+   ],
+   "handL": [
+    -0.054,
+    1.429,
+    -0.043
+   ],
+   "handR": [
+    -0.464,
+    1.196,
+    0.082
+   ],
+   "head": [
+    -0.393,
+    1.344,
+    -0.158
+   ],
+   "headQ": [
+    0.114,
+    0.393,
+    0.026,
+    0.912
+   ],
+   "spineQ": [
+    0.034,
+    0.12,
+    0,
+    0.992
+   ],
+   "lids": [
+    {
+     "visible": false,
+     "sy": 0.04
+    },
+    {
+     "visible": false,
+     "sy": 0.04
+    }
+   ],
+   "hero": {
+    "name": "hero",
+    "pos": [
+     0.3,
+     0.518,
+     -2.53
+    ]
+   },
+   "laundry": [
+    [
+     false,
+     [
+      0.3,
+      0.65,
+      -1.04
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.31,
+      0.59,
+      -1
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.26,
+      0.64,
+      -0.96
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.3,
+      0.64,
+      -0.93
+     ],
+     2
+    ],
+    [
+     false,
+     [
+      0.37,
+      0.6,
+      -0.89
+     ],
+     2
+    ]
+   ],
+   "cam": [
+    0.3,
+    0.92,
+    -1.08
+   ],
+   "idle": 11.199999999999989,
+   "seq": 5.1999999999999895,
+   "landed": true
+  }
+ ],
+ "tapToStart": {
+  "phase": "intro",
+  "time": 3.117,
+  "z": 1.592,
+  "x": 0,
+  "y": 0.491,
+  "world": [
+   0,
+   0.491,
+   1.592
+  ],
+  "path": {
+   "pitch": 0,
+   "heading": 0,
+   "bank": 0
+  },
+  "cameraUp": [
+   0,
+   1,
+   0
+  ],
+  "lane": 1,
+  "speed": 0,
+  "air": false,
+  "slope": 0,
+  "pitchDeg": 0,
+  "leanDeg": 0,
+  "coins": 1280,
+  "gems": 36,
+  "socks": 0,
+  "collected": {
+   "coins": 0,
+   "gems": 0
+  },
+  "laps": 0,
+  "camera": [
+   -0.162,
+   1.627,
+   -1.508
+  ],
+  "cameraPitchDeg": 1.85,
+  "particles": 16,
+  "repairedNormals": 1002065,
+  "machineryInnerX": 1.22,
+  "decorClear": {
+   "towers": 1.79,
+   "gears": 1.25,
+   "pipes": null,
+   "crowns": null
+  },
+  "rollerCandidate": null,
+  "hearts": 5,
+  "blasts": 3,
+  "turbos": 3,
+  "paused": false,
+  "blastT": 0,
+  "turboT": 0,
+  "knocks": 0,
+  "restarts": 0,
+  "bumps": 0
+ },
+ "after3s": {
+  "phase": "running",
+  "time": 6.117,
+  "z": 21.014,
+  "x": 0.002,
+  "y": 0.432,
+  "world": [
+   0.288,
+   0.896,
+   20.984
+  ],
+  "path": {
+   "pitch": 0.3,
+   "heading": 5.2,
+   "bank": 3.3
+  },
+  "cameraUp": [
+   0.059,
+   0.996,
+   -0.063
+  ],
+  "lane": 1,
+  "speed": 5.56,
+  "air": false,
+  "slope": -0.009,
+  "pitchDeg": 1,
+  "leanDeg": 0.7,
+  "coins": 1286,
+  "gems": 37,
+  "socks": 0,
+  "collected": {
+   "coins": 6,
+   "gems": 1
+  },
+  "laps": 0,
+  "camera": [
+   -0.002,
+   1.891,
+   17.837
+  ],
+  "cameraPitchDeg": 5.44,
+  "particles": 567,
+  "repairedNormals": 1002065,
+  "machineryInnerX": 1.22,
+  "decorClear": {
+   "towers": 1.79,
+   "gears": 1.25,
+   "pipes": null,
+   "crowns": null
+  },
+  "rollerCandidate": null,
+  "hearts": 4,
+  "blasts": 3,
+  "turbos": 3,
+  "paused": false,
+  "blastT": 0,
+  "turboT": 0,
+  "knocks": 1,
+  "restarts": 0,
+  "bumps": 1
+ },
+ "logs": [
+  "[.WebGL-0xca40016a000] GL_INVALID_OPERATION: glTexStorage2D: Texture is immutable.",
+  "[.WebGL-0xca40016a000] GL_INVALID_OPERATION: glTexStorage2D: Texture is immutable.",
+  "[.WebGL-0xca40016a000] GL_INVALID_OPERATION: glTexStorage2D: Texture is immutable."
+ ],
+ "glbs": [
+  [
+   "models/opening/girl_rigged.glb",
+   200
+  ],
+  [
+   "models/mascot.glb",
+   200
+  ],
+  [
+   "models/s3_castle.glb",
+   200
+  ],
+  [
+   "models/s3_entrance.glb",
+   200
+  ],
+  [
+   "models/s3_machinery.glb",
+   200
+  ],
+  [
+   "models/s3_brush.glb",
+   200
+  ],
+  [
+   "models/castle.glb",
+   200
+  ],
+  [
+   "models/sock.glb",
+   200
+  ],
+  [
+   "models/drum.glb",
+   200
+  ],
+  [
+   "models/roller.glb",
+   200
+  ],
+  [
+   "models/gem.glb",
+   200
+  ],
+  [
+   "models/machinery.glb",
+   200
+  ],
+  [
+   "models/tower.glb",
+   200
+  ],
+  [
+   "models/pipe.glb",
+   200
+  ],
+  [
+   "models/gear.glb",
+   200
+  ],
+  [
+   "models/crown.glb",
+   200
+  ],
+  [
+   "models/mascot.glb",
+   200
+  ],
+  [
+   "models/coin_p2.glb",
+   200
+  ],
+  [
+   "models/coin_p2_lo.glb",
+   200
+  ]
+ ]
+}

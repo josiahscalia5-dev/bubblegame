@@ -1,0 +1,45 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "home",
+  "level1"
+ ],
+ "fps": 20,
+ "frames": 479,
+ "log": [
+  [
+   "opening done at frame",
+   183
+  ],
+  [
+   0.05,
+   2.07,
+   "Washer drum"
+  ],
+  [
+   5.05,
+   49.18,
+   "Spinning brushes"
+  ],
+  [
+   10.05,
+   95.85,
+   "Treasure run"
+  ]
+ ],
+ "final": {
+  "phase": "running",
+  "coins": 1328,
+  "gems": 37,
+  "socks": 4,
+  "hearts": 5,
+  "knocks": 0,
+  "l1": {
+   "u": 132.71,
+   "section": "Treasure run",
+   "complete": false
+  }
+ },
+ "errors": []
+}

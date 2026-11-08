@@ -1,0 +1,24 @@
+{
+ "running": "running",
+ "pausePanel": true,
+ "timeFrozenWhilePaused": true,
+ "runsAfterResume": true,
+ "bubbleBlast": {
+  "before": 3,
+  "after": 2
+ },
+ "turboSpin": {
+  "before": 3,
+  "after": 2,
+  "speed": 8.45
+ },
+ "final": {
+  "phase": "running",
+  "hearts": 5,
+  "coins": 1302,
+  "socks": 1,
+  "gems": 37
+ },
+ "errors": [],
+ "note": "tap-to-spin not measured here: the game state does not expose the spin (mascot.spinLeft is internal); this field was removed from the probe"
+}
