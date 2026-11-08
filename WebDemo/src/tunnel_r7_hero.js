@@ -26,6 +26,7 @@ import { LIQUID_ON, buildLiquid } from './tunnel_r8_liquid.js';   // ?s3=liquid:
 import { MATCH_ON, MATCH, deepMerge, buildMatch } from './tunnel_r9_match.js';   // ?s3=match: Round 9's art-match pass
 import { buildMatchWater } from './tunnel_r9_match_water.js';
 import { phoneTanW } from './match_phone.js';   // ?s3=match only: the phone framing
+import { LEVEL1_ON, COURSE } from './level1.js';   // ?s3=...,level1: the drum's rings, bands and water texture stream past at her travel
 import { SWIM2_ON, SWIM2 } from './tunnel_s4_swim2.js';   // ?s3=intunnel,swim2: round3's swirl, whirlpool and inner bubbles kept hidden
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
@@ -247,7 +248,7 @@ export function buildHero({ scene, TR, L, W, mascot, updaters, time, waterSheets
     U.uHeroTanW.value = MATCH_ON ? phoneTanW(cam.fov, cam.aspect)   // ?s3=match: the 1:2 reference width on phones (match_phone.js)
       : 2 * Math.tan(THREE.MathUtils.degToRad(cam.fov) / 2) * cam.aspect;
   };
-  updaters.push(() => { U.uHeroTravel.value = mascot.z; });
+  updaters.push(() => { U.uHeroTravel.value = LEVEL1_ON ? COURSE.heroTravel.from + (mascot.z - COURSE.heroTravel.from) * COURSE.heroTravel.k : mascot.z; });   // (level1: the same at the start, k times faster as she travels)
 
   // 1. the whirlpool on the wall lining (round4's tube, restyled by round5 and round6)
   const wall = scene.getObjectByName('r6Walls') || scene.getObjectByName('r5Vortex') || scene.getObjectByName('r4Lining');

@@ -66,6 +66,10 @@ export const COURSE = {
   socks: [[0, 0.85, 101], [2, 0.85, 117], [1, 0.95, 162], [2, 0.85, 251], [0, 0.85, 291]],
   gems: [[1, 0.8, 126], [2, 0.8, 305]],
   swim: { rate: 1.55, roll: 0.075, surge: 0.035, yaw: 0.06, lean: 0.12, splash: 3 },
+  // the Screen 4 drum's painted rings, colour bands and water texture are drawn in screen polar coordinates and moved by the
+  // distance ridden at 0.03 ring per metre (tunnel_r9_match.js): too slow to read as travel. With level1 they advance k times
+  // faster than she travels, measured from her start (INTUNNEL.u, 1.592 m), so Tap to Start is the same picture
+  heroTravel: { from: 1.592, k: 6 },
 };
 
 const f4 = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
