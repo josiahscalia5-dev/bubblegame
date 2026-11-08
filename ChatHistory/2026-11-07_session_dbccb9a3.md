@@ -363,3 +363,9 @@ _[2 images attached]_
 
 [attached file: Bubble_Wash_Kingdom_Tripo_Claude_Secure_API_Prompt.txt] Here is my tripo APK key [REDACTED]
 
+---
+
+### Claude · 2026-11-08 00:32 UTC
+
+Now wiring it into Screen 2 (`screens12.js`), gated so it only replaces the painted picture when `level1` is on:
+

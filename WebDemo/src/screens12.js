@@ -12,9 +12,15 @@
 //     artwork's arrow into the washer's blue tunnel, the view dives into the tunnel and hands over to the live 3D
 //     Screen 4 (the accepted Tap to Start), which has been loading underneath the whole time.
 // Nothing here runs without the switch; the game's state, input and seeded Math.random are untouched (it uses none).
+import { LEVEL1_PARTS } from './level1.js';
+import { mountOpening3D } from './opening3d.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const HOME_ON = LIST.includes('home');
+// ?s3=...,home,level1 (8 November 2026): the painted Laundry Toss picture gives way to the real-time 3D opening (opening3d.js);
+// the UI here (top bar, titles, PLAY, START, panels) is unchanged and sits over it. Without level1 nothing changes.
+const O3D_ON = HOME_ON && LEVEL1_PARTS.opening;
+let o3d = null;
 
 // the artwork's own coordinates (864 x 1536): the cut-out character, the washer's tunnel, the arrow's path
 const ART = { w: 864, h: 1536, sprite: { x: 287, y: 554, w: 334, h: 319 }, tunnel: { x: 575, y: 1112 }, arrow: { x: 700, y: 790 } };
@@ -138,6 +144,12 @@ function build() {
   const card = el('div', 'card'); modal.appendChild(card);
   root.append(s1, s2, top, modal, glow);
   document.body.appendChild(root);
+  if (O3D_ON) {   // ?s3=...,home,level1: the live 3D scene behind both screens instead of the painted picture
+    art.style.display = 'none';
+    o3d = mountOpening3D(root, { test: !!window.__BW_TEST__,
+      onHandOver: () => { holding = false; root.style.transition = 'opacity .8s ease'; root.style.opacity = '0'; root.style.pointerEvents = 'none'; },
+      onDone: () => { clearInterval(syncT); o3d.dispose(); root.remove(); window.dispatchEvent(new Event('bw:home-done')); } });
+  }
 
   // layout: the artwork covers the screen (cropped at the sides on narrow phones, a little more on the right so the girl
   // stays whole); --a is one artwork pixel on screen
@@ -193,6 +205,7 @@ function build() {
     if (!ready()) return;
     clearInterval(gateT);
     s2.classList.add('off'); top.style.transition = 'opacity .35s'; top.style.opacity = '0';
+    if (o3d) { o3d.play(); return; }   // ?s3=...,home,level1: the 3D toss, the washer entry and the hand-over (opening3d.js)
     const S = ART.sprite, w = art.clientWidth, k = w / ART.w;   // screen px per artwork px
     const p0 = { x: S.x + S.w / 2, y: S.y + S.h / 2 }, p1 = ART.arrow, p2 = ART.tunnel;
     sprite.style.animation = 'none'; sprite.style.transformOrigin = '50% 50%';
