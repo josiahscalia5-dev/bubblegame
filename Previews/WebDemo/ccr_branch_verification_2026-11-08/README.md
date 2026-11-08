@@ -38,6 +38,8 @@ Contact sheet: `girl_probe_contact_sheet.jpg`.
 |---|---|---|---|
 | `s3_func` (the gameplay functions) | exit 0 | exit 0 | candidate output identical; the comparison differs only in draw calls: 222 with level1 against 211 (the old file still had 322, from before the course was culled) |
 | `r2_func` (hearts: 5 knocks to 0, restart to "5 Full", pause visible) | hearts test passed; exit 1 from a later page load over its 5-minute limit | the same | identical output AND the same timeout in the old session's run: a harness limit on the busy software renderer, not a game fault |
+| `r2_func` rerun on the idle machine (`proofs/r2_func_level1_rerun_unloaded.*`) | - | hearts test passed again; the same hang at its second page load (a same-page reload after the hearts test never reaches `domcontentloaded`) | the harness, not the game |
+| `scripts/abilities_probe.cjs` (r2_func's skipped sections, on a fresh page) | - | Pause: panel shown, time frozen, runs after Resume; Bubble Blast 3 -> 2; Turbo Spin 3 -> 2, speed 8.45; 0 errors | (tap-to-spin is not exposed by the game state, so not measured here) |
 | motion trace (seeded swipes and a jump) | exit 0 | exit 0 | **152 frames x 17 gameplay fields (lanes, steering, jump, speed, hearts, coins, gems, socks, knocks, camera): 0 differences** between the two |
 
 ## Video
