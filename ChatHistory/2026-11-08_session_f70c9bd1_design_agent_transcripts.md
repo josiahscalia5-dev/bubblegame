@@ -153,3 +153,39 @@ Lightweight READ-ONLY availability check only (session f70c9bd1); there is no bu
 
 
 _1 tool steps._
+
+---
+
+## Game Art Director: Art director structural review of pass 16 (started 20:38 UTC)
+
+**Lead → agent** (20:38 UTC):
+
+Structural review for Bubble Wash Kingdom Screen 09 "Avoid Enemies!" (session f70c9bd1). READ-ONLY; do not edit files, do not launch browsers.
+
+Authority (the ONLY target): /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/original_master_frame.png (the user's approved master, 756 x 1385 phone frame). The user's zone map: /home/user/bubblegame/Design/ReferencePacks/2026-11-08_Screen09_Strict_Handoff_from_user/03_APPROVED_BACKGROUND_3D_ZONE_MAP.png (A distant machine world, B left architecture, C right architecture, D water + player).
+
+Real gameplay renders at the SAME checkpoint (u 229.5, centre lane, 412 x 915, same seed):
+- BEFORE (pass 13b): /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/pass13b_u229.5_centre.png
+- NEW (pass 16: round drum housing on a raised cream-gold ledge at left; curved pink star wall at right; real 3D machine columns, gantries and mounted washer units / tanks / gears at 4-8 m over the channel; the big blue gear upper right; the master's own distant scenery (LaMa-repaired only where its enemy/banner hid it) on the far end wall only; one hero enemy floating high): /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/pass16_mach16_v2_far16_CURRENT.png
+- Side by side: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/01_ORIGINAL_PASS13b_NEW_u229.5_centre_FULLSIZE.png
+Note the HUD differs by design (the game shows a mission panel; ignore HUD differences).
+
+Compare the ARCHITECTURE of NEW against the ORIGINAL (not a generic art opinion), zone by zone (A, B, C, D): for each, say what now matches, what is still structurally wrong (silhouette, position as screen fractions, scale, depth, colour relationship), and whether NEW is closer to the original than BEFORE. Then give the 3 most important corrections, ranked, each concrete (which structure, where on screen it should be, what shape/colour). Be honest; if a zone is not recognizable, say so. Answer in at most 30 lines.
+
+- 20:38 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/original_master_frame.png
+- 20:38 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-08_Screen09_Strict_Handoff_from_user/03_APPROVED_BACKGROUND_3D_ZONE_MAP.png
+- 20:38 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/pass13b_u229.5_centre.png
+- 20:38 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/pass16_mach16_v2_far16_CURRENT.png
+- 20:38 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/01_ORIGINAL_PASS13b_NEW_u229.5_centre_FULLSIZE.png
+- 20:38 `Bash`
+- 20:38 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/o_upper.png
+- 20:38 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/n_upper.png
+- 20:38 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/b_upper.png
+- 20:39 `Bash`
+- 20:39 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/zB.png
+- 20:39 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/zC.png
+- 20:39 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/zA.png
+- 20:40 `Bash`
+- 20:40 `Bash`
+
+_15 tool steps._
