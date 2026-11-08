@@ -111,3 +111,32 @@ Restoration ping. Read-only: change nothing in the scene. A headless Chrome alre
 - 02:50 `SubagentHandback`
 
 _3 tool steps._
+
+---
+
+## Game Art Director: Art director judges match6 mascot (started 03:14 UTC)
+
+**Lead → agent** (03:14 UTC):
+
+Bubble Wash Kingdom, Screen 4, the pink mascot's REAR SILHOUETTE only (the user's priority 3 of 8 November: "Correcting the pink mascot's rear-view silhouette so it looks full, round, and fluffy like ORIGINAL CLASSIC Screen 4"). Read-only review; do not edit anything.
+
+The ONLY target: /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg (close-up of the same image: /home/user/bubblegame/Design/ReferencePacks/2026-11-07_Bubble_Wash_Mascot_Water_Focused_Correction_Pack/Screen4_PINK_CHARACTER_APPROVED_UNALTERED_CROP.png). The user's pass criterion: "a round, full pink dome with finer directional strands, small side nubs and the original rear-view profile at normal gameplay size".
+
+Real gameplay captures, same seed, same moment (Tap to Start), same camera, 768 x 1536 canvas:
+- PREVIOUS (match5): /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/frames/tap_to_start_MATCH5_previous_canvas.png
+- NEW (match6): /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/frames/tap_to_start_MATCH6_new_canvas.png
+- Her alone (everything else hidden, same frame): .../69_match6/frames/tap_to_start_MATCH5_her_alone.png and .../tap_to_start_MATCH6_her_alone.png
+- Sheets: .../69_match6/sheets/01_full_ORIGINAL_PREVIOUS_NEW_tap_to_start.jpg, 02_her_ORIGINAL_PREVIOUS_NEW_tap_to_start.jpg, 03_her_zoom_ORIGINAL_PREVIOUS_NEW.jpg
+
+What match6 changed (drawn only): her side nubs pushed slightly out and down with short fur so they read as lobes; her crown a broader arc; shell strands radiating from a whorl high on her back instead of combed straight down; strand bundles with dark grooves radiating from the top centre; a paler crown and a deeper magenta base (measured in five height bands against the ORIGINAL).
+
+Answer, in under 250 words: (1) Is NEW closer to the ORIGINAL's mascot than PREVIOUS: yes / no / mixed, and why, judging silhouette (dome roundness, top arc, side nubs, width/height), fur direction and colour. (2) Anything in NEW that looks LESS like the ORIGINAL than PREVIOUS (the user's rule: revert anything that looks less like the original). (3) The top 3 remaining mascot differences, ranked, with concrete fixes. Do not judge the water except where it hides her outline.
+
+- 03:14 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/03_her_zoom_ORIGINAL_PREVIOUS_NEW.jpg
+- 03:14 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/02_her_ORIGINAL_PREVIOUS_NEW_tap_to_start.jpg
+**Lead → agent** (03:14 UTC):
+
+[Request interrupted by user]
+
+
+_2 tool steps._
