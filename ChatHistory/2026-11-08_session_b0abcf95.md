@@ -585,3 +585,76 @@ REPLY FIRST WITH THREE SHORT ANSWERS BEFORE NEW RENDERING: (A) what is ALREADY d
 
 _[2 images attached]_
 
+---
+
+### Claude · 2026-11-08 13:37 UTC
+
+I'll answer your three questions first and start no new rendering. Two quick, non-rendering steps: storing your brief in the repository, and checking the running jobs so the answers are accurate.
+
+The original board is the authority. I will correct the exposed purple tunnel and final celebration without restarting existing proofs, resetting the game, or spending credits on unrelated work.
+
+Your brief is saved on GitHub (`2c81752`, branch `ccr-50c66592-kcnqoy`). The current jobs are still running on build `8363541c` and won't be restarted: the full recording is at frame 265, and 6 of 12 identity re-checks are done, all 0 pixels different.
+
+**(A) Already corrected and proven in the current build**
+- **Approved Screen 4 unchanged:** your Classic Screen 4 is 0 pixels different at Tap to Start and at 3 s. The full app's Tap to Start is also 0 pixels different from before.
+- **Real mechanics:**
+  - a raised side path, reached by bounce pad plus swipe; a swipe from the water is refused;
+  - a lower water path with raised ledges beside it; climbing back up is refused;
+  - grime balls that patrol and can be popped with a spin;
+  - socks in the board's order: 3/5 in the drum, 4/5 on the lower path, 5/5 only in the Kingdom.
+- **Level Complete:** the three goals and rewards add to your totals, and "Next Level" honestly says "Level 2 is coming soon".
+- **Coins:** the Level 1 coins are golder (`#f6c63b` against the original's `#f6c426`); the drum's coins are untouched.
+- **Built but not yet shown to you on screen:** in the final build she turns to face you and bounces at Level Complete, with the card moved up. Your annotated screenshot was from the build before that. The proof frames are being captured now.
+
+**(B) Not yet corrected**
+- **Purple ceiling:** in Level 1's sections a lilac perforated-metal band still runs over the top and narrows into a lilac cone at the far centre, crossed by thin orange arches. I only made that band narrower; it is not the blue, water-lit interior of your board.
+- **Composition:**
+  - the brushes are small and sit in her lanes, where the board has big ones near the walls;
+  - the rims are thin orange arches rather than colourful layered metal;
+  - there are far fewer bubbles than on the board;
+  - the side path and the drop are straight water channels, not the board's curved golden flumes;
+  - the enemies are small.
+- **Bubble Kingdom:** the castle is still only seen through a distant portal; there is no close arrival.
+- **Celebration:** the results card is still pale and large. There are no friendly socks or colourful kingdom scenery around her, and her turn toward you is not yet visually verified.
+- **For your awareness:** earlier today I merged the other account's 6 newest commits (only its chat history and proof logs) *into this branch*, with a normal merge. I never wrote to their branch; tell me if you'd rather I hadn't.
+
+**(C) The next two targeted changes**, each behind its own switch so the current build stays as the frozen baseline:
+1. **`roof2`, the blue water tunnel in Level 1 only:**
+   - In the tunnel wall shader, the water ribbons continue over the top in blue, turquoise and aqua, with a turquoise glowing centre.
+   - The washer metal becomes distinct silver/lavender rims with gold edges, instead of a continuous lilac surface.
+   - The Screen 4 drum is not touched, and there is no overlay or camera crop.
+   - **Proof:** still frames at six points in the level, each beside your original crop, plus the measured purple share of the upper screen (the original's is about 22%).
+2. **`finale2`, a close Kingdom arrival and the board-12 celebration:**
+   - The existing castle model moves inside an enlarged wet chamber, so there is no open sky, and she finishes at its moat on the water.
+   - The card is restyled blue and gold: stars and title at the top, a compact goals panel, rewards and Coming Soon at the bottom. The middle stays open so she is visible facing you and bouncing, with the existing sock models around her.
+   - **Proof:** frames of the approach, the arrival and the celebration, plus a 3-second clip, beside your crops 08 and 10.
+
+Order: let the current jobs finish, save, freeze and verify the baseline, then these two candidates with short captures only, then **one** final full recording.
+
+---
+
+### Automatic check · 2026-11-08 13:37 UTC
+
+Stop hook feedback:
+[command hook]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-08 13:38 UTC
+
+That save committed and pushed the two board images from your brief: `5634a58` on `ccr-50c66592-kcnqoy`, and the push is confirmed on GitHub. The earlier save had held them back because they were copied less than 30 seconds before it ran. That's the new "unfinished file" check doing its job; the next save picks such files up.
+
+Nothing else has changed: the full recording and the identity checks are still running on the current build, and the two fixes (`roof2` for the purple ceiling, `finale2` for the Kingdom arrival and celebration) start only after those finish and the baseline is saved.
+
+---
+
+### You · 2026-11-08 13:41 UTC
+
+Claudia, yes, proceed exactly with the plan you described. My two highest visual priorities are "roof2" and "finale2". The original approved 12-screen board remains the authority. I want the purple upper tunnel corrected into the rich blue-water environment and the Bubble Kingdom arrival and Level Complete celebration to closely match the original artwork. Finish and preserve the existing proofs first, then implement these two corrections with short real-gameplay comparisons. Do not redesign anything else, restart unnecessary recordings, or alter my approved Classic Screen 4. Keep my five-minute GitHub autosave active on "ccr-50c66592-kcnqoy". When finished, show me the actual corrected screenshots and explain honestly what still does not match.
+
+---
+
+### Claude · 2026-11-08 13:41 UTC
+
+Proceeding. The current jobs come first; I'm checking where they are:
+
