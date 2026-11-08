@@ -568,5 +568,50 @@ The user's rule: revert anything that looks less like the original. Reply in und
 - 18:07 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
 - 18:07 `Bash`
 - 18:07 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/upper3.png
+- 18:08 `Grep`: function facadeTexture
+**Agent** (18:08 UTC):
 
-_9 tool steps._
+**KEEP pass 9.**
+
+**Why:** Pass 8's upper half looked like an open, pale sky with a sun. The original has no sky; it is an enclosed machinery chamber. Pass 9 closes that chamber, so the gears, rings and facade now sit inside a room, as they do in the original. My visual judgement is that it is closer. The numbers agree: upper LPIPS 0.792 → 0.710 and play area 0.821 → 0.782. The ΔE change (30.2 → 30.6) is negligible.
+
+**What pass 9 got wrong** (my own measure, rows 0.18–0.40, saved images not re-rendered):
+- **Colour:** the vault is one flat blue-violet. 91 % of its pixels fall in hue 220–260°. The original spreads across violet, magenta and pink (about 50 % in 260–340°).
+- **Saturation:** 156, against the original's 120.
+- **Flatness:** brightness spread 11, against the original's 39.
+
+**Next single correction:** in `/home/user/bubblegame/WebDemo/src/tripo_l1.js`, change `SCENE07.chamber.vault` from `0x8f9cff` to about `0xf2c4ec`, a pale pink tint.
+- The vault reads the facade texture's top lavender (#b58ae8) and multiplies it by this tint. The periwinkle tint is what makes it blue-violet and over-saturated.
+- A pink tint should keep the lavender and move it toward the original's pink-lavender (median #b781c2).
+- Leave `emissiveIntensity` at 0.42 for this step. Re-measure upper saturation (aim for about 120) and the hue spread.
+
+**After that:** the density. Raise the existing `upper.items` machinery heights (2.0–4.4 m) into the vault band so machinery covers it, not a plain surface.
+
+
+_10 tool steps._
+
+---
+
+## claude-code-guide: How to reconnect plugin MCP server (started 18:09 UTC)
+
+**Lead → agent** (18:09 UTC):
+
+Short factual question about Claude Code (answer from the official docs, cite the page): A user runs a Claude Code CLOUD session (Claude Code on the web, claude.ai/code, also followed from the Claude mobile/desktop app). A plugin-provided stdio MCP server (from an enabled plugin) failed to connect at session start because its file was missing; the file now exists. The user said they "reconnected" it, but the session's MCP log shows no new connection attempt. 1) Is the `/mcp` slash command (with its Reconnect option) available in Claude Code on the web / remote cloud sessions, and where does the user type it (the session's own prompt box)? 2) Is there any other supported way to make a running session retry a failed MCP server (e.g. a reconnect button in the web UI, resuming the session, /reload-plugins or similar)? 3) Does starting a NEW session retry it? Reply in under 150 words with exact steps.
+
+- 18:09 `WebFetch`
+- 18:09 `WebFetch`
+- 18:10 `WebFetch`
+**Agent** (18:10 UTC):
+
+**1)** Not documented for cloud sessions. The MCP page describes `/mcp` > server > **Reconnect**, and `/mcp reconnect all` (v2.1.284+), for interactive terminal sessions only. The cloud page says terminal-only commands aren't available there. Type it in a local `claude` terminal session, not the web prompt box.
+
+**2)** No documented web reconnect button. The only documented route that re-runs session startup is reopening a session after its environment expired, which provisions a fresh VM. The docs don't say this retries MCP servers. Also, cloud sessions clone from GitHub, so commit and push the plugin file, or the new session won't have it.
+
+**3)** Not explicitly documented for cloud sessions. A new session should start fresh, but `claude -p` runs skip failed plugin servers for 15 minutes, so retry after that window if it still fails.
+
+Sources:
+- https://code.claude.com/docs/en/mcp.md
+- https://code.claude.com/docs/en/claude-code-on-the-web.md
+
+
+_3 tool steps._
