@@ -7,3 +7,6 @@ opening toss_idle_0.0: 0 pixels differ (aa85e7ac vs 4dc4b63e, ?s3=intunnel,struc
 accepted start: 0 pixels differ (?s3=intunnel)
 accepted T3.0: 0 pixels differ (?s3=intunnel)
 normal T1.0: 0 pixels differ (?s3=,)
+level1_flow start: 0 pixels differ (?s3=intunnel,structmatch,level1)
+level1_flow T20.0: 0 pixels differ (?s3=intunnel,structmatch,level1)
+== done 15:11:23
