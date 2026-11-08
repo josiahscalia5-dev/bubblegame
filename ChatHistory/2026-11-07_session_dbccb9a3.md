@@ -1706,3 +1706,5 @@ Finish the current proofs, preserve my progress, and verify the final GitHub com
 
 Checking the state first. This looks like a restarted session, so I'm confirming the branch, the latest commit on GitHub, the autosave and the tools. Then I'll check parallax-threejs, which is now loading in this session.
 
+The accepted Screen 4, the normal game and the candidate are still 0 pixels different after the culling. Recording both changes in the evidence README and committing this step:
+
