@@ -5,6 +5,8 @@
 credentials and files still being written are held back by `Tools/save_guard.py`), pushes with retries, merges another session's
 newer commits with a normal merge if needed (never a force-push), and asks GitHub which commit the branch is at: its last lines say
 `Push: VERIFIED, GitHub's <branch> is at <commit>`. Then `bash Tools/preservation_audit.sh` lists what GitHub has (optional, free).
+Tested again 8 November 14:28 UTC by session `57091b57` on its own branch `ccr-b67aeffb-d94mmq` (`9314182b`, `Push: VERIFIED`). It saves
+the CHECKED-OUT branch only: run `git branch --show-current` first, and never check out another session's live branch to save it.
 
 Use this when a Claude account is running low on usage. Ask Claude: **"Run SAVE_BEFORE_ACCOUNT_SWITCH.md now."** It takes a
 few minutes, and nothing in the game changes.
@@ -42,7 +44,8 @@ few minutes, and nothing in the game changes.
 - force-push, rebase, reset or delete a branch;
 - merge an experiment into the accepted build;
 - commit passwords, API keys, tokens or cookies (the chat exporter redacts keys; the repository is public);
-- spend Tripo credits without asking.
+- start a new Tripo job during a save (the user's standing Tripo authorization of 8 November covers asset work, never buying
+  credits, top-ups or automatic recharge; see `CLAUDE.md`, Safety).
 
 ## Good to know
 

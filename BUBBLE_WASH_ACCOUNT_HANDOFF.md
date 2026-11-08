@@ -93,7 +93,7 @@ Page captures: `SETTLE=900 S3=intunnel,structmatch TIMES=0,1,2,3,5 node tools/sc
     with package registries and MCP servers, `download.blender.org`, `download.pytorch.org`, a setup script that runs
     `Tools/cloud_env_setup.sh`); on a new account create the same (`CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` section 0 has the
     script verbatim);
-  - any Tripo key (environment settings only; never in the repository; Tripo jobs cost credits: ask first);
+  - any Tripo key (environment settings only; never in the repository; Tripo jobs cost credits: since 8 November covered by the user's standing authorization within the available balance, CLAUDE.md, Safety);
   - running agents' live state (only their files are saved, as worktree snapshots every 5 minutes).
 
 - **Android preview APK (7 November, about 16:25 UTC, the user's request):** `dl.google.com` added to this account's

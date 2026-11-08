@@ -1,5 +1,11 @@
 # Hand-off: where Bubble Wash Kingdom stands (6 November 2026: Screen 4 `?s3=intunnel` = `bt` + the start inside the tunnel; branch `ccr-10503be1-pnv5vq`)
 
+## Newest (8 November, about 14:45 UTC): session `57091b57`, branch `ccr-b67aeffb-d94mmq`
+The current state is `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` sections 0000 and 000. **Tripo:** the user's standing authorization of 8 November
+(`CLAUDE.md`, Safety) covers the AVAILABLE Tripo API credits without asking per job, and supersedes every "ask before spending" line in
+the dated sections below (they stay as history). Never buy credits or top up without asking. Balance 1,300 at 14:40 UTC (the user's
+purchase of 900 credits arrived). Jobs and decisions: `Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/README.md`.
+
 ## Newest (7 November, about 20:40-22:10 UTC): session `398ed88c`, the user's correction mandates: `swim3` and `match4`
 
 - **Branch:** `claude/bubble-wash-account-handoff-yhk8dy`. In `?s3=intunnel,structmatch` by default (the accepted `?s3=intunnel`

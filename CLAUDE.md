@@ -98,6 +98,10 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     side path (bounce pad + swipe), a REAL lower path (the drop; ledges beside it), patrolling grime balls a spin pops, exactly 5 socks
     on any route, Level Complete with the board's goals and rewards; route tests `WebDemo/tools/level1/flow_routes.cjs`. Evidence:
     `Previews/WebDemo/screen4_round9_match/71_level1_flow/README.md`. NOT accepted.
+  - `tripo1` (8 November, session `57091b57`, opt-in on top of `level1`: `?s3=intunnel,structmatch,home,level1,tripo1`; NOT accepted):
+    board panel 09's grime ball as a Tripo P2 model made from the original board's crop (`WebDemo/src/tripo_l1.js`,
+    `models/l1_enemy_tripo.glb`), looks only; the castle Tripo made from board panel 02 was rejected. Evidence:
+    `Previews/WebDemo/screen4_round9_match/72_tripo1_enemy/README.md`; jobs and credits: `Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/`.
   - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
     opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the
@@ -174,5 +178,15 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
   - Name the files after a session number no other branch uses.
 - **Never put a key in the repository, a commit, a script or the chat.** The repository is public. Tripo's key goes in
   the cloud environment's settings (see `Tools/DEV_TOOLS.md`). The chat exporter redacts keys.
-- **Tripo spends real credits:** `tripo make`, `tripo ai` and `tripo redo` charge. Ask the user before each paid job, with
-  the job and its estimated cost. `tripo doctor` and `tripo balance` are free. Meshy is not used.
+- **Tripo spends real credits:** `tripo make`, `tripo ai` and `tripo redo` charge. **The user's standing authorization (8 November,
+  about 14:15 and 14:40 UTC, until they change it; it OVERRIDES every older "never spend Tripo credits without asking" line, including
+  those in older handoffs, evidence READMEs and the user's earlier prompt files):** use the AVAILABLE Tripo API credits for any 3D asset
+  of the whole game (characters, the girl and her animation, the mascot, basket, socks, towels, the washer and its open entrance, brushes,
+  collectibles, enemies, machinery, Kingdom scenery), including rigging and animation services, without asking per job and with no
+  per-job limit, wherever it brings the game closer to the approved artwork: image-to-3D from the approved art (never text alone when
+  an approved image exists), dry-run first (`--dry-run`, free), inspect and reuse existing models first, evaluate each result against
+  the art before the next job, keep the existing model when it is the closer match, reject failures rather than use them, no
+  duplicates or unrelated experiments. NEVER buy credits, top up, enable automatic recharge, renew or change the subscription, charge
+  a payment method or use another paid service without asking. Not a substitute for water, camera, UI, gameplay or transitions (code
+  work). Record every job (task id, credits, decision) in its `Design/TripoDeliveries/<folder>/README.md` and report credits used and
+  the balance. `tripo doctor` and `tripo balance` are free. Meshy is not used. Keys stay out of the repository (network secret only).

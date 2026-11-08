@@ -79,7 +79,7 @@ https://claude.ai/code/session_01CUAtW8wdgwPxistiKwJw7V. Nothing here is a secre
 > Read `CLAUDE.md` and section 000 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`. Run `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing,
 > `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci`, `bash Tools/verify_restore.sh --build`, `bash Tools/preservation_audit.sh`; check one
 > autosave process runs; ToolSearch `mcp__plugin_parallax-threejs` (`Tools/PLUGIN_AND_MCP_RESTORE.md`); `TRIPO_API_KEY=tsk_proxy-injected tripo balance`.
-> Report what works and what I must reconnect, then continue section 000.5. Spend no Tripo credits without my yes for a named job and cost.
+> Report what works and what I must reconnect, then continue section 000.5. Use my available Tripo credits for game assets without asking per job (my standing authorization of 8 November); never buy credits.
 
 ## 00. NEWEST STATE (8 November 2026, about 11:20 UTC, session `8140e507`): history since section 000
 
@@ -167,7 +167,7 @@ the accepted `?s3=intunnel` (prove 0 px for every change). Unapproved candidates
 > the five project agents, `tripo doctor` (free; if the key is missing, open the secure credential form for openapi.tripo3d.ai),
 > `blender --version`. Report what works and what I must reconnect. Then continue: my verdicts are pending on `level1` (the wet chamber,
 > `port`), `structmatch` and `match6` (opt-in, not merged); the next task is my 10-beat Level 1 gameplay mandate in
-> `Design/ReferencePacks/2026-11-08_Level1_Gameplay_Flow_and_Account_Transfer_from_user/`. Spend no Tripo credits without my yes for a named job and cost.
+> `Design/ReferencePacks/2026-11-08_Level1_Gameplay_Flow_and_Account_Transfer_from_user/`. Use my available Tripo credits for game assets without asking per job (my standing authorization of 8 November); never buy credits.
 
 ## 0. CURRENT STATE AND RESTORATION MANUAL (8 November 2026, about 02:00 UTC, session `dbccb9a3`)
 
@@ -251,7 +251,7 @@ depth map, KEEP / REJECT / REWORK). None is in the game yet; nothing spent.
 > `index.html?s3=intunnel,structmatch`), a one-line ping of each project agent and of scenario-author / shader-reviewer /
 > visual-debugger, `tripo doctor` (free), `blender --version`. Report what works and what I must reconnect. Then continue from section
 > 0.2: the level1 opening and course are waiting for my verdict; the six Tripo models wait for my KEEP / REJECT / REWORK decisions;
-> spend no Tripo credits without my yes for a named job and cost.
+> use my available Tripo credits for game assets without asking per job (my standing authorization of 8 November); never buy credits.
 
 ## 1. Where the project is
 
@@ -344,7 +344,7 @@ The fresh session's first checks (read-only, nothing spent, no game change):
    `sync-view`): present, not run.
 6. `tripo doctor` with `TRIPO_API_KEY=tsk_proxy-injected` (free); `bash Tools/verify_restore.sh`; `blender --version`.
 Then resume: the `?s3=...,home,level1` work (section 4a; `Previews/WebDemo/screen4_round9_match/68_level1/README.md`), waiting for
-the user's verdict; open items: the opening girl's look (a Tripo model only after the user approves the job and cost), the
+the user's verdict; open items: the opening girl's look (a Tripo model: since 8 November covered by the user's standing authorization, see CLAUDE.md, Safety), the
 course's draw calls at Tap to Start (322 against 211 without level1: cull the course's far parts), the user's Screen 4 verdict.
 
 ## 4. State of the work (what is done, what is not)
@@ -393,7 +393,7 @@ Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_
      the user's 2D artwork. A rigged, animated 3D girl needs Tripo (PAID): image-to-model + rig + animation retarget. Free dry run
      (`tripo make <girl crop> --for anim --dry-run`): 110 credits for the model, plus the rig and per-animation retarget (not
      estimated; presets idle / walk; a throw is not a listed preset). The artwork shows her only from the waist up behind the
-     basket, so Tripo must invent her lower body. **Ask the user before any paid job** (balance 640).
+     basket, so Tripo must invent her lower body. (Was: ask before any paid job, balance 640. Since 8 November the user's standing authorization covers the available credits: CLAUDE.md, Safety.)
   3. The opening sequence (girl throws laundry, the character swept along, tumbling into the washer, the camera following into
      the drum, the hand-over) then builds on 2 in `WebDemo/src/screens12.js` (today a 2D toss + dive into the live game).
 - **Running at handoff:** the match4 Pixel 7 recording (`66_match4/videos/swim_steer_coins_new.mp4`) was still being written;
@@ -441,8 +441,9 @@ Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_
    ```
 4. **Tripo key:** add it as a NETWORK SECRET of that environment for host `openapi.tripo3d.ai` (Authorization: Bearer), never
    in the repository or the chat; run `tripo` with `TRIPO_API_KEY=proxy-injected`. **The previous key was pasted into the chat
-   on 7 November: the user should create a new key on Tripo's site and delete the old one.** Every paid Tripo job needs the
-   user's yes first (`tripo doctor` and `tripo balance` are free).
+   on 7 November: the user should create a new key on Tripo's site and delete the old one.** Paid Tripo jobs: the user's standing
+   authorization of 8 November covers the AVAILABLE API credits without asking per job; never buy credits or top up (`CLAUDE.md`, Safety;
+   `tripo doctor` and `tripo balance` are free).
 5. Live sessions, running jobs, agents' in-memory state and local worktrees never transfer; their files are in the repository.
 
 ## 7. First-session checklist for the new account

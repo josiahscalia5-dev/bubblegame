@@ -207,7 +207,7 @@ if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi
 - Blender 5.2.3 LTS;
 - OpenCV 5.0.0, scikit-image 0.26.0;
 - PyTorch 2.15 (CPU), LPIPS, Optuna 5.0;
-- glTF Transform 4.5.1, glTF Validator, Vite 8.3.5, Tripo CLI 0.11.2 (not signed in; paid jobs need the user's approval);
+- glTF Transform 4.5.1, glTF Validator, Vite 8.3.5, Tripo CLI 0.11.2 (paid jobs: the user's standing authorization of 8 November covers the available credits, see CLAUDE.md, Safety);
 - Git LFS 3.4.1;
 - `npm install` in `WebDemo/`: three **0.170.0** and esbuild **0.24.0**, pinned exactly in `WebDemo/package.json`
   (`package-lock.json` and `node_modules` are gitignored). Never upgrade three.js: the game is built and proven on r170.

@@ -138,21 +138,25 @@ commit, whether GitHub really has it, and the files saved.
   and `traverse.cjs`.
 - A2 (Tripo) is forced-perspective and closed at the back. Do not use it as a tunnel without un-tapering it in Blender.
 
-## Paid generators (ask first)
+## Paid generators (the user's standing Tripo authorization, 8 November)
 
 - **Tripo only** (the user's decision, 4 November). **Never call Meshy tools, ask for a Meshy key or spend Meshy credits.**
-- Use Tripo only when a 3D asset is truly missing. Tunnel, water, splashes, bubbles, brushes, lighting and composition
-  are built with Blender, three.js and the existing assets.
+- **Since 8 November the user authorizes the AVAILABLE Tripo API credits for any game asset without asking per job** (no
+  per-job limit; it overrides the older "ask first" rule below). Never buy credits, top up, enable automatic recharge, change the
+  subscription or use another paid service without asking. Use Tripo where a model from the APPROVED art would be clearly closer
+  than the existing one (inspect and reuse existing models first; no duplicates or unrelated experiments); one job at a time,
+  evaluated against the art before the next; record each job (task id, credits, decision) in `Design/TripoDeliveries/<folder>/README.md`.
+  Water, splashes, bubbles, lighting, camera, UI and gameplay stay code work (three.js, Blender).
 - **Tripo CLI** (`tripo`): the key lives in `~/.tripo` (outside the repository) after `tripo login --region ov --no-wait`
   (browser sign-in) or `tripo login --region ov --key ...`. A key pasted in chat must never be written to a repository file;
   `Tools/export_chat_history.py` redacts `tsk_` keys from exported chat. Balance on 4 November (third account): 760.
 - Before any generation:
   - check `tripo balance` (free);
   - get the cost from `tripo make "<prompt>" --model <m> --dry-run --json` (free: P2 110 credits, v3.1 20 credits a model);
-  - tell the user both and get their yes for that exact job.
+  - (before 8 November: tell the user both and get their yes; now: record both in the delivery README and go ahead).
 - **Tripo skips its own confirmations when it runs headless** (`--yes` is switched on automatically, as in a cloud
-  session), so `tripo make`, `tripo ai` and `tripo redo` spend credits at once. Run them only after the user's yes for
-  that exact job. `tripo doctor`, `tripo balance` and `tripo login` are free.
+  session), so `tripo make`, `tripo ai` and `tripo redo` spend credits at once: dry-run first. In a cloud session run every
+  command with `TRIPO_API_KEY=tsk_proxy-injected` (the proxy injects the real key). `tripo doctor`, `tripo balance` and `tripo login` are free.
 - Never put keys in the repo, scripts or chat.
 
 ## What is known

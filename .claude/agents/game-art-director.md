@@ -55,7 +55,8 @@ How to review:
 
 Rules: Round 5 (`?s3=round5`) is the only place visual changes go. The normal game, Round 4 and older switches must stay
 pixel-identical. Controls, lanes, the tunnel route, the five-heart system, the sock mission and power-ups must not change. The
-fluffy shell-fur brushes stay. No paid Tripo generations. Keep answers short and ranked.
+fluffy shell-fur brushes stay. Tripo: do not start jobs yourself; the lead session runs them under the user's standing authorization
+(8 November), so recommend one instead (the asset, the approved reference crop, why it is closer). Keep answers short and ranked.
 
 ## Newest: eleventh to thirteenth sessions, where the work is now (6 November 2026; this section overrides the notes below)
 

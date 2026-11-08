@@ -170,8 +170,18 @@ the setup script).
 | GitHub | yes | yes | yes | Fetch and push on this session's branch |
 
 **Warning about Tripo:** its `--yes` (skip confirmations) is switched on automatically when it runs headless, as here.
-`tripo make`, `tripo ai` and `tripo redo` would spend credits without asking. Claude runs them only after your yes for that
-exact job. `tripo doctor`, `tripo balance` and `tripo login` are free.
+`tripo make`, `tripo ai` and `tripo redo` would spend credits without asking. Since 8 November (about 14:15 UTC) the user's
+standing authorization lets Claude spend the AVAILABLE credits on asset jobs without asking each time (rules in `CLAUDE.md`,
+Safety: dry run first, image-to-3D from the approved art, evaluate before the next job, never buy credits or top up).
+`tripo doctor`, `tripo balance` and `tripo login` are free.
+
+**Tripo in a cloud session (verified 8 November 14:24 UTC, session `57091b57`, the user's other account):** the key is a network
+secret for `openapi.tripo3d.ai`; run every command with `TRIPO_API_KEY=tsk_proxy-injected` (a placeholder the proxy replaces).
+`tripo doctor`: all checks OK, region ov. A job's GLB downloads from `openapi-dl.data.tripo3d.com` (allowed on that environment).
+The proxy refuses `sshu-api.tripo3d.ai` and `apiplatform.tripo3d.ai`; the CLI still works without them. Working: `make` (image to
+model, P2, `-p texture_quality=detailed -p pbr=true`, 120 credits, about 2.5 minutes), `make --dry-run` (free cost estimate),
+`balance`, `doctor`. Outputs land in `-o <dir>/tripo-out/<name>-<task>/` (`model.glb`, `preview.png`, `task.json`). Contact sheets
+of any GLB: `node WebDemo/tools/tripo/glb_sheet.cjs <out.png> <a.glb> ...`; textures: `WebDemo/tools/tripo/glb_textures.cjs`.
 
 ## Claude Code plugins
 
@@ -254,5 +264,6 @@ What was done before that, for the record:
    server loads at session start, so this works from the next session.
 3. Balance on 4 November: 17 credits (permanent), read with two free checks; nothing was generated.
 
-**Credits:** generating models with Tripo spends credits. Claude checks the balance and the dry-run cost and asks you before any
-generation.
+**Credits:** generating models with Tripo spends credits. Claude checks the balance and the dry-run cost (both free) before each
+generation and records the job; since 8 November the user's standing authorization covers the AVAILABLE credits without asking per
+job (never buying credits, topping up or changing the subscription: `CLAUDE.md`, Safety).

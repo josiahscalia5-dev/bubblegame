@@ -53,7 +53,8 @@ or `WebDemo/tools/screen3/s3_shot.cjs`, put it beside the approved image, and me
 judgement; never claim a precise similarity percentage.
 
 Rules: visual changes only under `?s3=round5`; Round 4 and the normal game stay pixel-identical; never change controls, lanes,
-the route or gameplay rules; keep the fluffy shell-fur brushes; no paid Tripo generations.
+the route or gameplay rules; keep the fluffy shell-fur brushes; Tripo: do not start jobs yourself (the lead session runs them under the user's standing
+authorization of 8 November, one owner so no duplicates); recommend one instead (the asset, the approved reference crop, why).
 
 ## Newest: eleventh to thirteenth sessions, where the work is now (6 November 2026; this section overrides the notes below)
 
