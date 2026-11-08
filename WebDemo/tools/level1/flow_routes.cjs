@@ -96,6 +96,7 @@ const server = http.createServer((req, res) => {
   // on to the finish, then Level Complete (its card appears 1.1 s after the finish)
   await drive(1e9);
   await page.evaluate(() => window.__bw.advance(2.0));
+  await page.waitForTimeout(900);   // (the card's pop-in runs in real time)
   const end = await snap();
   await page.screenshot({ path: path.join(OUT, `${ROUTE}_level_complete.jpg`), clip: stage, quality: 88, timeout: 240000 });
   frames.push(['end', end]);

@@ -167,3 +167,11 @@ Now the gated hooks in `game.js`: lanes, the fall-off rule, the camera, the pad 
 
 Checking that `fx` exists before the Level 1 build (the context captures it by value), then building:
 
+Rebuilding and running the side-path-then-lower-path route first, with three frames:
+
+The stuck MCP browser's GPU process is using about 3 of the 4 cores. I'll point that page to a blank page to stop its rendering:
+
+The page is free and the CPU load has dropped. All five specialists and the plugin probe have reported (the water-motion engineer partially). Checking that the autosave has been pushing:
+
+The autosave pushes every 5 minutes and each push is checked against GitHub. Checking that it's still alive now:
+

@@ -454,6 +454,7 @@ export function buildLevel1(ctx) {
     // a gold axle up to the drum's wall (flow: all the way up to it; it stopped about 2 m above the water and floated)
     const hb = FLOW ? 0.74 + flowLift(x, u) : 0.74, armLen = FLOW ? Math.max(1.0, C.axisH + Math.sqrt(Math.max(0, radiusAt(u) ** 2 - x * x)) - hb - 0.45) : 1.0;
     const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, armLen, 12), brushHub); arm.position.set(0, FLOW ? 0.45 + armLen / 2 : 0.95, -0.25); holder.add(arm);
+    if (FLOW) arm.visible = false;   // (flow: a pole to the wall read as thin orange sticks across the tunnel; the brush spins on its own, as in the original)
     TR.map(x, hb, u, holder.position); TR.quaternion(u, holder.quaternion); holder.rotateY(Math.PI);
     holder.name = 'l1Brush'; root.add(holder);
     brushes.push({ holder, spinner, u, x, lane, dir: left ? 1 : -1, hit: false, bonk: 0 });
@@ -925,7 +926,8 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   }
   // (tests only: where the obstacles and socks are now, for the recording's steering)
   if (typeof window !== 'undefined') window.__bwLevel1Plan = () => ({ brushes: brushes.map((b) => [b.u, b.lane]), bars: C.bars.slice(),
-    enemies: enemies.map((e) => [+e.u.toFixed(2), e.lane, +e.x.toFixed(2), !!e.dead]), socks: C.socks.map(([lane, , u]) => [u, lane]) });   // (x, dead: flow's patrols and pops)
+    enemies: enemies.map((e) => [+e.u.toFixed(2), e.lane, +e.x.toFixed(2), !!e.dead]),   // (x, dead: flow's patrols and pops)
+    socks: [...(FLOW && ctx.socksList ? ctx.socksList.filter((s) => s.live && s.u < C.tube[0] && s.lane != null).map((s) => [s.u, s.lane]) : []), ...C.socks.map(([lane, , u]) => [u, lane])] });
   // (flow) the hooks game.js uses for her lanes on the routes (null without flow: the game's own lanes)
   return { update, reset, swim, report, finished: () => complete, flow: flow ? { changeLane: flow.changeLane, laneTarget: flow.laneTarget } : null };
 }

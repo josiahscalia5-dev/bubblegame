@@ -786,7 +786,7 @@ function buildSocks(gltf) {
     TR.quaternion(u, holder.quaternion);
     if (R2) withPrivateRandom(makeRandom(0x50c0 + socks.length), () => holder.add(haloSprite('sock', 1.25)));
     scene.add(holder);
-    socks.push({ obj: holder, turn, home: holder.position.clone(), kind: 'sock', live: true, pop: -1, phase: Math.random() * 6, u });
+    socks.push({ obj: holder, turn, home: holder.position.clone(), kind: 'sock', live: true, pop: -1, phase: Math.random() * 6, u, lane });   // (lane: tests' autopilot)
   };
   for (const [lane, above, u] of spots) addSockAt(lane, above, u);
   if (LEVEL1_ON) mats.l1AddSock = addSockAt;   // ?s3=...,level1: the course's socks

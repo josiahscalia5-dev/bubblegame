@@ -21,7 +21,7 @@ import * as THREE from 'three';
 export const FL = { x: 1.62, half: 0.4, lift: 0.9, u0: 62, u1: 86, ramp: 5, pad: { lane: 0, u: 56.6, vy: 7.4 } };
 // the drop: the tube pitches down at d0 (about 1.2 m), the middle lane's water goes with it (the lower path), the side lanes' water is
 // raised by the same amount (ledges that stay level) until e0, then ramps down to the lower path; lanes spread to sp between s0..s3
-export const DR = { d0: 112, pitch: 0.46, half: 0.5, wall: 0.1, e0: 129, ramp: 6, sp: 1.15, s0: 100, s1: 106, s2: 136, s3: 142 };
+export const DR = { d0: 112, pitch: 0.46, half: 0.68, wall: 0.1, e0: 129, ramp: 6, sp: 1.38, s0: 100, s1: 106, s2: 136, s3: 142 };
 // the tunnel widens round both (radius + dR between a..d)
 export const WD = { a: 42, b: 50, c: 140, d: 148, dR: 0.85 };
 
@@ -114,19 +114,37 @@ export function buildFlow(ctx) {
   // the rims: the original's warm gold (goldM, shared with the gate, portal and finish, reads orange-brown here), a lavender metal
   // for the troughs' sides (the original's silver-lavender) and a cobalt glass for the lower channel's walls
   const rimGoldM = ctx.mats.goldM.clone(); rimGoldM.color.set(0xffd27a); rimGoldM.metalness = 0.8; rimGoldM.roughness = 0.3; rimGoldM.emissive.set(0x7a4a2a); rimGoldM.emissiveIntensity = 0.45; rimGoldM.envMapIntensity = 1.1;
-  const troughM = new THREE.MeshStandardMaterial({ color: 0xc5a4e4, metalness: 0.6, roughness: 0.32, envMap: env, envMapIntensity: 1.0, emissive: 0x3a2a78, emissiveIntensity: 0.4, side: THREE.DoubleSide });
-  const glassM = new THREE.MeshStandardMaterial({ color: 0x2f74f4, metalness: 0.35, roughness: 0.22, envMap: env, envMapIntensity: 1.1, emissive: 0x0b2fb8, emissiveIntensity: 0.55, side: THREE.DoubleSide });
+  // the walls of the side path's trough and of the lower path: no flat lavender or purple box (the first captures read as a block
+  // and as a lavender canyon) but streaming water, as the drum's own walls: cobalt ribbons with turquoise currents and a few broken
+  // white streaks flowing along the route (the lighting review's metal-free wall), lighter toward the gold rim
+  const troughM = new THREE.ShaderMaterial({ uniforms: { uTime: timeU }, side: THREE.DoubleSide,
+    vertexShader: 'attribute vec2 aUH; varying vec2 vUH; void main() { vUH = aUH; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: /* glsl */ `uniform float uTime; varying vec2 vUH;
+float fh(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float fn(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fh(i), fh(i + vec2(1.0, 0.0)), f.x), mix(fh(i + vec2(0.0, 1.0)), fh(i + vec2(1.0, 1.0)), f.x), f.y); }
+float ff(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { s += a * fn(p); p = p * 2.03 + vec2(1.7, 9.2); a *= 0.5; } return s; }
+void main() {
+  float u = vUH.x, h = vUH.y, t = uTime, aa = clamp(fwidth(u) * 1.2 - 0.1, 0.0, 1.0);
+  float w = ff(vec2(u * 0.55 - t * 1.4, h * 1.6 + t * 0.2));
+  float rib = sin((u * 0.7 + h * 1.1 + w * 1.9 - t * 1.3) * 6.2832) * (1.0 - aa), rib2 = sin((u * 1.3 - h * 0.8 + w * 2.4 - t * 0.9) * 6.2832) * (1.0 - aa);
+  vec3 col = mix(vec3(0.02, 0.09, 0.62), vec3(0.06, 0.28, 0.95), smoothstep(-0.8, -0.05, rib));
+  col = mix(col, vec3(0.1, 0.55, 1.0), smoothstep(0.25, 0.8, rib) * 0.6);
+  col = mix(col, vec3(0.2, 0.85, 1.0), smoothstep(0.6, 0.95, rib2) * 0.45);
+  col = mix(col, vec3(0.92, 0.97, 1.0), smoothstep(0.92, 0.985, rib) * smoothstep(0.45, 0.7, ff(vec2(u * 2.2 - t * 3.0, h * 3.0))) * 0.6 * (1.0 - aa));
+  gl_FragColor = vec4(col, 1.0);
+}` });
+  const glassM = troughM;
   const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
 
   // a thin wall along the path at x = xc (half thickness th) from hBot(u) to hTop(u), u in [ua, ub]: two faces and a top
   const wall = (xc, th, hBot, hTop, ua, ub, mat, name) => {
-    const n = Math.max(2, Math.ceil((ub - ua) / 0.25) + 1), pos = new Float32Array(n * 4 * 3), idx = [];
+    const n = Math.max(2, Math.ceil((ub - ua) / 0.25) + 1), pos = new Float32Array(n * 4 * 3), uh = new Float32Array(n * 4 * 2), idx = [];
     for (let i = 0; i < n; i++) {
       const u = ua + (ub - ua) * i / (n - 1), b = hBot(u), t = hTop(u);
-      [[xc - th, b], [xc - th, t], [xc + th, t], [xc + th, b]].forEach(([x, h], j) => { const p = TR.map(x, h, u); pos.set([p.x, p.y, p.z], (i * 4 + j) * 3); });
+      [[xc - th, b], [xc - th, t], [xc + th, t], [xc + th, b]].forEach(([x, h], j) => { const p = TR.map(x, h, u); pos.set([p.x, p.y, p.z], (i * 4 + j) * 3); uh.set([u, h], (i * 4 + j) * 2); });
       if (i) for (let j = 0; j < 3; j++) { const a = (i - 1) * 4 + j, c = i * 4 + j; idx.push(a, c, a + 1, c, c + 1, a + 1); }
     }
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); g.computeBoundingSphere();
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aUH', new THREE.BufferAttribute(uh, 2)); g.setIndex(idx); g.computeBoundingSphere();
     const mesh = new THREE.Mesh(g, mat); mesh.name = name; root.add(mesh); items.push({ o: mesh, u0: ua, u1: ub }); return mesh;
   };
   const rail = (x, hTop, ua, ub, r, mat, name) => {
@@ -144,7 +162,9 @@ export function buildFlow(ctx) {
       rail(xw, top, ua, ub, 0.07, rimGoldM, 'l1FlowFlumeRim');
     }
     // its front end, facing her: lavender with a gold rim
-    const w = 2 * (FL.half + 0.1), h = FL.lift + 0.39, front = new THREE.Mesh(new THREE.PlaneGeometry(w, h), troughM);
+    const w = 2 * (FL.half + 0.1), h = FL.lift + 0.39, fg = new THREE.PlaneGeometry(w, h, 4, 4);
+    { const p = fg.attributes.position, a = new Float32Array(p.count * 2); for (let i = 0; i < p.count; i++) { a[i * 2] = ua + p.getX(i); a[i * 2 + 1] = p.getY(i) + h / 2 - 0.25; } fg.setAttribute('aUH', new THREE.BufferAttribute(a, 2)); }
+    const front = new THREE.Mesh(fg, troughM);
     TR.map(FL.x, -0.25 + h / 2, ua, front.position); TR.quaternion(ua, front.quaternion); front.name = 'l1FlowFlumeFront'; root.add(front); items.push({ o: front, u0: ua, u1: ua });
     const lip = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, w, 12), rimGoldM); lip.rotation.z = Math.PI / 2; lip.position.y = h / 2; front.add(lip);
   }
