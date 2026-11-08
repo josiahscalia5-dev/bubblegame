@@ -1,4 +1,4 @@
-# Session dbccb9a3, design agents
+# Session dbccb9a3 (7 November, new account): first-session checklist on branch ccr-76d4bc77-rqhl8o, design agents
 
 Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
