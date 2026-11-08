@@ -1,4 +1,4 @@
-# Session 8140e507, design agents
+# Session 8140e507 (8 November): plugin restoration and first-three-screens pass on branch claude/bubble-wash-kingdom-continue-z9nmm1, design agents
 
 Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
