@@ -230,6 +230,17 @@ sweep sheet), and the three test scripts (`spector_live_test.mjs`, `spector_stdi
   Agents: all five custom agents and the three plugin agents listed as agent types; not re-tested (unchanged definitions, tools present).
   One autosave, pinned to this branch.
 
+- 8 Nov 2026 ~19:30 UTC, session f70c9bd1, the user's one-shot verification (lightweight, read-only; each agent ran a Bash command
+  that returned HEAD `15acbfdc`): game-art-director WORKING (also read the Screen 09 image), gameplay-visual-testing WORKING (Playwright
+  1.63.0), lighting-visual-matching WORKING, water-vfx-engineer WORKING, screen4-water-motion-engineer WORKING with its MCP tools
+  (threejs-devtools `bridge_status` answered, "NOT connected" only because no game page was open; chrome-devtools
+  `list_console_messages` answered). Parallax agents RUN but LIMITED (plugin naming defect, unchanged): scenario-author Read/Glob/Write/
+  Bash, no Playwright; shader-reviewer Read/Grep/Glob/Bash, no threejs-devtools; visual-debugger Bash plus, NEW, the project server's
+  13 `mcp__spector__*` tools (its `tools:` line names `mcp__spector`, which is exactly the project's `.mcp.json` server; not called by
+  it in this check), still no threejs / chrome-devtools. Skill bubble-wash-screen-matcher listed (SKILL.md present, compare_s4.py
+  parses); Parallax deno tasks listed (checkpoint, sweep, diff-checkpoints, export-report, replay, visual:run, visual:accept); autosave
+  one process, every round github=VERIFIED. No configuration change was needed.
+
 ## 13. The five agents, second live round (8 Nov ~18:05-18:20 UTC, the user's suggested tasks; definitions unchanged since `56184934`)
 | AGENT | DEFINITION FOUND | LOADED | ACTUALLY INVOKED | REQUIRED TOOLS WORKING | FINAL STATUS |
 |---|---|---|---|---|---|
