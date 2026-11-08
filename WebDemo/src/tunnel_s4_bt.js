@@ -133,7 +133,10 @@ export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LI
   match4: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4'),
   // the user's mascot correction (7 November ~22:45 UTC: 'flatter mound, fur too short and compact'): longer, finer strands
   // combed down her dome, a spikier outline: ,nomatch5 draws the match4 look
-  match5: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4') && !LIST.includes('nomatch5') };
+  match5: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4') && !LIST.includes('nomatch5'),
+  // the user's priority 3 of 8 November (~02:35 UTC: her rear silhouette full, round and fluffy like the ORIGINAL): her side nubs
+  // kept apart from her dome and her strands radiating from a whorl on her back (session 8140e507): ,nomatch6 draws the match5 look
+  match6: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4') && !LIST.includes('nomatch5') && !LIST.includes('nomatch6') };
 export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
