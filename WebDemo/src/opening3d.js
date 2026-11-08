@@ -287,9 +287,9 @@ function buildVortex() {
         float a2 = a - 6.2832 * sign(a), bw = 0.5 * smoothstep(1.9, 3.1416, abs(a));
         float w = mix(o3f(vec2(a * 1.2 + t * 0.4, d * 0.9 - uFlow)), o3f(vec2(a2 * 1.2 + t * 0.4, d * 0.9 - uFlow)), bw);
         float sw = sin((d * 2.2 + a * 0.15915 + w * 1.5 - uFlow * 1.4 - t * 0.6) * 6.2832);
-        vec3 c = mix(vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0), smoothstep(-0.7, 0.3, sw));
-        c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * 0.75);
-        c = mix(c, vec3(1.0), smoothstep(0.9, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
+        vec3 c = mix(${LEVEL1_PARTS.port ? 'vec3(0.02, 0.1, 0.78), vec3(0.08, 0.4, 1.0)' : 'vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0)'}, smoothstep(-0.7, 0.3, sw));   // (port: the approved porthole's deeper cobalt)
+        c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * ${LEVEL1_PARTS.port ? '0.6' : '0.75'});
+        c = mix(c, vec3(1.0), smoothstep(${LEVEL1_PARTS.port ? '0.95' : '0.9'}, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
         c = mix(c, vec3(0.75, 0.6, 1.0), smoothstep(0.65, 0.9, mix(o3f(vec2(a * 0.8 + 3.0, d * 0.5)), o3f(vec2(a2 * 0.8 + 3.0, d * 0.5)), bw)) * 0.35);
         float ring = exp(-pow((fract(d * 0.8 - uFlow * 0.5) - 0.5) / 0.08, 2.0));
         c = mix(c, vec3(0.75, 0.95, 1.0), ring * ${LEVEL1_PARTS.port ? '0.22' : '0.4'});
