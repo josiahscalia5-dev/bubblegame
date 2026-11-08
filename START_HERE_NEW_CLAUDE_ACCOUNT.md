@@ -1,3 +1,6 @@
+> **Newest (8 November 2026, ~20:40 UTC, session f70c9bd1): `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` SECTION 0 is the single restore entry point** (branch
+> `claude/bubble-wash-account-switch-e1nndb`, the 5-minute restore, what to reconnect, the one prompt for the other account).
+
 > **Newest (8 November 2026, about 17:05 UTC): read `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` first, then `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` section 0000; it has the current branches, state and steps. This file is older.**
 > - Start the session on the newest work branch (0000.1 there; `ccr-b67aeffb-d94mmq` at this writing), NOT the repository's default
 >   branch `claude/new-session-oth0dd` (2 November, without `CLAUDE.md`, so a session there sees none of the rules).

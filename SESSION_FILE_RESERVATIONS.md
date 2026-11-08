@@ -3,6 +3,13 @@
 Two Claude sessions work on the SAME game. To avoid conflicting edits, each session edits only its own files.
 Neither session resets, overwrites or force-pushes either branch.
 
+## UPDATE 8 November, about 20:40 UTC: session `f70c9bd1` (the user's account switch), branch `claude/bubble-wash-account-switch-e1nndb`
+It merged `ccr-8cd911d8-0m96gr` (normal merge) and is the LEAD session. Edited by it: `WebDemo/src/tripo_l1.js` (scene07 hooks, all gated),
+new `WebDemo/src/scene07_wall15.js`, `WebDemo/src/scene07_recon16.js`, `WebDemo/textures/scene07/backdrop_art.webp` (opt-in `art16` only),
+`WebDemo/game.bundle.js` (rebuilt), `Tools/verify_restore.sh` (known bundles), `Tools/autosave_sessions.json` (its entry), the handoffs,
+`Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/`, the two user kits in `Design/ReferencePacks/2026-11-08_Screen09_*`.
+`game.js`, `level1.js`, `track.js`, the Classic Screen 4 files: untouched.
+
 ## UPDATE 8 November, about 18:00 UTC: session `ce30359f` (the user's account switch), branch `ccr-8cd911d8-0m96gr`
 Checked at its start (17:28 UTC): session `57091b57` had pushed nothing since its 17:15 autosave (idle at its usage limit); its head
 and `claude/bubble-wash-kingdom-continue-z9nmm1`'s two chat-history commits were merged here (normal merges). This session is now

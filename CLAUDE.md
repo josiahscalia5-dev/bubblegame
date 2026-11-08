@@ -1,5 +1,7 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
+**Newest (8 November ~20:40 UTC, session `f70c9bd1`): `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` section 0 is the single restore entry point; the work
+branch is `claude/bubble-wash-account-switch-e1nndb`; the current task is Screen 09, `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md`.**
 **On ANY Claude account, read `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` first (the permanent account-switch handoff: branches, restore steps, checklist, exact state). Then `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`: its section 0000 (8 November, about 14:50 UTC, session
 `57091b57`, branch `ccr-b67aeffb-d94mmq`) and section 000 (13:30 UTC, session `b0abcf95`) are the current state. Two sessions were live
 at once: `b0abcf95` on `ccr-50c66592-kcnqoy` (Level 1 flow, roof2, finale2) and `57091b57` on `ccr-b67aeffb-d94mmq` (save system,
@@ -110,6 +112,10 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     opt-in with `tripo1`: `?s3=intunnel,structmatch,home,level1,tripo1,scene07`; NOT accepted, in progress): Screen 07's pink-lavender
     star channel walls with gold rails, pink porthole rings, gears and bubbles as real geometry along the enemy stretch
     (`WebDemo/src/tripo_l1.js`). Evidence and the remaining list: `Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/README.md`.
+    Then passes 9-13b (session `ce30359f`, `75_...`, `76_...`) and, in it by default since session `f70c9bd1`, pass 16 (`WebDemo/src/scene07_recon16.js`,
+    the user's Screen 09 kits of 8 November evening): the round drum housing on a cream-gold ledge, the curved pink star wall, one hero enemy,
+    real 3D machine towers and pipes (MACH16, unfinished); opt-in `,art16` (depth cards, rejected by the user), `,norecon16` (= pass 13b),
+    `,norecon16,wall15` (pass 15), `,nomach16`. NOT approved. Evidence and next steps: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md`.
   - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
     opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the

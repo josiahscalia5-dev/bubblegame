@@ -241,6 +241,16 @@ sweep sheet), and the three test scripts (`spector_live_test.mjs`, `spector_stdi
   parses); Parallax deno tasks listed (checkpoint, sweep, diff-checkpoints, export-report, replay, visual:run, visual:accept); autosave
   one process, every round github=VERIFIED. No configuration change was needed.
 
+- 8 Nov 2026 ~20:40 UTC, session f70c9bd1, the user's account-transfer backup: nothing changed in the tool set since the ~19:30 entry
+  (all five custom agents WORKING; the three Parallax agents LIMITED by the plugin's tool-naming defect; chrome-devtools, threejs-devtools,
+  playwright and the project's Spector MCP WORKING; Blender, Tripo (1,060 credits, nothing spent), Deno, Vite, glTF tools, OpenCV,
+  scikit-image, PyTorch, LPIPS, Optuna, ImageMagick, FFmpeg, Git LFS present; autosave one process, github=VERIFIED). New this session,
+  NOT installed permanently: the LaMa inpainting model (big-lama TorchScript, 206 MB, Apache-2.0) was downloaded to the scratchpad from
+  https://github.com/enesmsahin/simple-lama-inpainting/releases/download/v0.1.0/big-lama.pt (sha256 7ba7aa7ac37a4d41...) and run with the
+  metrics Python; the user rejected inpainted fills, so it is not needed (re-download only on request). Project tools added:
+  `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/scripts/` (probe_variants.cjs, sheet_stats.py, make_backdrop_art.py,
+  identity.sh, the checkpoint camera's projection grid). Per-account items to reconnect: see `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` section 0.
+
 ## 13. The five agents, second live round (8 Nov ~18:05-18:20 UTC, the user's suggested tasks; definitions unchanged since `56184934`)
 | AGENT | DEFINITION FOUND | LOADED | ACTUALLY INVOKED | REQUIRED TOOLS WORKING | FINAL STATUS |
 |---|---|---|---|---|---|
