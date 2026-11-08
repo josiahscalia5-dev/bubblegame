@@ -217,7 +217,7 @@ function buildChamber(root, TR, env) {
     const hole = new THREE.Path(); hole.absarc(0, 1.5, Ch.portalR, 0, Math.PI * 2, true); sh.holes.push(hole);
     const wall = new THREE.Mesh(new THREE.ShapeGeometry(sh, 48), shellM); const ring = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.12, 0.26, 16, 72), goldM);
     const ring2 = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.62, 0.3, 14, 72), pinkM); ring.position.y = ring2.position.y = 1.5;
-    const g = new THREE.Group(); g.add(wall, ring, ring2); g.name = 'scene07_portal';
+    const g = new THREE.Group(); g.add(wall, ring); if (!RECON16_ON) g.add(ring2); g.name = 'scene07_portal';   // (pass 16: no thick pink outer ring; with the gold one it read as a ring tunnel)
     TR.map(0, 0, u, g.position); TR.quaternion(u, g.quaternion); root.add(g);
   }
   return goldM;
@@ -293,8 +293,9 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
   // the exit portal bright (the original's luminous vanishing point) and soft coloured lights in the air
   const soft = (r, g, b) => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const gr = x.createRadialGradient(32, 32, 2, 32, 32, 32);
     gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
-  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(255, 248, 230), transparent: true, opacity: U.glow.opacity, depthWrite: false, blending: THREE.AdditiveBlending }));
-  glow.scale.setScalar(U.glow.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + 0.5, glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
+  const GL = RECON16_ON ? RECON16.glow : U.glow;   // (pass 16: the original's luminous far end, larger and brighter)
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(255, 248, 230), transparent: true, opacity: GL.opacity, depthWrite: false, blending: THREE.AdditiveBlending }));
+  glow.scale.setScalar(GL.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + 0.5, glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
   const cols = [[255, 170, 230], [150, 210, 255], [255, 230, 140], [200, 170, 255]];
   for (let i = 0; i < U.lights; i++) {
     const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(...cols[i % 4]), transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending }));

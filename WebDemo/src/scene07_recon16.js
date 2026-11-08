@@ -22,15 +22,18 @@ export const RECON16 = {
   // the left drum: face centre (x, h, u), outer ring radius R, body depth (in R), yaw: how far the face turns from facing straight back
   // down the track toward the left wall (radians; the drum's body then shows on the face's right, as in the original)
   // (fitted with a projection grid of the real camera at the u 229.5 checkpoint, 77_.../scripts: centre (0.075, 0.30), gold band radius 0.125 H)
-  drum: { u: 238, x: 3.0, h: 4.0, R: 1.52, depth: 0.45, yaw: 0.62 },
+  drum: { u: 238, x: 2.85, h: 4.0, R: 1.52, depth: 0.45, yaw: 0.62 },
   ledge: { u: [232.2, 253.2], x: 2.25, h: 1.95 },
   // a long gentle curve (radius 5 m) whose face runs 1.3 m from the centre line (as close as the right lane allows; the master's wall would
   // stand at 0.5 m, inside the lane): from the right screen edge (u 234) to x 0.70 (u 240)
   right: { u: 237, inner: 1.3, R: 5.0, H: 0.85 },
-  towers: [[239.6, -3.35, 0.72, 2.3, 'pink'], [244.2, -3.55, 0.9, 3.0, 'mint'], [249.5, -3.3, 0.75, 2.6, 'pink']],   // [u, x, radius, height, dome] behind the right wall
-  leftTiers: [[242.8, 3.35, 0.8, 1.9, 'mint'], [246.6, 3.45, 0.7, 2.4, 'pink'], [250.6, 3.3, 0.75, 2.0, 'mint']],    // the same, on the ledge beyond the drum
+  towers: [[239.6, -3.35, 0.72, 2.8, 'pink'], [244.2, -3.4, 0.9, 3.4, 'mint'], [249.5, -3.2, 0.75, 3.0, 'pink']],   // [u, x, radius, height, dome] behind the right wall
+  // the tiers of machinery beyond the drum on the ledge (master: the green-topped machine at (0.31, 0.29), which this low camera puts ~5.3 m up)
+  leftTiers: [[242.6, 2.85, 0.72, 3.3, 'mint'], [245.8, 3.15, 0.8, 2.6, 'pink'], [248.6, 2.85, 0.66, 3.1, 'mint'], [251.4, 3.2, 0.75, 2.4, 'pink']],
   gear: { u: 237, x: -2.5, h: 5.0, R: 0.72 },   // master: centre (0.93, 0.205), the frill's radius 0.16 W
-  arches: [[244.2, 'cream'], [248.6, 'blue'], [252.9, 'pink']],
+  arches: [],   // (v1-v2 had three; with the portal they read as a tunnel of rings, the look the user rejected)
+  endWall: { gap: 3.05, ds: 0.72 },   // machinery on the far end wall round the opening (radius gap m round its centre)
+  glow: { r: 3.1, opacity: 1.0 },   // the far end's light (pass 13b: r 2.2, opacity 0.85)
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
 };
 const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
@@ -113,7 +116,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     lav: std(C.lav, 0x6a52b0, 0.42), lavD: std(0xb79cf2, 0x5a3fb0, 0.35, { side: THREE.DoubleSide }), cream: std(C.cream, 0x8a6e52, 0.5),
     blue: std(0x2f5cff, 0x0f2a9a, 0.5, { metalness: 0.45, roughness: 0.3 }), blueL: std(C.blue, 0x2f55b8, 0.45), mint: std(C.mint, 0x3a8a5a, 0.38),
     gold: goldM, white: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.35, 1.2, 1.5) }),
-    glass: new THREE.MeshPhysicalMaterial({ color: 0xf2e6ff, roughness: 0.05, envMap: env || null, envMapIntensity: 1.6, transparent: true, opacity: 0.55, iridescence: 1, iridescenceIOR: 1.3, clearcoat: 1, depthWrite: false, emissive: 0x9a7ae0, emissiveIntensity: 0.35 }),
+    glass: new THREE.MeshPhysicalMaterial({ color: 0xf2e6ff, roughness: 0.05, envMap: env || null, envMapIntensity: 1.6, transparent: true, opacity: 0.55, iridescence: 1, iridescenceIOR: 1.3, clearcoat: 1, depthWrite: false, emissive: 0xb08cf0, emissiveIntensity: 0.6 }),
   };
   const out = {};
   const mesh = (geo, mat, parent, fn) => { const m = new THREE.Mesh(geo, mat); if (fn) fn(m); parent.add(m); return m; };
@@ -126,7 +129,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     mesh(new THREE.TorusGeometry(R * 1.2, 0.05 * R, 10, 80), M.gold, g, (m) => { m.position.z = 0.04 * R; });           // gold outer band
     mesh(new THREE.TorusGeometry(R * 0.8, 0.045 * R, 10, 72), M.gold, g, (m) => { m.position.z = 0.12 * R; });          // gold inner band
     const intM = new THREE.MeshStandardMaterial({ map: interiorTexture(), emissive: 0xffffff, emissiveMap: null, emissiveIntensity: 0.0, roughness: 0.5, metalness: 0.1, envMap: env || null, envMapIntensity: 0.6 });
-    intM.emissiveMap = intM.map; intM.emissiveIntensity = 0.55;
+    intM.emissiveMap = intM.map; intM.emissiveIntensity = 0.85;
     mesh(new THREE.CylinderGeometry(R * 0.8, R * 0.8, 0.45 * R, 56, 1, true), M.lavD, g, (m) => { toZ(m); m.position.z = -0.225 * R; });   // the deep interior wall
     mesh(new THREE.CircleGeometry(R * 0.8, 56), intM, g, (m) => { m.position.z = -0.45 * R; });                          // its back, glowing lavender
     mesh(new THREE.SphereGeometry(R * 0.4, 32, 20), M.glass, g, (m) => { m.position.z = -0.12 * R; });                   // the emblem bubble
@@ -155,9 +158,6 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     t.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(mid), mid.length * 2, 0.04, 6, false), M.gold));
     const pl = at(TR, new THREE.Group(), D.x, L.h, D.u); t.add(pl);
     mesh(new RoundedBoxGeometry(1.7, Math.max(0.2, D.h - 1.2 * R - L.h + 0.1), 1.3, 1, 0.08), M.cream, pl, (m) => { m.position.y = Math.max(0.2, D.h - 1.2 * R - L.h + 0.1) / 2; });
-    // a lavender block joins the drum to the wall behind it (attached, not floating)
-    const blk = at(TR, new THREE.Group(), (D.x + Ch.halfW) / 2 + 0.35, L.h, D.u + 0.4); t.add(blk);
-    mesh(new RoundedBoxGeometry(Ch.halfW - D.x + 0.4, 2 * R, 2.4, 2, 0.18), M.lav, blk, (m) => { m.position.y = R; });
     // tiers of machinery beyond the drum on the ledge: lavender tanks with gold bands and domes
     for (const [u, x, r, h, dome] of R16.leftTiers) {
       const q = at(TR, new THREE.Group(), x, L.h, u); t.add(q);
@@ -260,6 +260,20 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
       else if (f < 0.55) { const r = 0.26 + 0.22 * hash(i, 6); add('gear', x, h, u, nx, ny, o + 0.06, r, r, r, null); }
       else if (f < 0.75) { const w2 = 0.3 + 0.35 * hash(i, 6), d2 = 0.25 + 0.4 * hash(i, 7); add('box', x, h, u, nx, ny, o + d2 / 2, w2, d2, w2 * 1.2, palette[Math.floor(hash(i, 10) * palette.length)]); }
       if (hash(i, 11) < 0.3) add('lamp', x, h, u + 0.35, nx, ny, o + 0.12, 0.09, 0.09, 0.09, glowCols[2]);
+    }
+    // the far end wall round the opening: the same machinery, facing back down the track
+    const E = R16.endWall, Qe = new THREE.Quaternion(), Rx = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+    const addEnd = (kind, x, h, off, sx, sy, sz, col) => { const u = Ch.u1 - 0.02; TR.map(x, h, u - off, P); TR.quaternion(u, Qe); Qe.multiply(Rx); kinds[kind].push([Mx.compose(P, Qe, S.set(sx, sy, sz)).clone(), col]); };
+    let ei = 5000;
+    for (let h = Ch.deck + 0.3; h < Ch.height; h += E.ds) for (let x = -a + 0.3 + ((Math.round(h / E.ds) % 2) * E.ds) / 2; x < a - 0.2; x += E.ds, ei++) {
+      if (Math.hypot(x, h - 1.5) < E.gap || h > Ch.wallH + b * Math.sqrt(Math.max(0, 1 - (x / a) ** 2)) - 0.3) continue;
+      const bw = 0.5 + 0.45 * hash(ei, 1), bd = 0.25 + 0.35 * hash(ei, 2);
+      addEnd('box', x, h, bd / 2, bw, bd, bw * (0.8 + 0.5 * hash(ei, 3)), palette[Math.floor(hash(ei, 4) * palette.length)]);
+      const f = hash(ei, 5);
+      if (f < 0.25) { const r = 0.2 + 0.14 * hash(ei, 6); addEnd('ring', x, h, bd + 0.04, r, r, r, null); addEnd('disc', x, h, bd + 0.03, r * 0.85, 1, r * 0.85, glowCols[Math.floor(hash(ei, 9) * 3)]); }
+      else if (f < 0.4) { const r = 0.24 + 0.2 * hash(ei, 6); addEnd('gear', x, h, bd + 0.06, r, r, r, null); }
+      else if (f < 0.6) { const r = 0.18 + 0.15 * hash(ei, 6); addEnd('tank', x, h, bd + r, r, 0.6 + 0.6 * hash(ei, 7), r, palette[1 + Math.floor(hash(ei, 8) * 3)]); }
+      if (hash(ei, 11) < 0.35) addEnd('lamp', x + 0.3, h + 0.25, bd + 0.1, 0.09, 0.09, 0.09, glowCols[2]);
     }
     const instM = (base) => { base.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); }; return base; };
     const gStd = instM(std(0xffffff, 0xffffff, 0.34));
