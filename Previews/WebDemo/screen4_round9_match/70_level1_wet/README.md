@@ -37,14 +37,43 @@ Build: bundle **89e89f18** (commit `03e8455`), on top of `ccr-76d4bc77-rqhl8o` `
 - Gameplay code is untouched: her lanes, speed, jumps, hit tests, collectibles, hearts, power-ups, the finish trigger and the
   progress bar are the same code; the chamber is drawn only.
 
-## Results (filled from `proofs/`)
-RESULTS_PLACEHOLDER
+## Results (filled from `proofs/`; all on the frozen final build 89e89f18)
+- **Identity** (`proofs/identity.txt`, `scripts/identity.sh`, layer_diag.cjs canvases 768 x 1536, seed 7): **0 pixels differ in every
+  check**: the accepted `?s3=intunnel` (start, 3 s), the normal game (1 s) and the candidate `?s3=intunnel,structmatch` (start, 3 s)
+  against `ccr`'s build 92bd9272; `,match6` against match6's own build b5f69217 (start, 3 s: the candidate kept exactly); level1 with
+  `,nowet,noport` against the previous level1 (start, 3 s: the rollback is exact); the new level1's Tap to Start against the previous.
+- **The route** (`proofs/route_old_new_24_moments.md`, `frames/old_ccr_92bd9272/`, `frames/new_89e89f18/`, `sheets/00_...`): at all 24
+  moments of the same autopiloted run (Tap to Start to 50 s), her place along the course, the section, the socks (6 by the end) and the
+  hearts (5) are the same, and Level Complete comes at the same moment (341.7 m, between 46 and 48 s). Coins: one coin is collected
+  earlier in the new build (from 7 s to 44 s the new run is one coin ahead); at Level Complete both have 1,371 (91 in the run). The
+  coins' bob phases come from the course's private random sequence, which the chamber's extra objects advance.
+- **Gameplay tests** (`proofs/`, `motion/`, `scripts/tests.sh`): the seeded motion trace (swipes and a jump) 152 frames x 17 gameplay and
+  camera fields, candidate against level1: **0 differences**; `s3_func` exit 0 for both (the candidate's output identical to the `ccr`
+  build's; with level1 only draw counts differ: more water triangles, 2 fewer calls at 41 m where the drum's end planes have shrunk);
+  `r2_func`'s hearts test passes (5 knocks to 0, restart to "5 Full"), then its harness hangs at a same-page reload as in the old session's
+  own runs; so pause / Bubble Blast / Turbo Spin were checked on a fresh page (`proofs/abilities_probe_level1.txt`): pause shows its
+  panel and freezes time, runs after Resume; Bubble Blast 3 -> 2; Turbo Spin 3 -> 2 at speed 8.45; 0 errors.
+- **Draw calls and triangles** (`proofs/cost_old.txt`, `proofs/cost_new.txt`, cost_probe.cjs, the same run and moments, 412 x 915):
+
+  | moment | previous level1 | new |
+  |---|---|---|
+  | Tap to Start | 222 / 2.76 M | 222 / 2.82 M (finer water mesh) |
+  | +3, +8, +20 s | 167, 119, 105 | the same calls (+0.06-0.08 M triangles) |
+  | +30 s (217 m) | 179 / 1.88 M | 120 / 1.79 M |
+  | in the chamber (+38 to +46 s) | 141-91 / 1.71-1.65 M (the open slide) | 159-139 / 2.34-2.15 M |
+  Highest anywhere in the new late level: 190 calls (+32 s); every moment stays under the level's own Tap to Start peak (222 / 2.82 M).
+  Real phone frame rates were not measured here (software rendering).
+- **The opening** (`sheets/01_...`, `02_...`, `03_...`; the girl probe's numbers in `../../ccr_branch_verification_2026-11-08/`): the rigged
+  girl, her blinks, the basket, the toss, the mascot through the porthole and the camera into the water are unchanged in timing and
+  motion; the porthole shows the blue spiral (port).
+- **The full recording**: `videos/` (see below).
 
 ## Remaining (candid)
 - The opening's girl, basket and composition are the rigged Tripo girl as the old session left them (her scale and framing differ from the
   approved art: she is cut by the left edge; not changed in this pass).
 - The porthole is closer to the approved art (no white foam mass, a cobalt spiral) but still paler and less luminous than its deep vortex.
 - The castle is the game's own castle model; the chamber is code-built (no new Tripo assets, nothing spent).
-- One coin near 7 s is collected that was not before: the coins' bob phases come from the course's private random sequence, which the
-  chamber's extra objects advance; every coin, gem and sock is in the same place and her route, hearts and socks are identical.
+- One coin is collected earlier than before (see the route); the totals at Level Complete are the same.
+- The user's 10-beat gameplay mandate (functional branching side paths, a drop to a lower path, patrolling enemies) is NOT built: the
+  course is one path (the soap bars are jumps on it, "the drop" is a slope on it). It is the next task.
 - Real phone frame rates were not measured (software rendering here); draw calls and triangles are counted.
