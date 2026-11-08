@@ -377,3 +377,259 @@ About 2.3 seconds per frame, so the full recording will take roughly an hour. Ch
 
 While those run, recording the new switch in `CLAUDE.md` and the handoff files, so any later session knows about it:
 
+---
+
+### Note · 2026-11-08 00:59 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-08 00:59 UTC
+
+CLAUDIA — MANDATORY TRIPO AI INTEGRATION FOR BUBBLE WASH KINGDOM
+
+Claudia, I want you to use my Tripo3D account and API to help improve the actual 3D assets in my EXISTING Bubble Wash Kingdom game.
+
+This is an implementation task, not a redesign.
+
+1. CONNECT TO TRIPO
+
+Use Tripo's current official API documentation at https://developers.tripo3d.ai/en/.
+
+Check whether Tripo is already installed or connected. If necessary, install the official Tripo CLI using the documented installation method.
+
+Guide me through securely configuring my Tripo API key.
+
+Do not ask me to paste my key into the chat. Use Claude Code's secure cloud network secrets or an appropriate secure local credential method.
+
+Verify the connection without consuming generation credits where possible.
+
+2. FIX THE PINK FLUFFY CHARACTER
+
+Use my ORIGINAL APPROVED CLASSIC Screen 4 mascot as the exact visual authority.
+
+Inspect my existing pink character before generating anything.
+
+I want the recognizable rounded, full, fuchsia-pink fluffy body, long fine-looking fur, small rounded appendages, and proper proportions.
+
+Do not invent a different mascot.
+
+If the current model needs improvement, evaluate Tripo's image-to-3D generation to produce a more accurate base model.
+
+Preserve the existing model and compare results before replacing it.
+
+3. ANIMATED CARTOON GIRL
+
+Inspect the existing cartoon girl model from my Laundry Toss opening.
+
+Use her approved appearance, curly brown hair, pink bow, and existing design.
+
+If she already has a usable 3D model, do not unnecessarily regenerate it.
+
+Make her genuinely animate: blinking, smiling, moving her arms and body, lifting the basket, and throwing socks and clothes.
+
+The pink mascot must accidentally get carried into the washing machine.
+
+Evaluate Tripo rigging and animation features where appropriate, but implement any missing motion in the actual Three.js game.
+
+4. REAL SWIMMING GAMEPLAY
+
+Preserve my approved saturated blue-water tunnel.
+
+The pink character must visibly travel forward, bob, swim, steer left and right, and interact naturally with the water.
+
+His lower fur should touch the blue water without a white film.
+
+Coins, socks, brushes, bubbles, and obstacles must remain fully functional.
+
+5. CREDIT APPROVAL
+
+Before using paid Tripo API credits, tell me which asset you want to generate and how many credits it is expected to cost.
+
+Ask for my approval before beginning generation.
+
+Do not waste credits on unnecessary repeated attempts.
+
+6. IMPLEMENT AND VERIFY
+
+Download any approved generated 3D model as an actual usable asset, preferably GLB.
+
+Integrate it into my existing playable game only if it improves the result.
+
+Preserve my current GitHub branch, source code, gameplay systems, and rollback checkpoint.
+
+Provide real gameplay videos showing the animated girl, washer entry, swimming character, and collectible interactions.
+
+Report the exact files changed, assets generated, credits used, and tests passed.
+
+FINAL INSTRUCTION: Start by checking the existing project and Tripo integration, then show me how to securely authorize my Tripo API key. Do not spend credits until I approve the proposed generation.
+Claudia, I need you to perform a COMPLETE AUDIT of my existing Bubble Wash Kingdom AI development environment.
+
+I recently switched Claude accounts because of usage limits, and I want to make absolutely sure that ALL the AI agents, custom design specialists, skills, plugins, MCP servers, instructions, and tools I previously used are restored and working.
+
+This is a mandatory verification task. Do not assume anything is installed or operational without checking it.
+
+1. CHECK MY AI AGENTS AND SPECIALISTS
+
+Inspect all available project-level and account-level agent configurations, including:
+
+- Custom AI agents and subagents
+- Visual design and art direction specialists
+- 3D modeling and Three.js specialists
+- Gameplay development specialists
+- Character animation specialists
+- Screenshot and visual comparison specialists
+- Debugging and quality assurance agents
+- Any other agents previously configured for Bubble Wash Kingdom
+
+Read "CLAUDE.md", ".claude/agents/", ".claude/skills/", ".claude/commands/", and other relevant configuration files.
+
+Identify the actual agents that exist. Do not invent missing agents.
+
+2. VERIFY MY PLUGINS AND MCP SERVERS
+
+Inspect the actual installed plugins, MCP server connections, available tools, and project integrations.
+
+Pay particular attention to GitHub, Tripo3D, browser testing, visual comparisons, 3D asset generation, and game development tools.
+
+For every integration, verify whether it is:
+
+- Installed
+- Enabled
+- Connected and authenticated
+- Accessible to the current session
+- Actually functioning
+
+Do not confuse configuration files with working connections.
+
+3. CHECK MY PREVIOUS GITHUB HANDOFF
+
+Open my existing repository:
+
+https://github.com/josiahscalia5-dev/bubblegame
+
+Read "HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md" and all available handoff documentation.
+
+Compare the documented previous environment against what is currently available in this Claude account.
+
+Identify anything that was not transferred.
+
+Do not change branches, reset files, or modify my game during this audit.
+
+4. TEST MY DEVELOPMENT TOOLS
+
+Perform safe, non-destructive checks to verify that the available agents, skills, plugins, and MCP servers can actually be invoked.
+
+For Tripo, verify the secure connection without generating paid models or spending credits.
+
+For GitHub, verify repository access and identify the correct development branch.
+
+Check whether any background agents or tasks are currently running. Do not claim an agent is running simply because its configuration exists.
+
+5. GIVE ME A COMPLETE VERIFICATION REPORT
+
+Create a table showing:
+
+Agent / Plugin / Tool Name | Purpose | Previously Documented | Installed | Enabled | Tested | Currently Running | Action Needed
+
+Use these statuses accurately: VERIFIED WORKING, INSTALLED BUT UNTESTED, DISCONNECTED, MISSING, NOT ACCESSIBLE, or NOT DOCUMENTED.
+
+Separate available tools from currently executing background tasks.
+
+6. RESTORE MISSING TOOLS
+
+For anything missing, explain exactly how to restore it.
+
+If a project-level agent or skill can be safely restored from GitHub, identify its original configuration and restore it without overwriting existing changes.
+
+If an account-specific plugin, private agent, permission, subscription, or MCP authorization requires manual setup, tell me the exact steps.
+
+Do not install unknown plugins, change permissions, spend credits, or overwrite configurations without my approval.
+
+FINAL REQUIREMENT
+
+I want to know whether my NEW Claude account has the SAME working AI development setup as my OLD Claude account.
+
+Do not simply say everything is working.
+
+Show me which agents and plugins exist, which ones you actually tested, which ones are currently running, and which ones still need restoration.
+
+Preserve my existing Bubble Wash Kingdom game and development progress.
+
+Begin the audit now and report your findings before returning to gameplay development.
+
+---
+
+### Claude · 2026-11-08 01:00 UTC
+
+Now the safe invocation test of your 5 project agents: a one-line "who are you and which tools do you have" ping each. They're told not to read, edit or run anything.
+
+No: your new account does not yet have the same working setup as the old one. Three things didn't transfer: the **parallax-threejs plugin** (with its 4 servers, 3 agents and its commands), a **working Tripo key**, and the **Blender** program. Everything kept in the repository did transfer and works.
+
+Nothing was changed during the audit. The only file I touched was a test-result file that the stopped run had left half-written; I put back its saved version.
+
+| Agent / plugin / tool | Purpose | Previously documented | Installed | Enabled | Tested | Running now | Status / action needed |
+|---|---|---|---|---|---|---|---|
+| `game-art-director` | Read-only reviewer against the original Screen 4 | Yes | Yes (`.claude/agents/`) | Yes | Yes: started and reported Read, Grep, Glob, Bash (matches its definition) | No | **VERIFIED WORKING** |
+| `gameplay-visual-testing` | Read-only gameplay and visual tests | Yes | Yes | Yes | Yes: Read, Grep, Glob, Bash | No | **VERIFIED WORKING** |
+| `lighting-visual-matching` | Tunnel geometry, lighting, colour grade | Yes | Yes | Yes | Yes: Read, Grep, Glob, Bash, Edit, Write | No | **VERIFIED WORKING** |
+| `water-vfx-engineer` | Water, splashes, bubbles | Yes | Yes | Yes | Yes: same six tools | No | **VERIFIED WORKING** |
+| `screen4-water-motion-engineer` | Water and swim motion with live 3D-scene inspection | Yes | Yes | Yes | Yes: has its six basic tools, **lacks all 13 live-scene tools** | No | **DISCONNECTED** (partly): needs the plugin below |
+| Skill `bubble-wash-screen-matcher` | Compare the game with the approved screens | Yes | Yes (`.claude/skills/`) | Yes (this session lists it) | Not run; running it starts a matching pass | No | **INSTALLED BUT UNTESTED** |
+| `.claude/commands/` | Custom slash commands | No | None exist | – | – | – | **NOT DOCUMENTED** (none existed before) |
+| Start-of-session hook | Restarts the autosave | Yes | Yes | Yes | Yes: it started the autosave when this session began | – | **VERIFIED WORKING** |
+| 5-minute autosave | Saves everything to GitHub | Yes | Yes | Yes | Yes: every push confirmed on GitHub (latest `aac418c`) | **Yes** (1 h 13 min) | **VERIFIED WORKING** |
+| **parallax-threejs plugin 0.4.12** | 3D-scene debugging and visual regression | Yes | **No**: in your catalogue, not enabled | No | Checked twice: not enabled | – | **MISSING**: enable it (install card offered earlier), then start a new session |
+| ↳ chrome-devtools-mcp, threejs-devtools-mcp, playwright-mcp | Live browser and 3D-scene servers | Yes (worked on the old account) | No | No | No tools of theirs exist in this session | – | **MISSING** (come with the plugin) |
+| ↳ spector server | Graphics frame capture | Yes (failed on the old account too) | No | No | – | – | **MISSING** (optional) |
+| ↳ plugin agents `scenario-author`, `shader-reviewer`, `visual-debugger` | Plugin helpers | Yes | No | No | – | – | **MISSING** (come with the plugin) |
+| ↳ plugin commands (checkpoint, diff, sweep, ship-check, …) | Plugin commands | Yes | No | No | – | – | **MISSING** (come with the plugin) |
+| GitHub | Repository access | Yes | Yes | Yes | Yes: signed in as josiahscalia5-dev, lists branches, pushes confirmed | – | **VERIFIED WORKING** |
+| Tripo command-line tool 0.11.2 | 3D model generation | Yes | Yes | Yes | Yes: `tripo doctor` (free) reaches Tripo, but Tripo answers **401 "Invalid API key"** | – | **DISCONNECTED**: the saved key is refused (see Tripo below) |
+| Tripo key (network secret) | Lets the tool sign in without exposing the key | Yes | Saved on the `bubblegame` environment for `openapi.tripo3d.ai` | Yes | Yes: refused by Tripo | – | **DISCONNECTED**: replace with a new key |
+| Tripo documentation site | Official API reference | – | – | – | `developers.tripo3d.ai` does not resolve from here | – | **NOT ACCESSIBLE** |
+| Cloud environment `bubblegame` | Network access and setup script | Yes (existed on the old account) | Recreated today | Yes (this session uses it) | Yes: the Blender, PyTorch and Google download hosts all answer | – | **VERIFIED WORKING** (setup script runs in a fresh session; not yet seen there) |
+| Playwright 1.63 + Chromium | Real game captures | Yes | Yes | Yes | Yes: all of today's captures | No | **VERIFIED WORKING** |
+| OpenCV 5.0, scikit-image 0.26 | Image comparison | Yes | Yes | Yes | Yes: they load | – | **VERIFIED WORKING** |
+| PyTorch 2.15, LPIPS, Optuna 5.0 | Similarity measurement, tuning studies | Yes | Yes | Yes | Yes: they load | – | **VERIFIED WORKING** |
+| glTF Transform, glTF Validator, Vite | Model tools, side tests | Yes | Yes | Yes | Presence only | – | **INSTALLED BUT UNTESTED** |
+| Blender 5.2.3 | 3D modelling and rendering | Yes | **No** (its download was blocked before the environment existed) | – | – | – | **MISSING**: one command now that the host is allowed |
+| Spector.js (npm package) | Frame capture script | Yes (installed when needed) | No | – | – | – | **MISSING**: installed on demand |
+| Android SDK | Building the preview APK | Yes (manual install) | No | – | – | – | **MISSING**: install when an APK is needed |
+
+**Running right now**
+- Only the autosave.
+- No agents: the 5 audit pings and the documentation reader have all finished.
+- No recordings or tests: you stopped them.
+- No scheduled tasks, and this is the only session on this account.
+- The old account's session last saved at 23:58 on the handoff branch. I can't see whether it is still open from here.
+
+**Not transferred from GitHub:** the old account saved 3 commits after the point I merged:
+- `2f7977e` and `2c72c2f`: its handoff notes and chat log;
+- `afd0ee6`: the match5 phone recording.
+
+None of them changes game code. With your OK, I'll merge them into this session's branch, `ccr-76d4bc77-rqhl8o`, the only branch this session may push to.
+
+**What I can restore once you say yes:** that merge, and Blender, by running `bash Tools/cloud_env_setup.sh`.
+
+**What only you can do:**
+1. **Plugin:** on claude.ai, enable **parallax-threejs** from the Anthropic Directory, then start a new session on the `bubblegame` environment.
+2. **Tripo key:**
+   - On Tripo's site, create a new secret key; it starts with `tsk_`. Delete the keys that were pasted into chats.
+   - Here, open the cloud environment menu in the session's title bar, choose `bubblegame`, then Edit, then Network secrets. Replace the value of the `openapi.tripo3d.ai` entry with the new key and save. Or tell me and I'll open the secure form again.
+   - Then I'll run the free check. The key never appears in the chat, the repository or the logs.
+
+**Tripo costs:** nothing is spent without your yes.
+- The old account's free dry run priced a 3D girl from your artwork at **110 credits** for the model. Rigging and animations are extra, and Tripo doesn't estimate them in advance.
+- Its earlier mascot attempt cost 120 credits and came out as a mushroom.
+- With your old key the balance was 640. I can't confirm credits on the new key until it works.
+- The girl in the opening now exists as an animated character built in code, so a Tripo model is optional. I'll propose a specific job, with its cost, only after comparing.
+
+**The game work, paused by your stop:**
+- The animated opening and the full Level 1 are saved (latest `aac418c`).
+- The accepted Screen 4, the candidate and the normal game were proven pixel-identical on the build just before the last small change.
+- Still to do: the final proof run and the continuous phone recording.
+
+Tell me which restore steps to take, and I'll go back to the recording afterwards.
+
