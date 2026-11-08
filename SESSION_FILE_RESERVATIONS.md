@@ -1,12 +1,23 @@
-# Session file reservations (8 November 2026, the user's choice "Split by files", about 03:00 UTC)
+# Session file reservations (8 November 2026, the user's choice "Split by files", about 03:00 UTC; updated 10:40 UTC)
 
-Two Claude sessions work on the SAME game at the same time. To avoid conflicting edits, each session edits only its own files.
+Two Claude sessions work on the SAME game. To avoid conflicting edits, each session edits only its own files.
 Neither session resets, overwrites or force-pushes either branch.
 
+## UPDATE 8 November, about 10:40 UTC: the user's choice "Take both over"
+The user gave this session (`8140e507`) `WebDemo/src/level1.js` and `WebDemo/src/opening3d.js` (and with them
+`WebDemo/models/opening/` and `WebDemo/tools/level1/`) for the Level 1 mandate (continuous water from the washer to the castle;
+the opening's fixes). Checked before any edit: the old session's last message (02:56 UTC) says nothing was left uncommitted; its
+last change to these files is `890167c`; `level1.js`, `opening3d.js`, `game.js`, `track.js` and `models/opening/` are
+byte-identical on `ccr-76d4bc77-rqhl8o` (`7e5dd685`) and on this session's branch. This session works on its own branch and
+offers the result as a pull request into `ccr-76d4bc77-rqhl8o`; it never writes that branch. If the old session resumes, it must
+merge this session's branch BEFORE touching either file. `match6` (her silhouette) stays a candidate (opt-in), not merged into the
+default look, until the user approves it.
+
 ## Session `dbccb9a3` (the old session), branch `ccr-76d4bc77-rqhl8o`
-Owns the cartoon girl, her animation, the laundry basket, the laundry toss, the washer-entry sequence and mobile performance:
-- `WebDemo/src/opening3d.js`, `WebDemo/src/level1.js` (the user named these two)
-- `WebDemo/models/opening/` (the rigged Tripo girl and the other opening models), `WebDemo/tools/level1/`
+Owned (until 10:40 UTC) the cartoon girl, her animation, the laundry basket, the laundry toss, the washer-entry sequence and
+mobile performance:
+- `WebDemo/src/opening3d.js`, `WebDemo/src/level1.js` (the user named these two): MOVED to session `8140e507` (above)
+- `WebDemo/models/opening/` (the rigged Tripo girl and the other opening models), `WebDemo/tools/level1/`: MOVED with them
 - `Previews/WebDemo/screen4_round9_match/68_level1/`, `Design/TripoDeliveries/`
 
 ## Session `8140e507` (this session), branch `claude/bubble-wash-kingdom-continue-z9nmm1`
