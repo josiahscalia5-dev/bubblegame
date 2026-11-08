@@ -99,8 +99,28 @@ a NEW session.
 | Feature Dev | plugin (agents + command) | verified installed 1.0.1, explorer agent **working** [R2] | no | no | - | optional |
 | Code Simplifier | plugin (agent) | verified installed 1.0.0, **working** (report-only run) [R2] | no | no | - | optional; built-in `/simplify` |
 | Plugin Developer Toolkit (`plugin-dev`) | plugin | **UNVERIFIED: no record of it on any account** (it appears only in the user's 8 Nov message); available in the catalog | no | no | - | only if the user wants to build plugins; not needed for the game |
-| Unity 0.1.9-beta | plugin (skills) | **not recorded**; enabled on this account | no | yes | listed; unrelated (the game is three.js; the repository's `Tools/verify/` Unity checks are from an older Unity version of the project) | the user may disable it; harmless |
+| Unity 0.1.9-beta (Unity Technologies, Anthropic Directory) | plugin (33 skills, no agents / MCP / commands) | **not recorded**; enabled on this account | no | **SYNCED** (33 skill folders on disk), **LOADED** (all 33 listed as `unity:*` skills in the session), **TESTED** (`unity:ui` invoked with the Skill tool: loaded, routes to ui-uitk / ui-ugui / ui-imgui; nothing created) | see section 5a | keep for future Unity projects; never used on this three.js game |
 | Fastly Agent Toolkit 0.1.0 | plugin (skills) | **not recorded**; enabled on this account | no | yes | listed; unrelated (CDN) | the user may disable it; harmless |
+
+## 5a. The Unity plugin against THIS game (checked 8 Nov ~18:10 UTC, session ce30359f; the game stays three.js, nothing migrated)
+
+All 33 skills (2d-pixel-perfect, asset-transformer-toolkit, audio-setup-mixers, build-gtk, build-live-game, craft-game-floors,
+create-2d-physics, create-tile-palette-or-rule-tiles, generate-editor-search-query, implement-in-app-purchases, initialize-ai-navigation,
+levelplay-unity-integration, localization, manage-sprite-atlas, migrate-birp-to-urp, new-unity-project, optimize-audio,
+optimize-text-mesh-pro, optimize-web, physics-3d-collision, setup-multiplayer-services, setup-vivox-voice-chat,
+shader-graph-create-custom-node, sprite-editor, sprite-segment-3x3grid, ui, ui-imgui, ui-ugui, ui-uitk, unity-cli,
+unity-package-management, urp-postprocessing, validate-urp-render-graph-renderer-feature) act on a Unity project: their only
+executable files are 59 C# scripts (58 import UnityEngine / UnityEditor), one HLSL file and one shell file of `toktx` examples
+(no Python or JavaScript). **None runs on the three.js game,
+and none generates 3D assets or scenery**, so none helps rebuild "Avoid Enemies!" directly. What carries over is advice only:
+- `optimize-web`: KTX2 / Basis texture compression with `toktx` (three.js reads KTX2; glTF Transform can write it once `toktx` is
+  installed). Relevant to mobile memory: the live game holds about 205 MB of uncompressed textures (memcheck). It changes pixels, so
+  it would need its own switch, a proof that nothing visible moved, and the user's approval. A later optimisation, not a look fix.
+- `craft-game-floors` (art direction, scene lighting, VFX rules, a generic "visual scorecard"): sensible general advice for NEW games;
+  this project already measures against an exact approved image (`compare_s4.py`, the art director), which is stricter.
+- `urp-postprocessing`: bloom / tone-mapping concepts that map to three.js post, already matched to the approved art here.
+- `asset-transformer-toolkit` (Pixyz decimation / LOD) needs the Unity Editor; Blender and glTF Transform already do this here.
+Priority stays: three.js, Tripo, Blender, Parallax, the five design agents and the screen-matcher skill.
 
 ## 6. Integrations and external services
 

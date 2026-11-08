@@ -291,3 +291,224 @@ Nothing was written or changed.
 
 
 _1 tool steps._
+
+---
+
+## Game Art Director: Art director: Screen 09 differences (started 18:01 UTC)
+
+**Lead → agent** (18:01 UTC):
+
+Activation test for the restored design team, on the CURRENT task. READ-ONLY: do not edit, commit or create files in the repository.
+
+The user's current major goal: the opt-in "Avoid Enemies!" scene (`?s3=intunnel,structmatch,home,level1,tripo1,scene07`) must match the user's approved Screen 09, `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png` (the ONLY authority for this screen). The latest game frame at the comparison checkpoint (pass 8, u 233) is `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg`; the side-by-side of earlier passes is `.../74_scene07_avoid_enemies/05_original_before_pass7_pass8.jpg`; the pass history and remaining list are in `.../74_scene07_avoid_enemies/README.md`. The user approved none of passes 1-8.
+
+Note: a teammate found that in `/home/user/bubblegame/WebDemo/src/tripo_l1.js` line 174 the code that builds and adds `scene07_chamberShell` (the corridor's vault/walls) sits after a `//` comment, so it is never drawn (absent from `WebDemo/game.bundle.js`). You may verify that.
+
+Report in under 300 words: (1) the tools you actually had; (2) the 6 largest visual differences between the approved Screen 09 and the pass 8 frame, ranked by visual impact, each with its owner (architecture/lighting, water, objects/enemy, camera/composition) and whether it is code work or a possible Tripo asset; (3) the ONE correction to make first, and whether restoring the commented-out shell is likely to move the frame closer or further from the original.
+
+**Agent** (18:01 UTC):
+
+I'll look at the approved Screen 09, the pass 8 frame, and the README.
+
+- 18:01 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:01 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg
+- 18:01 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/README.md
+**Agent** (18:01 UTC):
+
+Now I'll check the claim about line 174 and the side-by-side.
+
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:01 `Grep`: chamberShell
+- 18:01 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/05_original_before_pass7_pass8.jpg
+- 18:01 `Grep`: scene07_(deck|portal|chamberShell)
+- 18:01 `Grep`: chamber:\s*\{
+- 18:01 `Grep`: scene07_(deck|portal|chamberShell)\b
+- 18:02 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+**Agent** (18:02 UTC):
+
+**Tools I had:** Read (for images and code), Grep, Glob and Bash. I had no browser, DevTools or Playwright, and I did not run the measurement script. So what follows is visual judgement only, with no numbers.
+
+**The 6 largest differences, by visual impact (approved Screen 09 against pass 8 at u 233):**
+1. **The top half.** The original is an enclosed corridor packed with bright machinery all the way up. The game shows empty pale sky with a sun-like glow over about 40% of the frame. Owner: architecture/lighting. Code work (the shell bug below).
+2. **Depth.** The original's blue channel winds to a vanishing point near the centre, with objects spread along it. The game camera sees only a short stretch, and everything piles up in the lower middle. Owner: camera/composition. Code.
+3. **The enemy.** In the original it is navy, medium-sized, high and right of centre, and clear of her. In the game it is violet, large, on the left, and overlaps her. Owner: objects/enemy. Code: colour and size (the Tripo model exists, so no new job). Its lane is gameplay in `level1.js`.
+4. **The coins.** The original's paw coins frame the path at the sides and recede into the distance. The game's sit in the centre and cover her and the enemy. Owner: objects/camera. Code.
+5. **The side structures.** The original has a large pink porthole housing on the left and a pink-gold star tub on the right, both at the screen edges. The game's are small and far away, and its gears float in the sky. Owner: architecture. Code first; the housing and tub are possible Tripo assets (kit crops 09/10).
+6. **Water and bubbles.** The original's channel stays visible into the distance, with white foam edges and many iridescent bubbles. The game has foreground surf only. Owner: water. Code.
+
+Also different, but outside this ranking: she reads as a flat grainy mat, not the original's round pom-pom (the rules say not to redesign her), and the red "Avoid Enemies!" banner is missing.
+
+**Fix first: restore the shell.** The teammate is right. On line 174 of `/home/user/bubblegame/WebDemo/src/tripo_l1.js`, `const shell = …; root.add(shell);` sits after a `//`, so it never runs. The built game file `/home/user/bubblegame/WebDemo/game.bundle.js` contains `scene07_deck` and `scene07_portal` but not `scene07_chamberShell`. That means the README's pass 8 walls and periwinkle vault were never on screen.
+
+Restoring the shell will likely move the frame closer, because it closes in the empty sky and the original has no sky at all. Two risks to watch:
+- The pass 7 complaints could come back: the flat pink-dotted wall and the empty lavender vault.
+- The pipes placed 3.7–4.4 m high may poke through the vault, which is only about 4.8–5.0 m high where they stand.
+
+Compare the original, pass 8 and the new frame at u 233, and revert if the new frame looks less like the original.
+
+
+_10 tool steps._
+
+---
+
+## Gameplay & Visual Testing specialist: Testing agent: gameplay test status (started 18:01 UTC)
+
+**Lead → agent** (18:01 UTC):
+
+Activation test for the restored design team. Do NOT edit game files, commit or push; write any output only under `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/`.
+
+1. Inventory the existing gameplay tests in /home/user/bubblegame/WebDemo/tools (e.g. `level1/flow_routes.cjs`, `level1/l1_run.cjs`, `screen3/s3_func.cjs`, `screen3/r2_func.cjs`, `models/traverse.cjs`, `seeded_run.cjs`, `playtest.cjs`): one line each on what it checks.
+2. Report their LAST RECORDED status from the evidence logs, e.g. `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/proofs/` (route logs for scene07 passes 5-8 and `identity.txt`) and `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/71_level1_flow/proofs/`.
+3. Run ONE quick live gameplay test of your choice that exercises real controls (lanes / jump / spin / collectibles) on the current build, with at most ONE Chromium at a time (another software-WebGL page is open; respect any browser lock the tools use), and stop it if it would take longer than about 6 minutes. `cd /home/user/bubblegame && source Tools/bw_tools_env.sh` first; the game is also served at http://127.0.0.1:3000/.
+
+Reply in under 250 words: the tools you had, the test inventory, last recorded statuses, and the live test's command and PASS/FAIL with numbers.
+
+- 18:01 `Bash`: List test tools and proof folders
+- 18:01 `Bash`: Read header comments of each test tool
+- 18:01 `Bash`: Read scene07 route logs and identity proof
+- 18:01 `Bash`: Read level1_flow proofs and README test lines
+- 18:01 `Bash`: Check build state, browser lock and server
+- 18:01 `Bash`: List browser/node processes, server, route test table
+- 18:01 `Bash`: Read s3_func and find related logs
+- 18:01 `Bash`: Summarise level1 route test JSON and baseline s3_func
+- 18:01 `Bash`: Check baseline s3_func switch and variant diff
+**Agent** (18:01 UTC):
+
+Running the live test now: `s3_func` on the current build (md5 d2a666bd), using the shared browser lock and a 6-minute limit.
+
+- 18:01 `Bash`: Run s3_func live gameplay check under browser lock
+
+_10 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: Lighting agent: Screen 09 lighting review (started 18:01 UTC)
+
+**Lead → agent** (18:01 UTC):
+
+Activation test for the restored design team, on the CURRENT task. READ-ONLY this time: do not edit, write, build, commit or launch browsers.
+
+Review the LIGHTING and architecture-lighting differences between the user's approved Screen 09, `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png` (the authority), and the current opt-in scene07 game frame (pass 8, checkpoint u 233), `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg`. You may measure both images with `source /home/user/bubblegame/Tools/bw_tools_env.sh` and `$BW_PY` (OpenCV / NumPy), writing only to `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/`.
+
+The scene's code is `/home/user/bubblegame/WebDemo/src/tripo_l1.js` (you mapped its materials earlier: walls `wallM` l.83-84, `shellM` l.158, `vaultM` l.174, gold `goldM`, glow sprites l.253-263; and line 174's `scene07_chamberShell` creation is swallowed by a `//` comment).
+
+Report in under 300 words: (1) the tools you had; (2) the 3-4 largest lighting / brightness / colour-temperature differences, with measured numbers where you can (e.g. mean luminance or hue of named regions in both images); (3) the concrete parameter changes (file:line, old -> new) you would make first, in order, all behind the existing `scene07` flag; (4) whether restoring line 174's shell should come first.
+
+- 18:01 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:01 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:01 `Bash`
+- 18:01 `Grep`: pass 8|chamberShell|shell
+- 18:01 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/README.md
+- 18:02 `Bash`
+- 18:02 `Bash`
+- 18:02 `Bash`
+- 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/sbs.png
+- 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/game_portal.png
+
+_13 tool steps._
+
+---
+
+## Water & VFX specialist: Water VFX agent: blue-water shaders (started 18:01 UTC)
+
+**Lead → agent** (18:01 UTC):
+
+Activation test for the restored design team, on the CURRENT task. READ-ONLY this time: do not edit, write, build, commit or launch browsers.
+
+Inspect the blue-water shaders and effects the player sees in the "Avoid Enemies!" stretch of Level 1 (`/home/user/bubblegame/WebDemo/src/level1.js`: `waterFrag` ~l.248, `waterMat` ~l.360, `wetWaterMat`/`waterFragWet` ~l.290-389; `level1_flow.js` `troughM` ~l.137; plus any splash / foam / bubble / spray effects layered on that water in level1.js, level1_flow.js or tripo_l1.js). Compare how the water reads in the pass 8 frame `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg` with the approved Screen 09 `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png` (the authority: saturated blue water through a bright pink-gold waterway). You may measure the two images with `source /home/user/bubblegame/Tools/bw_tools_env.sh` and `$BW_PY`, writing only to `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/`.
+
+Remember the user's standing water rules (CLAUDE.md): visibly blue/turquoise water, white only as accents, never a white foam blanket, bloom or pale wash; the accepted Screen 4 water must not change.
+
+Report in under 250 words: (1) the tools you had; (2) the water shaders/effects active in that stretch (file:line); (3) the 2 largest water differences with measured numbers; (4) the first correction you would make (file:line, old -> new), behind the `scene07` flag.
+
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/level1.js
+- 18:01 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/frames/pass8/upper_u233.0.jpg
+- 18:01 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:01 `Grep`: troughM|splash|foam|spray|bubble|Bubble
+- 18:01 `Grep`: SCENE07|scene07|water|Water|foam|bubble|splash|spray
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/level1_flow.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:01 `Grep`: splash|foam|Foam|spray|Spray|bubble|Bubble|surf|pad|sparkle|droplet
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/level1.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/level1.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/level1.js
+- 18:01 `Grep`: heroSwell
+- 18:01 `Glob`: Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/*
+- 18:01 `Grep`: water|Water
+- 18:02 `Bash`: Check image sizes and available tools
+- 18:02 `Bash`: Make gridded side-by-side of both images
+- 18:02 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/agent_tests2/grid.png
+- 18:02 `Bash`: Measure water colour classes in both images
+
+_19 tool steps._
+
+---
+
+## screen4-water-motion-engineer: Water-motion agent: swim and live tools (started 18:01 UTC)
+
+**Lead → agent** (18:01 UTC):
+
+Activation test for the restored design team. READ-ONLY: do not edit or write files, commit, navigate, reload, resize, or change any uniform, material, transform or scene state.
+
+1. Code: summarise the CURRENT swim and water-motion implementation in the accepted look and its default layers: `/home/user/bubblegame/WebDemo/src/tunnel_s4_swim2.js` (`SWIM2_ON`, accepted), swim3 in `tunnel_s4_struct.js` / `tunnel_s4_bt.js` (`STRUCT_PARTS`), and Level 1's swim strokes (`level1.js`, `,noswim1`): what drives her stroke, how the water at her follows her travel, and the spray cap.
+2. Live tools: the real game is ALREADY open in the chrome-devtools MCP browser at http://localhost:9222/index.html?s3=intunnel (412 x 915) with its scene exposed to threejs-devtools. Using your MCP tools: `bridge_status`; find the hero water mesh (heroSwell or the object your code reading says carries the swell) and read its material (`material_details`) and one shader (`shader_source`), reporting 2-3 uniforms that drive the motion and their current values; chrome-devtools `evaluate_script` to read the game clock or swim phase if the code exposes one (read-only); `list_console_messages` (errors).
+
+Reply in under 300 words: the exact MCP tools you had, PASS/FAIL per live step, and the swim/water-motion summary with file:line references.
+
+- 18:01 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 18:01 `Grep`: SWIM2_ON|swim|spray|cap|travel|uFlow|uTime|scroll
+- 18:01 `Grep`: swim3|SWIM3|STRUCT_PARTS
+- 18:01 `Grep`: noswim1|swim1|SWIM1|stroke
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_s4_swim2.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/game.js
+- 18:01 `Read`: /home/user/bubblegame/WebDemo/src/level1.js
+- 18:01 `Grep`: SWIM2_ON|INTUNNEL_ON =|STRUCT_ON =
+- 18:01 `Grep`: swim2FlowPhase|swim2Travel|swim2CapPx|SWIM2_POINT|swim2Hide|SWIM2\.hide
+- 18:01 `Grep`: export function swimPose|export const SWIM\b|SWIM = \{|rate:|settle
+- 18:01 `Grep`: swim: \{|swim:\{
+- 18:01 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__object_details`
+- 18:01 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__material_details`
+- 18:01 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__shader_source`
+- 18:01 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 18:01 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__list_console_messages`
+- 18:02 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 18:02 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_s4_swim.js
+- 18:02 `Read`: /home/user/bubblegame/WebDemo/src/tunnel_r7_hero_water.js
+- 18:02 `Grep`: maxPx
+**Agent** (18:02 UTC):
+
+Every live step passed and nothing was changed.
+
+**MCP tools I had:**
+- **threejs-devtools:** `bridge_status`, `scene_tree`, `object_details`, `material_details`, `shader_source`, `set_uniform`, `run_js`, `geometry_details`, `renderer_info`.
+- **chrome-devtools:** `navigate_page`, `evaluate_script`, `take_screenshot`, `list_console_messages`.
+- The Spector server failed to connect ("Connection closed"), so its tools were not available.
+
+**Live steps:**
+1. `bridge_status`: **PASS**. Connected, port 9222 proxies to 3000.
+2. heroSwell `object_details` / `material_details`: **PASS**. It is a ShaderMaterial: transparent, normal blending, depth test on, no depth write, render order 5, 6,944 vertices.
+3. `shader_source`: **PASS**. The fragment shader's water phase is `fl = uTime * uFlow + uSwim2Fl`, which scrolls the texture by `(-fl*0.3, -fl*1.1)`. Values read:
+   - `uTime` 5.42 to 5.62, so the clock is running;
+   - `uFlow` 1.012;
+   - `uSwim2Fl` 0, because she has not travelled yet;
+   - `uHeroTravel` 1.592.
+4. `evaluate_script`: **PASS**. `__bw.state()` gives phase `intro`, time 5.967, z 1.592, speed 0, not in the air.
+5. `list_console_messages`: **PASS**. No errors, only Chrome's software-WebGL deprecation warning.
+
+**Swim and water-motion code:**
+- **swim2** (`tunnel_s4_swim2.js`, on in bare `intunnel` per `tunnel_s4_bt.js:142`):
+  - `swim2Travel` (:38) adds up the distance she swims, at most 1 m per frame. It is called once a frame from `tunnel_r7_hero_water.js:101`.
+  - `swim2FlowPhase` (:43) is that distance × 0.5. It goes into `uSwim2Fl` (`tunnel_r7_hero_water.js:191`), so the swell's water streams past her as she travels.
+  - It also hides r3Swirl, r3Whirlpool and r3Bubbles every frame (:26, `tunnel_r7_hero.js:299`).
+  - **Spray cap:** droplets are drawn no bigger than 12/1536 of the canvas height (`WATER7.maxPx`, `tunnel_s4_bt.js:235`). It eases in between 0.5 and 3 m swum (`swim2CapPx` :48, `game.js:1620`); sparkles keep their size (:46).
+- **swim3** (`STRUCT_PARTS.swim3`, `tunnel_s4_bt.js:130`) needs `structmatch`, so it is **not active on this page**. Where on, `swimPose` (`tunnel_s4_swim.js:233`) bobs, pitches, rolls and breathes her model at 1.2 Hz and cancels the game's own bob (`game.js:1052-1057`).
+- **Level 1 strokes** (`level1.js:992-1008`, `,noswim1`) are also not active here. They are a 1.55 Hz roll and surge scaled by speed, with a side paddle splash on a private generator (`mulberry(0x5e1a)`).
+
+All three only change how she is drawn; her gameplay state is untouched.
+
+
+_20 tool steps._
