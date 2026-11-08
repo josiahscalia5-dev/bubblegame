@@ -557,3 +557,88 @@ The left counter now has banded detail closer to the master. The upper-right gea
 
 _(You interrupted Claude here.)_
 
+---
+
+### Claude · 2026-11-08 22:46 UTC
+
+No response requested.
+
+---
+
+### You · 2026-11-08 22:47 UTC
+
+[attached file: BubbleWash_Claude_Reference_Files_NEW.zip] STOP THE CURRENT COLOR-TUNING APPROACH. I WANT AN ACTUAL 3D BACKGROUND RECONSTRUCTION.
+
+Claude, I need you to understand something important.
+
+I have repeatedly asked for my game's background scenery to match my ORIGINAL APPROVED "Avoid Enemies!" screenshot.
+
+You have been changing fog, lighting, bloom, material colors, individual gears, and small details. Some improvements are visible, but you are not fixing the main problem.
+
+THE ACTUAL BACKGROUND STRUCTURES ARE STILL DIFFERENT FROM MY APPROVED SCREEN.
+
+I have attached an annotated visual reference showing exactly what needs to be reconstructed.
+
+I want you to make the following six actual 3D environment groups:
+
+1. LEFT WASHING-MACHINE PORTAL: Reconstruct the large, curved pink and metallic machine housing, circular porthole, layered trims, and surrounding details from the approved image.
+
+2. RIGHT COBALT GEAR: Reconstruct the deep-blue toothed machinery shown in the approved background, including its proper orientation, shape, and mechanical details.
+
+3. DEEP LAUNDRY-MACHINE INTERIOR: This is extremely important. Reconstruct the dense machinery, pipes, gears, colorful structures, lighting fixtures, and layered mechanical environment extending into the distance. My approved scene has much more detail and depth than the current build.
+
+4. LEFT-SIDE STRUCTURES: Reconstruct the curved, layered platforms, metallic railings, colorful mechanical details, and decorative elements from my approved image.
+
+5. RIGHT-SIDE STRUCTURES: Reconstruct the large pink washing-machine components, curved housings, pipes, decorated panels, glowing fixtures, and surrounding details.
+
+6. BACKGROUND DECORATIONS: Recreate the decorative gold elements, bubbles, reflections, lights, and smaller scenery details at the correct depths. Do not change collectible gameplay logic.
+
+DO NOT JUST RECOLOR MY CURRENT BACKGROUND. REBUILD THE MISSING 3D ENVIRONMENT.
+
+Start by mapping the major approved objects to actual 3D meshes and groups in the scene. Match their silhouettes, proportions, positioning, depth, and visibility from the existing gameplay camera.
+
+If the current environment's geometry is fundamentally wrong, rebuild or replace only those background structures rather than repeatedly modifying their colors.
+
+Use the approved reference to guide the environmental layout, not the older Classic blue-tunnel artwork.
+
+Do not use a flat screenshot as the background. It must remain a genuine playable Three.js 3D environment.
+
+STRICT PROTECTION: Do not modify my pink character, enemy behavior, water, camera, HUD, controls, or gameplay. I understand that those elements may prevent an exact full-screen pixel match. My goal is to recreate the visible background environment.
+
+Before another lighting adjustment, show what background objects already exist, what approved objects are missing, and what actual 3D geometry you will construct.
+
+Then IMPLEMENT those structures, not just provide a plan.
+
+Capture real screenshots from my playable game and compare the background against my approved image. Work from the largest missing structures down to smaller decorative details.
+
+Do not spend another entire pass adjusting one gear while the rest of the environment is still wrong.
+
+I WANT THE SAME RECOGNIZABLE BACKGROUND OBJECTS, MACHINE STRUCTURES, DEPTH, AND SCENERY FROM MY APPROVED IMAGE.
+
+I am not asking you to redesign my game or invent your own interpretation.
+
+Please make this a substantial background-construction pass, not another minor color-correction pass. Show me a real before-and-after rendering when finished.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-08 22:47 UTC
+
+You're right that the last steps were mostly colour work while the structures themselves are still wrong. This pass is construction: six real 3D groups mapped to your annotated zones, built in that order of size, then captured from the real game against your LEFT image. The session restarted, so first a quick check that the branch, autosave and my working files survived.
+
+Your new files are unpacked; their README matches your message. Here is the map you asked for, before I build anything.
+
+| Your zone | What exists now (3D) | What your approved image shows that's missing | What I will build (real geometry, pass 18) |
+|---|---|---|---|
+| 1 Left portal | a pink ring, gold bands, lavender interior and glass bubble on a cream block | the machine itself: a large curved pink-gold metal housing round the porthole, layered rings, bolts, a control strip | a full washer housing body with the porthole set in it, layered trims, bolt studs, a hinge, a control strip with knobs and lights, a pipe into the ceiling |
+| 2 Right gear | one cobalt gear, mostly hidden by your banner | a deep cobalt toothed gear assembly, clearly visible | a gear assembly (main gear, two meshing gears, backing plate, bolts, axle) placed in the visible gap right of the banner |
+| 3 Deep interior | large columns, gantries, receding cabinet rows, a far machine wall | dense small machinery: pipes, angled panels, small gears, lit fixtures, receding | hundreds of instanced small parts on both sides and in a hanging cluster before the far wall; pipe runs with elbows and valves, no ceiling ribs |
+| 4 Left rail/ledge | a flat counter front with portholes and a gold lip | a curved, layered catwalk with railings and glowing ornaments | a lower step tier, a gold railing with glowing finials, front piping with brackets, ornamental lamps |
+| 5 Right wall | a 1 m pink star tub with a cream rim | a bulging, decorated pink cabinet with piping and lights | a bulge band, gold-framed panels, vertical pipes, rim lights, a taller stepped back tier, pipes and small machines on top |
+| 6 Decoration | 48 bank bubbles, 520 glints | gold accents, bubbles and lights at many depths | wall-mounted gold paw medallions on backing plates (never floating like your collectible coins), bubble clusters, warm and cool lamp glows |
+
+All of it sits behind a new `build18` switch inside `scene07`, never in the accepted game. Building it now.
+
+The map is set. Writing pass 18, all six groups in one new module.
+
