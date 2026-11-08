@@ -40,5 +40,11 @@
     "agents": "ChatHistory/2026-11-08_session_8140e507_design_agent_transcripts.md",
     "title": "Session 8140e507 (8 November): plugin restoration and first-three-screens pass on branch claude/bubble-wash-kingdom-continue-z9nmm1",
     "url": "https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP"
+  },
+  "b0abcf95-25a3-5b9a-a3f8-62736537e615": {
+    "chat": "ChatHistory/2026-11-08_session_b0abcf95.md",
+    "agents": "ChatHistory/2026-11-08_session_b0abcf95_design_agent_transcripts.md",
+    "title": "Session b0abcf95 (8 November, account transfer): restoration and the 10-beat Level 1 gameplay on branch ccr-50c66592-kcnqoy",
+    "url": "https://claude.ai/code/session_01CUAtW8wdgwPxistiKwJw7V"
   }
 }
