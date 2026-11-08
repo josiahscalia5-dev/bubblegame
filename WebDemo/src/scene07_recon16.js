@@ -84,6 +84,12 @@ export const MACH16 = {
   // the green-topped machine (0.22-0.35, 0.24-0.33), the stacks left of the vanishing point (0.28-0.47, 0.25-0.36), the centre above it
   // (0.44-0.54, 0.26-0.34), the blue gears and machines above the enemy (0.58-0.76, 0.23-0.29), the top band behind the HUD.
   towers: [], pipes: [],
+  // v6 (the art director on v5: "the upper middle faces the camera instead of receding ... the master shows two side walls of dense, saturated
+  // machinery angling in toward the vanishing point"; its columns read as castle turrets): `walls` replaces columns, gantries and the
+  // camera-facing mounted machines (kept below for the record, unused when walls is set).
+  // (v6 receding walls: judged NOT closer than v5 at the checkpoint (hidden behind the drum and the hero enemy), colour metric worse, +182 draw
+  // calls: REVERTED to opt-in `,walls6`; the default stays v5's columns, gantries and mounted machines)
+  walls: LIST.includes('walls6') ? { u: [240.4, 253.4], step: 1.22, x: [2.05, -1.8], jitter: 0.3, top: [8.0, 5.4], base: [1.95, 0.12], face: 0.5 } : null,
   columns: [[241.2, 3.3, 1.95, 'deep'], [245.4, 3.05, 1.95, 'blue'], [249.4, 2.95, 1.95, 'deep'], [253.0, 3.1, 1.95, 'blue'],
     [242.0, -3.0, 0.12, 'blue'], [246.0, -2.9, 0.12, 'deep'], [250.0, -2.85, 0.12, 'blue'], [253.3, -3.0, 0.12, 'deep']],   // [u, x, base, body]
   colTop: 8.0, gantries: [[0, 4, 7.7, 'lav'], [1, 5, 7.85, 'blue'], [2, 6, 7.6, 'lav'], [3, 7, 7.75, 'rose']],                 // [left column, right column, height, colour]
@@ -128,7 +134,7 @@ function canvasTex(w, h, draw, repeat) {
 // the chamber's own surface behind the machinery: deep lavender-blue recesses with faint panels (it shows only in the gaps)
 export function reconFacadeTexture() {
   return canvasTex(512, 256, (g, w, h) => {
-    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#a9b4f0'); gr.addColorStop(0.5, '#c9c2f2'); gr.addColorStop(1, '#ead4ee');   // (art director, pass 16 v3: pastel periwinkle / lilac, the master's light background)
+    const gr = g.createLinearGradient(0, 0, 0, h); const v6 = LIST.includes('walls6'); gr.addColorStop(0, v6 ? '#8f9ce0' : '#a9b4f0'); gr.addColorStop(0.5, v6 ? '#b0a2e6' : '#c9c2f2'); gr.addColorStop(1, v6 ? '#d6b6e8' : '#ead4ee');   // (v6, opt-in: a little deeper)   // (art director, pass 16 v3: pastel periwinkle / lilac, the master's light background)
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
     for (let i = 0; i < 40; i++) {
       const x = (i * 97) % w, y = (i * 53) % h, rw = 30 + (i * 37) % 60, rh = 24 + (i * 29) % 50;
@@ -484,9 +490,37 @@ function buildMachines16(root, TR, env, M, std, Ch) {
     let y = 0; for (const md of mods) y += module(g, y, md); return base + y;
   };
   const tops = K.towers.map(([u, x, base, mods]) => stack(x, base, u, mods));
+  // v6 walls: two receding side walls of densely stacked machines along the channel edges (taller near, lower far: their silhouettes converge on
+  // the vanishing point); each column's modules chosen by a fixed hash, fronts turned half toward the channel and half toward the camera
+  if (K.walls) {
+    const Wl = K.walls, kinds = [
+      (i) => ['w', 1.0 + 0.4 * hash(i, 1), 1.15 + 0.3 * hash(i, 2), ['blue', 'pink', 'lav', 'cream', 'deep'][Math.floor(hash(i, 3) * 5)], ['c', 'p', 'w'][Math.floor(hash(i, 4) * 3)]],
+      (i) => ['t', 0.9 + 0.8 * hash(i, 5), 0.45 + 0.2 * hash(i, 6), ['lav', 'blue', 'pink', 'cyan', 'mint'][Math.floor(hash(i, 7) * 5)], ['pink', 'gold', 'mint', 'cyan'][Math.floor(hash(i, 8) * 4)]],
+      (i) => ['g', 0.42 + 0.2 * hash(i, 9)],
+    ];
+    let i = 900;
+    for (const side of [1, -1]) {
+      for (let u = Wl.u[0]; u <= Wl.u[1]; u += Wl.step, i++) {
+        const f = (u - Wl.u[0]) / (Wl.u[1] - Wl.u[0]), top = Wl.top[0] + (Wl.top[1] - Wl.top[0]) * f;
+        const x = side > 0 ? Wl.x[0] + Wl.jitter * hash(i, 11) : Wl.x[1] - Wl.jitter * hash(i, 12), base = side > 0 ? Wl.base[0] : Wl.base[1];
+        const camYaw = Math.atan2(K.cam[0] - x, K.cam[1] - u), chYaw = side > 0 ? -Math.PI / 2 : Math.PI / 2;
+        const g = at(TR, new THREE.Group(), x, base, u, camYaw + (chYaw - camYaw) * Wl.face); t.add(g);
+        let y = 0, k = 0;
+        while (base + y < top - 0.4 && k < 6) {
+          const md = kinds[(Math.floor(hash(i, 20 + k) * 10) < 5) ? 0 : (hash(i, 30 + k) < 0.7 ? 1 : 2)](i * 7 + k);
+          if (md[0] === 'g') { const R = md[1], q = new THREE.Group(); q.position.set(0, y + R, 0); g.add(q);
+            add(q, new THREE.ExtrudeGeometry(gearShape(R * 1.35, 16, 0.86, true), { depth: R * 0.12, bevelEnabled: false, curveSegments: 3 }), B.cyan, 0, 0, -R * 0.12);
+            add(q, new THREE.ExtrudeGeometry(gearShape(R, 10, 0.8), { depth: R * 0.24, bevelEnabled: false, curveSegments: 3 }), B.deep, 0, 0, 0);
+            add(q, new THREE.CylinderGeometry(R * 0.3, R * 0.3, R * 0.3, 6), M.gold, 0, 0, R * 0.3, Math.PI / 2); y += 2 * R; }
+          else y += module(g, y, md);
+          k++;
+        }
+      }
+    }
+  }
   // columns: tall machine columns with gold rings and small glowing portholes, from the ledge / deck to the gantries
   const colPos = [];
-  for (const [u, x, base, col] of K.columns || []) {
+  for (const [u, x, base, col] of K.walls ? [] : K.columns || []) {
     const h = K.colTop - base, g = at(TR, new THREE.Group(), x, base, u, Math.atan2(K.cam[0] - x, K.cam[1] - u)); t.add(g);
     add(g, new THREE.CylinderGeometry(0.42, 0.5, h, 24), B[col], 0, h / 2, 0);
     for (let y = 0.8; y < h; y += 1.25) add(g, new THREE.TorusGeometry(0.45, 0.05, 6, 24), M.gold, 0, y, 0, Math.PI / 2);
@@ -494,7 +528,7 @@ function buildMachines16(root, TR, env, M, std, Ch) {
     colPos.push([u, x]);
   }
   // gantries: beams across the room between the column tops (lavender / blue / pink with gold edges), at slightly different heights
-  for (const [i, j, h, col] of K.gantries || []) {
+  for (const [i, j, h, col] of K.walls ? [] : K.gantries || []) {
     const [ua, xa] = colPos[i], [ub, xb] = colPos[j], pts = [];
     for (let k = 0; k <= 12; k++) { const f = k / 12; pts.push(TR.map(xa + (xb - xa) * f, h + 0.25 * Math.sin(Math.PI * f), ua + (ub - ua) * f, new THREE.Vector3())); }
     const cv = new THREE.CatmullRomCurve3(pts);
@@ -503,7 +537,7 @@ function buildMachines16(root, TR, env, M, std, Ch) {
   }
   // the mounted machinery: each piece hangs from the gantry above it on a gold rod
   const gh = (u) => { let best = null; for (const [i, , h] of K.gantries || []) { const d = Math.abs(colPos[i][0] - u); if (!best || d < best[0]) best = [d, h]; } return best ? best[1] : K.colTop; };
-  for (const [u, x, hc, mods] of K.mounted || []) {
+  for (const [u, x, hc, mods] of K.walls ? [] : K.mounted || []) {
     const hgt = mods.reduce((a, md) => a + (md[0] === 'w' ? md[1] : md[0] === 't' ? md[1] + md[2] * 0.9 : md[0] === 'g' ? md[1] * 2 : md[1]), 0);
     const base = hc - hgt / 2, g = at(TR, new THREE.Group(), x, base, u, Math.atan2(K.cam[0] - x, K.cam[1] - u)); t.add(g);
     let y = 0; for (const md of mods) {
