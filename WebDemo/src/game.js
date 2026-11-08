@@ -1720,7 +1720,7 @@ async function main() {
         fx, refreshHud, padJump: (vy) => { if (mascot.air) return; jump(); mascot.vy = vy; },   // (flow: the pops, the rewards, the bounce pad)
         restart: () => { if (R2) restartRound2(); else { resetRun(); state.phase = 'intro'; document.body.classList.remove('running', 'inDrum'); refreshHud(); } } }));
     }
-    if (level1 && (TRIPO1_ON || SCENE07_ON)) await applyTripo1({ scene, loader: gltfLoader, env: mats.env, TR, camera });   // ?s3=...,level1,tripo1 / scene07 (tripo_l1.js): looks only
+    if (level1 && (TRIPO1_ON || SCENE07_ON)) await applyTripo1({ scene, loader: gltfLoader, env: mats.env, TR, camera, fx });   // ?s3=...,level1,tripo1 / scene07 (tripo_l1.js): looks only
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
     resize();
     resetRun();
