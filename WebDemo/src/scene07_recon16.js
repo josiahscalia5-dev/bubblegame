@@ -154,6 +154,7 @@ function starPanelTexture() {   // the right wall's pink star panels (master cro
   }, true);
 }
 function ledgeTexture() {   // the left ledge's front (master: pink panels with gold trim lines under a cream top)
+  if (RECON16.ledgeTex) return RECON16.ledgeTex();   // (pass 17 JEWEL17: the master's banded counter front)
   return canvasTex(256, 128, (g, w, h) => {
     const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#ffe6d2'); gr.addColorStop(1, '#f6bcae'); g.fillStyle = gr; g.fillRect(0, 0, w, h);   // (art director, v3: a light peach front with stars, no slats)
     const star = (cx, cy, r) => { g.beginPath(); for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r; g.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } g.closePath(); g.fillStyle = '#ffd36a'; g.fill(); };
@@ -291,7 +292,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
       mesh(new THREE.CircleGeometry(r * 0.42, 20), M.white, q, (m) => { m.position.set(r * 1.0, h * 0.45, 0); m.rotation.y = Math.PI / 2; });
     }
     // the big blue gear with its lavender frilled ring, high on the right (master: the upper right corner)
-    const G = R16.gear, q = at(TR, new THREE.Group(), G.x, G.h, G.u, Math.PI / 2 + 0.75); if (!ART16_ON) t.add(q);   // (ART16: the master's own gear, in the artwork)
+    const G = R16.gear, q = at(TR, new THREE.Group(), G.x, G.h, G.u, Math.PI / 2 + 0.75); if (!ART16_ON && !G.hide) t.add(q);   // (pass 17 JEWEL17 sets hide: its own camera-facing cobalt gear)   // (ART16: the master's own gear, in the artwork)
     const ext = (sh, d) => new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: true, bevelThickness: d * 0.2, bevelSize: d * 0.15, bevelSegments: 2, curveSegments: 4 });
     mesh(ext(gearShape(G.R * 1.38, 22, 0.86, true), G.R * 0.12), std(0x8fe0ff, 0x2a8ac0, 0.55, {}, 0), q, (m) => { m.position.z = -G.R * 0.2; });
     const blueG = ext(gearShape(G.R, 12, 0.8), G.R * 0.26); mesh(blueG, std(0x1f46ff, 0x0a1f9a, 0.55, { metalness: 0.45, roughness: 0.3 }, 0), q);

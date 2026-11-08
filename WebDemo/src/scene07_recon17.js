@@ -48,6 +48,10 @@ export const R17 = {
   water: { u: [221, 256], blend: 3.5, mix: 0.78, crest: [1.05, 0.45], spark: 0.85 },
   // JEWEL17: PASTEL16 replaced (whitening, self-glow), the pass 17 machines' self-glow, the chamber surface's glow, the far glow sprite
   jewel: { pastel: { k: 0.0, kLandmark: 0.0, glow: 0.2 }, machineGlow: 0.2, shellGlow: 0.24, glow: { r: 4.2, opacity: 0.55 } },
+  // the master's big cobalt gear, upper right (centre (0.92, 0.25), radius ~0.15 W), facing the camera: [u, x, h, R]
+  gear: { u: 237.6, x: -2.62, h: 4.62, R: 0.92 },
+  // portholes along the left counter's front (real relief on the master's banded front): u range, step, height, ring radius
+  ledgePorts: { u: [233.2, 253], step: 2.2, h: 1.0, r: 0.24, skip: [236.6, 239.4] },
   // the level tube's hoops beyond the far portal (not in the approved image): kept out of view while the camera is in the stretch before the portal
   hoops: { beyond: 1.0, reach: 46 },
 };
@@ -68,6 +72,24 @@ export function jewelFacadeTexture() {
   }, true);
 }
 
+// JEWEL17: the left counter's front as the master draws it: a gold lip, a peach-pink band with small gold stars, a gold line, violet-blue panels with
+// lavender seams, magenta stars outlined in gold and cyan dots, and a pale foam band where it meets the water (canvas top = the counter's top)
+function ledgeTexture17() {
+  return canvasTex(256, 128, (g, w, h) => {
+    const gold = g.createLinearGradient(0, 0, 0, 14); gold.addColorStop(0, '#ffe08a'); gold.addColorStop(1, '#d9962e'); g.fillStyle = gold; g.fillRect(0, 0, w, 14);
+    const pk = g.createLinearGradient(0, 14, 0, 40); pk.addColorStop(0, '#f9b3cf'); pk.addColorStop(1, '#ea7fb2'); g.fillStyle = pk; g.fillRect(0, 14, w, 26);
+    const star = (cx, cy, r, fill, line) => { g.beginPath(); for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r; g.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } g.closePath();
+      g.fillStyle = fill; g.fill(); if (line) { g.lineWidth = 2; g.strokeStyle = line; g.stroke(); } };
+    for (const x of [20, 84, 148, 212]) star(x, 27, 6, '#ffd96a');
+    g.fillStyle = '#e8a83a'; g.fillRect(0, 40, w, 4);
+    const pn = g.createLinearGradient(0, 44, 0, 110); pn.addColorStop(0, '#5d58c2'); pn.addColorStop(1, '#8578d8'); g.fillStyle = pn; g.fillRect(0, 44, w, 66);
+    g.fillStyle = 'rgba(205,190,255,0.75)'; for (const x of [0, 64, 128, 192]) g.fillRect(x, 44, 3, 66);
+    for (const x of [32, 160]) star(x, 77, 15, '#ff6fb5', '#ffd36a');
+    for (const x of [96, 224]) { g.fillStyle = 'rgba(150,235,255,0.95)'; g.beginPath(); g.arc(x, 70, 5, 0, Math.PI * 2); g.fill(); g.beginPath(); g.arc(x, 90, 3.5, 0, Math.PI * 2); g.fill(); }
+    const fm = g.createLinearGradient(0, 110, 0, h); fm.addColorStop(0, '#a9c9ff'); fm.addColorStop(1, '#f4fbff'); g.fillStyle = fm; g.fillRect(0, 110, w, h - 110);
+  }, true);
+}
+
 function starTexture() {   // a soft four-point glint
   return canvasTex(64, 64, (g, w) => {
     const c = w / 2, gr = g.createRadialGradient(c, c, 0, c, c, c * 0.5); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
@@ -79,7 +101,7 @@ function starTexture() {   // a soft four-point glint
 
 // ROWS17 replaces v5's camera-facing mounted machines where its rows stand (they "face the camera instead of receding"); call before buildRecon16
 export function prepRecon17(M16) {
-  if (JEWEL17_ON) { Object.assign(PASTEL16, R17.jewel.pastel); Object.assign(RECON16.glow, R17.jewel.glow); }
+  if (JEWEL17_ON) { Object.assign(PASTEL16, R17.jewel.pastel); Object.assign(RECON16.glow, R17.jewel.glow); RECON16.gear.hide = true; RECON16.ledgeTex = ledgeTexture17; }
   if (!ROWS17_ON || !M16 || !M16.mounted) return 0;
   const n0 = M16.mounted.length;
   M16.mounted = M16.mounted.filter(([u, x, hc]) => !((x >= 1.2 && u >= 240 && hc >= 2.2 && hc <= 6.9) || (x <= -1.2 && u >= 241 && hc >= 4.3 && hc <= 6.9)));
@@ -194,8 +216,30 @@ export function buildRecon17(root, TR, env, goldM, Ch, items) {
     add(g, new THREE.CylinderGeometry(0.12, 0.12, Br.half * 2, 14), B.cyan, 0, Br.thick + 0.12, -0.12).rotation.z = Math.PI / 2;   // a pipe along its top
     out.far = bake(t, root, 'scene07_r17_far'); out.parts.push('far');
   }
+  // ---- JEWEL17: the master's cobalt gear (camera-facing) and the counter's portholes ------------------------------------------------------------
+  if (JEWEL17_ON) {
+    const t = new THREE.Group(), Gr = R17.gear, R = Gr.R, q = at(TR, new THREE.Group(), Gr.x, Gr.h, Gr.u, camYaw(Gr.x, Gr.u)); t.add(q);
+    const cob = (c, e, ei, extra = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.34, metalness: 0.15, envMap: env || null, envMapIntensity: 0.35, emissive: e, emissiveIntensity: ei, ...extra });
+    const ext = (sh, d) => new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: true, bevelThickness: d * 0.2, bevelSize: d * 0.12, bevelSegments: 2, curveSegments: 5 });
+    add(q, ext(gearShape(R * 1.42, 30, 0.9, true), R * 0.08), cob(0xc9b0f0, 0x8a6ad0, 0.32), 0, 0, -R * 0.16);   // the lilac frill
+    add(q, ext(gearShape(R * 1.14, 18, 0.84), R * 0.24), cob(0x1a3fc4, 0x0b2590, 0.3), 0, 0, 0);                  // the cobalt toothed ring
+    add(q, new THREE.TorusGeometry(R * 0.74, R * 0.08, 10, 48), cob(0x4a74ea, 0x1a3aa8, 0.32), 0, 0, R * 0.3);       // a lighter blue ring
+    add(q, new THREE.CylinderGeometry(R * 0.6, R * 0.6, R * 0.12, 40), cob(0x2450cf, 0x0c2a96, 0.3), 0, 0, R * 0.27, Math.PI / 2);
+    add(q, new THREE.TorusGeometry(R * 0.42, R * 0.05, 8, 40), cob(0x6a92ff, 0x2a50c0, 0.35), 0, 0, R * 0.35);
+    add(q, new THREE.CylinderGeometry(R * 0.22, R * 0.22, R * 0.2, 24), cob(0x10288a, 0x081a66, 0.3), 0, 0, R * 0.38, Math.PI / 2);
+    add(q, new THREE.SphereGeometry(R * 0.07, 10, 8), hi, -R * 0.08, R * 0.08, R * 0.5);
+    // the counter's portholes: gold rings with glowing glass, on its front, facing the channel
+    const Lp = R17.ledgePorts, L = RECON16.ledge; let j = 0;
+    for (let u = Lp.u[0]; u <= Lp.u[1]; u += Lp.step, j++) {
+      if (u > Lp.skip[0] && u < Lp.skip[1]) continue;
+      const g = at(TR, new THREE.Group(), L.x - 0.03, Lp.h, u, -Math.PI / 2); t.add(g);
+      add(g, torus(Lp.r, Lp.r * 0.2), B.gold, 0, 0, 0.02); add(g, new THREE.CircleGeometry(Lp.r * 0.82, 20), [G.c, G.p, G.w][j % 3], 0, 0, 0.01);
+      add(g, new THREE.CircleGeometry(Lp.r * 0.2, 10), hi, -Lp.r * 0.3, Lp.r * 0.3, 0.03);
+    }
+    out.jewel = bake(t, root, 'scene07_r17_jewel'); out.parts.push('gear', 'ledgePorts');
+  }
   const mid = TR.map(0, 2, 246, new THREE.Vector3());
-  for (const k of ['rows', 'far']) if (out[k]) items.push({ holder: out[k], turn: null, spin: 0, pos: mid });
+  for (const k of ['rows', 'far', 'jewel']) if (out[k]) items.push({ holder: out[k], turn: null, spin: 0, pos: mid });
   if (out.glints) items.push({ holder: out.glints, turn: null, spin: 0, pos: mid });
   let tris = 0; root.traverse((o) => { if (o.isMesh && /^scene07_r17/.test(o.name)) tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; });
   out.triangles = Math.round(tris);

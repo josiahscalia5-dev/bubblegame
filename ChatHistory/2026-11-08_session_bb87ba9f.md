@@ -545,3 +545,9 @@ I'll look closely at the master's upper-right corner (the gears) next to v5, bef
 
 Bundle `b0744ef8` builds cleanly. Capturing pass 17b at the checkpoint.
 
+The gear's centre projects to (0.95, 0.27), close to the master's (0.92, 0.25), so it is in place. I'll zoom into that corner of 17b to see why it still doesn't read as a cobalt gear.
+
+Bundle `d2a73523`. Capturing pass 17c.
+
+The left counter now has banded detail closer to the master. The upper-right gear is hard to judge at this scale, so I'll zoom both corners.
+
