@@ -3,7 +3,8 @@
 #   python3 make_sheets.py <repo>
 import sys, os
 from PIL import Image, ImageDraw, ImageFont
-R = sys.argv[1]; E = f'{R}/Previews/WebDemo/screen4_round9_match/71_level1_flow'; A = f'{R}/Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops'   # the user's precise crops of the original board; F = f'{E}/frames'
+R = sys.argv[1]; E = f'{R}/Previews/WebDemo/screen4_round9_match/71_level1_flow'; A = f'{R}/Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops'   # the user's precise crops of the original board
+F = f'{E}/frames'
 try: font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 17); small = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 14)
 except Exception: font = small = ImageFont.load_default()
 H = 600
