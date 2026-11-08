@@ -39,7 +39,7 @@ export const SCENE07 = {
   // pass 6 (the user's environment correction: "not another pass that only adds decorations to the wrong tunnel"): the tube is OPENED
   // above the water in this stretch (level1.js's wall shader patched at run time, its hoops hidden here) into one large, open laundry
   // CHAMBER: a pink-lavender facade shell, platforms either side of the water, gold-pink portal rings where the tube enters and leaves
-  chamber: { u0: 218, u1: 254, halfW: 4.6, height: 5.4, wallH: 3.6, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0x8f9cff, vaultGlow: 0.16 },   // (pass 8, the specialists' review: a corridor, vertical windowed walls to 3.6 m, a lower darker periwinkle vault)   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
+  chamber: { u0: 218, u1: 254, halfW: 4.6, height: 5.4, wallH: 3.6, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0xf2c4ec, vaultGlow: 0.16 },   // (pass 10, session ce30359f: vault tint 0x8f9cff -> 0xf2c4ec, toward the original's pink-lavender; the art director's measured correction)   // (pass 8, the specialists' review: a corridor, vertical windowed walls to 3.6 m, a lower darker periwinkle vault)   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
   // the original's LEFT big circular washer housing [u, x, h, ring radius] and RIGHT curved pink-gold star tubs [u, inner x, radius, height]
   housings: [[237, 2.75, 1.85, 1.05]],   // (pass 7: mapped to the original's left edge, 25-50 % down)
   tubs: [[236, 2.3, 1.15, 1.25], [242, 2.3, 1.05, 1.15], [248, 2.3, 1.1, 1.2]],

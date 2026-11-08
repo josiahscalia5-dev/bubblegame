@@ -48,8 +48,9 @@ above), fixed Spector, the metrics install and Parallax's checkpoint launcher, a
    then START A NEW SESSION (plugins load at session start). Check: ToolSearch `mcp__plugin_parallax-threejs`.
 7. **MCP servers:** chrome-devtools, playwright, threejs-devtools come with the plugin. **Spector** ships without its server, and the
    plugin's own `setup-spector.sh` now FAILS (and its Playwright 1.59 cannot launch this image's browser): since session `ce30359f`,
-   `bash Tools/cloud_env_setup.sh` builds a fixed copy in `~/.bubblewash-tools/spector` and the SessionStart hook
-   `.claude/hooks/session-start-spector.sh` links it into the plugin; if spector's tools are still missing, `/mcp` and reconnect it.
+   `bash Tools/cloud_env_setup.sh` builds a fixed copy in `~/.bubblewash-tools/spector` BEFORE Claude starts, and the project's
+   `.mcp.json` starts it as the server `spector` (enabled in `.claude/settings.json`); its tools are `mcp__spector__*`. Cloud sessions
+   have no `/mcp` reconnect: a server that failed at startup stays failed until the next session.
    **threejs-devtools** attaches only to a page served on port 3000 and opened through its proxy, with the game's scene exposed
    (`cd WebDemo && python3 -m http.server 3000`; chrome-devtools `navigate_page http://localhost:9222/index.html?s3=...`; evaluate
    `const d=window.__bw.debug(); window.__THREE_SCENE__=d.scene; window.__THREE_CAMERA__=d.camera; window.__THREE_RENDERER__=d.renderer`).

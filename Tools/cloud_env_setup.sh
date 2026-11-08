@@ -143,8 +143,8 @@ node -e "require('playwright').chromium.launch().then(async (b) => { console.log
 # builds vendor/spector/mcp; the server joins a session at the next session start, or after /mcp reconnect).
 command -v deno > /dev/null 2>&1 || npm install -g deno@2 --no-audit --no-fund > /dev/null 2>&1 || echo "  Deno: install failed (optional)"
 # (8 November 2026, session ce30359f) Spector is built HERE, in $T/spector, because this script runs before Claude starts and the
-# plugin's folder (~/.claude/plugins/synced/...) is only synced when the session starts; .claude/hooks/session-start-spector.sh then
-# links $T/spector into the plugin's vendor/ folder. Two fixes over the plugin's own scripts/setup-spector.sh: npm's install scripts
+# plugin's folder (~/.claude/plugins/synced/...) is only synced when the session starts, AFTER its MCP servers were spawned (session
+# ce30359f's log: spawn 17:27:13, MODULE_NOT_FOUND). The project's .mcp.json therefore starts this copy as its own server `spector`. Two fixes over the plugin's own scripts/setup-spector.sh: npm's install scripts
 # are skipped (upstream Spector.js now pulls unrs-resolver, whose postinstall needs a missing napi-postinstall: exit 127), and
 # Playwright is pinned to the version of the image's pre-installed Chromium (Spector's own 1.59 looks for a browser build the image
 # does not have, so load_url failed; `playwright install` must never run here).

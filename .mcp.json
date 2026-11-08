@@ -1,3 +1,8 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "spector": {
+      "command": "node",
+      "args": ["${HOME}/.bubblewash-tools/spector/mcp/dist/index.js"]
+    }
+  }
 }

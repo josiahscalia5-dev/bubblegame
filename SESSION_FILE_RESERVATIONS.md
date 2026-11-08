@@ -7,7 +7,7 @@ Neither session resets, overwrites or force-pushes either branch.
 Checked at its start (17:28 UTC): session `57091b57` had pushed nothing since its 17:15 autosave (idle at its usage limit); its head
 and `claude/bubble-wash-kingdom-continue-z9nmm1`'s two chat-history commits were merged here (normal merges). This session is now
 the LEAD session (Tripo included). Edited by it, environment only (no game code): `Tools/cloud_env_setup.sh` (metrics retry, Spector
-build), new `.claude/hooks/session-start-spector.sh` and its entry in `.claude/settings.json` (`session-start.sh` untouched),
+build), `.mcp.json` (the Spector server) and `enabledMcpjsonServers` in `.claude/settings.json` (`session-start.sh` untouched),
 `Tools/verify_restore.sh` (one known bundle added), `Tools/autosave_sessions.json` (its entry), `.gitignore` (`.parallax/`), the Parallax
 scaffold (`deno.json`, `scripts/`, `lib/`, `test/visual/`), new `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`,
 `Previews/WebDemo/environment_restore_2026-11-08_ce30359f/`, and pointer notes in the handoffs.

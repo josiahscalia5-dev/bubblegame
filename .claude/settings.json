@@ -6,13 +6,12 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
-          },
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start-spector.sh"
           }
         ]
       }
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "spector"
+  ]
 }
