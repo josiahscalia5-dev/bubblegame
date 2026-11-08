@@ -659,3 +659,38 @@ The user's rule: revert anything that looks less like the original. Reply in und
 
 
 _9 tool steps._
+
+---
+
+## Game Art Director: Whole-scene verdict and layout map (started 18:20 UTC)
+
+**Lead → agent** (18:20 UTC):
+
+READ-ONLY (do not edit or create repository files; you may write measurement images only under /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/).
+
+The user reviewed pass 11 and said it is still visually far from the approved Screen 09; they asked you to judge the WHOLE SCENE (architecture, background depth, machinery, enemy position/size, pink character, water, coins, lighting, composition), not just numbers, and they changed the approach: FIRST match the original's overall layout and silhouettes (left pink-gold washer housing, right curved pink-gold platform, dense colourful overlapping background machinery in pink / lavender / sky blue / gold, perspective and depth, the navy enemy SMALLER and UPPER-RIGHT, the rounded pink mascot on saturated blue water), THEN materials and detail.
+
+Images (u 233, same seed/route/inputs): approved `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png` (254 x 466; the annotated `/home/user/bubblegame/Design/ReferencePacks/2026-11-08_Screen07_Claude_Tripo_Reference_Kit_from_user/kit/Bubble_Wash_Screen07_Claude_Tripo_Kit/images/00_APPROVED_screen_annotated_overview.png`); pass 10 (the current game) `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass10/upper_u233.0.jpg` (412 x 915); pass 11 `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass11_frames/upper_u233.0.jpg`; pass 12 (pass 11 recoloured pink/blue/gold) `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass12_frames/upper_u233.0.jpg`; 4-up sheet `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/p10_p11_p12.jpg`. Pass 12 failed your numeric test (upper ΔE 31.7, LPIPS 0.716). Note: at u 233 the capture route has the mascot in lane 2 (screen right); the stretch's enemies are at u 222 lane 1, 228 lane 0, 234 lane 2, 240 lane 1, 246 lanes 0+2 (gameplay, not to be changed).
+
+Reply in under 400 words:
+(A) Verdict: does pass 11 or 12 genuinely improve the original's COMPOSITION over pass 10? KEEP or REVERT each.
+(B) A LAYOUT MAP of the original in normalised screen coordinates (x, y from the top-left, 0-1) with approximate width/height for: the left washer housing (body, circular glass/porthole), the right curved pink-gold platform/wall, the upper-left / upper-centre / upper-right machinery masses (dominant colours), the vanishing point of the water channel, the channel's apparent width at the mascot and at mid-distance, the enemy (centre, diameter), the two big coins, the mascot (centre, width, height), the banner. Then the SAME map for pass 10, and the 4 biggest silhouette/layout gaps between the two maps, in order.
+
+- 18:20 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:20 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/p10_p11_p12.jpg
+- 18:20 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-08_Screen07_Claude_Tripo_Reference_Kit_from_user/kit/Bubble_Wash_Screen07_Claude_Tripo_Kit/images/00_APPROVE
+- 18:20 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass10/upper_u233.0.jpg
+- 18:20 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass11_frames/upper_u233.0.jpg
+- 18:20 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass12_frames/upper_u233.0.jpg
+- 18:21 `Bash`
+- 18:21 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/approved_grid.png
+- 18:21 `Bash`
+- 18:21 `Bash`
+- 18:21 `Bash`
+- 18:21 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/enemy_zoom.png
+- 18:21 `Bash`
+- 18:21 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/p10_zoom.png
+- 18:22 `Bash`
+- 18:22 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/appr_mid.png
+
+_16 tool steps._
