@@ -1,6 +1,10 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-**Newest (8 November ~22:50 UTC, session `bb87ba9f`, a new account): branch `claude/bubble-wash-account-transfer-52t7ym` (contains e1nndb); environment re-verified
+**NEWEST (8 November ~23:55 UTC, session `bb87ba9f`): READ `START_HERE_NEXT_CLAUDE_ACCOUNT.md` FIRST. The user's CURRENT direction is the NEW
+SIX-SCENE storyboard (`Design/ReferencePacks/Six_Scene_New_Direction/`; status and next step: `SIX_SCENE_IMPLEMENTATION_STATUS.md`; switch `six`). It
+supersedes the "Avoid Enemies!" / Classic background matching FOR THAT SEQUENCE; do not resume the background-matching cycle unless asked. The rules
+below still protect the accepted Classic Screen 4 (`?s3=intunnel`, pixel-identical).**
+**Earlier (8 November ~22:50 UTC, session `bb87ba9f`, a new account): branch `claude/bubble-wash-account-transfer-52t7ym` (contains e1nndb); environment re-verified
 (`Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` section 14); the Screen 09 "Avoid Enemies!" target is ONLY `00_AUTHENTIC_APPROVED_SCREEN09.png` (the user's LEFT
 screenshot), background scenery only; current task: scene07 pass 17, `Previews/WebDemo/screen4_round9_match/78_scene07_pass17/README.md`.**
 **Previous (8 November ~20:40 UTC, session `f70c9bd1`): `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` section 0 is the single restore entry point; the work

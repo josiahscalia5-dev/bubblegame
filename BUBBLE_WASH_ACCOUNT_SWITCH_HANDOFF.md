@@ -7,6 +7,7 @@ preservation mandate. Nothing in this file is a secret. Newer sessions: add a da
 each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; it supersedes the short lists in sections 3, 4 and 7.
 
 ## 0. ONE-SHOT RESTORE: the single entry point (updated 8 November 2026 ~20:40 UTC, session `f70c9bd1`)
+**SUPERSEDED as the entry point (8 November ~23:55 UTC, session `bb87ba9f`): read `START_HERE_NEXT_CLAUDE_ACCOUNT.md` first (newest branch, backup verification, the six-scene direction).**
 **Update 8 November ~22:50 UTC, session `bb87ba9f` (https://claude.ai/code/session_01L8bvJdqHherLnTY4v7jTWP, a NEW Claude account):** the newest work
 branch is **`claude/bubble-wash-account-transfer-52t7ym`** (it contains all of `claude/bubble-wash-account-switch-e1nndb`; at each verified save e1nndb is
 fast-forwarded to it, never forced). Environment fully re-verified LIVE on this account (`Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` section 14): 5 project

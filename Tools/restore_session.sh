@@ -2,10 +2,10 @@
 # One-shot restore check for a NEW Claude account or session (session f70c9bd1, 8 November 2026). Lightweight: independent checks run in
 # parallel, no browsers, no installs unless the tool folder is missing, no Tripo spending (balance is a free call). It prints what works and
 # exactly what the user must reconnect. Usage (from the repository root):   bash Tools/restore_session.sh
-# Then continue the task in BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md section 0 (Screen 09: Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md).
+# Then continue START_HERE_NEXT_CLAUDE_ACCOUNT.md -> SIX_SCENE_IMPLEMENTATION_STATUS.md (the user's six-scene direction).
 set -u
 cd "$(dirname "$0")/.." || exit 1
-WORK=claude/bubble-wash-account-switch-e1nndb
+WORK=claude/bubble-wash-account-transfer-52t7ym   # (session bb87ba9f: the newest working branch; rollback checkpoint: claude/bubble-wash-account-switch-e1nndb at 0aa21621)
 T=$(mktemp -d)
 [ -d "$HOME/.bubblewash-tools" ] || { echo "== ~/.bubblewash-tools missing: running Tools/cloud_env_setup.sh once (Blender, Tripo CLI, glTF tools, Vite, metrics, Spector)"; bash Tools/cloud_env_setup.sh > "$T/setup.log" 2>&1 || echo "   setup reported a failed step: see $T/setup.log"; }
 source Tools/bw_tools_env.sh > /dev/null 2>&1
