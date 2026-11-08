@@ -57,3 +57,15 @@ Sheet `02_original_pass9_pass10.jpg`; frames `frames/pass10/`. Gameplay: `proofs
 
 Reading: the vault moved from blue-violet into the original's pink-lavender family but overshoots it and stays a flat, too-saturated
 surface; not less like the original, so kept. The larger gap is density: the original's upper half is machinery (pass 11).
+
+## Pass 11: a second tier of the game's own machinery IN the vault band (`SCENE07.upper.vaultItems`, 8 items). CANDIDATE (scratch build)
+Sheet `03_original_pass10_pass11.jpg`; frames `frames/pass11/`; gameplay `proofs/route_upper_scene07_pass11.json.log` equals pass 8's.
+Upper band at u 233: LPIPS 0.706 -> 0.712, ΔE2000 30.6 -> 32.0, Canny edge density 0.065 -> 0.091 (approved 0.163), brightness spread
+16 -> 21 (approved 39). Cost: about 245k triangles more, inside the stretch's draw distance only.
+- game-art-director: **KEEP, narrowly**: the shape moves toward the original's dense machinery skyline; the loss is colour only (the
+  models' copper and brown appear nowhere in the original; the orange pipe elbow top right crowds the HUD). Its test for the next step:
+  recolour only these 8 machines; keep pass 11 + 12 only if the upper ΔE drops below 30.6 and LPIPS is 0.706 or lower, else revert both.
+
+## Pass 12: the vault machines recoloured to the original's palette. CANDIDATE (scratch build)
+Each vault item gets its own material copies; the texture is desaturated to 25 % and multiplied by a cycled tint (pink 0xff9ed8, sky
+blue 0x9ccfff, gold 0xffd86a), in the diffuse and the emissive glow (0.28 -> 0.38). The first tier is untouched.
