@@ -42,3 +42,18 @@ now more saturated than the original's upper half and a plain surface where the 
   spread 11 vs 39. Next single correction: `SCENE07.chamber.vault` 0x8f9cff -> about 0xf2c4ec (pass 10); after that, density
   (machinery raised into the vault band).
 - The user: not reviewed yet.
+
+## Pass 10: vault tint 0x8f9cff -> 0xf2c4ec (`SCENE07.chamber.vault`; bundle `a8454993`). KEPT (marginal), NOT approved
+Sheet `02_original_pass9_pass10.jpg`; frames `frames/pass10/`. Gameplay: `proofs/route_upper_scene07_pass10.json.log` equals pass 8's
+(events, states, no console errors). Measured at u 233 (upper band 0.18-0.50 / play area 0.18-0.83):
+
+| | pass 9 | pass 10 | approved |
+|---|---|---|---|
+| upper LPIPS | 0.710 | **0.706** | - |
+| upper mean ΔE2000 | 30.6 | 30.6 | - |
+| upper hue 260-340° (violet-pink) / 220-260° (blue-violet) | 16 % / 74 % | 70 % / 20 % | 36 % / 28 % |
+| upper saturation / value (spread) | 144 / 243 (16) | 148 / 240 (16) | 115 / 213 (39) |
+| play area LPIPS | 0.782 | **0.780** | - |
+
+Reading: the vault moved from blue-violet into the original's pink-lavender family but overshoots it and stays a flat, too-saturated
+surface; not less like the original, so kept. The larger gap is density: the original's upper half is machinery (pass 11).
