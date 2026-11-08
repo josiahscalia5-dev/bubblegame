@@ -1,0 +1,48 @@
+BUBBLE WASH KINGDOM — SIX SCENES, ONE CONTINUOUS REAL 3D LEVEL 1
+MANDATORY CLAUDE CODE IMPLEMENTATION BRIEF
+
+I have chosen the attached new six-panel 3D art direction. BUILD THIS SEQUENCE IN MY EXISTING PLAYABLE GAME. Do not merely critique it, return another plan, or create six static pictures. This is a request to implement actual animation, environments and gameplay. I am exhausted by micro-adjustment passes on one screen. Move the project forward and show the integrated result.
+
+PROJECT / BACKUP
+- Work in my EXISTING josiahscalia5-dev/bubblegame repository, on the verified current gameplay branch. Inspect the active HEAD, live build, assets, current Pass 18 work, and handoff notes. Do not guess which of the earlier Claude branches is newest.
+- Save and commit the current playable state before touching the six-scene sequence. Use a separate reversible working branch/switch. Do not overwrite the last working version.
+- The exact visual targets are the SIX PNG references in this ZIP, plus 00_FULL_SIX_SCENE_BOARD.png. They are keyframes of one coherent style, not separate games. They are reference pictures, not 3D geometry. Keep the current game portrait-camera layout; crop/recompose visual targets appropriately for portrait gameplay.
+- This new six-scene direction supersedes the old 'Avoid Enemies!' screenshot as the primary art goal for the new Level 1 opening and continuation, while protecting the current functioning gameplay, existing player, water and mechanic logic.
+
+STORY RULE — THE GIRL MUST NEVER NOTICE THE PINK CREATURE
+The pink fluffy mascot is hidden under a blue towel among yellow/purple laundry in the girl's purple basket. The girl is cheerful and focused on laundry, NOT looking at the creature. The storyboard drawing makes her appear to notice him in panel 1, but that is NOT the intended story. Fix her gaze/blocking in 3D. She casually lifts the towel/garment bundle, unknowingly carries the concealed creature with it, and gently drops/tosses that laundry into the open pink washer. The creature is accidentally carried into the drum, not willingly jumping in and not visibly thrown by a girl who knows it is there. She closes the washer, still unaware. The creature realizes what happened from inside. The interior then becomes the magical, water-filled laundry tunnel and the playable swimming adventure begins. Keep this lighthearted and funny, not frightening.
+
+SCENE 1 — HIDDEN IN LAUNDRY BASKET (01 PNG)
+Cinematic 3D keyframe: the existing girl model, ponytail/brown curls/pink bow if possible, pink outfit, purple basket, blue towel concealing the recognizable fluffy pink mascot. Pink/gold washer beside her. Mascot peeks out, but her head/eye-line and hand activity show she does not see him. Retain visual style: shiny premium toy-like CGI, lavender metal, warm glowing gold, blue/cyan accents. No substitute still picture.
+
+SCENE 2 — GIRL LOADS LAUNDRY (02 PNG)
+Animate arms, basket and blue towel. The girl faces the open door and concentrates on loading towels. Mascot is concealed in the folded bundle or momentarily hidden behind the towel from her line of sight. Natural, continuous motion from scene 1.
+
+SCENE 3 — ACCIDENTAL TOSS (03 PNG)
+The towel bundle tumbles into the washer; the hidden fluffy mascot tumbles with it and reacts in surprise. Follow the bundle with a camera move into the real washer drum. The girl NEVER notices him. No abrupt teleport, no independent character leap, no impossible collision.
+
+SCENE 4 — WASH BEGINS (04 PNG)
+The girl shuts the washer door from the outside and leaves unaware. Show the pink creature seen through the circular glass porthole; safe playful magical water comes alive inside only after door closure. Use authentic circular glass, thick pink-and-gold rim, glowing side controls, reflections and inner silver-lavender drum. This is a CINEMATIC TRANSITION, not a duplicate of an unrelated scene.
+
+SCENE 5 — INTO THE LAUNDRY TUNNEL (05 PNG)
+Connect that exact same washer drum to the EXISTING playable tunnel. Transition visually and spatially, not by jumping to an unrelated environment. Rounded perforated silver-lavender cylindrical walls, continuous pink/gold machine shells, blue wave channel, cobalt gears, pipes, warm lights, bubbles, star panels. The pink mascot lands naturally on/through the moving blue water and faces into the tunnel. Reuse the existing water/scene as the foundation; only improve scene continuity and premium material quality when necessary. Do not replace live water with a flat animated texture.
+
+SCENE 6 — SWIM, COLLECT, AVOID ENEMIES (06 PNG)
+THIS ALREADY HAS A PARTLY PLAYABLE IMPLEMENTATION. Keep and improve existing Screen 4/Level 1 game systems: pink fluffy swimmer, smooth forward travel with natural bobbing and swim motion, left/right swipe control, glossy blue moving water, glowing paw-print collectible coins, enemies/obstacles, sock-rescue objective, Bubble Blast/Turbo Spin, HUD, character perspective. Preserve collisions and existing progress. Add only missing details required to make this scene match the art direction and connect with scene 5. Do not remake gameplay as a video or replace character/enemy models casually. In the existing accepted water variant, the pink character rides on the blue surface with no white foam cloud behind him.
+
+ASSET / TRIPO RULES
+- First inventory the GLBs, textures, washer, girl, basket, towel, socks and pink mascot models already in the repo; inspect whether each model has working rigging/animation. Reuse them. A GLB file existing is not proof that its animation works.
+- You have my permission to use necessary Tripo generation credits for missing 3D characters, rigged/animated assets and major machine pieces IF my connected account is actually accessible. Prioritize the biggest visual gains; do not burn credits with repeated low-quality model generation. Log the number of paid jobs and their known cost/credits. Do not buy new credit packages, repeatedly submit failing paid jobs, or imply an unlimited spending authorization.
+- Tripo connections/key/allowlisted download host were problematic in earlier Claude sessions. Test connectivity without charging credits first. If blocked or authentication fails, state the precise blocker and continue with existing GLBs, code-built 3D geometry, other already-available assets, and animation tools. Do not paste API keys in source, logs, screenshots or prompts.
+- Do not default to Blender/manual outsourcing. Make the best functioning build in the session with working tools.
+
+MANDATORY EXECUTION
+1. Audit actual working scene flow and assets FIRST, for only as long as needed; mark what can be reused and exactly what is missing. Do not spend the entire session rechecking plugins or debating the art.
+2. Implement Scene 1 through 4 as real animated 3D, connect 4 to existing 5 and 5 to existing 6. Use a consistent, existing girl and mascot; keep the same machine exterior/interior identity.
+3. Match each supplied image's principal silhouettes, geometry, composition, materials, placement, lighting and character behavior as closely as feasible, subject to portrait framing and real interactive 3D. Do not promise literal pixel-identical output from a 2D concept. Avoid random filler geometry, overglow, incoherent fantasy-factory décor and excessive performance cost.
+4. Test on a real local build with Playwright/Chromium or appropriate browser capture. Verify startup, cutscene transitions, input, animation, collisions, collectibles, performance and no missing asset URLs. Do a continuous run: basket -> towel lift -> accidental tumble -> door closes -> magical water -> tunnel travel -> playable enemies/coins.
+5. Deliver SIX real in-engine portrait screenshots, corresponding to references 01–06, a continuous playable recording, and a single side-by-side comparison board of references versus live frames. Do not substitute image-generation mockups as evidence. State exactly what still differs.
+6. Git-commit the implementation on the verified working branch/review branch with the last accepted version preserved, and report paths, commit IDs, test results and any costs.
+
+CRITICAL STOP CONDITION
+Do not call this APPROVED until I see the real six-scene sequence. I want meaningful completion, not Pass 19/20/21 of changing one gear at a time. If any one dependency fails, complete the most valuable functional pieces and report the blocker clearly rather than returning only a plan or restarting the game.

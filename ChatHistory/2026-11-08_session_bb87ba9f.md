@@ -1928,3 +1928,9 @@ Do not abandon existing work.
 
 RECOVER THE PROJECT. VERIFY THE ENVIRONMENT. CONTINUE BUILDING WHERE THE PREVIOUS ACCOUNT STOPPED.
 
+---
+
+### Claude · 2026-11-08 23:39 UTC
+
+While the restore test runs, I'll write the main handoff document.
+

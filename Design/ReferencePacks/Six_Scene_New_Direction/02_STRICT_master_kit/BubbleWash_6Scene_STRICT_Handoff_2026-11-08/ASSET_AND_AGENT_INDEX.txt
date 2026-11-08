@@ -1,0 +1,13 @@
+KNOWN PROJECT SOURCES (checked via GitHub; only historical branch ccr-76d4bc77-rqhl8o was inspected; Claude MUST inspect its actual active HEAD):
+GitHub: https://github.com/josiahscalia5-dev/bubblegame
+WebDemo/src/opening3d.js
+WebDemo/src/level1.js
+WebDemo/src/game.js
+WebDemo/models/opening/girl_rigged.glb
+Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/: six GLBs (girl, pink fluffy creature, purple basket, plush towels, sock character, washing machine)
+.claude/agents/: game-art-director.md, gameplay-visual-testing.md, lighting-visual-matching.md, screen4-water-motion-engineer.md, water-vfx-engineer.md
+.claude/skills/bubble-wash-screen-matcher/SKILL.md
+Tools/DEV_TOOLS.md; Tools/bw_tools_env.sh; Tools/save_now.sh; WebDemo/build.mjs; WebDemo/tools/
+
+CRITICAL: Existing agent instructions from prior work hardcode a Classic Screen 4 image as its primary target. This new story task supersedes that for this run, without destroying historical files.
+Tripo current credit balance and session's plugin activation were NOT verified from this chat and need checking in active Claude Code session.
