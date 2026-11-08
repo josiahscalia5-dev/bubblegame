@@ -1,4 +1,4 @@
-# Session bb87ba9f, design agents
+# Session bb87ba9f (8 November, account transfer): full environment restore and Screen 09 pass 17 on branch claude/bubble-wash-account-transfer-52t7ym, design agents
 
 Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 

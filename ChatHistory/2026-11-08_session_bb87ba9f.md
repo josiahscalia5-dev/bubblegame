@@ -1,4 +1,4 @@
-# Session bb87ba9f
+# Session bb87ba9f (8 November, account transfer): full environment restore and Screen 09 pass 17 on branch claude/bubble-wash-account-transfer-52t7ym
 
 Your messages and Claude's replies, exported from the session log. Tool calls, raw command output and screenshots are left out; the work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
