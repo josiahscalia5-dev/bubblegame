@@ -863,3 +863,5 @@ _[2 images attached]_
 
 New direction understood: build all six storyboard scenes as one connected, animated 3D sequence, reusing the existing opening, tunnel and gameplay, with Screens 1-4 the priority. I'll keep it reversible. First I'll save the current pass 18 state to GitHub as the preserved version, and check the regression proof that was running.
 
+On reflection the metal should be applied after the swirl's own streaks, then the bright far heart re-applied over it. I'll swap where the two snippets go.
+

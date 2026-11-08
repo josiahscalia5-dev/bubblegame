@@ -37,6 +37,17 @@ export const OPENING3D = {
   waterY: 0.385, heroW: 0.42,   // (the water low in the opening, so the swirl shows; his width in the opening, m)
 };
 
+// SIX (8 November 2026, session bb87ba9f; the user's six-scene storyboard, Design/ReferencePacks/2026-11-08_Six_Scenes_FRESH_from_user/): OPT-IN `six`
+// (with home + level1). The opening tells the new story: (1) the pink character hides under a blue towel in the girl's basket while she looks at the
+// washer, never at him; (2) she lifts the towel bundle with him caught inside and turns to the washer; (3) she tosses it in: he tumbles into the drum,
+// surprised; (4) the door swings shut (her push), she turns away, unaware; the washer lights up and the water floods in round him, seen through the
+// porthole; (5) the camera pushes through the glass into the silver-lavender drum tunnel as the water carries him in; (6) the live game. Without `six`
+// the opening is exactly as before.
+const LIST6 = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+export const SIX_ON = LIST6.includes('six');
+export const SIX = { handOver: 7.9, seqEnd: 8.7, inBasket: 0.68, towel: 0x5aa8ff };
+if (SIX_ON) Object.assign(OPENING3D, { handOver: SIX.handOver, seqEnd: SIX.seqEnd });
+
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
 const sm = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };
@@ -267,10 +278,21 @@ function buildWasher(env) {
   const cg = new THREE.Mesh(new THREE.OctahedronGeometry(0.03), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 0.35, 1.3) })); cg.position.set(0, 0.0, 0.035); crown.add(cg);
   const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.04, 28), goldM); knob.rotation.x = Math.PI / 2; knob.position.set(x0 + W / 2 - 0.13, H - 0.12, zf + 0.03); g.add(knob);
   for (let i = 0; i < 2; i++) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(...(i ? [0.4, 1.6, 1.8] : [1.8, 0.5, 1.4])) })); l.position.set(x0 + W / 2 - 0.28 - i * 0.07, H - 0.12, zf + 0.03); g.add(l); }
-  return { g, goldM, silver };
+  return { g, goldM, silver, door, glass, crown, knob };
 }
 // the glowing tunnel inside the washer (one continuous space the camera flies into): a swirling, luminous blue drum that
 // widens behind the door, its far end a bright heart; blue water along its floor
+// SIX: the drum tunnel of the storyboard's panels 4 and 5: perforated silver-lavender drum metal over the top and sides with glowing pink-gold
+// ring bands, the blue swirl only low on the walls toward the water, the bright heart at the far end
+const SIX_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 at the bottom
+        vec3 m6 = mix(vec3(0.62, 0.56, 0.9), vec3(0.9, 0.86, 1.0), 0.5 + 0.5 * up6);
+        vec2 hp6 = vec2(a * 5.0, d * 5.0); vec2 hc6 = fract(hp6 + vec2(0.0, 0.5 * mod(floor(hp6.x), 2.0))) - 0.5;
+        m6 = mix(m6, vec3(0.34, 0.28, 0.62), (1.0 - smoothstep(0.17, 0.23, length(hc6))) * 0.7);
+        float rb6 = exp(-pow((fract(d * 0.85) - 0.5) / 0.05, 2.0));
+        m6 = mix(m6, vec3(1.5, 1.05, 0.75), rb6 * 0.8);
+        c = mix(blue6, m6, smoothstep(-0.55, -0.15, up6));
+        c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(2.4, 8.0, d) * 0.85 * uGlow);`;
+const SIX_DRUM = '';
 function buildVortex() {
   const P = OPENING3D.porthole, len = 9, n = 90, nA = 48;
   const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);   // (hidden behind the washer and the wall until the camera is inside)
@@ -288,13 +310,15 @@ function buildVortex() {
         float a2 = a - 6.2832 * sign(a), bw = 0.5 * smoothstep(1.9, 3.1416, abs(a));
         float w = mix(o3f(vec2(a * 1.2 + t * 0.4, d * 0.9 - uFlow)), o3f(vec2(a2 * 1.2 + t * 0.4, d * 0.9 - uFlow)), bw);
         float sw = sin((d * 2.2 + a * 0.15915 + w * 1.5 - uFlow * 1.4 - t * 0.6) * 6.2832);
-        vec3 c = mix(${LEVEL1_PARTS.port ? 'vec3(0.02, 0.1, 0.78), vec3(0.08, 0.4, 1.0)' : 'vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0)'}, smoothstep(-0.7, 0.3, sw));   // (port: the approved porthole's deeper cobalt)
+        vec3 c = mix(${LEVEL1_PARTS.port ? 'vec3(0.02, 0.1, 0.78), vec3(0.08, 0.4, 1.0)' : 'vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0)'}, smoothstep(-0.7, 0.3, sw));
+        ${SIX_ON ? SIX_DRUM : ''}   // (port: the approved porthole's deeper cobalt)
         c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * ${LEVEL1_PARTS.port ? '0.6' : '0.75'});
         c = mix(c, vec3(1.0), smoothstep(${LEVEL1_PARTS.port ? '0.95' : '0.9'}, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
         c = mix(c, vec3(0.75, 0.6, 1.0), smoothstep(0.65, 0.9, mix(o3f(vec2(a * 0.8 + 3.0, d * 0.5)), o3f(vec2(a2 * 0.8 + 3.0, d * 0.5)), bw)) * 0.35);
         float ring = exp(-pow((fract(d * 0.8 - uFlow * 0.5) - 0.5) / 0.08, 2.0));
         c = mix(c, vec3(0.75, 0.95, 1.0), ring * ${LEVEL1_PARTS.port ? '0.22' : '0.4'});
         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(${LEVEL1_PARTS.port ? '3.4, 8.6' : '1.6, 8.0'}, d) * ${LEVEL1_PARTS.port ? '0.85' : '0.9'} * uGlow);   // (port: deep blue spiral, the bright heart only at its far end)
+        ${SIX_ON ? SIX_DRUM_END : ''}
         gl_FragColor = vec4(c, 1.0);
       }` });
   const tube = new THREE.Mesh(g, mat); tube.name = 'vortex';
