@@ -1,1 +1,3 @@
 accepted start: 0 pixels differ (aa85e7ac vs d2a666bd, ?s3=intunnel)
+normal T1.0: 0 pixels differ (aa85e7ac vs d2a666bd, ?s3=,)
+opening_home start: 0 pixels differ (aa85e7ac vs d2a666bd, ?s3=intunnel,structmatch,home)
