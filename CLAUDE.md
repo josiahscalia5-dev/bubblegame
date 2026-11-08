@@ -1,6 +1,8 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first (7 November, 23:10 UTC: the current state).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
+**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first: its section 00 (8 November, 11:20 UTC, session
+`8140e507`) is the current state; continue on branch `claude/bubble-wash-kingdom-continue-z9nmm1` (it contains all of
+`ccr-76d4bc77-rqhl8o`).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
 On a different Claude account, read `START_HERE_NEW_CLAUDE_ACCOUNT.md`, then `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (7 November;
 it replaces `ACCOUNT_SWITCH_HANDOFF.md`): the branch, the accepted checkpoint, the agents, the plugin and environment
 inventory, how to restore and verify (`bash Tools/verify_restore.sh --build`), and the continuation prompt. Before
@@ -84,6 +86,14 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     into the tunnel), and the run no longer loops: after the Screen 4 drum it goes on through Level 1's sections to Level
     Complete (`WebDemo/src/level1.js`, `track.js` COURSE), with swim strokes. Full app: `?s3=intunnel,structmatch,home,level1`;
     off: `,noswim1`, `,noopening3d`. Evidence: `Previews/WebDemo/screen4_round9_match/68_level1/README.md`.
+    Since then, in it by default: `girl2` (the user's Tripo girl, rigged, in the opening; `,nogirl2` = the code-built girl; session
+    `dbccb9a3`), and (session `8140e507`, the user's Level 1 mandate of 8 November: continuous saturated blue water from the washer
+    to Level Complete, never a dry road) `wet` (the drum widens into one wet washer chamber, the castle through a glowing portal,
+    Level Complete on the water; `,nowet` = before) and `port` (the porthole shows the blue spiral; `,noport` = before). Evidence:
+    `Previews/WebDemo/screen4_round9_match/70_level1_wet/README.md`. NOT accepted. Next: the user's 10-beat gameplay mandate
+    (`Design/ReferencePacks/2026-11-08_Level1_Gameplay_Flow_and_Account_Transfer_from_user/`: functional branching side paths).
+  - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
+    opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the
     live game, from the user's girl + laundry artwork (`WebDemo/src/screens12.js`); e.g. `?s3=intunnel,structmatch,home`.
   - `intunnel,swim2` (7 November, eighteenth session): **ACCEPTED, the bare `?s3=intunnel` now includes it** (the user's
