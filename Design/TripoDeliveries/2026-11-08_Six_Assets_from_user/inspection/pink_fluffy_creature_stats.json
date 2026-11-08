@@ -1,0 +1,25 @@
+{
+ "file": "pink fluffy creature 3d model.glb",
+ "meshes": 1,
+ "triangles": 9796,
+ "vertices": 13769,
+ "loose_parts": 2537,
+ "materials": [
+  "tripo_mat_f1ff4ada-49af-4713-b4cd-8d12a2a13721"
+ ],
+ "textures": [
+  [
+   "tripo_rgb_2a693236-a69c-44d8-8993-6ea65039cf7e",
+   4096,
+   4096
+  ]
+ ],
+ "armatures": 0,
+ "actions": 0,
+ "skinned": false,
+ "size_xyz_blender": [
+  0.9507,
+  0.9995,
+  0.7329
+ ]
+}

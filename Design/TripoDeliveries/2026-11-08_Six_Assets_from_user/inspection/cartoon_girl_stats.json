@@ -1,0 +1,25 @@
+{
+ "file": "cartoon girl 3d model.glb",
+ "meshes": 1,
+ "triangles": 10755,
+ "vertices": 13274,
+ "loose_parts": 1593,
+ "materials": [
+  "tripo_mat_a28868ff-1f00-42e3-8330-eea598f64e90"
+ ],
+ "textures": [
+  [
+   "tripo_rgb_4ab060a4-4241-4b49-b4a6-6eb0142b0f8c",
+   4096,
+   4096
+  ]
+ ],
+ "armatures": 0,
+ "actions": 0,
+ "skinned": false,
+ "size_xyz_blender": [
+  0.5366,
+  0.4497,
+  0.9995
+ ]
+}
