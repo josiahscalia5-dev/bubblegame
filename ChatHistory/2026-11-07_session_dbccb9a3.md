@@ -1650,3 +1650,31 @@ All of these steps are written out in section 0 of `HANDOFF_FOR_NEW_CLAUDE_ACCOU
 - **Phone cost:** with `level1`, Tap to Start draws 322 calls against 211 without it, which should be trimmed.
 - **Autosave:** this session's autosave keeps saving to the branch while the session is open. That's harmless, but have the other account's session merge the branch first, as the prompt says.
 
+---
+
+### Automatic notice · 2026-11-08 02:24 UTC
+
+_Background command "Record the corrected full sequence frame by frame" completed (exit code 0)_
+
+---
+
+### Claude · 2026-11-08 02:24 UTC
+
+The recording has finished. Encoding the video and checking its log:
+
+_[Sent you files: Previews/WebDemo/screen4_round9_match/68_level1/videos/full_sequence_home_toss_washer_level1_pixel7.mp4, Previews/WebDemo/screen4_round9_match/68_level1/videos/full_sequence_contact_sheet.jpg]_
+
+The continuous phone recording finished and is attached above, with a contact sheet. It's committed and pushed: GitHub's `ccr-76d4bc77-rqhl8o` is now at **`978ed208dc21d56fb6524f8d5ef88efb225d32c6`**, the same as the local copy, and the files are confirmed on GitHub.
+
+The 48.5-second video is the real game recorded frame by frame at phone size (seed 7). It plays without a cut:
+1. **Home and Laundry Toss:** the girl breathes, blinks and smiles while waiting.
+2. **The toss:** she lifts and tips the basket, and the socks and towels fly toward the washer.
+3. **The washer entry:** the character is carried to the door rim, pulled in, and the camera follows him into the tunnel, where he lands on the water.
+4. **Tap to Start** inside the tunnel.
+5. **Every Level 1 section, steered by swipes** (labelled on screen): the drum, the brushes, the treasure run, the soap-bar jumps, the drop, the grime balls and the Bubble Kingdom.
+6. **Level Complete.**
+
+The final game state: 6 socks rescued, 89 coins collected, the gem found, all 5 hearts kept, no knocks and no console errors. The video, contact sheet and log are in `Previews/WebDemo/screen4_round9_match/68_level1/videos/`, and that folder's README now lists the final proofs.
+
+The other items from the transfer report haven't changed: the plugin still needs checking in a session started after it was enabled, and the six Tripo models wait for your keep / reject / rework decisions. Section 0 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` already points to this video.
+
