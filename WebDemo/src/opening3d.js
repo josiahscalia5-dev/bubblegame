@@ -641,7 +641,7 @@ export function mountOpening3D(container, opts = {}) {
     const goldT = washer.goldM, glassG = new THREE.MeshStandardMaterial({ color: 0xd8b8ff, emissive: 0xb07cff, emissiveIntensity: 1.1, roughness: 0.15, transparent: true, opacity: 0.85 });
     const wy = OPENING3D.waterY, rad = (d) => THREE.MathUtils.lerp(rO, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);
     const at6 = (side, d, up) => { const r = rad(d) * 0.78; return V([P.x + side * Math.sqrt(Math.max(0, r * r - (up - P.y) ** 2)), up, P.z - d]); };
-    for (const [side, d] of [[-1, 2.9], [-1, 4.3], [-1, 5.8], [1, 4.9], [1, 6.6]]) {
+    for (const [side, d] of [[-1, 2.3], [1, 2.6], [-1, 3.1], [-1, 3.9], [1, 4.3], [-1, 4.7], [1, 5.1], [-1, 5.5], [1, 5.9], [-1, 6.3], [1, 6.8], [-1, 7.2]]) {   // (pass 3: the walls lined with housings, as in panel 5)
       const g = new THREE.Group(); g.position.copy(at6(side, d, wy + 0.16)); g.rotation.y = side * 0.5; tun.add(g);
       const body = new THREE.Mesh(new RoundedBoxGeometry(0.26, 0.24, 0.3, 3, 0.05), pinkM); body.position.y = 0.12; g.add(body);
       for (const y of [0.03, 0.22]) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.27, 0.02, 0.31), goldT); b.position.y = y; g.add(b); }
@@ -652,7 +652,7 @@ export function mountOpening3D(container, opts = {}) {
     const rail = []; for (let d = 2.4; d <= 7.2; d += 0.4) rail.push(at6(-1, d, wy + 0.32).add(V([0.06, 0, 0])));
     tun.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail), 40, 0.012, 6), goldT));
     for (const p of rail.filter((_, i) => i % 2 === 0)) { const post = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.12, 6), goldT); post.position.copy(p).add(V([0, -0.06, 0])); tun.add(post); }
-    const gear = new THREE.Group(); gear.position.copy(at6(1, 3.4, P.y + 0.12)); gear.rotation.y = -Math.PI / 2 + 0.35; tun.add(gear);
+    const gear = new THREE.Group(); gear.position.copy(at6(1, 3.3, P.y + 0.16)); gear.rotation.y = -Math.PI / 2 + 0.45; gear.scale.setScalar(1.35); tun.add(gear);
     const gs = new THREE.Shape(); for (let i = 0; i <= 64; i++) { const a = (i / 64) * Math.PI * 2, r = i % 4 < 2 ? 0.3 : 0.25; if (i) gs.lineTo(Math.cos(a) * r, Math.sin(a) * r); else gs.moveTo(Math.cos(a) * r, Math.sin(a) * r); }
     gear.add(new THREE.Mesh(new THREE.ExtrudeGeometry(gs, { depth: 0.06, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01, bevelSegments: 2 }),
       new THREE.MeshStandardMaterial({ color: 0x1f46d8, metalness: 0.35, roughness: 0.3, envMap: env, envMapIntensity: 0.6, emissive: 0x0a2090, emissiveIntensity: 0.4 })));
@@ -778,7 +778,7 @@ export function mountOpening3D(container, opts = {}) {
     return [[0, [-0.02, 1.06, 3.2], [-0.02, 1.0, 0.1], 35], [1.2, [-0.02, 1.1, 3.3], [-0.1, 1.08, 0.1], 35], [2.0, [0.22, 1.0, 2.6], [0.2, 0.85, 0.2], 35],
       [2.7, [0.32, 0.78, 1.65], [P.x, P.y, P.z - 0.3], 36], [3.2, [0.12, 1.02, 2.9], [-0.02, 0.86, 0.2], 35], [3.95, [0.12, 1.0, 2.8], [0.05, 0.84, 0.2], 35],
       [4.6, [P.x - 0.06, P.y + 0.16, P.z + 2.25], [P.x - 0.06, P.y + 0.1, P.z], 36], [5.8, [P.x - 0.04, P.y + 0.12, P.z + 1.9], [P.x - 0.04, P.y + 0.06, P.z], 36],
-      [6.5, [P.x, P.y, P.z - 0.06], [P.x, P.y - 0.05, P.z - 1.4], 46], [7.5, camZ.toArray(), tgtZ.toArray(), 60]]; })();
+      [6.5, [P.x, P.y + 0.06, P.z - 0.06], [P.x, P.y - 0.04, P.z - 2.0], 54], [7.5, camZ.toArray(), tgtZ.toArray(), 60]]; })();
   function poseSix(it, st) {
     const s = st < 0 ? -1 : st, hk = OPENING3D.heroW / 0.34;
     // ---- the basket rests on its stand; the bundle's path: in the basket -> lifted to her chest -> turned to the washer -> tossed into the drum
@@ -835,7 +835,7 @@ export function mountOpening3D(container, opts = {}) {
     else if (s < 3.0) { const k = sm(2.4, 3.0, s); hp = bp.clone().lerp(heroSit, k); hp.y += Math.sin(k * Math.PI) * 0.06; rot.set(-4.8 - (2 * Math.PI - 4.8) * k, (1 - k) * 0.8, 0);   /* (ends upright: one full turn) */ scl += (1 - scl) * k; surprise = 1; }
     else if (s < 5.9) { const wet = sm(4.4, 5.2, s); hp = heroSit.clone(); hp.y += wet * 0.03 + wet * 0.014 * Math.sin((s - 4.4) * 6.5);
       rot.set(0.04 * Math.sin(s * 3), 0.35 * Math.sin((s - 3) * 1.6) * (s < 4.6 ? 1 : 0.5), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 4.7 ? 1 : 0; }
-    else { const k = sm(5.9, 7.2, s), tn = sm(5.9, 6.5, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 5.9) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
+    else { const k = sm(5.75, 7.0, s), tn = sm(5.9, 6.5, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 5.9) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
     hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
     heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) });
     if (!landed && s >= 4.75) { landed = true; for (let i = 0; i < 70; i++) { const a = rnd() * Math.PI * 2, v = 0.3 + rnd() * 0.7; splash.emit(V([hp.x + Math.cos(a) * 0.12, OPENING3D.waterY + 0.02, hp.z + Math.sin(a) * 0.1]), V([Math.cos(a) * v * 0.5, 0.6 + rnd() * 0.9, Math.sin(a) * v * 0.3]), 0.5 + rnd() * 0.4); } vortex.WU.uHit.value.set(hp.x - P.x, 1, P.z - hp.z); }
