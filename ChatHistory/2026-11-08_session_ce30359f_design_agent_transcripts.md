@@ -727,3 +727,74 @@ The gridded crops are in /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-
 
 
 _16 tool steps._
+
+---
+
+## Game Art Director: Art director: passes 13 and 14b (started 18:40 UTC)
+
+**Lead → agent** (18:40 UTC):
+
+READ-ONLY review (do not edit or create repository files). The user's approach: FIRST match the original's layout and silhouettes, THEN detail; judge the WHOLE SCENE, not only numbers; revert anything that looks less like the original.
+
+Your previous layout map of the approved `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png` drove two candidate passes (opt-in, scene07). The checkpoint is now u 229.5 with the mascot in the CENTRE lane (closer to the original's composition), the same for all frames below (412 x 915):
+- BEFORE (pass 10, the current game): `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/before_p10.png`
+- pass 13 (layout: the stretch's camera aimed down and right so the vanishing point moves from (0.31, 0.53) to about (0.48, 0.45); the left washer housing rebuilt as a tall rounded pink body with the gold ring and glass at screen (0.0-0.22, 0.18-0.51) on a raised gold-rimmed ledge; the right side one big curved star drum at the edge plus a smaller one; the enemy drawn at 0.75 size and floating high while far ahead, down to its own height near her): `.../probe13/p13b.png`
+- pass 14b (pass 13 + 18 copies of the USER'S OWN Tripo washing machine, tinted pink / lavender / sky blue / gold with glowing portholes, in three clusters upper-left / upper-centre / upper-right, the vault raised): `.../probe13/p14b.png`
+- 4-up sheet: `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/p10_p13_p14b.jpg`
+
+Reply in under 300 words: (1) pass 13 vs BEFORE: KEEP or REVERT, with the elements that moved closer / further (architecture, depth, enemy, mascot, water, coins, lighting, composition); (2) pass 14b vs pass 13: KEEP or REVERT; (3) the remaining 3 biggest differences from the original, ranked, each with the concrete change you would make next (numbers where you can), noting which are gameplay-bound (lanes, coin positions) and must not be changed.
+
+- 18:40 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:40 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/p10_p13_p14b.jpg
+- 18:40 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/before_p10.png
+- 18:40 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/p13b.png
+- 18:40 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/p14b.png
+- 18:40 `Bash`: Make upper-region crop sheet of original, pass13, pass14b
+- 18:40 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/ad_upper.png
+**Lead → agent** (18:40 UTC):
+
+[Image: original 2512x916, displayed at 2000x729. Multiply coordinates by 1.26 to map to original image.]
+
+- 18:41 `Bash`: Make lower-region crop sheet of original, before, pass13
+- 18:41 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/ad_lower.png
+**Agent** (18:41 UTC):
+
+**Scene 07 review, judged against the original `09_Avoid_Enemies.png` (HUD ignored)**
+
+**1. Pass 13 vs BEFORE: KEEP.**
+
+Closer:
+- **Composition:** the vanishing point is now near the centre, about (0.47, 0.44), where the original's glowing far end is, about (0.45, 0.40). Before, it was off to the left.
+- **Enemy:** it no longer overlaps her. It floats to her upper right, as in the original.
+- **Architecture:** the tall pink housing at the left and the star drum at the right match the original's left porthole and right star drum.
+- **Mascot height:** her top is now at 0.58 H; the original's is 0.57 H.
+
+Further:
+- **Foreground water:** below her (0.80–0.93 H) there is now a dark cobalt slab with a crease, and a stray blue foam blob at (0.6, 0.9). The original is bright white-blue foam full of bubbles there.
+- **Mascot position:** she sits at x 0.37; the original has her at 0.42.
+- **Enemy size and height:** it is 0.26 W wide at y 0.50. The original's is 0.33 W at y 0.36.
+
+**2. Pass 14b vs pass 13: REVERT.**
+- It does fill the empty purple sky, and the gold portholes echo the original's gold.
+- But 18 copies of one machine, floating loose, read as scattered stickers, not attached architecture.
+- The upper-centre cluster crowds the glowing far end that pass 13 just recovered.
+- If you retry it: only the left and right clusters, mounted on the walls, none above the vanishing point.
+
+**3. Remaining biggest differences, ranked**
+
+1. **Foreground water (bottom third).**
+   - Lift the slab to the original's light azure (about #7cc8ff) with a white crest band at 0.78–0.88 H.
+   - Add 20–30 translucent bubbles at the lower edges, and remove the stray blob.
+   - Visual only.
+2. **Upper-half palette and density.**
+   - The original is cream, gold and lavender arcades with soft glow and many bubbles. The game has flat magenta plus an empty purple sky (0.25–0.40 H).
+   - Fill the sky with a lavender drum ceiling and arcades. Bring the housing's saturation down by about 30%, toward lavender-pink. Double the bubbles.
+3. **Enemy and mascot staging.**
+   - Enemy: draw it at about 1.0 instead of 0.75 at this distance, and float it about 0.12 H higher (target centre (0.72, 0.36)).
+   - Mascot: move her about 0.05 W to the right by panning the camera.
+   - Gameplay-bound, do not change: the queue of four enemies (spawns and lanes), the centre-lane coin line, and the original's flanking coins (lane positions). Do not fade the far enemies, because players need to read the hazards.
+
+Comparison crops I made: `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/ad_upper.png` and `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/probe13/ad_lower.png`.
+
+
+_9 tool steps._
