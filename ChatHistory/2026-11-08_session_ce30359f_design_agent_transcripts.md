@@ -615,3 +615,47 @@ Sources:
 
 
 _3 tool steps._
+
+---
+
+## Game Art Director: Art director verdict on pass 11 (started 18:16 UTC)
+
+**Lead → agent** (18:16 UTC):
+
+Verdict needed (READ-ONLY; do not edit or create repository files). One correction, pass 11, on the opt-in "Avoid Enemies!" scene (after your pass 9 KEEP and the pass 10 vault tint 0x8f9cff -> 0xf2c4ec): a second tier of the game's own machinery models placed IN the vault band (8 items, `SCENE07.upper.vaultItems`: s3_machinery x5, pipe x3, heights 4.2-4.6 m, 2.2-2.7 m off the centre line). Nothing else changed.
+
+Compare at u 233 (same seed, route, inputs):
+- APPROVED (the only authority): `/home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png`
+- pass 10: `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass10/upper_u233.0.jpg`
+- pass 11: `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass11_frames/upper_u233.0.jpg` (also `upper_u230.0.jpg` there; pass 10's u 230 is in `.../frames/pass10/`)
+- side-by-side: `/tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/p10_p11.jpg`
+
+Measured (approved resized to 412 x 915; upper band 0.18-0.50): LPIPS 0.706 -> 0.712, mean ΔE2000 30.6 -> 32.0, Canny edge density 0.065 -> 0.091 (approved 0.163), brightness spread 16 -> 21 (approved 39); play area LPIPS 0.780 -> 0.783. The added machines read orange / brown; the original's upper machinery is pink, sky-blue, gold, with green accents.
+
+The user's rule: revert anything that looks less like the original. Reply in under 180 words: KEEP or REVERT pass 11, why, and, if KEEP, the single next correction (e.g. tinting these vault machines toward the original's palette: say how, given they use their texture as emissive map at 0.28 in `buildUpper`, `/home/user/bubblegame/WebDemo/src/tripo_l1.js`), or, if REVERT, what to do instead for the upper half's density.
+
+- 18:16 `Read`: /home/user/bubblegame/Design/ApprovedScreens/09_Avoid_Enemies.png
+- 18:16 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/p10_p11.jpg
+- 18:16 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass11_frames/upper_u233.0.jpg
+- 18:16 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass10/upper_u233.0.jpg
+- 18:16 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/pass11_frames/upper_u230.0.jpg
+- 18:16 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/75_scene07_pass9_shell/frames/pass10/upper_u230.0.jpg
+- 18:16 `Grep`: vaultItems|emissiveIntensity|emissiveMap|vaultTint|0xf2c4ec
+- 18:16 `Read`: /home/user/bubblegame/WebDemo/src/tripo_l1.js
+- 18:16 `Grep`: vaultItems|upper:
+**Agent** (18:16 UTC):
+
+**KEEP pass 11, but only narrowly.**
+
+**Why:** In the original, the upper half is a dense, busy skyline of machinery. In pass 10 it was an empty, striped lavender sky, which was the biggest gap in that band. Pass 11 starts to fill it, and the shape numbers move toward the original: edge density 0.065 -> 0.091 and brightness spread 16 -> 21. The losses are about colour only (LPIPS +0.006, ΔE +1.4). Copper and brown appear nowhere in the original, and at u 233 the large orange pipe elbow at the top right crowds the HUD.
+
+**Next single correction: recolour only the 8 vault machines in `buildUpper`.**
+- Clone each material per vault item first (`o.material = m.clone()`). `clone(true)` shares materials with the first tier, so tinting in place would change those machines too.
+- Setting `emissive` to a tint isn't enough, because the orange texture still shows through. Use `onBeforeCompile`:
+  - after `map_fragment`: `diffuseColor.rgb = mix(vec3(dot(diffuseColor.rgb, vec3(.3,.59,.11))), diffuseColor.rgb, .25) * uTint;`
+  - after `emissivemap_fragment`: the same on `totalEmissiveRadiance`.
+- Cycle `uTint` through pink 0xff9ed8, sky blue 0x9ccfff and gold 0xffd86a. Raise emissive 0.28 -> 0.38 to lift the browns.
+- **Test:** keep it only if ΔE drops below 30.6 and LPIPS is 0.706 or lower. Otherwise revert both passes.
+
+
+_9 tool steps._
