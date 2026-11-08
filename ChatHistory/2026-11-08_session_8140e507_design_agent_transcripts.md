@@ -140,3 +140,41 @@ Answer, in under 250 words: (1) Is NEW closer to the ORIGINAL's mascot than PREV
 
 
 _2 tool steps._
+
+---
+
+## Game Art Director: Art director judges match6 mascot (started 04:28 UTC)
+
+**Lead → agent** (04:28 UTC):
+
+Bubble Wash Kingdom, Screen 4, the pink mascot's REAR SILHOUETTE only (the user's priority 3 of 8 November: "Correcting the pink mascot's rear-view silhouette so it looks full, round, and fluffy like ORIGINAL CLASSIC Screen 4"). Read-only review; do not edit anything. Keep it efficient: look at the sheets first, open the full captures only if needed.
+
+The ONLY target: /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg (close-up of the same image: /home/user/bubblegame/Design/ReferencePacks/2026-11-07_Bubble_Wash_Mascot_Water_Focused_Correction_Pack/Screen4_PINK_CHARACTER_APPROVED_UNALTERED_CROP.png). The user's pass criterion: "a round, full pink dome with finer directional strands, small side nubs and the original rear-view profile at normal gameplay size".
+
+Real gameplay captures (seed 7, same moment, same camera). Folder /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/:
+- sheets/02_her_ORIGINAL_PREVIOUS_NEW_tap_to_start.jpg and sheets/03_her_zoom_ORIGINAL_PREVIOUS_NEW.jpg (her crop: ORIGINAL | PREVIOUS match5 | NEW match6)
+- sheets/04_page_with_HUD_ORIGINAL_PREVIOUS_NEW.jpg (normal gameplay size with the HUD)
+- sheets/05_motion_ORIGINAL_MATCH5_MATCH6_same_run.jpg (the same seeded run with real swipes at 4, 5, 5.5, 6, 7.7, 10 s; at 6.0 s she is mid-jump; match5's 7.7 s frame is washed out by a real-time hit-flash overlay caught at a different instant, not a rendering difference)
+- frames/tap_to_start_MATCH5_her_alone.png and frames/tap_to_start_MATCH6_her_alone.png (her alone, everything else hidden)
+
+What match6 changed (drawn only): her side nubs pushed slightly out and down with short fur so they read as lobes; her crown a broader arc; shell strands radiating from a whorl high on her back instead of combed straight down; strand bundles with dark grooves radiating from the top centre; a paler crown and a deeper magenta base (measured in five height bands against the ORIGINAL). Measured on her crop: LPIPS (AlexNet) against the ORIGINAL 0.7545 -> 0.7346, SSIM 0.161 -> 0.170.
+
+Answer in under 250 words: (1) Is NEW closer to the ORIGINAL's mascot than PREVIOUS: yes / no / mixed, and why (silhouette: dome roundness, top arc, side nubs, width/height; fur direction; colour). (2) Anything in NEW that looks LESS like the ORIGINAL than PREVIOUS, including through the run and in the jump frame (the user's rule: revert anything that looks less like the original). (3) The top 3 remaining mascot differences, ranked, with concrete fixes. Do not judge the water except where it hides her outline.
+
+- 04:28 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/03_her_zoom_ORIGINAL_PREVIOUS_NEW.jpg
+- 04:28 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/02_her_ORIGINAL_PREVIOUS_NEW_tap_to_start.jpg
+- 04:28 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/frames/tap_to_start_MATCH5_her_alone.png
+- 04:28 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/frames/tap_to_start_MATCH6_her_alone.png
+- 04:28 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-07_Bubble_Wash_Mascot_Water_Focused_Correction_Pack/Screen4_PINK_CHARACTER_APPROVED_UNALTERED_CROP.png
+- 04:28 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/04_page_with_HUD_ORIGINAL_PREVIOUS_NEW.jpg
+- 04:28 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/05_motion_ORIGINAL_MATCH5_MATCH6_same_run.jpg
+- 04:28 `Bash`: List match6 evidence frames
+- 04:29 `Bash`: Build same-box crop comparison original/previous/new
+- 04:29 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/cmp.png
+- 04:29 `Bash`: Measure pink silhouette widths and band colours
+- 04:29 `Bash`: List motion frames
+- 04:30 `Bash`: Crop motion frames match5 vs match6 at 5, 6, 10 s
+- 04:30 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/motion_cmp.png
+- 04:30 `SubagentHandback`
+
+_15 tool steps._
