@@ -45,7 +45,7 @@ export const RECON16 = {
   // the left drum: face centre (x, h, u), outer ring radius R, body depth (in R), yaw: how far the face turns from facing straight back
   // down the track toward the left wall (radians; the drum's body then shows on the face's right, as in the original)
   // (fitted with a projection grid of the real camera at the u 229.5 checkpoint, 77_.../scripts: centre (0.075, 0.30), gold band radius 0.125 H)
-  drum: { u: 238, x: 2.9, h: 3.78, R: 1.4, depth: 0.3, yaw: 0.5 },   // (v3: R 1.52, depth 0.45, yaw 0.62: its body showed as extra rings to x 0.30; the master's ring ends at 0.21)
+  drum: { u: 238, x: 3.15, h: 3.55, R: 1.2, depth: 0.3, yaw: 0.5 },   // (v2 of MACH16: the master's footprint, ring right edge ~0.21-0.25 of the screen)   // (v3: R 1.52, depth 0.45, yaw 0.62: its body showed as extra rings to x 0.30; the master's ring ends at 0.21)
   ledge: { u: [232.2, 253.2], x: 2.25, h: 1.95 },
   // a long gentle curve (radius 5 m) whose face runs 1.3 m from the centre line (as close as the right lane allows; the master's wall would
   // stand at 0.5 m, inside the lane): from the right screen edge (u 234) to x 0.70 (u 240)
@@ -66,19 +66,32 @@ export const RECON16 = {
 // (gold bands, a porthole, a dome); ['d', radius, colour] a dome. Each tower stands on the ledge (left) or the deck (right) and faces the camera.
 export const MACH16 = {
   cam: [-0.62, 226.7],
-  towers: [
-    [240.8, 3.95, 1.95, [['w', 1.45, 1.6, 'deep', 'c'], ['w', 1.3, 1.45, 'lav', 'p'], ['t', 1.5, 0.62, 'cream', 'pink']]],
-    [243.9, 2.8, 1.95, [['w', 1.1, 1.3, 'cream', 'c'], ['t', 2.0, 0.62, 'pink', 'mint']]],          // the master's green-topped machine
-    [246.7, 3.7, 1.95, [['w', 1.25, 1.4, 'blue', 'p'], ['w', 1.2, 1.3, 'lav', 'c'], ['t', 1.0, 0.5, 'deep', 'pink']]],
-    [249.6, 2.75, 1.95, [['t', 1.9, 0.55, 'blue', 'gold']]],
-    [252.0, 3.6, 1.95, [['w', 1.3, 1.4, 'cream', 'c'], ['t', 1.3, 0.55, 'lav', 'pink']]],
-    [241.2, -3.3, 0.12, [['t', 2.8, 0.7, 'lav', 'pink']]],
-    [244.3, -2.7, 0.12, [['w', 1.35, 1.4, 'pink', 'c'], ['w', 1.25, 1.3, 'lav', 'p'], ['d', 0.6, 'mint']]],
-    [247.6, -3.6, 0.12, [['t', 3.3, 0.75, 'blue', 'mint']]],
-    [250.6, -2.6, 0.12, [['w', 1.4, 1.45, 'cream', 'p'], ['t', 1.3, 0.55, 'pink', 'gold']]],
-    [252.9, -3.7, 0.12, [['w', 1.3, 1.4, 'blue', 'c'], ['w', 1.3, 1.4, 'lav', 'p'], ['w', 1.1, 1.2, 'pink', 'c']]],
+  // v2 (session f70c9bd1): v1's towers stood exactly behind the drum (left) and behind the right wall and the hero enemy (right): from this
+  // low camera (eye 1.49 m, level) the master's upper half is 4-8 m above the channel, BETWEEN those structures. So: machine COLUMNS on the
+  // ledge and behind the right wall rise to 8 m, GANTRY beams join them across the room, and the machinery is MOUNTED on the gantries at
+  // 4.4-8 m (above the gameplay space: the hero enemy floats to ~3 m), each piece placed with the grid where the master shows machinery:
+  // the green-topped machine (0.22-0.35, 0.24-0.33), the stacks left of the vanishing point (0.28-0.47, 0.25-0.36), the centre above it
+  // (0.44-0.54, 0.26-0.34), the blue gears and machines above the enemy (0.58-0.76, 0.23-0.29), the top band behind the HUD.
+  towers: [], pipes: [],
+  columns: [[241.2, 3.3, 1.95, 'deep'], [245.4, 3.05, 1.95, 'blue'], [249.4, 2.95, 1.95, 'deep'], [253.0, 3.1, 1.95, 'blue'],
+    [242.0, -3.0, 0.12, 'blue'], [246.0, -2.9, 0.12, 'deep'], [250.0, -2.85, 0.12, 'blue'], [253.3, -3.0, 0.12, 'deep']],   // [u, x, base, body]
+  colTop: 8.0, gantries: [[0, 4, 7.7, 'lav'], [1, 5, 7.85, 'blue'], [2, 6, 7.6, 'lav'], [3, 7, 7.75, 'rose']],                 // [left column, right column, height, colour]
+  // mounted machines: [u, x, centre height, module list (as towers), hung from the gantry above (true) or standing on a bracket]
+  mounted: [
+    [244.4, 2.35, 4.4, [['t', 1.5, 0.6, 'pink', 'mint']]],                                     // the master's green-topped machine
+    [247.2, 1.7, 5.6, [['w', 1.4, 1.5, 'cream', 'c']]],
+    [248.8, 1.45, 4.4, [['w', 1.15, 1.3, 'pink', 'p']]],
+    [251.2, 0.6, 5.1, [['w', 1.35, 1.4, 'blue', 'c']]],
+    [252.5, -0.5, 6.0, [['w', 1.15, 1.2, 'lav', 'p']]],
+    [244.0, -1.9, 5.7, [['w', 1.35, 1.4, 'pink', 'c']]],
+    [246.6, -1.45, 6.4, [['g', 0.62]]],
+    [249.6, -1.3, 4.8, [['w', 1.15, 1.2, 'cream', 'p']]],
+    [237.6, 1.8, 6.5, [['w', 1.45, 1.5, 'lav', 'c']]],
+    [238.6, -1.2, 6.8, [['w', 1.3, 1.4, 'blue', 'p']]],
+    [250.4, -0.1, 6.9, [['g', 0.5]]],
+    [242.2, 0.4, 6.7, [['t', 1.0, 0.55, 'blue', 'pink']]],
+    [253.2, 1.4, 6.2, [['g', 0.55]]],
   ],
-  pipes: [[0, 5, 'lav'], [2, 7, 'blue'], [4, 9, 'rose']],   // [left tower, right tower, colour]: curved pipes over the channel, top to top
   far: { u: 253.45, arch: [2.72, 3.4], door: { h: 5.3, r: 0.95 },
     stacks: [[3.55, [['w', 1.4, 1.5, 'lav', 'c'], ['w', 1.3, 1.4, 'blue', 'p'], ['d', 0.55, 'pink']]], [-3.55, [['t', 2.3, 0.62, 'pink', 'mint'], ['w', 1.0, 1.2, 'cream', 'c']]]] },
   bubbles: [[-2.5, 3.6, 241.5, 0.55], [-3.1, 4.7, 243.0, 0.42], [-2.1, 2.5, 245.2, 0.35], [2.3, 4.9, 242.2, 0.4], [1.8, 3.3, 248.2, 0.3], [-1.9, 4.2, 249.5, 0.3]],
@@ -442,6 +455,38 @@ function buildMachines16(root, TR, env, M, std, Ch) {
     let y = 0; for (const md of mods) y += module(g, y, md); return base + y;
   };
   const tops = K.towers.map(([u, x, base, mods]) => stack(x, base, u, mods));
+  // columns: tall machine columns with gold rings and small glowing portholes, from the ledge / deck to the gantries
+  const colPos = [];
+  for (const [u, x, base, col] of K.columns || []) {
+    const h = K.colTop - base, g = at(TR, new THREE.Group(), x, base, u, Math.atan2(K.cam[0] - x, K.cam[1] - u)); t.add(g);
+    add(g, new THREE.CylinderGeometry(0.42, 0.5, h, 24), B[col], 0, h / 2, 0);
+    for (let y = 0.8; y < h; y += 1.25) add(g, new THREE.TorusGeometry(0.45, 0.05, 6, 24), M.gold, 0, y, 0, Math.PI / 2);
+    for (let y = 1.4; y < h - 0.5; y += 2.5) door(g, y, 0.42, 0.2, (Math.round(y) % 2) ? 'c' : 'p');
+    colPos.push([u, x]);
+  }
+  // gantries: beams across the room between the column tops (lavender / blue / pink with gold edges), at slightly different heights
+  for (const [i, j, h, col] of K.gantries || []) {
+    const [ua, xa] = colPos[i], [ub, xb] = colPos[j], pts = [];
+    for (let k = 0; k <= 12; k++) { const f = k / 12; pts.push(TR.map(xa + (xb - xa) * f, h + 0.25 * Math.sin(Math.PI * f), ua + (ub - ua) * f, new THREE.Vector3())); }
+    const cv = new THREE.CatmullRomCurve3(pts);
+    t.add(new THREE.Mesh(new THREE.TubeGeometry(cv, 24, 0.24, 10, false), B[col]));
+    for (const dh of [0.22, -0.22]) t.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map((q) => q.clone().add(TR.dir(0, dh, 0, ua, new THREE.Vector3())))), 24, 0.05, 6, false), M.gold));
+  }
+  // the mounted machinery: each piece hangs from the gantry above it on a gold rod
+  const gh = (u) => { let best = null; for (const [i, , h] of K.gantries || []) { const d = Math.abs(colPos[i][0] - u); if (!best || d < best[0]) best = [d, h]; } return best ? best[1] : K.colTop; };
+  for (const [u, x, hc, mods] of K.mounted || []) {
+    const hgt = mods.reduce((a, md) => a + (md[0] === 'w' ? md[1] : md[0] === 't' ? md[1] + md[2] * 0.9 : md[0] === 'g' ? md[1] * 2 : md[1]), 0);
+    const base = hc - hgt / 2, g = at(TR, new THREE.Group(), x, base, u, Math.atan2(K.cam[0] - x, K.cam[1] - u)); t.add(g);
+    let y = 0; for (const md of mods) {
+      if (md[0] === 'g') { const R = md[1], q = new THREE.Group(); q.position.set(0, y + R, 0); g.add(q);
+        add(q, new THREE.ExtrudeGeometry(gearShape(R * 1.35, 18, 0.86, true), { depth: R * 0.12, bevelEnabled: false, curveSegments: 3 }), B.lav, 0, 0, -R * 0.12);
+        add(q, new THREE.ExtrudeGeometry(gearShape(R, 10, 0.8), { depth: R * 0.24, bevelEnabled: false, curveSegments: 3 }), B.blue, 0, 0, 0);
+        add(q, new THREE.CylinderGeometry(R * 0.3, R * 0.3, R * 0.3, 6), M.gold, 0, 0, R * 0.3, Math.PI / 2); y += 2 * R; }
+      else y += module(g, y, md);
+    }
+    const top = base + y, rodLen = Math.max(0, gh(u) - top);
+    if (rodLen > 0.05) add(g, new THREE.CylinderGeometry(0.05, 0.05, rodLen, 8), M.gold, 0, y + rodLen / 2, 0);
+  }
   // pipes over the channel, joining a left tower's top to a right tower's top (the two sides are one machine room)
   const curve = (pts) => new THREE.CatmullRomCurve3(pts.map(([x, h, u]) => TR.map(x, h, u, new THREE.Vector3())));
   for (const [i, j, col] of K.pipes) {
