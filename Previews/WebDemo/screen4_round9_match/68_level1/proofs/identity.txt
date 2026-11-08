@@ -1,2 +1,6 @@
 accepted start: 0 pixels differ (2e9ce682 ?s3=intunnel vs 06f8e1b9 ?s3=intunnel)
 accepted T1.0: 0 pixels differ (2e9ce682 ?s3=intunnel vs 06f8e1b9 ?s3=intunnel)
+accepted T3.0: 0 pixels differ (2e9ce682 ?s3=intunnel vs 06f8e1b9 ?s3=intunnel)
+normal start: 0 pixels differ (2e9ce682 ?s3=, vs 06f8e1b9 ?s3=,)
+normal T1.0: 0 pixels differ (2e9ce682 ?s3=, vs 06f8e1b9 ?s3=,)
+candidate start: 0 pixels differ (2e9ce682 ?s3=intunnel,structmatch vs 06f8e1b9 ?s3=intunnel,structmatch)
