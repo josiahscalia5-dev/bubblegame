@@ -34,5 +34,11 @@
     "agents": "ChatHistory/2026-11-07_session_dbccb9a3_design_agent_transcripts.md",
     "title": "Session dbccb9a3 (7 November, new account): first-session checklist on branch ccr-76d4bc77-rqhl8o",
     "url": "https://claude.ai/code/session_01CUAtW4EmBf6vbP6Vos5gB2"
+  },
+  "8140e507-b3f0-5294-a0db-dfc0f4eba5b6": {
+    "chat": "ChatHistory/2026-11-08_session_8140e507.md",
+    "agents": "ChatHistory/2026-11-08_session_8140e507_design_agent_transcripts.md",
+    "title": "Session 8140e507 (8 November): plugin restoration and first-three-screens pass on branch claude/bubble-wash-kingdom-continue-z9nmm1",
+    "url": "https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP"
   }
 }
