@@ -24,6 +24,7 @@ GIRL2_BUNDLE_MD5=92bd9272a90407a75b64198e5a4c343b           # + the course culle
 MATCH6_BUNDLE_MD5=b5f69217                                  # (first 8) + match6, her rear silhouette (session 8140e507; 0 px: 69_match6/proofs/identity.txt)
 WET_BUNDLE_MD5=a62848a060079f447f2c86173aae2d97             # + level1's wet chamber and port, match6 opt-in (session 8140e507; 70_level1_wet/proofs/identity.txt)
 FLOW_BUNDLE_MD5=8363541c3cff0474bc2bbc3cdcf97732            # + level1's 10-beat flow, match6 opt-in (session b0abcf95, branch ccr-50c66592-kcnqoy; 71_level1_flow/proofs/identity.txt)
+SCENE07_BUNDLE_MD5=d2a666bd70926c4a1360dc08d02ecc41          # + tripo1, tripo2, scene07 pass 8 opt-in (session 57091b57, ccr-b67aeffb-d94mmq 4c7868eb; accepted, normal, home, level1 0 px: 74_scene07_avoid_enemies/proofs/identity.txt; added by session ce30359f)
 ACCEPTED_BUNDLE_MD5=5bb24e2828a6f2ef17146252c69b413a          # ?s3=intunnel and the normal game (accepted build)
 SWIM2_BUNDLE_MD5=1199348a80352be29327134230a1b6a1            # the same + ?s3=intunnel,swim2 behind its flag (7 November, user-approved)
 BLEND_BUNDLE_MD5=38466b676bd36b05568023b5240818dd            # the accepted ?s3=intunnel (swim2) + ?s3=intunnel,blend behind its flag (7 November; accepted frames 0 px: 59_blend/proofs/)
@@ -55,7 +56,8 @@ done
 echo "== The accepted game (must be unchanged)"
 m() { md5sum < "$1" 2>/dev/null | cut -c1-32; }
 bm="$(m WebDemo/game.bundle.js)"
-if [ "$bm" = "$FLOW_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 flow, the 10-beat Level 1, on top of wet + port; match6 opt-in; 71_level1_flow/)"
+if [ "$bm" = "$SCENE07_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (tripo1, tripo2, scene07 pass 8 opt-in on the flow build; accepted frames 0 px: 74_scene07_avoid_enemies/proofs/identity.txt)"
+elif [ "$bm" = "$FLOW_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 flow, the 10-beat Level 1, on top of wet + port; match6 opt-in; 71_level1_flow/)"
 elif [ "$bm" = "$WET_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 wet + port on the ccr build, match6 opt-in; 70_level1_wet/)"
 elif [ "${bm:0:8}" = "$MATCH6_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (match6 on the ccr build: accepted, normal and ,nomatch6 0 px; 69_match6/)"
 elif [ "$bm" = "$GIRL2_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (ccr-76d4bc77-rqhl8o: the culled course and the Tripo girl; 68_level1/)"
