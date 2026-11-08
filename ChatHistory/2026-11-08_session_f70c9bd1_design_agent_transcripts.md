@@ -237,3 +237,65 @@ Compare the ARCHITECTURE of NEW against the ORIGINAL (not a generic art opinion)
 
 
 _15 tool steps._
+
+---
+
+## Game Art Director: Art director judges v4 vs v5 vs original (started 21:17 UTC)
+
+**Lead → agent** (21:17 UTC):
+
+Structural judgement for Bubble Wash Kingdom Screen 09 "Avoid Enemies!" (session f70c9bd1). READ-ONLY: do not edit files or launch browsers. Be concise (max 25 lines).
+
+Authority: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/original_master_frame.png (the user's approved master).
+Real gameplay renders at the same checkpoint (u 229.5, centre lane, 412 x 915, seed 7):
+- V4: .../77_scene07_pass15_upper/frames/pass16_v4_FINAL_CANDIDATE_u229.5_centre.png (pastel materials everywhere)
+- V5: .../77_scene07_pass15_upper/frames/pass16_v5_u229.5_centre.png (V4 + ten more mounted 3D machines in the upper middle, machines re-saturated (cobalt/pink/gold/cyan) against the pale hall, no portal rings / far arch, machine stacks hugging the far opening with a lintel, larger pale far glow, larger saturated cobalt gear)
+- Side by side: .../77_scene07_pass15_upper/03_ORIGINAL_CURRENT_v4_IMPROVED_v5_u229.5_centre_FULLSIZE.png
+(full prefix /home/user/bubblegame/Previews/WebDemo/screen4_round9_match). A background-only metric (HUD/mascot/coins/enemies masked) says zone A colour difference V4 43.9, V5 46.6 (V5 more saturated); other zones equal. Ignore HUD differences (the game's mission panel is by design).
+
+Answer: (1) Which of V4 or V5 resembles the ORIGINAL more as a whole scene, and per region (left housing, right machinery, upper background, far distance)? Judge structure and recognizability, not only colour. (2) Give an honest overall resemblance estimate for the better one (as a rough percentage of how recognizable the original's environment is, stating it is a judgement, not a measurement). (3) The 3 most important remaining structural obstacles, concrete (where on screen, what shape), and whether each is fixable with scene geometry or blocked by the game's fixed elements (camera height, lane positions, the level tube, the HUD).
+
+- 21:17 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/original_master_frame.png
+- 21:17 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/pass16_v4_FINAL_CANDIDATE_u229.5_centre.png
+- 21:17 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/frames/pass16_v5_u229.5_centre.png
+- 21:17 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/03_ORIGINAL_CURRENT_v4_IMPROVED_v5_u229.5_centre_FULLSIZE.png
+- 21:17 `Bash`: Crop upper region of the three frames side by side into scratchpad
+- 21:17 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/upper_cmp.png
+- 21:17 `Bash`: Zoom V4 vs V5 upper middle and find changed area bbox
+- 21:17 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/v4v5_upper_zoom.png
+- 21:18 `Bash`: Crop matching fractional middle band of original and V5
+- 21:18 `Read`: /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/orig_v5_mid.png
+**Agent** (21:19 UTC):
+
+**Screen 09 judgement, V4 vs V5 against the master.** This is visual judgement. The only number used is your background metric, and it is reported separately.
+
+**(1) Which is closer.** V5, by a small margin. At full-frame size the two read almost the same.
+- **Left housing:** a tie. Both have the pink torus porthole in about the master's place (x 0 to 0.27 W, y 0.20 to 0.42 H). In both it is a thick pastel tube with a flat lavender disc inside. The master's is a gold-trimmed metal rim with a glass bubble inside.
+- **Right machinery:** V5. Its gear is more cobalt and reads a little more like the master's large, saturated cobalt gear at the top right. The pink-star drum at the right (y 0.48 to 0.61) matches the master well in both.
+- **Upper background:** V5, slightly. It has more machinery and fewer bare castle turrets. But the extra machines are small, fine-scale pieces on a pale lavender wall. The master has large, chunky, saturated clutter. Your metric (zone A: V4 43.9, V5 46.6) says V5's colour lands in the wrong places, even though its structure is a bit closer.
+- **Far distance:** V5, clearly. The master has no gold portal ring, only a bright glow where the water channel disappears. Removing the ring and enlarging the glow both move toward that.
+
+**(2) Overall estimate for V5:** roughly 40 to 45% of the master's environment is recognizable. This is my judgement, not a measurement. What reads: the left porthole, the right star drum, a water channel running to a central vanishing point, the enemy and coins. What does not: the depth of the tunnel walls, the light, and the density of the clutter.
+
+**(3) The three largest remaining structural obstacles.**
+1. **The upper middle faces the camera instead of receding** (x 0.25 to 0.75, y 0.25 to 0.45). The game shows a flat backdrop of castle towers with gold rings in a pale hall. The master shows two side walls of dense, saturated machinery angling in toward the vanishing point, with light streaks radiating from it.
+   - **Fixable with scene geometry:** move the machines onto receding side walls and a ceiling, add streak cards, and darken the lavender wash.
+2. **The glass ring tube in the centre** (x 0.30 to 0.65, y 0.38 to 0.52) is a distinct shape the master lacks. The master has a white-gold glow with the channel winding into it.
+   - **Blocked by the level tube.** It can only be softened, for example with a brighter glow card in front of its far end and lower ring contrast. Removing it needs permission to change the tube.
+3. **The channel's width and shape.** The master's water is a narrow, winding, light sparkly ribbon about 0.25 W wide at y 0.5, between low gold-and-cream ledges. The game's is a straight, wide, deep cobalt sheet covering x 0.1 to 0.85.
+   - **Mostly blocked** by the camera height and the three lane positions.
+   - **Partly fixable:** replace the large smooth pink slab on the left (x 0 to 0.3, y 0.40 to 0.62) with the master's detailed gold counter, bring the side ledges in at mid-distance, and lighten the water.
+
+There is also a smaller blocker from the HUD. The mission panel takes the slot where the master's "Avoid Enemies!" banner sits, which pushes the banner down to y 0.21 to 0.30. There it hides the top of the porthole and most of the cobalt gear, and no scene change can fix that.
+
+Files are in /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/:
+- master: frames/original_master_frame.png
+- V4: frames/pass16_v4_FINAL_CANDIDATE_u229.5_centre.png
+- V5: frames/pass16_v5_u229.5_centre.png
+
+I also made zoomed crops for this check:
+- /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/v4v5_upper_zoom.png
+- /tmp/claude-0/-home-user-bubblegame/f70c9bd1-e78b-5e2f-8359-1182a397dbc6/scratchpad/orig_v5_mid.png
+
+
+_10 tool steps._
