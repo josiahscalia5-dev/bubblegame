@@ -207,3 +207,81 @@ Address this before completing your current task.
 - 04:47 `SubagentHandback`
 
 _26 tool steps._
+
+---
+
+## Gameplay & Visual Testing specialist: Independent check of every Level 1 transition (started 11:40 UTC)
+
+**Lead → agent** (11:40 UTC):
+
+Read-only review (do not edit any file, do not run long tests). Bubble Wash Kingdom, Level 1 (`?s3=intunnel,structmatch,level1`), real seeded gameplay captures (seed 7, Pixel 7 412 x 915, the same autopiloted run) of the PREVIOUS build (branch ccr-76d4bc77-rqhl8o, bundle 92bd9272) and the NEW build (bundle 89e89f18).
+
+The user's acceptance rule: "once the pink fluffy character enters the washing machine, the character remains in continuous saturated blue water throughout the full level ... Do not allow sections of the walls, ceiling, water, or tunnel to disappear, become visibly disconnected, or turn into a dry road. The castle must be reached through the same connected watery laundry-machine world." Level Complete must come while she is still on the water.
+
+Files (folder /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/):
+- sheets/00_every_transition_OLD_NEW_24_moments.jpg (top row OLD, bottom row NEW, 24 moments from Tap to Start to Level Complete)
+- full-size frames: frames/old_ccr_92bd9272/t*.png and frames/new_89e89f18/t*.png (t0 = Tap to Start; t3.0 ... t50.0 seconds after the tap)
+- proofs/route_old_new_24_moments.md (her position u along the course, section, coins, socks, hearts at each moment)
+- sheets/05_swim_handoff_OLD_NEW.jpg, 06_side_path_drop_OLD_NEW.jpg, 07_castle_end_OLD_NEW.jpg
+- the ORIGINAL approved Screen 4 (the tunnel/water target): /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
+
+Examine EVERY one of the 24 NEW frames (open the full-size ones, not just the sheet) and answer in under 300 words:
+1. For each NEW frame where she is past the washer entry: is she on visible blue water, inside a connected washer tunnel/chamber (walls, ceiling, water continuous, no gaps, no dark holes, no missing sections, no dry road, no open sky except through the end portal)? List any frame that FAILS, with what you see.
+2. The transitions specifically: the drum hand-off (t5.0-t7.0), the drop (t26-t28), the gate into the chamber (t36-t38), the chamber to the finish (t40-t48), Level Complete (t50). Pass / fail each.
+3. Anything in NEW that looks worse than OLD (artifacts, streaks, pale patches, pink bands, oversized objects).
+4. Whether gameplay state matches (route table).
+Be concrete and honest; do not grade with a percentage.
+
+- 11:40 `Bash`: List evidence folder contents
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/proofs/route_old_new_24_moments.md
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/sheets/00_every_transition_OLD_NEW_24_moments.jpg
+**Lead → agent** (11:40 UTC):
+
+[Image: original 3672x712, displayed at 2000x388. Multiply coordinates by 1.84 to map to original image.]
+
+- 11:40 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t3.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t4.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t5.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t6.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t7.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t8.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t10.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t14.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t18.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t22.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t26.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t28.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t30.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t32.0.png
+- 11:40 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t34.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t36.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t38.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t40.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t42.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t44.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t46.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t48.0.png
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/frames/new_89e89f18/t50.0.png
+- 11:41 `Bash`: Show README head and sheet list
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/sheets/05_swim_handoff_OLD_NEW.jpg
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/sheets/06_side_path_drop_OLD_NEW.jpg
+**Lead → agent** (11:41 UTC):
+
+[Image: original 2584x971, displayed at 2000x752. Multiply coordinates by 1.29 to map to original image.]
+
+- 11:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/70_level1_wet/sheets/07_castle_end_OLD_NEW.jpg
+**Lead → agent** (11:41 UTC):
+
+[Image: original 2584x971, displayed at 2000x752. Multiply coordinates by 1.29 to map to original image.]
+
+- 11:41 `Bash`: Montage gem counter crops OLD vs NEW
+- 11:41 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/gems.png
+- 11:41 `Bash`: Side-by-side OLD/NEW at 14 and 18 s
+- 11:41 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/t14_18.png
+- 11:41 `Bash`: Side-by-side OLD/NEW at 22 and 42 s
+- 11:42 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/t22_42.png
+- 11:42 `Bash`: Zoom crops of NEW frames at areas of interest
+
+_39 tool steps._
