@@ -297,3 +297,34 @@ I'll check this live: the CLI install, a direct API call through the proxy, `tri
 
 The CLI calls `/v3/account/balance`, not the `/v2` path I guessed. Repeating the direct call through the proxy on the correct endpoint, with only a placeholder key and with no key header at all:
 
+## TRIPO CONNECTED — VERIFIED WORKING
+
+I checked the real API connection in this session, not just the setting. Your key is never printed, logged or stored anywhere: it isn't in the container's environment and it isn't in the repository. The network proxy adds it to each request on the way out.
+
+| Your question | Result | Evidence |
+|---|---|---|
+| 1. Connected? | **CONNECTED** | A direct call to Tripo's free balance endpoint through the proxy returned HTTP 200 and your balance, even with no key header sent. So the proxy is adding your saved key itself. |
+| 2. Key accepted by Tripo? | **Yes** | The call reached your account and returned your balance. `tripo doctor` reports the key check passing (it reads a placeholder; the proxy swaps in your real key). |
+| 3. CLI can talk to the API? | **Yes** | Tripo CLI 0.11.2 is installed. `tripo doctor` passed every check, including "api reachability" and "balance 640". |
+| 4. Credit balance readable? | **Yes: 640 credits, 0 frozen** | `tripo balance` returned the same as the direct call. |
+| 5. Development agents can use it? | **Yes** | I had one of your project agents (`gameplay-visual-testing`) run `tripo balance` in its own process: 640 credits, no errors. The other four have the same command-line access and the same network path. |
+
+My first direct call returned a 404 because I used the wrong address; the CLI uses `/v3/account/balance`, and that one works. No paid command was run, so nothing was spent. Before any 3D generation (`tripo make`, `tripo ai` or `tripo redo`), I'll ask you first with the exact job and its estimated credit cost. You don't need to change anything in Network secrets.
+
+The Level 1 proofs and the full recording are still running in the background. I'll continue with them and the final report when they finish.
+
+---
+
+### Automatic check · 2026-11-08 12:51 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-08 12:51 UTC
+
+The leftover change was the pixel-identity proof log, which the background proof run is still writing to. It's committed and pushed as `f213c2a` on `ccr-50c66592-kcnqoy`, and the push is confirmed on GitHub. That log will keep changing until the proofs finish; the 5-minute autosave picks up each update.
+
+Tripo is still connected and verified, with 640 credits and nothing spent. The Level 1 identity proofs and the full recording are still running. When they finish I'll continue with the second-route clip, the performance numbers, the side-by-side sheets and the final report.
+
