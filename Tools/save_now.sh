@@ -86,7 +86,7 @@ if [ -n "$files" ]; then
 else
   echo "Files saved: none new (GitHub already had everything)"
 fi
-if [ -n "$held" ]; then echo "Held back (not saved this round):$held"; echo "  (SECRET = a key or token pattern: remove it from the file; BUSY = still being written: the next round saves it)"; fi
+if [ -n "$held" ]; then echo "Held back (not saved this round):$held"; echo "  (SECRET = a key or token pattern: remove it from the file; BUSY = still being written: the next round saves it; LARGE = over 95 MB, GitHub refuses 100 MB: use Git LFS or make it smaller)"; fi
 # one line per round in the container's save history (the durable record is GitHub's own commit list)
 mkdir -p "$HOME/.bubblewash-autosave" && echo "$NOW branch=$BRANCH commit=$HEAD_SHA committed=${committed%% *} github=$([ "$remote" = "$HEAD_SHA" ] && echo VERIFIED || echo FAILED:${remote:-none})$([ -n "$held" ] && echo " held=$(printf '%s' "$held" | grep -c .)")" >> "$HOME/.bubblewash-autosave/save_history.log"
 [ "$remote" = "$HEAD_SHA" ]

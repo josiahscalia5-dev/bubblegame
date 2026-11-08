@@ -44,6 +44,15 @@ for ((i = 1; i <= ROUNDS; i++)); do
   fi
   bash Tools/save_now.sh "Auto-save $(date -u '+%Y-%m-%d %H:%M') UTC: latest work in progress, chat history and design agents" \
     "Automatic save at the user's request (every ${MINUTES} minutes): the chat history, the design agents' transcripts and a snapshot of each agent's unfinished work. Work branch only; nothing is merged."
+  # (8 November, session 57091b57) BW_PARENT_BRANCH: the branch this one continues (another session may still be writing it). Report only,
+  # never merge it here: a merge would change files under a running build, recording or edit. Fetching moves only origin/<parent>.
+  if [ -n "${BW_PARENT_BRANCH:-}" ] && [ "$BW_PARENT_BRANCH" != "$START_BRANCH" ]; then
+    if git fetch -q origin "$BW_PARENT_BRANCH" 2>/dev/null; then
+      behind="$(git rev-list --count "HEAD..origin/$BW_PARENT_BRANCH" 2>/dev/null || echo '?')"
+      if [ "$behind" = "0" ]; then echo "Parent:    $BW_PARENT_BRANCH (GitHub $(git rev-parse --short origin/$BW_PARENT_BRANCH)) is fully merged into $START_BRANCH"
+      else echo "Parent:    $BW_PARENT_BRANCH (GitHub $(git rev-parse --short origin/$BW_PARENT_BRANCH)) has $behind commit(s) not yet in $START_BRANCH; merge by hand: git merge --no-edit origin/$BW_PARENT_BRANCH"; fi
+    else echo "Parent:    could not fetch $BW_PARENT_BRANCH this round"; fi
+  fi
   if [ "$i" -lt "$ROUNDS" ]; then sleep $((MINUTES * 60)); fi
 done
 echo "$(date -u +%H:%M) finished all $ROUNDS rounds; start it again to keep saving"

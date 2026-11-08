@@ -12,6 +12,9 @@ names = subprocess.run(['git', 'diff', '--cached', '--name-only', '--diff-filter
 now = time.time(); hold = {}
 for f in filter(None, names):
     if f.lower().endswith(MEDIA) and os.path.exists(f) and now - os.path.getmtime(f) < 30: hold[f] = 'BUSY'
+    # (8 November, session 57091b57) GitHub refuses any file over 100 MB, and one such file would make EVERY later push fail:
+    # hold it back (it stays on disk) and report it, so the rest keeps saving; store it with Git LFS or split it by hand
+    elif os.path.isfile(f) and os.path.getsize(f) > 95 * 1024 * 1024: hold[f] = 'LARGE'
 diff = subprocess.run(['git', 'diff', '--cached', '-U0', '--no-color', '--no-ext-diff', '--diff-filter=AM'], capture_output=True).stdout.decode('utf-8', 'replace')
 cur = None
 for line in diff.split('\n'):

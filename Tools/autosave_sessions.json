@@ -46,5 +46,12 @@
     "agents": "ChatHistory/2026-11-08_session_b0abcf95_design_agent_transcripts.md",
     "title": "Session b0abcf95 (8 November, account transfer): restoration and the 10-beat Level 1 gameplay on branch ccr-50c66592-kcnqoy",
     "url": "https://claude.ai/code/session_01CUAtW8wdgwPxistiKwJw7V"
+  },
+  "57091b57-ea17-50e0-96e3-a3dcec8c9b4a": {
+    "chat": "ChatHistory/2026-11-08_session_57091b57.md",
+    "agents": "ChatHistory/2026-11-08_session_57091b57_design_agent_transcripts.md",
+    "title": "Session 57091b57 (8 November, account transfer): autosave verification and Tripo asset pass on branch ccr-b67aeffb-d94mmq",
+    "url": "https://claude.ai/code/session_013kxR3NgrYJJC9HLHZ7n41J",
+    "parent": "ccr-50c66592-kcnqoy"
   }
 }
