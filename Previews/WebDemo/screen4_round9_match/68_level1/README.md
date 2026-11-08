@@ -65,7 +65,20 @@ A real-time three.js scene in its own canvas behind the real UI (top bar, titles
 - The first 4.7 s (the accepted Screen 4 drum) keep their accepted look, which includes the camera-fixed parts listed above;
   the strongest travel cues (hoops, rings, metal, wall water fixed to the world) start where the course begins.
 
-## Proofs
+## Proofs (final build `992bd377`, 8 November)
 
-See `proofs/identity.txt`, `proofs/*_compare.txt`, `proofs/motion_trace_gameplay.txt` and the recording in `videos/` (filled in
-below when each run finishes).
+- **Identity** (`proofs/identity.txt`, `scripts/identity.sh`): against the bundle before this work (`2e9ce682`), 0 pixels differ for
+  the accepted `?s3=intunnel` (Tap to Start, +1 s, +3 s), the normal game (Tap to Start, +1 s), the candidate
+  `?s3=intunnel,structmatch` (Tap to Start, +1 s, +3 s), `noswim2` and `blend`; with `level1`, Tap to Start is 0 px against the
+  candidate; at +3 s 317,427 px differ (the drum's rings stream at her speed, her swim strokes): intended.
+- **Gameplay** (`scripts/gameplay.sh`): the seeded swipe-and-jump motion trace, 152 frames x 17 gameplay fields: 0 differences;
+  `s3_func` and `r2_func` differ only where the run no longer loops (the candidate is back at 7.3 m with 0 socks after the drum;
+  level1 goes on to 41 m with its sock; the 4th and 5th knocks of `r2_func` happen on the course's brushes, hearts and the restart
+  behave the same). Cost at Tap to Start: 322 draw calls with level1 against 211 (the course ahead; to be culled).
+- **The continuous phone recording** (`videos/full_sequence_home_toss_washer_level1_pixel7.mp4`, 48.5 s, 412 x 916, 20 frames
+  per game second, seed 7, every frame the real game; swipes labelled by the recorder): Home, Laundry Toss, START, the toss, the
+  character carried into the washer, the entry and landing, Tap to Start, the run through every section with swipes, Level
+  Complete (`videos/record_log.json`: 6 socks, 89 coins, the gem, 5 hearts, 0 knocks, no console errors). Sheet:
+  `videos/full_sequence_contact_sheet.jpg`.
+- **Screens** (`screens/`): the approved Screens 1-2 against the new live 3D versions; the toss, entry and landing;
+  `seed7_TapToStart_ORIGINAL_BEFORE_AFTER.jpg` and `seed7_3.0s_ORIGINAL_BEFORE_AFTER.jpg` against the ORIGINAL Screen 4.

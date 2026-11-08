@@ -1,0 +1,70 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "home",
+  "level1"
+ ],
+ "fps": 20,
+ "frames": 970,
+ "log": [
+  [
+   "opening done at frame",
+   183
+  ],
+  [
+   0.05,
+   2.07,
+   "Washer drum"
+  ],
+  [
+   5.05,
+   49.18,
+   "Spinning brushes"
+  ],
+  [
+   10.05,
+   95.85,
+   "Treasure run"
+  ],
+  [
+   15.05,
+   142.51,
+   "Soap bars"
+  ],
+  [
+   20.05,
+   193.56,
+   "The drop"
+  ],
+  [
+   25.05,
+   240.55,
+   "Grime balls"
+  ],
+  [
+   30.05,
+   287.58,
+   "Bubble Kingdom"
+  ],
+  [
+   35.05,
+   337.82,
+   "Bubble Kingdom"
+  ]
+ ],
+ "final": {
+  "phase": "complete",
+  "coins": 1369,
+  "gems": 37,
+  "socks": 6,
+  "hearts": 5,
+  "knocks": 0,
+  "l1": {
+   "u": 341.74,
+   "section": "Bubble Kingdom",
+   "complete": true
+  }
+ },
+ "errors": []
+}
