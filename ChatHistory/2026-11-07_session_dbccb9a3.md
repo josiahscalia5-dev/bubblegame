@@ -177,3 +177,5 @@ Here's where things stand, then I'll keep going on your mandate.
 
 I'm now building the fix behind a new switch, so the accepted `?s3=intunnel` stays exactly as it is.
 
+Stage A's causes are confirmed in the code. I'm capturing the current candidate at several moments to see what the end of the tunnel looks like before I extend it.
+
