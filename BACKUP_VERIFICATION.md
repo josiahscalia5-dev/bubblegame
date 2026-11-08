@@ -17,4 +17,11 @@
 
 ## Clean-clone restore test
 A fresh `git clone --depth 1 -b claude/bubble-wash-account-transfer-52t7ym` from GitHub into an empty folder (code checkpoint `27eae349`), then the
-model files' magic bytes, `npm ci`, `node build.mjs` and a comparison of the rebuilt bundle with the committed one. Result: PENDING (filled in below).
+model files' magic bytes, `npm ci`, `node build.mjs` and a comparison of the rebuilt bundle with the committed one.
+**RESTORE TEST: PASS** (8 Nov ~00:10 UTC). A FULL clone of this repository (about 6 GB: the evidence images) exceeded the cloud session's disk
+allowance (the first attempt filled it and was deleted), so the test used a fresh BLOBLESS SPARSE clone from GitHub (`git clone --filter=blob:none
+--depth 1 -b claude/bubble-wash-account-transfer-52t7ym` + `git sparse-checkout set WebDemo .claude Tools Design/TripoDeliveries/2026-11-08_Six_Assets_from_user
+Design/ReferencePacks/Six_Scene_New_Direction`): clone head `d2a2ff194ea8df26547ce636df6a65cec3a02e54` in 6 s, 119 MB checked out; all seven handoff
+documents, `CLAUDE.md`, `.mcp.json` and the five agents present; every GLB checked starts with `glTF` (real binaries); 20 six-scene references;
+`npm ci` exit 0; `node build.mjs` exit 0; **the rebuilt bundle is IDENTICAL to the committed one** (`76581f46`).
+Tip for the next account: the cloud session clones the repository itself; for a manual second copy use the same blobless sparse clone.
