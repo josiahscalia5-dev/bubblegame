@@ -221,11 +221,13 @@ void main() {
 // and its far sheen use each point's own half width, vHalf)
 const WATER_VERT_WET = WATER_VERT.replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'attribute float aHalf; varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
   .replace('vXU = aXU; float h', 'vXU = aXU; vHalf = aHalf; float h');
-// (the waves' crest-and-trough shade fades out with distance: over the chamber's long, grazing far water it aliased into thin
-// dark lines across it)
+// (over the chamber's long, grazing far water its noise aliased into thin dark lines across it: where the current's pattern
+// changes faster than a pixel (fwidth), its colour goes to its mean blue and its flecks fade; the waves' shade fades with distance)
 const waterFragWet = () => waterFrag().replace(' uniform float uHalf;', '').replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
   .replaceAll('uHalf', 'vHalf')
-  .replace('col *= 0.86 + 1.6 * clamp(vH, -0.05, 0.12);', 'col *= mix(0.86 + 1.6 * clamp(vH, -0.05, 0.12), 1.0, smoothstep(9.0, 26.0, length(vW - uCam)));');
+  .replace('col *= 0.86 + 1.6 * clamp(vH, -0.05, 0.12);', 'float aaW = clamp(fwidth(uf) * 0.9 - 0.12, 0.0, 1.0); col = mix(col, vec3(0.012, 0.1, 0.7), aaW);\n  col *= mix(0.86 + 1.6 * clamp(vH, -0.05, 0.12), 1.0, smoothstep(9.0, 26.0, length(vW - uCam)));')
+  .replace('* (0.35 + 0.65 * side);', '* (0.35 + 0.65 * side) * (1.0 - aaW);')
+  .replace('float glint = smoothstep(0.82, 0.9, l1n(vec2(x * 11.0, uf * 5.0 + t))) * 0.6;', 'float glint = smoothstep(0.82, 0.9, l1n(vec2(x * 11.0, uf * 5.0 + t))) * 0.6 * (1.0 - aaW);');
 
 // ---------------------------------------------------------------- the Bubble Kingdom's sky (follows the camera)
 const SKY_FRAG = /* glsl */ `
@@ -307,7 +309,9 @@ export function buildLevel1(ctx) {
   } else {
     // (wet) one water, its half width following the drum and the chamber to their walls, then out through the portal into the
     // castle's lagoon (seen only through the portal)
-    const wetWaterMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uRider: riderU }, vertexShader: WATER_VERT_WET, fragmentShader: waterFragWet() });
+    // (double-sided: over the chamber's long far water, seen at a grazing angle, the wave faces leaning away were culled and
+    // left thin see-through lines across it)
+    const wetWaterMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uRider: riderU }, vertexShader: WATER_VERT_WET, fragmentShader: waterFragWet(), side: THREE.DoubleSide });
     const wHalf = (u) => (u <= K.end ? halfAt(u) : halfAt(K.end) + (K.lagoon - halfAt(K.end)) * smooth(K.end, K.end + 12, u));
     const wetChunk = (u0, u1) => {
       const nx = 96, rows = Math.max(2, Math.ceil((u1 - u0) / 0.4) + 1), cols = nx + 1;   // (one column count for every chunk: their edges meet exactly, no cracks)
