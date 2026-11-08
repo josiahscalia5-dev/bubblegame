@@ -209,10 +209,30 @@ export function structFurFragment(src, constBase) {
     c = mat3(${col(0)}, ${col(1)}, ${col(2)}) * c;
     float stL = dot(c, vec3(0.2126, 0.7152, 0.0722));
     c = max(stL + (c - stL) * ${f4(F.sat)}, 0.0) * ${f4(F.gain)};
-  }
+  }${STRUCT_PARTS.match6 ? match6FurGLSL() : ''}
   gl_FragColor = vec4(c, 1.0);`);
   if (constBase) s = s.replace('vec3 base = texture2D(map, vUv).rgb;', `vec3 base = vec3(${constBase.map(f4).join(', ')});`);
   return s;
+}
+// match6: the ORIGINAL's fur look (measured in five height bands of her dome at Tap to Start: the ORIGINAL's crown paler, G / B
+// 0.50 / 0.90 against match5's 0.42 / 0.79; its lower half darker, luminance medians 0.42 / 0.37 against 0.47 / 0.43; and more
+// contrast between strands, quartile spread 0.25-0.29 against 0.17-0.19): strand bundles radiating from the whorl high on her
+// back (seen from the camera), dark grooves between them, a paler backlit crown and a deeper base. Her own frame: her centre and
+// up (the fur's uniforms) and the camera's side, so the bundles stay on her as she swims.
+function match6FurGLSL() {
+  const K = SHELL_FUR6.look;
+  return `
+  {   // ?s3=intunnel,structmatch (match6): radiating strand bundles, paler crown, deeper base (tunnel_s4_struct.js SHELL_FUR6.look)
+    vec3 toCam = cameraPosition - uCentre, Vh = normalize(toCam - uUp * dot(toCam, uUp) + vec3(1e-4, 0.0, 0.0));
+    vec3 A = normalize(uUp * ${f4(K.whorl[0])} + Vh * ${f4(K.whorl[1])}), e1 = normalize(cross(uUp, Vh)), e2 = normalize(cross(A, e1));
+    vec3 d = Ns - A * dot(Ns, A); float sd = length(d), phi = atan(dot(d, e2), dot(d, e1));
+    float ring = floor(sd * ${f4(K.rings)});
+    float ph = phi * ${f4(K.bundles / (2 * Math.PI))} + bwHash(vec2(ring, 3.1)) * 0.5 + ${f4(K.wave)} * sin(sd * 9.0 + phi * 3.0);
+    float fb = fract(ph), pr = smoothstep(0.0, 0.5, fb) * smoothstep(1.0, 0.5, fb), vr = bwHash(vec2(floor(ph), ring + 7.0));
+    c *= mix(1.0, mix(${f4(K.groove)}, 1.0 + ${f4(K.lift)} * vr, pow(pr, 0.7)), smoothstep(0.06, 0.3, sd));
+    c *= mix(${f4(K.base)}, 1.0, smoothstep(${f4(K.baseH[0])}, ${f4(K.baseH[1])}, hgt));
+    c = mix(c, c * ${f4(K.crownMul)} + vec3(${K.crownAdd.map(f4).join(', ')}), smoothstep(${f4(K.crownH[0])}, ${f4(K.crownH[1])}, hgt) * smoothstep(0.2, 0.9, 1.0 - sd * 0.6));
+  }`;
 }
 // the fill between her legs: an ellipsoid inside her lower body, drawn with her fur's light (a constant fur colour)
 export function structFill(model, furUniforms, furVertex, furFragment) {
@@ -240,9 +260,13 @@ export const SHELL_FUR5 = { layers: 8, len: 0.22, lean: 0.5, comb: 0.45, density
 // them (nub: |x| from x0 to x1, y from y0 to y1 of her model, len x nubK), radiating from the whorl (her model's own point;
 // her back faces +z) with a little gravity (grav), shorter where they part at the whorl (part)
 export const SHELL_FUR6 = { layers: 8, len: 0.2, lean: 0.4, comb: 0.6, grav: 0.35, whorl: [0.0, 0.62, 0.55], part: 0.4,
-  nub: { x0: 0.66, x1: 0.84, y0: 0.0, y1: 0.62, k: 0.22 }, density: 74, thick: 0.3, tip: 0.2, root: 0.6,
+  nub: { x0: 0.66, x1: 0.84, y0: 0.0, y1: 0.62, k: 0.22 }, density: 56, thick: 0.34, tip: 0.24, root: 0.6,
   push: { x0: 0.74, x1: 0.9, y0: 0.08, y1: 0.55, out: 0.1, down: 0.12 },
-  crown: { R: 0.98, h0: 0.34, h1: 0.56 } };   // (structCrown: her crown a broader arc, as the ORIGINAL's dome)   // (structCrown: the nubs' drawn mesh moved out and down)
+  crown: { R: 0.98, h0: 0.34, h1: 0.56 },
+  // her fur's look (match6FurGLSL): the whorl's direction (up, toward the camera), bundles round it, rows of them outward,
+  // their wobble, the grooves' and the bundles' shade, the base's shade over height (hgt -1 at the water .. +1 on top), the crown
+  look: { whorl: [0.85, 0.5], bundles: 40, rings: 6, wave: 0.3, groove: 0.5, lift: 0.3, base: 0.84, baseH: [-0.6, 0.6],
+    crownMul: 0.72, crownAdd: [0.2, 0.16, 0.3], crownH: [0.35, 0.95] } };   // (structCrown: her crown a broader arc, as the ORIGINAL's dome)   // (structCrown: the nubs' drawn mesh moved out and down)
 export const SHELL_FUR = { layers: 6, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
 const SHELL_VERTEX = /* glsl */ `
 attribute float aLayer;
