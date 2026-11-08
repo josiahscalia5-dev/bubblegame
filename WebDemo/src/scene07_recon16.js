@@ -22,7 +22,10 @@ export const RECON16_ON = LIST.includes('scene07') && !LIST.includes('norecon16'
 // by 77_.../scripts/make_backdrop_art.py: the HUD, banner and enemy removed, the housing and everything below the far water line faded out)
 // PROJECTED from the approved checkpoint camera onto the chamber's real walls, vault and far end (camera projection mapping): exact from the
 // approved viewpoint, real depth and parallax as the camera moves. `,noart16` = the geometry-only reconstruction.
-export const ART16_ON = RECON16_ON && !LIST.includes('noart16');
+export const ART16_ON = RECON16_ON && LIST.includes('art16');   // (opt-in only: the user rejected cards / projection for this scenery, 8 Nov ~20:20 UTC)
+// MACH16 (the user's strict mandate, 8 Nov ~20:20 UTC: "BUILD ACTUAL 3D SCENERY ... NO FAKE BACKGROUND SHORTCUTS"): the original's machinery as
+// real 3D towers on both sides, the far end's arch, stacks and glowing washer door, and pipes joining the two sides; `,nomach16` = without.
+export const MACH16_ON = RECON16_ON && !ART16_ON && !LIST.includes('nomach16');
 export const ART16 = {
   file: 'textures/scene07/backdrop_art.webp',
   // the game camera at the checkpoint (u 229.5, centre lane, 412 x 915), measured in track space (77_.../README): the projector
@@ -55,6 +58,30 @@ export const RECON16 = {
   endWall: { gap: 3.05, ds: 0.72 },   // machinery on the far end wall round the opening (radius gap m round its centre)
   glow: { r: 4.2, opacity: 1.0, du: 2.5, fade: [8, 16] },   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
+};
+// MACH16 placements, fitted with the projection grid of the real camera at the u 229.5 checkpoint (77_.../scripts): the screen positions of
+// the master's machinery (the green-topped machine at (0.31, 0.29), the towers behind the housing at the top left, the right towers and
+// bubbles at (0.85-1.0, 0.3-0.5), the far arch round the bright vanishing point). Modules: ['w', height, width, body, glass] a washer unit
+// (rounded body, round glowing door with gold and pink rings, a gold control strip with buttons); ['t', height, radius, body, dome] a tank
+// (gold bands, a porthole, a dome); ['d', radius, colour] a dome. Each tower stands on the ledge (left) or the deck (right) and faces the camera.
+export const MACH16 = {
+  cam: [-0.62, 226.7],
+  towers: [
+    [240.8, 3.95, 1.95, [['w', 1.45, 1.6, 'deep', 'c'], ['w', 1.3, 1.45, 'lav', 'p'], ['t', 1.5, 0.62, 'cream', 'pink']]],
+    [243.9, 2.8, 1.95, [['w', 1.1, 1.3, 'cream', 'c'], ['t', 2.0, 0.62, 'pink', 'mint']]],          // the master's green-topped machine
+    [246.7, 3.7, 1.95, [['w', 1.25, 1.4, 'blue', 'p'], ['w', 1.2, 1.3, 'lav', 'c'], ['t', 1.0, 0.5, 'deep', 'pink']]],
+    [249.6, 2.75, 1.95, [['t', 1.9, 0.55, 'blue', 'gold']]],
+    [252.0, 3.6, 1.95, [['w', 1.3, 1.4, 'cream', 'c'], ['t', 1.3, 0.55, 'lav', 'pink']]],
+    [241.2, -3.3, 0.12, [['t', 2.8, 0.7, 'lav', 'pink']]],
+    [244.3, -2.7, 0.12, [['w', 1.35, 1.4, 'pink', 'c'], ['w', 1.25, 1.3, 'lav', 'p'], ['d', 0.6, 'mint']]],
+    [247.6, -3.6, 0.12, [['t', 3.3, 0.75, 'blue', 'mint']]],
+    [250.6, -2.6, 0.12, [['w', 1.4, 1.45, 'cream', 'p'], ['t', 1.3, 0.55, 'pink', 'gold']]],
+    [252.9, -3.7, 0.12, [['w', 1.3, 1.4, 'blue', 'c'], ['w', 1.3, 1.4, 'lav', 'p'], ['w', 1.1, 1.2, 'pink', 'c']]],
+  ],
+  pipes: [[0, 5, 'lav'], [2, 7, 'blue'], [4, 9, 'rose']],   // [left tower, right tower, colour]: curved pipes over the channel, top to top
+  far: { u: 253.45, arch: [2.72, 3.4], door: { h: 5.3, r: 0.95 },
+    stacks: [[3.55, [['w', 1.4, 1.5, 'lav', 'c'], ['w', 1.3, 1.4, 'blue', 'p'], ['d', 0.55, 'pink']]], [-3.55, [['t', 2.3, 0.62, 'pink', 'mint'], ['w', 1.0, 1.2, 'cream', 'c']]]] },
+  bubbles: [[-2.5, 3.6, 241.5, 0.55], [-3.1, 4.7, 243.0, 0.42], [-2.1, 2.5, 245.2, 0.35], [2.3, 4.9, 242.2, 0.4], [1.8, 3.3, 248.2, 0.3], [-1.9, 4.2, 249.5, 0.3]],
 };
 const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
 const C = { pink: 0xff86c8, rose: 0xff9fd0, lav: 0xc9b2f6, lavDeep: 0x8e6fe0, cream: 0xf7e2c4, blue: 0x7fa8ff, mint: 0x9fe3b8, peach: 0xffc8a2, gold: 0xffdc7a };
@@ -179,7 +206,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     const pl = at(TR, new THREE.Group(), D.x, L.h, D.u); t.add(pl);
     mesh(new RoundedBoxGeometry(1.7, Math.max(0.2, D.h - 1.2 * R - L.h + 0.1), 1.3, 1, 0.08), M.cream, pl, (m) => { m.position.y = Math.max(0.2, D.h - 1.2 * R - L.h + 0.1) / 2; });
     // tiers of machinery beyond the drum on the ledge: lavender tanks with gold bands and domes
-    for (const [u, x, r, h, dome] of ART16_ON ? [] : R16.leftTiers) {
+    for (const [u, x, r, h, dome] of ART16_ON || MACH16_ON ? [] : R16.leftTiers) {
       const q = at(TR, new THREE.Group(), x, L.h, u); t.add(q);
       mesh(new THREE.CylinderGeometry(r, r * 1.05, h, 28), M.lav, q, (m) => { m.position.y = h / 2; });
       for (const f of [0.15, 0.6, 0.95]) mesh(new THREE.TorusGeometry(r * 1.04, 0.05, 6, 28), M.gold, q, (m) => { m.rotation.x = Math.PI / 2; m.position.y = h * f; });
@@ -209,7 +236,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     mesh(new THREE.TorusGeometry(W.R + 0.05, 0.12, 8, 112), M.blueL, g, (m) => flat(m, 0.02));            // the lavender-blue base band
     mesh(new THREE.TorusGeometry(W.R + 0.08, 0.035, 6, 112), M.gold, g, (m) => flat(m, 0.17));
     const cx = -(W.inner + W.R);
-    for (const [u, x, r, h, dome] of ART16_ON ? [] : R16.towers) {
+    for (const [u, x, r, h, dome] of ART16_ON || MACH16_ON ? [] : R16.towers) {
       const q = at(TR, new THREE.Group(), x, (x - cx) ** 2 + (u - W.u) ** 2 < W.R * W.R ? W.H : Ch.deck, u); t.add(q);
       mesh(new THREE.CylinderGeometry(r, r * 1.05, h, 28), M.lav, q, (m) => { m.position.y = h / 2; });
       for (const f of [0.12, 0.55, 0.92]) mesh(new THREE.TorusGeometry(r * 1.04, 0.05, 6, 28), M.gold, q, (m) => { m.rotation.x = Math.PI / 2; m.position.y = h * f; });
@@ -248,7 +275,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
   }
 
   // ---- 4. the upper surfaces covered with layered machinery (instanced) -----------------------------------------------------------------
-  {
+  if (!MACH16_ON) {   // (MACH16 replaces these small blocks: the user, "no simple flat building blocks")
     const Gp = R16.greebles, a = Ch.halfW, b = Ch.height - Ch.wallH;
     // points along the chamber's upper section, by arc length: up the right wall, over the vault, down the left wall
     const path = [];
@@ -315,7 +342,8 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     root.add(g); out.upper = g; out.instances = n;
   }
   const mid = TR.map(0, 2, 242, new THREE.Vector3());
-  for (const k of ['left', 'right', 'arches', 'upper']) items.push({ holder: out[k], turn: null, spin: 0, pos: mid });
+  if (MACH16_ON) out.machines = buildMachines16(root, TR, env, M, std, Ch);
+  for (const k of ['left', 'right', 'arches', 'upper', 'machines']) if (out[k]) items.push({ holder: out[k], turn: null, spin: 0, pos: mid });
   let tris = 0; root.traverse((o) => { if (o.isMesh && /^scene07_r16/.test(o.name)) tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3 * (o.isInstancedMesh ? o.count : 1); });
   return { instances: out.instances, triangles: Math.round(tris) };
 }
@@ -376,4 +404,59 @@ export async function applyArt16(root, TR, Ch, camera) {
     o.instanceMatrix.needsUpdate = true;
   });
   return { cards: cards.length, hidden, update: () => { for (const { C, m, centre } of cards) m.material.uniforms.uOpacity.value = THREE.MathUtils.smoothstep(centre.distanceTo(camera.position), C.fade[0], C.fade[1]); } };
+}
+
+// ---- MACH16 builder ------------------------------------------------------------------------------------------------------------------------
+function buildMachines16(root, TR, env, M, std, Ch) {
+  const K = MACH16, t = new THREE.Group(), P = new THREE.Vector3();
+  const B = { blue: std(0x6f7fe0, 0x24308a, 0.45, { metalness: 0.35, roughness: 0.32 }), deep: std(0x4a56c0, 0x1a2280, 0.42, { metalness: 0.4, roughness: 0.3 }),
+    lav: M.lav, pink: M.pink, rose: M.rose, cream: M.cream, mint: M.mint, gold: M.gold };
+  const G = { c: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.7, 1.15, 1.6) }), p: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.95, 1.35) }) };
+  const lamp = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.3, 0.85) });
+  const add = (g, geo, mat, x, y, z, rx = 0, ry = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); g.add(m); return m; };
+  const door = (g, y, z, r, glass) => {   // a round washer door facing +z
+    add(g, new THREE.TorusGeometry(r, r * 0.13, 10, 36), M.gold, 0, y, z + r * 0.05);
+    add(g, new THREE.TorusGeometry(r * 0.8, r * 0.07, 8, 32), B.pink, 0, y, z + r * 0.08);
+    add(g, new THREE.CircleGeometry(r * 0.74, 28), G[glass] || G.c, 0, y, z + r * 0.04);
+    add(g, new THREE.CircleGeometry(r * 0.2, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.8, 1.9) }), -r * 0.3, y + r * 0.3, z + r * 0.06);
+  };
+  const module = (g, y, md) => {
+    if (md[0] === 'w') { const [, h, w, col, glass] = md, d = w * 0.85;
+      add(g, new RoundedBoxGeometry(w, h, d, 2, Math.min(w, h) * 0.16), B[col], 0, y + h / 2, 0);
+      door(g, y + h * 0.44, d / 2, Math.min(w, h) * 0.3, glass);
+      add(g, new THREE.BoxGeometry(w * 0.78, 0.11, 0.07), M.gold, 0, y + h * 0.86, d / 2 + 0.01);
+      [0xff7fbf, 0x8fe3b0, 0x7fa8ff].forEach((c, i) => add(g, new THREE.SphereGeometry(0.05, 8, 6), new THREE.MeshBasicMaterial({ color: c }), (i - 1) * w * 0.18, y + h * 0.86, d / 2 + 0.06));
+      return h; }
+    if (md[0] === 't') { const [, h, r, col, dome] = md;
+      add(g, new THREE.CylinderGeometry(r, r * 1.05, h, 28), B[col], 0, y + h / 2, 0);
+      for (const f of [0.1, 0.55, 0.94]) add(g, new THREE.TorusGeometry(r * 1.04, 0.045, 6, 28), M.gold, 0, y + h * f, 0, Math.PI / 2);
+      door(g, y + h * 0.36, r * 0.92, r * 0.42, 'c');
+      add(g, new THREE.SphereGeometry(r, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), B[dome] || M.gold, 0, y + h, 0);
+      add(g, new THREE.SphereGeometry(0.09, 10, 8), lamp, 0, y + h + r + 0.05, 0);
+      return h + r * 0.9; }
+    if (md[0] === 'd') { const [, r, col] = md; add(g, new THREE.SphereGeometry(r, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), B[col], 0, y, 0); return r; }
+    return 0;
+  };
+  const stack = (x, base, u, mods) => {   // a tower at (x, base, u) facing the checkpoint camera; returns its top height
+    const g = at(TR, new THREE.Group(), x, base, u, Math.atan2(K.cam[0] - x, K.cam[1] - u)); t.add(g);
+    let y = 0; for (const md of mods) y += module(g, y, md); return base + y;
+  };
+  const tops = K.towers.map(([u, x, base, mods]) => stack(x, base, u, mods));
+  // pipes over the channel, joining a left tower's top to a right tower's top (the two sides are one machine room)
+  const curve = (pts) => new THREE.CatmullRomCurve3(pts.map(([x, h, u]) => TR.map(x, h, u, new THREE.Vector3())));
+  for (const [i, j, col] of K.pipes) {
+    const [ua, xa] = K.towers[i], [ub, xb] = K.towers[j], ha = tops[i] + 0.2, hb = tops[j] + 0.2, hm = Math.max(ha, hb) + 0.7;
+    t.add(new THREE.Mesh(new THREE.TubeGeometry(curve([[xa, ha, ua], [xa * 0.55, hm - 0.2, (ua * 3 + ub) / 4], [0, hm, (ua + ub) / 2], [xb * 0.55, hm - 0.2, (ua + ub * 3) / 4], [xb, hb, ub]]), 40, 0.15, 10, false), B[col]));
+    for (const [x, h, u] of [[xa, ha, ua], [xb, hb, ub]]) { const c = at(TR, new THREE.Group(), x, h, u); t.add(c); add(c, new THREE.CylinderGeometry(0.24, 0.24, 0.22, 16), M.gold, 0, 0, 0); }
+  }
+  // the far end: an arch round the opening (blue-lavender, gold edged), stacks either side, a big glowing washer door above
+  { const F = K.far, g = at(TR, new THREE.Group(), 0, 1.5, F.u); t.add(g); const [ri, ro] = F.arch;
+    const sh = new THREE.Shape(); sh.absarc(0, 0, ro, -0.25, Math.PI + 0.25, false); sh.absarc(0, 0, ri, Math.PI + 0.25, -0.25, true);
+    add(g, new THREE.ExtrudeGeometry(sh, { depth: 0.45, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.06, bevelSegments: 2, curveSegments: 40 }), B.blue, 0, 0, -0.3);
+    for (const r of [ro + 0.04, ri - 0.04]) add(g, new THREE.TorusGeometry(r, 0.06, 6, 64, Math.PI + 0.5), M.gold, 0, 0, 0.18, 0, 0).rotation.z = -0.25;
+    door(g, F.door.h - 1.5, 0.2, F.door.r, 'c');
+    add(g, new RoundedBoxGeometry(F.door.r * 2.6, F.door.r * 2.6, 0.5, 2, 0.3), B.lav, 0, F.door.h - 1.5, -0.1);
+    for (const [x, mods] of F.stacks) stack(x, Ch.deck, F.u - 0.6, mods); }
+  for (const [x, h, u, r] of K.bubbles) { const b = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), M.glass); TR.map(x, h, u, b.position); t.add(b); }
+  return bake(t, root, 'scene07_r16_machines');
 }
