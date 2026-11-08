@@ -7,3 +7,5 @@ candidate start: 0 pixels differ (2e9ce682 ?s3=intunnel,structmatch vs 06f8e1b9 
 candidate T1.0: 0 pixels differ (2e9ce682 ?s3=intunnel,structmatch vs 06f8e1b9 ?s3=intunnel,structmatch)
 candidate T3.0: 0 pixels differ (2e9ce682 ?s3=intunnel,structmatch vs 3048be07 ?s3=intunnel,structmatch)
 noswim2 T1.0: 0 pixels differ (2e9ce682 ?s3=intunnel,noswim2 vs 3048be07 ?s3=intunnel,noswim2)
+blend T1.0: 0 pixels differ (2e9ce682 ?s3=intunnel,blend vs 61802921 ?s3=intunnel,blend)
+level1_vs_candidate start: 0 pixels differ (2e9ce682 ?s3=intunnel,structmatch vs 25c1cc94 ?s3=intunnel,structmatch,level1)

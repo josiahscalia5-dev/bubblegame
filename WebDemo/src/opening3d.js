@@ -24,7 +24,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 export const OPENING3D = {
   seqEnd: 6.1, handOver: 5.15, fade: 0.8,       // seconds after START: the game is released and the view fades into it
   porthole: new THREE.Vector3(0.3, 0.62, 0.27), rOpen: 0.28,
-  waterY: 0.43,
+  waterY: 0.385, heroW: 0.42,   // (the water low in the opening, so the swirl shows; his width in the opening, m)
 };
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -104,7 +104,7 @@ function buildGirl(rnd) {
   const face = new THREE.Group(); face.position.set(0, -0.02, 0.0); head.add(face);
   const eyes = [], lids = [], brows = [];
   for (const s of [-1, 1]) {
-    const eg = new THREE.Group(); eg.position.set(s * 0.072, 0.01, 0.16); eg.rotation.y = s * 0.28; face.add(eg);
+    const eg = new THREE.Group(); eg.position.set(s * 0.074, 0.012, 0.158); eg.rotation.y = s * 0.28; eg.scale.setScalar(1.18); face.add(eg);   // (big, bright cartoon eyes)
     const scl = sph(0.05, white, 20, 16); scl.scale.set(0.9, 1.12, 0.5); eg.add(scl);
     const ir = sph(0.034, iris, 18, 14); ir.scale.set(1, 1.1, 0.45); ir.position.z = 0.02; eg.add(ir);
     const pu = sph(0.019, dark, 14, 10); pu.scale.set(1, 1.1, 0.4); pu.position.z = 0.033; eg.add(pu);
@@ -205,7 +205,7 @@ function buildTowel(col) {
 // ---------------------------------------------------------------- the washer
 function buildWasher(env) {
   const P = OPENING3D.porthole, g = new THREE.Group(); g.name = 'washer';
-  const silver = new THREE.MeshStandardMaterial({ color: 0xe6e1f4, metalness: 0.55, roughness: 0.3, envMap: env, envMapIntensity: 1.0, emissive: 0x4a3a7a, emissiveIntensity: 0.18 });
+  const silver = new THREE.MeshStandardMaterial({ color: 0xd6d0f2, metalness: 0.78, roughness: 0.2, envMap: env, envMapIntensity: 1.5, emissive: 0x2a2050, emissiveIntensity: 0.22 });
   const goldM = new THREE.MeshStandardMaterial({ color: 0xffc552, metalness: 1, roughness: 0.22, envMap: env, envMapIntensity: 1.4, emissive: 0x8a5200, emissiveIntensity: 0.45 });
   const W = 0.98, H = 1.12, D = 0.9, x0 = P.x - 0.0, zf = P.z - 0.01;
   // the front panel with the round opening
@@ -278,12 +278,13 @@ function buildVortex() {
     for (let j = 0; j <= nx; j++) { const x = -hw + 2 * hw * j / nx; wpos.push(P.x + x, wl, P.z - d + 0.04); wuv.push(x, d); } }
   for (let i = 0; i < n; i++) for (let j = 0; j < nx; j++) { const a = i * (nx + 1) + j, b = a + nx + 1; widx.push(a, a + 1, b, b, a + 1, b + 1); }
   const wg = new THREE.BufferGeometry(); wg.setAttribute('position', new THREE.Float32BufferAttribute(wpos, 3)); wg.setAttribute('aXD', new THREE.Float32BufferAttribute(wuv, 2)); wg.setIndex(widx);
-  const WU = { uTime: U.uTime, uFlow: U.uFlow, uHit: { value: new THREE.Vector3(0, 0, -99) } };
+  const WU = { uTime: U.uTime, uFlow: U.uFlow, uHit: { value: new THREE.Vector3(0, 0, -99) }, uFrom: { value: 2.4 } };   // uFrom: where the water begins (m in); deep while waiting, so the opening shows the swirl
   const wmat = new THREE.ShaderMaterial({ uniforms: WU,
     vertexShader: 'attribute vec2 aXD; uniform float uTime; varying vec2 vXD; void main() { vXD = aXD; vec3 p = position; p.y += 0.012 * sin(aXD.y * 7.0 - uTime * 4.0 + aXD.x * 9.0); gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }',
-    fragmentShader: /* glsl */ `uniform float uTime, uFlow; uniform vec3 uHit; varying vec2 vXD; ${NOISE}
+    fragmentShader: /* glsl */ `uniform float uTime, uFlow, uFrom; uniform vec3 uHit; varying vec2 vXD; ${NOISE}
       void main() {
         float x = vXD.x, d = vXD.y, df = d - uTime * 0.9 - uFlow;
+        if (d < uFrom) discard;
         float n = o3f(vec2(x * 4.0, df * 1.6)), n2 = o3f(vec2(x * 9.0 + 4.0, df * 3.5));
         vec3 c = mix(vec3(0.02, 0.18, 0.75), vec3(0.1, 0.45, 1.0), smoothstep(0.3, 0.7, n));
         c = mix(c, vec3(0.25, 0.85, 1.0), smoothstep(0.55, 0.85, n2) * 0.7);
@@ -424,13 +425,13 @@ export function mountOpening3D(container, opts = {}) {
   const room = buildRoom(env, rnd); scene.add(room);
   const washer = buildWasher(env); scene.add(washer.g);
   const vortex = buildVortex(); scene.add(vortex.tube, vortex.cap, vortex.water);
-  const girl = buildGirl(rnd); girl.root.position.set(-0.27, 0.38, -0.3); girl.root.rotation.y = 0.1; girl.root.scale.setScalar(1.05); scene.add(girl.root);
+  const girl = buildGirl(rnd); girl.root.position.set(-0.36, 0.42, -0.2); girl.root.rotation.y = 0.18; girl.root.scale.setScalar(1.08); scene.add(girl.root);
   const basket = buildBasket(); scene.add(basket);
   // laundry that flies: two socks, three towels
   const laundry = [];
   for (let i = 0; i < 5; i++) {
     const o = i < 2 ? buildSock(rnd) : buildTowel([0xffd34d, 0x6fb6ff, 0xff8ccf][i - 2]);
-    o.visible = false; scene.add(o);
+    o.scale.setScalar(1.45); o.userData.k = 1.45; o.visible = false; scene.add(o);
     laundry.push({ o, t0: 0.42 + i * 0.06, t1: 1.45 + i * 0.1, from: V([-0.02 + (rnd() - 0.5) * 0.08, 1.35, 0.15]), apex: V([0.32 + rnd() * 0.35, 2.3 + rnd() * 0.25, 0.45 + rnd() * 0.2]),
       to: V([OPENING3D.porthole.x + (rnd() - 0.5) * 0.15, OPENING3D.porthole.y + (rnd() - 0.5) * 0.12, OPENING3D.porthole.z - 0.2]), spin: V([rnd() * 9 - 4.5, rnd() * 9 - 4.5, rnd() * 9 - 4.5]) });
   }
@@ -440,8 +441,28 @@ export function mountOpening3D(container, opts = {}) {
   const bub = [];
   for (let i = 0; i < nb; i++) {
     const front = i < 26;
-    bub.push(front ? { p: V([-0.75 + rnd() * 1.8, -0.02 + rnd() * 0.2, 0.55 + rnd() * 0.45]), s: 0.06 + rnd() * 0.11, rise: 0, ph: rnd() * 6 }
+    bub.push(front ? { p: V([-0.75 + rnd() * 1.8, 0.1 + rnd() * 0.3, 0.45 + rnd() * 0.45]), s: 0.03 + rnd() * 0.06, rise: 0, ph: rnd() * 6 }
       : { p: V([-0.7 + rnd() * 1.7, 0.2 + rnd() * 1.8, -0.6 + rnd() * 1.2]), s: 0.025 + rnd() * 0.05, rise: 0.06 + rnd() * 0.08, ph: rnd() * 6 });
+  }
+  // foreground bubbles as in the approved art: glossy lavender, pink and sky-blue spheres heaped along the bottom
+  const fbM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.08, metalness: 0, envMap: env, envMapIntensity: 1.6, transparent: true, opacity: 0.78, iridescence: 0.8, iridescenceIOR: 1.3, clearcoat: 1, emissive: 0x6a4aa0, emissiveIntensity: 0.25 });
+  const nf = 24, front = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 28, 18), fbM, nf); front.frustumCulled = false; scene.add(front);
+  const fcols = [0xc6b0ff, 0xffb6e4, 0xa9d8ff, 0xe0c8ff, 0xffd0f0];
+  const fb = []; for (let i = 0; i < nf; i++) { fb.push({ p: V([-0.72 + rnd() * 1.6, 0.0 + rnd() * 0.16, 0.6 + rnd() * 0.5]), s: 0.07 + rnd() * 0.12, ph: rnd() * 6 }); front.setColorAt(i, new THREE.Color(fcols[i % fcols.length])); }
+  front.instanceColor.needsUpdate = true;
+  // white foam and little bubbles along the lower inner rim of the washer's opening (the approved art's foam in the vortex)
+  const foamM = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.25, metalness: 0, envMap: env, emissive: 0xbfe8ff, emissiveIntensity: 0.55 });
+  const nfo = 70, foam = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 12, 8), foamM, nfo); foam.frustumCulled = false; scene.add(foam);
+  const fo = []; for (let i = 0; i < nfo; i++) { const a = Math.PI * (1.08 + rnd() * 0.84), r = OPENING3D.rOpen * (0.72 + rnd() * 0.24); fo.push({ x: Math.cos(a) * r, y: Math.sin(a) * r, z: -0.03 - rnd() * 0.18, s: 0.012 + rnd() * 0.028, ph: rnd() * 6 }); }
+  // the pink toss arrow (as in the approved Screens 1 and 2): from the character's perch, curving down into the opening
+  const arrow = new THREE.Group(); arrow.name = 'tossArrow'; scene.add(arrow);
+  {
+    const curve = new THREE.QuadraticBezierCurve3(V([0.0, 1.2, 0.42]), V([0.42, 1.28, 0.5]), V([OPENING3D.porthole.x + 0.02, OPENING3D.porthole.y + 0.1, OPENING3D.porthole.z + 0.24]));
+    const pinkM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.35, 1.05), transparent: true }), lineM = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide, transparent: true });
+    arrow.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 0.02, 10), pinkM), new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 0.031, 10), lineM));
+    const end = curve.getPoint(1), tan = curve.getTangent(1);
+    for (const [m, k] of [[pinkM, 1], [lineM, 1.3]]) { const c = new THREE.Mesh(new THREE.ConeGeometry(0.05 * k, 0.1 * k, 16), m); c.position.copy(end).addScaledVector(tan, 0.03); c.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tan); arrow.add(c); }
+    arrow.userData.mats = [pinkM, lineM];
   }
   const sparks = new Puffs(160, 0xffc8f4, 0.05), splash = new Puffs(140, 0xd8f6ff, 0.045);
   scene.add(sparks.points, splash.points);
@@ -454,12 +475,12 @@ export function mountOpening3D(container, opts = {}) {
     const m = gl.scene; let map = null;
     m.traverse((o) => { if (o.isMesh) { map = o.material.map; o.geometry.computeVertexNormals(); o.material = new THREE.MeshStandardMaterial({ map, color: 0xffd0ee, roughness: 1, metalness: 0, emissive: 0xff2aa6, emissiveMap: map, emissiveIntensity: 0.42, side: THREE.DoubleSide }); } });
     const box = new THREE.Box3().setFromObject(m), size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
-    const s = 0.34 / size.x; m.scale.setScalar(s); m.position.copy(mid).multiplyScalar(-s); heroBody.add(m);
+    const s = OPENING3D.heroW / size.x; m.scale.setScalar(s); m.position.copy(mid).multiplyScalar(-s); heroBody.add(m);
     // face on its front (+Z): big blue eyes with highlights, eyelids for blinks, an open smile and an O for surprise
-    const fz = size.z * s * 0.47, white = new THREE.MeshBasicMaterial({ color: 0xffffff }), blue = new THREE.MeshBasicMaterial({ color: 0x2f86e8 }), dark = new THREE.MeshBasicMaterial({ color: 0x101020 });
+    const fk = OPENING3D.heroW / 0.34, fz = size.z * s * 0.47, white = new THREE.MeshBasicMaterial({ color: 0xffffff }), blue = new THREE.MeshBasicMaterial({ color: 0x2f86e8 }), dark = new THREE.MeshBasicMaterial({ color: 0x101020 });
     const lidM = new THREE.MeshStandardMaterial({ map, color: 0xffd0ee, emissive: 0xff2aa6, emissiveMap: map, emissiveIntensity: 0.42, roughness: 1 });
     for (const sx of [-1, 1]) {
-      const eg = new THREE.Group(); eg.position.set(sx * 0.055, 0.035, fz); eg.rotation.y = sx * 0.3; heroBody.add(eg);
+      const eg = new THREE.Group(); eg.position.set(sx * 0.055 * fk, 0.035 * fk, fz); eg.rotation.y = sx * 0.3; eg.scale.setScalar(fk); heroBody.add(eg);
       const sc = new THREE.Mesh(new THREE.SphereGeometry(0.042, 20, 16), white); sc.scale.set(0.9, 1.1, 0.55); eg.add(sc);
       const ir = new THREE.Mesh(new THREE.SphereGeometry(0.03, 18, 14), blue); ir.scale.set(1, 1.1, 0.5); ir.position.z = 0.016; eg.add(ir);
       const pu = new THREE.Mesh(new THREE.SphereGeometry(0.016, 14, 10), dark); pu.scale.set(1, 1.1, 0.4); pu.position.z = 0.028; eg.add(pu);
@@ -467,7 +488,7 @@ export function mountOpening3D(container, opts = {}) {
       const lid = new THREE.Mesh(new THREE.SphereGeometry(0.045, 18, 10, 0, Math.PI * 2, 0, Math.PI * 0.5), lidM); lid.scale.set(0.95, 0.1, 0.6); lid.position.z = 0.004; eg.add(lid);
       heroFace.eyes.push({ eg, sc }); heroFace.lids.push(lid);
     }
-    const mouth = new THREE.Group(); mouth.position.set(0, -0.035, fz + 0.005); heroBody.add(mouth);
+    const mouth = new THREE.Group(); mouth.position.set(0, -0.035 * fk, fz + 0.005); mouth.scale.setScalar(fk); heroBody.add(mouth);
     const mo = new THREE.Mesh(new THREE.SphereGeometry(0.035, 22, 12, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x8a1236 })); mo.scale.set(1.2, 0.9, 0.35); mouth.add(mo);
     const tg = new THREE.Mesh(new THREE.SphereGeometry(0.02, 14, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xff6f96 })); tg.scale.set(1.2, 0.8, 0.4); tg.position.set(0, -0.016, 0.008); mouth.add(tg);
     const O = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 12), new THREE.MeshBasicMaterial({ color: 0x8a1236 })); O.scale.set(0.9, 1.15, 0.35); O.visible = false; mouth.add(O);
@@ -484,9 +505,9 @@ export function mountOpening3D(container, opts = {}) {
   // ------------------------------------------------ the timeline
   const P = OPENING3D.porthole;
   const blinkAt = (t, every, off) => { const k = ((t + off) % every); return k < 0.13 ? Math.sin(k / 0.13 * Math.PI) : 0; };
-  const basketHome = V([-0.2, 1.1, 0.04]);
-  const heroLaunch = V([0.0, 1.55, 0.18]), heroApex = V([0.55, 2.15, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
-  const heroIn = V([P.x, P.y - 0.02, P.z - 1.3]), heroLand = V([P.x, OPENING3D.waterY + 0.1, P.z - 2.8]);
+  const basketHome = V([-0.3, 1.04, 0.16]);
+  const heroLaunch = V([-0.02, 1.47, 0.24]), heroApex = V([0.5, 2.05, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
+  const heroIn = V([P.x, P.y - 0.02, P.z - 1.3]), heroLand = V([P.x, OPENING3D.waterY + 0.1 * OPENING3D.heroW / 0.34, P.z - 2.8]);
   let seq = -1, idle = 0, landed = false, fadeStarted = false, doneCalled = false, sparkCarry = 0;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
   function pose(it, st) {
@@ -496,7 +517,7 @@ export function mountOpening3D(container, opts = {}) {
     const tip = key(s, [[0, 0], [0.32, -0.25], [0.6, 1.15], [1.3, 1.0], [2.4, 0.3]]);
     const bx = key(s, [[0, 0], [0.32, -0.05], [0.6, 0.2], [1.5, 0.15], [2.4, 0.02]]);
     basket.position.copy(basketHome).add(V([bx, 0.012 * Math.sin(it * 2.1) + lift * 0.12, lift * 0.1]));
-    basket.rotation.set(0.05 + tip * 0.35, 0.3, -tip * 0.85 + 0.03 * Math.sin(it * 1.7));
+    basket.rotation.set(0.05 + tip * 0.35, 0.3, -0.35 - tip * 0.6 + 0.03 * Math.sin(it * 1.7));   // (held tipped toward the washer, as in the approved still)
     // ---- girl: breathing, sway, lean into the toss, reaction
     const lean = key(s, [[0, 0], [0.32, -0.15], [0.6, 0.22], [1.4, 0.15], [2.4, 0.05]]);
     girl.hips.rotation.z = 0.03 * Math.sin(it * 1.1); girl.hips.position.y = 0.56 + 0.006 * Math.sin(it * 2.2);
@@ -507,7 +528,7 @@ export function mountOpening3D(container, opts = {}) {
     girl.head.rotation.set(-lookUp + 0.05 * Math.sin(it * 0.8), 0.12 + lookSide + 0.08 * Math.sin(it * 0.6), 0.1 * Math.sin(it * 0.7) - 0.08);
     for (let i = 0; i < girl.curls.length; i += 3) girl.curls[i].position.y += Math.sin(it * 3 + i) * 0.0003;   // a little bounce in the curls
     const blink = Math.max(blinkAt(it, 3.1, 0.4), s > 0 ? blinkAt(s, 1.7, 1.2) : 0);
-    girl.setFace({ open: key(s, [[0, 0.25], [0.45, 0.45], [0.8, 0.7], [1.1, 0.3], [1.6, 0.85], [2.4, 0.7]]), smile: 1,
+    girl.setFace({ open: key(s, [[0, 0.55], [0.45, 0.6], [0.8, 0.7], [1.1, 0.3], [1.6, 0.85], [2.4, 0.7]]), smile: 1,
       O: s > 0.85 && s < 1.25 ? 1 : 0, lid: Math.max(blink, s > 1.6 ? 0.35 : 0), browUp: key(s, [[0, 0.1], [0.45, 0.6], [1.1, 1.0], [1.8, 0.3]]),
       look: [key(s, [[0, 0.5], [0.8, 0.6], [1.5, 0.9]]), key(s, [[0, -0.3], [0.5, 0.4], [1.2, -0.2], [2.0, -0.6]])] });
     girl.root.updateMatrixWorld(true); basket.updateMatrixWorld(true);
@@ -520,7 +541,7 @@ export function mountOpening3D(container, opts = {}) {
     // ---- the pink character
     let hp, spin = new THREE.Euler(), sq = 1, surprise = 0, faceAway = 0;
     if (s < 0.55) {   // sitting on the laundry, bouncing; hops in surprise as the basket swings
-      hp = basket.position.clone().add(V([0.02, 0.28 + Math.abs(Math.sin(it * 3.4)) * 0.025 + key(s, [[0, 0], [0.3, 0.05], [0.55, 0.12]]), 0]));
+      hp = basket.position.clone().add(V([0.21, 0.28 + Math.abs(Math.sin(it * 3.4)) * 0.025 + key(s, [[0, 0], [0.3, 0.05], [0.55, 0.12]]), 0.05]));   // perched on the basket's lip
       spin.set(0, 0.3 * Math.sin(it * 0.7), 0.06 * Math.sin(it * 1.9) - sm(0.3, 0.55, s) * 0.4); sq = 1 + 0.05 * Math.sin(it * 6.8) + sm(0.3, 0.5, s) * 0.12;
       surprise = sm(0.25, 0.4, s);
     } else if (s < 2.05) {   // caught in the toss: a curved path to the washer's door, tumbling with the laundry
@@ -549,15 +570,15 @@ export function mountOpening3D(container, opts = {}) {
       L.o.visible = s >= L.t0 && s < L.t1 + 0.9;
       if (!L.o.visible) continue;
       const p = k <= 1 ? bez(L.from, L.apex, L.to, clamp01(k)) : L.to.clone().add(V([0, 0, -(k - 1) * 1.3]));
-      L.o.position.copy(p); L.o.rotation.set(L.spin.x * s, L.spin.y * s, L.spin.z * s); L.o.scale.setScalar(k > 1 ? Math.max(0.01, 1 - (k - 1) * 0.6) : 1);
+      L.o.position.copy(p); L.o.rotation.set(L.spin.x * s, L.spin.y * s, L.spin.z * s); L.o.scale.setScalar(L.o.userData.k * (k > 1 ? Math.max(0.01, 1 - (k - 1) * 0.6) : 1));
     }
     // ---- the washer's glow and the tunnel's flow (it speeds up as he is pulled in)
-    vortex.U.uGlow.value = 0.62 + 0.38 * sm(3.0, 4.4, s); vortex.U.uTime.value = it; vortex.U.uFlow.value = s > 0 ? key(s, [[0, 0], [2, 1.5], [3.2, 5.0], [5, 8.0]]) + s * 0.4 : 0;
+    vortex.U.uGlow.value = 0.62 + 0.38 * sm(3.0, 4.4, s); vortex.WU.uFrom.value = s < 0 ? 2.4 : 2.4 * (1 - sm(1.4, 2.4, s)); vortex.U.uTime.value = it; vortex.U.uFlow.value = s > 0 ? key(s, [[0, 0], [2, 1.5], [3.2, 5.0], [5, 8.0]]) + s * 0.4 : 0;
     glowL.intensity = 2.5 + 1.5 * Math.sin(it * 2.0) * 0.3 + sm(1.5, 2.6, s) * 3.0;
     // ---- the camera: one continuous move, following him through the door into the tunnel
     // (its end: the game's Tap to Start framing at her scale: 1.03 m above her and 3.58 m behind for a 1.04 m body, looking
     // down the tunnel; here she is 0.34 m wide)
-    const camA = V([0.04, 1.02, 4.0]), tgtA = V([0.04, 1.02, 0.2]), camZ = V([heroLand.x, heroLand.y + 0.33, heroLand.z + 1.17]), tgtZ = V([heroLand.x, heroLand.y + 0.12, heroLand.z - 2.1]);
+    const camA = V([0.04, 1.02, 4.0]), tgtA = V([0.04, 1.02, 0.2]), hk = OPENING3D.heroW / 0.34, camZ = V([heroLand.x, heroLand.y + 0.33 * hk, heroLand.z + 1.17 * hk]), tgtZ = V([heroLand.x, heroLand.y + 0.12 * hk, heroLand.z - 2.1 * hk]);
     if (s < 0) { camPos.copy(camA).add(V([0.02 * Math.sin(it * 0.3), 0.01 * Math.sin(it * 0.4), 0])); camTgt.copy(tgtA); camera.fov = 35; }
     else {
       const follow = sm(0.8, 1.8, s), dolly = sm(1.7, 3.0, s), inside = sm(2.9, 4.3, s);
@@ -568,7 +589,7 @@ export function mountOpening3D(container, opts = {}) {
     camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix();
     // the room is out of sight once the camera is inside the drum
     const inDrum = camera.position.z < P.z - 0.05;
-    room.visible = washer.g.visible = girl.root.visible = basket.visible = !inDrum; bubbles.visible = !inDrum;
+    room.visible = washer.g.visible = girl.root.visible = basket.visible = !inDrum; bubbles.visible = front.visible = foam.visible = !inDrum;
   }
   function stepFx(dt, s) {
     sparks.update(dt, 0.15); splash.update(dt, 2.6);
@@ -577,6 +598,14 @@ export function mountOpening3D(container, opts = {}) {
     bub.forEach((b, i) => { const y = b.rise ? (b.p.y + ((idle * b.rise + b.ph * 0.2) % 1.8)) : b.p.y + 0.01 * Math.sin(idle * 1.5 + b.ph); const s2 = b.s * (1 + 0.04 * Math.sin(idle * 3 + b.ph));
       M.compose(V([b.p.x + 0.02 * Math.sin(idle + b.ph), y, b.p.z]), Q, V([s2, s2, s2])); bubbles.setMatrixAt(i, M); });
     bubbles.instanceMatrix.needsUpdate = true;
+    fb.forEach((b, i) => { const s2 = b.s * (1 + 0.03 * Math.sin(idle * 2 + b.ph)); M.compose(V([b.p.x, b.p.y + 0.008 * Math.sin(idle * 1.3 + b.ph), b.p.z]), Q, V([s2, s2, s2])); front.setMatrixAt(i, M); });
+    front.instanceMatrix.needsUpdate = true;
+    const P0 = OPENING3D.porthole;
+    fo.forEach((f, i) => { const s2 = f.s * (1 + 0.25 * Math.sin(idle * 4 + f.ph)); M.compose(V([P0.x + f.x + 0.004 * Math.sin(idle * 3 + f.ph), P0.y + f.y + 0.006 * Math.sin(idle * 2.5 + f.ph), P0.z + f.z]), Q, V([s2, s2, s2])); foam.setMatrixAt(i, M); });
+    foam.instanceMatrix.needsUpdate = true;
+    // the toss arrow: shown while waiting (pulsing), gone as the toss begins
+    const ak = s < 0 ? 1 : 1 - sm(0.0, 0.35, s); arrow.visible = ak > 0.01;
+    for (const m of arrow.userData.mats) m.opacity = ak * (0.85 + 0.15 * Math.sin(idle * 4));
   }
   const resize = () => { const w = container.clientWidth || window.innerWidth, h = container.clientHeight || window.innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
   resize(); window.addEventListener('resize', resize);
