@@ -1,5 +1,10 @@
 # parallax-threejs plugin and MCP servers: what is in Git, what is per account, how to restore (checked live 8 November 2026, session `b0abcf95`)
 
+> **Newer (8 November ~18:00 UTC, session `ce30359f`): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`** is the current, live-tested
+> status of everything below. In short: Spector is now built by `Tools/cloud_env_setup.sh` and linked by a SessionStart hook (the
+> plugin's own build fails, and its Playwright could not launch this image's browser); `/parallax-threejs:init` has been run;
+> checkpoint / diff / export-report / sweep / memcheck / sync-view work; the plugin agents still get no MCP tools.
+
 **A plugin is installed per Claude ACCOUNT, not per repository.** Git cannot carry a working plugin installation to the other account;
 it carries this record of exactly what to enable and how to check it. Nothing here is a secret.
 

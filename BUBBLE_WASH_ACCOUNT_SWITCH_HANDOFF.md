@@ -3,7 +3,16 @@
 Written 8 November 2026, about 17:05 UTC, by session `57091b57` (https://claude.ai/code/session_013kxR3NgrYJJC9HLHZ7n41J) at the user's
 preservation mandate. Nothing in this file is a secret. Newer sessions: add a dated section at the top of section 1 and update section 9.
 
+**FULL INVENTORY (every agent, plugin, MCP server, skill, command, integration and tool, with history, live tests and how to restore
+each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; it supersedes the short lists in sections 3, 4 and 7.
+
 ## 1. Where everything is (verified 8 November ~17:05 UTC)
+**Update 8 November ~18:00 UTC, session `ce30359f` (https://claude.ai/code/session_01CUAtW4nh4Z5qW7Dm1JTSCB):** the newest work branch
+is **`ccr-8cd911d8-0m96gr`**. It contains all of `ccr-b67aeffb-d94mmq` (to its 17:15 autosave), `ccr-50c66592-kcnqoy`,
+`ccr-76d4bc77-rqhl8o` and `claude/bubble-wash-kingdom-continue-z9nmm1` (checked with 844 commits of history; normal merges only).
+Session `57091b57` was idle (its account's usage limit). This session restored and live-tested the whole environment (the inventory
+above), fixed Spector, the metrics install and Parallax's checkpoint launcher, and ran `/parallax-threejs:init`. No game code changed.
+
 | | |
 |---|---|
 | Repository | https://github.com/josiahscalia5-dev/bubblegame |
@@ -37,8 +46,10 @@ preservation mandate. Nothing in this file is a secret. Newer sessions: add a da
 5. **Project skill:** `.claude/skills/bubble-wash-screen-matcher/` loads automatically. There is no `.claude/commands/` folder.
 6. **parallax-threejs plugin 0.4.12 (PER ACCOUNT):** on claude.ai enable it (Customize / plugins, Anthropic Directory, `parallax-threejs`),
    then START A NEW SESSION (plugins load at session start). Check: ToolSearch `mcp__plugin_parallax-threejs`.
-7. **MCP servers:** chrome-devtools, playwright, threejs-devtools come with the plugin. **Spector** ships without its server: run
-   `sh <plugin>/scripts/setup-spector.sh` (or `bash Tools/cloud_env_setup.sh`, which does it), then `/mcp` reconnect or a new session.
+7. **MCP servers:** chrome-devtools, playwright, threejs-devtools come with the plugin. **Spector** ships without its server, and the
+   plugin's own `setup-spector.sh` now FAILS (and its Playwright 1.59 cannot launch this image's browser): since session `ce30359f`,
+   `bash Tools/cloud_env_setup.sh` builds a fixed copy in `~/.bubblewash-tools/spector` and the SessionStart hook
+   `.claude/hooks/session-start-spector.sh` links it into the plugin; if spector's tools are still missing, `/mcp` and reconnect it.
    **threejs-devtools** attaches only to a page served on port 3000 and opened through its proxy, with the game's scene exposed
    (`cd WebDemo && python3 -m http.server 3000`; chrome-devtools `navigate_page http://localhost:9222/index.html?s3=...`; evaluate
    `const d=window.__bw.debug(); window.__THREE_SCENE__=d.scene; window.__THREE_CAMERA__=d.camera; window.__THREE_RENDERER__=d.renderer`).
@@ -66,8 +77,10 @@ preservation mandate. Nothing in this file is a secret. Newer sessions: add a da
 - [ ] `bash Tools/verify_restore.sh --build`: 0 failed; `node build.mjs` rebuilds the committed bundle byte-identical
 - [ ] each of the five agents completes a harmless task (screen4-water-motion-engineer must reach its MCP tools)
 - [ ] chrome-devtools `navigate_page` + `evaluate_script`; playwright `browser_tabs`; threejs-devtools `bridge_status` + `find_objects` (method in 3.7)
-- [ ] Spector: `spector-mcp` answers (or `<plugin>/vendor/spector/mcp/dist/index.js` exists and the session was restarted)
-- [ ] `deno --version` (2.x); the plugin's checkpoint / diff / sweep also need `/parallax-threejs:init` (adds files to the repo: ask the user)
+- [ ] Spector: its `mcp__plugin_parallax-threejs_spector__*` tools are listed (ToolSearch); standalone, a real `load_url` + `capture_frame`
+      (`node Previews/WebDemo/environment_restore_2026-11-08_ce30359f/spector_live_test.mjs <plugin>/vendor/spector/mcp/dist/index.js <url>`)
+- [ ] `deno --version` (2.x); `/parallax-threejs:init` was RUN on 8 Nov (session ce30359f): expose the scene with
+      `expose_scene.cjs` (same folder), then `PARALLAX_HEADLESS=true deno task checkpoint <label>` (no `--`), `diff-checkpoints`, `export-report`
 - [ ] `blender -b --python-expr "import bpy; print(bpy.app.version_string)"`; `gltf-transform --version`; `vite --version`
 - [ ] metrics python (`~/.bubblewash-tools/metrics/bin/python`): import cv2, skimage, torch, lpips, optuna; one LPIPS distance
 - [ ] `TRIPO_API_KEY=tsk_proxy-injected tripo balance` (free); `BW_TRIPO_CHECK_ONLY=1 bash Tools/tripo_job.sh test make <image>` (no spend)
@@ -90,6 +103,9 @@ the Level 1 FRESH pack's ten crops `Design/ReferencePacks/2026-11-08_Approved_Re
 the Screen 07/09 kit `Design/ReferencePacks/2026-11-08_Screen07_Claude_Tripo_Reference_Kit_from_user/` (annotations, object crops, Tripo guidance).
 
 ## 7. Agents, plugin, tools: status in session 57091b57 (live tests; details `ENVIRONMENT_VERIFICATION_2026-11-08_session_57091b57.md`)
+**Superseded by `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` (session ce30359f, all rows re-tested live).** Changes since: Spector
+really captures a frame now (it never could before: wrong Playwright); the metrics venv was broken at that session's start and is
+fixed; Parallax init / checkpoint / diff / export-report / sweep / memcheck / sync-view PASS; Tripo 1,060 credits.
 - Five design agents: installed (repo), loaded, live-tested PASS. Plugin agents scenario-author / shader-reviewer / visual-debugger: run
   but get NO MCP tools (the plugin's tool-naming defect; only its author can fix it): use the main session or screen4-water-motion-engineer.
 - chrome-devtools, playwright, threejs-devtools: PASS. Spector: rebuilt in this container and answering (needs a new session to appear).

@@ -3,6 +3,15 @@
 Two Claude sessions work on the SAME game. To avoid conflicting edits, each session edits only its own files.
 Neither session resets, overwrites or force-pushes either branch.
 
+## UPDATE 8 November, about 18:00 UTC: session `ce30359f` (the user's account switch), branch `ccr-8cd911d8-0m96gr`
+Checked at its start (17:28 UTC): session `57091b57` had pushed nothing since its 17:15 autosave (idle at its usage limit); its head
+and `claude/bubble-wash-kingdom-continue-z9nmm1`'s two chat-history commits were merged here (normal merges). This session is now
+the LEAD session (Tripo included). Edited by it, environment only (no game code): `Tools/cloud_env_setup.sh` (metrics retry, Spector
+build), new `.claude/hooks/session-start-spector.sh` and its entry in `.claude/settings.json` (`session-start.sh` untouched),
+`Tools/verify_restore.sh` (one known bundle added), `Tools/autosave_sessions.json` (its entry), `.gitignore` (`.parallax/`), the Parallax
+scaffold (`deno.json`, `scripts/`, `lib/`, `test/visual/`), new `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`,
+`Previews/WebDemo/environment_restore_2026-11-08_ce30359f/`, and pointer notes in the handoffs.
+
 ## UPDATE 8 November, about 14:45 UTC: session `57091b57` (the user's other account), branch `ccr-b67aeffb-d94mmq`
 Checked at its start (14:18 UTC): session `b0abcf95` is STILL LIVE on `ccr-50c66592-kcnqoy` (its autosave pushed `fc57eba2` at 14:17:45,
 Level 1 route frames from its running jobs). So this session never writes `ccr-50c66592-kcnqoy`: it works on its own branch
