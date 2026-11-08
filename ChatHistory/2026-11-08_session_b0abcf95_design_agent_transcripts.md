@@ -220,6 +220,86 @@ Return your report as your final message (under 700 words), starting with one li
 - 12:20 `Bash`: Read beats one to five of the mandate
 - 12:20 `Bash`: Save functional, abilities, hit and cost results to baseline
 - 12:20 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/71_level1_flow/baseline/frames/t28.0.jpg
+**Agent** (12:21 UTC):
+
+The baseline is done: the current Level 1 runs from Tap to Start to Level Complete without errors, but the side path and the lower path (beats 03 and 04) are missing.
+
+**Tools used (all exit 0):** `tools/level1/l1_run.cjs`, a copy of `tools/screen3/s3_func.cjs` with the viewport set to 412 x 915 (its built-in size is 700 x 1076), `ccr_branch_verification_2026-11-08/scripts/abilities_probe.cjs`, `tools/level1/cost_probe.cjs`, and a new scratch probe of mine, `hit_probe.cjs`.
+
+Everything ran on the frozen snapshot only (bundle md5 a62848a0…), with `S3=intunnel,structmatch,level1`, seed 7, all browsers under the shared lock. The `home` opening was not run.
+
+## 1. Seeded frames (AUTO=1, 412 x 915)
+
+| Frame (game s) | u (m) | Section | Socks | Coins | Hearts |
+|---|---|---|---|---|---|
+| Tap to Start | 1.59 | Washer drum | 0 | 1280 | 5 |
+| 3 | 22.16 | Washer drum | 0 | 1290 | 5 |
+| 8 | 58.05 | Spinning brushes | 1 | 1307 | 5 |
+| 15 | 107.05 | Treasure run | 2 | 1321 | 5 |
+| 22 (in the air) | 156.05 | Soap bars | 3 | 1336 | 5 |
+| 28 | 202.73 | The drop | 4 | 1346 | 5 |
+| 34 | 244.75 | Grime balls | 4 | 1355 | 5 |
+| 40 | 287.08 | Bubble Kingdom | 5 | 1368 | 5 |
+| 46 | 332.41 | Bubble Kingdom | 6 | 1371 | 5 |
+| 52, Level Complete | 341.74 | Bubble Kingdom (complete) | 6 | 1371 | 5 |
+
+- The finish (u 340) is reached at about 47 s. The frames at 58, 64 and 70 s showed the same state as 52 s, so I did not keep them.
+- No console errors or warnings.
+- One thing seen, not measured: in the 22 s jump frame a flat pale-lavender band crosses the lower screen under her (y about 765 to 830 of 915).
+
+## 2. Functional checks
+
+**`s3_func` (412 x 915): PASS except one swipe.**
+- Tap starts the run (`running`); keyboard Enter starts it too; 0 console errors.
+- Two right swipes put her in lane 2; the up swipe sets `air: true`.
+- By z 40.96 she has collected 13 coins and 1 sock.
+- **The left swipe did not show a lane change:** lane 1 before and after, at z 8.588. The earlier proof `70_level1_wet/proofs/s3_func_level1.txt` has the same numbers, so this is not new. Its cause is not established.
+- Cost from this run: 222 draw calls / 2,815,453 triangles at Tap to Start; 116 / 2,506,144 in the tunnel.
+
+**`abilities_probe`: PASS.** Pause opens its panel and freezes time, and the game runs again after Resume. Bubble Blast count 3 → 2; Turbo Spin 3 → 2 (speed 8.45); 0 errors.
+
+**`hit_probe` (my addition), letting her hit things instead of avoiding them:**
+
+| What she hit | Where | Hearts | Speed |
+|---|---|---|---|
+| Brush | u 63.46 | 5 → 4 | 7.00 → 4.30 |
+| Brush | u 70.61 | 4 → 3 | 6.78 → 4.20 |
+| Soap bar (no jump) | u 145.73 | 3 → 2 | 7.00 → 3.85 |
+| Soap bar (no jump) | u 155.64 | 2 → 1 | 6.90 → 3.81 |
+| Grime ball | u 209.21 | 1 → 0 | 7.01 → 4.30 |
+
+With 0 hearts the run went back to Tap to Start (u 1.59, socks 0) about 1.4 s later.
+
+## 3. Draw calls and triangles (`cost_probe`, 412 x 915)
+
+| Moment | u (m) | Draw calls | Triangles |
+|---|---|---|---|
+| Tap to Start | 1.59 | 222 | 2,816,420 |
+| 3 s | 22.16 | 167 | 2,711,064 |
+| 20 s | 142.05 | 105 | 1,817,797 |
+| 38 s | 272.75 | 154 | 2,340,692 |
+
+## 4. The user's 10 beats
+
+| Beat | Status | Evidence |
+|---|---|---|
+| 01 Washer entry | PARTLY | The run starts inside the tunnel with the mission shown (Tap to Start frame, u 1.59). The girl / porthole entry needs `,home` and was not tested. |
+| 02 Sock goal 0/5 shown | WORKS | "Rescue 5 lost socks 0/5" on the HUD at Tap to Start and at 3 s. |
+| 03 Jump to raised side path | MISSING | The level is one 3-lane path. The only jumps are over two soap bars (u 146, 156) in the same lanes (22 s frame: in the air at u 156.05). |
+| 04 Drop to a lower path | MISSING | "The drop" (u 166–203) is a downhill slope on the same path (`COURSE.pitch`, about −0.42 rad over u 172–190). The banner says "Drop down to the lower path!" but there is no second path (28 s frame). |
+| 05 Spinning brushes | WORKS | 11 brushes (u 52–132), and hitting one costs a heart and speed (table above); 8 s frame. |
+| 06 Coins, gems, socks | WORKS | Coins +91 (1280 → 1371), 6 socks picked up, HUD gems 36 → 38. The level places 114 coins, 2 gems and 5 socks (plus the Screen 4 drum's own items). The Level Complete card shows gem 1/1. |
+| 07 Enemies that affect gameplay | WORKS | 6 grime balls roll toward her (28 s frame). A hit takes a heart and speed (u 209.21); 0 hearts resets the run. |
+| 08 Bubble Kingdom inside a wet chamber | PARTLY | The chamber widens over u 266–292 (40 s and 46 s frames). The castle is only seen through a portal in the end wall at u 360, past the finish (u 340), so she never enters the kingdom. |
+| 09 Rescue progress to 5/5 | WORKS | 1/5 at 8 s, 2/5 at 15 s, 3/5 at 22 s, 4/5 at 28–34 s, 5/5 at 40 s (u 287). There are 6 sock pickups (the count reaches 6) and the HUD stops at 5/5; no resets along the way. |
+| 10 Level Complete with rewards | PARTLY | The card appears after u 341.74 with 3 stars, socks 5/5, coins 91, gem 1/1. But it only has "Play again" and says "Level 2 (Soap Lagoon) is not built yet": no Next Level button and no reward beyond these counts. |
+
+Everything is in `/home/user/bubblegame/Previews/WebDemo/screen4_round9_match/71_level1_flow/baseline/`:
+- `frames/` (10 jpgs and `states.json`)
+- `contact_sheet.jpg`
+- `s3_func.txt`, `abilities_probe.txt`, `hit_probe.txt`, `cost.txt`
+- `scripts/` (`s3_func_412.cjs`, `hit_probe.cjs`)
+
 
 _39 tool steps._
 
@@ -266,6 +346,110 @@ Deliver as your final message (under 900 words, start with one line listing the 
 - 12:20 `Grep`: heroWalls
 - 12:20 `Bash`: Check hero wall geometry radius
 - 12:20 `Bash`: Find level1 hooks in game.js
+**Agent** (12:21 UTC):
+
+Tools I used: Read, Grep, and Bash with Python/PIL (contact sheets and crops in the scratchpad, plus colour-class measurements). Nothing in the repository was edited and no browser was launched.
+
+**Measurements** (colour classes, in the band from 0.20 to 0.45 of the screen height):
+- **Lavender/purple share:** original 26% (that counts its housing rim and the pink brush); captures t6, t14, t32, t40 and t44 give 59%, 58%, 75%, 61% and 69%.
+- **Warm rim pixels:** the original's rim has median #e99d8b, highlights #fdd3a7 and shadows #b87168. The game's hoops (goldM) have median #f5966a and shadows #943f25 (more orange, with brown shadows).
+
+## 1. Artifacts, ranked by visual impact
+
+**A. Purple ceiling dominance — CONFIRMED** (t6–t44; worst at t32 and in the chamber at t40–t48, from the top of the frame down to the vanishing point).
+- Cause, lines 151–152: the metal is a fixed angle, `|a| < 0.78` rad (±45°).
+- On a portrait screen a ±45° wedge above the vanishing point covers the whole upper half (the screen's top corners are only about 26° off vertical).
+- In the chamber it is 0.78 × 5.6 = 4.4 m of metal each side of the top.
+- Fix: make the crown a fixed arc length, so the upper corners show water.
+```glsl
+float Rr = ${wet ? 'vR' : f4(R)};
+float edge = 1.1 / Rr + 0.025 * sin(u * 0.45 + t * 0.8);   // 0.43 rad drum, 0.31 at 3.6 m, 0.20 chamber
+float ra = abs(a) / edge;
+float metal = 1.0 - smoothstep(0.82, 1.08, ra);
+vec3 mc = mix(PURPLE, LAV, 1.0 - smoothstep(0.38, 1.0, ra));
+mc = mix(mc, SILVER, (1.0 - smoothstep(0.0, 0.41, ra)) * 0.6);
+```
+The `ra`-relative ramps are required. Line 154's fixed 0.32 would turn a narrow crown entirely silver. Line 153's `smoothstep(edge, 0.3, …)` already has edge0 > edge1, which GLSL ES leaves undefined.
+
+**B. Wavy "cut-out" metal edge with white and orange outlines — CONFIRMED** (crops of t6, t14, t32 and t40: lobed boundaries traced in white and orange).
+- Line 151: a wobble of 0.07·sin(u·1.1 + t·1.6).
+- Line 152: a hard ±0.05 edge.
+- Line 164: a full-strength white line.
+- Line 165: a gold line that follows the wobble.
+- Fix: use the softer `metal` above, then
+```glsl
+float wl = abs(ra - 1.0) * edge;
+col = mix(col, WHITE, (1.0 - smoothstep(0.0, 0.05, wl)) * 0.25 * (0.55 + 0.45 * l1n(vec2(u*3.0 - t*4.0, a*9.0))));
+col = mix(col, GOLD, (1.0 - smoothstep(0.0, 0.02, abs(ra - 0.88) * edge)) * 0.35);
+```
+
+**C. Floating orange poles — CONFIRMED** (t7 left, t8 right, the sheet 05 frame NEW 6 s).
+- Line 416: the brush's gold axle is 1.0 m long at y 0.95, so it stops about 2.2 m above the water. The wall top is at 4.05 m.
+- Fix:
+```js
+const top = C.axisH + Math.sqrt(C.radius ** 2 - x * x) - 0.74, len = top - 0.45;
+const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, len, 12), brushHub); arm.position.set(0, 0.45 + len / 2, -0.25);
+```
+
+**D. Fine stripes on the side walls toward the centre — CONFIRMED** visually (t14, t32: vertical hairline striping and dashed white streaks).
+- Lines 139–145, 148 and 155 have no fwidth fade (the water got one, `aaW`, line 238).
+- Fix, after line 140:
+```glsl
+float aaR = clamp(fwidth(u) * 1.4 - 0.1, 0.0, 1.0);
+rib *= 1.0 - aaR; rib2 *= 1.0 - aaR;   // and multiply streak and ring by (1.0 - aaR); line 155: 0.05 * (1.0 - aaR)
+```
+
+**E. Hand-off at u 35–50 — CONFIRMED** (t5): the course tube's crown, its outlines and the hoop at 44 show as a nested tube inside the Screen 4 drum.
+- Lines 167–170: the intro blend runs after the metal and keeps 30% of it.
+- A step from the Screen 4 lining's radius (2.0, `tunnel_r7_hero.js:254`) to 2.55 is SUSPECTED.
+- Fix, before line 161: `metal *= smoothstep(41.0, 52.0, u);`, and the same factor on both waterline lines.
+
+**F. Pale far centre — SUSPECTED deviation** (t14, t44: white-lavender).
+- Line 173 mixes 0.92 toward #e6f8ff × 1.3; the original keeps the middle depth azure.
+- Fix: `col = mix(col, mix(AZURE, GLOW, 0.6) * 1.2, smoothstep(12.0, 60.0, d) * 0.7);`
+
+**G. Chamber end wall.**
+- Green island slabs seen edge-on through the portal — CONFIRMED (t44–t48). Line 93 puts the islands at h 0.4–1.0, at eye height. Move them to h −2.5 to −1.0 or +3 to +5.
+- The violM band — SUSPECTED, from the geometry; I can't see it clearly at t48. Line 552 puts it at radius Rk − 0.6 around the portal centre (P.h 2.4, 0.9 m above the drum axis), so its top reaches 7.62 m against the 7.1 m ceiling and is cut by the wall. Fix: `band.position.y = C.axisH - P.h` for that band, at radius `Rk - 0.35`.
+
+**H. Pink bar across the chamber** (t44, t46 in `frames/new_89e89f18`) — this is the finish ribbon, already hidden at line 536 in the final build. Recapture to confirm.
+
+**I. Chunk joins.** No seam is visible at 50.6, 65.6 and so on, since joining rows use the same `TR.frame(u)`.
+- SUSPECTED: at 260.6, line 282 switches from 64 to 112 columns. That leaves a T-junction crescent of up to 3 mm, which could show the sky as sparkle once it is visible (u > 220).
+- Use one constant `nA` (112) for every chunk once any widening exists.
+
+No horizontal dark streaks show in the water in these captures; the `aaW` fix holds.
+
+## 2. The widened section (R 2.55 → 3.6) and the lower channel
+
+**Metal crown.**
+- Formula A gives `edge` = 1.1/3.6 = 0.31 rad there (18°, 1.1 m of arc each side), so the crown edge sits at h ≈ 4.9 m. The walls beside and behind the flumes are then water ribbons.
+- If the drum must stay as it is for now (one correction at a time), use instead: `float edge = mix(0.78, 1.1 / vR, smoothstep(2.6, 3.4, vR)) + 0.025 * sin(u * 0.45 + t * 0.8);`
+- The `ra` ramps and the softened outlines from B are needed in either case.
+- `vR` already reaches the shader (`aR`); size every chunk's `nA` from its largest `radiusAt`.
+
+**Hoops.** Uniform `hk` = 1.41 makes them 41% thicker. Their 170° arc ends at h ≈ 1.8 m, x ≈ ±3.5, just behind the flumes. Give the widened section its own InstancedMesh with a 110–120° arc.
+
+**Flumes.**
+- At h 1.1–1.4 the wall is at |x| ≈ 3.58, so flumes at x = ±1.85 float about 1.2 m off it. Give each a violM outer skirt down to the main water, or silverM brackets to the wall every 4 m.
+- Flume water: `waterFragWet` with `aHalf` set to the flume's half-width, so its foam sits at its rims.
+
+**Gold that reads like the original's rim.** goldM (line 364) gives the orange and brown above (emissive 0x6a3a00, metalness 1 against a blue env map). Don't change goldM itself (the gate, portal and finish share it); clone it:
+```js
+const rimGoldM = goldM.clone();
+rimGoldM.color.set(0xffd9a6); rimGoldM.metalness = 0.8; rimGoldM.roughness = 0.3;
+rimGoldM.emissive.set(0x8a4e5e); rimGoldM.emissiveIntensity = 0.5; rimGoldM.envMapIntensity = 1.1;
+```
+- The rim: a TubeGeometry (radius 0.08) along each flume edge, built with the rail pattern at lines 479–480 (`TR.map(s*x, h, u)` into a `CatmullRomCurve3`).
+- Inside it, a silverM lip (radius 0.035, 0.06 m inward), with violM underneath as at line 482.
+- Optional: bulbM lights every 2 m, matching the hoops.
+
+**Lower channel (−1.4 m).**
+- Don't let `W.baseHeight` step inside one wetChunk. With 96 columns the step becomes near-vertical faces that stretch the noise into streaks.
+- Split the water into the side water and the channel's own ribbon.
+- Line the channel's side walls with a metal-free variant of the wall shader (for example a `uCrown` uniform set to 0), so they show dark-blue water ribbons, not lavender.
+- Divider rails: rimGoldM on top, violM base tubes (the pattern at lines 479–482), placed so they hide the step edges.
+
 
 _29 tool steps._
 
@@ -296,6 +480,93 @@ Deliver as your final message (under 900 words, starting with one line listing t
 - 12:16 `Bash`: Read layout tunnel values and track frame API
 - 12:16 `Bash`: Find height function call sites
 - 12:19 `Bash`: Check rider uniform components and camera height use
+**Agent** (12:24 UTC):
+
+Tools used successfully: Read, Bash (grep, sed, wc). Nothing was edited and no browser was launched.
+
+# Spec: side flumes and lower-path chute for the Level 1 water
+
+**Where the water sits now:** past u 37.2, `W.baseHeight` is 0, because its `inside` and `before` terms are both zero. So everything below can be added to it as an offset.
+
+## 1. Chute heightfield (`wetChunk`)
+```js
+const D = { u0: 168, len: 3, depth: 1.4, inner: 0.5, step: 0.16, ledge: [172, 175], rec: [176, 186] };
+const keepD = (u) => 1 - smooth(D.rec[0], D.rec[1], u);   // back to 0 during the track's own downhill (pitch bump 176-186): reads as downhill, not a climb
+const dropOff = (x, u) => -D.depth * keepD(u) * Math.max(smooth(D.u0, D.u0 + D.len, u) * (1 - smooth(D.inner, D.inner + D.step, Math.abs(x))), smooth(D.ledge[0], D.ledge[1], u));
+const fine = (u) => (u > D.u0 - 0.8 && u < D.u0 + D.len + 0.8) || (u > D.ledge[0] - 0.5 && u < D.ledge[1] + 0.5);
+const us = [u0]; while (us.at(-1) < u1 - 1e-6) us.push(Math.min(u1, us.at(-1) + (fine(us.at(-1)) ? 0.15 : 0.4)));
+// rows = us.length; u = us[i]; h = W.baseHeight(L, x, u) + dropOff(x, u). Keep nx = 96: the step is 3.5 columns wide, and chunk edges still meet exactly
+```
+- **Texture:** keep `aXU = (x, u)`. Do not re-map u by arc length. The steepest slope is 0.7, so the pattern stretches by at most 1.22 on the chute face, which reads as water speeding up. Re-mapping u would shift her wake and rings against `uRider.y`.
+- **Drum floor (this one matters):** the wall's bottom is at h = 1.5 - 2.55 = -1.05. A channel at -1.4 is outside the drum, so the wall's opaque bottom arc would cover it. In `tubeChunk`, after computing `h`:
+```js
+const uni = -D.depth * keepD(u) * smooth(D.ledge[0], D.ledge[1], u), deep = Math.min(0, dropOff(x * 0.6, u) - uni);
+h += uni + (h < 0 ? deep * smooth(0, -0.6, h) : 0);   // the waterline on the walls is unchanged; the ledge water hides the lowered arc
+```
+- The hoop at u 180 and the coins at 176-187 need `uni` too.
+
+## 2. Main-water whitewater and level gate
+Build it at the material with `waterFragWet().replace('uniform vec4 uRider;', 'uniform vec4 uRider; uniform vec4 uLand;').replace(WHITE, CHUTE + NEW_WHITE)`. `WHITE` is the unchanged line `float white = clamp(fl * 0.75 + glint + wake * uRider.z * 0.9 + rings * 0.55, 0.0, 1.0);`.
+```glsl
+float mid = 1.0 - smoothstep(DI, DI + DS, abs(x)), kC = clamp((u - D0) / DL, 0.0, 1.0);
+float off = -DD * (1.0 - smoothstep(R0, R1, u)) * max(smoothstep(0.0, 1.0, kC) * mid, smoothstep(G0, G1, u));
+float steep = 4.0 * kC * (1.0 - kC) * mid;
+float lip = exp(-pow((u - D0 - 0.3) / 0.3, 2.0)) * mid;
+float pool = smoothstep(D0 + DL - 0.3, D0 + DL + 0.3, u) * (1.0 - smoothstep(D0 + DL + 0.3, D0 + DL + 2.2, u)) * mid;
+float fast = l1n(vec2(x * 9.0, (u - t * 6.5) * 0.7));        // its own CONSTANT speed
+float aaX = clamp(fwidth(x) * 9.0 - 0.6, 0.0, 1.0);
+float ww = lip * smoothstep(0.38, 0.62, fast) * 0.7 + steep * smoothstep(0.66, 0.82, fast) * 0.3
+         + pool * smoothstep(0.58, 0.76, l1n(vec2(x * 7.0, uf * 3.0))) * 0.55;
+col = mix(col, vec3(0.03, 0.5, 1.0), steep * 0.35);         // face: lighter turquoise, not white
+float lvl = 1.0 - smoothstep(0.3, 0.7, abs(off - uRider.w));
+float age = t - uLand.z, lr = length(vec2(x - uLand.x, (u - uLand.y) * 1.2));
+float pulse = (1.0 - smoothstep(0.0, 0.05 + age * 0.06, abs(lr - 0.3 - age * 1.8))) * exp(-age * 3.0) * step(0.0, age) * uLand.w;
+float white = clamp(fl * 0.75 + glint + (wake * uRider.z * 0.9 + rings * 0.55 + pulse) * lvl + ww * (1.0 - max(aaW, aaX)), 0.0, 1.0);
+```
+- **How much white:** a broken crest about 0.3 m deep at the lip, about 15% streak coverage on the face, and broken flecks in a 2 m plunge band that fade out downstream.
+- **`riderU.w` becomes her level:** set it to `hAt(m.x, m.z) - W.baseHeight(...)`. It currently carries `m.xv`, which no water shader reads. Her rings and wake then stop showing on the ledges while she is in the channel, and on the main water while she is up on a flume.
+
+## 3. Flume strips (built inside `privately(0x7e72, …)`)
+Every new geometry, material and mesh takes a UUID from `Math.random`, so building them outside `privately` would shift the game's seeded sequence.
+```js
+const FL = { u0: S0, u1: S1, ramp: 4, h: 1.1, half: 0.5, c: 1.85, cEnd: 1.45 }, fk = (u) => smooth(FL.u1 - FL.ramp, FL.u1, u);
+const flumeH = (u) => (FL.h + 0.12) * (1 - fk(u)) - 0.12;   // ends 0.12 m under the main water: crosses it at ~16°, no flat coplanar z-fight
+const flumeC = (u) => FL.c + (FL.cEnd - FL.c) * fk(u);      // the drum wall is at x 2.06 at h 0: a fixed 1.85 centre pokes the ramp's end through it
+// per vertex (nx 20, rows every 0.25 m, TR.frame(u, F)): xl in [-0.5, 0.5]; x = sg*flumeC(u) + xl  (GLOBAL x: same waves and colour as the main water at the merge)
+// h = W.baseHeight(L, x, u) + flumeH(u) + 0.05 * smooth(0.3, 0.5, |xl|) ** 2;  aXU = (x, u); aUp = F.U; aHalf = 0.5; aFl = (sg*flumeC(u), flumeH(u))
+const FV = WATER_VERT_WET.replace('attribute float aHalf;', 'attribute float aHalf; attribute vec2 aFl; varying vec2 vFl;').replace('vHalf = aHalf;', 'vHalf = aHalf; vFl = aFl;');
+const FF = waterFragWet().replace('varying float vHalf;', 'varying float vHalf; varying vec2 vFl;').replace('uniform vec4 uRider;', 'uniform vec4 uRider; uniform vec4 uLand;')
+  .replace('smoothstep(vHalf - 0.75, vHalf - 0.05, abs(x))', 'smoothstep(vHalf - 0.24, vHalf - 0.03, abs(x - vFl.x))')
+  .replace('(vHalf > 2.0 ? 0.7 : 0.25)', '0.7')
+  .replace(WHITE, PULSE_AND_LVL_WITH('abs(vFl.y - uRider.w)') + 'float merge = (1.0 - smoothstep(0.03, 0.3, vFl.y)) * smoothstep(0.42, 0.68, l1n(vec2(x * 8.0, uf * 2.5))) * 0.6;\n' + NEW_WHITE_WITH('merge'));
+```
+- **Why `vHalf` = 0.5 alone is wrong:** with the stock width, `smoothstep(-0.25, 0.45, |x|)` already gives 0.29 of the wall foam at the middle of the strip.
+- **With the replace:** the foam climbs only the outer 0.21 m on each side (|xl| from 0.26 to 0.47).
+- **Far sheen:** the `0.7` replace matters. Without it, the strip would look darker than the water beside it in the distance.
+- **Material:** build it with an explicit uniforms object (`uTime: timeU, uCam: camU, uRider: riderU, uLand: landU`), not `.clone()`, which deep-copies the uniforms and stops them updating.
+- **Trough:** put the trough's inner walls at |xl| = 0.47 so the water's edge tucks under them.
+
+## 4. Splashes (in `update`, private `lprnd = mulberry(0x1a4d)`; use `emitT`, never `burstT`, which draws from `Math.random`)
+```js
+if (wasAir && !m.air && running) { const lv = riderLevel; landU.value.set(m.x, m.z, t, lv > 0.5 ? 1 : 0.5);
+  if (lv > 0.5) { const c = Math.sign(m.x) * flumeC(m.z), s0 = W.baseHeight(L, m.x, m.z) + lv;   // water slapping up both trough walls
+    for (const s of [-1, 1]) for (let i = 0; i < 5; i++) ctx.fx.emitT(c + s * (0.42 + lprnd() * 0.05), s0 + 0.04, m.z + lprnd() * 0.5,
+      -s * (0.2 + lprnd() * 0.4), 2.0 + lprnd() * 1.2, m.speed * (0.6 + lprnd() * 0.25), 0.04 + lprnd() * 0.035, 0.4 + lprnd() * 0.25, 0); } }
+wasAir = m.air;
+```
+- `game.js` 1010 already throws its landing burst, and the 12 px droplet cap still applies.
+- On a flume, 20 droplets at power 1.0 (`up` 0.85) instead of 34 at power 1.4 keeps most of them inside the 1 m trough.
+- **Lip spray:** when she crosses `D.u0 + 0.2`, emit about 8 droplets through `fx.emit(..., null)` with no floor. `emitT`'s floor plane is at the lip's level, so its droplets would vanish right at the edge.
+- **Plunge splash:** it comes for free from `game.js` 1019-1026, as long as `slopeAt` includes the chute.
+
+## 5. Risks of dark streaks and seams
+- **Dark line at the lip:** where the surface is seen nearly edge-on (the lip crest, the chute while she descends), `aaW` switches to its average blue (about #1d59da). That is darker than the lightened water ahead of her (about #3fadff), so a dark line forms exactly at the lip. The turquoise lift and the lip white are applied after `aaW`, and the lift is not scaled by `(1 - aaW)`.
+- **Flow speed:** never write `uf = u - t*speed(x,u)` with a speed that varies in space. Its gradient grows with time, so `fwidth(uf)` keeps rising and within about a minute `aaW` darkens the chute area in bands. Use the separate constant-speed layer (`fast`) instead.
+- **`fwidth` in a branch:** if you gate the chute block with an `if`, compute `aaX` (and anything else using `fwidth`) before it. `fwidth` inside a branch that varies per pixel is undefined.
+- **The 1.4 m step between channel and ledge:** it spans only 0.16 m of x, so the pattern smears about 9 times into vertical stripes, and `aaW` cannot catch it because u is constant down the face. The golden divider has to cover the full height (h -1.45 to +0.1), not a 0.2 m rail.
+- **Height routing in `game.js`:** these all use `W.baseHeight` and need one shared `hAt` (base + chute + flume): 825 (the `emitT` floor), 989 (`slopeAt`, which drives her pitch, speed and the plunge splash), 1002 (`surf`), 1218 and 1222 (the camera's height and tilt), plus `level1.js` 590-592 (coins and gems).
+- **Her ride height on the slope:** use `W.FLOAT_H * Math.hypot(1, slope)`. With the plain value, her back sinks into the chute face, which breaks the rule that she sits on top of the water.
+
 
 _12 tool steps._
 
@@ -340,8 +611,16 @@ Deliver as your final message (under 800 words): first a table of every MCP tool
 - 12:19 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__material_details`
 - 12:19 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__material_details`
 - 12:19 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__object_details`
+- 12:21 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:22 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:23 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:23 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:23 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:24 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:25 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 12:26 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 
-_24 tool steps._
+_32 tool steps._
 
 ---
 
