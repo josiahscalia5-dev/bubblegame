@@ -328,3 +328,56 @@ The leftover change was the pixel-identity proof log, which the background proof
 
 Tripo is still connected and verified, with 640 credits and nothing spent. The Level 1 identity proofs and the full recording are still running. When they finish I'll continue with the second-route clip, the performance numbers, the side-by-side sheets and the final report.
 
+---
+
+### You · 2026-11-08 13:09 UTC
+
+[attached file: BubbleWash_Claude_Match_Prompt_FRESH.txt] [attached file: BubbleWash_Approved_References_FRESH.zip] CLAUDIA — MANDATORY LEVEL 1 COMPLETION, ORIGINAL APPROVED-SCREEN MATCHING, AND FINAL VERIFICATION
+
+Claudia, I have reviewed your latest Bubble Wash Kingdom development report. I appreciate that the new side paths, lower water routes, enemies, spinning brushes, sock collection, and Level Complete systems are now working in your tests. However, I DO NOT CONSIDER LEVEL 1 FINISHED YET. My most important priority is making the actual playable game look and play as closely as possible to my ORIGINAL approved 12-screen gameplay board and ORIGINAL CLASSIC approved Screen 4.
+
+FIRST, FINISH YOUR CURRENT WORK BEFORE STARTING ANYTHING NEW. Complete the running pixel-identity checks, full mobile gameplay recording, second-route video, performance measurements, and side-by-side visual comparisons. Preserve and push the results to my existing GitHub repository. Do not restart completed tests unnecessarily or waste additional Claude usage. Verify the exact current remote commit before claiming everything is saved.
+
+SECOND, FOLLOW MY ORIGINAL APPROVED GAMEPLAY SCREENS. Preserve the animated Tripo girl and laundry-toss opening. Once the pink character enters the washing machine, Level 1 must follow the gameplay sequence I approved: swimming through the blue-water tunnel, rescuing socks, jumping to side paths, dropping to lower paths, avoiding spinning brushes, collecting gold paw coins and gems, avoiding enemies, entering Bubble Kingdom, rescuing all five socks, and completing the level. These must remain real playable mechanics, not decorative images.
+
+THIRD, MAKE THE ACTUAL GAME MATCH MY APPROVED ARTWORK. Your new gameplay mechanics are encouraging, but visual accuracy is still very important. I want the original pink fluffy mascot, beautiful dimensional cobalt-blue water, metallic silver/lavender washer housing, fluffy brushes, gold coins, smiling socks, lighting, colors, camera perspective, and interface to look as close as technically possible to my approved artwork. Do not substitute the newer generated preview boards for my original images.
+
+FOURTH, CORRECT THE BUBBLE KINGDOM ENDING. You reported that the castle is still visible only through a distant portal. That is not close enough to my original approved gameplay screen. I want the player to feel like the pink character actually reaches the beautiful Bubble Kingdom destination, with recognizable towers, magical scenery, and a satisfying arrival. However, the character must remain on and swimming through continuous blue water connected to the washing-machine environment. Do not reintroduce a dry road or abruptly disconnect the character from the water.
+
+FIFTH, FIX THE REMAINING VISUAL DETAILS. The new gameplay coins look too orange compared with my approved golden paw coins. Investigate a correction restricted to the new Level 1 sections so that you do not change my accepted Classic Screen 4. Also improve any remaining exposed purple ceiling, visual seams, odd objects, clipped tunnel geometry, unnatural water interaction, and unfinished character placement. Correct these only where visual comparisons show a real problem.
+
+SIXTH, MAKE LEVEL COMPLETE FEEL FINISHED. Add a polished celebration animation for my original pink fluffy mascot, consistent with the approved final screen. Keep the surrounding blue water and Bubble Kingdom scenery visible. Preserve the three-star rating, objectives, and rewards. If Level 2 is not ready, do not create a fake playable Level 2. Instead, make the button behavior clear and functional, such as showing that Level 2 is coming soon, while preserving the approved visual direction.
+
+SEVENTH, USE MY SPECIALIZED AI DEVELOPMENT AGENTS. Continue using the working game-art-director, gameplay-visual-testing, lighting-visual-matching, water-vfx-engineer, and screen4-water-motion-engineer where appropriate. Use Tripo for genuinely necessary 3D asset improvements, including suitable Bubble Kingdom scenery, if the existing assets cannot match my approved references. My secure Tripo connection has been verified, but do not spend credits merely to produce unnecessary models. Preserve all working game systems and optimize assets for mobile performance.
+
+EIGHTH, PROTECT MY GITHUB WORK. My repository is "josiahscalia5-dev/bubblegame", and this new-account session has been working on "ccr-50c66592-kcnqoy". Verify the latest remote commit and coordinate with the other Claude development branch before touching shared files. Keep your work isolated and preserve all original approved artwork, Tripo models, custom agents, tools, plugin configurations, development history, and five-minute autosave. Do not force-push, reset, or automatically merge Pull Request #3 or Match6.
+
+NINTH, PROVIDE HONEST EVIDENCE. When your current tests are finished, send the real uninterrupted gameplay video from the animated girl opening through Level Complete, separate footage of the alternative route, and side-by-side screenshots against each relevant approved image. Tell me which gameplay events work, which visual details match, which ones still look different, and why. Report anything you cannot achieve, the exact technical reason, and what would be required to improve it. Include mobile performance, test results, files changed, GitHub branch, and verified commit SHA.
+
+FINAL MANDATE: Claudia, do not consider this project finished just because the gameplay tests pass. My goal is a real, polished, professionally animated Bubble Wash Kingdom Level 1 that looks and plays like my exact approved artwork. Finish the current proof work, preserve everything, then focus on closing the remaining visual differences without damaging anything already approved. I WANT REAL PLAYABLE RESULTS, CLEAR COMPARISONS, AND A TRUTHFUL REPORT OF WHAT SUCCEEDED AND WHAT STILL NEEDS WORK. Claudia, please prioritize completing and saving the current Level 1 tests, full gameplay recording, visual comparisons, and final report before my usage runs out. Make sure everything is committed and verified on GitHub. Do not start another major redesign yet. Once the current work is safely finished, our next priority is matching my ORIGINAL approved screens more closely, especially the Bubble Kingdom castle, gold coins, pink mascot celebration, and continuous blue-water tunnel. Tell me exactly what is completed and what remains unfinished.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-08 13:10 UTC
+
+Understood. I'll finish and save the current proof work first: identity checks, full recording, second-route clip, performance and side-by-sides. Then I'll give you the report, with no redesign before that. First I'll store your new reference pack and check the background jobs:
+
+The chat attachment is identical to the board in the zip, so I'll drop the duplicate copy. Switching the sheet script to your precise `original_crops`:
+
+That job is chained in the background. A second wait notifies me when the full recording finishes:
+
+Both jobs are waiting in the background. Saving the new reference pack and script changes now, so nothing is only local:
+
+Saved and pushed: `3632439` on `ccr-50c66592-kcnqoy`, confirmed on GitHub. Your new reference pack is stored in `Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/`, and its ten precise crops will be the comparison source.
+
+I'm finishing the current proof work first and won't start a redesign until it's saved and reported:
+
+- **Identity proofs:** 9 of 11 checks done, all 0 pixels different. That covers your approved Classic Screen 4 at Tap to Start and at 3 s, the normal game, the candidate, Match6 when switched on, and the previous Level 1 when the new gameplay is switched off. The last two checks are running.
+- **Full recording:** from the girl's opening through Level Complete, on the side-path then lower-path route. About a third is captured; this machine only has software rendering, so it takes a while.
+- **Queued behind it:** the performance comparison of the previous and new builds, a separate clip of the alternative route (the main route past the side path, then the raised ledge beside the lower path), and a 5/5 re-capture of that route's screenshots.
+- **Then:** the 10-row comparison against your original crops, the side-by-side against the original Screen 4, the finished README, the final verified commit and the full report.
+
+Your later items will come after that, as small, separately proven steps behind the same switch: Bubble Kingdom arrival, golder coins in the Level 1 sections only, the mascot's celebration, and a clear "Level 2 coming soon" button. Your approved Screen 4 stays untouched, and no Tripo credits will be spent without your yes.
+
