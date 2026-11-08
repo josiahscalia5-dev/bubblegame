@@ -33,7 +33,7 @@ export const RECON16 = {
   gear: { u: 237, x: -2.5, h: 5.0, R: 0.72 },   // master: centre (0.93, 0.205), the frill's radius 0.16 W
   arches: [],   // (v1-v2 had three; with the portal they read as a tunnel of rings, the look the user rejected)
   endWall: { gap: 3.05, ds: 0.72 },   // machinery on the far end wall round the opening (radius gap m round its centre)
-  glow: { r: 3.1, opacity: 1.0 },   // the far end's light (pass 13b: r 2.2, opacity 0.85)
+  glow: { r: 4.2, opacity: 1.0, du: 2.5, fade: [8, 16] },   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
 };
 const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
@@ -47,7 +47,7 @@ function canvasTex(w, h, draw, repeat) {
 // the chamber's own surface behind the machinery: deep lavender-blue recesses with faint panels (it shows only in the gaps)
 export function reconFacadeTexture() {
   return canvasTex(512, 256, (g, w, h) => {
-    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#8f84dc'); gr.addColorStop(0.5, '#b4a2ec'); gr.addColorStop(1, '#d9aee6');
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#5f68b5'); gr.addColorStop(0.5, '#8a72b6'); gr.addColorStop(1, '#c47aa8');   // deep recesses (the master's darker tones)
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
     for (let i = 0; i < 40; i++) {
       const x = (i * 97) % w, y = (i * 53) % h, rw = 30 + (i * 37) % 60, rh = 24 + (i * 29) % 50;
@@ -239,7 +239,9 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     const total = len[len.length - 1], pick = (s) => { let i = 1; while (i < len.length - 1 && len[i] < s) i++; return path[i]; };
     const slots = []; let row = 0;
     for (let u = Gp.u[0]; u <= Gp.u[1]; u += Gp.du, row++) for (let s = (row % 2) * Gp.ds / 2; s < total; s += Gp.ds) slots.push([u, s, slots.length]);
-    const palette = [C.cream, C.lav, C.rose, C.blue, C.peach, C.cream, C.lav, C.mint].map((c) => new THREE.Color(c));
+    // the original's own background colours (median-cut of the master's upper middle, without the banner): periwinkle blues, violet,
+    // pink-lavender, dusty rose, peach and cream highlights, mauve
+    const palette = [0x5f68b5, 0x969ccc, 0x936fae, 0xd4a5da, 0xd7a0a0, 0xeec7be, 0xfbe9d7, 0x7a86e0, 0xc672a1, 0x4a56c0, 0xfbe9d7, 0x969ccc].map((c) => new THREE.Color(c));
     const glowCols = [new THREE.Color(0.75, 1.15, 1.55), new THREE.Color(1.55, 0.95, 1.35), new THREE.Color(1.55, 1.3, 0.85)];
     const kinds = { box: [], tank: [], ring: [], disc: [], gear: [], lamp: [] };
     const Q = new THREE.Quaternion(), Ql = new THREE.Quaternion(), Z = new THREE.Vector3(0, 0, 1), S = new THREE.Vector3(), Mx = new THREE.Matrix4();
@@ -276,7 +278,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
       if (hash(ei, 11) < 0.35) addEnd('lamp', x + 0.3, h + 0.25, bd + 0.1, 0.09, 0.09, 0.09, glowCols[2]);
     }
     const instM = (base) => { base.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); }; return base; };
-    const gStd = instM(std(0xffffff, 0xffffff, 0.34));
+    const gStd = instM(std(0xffffff, 0xffffff, 0.2));   // (v1-v3: 0.34 washed every colour to one lilac)
     const ringGeo = new THREE.TorusGeometry(1, 0.16, 8, 24); ringGeo.rotateX(Math.PI / 2);
     const discGeo = new THREE.CircleGeometry(1, 20); discGeo.rotateX(-Math.PI / 2);
     const tankGeo = new THREE.CylinderGeometry(1, 1, 1, 18); tankGeo.rotateX(Math.PI / 2);

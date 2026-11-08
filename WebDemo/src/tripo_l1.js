@@ -295,7 +295,8 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
     gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
   const GL = RECON16_ON ? RECON16.glow : U.glow;   // (pass 16: the original's luminous far end, larger and brighter)
   const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(255, 248, 230), transparent: true, opacity: GL.opacity, depthWrite: false, blending: THREE.AdditiveBlending }));
-  glow.scale.setScalar(GL.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + 0.5, glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
+  glow.scale.setScalar(GL.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + (GL.du || 0.5), glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
+  if (GL.fade) SCENE07._glow = { sprite: glow, ...GL };
   const cols = [[255, 170, 230], [150, 210, 255], [255, 230, 140], [200, 170, 255]];
   for (let i = 0; i < U.lights; i++) {
     const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(...cols[i % 4]), transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending }));
@@ -349,6 +350,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
       it.holder.visible = it.pos.distanceTo(cam) < SCENE07.drawDist;
       if (it.spin && it.holder.visible) it.turn.rotation.z = along * 0.35 * it.spin;
     }
+    if (SCENE07._glow) { const G = SCENE07._glow; G.sprite.material.opacity = G.opacity * THREE.MathUtils.smoothstep(G.sprite.position.distanceTo(cam), G.fade[0], G.fade[1]); }   // (pass 16)
     if (base !== null) { const k = cam.clone().sub(ends[0]).dot(seg) / segL2; fx.u.uScale.value = k > 0 && k < 1 ? base * SCENE07.particles : base; }
   };
   if (typeof document !== 'undefined') {
