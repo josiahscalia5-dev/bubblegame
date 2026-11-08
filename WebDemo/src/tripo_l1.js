@@ -10,7 +10,8 @@
 // code-built meshes are hidden, not removed (level1.js still turns the ball, and the wobble on `body` moves the new look too).
 // No random numbers. Report: window.__bwTripo1.
 import * as THREE from 'three';
-import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): the upper 40 %, attached wall machinery; `,nowall15` = pass 13b
+import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): opt-in `,norecon16,wall15` only
+import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture } from './scene07_recon16.js';   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -174,11 +175,11 @@ function openTube(scene, TR, Ch) {
 }
 function buildChamber(root, TR, env) {
   const Ch = SCENE07.chamber, P = new THREE.Vector3();
-  const tex = facadeTexture();
+  const tex = RECON16_ON ? reconFacadeTexture() : facadeTexture();   // (pass 16: the chamber's own surface behind the machinery)
   const shellM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15, envMap: env || null, envMapIntensity: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.45, side: THREE.DoubleSide });
   // the shell: a half-ellipse over the stretch, from the deck on one side over the top to the other
   const pos = [], uv = [], idx = [], nA = 36, step = 1; let rows = 0;
-  const col = [], vc = WALL15_ON ? new THREE.Color().setRGB(...WALL15.vaultRGB) : new THREE.Color(Ch.vault), cc = new THREE.Color();   // (pass 15: a warm cream-lavender vault)
+  const col = [], vc = RECON16_ON ? new THREE.Color(1, 1, 1) : WALL15_ON ? new THREE.Color().setRGB(...WALL15.vaultRGB) : new THREE.Color(Ch.vault), cc = new THREE.Color();   // (pass 15: a warm cream-lavender vault)
   // the cross-section (pass 8): up the left wall to wallH, the vault over the top, down the right wall
   const sec = []; for (let j = 0; j <= 6; j++) sec.push([Ch.halfW, -0.3 + (Ch.wallH + 0.3) * j / 6]);
   for (let j = 1; j < 24; j++) { const a = Math.PI * j / 24; sec.push([Ch.halfW * Math.cos(a), Ch.wallH + (Ch.height - Ch.wallH) * Math.sin(a)]); }
@@ -186,7 +187,7 @@ function buildChamber(root, TR, env) {
   const nS = sec.length - 1;
   for (let u = Ch.u0 - 1; u <= Ch.u1 + 1 + 1e-6; u += step, rows++) {
     for (const [sx, sh] of sec) { TR.map(sx, Ch.deck + sh, u, P); pos.push(P.x, P.y, P.z);
-      uv.push((u - Ch.u0) / 4, sh < Ch.wallH ? Math.max(0, sh) / 1.8 : 1.95);   // the windows on the walls; above: the texture's lavender
+      uv.push((u - Ch.u0) / 4, RECON16_ON ? Math.max(0, sh) / 1.8 : sh < Ch.wallH ? Math.max(0, sh) / 1.8 : 1.95);   // the windows on the walls; above: the texture's lavender
       const k = THREE.MathUtils.smoothstep(sh, Ch.wallH - 0.2, Ch.wallH + 0.8); cc.setRGB(1, 1, 1).lerp(vc, k); col.push(cc.r, cc.g, cc.b); }
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nS; j++) { const a = i * (nS + 1) + j, b = a + nS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
@@ -273,7 +274,7 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
   const U = SCENE07.upper, load = (url) => new Promise((ok, no) => loader.load(url, ok, undefined, no));
   const names = Object.keys(U.files), models = {};
   (await Promise.all(names.map((k) => load(U.files[k])))).forEach((gl, i) => { models[names[i]] = gl.scene; });
-  for (const [kind, side, u, x, h, size] of U.items) {
+  for (const [kind, side, u, x, h, size] of RECON16_ON ? [] : U.items) {   // (pass 16: not the game's generic machinery models)
     const look = models[kind].clone(true);
     look.traverse((o) => { if (o.isMesh) for (const m of [].concat(o.material)) if (m.isMeshStandardMaterial) { if (env) { m.envMap = env; m.envMapIntensity = 1.1; } if (m.map) { m.emissiveMap = m.map; m.emissive = new THREE.Color(0xffffff); m.emissiveIntensity = 0.28; } } });
     const box = new THREE.Box3().setFromObject(look), sz = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3()), k = size / Math.max(sz.x, sz.y, sz.z);
@@ -286,9 +287,9 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
   // the walkway's gold balustrade on posts (the original's left ledge)
   const pts = [], P = new THREE.Vector3();
   for (let u = U.railU[0]; u <= U.railU[1]; u += 1) pts.push(TR.map(U.railX, U.railH, u, new THREE.Vector3()));
-  root.add(Object.assign(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, 0.06, 8, false), goldM), { name: 'scene07_rail' }));
+  if (!RECON16_ON) root.add(Object.assign(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, 0.06, 8, false), goldM), { name: 'scene07_rail' }));   // (pass 16: the raised ledge replaces the walkway's rail)
   const postG = new THREE.CylinderGeometry(0.045, 0.06, U.railH, 10);
-  for (let u = U.railU[0]; u <= U.railU[1]; u += U.postEvery) { const p = new THREE.Mesh(postG, goldM); TR.map(U.railX, U.railH / 2, u, p.position); TR.quaternion(u, p.quaternion); p.name = 'scene07_post'; root.add(p); }
+  for (let u = U.railU[0]; u <= (RECON16_ON ? U.railU[0] - 1 : U.railU[1]); u += U.postEvery) { const p = new THREE.Mesh(postG, goldM); TR.map(U.railX, U.railH / 2, u, p.position); TR.quaternion(u, p.quaternion); p.name = 'scene07_post'; root.add(p); }
   // the exit portal bright (the original's luminous vanishing point) and soft coloured lights in the air
   const soft = (r, g, b) => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const gr = x.createRadialGradient(32, 32, 2, 32, 32, 32);
     gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
@@ -312,12 +313,16 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
 async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   const root = new THREE.Group(); root.name = 'scene07'; scene.add(root);
   const items = [];
+  if (RECON16_ON) Object.assign(SCENE07.chamber, RECON16.chamber);   // pass 16: a higher chamber for the upper machinery
   const opened = openTube(scene, TR, SCENE07.chamber);
   const goldM = buildChamber(root, TR, env);
-  buildLandmarks(root, TR, env, goldM, items);
+  let recon16 = null;
+  if (RECON16_ON) recon16 = buildRecon16(root, TR, env, goldM, SCENE07.chamber, items);   // pass 16 (scene07_recon16.js): left housing, right wall, upper machinery
+  else buildLandmarks(root, TR, env, goldM, items);
   await buildUpper(root, TR, env, loader, goldM, items);
   SCENE07.enclosures.length = 0; SCENE07.portholes.splice(0, SCENE07.portholes.length - SCENE07.upper.rings.length);   // (pass 6: landmarks replace pass 5's pieces; pass 7's high rings stay)
   SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 2.4, 4.2, 0.8, 1], [1, 250, 1.2, 4.6, 0.75, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
+  if (RECON16_ON) { SCENE07.portholes.length = 0; SCENE07.gears.length = 0; }   // (pass 16 builds its own portholes and gears)
   let wall15 = null;
   if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, SCENE07.ledge, items); }   // pass 15 (scene07_wall15.js)
   buildArchitecture(root, TR, env, items);
@@ -358,7 +363,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
       body.scene07 #l1Banner.warn span { display: none; }`;
     document.head.appendChild(st);
   }
-  report.scene07 = { wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
+  report.scene07 = { recon16, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {

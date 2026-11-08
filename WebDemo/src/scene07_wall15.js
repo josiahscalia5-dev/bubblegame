@@ -5,13 +5,13 @@
 // were rejected, so here everything is ATTACHED: a continuous band of machine cabinets, tanks and pipe stacks standing on the decks
 // against both walls (on the right drums where they stand), a gold pipe running the whole length, cream-and-gold arcade ribs across the
 // vault (a washer drum's ribs), and the vault itself lit a warm cream-lavender. Procedural three.js, merged per material (a handful of
-// draw calls); no random numbers (a fixed hash). Part of scene07 (opt-in, NOT approved); `,nowall15` builds pass 13b exactly.
+// draw calls); no random numbers (a fixed hash). Superseded by pass 16 (the user's reconstruction kit arrived): only `,norecon16,wall15`.
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const WALL15_ON = !LIST.includes('nowall15');
+export const WALL15_ON = LIST.includes('wall15') && LIST.includes('norecon16');   // (opt-in only: superseded by pass 16, scene07_recon16.js, before the user saw it)
 export const WALL15 = {
   u: [221, 253.4],               // the band's extent along the track (the chamber is u 218-254)
   // the band's BACK line, m from the centre line: not at the walls (4.6 m), which this camera never sees (the left housing and the
