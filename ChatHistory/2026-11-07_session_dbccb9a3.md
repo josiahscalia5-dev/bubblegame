@@ -633,3 +633,57 @@ None of them changes game code. With your OK, I'll merge them into this session'
 
 Tell me which restore steps to take, and I'll go back to the recording afterwards.
 
+---
+
+### You · 2026-11-08 01:05 UTC
+
+Claudia, thank you for completing the environment audit.
+
+I authorize you to proceed with restoring the remaining transferable parts of my original Bubble Wash Kingdom development environment.
+
+1. GitHub restoration
+
+You have my approval to bring over the three remaining handoff commits ("2f7977e", "2c72c2f", and "afd0ee6") to my current development branch, "ccr-76d4bc77-rqhl8o".
+
+First verify their contents and create a reversible checkpoint. Preserve all existing game code, completed gameplay, agents, approved artwork, and current progress. Do not overwrite conflicting files without checking them. Verify the resulting remote commit after pushing.
+
+2. Blender restoration
+
+You have my approval to install Blender using the existing "Tools/cloud_env_setup.sh" setup, provided you first inspect the script for safety and compatibility.
+
+After installation, verify Blender runs correctly. Do not change my existing 3D game assets unnecessarily.
+
+3. parallax-threejs plugin
+
+I understand this plugin must be enabled on my new Claude account.
+
+Tell me exactly how to enable version 0.4.12 and verify that its four MCP servers, three specialist agents, commands, and live 3D inspection tools become available in a fresh session.
+
+Do not claim they are operational until tested.
+
+4. Tripo API
+
+I will securely replace the Tripo API key if necessary.
+
+Once configured, verify authentication and test the connection without spending generation credits.
+
+Do not generate any 3D assets until I approve the specific job and cost.
+
+5. Preserve my existing game
+
+Keep my current Bubble Wash Kingdom game, approved Screen 3 and Screen 4 references, water effects, pink character, animated girl, washer entrance, swimming systems, and collectibles intact.
+
+Once the environment is restored, resume the unfinished final gameplay tests and continuous phone recording.
+
+Provide a report showing what was successfully restored, what remains unavailable, and the verified GitHub commit.
+
+Do not begin a redesign or restart my game.
+
+---
+
+### Claude · 2026-11-08 01:05 UTC
+
+Starting the restoration. First the GitHub part: inspecting the three commits and the files they touch, and checking for overlaps with my changes.
+
+GitHub verified: the branch is at `3e5c5a3` both locally and on GitHub, and contains all three commits. Next, Blender: inspecting the setup script's Blender step before running it.
+
