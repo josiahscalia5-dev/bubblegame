@@ -136,3 +136,11 @@ I have what I need for the hooks. Next I'll confirm the exact shader strings I'd
 
 A jump peaks at about 1.13 m (v²/2g with 6.2 and 17), so her top reaches about 2.3 m; a bridge bottom at 3.1 m stays clear. Now I'll write the pass 17 module.
 
+Now the pass 17 module itself.
+
+The autosave committed my in-progress edits (by design: it saves everything every 5 minutes). I'll rebuild from the current sources to make sure the bundle matches them.
+
+Bundle `54c3001b` builds from the current sources. Now the first pass 17 capture at the checkpoint, along with its build report.
+
+Pass 17 built with no errors: rows and far machinery, 520 glints, 11 camera-facing machines replaced, and both shaders patched. That's 410 draw calls against v5's 392. Now the visual comparison.
+
