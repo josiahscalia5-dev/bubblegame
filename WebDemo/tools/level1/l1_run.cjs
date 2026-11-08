@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
   }, S3);
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
-  const shot = async (f) => { if (process.env.SETTLE) await page.waitForTimeout(+process.env.SETTLE); return page.screenshot({ path: path.join(OUT, f), clip: await page.locator('#stage').boundingBox() }); };
+  const shot = async (f) => { if (process.env.SETTLE) await page.waitForTimeout(+process.env.SETTLE); return page.screenshot({ path: path.join(OUT, f), clip: await page.locator('#stage').boundingBox(), timeout: 240000 }); };
   // the autopilot: every 0.1 s, keep out of any obstacle's lane in the next 2-8 m, jump soap bars, else head for a sock
   const pilot = () => page.evaluate(() => {
     const st = window.__bw.state(), m = st.mascot || st, u = m.z ?? m.u, lane = m.lane;
@@ -43,14 +43,14 @@ const server = http.createServer((req, res) => {
     return want;
   });
   const out = [];
-  const state = () => page.evaluate(() => { const s = window.__bw.state(); return { l1: window.__bwLevel1 || null, lane: s.lane, speed: s.speed, air: s.air, coins: s.coins, socks: s.socks, hearts: s.hearts, phase: s.phase, z: s.z }; });
+  const state = () => page.evaluate(() => { const s = window.__bw.state(); return { l1: window.__bwLevel1 || null, lane: s.lane, speed: s.speed, air: s.air, coins: s.coins, socks: s.socks, hearts: s.hearts, phase: s.phase, z: s.z, info: window.__bw.info ? window.__bw.info() : null }; });
   await page.evaluate(() => window.__bw.advance(0.5));
   if (TIMES.includes(0)) { await shot('t0.png'); out.push(['tap', await state()]); }
   if (TIMES.some((t) => t > 0)) {
     await page.evaluate(() => window.__bw.tap());
     let since = 0;
     for (const t of TIMES.filter((t) => t > 0)) {
-      if (AUTO) { while (since < t - 1e-6) { const d = Math.min(0.1, t - since); await pilot(); await page.evaluate((x) => window.__bw.advance(x), d); since += d; } }
+      if (AUTO) { while (since < t - 1e-6) { const d = Math.min(0.1, t - since); await pilot(); await page.evaluate((x) => window.__bw.step(x), d); since += d; } await page.evaluate(() => window.__bw.render()); }
       else { await page.evaluate((d) => window.__bw.advance(d), t - since); since = t; }
       await shot(`t${t.toFixed(1)}.png`); out.push([t, await state()]);
     }

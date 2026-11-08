@@ -286,7 +286,13 @@ export function buildLevel1(ctx) {
   // ---------------- soap bubbles drifting in the drum and the kingdom (fixed to the world, rising slowly)
   const bubbleMat = new THREE.ShaderMaterial({
     uniforms: { uTime: timeU }, transparent: true, depthWrite: false,
-    vertexShader: /* glsl */ `varying vec3 vN, vV; void main() { vec4 w = modelMatrix * instanceMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix * instanceMatrix) * normal); vV = normalize(cameraPosition - w.xyz); gl_Position = projectionMatrix * viewMatrix * w; }`,
+    vertexShader: /* glsl */ `varying vec3 vN, vV; void main() {
+#ifdef USE_INSTANCING
+  mat4 im = instanceMatrix;
+#else
+  mat4 im = mat4(1.0);
+#endif
+  vec4 w = modelMatrix * im * vec4(position, 1.0); vN = normalize(mat3(modelMatrix * im) * normal); vV = normalize(cameraPosition - w.xyz); gl_Position = projectionMatrix * viewMatrix * w; }`,
     fragmentShader: /* glsl */ `varying vec3 vN, vV; void main() { float f = 1.0 - abs(dot(normalize(vN), vV)); vec3 irid = 0.5 + 0.5 * cos(6.2832 * (f * 1.3 + vec3(0.0, 0.33, 0.67)));
       vec3 c = mix(vec3(0.85, 0.95, 1.0), irid, 0.45); float a = pow(f, 2.2) * 0.85 + 0.05; float hl = pow(max(0.0, dot(reflect(-vV, normalize(vN)), normalize(vec3(-0.4, 0.8, 0.3)))), 40.0);
       gl_FragColor = vec4(c + hl, clamp(a + hl, 0.0, 1.0)); }`,
@@ -525,7 +531,12 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // brushes spin; a brush in her lane knocks her
     for (const b of brushes) {
       const ahead = b.u - u;
-      b.holder.visible = ahead > -4 && ahead < 60;
+      b.holder.visible = ahead > -2.2 && ahead < 60;
+      // once she is past it, it folds back into the drum's wall (so it never fills the screen between her and the camera)
+      const gone = smooth(-0.3, -2.0, ahead);
+      b.holder.scale.setScalar(1 - 0.9 * gone);
+      if (!b.base) b.base = b.holder.position.clone();
+      TR.frame(b.u, F); b.holder.position.copy(b.base).addScaledVector(F.R, Math.sign(b.x || (b.dir > 0 ? 1 : -1)) * gone * 1.4).addScaledVector(F.U, gone * 0.9);
       b.bonk = Math.max(0, b.bonk - dt);
       if (b.holder.visible) b.spinner.rotation.z += dt * 3.2 * b.dir * (1 + 4 * b.bonk);
       if (!running) continue;
@@ -537,7 +548,8 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // soap bars: jump them
     for (const b of bars) {
       const ahead = b.u - u;
-      b.holder.visible = ahead > -4 && ahead < 70;
+      b.holder.visible = ahead > -1.8 && ahead < 70;
+      b.holder.scale.setScalar(1 - 0.95 * smooth(-0.4, -1.8, ahead));
       if (!running) continue;
       if (Math.abs(ahead) > 0.42) { if (ahead < -1.5) b.hit = false; continue; }
       if (b.hit || m.yAbs - W.surface(L, m.x, m.z, t) > 0.5) continue;
@@ -548,13 +560,14 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
       const near = e.u0 - u;
       if (running && near < 26 && near > -6) e.u = Math.max(e.u0 - 9, e.u - dt * 1.6);
       const ahead = e.u - u;
-      e.holder.visible = ahead > -4 && ahead < 60;
+      e.holder.visible = ahead > -1.8 && ahead < 60;
       if (!e.holder.visible) continue;
       const bob = Math.abs(Math.sin(t * 4.2 + e.ph)) * 0.16;
       TR.map(e.x + Math.sin(t * 1.3 + e.ph) * 0.08, 0.36 + bob, e.u, e.holder.position); TR.quaternion(e.u, e.holder.quaternion); e.holder.rotateY(Math.PI);
       // the fuzzy ball rolls toward her under its eyes, which stay on her, wobbling
       e.body.children[0].rotation.x = -t * 2.5;
       e.body.rotation.set(Math.sin(t * 5.0 + e.ph) * 0.12, 0, Math.sin(t * 2.0 + e.ph) * 0.15);
+      e.holder.scale.setScalar(1 - 0.95 * smooth(-0.3, -1.6, ahead));
       if (!running) continue;
       if (Math.abs(ahead) > 0.6) { if (ahead < -1.5) e.hit = false; continue; }
       if (e.hit || Math.abs(m.x - e.x) > 0.48) continue;

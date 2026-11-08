@@ -1345,7 +1345,7 @@ function startRun() {
 const startPanels = ['banner', 'startPanel'].map((id) => $(id));
 const openingArt = $('openingArt');
 function fadeStartPanels() {
-  const since = state.phase === 'running' ? state.time - state.startedAt : -1;
+  const since = state.phase === 'running' || state.phase === 'complete' ? state.time - state.startedAt : -1;   // ('complete': ?s3=...,level1's finish)
   const k = since < 0 ? 0 : THREE.MathUtils.smoothstep(since, 0, 0.45);
   for (const el of startPanels) {
     el.style.opacity = (1 - k).toFixed(3);
@@ -1754,6 +1754,8 @@ window.__bw = {
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
   swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
   advance: (seconds, fps = 30) => { const n = Math.max(1, Math.round(seconds * fps)); for (let i = 0; i < n; i++) step(1 / fps); render(); return window.__bw.state(); },
+  step: (seconds, fps = 30) => { const n = Math.max(1, Math.round(seconds * fps)); for (let i = 0; i < n; i++) step(1 / fps); },   // (tests: the same steps without drawing)
+  info: () => ({ calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures }),
   render,
   lookBack: (v) => { mascot.look = v; mascot.lookT = -0.5; },
   setBloom: (on) => { bloom.enabled = !!on; },
