@@ -28,15 +28,21 @@ export const ART16 = {
   // the game camera at the checkpoint (u 229.5, centre lane, 412 x 915), measured in track space (77_.../README): the projector
   cam: { u: 226.66, pos: [-0.61617, 1.48896, 0.00312], fwd: [0.18668, -0.02616, 0.98207], up: [-0.02152, 0.9993, 0.03071], fov: 68, aspect: 0.45027 },
   gain: 0.95,                  // the output pass's exposure is 1.05
-  card: { fade: [7, 13] },     // the card in the far end's opening fades out as the camera comes within 13..7 m (the run goes on through it)
-  greebleMaxU: 233,            // 3D machinery only where the artwork does not reach (the chamber's first metres, above the checkpoint view)
+  // (the user, 8 Nov ~20:10 UTC: no projection across mismatched surfaces) LAYERED DEPTH CARDS: flat planes square to the approved camera,
+  // so the master's machinery is never stretched; each shows only its screen rectangle [x0, y0, x1, y1] of the artwork, at a depth (m along
+  // the view) where that scenery stands (the far end at the end wall; the left and right machinery beside the channel), and fades out as
+  // the camera comes within fade[1]..fade[0] m. Where the master's HUD, banner and enemy hid the scenery the cards are transparent and the
+  // real 3D machinery behind shows.
+  cards: [{ name: 'far', rect: [0.27, 0.22, 0.71, 0.53], dist: 26.6, fade: [7, 13] }, { name: 'left', rect: [0.13, 0.15, 0.43, 0.51], dist: 18.0, fade: [6, 11] },
+    { name: 'right', rect: [0.58, 0.05, 1.0, 0.53], dist: 15.5, fade: [6, 11] }],
+  feather: 0.03,
 };
 export const RECON16 = {
   chamber: { wallH: 4.8, height: 7.2 },   // a higher chamber (pass 13b: 3.6 / 5.4) so the upper machinery and the gear have room
   // the left drum: face centre (x, h, u), outer ring radius R, body depth (in R), yaw: how far the face turns from facing straight back
   // down the track toward the left wall (radians; the drum's body then shows on the face's right, as in the original)
   // (fitted with a projection grid of the real camera at the u 229.5 checkpoint, 77_.../scripts: centre (0.075, 0.30), gold band radius 0.125 H)
-  drum: { u: 238, x: 2.85, h: 4.0, R: 1.52, depth: 0.45, yaw: 0.62 },
+  drum: { u: 238, x: 2.9, h: 3.78, R: 1.4, depth: 0.3, yaw: 0.5 },   // (v3: R 1.52, depth 0.45, yaw 0.62: its body showed as extra rings to x 0.30; the master's ring ends at 0.21)
   ledge: { u: [232.2, 253.2], x: 2.25, h: 1.95 },
   // a long gentle curve (radius 5 m) whose face runs 1.3 m from the centre line (as close as the right lane allows; the master's wall would
   // stand at 0.5 m, inside the lane): from the right screen edge (u 234) to x 0.70 (u 240)
@@ -267,7 +273,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     const D = R16.drum;
     const free = (x, h, u) => !(x > 1.2 && Math.abs(u - D.u) < 2.6 && h < D.h + D.R * 1.35) && !(u > 252.6 && Math.abs(x) < 3.1 && h < 4.6);
     for (const [u, s, i] of slots) {
-      const [x, h, nx, ny] = pick(s); if (!free(x, h, u) || (ART16_ON && u >= ART16.greebleMaxU)) continue;
+      const [x, h, nx, ny] = pick(s); if (!free(x, h, u)) continue;
       const bw = 0.55 + 0.6 * hash(i, 1), bd = 0.25 + 0.3 * hash(i, 2), bl = 0.55 + 0.5 * hash(i, 3);
       add('box', x, h, u, nx, ny, bd / 2, bw, bd, bl, palette[Math.floor(hash(i, 4) * palette.length)]);
       const f = hash(i, 5), o = bd;
@@ -281,7 +287,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     const E = R16.endWall, Qe = new THREE.Quaternion(), Rx = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
     const addEnd = (kind, x, h, off, sx, sy, sz, col) => { const u = Ch.u1 - 0.02; TR.map(x, h, u - off, P); TR.quaternion(u, Qe); Qe.multiply(Rx); kinds[kind].push([Mx.compose(P, Qe, S.set(sx, sy, sz)).clone(), col]); };
     let ei = 5000;
-    if (!ART16_ON) for (let h = Ch.deck + 0.3; h < Ch.height; h += E.ds) for (let x = -a + 0.3 + ((Math.round(h / E.ds) % 2) * E.ds) / 2; x < a - 0.2; x += E.ds, ei++) {
+    for (let h = Ch.deck + 0.3; h < Ch.height; h += E.ds) for (let x = -a + 0.3 + ((Math.round(h / E.ds) % 2) * E.ds) / 2; x < a - 0.2; x += E.ds, ei++) {
       if (Math.hypot(x, h - 1.5) < E.gap || h > Ch.wallH + b * Math.sqrt(Math.max(0, 1 - (x / a) ** 2)) - 0.3) continue;
       const bw = 0.5 + 0.45 * hash(ei, 1), bd = 0.25 + 0.35 * hash(ei, 2);
       addEnd('box', x, h, bd / 2, bw, bd, bw * (0.8 + 0.5 * hash(ei, 3)), palette[Math.floor(hash(ei, 4) * palette.length)]);
@@ -319,33 +325,55 @@ function projector(TR) {
   const c = ART16.cam, cam = new THREE.PerspectiveCamera(c.fov, c.aspect, 0.1, 500);
   const P = TR.map(c.pos[0], c.pos[1], c.u + c.pos[2], new THREE.Vector3()), F = TR.dir(c.fwd[0], c.fwd[1], c.fwd[2], c.u, new THREE.Vector3()), U = TR.dir(c.up[0], c.up[1], c.up[2], c.u, new THREE.Vector3());
   cam.position.copy(P); cam.up.copy(U); cam.lookAt(P.clone().add(F)); cam.updateMatrixWorld(true); cam.updateProjectionMatrix();
-  return new THREE.Matrix4().multiplyMatrices(cam.projectionMatrix, cam.matrixWorldInverse);
+  return { cam, PV: new THREE.Matrix4().multiplyMatrices(cam.projectionMatrix, cam.matrixWorldInverse) };
 }
 export function projMaterial(art, PV, fall, opts = {}) {
   return new THREE.ShaderMaterial({
     name: 'scene07_art16', side: THREE.DoubleSide, transparent: !!opts.transparent, depthWrite: !opts.transparent,
-    uniforms: { uArt: { value: art }, uFall: { value: fall }, uPV: { value: PV }, uGain: { value: ART16.gain }, uFallGain: { value: 0.85 }, uOpacity: { value: 1 }, uHasFall: { value: fall ? 1 : 0 } },
+    uniforms: { uArt: { value: art }, uFall: { value: fall }, uPV: { value: PV }, uGain: { value: ART16.gain }, uFallGain: { value: 0.85 }, uOpacity: { value: 1 }, uHasFall: { value: fall ? 1 : 0 },
+      uRect: { value: new THREE.Vector4(...(opts.rect || [0, 0, 1, 1])) }, uFeather: { value: opts.rect ? ART16.feather : 0.0001 } },
     vertexShader: 'uniform mat4 uPV; varying vec4 vP; varying vec2 vUv;\nvoid main() { vec4 w = modelMatrix * vec4(position, 1.0); vP = uPV * w; vUv = uv; gl_Position = projectionMatrix * viewMatrix * w; }',
-    fragmentShader: 'uniform sampler2D uArt; uniform sampler2D uFall; uniform mat4 uPV; uniform float uGain, uFallGain, uOpacity, uHasFall; varying vec4 vP; varying vec2 vUv;\n' +
+    fragmentShader: 'uniform sampler2D uArt; uniform sampler2D uFall; uniform mat4 uPV; uniform vec4 uRect; uniform float uGain, uFallGain, uOpacity, uHasFall, uFeather; varying vec4 vP; varying vec2 vUv;\n' +
       'void main() { vec3 fall = uHasFall > 0.5 ? texture2D(uFall, vUv).rgb * uFallGain : vec3(0.0); float a = 0.0; vec3 art = vec3(0.0);\n' +
-      '  if (vP.w > 0.0) { vec2 s = vP.xy / vP.w * 0.5 + 0.5; if (s.x > 0.0 && s.x < 1.0 && s.y > 0.0 && s.y < 1.0) { vec4 t = texture2D(uArt, s); art = t.rgb * uGain; a = t.a; } }\n' +
+      '  if (vP.w > 0.0) { vec2 s = vP.xy / vP.w * 0.5 + 0.5; if (s.x > 0.0 && s.x < 1.0 && s.y > 0.0 && s.y < 1.0) { vec4 t = texture2D(uArt, s); art = t.rgb * uGain; vec2 q = vec2(s.x, 1.0 - s.y);\n' +
+      '    float rm = smoothstep(uRect.x, uRect.x + uFeather, q.x) * (1.0 - smoothstep(uRect.z - uFeather, uRect.z, q.x)) * smoothstep(uRect.y, uRect.y + uFeather, q.y) * (1.0 - smoothstep(uRect.w - uFeather, uRect.w, q.y));\n' +
+      '    a = t.a * rm; } }\n' +
       '  float o = uHasFall > 0.5 ? uOpacity : a * uOpacity;\n' +
       '  gl_FragColor = vec4(uHasFall > 0.5 ? mix(fall, art, a) : art, o);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}',
   });
 }
-// swaps the chamber shell's and far end wall's materials for the projection, adds the card in the far end's opening; returns a per-frame update
+// the layered depth cards: planes square to the approved camera, each with its rectangle of the master's distant scenery; hides the 3D machinery
+// instances that would stand IN FRONT of a card where the card shows authentic scenery; returns a per-frame update (the cards' fade)
 export async function applyArt16(root, TR, Ch, camera) {
   const art = await new THREE.TextureLoader().loadAsync(ART16.file);
   art.colorSpace = THREE.SRGBColorSpace; art.minFilter = THREE.LinearFilter; art.generateMipmaps = false; art.anisotropy = 4;
-  const PV = projector(TR); let swapped = 0;
+  const { cam, PV } = projector(TR), th = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)), cards = [];
+  for (const C of ART16.cards) {
+    const [x0, y0, x1, y1] = C.rect, hh = 2 * C.dist * th, ww = hh * cam.aspect;
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), projMaterial(art, PV, null, { transparent: true, rect: C.rect }));
+    m.matrixAutoUpdate = false; m.name = 'scene07_art16_' + C.name;
+    m.matrix.copy(cam.matrixWorld).multiply(new THREE.Matrix4().makeTranslation(((x0 + x1) / 2 - 0.5) * ww, (0.5 - (y0 + y1) / 2) * hh, -C.dist))
+      .multiply(new THREE.Matrix4().makeScale((x1 - x0) * ww * 1.04, (y1 - y0) * hh * 1.04, 1));
+    m.matrixWorldNeedsUpdate = true; root.add(m);
+    cards.push({ C, m, centre: new THREE.Vector3().setFromMatrixPosition(m.matrix) });
+  }
+  // the chamber's outer shell (walls and vault) is the outermost surface: drawn first and never written to depth, like a backdrop, so that
+  // it never hides the cards standing at the scenery's own depth (the upper cards reach above the vault); everything inside still layers
+  root.traverse((o) => { if (o.isMesh && o.name === 'scene07_chamberShell') { o.material.depthWrite = false; o.renderOrder = -10; } });
+  // the artwork's alpha, to know where a card shows authentic scenery
+  const cv = document.createElement('canvas'); cv.width = art.image.width; cv.height = art.image.height;
+  const g2 = cv.getContext('2d'); g2.drawImage(art.image, 0, 0); const A = g2.getImageData(0, 0, cv.width, cv.height).data;
+  const alphaAt = (sx, sy) => A[(Math.min(cv.height - 1, Math.max(0, Math.floor(sy * cv.height))) * cv.width + Math.min(cv.width - 1, Math.max(0, Math.floor(sx * cv.width)))) * 4 + 3] / 255;
+  const V = new THREE.Vector3(), Mi = new THREE.Matrix4(), Z = new THREE.Matrix4().makeScale(0, 0, 0); let hidden = 0;
   root.traverse((o) => {
-    if (o.isMesh && (o.name === 'scene07_chamberShell' || (o.parent && o.parent.name === 'scene07_portal' && o.geometry.type === 'ShapeGeometry'))) {
-      const fall = o.material.map || null; o.material = projMaterial(art, PV, fall); swapped++;
+    if (!o.isInstancedMesh || !/^scene07_r16_upper_/.test(o.name)) return;
+    for (let i = 0; i < o.count; i++) {
+      o.getMatrixAt(i, Mi); V.setFromMatrixPosition(Mi);
+      const depth = -V.clone().applyMatrix4(cam.matrixWorldInverse).z; V.applyMatrix4(PV);
+      const sx = (V.x + 1) / 2, sy = (1 - V.y) / 2;
+      if (cards.some(({ C }) => depth < C.dist && sx > C.rect[0] && sx < C.rect[2] && sy > C.rect[1] && sy < C.rect[3]) && alphaAt(sx, sy) > 0.3) { o.setMatrixAt(i, Z); hidden++; }
     }
+    o.instanceMatrix.needsUpdate = true;
   });
-  const cardM = projMaterial(art, PV, null, { transparent: true });
-  const card = new THREE.Mesh(new THREE.CircleGeometry(Ch.portalR + 0.05, 64), cardM); card.name = 'scene07_art16_card';
-  TR.map(0, 1.5, Ch.u1 - 0.03, card.position); TR.quaternion(Ch.u1, card.quaternion); card.renderOrder = 2; root.add(card);
-  const W = new THREE.Vector3();
-  return { swapped, update: () => { cardM.uniforms.uOpacity.value = THREE.MathUtils.smoothstep(card.getWorldPosition(W).distanceTo(camera.position), ART16.card.fade[0], ART16.card.fade[1]); } };
+  return { cards: cards.length, hidden, update: () => { for (const { C, m, centre } of cards) m.material.uniforms.uOpacity.value = THREE.MathUtils.smoothstep(centre.distanceTo(camera.position), C.fade[0], C.fade[1]); } };
 }

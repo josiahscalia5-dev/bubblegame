@@ -369,7 +369,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
       body.scene07 #l1Banner.warn span { display: none; }`;
     document.head.appendChild(st);
   }
-  report.scene07 = { recon16, art16: art16 && art16.swapped, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
+  report.scene07 = { recon16, art16: art16 && { cards: art16.cards, hidden: art16.hidden }, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
@@ -407,7 +407,11 @@ export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
       const E = SCENE07.enemy, W = new THREE.Vector3(), prev = scene.onBeforeRender;
       scene.onBeforeRender = function (...a) {
         if (prev) prev.apply(this, a);
-        for (const f of floaters) { const d = f.holder.getWorldPosition(W).distanceTo(camera.position), k = THREE.MathUtils.smoothstep(d, E.near, E.far) * E.high;
+        // pass 16 (the user's kit: ONE hero-sized enemy upper right at the checkpoint): only the nearest enemy ahead of the camera floats high;
+        // the others keep their own height (small, low over the far water). Looks only: the hit tests are level1.js's.
+        let hero = null, best = 1e9; const fw = camera.getWorldDirection(new THREE.Vector3());
+        for (const f of floaters) { f.d = f.holder.getWorldPosition(W).distanceTo(camera.position); const ahead = W.sub(camera.position).dot(fw) > 0; if (ahead && f.d > E.near * 0.6 && f.d < best) { best = f.d; hero = f; } }
+        for (const f of floaters) { const k = (!RECON16_ON || f === hero) ? THREE.MathUtils.smoothstep(f.d, E.near, E.far) * E.high : 0;
           f.look.position.y = f.y0 + k; f.halo.position.y = f.h0 + k; }
       };
     }

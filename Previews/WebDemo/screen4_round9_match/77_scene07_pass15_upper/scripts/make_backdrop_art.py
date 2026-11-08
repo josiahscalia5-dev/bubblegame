@@ -8,7 +8,7 @@
 # draws itself, in 3D or as its HUD) are filled, by LaMa ("big-lama", Apache-2.0 generative inpainting with fast Fourier convolutions,
 # TorchScript from github.com/enesmsahin/simple-lama-inpainting releases v0.1.0, sha256 7ba7aa7ac37a4d41...), from the surrounding
 # machinery. The parts the game builds in 3D (the left washer housing; everything below the far water line) are faded out (alpha 0).
-#   ~/.bubblewash-tools/metrics/bin/python make_backdrop_art.py <master.png> <big-lama.pt> <out.webp> [<preview.png>] [<mask.png>]
+#   ~/.bubblewash-tools/metrics/bin/python make_backdrop_art.py <master.png> <- | big-lama.pt> <out.webp> [<preview.png>] [<mask.png>]   ('-': no fill, the default used)
 import sys
 import cv2
 import numpy as np
@@ -39,19 +39,21 @@ banner = cv2.dilate(banner, np.ones((19, 19), np.uint8))          # its outline 
 mask |= banner
 mask[0:fy(0.092), :] = 255
 
-# 2. LaMa on the whole frame; its result is used ONLY inside the mask
-dev = torch.device('cpu')
-model = torch.jit.load(model_path, map_location=dev).eval()
-ph, pw = (8 - H % 8) % 8, (8 - W % 8) % 8
-rgb = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-img_t = torch.from_numpy(np.pad(rgb, ((0, ph), (0, pw), (0, 0)), mode='reflect')).permute(2, 0, 1)[None].float() / 255.0
-msk_t = torch.from_numpy(np.pad((mask > 0).astype(np.float32), ((0, ph), (0, pw)), mode='constant'))[None, None]
-with torch.no_grad():
-    res = model(img_t, msk_t)[0].permute(1, 2, 0).numpy()[:H, :W]
-lama = cv2.cvtColor(np.clip(res * 255, 0, 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
-m = cv2.GaussianBlur((mask > 0).astype(np.float32), (0, 0), 2.0)[..., None]
-m[mask > 0] = 1.0                                                   # inside: LaMa only; a 2 px blend just outside the mask
-im = (im * (1 - m) + lama * m).astype(np.uint8)
+# 2. (the user, 8 Nov ~20:10 UTC: the inpainted areas looked smeared) DEFAULT: no fill at all: the masked areas become transparent and the
+#    game shows real 3D machinery there. With a model path instead of '-', LaMa fills them (kept for reference only).
+if model_path != '-':
+    dev = torch.device('cpu')
+    model = torch.jit.load(model_path, map_location=dev).eval()
+    ph, pw = (8 - H % 8) % 8, (8 - W % 8) % 8
+    rgb = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+    img_t = torch.from_numpy(np.pad(rgb, ((0, ph), (0, pw), (0, 0)), mode='reflect')).permute(2, 0, 1)[None].float() / 255.0
+    msk_t = torch.from_numpy(np.pad((mask > 0).astype(np.float32), ((0, ph), (0, pw)), mode='constant'))[None, None]
+    with torch.no_grad():
+        res = model(img_t, msk_t)[0].permute(1, 2, 0).numpy()[:H, :W]
+    lama = cv2.cvtColor(np.clip(res * 255, 0, 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
+    m = cv2.GaussianBlur((mask > 0).astype(np.float32), (0, 0), 2.0)[..., None]
+    m[mask > 0] = 1.0                                                   # inside: LaMa only; a 2 px blend just outside the mask
+    im = (im * (1 - m) + lama * m).astype(np.uint8)
 
 # 3. alpha: the distant scenery only
 alpha = np.ones((H, W), np.float32)
@@ -59,6 +61,7 @@ alpha *= np.clip((0.52 - yy / H) / 0.06, 0, 1)                      # fade out b
 ex, ey, rx, ry = 0.07 * W, 0.31 * H, 0.215 * W, 0.137 * H             # the left washer housing (built in 3D)
 e = np.sqrt(((xx - ex) / rx) ** 2 + ((yy - ey) / ry) ** 2)
 alpha *= np.clip((e - 1.0) / 0.12, 0, 1)
+if model_path == '-': alpha *= 1 - cv2.GaussianBlur((mask > 0).astype(np.float32), (0, 0), 3.0)   # what the master's enemy, banner and HUD hid: transparent
 rgba = np.dstack([im, (alpha * 255).astype(np.uint8)])
 cv2.imwrite(out, rgba, [cv2.IMWRITE_WEBP_QUALITY, 90])
 if len(sys.argv) > 4:
