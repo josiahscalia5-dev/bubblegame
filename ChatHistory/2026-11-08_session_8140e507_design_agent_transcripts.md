@@ -176,5 +176,23 @@ Answer in under 250 words: (1) Is NEW closer to the ORIGINAL's mascot than PREVI
 - 04:30 `Bash`: Crop motion frames match5 vs match6 at 5, 6, 10 s
 - 04:30 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/motion_cmp.png
 - 04:30 `SubagentHandback`
+**Lead → agent** (04:41 UTC):
 
-_15 tool steps._
+The coordinator sent a message while you were working:
+Thank you. I acted on your review and rebuilt match6 (try "m6i"). Read-only again, under 200 words please. Changes since the version you judged (m6e): the pleat-like groove bundles REMOVED, replaced by short irregular tufts (random place, width, strength, tapering outward) plus sparse white droplet specks; the darker base REMOVED, replaced by a rosier tint (lowest band on a strict pink mask: ORIGINAL #e64cb5 hue 319, match5 #ec41b8 hue 318, m6i #ea3db7 hue 318); the nubs rebuilt as round lobes on a narrower neck, the screen-left one raised, the screen-right one lower and pushed out, the body below them 7 % slimmer. Paler crown kept. Not changed in this step: her height in the frame and the water's crest (next step, the water).
+
+Look at: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/06_her_ORIGINAL_MATCH5_M6E_M6I.jpg (ORIGINAL | match5 | m6e | m6i | m6i alone), and the regenerated sheets 02_her_ORIGINAL_PREVIOUS_NEW_tap_to_start.jpg, 03_her_zoom_ORIGINAL_PREVIOUS_NEW.jpg, 04_page_with_HUD_ORIGINAL_PREVIOUS_NEW.jpg (NEW is now m6i); frames/tap_to_start_MATCH6_her_alone.png.
+
+Answer: (1) m6i against match5 (previous accepted look): closer / not closer / mixed, and why. (2) Anything in m6i still LESS like the ORIGINAL than match5 (to revert). (3) The single most important remaining mascot difference.
+
+Address this before completing your current task.
+
+- 04:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/06_her_ORIGINAL_MATCH5_M6E_M6I.jpg
+- 04:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/04_page_with_HUD_ORIGINAL_PREVIOUS_NEW.jpg
+- 04:41 `Read`: /home/user/bubblegame/Previews/WebDemo/screen4_round9_match/69_match6/sheets/03_her_zoom_ORIGINAL_PREVIOUS_NEW.jpg
+- 04:41 `Bash`: Measure m6i silhouette rows and crop compare
+- 04:41 `Read`: /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/cmp2.png
+- 04:41 `Bash`: Compare overall body colour and contrast
+- 04:42 `SubagentHandback`
+
+_22 tool steps._

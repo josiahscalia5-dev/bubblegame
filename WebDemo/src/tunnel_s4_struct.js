@@ -239,7 +239,7 @@ function match6FurGLSL() {
     float th1 = bwHash(ti + 1.7), th2 = bwHash(ti + 17.3), th3 = bwHash(ti + 5.1);
     float tdx = abs(tf.x - (0.25 + 0.5 * th1)) / (0.22 + 0.3 * th2), tap = mix(1.0, 0.3, tf.y);
     float tuft = (1.0 - smoothstep(0.55 * tap, tap, tdx)) * step(${f4(K.tuftShare)}, th3);
-    c *= mix(1.0, mix(${f4(K.groove)}, 1.0 + ${f4(K.lift)} * th2, tuft), smoothstep(0.06, 0.3, sd));
+    c *= mix(vec3(1.0), mix(vec3(${K.groove.map(f4).join(', ')}), vec3(1.0 + ${f4(K.lift)} * th2), tuft), smoothstep(0.06, 0.3, sd));   // (crimson grooves)
     // white droplet specks over her fur (the ORIGINAL's)
     vec2 sq = floor(vec2(phi * ${f4(K.specks / (2 * Math.PI))}, sd * ${f4(K.specks / 3)}));
     c = mix(c, vec3(1.0, 0.95, 1.0), step(${f4(1 - K.speckShare)}, bwHash(sq + 3.7)) * ${f4(K.speckK)} * smoothstep(-0.4, 0.2, hgt));
@@ -275,12 +275,12 @@ export const SHELL_FUR5 = { layers: 8, len: 0.22, lean: 0.5, comb: 0.45, density
 // her back faces +z) with a little gravity (grav), shorter where they part at the whorl (part)
 export const SHELL_FUR6 = { layers: 8, len: 0.2, lean: 0.4, comb: 0.6, grav: 0.35, whorl: [0.0, 0.62, 0.55], part: 0.4,
   nub: { x0: 0.66, x1: 0.84, y0: 0.02, y1: 0.66, k: 0.22 }, density: 56, thick: 0.34, tip: 0.24, root: 0.6,
-  push: { x0: 0.7, xw: 0.16, sig: 0.17, left: { yc: 0.42, cx: 0.9, grow: 0.3, out: 0.06, up: 0.08 },
-    right: { yc: 0.24, cx: 0.9, grow: 0.34, out: 0.16, up: -0.02 }, lower: { y0: 0.12, y1: -0.12, k: 0.07 } },
+  push: { x0: 0.7, xw: 0.16, sig: 0.17, left: { yc: 0.42, cx: 0.9, grow: 0.08, out: 0.07, up: 0.08 },
+    right: { yc: 0.24, cx: 0.9, grow: 0.12, out: 0.24, up: -0.1 }, lower: { y0: 0.12, y1: -0.12, k: 0.07 } },
   crown: { R: 0.98, h0: 0.34, h1: 0.56 },
   // her fur's look (match6FurGLSL): the whorl's direction (up, toward the camera), bundles round it, rows of them outward,
   // their wobble, the grooves' and the bundles' shade, the base's shade over height (hgt -1 at the water .. +1 on top), the crown
-  look: { whorl: [0.85, 0.5], bundles: 46, rings: 13, wave: 0.25, groove: 0.8, lift: 0.25, tuftShare: 0.3, specks: 150, speckShare: 0.012,
+  look: { whorl: [0.85, 0.5], bundles: 46, rings: 13, wave: 0.25, groove: [0.76, 0.76, 0.64], lift: 0.25, tuftShare: 0.3, specks: 150, speckShare: 0.012,
     speckK: 0.7, baseMul: [0.88, 1.0, 0.95], baseAdd: [0.0, 0.09, 0.0], baseH: [-0.6, 0.6],
     crownMul: 0.72, crownAdd: [0.2, 0.16, 0.3], crownH: [0.35, 0.95] } };   // (structCrown: her crown a broader arc, as the ORIGINAL's dome)   // (structCrown: the nubs' drawn mesh moved out and down)
 export const SHELL_FUR = { layers: 6, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
