@@ -1,0 +1,78 @@
+Repository https://github.com/josiahscalia5-dev/bubblegame  branch ccr-50c66592-kcnqoy  GitHub head 702817d5cd7009178c5fc277c21b20cca37111a1  (2026-11-08 13:27 UTC)
+== Design agents, skill, hook, settings, MCP
+  ON GITHUB   .claude/agents/game-art-director.md  (identical to the local file, 27340 bytes)
+  ON GITHUB   .claude/agents/gameplay-visual-testing.md  (identical to the local file, 27318 bytes)
+  ON GITHUB   .claude/agents/lighting-visual-matching.md  (identical to the local file, 27032 bytes)
+  ON GITHUB   .claude/agents/water-vfx-engineer.md  (identical to the local file, 27259 bytes)
+  ON GITHUB   .claude/agents/screen4-water-motion-engineer.md  (identical to the local file, 5179 bytes)
+  ON GITHUB   .claude/skills/bubble-wash-screen-matcher/SKILL.md  (identical to the local file)
+  ON GITHUB   .claude/settings.json  (SessionStart hook)
+  ON GITHUB   .claude/hooks/session-start.sh
+  ON GITHUB   .mcp.json  (empty on purpose: the MCP servers come from the parallax-threejs plugin)
+== Setup, save and verification scripts
+  ON GITHUB   Tools/cloud_env_setup.sh
+  ON GITHUB   Tools/bw_tools_env.sh
+  ON GITHUB   Tools/verify_restore.sh
+  ON GITHUB   Tools/save_now.sh
+  ON GITHUB   Tools/save_guard.py
+  ON GITHUB   Tools/autosave.sh
+  ON GITHUB   Tools/autosave_sessions.json
+  ON GITHUB   Tools/export_chat_history.py
+  ON GITHUB   Tools/DEV_TOOLS.md
+  MISSING     Tools/preservation_audit.sh
+  ON GITHUB   WebDemo/package.json
+  ON GITHUB   WebDemo/package-lock.json
+  ON GITHUB   WebDemo/build.mjs
+== Handoffs
+  ON GITHUB   CLAUDE.md
+  ON GITHUB   HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md
+  ON GITHUB   SESSION_FILE_RESERVATIONS.md
+  ON GITHUB   SAVE_BEFORE_ACCOUNT_SWITCH.md
+  ON GITHUB   START_HERE_NEW_CLAUDE_ACCOUNT.md
+  ON GITHUB   RESTORATION_REPORT_2026-11-08_session_8140e507.md
+== The six Tripo GLBs (sha256 of GitHub's copy against the manifest)
+  VERIFIED     cartoon girl 3d model.glb  (3,154,864 bytes, sha256 4b0b8da7bc7f3819...)
+  VERIFIED     pink fluffy creature 3d model.glb  (4,812,284 bytes, sha256 cd00a584fdb8fea6...)
+  VERIFIED     purple basket 3d model.glb  (2,240,484 bytes, sha256 23356a121ff6d868...)
+  VERIFIED     sock character 3d model.glb  (3,922,944 bytes, sha256 56c24346dd4da711...)
+  VERIFIED     soft plush towels 3d model.glb  (4,885,052 bytes, sha256 87e226c2c1edfb20...)
+  VERIFIED     washing machine 3d model.glb  (2,390,616 bytes, sha256 0a67f89d46e718aa...)
+  ON GITHUB   WebDemo/models/opening/girl_rigged.glb  (the rigged Tripo girl used in the opening)
+== Approved references
+  ON GITHUB   Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg  (sha256 b30dc6a1794213be (expected b30dc6a1794213be))
+  ON GITHUB   Design/ApprovedScreens/00_ORIGINAL_COMPLETE_12_SCREEN_BOARD.jpg  (the original 12-screen board)
+  ON GITHUB   Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/11109.jpg  (the girl and laundry reference)
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/01_washer_entry.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/02_rescue_goal.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/03_jump_to_side_paths.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/04_drop_to_lower_paths.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/05_spinning_brushes.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/06_collect_coins_and_gems.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/07_avoid_enemies.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/08_enter_bubble_kingdom.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/09_rescue_progress.png
+  ON GITHUB   Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/10_level_complete.png
+== The game
+  ON GITHUB   WebDemo/index.html
+  ON GITHUB   WebDemo/src/game.js
+  ON GITHUB   WebDemo/src/level1.js
+  ON GITHUB   WebDemo/src/level1_flow.js
+  ON GITHUB   WebDemo/src/opening3d.js
+  ON GITHUB   WebDemo/src/world.js
+  ON GITHUB   WebDemo/src/tunnel_s4_struct.js
+  MISSING     WebDemo/src/tunnel_s4_match6.js
+  ON GITHUB   WebDemo/game.bundle.js  (md5 8363541c)
+== Large files and Git LFS
+  LFS rules in .gitattributes: 0
+0
+  largest:   28.0 MB  Previews/WebDemo/screen4_round9_match/68_level1/videos/full_sequence_home_toss_washer_level1_pixel7.mp4
+  largest:   24.2 MB  Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/video/pixel7_focus_step6_ride_10s.mp4
+  largest:   24.2 MB  Previews/WebDemo/screen4_round9_match/29_video_step4/pixel7_focus_step4_ride_10s.mp4
+  files over 50 MB (GitHub warns) / 100 MB (GitHub refuses): 0 / 0
+== Only in this container (not in Git)
+  untracked, not ignored: 2   uncommitted changes: 0
+  ignored on purpose: WebDemo/artifact-models/
+  ignored on purpose: WebDemo/node_modules/
+== Credential scan of GitHub's branch (key and token patterns; the proxy placeholder tsk_proxy-injected is not a key)
+  no key or token pattern found in any text file
+== Summary: 55 present, 2 missing
