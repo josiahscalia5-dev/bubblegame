@@ -60,5 +60,12 @@
     "title": "Session ce30359f (8 November, account transfer): full agent, plugin and tool inventory and restoration on branch ccr-8cd911d8-0m96gr",
     "url": "https://claude.ai/code/session_01CUAtW4nh4Z5qW7Dm1JTSCB",
     "parent": "ccr-b67aeffb-d94mmq"
+  },
+  "f70c9bd1-e78b-5e2f-8359-1182a397dbc6": {
+    "chat": "ChatHistory/2026-11-08_session_f70c9bd1.md",
+    "agents": "ChatHistory/2026-11-08_session_f70c9bd1_design_agent_transcripts.md",
+    "title": "Session f70c9bd1 (8 November, account switch): restoration and Screen 09 on branch claude/bubble-wash-account-switch-e1nndb",
+    "url": "https://claude.ai/code/session_019Rgj5g6iZsturQ5pdRxSux",
+    "parent": "ccr-8cd911d8-0m96gr"
   }
 }

@@ -7,6 +7,10 @@ preservation mandate. Nothing in this file is a secret. Newer sessions: add a da
 each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; it supersedes the short lists in sections 3, 4 and 7.
 
 ## 1. Where everything is (verified 8 November ~17:05 UTC)
+**Update 8 November ~19:10 UTC, session `f70c9bd1` (https://claude.ai/code/session_019Rgj5g6iZsturQ5pdRxSux, the user's account
+switch):** the newest work branch is **`claude/bubble-wash-account-switch-e1nndb`**; it contains all of `ccr-8cd911d8-0m96gr` (normal
+merge; that branch's autosave may still add chat-history commits: merge them, never force). Short readiness check only (inventory
+section 12): every tool present, `verify_restore.sh --build` 0 failed, all four MCP servers live (Spector included), Tripo 1,060.
 **Update 8 November ~18:00 UTC, session `ce30359f` (https://claude.ai/code/session_01CUAtW4nh4Z5qW7Dm1JTSCB):** the newest work branch
 is **`ccr-8cd911d8-0m96gr`**. It contains all of `ccr-b67aeffb-d94mmq` (to its 17:15 autosave), `ccr-50c66592-kcnqoy`,
 `ccr-76d4bc77-rqhl8o` and `claude/bubble-wash-kingdom-continue-z9nmm1` (checked with 844 commits of history; normal merges only).

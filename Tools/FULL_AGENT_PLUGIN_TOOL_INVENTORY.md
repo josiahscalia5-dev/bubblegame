@@ -218,6 +218,18 @@ sweep sheet), and the three test scripts (`spector_live_test.mjs`, `spector_stdi
   screenshot limit found (section 3); `.playwright-mcp/` git-ignored; the five agents invoked AGAIN individually, each on the user's
   suggested task (section 13). Spector still needs the user's `/mcp` reconnect in this session.
 
+- 8 Nov 2026 ~19:10 UTC, session f70c9bd1 (account switch; branch `claude/bubble-wash-account-switch-e1nndb`, merged from
+  `ccr-8cd911d8-0m96gr`): SHORT readiness check only, nothing reinstalled. `~/.bubblewash-tools` was already built by the environment's
+  setup script; Blender 5.2.3, Tripo 0.11.2 (balance 1,060, 0 frozen), glTF Transform 4.5.1, Vite 8.3.5, Deno 2.9.6, Playwright 1.63.0,
+  metrics venv (cv2 5.0.0, skimage 0.26.0, torch 2.15.0, lpips, optuna 5.0.0), FFmpeg 6.1.1, ImageMagick 6.9.12, Git LFS 3.4.1: present.
+  `verify_restore.sh --build`: 25 PASS, 0 FAIL after adding pass 13b's bundle `6579f556` (0 px proof) to its known list; rebuild
+  byte-identical. MCP LIVE: chrome-devtools navigate + evaluate (WebGL2, 121 children), threejs-devtools `bridge_status` connected,
+  playwright `browser_tabs`, and **the project's Spector server (`mcp__spector__*`) CONNECTED and captured a real frame of `?s3=intunnel`**
+  (209 draw calls, 51 programs, no GL errors; `load_url` itself exceeds the MCP's 60 s limit on this page in software WebGL, but the
+  page loads and `list_canvases` / `capture_frame` work after it). The plugin's own `spector` fails at startup (known, harmless).
+  Agents: all five custom agents and the three plugin agents listed as agent types; not re-tested (unchanged definitions, tools present).
+  One autosave, pinned to this branch.
+
 ## 13. The five agents, second live round (8 Nov ~18:05-18:20 UTC, the user's suggested tasks; definitions unchanged since `56184934`)
 | AGENT | DEFINITION FOUND | LOADED | ACTUALLY INVOKED | REQUIRED TOOLS WORKING | FINAL STATUS |
 |---|---|---|---|---|---|
