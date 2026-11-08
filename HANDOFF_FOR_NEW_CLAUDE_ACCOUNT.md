@@ -1,11 +1,44 @@
-# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST: section 00 is the newest, 8 November 11:20 UTC)
+# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST: section 000 is the newest, 8 November about 13:30 UTC)
 
 Written 7 November 2026, about 23:10 UTC, by session `398ed88c`, at the user's handoff order
 (`Design/ReferencePacks/2026-11-07_Full_Screen4_Brief_from_user/User_GitHub_Handoff_Order.md`). Nothing in this file is a
 secret. It supersedes the older handoff files for the CURRENT state; they stay as history (`BUBBLE_WASH_ACCOUNT_HANDOFF.md`,
 `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, `START_HERE_NEW_CLAUDE_ACCOUNT.md`, `HANDOFF.md`). The project rules are `CLAUDE.md`.
 
-## 00. NEWEST STATE (8 November 2026, about 11:20 UTC, session `8140e507`): READ THIS FIRST
+## 000. NEWEST STATE (8 November 2026, about 13:30 UTC, session `b0abcf95`, the user's other account): READ THIS FIRST
+
+Section 00 below (11:20 UTC, session `8140e507`) is history; where they differ, THIS section is right. Session link:
+https://claude.ai/code/session_01CUAtW8wdgwPxistiKwJw7V. Nothing here is a secret.
+
+### 000.1 Where everything is
+| | |
+|---|---|
+| Repository | https://github.com/josiahscalia5-dev/bubblegame |
+| **Continue on** | **`ccr-50c66592-kcnqoy`** (session `b0abcf95`): it contains ALL of `claude/bubble-wash-kingdom-continue-z9nmm1` (normal merges; that branch kept receiving proof logs from session `8140e507`'s container, merge its newest first) and of `ccr-76d4bc77-rqhl8o` (proven an ancestor after deepening the shallow clone). Never force-push. |
+| Its head | moves with the 5-minute autosave: `git ls-remote origin ccr-50c66592-kcnqoy`. The final commit of session `b0abcf95` is named in `Previews/WebDemo/screen4_round9_match/71_level1_flow/README.md`. |
+| Review route | pull request #3 (draft, from `claude/bubble-wash-kingdom-continue-z9nmm1`) is NOT merged and was not touched. This branch is not in a pull request yet (the user did not ask for one). |
+| File ownership | `SESSION_FILE_RESERVATIONS.md` (12:50 UTC update): this session edited `level1.js`, `game.js` (gated hooks), `world.js` (`HOOK`), new `level1_flow.js`. |
+
+### 000.2 What is new: `flow`, the 10-beat Level 1 (NOT accepted; waiting for the user)
+- Full app: `index.html?s3=intunnel,structmatch,home,level1` (flow is on by default with level1; `,noflow` = the previous level1 exactly).
+- In the board's order: Let's go (washer entry) -> rescue 5 socks -> **a REAL raised side path** (bounce pad in the left lane, swipe left in
+  the air onto a golden-rimmed water flume 0.9 m up; it has its own sock, gem and coins; it ends in the main water; from the water you
+  cannot get on: "Jump first!") -> **a REAL lower path** (the drop: the middle lane falls 1.2 m down a chute into a lower channel between
+  gold-railed water walls, the side lanes stay up on ledges with their own soap bar and sock; from the lower path you cannot climb back;
+  the routes rejoin) -> spinning brushes -> treasure -> grime balls (some patrol across lanes; a tap-spin, Turbo or Blast pops them for
+  5 coins, else they knock her) -> the Bubble Kingdom chamber -> rescue progress (4/5, 5/5 banners) -> Level Complete (goals: 5 socks,
+  50 coins, 1 special gem; rewards +300 coins, +10 gems, +5 socks added to the totals).
+- Exactly 5 socks on ANY route (2 drum socks; the drum's 3 far socks are parked, not removed; one per route of each branch; the Kingdom's).
+- Evidence, proofs, recordings, specialists' reports: `Previews/WebDemo/screen4_round9_match/71_level1_flow/README.md`.
+
+### 000.3 Agents, plugin, tools in session `b0abcf95` (all checked live; details in that README)
+- Five project agents: all invoked with real tasks in parallel (reports in `71_level1_flow/agents/`); screen4-water-motion-engineer used
+  the threejs-devtools and chrome-devtools MCP tools live (partial: the shared page hung under the 4-core load).
+- parallax-threejs: threejs-devtools, chrome-devtools, playwright MCP WORK in the main session; spector FAILS to connect; the plugin's own
+  agents still get no MCP tools (only Bash: its tool-naming defect); checkpoint / diff / sweep need Deno (not installed).
+- `verify_restore.sh --build`: 28 passed, 0 failed. Tripo: authenticated through the proxy, 640 credits, nothing spent. Blender 5.2.3.
+
+## 00. NEWEST STATE (8 November 2026, about 11:20 UTC, session `8140e507`): history since section 000
 
 Section 0 below (02:00 UTC, session `dbccb9a3`) and sections 1-8 are history; where they differ, THIS section is right.
 Session link: https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP. Nothing here is a secret.

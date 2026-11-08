@@ -1,7 +1,20 @@
-# Session file reservations (8 November 2026, the user's choice "Split by files", about 03:00 UTC; updated 10:40 UTC)
+# Session file reservations (8 November 2026, the user's choice "Split by files", about 03:00 UTC; updated 10:40 UTC and 12:50 UTC)
 
 Two Claude sessions work on the SAME game. To avoid conflicting edits, each session edits only its own files.
 Neither session resets, overwrites or force-pushes either branch.
+
+## UPDATE 8 November, about 12:50 UTC: session `b0abcf95` (the user's new account), branch `ccr-50c66592-kcnqoy`
+The user moved to another Claude account and asked this session to continue from the latest work and to build the 10-beat Level 1
+gameplay (`Design/ReferencePacks/2026-11-08_Level1_Blueprint_and_Strict_Prompt_from_user/`), and: "If another Claude session is
+still actively working on this branch, do not make competing changes ... create a separate working branch." Checked first: session
+`8140e507`'s container was still pushing to `claude/bubble-wash-kingdom-continue-z9nmm1` at 12:06 UTC (and later), but only its
+chat history and proof logs (no game source since `af2e7dd`, 11:52 UTC). So this session works on its OWN branch `ccr-50c66592-kcnqoy`
+(it merged `origin/claude/bubble-wash-kingdom-continue-z9nmm1` with normal merges; `ccr-76d4bc77-rqhl8o` is an ancestor) and never
+writes `claude/bubble-wash-kingdom-continue-z9nmm1` or `ccr-76d4bc77-rqhl8o`. Edited by this session, at the user's direction:
+`WebDemo/src/level1.js` (everything new gated on `FLOW`), `WebDemo/src/game.js` (hooks gated on `level1.flow`), `WebDemo/src/world.js`
+(`HOOK`, null unless flow), new `WebDemo/src/level1_flow.js`, new `WebDemo/tools/level1/flow_routes.cjs` and `record_flow.cjs`,
+`Previews/WebDemo/screen4_round9_match/71_level1_flow/`. **If session `8140e507` resumes, it must merge `origin/ccr-50c66592-kcnqoy`
+BEFORE touching `level1.js`, `game.js` or `world.js`.** `match6` stays opt-in (not merged into the default look).
 
 ## UPDATE 8 November, about 10:40 UTC: the user's choice "Take both over"
 The user gave this session (`8140e507`) `WebDemo/src/level1.js` and `WebDemo/src/opening3d.js` (and with them

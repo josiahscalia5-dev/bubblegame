@@ -1,8 +1,8 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first: its section 00 (8 November, 11:20 UTC, session
-`8140e507`) is the current state; continue on branch `claude/bubble-wash-kingdom-continue-z9nmm1` (it contains all of
-`ccr-76d4bc77-rqhl8o`).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
+**On a new Claude account, read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first: its section 000 (8 November, about 13:30 UTC, session
+`b0abcf95`) is the current state; continue on branch `ccr-50c66592-kcnqoy` (it contains all of
+`claude/bubble-wash-kingdom-continue-z9nmm1` and `ccr-76d4bc77-rqhl8o`; merge the newest of both first, normal merges only).** Then `HANDOFF.md`: its top section is the newest state, branch and commit. The full history is in `ChatHistory/`.
 On a different Claude account, read `START_HERE_NEW_CLAUDE_ACCOUNT.md`, then `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md` (7 November;
 it replaces `ACCOUNT_SWITCH_HANDOFF.md`): the branch, the accepted checkpoint, the agents, the plugin and environment
 inventory, how to restore and verify (`bash Tools/verify_restore.sh --build`), and the continuation prompt. Before
@@ -90,8 +90,12 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     `dbccb9a3`), and (session `8140e507`, the user's Level 1 mandate of 8 November: continuous saturated blue water from the washer
     to Level Complete, never a dry road) `wet` (the drum widens into one wet washer chamber, the castle through a glowing portal,
     Level Complete on the water; `,nowet` = before) and `port` (the porthole shows the blue spiral; `,noport` = before). Evidence:
-    `Previews/WebDemo/screen4_round9_match/70_level1_wet/README.md`. NOT accepted. Next: the user's 10-beat gameplay mandate
-    (`Design/ReferencePacks/2026-11-08_Level1_Gameplay_Flow_and_Account_Transfer_from_user/`: functional branching side paths).
+    `Previews/WebDemo/screen4_round9_match/70_level1_wet/README.md`. NOT accepted. Then (session `b0abcf95`, the user's 10-beat
+    Level 1 blueprint and strict prompt of 8 November, `Design/ReferencePacks/2026-11-08_Level1_Blueprint_and_Strict_Prompt_from_user/`)
+    `flow` (in level1 by default; `,noflow` = before; `WebDemo/src/level1_flow.js`): the course in the board's order with a REAL raised
+    side path (bounce pad + swipe), a REAL lower path (the drop; ledges beside it), patrolling grime balls a spin pops, exactly 5 socks
+    on any route, Level Complete with the board's goals and rewards; route tests `WebDemo/tools/level1/flow_routes.cjs`. Evidence:
+    `Previews/WebDemo/screen4_round9_match/71_level1_flow/README.md`. NOT accepted.
   - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
     opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the
