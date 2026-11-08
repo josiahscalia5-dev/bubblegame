@@ -130,3 +130,9 @@ The vanishing-point "ring tunnel" comes from the level tube's own wall (`l1Wall`
 
 I'll freeze the v5 build (bundle `a359dad4`) in the scratchpad for side-by-side comparisons, then time one checkpoint capture with a variant that hides the level tube.
 
+The visible window and the vanishing point (about x 0.44, y 0.45) are now mapped. I'll read the per-frame update in `tripo_l1.js` so the pass 17 hooks fit beside the existing ones.
+
+I have what I need for the hooks. Next I'll confirm the exact shader strings I'd patch at runtime (the wall's rings, the water's colour lines) in the wet / flow variants that scene07 uses.
+
+A jump peaks at about 1.13 m (v²/2g with 6.2 and 17), so her top reaches about 2.3 m; a bridge bottom at 3.1 m stays clear. Now I'll write the pass 17 module.
+

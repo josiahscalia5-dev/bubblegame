@@ -30,7 +30,7 @@ export const MACH16_ON = RECON16_ON && !ART16_ON && !LIST.includes('nomach16');
 // (about 25 m from the checkpoint camera) and the opening in it show the master's own distant machine world (textures/scene07/far_art_lama.webp:
 // the master's pixels, LaMa only where its enemy, banner and HUD covered them), projected from the approved camera onto that one wall (a plane
 // at the right depth); the opening's part fades out as the camera comes within 14..8 m, so the run goes on into the real tube. `,nofar16` = off.
-export const FAR16_ON = MACH16_ON && !LIST.includes('nofar16');
+export const FAR16_ON = MACH16_ON && !LIST.includes('nofar16') && (LIST.includes('norecon17') || LIST.includes('far16'));   // (pass 17, session bb87ba9f: the user's mandate of 8 Nov ~22:10 UTC, "no screenshot pasted behind the character, no fake wallpaper": the master's pixels on the far wall are replaced by real 3D machinery (scene07_recon17.js); `,far16` keeps them, `,norecon17` = v5)
 // PASTEL16 (v4; the background-only measurement, scripts/bg_metric.py: the master's architecture has about half the game's chroma, five
 // times its near-white share and a higher brightness, zone by zone): every pass-16 material is moved toward white by `k` and lit by its
 // own pastel colour (a soft self-glow), gold excepted; the big landmarks (drum ring, star wall) keep more colour. `,nopastel16` = v3.
@@ -123,10 +123,10 @@ export const MACH16 = {
   bankBubbles: 48,   // (v4: the master's many bubbles along both banks; scene07's 18 -> 48)
   bubbles: [[-2.5, 3.6, 241.5, 0.55], [-3.1, 4.7, 243.0, 0.42], [-2.1, 2.5, 245.2, 0.35], [2.3, 4.9, 242.2, 0.4], [1.8, 3.3, 248.2, 0.3], [-1.9, 4.2, 249.5, 0.3]],
 };
-const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
+export const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
 const C = { pink: 0xff86c8, rose: 0xff9fd0, lav: 0xc9b2f6, lavDeep: 0x8e6fe0, cream: 0xf7e2c4, blue: 0x7fa8ff, mint: 0x9fe3b8, peach: 0xffc8a2, gold: 0xffdc7a };
 
-function canvasTex(w, h, draw, repeat) {
+export function canvasTex(w, h, draw, repeat) {
   const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
   if (repeat) t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
@@ -168,7 +168,7 @@ function interiorTexture() {   // the drum's deep interior: light lavender at th
     g.fillStyle = gr; g.fillRect(0, 0, w, w);
   });
 }
-function gearShape(R, teeth, inner, round) {
+export function gearShape(R, teeth, inner, round) {
   const sh = new THREE.Shape(), n = teeth * 4;
   for (let i = 0; i <= n; i++) {
     const a = (i / n) * Math.PI * 2, r = round ? R * (0.9 + 0.1 * Math.cos(a * teeth)) : (i % 4 < 2 ? R : R * inner);
@@ -178,7 +178,7 @@ function gearShape(R, teeth, inner, round) {
 }
 
 // bake a temporary hierarchy into one merged mesh per material (world space), added to `root`
-function bake(temp, root, name) {
+export function bake(temp, root, name) {
   temp.updateMatrixWorld(true);
   const byMat = new Map();
   temp.traverse((o) => {
@@ -194,7 +194,7 @@ function bake(temp, root, name) {
   let i = 0; for (const [m, list] of byMat) { const mesh = new THREE.Mesh(mergeGeometries(list, false), m); mesh.name = `${name}_${i++}`; group.add(mesh); }
   root.add(group); return group;
 }
-const at = (TR, o, x, h, u, yaw = 0) => { TR.map(x, h, u, o.position); TR.quaternion(u, o.quaternion); if (yaw) o.rotateY(yaw); return o; };
+export const at = (TR, o, x, h, u, yaw = 0) => { TR.map(x, h, u, o.position); TR.quaternion(u, o.quaternion); if (yaw) o.rotateY(yaw); return o; };
 
 export function buildRecon16(root, TR, env, goldM, Ch, items) {
   const R16 = RECON16, P = new THREE.Vector3();
