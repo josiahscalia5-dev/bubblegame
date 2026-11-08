@@ -483,3 +483,83 @@ DO NOT TELL ME EVERYTHING IS SAVED UNTIL YOU HAVE VERIFIED THE ACTUAL REMOTE GIT
 
 I'll audit the existing system first, read-only and without touching the running Level 1 jobs: git state, the autosave process and logs, and the save scripts.
 
+The manifest records the size and SHA-256 of each of the six Tripo models. The audit will hash each model as GitHub stores it and compare. Writing and running it:
+
+The build check is generic and fine. Only the list of known bundles needs the new final build added:
+
+Now the handoff section 000 gets the preservation summary, the tested SAVE NOW command, the four-way status split and an updated first message for the other account:
+
+## Backup report (checked against GitHub at 13:29 UTC)
+
+**Everything on this branch is saved and verified on GitHub.** I asked GitHub for the branch head directly after the last push.
+
+| | |
+|---|---|
+| Repository | https://github.com/josiahscalia5-dev/bubblegame |
+| Current branch (this session's own) | `ccr-50c66592-kcnqoy` |
+| Latest verified commit | `57a8b930063d69675bbcb13794e9a78208e21624` |
+| Last successful backup | 13:29 UTC |
+| Autosave | **running, exactly one process**, saving only `ccr-50c66592-kcnqoy` |
+| Interval | every 300 seconds (5 minutes) plus the few seconds each round takes; 288 rounds = 24 hours |
+
+**Branches:**
+- Every commit on `ccr-50c66592-kcnqoy` comes from this session.
+- The other account's branch, `claude/bubble-wash-kingdom-continue-z9nmm1`, has been quiet since 12:22 UTC. Its 6 newest commits (only its chat history and proof logs) are now merged into this branch with a normal merge, so it is fully contained.
+- `ccr-76d4bc77-rqhl8o` is fully contained.
+- I never pushed to either of those branches. Pull request #3 is untouched, and Match6 stays opt-in only.
+
+**What I kept and what I strengthened.** The existing autosave, the start-of-session hook and the save script were working, so I kept them and closed three gaps:
+
+1. **Credential check:** before every commit, staged files are scanned for key and token patterns. Any match is held back and reported, never pushed.
+2. **Unfinished files:** a recording, video or model written in the last 30 seconds waits for the next round, so half-written files don't get committed.
+3. **Branch pin and record:** the autosave now saves only the branch it started on. Each round writes one line (time, branch, commit, "VERIFIED") to the container's save log, and GitHub's commit list is the permanent record.
+
+I tested this with a fake key file and a freshly written video: both were held back, everything else was saved and verified, and neither file reached GitHub. A save with nothing new creates no empty commit and still verifies GitHub.
+
+**Your SAVE NOW command (tested):** just tell me "Run SAVE NOW". It runs:
+`bash Tools/save_now.sh "Save before account switch"`
+Its last lines read `Push: VERIFIED, GitHub's ccr-50c66592-kcnqoy is at <commit>`. The command and its behaviour are also at the top of `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
+
+**Saved on GitHub** (checked against GitHub's own copy by the new `Tools/preservation_audit.sh`: 57 of 57 items present, nothing missing):
+- **Your five design agents:** each byte-identical to the original definition. Also the `bubble-wash-screen-matcher` skill, the start-of-session hook and its settings.
+- **Six Tripo models:** each matches its SHA-256 checksum in the manifest, plus the rigged girl.
+- **Approved references:**
+  - the original Screen 4 (checksum matches);
+  - the 12-screen board and the girl/laundry reference;
+  - the ten original crops from your new reference pack.
+- **The game:** source, build and models.
+- **Restoration material:** setup, save and verification scripts, handoffs, evidence and chat histories.
+- **Checks:** no file is over 50 MB (the largest is 28 MB, so Git LFS isn't needed), and no credential pattern exists anywhere on the branch.
+
+**Restorable from GitHub** (reinstalled by script, not stored as installations):
+- `bash Tools/cloud_env_setup.sh` reinstalls Blender, the Tripo CLI, glTF Transform, glTF Validator, Vite, OpenCV, scikit-image, PyTorch, LPIPS and Optuna.
+- `cd WebDemo && npm ci` reinstalls the game's packages.
+- `bash Tools/verify_restore.sh --build` then checks it all. It passes here, and now recognises the final Level 1 build.
+
+**Installed and verified in this session:**
+- **Design agents:** all five ran this session.
+- **parallax-threejs 0.4.12:** its Chrome DevTools, three.js inspection and Playwright servers work.
+  - Spector fails to connect because the installed plugin is missing its Spector folder, a defect in the plugin itself.
+  - The plugin's own three agents get only basic shell access, another plugin defect. Your water-motion engineer did use the live three.js tools.
+  - Deno isn't installed, so the plugin's checkpoint, diff and sweep commands can't run.
+- **Tripo:** connected through the secure proxy, 640 credits.
+- **Blender:** 5.2.3.
+
+**Must be reconnected on your other Claude account:**
+- **The parallax-threejs plugin:** enable it on that account, then start a new session. The steps are in `Tools/PLUGIN_AND_MCP_RESTORE.md`.
+- **Your Tripo key:** add it as a network secret for `openapi.tripo3d.ai` if that account's environment doesn't already have it.
+- **That environment's network hosts and setup script:** described in the handoff.
+
+**Not yet verified:** the start-of-session hook's automatic restart on your other account. It did start the autosave at this session's start, but can only be confirmed by opening a session there.
+
+**Never transfers:** running processes (the autosave, recordings, browsers, agents) and my scratch files. Saving only happens while a session's container is running; when it's suspended or reclaimed, saving stops until a session on this branch starts again.
+
+**Handoff:** `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` section 000 now has this status split, the save system, what's still running, and a copy-and-paste first message for your other account.
+
+**Level 1 work, still running on the final build:**
+- **Recording:** the full recording from the girl's opening through Level Complete is at frame 202. It is not final until it finishes.
+- **Identity checks:** 4 of 12 re-checks are done, all 0 pixels different, including your approved Classic Screen 4.
+- **Queued:** the alternative-route clip, the performance numbers and the side-by-side sheets.
+
+I'll report those when they finish; the autosave saves each piece as it lands.
+
