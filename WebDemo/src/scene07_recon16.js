@@ -26,6 +26,12 @@ export const ART16_ON = RECON16_ON && LIST.includes('art16');   // (opt-in only:
 // MACH16 (the user's strict mandate, 8 Nov ~20:20 UTC: "BUILD ACTUAL 3D SCENERY ... NO FAKE BACKGROUND SHORTCUTS"): the original's machinery as
 // real 3D towers on both sides, the far end's arch, stacks and glowing washer door, and pipes joining the two sides; `,nomach16` = without.
 export const MACH16_ON = RECON16_ON && !ART16_ON && !LIST.includes('nomach16');
+// FAR16 (the user, 8 Nov ~20:45 UTC: "Use LaMa to repair obscured areas ... Use the repaired artwork only for distant scenery"): the far END WALL
+// (about 25 m from the checkpoint camera) and the opening in it show the master's own distant machine world (textures/scene07/far_art_lama.webp:
+// the master's pixels, LaMa only where its enemy, banner and HUD covered them), projected from the approved camera onto that one wall (a plane
+// at the right depth); the opening's part fades out as the camera comes within 14..8 m, so the run goes on into the real tube. `,nofar16` = off.
+export const FAR16_ON = MACH16_ON && !LIST.includes('nofar16');
+export const FAR16 = { file: 'textures/scene07/far_art_lama.webp', fade: [8, 14] };
 export const ART16 = {
   file: 'textures/scene07/backdrop_art.webp',
   // the game camera at the checkpoint (u 229.5, centre lane, 412 x 915), measured in track space (77_.../README): the projector
@@ -504,4 +510,17 @@ function buildMachines16(root, TR, env, M, std, Ch) {
     for (const [x, mods] of F.stacks) stack(x, Ch.deck, F.u - 0.6, mods); }
   for (const [x, h, u, r] of K.bubbles) { const b = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), M.glass); TR.map(x, h, u, b.position); t.add(b); }
   return bake(t, root, 'scene07_r16_machines');
+}
+
+// FAR16: the master's distant scenery on the far end wall only (and its opening, fading); returns a per-frame update
+export async function applyFar16(root, TR, Ch, camera) {
+  const art = await new THREE.TextureLoader().loadAsync(FAR16.file);
+  art.colorSpace = THREE.SRGBColorSpace; art.minFilter = THREE.LinearFilter; art.generateMipmaps = false;
+  const { PV } = projector(TR), end = TR.map(0, 0, Ch.u1, new THREE.Vector3()), W = new THREE.Vector3(); let wall = null, best = 1e9;
+  root.traverse((o) => { if (o.name === 'scene07_portal') { const d = o.getWorldPosition(W).distanceTo(end); if (d < best) { best = d; wall = o; } } });
+  if (wall) wall.traverse((o) => { if (o.isMesh && o.geometry.type === 'ShapeGeometry') o.material = projMaterial(art, PV, o.material.map || null); });
+  const cardM = projMaterial(art, PV, null, { transparent: true });
+  const card = new THREE.Mesh(new THREE.CircleGeometry(Ch.portalR + 0.05, 64), cardM); card.name = 'scene07_far16_card';
+  TR.map(0, 1.5, Ch.u1 - 0.03, card.position); TR.quaternion(Ch.u1, card.quaternion); card.renderOrder = 2; root.add(card);
+  return { wall: !!wall, update: () => { cardM.uniforms.uOpacity.value = THREE.MathUtils.smoothstep(card.getWorldPosition(W).distanceTo(camera.position), FAR16.fade[0], FAR16.fade[1]); } };
 }

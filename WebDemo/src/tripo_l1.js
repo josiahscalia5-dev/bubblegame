@@ -11,7 +11,7 @@
 // No random numbers. Report: window.__bwTripo1.
 import * as THREE from 'three';
 import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): opt-in `,norecon16,wall15` only
-import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16 } from './scene07_recon16.js';   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
+import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16, FAR16_ON, applyFar16 } from './scene07_recon16.js';   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -192,7 +192,7 @@ function buildChamber(root, TR, env) {
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nS; j++) { const a = i * (nS + 1) + j, b = a + nS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
-  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
+  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = RECON16_ON ? 0.22 : 0.42;   // (pass 16: the master's deeper blue-violet recesses) vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
   // (pass 9, session ce30359f: in pass 8 the next statement sat inside the comment above, so the walls and vault were never drawn)
   const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
   // the decks either side of the water: lavender with a gold edge at the water
@@ -326,7 +326,8 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 2.4, 4.2, 0.8, 1], [1, 250, 1.2, 4.6, 0.75, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
   if (RECON16_ON) { SCENE07.portholes.length = 0; SCENE07.gears.length = 0; }   // (pass 16 builds its own portholes and gears)
   let art16 = null;
-  if (ART16_ON) { art16 = await applyArt16(root, TR, SCENE07.chamber, camera); if (SCENE07._glow) SCENE07._glow.opacity = 0.3; }   // pass 16: the master's distant scenery, projected (scene07_recon16.js)
+  if (ART16_ON) { art16 = await applyArt16(root, TR, SCENE07.chamber, camera); if (SCENE07._glow) SCENE07._glow.opacity = 0.3; }
+  if (FAR16_ON) { art16 = await applyFar16(root, TR, SCENE07.chamber, camera); if (SCENE07._glow) SCENE07._glow.opacity = 0.35; }   // pass 16: the master's distant scenery on the far end wall only   // pass 16: the master's distant scenery, projected (scene07_recon16.js)
   let wall15 = null;
   if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, SCENE07.ledge, items); }   // pass 15 (scene07_wall15.js)
   buildArchitecture(root, TR, env, items);
@@ -369,7 +370,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
       body.scene07 #l1Banner.warn span { display: none; }`;
     document.head.appendChild(st);
   }
-  report.scene07 = { recon16, art16: art16 && { cards: art16.cards, hidden: art16.hidden }, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
+  report.scene07 = { recon16, art16: art16 && { cards: art16.cards, hidden: art16.hidden, farWall: art16.wall }, wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
