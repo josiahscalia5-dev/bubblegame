@@ -49,10 +49,11 @@ const server = http.createServer((req, res) => {
   for (let i = 0; i < Math.round(1.6 * FPS); i++) { idle += DT; await page.evaluate((x) => window.__bwO3D.seek(x, -1), idle); await frame(); }
   await badge('tap START'); await page.click('#bwHome .screen:not(.off) .go'); badgeT = 0.6;
   // 2. the toss, the flight, the washer entry; then the cross-fade into the game's Tap to Start
-  for (let s = DT; s < 6.25; s += DT) {
+  const O_END = +(process.env.O_END || 6.25), O_HAND = +(process.env.O_HAND || 5.15);   // (session bb87ba9f: the six-scene opening is longer: O_END=8.85 O_HAND=7.9)
+  for (let s = DT; s < O_END; s += DT) {
     idle += DT;
-    const st = await page.evaluate(([a, b, d]) => { if (window.__bwO3D) window.__bwO3D.seek(a, b, d); const h = document.getElementById('bwHome');
-      if (h && b >= 5.15) h.style.opacity = String(Math.max(0, 1 - (b - 5.15) / 0.8)); if (b >= 5.15) window.__bw.advance(1 / 20); return !!h; }, [idle, s, DT]);
+    const st = await page.evaluate(([a, b, d, hand]) => { if (window.__bwO3D) window.__bwO3D.seek(a, b, d); const h = document.getElementById('bwHome');
+      if (h && b >= hand) h.style.opacity = String(Math.max(0, 1 - (b - hand) / 0.8)); if (b >= hand) window.__bw.advance(1 / 20); return !!h; }, [idle, s, DT, O_HAND]);
     if (badgeT > 0 && (badgeT -= DT) <= 0) await badge('');
     await frame();
     if (!st) break;

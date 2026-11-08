@@ -832,7 +832,7 @@ export function mountOpening3D(container, opts = {}) {
     let hp, scl = SIX.inBasket, surprise = 0; const rot = new THREE.Euler();
     if (s < 0) { hp = inB.clone().add(V([0, 0.012 * Math.abs(Math.sin(it * 1.6)), 0])); rot.set(0, -0.15 + 0.1 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); }
     else if (s < 2.4) { hp = bp.clone(); scl = SIX.inBasket * (1 - 0.18 * sm(0.5, 1.0, s)); surprise = sm(0.5, 0.65, s); rot.set(0.15 * Math.sin(s * 5), -0.2, 0.1 * Math.sin(s * 4)); if (s > 1.6) rot.set(-(s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
-    else if (s < 3.0) { const k = sm(2.4, 3.0, s); hp = bp.clone().lerp(heroSit, k); hp.y += Math.sin(k * Math.PI) * 0.06; rot.set(-(1 - k) * 4.2 - 4.8, (1 - k) * 0.8, 0); scl += (1 - scl) * k; surprise = 1; }
+    else if (s < 3.0) { const k = sm(2.4, 3.0, s); hp = bp.clone().lerp(heroSit, k); hp.y += Math.sin(k * Math.PI) * 0.06; rot.set(-4.8 - (2 * Math.PI - 4.8) * k, (1 - k) * 0.8, 0);   /* (ends upright: one full turn) */ scl += (1 - scl) * k; surprise = 1; }
     else if (s < 5.9) { const wet = sm(4.4, 5.2, s); hp = heroSit.clone(); hp.y += wet * 0.03 + wet * 0.014 * Math.sin((s - 4.4) * 6.5);
       rot.set(0.04 * Math.sin(s * 3), 0.35 * Math.sin((s - 3) * 1.6) * (s < 4.6 ? 1 : 0.5), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 4.7 ? 1 : 0; }
     else { const k = sm(5.9, 7.2, s), tn = sm(5.9, 6.5, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 5.9) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
