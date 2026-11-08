@@ -654,3 +654,13 @@ Bundle `3950385c` (18b plus sparkle). Capturing it while the review runs.
 
 While the review runs, I'll prepare the moving-recording tool the previous session used, so the playable recording is ready to run on the final build.
 
+The proof is running against a frozen copy of the current bundle (`3950385c`). Meanwhile I'll draft the pass 18 README with the zone-to-3D-group map, so it's ready for the final numbers.
+
+I'll save your new reconstruction-map pack unchanged into the repository, as the README references.
+
+---
+
+### Note · 2026-11-08 22:59 UTC
+
+_(You interrupted Claude here.)_
+
