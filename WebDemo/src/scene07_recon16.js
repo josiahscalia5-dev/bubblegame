@@ -31,6 +31,11 @@ export const MACH16_ON = RECON16_ON && !ART16_ON && !LIST.includes('nomach16');
 // the master's pixels, LaMa only where its enemy, banner and HUD covered them), projected from the approved camera onto that one wall (a plane
 // at the right depth); the opening's part fades out as the camera comes within 14..8 m, so the run goes on into the real tube. `,nofar16` = off.
 export const FAR16_ON = MACH16_ON && !LIST.includes('nofar16');
+// PASTEL16 (v4; the background-only measurement, scripts/bg_metric.py: the master's architecture has about half the game's chroma, five
+// times its near-white share and a higher brightness, zone by zone): every pass-16 material is moved toward white by `k` and lit by its
+// own pastel colour (a soft self-glow), gold excepted; the big landmarks (drum ring, star wall) keep more colour. `,nopastel16` = v3.
+export const PASTEL16_ON = RECON16_ON && !LIST.includes('nopastel16');
+export const PASTEL16 = { k: 0.34, kLandmark: 0.18, glow: 0.5 };
 export const FAR16 = { file: 'textures/scene07/far_art_lama.webp', fade: [8, 14] };
 export const ART16 = {
   file: 'textures/scene07/backdrop_art.webp',
@@ -62,7 +67,7 @@ export const RECON16 = {
   gear: { u: 237, x: -2.5, h: 4.15, R: 0.75 },   // (art director, v3: saturated cobalt with a cyan rim, centre ~(0.92, 0.27), clear of the mission panel)
   arches: [],   // (v1-v2 had three; with the portal they read as a tunnel of rings, the look the user rejected)
   endWall: { gap: 3.05, ds: 0.72 },   // machinery on the far end wall round the opening (radius gap m round its centre)
-  glow: { r: 3.4, opacity: 1.0, du: 2.5, fade: [8, 16], rgb: [225, 245, 255] },   // (v3: the master's pale cyan-white far glow)   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
+  glow: { r: 4.6, opacity: 1.0, du: 3.0, fade: [8, 16], rgb: [232, 246, 255] },   // (v4: larger: the luminous far end once the tube's hoops are gone)   // (v3: the master's pale cyan-white far glow)   // the far end's light (pass 13b: r 2.2, opacity 0.85, at the portal); it fades out as the camera comes within fade[1]..fade[0] m
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
 };
 // MACH16 placements, fitted with the projection grid of the real camera at the u 229.5 checkpoint (77_.../scripts): the screen positions of
@@ -100,6 +105,7 @@ export const MACH16 = {
   ],
   far: { u: 253.45, arch: [2.72, 3.4], door: { h: 5.3, r: 0.95 },
     stacks: [[3.55, [['w', 1.4, 1.5, 'lav', 'c'], ['w', 1.3, 1.4, 'blue', 'p'], ['d', 0.55, 'pink']]], [-3.55, [['t', 2.3, 0.62, 'pink', 'mint'], ['w', 1.0, 1.2, 'cream', 'c']]]] },
+  bankBubbles: 48,   // (v4: the master's many bubbles along both banks; scene07's 18 -> 48)
   bubbles: [[-2.5, 3.6, 241.5, 0.55], [-3.1, 4.7, 243.0, 0.42], [-2.1, 2.5, 245.2, 0.35], [2.3, 4.9, 242.2, 0.4], [1.8, 3.3, 248.2, 0.3], [-1.9, 4.2, 249.5, 0.3]],
 };
 const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
@@ -177,9 +183,13 @@ const at = (TR, o, x, h, u, yaw = 0) => { TR.map(x, h, u, o.position); TR.quater
 
 export function buildRecon16(root, TR, env, goldM, Ch, items) {
   const R16 = RECON16, P = new THREE.Vector3();
-  const std = (color, emissive, ei, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.4, metalness: 0.2, envMap: env || null, envMapIntensity: 0.9, emissive, emissiveIntensity: ei, ...extra });
+  const std = (color, emissive, ei, extra = {}, k = PASTEL16.k) => {
+    if (!PASTEL16_ON || color === 0xffffff) return new THREE.MeshStandardMaterial({ color, roughness: 0.4, metalness: 0.2, envMap: env || null, envMapIntensity: 0.9, emissive, emissiveIntensity: ei, ...extra });
+    const c = new THREE.Color(color).lerp(new THREE.Color(1, 1, 1), k);   // pastel, self-lit by its own colour
+    return new THREE.MeshStandardMaterial({ color: c, roughness: 0.45, metalness: Math.min(0.2, extra.metalness ?? 0.2), envMap: env || null, envMapIntensity: 0.8, emissive: c.clone(), emissiveIntensity: PASTEL16.glow, ...extra, metalness: Math.min(0.2, extra.metalness ?? 0.2) });
+  };
   const M = {
-    pink: std(C.pink, 0xff4fa8, 0.34, { metalness: 0.3, roughness: 0.32 }), rose: std(C.rose, 0xff5fb0, 0.3),
+    pink: std(C.pink, 0xff4fa8, 0.34, { metalness: 0.3, roughness: 0.32 }, PASTEL16.kLandmark), rose: std(C.rose, 0xff5fb0, 0.3),
     lav: std(C.lav, 0x6a52b0, 0.42), lavD: std(0xb79cf2, 0x5a3fb0, 0.35, { side: THREE.DoubleSide }), cream: std(C.cream, 0x8a6e52, 0.5),
     blue: std(0x2f5cff, 0x0f2a9a, 0.5, { metalness: 0.45, roughness: 0.3 }), blueL: std(C.blue, 0x2f55b8, 0.45), mint: std(C.mint, 0x3a8a5a, 0.38),
     gold: goldM, white: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.35, 1.2, 1.5) }),
@@ -432,7 +442,7 @@ function buildMachines16(root, TR, env, M, std, Ch) {
   const K = MACH16, t = new THREE.Group(), P = new THREE.Vector3();
   const B = { blue: std(0x6f7fe0, 0x24308a, 0.45, { metalness: 0.35, roughness: 0.32 }), deep: std(0x4a56c0, 0x1a2280, 0.42, { metalness: 0.4, roughness: 0.3 }),
     lav: M.lav, pink: M.pink, rose: M.rose, cream: M.cream, mint: M.mint, gold: M.gold, cyan: std(0x9fe2ff, 0x2f86b8, 0.5, { metalness: 0.3, roughness: 0.3 }) };
-  const G = { c: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.7, 1.15, 1.6) }), p: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.95, 1.35) }) };
+  const G = { c: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.7, 1.15, 1.6) }), p: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.95, 1.35) }), w: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.65, 1.3, 0.8) }) };
   const lamp = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.3, 0.85) });
   const add = (g, geo, mat, x, y, z, rx = 0, ry = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); g.add(m); return m; };
   const door = (g, y, z, r, glass) => {   // a round washer door facing +z
@@ -469,7 +479,7 @@ function buildMachines16(root, TR, env, M, std, Ch) {
     const h = K.colTop - base, g = at(TR, new THREE.Group(), x, base, u, Math.atan2(K.cam[0] - x, K.cam[1] - u)); t.add(g);
     add(g, new THREE.CylinderGeometry(0.42, 0.5, h, 24), B[col], 0, h / 2, 0);
     for (let y = 0.8; y < h; y += 1.25) add(g, new THREE.TorusGeometry(0.45, 0.05, 6, 24), M.gold, 0, y, 0, Math.PI / 2);
-    for (let y = 1.4; y < h - 0.5; y += 2.5) door(g, y, 0.42, 0.2, (Math.round(y) % 2) ? 'c' : 'p');
+    for (let y = 1.4, n = 0; y < h - 0.5; y += 1.6, n++) door(g, y, 0.42, 0.2, ['w', 'c', 'w', 'p'][n % 4]);   // (v4: warm luminous windows)
     colPos.push([u, x]);
   }
   // gantries: beams across the room between the column tops (lavender / blue / pink with gold edges), at slightly different heights

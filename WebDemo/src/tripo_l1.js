@@ -11,7 +11,7 @@
 // No random numbers. Report: window.__bwTripo1.
 import * as THREE from 'three';
 import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): opt-in `,norecon16,wall15` only
-import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16, FAR16_ON, applyFar16 } from './scene07_recon16.js';   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
+import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16, FAR16_ON, applyFar16, MACH16 } from './scene07_recon16.js';   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -168,7 +168,7 @@ function openTube(scene, TR, Ch) {
     wallMat.needsUpdate = true;
   }
   const M = new THREE.Matrix4(), P = new THREE.Vector3(), Z = new THREE.Matrix4().makeScale(0, 0, 0), ctr = [];
-  for (let u = Ch.u0; u <= Ch.u1; u += 1) ctr.push(TR.map(0, 1.5, u));
+  for (let u = Ch.u0; u <= Ch.u1 + (RECON16_ON ? 18 : 0); u += 1) ctr.push(TR.map(0, 1.5, u));   // (pass 16 v4: also the tube's hoops for 18 m beyond the far end: they read as a ring tunnel at the vanishing point)
   let hidden = 0;
   for (const h of hoops) { for (let i = 0; i < h.count; i++) { h.getMatrixAt(i, M); P.setFromMatrixPosition(M); if (ctr.some((c) => c.distanceTo(P) < 3.4)) { h.setMatrixAt(i, Z); hidden++; } } h.instanceMatrix.needsUpdate = true; }
   return { patched: !!wallMat, hoopsHidden: hidden };
@@ -333,7 +333,8 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   buildArchitecture(root, TR, env, items);
   // big iridescent bubbles near the walls (board 07's large bubbles at its sides); a fixed pattern, no random numbers
   const bubM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.06, metalness: 0, envMap: env || null, envMapIntensity: 1.6, transparent: true,
-    opacity: 0.5, iridescence: 0.9, iridescenceIOR: 1.3, clearcoat: 1, depthWrite: false });
+    opacity: 0.5, iridescence: 0.9, iridescenceIOR: 1.3, clearcoat: 1, depthWrite: false, ...(RECON16_ON ? { emissive: 0xe8f4ff, emissiveIntensity: 0.28, opacity: 0.58 } : {}) });
+  if (RECON16_ON && MACH16.bankBubbles) SCENE07.bubbles.n = MACH16.bankBubbles;
   const bubG = new THREE.SphereGeometry(1, 24, 16);
   for (let i = 0; i < SCENE07.bubbles.n; i++) {
     const f = (i + 0.5) / SCENE07.bubbles.n, side = i % 2 ? 1 : -1, r = 0.12 + 0.18 * ((i * 7) % 5) / 4;
