@@ -1579,3 +1579,74 @@ Do not delete anything, redesign anything, reset anything, expose credentials, o
 
 Begin the complete preservation audit now, then commit, push, verify, and provide my account-transfer report.
 
+---
+
+### Claude · 2026-11-08 02:08 UTC
+
+Now the tool inventory with real version numbers, for the restoration manual:
+
+Finding the exact file paths of each approved reference, to list them in the manual:
+
+Writing the restoration manual as a new top section of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`. Everything older in that file stays below it as history.
+
+Scanning everything about to be committed, and then the whole repository, for keys or tokens before the commit:
+
+No credentials anywhere, either in the staged changes or in the whole repository. Committing (the checkpoint before it is `4e96b92`, already on GitHub) and pushing:
+
+**The backup is complete and verified on GitHub.** The game, the approved designs, your six Tripo models, all 5 agents, the skill and the automation all restore from GitHub with no differences. Only account-level things can't travel through GitHub, and they're listed below with exact steps.
+
+**A. Repository**
+- Repository: https://github.com/josiahscalia5-dev/bubblegame
+- Branch: `ccr-76d4bc77-rqhl8o`
+- Latest commit: `924df03813aaf5fa2cf95023c4fedf2eaad2e354`, the same locally and on GitHub. Nothing is unpushed.
+- Checkpoint before this backup: `4e96b92`.
+- No credentials found anywhere, in the staged changes or in the whole repository.
+
+**B and G. What was saved, and the clean-clone test**
+- A fresh clone from GitHub reproduced everything:
+  - the 5 agents, the skill, the hook, the settings, `.mcp.json`, `CLAUDE.md` and the setup and autosave scripts are byte-identical;
+  - the ORIGINAL Screen 3 and Screen 4, the girl artwork and the 12-panel board are identical, including the Screen 4 checksum;
+  - all six Tripo GLBs match your manifest's SHA-256;
+  - `npm ci` worked, and the rebuilt game is byte-identical to the committed build;
+  - the game then ran from the clone: Tap to Start, then 6 seconds of play into the "Spinning brushes" section, with no console errors.
+- Git LFS is not needed: the largest file is 25 MB, so everything is stored directly in Git.
+- `node_modules` is left out on purpose. `package-lock.json` is now committed so installs are exact.
+
+**C to F. Inventory: what transfers and what doesn't**
+
+| Item | Previously used | Saved in GitHub | Verified remotely | Transfers automatically | Manual restoration required |
+|---|---|---|---|---|---|
+| Game source, models, build, test tools | Yes | Yes | Yes (rebuilt byte-identical, ran) | Yes | `npm ci && node build.mjs` |
+| Approved references (Screen 3, classic Screen 4, girl art, 12-panel board, storyboards) | Yes | Yes | Yes (identical) | Yes | None |
+| Your six Tripo GLBs, review and inspection | Yes | Yes | Yes (hashes match) | Yes | None |
+| Evidence, sheets, recordings (`Previews/`) | Yes | Yes | On GitHub; not part of the clean-clone test | Yes | None |
+| The 5 project agents | Yes | Yes (full files) | Yes (identical) | Yes | None; `screen4-water-motion-engineer` also needs the plugin |
+| Skill `bubble-wash-screen-matcher` | Yes | Yes | Yes | Yes | None |
+| Start-of-session hook and 5-minute autosave | Yes | Yes | Yes | Yes | Add the new session to `Tools/autosave_sessions.json` |
+| `.mcp.json` (empty on purpose) | Yes | Yes | Yes | Yes | None |
+| Custom slash commands | None ever existed | – | – | – | – |
+| **parallax-threejs 0.4.12**, with its 4 servers, 3 agents, 9 commands and 1 skill | Yes | Documented only | – | **No** (account-level) | Enable it on claude.ai on the account you'll use, then start a new session |
+| GitHub connection | Yes | – | Works here | **No** | Connect GitHub on claude.ai |
+| Cloud environment `bubblegame` | Yes | Its setup script, yes | Yes | **No** (per account) | Create it with the hosts and the one-line script in section 0.4 of the handoff file |
+| Tripo key | Yes | Never | – | **No** | Network secret for `openapi.tripo3d.ai` (key starting `tsk_`) |
+| Tools: Blender 5.2.3, Tripo CLI 0.11.2, Playwright 1.63, glTF Transform 4.5.1, glTF Validator, Vite 8.3.5, OpenCV 5.0, scikit-image 0.26, PyTorch 2.15, LPIPS, Optuna 5.0 | Yes | Install script, yes | Yes (script identical) | **No** (programs aren't stored in Git) | Installed by the environment's setup script |
+| Spector.js, Android SDK | Yes, occasionally | Install instructions | – | **No** | Install when needed (steps in the handoff file) |
+
+All of these steps are written out in section 0 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`, together with the six categories of visual authority.
+
+**H. First message for your other account** (also in section 0.7 of the handoff file):
+> Continue my Bubble Wash Kingdom game: repository josiahscalia5-dev/bubblegame, branch `ccr-76d4bc77-rqhl8o` (if this session is given its own branch, merge `ccr-76d4bc77-rqhl8o` into it with a normal merge first; never force-push). Read `CLAUDE.md`, then section 0 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`, and follow them. Do not reset, redesign or rebuild anything. Run `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing, `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci && node build.mjs`, `bash Tools/verify_restore.sh --build`; check the autosave runs and add this session to `Tools/autosave_sessions.json`. Verify, do not assume: `ListPlugins` and the parallax-threejs tools (threejs-devtools `bridge_status` and a read-only `scene_tree` of `index.html?s3=intunnel,structmatch`), a one-line ping of each project agent and of scenario-author / shader-reviewer / visual-debugger, `tripo doctor` (free), `blender --version`. Report what works and what I must reconnect. Then continue from section 0.2: the level1 opening and course are waiting for my verdict; the six Tripo models wait for my KEEP / REJECT / REWORK decisions; spend no Tripo credits without my yes for a named job and cost.
+
+**I. Still unresolved**
+- **The plugin is not verified.** This session started before you enabled it, so it can't load it. This account's catalog also still reports it as not enabled. The first session on whichever account you use will settle that for certain.
+- **The continuous phone video is still rendering**, at 688 of about 1,260 frames. I'll encode, commit and send it when it finishes. If this session closes first, the command to rerun it is in section 0.2 of the handoff file.
+- **Your six Tripo models are inspected but not integrated.** Proposals, with renders, statistics and the washer's depth map, are in `Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/inspection/README.md`:
+  - **Girl:** rig her and use her in the opening (much closer to your art than my code-built girl).
+  - **Basket and sock:** use them in the opening.
+  - **Towels:** split into three pieces, then use them in the toss.
+  - **Washer:** cut the porthole open (it is a closed bowl today) and fit the tunnel behind it.
+  - **Pink creature:** reject it for gameplay (its tail breaks the ORIGINAL's rear silhouette).
+  - **All six:** their 4096 × 4096 textures must be shrunk before use on a phone.
+- **Phone cost:** with `level1`, Tap to Start draws 322 calls against 211 without it, which should be trimmed.
+- **Autosave:** this session's autosave keeps saving to the branch while the session is open. That's harmless, but have the other account's session merge the branch first, as the prompt says.
+
