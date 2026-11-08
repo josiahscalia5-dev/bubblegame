@@ -1,0 +1,74 @@
+{
+ "verts_before": 13274,
+ "verts_after_weld": 5413,
+ "joints": {
+  "L": {
+   "shoulder": [
+    0.112,
+    -0.0732,
+    0.505
+   ],
+   "elbow": [
+    0.1361,
+    -0.07,
+    0.4071
+   ],
+   "wrist": [
+    0.1735,
+    -0.1037,
+    0.3299
+   ],
+   "hand": [
+    0.1787,
+    -0.0934,
+    0.2854
+   ]
+  },
+  "R": {
+   "shoulder": [
+    -0.112,
+    -0.0725,
+    0.505
+   ],
+   "elbow": [
+    -0.1394,
+    -0.0702,
+    0.4076
+   ],
+   "wrist": [
+    -0.1728,
+    -0.1032,
+    0.3303
+   ],
+   "hand": [
+    -0.1828,
+    -0.0932,
+    0.2855
+   ]
+  }
+ },
+ "unweighted_vertices": 0,
+ "vertex_groups": [
+  "hips",
+  "spine",
+  "chest",
+  "neck",
+  "head",
+  "shoulder.L",
+  "upper_arm.L",
+  "forearm.L",
+  "hand.L",
+  "shoulder.R",
+  "upper_arm.R",
+  "forearm.R",
+  "hand.R",
+  "thigh.L",
+  "shin.L",
+  "thigh.R",
+  "shin.R"
+ ],
+ "texture": [
+  "tripo_rgb_4ab060a4-4241-4b49-b4a6-6eb0142b0f8c",
+  2048
+ ]
+}
