@@ -21,12 +21,15 @@ export const RECON16 = {
   chamber: { wallH: 4.8, height: 7.2 },   // a higher chamber (pass 13b: 3.6 / 5.4) so the upper machinery and the gear have room
   // the left drum: face centre (x, h, u), outer ring radius R, body depth (in R), yaw: how far the face turns from facing straight back
   // down the track toward the left wall (radians; the drum's body then shows on the face's right, as in the original)
-  drum: { u: 238.5, x: 3.3, h: 3.9, R: 1.85, depth: 0.85, yaw: 0.62 },
-  ledge: { u: [232.2, 253.2], x: 2.25, h: 1.75 },
-  right: { u: 235.5, inner: 1.45, R: 3.2, H: 1.0 },
+  // (fitted with a projection grid of the real camera at the u 229.5 checkpoint, 77_.../scripts: centre (0.075, 0.30), gold band radius 0.125 H)
+  drum: { u: 238, x: 3.0, h: 4.0, R: 1.52, depth: 0.45, yaw: 0.62 },
+  ledge: { u: [232.2, 253.2], x: 2.25, h: 1.95 },
+  // a long gentle curve (radius 5 m) whose face runs 1.3 m from the centre line (as close as the right lane allows; the master's wall would
+  // stand at 0.5 m, inside the lane): from the right screen edge (u 234) to x 0.70 (u 240)
+  right: { u: 237, inner: 1.3, R: 5.0, H: 0.85 },
   towers: [[239.6, -3.35, 0.72, 2.3, 'pink'], [244.2, -3.55, 0.9, 3.0, 'mint'], [249.5, -3.3, 0.75, 2.6, 'pink']],   // [u, x, radius, height, dome] behind the right wall
   leftTiers: [[242.8, 3.35, 0.8, 1.9, 'mint'], [246.6, 3.45, 0.7, 2.4, 'pink'], [250.6, 3.3, 0.75, 2.0, 'mint']],    // the same, on the ledge beyond the drum
-  gear: { u: 237.2, x: -3.05, h: 5.25, R: 1.05 },
+  gear: { u: 237, x: -2.5, h: 5.0, R: 0.72 },   // master: centre (0.93, 0.205), the frill's radius 0.16 W
   arches: [[244.2, 'cream'], [248.6, 'blue'], [252.9, 'pink']],
   greebles: { u: [230.6, 253.6], du: 0.85, ds: 0.8, hMin: [2.3, 1.6] },   // hMin: lowest height on the walls [left, right]
 };
@@ -150,6 +153,8 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     t.add(new THREE.Mesh(geo(front, fi, fuv), frontM));
     t.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(lip), lip.length * 2, 0.085, 8, false), M.gold));
     t.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(mid), mid.length * 2, 0.04, 6, false), M.gold));
+    const pl = at(TR, new THREE.Group(), D.x, L.h, D.u); t.add(pl);
+    mesh(new RoundedBoxGeometry(1.7, Math.max(0.2, D.h - 1.2 * R - L.h + 0.1), 1.3, 1, 0.08), M.cream, pl, (m) => { m.position.y = Math.max(0.2, D.h - 1.2 * R - L.h + 0.1) / 2; });
     // a lavender block joins the drum to the wall behind it (attached, not floating)
     const blk = at(TR, new THREE.Group(), (D.x + Ch.halfW) / 2 + 0.35, L.h, D.u + 0.4); t.add(blk);
     mesh(new RoundedBoxGeometry(Ch.halfW - D.x + 0.4, 2 * R, 2.4, 2, 0.18), M.lav, blk, (m) => { m.position.y = R; });
@@ -171,7 +176,7 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     const tex = starPanelTexture(); tex.repeat.set(Math.round(2 * Math.PI * W.R / 1.15), 1);
     const wallM = std(0xffffff, 0xffffff, 0.34, { map: tex, side: THREE.DoubleSide }); wallM.emissiveMap = tex;
     mesh(new THREE.CylinderGeometry(W.R, W.R, W.H + 0.3, 96, 1, true), wallM, g, (m) => { m.position.y = (W.H - 0.3) / 2; });
-    for (let a = -80; a <= 80; a += 16) {   // lavender pilasters with gold caps on the face toward the channel (+x)
+    for (let a = -44; a <= 44; a += 8) {   // lavender pilasters with gold caps on the face toward the channel (+x)
       const r = (a * Math.PI) / 180, p = new THREE.Group(); p.position.set(Math.cos(r) * (W.R + 0.04), 0, -Math.sin(r) * (W.R + 0.04)); p.rotation.y = r; g.add(p);
       mesh(new RoundedBoxGeometry(0.12, W.H + 0.2, 0.2, 1, 0.04), M.lav, p, (m) => { m.position.y = W.H / 2 - 0.05; });
       mesh(new THREE.BoxGeometry(0.16, 0.08, 0.26), M.gold, p, (m) => { m.position.y = W.H - 0.12; });
@@ -183,8 +188,9 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     mesh(new THREE.CircleGeometry(W.R, 72), M.cream, g, (m) => { m.rotation.x = -Math.PI / 2; m.position.y = W.H + 0.06; });
     mesh(new THREE.TorusGeometry(W.R + 0.05, 0.12, 8, 112), M.blueL, g, (m) => flat(m, 0.02));            // the lavender-blue base band
     mesh(new THREE.TorusGeometry(W.R + 0.08, 0.035, 6, 112), M.gold, g, (m) => flat(m, 0.17));
+    const cx = -(W.inner + W.R);
     for (const [u, x, r, h, dome] of R16.towers) {
-      const q = at(TR, new THREE.Group(), x, W.H, u); t.add(q);
+      const q = at(TR, new THREE.Group(), x, (x - cx) ** 2 + (u - W.u) ** 2 < W.R * W.R ? W.H : Ch.deck, u); t.add(q);
       mesh(new THREE.CylinderGeometry(r, r * 1.05, h, 28), M.lav, q, (m) => { m.position.y = h / 2; });
       for (const f of [0.12, 0.55, 0.92]) mesh(new THREE.TorusGeometry(r * 1.04, 0.05, 6, 28), M.gold, q, (m) => { m.rotation.x = Math.PI / 2; m.position.y = h * f; });
       mesh(new THREE.SphereGeometry(r, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), M[dome], q, (m) => { m.position.y = h; });
@@ -200,7 +206,9 @@ export function buildRecon16(root, TR, env, goldM, Ch, items) {
     mesh(new THREE.CylinderGeometry(G.R * 0.3, G.R * 0.3, G.R * 0.4, 24), M.blueL, q, (m) => { m.rotation.x = Math.PI / 2; m.position.z = G.R * 0.25; });
     mesh(new THREE.CylinderGeometry(G.R * 0.36, G.R * 0.36, G.R * 0.4, 6), M.gold, q, (m) => { m.rotation.x = Math.PI / 2; m.position.z = G.R * 0.12; });
     // its wall bracket (attached to the right wall)
-    mesh(new RoundedBoxGeometry(0.6, 0.6, G.R * 1.6, 1, 0.1), M.cream, q, (m) => { m.position.z = -G.R * 0.9; });
+    const beam = at(TR, new THREE.Group(), -(Math.abs(G.x) + Ch.halfW) / 2, G.h, G.u + 0.35); t.add(beam);
+    mesh(new RoundedBoxGeometry(Ch.halfW - Math.abs(G.x) + 0.3, 0.42, 0.5, 1, 0.08), M.cream, beam);
+    mesh(new THREE.BoxGeometry(Ch.halfW - Math.abs(G.x) + 0.32, 0.06, 0.52), M.gold, beam, (m) => { m.position.y = 0.2; });
     out.right = bake(t, root, 'scene07_r16_right');
   }
 

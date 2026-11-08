@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
   }, { Z, LANE });
   const stage = await page.locator('#stage').boundingBox(), results = [];
   for (const [i, cam] of CAMS.entries()) {
-    const res = await page.evaluate(({ Z, LANE, NAMES, PTS, cam, code }) => {
+    const res = await page.evaluate(({ Z, LANE, NAMES, PTS, cam, code, post }) => {
       const B = window.__bw, d = B.debug(), m = d.mascotState, scene = d.scene;
       const info = code ? (new Function('d', 'scene', code))(d, scene) : null;
       if (cam) window.__BW_S07_CAM__ = cam; else delete window.__BW_S07_CAM__;
@@ -57,6 +57,7 @@ const server = http.createServer((req, res) => {
         return front ? [r3(x0), r3(y0), r3(x1), r3(y1), r3((x0 + x1) / 2), r3((y0 + y1) / 2)] : null;
       };
       out.info = info === undefined ? null : info; out.mascot = rectOf(d.mascot);
+      if (post) out.post = (new Function('d', 'scene', post))(d, scene);   // POST: a snippet run after the camera is set (e.g. a projection grid)
       const re = new RegExp(NAMES);
       d.scene.traverse((o) => { if (o.name && re.test(o.name)) { const r = rectOf(o); if (r) out.objects.push([o.name, ...r]); } });
       for (const [label, x, h, u] of PTS) { const p = d.track.map(x, h, u, new V()); p.project(d.camera); out.points.push([label, r3((p.x + 1) / 2), r3((1 - p.y) / 2)]); }
@@ -66,7 +67,7 @@ const server = http.createServer((req, res) => {
       R.info.autoReset = ar;
       if (d.composer) d.composer.render(); else B.advance(1 / 30);   // draw the real frame again (with the game's post passes) for the screenshot
       return out;
-    }, { Z, LANE, NAMES, PTS: JSON.parse(PTS || '[]'), cam, code: VARIANTS[i] });
+    }, { Z, LANE, NAMES, PTS: JSON.parse(PTS || '[]'), cam, code: VARIANTS[i], post: process.env.POST || '' });
     const png = CAMS.length > 1 ? `${OUT}_${i}.png` : `${OUT}.png`;
     await page.screenshot({ path: png, clip: stage, timeout: 240000 });
     res.png = png; results.push(res);
