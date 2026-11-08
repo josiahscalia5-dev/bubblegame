@@ -290,7 +290,7 @@ const SIX_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 
         m6 = mix(m6, vec3(0.34, 0.28, 0.62), (1.0 - smoothstep(0.17, 0.23, length(hc6))) * 0.7);
         float rb6 = exp(-pow((fract(d * 0.85) - 0.5) / 0.05, 2.0));
         m6 = mix(m6, vec3(1.5, 1.05, 0.75), rb6 * 0.8);
-        c = mix(blue6, m6, smoothstep(-0.55, -0.15, up6));
+        c = mix(blue6, m6, smoothstep(-0.9, -0.72, up6));
         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(2.4, 8.0, d) * 0.85 * uGlow);`;
 const SIX_DRUM = '';
 function buildVortex() {
@@ -613,10 +613,54 @@ export function mountOpening3D(container, opts = {}) {
     const towelM = new THREE.MeshStandardMaterial({ color: SIX.towel, map: tt, roughness: 0.95, metalness: 0, envMap: env, envMapIntensity: 0.4, emissive: 0x1a4aa0, emissiveIntensity: 0.28, side: THREE.DoubleSide });
     const fold = (geo, amt) => { const p = geo.attributes.position; for (let i = 0; i < p.count; i++) { const x = p.getX(i), y = p.getY(i), z = p.getZ(i), a = Math.atan2(x, z);
       const k = 1 + amt * Math.sin(a * 6 + y * 3) * (0.6 - y * 0.5); p.setXYZ(i, x * k, y, z * k); } geo.computeVertexNormals(); return geo; };
+    // the towel as CLOTH: a square terry towel (a 28 x 28 grid) whose vertices are placed every frame (drape()): draped over him with its corners
+    // hanging (scene 1), wrapped round him into a soft bundle with corner tufts (scene 2), sitting on his head like a hat (scene 3), fluttering
     const towel = new THREE.Group(); towel.name = 'six_towel'; scene.add(towel);
-    const cap = new THREE.Mesh(fold(new THREE.SphereGeometry(1, 48, 24, 0, Math.PI * 2, 0, Math.PI * 0.62), 0.07), towelM); towel.add(cap);
-    const low = new THREE.Mesh(fold(new THREE.SphereGeometry(1.02, 40, 12, 0, Math.PI * 2, Math.PI * 0.6, Math.PI * 0.4), 0.05), towelM); towel.add(low);
-    return { pinkM, lights6, dial, med, stand, towel, cap, low };
+    const cloth = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 28, 28), towelM); cloth.frustumCulled = false; towel.add(cloth);
+    const UV0 = cloth.geometry.attributes.position.array.slice();   // the flat grid (x, y in -0.5..0.5)
+    // shape: r = the radius of what is under it, L = half the towel's side, wrap 0 (draped) .. 1 (bundle), hang = how far the sides fall, t = time,
+    // flut = flutter amount
+    const drape = (r, L, wrap, hang, t, flut) => {
+      const pa = cloth.geometry.attributes.position, D = L * Math.SQRT2;
+      for (let i = 0; i < pa.count; i++) {
+        const u = UV0[i * 3] * 2, v = UV0[i * 3 + 1] * 2, d = Math.hypot(u, v) * L, th = Math.atan2(v, u), arc = r * Math.PI * 0.5;
+        const wr = 0.012 * Math.sin(th * 7 + d * 22) * Math.min(1, d / L);   // folds, stronger toward the edges
+        let ax, ay, az;
+        if (d < arc) { const ph = d / r, rr = r + wr; ax = Math.sin(ph) * Math.cos(th) * rr; ay = Math.cos(ph) * rr; az = Math.sin(ph) * Math.sin(th) * rr; }
+        else { const e = d - arc, rr = r + e * 0.22 + wr * 2; ax = Math.cos(th) * rr; az = Math.sin(th) * rr; ay = -Math.min(e, hang) * 0.95 - Math.max(0, e - hang) * 0.2; }
+        const ph2 = (d / D) * 2.75, tuft = 1 + 0.32 * sm(0.82, 1, d / D), rb = r * 1.04 * tuft + wr;
+        const bx = Math.sin(ph2) * Math.cos(th) * rb, by = Math.cos(ph2) * rb, bz = Math.sin(ph2) * Math.sin(th) * rb;
+        const f = flut * Math.min(1, d / L) * Math.sin(t * 7 + d * 14 + th * 2) * 0.012;
+        pa.setXYZ(i, ax + (bx - ax) * wrap + f, ay + (by - ay) * wrap + f * 0.6, az + (bz - az) * wrap);
+      }
+      pa.needsUpdate = true; cloth.geometry.computeVertexNormals();
+    };
+    // scene 5's machinery inside the drum tunnel (the storyboard's panel 5): pink-gold housings with glowing lilac glass, a gold railing along the left
+    // bank, a cobalt gear on the right wall, warm lamps under the crown, bubbles; all above the water, clear of his path (the opening only)
+    const tun = new THREE.Group(); tun.name = 'six_tunnelProps'; scene.add(tun);
+    const goldT = washer.goldM, glassG = new THREE.MeshStandardMaterial({ color: 0xd8b8ff, emissive: 0xb07cff, emissiveIntensity: 1.1, roughness: 0.15, transparent: true, opacity: 0.85 });
+    const wy = OPENING3D.waterY, rad = (d) => THREE.MathUtils.lerp(rO, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);
+    const at6 = (side, d, up) => { const r = rad(d) * 0.78; return V([P.x + side * Math.sqrt(Math.max(0, r * r - (up - P.y) ** 2)), up, P.z - d]); };
+    for (const [side, d] of [[-1, 2.9], [-1, 4.3], [-1, 5.8], [1, 4.9], [1, 6.6]]) {
+      const g = new THREE.Group(); g.position.copy(at6(side, d, wy + 0.16)); g.rotation.y = side * 0.5; tun.add(g);
+      const body = new THREE.Mesh(new RoundedBoxGeometry(0.26, 0.24, 0.3, 3, 0.05), pinkM); body.position.y = 0.12; g.add(body);
+      for (const y of [0.03, 0.22]) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.27, 0.02, 0.31), goldT); b.position.y = y; g.add(b); }
+      const gl = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.16, 20), glassG); gl.position.y = 0.32; g.add(gl);
+      for (const y of [0.24, 0.41]) { const c = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.025, 20), goldT); c.position.y = y; g.add(c); }
+      const port = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.012, 8, 20), goldT); port.position.set(0, 0.12, 0.155); g.add(port);
+    }
+    const rail = []; for (let d = 2.4; d <= 7.2; d += 0.4) rail.push(at6(-1, d, wy + 0.32).add(V([0.06, 0, 0])));
+    tun.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail), 40, 0.012, 6), goldT));
+    for (const p of rail.filter((_, i) => i % 2 === 0)) { const post = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.12, 6), goldT); post.position.copy(p).add(V([0, -0.06, 0])); tun.add(post); }
+    const gear = new THREE.Group(); gear.position.copy(at6(1, 3.4, P.y + 0.12)); gear.rotation.y = -Math.PI / 2 + 0.35; tun.add(gear);
+    const gs = new THREE.Shape(); for (let i = 0; i <= 64; i++) { const a = (i / 64) * Math.PI * 2, r = i % 4 < 2 ? 0.3 : 0.25; if (i) gs.lineTo(Math.cos(a) * r, Math.sin(a) * r); else gs.moveTo(Math.cos(a) * r, Math.sin(a) * r); }
+    gear.add(new THREE.Mesh(new THREE.ExtrudeGeometry(gs, { depth: 0.06, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01, bevelSegments: 2 }),
+      new THREE.MeshStandardMaterial({ color: 0x1f46d8, metalness: 0.35, roughness: 0.3, envMap: env, envMapIntensity: 0.6, emissive: 0x0a2090, emissiveIntensity: 0.4 })));
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.1, 24), goldT); hub.rotation.x = Math.PI / 2; hub.position.z = 0.05; gear.add(hub);
+    const lampM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.4, 0.9) });
+    for (let d = 1.6; d <= 7.5; d += 0.9) for (const a of [-0.5, 0.5]) { const r = rad(d) * 0.94, l = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 8), lampM); l.position.set(P.x + Math.sin(a) * r, P.y + Math.cos(a) * r, P.z - d); tun.add(l); }
+    const bubT = bubbleMaterial(); for (let i = 0; i < 9; i++) { const b = new THREE.Mesh(new THREE.SphereGeometry(0.035 + 0.03 * ((i * 7) % 3), 18, 12), bubT); b.position.copy(at6(i % 2 ? 1 : -1, 2.2 + i * 0.6, wy + 0.3 + 0.06 * (i % 3))); tun.add(b); }
+    return { pinkM, lights6, dial, med, stand, towel, cloth, drape, tun };
   })() : null;
 
   // ------------------------------------------------ the timeline
@@ -731,9 +775,9 @@ export function mountOpening3D(container, opts = {}) {
     // [t, camera, target, fov]: (1) the girl, basket and washer; (2) closer on her lifting the bundle; (3) following it into the drum; (4) back out to see
     // her shut the door and turn away, then the porthole close-up while the wash begins; (5) through the glass into the drum tunnel, ending at the
     // game's Tap to Start framing
-    return [[0, [0.04, 1.02, 4.0], [0.04, 1.02, 0.2], 35], [1.2, [-0.02, 1.1, 3.3], [-0.1, 1.08, 0.1], 35], [2.0, [0.22, 1.0, 2.6], [0.2, 0.85, 0.2], 35],
+    return [[0, [-0.02, 1.06, 3.2], [-0.02, 1.0, 0.1], 35], [1.2, [-0.02, 1.1, 3.3], [-0.1, 1.08, 0.1], 35], [2.0, [0.22, 1.0, 2.6], [0.2, 0.85, 0.2], 35],
       [2.7, [0.32, 0.78, 1.65], [P.x, P.y, P.z - 0.3], 36], [3.2, [0.12, 1.02, 2.9], [-0.02, 0.86, 0.2], 35], [3.95, [0.12, 1.0, 2.8], [0.05, 0.84, 0.2], 35],
-      [4.6, [P.x, P.y + 0.03, P.z + 0.95], [P.x, P.y - 0.03, P.z - 0.3], 36], [5.8, [P.x, P.y + 0.02, P.z + 0.85], [P.x, P.y - 0.03, P.z - 0.3], 36],
+      [4.6, [P.x - 0.06, P.y + 0.16, P.z + 2.25], [P.x - 0.06, P.y + 0.1, P.z], 36], [5.8, [P.x - 0.04, P.y + 0.12, P.z + 1.9], [P.x - 0.04, P.y + 0.06, P.z], 36],
       [6.5, [P.x, P.y, P.z - 0.06], [P.x, P.y - 0.05, P.z - 1.4], 46], [7.5, camZ.toArray(), tgtZ.toArray(), 60]]; })();
   function poseSix(it, st) {
     const s = st < 0 ? -1 : st, hk = OPENING3D.heroW / 0.34;
@@ -796,12 +840,19 @@ export function mountOpening3D(container, opts = {}) {
     heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) });
     if (!landed && s >= 4.75) { landed = true; for (let i = 0; i < 70; i++) { const a = rnd() * Math.PI * 2, v = 0.3 + rnd() * 0.7; splash.emit(V([hp.x + Math.cos(a) * 0.12, OPENING3D.waterY + 0.02, hp.z + Math.sin(a) * 0.1]), V([Math.cos(a) * v * 0.5, 0.6 + rnd() * 0.9, Math.sin(a) * v * 0.3]), 0.5 + rnd() * 0.4); } vortex.WU.uHit.value.set(hp.x - P.x, 1, P.z - hp.z); }
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
-    // ---- the towel: over him in the basket, wrapped into the bundle, then falling off him in the drum and settling on its floor
-    const T = six.towel, rT = OPENING3D.heroW * SIX.inBasket * 0.64;
-    T.visible = s < 5.85;
-    if (s < 2.45) { const wrap = sm(0.5, 1.0, s); T.position.copy(s < 0 ? inB : bp).add(V([0, 0.03 - wrap * 0.02, 0])); T.rotation.set(-0.6 + wrap * 0.25, wrap * 0.4, 0.15 * wrap); T.scale.set(rT * (1 - wrap * 0.2), rT * (1 - wrap * 0.38), rT * (1 - wrap * 0.12)); six.low.scale.setScalar(Math.max(0.001, wrap));   // (wrapped: a smaller, flatter bundle of laundry, not a ball)
-      if (s > 1.6) T.rotation.set(-0.6 - (s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
-    else { const k = sm(2.45, 3.1, s); T.position.copy(bp).add(V([-0.2 * k, -0.16 * k, -0.3 * k]));   /* (settles back-left on the drum floor, out of the porthole view) */ T.rotation.set(-1.4 - k * 0.6, 0.5, 0.3 * k); T.scale.set(rT, rT * (1 - 0.55 * k), rT); six.low.scale.setScalar(Math.max(0.001, 1 - k)); }
+    // ---- the towel (cloth): draped over him in the basket (he peeks out under its front edge), wrapped into a soft bundle as she lifts it, loosening
+    // in the air, then sitting on his head like a hat in the drum (the storyboard's panel 3) until the water lifts it off and carries it away
+    const T = six.towel, rB = OPENING3D.heroW * 0.5;
+    T.visible = s < 5.2;
+    if (s < 2.45) {
+      const wrap = sm(0.5, 1.0, s) * (1 - 0.55 * sm(1.75, 2.35, s)), k = s < 0 ? SIX.inBasket : scl;
+      T.position.copy(hp).add(V([0, 0.02 * k, -0.02 * k])); T.rotation.set(-0.55 + wrap * 0.4, rot.y * 0.6, rot.z * 0.6); if (s > 1.6) T.rotation.copy(rot);
+      six.drape(rB * k * 1.02, rB * k * 1.75, wrap, rB * k * 0.55, it, s > 0.4 ? 1.2 : 0.4); T.scale.setScalar(1);
+    } else {
+      const off = sm(4.35, 5.1, s), kk = scl;
+      T.position.copy(hp).add(V([-0.03, rB * kk * 0.25 + off * 0.1, -off * 0.45])); T.rotation.set(-0.35 - off * 0.8, rot.y, rot.z - 0.25 - off * 0.5);
+      six.drape(rB * kk * 0.92, rB * kk * 1.25, 0, rB * kk * (0.35 + off * 0.5), it, 0.6 + off); T.scale.setScalar(1 - off * 0.7);
+    }
     // ---- the rest of the laundry follows the bundle in
     laundry.forEach((L, i) => { const t0 = 1.62 + i * 0.05, t1 = t0 + 0.65, k = (s - t0) / (t1 - t0); L.o.visible = s >= t0 && s < t1 + 0.9; if (!L.o.visible) return;
       const from = rel.clone().add(V([(i - 2) * 0.05, -0.04 * i, 0])), p = k <= 1 ? bez(from, L.apex, L.to, clamp01(k)) : L.to.clone().add(V([0, 0, -(k - 1) * 1.3]));
@@ -816,7 +867,7 @@ export function mountOpening3D(container, opts = {}) {
     vortex.U.uTime.value = it; vortex.U.uGlow.value = 0.55 + 0.45 * on; vortex.U.uFlow.value = s > 0 ? Math.max(0, s - 4.05) * on * 1.8 + sm(5.9, 7.5, s) * 6 : 0;
     vortex.WU.uFrom.value = s < 4.3 ? 9.5 : 9.5 * (1 - sm(4.3, 5.1, s));
     // ---- the camera
-    if (s < 0) { camPos.set(0.04 + 0.02 * Math.sin(it * 0.3), 1.02 + 0.01 * Math.sin(it * 0.4), 4.0); camTgt.set(0.04, 1.02, 0.2); camera.fov = 35; }
+    if (s < 0) { camPos.set(-0.02 + 0.02 * Math.sin(it * 0.3), 1.06 + 0.01 * Math.sin(it * 0.4), 3.2); camTgt.set(-0.02, 1.0, 0.1); camera.fov = 35; }
     else { camPos.fromArray(key(s, sixC.map(([t, c]) => [t, c]))); camTgt.fromArray(key(s, sixC.map(([t, , g]) => [t, g]))); camera.fov = key(s, sixC.map(([t, , , f]) => [t, f]));
       if (s > 3.85 && s < 4.1) camPos.y += 0.006 * Math.sin((s - 3.85) * 60) * (1 - sm(3.85, 4.1, s)); }   // the door's thunk
     camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix();
