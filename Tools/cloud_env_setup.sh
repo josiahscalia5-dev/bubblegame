@@ -135,6 +135,18 @@ echo "  $(git lfs version 2>/dev/null || echo 'Git LFS: MISSING')"
 node -e "require('playwright').chromium.launch().then(async (b) => { console.log('  Playwright', require('playwright/package.json').version, '/ Chromium', b.version()); await b.close(); })" 2>/dev/null \
   || echo "  Playwright: not found from here (normal while the environment is being built; check in the session)"
 
+# (8 November 2026, session 57091b57's audit) the parallax-threejs plugin's extras, both outside the repository and optional (a failure
+# here is reported, never fatal): Deno for its checkpoint / diff / sweep / ship-check tasks and its shader-binding check (npm's `deno`
+# package, 2.x), and its Spector MCP server, which the plugin ships without (its own scripts/setup-spector.sh clones Spector.js and
+# builds vendor/spector/mcp; the server joins a session at the next session start, or after /mcp reconnect).
+command -v deno > /dev/null 2>&1 || npm install -g deno@2 --no-audit --no-fund > /dev/null 2>&1 || echo "  Deno: install failed (optional)"
+for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do
+  [ -f "$pj" ] || continue; pr="$(dirname "$(dirname "$pj")")"
+  grep -q '"parallax-threejs"' "$pj" && [ ! -f "$pr/vendor/spector/mcp/dist/index.js" ] && [ -f "$pr/scripts/setup-spector.sh" ] \
+    && { sh "$pr/scripts/setup-spector.sh" > /dev/null 2>&1 && echo "  Spector MCP built for parallax-threejs" || echo "  Spector MCP build failed (optional)"; }
+done
+echo "  $(deno --version 2>/dev/null | sed -n 1p || echo 'Deno: MISSING (optional)')"
+
 if [ ${#failed[@]} -gt 0 ]; then
   printf '\nFAILED steps: %s\n' "${failed[*]}"
   exit 1
