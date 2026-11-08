@@ -1,4 +1,4 @@
-> **Newest (8 November 2026, about 15:00 UTC): read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` section 0000 first; it has the current branches, state and steps. This file is older.**
+> **Newest (8 November 2026, about 17:05 UTC): read `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` first, then `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` section 0000; it has the current branches, state and steps. This file is older.**
 > - Start the session on the newest work branch (0000.1 there; `ccr-b67aeffb-d94mmq` at this writing), NOT the repository's default
 >   branch `claude/new-session-oth0dd` (2 November, without `CLAUDE.md`, so a session there sees none of the rules).
 > - Tripo: the user's standing authorization (8 November) covers the AVAILABLE API credits without asking per job; ONE lead session

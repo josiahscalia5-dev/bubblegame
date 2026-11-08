@@ -1,4 +1,4 @@
-# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST: section 0000 is the newest, 8 November about 14:50 UTC; then 000)
+# Bubble Wash Kingdom: handoff for a new Claude account (READ `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` FIRST: the newest state, 8 November about 17:05 UTC; then section 0000 here)
 
 Written 7 November 2026, about 23:10 UTC, by session `398ed88c`, at the user's handoff order
 (`Design/ReferencePacks/2026-11-07_Full_Screen4_Brief_from_user/User_GitHub_Handoff_Order.md`). Nothing in this file is a

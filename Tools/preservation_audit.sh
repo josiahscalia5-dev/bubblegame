@@ -15,7 +15,7 @@ chk .claude/skills/bubble-wash-screen-matcher/SKILL.md "$(same .claude/skills/bu
 echo "== Setup, save and verification scripts"
 for f in Tools/cloud_env_setup.sh Tools/bw_tools_env.sh Tools/verify_restore.sh Tools/save_now.sh Tools/save_guard.py Tools/tripo_job.sh Design/TripoDeliveries/TRIPO_JOBS_LOG.md Tools/autosave.sh Tools/autosave_sessions.json Tools/export_chat_history.py Tools/DEV_TOOLS.md Tools/preservation_audit.sh WebDemo/package.json WebDemo/package-lock.json WebDemo/build.mjs; do chk "$f"; done
 echo "== Handoffs"
-for f in CLAUDE.md HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md SESSION_FILE_RESERVATIONS.md SAVE_BEFORE_ACCOUNT_SWITCH.md START_HERE_NEW_CLAUDE_ACCOUNT.md RESTORATION_REPORT_2026-11-08_session_8140e507.md; do chk "$f"; done
+for f in BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md ENVIRONMENT_VERIFICATION_2026-11-08_session_57091b57.md CLAUDE.md HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md SESSION_FILE_RESERVATIONS.md SAVE_BEFORE_ACCOUNT_SWITCH.md START_HERE_NEW_CLAUDE_ACCOUNT.md RESTORATION_REPORT_2026-11-08_session_8140e507.md; do chk "$f"; done
 echo "== The six Tripo GLBs (sha256 of GitHub's copy against the manifest)"
 M=Design/TripoDeliveries/2026-11-08_Six_Assets_from_user
 git show "$R:$M/Bubble_Wash_Tripo_GLB_Manifest.json" > /tmp/bw_manifest.json 2>/dev/null
@@ -32,7 +32,8 @@ chk WebDemo/models/opening/girl_rigged.glb "the rigged Tripo girl used in the op
 echo "== Approved references"
 O=Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg
 chk "$O" "sha256 $(git cat-file blob "$R:$O" 2>/dev/null | sha256sum | cut -c1-16) (expected b30dc6a1794213be)"
-chk Design/ApprovedScreens/00_ORIGINAL_COMPLETE_12_SCREEN_BOARD.jpg "the original 12-screen board"
+chk Design/ApprovedScreens/00_ORIGINAL_COMPLETE_12_SCREEN_BOARD.jpg "the original 12-screen board"; chk Design/ApprovedScreens/09_Avoid_Enemies.png "Avoid Enemies! (the user's board 07 / Screen 09), sha256 $(git cat-file blob "$R:Design/ApprovedScreens/09_Avoid_Enemies.png" 2>/dev/null | sha256sum | cut -c1-16) (expected 1314ceed6636e2a7)"
+for f in WebDemo/models/l1_enemy_tripo.glb WebDemo/models/opening/basket_tripo.glb WebDemo/models/opening/towels_tripo.glb Design/TripoDeliveries/TRIPO_JOBS_LOG.md Tools/tripo_job.sh; do chk "$f"; done
 chk Design/ReferencePacks/2026-11-07_First_Two_Screens_Girl_Laundry_from_user/11109.jpg "the girl and laundry reference"
 for i in 01_washer_entry 02_rescue_goal 03_jump_to_side_paths 04_drop_to_lower_paths 05_spinning_brushes 06_collect_coins_and_gems 07_avoid_enemies 08_enter_bubble_kingdom 09_rescue_progress 10_level_complete; do chk "Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops/$i.png"; done
 echo "== The game"
