@@ -1,0 +1,20 @@
+TRIPO ASSET GUIDANCE — FROM AUTHENTIC APPROVED SCREEN 07
+
+IMPORTANT: the following are prompts for single-asset generation ONLY, not the full screen. Use a CLEAN isolated asset reference. Do not pass an entire user screenshot for image-to-3D. The isolated enemy crop is low-res, so visually compare any results; ideally reuse and refine the existing Tripo grime-ball model.
+
+A. NAVY ENEMY / GRIME BALL (only if existing candidate fails)
+A single perfectly rounded glossy deep navy blue floating spherical cartoon enemy. Centered front-facing angry face with large pink/magenta half-lidded eyes framed by black angled V eyebrows, small dark frowning mouth, hard shiny specular highlights. Very smooth spherical body, no arms, legs, spikes or protruding tail. Match approved Bubble Wash Kingdom Screen 07 enemy; mobile-game optimized textured isolated GLB. No water, coins, scenery or text.
+
+B. LEFT PINK/GOLD WASHER ARCHITECTURE (object study; use one clean isolated view)
+A rounded magical-laundry industrial platform/washer accessory, lavender and saturated pink metal with thick glossy gold trim, decorated rounded rails, curved mechanical cylindrical details and blue glowing secondary machinery. A real volumetric stylized game environment object with an open side, not a flat wall panel or picture. Compatible with a continuous 3D washer tunnel and mobile optimization. No character, coins, HUD, water or background. Match the left-side decorative platform shown in ORIGINAL Screen 07.
+
+C. RIGHT PINK/LAVENDER STAR-DECORATED SIDE STRUCTURE (object study)
+One dimensional rounded pink/lavender metallic laundry-world housing forming a chunky curved platform at the edge of a watery tunnel, gold trim, yellow star ornament, blue metallic mechanism inset, cheerful premium 3D cartoon mobile-game proportions. Open geometry and real depth, no giant solid front wall. No character, water, coins or UI. Match the right-side platform beside the gold coin in ORIGINAL Screen 07.
+
+D. LARGE GOLD PAW COIN (if current procedural coin fails visual match)
+A single thick circular bright gold collectible coin with raised central paw-print emblem, smooth polished metal bevel, cheerful shiny gold highlights and substantial 3D depth. Isolated, no lettering, no background, no other objects; export optimized mobile GLB.
+
+E. FLUFFY WASHER BRUSH SEGMENT (only if existing brush does not match)
+A stylized round rotating laundry-machine brush roller with thick bright fluffy pink / white / electric blue bristles and a metallic blue cylinder/hub. A distinct modular 3D washer-machine prop to mount on curved tunnel sidewalls. No characters, water or background.
+
+DO NOT GENERATE: Water as a model; build it using animated Three.js geometry, materials and shaders. Do not replace approved pink mascot with rejected large-tailed Tripo candidate. Do not generate entire Screen 07 as one fused model.

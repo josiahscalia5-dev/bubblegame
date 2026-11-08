@@ -73,7 +73,10 @@ continue from the newer; otherwise merge both into your own branch with normal m
 1. DONE as `tripo2` (opt-in, waiting for the user): the user's Tripo basket (the art's violet) and towels in the toss
    (`73_tripo2_opening_basket_towels/README.md`). Remaining in the opening: the basket bigger and higher as in the art, the flight's
    diagonal, the flying socks (placement / animation in `opening3d.js`).
-2. Level 1 board 05: the wheel brushes large on the walls; board 07: the enemy higher and larger (in `level1.js`: coordinate with `b0abcf95`).
+2. Screen 07 ("Avoid Enemies!", the user's mandate and kit of 8 November ~15:40 UTC): `tripo1` v2 (the floating enemy) and `scene07` pass 4
+   (channel walls, portholes, gears, bubbles) are IN PROGRESS: `74_scene07_avoid_enemies/README.md` lists what is done and what remains
+   (taller walls, the left wall, the enemy's lane / height, coins, banner, the dominant tube in `level1.js`). The user's order: the opening,
+   the Laundry Toss, the Screen 4 baseline, then this screen. Board 05: the game's wheel brushes (`machinery.glb`) large on the walls.
 3. The castle: a clean castle reference, then one Tripo job; finale2 (session `b0abcf95`) places it.
 4. A full phone recording only after these.
 

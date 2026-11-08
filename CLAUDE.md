@@ -106,6 +106,10 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     the user's OWN Tripo basket (its violet lifted to the approved girl art's) and towels (split into three) in the Laundry Toss, looks
     only, no credits (`WebDemo/src/opening_tripo.js`, `models/opening/basket_tripo.glb`, `towels_tripo.glb`). Evidence:
     `Previews/WebDemo/screen4_round9_match/73_tripo2_opening_basket_towels/README.md`.
+  - `scene07` (8 November, session `57091b57`, the user's Screen 07 mandate and kit, master `Design/ApprovedScreens/09_Avoid_Enemies.png`;
+    opt-in with `tripo1`: `?s3=intunnel,structmatch,home,level1,tripo1,scene07`; NOT accepted, in progress): Screen 07's pink-lavender
+    star channel walls with gold rails, pink porthole rings, gears and bubbles as real geometry along the enemy stretch
+    (`WebDemo/src/tripo_l1.js`). Evidence and the remaining list: `Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/README.md`.
   - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
     opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the
