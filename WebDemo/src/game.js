@@ -8,7 +8,7 @@ import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   //
 import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately, structShellFur } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
 import { HOME_ON, homeHolds } from './screens12.js';   // ?s3=...,home: Screen 1 (Home) and Screen 2 (Laundry Toss) in front of the live game
 import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
-import { TRIPO1_ON, SCENE07_ON, applyTripo1 } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
+import { TRIPO1_ON, SCENE07_ON, applyTripo1, scene07Camera } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
 import { flowCamX } from './level1_flow.js';   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -1219,6 +1219,7 @@ function updateCamera(dt) {
   const k = THREE.MathUtils.smoothstep(m.z, -4, L.tunnelStart + (R6_ON ? ROUND6.camBlendEnd : 3));   // round6: the drum framing is set before the mouth
   const off = S3.off.clone().lerp(S4.off, k), lk = S3.look.clone().lerp(S4.look, k);
   const fovV = THREE.MathUtils.lerp(S3.fov, S4.fov, k);
+  if (SCENE07_ON) scene07Camera(m.z, off, lk);   // ?s3=...,scene07 (pass 13, session ce30359f): the Avoid Enemies stretch's own aim (tripo_l1.js)
   // Follow: 55 % of lane moves, the ride height fully (smoothed), 35 % of jumps and bobbing.
   const rideY = W.baseHeight(L, m.x, m.z) + W.FLOAT_H;
   const targetX = level1 && level1.flow ? flowCamX(m.x) : m.x * 0.55, targetY = rideY + (m.yAbs - rideY) * 0.35;   // (flow: more of a move onto a side path or ledge)

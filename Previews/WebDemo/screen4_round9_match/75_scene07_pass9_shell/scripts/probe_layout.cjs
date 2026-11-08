@@ -60,6 +60,7 @@ const server = http.createServer((req, res) => {
       const R = d.renderer, ar = R.info.autoReset; R.info.autoReset = false; R.info.reset(); R.render(d.scene, d.camera);
       out.perf = { drawCalls: R.info.render.calls, triangles: R.info.render.triangles, geometries: R.info.memory.geometries, textures: R.info.memory.textures, programs: R.info.programs ? R.info.programs.length : null };
       R.info.autoReset = ar;
+      if (d.composer) d.composer.render(); else B.advance(1 / 30);   // draw the real frame again (with the game's post passes) for the screenshot
       return out;
     }, { Z, LANE, NAMES, PTS: JSON.parse(PTS || '[]'), cam });
     const png = CAMS.length > 1 ? `${OUT}_${i}.png` : `${OUT}.png`;

@@ -41,8 +41,14 @@ export const SCENE07 = {
   // CHAMBER: a pink-lavender facade shell, platforms either side of the water, gold-pink portal rings where the tube enters and leaves
   chamber: { u0: 218, u1: 254, halfW: 4.6, height: 5.4, wallH: 3.6, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0xf2c4ec, vaultGlow: 0.16 },   // (pass 10, session ce30359f: vault tint 0x8f9cff -> 0xf2c4ec, toward the original's pink-lavender; the art director's measured correction)   // (pass 8, the specialists' review: a corridor, vertical windowed walls to 3.6 m, a lower darker periwinkle vault)   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
   // the original's LEFT big circular washer housing [u, x, h, ring radius] and RIGHT curved pink-gold star tubs [u, inner x, radius, height]
-  housings: [[237, 2.75, 1.85, 1.05]],   // (pass 7: mapped to the original's left edge, 25-50 % down)
-  tubs: [[236, 2.3, 1.15, 1.25], [242, 2.3, 1.05, 1.15], [248, 2.3, 1.1, 1.2]],
+  housings: [[237.5, 3.4, 3.0, 1.0]],   // (pass 7: [237, 2.75, 1.85, 1.05], off-screen left; pass 13: its ring where the original's is, (0.04, 0.32) of the screen, radius 0.19 W)
+  tubs: [[232.5, 1.35, 2.0, 1.6], [240, 1.5, 1.4, 1.2]],   // (pass 7: three small tubs [236|242|248, 2.3, ~1.1, ~1.2]; pass 13: the original's ONE big curved drum at the right edge beside lane 2, and a smaller one behind)
+  // pass 13: the original's left washer housing is a TALL rounded body (screen x 0-0.24, y 0.18-0.47) with the ring on it, standing on a
+  // gold-rimmed ledge (x 0-0.40, y 0.43-0.48): [u0, u1, inner x, height] for the ledge; the body's width, top height and depth
+  ledge: [233.5, 241.5, 2.3, 0.95], houseBody: { w: 2.7, top: 5.1, depth: 1.3 },
+  // pass 13: the enemy as the original draws it (0.31 W, upper right, high over the far channel): 0.75 of its size, and floating `high` m
+  // higher while it is far ahead, coming down to its own height over the last metres to her (its hit test is level1.js's, unchanged)
+  enemy: { scale: 0.95, high: 1.9, near: 5.5, far: 8.5 },   // (pass 13b, the art director: 0.75 / 1.25 drew it 0.26 W at y 0.50; the original 0.33 W at 0.36)
   // pass 7 (the user's review of pass 6: "replace the flat pink upper background with actual layered 3D scenery ... machinery, architecture"):
   // the game's OWN colourful machinery models stacked high on the chamber's walls [model, side, u, x, h, size]; pink rings high; a left
   // gold balustrade on posts along the walkway; the exit portal bright at the vanishing point; soft coloured lights in the air
@@ -53,6 +59,18 @@ export const SCENE07 = {
     rings: [[1, 246, 3.9, 3.0, 0.75], [-1, 237, 3.9, 3.1, 0.7]], railU: [227, 253], railX: 2.32, railH: 0.62, postEvery: 1.5,
     glow: { r: 2.2, opacity: 0.85 }, lights: 30, bulbs: { every: 2.0, h: 3.45, x: 4.45 } },
 };
+// pass 13 (session ce30359f, the user's layout-first correction and the art director's layout map of 09_Avoid_Enemies.png): the
+// original looks DOWN the channel to a vanishing point at (0.48, 0.41) of the screen; the game's camera looked level, to (0.33, 0.51),
+// so the upper half was ceiling. Inside this stretch only (blended in over u[0..1], out over u[2..3]) the camera's aim point moves
+// (lookX: + aims screen-left, which moves the picture RIGHT; lookY: + up) and the camera moves (offX: + = screen-left, offY: up, offZ: + = forward). Looks only: the camera is not part of the gameplay state.
+// A test may override it with window.__BW_S07_CAM__ (the layout probe).
+SCENE07.camera = { u: [212, 220, 250, 258], lookX: 0.5, lookY: -0.85, offX: -0.35, offY: 0, offZ: 0 };   // (pass 13b: the art director's 'mascot 0.05 W right', a gentler look-down for the foreground water)   // (probed: a steeper look-down, lookY -1.6, put the vanishing point exactly at (0.46, 0.41) but showed the edge of the surf that rides with her; -1.0 keeps the foreground clean: (0.48, 0.45))
+export function scene07Camera(z, off, lk) {
+  const C = (typeof window !== 'undefined' && window.__BW_S07_CAM__) || SCENE07.camera, [a, b, c, d] = C.u;
+  const w = THREE.MathUtils.smoothstep(z, a, b) * (1 - THREE.MathUtils.smoothstep(z, c, d));
+  if (w <= 0) return;
+  off.x += (C.offX || 0) * w; off.y += (C.offY || 0) * w; off.z += (C.offZ || 0) * w; lk.x += C.lookX * w; lk.y += C.lookY * w;
+}
 export const TRIPO1_FILES = { enemy: 'models/l1_enemy_tripo.glb' };
 // the new look's diameter against the code ball's (its bounding sphere); (v2, the user's "Avoid Enemies!" mandate: "larger, raised so
 // it clearly floats above the water, its lighting separating it from the tunnel") the look raised in its own frame so the whole ball
@@ -213,8 +231,28 @@ function buildLandmarks(root, TR, env, goldM, items) {
     g.add(new THREE.Mesh(new THREE.TorusGeometry(R, R * 0.26, 20, 64), pinkM));
     for (const rr of [R * 1.27, R * 0.74]) { const rim = new THREE.Mesh(new THREE.TorusGeometry(rr, R * 0.05, 8, 64), goldM); rim.position.z = R * 0.12; g.add(rim); }
     const bub = new THREE.Mesh(new THREE.SphereGeometry(R * 0.62, 32, 20), glassM); bub.position.z = R * 0.1; g.add(bub);
+    if (SCENE07.houseBody) {   // pass 13: the tall rounded washer body behind the ring (a rounded-top slab with a gold outline), down to the ledge
+      const B = SCENE07.houseBody, hw = B.w / 2, y0 = SCENE07.ledge[3] - h, y1 = B.top - h - hw, sh = new THREE.Shape();
+      sh.moveTo(-hw, y0); sh.lineTo(hw, y0); sh.lineTo(hw, y1); sh.absarc(0, y1, hw, 0, Math.PI, false); sh.lineTo(-hw, y0);
+      const body = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: B.depth, bevelEnabled: true, bevelSize: 0.12, bevelThickness: 0.12, bevelSegments: 3, curveSegments: 32 }), pinkM);
+      body.position.z = -B.depth - R * 0.2; body.name = 'scene07_houseBody'; g.add(body);
+      const edge = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(sh.getSpacedPoints(80).map((q) => new THREE.Vector3(q.x, q.y, 0)), true), 160, 0.07, 8, true), goldM);
+      edge.position.z = R * 0.02; g.add(edge);
+    }
     TR.map(x, h, u, g.position); TR.quaternion(u, g.quaternion); g.rotateY(-Math.PI / 2 - 1.05);
     root.add(g); items.push({ holder: g, turn: null, spin: 0, pos: g.position.clone() });
+  }
+  if (SCENE07.ledge) {   // pass 13: the raised lavender ledge under the housing, its front edge gold (the original's gold-rimmed ledge, left)
+    const [u0, u1, x0, lh] = SCENE07.ledge, top = [], front = [], ti = [], fi = [], lip = [], P = new THREE.Vector3(); let k = 0;
+    for (let u = u0; u <= u1 + 1e-6; u += 0.5, k++) {
+      TR.map(x0, lh, u, P); top.push(P.x, P.y, P.z); lip.push(P.clone()); TR.map(SCENE07.chamber.halfW, lh, u, P); top.push(P.x, P.y, P.z);
+      TR.map(x0, lh, u, P); front.push(P.x, P.y, P.z); TR.map(x0, SCENE07.chamber.deck, u, P); front.push(P.x, P.y, P.z);
+      if (k) { const a = 2 * (k - 1); ti.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); fi.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    }
+    const mk = (pos, idx) => { const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setIndex(idx); geo.computeVertexNormals(); return geo; };
+    const lm = lavM.clone(); lm.side = THREE.DoubleSide;
+    root.add(Object.assign(new THREE.Mesh(mk(top, ti), lm), { name: 'scene07_ledge' }), Object.assign(new THREE.Mesh(mk(front, fi), pinkM.clone()), { name: 'scene07_ledgeFront' }));
+    root.add(Object.assign(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(lip), lip.length * 2, 0.08, 8, false), goldM), { name: 'scene07_ledgeGold' }));
   }
   // RIGHT: the original's curved pink-gold structure: big round star tubs at the water's edge, gold rims
   const tex = starTexture();
@@ -338,7 +376,7 @@ export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
     const haloM = new THREE.SpriteMaterial({ map: haloTex, transparent: true, opacity: TRIPO1_SIZE.haloOpacity, depthWrite: false });
     const box = new THREE.Box3().setFromObject(gl.scene), size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
     const holders = []; scene.traverse((o) => { if (o.name === 'l1Enemy') holders.push(o); });
-    let n = 0;
+    let n = 0; const floaters = [];   // (pass 13: scene07's enemies, see SCENE07.enemy)
     for (const holder of holders) {
       const body = holder.children[0]; if (!body || !body.children.length) continue;
       const ball = body.children[0]; if (!ball.geometry.boundingSphere) ball.geometry.computeBoundingSphere();
@@ -346,8 +384,17 @@ export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
       const look = gl.scene.clone(true); look.scale.setScalar(s); look.position.set(-mid.x * s, -mid.y * s + TRIPO1_SIZE.float, -mid.z * s); look.name = 'l1EnemyTripo';
       for (const c of body.children) c.visible = false;   // the code ball, eyes, pupils and brows
       const halo = new THREE.Sprite(haloM); halo.scale.setScalar(D * TRIPO1_SIZE.halo); halo.position.set(0, TRIPO1_SIZE.float, -D * 0.15); halo.renderOrder = -1; halo.name = 'l1EnemyHalo';
+      if (SCENE07_ON && SCENE07.enemy) { const E = SCENE07.enemy; look.scale.multiplyScalar(E.scale); look.position.multiplyScalar(E.scale); look.position.y += TRIPO1_SIZE.float * (1 - E.scale); halo.scale.multiplyScalar(E.scale); floaters.push({ holder, look, halo, y0: look.position.y, h0: halo.position.y }); }
       body.add(halo, look); n++;
       report.enemy = { count: n, diameter: +D.toFixed(3), scale: +s.toFixed(4), float: TRIPO1_SIZE.float };
+    }
+    if (floaters.length && camera) {   // pass 13: high while far ahead (the original's enemy over the far channel), down to its own height near her
+      const E = SCENE07.enemy, W = new THREE.Vector3(), prev = scene.onBeforeRender;
+      scene.onBeforeRender = function (...a) {
+        if (prev) prev.apply(this, a);
+        for (const f of floaters) { const d = f.holder.getWorldPosition(W).distanceTo(camera.position), k = THREE.MathUtils.smoothstep(d, E.near, E.far) * E.high;
+          f.look.position.y = f.y0 + k; f.halo.position.y = f.h0 + k; }
+      };
     }
   } catch (e) { report.errors.push('enemy: ' + ((e && e.message) || e)); }
   return report;
