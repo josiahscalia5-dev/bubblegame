@@ -371,3 +371,9 @@ Now wiring it into Screen 2 (`screens12.js`), gated so it only replaces the pain
 
 Before committing, the gameplay tests. Reading how the previous step ran them:
 
+Writing the evidence README while frames record:
+
+About 2.3 seconds per frame, so the full recording will take roughly an hour. Checking its first frames now to catch problems early:
+
+While those run, recording the new switch in `CLAUDE.md` and the handoff files, so any later session knows about it:
+

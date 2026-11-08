@@ -62,6 +62,17 @@ bob, swimming and responsive steering with the water and ripples following her, 
 lavender / purple / gold washer rim recognisable throughout but not an oversized ceiling; coins, socks, gems, bubbles, brushes,
 HUD and every gameplay system unchanged; about 90 % visual similarity (never claim a percentage without a measurement).
 
+## 4a. Newest (8 November, session `dbccb9a3`, branch `ccr-76d4bc77-rqhl8o`, the new account)
+
+- Branch `ccr-76d4bc77-rqhl8o` (this session's own) carries everything from `claude/bubble-wash-account-handoff-yhk8dy` (its
+  last autosave `f3dcce0` merged). Reconnected on the new account: GitHub works; the personal cloud environment `bubblegame`
+  was created with the hosts above and the guarded setup script (unproven until a fresh session starts on it); the Tripo key
+  was saved as a network secret for `openapi.tripo3d.ai` but Tripo refuses it (401 "Invalid API key"): a new key is needed;
+  the parallax-threejs plugin is NOT installed on this account (install card offered).
+- The user's ANIMATION AND MOVEMENT MANDATE: `?s3=...,level1` (see `CLAUDE.md` and
+  `Previews/WebDemo/screen4_round9_match/68_level1/README.md`): the real-time 3D Laundry Toss opening and real travel through
+  Level 1 to Level Complete. Accepted `?s3=intunnel`, the candidate and the normal game: 0 px different.
+
 ## 4. State of the work (what is done, what is not)
 
 Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_round9_match/64_final_pass/` (structmatch),

@@ -78,6 +78,12 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     packs of 7 November evening: the original's banded washer rim through the whole run, the tunnel's cobalt saturation, her
     shell fur of fine fuchsia strands; `,nomatch4` = the swim3 build) and `match5` (`67_match5/`: longer, finer strands combed
     down her dome, her body narrowed under them so her outline keeps the original's width; `,nomatch5` = the match4 build).
+  - `level1` (8 November, session `dbccb9a3`, the user's ANIMATION AND MOVEMENT MANDATE and motion storyboards; NOT accepted,
+    waiting for the user): with `home` the Laundry Toss is a real-time 3D scene (`WebDemo/src/opening3d.js`: a code-built,
+    jointed, animated girl, since no girl model exists; the laundry toss; the character flying into the washer; one camera move
+    into the tunnel), and the run no longer loops: after the Screen 4 drum it goes on through Level 1's sections to Level
+    Complete (`WebDemo/src/level1.js`, `track.js` COURSE), with swim strokes. Full app: `?s3=intunnel,structmatch,home,level1`;
+    off: `,noswim1`, `,noopening3d`. Evidence: `Previews/WebDemo/screen4_round9_match/68_level1/README.md`.
   - `home` (7 November, `Previews/WebDemo/screens12_first_two_screens/`): Screens 1-2 (Home, Laundry Toss) in front of the
     live game, from the user's girl + laundry artwork (`WebDemo/src/screens12.js`); e.g. `?s3=intunnel,structmatch,home`.
   - `intunnel,swim2` (7 November, eighteenth session): **ACCEPTED, the bare `?s3=intunnel` now includes it** (the user's
