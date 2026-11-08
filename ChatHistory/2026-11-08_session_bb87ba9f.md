@@ -1966,3 +1966,18 @@ _[1 image attached]_
 
 Bundle `1113d38e` builds. Capturing the reworked sequence.
 
+While the recording runs, I'll update the six-scene status document to this pass's real state.
+
+While the recording runs, I'll check how the gameplay route test is invoked, so it can run as soon as the browser is free.
+
+Recording and identity proof are both running in the background; I'll be re-invoked when they finish and will then encode the video, run the gameplay checks, and give the full report.
+
+**Status so far (all saved and pushed to GitHub, branch `claude/bubble-wash-account-transfer-52t7ym`, head `1361f5c`):**
+
+- **Emergency backup is done and verified.** The seven handoff files are on GitHub: `START_HERE_NEXT_CLAUDE_ACCOUNT.md`, `CURRENT_PROJECT_STATUS.md`, `SIX_SCENE_IMPLEMENTATION_STATUS.md`, `AGENTS_AND_SPECIALISTS_INVENTORY.md`, `TOOLS_AND_PLUGINS_RESTORE.md`, `ASSET_AND_MODEL_INVENTORY.md` and `BACKUP_VERIFICATION.md`. A fresh clone from GitHub had every file, agent and real model binary, and it rebuilt the game byte-for-byte identical.
+  - A full clone is about 6 GB, so the restore test used a lighter clone that skips the evidence images.
+  - Your six-scene references are saved under `Design/ReferencePacks/Six_Scene_New_Direction/`.
+  - The rollback point is unchanged: `claude/bubble-wash-account-switch-e1nndb` at `0aa21621`.
+- **Six scenes, built as real 3D behind the opt-in `six` switch:** the cloth towel, the bundle, the tumble with the towel on his head, the door, the wash seen through the porthole, and the drum tunnel with machinery. The reference-versus-game sheet is at `Previews/WebDemo/six_scenes/04_final_8823adc8/SIX_SCENES_REFERENCE_vs_GAME.png`.
+- **Tripo:** connected, 1,060 credits. Model downloads now work after I added the download host to your environment's allowlist. No credits were spent; every asset already existed.
+
