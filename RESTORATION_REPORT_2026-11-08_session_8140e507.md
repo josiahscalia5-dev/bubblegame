@@ -70,3 +70,12 @@ Session link: https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP. Nothing i
   then the metal housing, the brushes, the lighting.
 - **For the old session (priority 5, not this session's files):** per `dispose_check`, 20 hidden meshes still hold geometry
   (three of 174,806 vertices): freeing or not creating them would save phone memory.
+
+## Update 8 November, about 11:00 UTC: the Level 1 mandate (continuous water to the castle)
+- The user gave this session `level1.js` and `opening3d.js` ("Take both over"; `SESSION_FILE_RESERVATIONS.md`). Checked first: the old
+  session left nothing uncommitted; both files were byte-identical on `ccr-76d4bc77-rqhl8o` (`7e5dd685`) and this branch.
+- New `level1` sub-switches, on by default: `wet` (the drum widens into one wet washer chamber to the castle portal; the hand-off out of
+  the Screen 4 drum no longer hides her; the course's water double-sided, deep blue to the end) and `port` (the opening's porthole shows
+  the blue spiral). Rollback `,nowet` / `,noport`. Evidence: `Previews/WebDemo/screen4_round9_match/70_level1_wet/README.md`.
+- `match6` is now opt-in (`,match6`): a candidate until the user approves it (the user's order); the default candidate look is match5.
+- Final candidate bundle 2f5e7987 (commit `debab7e`); a pull request from this branch into `ccr-76d4bc77-rqhl8o` is the review route.
