@@ -964,3 +964,351 @@ Committed and verified on GitHub: **`7a5f7db`** on `ccr-76d4bc77-rqhl8o` (final 
 
 While those run, the Screen 3 side by side at the established moment (seed 7, 3.0 s): the ORIGINAL approved Screen 4, the candidate before, and the new build.
 
+_[Sent you files: Previews/WebDemo/screen4_round9_match/68_level1/screens/screens1_2_APPROVED_vs_NEW.jpg, Previews/WebDemo/screen4_round9_match/68_level1/screens/toss_entry_landing_sequence.jpg, Previews/WebDemo/screen4_round9_match/68_level1/seed7_TapToStart_ORIGINAL_BEFORE_AFTER.jpg]_
+
+The first 3 screens are corrected and committed in the game: **`7a5f7db`** on `ccr-76d4bc77-rqhl8o`, verified on GitHub. The new video and the gameplay tests are still running; I'll send the video and the test results when they finish.
+
+To try it: `index.html?s3=intunnel,structmatch,home,level1`. It's also the top link on the APK start page.
+
+**Restoration you approved:**
+- **GitHub:** done. The three old commits are merged as `3e5c5a3`, with no conflicts and no game code in them; the checkpoint before it is `15b3a66`.
+- **Blender:** done. 5.2.3 is installed with its checksum verified, and it renders headlessly.
+- **Tripo:** done. Your new key authenticates; the balance is 640 credits and nothing has been spent.
+- **parallax-threejs:** still needs you. Enable it from the card above, then start a new session; I'll only call it working after testing its servers, agents and commands there.
+
+**What changed on each screen:**
+- **Screen 1 (Home) and Screen 2 (Laundry Toss)** are one live 3D scene behind your real UI. It's restaged to your approved stills:
+  - a laundry room with an arched window, shelves of towels and soap bottles with paw labels, and a second basket;
+  - the girl at the upper left holding the basket tipped toward the washer;
+  - the pink character perched in the middle with a face, and your pink toss arrow into the porthole;
+  - the gold porthole at the lower right, showing a glowing blue swirl with white foam;
+  - glossy pastel bubbles and brighter lighting.
+- **Screen 2's action:** at START the girl lifts and tips the basket, then laughs and waves. The socks and towels fly in arcs into the washer. The surprised character is carried along a curve to the rim and pulled in. The camera follows him through the door into the glowing tunnel, he lands on the water seen from behind, and the view cross-fades into the live Tap to Start. There are no cuts.
+- **Screen 3 (the tunnel):** the approved Tap to Start look is untouched; it's 0 pixels different from the candidate. Once she moves, the painted rings and water stream past 6 times faster than before, so they move with her speed. The run no longer loops: it continues through Level 1's sections to Level Complete. She also gets swim strokes with paddle splashes and leans into each swipe.
+
+**Proofs:**
+- 0 pixels different from before this work: the accepted `?s3=intunnel`, the candidate, the normal game, `noswim2` and `blend`.
+- With `level1`, Tap to Start is also unchanged.
+- The full level was played through with swipes: 6 socks rescued, all hearts kept, Level Complete reached.
+
+**Files changed:**
+- New: `WebDemo/src/opening3d.js`, `WebDemo/src/level1.js`, and the test tools in `WebDemo/tools/level1/`.
+- Changed: `screens12.js`, `game.js`, `track.js`, `tunnel_r7_hero.js` and the rebuilt `game.bundle.js`; everything is gated on the switch.
+- Also updated: the APK start page, `CLAUDE.md`, the handoff file, and the evidence in `Previews/WebDemo/screen4_round9_match/68_level1/`.
+
+**Honest ratings** (my judgement by eye; no similarity score was measured):
+
+| Screen | Layout and staging | Look against your painted art | Why |
+|---|---|---|---|
+| 1 Home | about 7/10 | about 4-5/10 | The same elements sit in the same places, but the girl is built from simple shapes in code. She is much plainer than the painted girl, and the lighting is flatter. |
+| 2 Laundry Toss | about 7/10 | about 4-5/10 | Same look gap, but the action you asked for is all there and readable. |
+| 3 Tunnel | unchanged at Tap to Start | as accepted | The travel problem is fixed. The water and fur match is the separate Screen 4 work, still waiting for your verdict on the candidate. |
+
+The biggest remaining gap is the girl's look. A Tripo model would be closer; the old account's free estimate was 110 credits for the model, plus rigging and animations that Tripo doesn't price in advance. Tell me if you want that job.
+
+---
+
+### Automatic check · 2026-11-08 01:39 UTC
+
+Stop hook feedback:
+[command hook]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+---
+
+### Claude · 2026-11-08 01:39 UTC
+
+These are the gameplay test's output files, which it is still writing. Committing them as they stand; the final versions follow when the run ends.
+
+I committed and pushed the gameplay test's output files that were sitting uncommitted (`e3f48e2`, confirmed on GitHub). Of those tests, only `s3_func` has finished; `r2_func` and the swipe-and-jump motion trace are still running, and its partial output is in that commit. The continuous phone recording of the full sequence is still being captured. I'll commit the final test results and encode, commit and send the video when they finish.
+
+---
+
+### You · 2026-11-08 01:39 UTC
+
+CLAUDE CODE — MANDATORY COMPLETE AI AGENT, PLUGIN & DEVELOPMENT ENVIRONMENT RESTORATION
+
+PROJECT: BUBBLE WASH KINGDOM
+
+PRIORITY: CRITICAL — RESTORE MY COMPLETE ORIGINAL DEVELOPMENT CAPABILITIES
+
+Claudia, I am instructing you to restore, enable, connect, configure, and verify ALL the original AI agents, custom design specialists, plugins, MCP servers, skills, commands, hooks, and development tools that I previously used for my Bubble Wash Kingdom mobile game.
+
+I recently switched Claude accounts, and your previous audit confirmed that my new account is missing important capabilities.
+
+I do not want a reduced development environment. I want the same working tools and specialists that I previously had, wherever technically possible.
+
+This is an actual installation, configuration, and verification task—not a request for another general explanation.
+
+PHASE 1 — RESTORE ALL FIVE CUSTOM AI AGENTS
+
+Inspect ".claude/agents/" and restore or activate these original project agents:
+
+1. "game-art-director" — Responsible for reviewing the actual game against my ORIGINAL approved Screen 4 artwork.
+2. "gameplay-visual-testing" — Responsible for gameplay screenshots, recordings, testing, and visual comparisons.
+3. "lighting-visual-matching" — Responsible for tunnel lighting, geometry, shaders, color grading, and accurate visual matching.
+4. "water-vfx-engineer" — Responsible for realistic-looking stylized blue water, splashes, bubbles, water contact, and water animation.
+5. "screen4-water-motion-engineer" — Responsible for live Three.js scene inspection, swimming motion, dimensional water, and Screen 4 fidelity.
+
+Your previous audit confirmed that the first four agents were verified working and the fifth was only partially functional because its 13 live-scene tools were unavailable.
+
+Restore the fifth agent's missing capabilities.
+
+Read the original agent instructions and preserve their exact responsibilities, permissions, and configurations.
+
+Do not recreate generic replacements if the original definitions already exist.
+
+Run safe tests demonstrating that every agent can actually be invoked and use its authorized tools.
+
+PHASE 2 — ENABLE THE PARALLAX-THREEJS PLUGIN
+
+Plugin: "parallax-threejs"
+Previously documented version: "0.4.12"
+
+This is a high-priority missing component.
+
+Your audit established that the plugin existed in the catalog but was not enabled on my new account.
+
+I want you to install and enable the original compatible plugin, including its documented MCP servers, agents, commands, and dependencies.
+
+The previously documented MCP servers are:
+
+- "chrome-devtools-mcp"
+- "threejs-devtools-mcp"
+- "playwright-mcp"
+- "spector" graphics-capture server, where supported
+
+The plugin's three specialist agents are:
+
+- "scenario-author"
+- "shader-reviewer"
+- "visual-debugger"
+
+Also restore its original supported commands, including the documented checkpoint, diff, sweep, and ship-check workflows.
+
+Do not invent command names or install an unrelated similarly named plugin.
+
+MANDATORY REQUIREMENTS:
+
+1. Locate the exact original plugin in the available Claude plugin directory.
+2. Check its compatibility and required permissions.
+3. Install and enable it if this environment supports doing so.
+4. If Claude account-level approval is required, give me the exact instructions and ask me to perform that approval.
+5. Reload or start a fresh session when required.
+6. Verify the actual registered MCP tools and specialist agents.
+7. Restore the 13 missing live-scene inspection tools required by "screen4-water-motion-engineer", if still provided by the plugin.
+8. Test a safe, read-only Three.js scene inspection.
+9. Report any unavailable or incompatible server separately.
+
+Do not claim the plugin is working merely because it appears in the directory.
+
+PHASE 3 — RESTORE BLENDER AND 3D DEVELOPMENT TOOLS
+
+Your previous audit reported Blender was missing.
+
+Target previously documented version: Blender 5.2.3.
+
+Inspect the existing project setup script:
+
+"Tools/cloud_env_setup.sh"
+
+Verify its contents and safety before executing it.
+
+Install the compatible Blender version and required dependencies into my development environment.
+
+Then verify:
+
+- Blender launches successfully in background/headless mode.
+- Blender can import and export relevant GLB/glTF assets.
+- The existing game models remain unchanged.
+- The game can continue using its original Three.js/WebGL asset pipeline.
+
+Also verify:
+
+- glTF Transform
+- glTF Validator
+- Vite
+- Playwright and Chromium
+- OpenCV and scikit-image
+- PyTorch, LPIPS, and Optuna
+- Spector.js where needed
+
+Check actual versions and dependencies.
+
+Do not reinstall already functioning packages unnecessarily.
+
+The Android SDK can remain deferred until an Android APK build is specifically required. Document its installation requirements.
+
+PHASE 4 — RECONNECT TRIPO AI SECURELY
+
+My previous audit identified:
+
+Tripo CLI: version 0.11.2 — installed, but authentication failed with HTTP 401.
+
+I have configured a network secret for:
+
+"openapi.tripo3d.ai"
+
+I want you to:
+
+1. Verify the current Tripo CLI installation.
+2. Inspect the documented authentication method.
+3. Check whether the secure network secret is correctly configured and available.
+4. Test authentication without exposing the secret.
+5. If authentication still fails, identify the precise issue and guide me through securely replacing the key.
+6. Once connected, check the available API balance if supported without spending credits.
+7. Verify that image-to-3D generation is accessible.
+
+Never print or commit API credentials.
+
+Do not generate models or spend Tripo credits without my separate approval.
+
+Tripo may be used for improving the original pink fluffy mascot and creating suitable animated character assets, but only after comparing the existing assets and explaining the proposed costs.
+
+PHASE 5 — RESTORE CUSTOM SKILLS, INSTRUCTIONS AND AUTOMATION
+
+Verify and activate the existing project skill:
+
+"bubble-wash-screen-matcher"
+
+Confirm that it can compare actual gameplay captures with the original approved references.
+
+Inspect:
+
+- "CLAUDE.md"
+- ".claude/agents/"
+- ".claude/skills/"
+- ".claude/commands/"
+- ".claude/settings.json"
+- Applicable hooks and automation scripts
+- Project MCP configurations
+
+Preserve all original custom instructions.
+
+Verify the documented start-of-session hook and five-minute GitHub autosave.
+
+Do not create unnecessary new agents or duplicate commands.
+
+The previous audit reported that ".claude/commands/" had no separately documented custom commands. Only restore commands that actually existed or are supplied by the original plugin.
+
+PHASE 6 — RESTORE GITHUB AND PROJECT CONTINUITY
+
+My existing repository:
+
+https://github.com/josiahscalia5-dev/bubblegame
+
+The previous audit identified the working branch as:
+
+"ccr-76d4bc77-rqhl8o"
+
+And reported an autosave commit:
+
+"aac418c"
+
+Verify the CURRENT remote branch and HEAD commit before making changes, because development may have progressed.
+
+Read all existing handoff documentation and "CLAUDE.md".
+
+Preserve:
+
+- My original playable Bubble Wash Kingdom source code
+- The animated cartoon girl
+- The laundry basket and washer-entry sequence
+- The pink fluffy mascot
+- The blue laundry tunnel and water effects
+- The original approved Screen 3 and Classic Screen 4 references
+- Coins, socks, gems, brushes, and collectibles
+- Swimming mechanics and player steering
+- Existing camera and animation systems
+- All existing project progress
+- Previously installed project-level AI agents and skills
+
+Do not reset, delete, force-push, redesign, or rebuild my game.
+
+Make reversible checkpoints before any project modifications.
+
+PHASE 7 — VERIFY EVERYTHING ACTUALLY WORKS
+
+Do not just tell me that tools are installed.
+
+Run safe verification tests.
+
+Check whether:
+
+- Each custom AI agent can be invoked.
+- The design agents can review the actual approved artwork.
+- The Three.js specialists can inspect the live game scene.
+- The visual testing tools can capture gameplay.
+- The shader and lighting reviewers can access relevant scene information.
+- Blender launches and processes a test asset.
+- Tripo authenticates securely.
+- GitHub access and autosave operate correctly.
+- Original project hooks and skills remain available.
+- My current game still builds and runs.
+
+Report the difference between an agent being available and an agent actively executing a task.
+
+Do not start continuous background agent jobs unless needed and authorized.
+
+PHASE 8 — PROVIDE A COMPLETE FINAL RESTORATION REPORT
+
+Create a detailed table:
+
+Tool / Agent | Previously Available | Installed | Enabled | Authenticated | Tested | Currently Running | Final Status
+
+Use the following statuses where appropriate:
+
+- VERIFIED WORKING
+- INSTALLED BUT UNTESTED
+- PARTIALLY WORKING
+- DISCONNECTED
+- MISSING
+- REQUIRES USER AUTHORIZATION
+- NOT SUPPORTED
+
+Explain every missing capability and the exact steps required to restore it.
+
+Include the verified GitHub branch and commit if any project changes were pushed.
+
+MY FINAL REQUIREMENT
+
+I want my new Claude Code environment to have the SAME actual game-development capabilities as my previous account.
+
+I want my design agents, Three.js specialists, character animation tools, lighting specialists, water-effects engineers, screenshot comparison tools, MCP servers, plugins, and development utilities properly restored.
+
+Some tools may require manual account-level installation, external credentials, or permissions. Tell me exactly what I must approve instead of claiming those steps happened automatically.
+
+Do not spend API credits, change subscriptions, expose secrets, or overwrite working project files.
+
+Once the environment is fully verified, return to my existing Bubble Wash Kingdom development and resume the unfinished gameplay recording and visual tests.
+
+BEGIN BY RESTORING THE MISSING PARALLAX-THREEJS PLUGIN, BLENDER ENVIRONMENT, AND TRIPO AUTHENTICATION, WHILE PRESERVING ALL FIVE EXISTING PROJECT AGENTS.
+Claudia, I have ALREADY enabled the parallax-threejs plugin on my new Claude account.
+
+Please stop asking me to enable it again.
+
+I understand that the plugin might need a fresh Claude Code session to load, but I do NOT want to restart my Bubble Wash Kingdom game, lose development progress, or repeat all my previous setup.
+
+Please do the following:
+
+1. Finish and safely save my current running gameplay tasks.
+2. Commit and verify all appropriate completed changes on GitHub.
+3. Confirm my exact current repository, development branch, and latest remote commit SHA.
+4. Tell me whether you can reload or activate parallax-threejs in this session. If not, explain the minimum necessary step.
+5. If a new session is required, give me the exact instructions to open it using my existing bubblegame environment, saved project, and development branch.
+6. In that fresh session, verify that parallax-threejs 0.4.12, its specialist agents, commands, and MCP servers are actually available.
+7. Resume my existing game development at the exact saved checkpoint.
+
+Do not create a new game, reset my project, switch to an unrelated branch, or redo the completed restoration.
+
+If parallax-threejs still cannot load despite being enabled, investigate whether Claude Code's cloud environment supports that plugin and its MCP servers.
+
+I want the simplest possible solution. I have already completed the installation step.
+
+---
+
+### Claude · 2026-11-08 01:39 UTC
+
+Checking where things stand before answering: whether the plugin is now enabled on the account, whether this session can see its tools, and how far the recording and tests have got.
+
+While they run, comparing the finished `s3_func` gameplay test, the candidate against `level1`:
+

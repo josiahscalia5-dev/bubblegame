@@ -78,6 +78,27 @@ HUD and every gameplay system unchanged; about 90 % visual similarity (never cla
   `Previews/WebDemo/screen4_round9_match/68_level1/README.md`): the real-time 3D Laundry Toss opening and real travel through
   Level 1 to Level Complete. Accepted `?s3=intunnel`, the candidate and the normal game: 0 px different.
 
+## 4b. FRESH SESSION FOR THE PLUGIN (8 November, session `dbccb9a3` hands over)
+
+Plugins are copied into a cloud session only when it STARTS; session `dbccb9a3` started before parallax-threejs was enabled, so
+it cannot load it. A fresh session on the SAME environment (`bubblegame`) and the SAME branch (`ccr-76d4bc77-rqhl8o`) continues
+the work; `dbccb9a3` stops its autosave before the hand-over, so only one session writes the branch.
+
+The fresh session's first checks (read-only, nothing spent, no game change):
+1. `ListPlugins` / `SearchPlugins parallax-threejs`: enabled, version 0.4.12. If NOT enabled, say so plainly (the account's catalog
+   in `dbccb9a3` still read `"enabled": false` at 01:45 UTC although the user had turned it on: possibly another account or org).
+2. ToolSearch `mcp__plugin_parallax-threejs`: the chrome-devtools-mcp, threejs-devtools-mcp, playwright-mcp tools (spector is
+   optional; it failed on the old account too); the 13 tools named in `.claude/agents/screen4-water-motion-engineer.md`.
+3. Serve the game (`npx http-server WebDemo -p 3000` or the test tools' own server), open `index.html?s3=intunnel,structmatch` with
+   chrome-devtools-mcp, then threejs-devtools-mcp `bridge_status`, `scene_tree`, `renderer_info` (read-only), one screenshot.
+4. The agents `scenario-author`, `shader-reviewer`, `visual-debugger` and the five project agents: a one-line ping each (no edits).
+5. The plugin commands listed (`checkpoint`, `diff`, `sweep`, `ship-check`, `memcheck`, `replay`, `export-report`, `init`,
+   `sync-view`): present, not run.
+6. `tripo doctor` with `TRIPO_API_KEY=tsk_proxy-injected` (free); `bash Tools/verify_restore.sh`; `blender --version`.
+Then resume: the `?s3=...,home,level1` work (section 4a; `Previews/WebDemo/screen4_round9_match/68_level1/README.md`), waiting for
+the user's verdict; open items: the opening girl's look (a Tripo model only after the user approves the job and cost), the
+course's draw calls at Tap to Start (322 against 211 without level1: cull the course's far parts), the user's Screen 4 verdict.
+
 ## 4. State of the work (what is done, what is not)
 
 Evidence folders (each has a README with the proofs): `Previews/WebDemo/screen4_round9_match/64_final_pass/` (structmatch),
