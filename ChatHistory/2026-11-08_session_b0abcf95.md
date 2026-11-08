@@ -686,3 +686,9 @@ The existing proofs are still running and come first: 9 of 12 identity checks ar
 
 _Background command "Run identity proofs and the remaining evidence on the final build" completed (exit code 0)_
 
+---
+
+### Note · 2026-11-08 14:20 UTC
+
+_(You interrupted Claude here.)_
+
