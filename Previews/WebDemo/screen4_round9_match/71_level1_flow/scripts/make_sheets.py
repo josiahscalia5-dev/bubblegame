@@ -3,23 +3,23 @@
 #   python3 make_sheets.py <repo>
 import sys, os
 from PIL import Image, ImageDraw, ImageFont
-R = sys.argv[1]; E = f'{R}/Previews/WebDemo/screen4_round9_match/71_level1_flow'; A = f'{R}/Design/ApprovedScreens'; F = f'{E}/frames'
+R = sys.argv[1]; E = f'{R}/Previews/WebDemo/screen4_round9_match/71_level1_flow'; A = f'{R}/Design/ReferencePacks/2026-11-08_Approved_References_FRESH_Match_Prompt_from_user/original_crops'   # the user's precise crops of the original board; F = f'{E}/frames'
 try: font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 17); small = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 14)
 except Exception: font = small = ImageFont.load_default()
 H = 600
 def fit(p, h=H):
     im = Image.open(p).convert('RGB'); return im.resize((round(im.width * h / im.height), h), Image.LANCZOS)
 beats = [
-  ('01 Washer entry / Let\'s go', '03_Lets_Go_Washer_Entry.png', [f'{F}/opening_toss.jpg', f'{F}/upper_route/upper_u003.5.jpg']),
-  ('02 Rescue 5 lost socks', '04_Rescue_Socks_Inside_Tunnel.png', [f'{F}/upper_route/upper_u040.0.jpg']),
-  ('03 Jump to side paths', '05_Jump_To_Side_Paths.png', [f'{F}/upper_route/upper_u059.0.jpg', f'{F}/upper_route/upper_u066.0.jpg']),
-  ('04 Drop to the lower path', '06_Drop_Down_To_Lower_Paths.png', [f'{F}/upper_route/upper_u113.5.jpg', f'{F}/ledge_route/ledge_u117.4.jpg']),
-  ('05 Spinning brushes', '07_Watch_Out_Spinning_Brushes.png', [f'{F}/upper_route/upper_u150.0.jpg']),
-  ('06 Coins, gems, socks', '08_Collect_Coins_Gems_Socks.png', [f'{F}/upper_route/upper_u197.0.jpg']),
-  ('07 Avoid enemies', '09_Avoid_Enemies.png', [f'{F}/upper_route/upper_u226.0.jpg']),
-  ('08 Bubble Kingdom', '10_Enter_Bubble_Kingdom.png', [f'{F}/upper_route/upper_u258.0.jpg', f'{F}/upper_route/upper_u336.0.jpg']),
-  ('09 Rescue progress', '11_Rescue_Progress.png', [f'{F}/upper_route/upper_u312.0.jpg']),
-  ('10 Level Complete', '12_Level_Complete.png', [f'{F}/upper_route/upper_level_complete.jpg']),
+  ('01 Washer entry / Let\'s go', '01_washer_entry.png', [f'{F}/opening_toss.jpg', f'{F}/upper_route/upper_u003.5.jpg']),
+  ('02 Rescue 5 lost socks', '02_rescue_goal.png', [f'{F}/upper_route/upper_u040.0.jpg']),
+  ('03 Jump to side paths', '03_jump_to_side_paths.png', [f'{F}/upper_route/upper_u059.0.jpg', f'{F}/upper_route/upper_u066.0.jpg']),
+  ('04 Drop to the lower path', '04_drop_to_lower_paths.png', [f'{F}/upper_route/upper_u113.5.jpg', f'{F}/ledge_route/ledge_u117.4.jpg']),
+  ('05 Spinning brushes', '05_spinning_brushes.png', [f'{F}/upper_route/upper_u150.0.jpg']),
+  ('06 Coins, gems, socks', '06_collect_coins_and_gems.png', [f'{F}/upper_route/upper_u197.0.jpg']),
+  ('07 Avoid enemies', '07_avoid_enemies.png', [f'{F}/upper_route/upper_u226.0.jpg']),
+  ('08 Bubble Kingdom', '08_enter_bubble_kingdom.png', [f'{F}/upper_route/upper_u258.0.jpg', f'{F}/upper_route/upper_u336.0.jpg']),
+  ('09 Rescue progress', '09_rescue_progress.png', [f'{F}/upper_route/upper_u312.0.jpg']),
+  ('10 Level Complete', '10_level_complete.png', [f'{F}/upper_route/upper_level_complete.jpg']),
 ]
 os.makedirs(f'{E}/sheets', exist_ok=True)
 rows = []
@@ -29,7 +29,7 @@ for title, panel, game in beats:
     row = Image.new('RGB', (w + 20, H + 70), (14, 30, 90)); d = ImageDraw.Draw(row)
     d.text((10, 8), title, font=font, fill=(255, 230, 120)); x = 10
     for k, im in enumerate(ims):
-        row.paste(im, (x, 36)); d.text((x + 4, H + 42), 'ORIGINAL BOARD' if k == 0 else 'REAL GAMEPLAY (this build)', font=small, fill=(255, 255, 255)); x += im.width + 12
+        row.paste(im, (x, 36)); d.text((x + 4, H + 42), 'ORIGINAL BOARD (crop)' if k == 0 else 'REAL GAMEPLAY (this build)', font=small, fill=(255, 255, 255)); x += im.width + 12
     rows.append(row)
     row.save(f'{E}/sheets/beat_{title[:2]}_board_vs_game.jpg', quality=86)
 for part, rs in [('1', rows[:5]), ('2', rows[5:])]:
