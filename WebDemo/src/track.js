@@ -17,16 +17,22 @@ const bump = (u, a, b, c, d) => W.smoothstep(a, b, u) * (1 - W.smoothstep(c, d, 
 // drum is straight and the view looks straight down its rings, as in the approved Screen 4 (default 0: unchanged).
 // opts.curve (?s3=round5 only): the climb, drop and turns scaled by this (1, the default, leaves them exactly as they are),
 // so a gentler tube keeps the far tunnel's bright heart near the middle of the view, as in the approved Screen 4.
+// opts.course (?s3=...,level1 only, level1.js COURSE): the run goes on past the drum's end through Level 1's later sections;
+// its own climbs, drops and turns (zero before the drum's end, so everything up to there is computed exactly as without it)
+// and the path's length. Without it the path is exactly as before.
 export function makeTrack(L, opts = {}) {
   const ts = L.tunnelStart + (opts.straight || 0), cv = opts.curve ?? 1;
   // Pitch of the tube (radians, + climbs) and turn rate (radians per metre, + turns to screen-left).
-  const pitch = (u) => cv * (0.27 * bump(u, ts + 5, ts + 8, ts + 11, ts + 13.5) - 0.34 * bump(u, ts + 14.5, ts + 17.5, ts + 21, ts + 24));
-  const turn = (u) => cv * (0.055 * bump(u, ts + 6, ts + 9, ts + 12, ts + 15) - 0.06 * bump(u, ts + 18, ts + 21, ts + 26, ts + 29));
+  const pitch0 = (u) => cv * (0.27 * bump(u, ts + 5, ts + 8, ts + 11, ts + 13.5) - 0.34 * bump(u, ts + 14.5, ts + 17.5, ts + 21, ts + 24));
+  const turn0 = (u) => cv * (0.055 * bump(u, ts + 6, ts + 9, ts + 12, ts + 15) - 0.06 * bump(u, ts + 18, ts + 21, ts + 26, ts + 29));
+  const C = opts.course;
+  const pitch = C ? (u) => pitch0(u) + C.pitch(u, bump) : pitch0;
+  const turn = C ? (u) => turn0(u) + C.turn(u, bump) : turn0;
   // Bank: the water surface tilts so its outer edge is higher, by the angle a flowing current takes
   // in that turn at cruise speed (tan(bank) = v^2 * curvature / g).
   const bankOf = (u) => Math.atan((W.CRUISE * W.CRUISE * turn(u)) / 9.81);
 
-  const u0 = L.startZ - 34, u1 = L.tunnelEnd + 14, du = 0.05;
+  const u0 = L.startZ - 34, u1 = C ? Math.max(L.tunnelEnd + 14, C.length) : L.tunnelEnd + 14, du = 0.05;
   const n = Math.ceil((u1 - u0) / du) + 1;
   const P = new Float64Array(n * 3), R = new Float64Array(n * 3), U = new Float64Array(n * 3), T = new Float64Array(n * 3);
   const info = new Float64Array(n * 3);   // pitch, heading, bank (radians)

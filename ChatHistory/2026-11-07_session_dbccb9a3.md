@@ -179,3 +179,5 @@ I'm now building the fix behind a new switch, so the accepted `?s3=intunnel` sta
 
 Stage A's causes are confirmed in the code. I'm capturing the current candidate at several moments to see what the end of the tunnel looks like before I extend it.
 
+Now writing the code. First the track: under the new switch only, the path is extended with turns and a drop beyond the hero tunnel. Without the switch it's computed exactly as before.
+
