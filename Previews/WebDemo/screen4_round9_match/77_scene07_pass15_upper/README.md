@@ -8,9 +8,11 @@ Full app with the candidate: `index.html?s3=intunnel,structmatch,home,level1,tri
 Without `scene07` nothing changes (proof below). Code: `WebDemo/src/scene07_recon16.js` (pass 16), `WebDemo/src/scene07_wall15.js`
 (pass 15, now opt-in only), hooks in `WebDemo/src/tripo_l1.js` (all gated on `RECON16_ON` / `WALL15_ON` / `SCENE07_ON`).
 
-## Where it stands (honest; updated ~21:00 UTC)
-**Candidate: pass 16 v3, bundle `1db26fd8` (NOT approved).** Full size: `01_ORIGINAL_PASS13b_NEW_u229.5_centre_FULLSIZE.png` (ORIGINAL /
-PASS 13b / NEW at the same checkpoint: u 229.5, centre lane, 412 x 915, seed 7; the game's mission panel is gameplay HUD and differs by design).
+## Where it stands (honest; updated ~21:10 UTC)
+**Candidate: pass 16 v4, bundle `393d9d29` (NOT approved).** v4 = v3 + PASTEL16 (every pass-16 material moved toward the master's measured
+pastel palette and softly self-lit), the level tube's hoops hidden for 18 m beyond the far end, warm luminous windows on the columns, 48
+bright bubbles along both banks, a larger pale far glow. Full size: `01_ORIGINAL_PASS13b_NEW_u229.5_centre_FULLSIZE.png` and
+`02_ORIGINAL_CURRENT_v3_IMPROVED_v4_u229.5_centre_FULLSIZE.png` (the same checkpoint: u 229.5, centre lane, 412 x 915, seed 7; the game's mission panel is gameplay HUD and differs by design).
 Built as real three.js geometry (scene07 only):
 - LEFT: a round washer drum (fat pink rim, darker magenta inner lip, gold bands, a lavender glowing interior with a paw-emblem bubble, a gold
   drum body running back) on a raised cream-gold ledge with a light peach star front; machine columns rising behind it.
@@ -28,7 +30,13 @@ it was rejected by the art director as a "hot rainbow disc"); the upper area is 
 master's bright cluttered pastel street; the mounted machines are simpler and more regular than the master's; the channel's middle water is
 deep indigo where the master's is light azure, and the surf edge behind the mascot is unchanged (water: zone D, not touched by pass 16).
 The art director's structural review of v2 (and what v3 changed): `ART_DIRECTOR_REVIEW_pass16_v2.md`. v3 itself is not re-reviewed yet.
-Moving test: `video/pass16_v3_moving_u212-258.mp4` (the real game with the flow autopilot, 12 fps, u 212 to 258) if present; see below.
+Background-only measurement (HUD, banners, mascot, coins and enemies masked; `scripts/bg_metric.py`, results in
+`bg_metric_original_pass13b_v3_v4.txt`; supporting evidence only): mean colour difference to the original, pass 13b / v3 / v4: zone A
+62.1 / 50.5 / 43.9, B 62.3 / 55.2 / 50.4, C 60.9 / 56.4 / 51.5, D (water, not changed) 52.6 / 52.7 / 52.0; chroma in A 66 / 55 / 45
+(original 31); brightness in A 60 / 65 / 71 (original 69). Structure (SSIM) barely moves: the architecture is still simpler than the master's.
+Reconstruction map (every structure of the master, its screen position, colours, 3D build and status): `RECONSTRUCTION_MAP.md`.
+Moving tests (the REAL game with the flow autopilot, 12 fps, u 212-258, real parallax and occlusion, no flat image edges):
+`video/pass16_v3_moving_u212-258.mp4` (+ contact sheet) and `video/pass16_v4_moving_u212-258.mp4` (+ contact sheet).
 
 ## What was tried, in order (all at u 229.5, centre lane, 412 x 915; sheets in `steps/`, frames in `frames/`)
 | Step | What | Result |
@@ -40,7 +48,8 @@ Moving test: `video/pass16_v3_moving_u212-258.mp4` (the real game with the flow 
 | ART16 depth cards (`,art16`) | three planes square to the approved camera at the scenery's depths | the cards drew behind other geometry and their overlaps doubled; then the user's strict mandate forbade cards for nearby scenery. Kept only as the opt-in `art16` for the record |
 | MACH16 v1 | real 3D machine towers (washer units with glowing round doors and control strips, tanks with gold bands and domes) on the ledge and behind the right wall, the original's green-topped machine at its screen position, pipes joining the two sides overhead, a far arch with a glowing washer door and stacks round the opening, high bubbles, the big blue gear restored | built (no console errors) but invisible from the checkpoint: the left towers stood exactly behind the drum, the right ones behind the wall's top and the hero enemy (screen rectangles computed from the grid) |
 | MACH16 v2 + FAR16 | columns, gantries, mounted machinery at 4.4-8 m; LaMa-repaired master art on the far end wall and a disc in the opening | the upper area finally holds machinery; art director: zone B clearly closer, C closer in shape, A slightly closer, the disc a "hot rainbow disc" |
-| **v3 (candidate)** | the art director's three ranked corrections (pastel shell, varied cyan/blue machines, cobalt gear lowered, no disc + pale glow; fat drum with a gold body, peach star ledge; solid pink star wall, nearer, no base) | see the sheet; vanishing point still shows the tube |
+| v3 | the art director's three ranked corrections (pastel shell, varied cyan/blue machines, cobalt gear lowered, no disc + pale glow; fat drum with a gold body, peach star ledge; solid pink star wall, nearer, no base) | closer on the left and right; the vanishing point still showed the tube |
+| **v4 (candidate)** | PASTEL16 materials, tube hoops hidden 18 m beyond the far end, warm windows, bank bubbles, larger pale glow | background-only colour difference down in A / B / C (table above); a light ring shape (the portal's gold ring and the far arch) still at the vanishing point |
 
 ## Next steps (in the user's priority order; one correction at a time, art director review each)
 1. Make the MACH16 towers visible and dominant in the upper half: taller (to 7-8 m) and nearer the channel edge (|x| 2.3-3.0 m), more of
@@ -64,7 +73,7 @@ Moving test: `video/pass16_v3_moving_u212-258.mp4` (the real game with the flow 
 - `identity.sh`: the scene07-off identity proof (pass 13b build against this build).
 
 ## Regression proof (scene07 off)
-`proofs/identity_5ab92333.txt` (MACH16 v1) and `proofs/identity_1db26fd8.txt` (v3, the candidate): the accepted `?s3=intunnel`, the normal game, the 3D opening and Level 1 (start and 20 s), pass 13b build
+`proofs/identity_5ab92333.txt` (MACH16 v1), `proofs/identity_1db26fd8.txt` (v3) and `proofs/identity_393d9d29.txt` (v4, the candidate): the accepted `?s3=intunnel`, the normal game, the 3D opening and Level 1 (start and 20 s), pass 13b build
 `6579f556` against these builds, WebGL canvases, seed 7 (written by `scripts/identity.sh`).
 
 ## Cost (one plain render of the 3D scene at the checkpoint; SwiftShader, so no phone frame rate is claimed)
@@ -74,7 +83,8 @@ Moving test: `video/pass16_v3_moving_u212-258.mp4` (the real game with the flow 
 | pass 16 recon v4 | 257 | 2,404,557 |
 | pass 16 MACH16 v1 | 329 | 2,276,361 |
 | pass 16 v2 (MACH16 v2 + FAR16) | 328 | 2,292,225 |
-| **pass 16 v3 (candidate)** | **318** | **2,292,925** |
+| pass 16 v3 | 318 | 2,292,925 |
+| **pass 16 v4 (candidate)** | **351** | **2,320,381** |
 
 ## Tripo
 No job, no credits (1,060 available). The user's new mandate: no new Tripo spending without authorization.

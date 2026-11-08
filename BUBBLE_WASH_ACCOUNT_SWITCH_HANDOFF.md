@@ -11,7 +11,7 @@ each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; i
 |---|---|
 | Repository / branch | `josiahscalia5-dev/bubblegame`, branch **`claude/bubble-wash-account-switch-e1nndb`** (contains every earlier work branch; `git ls-remote origin claude/bubble-wash-account-switch-e1nndb` gives its head, which moves with the 5-minute autosave) |
 | Approved | ONLY the Classic Screen 4 look `?s3=intunnel` (with swim2). Everything else is a candidate waiting for the user |
-| Current task | Screen 09 "Avoid Enemies!" (`scene07`, opt-in), pass 16 v3 (bundle `1db26fd8`), NOT approved, unfinished: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md` (state, what failed and was rejected, next steps) |
+| Current task | Screen 09 "Avoid Enemies!" (`scene07`, opt-in), pass 16 v4 (bundle `393d9d29`), NOT approved, unfinished: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md` (state, what failed and was rejected, next steps) |
 | Rules | `CLAUDE.md`; the user's Screen 09 mandates: `Design/ReferencePacks/2026-11-08_Screen09_Strict_Handoff_from_user/00_ONE_SHOT_STRICT_PROMPT_FOR_CLAUDE.txt` and `.../2026-11-08_Screen09_Approved_Reference_Kit_from_user/README.md` |
 | Tools / agents / plugins | `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` (section 12: the latest live results) |
 
@@ -164,7 +164,7 @@ fixed; Parallax init / checkpoint / diff / export-report / sweep / memcheck / sy
 
 ## 9. EXACT GAME STATE AND NEXT TASK
 **Update 8 November ~20:40 UTC, session f70c9bd1 (branch `claude/bubble-wash-account-switch-e1nndb`):** Screen 09 (`scene07`, opt-in)
-is at **pass 16 v3** (bundle `1db26fd8`; NOT approved; closer than pass 13b on the left and right per the art director, the upper area now real 3D
+is at **pass 16 v4** (bundle `393d9d29`; NOT approved; v4 = v3 + pastel materials, tube hoops hidden beyond the far end, bank bubbles; closer than pass 13b on the left and right per the art director, the upper area now real 3D
 machinery on columns and gantries, but the vanishing point still shows the level's tube and the hall still reads lavender, not the master's
 bright pastel street). The user sent two
 kits this session (saved unchanged in `Design/ReferencePacks/2026-11-08_Screen09_Approved_Reference_Kit_from_user/` and
