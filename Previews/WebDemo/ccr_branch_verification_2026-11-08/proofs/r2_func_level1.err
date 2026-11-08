@@ -1,0 +1,11 @@
+page.goto: Timeout 300000ms exceeded.
+Call log:
+[2m  - navigating to "http://localhost:46289/index.html", waiting until "domcontentloaded"[22m
+
+    at fresh (/tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/ccr_7e5dd68/WebDemo/tools/screen3/r2_func.cjs:24:42)
+    at /tmp/claude-0/-home-user-bubblegame/8140e507-b3f0-5294-a0db-dfc0f4eba5b6/scratchpad/ccr_7e5dd68/WebDemo/tools/screen3/r2_func.cjs:49:9 {
+  log: [
+    '  - navigating to "http://localhost:46289/index.html", waiting until "domcontentloaded"'
+  ],
+  name: 'TimeoutError'
+}
