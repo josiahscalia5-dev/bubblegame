@@ -1,2 +1,3 @@
 accepted start: 0 pixels differ (92bd9272 ?s3=intunnel vs a62848a0 ?s3=intunnel)
 accepted T3.0: 0 pixels differ (92bd9272 ?s3=intunnel vs a62848a0 ?s3=intunnel)
+normal T1.0: 0 pixels differ (92bd9272 ?s3=, vs a62848a0 ?s3=,)
