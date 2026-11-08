@@ -251,6 +251,15 @@ sweep sheet), and the three test scripts (`spector_live_test.mjs`, `spector_stdi
   `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/scripts/` (probe_variants.cjs, sheet_stats.py, make_backdrop_art.py,
   identity.sh, the checkpoint camera's projection grid). Per-account items to reconnect: see `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` section 0.
 
+- 8 Nov 2026 ~21:35 UTC, session f70c9bd1, FINAL account-transfer backup: the 8 agents are preserved unchanged in the repository (5 custom in
+  `.claude/agents/`, live-tested WORKING this session; the 3 Parallax agents come with the account-level plugin, LIMITED: no browser tools).
+  New: `Tools/restore_session.sh` (one-shot, ~20 s, parallel lightweight checks + the manual per-account list; tested this session). Other
+  skills seen in this session (built-in / account-level, not in Git): artifact-design / artifact-capabilities / artifact-diagramming / dataviz,
+  docs / docx / pdf / pptx / xlsx / google-workspace, deep-research, skill-creator, code-review / security-review / simplify / init / run /
+  loop / update-config / fewer-permission-prompts / keybindings-help / session-start-hook / plugin-authoring / claude-api, the Parallax skills
+  (checkpoint, diff, export-report, init, memcheck, replay, ship-check, sweep, sync-view, qa-visual-test-harness). The Unity and Fastly plugins
+  were NOT loaded in this account's session (section 5 records them from session ce30359f). Connectors seen: GitHub (built-in), Claude Docs.
+
 ## 13. The five agents, second live round (8 Nov ~18:05-18:20 UTC, the user's suggested tasks; definitions unchanged since `56184934`)
 | AGENT | DEFINITION FOUND | LOADED | ACTUALLY INVOKED | REQUIRED TOOLS WORKING | FINAL STATUS |
 |---|---|---|---|---|---|

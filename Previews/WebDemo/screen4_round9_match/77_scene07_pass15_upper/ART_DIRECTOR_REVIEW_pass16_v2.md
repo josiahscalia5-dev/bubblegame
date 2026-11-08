@@ -15,3 +15,14 @@ pipes / tanks converging on a pale cyan-white glow, the gear saturated cobalt wi
 solid cream-gold counter with a peach front and stars, no magenta wall); 3. zone C (taller to ~0.65-0.70 H, solid pink panels with large gold
 stars, thinner rim, no lavender base).
 **Applied in pass 16 v3 (bundle 1db26fd8):** all three, in one pass (see README). Not re-reviewed yet.
+
+# Second review: V4 against V5 (8 Nov ~21:20 UTC), frames `pass16_v4_FINAL_CANDIDATE_u229.5_centre.png` and `pass16_v5_u229.5_centre.png`
+V5 closer by a small margin. Left housing: a tie (pink torus porthole in place, x 0-0.27, y 0.20-0.42, but a pastel tube with a flat disc vs
+the master's gold-trimmed metal rim with a glass bubble). Right: V5 (more cobalt gear; the pink star drum at y 0.48-0.61 matches in both).
+Upper background: V5 slightly (more machinery, fewer bare turrets, but small fine pieces on a pale wall vs the master's chunky saturated
+clutter). Far distance: V5 clearly (no gold portal ring, larger glow). Overall V5: **roughly 40-45 % recognizable (judgement, not a
+measurement)**. Obstacles: (1) the upper middle (x 0.25-0.75, y 0.25-0.45) faces the camera; the master has two receding side walls of
+dense saturated machinery angling to the vanishing point with light streaks (fixable with geometry); (2) the glass ring tube at the centre
+(x 0.30-0.65, y 0.38-0.52; blocked by the level tube, only softenable); (3) the channel's width / shape / colour (mostly blocked by the
+camera height and the lanes; the left pink slab x 0-0.3 y 0.40-0.62 and the side ledges partly fixable). The mission panel pushes the banner
+over the porthole's top and the gear (HUD).

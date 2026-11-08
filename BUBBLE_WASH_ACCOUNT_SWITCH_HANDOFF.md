@@ -11,13 +11,14 @@ each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; i
 |---|---|
 | Repository / branch | `josiahscalia5-dev/bubblegame`, branch **`claude/bubble-wash-account-switch-e1nndb`** (contains every earlier work branch; `git ls-remote origin claude/bubble-wash-account-switch-e1nndb` gives its head, which moves with the 5-minute autosave) |
 | Approved | ONLY the Classic Screen 4 look `?s3=intunnel` (with swim2). Everything else is a candidate waiting for the user |
-| Current task | Screen 09 "Avoid Enemies!" (`scene07`, opt-in), pass 16 v4 (bundle `393d9d29`), NOT approved, unfinished: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md` (state, what failed and was rejected, next steps) |
+| Current task | Screen 09 "Avoid Enemies!" (`scene07`, opt-in), pass 16 v5 (final bundle `a359dad4`; `,walls6` = the reverted v6), NOT approved, unfinished (art director: ~40-45 % recognizable): `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md` (state, what failed and was rejected, next steps) |
 | Rules | `CLAUDE.md`; the user's Screen 09 mandates: `Design/ReferencePacks/2026-11-08_Screen09_Strict_Handoff_from_user/00_ONE_SHOT_STRICT_PROMPT_FOR_CLAUDE.txt` and `.../2026-11-08_Screen09_Approved_Reference_Kit_from_user/README.md` |
 | Tools / agents / plugins | `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` (section 12: the latest live results) |
 
 **Restore in 5 minutes (no long audits):** (1) start the Claude Code session ON branch `claude/bubble-wash-account-switch-e1nndb` (the
-SessionStart hook then starts one autosave by itself). (2) `source Tools/bw_tools_env.sh`; only if `~/.bubblewash-tools` is missing:
-`bash Tools/cloud_env_setup.sh`. (3) `bash Tools/verify_restore.sh --build` (expect 0 failed). (4) ToolSearch `mcp__plugin_parallax-threejs`
+SessionStart hook then starts one autosave by itself). (2) `bash Tools/restore_session.sh` (~20 s: runs the git, tool, build, agent, autosave
+and free Tripo checks in parallel, installs only if `~/.bubblewash-tools` is missing, and prints what the user must reconnect). (3) its
+`verify_restore.sh --build` line must say 0 failed. (4) ToolSearch `mcp__plugin_parallax-threejs`
 and `mcp__spector` (tools listed = the MCP servers are up). (5) `TRIPO_API_KEY=tsk_proxy-injected tripo balance` (free). (6) Continue the
 77_ README's "Next steps". Run a live check only for something that fails or changed.
 
@@ -32,7 +33,7 @@ Optional plugins (Superpowers, Frontend Design, ...) are not needed (inventory s
 **The one prompt for the other account (copy and paste):**
 > Continue my EXISTING Bubble Wash Kingdom game (josiahscalia5-dev/bubblegame), on branch claude/bubble-wash-account-switch-e1nndb. Do not
 > restart or redesign anything. Read BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md section 0 and CLAUDE.md, do the 5-minute restore in section 0
-> (no long audits; never force-push; never touch the default branch claude/new-session-oth0dd), tell me only what failed or what I must
+> (bash Tools/restore_session.sh; no long audits; never force-push; never touch the default branch claude/new-session-oth0dd), tell me only what failed or what I must
 > reconnect, then continue Screen 09 from Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md "Next steps": real 3D
 > machinery that matches my approved original (00_AUTHENTIC_APPROVED_SCREEN09.png), no cards, projection or inpainted wallpaper, opt-in
 > under scene07, Classic Screen 4 unchanged, no Tripo spending without asking me. Commit and push each verified step and give me the hash.
@@ -164,7 +165,7 @@ fixed; Parallax init / checkpoint / diff / export-report / sweep / memcheck / sy
 
 ## 9. EXACT GAME STATE AND NEXT TASK
 **Update 8 November ~20:40 UTC, session f70c9bd1 (branch `claude/bubble-wash-account-switch-e1nndb`):** Screen 09 (`scene07`, opt-in)
-is at **pass 16 v4** (bundle `393d9d29`; NOT approved; v4 = v3 + pastel materials, tube hoops hidden beyond the far end, bank bubbles; closer than pass 13b on the left and right per the art director, the upper area now real 3D
+is at **pass 16 v5** (final bundle `a359dad4`; NOT approved; the art director judges ~40-45 % of the master's environment recognizable; closer than pass 13b on the left and right per the art director, the upper area now real 3D
 machinery on columns and gantries, but the vanishing point still shows the level's tube and the hall still reads lavender, not the master's
 bright pastel street). The user sent two
 kits this session (saved unchanged in `Design/ReferencePacks/2026-11-08_Screen09_Approved_Reference_Kit_from_user/` and

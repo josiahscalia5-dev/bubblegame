@@ -114,7 +114,8 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
     (`WebDemo/src/tripo_l1.js`). Evidence and the remaining list: `Previews/WebDemo/screen4_round9_match/74_scene07_avoid_enemies/README.md`.
     Then passes 9-13b (session `ce30359f`, `75_...`, `76_...`) and, in it by default since session `f70c9bd1`, pass 16 (`WebDemo/src/scene07_recon16.js`,
     the user's Screen 09 kits of 8 November evening): the round drum housing on a cream-gold ledge, the curved pink star wall, one hero enemy,
-    real 3D machine towers and pipes (MACH16, unfinished); opt-in `,art16` (depth cards, rejected by the user), `,norecon16` (= pass 13b),
+    real 3D machine columns, gantries and mounted machinery (MACH16 v2/v5), pastel hall, the master's distant scenery on the far end wall only
+    (FAR16, LaMa only where its enemy / banner hid it); the candidate is v5 (final bundle `a359dad4`), opt-in `,walls6` (v6, reverted), `,nopastel16`, `,nofar16`; opt-in `,art16` (depth cards, rejected by the user), `,norecon16` (= pass 13b),
     `,norecon16,wall15` (pass 15), `,nomach16`. NOT approved. Evidence and next steps: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md`.
   - `match6` (8 November, session `8140e507`): her rear silhouette (round dome, pom-pom nubs, radiating strands). A CANDIDATE,
     opt-in only (`?s3=intunnel,structmatch,match6`), not merged into the default look until the user approves it (`69_match6/`).
