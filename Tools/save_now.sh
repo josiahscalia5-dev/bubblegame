@@ -23,6 +23,13 @@ case "$BRANCH" in main|master|HEAD) echo "$NOW save refused: on '$BRANCH'; saves
 
 before_remote="$(git ls-remote origin "refs/heads/$BRANCH" 2>/dev/null | cut -f1)"
 git add -A
+# (8 November, the user's preservation mandate) Tools/save_guard.py: a file with a credential pattern is never committed, and a media
+# file changed in the last 30 s (a recording or an encode still writing) waits for the next round; both stay on disk, unstaged
+held=""
+if [ -f Tools/save_guard.py ]; then
+  while read -r why f; do [ -n "$f" ] || continue; git reset -q -- "$f"; held="$held
+  $why  $f"; done < <(python3 -I Tools/save_guard.py 2>/dev/null)
+fi
 if git diff --cached --quiet; then
   committed="no (nothing new since the last commit)"
 else
@@ -79,4 +86,7 @@ if [ -n "$files" ]; then
 else
   echo "Files saved: none new (GitHub already had everything)"
 fi
+if [ -n "$held" ]; then echo "Held back (not saved this round):$held"; echo "  (SECRET = a key or token pattern: remove it from the file; BUSY = still being written: the next round saves it)"; fi
+# one line per round in the container's save history (the durable record is GitHub's own commit list)
+mkdir -p "$HOME/.bubblewash-autosave" && echo "$NOW branch=$BRANCH commit=$HEAD_SHA committed=${committed%% *} github=$([ "$remote" = "$HEAD_SHA" ] && echo VERIFIED || echo FAILED:${remote:-none})$([ -n "$held" ] && echo " held=$(printf '%s' "$held" | grep -c .)")" >> "$HOME/.bubblewash-autosave/save_history.log"
 [ "$remote" = "$HEAD_SHA" ]

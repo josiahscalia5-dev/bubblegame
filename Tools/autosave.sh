@@ -22,8 +22,17 @@ set -u
 LOG="$1"; OUT="$2"; TITLE="$3"; MINUTES="${4:-5}"; ROUNDS="${5:-23}"
 SESSION_DIR="${LOG%.jsonl}"
 cd "$(dirname "$0")/.." || exit 1
+# (8 November, the user's preservation mandate) the autosave saves only the branch it was started on (BW_AUTOSAVE_BRANCH, else the
+# branch checked out at its start): if the working copy is switched to another branch (for example the other Claude account's), the
+# round is skipped and says so, so this session's work never lands on another session's branch by accident
+START_BRANCH="${BW_AUTOSAVE_BRANCH:-$(git branch --show-current)}"
+echo "$(date -u +%H:%M) autosave for branch $START_BRANCH, every $MINUTES minutes, $ROUNDS rounds"
 for ((i = 1; i <= ROUNDS; i++)); do
   echo "--- round $i of $ROUNDS"
+  if [ "$(git branch --show-current)" != "$START_BRANCH" ]; then
+    echo "$(date -u +%H:%M) round skipped: the working copy is on '$(git branch --show-current)', not '$START_BRANCH' (this autosave saves only $START_BRANCH)"
+    if [ "$i" -lt "$ROUNDS" ]; then sleep $((MINUTES * 60)); fi; continue
+  fi
   python3 -I Tools/export_chat_history.py "$LOG" "$OUT" "$TITLE" > /dev/null 2>&1 || echo "$(date -u +%H:%M) chat export failed"
   if [ -n "${BW_AGENT_TRANSCRIPTS:-}" ] && [ -d "$SESSION_DIR/subagents" ]; then
     python3 -I Tools/export_agent_transcripts.py "$SESSION_DIR" "$BW_AGENT_TRANSCRIPTS" "${BW_AGENT_TITLE:-Design agent transcripts}" \
