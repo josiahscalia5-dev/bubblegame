@@ -1,0 +1,11 @@
+CLAUDIA — REVIEW AND SAFE-INTEGRATE MY SIX ACTUAL TRIPO 3D GLB ASSETS
+
+I have uploaded six real Tripo files: cartoon girl 3d model.glb; pink fluffy creature 3d model.glb; purple basket 3d model.glb; sock character 3d model.glb; soft plush towels 3d model.glb; washing machine 3d model.glb. Read Bubble_Wash_Tripo_GLB_Review.md and inspect these actual models, NOT substitute screenshots or concept art.
+
+First create a reversible checkpoint on the existing GitHub development branch. Preserve all finished Bubble Wash Kingdom systems and ORIGINAL CLASSIC approved Screen 4. Do not spend any Tripo credits, delete existing models, or replace anything yet.
+
+Import the models into an isolated test scene and show front/side/rear renders, polycount, materials, dimensions, collision issues, mobile performance and rig/animation state. Compare the new girl, mascot, washer, socks and basket against the user's approved visual targets and actual latest game. In particular: verify girl identity (hair/bow/outfit) and whether her arms can be rigged to throw laundry, verify separate basket and individual towel objects, verify washer has a *real traversable opening*, and check the mascot's ORIGINAL CLASSIC Screen 4 rear-view silhouette, fine pink fur and natural blue water contact. Do not replace the mascot if it is less faithful.
+
+These supplied files have no embedded animations or skinning: animate/rig in-game as required. Make the girl genuinely blink, tip a basket and throw separate socks/towels; show the pink character visibly tumbling through the washer opening, camera entering the correct 3D tunnel, and maintain playable buoyant forward swimming, steering and actual coin/sock collection. Keep the existing water, tunnel, coins, UI, game logic and controls unless a narrow correction is justified.
+
+Propose precise asset-by-asset KEEP/REJECT/REWORK decisions with comparison evidence. Integrate only demonstrably better assets, with user approval before replacing authoritative models or spending credits. Run real mobile gameplay tests, provide comparison screenshots, an uninterrupted demo video, file changes and remote verified commit. Do not claim the models are rigged, production-ready or matching the proof art until verified.

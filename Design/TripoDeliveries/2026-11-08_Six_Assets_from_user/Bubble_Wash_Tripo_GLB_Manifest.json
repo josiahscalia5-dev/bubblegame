@@ -1,0 +1,74 @@
+[
+  {
+    "file": "cartoon girl 3d model.glb",
+    "bytes": 3154864,
+    "sha256": "4b0b8da7bc7f3819a7827d86c3d66ac1726aa1dbe2b32615da3a928c9a825152",
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 10755,
+    "animations": 0,
+    "skins": 0,
+    "textures": 1,
+    "notes": "Visually promising full-body girl; static, unrigged, no animation. Check visual identity; prepare rig and arm/head animation only if suitable."
+  },
+  {
+    "file": "pink fluffy creature 3d model.glb",
+    "bytes": 4812284,
+    "sha256": "cd00a584fdb8fea68317dcbbe431a77975167c196f8584531cf24f831a7df0cf",
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 9796,
+    "animations": 0,
+    "skins": 0,
+    "textures": 1,
+    "notes": "Needs strict rear-angle silhouette comparison against ORIGINAL CLASSIC Screen 4; visible prominent protrusions/spiky look differ. Do NOT replace approved mascot by default."
+  },
+  {
+    "file": "purple basket 3d model.glb",
+    "bytes": 2240484,
+    "sha256": "23356a121ff6d868032c72950bebf19fe9723f70e1ae45c56a6008291b92863a",
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 9679,
+    "animations": 0,
+    "skins": 0,
+    "textures": 1,
+    "notes": "Recognizable purple basket. Check whether vent holes and interior are physically open; test tip pivot and hand contact."
+  },
+  {
+    "file": "sock character 3d model.glb",
+    "bytes": 3922944,
+    "sha256": "56c24346dd4da7118a3cb7b8a9e8edd3192d0b80ba2187cfeec404603f86b911",
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 10244,
+    "animations": 0,
+    "skins": 0,
+    "textures": 1,
+    "notes": "Promising smiling collectible. Needs animation/collection behavior and model scale alignment."
+  },
+  {
+    "file": "soft plush towels 3d model.glb",
+    "bytes": 4885052,
+    "sha256": "87e226c2c1edfb20496bfaa1184902920fed3e39e89d8a8501ccc06bd543cf72",
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 10076,
+    "animations": 0,
+    "skins": 0,
+    "textures": 1,
+    "notes": "Appears to contain three towels in one mesh; toss sequence needs individually controllable pieces or separated geometry."
+  },
+  {
+    "file": "washing machine 3d model.glb",
+    "bytes": 2390616,
+    "sha256": "0a67f89d46e718aae7e8894be9b9d4fac265a9f44cea1219f14b8ca4d5954bb5",
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 9461,
+    "animations": 0,
+    "skins": 0,
+    "textures": 1,
+    "notes": "Plausible lavender/silver body and gold ring. Verify central opening is physically traversable by mascot/camera; dark cavity in preview is not evidence of working tunnel."
+  }
+]

@@ -1312,3 +1312,9 @@ Checking where things stand before answering: whether the plugin is now enabled 
 
 While they run, comparing the finished `s3_func` gameplay test, the candidate against `level1`:
 
+---
+
+### You (sent while Claude was working) · 2026-11-08 01:44 UTC
+
+[attached file: Bubble_Wash_Six_Tripo_3D_Assets_Handoff.zip] [attached file: Bubble_Wash_Tripo_GLB_Review.md] [attached file: Bubble_Wash_Tripo_Claude_Import_Prompt.txt]
+
