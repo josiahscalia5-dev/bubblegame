@@ -42,16 +42,16 @@ const server = http.createServer((req, res) => {
       const plan = window.__bwLevel1Plan();
       const hz = (B.hazards() || []).filter((h) => !h.cleared).map((h) => [h.u, h.side > 0 ? 0 : 2]);
       const blocked = {};
-      for (const [bu, bl] of [...plan.brushes, ...hz]) { const d = bu - u; if (d > -0.6 && d < 6.5) blocked[bl] = true; }
+      for (const [bu, bl] of [...plan.brushes, ...hz]) { const d = bu - u; if (d > -0.6 && d < 3.8) blocked[bl] = true; }
       let act = null;
       // grime balls: spin-attack one that is about to reach her (the flow's interaction), else keep out of its way
       for (const [eu, el, ex, dead] of plan.enemies) {
         if (dead) continue; const d = eu - u;
         if (d > 0.25 && d < 1.3 && Math.abs(ex - st.x) < 0.7) { B.tap(); ev.spins++; ev.events.push(['spin', +u.toFixed(1)]); }
-        if (route === 'dodge' && d > -0.6 && d < 6.5) blocked[el] = true;
+        if (route === 'dodge' && d > -0.6 && d < 3.8) blocked[el] = true;
       }
       // soap bars (flow: [u, lane] on the ledges): jump them
-      for (const b of plan.bars) { const [bu, bl] = Array.isArray(b) ? b : [b, null]; const d = bu - u; if (d > 0.9 && d < 1.5 && (bl === null || bl === lane) && !st.air) { B.swipe('up'); act = 'jump'; ev.events.push(['jump bar', +u.toFixed(1)]); } }
+      for (const b of plan.bars) { const [bu, bl] = Array.isArray(b) ? b : [b, null]; const d = bu - u; if (d > 0.75 && d < 1.6 && (bl === null || bl === lane) && !st.air) { B.swipe('up'); act = 'jump'; ev.events.push(['jump bar', +u.toFixed(1)]); } }
       let want = null;
       if (route === 'upper') {
         if (lane === -1) want = -1;
@@ -62,17 +62,27 @@ const server = http.createServer((req, res) => {
         if (u > 99 && u < 136) want = 0;                                                      // the left upper ledge
       } else if (route === 'blocked') {
         if (u > 44 && u < 50) want = 0;
-        if (u > 60 && u < 60.2 && lane === 0 && !st.air) { const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['onto side path from the water', +u.toFixed(2), before, after]); }
+        if (!ev.t1 && u > 60 && lane === 0 && !st.air) { ev.t1 = 1; const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['onto side path from the water', +u.toFixed(2), before, after]); }
         if (u > 99 && u < 136) want = 1;
-        if (u > 121 && u < 121.2 && lane === 1) { const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['lower path back up to a ledge', +u.toFixed(2), before, after]); }
+        if (!ev.t2 && u > 121 && lane === 1) { ev.t2 = 1; const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['lower path back up to a ledge', +u.toFixed(2), before, after]); }
       }
       if (want === null && !act) {
         want = lane;
+        // a hazard in lane l between a and b metres ahead
+        const hazIn = (l, a, b) => [...plan.brushes, ...hz].some(([bu, bl]) => bl === l && bu - u > a && bu - u < b) || plan.enemies.some(([eu, el, ex, dead]) => !dead && el === l && eu - u > a && eu - u < b);
         if (blocked[lane]) { const order = [1, lane === 0 ? 0 : 2, lane === 0 ? 2 : 0]; want = order.find((l) => !blocked[l]) ?? lane; }
-        else { const sk = plan.socks.find(([su, sl]) => sl >= 0 && su - u > 2 && su - u < 14); if (sk && !blocked[sk[1]] && (Math.abs(sk[1] - lane) === 1 || !blocked[1])) want = sk[1]; }
+        else {
+          // the next sock whose lane is clear up to it (a brush beyond the sock does not matter: she leaves the lane after it)
+          const sk = plan.socks.map(([su, sl]) => [su, sl >= 0 ? Math.max(0, Math.min(2, Math.round(sl))) : -1]).find(([su, sl]) => sl >= 0 && su - u > 1 && su - u < 14 && !hazIn(sl, -0.6, su - u + 0.7));
+          if (sk && (Math.abs(sk[1] - lane) <= 1 || !hazIn(1, -0.6, 4))) want = sk[1];
+        }
       }
       if (want !== null && want !== -1 && lane !== -1) { if (want < lane) { B.swipe('left'); ev.swipes++; } else if (want > lane) { B.swipe('right'); ev.swipes++; } }
+      const h0 = st.hearts, s0 = st.socks;
       B.step(0.1, 30);
+      const s1 = B.state();
+      if (s1.hearts < h0) ev.events.push(['KNOCK (heart lost)', +s1.z.toFixed(1), 'lane ' + s1.lane, 'near: ' + JSON.stringify({ brushes: plan.brushes.filter(([bu]) => Math.abs(bu - u) < 2), enemies: plan.enemies.filter(([eu]) => Math.abs(eu - u) < 2), bars: plan.bars.filter((b) => Math.abs((Array.isArray(b) ? b[0] : b) - u) < 2), drum: hz.filter(([hu]) => Math.abs(hu - u) < 2) })]);
+      if (s1.socks > s0) ev.events.push(['sock', +s1.z.toFixed(1), s1.socks, window.__bwLevel1 ? window.__bwLevel1.route : '']);
     }
     const st = B.state();
     return { u: st.z, phase: st.phase };
