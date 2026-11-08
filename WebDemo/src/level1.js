@@ -903,7 +903,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     if (complete) { completeT += dt; if (completeT > 1.1 && !done.classList.contains('show')) showComplete(); }
     // (flow) board 10's celebration: she turns to the player (the game's own look-back pose) and bounces happily on the water
     if (FLOW && complete) {
-      if (completeT > 0.6 && completeT - dt <= 0.6) m.lookT = 0.05;
+      if (completeT > 0.6) m.lookT = -0.5;   // (held: she keeps facing the player while she celebrates)
       if (completeT > 0.9 && !m.air && (celebT += dt) > 1.15) { celebT = 0; m.air = true; m.vy = 4.4; m.falling = true; m.sqV += 5; }
     }
     window.__bwLevel1 = { u: +u.toFixed(2), section: C.sections[k].name, progress: +p.toFixed(4), complete, socks: state.socks, report,
