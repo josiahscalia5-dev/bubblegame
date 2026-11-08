@@ -39,10 +39,18 @@ export const SCENE07 = {
   // pass 6 (the user's environment correction: "not another pass that only adds decorations to the wrong tunnel"): the tube is OPENED
   // above the water in this stretch (level1.js's wall shader patched at run time, its hoops hidden here) into one large, open laundry
   // CHAMBER: a pink-lavender facade shell, platforms either side of the water, gold-pink portal rings where the tube enters and leaves
-  chamber: { u0: 218, u1: 270, halfW: 7.2, height: 8.5, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0xbfb2ff },   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
+  chamber: { u0: 218, u1: 254, halfW: 7.2, height: 8.5, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0xd6dcff },   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
   // the original's LEFT big circular washer housing [u, x, h, ring radius] and RIGHT curved pink-gold star tubs [u, inner x, radius, height]
-  housings: [[239, 3.7, 2.35, 1.75], [257, 3.7, 2.35, 1.6]],
-  tubs: [[234, 2.35, 2.1, 1.45], [249, 2.35, 1.9, 1.35], [263, 2.35, 2.0, 1.4]],
+  housings: [[237, 2.75, 1.85, 1.05]],   // (pass 7: mapped to the original's left edge, 25-50 % down)
+  tubs: [[236, 2.3, 1.8, 1.3], [248, 2.3, 1.6, 1.2]],
+  // pass 7 (the user's review of pass 6: "replace the flat pink upper background with actual layered 3D scenery ... machinery, architecture"):
+  // the game's OWN colourful machinery models stacked high on the chamber's walls [model, side, u, x, h, size]; pink rings high; a left
+  // gold balustrade on posts along the walkway; the exit portal bright at the vanishing point; soft coloured lights in the air
+  upper: { files: { machine: 'models/s3_machinery.glb', tower: 'models/tower.glb', pipe: 'models/pipe.glb' },
+    items: [['tower', 1, 236, 5.4, 3.3, 3.2], ['machine', 1, 242, 4.6, 3.5, 2.6], ['pipe', 1, 248, 4.1, 4.7, 2.0],
+      ['machine', -1, 240, 4.5, 3.6, 2.6], ['tower', -1, 246, 5.1, 3.4, 3.0], ['pipe', -1, 251, 4.1, 4.5, 2.0]],
+    rings: [[1, 245, 5.2, 5.2, 1.15], [-1, 243, 5.3, 5.4, 1.0]], railU: [227, 253], railX: 2.32, railH: 0.62, postEvery: 1.5,
+    glow: { r: 3.2, opacity: 0.75 }, lights: 14 },
 };
 export const TRIPO1_FILES = { enemy: 'models/l1_enemy_tripo.glb' };
 // the new look's diameter against the code ball's (its bounding sphere); (v2, the user's "Avoid Enemies!" mandate: "larger, raised so
@@ -152,8 +160,8 @@ function buildChamber(root, TR, env) {
   const col = [], vc = new THREE.Color(Ch.vault), cc = new THREE.Color();
   for (let u = Ch.u0 - 1; u <= Ch.u1 + 1 + 1e-6; u += step, rows++) {
     for (let j = 0; j <= nA; j++) { const a = -Math.PI / 2 + Math.PI * j / nA, hgt = Math.cos(a) * Ch.height; TR.map(Math.sin(a) * Ch.halfW, Ch.deck + hgt, u, P); pos.push(P.x, P.y, P.z);
-      uv.push((u - Ch.u0) / 4, Math.min(hgt, 3.6) / 1.8);   // the windows on the side walls only (two rows up to 3.6 m)
-      const k = THREE.MathUtils.smoothstep(hgt, 2.6, 6.0); cc.setRGB(1, 1, 1).lerp(vc, k); col.push(cc.r, cc.g, cc.b); }
+      uv.push((u - Ch.u0) / 4, hgt < 3.6 ? hgt / 1.8 : 1.95);   // the windows on the side walls only (two rows up to 3.6 m); above: the texture's lavender
+      const k = THREE.MathUtils.smoothstep(hgt, 3.4, 6.5); cc.setRGB(1, 1, 1).lerp(vc, k); col.push(cc.r, cc.g, cc.b); }
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
@@ -197,7 +205,7 @@ function buildLandmarks(root, TR, env, goldM, items) {
     g.add(new THREE.Mesh(new THREE.TorusGeometry(R, R * 0.26, 20, 64), pinkM));
     for (const rr of [R * 1.27, R * 0.74]) { const rim = new THREE.Mesh(new THREE.TorusGeometry(rr, R * 0.05, 8, 64), goldM); rim.position.z = R * 0.12; g.add(rim); }
     const bub = new THREE.Mesh(new THREE.SphereGeometry(R * 0.62, 32, 20), glassM); bub.position.z = R * 0.1; g.add(bub);
-    TR.map(x, h, u, g.position); TR.quaternion(u, g.quaternion); g.rotateY(-Math.PI / 2 - 0.75);
+    TR.map(x, h, u, g.position); TR.quaternion(u, g.quaternion); g.rotateY(-Math.PI / 2 - 1.05);
     root.add(g); items.push({ holder: g, turn: null, spin: 0, pos: g.position.clone() });
   }
   // RIGHT: the original's curved pink-gold structure: big round star tubs at the water's edge, gold rims
@@ -213,14 +221,48 @@ function buildLandmarks(root, TR, env, goldM, items) {
   }
 }
 
-async function applyScene07({ scene, env, TR, camera, fx, report }) {
+async function buildUpper(root, TR, env, loader, goldM, items) {
+  const U = SCENE07.upper, load = (url) => new Promise((ok, no) => loader.load(url, ok, undefined, no));
+  const names = Object.keys(U.files), models = {};
+  (await Promise.all(names.map((k) => load(U.files[k])))).forEach((gl, i) => { models[names[i]] = gl.scene; });
+  for (const [kind, side, u, x, h, size] of U.items) {
+    const look = models[kind].clone(true);
+    look.traverse((o) => { if (o.isMesh) for (const m of [].concat(o.material)) if (m.isMeshStandardMaterial) { if (env) { m.envMap = env; m.envMapIntensity = 1.1; } if (m.map) { m.emissiveMap = m.map; m.emissive = new THREE.Color(0xffffff); m.emissiveIntensity = 0.28; } } });
+    const box = new THREE.Box3().setFromObject(look), sz = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3()), k = size / Math.max(sz.x, sz.y, sz.z);
+    look.scale.setScalar(k); look.position.set(-mid.x * k, -mid.y * k, -mid.z * k);
+    const g = new THREE.Group(); g.add(look); g.name = 'scene07_upper_' + kind;
+    TR.map(side * x, h, u, g.position); TR.quaternion(u, g.quaternion); g.rotateY(side > 0 ? -Math.PI / 2 - SCENE07.facing : Math.PI / 2 + SCENE07.facing);
+    root.add(g); items.push({ holder: g, turn: null, spin: 0, pos: g.position.clone() });
+  }
+  SCENE07.portholes.push(...U.rings);
+  // the walkway's gold balustrade on posts (the original's left ledge)
+  const pts = [], P = new THREE.Vector3();
+  for (let u = U.railU[0]; u <= U.railU[1]; u += 1) pts.push(TR.map(U.railX, U.railH, u, new THREE.Vector3()));
+  root.add(Object.assign(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, 0.06, 8, false), goldM), { name: 'scene07_rail' }));
+  const postG = new THREE.CylinderGeometry(0.045, 0.06, U.railH, 10);
+  for (let u = U.railU[0]; u <= U.railU[1]; u += U.postEvery) { const p = new THREE.Mesh(postG, goldM); TR.map(U.railX, U.railH / 2, u, p.position); TR.quaternion(u, p.quaternion); p.name = 'scene07_post'; root.add(p); }
+  // the exit portal bright (the original's luminous vanishing point) and soft coloured lights in the air
+  const soft = (r, g, b) => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const gr = x.createRadialGradient(32, 32, 2, 32, 32, 32);
+    gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(255, 248, 230), transparent: true, opacity: U.glow.opacity, depthWrite: false, blending: THREE.AdditiveBlending }));
+  glow.scale.setScalar(U.glow.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + 0.5, glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
+  const cols = [[255, 170, 230], [150, 210, 255], [255, 230, 140], [200, 170, 255]];
+  for (let i = 0; i < U.lights; i++) {
+    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(...cols[i % 4]), transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }));
+    l.scale.setScalar(0.5 + 0.35 * ((i * 5) % 4)); const side = i % 2 ? 1 : -1;
+    TR.map(side * (1.2 + 2.4 * ((i * 3) % 5) / 4), 2.6 + 2.6 * ((i * 7) % 6) / 5, 228 + 24 * (i + 0.5) / U.lights, l.position); l.name = 'scene07_light'; root.add(l);
+  }
+}
+
+async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   const root = new THREE.Group(); root.name = 'scene07'; scene.add(root);
   const items = [];
   const opened = openTube(scene, TR, SCENE07.chamber);
   const goldM = buildChamber(root, TR, env);
   buildLandmarks(root, TR, env, goldM, items);
-  SCENE07.enclosures.length = 0; SCENE07.portholes.length = 0;   // (pass 6: the chamber's landmarks replace pass 5's small pieces)
-  for (const gr of SCENE07.gears) { gr[2] = 4.2; gr[3] = 4.4; gr[4] *= 1.6; }   // gears high on the chamber's walls
+  await buildUpper(root, TR, env, loader, goldM, items);
+  SCENE07.enclosures.length = 0; SCENE07.portholes.splice(0, SCENE07.portholes.length - SCENE07.upper.rings.length);   // (pass 6: landmarks replace pass 5's pieces; pass 7's high rings stay)
+  SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 3.6, 4.6, 0.8, 1], [1, 250, 1.4, 5.6, 0.9, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
   buildArchitecture(root, TR, env, items);
   // big iridescent bubbles near the walls (board 07's large bubbles at its sides); a fixed pattern, no random numbers
   const bubM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.06, metalness: 0, envMap: env || null, envMapIntensity: 1.6, transparent: true,
@@ -246,13 +288,26 @@ async function applyScene07({ scene, env, TR, camera, fx, report }) {
     }
     if (base !== null) { const k = cam.clone().sub(ends[0]).dot(seg) / segL2; fx.u.uScale.value = k > 0 && k < 1 ? base * SCENE07.particles : base; }
   };
+  if (typeof document !== 'undefined') {
+    document.body.classList.add('scene07');
+    const st = document.createElement('style'); st.id = 'scene07Banner';
+    st.textContent = `body.scene07 #l1Banner.warn { background: linear-gradient(#ff5a78, #e3204f 60%, #c8143f); border: calc(var(--u, 2px) * 2.2) solid #ffd6e2;
+      border-radius: calc(var(--u, 2px) * 22); padding: calc(var(--u, 2px) * 7) calc(var(--u, 2px) * 18) calc(var(--u, 2px) * 7) calc(var(--u, 2px) * 46);
+      box-shadow: 0 calc(var(--u, 2px) * 3) 0 #8e1038, 0 0 calc(var(--u, 2px) * 16) rgba(255, 80, 130, .55); rotate: -4deg; white-space: nowrap; }
+      body.scene07 #l1Banner.warn b { font-size: calc(var(--u, 2px) * 21); text-transform: capitalize; color: #fff; -webkit-text-stroke: calc(var(--u, 2px) * 0.6) #8e1038;
+        text-shadow: 0 calc(var(--u, 2px) * 2) 0 #8e1038; position: relative; }
+      body.scene07 #l1Banner.warn b::before { content: ''; position: absolute; left: calc(var(--u, 2px) * -38); top: 50%; translate: 0 -55%; width: calc(var(--u, 2px) * 30); height: calc(var(--u, 2px) * 27);
+        background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 27'%3E%3Cpath d='M15 1.5 L29 25.5 H1 Z' fill='%23ffffff' stroke='%23c8143f' stroke-width='2' stroke-linejoin='round'/%3E%3Crect x='13.4' y='8' width='3.2' height='10' rx='1.4' fill='%23e3204f'/%3E%3Ccircle cx='15' cy='21.6' r='1.8' fill='%23e3204f'/%3E%3C/svg%3E"); }
+      body.scene07 #l1Banner.warn span { display: none; }`;
+    document.head.appendChild(st);
+  }
   report.scene07 = { opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
   const report = { on: true, enemy: null, scene07: null, errors: [] };
   if (typeof window !== 'undefined') window.__bwTripo1 = report;
-  if (SCENE07_ON && TR && camera) { try { await applyScene07({ scene, env, TR, camera, fx, report }); } catch (e) { report.errors.push('scene07: ' + ((e && e.message) || e)); } }
+  if (SCENE07_ON && TR && camera) { try { await applyScene07({ scene, env, TR, camera, fx, loader, report }); } catch (e) { report.errors.push('scene07: ' + ((e && e.message) || e)); } }
   if (!TRIPO1_ON) return report;
   try {
     const gl = await new Promise((ok, no) => loader.load(TRIPO1_FILES.enemy, ok, undefined, no));
