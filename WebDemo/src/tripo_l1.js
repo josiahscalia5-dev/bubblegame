@@ -12,7 +12,7 @@
 import * as THREE from 'three';
 import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): opt-in `,norecon16,wall15` only
 import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16, FAR16_ON, applyFar16, MACH16 } from './scene07_recon16.js';
-import { RECON17_ON, prepRecon17, buildRecon17, patchShaders17 } from './scene07_recon17.js';   // scene07 pass 17 (session bb87ba9f): receding rows, a machinery far end, the stretch's lighter water; `,norecon17` = pass 16 v5   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
+import { RECON17_ON, JEWEL17_ON, R17, jewelFacadeTexture, prepRecon17, buildRecon17, patchShaders17 } from './scene07_recon17.js';   // scene07 pass 17 (session bb87ba9f): receding rows, a machinery far end, the stretch's lighter water; `,norecon17` = pass 16 v5   // scene07 pass 16 (session f70c9bd1): the reconstruction from the user's Screen 09 kit; `,norecon16` = pass 13b
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -176,8 +176,8 @@ function openTube(scene, TR, Ch) {
 }
 function buildChamber(root, TR, env) {
   const Ch = SCENE07.chamber, P = new THREE.Vector3();
-  const tex = RECON16_ON ? reconFacadeTexture() : facadeTexture();   // (pass 16: the chamber's own surface behind the machinery)
-  const shellM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15, envMap: env || null, envMapIntensity: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.45, side: THREE.DoubleSide });
+  const tex = JEWEL17_ON ? jewelFacadeTexture() : RECON16_ON ? reconFacadeTexture() : facadeTexture();   // (pass 17: the master's deep blue-violet recesses)   // (pass 16: the chamber's own surface behind the machinery)
+  const shellM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15, envMap: env || null, envMapIntensity: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: JEWEL17_ON ? R17.jewel.shellGlow : 0.45, side: THREE.DoubleSide });
   // the shell: a half-ellipse over the stretch, from the deck on one side over the top to the other
   const pos = [], uv = [], idx = [], nA = 36, step = 1; let rows = 0;
   const col = [], vc = RECON16_ON ? new THREE.Color(1, 1, 1) : WALL15_ON ? new THREE.Color().setRGB(...WALL15.vaultRGB) : new THREE.Color(Ch.vault), cc = new THREE.Color();   // (pass 15: a warm cream-lavender vault)
@@ -193,7 +193,7 @@ function buildChamber(root, TR, env) {
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nS; j++) { const a = i * (nS + 1) + j, b = a + nS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
-  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
+  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = JEWEL17_ON ? R17.jewel.shellGlow : 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
   // (pass 9, session ce30359f: in pass 8 the next statement sat inside the comment above, so the walls and vault were never drawn)
   const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
   // the decks either side of the water: lavender with a gold edge at the water

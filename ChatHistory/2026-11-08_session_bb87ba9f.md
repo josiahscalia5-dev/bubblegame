@@ -531,3 +531,17 @@ The only 404 is `/favicon.ico` from the plain test server, which is harmless. I'
 
 Autosave is healthy: one process, every round `github=VERIFIED`, and local HEAD `cd4c4468` matches GitHub. I'll register this session for future autosave restarts.
 
+I'll do a free reachability check of the three extra hosts the environment is documented to allow. They matter only for Tripo model downloads and fresh tool installs.
+
+Bundle `5215facc` (pass 17 work in progress, water excluded). Now I'll record the readiness results in the inventory.
+
+I referenced a folder for your two uploaded packs, so I'll save them there unchanged. The first pack's README is kept but marked superseded.
+
+Now the handoff's section 0 and the newest-state line in `CLAUDE.md`.
+
+I'll create the pass 17 README that the handoff points to (work-in-progress state), then save and verify the push.
+
+I'll look closely at the master's upper-right corner (the gears) next to v5, before building anything there.
+
+Bundle `b0744ef8` builds cleanly. Capturing pass 17b at the checkpoint.
+

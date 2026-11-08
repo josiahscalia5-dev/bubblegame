@@ -18,12 +18,16 @@
 // Real three.js geometry, baked per material (a few draw calls). No random numbers (a fixed hash). Looks only: no hit test changes.
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { RECON16_ON, MACH16_ON, hash, canvasTex, gearShape, bake, at } from './scene07_recon16.js';
+import { RECON16_ON, MACH16_ON, PASTEL16, RECON16, hash, canvasTex, gearShape, bake, at } from './scene07_recon16.js';
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const RECON17_ON = RECON16_ON && MACH16_ON && !LIST.includes('norecon17') && !LIST.includes('walls6');
 export const ROWS17_ON = RECON17_ON && !LIST.includes('norows17');
 export const FAR17_ON = RECON17_ON && !LIST.includes('nofar17');
+// JEWEL17 (`,nojewel17`; the user, 8 Nov ~22:40 UTC: "saturated jewel tones ... without washing everything out into pale lavender"; measured: the
+// master's background is darker than the game's in every zone, value 0.76-0.89 against 0.83-0.97, its right gear deep cobalt where the game's reads
+// pale lavender): the hall's whitening and self-glow (PASTEL16) lowered, a deep blue-violet chamber surface, the far glow smaller and softer
+export const JEWEL17_ON = RECON17_ON && !LIST.includes('nojewel17');
 export const WATER17_ON = RECON17_ON && LIST.includes('water17');   // OPT-IN ONLY: the user's background-only mandate (8 Nov ~22:40 UTC): "do NOT modify my existing water appearance"
 
 export const R17 = {
@@ -42,9 +46,27 @@ export const R17 = {
     bridge: { u: 252.55, h: 3.1, depth: 0.7, thick: 0.55, half: 2.95 }, ringFade: [8, 16] },
   // WATER17: the stretch [u0, u1] with a blend of `blend` m at each end; the azure mix and the banks' white crest
   water: { u: [221, 256], blend: 3.5, mix: 0.78, crest: [1.05, 0.45], spark: 0.85 },
+  // JEWEL17: PASTEL16 replaced (whitening, self-glow), the pass 17 machines' self-glow, the chamber surface's glow, the far glow sprite
+  jewel: { pastel: { k: 0.0, kLandmark: 0.0, glow: 0.2 }, machineGlow: 0.2, shellGlow: 0.24, glow: { r: 4.2, opacity: 0.55 } },
+  // the level tube's hoops beyond the far portal (not in the approved image): kept out of view while the camera is in the stretch before the portal
+  hoops: { beyond: 1.0, reach: 46 },
 };
 const COL = { blue: 0x3f63e6, deep: 0x2a3ab8, violet: 0x8a5ad8, pink: 0xf06ab8, rose: 0xff9fd0, mint: 0x7fdcae, cyan: 0x62c8ff, cream: 0xf6e2c0, lilac: 0xbfa2f2, gold: 0xffcf5a };
 const ROWCOLS = ['blue', 'violet', 'pink', 'mint', 'cyan', 'deep', 'lilac', 'cream'];
+
+// JEWEL17: the chamber's own surface behind the machinery: the master's deep blue-violet recesses (#5f66af / #726eb0) with magenta seams and faint
+// panels, darker toward the top, a little warmer toward the decks (it shows only in the gaps)
+export function jewelFacadeTexture() {
+  return canvasTex(512, 256, (g, w, h) => {
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#3f3f9a'); gr.addColorStop(0.5, '#5e58b4'); gr.addColorStop(1, '#8a5aae');
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 46; i++) {
+      const x = (i * 97) % w, y = (i * 53) % h, rw = 26 + (i * 37) % 58, rh = 20 + (i * 29) % 46;
+      g.fillStyle = ['rgba(30,24,90,0.35)', 'rgba(150,120,230,0.22)', 'rgba(200,64,140,0.22)'][i % 3]; g.beginPath(); g.roundRect(x, y, rw, rh, 6); g.fill();
+    }
+    for (let i = 0; i < 70; i++) { g.fillStyle = ['rgba(255,236,190,0.9)', 'rgba(190,240,255,0.9)', 'rgba(255,170,220,0.85)'][i % 3]; g.beginPath(); g.arc((i * 71) % w, (i * 43 + (i * i) % 17) % h, 1.5 + (i % 3), 0, Math.PI * 2); g.fill(); }
+  }, true);
+}
 
 function starTexture() {   // a soft four-point glint
   return canvasTex(64, 64, (g, w) => {
@@ -57,6 +79,7 @@ function starTexture() {   // a soft four-point glint
 
 // ROWS17 replaces v5's camera-facing mounted machines where its rows stand (they "face the camera instead of receding"); call before buildRecon16
 export function prepRecon17(M16) {
+  if (JEWEL17_ON) { Object.assign(PASTEL16, R17.jewel.pastel); Object.assign(RECON16.glow, R17.jewel.glow); }
   if (!ROWS17_ON || !M16 || !M16.mounted) return 0;
   const n0 = M16.mounted.length;
   M16.mounted = M16.mounted.filter(([u, x, hc]) => !((x >= 1.2 && u >= 240 && hc >= 2.2 && hc <= 6.9) || (x <= -1.2 && u >= 241 && hc >= 4.3 && hc <= 6.9)));
@@ -66,7 +89,8 @@ export function prepRecon17(M16) {
 export function buildRecon17(root, TR, env, goldM, Ch, items) {
   const out = { parts: [] };
   const mat = (color, ei = 0.42, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.36, metalness: 0.25, envMap: env || null, envMapIntensity: 0.9, emissive: color, emissiveIntensity: ei, ...extra });
-  const B = {}; for (const k of Object.keys(COL)) B[k] = mat(COL[k], k === 'cream' ? 0.32 : 0.42);
+  const gi = JEWEL17_ON ? R17.jewel.machineGlow : 0.42;
+  const B = {}; for (const k of Object.keys(COL)) B[k] = mat(COL[k], k === 'cream' ? gi * 0.76 : gi);
   B.gold = goldM;
   const G = { c: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.75, 1.2, 1.6) }), p: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.95, 1.35) }), w: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.65, 1.3, 0.8) }) };
   const hi = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.8, 1.9) });
@@ -181,7 +205,7 @@ export function buildRecon17(root, TR, env, goldM, Ch, items) {
 // FAR17 (the level tube beyond the far portal) and WATER17 (the stretch's water): Level 1's own shaders, patched at run time for scene07 only.
 // Returns a per-frame update (the rings' suppression follows the camera's distance to the portal).
 export function patchShaders17(scene, TR, Ch) {
-  const rep = { wall: false, water: 0 }, portal = TR.map(0, 1.5, Ch.u1, new THREE.Vector3());
+  const rep = { wall: false, water: 0, hoops: 0 }, portal = TR.map(0, 1.5, Ch.u1, new THREE.Vector3()), dir = TR.map(0, 1.5, Ch.u1 + 1, new THREE.Vector3()).sub(portal).normalize();
   let wallMat = null; const waterMats = new Set();
   scene.traverse((o) => { if (o.name === 'l1Wall' && o.material && !wallMat) wallMat = o.material; if (o.name === 'l1Water' && o.material && o.material.uniforms && o.material.uniforms.uRider) waterMats.add(o.material); });
   const far = { value: new THREE.Vector4(Ch.u1 - 0.5, 1, 0, 0) };
@@ -213,6 +237,22 @@ export function patchShaders17(scene, TR, Ch) {
       m.fragmentShader = s; m.uniforms.uW17 = uW; m.needsUpdate = true; rep.water++;
     }
   }
-  const F = R17.far.ringFade;
-  return { report: rep, update: (cam) => { far.value.y = THREE.MathUtils.smoothstep(portal.distanceTo(cam), F[0], F[1]); } };
+  // the hoops beyond the far portal: collapsed (each instance scaled to nothing about its own centre) while the camera is in the stretch before
+  // the portal; they grow back as it comes within 16..8 m (instanced draws only; every other use of these materials is unchanged)
+  const hoopU = { value: new THREE.Vector4(portal.x, portal.y, portal.z, 0) }, hoopD = { value: dir.clone() }, seen = new Set();
+  if (FAR17_ON) scene.traverse((o) => {
+    if (o.name !== 'l1Hoops' || !o.isInstancedMesh || seen.has(o.material)) return; const m = o.material; seen.add(m);
+    const prev = m.onBeforeCompile;
+    m.onBeforeCompile = (sh, r) => { if (prev) prev(sh, r); sh.uniforms.uHoop17 = hoopU; sh.uniforms.uHoop17D = hoopD;
+      sh.vertexShader = 'uniform vec4 uHoop17; uniform vec3 uHoop17D;\n' + sh.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
+#ifdef USE_INSTANCING
+  { vec3 ip17 = (modelMatrix * instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz; transformed *= 1.0 - uHoop17.w * step(${R17.hoops.beyond.toFixed(1)}, dot(ip17 - uHoop17.xyz, uHoop17D)); }
+#endif`); };
+    const key = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null;
+    m.customProgramCacheKey = () => (key ? key() : '') + '|hoop17'; m.needsUpdate = true; rep.hoops++;
+  });
+  const F = R17.far.ringFade, V = new THREE.Vector3();
+  // (only while the camera is in this stretch BEFORE the portal: past it, or far before the chamber, the tube keeps its rings and hoops)
+  return { report: rep, update: (cam) => { const before = V.copy(cam).sub(portal).dot(dir) < 0 && portal.distanceTo(cam) < R17.hoops.reach;
+    const k = before ? THREE.MathUtils.smoothstep(portal.distanceTo(cam), F[0], F[1]) : 0; far.value.y = k; hoopU.value.w = k; } };
 }

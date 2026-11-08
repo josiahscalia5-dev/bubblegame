@@ -191,6 +191,18 @@ Then review the GLSL that /workspace/bubblegame/WebDemo/src/scene07_recon17.js i
 - 22:29 `Bash`: Compose final patched shader sources in scratchpad for inspection
 - 22:29 `Bash`: Check how often the scene07 apply path runs
 - 22:29 `Bash`: Find applyTripo1 call sites in game.js
+**Agent** (22:29 UTC):
+
+Tools available: Read, Grep, Glob, Bash. There is no threejs-devtools MCP tool. The `plugin:parallax-threejs:spector` MCP server is configured but failed to connect (CONNECTION_CLOSED), so I couldn't check the live compiled shader. This is the static pass only.
+1. **Script output: three findings, all false positives.** `check-shader-bindings.ts` on `level1.js` and `scene07_recon17.js` reported three cleanliness lines: `uTime`, `uFar17` and `uW17` are set in JS with "no matching GLSL uniform declaration". The script's regex can't see GLSL that lives inside JS template strings or is added by string replacement. I rebuilt the final source and all three are declared.
+2. **How I checked:** I rebuilt the exact final shader text from the real `level1.js` code plus the same patches, in the order they run (`openTube` first, then `patchShaders17`). The files are `/tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/wall_roof2_true.frag`, `/tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/wall_roof2_false.frag` and `/tmp/claude-0/-workspace-bubblegame/bb87ba9f-9df1-5d94-9b9c-75a7e04a090e/scratchpad/water_wet17.frag`.
+3. **Wall shader:** the search text appears exactly once, with roof2 on or off. The result is `ring = exp(-pow((rg - 0.5) / 0.07, 2.0)) * (1.0 - uFar17.y * step(uFar17.x, u)) * (1.0 - aaR);`. `u` (the first line of main) and `aaR` (the flow variant's rib2 line) are declared earlier in the same scope. `uniform vec4 uFar17;` is declared once, at global scope after `uOpen07`. JS sets it at `scene07_recon17.js:191`.
+4. **Water shader:** `x`, `t`, `u`, `uf`, `n` and `n2` are local variables at the top of main. `aaW` comes from `level1.js:292`, above the injection point. `vH` and `vHalf` are varyings of the wet shader, and `l1n` comes from NOISE. The new names `w17` and `az` don't clash with anything, and `bank` and `spk` sit inside their own block.
+5. **`white`** is a non-const `float white = clamp(...)` (`level1.js:275`), declared before the injected `white = max(...)`. `uniform vec4 uW17;` is declared once and set at `scene07_recon17.js:214`. No `uHalf` is left over and nothing is declared twice.
+6. **Patch scope:** only the wet water material is patched, because the `vHalf` check skips the others. In the wet build the old water chunks are removed before the scene is searched.
+7. **Cleanliness only, nothing blocking:** `const a2` at `scene07_recon17.js:200` is never used. Nothing stops the patches from being applied twice, which would duplicate the uniforms, but `patchShaders17` runs once (`tripo_l1.js:333`, through the single `applyTripo1` call at `game.js:1724`), so there is no current risk.
+8. **Result:** no binding or scope issues found.
+
 
 _12 tool steps._
 
