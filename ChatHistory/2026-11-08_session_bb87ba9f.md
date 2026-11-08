@@ -1934,3 +1934,21 @@ RECOVER THE PROJECT. VERIFY THE ENVIRONMENT. CONTINUE BUILDING WHERE THE PREVIOU
 
 While the restore test runs, I'll write the main handoff document.
 
+The clone is still running; the repository is large. Meanwhile I'll check for duplicate autosave processes, then save the documents, references and captures now rather than wait.
+
+The clone has reached 3.4 GB; the repository is large because of the evidence images, and it's still downloading. I'll wait for it to finish rather than poll.
+
+The clone test will notify me when it finishes. Meanwhile I'll write `BACKUP_VERIFICATION.md` with everything already verified, leaving only the clean-clone build result to fill in.
+
+Saving this document straight away, so it exists on GitHub even if the session ends before the clone finishes.
+
+The build fails on an unbalanced brace. My comment on the towel-drop line commented out the rest of that line, including its closing brace. Fixing that.
+
+While the restore test runs, I'll recapture the opening with the bundle fix, so the six-scene evidence reflects the current build.
+
+---
+
+### Note · 2026-11-08 23:45 UTC
+
+_(You interrupted Claude here.)_
+

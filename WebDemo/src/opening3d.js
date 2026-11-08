@@ -758,7 +758,7 @@ export function mountOpening3D(container, opts = {}) {
     const targets = (cw) => {   // [the hand on the washer's side (screen right), the other]
       const rest = [cw.clone().add(V([0.16, -0.42, 0.12])), cw.clone().add(V([-0.2, -0.42, 0.1]))], fwd = [cw.clone().add(V([0.42, -0.02, 0.42])), cw.clone().add(V([0.1, -0.12, 0.38]))];
       if (s < 0.3) return [rimR.clone().add(V([0, pat, 0])), rimL.clone().add(V([0, -pat, 0]))];
-      if (s < 1.75) { const k = sm(0.3, 0.5, s); return [rimR.clone().lerp(bp.clone().add(V([0.15, 0, 0])), k), rimL.clone().lerp(bp.clone().add(V([-0.15, 0, 0])), k)]; }
+      if (s < 1.75) { const k = sm(0.3, 0.5, s); return [rimR.clone().lerp(bp.clone().add(V([0.12, 0, 0])), k), rimL.clone().lerp(bp.clone().add(V([-0.12, 0, 0])), k)]; }
       if (s < 2.3) { const k = sm(1.75, 2.1, s); return [rel.clone().add(V([0.14, 0, 0])).lerp(fwd[0], k), rel.clone().add(V([-0.14, 0, 0])).lerp(fwd[1], k)]; }
       if (s < 3.25) { const k = sm(2.3, 2.9, s); return [fwd[0].lerp(rest[0], k), fwd[1].lerp(rest[1], k)]; }
       if (s < 4.1) { const k = sm(3.25, 3.65, s), b = sm(3.85, 4.1, s); return [rest[0].clone().lerp(cw.clone().add(V([0.5, -0.12, 0.48])), k).lerp(rest[0], b), rest[1]]; }   // the push that shuts the door
@@ -787,7 +787,7 @@ export function mountOpening3D(container, opts = {}) {
     // in the drum looking out (surprised, then delighted as the magic water rises); carried into the tunnel, turning to face into it
     let hp, scl = SIX.inBasket, surprise = 0; const rot = new THREE.Euler();
     if (s < 0) { hp = inB.clone().add(V([0, 0.012 * Math.abs(Math.sin(it * 1.6)), 0])); rot.set(0, -0.15 + 0.1 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); }
-    else if (s < 2.4) { hp = bp.clone(); surprise = sm(0.5, 0.65, s); rot.set(0.15 * Math.sin(s * 5), -0.2, 0.1 * Math.sin(s * 4)); if (s > 1.6) rot.set(-(s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
+    else if (s < 2.4) { hp = bp.clone(); scl = SIX.inBasket * (1 - 0.18 * sm(0.5, 1.0, s)); surprise = sm(0.5, 0.65, s); rot.set(0.15 * Math.sin(s * 5), -0.2, 0.1 * Math.sin(s * 4)); if (s > 1.6) rot.set(-(s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
     else if (s < 3.0) { const k = sm(2.4, 3.0, s); hp = bp.clone().lerp(heroSit, k); hp.y += Math.sin(k * Math.PI) * 0.06; rot.set(-(1 - k) * 4.2 - 4.8, (1 - k) * 0.8, 0); scl += (1 - scl) * k; surprise = 1; }
     else if (s < 5.9) { const wet = sm(4.4, 5.2, s); hp = heroSit.clone(); hp.y += wet * 0.03 + wet * 0.014 * Math.sin((s - 4.4) * 6.5);
       rot.set(0.04 * Math.sin(s * 3), 0.35 * Math.sin((s - 3) * 1.6) * (s < 4.6 ? 1 : 0.5), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 4.7 ? 1 : 0; }
@@ -798,10 +798,10 @@ export function mountOpening3D(container, opts = {}) {
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
     // ---- the towel: over him in the basket, wrapped into the bundle, then falling off him in the drum and settling on its floor
     const T = six.towel, rT = OPENING3D.heroW * SIX.inBasket * 0.64;
-    T.visible = s < 6.3;
-    if (s < 2.45) { const wrap = sm(0.5, 1.0, s); T.position.copy(s < 0 ? inB : bp).add(V([0, 0.03, 0])); T.rotation.set(-0.6, 0, 0); T.scale.setScalar(rT * (1 + wrap * 0.1)); six.low.scale.setScalar(Math.max(0.001, wrap));
+    T.visible = s < 5.85;
+    if (s < 2.45) { const wrap = sm(0.5, 1.0, s); T.position.copy(s < 0 ? inB : bp).add(V([0, 0.03 - wrap * 0.02, 0])); T.rotation.set(-0.6 + wrap * 0.25, wrap * 0.4, 0.15 * wrap); T.scale.set(rT * (1 - wrap * 0.2), rT * (1 - wrap * 0.38), rT * (1 - wrap * 0.12)); six.low.scale.setScalar(Math.max(0.001, wrap));   // (wrapped: a smaller, flatter bundle of laundry, not a ball)
       if (s > 1.6) T.rotation.set(-0.6 - (s - 1.6) * 6, 0.3, (s - 1.6) * 2); }
-    else { const k = sm(2.45, 3.1, s); T.position.copy(bp).add(V([-0.12 * k, -0.14 * k, -0.08 * k])); T.rotation.set(-1.4 - k * 0.6, 0.5, 0.3 * k); T.scale.set(rT, rT * (1 - 0.55 * k), rT); six.low.scale.setScalar(Math.max(0.001, 1 - k)); }
+    else { const k = sm(2.45, 3.1, s); T.position.copy(bp).add(V([-0.2 * k, -0.16 * k, -0.3 * k]));   /* (settles back-left on the drum floor, out of the porthole view) */ T.rotation.set(-1.4 - k * 0.6, 0.5, 0.3 * k); T.scale.set(rT, rT * (1 - 0.55 * k), rT); six.low.scale.setScalar(Math.max(0.001, 1 - k)); }
     // ---- the rest of the laundry follows the bundle in
     laundry.forEach((L, i) => { const t0 = 1.62 + i * 0.05, t1 = t0 + 0.65, k = (s - t0) / (t1 - t0); L.o.visible = s >= t0 && s < t1 + 0.9; if (!L.o.visible) return;
       const from = rel.clone().add(V([(i - 2) * 0.05, -0.04 * i, 0])), p = k <= 1 ? bez(from, L.apex, L.to, clamp01(k)) : L.to.clone().add(V([0, 0, -(k - 1) * 1.3]));
