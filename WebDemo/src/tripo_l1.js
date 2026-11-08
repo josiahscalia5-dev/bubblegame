@@ -10,6 +10,7 @@
 // code-built meshes are hidden, not removed (level1.js still turns the ball, and the wobble on `body` moves the new look too).
 // No random numbers. Report: window.__bwTripo1.
 import * as THREE from 'three';
+import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): the upper 40 %, attached wall machinery; `,nowall15` = pass 13b
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -176,7 +177,7 @@ function buildChamber(root, TR, env) {
   const shellM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15, envMap: env || null, envMapIntensity: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.45, side: THREE.DoubleSide });
   // the shell: a half-ellipse over the stretch, from the deck on one side over the top to the other
   const pos = [], uv = [], idx = [], nA = 36, step = 1; let rows = 0;
-  const col = [], vc = new THREE.Color(Ch.vault), cc = new THREE.Color();
+  const col = [], vc = WALL15_ON ? new THREE.Color().setRGB(...WALL15.vaultRGB) : new THREE.Color(Ch.vault), cc = new THREE.Color();   // (pass 15: a warm cream-lavender vault)
   // the cross-section (pass 8): up the left wall to wallH, the vault over the top, down the right wall
   const sec = []; for (let j = 0; j <= 6; j++) sec.push([Ch.halfW, -0.3 + (Ch.wallH + 0.3) * j / 6]);
   for (let j = 1; j < 24; j++) { const a = Math.PI * j / 24; sec.push([Ch.halfW * Math.cos(a), Ch.wallH + (Ch.height - Ch.wallH) * Math.sin(a)]); }
@@ -316,6 +317,8 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   await buildUpper(root, TR, env, loader, goldM, items);
   SCENE07.enclosures.length = 0; SCENE07.portholes.splice(0, SCENE07.portholes.length - SCENE07.upper.rings.length);   // (pass 6: landmarks replace pass 5's pieces; pass 7's high rings stay)
   SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 2.4, 4.2, 0.8, 1], [1, 250, 1.2, 4.6, 0.75, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
+  let wall15 = null;
+  if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, items); }   // pass 15 (scene07_wall15.js)
   buildArchitecture(root, TR, env, items);
   // big iridescent bubbles near the walls (board 07's large bubbles at its sides); a fixed pattern, no random numbers
   const bubM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.06, metalness: 0, envMap: env || null, envMapIntensity: 1.6, transparent: true,
@@ -354,7 +357,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
       body.scene07 #l1Banner.warn span { display: none; }`;
     document.head.appendChild(st);
   }
-  report.scene07 = { opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
+  report.scene07 = { wall15, opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
