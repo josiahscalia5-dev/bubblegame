@@ -668,10 +668,12 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     } else {
       // (wet) once she nears the chamber, all of it is drawn to its end wall (no gap, no wall or water popping in), the kingdom
       // and its sky only beyond the portal (the chamber encloses everything else)
-      const nearK = u > K.u0 - 60;
+      // (mobile cost: drawn whole only once the drum's usual reach touches the chamber; before that its far end is in the drum's
+      // glow. Later than this, the reach would end inside the widening chamber and show a dark hole)
+      const nearK = u > K.u0 - DRAW_AHEAD - 1;
       sky.visible = nearK; sky.position.copy(camU.value); kingdom.visible = nearK; endWall.visible = nearK;
       for (const c of chunks) c.visible = c.userData.u[1] > u - DRAW_BEHIND && (c.userData.u[0] < u + DRAW_AHEAD || (nearK && c.userData.u[0] >= K.u0 - 15));
-      for (const d of decor) { d.o.visible = nearK && d.u - u > -3; if (d.spinner && d.o.visible) d.spinner.rotation.z += dt * 2.4 * d.dir; }
+      for (const d of decor) { d.o.visible = nearK && d.u - u > -3 && d.u - u < 70; if (d.spinner && d.o.visible) d.spinner.rotation.z += dt * 2.4 * d.dir; }
       // the Screen 4 drum's far-end light planes shrink away as she nears the drum's end (they never come between her and the camera)
       for (const e of exitPlanes) {
         const k = 1 - smooth(K.exit[0], K.exit[1], u);
