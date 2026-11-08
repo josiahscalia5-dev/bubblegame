@@ -144,7 +144,8 @@ function buildArchitecture(root, TR, env, items) {
 // pass 6: open the tube in this stretch and build the chamber (real geometry along the track)
 function facadeTexture() {
   const c = document.createElement('canvas'); c.width = 512; c.height = 256; const g = c.getContext('2d');
-  const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#b58ae8'); gr.addColorStop(0.45, '#e2a6f2'); gr.addColorStop(1, '#ff9fd2');
+  const F = WALL15_ON ? WALL15.facade : ['#b58ae8', '#e2a6f2', '#ff9fd2'];   // (pass 15: the original's paler, warmer cream-lavender-pink)
+  const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, F[0]); gr.addColorStop(0.45, F[1]); gr.addColorStop(1, F[2]);
   g.fillStyle = gr; g.fillRect(0, 0, 512, 256);
   for (let i = 0; i < 4; i++) {   // columns, arched windows with a warm glow, gold frames
     const x = 18 + i * 128; g.fillStyle = 'rgba(255,240,255,0.45)'; g.fillRect(x - 10, 0, 12, 256);

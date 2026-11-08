@@ -18,7 +18,8 @@ export const WALL15 = {
   depth: [0.75, 1.15], height: [1.9, 3.1], width: [1.25, 1.8],
   pipe: { h: 3.25, r: 0.085 },   // the gold pipe along both walls, above the cabinets
   ribs: { every: 2.4, r: 0.13, inset: 0.18 },
-  vaultRGB: [1.7, 2.35, 1.12],   // the vault's vertex colour (it multiplies the facade texture's #b990e9): warm cream-lavender, ~(238, 218, 242)
+  facade: ['#dcc6f0', '#f4d6ea', '#ffc6dc'],   // the chamber facade's gradient (pass 13b: #b58ae8 / #e2a6f2 / #ff9fd2, a saturated purple-pink)
+  vaultRGB: [1.25, 1.35, 1.05],   // the vault's vertex colour (it multiplies the facade's top colour): a warm cream-lavender, ~(243, 226, 245)
   gear: [-1, 239, 2.55, 3.95, 1.2, -1],   // the original's big blue gear high on the right (pass 13b: [-1, 237, 2.9, 3.0, 0.95])
 };
 const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
