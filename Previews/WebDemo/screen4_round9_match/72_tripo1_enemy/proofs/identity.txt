@@ -4,3 +4,6 @@ normal T1.0: 0 pixels differ (e97a4d3b vs aa85e7ac, ?s3=,)
 candidate start: 0 pixels differ (e97a4d3b vs aa85e7ac, ?s3=intunnel,structmatch)
 level1_flow start: 0 pixels differ (e97a4d3b vs aa85e7ac, ?s3=intunnel,structmatch,level1)
 level1_flow T3.0: 0 pixels differ (e97a4d3b vs aa85e7ac, ?s3=intunnel,structmatch,level1)
+level1_flow T20.0: 0 pixels differ (e97a4d3b vs aa85e7ac, ?s3=intunnel,structmatch,level1)
+level1_flow T38.0: 0 pixels differ (e97a4d3b vs aa85e7ac, ?s3=intunnel,structmatch,level1)
+== done 14:51:03
