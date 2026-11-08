@@ -129,6 +129,9 @@ two tiers, pink rings, star tubs, bulbs; still airier and less dense than the or
 Tripo image-to-3D through `Tools/tripo_job.sh` (never the whole screenshot; reject flat cards); (3) integrate, compare ORIGINAL / BEFORE /
 AFTER at u 233 and a moving recording; (4) the enemy upper right needs a lane / height change in `level1.js` (coordinate with its owner,
 session b0abcf95, or the user); (5) find when the banner shows and capture it.
+**Screen 09 Tripo attempt (8 Nov ~17:10 UTC):** the left washer housing and the top-right machinery, from clean crops of the original
+(mirror-completed), both came back as shapeless blobs: REJECTED (`Design/TripoDeliveries/2026-11-08_session_57091b57_Screen09_architecture/README.md`);
+240 credits; balance 1,060. The original's structures are too small (40-80 px) for image-to-3D. Options there; ask the user before more jobs.
 **Known issues:** the clone is shallow (ancestry checks of old branches can read "not contained": deepen with `git fetch --unshallow`);
 the plugin's agents have no MCP tools; captures run in software WebGL (slow; one browser at a time is safest).
 **Nothing is running** at the writing of this file except the autosave.

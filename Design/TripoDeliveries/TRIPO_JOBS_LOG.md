@@ -12,3 +12,4 @@ enforces it with Tripo's account-wide history); never buy credits, top up or upg
 | 2026-11-08 14:27 | 57091b57 | ccr-b67aeffb-d94mmq | grime ball, board panel 09 (in `tripo1`) | `f53f85e8-8636-4b8e-9f87-cd6127924fd6` | 120 | success | 640 -> 400 (both jobs) |
 | 2026-11-08 14:40 | - | - | the user's purchase (+900 API credits) | - | - | - | 400 -> 1300 |
 | 2026-11-08 17:08 | 57091b57 | ccr-b67aeffb-d94mmq | s09_housing | `2414a436-d703-4458-b25f-81da91890435` | 120 | success | 1300 -> 1180 |
+| 2026-11-08 17:11 | 57091b57 | ccr-b67aeffb-d94mmq | s09_machinery | `b1e382e3-389f-4f29-b14c-4224b6d31241` | 120 | success | 1180 -> 1060 |
