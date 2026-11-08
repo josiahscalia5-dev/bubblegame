@@ -36,4 +36,9 @@ now more saturated than the original's upper half and a plain surface where the 
   pass 9 build: `proofs/identity.txt` (`scripts/identity.sh`).
 
 ## Verdict
-Pending (the game-art-director agent's keep / revert, then the user's review).
+- game-art-director agent: **KEEP** (pass 8's upper half read as an open pale sky with a sun; the original is an enclosed machinery
+  chamber, and pass 9 encloses it). What it still gets wrong (its measure, rows 0.18-0.40): the vault is one flat blue-violet (91 % of
+  pixels in hue 220-260°; the original about 50 % in 260-340°: violet, magenta, pink), saturation 156 vs the original's 120, brightness
+  spread 11 vs 39. Next single correction: `SCENE07.chamber.vault` 0x8f9cff -> about 0xf2c4ec (pass 10); after that, density
+  (machinery raised into the vault band).
+- The user: not reviewed yet.
