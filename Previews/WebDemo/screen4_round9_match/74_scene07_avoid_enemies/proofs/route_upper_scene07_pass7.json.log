@@ -1,0 +1,195 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "scene07"
+ ],
+ "route": "upper",
+ "frames": [
+  [
+   "tap",
+   {
+    "u": 1.592,
+    "x": 0,
+    "y": 0.405,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Washer drum",
+    "socks": 0,
+    "coins": 1280,
+    "gems": 36,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "intro",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 124,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   230,
+   {
+    "u": 230.245,
+    "x": -0.7,
+    "y": 0.379,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Grime balls",
+    "socks": 4,
+    "coins": 1371,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 1,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 252,
+     "textures": 64
+    },
+    "result": null
+   }
+  ],
+  [
+   233,
+   {
+    "u": 233.045,
+    "x": -0.7,
+    "y": 0.341,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Grime balls",
+    "socks": 4,
+    "coins": 1373,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 1,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 252,
+     "textures": 64
+    },
+    "result": null
+   }
+  ],
+  [
+   "end",
+   {
+    "u": 341.773,
+    "x": 0,
+    "y": 0.282,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue progress",
+    "socks": 5,
+    "coins": 1705,
+    "gems": 48,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "complete",
+    "complete": true,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 257,
+     "textures": 64
+    },
+    "result": {
+     "socks": 5,
+     "coins": 125,
+     "gems": 2,
+     "stars": 3,
+     "rewards": {
+      "coins": 300,
+      "gems": 10,
+      "socks": 5
+     }
+    }
+   }
+  ]
+ ],
+ "events": {
+  "swipes": 11,
+  "blocked": [],
+  "spins": 3,
+  "events": [
+   [
+    "sock",
+    3,
+    1,
+    "main"
+   ],
+   [
+    "sock",
+    6.6,
+    2,
+    "main"
+   ],
+   [
+    "sock",
+    21.5,
+    3,
+    "main"
+   ],
+   [
+    "swipe onto side path",
+    56.6,
+    0.86
+   ],
+   [
+    "sock",
+    126.6,
+    4,
+    "lower path"
+   ],
+   [
+    "spin",
+    228.1
+   ],
+   [
+    "spin",
+    234.4
+   ],
+   [
+    "KNOCK (heart lost)",
+    240.7,
+    "lane 1",
+    "near: {\"brushes\":[],\"enemies\":[[241.41,0,0.7,false],[241.41,2,-0.7,false]],\"bars\":[],\"drum\":[]}"
+   ],
+   [
+    "spin",
+    240.7
+   ],
+   [
+    "sock",
+    304,
+    5,
+    "main"
+   ]
+  ]
+ },
+ "logs": []
+}

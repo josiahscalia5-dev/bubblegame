@@ -22,6 +22,23 @@ Code: `WebDemo/src/tripo_l1.js` (`SCENE07`, `buildArchitecture`, `applyScene07`)
    the camera is in this stretch (fewer large white stars over the blue water; the exact previous size restored outside). Gameplay
    identical (`proofs/route_upper_scene07_pass5.json.log`), no console errors.
 
+## Passes 6 and 7 (the user's environment corrections: "not another pass that only adds decorations to the wrong tunnel")
+6. (not approved by the user: "a giant flat hot-pink ceiling") the tube OPENED above the water in this stretch (level1.js's wall shader
+   patched at run time from `tripo_l1.js`, its hoops hidden here; `level1.js` itself unchanged) into one open laundry CHAMBER: a facade
+   shell, decks either side of the water with gold edges, gold-pink portals where the tube enters and leaves, the big pink washer housing
+   (left), big star tubs (right). Frames `frames/pass6/`, `03_original_before_pass5_pass6.jpg`.
+7. **current** (`frames/pass7/`, `04_original_before_pass6_pass7.jpg`, video `videos/scene07_pass7_layered_chamber_seed7_412x915.mp4`):
+   structures mapped to the original's screen positions: the pink housing with its bubble at the left edge; the game's own colourful
+   machinery models (blue-gold machines, towers, pink-gold pipes) stacked high on the chamber walls as the layered upper background; pink
+   rings high; blue gears top right and top centre; a gold balustrade on posts along the left walkway; the chamber shortened so the bright
+   exit portal sits at the vanishing point; soft coloured lights; a light lavender vault (no hot pink); the original-style red warning
+   banner styled (title only, warning icon) while scene07 is on. Gameplay identical, no console errors; identity `proofs/identity.txt`.
+
+**Still NOT the original (honest):** the vault still reads as a big lavender dome above the window band, where the original is a busy,
+bright, layered corridor; the enemy is in the left lane (the original's is right of centre: its lane is gameplay, in `level1.js`); the
+restyled banner was not caught in a frame yet (it did not show at u 205-233 in these captures: not verified); the coins and the water are
+unchanged; the HUD's mission panel is the game's own. The user has NOT approved passes 6 or 7.
+
 ## Checklist: the original's objects (the kit's annotations 1-6) in the game now (pass 5)
 | # | Original | In the game (pass 4) | Status |
 |---|---|---|---|
