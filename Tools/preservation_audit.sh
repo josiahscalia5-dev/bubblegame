@@ -13,7 +13,7 @@ echo "== Design agents, skill, hook, settings, MCP"
 for a in game-art-director gameplay-visual-testing lighting-visual-matching water-vfx-engineer screen4-water-motion-engineer; do chk ".claude/agents/$a.md" "$(same .claude/agents/$a.md), $(git cat-file -s "$R:.claude/agents/$a.md" 2>/dev/null) bytes"; done
 chk .claude/skills/bubble-wash-screen-matcher/SKILL.md "$(same .claude/skills/bubble-wash-screen-matcher/SKILL.md)"; chk .claude/settings.json "SessionStart hook"; chk .claude/hooks/session-start.sh; chk .mcp.json "empty on purpose: the MCP servers come from the parallax-threejs plugin"
 echo "== Setup, save and verification scripts"
-for f in Tools/cloud_env_setup.sh Tools/bw_tools_env.sh Tools/verify_restore.sh Tools/save_now.sh Tools/save_guard.py Tools/autosave.sh Tools/autosave_sessions.json Tools/export_chat_history.py Tools/DEV_TOOLS.md Tools/preservation_audit.sh WebDemo/package.json WebDemo/package-lock.json WebDemo/build.mjs; do chk "$f"; done
+for f in Tools/cloud_env_setup.sh Tools/bw_tools_env.sh Tools/verify_restore.sh Tools/save_now.sh Tools/save_guard.py Tools/tripo_job.sh Design/TripoDeliveries/TRIPO_JOBS_LOG.md Tools/autosave.sh Tools/autosave_sessions.json Tools/export_chat_history.py Tools/DEV_TOOLS.md Tools/preservation_audit.sh WebDemo/package.json WebDemo/package-lock.json WebDemo/build.mjs; do chk "$f"; done
 echo "== Handoffs"
 for f in CLAUDE.md HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md SESSION_FILE_RESERVATIONS.md SAVE_BEFORE_ACCOUNT_SWITCH.md START_HERE_NEW_CLAUDE_ACCOUNT.md RESTORATION_REPORT_2026-11-08_session_8140e507.md; do chk "$f"; done
 echo "== The six Tripo GLBs (sha256 of GitHub's copy against the manifest)"

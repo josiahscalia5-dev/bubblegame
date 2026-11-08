@@ -172,7 +172,10 @@ the setup script).
 **Warning about Tripo:** its `--yes` (skip confirmations) is switched on automatically when it runs headless, as here.
 `tripo make`, `tripo ai` and `tripo redo` would spend credits without asking. Since 8 November (about 14:15 UTC) the user's
 standing authorization lets Claude spend the AVAILABLE credits on asset jobs without asking each time (rules in `CLAUDE.md`,
-Safety: dry run first, image-to-3D from the approved art, evaluate before the next job, never buy credits or top up).
+Safety: dry run first, image-to-3D from the approved art, evaluate before the next job, never buy credits or top up). ONE lead
+session submits paid jobs, always with `bash Tools/tripo_job.sh <name> make <input> ...` (tested 8 November without spending:
+refuses topup, a second job in the same container, a job in flight on the account, another session's job in the last 30 minutes
+unless `BW_TRIPO_I_AM_LEAD=1`; `BW_TRIPO_CHECK_ONLY=1` runs every check and the dry run only). Log: `Design/TripoDeliveries/TRIPO_JOBS_LOG.md`.
 `tripo doctor`, `tripo balance` and `tripo login` are free.
 
 **Tripo in a cloud session (verified 8 November 14:24 UTC, session `57091b57`, the user's other account):** the key is a network

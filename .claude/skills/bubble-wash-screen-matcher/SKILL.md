@@ -146,6 +146,8 @@ commit, whether GitHub really has it, and the files saved.
   subscription or use another paid service without asking. Use Tripo where a model from the APPROVED art would be clearly closer
   than the existing one (inspect and reuse existing models first; no duplicates or unrelated experiments); one job at a time,
   evaluated against the art before the next; record each job (task id, credits, decision) in `Design/TripoDeliveries/<folder>/README.md`.
+  **One lead session submits paid jobs**, always through `bash Tools/tripo_job.sh <name> make ...` (it refuses while another session's
+  job is in flight or recent, dry-runs, logs every job to `Design/TripoDeliveries/TRIPO_JOBS_LOG.md`); agents only recommend jobs.
   Water, splashes, bubbles, lighting, camera, UI and gameplay stay code work (three.js, Blender).
 - **Tripo CLI** (`tripo`): the key lives in `~/.tripo` (outside the repository) after `tripo login --region ov --no-wait`
   (browser sign-in) or `tripo login --region ov --key ...`. A key pasted in chat must never be written to a repository file;

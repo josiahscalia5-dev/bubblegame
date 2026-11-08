@@ -291,3 +291,7 @@ Verify with real gameplay, never isolated renders: `cd WebDemo && node build.mjs
   `flock /tmp/bw_browser.lock <command>`. A blank lavender frame means two browsers ran at once: capture again.
 - If you work in a separate git worktree, link the packages first (`ln -s /home/user/bubblegame/WebDemo/node_modules
   WebDemo/node_modules`) and **commit your work in that worktree before you finish**, or it is lost when the session ends.
+- Tripo (the user's standing authorization of 8 November): the AVAILABLE Tripo API credits may be spent on useful 3D game assets
+  without asking per job, but ONE lead session submits paid jobs, through `bash Tools/tripo_job.sh` (it enforces one job at a time
+  across sessions and accounts). Agents never run `tripo make` / `redo` / `ai` themselves: recommend a job to the lead (the asset,
+  the approved reference crop, why it is closer). Never buy credits or top up.

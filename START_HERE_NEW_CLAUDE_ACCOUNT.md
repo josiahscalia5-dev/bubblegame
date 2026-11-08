@@ -1,4 +1,8 @@
-> **Newest (7 November 2026, 23:10 UTC): read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` first; it has the current branch, state and steps. This file is older.**
+> **Newest (8 November 2026, about 15:00 UTC): read `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md` section 0000 first; it has the current branches, state and steps. This file is older.**
+> - Start the session on the newest work branch (0000.1 there; `ccr-b67aeffb-d94mmq` at this writing), NOT the repository's default
+>   branch `claude/new-session-oth0dd` (2 November, without `CLAUDE.md`, so a session there sees none of the rules).
+> - Tripo: the user's standing authorization (8 November) covers the AVAILABLE API credits without asking per job; ONE lead session
+>   submits paid jobs, always with `bash Tools/tripo_job.sh`; never buy credits or upgrade (`CLAUDE.md`, Safety).
 
 # Start here: continuing Bubble Wash Kingdom on another Claude account
 

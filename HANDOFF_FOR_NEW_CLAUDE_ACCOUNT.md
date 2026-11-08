@@ -40,8 +40,13 @@ continue from the newer; otherwise merge both into your own branch with normal m
 ### 0000.3 Tripo (verified 14:24 and 14:40 UTC)
 - Connected through the network secret for `openapi.tripo3d.ai` (`TRIPO_API_KEY=tsk_proxy-injected`); `tripo doctor` all OK.
 - Balance: 640 -> 400 after this session's two jobs (240) -> **1,300 at 14:40 UTC** (the user's purchase: +900 on the API balance).
-- **The user's standing authorization** (`CLAUDE.md`, Safety) now stands in every active instruction: available credits, no per-job
-  approval; never buy credits, top up or change the subscription.
+- **The user's standing authorization** (`CLAUDE.md`, Safety; confirmed by the user about 14:55 UTC) now stands in every active
+  instruction (CLAUDE.md, the skill, all five agents, the handoffs, DEV_TOOLS.md, the save checklist): available credits, no per-job
+  approval; never buy credits, top up or change the subscription. **ONE lead session submits paid jobs**, always with
+  `bash Tools/tripo_job.sh <name> make ...` (checks Tripo's account-wide history so two sessions or accounts never spend at once; dry
+  run; logs to `Design/TripoDeliveries/TRIPO_JOBS_LOG.md`). Agents recommend jobs, never submit them.
+- **The repository's DEFAULT branch is `claude/new-session-oth0dd` (2 November, no `CLAUDE.md`).** A session started on it sees none of
+  this: start the other account's session on `ccr-b67aeffb-d94mmq` (or the newest branch in 0000.1), or paste 0000.7 as its first message.
 - Jobs: the grime ball (board panel 09): SUCCESS, in `tripo1` (`72_tripo1_enemy/README.md`); the castle (board panel 02): REJECTED (a
   flat card; the board's castle has no clean silhouette at 1536 x 1024; a clean, larger castle view is needed first).
 - Asset decisions so far (`Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/README.md`): `sock.glb` KEEP (matches the
@@ -76,8 +81,8 @@ continue from the newer; otherwise merge both into your own branch with normal m
 > else merge both into your own branch with normal merges (rebuild the bundle); never force-push, reset, or merge PR #3 or an unapproved
 > candidate. Run `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing, `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci`,
 > `bash Tools/verify_restore.sh --build`, `bash Tools/preservation_audit.sh`; check one autosave process runs; ToolSearch `mcp__plugin_parallax-threejs`;
-> `TRIPO_API_KEY=tsk_proxy-injected tripo balance`. Use my available Tripo credits under my standing authorization (never buy credits).
-> Report what works and what I must reconnect, then continue section 0000.6.
+> `TRIPO_API_KEY=tsk_proxy-injected tripo balance`. Use my available Tripo credits under my standing authorization, one lead session at a
+> time, every paid job through `bash Tools/tripo_job.sh` (never buy credits). Report what works and what I must reconnect, then continue 0000.6.
 
 ## 000. (8 November 2026, about 13:30 UTC, session `b0abcf95`, the user's other account): the state before section 0000
 

@@ -74,3 +74,10 @@ One technically justified correction at a time, for BOTH of the user's equal goa
 ## Machine limits
 
 4 cores and 16 GB: at most two browsers at once. Commit with `bash Tools/save_now.sh "<message>"`.
+
+## Tripo
+
+- Tripo (the user's standing authorization of 8 November): the AVAILABLE Tripo API credits may be spent on useful 3D game assets
+  without asking per job, but ONE lead session submits paid jobs, through `bash Tools/tripo_job.sh` (it enforces one job at a time
+  across sessions and accounts). Agents never run `tripo make` / `redo` / `ai` themselves: recommend a job to the lead (the asset,
+  the approved reference crop, why it is closer). Never buy credits or top up.

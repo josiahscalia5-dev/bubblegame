@@ -190,3 +190,8 @@ switching accounts, follow `SAVE_BEFORE_ACCOUNT_SWITCH.md`.
   a payment method or use another paid service without asking. Not a substitute for water, camera, UI, gameplay or transitions (code
   work). Record every job (task id, credits, decision) in its `Design/TripoDeliveries/<folder>/README.md` and report credits used and
   the balance. `tripo doctor` and `tripo balance` are free. Meshy is not used. Keys stay out of the repository (network secret only).
+  Confirmed by the user at about 14:55 UTC (1,300 credits available then). **ONE lead Claude session submits paid Tripo jobs at a time,
+  to prevent duplicated spending:** every paid job goes through `bash Tools/tripo_job.sh <name> make ...`, which refuses while any job
+  is queued or running on the account, or another session submitted one in the last 30 minutes (Tripo's account-wide history, the same
+  for both Claude accounts), runs the free dry run, then the job, and appends it to `Design/TripoDeliveries/TRIPO_JOBS_LOG.md`.
+  Design agents never submit jobs; they recommend one to the lead session.
