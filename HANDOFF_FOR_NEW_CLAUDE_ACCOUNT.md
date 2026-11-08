@@ -1,11 +1,85 @@
-# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST: section 000 is the newest, 8 November about 13:30 UTC)
+# Bubble Wash Kingdom: handoff for a new Claude account (READ THIS FIRST: section 0000 is the newest, 8 November about 14:50 UTC; then 000)
 
 Written 7 November 2026, about 23:10 UTC, by session `398ed88c`, at the user's handoff order
 (`Design/ReferencePacks/2026-11-07_Full_Screen4_Brief_from_user/User_GitHub_Handoff_Order.md`). Nothing in this file is a
 secret. It supersedes the older handoff files for the CURRENT state; they stay as history (`BUBBLE_WASH_ACCOUNT_HANDOFF.md`,
 `CLAUDE_ACCOUNT_TRANSFER_HANDOFF.md`, `START_HERE_NEW_CLAUDE_ACCOUNT.md`, `HANDOFF.md`). The project rules are `CLAUDE.md`.
 
-## 000. NEWEST STATE (8 November 2026, about 13:30 UTC, session `b0abcf95`, the user's other account): READ THIS FIRST
+## 0000. NEWEST STATE (8 November 2026, about 14:50 UTC, session `57091b57`): READ THIS FIRST, then section 000
+
+Session link: https://claude.ai/code/session_013kxR3NgrYJJC9HLHZ7n41J. Nothing here is a secret.
+
+### 0000.1 Branches (TWO sessions were live at once)
+| Branch | Session | State at 14:50 UTC |
+|---|---|---|
+| **`ccr-b67aeffb-d94mmq`** | `57091b57` (this one; the harness gave it this branch) | contains ALL of `ccr-50c66592-kcnqoy` up to `fc57eba2` (normal merge `24ca897b`); plus the save-system fixes, the Tripo authorization in every instruction, `tripo1`. Head: `git ls-remote origin ccr-b67aeffb-d94mmq` |
+| `ccr-50c66592-kcnqoy` | `b0abcf95` | STILL LIVE at 14:18 UTC (autosave `fc57eba2` at 14:17:45: Level 1 route frames from its running jobs). Never written by `57091b57` |
+| `claude/bubble-wash-kingdom-continue-z9nmm1` (PR #3, draft) / `ccr-76d4bc77-rqhl8o` | `8140e507` / `dbccb9a3` | contained in both branches above; PR #3 untouched, not merged |
+
+**To continue:** `git fetch origin ccr-b67aeffb-d94mmq ccr-50c66592-kcnqoy`; if one contains the other (`git merge-base --is-ancestor`),
+continue from the newer; otherwise merge both into your own branch with normal merges (expected overlap: `game.js` near `buildLevel1`
+(keep both sides), `CLAUDE.md` / handoffs (keep both sections), `game.bundle.js` (REBUILD with `node build.mjs`, never hand-merge)).
+
+### 0000.2 The save system: verified in session `57091b57` (real evidence, not assumed)
+- The SessionStart hook started the 5-minute autosave by itself when this NEW session opened (14:18 UTC, its first save `88201e87`,
+  `github=VERIFIED`). Tested by hand too: a first hook call started exactly one autosave, a second started none (no duplicates).
+- Strengthened: the autosave is pinned to the branch checked out at its start (`BW_AUTOSAVE_BRANCH`, set by the hook); it reports each
+  round whether the parent branch (`ccr-50c66592-kcnqoy`, from `Tools/autosave_sessions.json`) has commits not merged yet, and never
+  merges it by itself (a merge would change files under a running build or recording); `Tools/save_guard.py` also holds back any file
+  over 95 MB (GitHub refuses 100 MB, and one such file would stop every later push). Guard tested: a fake key, a file written seconds
+  ago and a 97 MB file held back; the proxy placeholder and an old image passed.
+- **SAVE NOW (tested, `9314182b` and `7eefa537`, both `Push: VERIFIED`):** `bash Tools/save_now.sh "Save before account switch"`.
+  It saves the CHECKED-OUT branch only (check `git branch --show-current` first).
+- Audit of GitHub's copy (`bash Tools/preservation_audit.sh ccr-b67aeffb-d94mmq`, 14:37 UTC): 57 present, 0 missing; the five agents
+  byte-identical, the six Tripo GLBs sha256 = manifest, the original Screen 4 sha256 `b30dc6a1794213be`, the 12-screen board, the girl art,
+  the FRESH pack's ten crops; no file over 50 MB; no key or token pattern. Cross-checked with the GitHub API (branch head, the agents,
+  `WebDemo/models/`).
+- NOT YET VERIFIED: the hook after a container is reclaimed and the session RESUMES (it is written for it; not observed); the autosave
+  runs only while this container runs.
+
+### 0000.3 Tripo (verified 14:24 and 14:40 UTC)
+- Connected through the network secret for `openapi.tripo3d.ai` (`TRIPO_API_KEY=tsk_proxy-injected`); `tripo doctor` all OK.
+- Balance: 640 -> 400 after this session's two jobs (240) -> **1,300 at 14:40 UTC** (the user's purchase: +900 on the API balance).
+- **The user's standing authorization** (`CLAUDE.md`, Safety) now stands in every active instruction: available credits, no per-job
+  approval; never buy credits, top up or change the subscription.
+- Jobs: the grime ball (board panel 09): SUCCESS, in `tripo1` (`72_tripo1_enemy/README.md`); the castle (board panel 02): REJECTED (a
+  flat card; the board's castle has no clean silhouette at 1536 x 1024; a clean, larger castle view is needed first).
+- Asset decisions so far (`Design/TripoDeliveries/2026-11-08_session_57091b57_Level1_assets/README.md`): `sock.glb` KEEP (matches the
+  board's socks); board 05's wall brushes = the game's own wheel brush (`machinery.glb`, "big blue wheel with pink, white and blue
+  bristles") placed large on Level 1's walls (code, no credits); the opening's basket = the user's Tripo basket recoloured from plum to
+  the approved art's lavender, with the user's Tripo towels (colours already match): no new job needed. None of these three done yet.
+
+### 0000.4 Plugin, MCP and tools in session `57091b57` (checked live)
+- parallax-threejs 0.4.12 enabled on this account: threejs-devtools 0.2.1 answers (no page attached), playwright-mcp 0.0.78 and
+  chrome-devtools 1.6.0 connected; **spector FAILS** (the plugin ships without `vendor/spector`); the plugin's agents declare unprefixed
+  MCP tool names (its defect); Deno not installed (checkpoint, diff, sweep, replay, export-report, ship-check, init need it; memcheck does not).
+- Installed and working: Blender 5.2.3, Tripo CLI 0.11.2, glTF Transform 4.5.1, glTF Validator 2.0.0-dev.3.10, Vite 8.3.5, three 0.170.0,
+  Playwright 1.63.0 (preinstalled Chromium), PyTorch 2.15, LPIPS, Optuna 5.0, scikit-image 0.26, OpenCV 5.0, Git LFS 3.4.1 (not needed).
+
+### 0000.5 What lives where
+| | |
+|---|---|
+| SAVED ON GITHUB | everything in 000.4 below plus: `tripo1` (source, bundle `aa85e7ac`, model), the Tripo deliveries with inputs and checksums, `WebDemo/tools/tripo/`, evidence `72_tripo1_enemy/` |
+| RESTORABLE FROM GITHUB | the tools (`bash Tools/cloud_env_setup.sh`, `cd WebDemo && npm ci`), the autosave (the hook, or the command in `CLAUDE.md`) |
+| INSTALLED AND VERIFIED IN THIS SESSION ONLY | the running autosave process, the tool installs in `~/.bubblewash-tools`, rembg (scratch, for cut-outs), scratch build copies |
+| MUST BE RECONNECTED ON THE OTHER ACCOUNT | the parallax-threejs plugin (enable, new session), the Tripo network secret, the cloud environment (hosts incl. `openapi-dl.data.tripo3d.com`, setup script), Deno if wanted |
+
+### 0000.6 Next (in the user's order: Home, Laundry Toss, Screen 4, Level 1)
+1. The opening: the user's Tripo basket (lavender) and towels in the toss, compared at the same frames with the approved girl art.
+2. Level 1 board 05: the wheel brushes large on the walls; board 07: the enemy higher and larger (in `level1.js`: coordinate with `b0abcf95`).
+3. The castle: a clean castle reference, then one Tripo job; finale2 (session `b0abcf95`) places it.
+4. A full phone recording only after these.
+
+### 0000.7 First message for the other account (copy and paste)
+> Continue my Bubble Wash Kingdom game: repository josiahscalia5-dev/bubblegame. Read `CLAUDE.md` and section 0000 of
+> `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`. Fetch `ccr-b67aeffb-d94mmq` and `ccr-50c66592-kcnqoy`; continue from the one that contains the other,
+> else merge both into your own branch with normal merges (rebuild the bundle); never force-push, reset, or merge PR #3 or an unapproved
+> candidate. Run `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing, `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci`,
+> `bash Tools/verify_restore.sh --build`, `bash Tools/preservation_audit.sh`; check one autosave process runs; ToolSearch `mcp__plugin_parallax-threejs`;
+> `TRIPO_API_KEY=tsk_proxy-injected tripo balance`. Use my available Tripo credits under my standing authorization (never buy credits).
+> Report what works and what I must reconnect, then continue section 0000.6.
+
+## 000. (8 November 2026, about 13:30 UTC, session `b0abcf95`, the user's other account): the state before section 0000
 
 Section 00 below (11:20 UTC, session `8140e507`) is history; where they differ, THIS section is right. Session link:
 https://claude.ai/code/session_01CUAtW8wdgwPxistiKwJw7V. Nothing here is a secret.
