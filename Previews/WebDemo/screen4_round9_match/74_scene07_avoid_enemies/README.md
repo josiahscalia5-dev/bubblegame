@@ -15,12 +15,19 @@ Code: `WebDemo/src/tripo_l1.js` (`SCENE07`, `buildArchitecture`, `applyScene07`)
    curve, u 216-268); thick PINK PORTHOLE RINGS with gold rims and an iridescent bubble inside on the upper left wall; gears high on the
    walls; big iridescent bubbles. Plus `tripo1` v2 (the floating Tripo enemy, `72_tripo1_enemy/`).
 
-## Checklist: the original's objects (the kit's annotations 1-6) in the game now
+5. **current** (the user's review of pass 4; `frames/pass5/`, `01_original_before_after.jpg`, `02_original_before_pass4_pass5.jpg`): the
+   copper gear and the straight channel walls REMOVED; ROUND pink-lavender star ENCLOSURES with gold rims at the water's edge, alternating
+   sides (kit crop 10); larger pink PORTHOLE rings on BOTH upper walls (crop 09), covering more of the plain tube; BLUE GEARS built in
+   three.js (blue teeth, lavender ring, gold hub) in place of the copper `gear.glb`; the game's particle bursts at 55 % size only while
+   the camera is in this stretch (fewer large white stars over the blue water; the exact previous size restored outside). Gameplay
+   identical (`proofs/route_upper_scene07_pass5.json.log`), no console errors.
+
+## Checklist: the original's objects (the kit's annotations 1-6) in the game now (pass 5)
 | # | Original | In the game (pass 4) | Status |
 |---|---|---|---|
-| 1 | left: big pink porthole ring with a bubble, gold rims; colourful platforms | pink porthole rings with gold rims and a bubble on the upper left wall (u 233, 251) | PARTLY: visible at u 230 top left; smaller and higher than the board's; the left channel wall barely shows |
+| 1 | left: big pink porthole ring with a bubble, gold rims; colourful platforms | pink porthole rings with gold rims and a bubble on both upper walls (6), round star enclosures | CLOSER: the rings read; the board's ring is lower and larger at the left edge |
 | 2 | glossy navy enemy floating, angry pink eyes | the Tripo enemy floating clear of the water, glossy, halo (`tripo1` v2) | CLOSER: still left of centre and lower than the board's, and more violet than navy |
-| 3 | right: round pink / gold side enclosure with stars, blue machinery | the right channel wall: pink-lavender, yellow stars, gold rail, curving into the distance | CLOSER: lower than the board's wall, which rises to about two thirds of the screen height at the right edge |
+| 3 | right: round pink / gold side enclosure with stars, blue machinery | round pink-lavender star enclosures with gold rims (7, alternating sides); blue gears high | CLOSER: the board's enclosure is taller and nearer at the right edge; the gears read periwinkle, not the board's deep blue |
 | 4 | the mascot ON saturated blue water, restrained splashes | unchanged (the accepted mascot and Level 1 water) | NOT CHANGED in this pass |
 | 5 | large gold paw coins framing the path | unchanged (the game's coins, in their lanes) | NOT CHANGED: the board's coins sit higher and at the sides |
 | 6 | pink curved "Avoid Enemies!" banner | the game's smaller "Avoid enemies! Tap to spin-attack them" banner | NOT CHANGED |
@@ -28,9 +35,10 @@ Code: `WebDemo/src/tripo_l1.js` (`SCENE07`, `buildArchitecture`, `applyScene07`)
 ## Remaining differences (honest)
 - The blue swirl TUBE still dominates the middle of the screen; the board shows an open, deep corridor of machinery, coins and lights.
   The tube and the course belong to `level1.js` (session `b0abcf95`'s file: roof2 is its candidate for the upper tunnel).
-- The walls should be taller and the left one more visible; the gears read orange-copper (their texture's gold under the grade).
+- The enclosures should be taller and nearer the screen edges; the gears read periwinkle under the tunnel's purple light (the board: deep blue).
+- The mascot's silhouette is the accepted one (not changed: the Screen 4 baseline is the user's first priority after the opening).
 - The water, the coins' placement and the banner are not changed yet.
-- Mobile cost: pass 4 adds 2 walls, 2 rails, 3 portholes, 4 gears (18,748 triangles each, drawn only within 34 m) and 18 bubbles.
+- Mobile cost: pass 5 adds 7 enclosures, 6 portholes, 5 gears (procedural, a few thousand triangles each, drawn only within 34 m) and 18 bubbles.
 
 ## Proofs
 - Gameplay: the route with `tripo1,scene07` has the identical event log and identical states (through Level Complete) as without
