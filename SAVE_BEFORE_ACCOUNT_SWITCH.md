@@ -1,5 +1,11 @@
 # Save before an account switch (a reusable checklist)
 
+**Emergency, when usage is almost out (tested 8 November 2026, session `b0abcf95`):** ask Claude to run
+`bash Tools/save_now.sh "Save before account switch"` . It commits everything on the checked-out work branch (never `main`;
+credentials and files still being written are held back by `Tools/save_guard.py`), pushes with retries, merges another session's
+newer commits with a normal merge if needed (never a force-push), and asks GitHub which commit the branch is at: its last lines say
+`Push: VERIFIED, GitHub's <branch> is at <commit>`. Then `bash Tools/preservation_audit.sh` lists what GitHub has (optional, free).
+
 Use this when a Claude account is running low on usage. Ask Claude: **"Run SAVE_BEFORE_ACCOUNT_SWITCH.md now."** It takes a
 few minutes, and nothing in the game changes.
 
@@ -13,8 +19,8 @@ few minutes, and nothing in the game changes.
    - copy any scratch scripts it needs from the scratchpad into the evidence folder (text only).
    - Never discard unfinished work silently: list it in the handoff.
 3. **Check the accepted game is untouched:** run `bash Tools/verify_restore.sh`.
-   - The accepted bundle's md5 must be `5bb24e2828a6f2ef17146252c69b413a`, unless the user approved a new accepted build:
-     then update the md5 in `Tools/verify_restore.sh` and the handoff.
+   - The bundle's md5 must be one `Tools/verify_restore.sh` knows (it lists every proven build; a new build is added there with
+     its proof folder, and the accepted look is proven 0 px by frame comparison, not by the md5).
    - `git diff --stat <last checkpoint> HEAD -- WebDemo/` must list only changes the user approved. Experiments stay
      behind their `?s3=` flags.
 4. **Update the handoff:**

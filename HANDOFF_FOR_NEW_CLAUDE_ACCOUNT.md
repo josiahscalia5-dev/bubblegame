@@ -38,6 +38,49 @@ https://claude.ai/code/session_01CUAtW8wdgwPxistiKwJw7V. Nothing here is a secre
   agents still get no MCP tools (only Bash: its tool-naming defect); checkpoint / diff / sweep need Deno (not installed).
 - `verify_restore.sh --build`: 28 passed, 0 failed. Tripo: authenticated through the proxy, 640 credits, nothing spent. Blender 5.2.3.
 
+### 000.4 Preservation: what is where (audited against GitHub's copy, 8 November 13:28 UTC; re-run `bash Tools/preservation_audit.sh`)
+| | |
+|---|---|
+| SAVED ON GITHUB (branch `ccr-50c66592-kcnqoy`) | the game (`WebDemo/` sources, bundle, models), the five design agents (byte-identical), the skill, the SessionStart hook and settings, all setup / save / verify scripts, the handoffs, the six Tripo GLBs (sha256 = manifest), `girl_rigged.glb`, the original Screen 4 (sha256 `b30dc6a1794213be`), the 12-screen board, the girl reference, the FRESH pack's ten original crops, all evidence and chat histories. 57 of 57 checked items present; no file over 50 MB (largest 28 MB: Git LFS not needed); no credential pattern anywhere |
+| RESTORABLE FROM GITHUB | the tools: `bash Tools/cloud_env_setup.sh` (Blender, Tripo CLI 0.11.2, glTF Transform, glTF Validator, Vite, OpenCV, scikit-image, PyTorch, LPIPS, Optuna into `~/.bubblewash-tools`); `cd WebDemo && npm ci` (three.js 0.170, esbuild, Playwright 1.63 uses the preinstalled Chromium); then `bash Tools/verify_restore.sh --build` |
+| MUST BE RECONNECTED ON THE OTHER ACCOUNT | the parallax-threejs 0.4.12 plugin (enable it, start a NEW session: `Tools/PLUGIN_AND_MCP_RESTORE.md`); the Tripo key as a network secret for `openapi.tripo3d.ai` (never in Git; check free with `TRIPO_API_KEY=tsk_proxy-injected tripo balance`); the cloud environment's network hosts and setup script (00.4 below); Deno only if the plugin's checkpoint / diff / sweep are wanted |
+| NEVER TRANSFERS | running processes (the autosave, recordings, browsers, agents): they live in one container and stop when it is reclaimed; scratchpad files (raw frames, frozen build copies); account-level plugin installs and secrets |
+
+**The save system (verified in session `b0abcf95`).**
+- The 5-minute autosave: `Tools/autosave.sh` (one process, started by the SessionStart hook if none runs; never on `main`, `master` or a
+  detached head). Each round exports the chat history and the agents' transcripts, then runs `Tools/save_now.sh`. Since 13:26 UTC it is
+  pinned to the branch it started on (`BW_AUTOSAVE_BRANCH`, else the checked-out branch), so a switched working copy is never saved.
+  Log: `~/.bubblewash-autosave/autosave_<session>.log`; one line per round in `~/.bubblewash-autosave/save_history.log`
+  (time, branch, commit, `github=VERIFIED`); the durable record is GitHub's commit list.
+- `Tools/save_now.sh "<message>"` (the SAVE NOW command; tested 13:26 UTC): commits all changes on the checked-out branch, holds back
+  any file with a key / token pattern and any media file written in the last 30 s (`Tools/save_guard.py`; tested with a fake key and a
+  fresh video: both held back, the rest saved), skips during a merge / rebase / another git command, pushes with retries, merges a
+  newer remote with a normal merge (never force), and checks GitHub's head with `git ls-remote`: `Push: VERIFIED, GitHub's <branch> is at <commit>`.
+  With nothing changed it makes no commit and still verifies.
+- Limits: it runs only while this container runs. When the session ends, pauses or the container is reclaimed, saving stops until
+  a session on this branch starts again (the hook restarts it). The hook's automatic start on the OTHER account is NOT YET VERIFIED
+  there (it did start the autosave at this session's start).
+
+### 000.5 Running and unfinished at 13:30 UTC (session `b0abcf95`)
+- RUNNING on the frozen final build `8363541c`: the full phone recording (girl to Level Complete), the identity proofs again, the cost
+  probes, the alternative-route clip, the frames of both routes. When done: the 10-row acceptance matrix against the FRESH pack's crops,
+  the Screen 4 side by side, `71_level1_flow/README.md` completed. If this session ended before that, rerun
+  `Previews/WebDemo/screen4_round9_match/71_level1_flow/scripts/identity.sh` and `after_identity.sh`, and
+  `WebDemo/tools/level1/record_flow.cjs` (headers explain).
+- NOT STARTED (the user's next priorities, after the evidence): the Bubble Kingdom arrival seen close (castle towers inside the wet
+  chamber), the remaining lilac crown at the top centre, the brushes' look, the hoops, her shell fur's cost.
+- Unapproved candidates, never on by default without the user: `structmatch` (default in the full app), `level1` (`wet`, `port`, `flow`),
+  `match6` (opt-in only).
+
+### 000.6 First message for the other account (copy and paste)
+> Continue my Bubble Wash Kingdom game: repository josiahscalia5-dev/bubblegame. Check the remote heads first; continue from branch
+> `ccr-50c66592-kcnqoy` (it contains all of `claude/bubble-wash-kingdom-continue-z9nmm1` and `ccr-76d4bc77-rqhl8o`); if this session has its own
+> branch, merge `origin/ccr-50c66592-kcnqoy` into it with a normal merge first; never force-push, reset or merge an unapproved candidate or PR #3.
+> Read `CLAUDE.md` and section 000 of `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`. Run `bash Tools/cloud_env_setup.sh` if `~/.bubblewash-tools` is missing,
+> `source Tools/bw_tools_env.sh`, `cd WebDemo && npm ci`, `bash Tools/verify_restore.sh --build`, `bash Tools/preservation_audit.sh`; check one
+> autosave process runs; ToolSearch `mcp__plugin_parallax-threejs` (`Tools/PLUGIN_AND_MCP_RESTORE.md`); `TRIPO_API_KEY=tsk_proxy-injected tripo balance`.
+> Report what works and what I must reconnect, then continue section 000.5. Spend no Tripo credits without my yes for a named job and cost.
+
 ## 00. NEWEST STATE (8 November 2026, about 11:20 UTC, session `8140e507`): history since section 000
 
 Section 0 below (02:00 UTC, session `dbccb9a3`) and sections 1-8 are history; where they differ, THIS section is right.

@@ -1,4 +1,4 @@
-Repository https://github.com/josiahscalia5-dev/bubblegame  branch ccr-50c66592-kcnqoy  GitHub head 702817d5cd7009178c5fc277c21b20cca37111a1  (2026-11-08 13:27 UTC)
+Repository https://github.com/josiahscalia5-dev/bubblegame  branch ccr-50c66592-kcnqoy  GitHub head 25d0a988db7ec0b099fcc31f5069bb37aee36e64  (2026-11-08 13:28 UTC)
 == Design agents, skill, hook, settings, MCP
   ON GITHUB   .claude/agents/game-art-director.md  (identical to the local file, 27340 bytes)
   ON GITHUB   .claude/agents/gameplay-visual-testing.md  (identical to the local file, 27318 bytes)
@@ -19,7 +19,7 @@ Repository https://github.com/josiahscalia5-dev/bubblegame  branch ccr-50c66592-
   ON GITHUB   Tools/autosave_sessions.json
   ON GITHUB   Tools/export_chat_history.py
   ON GITHUB   Tools/DEV_TOOLS.md
-  MISSING     Tools/preservation_audit.sh
+  ON GITHUB   Tools/preservation_audit.sh
   ON GITHUB   WebDemo/package.json
   ON GITHUB   WebDemo/package-lock.json
   ON GITHUB   WebDemo/build.mjs
@@ -60,19 +60,18 @@ Repository https://github.com/josiahscalia5-dev/bubblegame  branch ccr-50c66592-
   ON GITHUB   WebDemo/src/opening3d.js
   ON GITHUB   WebDemo/src/world.js
   ON GITHUB   WebDemo/src/tunnel_s4_struct.js
-  MISSING     WebDemo/src/tunnel_s4_match6.js
+  ON GITHUB   WebDemo/src/tunnel_s4_bt.js
   ON GITHUB   WebDemo/game.bundle.js  (md5 8363541c)
 == Large files and Git LFS
   LFS rules in .gitattributes: 0
-0
   largest:   28.0 MB  Previews/WebDemo/screen4_round9_match/68_level1/videos/full_sequence_home_toss_washer_level1_pixel7.mp4
   largest:   24.2 MB  Previews/WebDemo/screen4_round9_match/32_step6_centre_placement/video/pixel7_focus_step6_ride_10s.mp4
   largest:   24.2 MB  Previews/WebDemo/screen4_round9_match/29_video_step4/pixel7_focus_step4_ride_10s.mp4
   files over 50 MB (GitHub warns) / 100 MB (GitHub refuses): 0 / 0
 == Only in this container (not in Git)
-  untracked, not ignored: 2   uncommitted changes: 0
+  untracked, not ignored: 0   uncommitted changes: 1
   ignored on purpose: WebDemo/artifact-models/
   ignored on purpose: WebDemo/node_modules/
 == Credential scan of GitHub's branch (key and token patterns; the proxy placeholder tsk_proxy-injected is not a key)
   no key or token pattern found in any text file
-== Summary: 55 present, 2 missing
+== Summary: 57 present, 0 missing
