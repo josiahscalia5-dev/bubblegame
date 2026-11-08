@@ -39,18 +39,19 @@ export const SCENE07 = {
   // pass 6 (the user's environment correction: "not another pass that only adds decorations to the wrong tunnel"): the tube is OPENED
   // above the water in this stretch (level1.js's wall shader patched at run time, its hoops hidden here) into one large, open laundry
   // CHAMBER: a pink-lavender facade shell, platforms either side of the water, gold-pink portal rings where the tube enters and leaves
-  chamber: { u0: 218, u1: 254, halfW: 7.2, height: 8.5, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0xd6dcff },   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
+  chamber: { u0: 218, u1: 254, halfW: 4.6, height: 5.4, wallH: 3.6, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25, vault: 0x8f9cff, vaultGlow: 0.16 },   // (pass 8, the specialists' review: a corridor, vertical windowed walls to 3.6 m, a lower darker periwinkle vault)   // (vault: the upper shell fades to a light lavender, bright like the original's top, without the window pattern)
   // the original's LEFT big circular washer housing [u, x, h, ring radius] and RIGHT curved pink-gold star tubs [u, inner x, radius, height]
   housings: [[237, 2.75, 1.85, 1.05]],   // (pass 7: mapped to the original's left edge, 25-50 % down)
-  tubs: [[236, 2.3, 1.8, 1.3], [248, 2.3, 1.6, 1.2]],
+  tubs: [[236, 2.3, 1.15, 1.25], [242, 2.3, 1.05, 1.15], [248, 2.3, 1.1, 1.2]],
   // pass 7 (the user's review of pass 6: "replace the flat pink upper background with actual layered 3D scenery ... machinery, architecture"):
   // the game's OWN colourful machinery models stacked high on the chamber's walls [model, side, u, x, h, size]; pink rings high; a left
   // gold balustrade on posts along the walkway; the exit portal bright at the vanishing point; soft coloured lights in the air
   upper: { files: { machine: 'models/s3_machinery.glb', tower: 'models/tower.glb', pipe: 'models/pipe.glb' },
-    items: [['tower', 1, 236, 5.4, 3.3, 3.2], ['machine', 1, 242, 4.6, 3.5, 2.6], ['pipe', 1, 248, 4.1, 4.7, 2.0],
-      ['machine', -1, 240, 4.5, 3.6, 2.6], ['tower', -1, 246, 5.1, 3.4, 3.0], ['pipe', -1, 251, 4.1, 4.5, 2.0]],
-    rings: [[1, 245, 5.2, 5.2, 1.15], [-1, 243, 5.3, 5.4, 1.0]], railU: [227, 253], railX: 2.32, railH: 0.62, postEvery: 1.5,
-    glow: { r: 3.2, opacity: 0.75 }, lights: 14 },
+    items: [['machine', 1, 233, 3.7, 2.2, 1.9], ['tower', 1, 239, 3.75, 2.0, 2.3], ['pipe', 1, 244, 3.4, 3.7, 1.5], ['machine', 1, 249, 3.7, 2.2, 1.9],
+      ['tower', -1, 234, 3.75, 2.0, 2.3], ['machine', -1, 240, 3.7, 2.2, 1.9], ['pipe', -1, 245, 3.4, 3.8, 1.5], ['tower', -1, 251, 3.75, 2.0, 2.2],
+      ['pipe', 1, 236, 2.9, 4.4, 1.3], ['pipe', -1, 248, 2.9, 4.4, 1.3]],
+    rings: [[1, 246, 3.9, 3.0, 0.75], [-1, 237, 3.9, 3.1, 0.7]], railU: [227, 253], railX: 2.32, railH: 0.62, postEvery: 1.5,
+    glow: { r: 2.2, opacity: 0.85 }, lights: 30, bulbs: { every: 2.0, h: 3.45, x: 4.45 } },
 };
 export const TRIPO1_FILES = { enemy: 'models/l1_enemy_tripo.glb' };
 // the new look's diameter against the code ball's (its bounding sphere); (v2, the user's "Avoid Enemies!" mandate: "larger, raised so
@@ -158,14 +159,19 @@ function buildChamber(root, TR, env) {
   // the shell: a half-ellipse over the stretch, from the deck on one side over the top to the other
   const pos = [], uv = [], idx = [], nA = 36, step = 1; let rows = 0;
   const col = [], vc = new THREE.Color(Ch.vault), cc = new THREE.Color();
+  // the cross-section (pass 8): up the left wall to wallH, the vault over the top, down the right wall
+  const sec = []; for (let j = 0; j <= 6; j++) sec.push([Ch.halfW, -0.3 + (Ch.wallH + 0.3) * j / 6]);
+  for (let j = 1; j < 24; j++) { const a = Math.PI * j / 24; sec.push([Ch.halfW * Math.cos(a), Ch.wallH + (Ch.height - Ch.wallH) * Math.sin(a)]); }
+  for (let j = 6; j >= 0; j--) sec.push([-Ch.halfW, -0.3 + (Ch.wallH + 0.3) * j / 6]);
+  const nS = sec.length - 1;
   for (let u = Ch.u0 - 1; u <= Ch.u1 + 1 + 1e-6; u += step, rows++) {
-    for (let j = 0; j <= nA; j++) { const a = -Math.PI / 2 + Math.PI * j / nA, hgt = Math.cos(a) * Ch.height; TR.map(Math.sin(a) * Ch.halfW, Ch.deck + hgt, u, P); pos.push(P.x, P.y, P.z);
-      uv.push((u - Ch.u0) / 4, hgt < 3.6 ? hgt / 1.8 : 1.95);   // the windows on the side walls only (two rows up to 3.6 m); above: the texture's lavender
-      const k = THREE.MathUtils.smoothstep(hgt, 3.4, 6.5); cc.setRGB(1, 1, 1).lerp(vc, k); col.push(cc.r, cc.g, cc.b); }
+    for (const [sx, sh] of sec) { TR.map(sx, Ch.deck + sh, u, P); pos.push(P.x, P.y, P.z);
+      uv.push((u - Ch.u0) / 4, sh < Ch.wallH ? Math.max(0, sh) / 1.8 : 1.95);   // the windows on the walls; above: the texture's lavender
+      const k = THREE.MathUtils.smoothstep(sh, Ch.wallH - 0.2, Ch.wallH + 0.8); cc.setRGB(1, 1, 1).lerp(vc, k); col.push(cc.r, cc.g, cc.b); }
   }
-  for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+  for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nS; j++) { const a = i * (nS + 1) + j, b = a + nS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
-  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
+  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle) const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
   // the decks either side of the water: lavender with a gold edge at the water
   const deckM = new THREE.MeshStandardMaterial({ color: 0xc7a2f0, roughness: 0.45, metalness: 0.2, envMap: env || null, envMapIntensity: 0.6, emissive: 0x6a4aa8, emissiveIntensity: 0.45, side: THREE.DoubleSide });
   const goldM = new THREE.MeshStandardMaterial({ color: 0xffdc7a, metalness: 1, roughness: 0.22, envMap: env || null, envMapIntensity: 1.4, emissive: 0x7a5a1c, emissiveIntensity: 0.55 });
@@ -183,8 +189,8 @@ function buildChamber(root, TR, env) {
   // the end walls with the portal where the tube enters and leaves: the chamber's cross-section with a round hole, a gold-pink ring
   const pinkM = new THREE.MeshStandardMaterial({ color: 0xff6cbc, metalness: 0.35, roughness: 0.33, envMap: env || null, envMapIntensity: 1.0, emissive: 0xff4fa8, emissiveIntensity: 0.3 });
   for (const u of [Ch.u0, Ch.u1]) {
-    const sh = new THREE.Shape(); for (let j = 0; j <= 48; j++) { const a = -Math.PI / 2 + Math.PI * j / 48, x = Math.sin(a) * Ch.halfW, y = Ch.deck + Math.cos(a) * Ch.height; if (j) sh.lineTo(x, y); else sh.moveTo(x, y); }
-    sh.lineTo(-Ch.halfW, Ch.deck - 1.5); sh.lineTo(Ch.halfW, Ch.deck - 1.5); sh.closePath();
+    const sh = new THREE.Shape(); sec.forEach(([x, y], j) => { if (j) sh.lineTo(x, Ch.deck + y); else sh.moveTo(x, Ch.deck + y); });
+    sh.closePath();
     const hole = new THREE.Path(); hole.absarc(0, 1.5, Ch.portalR, 0, Math.PI * 2, true); sh.holes.push(hole);
     const wall = new THREE.Mesh(new THREE.ShapeGeometry(sh, 48), shellM); const ring = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.12, 0.26, 16, 72), goldM);
     const ring2 = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.62, 0.3, 14, 72), pinkM); ring.position.y = ring2.position.y = 1.5;
@@ -248,9 +254,16 @@ async function buildUpper(root, TR, env, loader, goldM, items) {
   glow.scale.setScalar(U.glow.r * 2); TR.map(0, 1.6, SCENE07.chamber.u1 + 0.5, glow.position); glow.name = 'scene07_portalGlow'; root.add(glow);
   const cols = [[255, 170, 230], [150, 210, 255], [255, 230, 140], [200, 170, 255]];
   for (let i = 0; i < U.lights; i++) {
-    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(...cols[i % 4]), transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }));
+    const l = new THREE.Sprite(new THREE.SpriteMaterial({ map: soft(...cols[i % 4]), transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending }));
     l.scale.setScalar(0.5 + 0.35 * ((i * 5) % 4)); const side = i % 2 ? 1 : -1;
-    TR.map(side * (1.2 + 2.4 * ((i * 3) % 5) / 4), 2.6 + 2.6 * ((i * 7) % 6) / 5, 228 + 24 * (i + 0.5) / U.lights, l.position); l.name = 'scene07_light'; root.add(l);
+    TR.map(side * (0.9 + 2.6 * ((i * 3) % 5) / 4), 2.4 + 2.2 * ((i * 7) % 6) / 5, 228 + 26 * (i + 0.5) / U.lights, l.position); l.name = 'scene07_light'; root.add(l);
+  }
+  // rows of warm bulbs along both walls under the vault (the original's gold glows and light bulbs)
+  const bulbM = new THREE.SpriteMaterial({ map: soft(255, 214, 120), transparent: true, opacity: 0.95, depthWrite: false, blending: THREE.AdditiveBlending });
+  const coreM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.35, 0.9) }), coreG = new THREE.SphereGeometry(0.07, 10, 8);
+  for (const side of [1, -1]) for (let u = 220; u <= 252; u += U.bulbs.every) {
+    const g = new THREE.Group(); g.add(new THREE.Mesh(coreG, coreM)); const halo = new THREE.Sprite(bulbM); halo.scale.setScalar(0.55); g.add(halo);
+    TR.map(side * U.bulbs.x, U.bulbs.h, u, g.position); g.name = 'scene07_bulb'; root.add(g);
   }
 }
 
@@ -262,7 +275,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   buildLandmarks(root, TR, env, goldM, items);
   await buildUpper(root, TR, env, loader, goldM, items);
   SCENE07.enclosures.length = 0; SCENE07.portholes.splice(0, SCENE07.portholes.length - SCENE07.upper.rings.length);   // (pass 6: landmarks replace pass 5's pieces; pass 7's high rings stay)
-  SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 3.6, 4.6, 0.8, 1], [1, 250, 1.4, 5.6, 0.9, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
+  SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 2.4, 4.2, 0.8, 1], [1, 250, 1.2, 4.6, 0.75, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
   buildArchitecture(root, TR, env, items);
   // big iridescent bubbles near the walls (board 07's large bubbles at its sides); a fixed pattern, no random numbers
   const bubM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.06, metalness: 0, envMap: env || null, envMapIntensity: 1.6, transparent: true,
