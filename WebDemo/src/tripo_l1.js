@@ -171,7 +171,9 @@ function buildChamber(root, TR, env) {
   }
   for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nS; j++) { const a = i * (nS + 1) + j, b = a + nS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); sg.setIndex(idx); sg.computeVertexNormals();
-  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle) const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
+  const vaultM = shellM.clone(); vaultM.vertexColors = true; vaultM.emissiveIntensity = 0.42; vaultM.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= vColor.rgb;'); };   // (pass 8: the walls keep their glow, the vault glows a dim periwinkle)
+  // (pass 9, session ce30359f: in pass 8 the next statement sat inside the comment above, so the walls and vault were never drawn)
+  const shell = new THREE.Mesh(sg, vaultM); shell.name = 'scene07_chamberShell'; root.add(shell);
   // the decks either side of the water: lavender with a gold edge at the water
   const deckM = new THREE.MeshStandardMaterial({ color: 0xc7a2f0, roughness: 0.45, metalness: 0.2, envMap: env || null, envMapIntensity: 0.6, emissive: 0x6a4aa8, emissiveIntensity: 0.45, side: THREE.DoubleSide });
   const goldM = new THREE.MeshStandardMaterial({ color: 0xffdc7a, metalness: 1, roughness: 0.22, envMap: env || null, envMapIntensity: 1.4, emissive: 0x7a5a1c, emissiveIntensity: 0.55 });

@@ -70,3 +70,5 @@ __pycache__/
 # Parallax (parallax-threejs) local debug state: checkpoints, diffs, sweeps, reports and its own Chrome profile.
 # Kept out of Git (as in the plugin's own repository); copy outputs worth keeping into an evidence folder under Previews/.
 .parallax/
+# playwright-mcp (parallax-threejs) page snapshots and console logs, written to the working directory: local only
+.playwright-mcp/
