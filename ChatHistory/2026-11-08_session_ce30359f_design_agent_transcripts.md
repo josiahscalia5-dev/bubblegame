@@ -692,5 +692,38 @@ Reply in under 400 words:
 - 18:21 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/p10_zoom.png
 - 18:22 `Bash`
 - 18:22 `Read`: /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/appr_mid.png
+**Agent** (18:23 UTC):
+
+**(A) Verdict**
+
+- **Pass 11: REVERT.** It looks further from the original. It adds isolated orange-copper pipe clumps that float in the empty purple sky, at upper left and upper right. Those colours aren't in the original's palette. Every silhouette that matters is the same as pass 10: the enemy, the mascot, the coins, the side walls and the vanishing point.
+- **Pass 12: REVERT.** The composition is the same as pass 10. These are the same clumps recoloured. Its blue mass at upper right happens to sit where the original's blue gear is, but the scene is still sparse clutter in open sky. You could keep the recoloured models for later material work.
+
+**(B) Layout map**
+
+Positions are centres as (x, y) from the top left, read by hand from gridded zooms. The enemy's box was read pixel by pixel. The frames have different shapes (original 1:1.83, game 1:2.22), so sizes are given in frame widths (W).
+
+| Element | Original | Pass 10 |
+|---|---|---|
+| Banner | (0.50, 0.18), 0.64W × 0.10H, pink | missing; blue mission panel at (0.46, 0.135) |
+| Left housing | ring centre (0.04, 0.32), radius 0.19W; body x 0–0.24, y 0.18–0.47; glass (0.11, 0.30), 0.13W; gold-rim ledge x 0–0.40, y 0.43–0.48 | none; a gold-pink arch at (0.30, 0.52), 0.45W, behind the enemy; a low rail |
+| Right platform | curved pink-gold drum, x 0.68–1.0, y 0.47–0.70, rim rising to the edge | flat star wall, x 0.62–1.0, y 0.55–0.68, straight rail |
+| Upper left / centre | dense pink, lavender and gold machinery with small coins and green pieces, y 0.20–0.42 | open purple sky, pink sun at (0.53, 0.25); pink-white arched wall at y 0.41–0.55 |
+| Upper right | sky-blue/navy gear (0.93, 0.26), 0.25W | blue gear (0.97, 0.38), 0.30W; bubble |
+| Vanishing point | (0.48, 0.41) | about (0.33, 0.51), hidden behind the enemy |
+| Channel width | about 0.80W at the mascot; 0.50W at y 0.53; 0.24W at y 0.47 | full width at the mascot; about 0.55W at y 0.58, mostly hidden |
+| Enemy | (0.72, 0.38), 0.31W, floating above the far channel | (0.34, 0.60), 0.41W |
+| Coins | (0.17, 0.52), 0.19W and (0.90, 0.51), 0.17W, one on each side | (0.57, 0.645), 0.24W and (0.30, 0.715), 0.21W, in the middle, overlapping |
+| Mascot | (0.43, 0.67), 0.46W (0.51 with the side nubs) × 0.22H; round dome, top clear | (0.67, 0.755), 0.54W × 0.17H; flat slab, top cut by a coin |
+
+**The 4 biggest gaps, in order**
+
+1. **The upper 40% of the screen.** The original is wall-to-wall overlapping machinery with no sky showing. The game shows open sky above one low wall. It needs tall structures rising on both sides and over the channel, with the horizon lowered to about y 0.41.
+2. **The enemy and the coins pile up in the middle.** The original's enemy is about 25% smaller and sits upper right, and its coins sit one on each side at y 0.52. A fix that leaves gameplay alone: draw the enemy at about 0.75 scale and higher above the water, and take the comparison frame at a moment when the next enemy is several units ahead, in the lane to her right.
+3. **Framing and vanishing point.** The left housing ring with its ledge and the right curved drum form a V that runs into (0.48, 0.41). The game's vanishing point is about 0.15W too far left and 0.10H too low, and its side walls are flat.
+4. **The mascot.** The original has a round dome left of centre. The game shows a flat slab at screen right, because she is in lane 2 at u 233. The `match6` dome is the existing candidate for this silhouette.
+
+The gridded crops are in /tmp/claude-0/-home-user-bubblegame/ce30359f-7fd9-55e1-9a74-76ff9b96318f/scratchpad/ad_layout/: `approved_grid.png`, `appr_mid.png`, `enemy_zoom.png` and `p10_zoom.png`.
+
 
 _16 tool steps._
