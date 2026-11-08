@@ -260,6 +260,10 @@ sweep sheet), and the three test scripts (`spector_live_test.mjs`, `spector_stdi
   (checkpoint, diff, export-report, init, memcheck, replay, ship-check, sweep, sync-view, qa-visual-test-harness). The Unity and Fastly plugins
   were NOT loaded in this account's session (section 5 records them from session ce30359f). Connectors seen: GitHub (built-in), Claude Docs.
 
+- 8 Nov 2026 ~22:45 UTC, session bb87ba9f (https://claude.ai/code/session_01L8bvJdqHherLnTY4v7jTWP, a NEW Claude account; branch
+  `claude/bubble-wash-account-transfer-52t7ym`, which contains all of `claude/bubble-wash-account-switch-e1nndb`): FULL live re-verification at the
+  user's environment mandate, every row run in this session. Results and the per-account steps: section 14.
+
 ## 13. The five agents, second live round (8 Nov ~18:05-18:20 UTC, the user's suggested tasks; definitions unchanged since `56184934`)
 | AGENT | DEFINITION FOUND | LOADED | ACTUALLY INVOKED | REQUIRED TOOLS WORKING | FINAL STATUS |
 |---|---|---|---|---|---|
@@ -268,3 +272,49 @@ sweep sheet), and the three test scripts (`spector_live_test.mjs`, `spector_stdi
 | lighting-visual-matching | yes (292 lines, 5 Nov) | yes | round 1 PASS (scene07 materials); round 2 (Screen 09 lighting): PENDING | yes (round 1) | PENDING round 2 |
 | water-vfx-engineer | yes (297 lines, 5 Nov) | yes | round 1 PASS (Level 1 water); round 2 (Screen 09 water): PENDING | yes (round 1) | PENDING round 2 |
 | screen4-water-motion-engineer | yes (83 lines, 6 Nov) | yes | yes, twice: live MCP; then swim2 / swim3 / Level 1 strokes + heroSwell's live uniforms (`uFlow` 1.012, `uSwim2Fl`, `uHeroTravel`) | its 9 threejs-devtools + 4 chrome-devtools MCP tools: yes (Spector's are not in its list) | **WORKING** |
+
+## 14. Environment readiness, session bb87ba9f (8 Nov 2026 ~22:05-22:45 UTC, new Claude account; every row LIVE in this session)
+
+`bash Tools/restore_session.sh` (73 s): git OK, every tool present, `verify_restore.sh --build` **28 passed, 1 note, 0 failed**, the five agents, the skill,
+the SessionStart hook and the project Spector server registered, one autosave. Nothing was reinstalled (`~/.bubblewash-tools` came from the environment's
+setup script). WORKING = installed, connected and tested now; LIMITED = available with a missing capability; MISSING = not available.
+
+| Component | Status | Live test in this session |
+|---|---|---|
+| game-art-director (project agent) | WORKING | compared master / v5 / pass 17a frames (Read + Bash pixel measures): zone verdicts and the 3 largest background differences; measured the game's upper background brighter than the master (0.93 vs 0.81) |
+| gameplay-visual-testing (project agent) | WORKING | own Playwright 1.63 + SwiftShader script: `?s3=intunnel` ready in 24.1 s, WebGL2 true, three r170, 0 page errors, screenshot |
+| lighting-visual-matching (project agent) | WORKING | mapped PASTEL16 (lines 37-38, the `std` helper 201-205, kLandmark / k / MACH16's kM) and named `PASTEL16.k` as the main de-pastelising lever |
+| water-vfx-engineer (project agent) | WORKING | rebuilt Level 1's water shaders in node: both pass 17 anchors occur exactly once; proved the patch cannot touch the Classic Screen 4 water |
+| screen4-water-motion-engineer (project agent) | WORKING, MCP tools reached | threejs-devtools `bridge_status` (connected), `renderer_info` (54 programs), `object_details` (`output_unwrapped`, 147,212 vertices); chrome-devtools `list_console_messages` (1 error = `/favicon.ico` 404 of the test server, harmless) |
+| parallax-threejs:shader-reviewer | WORKING for static review; LIMITED (no MCP) | rebuilt the final patched GLSL of the wall and water shaders: "no binding or scope issues found"; tools Read / Grep / Glob / Bash only (the plugin's tool-naming defect) |
+| parallax-threejs:visual-debugger | LIMITED | has Bash + the project's 13 `mcp__spector__*` tools (its `list_canvases` call reached the server); NO threejs-devtools, chrome-devtools or playwright tools (plugin defect) |
+| parallax-threejs:scenario-author | LIMITED | Read / Glob / Write / Bash; NO Playwright MCP tool (plugin defect); scaffold present: `test/visual/run.ts`, `lib/` (6 modules + 5 tests), `scenarios/` empty, `deno.json` 7 tasks |
+| bubble-wash-screen-matcher (project SKILL, not an agent) | WORKING | its `WebDemo/tools/screen4/compare_s4.py` ran (arguments `label=path`): master vs v5 / pass 17a, mean ΔE2000 21.8 / 20.7 (its colour classes are Screen 4's: supporting evidence only) |
+| chrome-devtools-mcp (plugin) | WORKING | `navigate_page` to the game via :9222, `evaluate_script` (WebGL2 true, 121 scene children, three r170) |
+| threejs-devtools-mcp (plugin) | WORKING | `bridge_status` connected (:9222 -> :3000), `renderer_info` |
+| playwright-mcp (plugin) | WORKING (screenshot limit known) | `browser_tabs`; its screenshot times out on the live game in software WebGL (section 3): use chrome-devtools or the project scripts |
+| spector (project `.mcp.json` server, `mcp__spector__*`) | WORKING | `load_url` on a small local WebGL page + `capture_frame`: 6 commands, 1 draw call, 1 program, WebGL 2, no GL errors (on the full game `load_url` exceeds the MCP's 60 s in software WebGL: section 12) |
+| spector (the plugin's own copy) | fails at startup (known, harmless) | CONNECTION_CLOSED: the plugin ships without its server; the project server above replaces it. Not fixable by the user |
+| GitHub (built-in MCP + git) | WORKING | MCP `list_branches`; fetch; autosave pushes `github=VERIFIED` every 5 minutes |
+| parallax-threejs 0.4.12 plugin | WORKING (loaded) | its 3 agents, 10 skills (init, checkpoint, diff, export-report, replay, ship-check, sweep, memcheck, sync-view, qa-visual-test-harness) and 3 MCP servers are present; the account catalog API (`ListPlugins`) returns an empty list even so (same inconsistency as recorded in section 3) |
+| chrome-extension-builder plugin | loaded on this account, unrelated | its agents and skills are listed; never used for the game |
+| Unity, Fastly plugins | not loaded on this account | not needed (section 5a) |
+| Parallax Deno tasks | present, not re-run | `deno.json`: checkpoint, sweep, diff-checkpoints, export-report, replay, visual:run, visual:accept (all PASS in session ce30359f); Deno 2.9.6 runs |
+| Blender 5.2.3, Tripo CLI 0.11.2, glTF Transform 4.5.1, Vite 8.3.5, Deno 2.9.6, Node 22.23.4, Playwright 1.63.0 | WORKING | each executed by `restore_session.sh` (Blender headless `bpy` version) |
+| metrics Python (OpenCV 5.0.0, scikit-image, PyTorch 2.15.0, LPIPS, Optuna) | WORKING | imported by `restore_session.sh`; OpenCV used for the reference-image correlation below |
+| FFmpeg 6.1.1, ImageMagick 6.9.12-98, Git LFS 3.4.1 | WORKING | versions executed |
+| three.js r170 build (esbuild) | WORKING | `node build.mjs`; `verify_restore.sh --build` rebuilds byte-identically |
+| Tripo API (network secret for `openapi.tripo3d.ai`, added by the user on this account) | WORKING | free checks only: `tripo doctor` all checks OK (api key from the proxy, region ov), `tripo balance` **1,060 credits, 0 frozen**. Nothing spent, no key shown |
+| Tripo model downloads (`openapi-dl.data.tripo3d.com`) | LIMITED (manual) | the proxy refuses this host (CONNECT 403): add it to the environment's allowed hosts before any paid job (only needed to download a finished model) |
+| `download.blender.org`, `download.pytorch.org` | WORKING | reachable (only needed by the setup script) |
+| Autosave + SessionStart hook | WORKING | one process, every round `github=VERIFIED`; this session registered in `Tools/autosave_sessions.json` |
+
+**Per-account steps still for the user (none essential now):** add the host `openapi-dl.data.tripo3d.com` to this environment's network allowlist
+before the next paid Tripo job. Everything else is connected. The Parallax agents' missing browser tools are a plugin defect (only its author can fix it);
+use the main session or `screen4-water-motion-engineer` for live browser work.
+
+**Reference correction recorded in this session (the user, 8 Nov ~22:45 UTC):** for the Screen 09 "Avoid Enemies!" background the ONLY target is the
+user's LEFT "Avoid Enemies!" screenshot = `Design/ReferencePacks/2026-11-08_Screen09_Approved_Reference_Kit_from_user/00_AUTHENTIC_APPROVED_SCREEN09.png`
+(its frame `77_.../frames/original_master_frame.png` correlates 0.92 with the user's annotated upload, annotations masked); `Design/ApprovedScreens/09_Avoid_Enemies.png`
+is a lower-resolution copy. `Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg` is the CLASSIC blue tunnel
+(correlation 0.14) and is NOT the target for this work. The user's packs: `Design/ReferencePacks/2026-11-08_Avoid_Enemies_Background_Pack_from_user/`.

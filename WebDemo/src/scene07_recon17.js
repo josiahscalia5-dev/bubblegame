@@ -12,7 +12,7 @@
 //           gears, pipes) instead of the master's pixels (FAR16), the round portal broken by two machine jambs and a gantry bridge (bottom 3.1 m:
 //           above her highest jump), and the level tube's glowing rings beyond the portal suppressed while the camera is far (they fade back in
 //           within 16..8 m of the portal, so the run goes on into the normal tube).
-//   WATER17 (`,nowater17`): the channel's water in this stretch only: the master's lighter azure with dense white sparkle and white crests
+//   WATER17 (opt-in `,water17` ONLY; the user then forbade any water change): the channel's water in this stretch only: the master's lighter azure with dense white sparkle and white crests
 //           along both banks (a narrower blue ribbon). Level 1's own water shader, patched at run time for this stretch; the accepted Screen 4
 //           water and every other stretch are untouched.
 // Real three.js geometry, baked per material (a few draw calls). No random numbers (a fixed hash). Looks only: no hit test changes.
@@ -24,7 +24,7 @@ const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((locatio
 export const RECON17_ON = RECON16_ON && MACH16_ON && !LIST.includes('norecon17') && !LIST.includes('walls6');
 export const ROWS17_ON = RECON17_ON && !LIST.includes('norows17');
 export const FAR17_ON = RECON17_ON && !LIST.includes('nofar17');
-export const WATER17_ON = RECON17_ON && !LIST.includes('nowater17');
+export const WATER17_ON = RECON17_ON && LIST.includes('water17');   // OPT-IN ONLY: the user's background-only mandate (8 Nov ~22:40 UTC): "do NOT modify my existing water appearance"
 
 export const R17 = {
   // ROWS17: [side (+1 = screen-left), u0, u1, front x (m from the centre line, the face toward the channel), base h, tiers [[h0, h1], ...]]
@@ -197,7 +197,6 @@ export function patchShaders17(scene, TR, Ch) {
   if (WATER17_ON) {
     const Wt = R17.water, uW = { value: new THREE.Vector4(Wt.u[0], Wt.u[1], Wt.blend, 1) };
     const a1 = '  col *= mix(0.86 + 1.6 * clamp(vH, -0.05, 0.12), 1.0, smoothstep(9.0, 26.0, length(vW - uCam)));';
-    const a2 = '  col = mix(col, vec3(0.9490, 0.9832, 1.0), white);';
     for (const m of waterMats) {
       let s = m.fragmentShader; if (!s || !s.includes(a1) || !s.includes('vHalf')) continue;
       const foam = s.match(/  col = mix\(col, vec3\([^)]*\), white\);/); if (!foam) continue;

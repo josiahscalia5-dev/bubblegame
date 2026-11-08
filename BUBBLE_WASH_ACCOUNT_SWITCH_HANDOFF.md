@@ -7,6 +7,18 @@ preservation mandate. Nothing in this file is a secret. Newer sessions: add a da
 each): `Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md`.** Read it after this file; it supersedes the short lists in sections 3, 4 and 7.
 
 ## 0. ONE-SHOT RESTORE: the single entry point (updated 8 November 2026 ~20:40 UTC, session `f70c9bd1`)
+**Update 8 November ~22:50 UTC, session `bb87ba9f` (https://claude.ai/code/session_01L8bvJdqHherLnTY4v7jTWP, a NEW Claude account):** the newest work
+branch is **`claude/bubble-wash-account-transfer-52t7ym`** (it contains all of `claude/bubble-wash-account-switch-e1nndb`; at each verified save e1nndb is
+fast-forwarded to it, never forced). Environment fully re-verified LIVE on this account (`Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` section 14): 5 project
+agents WORKING, the 3 Parallax agents LIMITED (plugin naming defect), all MCP servers WORKING (project Spector captured a frame), Tripo connected via the
+user's network secret (1,060 credits, nothing spent); one manual item: allow host `openapi-dl.data.tripo3d.com` before the next paid Tripo job.
+**Target correction (the user):** the Screen 09 "Avoid Enemies!" background's ONLY target is the user's LEFT screenshot =
+`Design/ReferencePacks/2026-11-08_Screen09_Approved_Reference_Kit_from_user/00_AUTHENTIC_APPROVED_SCREEN09.png` (packs:
+`Design/ReferencePacks/2026-11-08_Avoid_Enemies_Background_Pack_from_user/`); the Classic blue-tunnel `01_Original_Approved_Screen_4.jpg` is NOT it.
+**The user's background-only mandate:** change ONLY the background scenery (real 3D); never the mascot, water, enemies, HUD, camera, controls, collectibles or
+progression. **Current task:** scene07 pass 17 (`WebDemo/src/scene07_recon17.js`, opt-in inside `scene07`; `,norecon17` = v5):
+`Previews/WebDemo/screen4_round9_match/78_scene07_pass17/README.md`.
+
 | | |
 |---|---|
 | Repository / branch | `josiahscalia5-dev/bubblegame`, branch **`claude/bubble-wash-account-switch-e1nndb`** (contains every earlier work branch; `git ls-remote origin claude/bubble-wash-account-switch-e1nndb` gives its head, which moves with the 5-minute autosave) |

@@ -1,6 +1,9 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-**Newest (8 November ~20:40 UTC, session `f70c9bd1`): `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` section 0 is the single restore entry point; the work
+**Newest (8 November ~22:50 UTC, session `bb87ba9f`, a new account): branch `claude/bubble-wash-account-transfer-52t7ym` (contains e1nndb); environment re-verified
+(`Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md` section 14); the Screen 09 "Avoid Enemies!" target is ONLY `00_AUTHENTIC_APPROVED_SCREEN09.png` (the user's LEFT
+screenshot), background scenery only; current task: scene07 pass 17, `Previews/WebDemo/screen4_round9_match/78_scene07_pass17/README.md`.**
+**Previous (8 November ~20:40 UTC, session `f70c9bd1`): `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` section 0 is the single restore entry point; the work
 branch is `claude/bubble-wash-account-switch-e1nndb`; the current task is Screen 09, `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/README.md`.**
 **On ANY Claude account, read `BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md` first (the permanent account-switch handoff: branches, restore steps, checklist, exact state). Then `HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md`: its section 0000 (8 November, about 14:50 UTC, session
 `57091b57`, branch `ccr-b67aeffb-d94mmq`) and section 000 (13:30 UTC, session `b0abcf95`) are the current state. Two sessions were live
