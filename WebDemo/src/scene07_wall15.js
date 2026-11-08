@@ -13,18 +13,22 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const WALL15_ON = !LIST.includes('nowall15');
 export const WALL15 = {
-  u: [221, 253],                 // the band's extent along the track (the chamber is u 218-254)
-  skipLeft: [232.6, 242.2],      // the left washer housing and its ledge stand here (pass 13)
-  depth: [0.75, 1.15], height: [1.9, 3.1], width: [1.25, 1.8],
-  pipe: { h: 3.25, r: 0.085 },   // the gold pipe along both walls, above the cabinets
-  ribs: { every: 2.4, r: 0.13, inset: 0.18 },
+  u: [221, 253.4],               // the band's extent along the track (the chamber is u 218-254)
+  // the band's BACK line, m from the centre line: not at the walls (4.6 m), which this camera never sees (the left housing and the
+  // right drum stand in front of them; probed), but just behind the walkway's balustrade (2.32 m), where the original stacks its
+  // machinery beside the housing and round the far end; [left, right]
+  back: [3.05, 3.1],
+  skipLeft: [232.6, 239.2],      // the left washer housing stands here (pass 13); the band starts behind it
+  depth: [0.55, 0.85], height: [2.5, 3.9], width: [1.1, 1.6], maxTop: 4.55,   // maxTop: under the vault (4.96 m at 3 m from the centre)
+  pipe: { h: 4.62, r: 0.09 },    // a gold pipe along the top of each band
+  ribs: { every: 2.4, r: 0.13, inset: 0.18, foot: 3.25 },   // foot: the ribs come down the walls to this height
   facade: ['#dcc6f0', '#f4d6ea', '#ffc6dc'],   // the chamber facade's gradient (pass 13b: #b58ae8 / #e2a6f2 / #ff9fd2, a saturated purple-pink)
   vaultRGB: [1.25, 1.35, 1.05],   // the vault's vertex colour (it multiplies the facade's top colour): a warm cream-lavender, ~(243, 226, 245)
   gear: [-1, 239, 2.55, 3.95, 1.2, -1],   // the original's big blue gear high on the right (pass 13b: [-1, 237, 2.9, 3.0, 0.95])
 };
 const hash = (i, k) => { const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return s - Math.floor(s); };
 
-export function buildWall15(root, TR, env, goldM, Ch, tubs, items) {
+export function buildWall15(root, TR, env, goldM, Ch, tubs, ledge, items) {
   const W = WALL15, Q = new THREE.Quaternion(), P = new THREE.Vector3(), N = new THREE.Vector3();
   const parts = { cream: [], lav: [], blue: [], pink: [], gold: [], glow: [], mint: [] };
   // lay a local geometry (x sideways, y up, z along the track) at track point (x, h, u); it follows the track's frame
@@ -40,9 +44,10 @@ export function buildWall15(root, TR, env, goldM, Ch, tubs, items) {
     parts[key].push(g);
   };
   const faceX = new THREE.Matrix4().makeRotationY(Math.PI / 2), upright = new THREE.Matrix4();
-  const baseAt = (s, u) => {   // the floor under a unit: the deck, or the top of a right-side drum where one stands
+  const baseAt = (s, u) => {   // the floor under a unit: the deck, the left ledge, or the top of a right-side drum where one stands
     let b = Ch.deck;
-    if (s < 0) for (const [tu, , R, H] of tubs) if (Math.abs(u - tu) < R * 0.95) b = Math.max(b, H - 0.15);
+    if (s > 0 && ledge && u > ledge[0] && u < ledge[1]) b = ledge[3];
+    if (s < 0) for (const [tu, inner, R, H] of tubs) if (Math.abs(u - tu) < R * 0.95 && inner < W.back[1]) b = Math.max(b, H - 0.15);
     return b;
   };
   // the cabinets, tanks and pipe stacks, edge to edge along both walls
@@ -52,7 +57,7 @@ export function buildWall15(root, TR, env, goldM, Ch, tubs, items) {
       const w = W.width[0] + (W.width[1] - W.width[0]) * hash(i, 1), uc = u + w / 2; u += w; i++;
       if (s > 0 && uc > W.skipLeft[0] && uc < W.skipLeft[1]) continue;
       const d = W.depth[0] + (W.depth[1] - W.depth[0]) * hash(i, 2), H = W.height[0] + (W.height[1] - W.height[0]) * hash(i, 3);
-      const xc = s * (Ch.halfW - d / 2), base = baseAt(s, uc), hTop = Math.min(H, W.pipe.h - 0.35 - (base - Ch.deck));
+      const back = W.back[s > 0 ? 0 : 1], xc = s * (back - d / 2), base = baseAt(s, uc), hTop = Math.min(H, W.maxTop - base);
       const xf = xc - s * d / 2;   // the unit's front (toward the water)
       const type = Math.floor(hash(i, 4) * 3);
       if (type === 0) {   // a cream cabinet: rounded box, a gold top band, a glowing round window with a gold ring
@@ -63,7 +68,7 @@ export function buildWall15(root, TR, env, goldM, Ch, tubs, items) {
         put('glow', new THREE.CircleGeometry(r * 0.88, 24), xf - s * 0.02, wy, uc, new THREE.Matrix4().makeRotationY(s > 0 ? -Math.PI / 2 : Math.PI / 2));
         put('lav', new RoundedBoxGeometry(d * 0.5, 0.42, w * 0.6, 2, 0.08), xc - s * d * 0.2, base + hTop + 0.21, uc);   // a lavender cap block
       } else if (type === 1) {   // a lavender tank: an upright cylinder with gold bands and a pink dome
-        const r = Math.min(d, w) * 0.46, tx = s * (Ch.halfW - r - 0.05);
+        const r = Math.min(d, w) * 0.5, tx = s * (back - r - 0.05);
         put('lav', new THREE.CylinderGeometry(r, r * 1.04, hTop, 22), tx, base + hTop / 2, uc, upright);
         for (const f of [0.18, 0.55, 0.9]) put('gold', new THREE.TorusGeometry(r * 1.03, 0.045, 6, 26), tx, base + hTop * f, uc, new THREE.Matrix4().makeRotationX(Math.PI / 2));
         put(hash(i, 5) > 0.5 ? 'pink' : 'mint', new THREE.SphereGeometry(r * 0.98, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2), tx, base + hTop, uc);
@@ -80,19 +85,19 @@ export function buildWall15(root, TR, env, goldM, Ch, tubs, items) {
       }
     }
     // one gold pipe the whole length, and warm bulbs on it (the original's gold glows)
-    const pts = []; for (let uu = W.u[0]; uu <= W.u[1] + 1e-6; uu += 1) pts.push(new THREE.Vector3(0, 0, uu));
+    const u0 = s > 0 ? W.skipLeft[1] : W.u[0], pts = []; for (let uu = u0; uu <= W.u[1] + 1e-6; uu += 0.5) pts.push(new THREE.Vector3(0, 0, uu));
     const pipe = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, W.pipe.r, 8, false);
     const g = pipe.toNonIndexed(), p = g.attributes.position;
-    for (let k = 0; k < p.count; k++) { TR.map(s * (Ch.halfW - 0.2) + p.getX(k), W.pipe.h + p.getY(k), p.getZ(k), P); p.setXYZ(k, P.x, P.y, P.z); }
+    for (let k = 0; k < p.count; k++) { TR.map(s * (W.back[s > 0 ? 0 : 1] - 0.15) + p.getX(k), W.pipe.h + p.getY(k), p.getZ(k), P); p.setXYZ(k, P.x, P.y, P.z); }
     g.computeVertexNormals(); parts.gold.push(g);
-    for (let uu = W.u[0] + 0.7; uu < W.u[1]; uu += 1.6) put('glow', new THREE.SphereGeometry(0.075, 8, 6), s * (Ch.halfW - 0.2), W.pipe.h - 0.16, uu);
+    for (let uu = u0 + 0.7; uu < W.u[1]; uu += 1.6) put('glow', new THREE.SphereGeometry(0.075, 8, 6), s * (W.back[s > 0 ? 0 : 1] - 0.15), W.pipe.h - 0.16, uu);
   }
   // the arcade ribs across the vault: cream bands with a gold edge, following the chamber's own cross-section
   const sec = []; for (let j = 0; j <= 24; j++) { const a = Math.PI * j / 24; sec.push([Ch.halfW * Math.cos(a), Ch.wallH + (Ch.height - Ch.wallH) * Math.sin(a)]); }
   for (let u = W.u[0]; u <= W.u[1]; u += W.ribs.every) {
     const kx = (Ch.halfW - W.ribs.inset) / Ch.halfW, ky = (Ch.height - Ch.wallH - W.ribs.inset) / (Ch.height - Ch.wallH);
     const pts = sec.map(([x, h]) => new THREE.Vector3(x * kx, Ch.deck + Ch.wallH + (h - Ch.wallH) * ky, u));
-    pts.unshift(new THREE.Vector3(pts[0].x, Ch.deck + W.pipe.h, u)); pts.push(new THREE.Vector3(pts[pts.length - 1].x, Ch.deck + W.pipe.h, u));
+    pts.unshift(new THREE.Vector3(pts[0].x, Ch.deck + W.ribs.foot, u)); pts.push(new THREE.Vector3(pts[pts.length - 1].x, Ch.deck + W.ribs.foot, u));
     for (const [key, r, du] of [['cream', W.ribs.r, 0], ['gold', W.ribs.r * 0.45, -W.ribs.r * 0.95]]) {
       const tg = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map((q) => q.clone().setZ(u + du))), 48, r, 8, false).toNonIndexed(), p = tg.attributes.position;
       for (let k = 0; k < p.count; k++) { TR.map(p.getX(k), p.getY(k), p.getZ(k), P); p.setXYZ(k, P.x, P.y, P.z); }

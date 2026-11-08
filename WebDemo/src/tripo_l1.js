@@ -319,7 +319,7 @@ async function applyScene07({ scene, env, TR, camera, fx, loader, report }) {
   SCENE07.enclosures.length = 0; SCENE07.portholes.splice(0, SCENE07.portholes.length - SCENE07.upper.rings.length);   // (pass 6: landmarks replace pass 5's pieces; pass 7's high rings stay)
   SCENE07.gears.splice(0, SCENE07.gears.length, [-1, 237, 2.9, 3.0, 0.95, -1], [-1, 244, 2.4, 4.2, 0.8, 1], [1, 250, 1.2, 4.6, 0.75, 1]);   // (pass 7: the original's blue machinery, top right and top centre)
   let wall15 = null;
-  if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, items); }   // pass 15 (scene07_wall15.js)
+  if (WALL15_ON) { SCENE07.gears[0] = WALL15.gear; wall15 = buildWall15(root, TR, env, goldM, SCENE07.chamber, SCENE07.tubs, SCENE07.ledge, items); }   // pass 15 (scene07_wall15.js)
   buildArchitecture(root, TR, env, items);
   // big iridescent bubbles near the walls (board 07's large bubbles at its sides); a fixed pattern, no random numbers
   const bubM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.06, metalness: 0, envMap: env || null, envMapIntensity: 1.6, transparent: true,
