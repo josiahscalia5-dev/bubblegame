@@ -127,7 +127,17 @@ fixed; Parallax init / checkpoint / diff / export-report / sweep / memcheck / sy
 - **No pink-and-gold architecture GLBs exist in the repository or in session 57091b57's uploads** (the Screen 07 kit says "NO 3D GLB
   INCLUDED"). If the user has such GLBs, they must be uploaded to the session (or committed) before they can be inspected.
 
-## 9. EXACT GAME STATE AND NEXT TASK (8 November ~17:05 UTC)
+## 9. EXACT GAME STATE AND NEXT TASK
+**Update 8 November ~19:00 UTC, session ce30359f (branch `ccr-8cd911d8-0m96gr`):** Screen 09 ("Avoid Enemies!", opt-in `scene07`) is at
+**pass 13b** (bundle `6579f556`; NOT approved): layout first, from the art director's measured map of the original: the stretch's camera
+aimed down the channel, the left washer housing as a tall rounded pink body with ring and glass on a gold-rimmed ledge, one big curved star
+drum at the right edge, the enemy floating high while far ahead (hit test unchanged). Evidence, element table, costs, proofs:
+`Previews/WebDemo/screen4_round9_match/76_scene07_pass13_layout/README.md`; passes 9-12 and the reverted 14b: `75_scene07_pass9_shell/`.
+Same-checkpoint tool: `75_.../scripts/probe_layout.cjs` (u 229.5, centre lane; screen rectangles, scene draw calls and triangles).
+**Next:** the upper 40 % (wall-mounted machinery left and right, none above the vanishing point; the user's own Tripo washer, already
+optimised in `WebDemo/models/scene07/`, is available), then the foreground foam and bubbles; one correction at a time, art director review.
+
+### Earlier state (8 November ~17:05 UTC, session 57091b57)
 **Accepted by the user:** the ORIGINAL CLASSIC Screen 4 look `?s3=intunnel` (with swim2). Proven 0 px unchanged by every pass since.
 **Candidates waiting for the user (NOT approved):** the full app `index.html?s3=intunnel,structmatch,home,level1` (the 3D opening with the
 rigged Tripo girl, the Laundry Toss, the washer entry, Level 1 with `wet`, `port`, `flow`: raised side path, lower path, grime balls, 5
