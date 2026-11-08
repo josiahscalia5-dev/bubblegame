@@ -90,44 +90,53 @@ const WALL_VERT = /* glsl */ `
 attribute vec2 aTU; varying vec2 vTU; varying vec3 vW;
 void main() { vTU = aTU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`;
 function wallFrag(R) {
-  const C = { deep: lin('#0a1f8c'), cobalt: lin('#1f4fe0'), turq: lin('#2fd0ff'), white: lin('#f4fbff'), lav: lin('#b9a6ec'), silver: lin('#ece6fb'),
-    purple: lin('#5b3fa8'), hole: lin('#3a2a78'), glow: lin('#d9f4ff'), gold: lin('#ffcf7a') };
+  const C = { deep: lin('#1838c8'), cobalt: lin('#2f66f4'), azure: lin('#4fa8ff'), turq: lin('#3fe0ff'), white: lin('#f4fbff'), lav: lin('#cbb8f4'), silver: lin('#f1ecfd'),
+    purple: lin('#7a5ac8'), hole: lin('#5a46a8'), glow: lin('#e6f8ff'), gold: lin('#ffcf7a'), pink: lin('#ffb4e6'), lilac: lin('#b9a4ff') };
   return /* glsl */ `
 uniform float uTime; uniform vec3 uCam; uniform float uFade;
 varying vec2 vTU; varying vec3 vW;
 ${NOISE}
 void main() {
   float a = vTU.x, u = vTU.y, t = uTime, ca = a * ${f4(R)};
-  // the water on the walls: helical ribbons, twisted by slow curls, streaming toward the rider and swirling round
-  vec2 q = vec2(ca * 0.55 + t * 0.32, u * 0.3 - t * 0.85);
-  float w = l1f(q * 1.3);
-  float rib = sin((u * 0.42 + ca * 0.23 + w * 1.7 - t * 0.6) * 6.2832);
-  float rib2 = sin((u * 0.85 - ca * 0.31 + w * 2.3 + t * 0.7) * 6.2832);
-  vec3 col = mix(${v3(C.deep)}, ${v3(C.cobalt)}, smoothstep(-0.85, -0.05, rib));
-  col = mix(col, ${v3(C.turq)}, smoothstep(0.35, 0.9, rib) * 0.8);
-  col = mix(col, mix(${v3(C.cobalt)}, ${v3(C.turq)}, 0.55), smoothstep(0.55, 0.95, rib2) * 0.45);
-  float streak = smoothstep(0.92, 0.985, rib) * smoothstep(0.42, 0.68, l1f(q * 3.1 + 3.0));
+  // the water on the walls: twisting irregular ribbons (cobalt, azure, turquoise currents, broken white streaks), streaming
+  // toward the rider and swirling round
+  vec2 q = vec2(ca * 0.6 + t * 0.35, u * 0.32 - t * 0.9);
+  float w = l1f(q * 1.25);
+  float rib = sin((u * 0.5 + ca * 0.27 + w * 1.6 - t * 0.7) * 6.2832);
+  float rib2 = sin((u * 1.1 - ca * 0.35 + w * 2.2 + t * 0.8) * 6.2832);
+  vec3 col = mix(${v3(C.deep)}, ${v3(C.cobalt)}, smoothstep(-0.9, -0.1, rib));
+  col = mix(col, ${v3(C.azure)}, smoothstep(0.1, 0.7, rib) * 0.7);
+  col = mix(col, ${v3(C.turq)}, smoothstep(0.55, 0.95, rib2) * 0.55);
+  float streak = smoothstep(0.9, 0.98, rib) * smoothstep(0.4, 0.66, l1f(q * 3.1 + 3.0));
   col = mix(col, ${v3(C.white)}, streak * 0.85);
-  // the drum's metal over the top: brushed lavender, a silver crown, deep purple at its edge, round perforations
-  float edge = 1.18 + 0.1 * sin(u * 1.1 + t * 1.6) + 0.06 * sin(ca * 3.0 - u * 0.7);
-  float metal = 1.0 - smoothstep(edge - 0.06, edge + 0.06, abs(a));
-  vec3 mc = mix(${v3(C.purple)}, ${v3(C.lav)}, smoothstep(edge, 0.35, abs(a)));
-  mc = mix(mc, ${v3(C.silver)}, (1.0 - smoothstep(0.0, 0.42, abs(a))) * 0.55);
-  mc *= 0.93 + 0.07 * sin(u * 9.0 + sin(ca * 2.0) * 1.3);
+  // glowing rings round the drum, fixed to it (they rush toward the camera and past her as she travels)
+  float rg = fract(u / 2.6), ring = exp(-pow((rg - 0.5) / 0.07, 2.0));
+  col = mix(col, mix(${v3(C.turq)}, ${v3(C.white)}, 0.55), ring * 0.55 * (0.7 + 0.3 * l1n(vec2(ca * 2.0, u))));
+  col += ${v3(C.lilac)} * exp(-pow((rg - 0.5) / 0.22, 2.0)) * 0.12;
+  // the washer drum's metal over the top: lavender with a silver crown and soft purple edges, small round perforations
+  float edge = 0.78 + 0.07 * sin(u * 1.1 + t * 1.6) + 0.04 * sin(ca * 3.0 - u * 0.7);
+  float metal = 1.0 - smoothstep(edge - 0.05, edge + 0.05, abs(a));
+  vec3 mc = mix(${v3(C.purple)}, ${v3(C.lav)}, smoothstep(edge, 0.3, abs(a)));
+  mc = mix(mc, ${v3(C.silver)}, (1.0 - smoothstep(0.0, 0.32, abs(a))) * 0.6);
+  mc *= 0.95 + 0.05 * sin(u * 9.0 + sin(ca * 2.0) * 1.3);
   vec2 hp = vec2(ca / 0.3, u / 0.3); vec2 hc = fract(hp + vec2(0.0, 0.5 * mod(floor(hp.x), 2.0))) - 0.5;
   float hr = length(hc), haa = fwidth(hp.x) * 0.7 + 0.02;
-  float hole = 1.0 - smoothstep(0.2 - haa, 0.2 + haa, hr);
-  float rim = (1.0 - smoothstep(0.0, 0.06 + haa, abs(hr - 0.24))) * (1.0 - smoothstep(0.1, 0.5, haa));
-  mc = mix(mc, ${v3(C.hole)}, hole * 0.8 * (1.0 - smoothstep(0.15, 0.6, haa)));
-  mc = mix(mc, ${v3(C.silver)}, rim * 0.35);
-  // the waterline where the swirling water meets the metal: white foam with a thin gold-peach glint above it
-  float wl = abs(abs(a) - edge);
+  float hole = (1.0 - smoothstep(0.16 - haa, 0.16 + haa, hr)) * (1.0 - smoothstep(0.15, 0.6, haa));
+  mc = mix(mc, ${v3(C.hole)}, hole * 0.55);
+  mc = mix(mc, ${v3(C.pink)}, ring * 0.35);
   col = mix(col, mc, metal);
-  col = mix(col, ${v3(C.white)}, (1.0 - smoothstep(0.0, 0.07, wl)) * (0.6 + 0.4 * l1n(vec2(u * 3.0 - t * 4.0, a * 9.0))));
-  col = mix(col, ${v3(C.gold)}, (1.0 - smoothstep(0.0, 0.025, abs(abs(a) - edge + 0.1))) * 0.5);
+  // the waterline where the swirling water meets the metal: white foam and a thin gold glint
+  float wl = abs(abs(a) - edge);
+  col = mix(col, ${v3(C.white)}, (1.0 - smoothstep(0.0, 0.06, wl)) * (0.55 + 0.45 * l1n(vec2(u * 3.0 - t * 4.0, a * 9.0))));
+  col = mix(col, ${v3(C.gold)}, (1.0 - smoothstep(0.0, 0.022, abs(abs(a) - edge + 0.08))) * 0.55);
+  // its first metres take the Screen 4 drum's bright pastel swirl, so the hand-over is a blend, not a jump
+  float intro = 1.0 - smoothstep(41.0, 50.0, u);
+  vec3 sw = mix(${v3(C.azure)}, ${v3(C.white)}, 0.35 + 0.35 * sin((u * 0.8 + ca * 0.4 + w - t * 0.6) * 6.2832));
+  sw = mix(sw, ${v3(C.pink)}, smoothstep(0.6, 0.9, l1f(q * 0.8 + 7.0)) * 0.35);
+  col = mix(col, sw, intro * 0.7);
   // the far tunnel's bright heart
   float d = length(vW - uCam);
-  col = mix(col, ${v3(C.glow)} * 1.25, smoothstep(13.0, 70.0, d) * 0.9);
+  col = mix(col, ${v3(C.glow)} * 1.3, smoothstep(10.0, 55.0, d) * 0.92);
   gl_FragColor = vec4(col * uFade, 1.0);
 }`;
 }
@@ -179,7 +188,7 @@ void main() {
   col = mix(col, ${v3(C.foam)}, white);
   // a soft sheen toward the far water (its reflection of the bright tunnel or the sky)
   float d = length(vW - uCam);
-  col = mix(col, vec3(0.75, 0.9, 1.0) * 1.15, smoothstep(16.0, 70.0, d) * 0.7);
+  col = mix(col, vec3(0.75, 0.9, 1.0) * 1.15, smoothstep(16.0, 70.0, d) * (uHalf > 2.0 ? 0.7 : 0.25));
   gl_FragColor = vec4(col, 1.0);
 }`;
 }
@@ -190,8 +199,8 @@ uniform float uTime; varying vec3 vD;
 ${NOISE}
 void main() {
   vec3 d = normalize(vD); float y = d.y;
-  vec3 top = vec3(0.16, 0.42, 1.0), mid = vec3(0.45, 0.72, 1.0), hor = vec3(1.0, 0.78, 0.93);
-  vec3 col = mix(hor, mid, smoothstep(-0.02, 0.25, y)); col = mix(col, top, smoothstep(0.25, 0.8, y));
+  vec3 top = vec3(0.05, 0.22, 0.95), mid = vec3(0.2, 0.5, 1.0), hor = vec3(0.75, 0.72, 1.0), pinkH = vec3(1.0, 0.7, 0.9);
+  vec3 col = mix(pinkH, hor, smoothstep(-0.04, 0.04, y)); col = mix(col, mid, smoothstep(0.04, 0.18, y)); col = mix(col, top, smoothstep(0.18, 0.55, y));
   vec2 cp = d.xz / max(0.12, y + 0.18) * 1.4 + vec2(uTime * 0.02, 0.0);
   float cl = smoothstep(0.52, 0.78, l1f(cp)) * smoothstep(-0.05, 0.12, y);
   col = mix(col, vec3(1.0, 0.97, 1.0), cl * 0.85);
@@ -258,7 +267,7 @@ export function buildLevel1(ctx) {
   // ---------------- the washer's hoops: silver-lavender bands with a gold edge and small lights, round the drum's upper wall
   // (fixed to the world every 8 m: the clearest sign of travel, one passing her about every second)
   const hoopU = []; for (let u = 44; u < C.gate - 4; u += 8) hoopU.push(u);
-  const arc = THREE.MathUtils.degToRad(250);
+  const arc = THREE.MathUtils.degToRad(170);
   const hoopG = new THREE.TorusGeometry(C.radius - 0.06, 0.11, 10, 72, arc); hoopG.rotateZ(Math.PI / 2 - arc / 2);
   const goldG = new THREE.TorusGeometry(C.radius - 0.13, 0.045, 8, 72, arc); goldG.rotateZ(Math.PI / 2 - arc / 2); goldG.translate(0, 0, -0.14);
   const violG = new THREE.TorusGeometry(C.radius - 0.1, 0.06, 8, 72, arc); violG.rotateZ(Math.PI / 2 - arc / 2); violG.translate(0, 0, 0.16);
@@ -410,7 +419,7 @@ export function buildLevel1(ctx) {
         const tw = new THREE.Mesh(new THREE.CylinderGeometry(tr, tr * 1.1, th, 16), towerM); tw.position.set(ox, th / 2 + 0.3, oz); isl.add(tw);
         const roof = new THREE.Mesh(new THREE.ConeGeometry(tr * 1.35, tr * 2.4, 16), roofM); roof.position.set(ox, th + 0.3 + tr * 1.2, oz); isl.add(roof);
       }
-      const fall = new THREE.Mesh(new THREE.PlaneGeometry(r * 0.6, r * 2.6), fallM); fall.position.set(-Math.sign(x) * r * 0.55, -r * 1.2, 0); fall.lookAt(isl.position.clone().sub(F.T.clone().multiplyScalar(30)).sub(base).add(fall.position)); isl.add(fall);
+      const fall = new THREE.Mesh(new THREE.PlaneGeometry(r * 0.6, r * 2.6), fallM); fall.position.set(Math.sign(x) * r * 0.75, -r * 1.2, 0); fall.lookAt(isl.position.clone().sub(F.T.clone().multiplyScalar(30)).sub(base).add(fall.position)); isl.add(fall);
     }
   }
   // the castle at the end of the slide (the game's own castle model)
@@ -445,7 +454,7 @@ export function buildLevel1(ctx) {
   // ---------------- the HUD: section banner, progress bar, Level Complete
   const css = document.createElement('style');
   css.textContent = `
-#l1Banner { position: absolute; left: 50%; top: calc(var(--u, 2px) * 92); transform: translate(-50%, -12px) scale(.86); opacity: 0; z-index: 30; pointer-events: none;
+#l1Banner { position: absolute; left: 50%; top: calc(var(--u, 2px) * 122); transform: translate(-50%, -12px) scale(.86); opacity: 0; z-index: 30; pointer-events: none;
   padding: calc(var(--u, 2px) * 6) calc(var(--u, 2px) * 16) calc(var(--u, 2px) * 7); border-radius: calc(var(--u, 2px) * 20); text-align: center; white-space: nowrap;
   font-family: var(--display, 'Fredoka', system-ui, sans-serif); color: #fff; font-weight: 700; transition: opacity .3s, transform .3s cubic-bezier(.3,1.6,.5,1);
   background: linear-gradient(#5aa8ff, #2f6ff0); border: calc(var(--u, 2px) * 2.2) solid #e8f6ff; box-shadow: 0 calc(var(--u, 2px) * 3) 0 #1a3f9e, 0 0 calc(var(--u, 2px) * 14) rgba(140,210,255,.8); }
@@ -453,7 +462,7 @@ export function buildLevel1(ctx) {
 #l1Banner.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
 #l1Banner b { display: block; font-size: calc(var(--u, 2px) * 15); line-height: 1.1; text-shadow: 0 calc(var(--u, 2px) * 1.5) 0 rgba(10,30,90,.55); }
 #l1Banner span { display: block; font-size: calc(var(--u, 2px) * 11.5); line-height: 1.15; text-shadow: 0 calc(var(--u, 2px) * 1.2) 0 rgba(10,30,90,.5); }
-#l1Prog { position: absolute; left: calc(var(--u, 2px) * 14); right: calc(var(--u, 2px) * 14); top: calc(var(--u, 2px) * 76); height: calc(var(--u, 2px) * 9); z-index: 25; pointer-events: none; opacity: 0; transition: opacity .4s; }
+#l1Prog { position: absolute; left: calc(var(--u, 2px) * 16); right: calc(var(--u, 2px) * 24); top: calc(var(--u, 2px) * 99); height: calc(var(--u, 2px) * 8); z-index: 25; pointer-events: none; opacity: 0; transition: opacity .4s; }
 body.running #l1Prog, #l1Prog.on { opacity: 1; }
 #l1Prog .bar { position: absolute; inset: 0; border-radius: 99px; background: rgba(20,30,110,.45); border: calc(var(--u, 2px) * 1.2) solid rgba(230,240,255,.85); overflow: hidden; }
 #l1Prog .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(90deg, #6ff0ff, #ff8ad8); border-radius: 99px; }
