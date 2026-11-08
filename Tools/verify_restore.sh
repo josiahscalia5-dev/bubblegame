@@ -24,6 +24,7 @@ GIRL2_BUNDLE_MD5=92bd9272a90407a75b64198e5a4c343b           # + the course culle
 MATCH6_BUNDLE_MD5=b5f69217                                  # (first 8) + match6, her rear silhouette (session 8140e507; 0 px: 69_match6/proofs/identity.txt)
 WET_BUNDLE_MD5=a62848a060079f447f2c86173aae2d97             # + level1's wet chamber and port, match6 opt-in (session 8140e507; 70_level1_wet/proofs/identity.txt)
 FLOW_BUNDLE_MD5=8363541c3cff0474bc2bbc3cdcf97732            # + level1's 10-beat flow, match6 opt-in (session b0abcf95, branch ccr-50c66592-kcnqoy; 71_level1_flow/proofs/identity.txt)
+SCENE07B_BUNDLE_MD5=6579f556e0104ac0d9531e72631d4293         # + scene07 pass 13b opt-in (session ce30359f, ccr-8cd911d8-0m96gr 6b719c7; accepted, normal, home, level1 0 px vs d2a666bd: 75_scene07_pass9_shell/proofs/identity_6579f556.txt; added by session f70c9bd1)
 SCENE07_BUNDLE_MD5=d2a666bd70926c4a1360dc08d02ecc41          # + tripo1, tripo2, scene07 pass 8 opt-in (session 57091b57, ccr-b67aeffb-d94mmq 4c7868eb; accepted, normal, home, level1 0 px: 74_scene07_avoid_enemies/proofs/identity.txt; added by session ce30359f)
 ACCEPTED_BUNDLE_MD5=5bb24e2828a6f2ef17146252c69b413a          # ?s3=intunnel and the normal game (accepted build)
 SWIM2_BUNDLE_MD5=1199348a80352be29327134230a1b6a1            # the same + ?s3=intunnel,swim2 behind its flag (7 November, user-approved)
@@ -56,7 +57,8 @@ done
 echo "== The accepted game (must be unchanged)"
 m() { md5sum < "$1" 2>/dev/null | cut -c1-32; }
 bm="$(m WebDemo/game.bundle.js)"
-if [ "$bm" = "$SCENE07_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (tripo1, tripo2, scene07 pass 8 opt-in on the flow build; accepted frames 0 px: 74_scene07_avoid_enemies/proofs/identity.txt)"
+if [ "$bm" = "$SCENE07B_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (scene07 pass 13b opt-in; accepted frames 0 px: 75_scene07_pass9_shell/proofs/identity_6579f556.txt)"
+elif [ "$bm" = "$SCENE07_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (tripo1, tripo2, scene07 pass 8 opt-in on the flow build; accepted frames 0 px: 74_scene07_avoid_enemies/proofs/identity.txt)"
 elif [ "$bm" = "$FLOW_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 flow, the 10-beat Level 1, on top of wet + port; match6 opt-in; 71_level1_flow/)"
 elif [ "$bm" = "$WET_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 wet + port on the ccr build, match6 opt-in; 70_level1_wet/)"
 elif [ "${bm:0:8}" = "$MATCH6_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (match6 on the ccr build: accepted, normal and ,nomatch6 0 px; 69_match6/)"
