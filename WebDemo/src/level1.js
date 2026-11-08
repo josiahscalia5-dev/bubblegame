@@ -32,7 +32,17 @@ import { makeFluffyBrush } from './fluffy_brush.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const LEVEL1_ON = LIST.includes('level1');
-export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), opening: LEVEL1_ON && !LIST.includes('noopening3d'), girl2: LEVEL1_ON && !LIST.includes('nogirl2') };   // girl2: the user's Tripo girl, rigged (8 November)
+export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), opening: LEVEL1_ON && !LIST.includes('noopening3d'), girl2: LEVEL1_ON && !LIST.includes('nogirl2'),   // girl2: the user's Tripo girl, rigged (8 November)
+  // wet (8 November ~10:45 UTC, session 8140e507, the user's Level 1 mandate: "once the pink fluffy character enters the washing
+  // machine, the character remains in continuous saturated blue water throughout the full level"): the drum tunnel goes on past
+  // the golden gate and widens into one large wet washer chamber (the same lavender metal and cobalt water walls, hoops,
+  // decorative brushes, bubbles, full-width water to its walls) instead of the open-sky slide (its rails, pillars and underside,
+  // the dry-road look); the Bubble Kingdom's castle is seen through a glowing portal in the chamber's end wall, and Level
+  // Complete comes while she floats in the chamber. Also the hand-off out of the Screen 4 drum: the drum's far-end light planes
+  // (game.js exitLight, one an opaque painted vortex) shrink away before she reaches them, instead of hiding her for 0.3 s.
+  // ,nowet draws the previous level1 exactly
+  wet: LEVEL1_ON && !LIST.includes('nowet') };
+const WET = LEVEL1_PARTS.wet;
 
 // The course (u = metres along the path; the Screen 4 drum is 3.9-37.2). Turns are radians per metre (+ to screen-left),
 // pitch radians (+ climbs); both are bumps that are zero before the drum's end.
@@ -70,6 +80,13 @@ export const COURSE = {
   // distance ridden at 0.03 ring per metre (tunnel_r9_match.js): too slow to read as travel. With level1 they advance k times
   // faster than she travels, measured from her start (INTUNNEL.u, 1.592 m), so Tap to Start is the same picture
   heroTravel: { from: 1.592, k: 6 },
+  // wet (LEVEL1_PARTS.wet): the chamber the drum widens into after the gate (radius from C.radius to R between u0 and u1), its
+  // end wall at end with the portal (radius, centre height above the water) the castle is seen through; beyond it the kingdom's
+  // lagoon (half width) with the castle (place, size, height) and islands [u, x, h, r]; decorative wall brushes [u, side];
+  // the drum's far-end light planes shrink away over exit (her u)
+  chamber: { u0: 266, u1: 292, R: 5.6, end: 366, portal: { r: 3.1, h: 2.1 }, lagoon: 14, castle: { u: 410, size: 19, h: -0.3 },
+    islands: [[384, -10, 0.4, 3.6], [392, 11, 0.6, 4.2], [402, -15, 0.8, 4.6], [414, 14, 0.5, 4.0], [424, -7, 1.0, 3.4]],
+    brushes: [[296, 1], [306, -1], [318, 1], [330, -1], [348, 1], [356, -1]], exit: [27, 39.5] },
 };
 
 const f4 = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
@@ -93,15 +110,18 @@ float l1f(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { s += a
 const WALL_VERT = /* glsl */ `
 attribute vec2 aTU; varying vec2 vTU; varying vec3 vW;
 void main() { vTU = aTU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`;
-function wallFrag(R) {
+// (wet: the chamber's radius varies along it, so its patterns use each point's own radius, vR, keeping the drum's scale)
+const WALL_VERT_WET = WALL_VERT.replace('attribute vec2 aTU; varying vec2 vTU; varying vec3 vW;', 'attribute vec2 aTU; attribute float aR; varying vec2 vTU; varying vec3 vW; varying float vR;')
+  .replace('void main() { vTU = aTU;', 'void main() { vTU = aTU; vR = aR;');
+function wallFrag(R, wet = false) {
   const C = { deep: lin('#1838c8'), cobalt: lin('#2f66f4'), azure: lin('#4fa8ff'), turq: lin('#3fe0ff'), white: lin('#f4fbff'), lav: lin('#cbb8f4'), silver: lin('#f1ecfd'),
     purple: lin('#7a5ac8'), hole: lin('#5a46a8'), glow: lin('#e6f8ff'), gold: lin('#ffcf7a'), pink: lin('#ffb4e6'), lilac: lin('#b9a4ff') };
   return /* glsl */ `
 uniform float uTime; uniform vec3 uCam; uniform float uFade;
-varying vec2 vTU; varying vec3 vW;
+varying vec2 vTU; varying vec3 vW;${wet ? ' varying float vR;' : ''}
 ${NOISE}
 void main() {
-  float a = vTU.x, u = vTU.y, t = uTime, ca = a * ${f4(R)};
+  float a = vTU.x, u = vTU.y, t = uTime, ca = a * ${wet ? 'vR' : f4(R)};
   // the water on the walls: twisting irregular ribbons (cobalt, azure, turquoise currents, broken white streaks), streaming
   // toward the rider and swirling round
   vec2 q = vec2(ca * 0.6 + t * 0.35, u * 0.32 - t * 0.9);
@@ -197,6 +217,13 @@ void main() {
 }`;
 }
 
+// (wet: one water from the drum to the castle's lagoon; its half width varies along it, so its foam where it climbs the walls
+// and its far sheen use each point's own half width, vHalf)
+const WATER_VERT_WET = WATER_VERT.replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'attribute float aHalf; varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
+  .replace('vXU = aXU; float h', 'vXU = aXU; vHalf = aHalf; float h');
+const waterFragWet = () => waterFrag().replace(' uniform float uHalf;', '').replace('varying vec2 vXU; varying vec3 vW; varying float vH;', 'varying vec2 vXU; varying vec3 vW; varying float vH; varying float vHalf;')
+  .replaceAll('uHalf', 'vHalf');
+
 // ---------------------------------------------------------------- the Bubble Kingdom's sky (follows the camera)
 const SKY_FRAG = /* glsl */ `
 uniform float uTime; varying vec3 vD;
@@ -227,25 +254,30 @@ export function buildLevel1(ctx) {
   const riderU = { value: new THREE.Vector4() };
 
   // ---------------- the drum tunnel (chunks of 15 m, each culled by the camera on its own)
-  const wallMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uFade: { value: 1 } }, vertexShader: WALL_VERT, fragmentShader: wallFrag(C.radius), side: THREE.DoubleSide });
+  const wallMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uFade: { value: 1 } }, vertexShader: WET ? WALL_VERT_WET : WALL_VERT, fragmentShader: wallFrag(C.radius, WET), side: THREE.DoubleSide });
+  // (wet) the drum's radius along the path: C.radius, then widening into the chamber between K.u0 and K.u1
+  const K = C.chamber, radiusAt = (u) => (WET ? C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) : C.radius);
+  const halfAt = (u) => Math.sqrt(Math.max(0.01, radiusAt(u) ** 2 - C.axisH ** 2)) + 0.15;   // the water reaches the wall
   const tubeChunk = (u0, u1) => {
-    const nA = 64, rows = Math.max(2, Math.ceil((u1 - u0) / 0.5) + 1), cols = nA + 1;
-    const pos = new Float32Array(rows * cols * 3), tu = new Float32Array(rows * cols * 2), idx = [];
+    const nA = WET && u1 > K.u0 ? 112 : 64, rows = Math.max(2, Math.ceil((u1 - u0) / 0.5) + 1), cols = nA + 1;
+    const pos = new Float32Array(rows * cols * 3), tu = new Float32Array(rows * cols * 2), rr = WET ? new Float32Array(rows * cols) : null, idx = [];
     for (let i = 0; i < rows; i++) {
-      const u = u0 + (u1 - u0) * i / (rows - 1); TR.frame(u, F);
+      const u = u0 + (u1 - u0) * i / (rows - 1), R = radiusAt(u); TR.frame(u, F);
       for (let j = 0; j < cols; j++) {
-        const a = -Math.PI + 2 * Math.PI * j / nA, x = Math.sin(a) * C.radius, h = C.axisH + Math.cos(a) * C.radius, k = i * cols + j;
+        const a = -Math.PI + 2 * Math.PI * j / nA, x = Math.sin(a) * R, h = C.axisH + Math.cos(a) * R, k = i * cols + j;
         pos[k * 3] = F.P.x + F.R.x * x + F.U.x * h; pos[k * 3 + 1] = F.P.y + F.R.y * x + F.U.y * h; pos[k * 3 + 2] = F.P.z + F.R.z * x + F.U.z * h;
-        tu[k * 2] = a; tu[k * 2 + 1] = u;
+        tu[k * 2] = a; tu[k * 2 + 1] = u; if (rr) rr[k] = R;
       }
     }
     for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nA; j++) { const a = i * cols + j, b = a + cols; idx.push(a, b, a + 1, b, b + 1, a + 1); }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aTU', new THREE.BufferAttribute(tu, 2)); g.setIndex(idx);
+    if (rr) g.setAttribute('aR', new THREE.BufferAttribute(rr, 1));
     g.computeBoundingSphere();
     const m = new THREE.Mesh(g, wallMat); m.name = 'l1Wall'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
   };
-  for (let u = C.tube[0]; u < C.tube[1]; u += 15) tubeChunk(u, Math.min(C.tube[1], u + 15));
-  report.parts.push('tube');
+  const tubeEnd = WET ? K.end : C.tube[1];   // (wet: on past the gate, through the chamber to its end wall)
+  for (let u = C.tube[0]; u < tubeEnd; u += 15) tubeChunk(u, Math.min(tubeEnd, u + 15));
+  report.parts.push(WET ? 'tube+chamber' : 'tube');
 
   // ---------------- the water (chunks of 15 m)
   const waterMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uRider: riderU, uHalf: { value: 2.2 } }, vertexShader: WATER_VERT, fragmentShader: waterFrag() });
@@ -266,13 +298,38 @@ export function buildLevel1(ctx) {
     g.setAttribute('aUp', new THREE.BufferAttribute(up, 3)); g.setIndex(idx); g.computeBoundingSphere(); g.boundingSphere.radius += 0.3;
     const m = new THREE.Mesh(g, mat); m.name = 'l1Water'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
   };
-  for (let u = C.water[0]; u < C.gate + 1; u += 15) waterChunk(u, Math.min(C.gate + 1, u + 15), 2.2, waterMat);
-  for (let u = C.gate - 1; u < C.water[1]; u += 15) waterChunk(u, Math.min(C.water[1], u + 15), 1.45, kWaterMat);
+  if (!WET) {
+    for (let u = C.water[0]; u < C.gate + 1; u += 15) waterChunk(u, Math.min(C.gate + 1, u + 15), 2.2, waterMat);
+    for (let u = C.gate - 1; u < C.water[1]; u += 15) waterChunk(u, Math.min(C.water[1], u + 15), 1.45, kWaterMat);
+  } else {
+    // (wet) one water, its half width following the drum and the chamber to their walls, then out through the portal into the
+    // castle's lagoon (seen only through the portal)
+    const wetWaterMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uRider: riderU }, vertexShader: WATER_VERT_WET, fragmentShader: waterFragWet() });
+    const wHalf = (u) => (u <= K.end ? halfAt(u) : halfAt(K.end) + (K.lagoon - halfAt(K.end)) * smooth(K.end, K.end + 12, u));
+    const wetChunk = (u0, u1) => {
+      const hmax = Math.max(wHalf(u0), wHalf(u1)), nx = Math.min(120, Math.max(28, Math.ceil(2 * hmax / 0.16))), rows = Math.max(2, Math.ceil((u1 - u0) / 0.4) + 1), cols = nx + 1;
+      const pos = new Float32Array(rows * cols * 3), xu = new Float32Array(rows * cols * 2), up = new Float32Array(rows * cols * 3), hf = new Float32Array(rows * cols), idx = [];
+      for (let i = 0; i < rows; i++) {
+        const u = u0 + (u1 - u0) * i / (rows - 1), half = wHalf(u); TR.frame(u, F);
+        for (let j = 0; j < cols; j++) {
+          const x = -half + 2 * half * j / nx, h = W.baseHeight(L, x, u), k = i * cols + j;
+          pos[k * 3] = F.P.x + F.R.x * x + F.U.x * h; pos[k * 3 + 1] = F.P.y + F.R.y * x + F.U.y * h; pos[k * 3 + 2] = F.P.z + F.R.z * x + F.U.z * h;
+          xu[k * 2] = x; xu[k * 2 + 1] = u; up[k * 3] = F.U.x; up[k * 3 + 1] = F.U.y; up[k * 3 + 2] = F.U.z; hf[k] = half;
+        }
+      }
+      for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nx; j++) { const a = i * cols + j, b = a + cols; idx.push(a, a + 1, b, b, a + 1, b + 1); }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aXU', new THREE.BufferAttribute(xu, 2));
+      g.setAttribute('aUp', new THREE.BufferAttribute(up, 3)); g.setAttribute('aHalf', new THREE.BufferAttribute(hf, 1)); g.setIndex(idx); g.computeBoundingSphere(); g.boundingSphere.radius += 0.3;
+      const m = new THREE.Mesh(g, wetWaterMat); m.name = 'l1Water'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
+    };
+    const wEnd = K.castle.u + 20;
+    for (let u = C.water[0]; u < wEnd; u += 15) wetChunk(u, Math.min(wEnd, u + 15));
+  }
   report.parts.push('water');
 
   // ---------------- the washer's hoops: silver-lavender bands with a gold edge and small lights, round the drum's upper wall
   // (fixed to the world every 8 m: the clearest sign of travel, one passing her about every second)
-  const hoopU = []; for (let u = 44; u < C.gate - 4; u += 8) hoopU.push(u);
+  const hoopU = []; for (let u = 44; u < (WET ? K.end - 4 : C.gate - 4); u += 8) hoopU.push(u);   // (wet: on through the chamber, scaled to it)
   const arc = THREE.MathUtils.degToRad(170);
   const hoopG = new THREE.TorusGeometry(C.radius - 0.06, 0.11, 10, 72, arc); hoopG.rotateZ(Math.PI / 2 - arc / 2);
   const goldG = new THREE.TorusGeometry(C.radius - 0.13, 0.045, 8, 72, arc); goldG.rotateZ(Math.PI / 2 - arc / 2); goldG.translate(0, 0, -0.14);
@@ -288,9 +345,10 @@ export function buildLevel1(ctx) {
   const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), S1 = new THREE.Vector3(1, 1, 1), P0 = new THREE.Vector3();
   hoopU.forEach((u, i) => {
     TR.frame(u, F); P0.copy(F.P).addScaledVector(F.U, C.axisH); TR.quaternion(u, Q);
-    M4.compose(P0, Q, S1); for (const h of hoops) h.setMatrixAt(i, M4);
+    const hk = radiusAt(u) / C.radius;   // (1 in the drum; wet: the chamber's size)
+    M4.compose(P0, Q, hk === 1 ? S1 : new THREE.Vector3(hk, hk, hk)); for (const h of hoops) h.setMatrixAt(i, M4);
     for (let b = 0; b < nb; b++) {
-      const a = (b / (nb - 1) - 0.5) * arc * 0.92, r = C.radius - 0.2;
+      const a = (b / (nb - 1) - 0.5) * arc * 0.92, r = radiusAt(u) - 0.2 * hk;
       const p = P0.clone().addScaledVector(F.R, Math.sin(a) * r).addScaledVector(F.U, Math.cos(a) * r).addScaledVector(F.T, -0.14);
       bulbs.setMatrixAt(i * nb + b, M4.compose(p, Q, S1));
     }
@@ -386,8 +444,9 @@ export function buildLevel1(ctx) {
   const sky = new THREE.Mesh(new THREE.SphereGeometry(150, 32, 16), new THREE.ShaderMaterial({ uniforms: { uTime: timeU }, side: THREE.BackSide, depthWrite: false, depthTest: false,
     vertexShader: 'varying vec3 vD; void main() { vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }', fragmentShader: SKY_FRAG }));
   sky.renderOrder = -9; sky.frustumCulled = false; sky.name = 'l1Sky'; sky.visible = false; scene.add(sky);
-  // the slide's rails on both sides of the kingdom water, with pillars down into the clouds
-  {
+  // the slide's rails on both sides of the kingdom water, with pillars down into the clouds (wet: none; she stays in the
+  // chamber's water, and the open slide was the dry-road look)
+  if (!WET) {
     const railM = new THREE.MeshStandardMaterial({ color: 0xf3ecff, roughness: 0.35, metalness: 0.2, envMap: env, emissive: 0x6a5aa0, emissiveIntensity: 0.25 });
     for (const s of [-1, 1]) {
       const pts = []; for (let u = C.gate - 1; u <= C.water[1]; u += 1) pts.push(TR.map(s * 1.55, 0.12, u));
@@ -413,7 +472,7 @@ export function buildLevel1(ctx) {
       vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
       fragmentShader: `uniform float uTime; varying vec2 vUv; ${NOISE} void main() { float n = l1f(vec2(vUv.x * 6.0, vUv.y * 3.0 + uTime * 1.6)); vec3 c = mix(vec3(0.3, 0.7, 1.0), vec3(0.95, 0.99, 1.0), smoothstep(0.45, 0.75, n));
         float a = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x) * (0.75 + 0.25 * n); gl_FragColor = vec4(c * 1.15, a); }` });
-    const islands = [[284, -9, 1, 4.5], [300, 11, 2, 5.5], [318, -13, 0, 6], [336, 10, -1, 5], [352, -8, 3, 4], [366, 15, 1, 6]];
+    const islands = WET ? K.islands : [[284, -9, 1, 4.5], [300, 11, 2, 5.5], [318, -13, 0, 6], [336, 10, -1, 5], [352, -8, 3, 4], [366, 15, 1, 6]];   // (wet: beyond the portal, round the castle's lagoon)
     for (const [u, x, h, r] of islands) {
       TR.frame(u, F); const base = F.P.clone().addScaledVector(F.R, x).addScaledVector(F.U, h);
       const isl = new THREE.Group(); isl.position.copy(base); kingdom.add(isl);
@@ -432,8 +491,9 @@ export function buildLevel1(ctx) {
   if (ctx.castleModel) {
     const c = ctx.castleModel.clone(true); const holder = new THREE.Group(); holder.add(c);
     const box = new THREE.Box3().setFromObject(c), size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
-    const s = 30 / Math.max(size.x, size.z); c.scale.setScalar(s); c.position.set(-mid.x * s, -box.min.y * s, -mid.z * s);
-    TR.map(0, -9, C.castle, holder.position); TR.quaternion(C.castle, holder.quaternion);
+    const s = (WET ? K.castle.size : 30) / Math.max(size.x, size.z); c.scale.setScalar(s); c.position.set(-mid.x * s, -box.min.y * s, -mid.z * s);
+    // (wet: standing in the lagoon beyond the chamber's portal, sized to be framed by it from the finish)
+    if (WET) { TR.map(0, K.castle.h, K.castle.u, holder.position); TR.quaternion(K.castle.u, holder.quaternion); } else { TR.map(0, -9, C.castle, holder.position); TR.quaternion(C.castle, holder.quaternion); }
     holder.name = 'l1Castle'; kingdom.add(holder); report.parts.push('castle');
   }
   // the finish: a gold and pink arch with a ribbon
@@ -445,6 +505,50 @@ export function buildLevel1(ctx) {
     TR.map(0, 0, C.finish, finish.position); TR.quaternion(C.finish, finish.quaternion); root.add(finish);
   }
   report.parts.push('kingdom');
+
+  // ---------------- (wet) the chamber's end wall with the portal to the Bubble Kingdom, its waterfalls, its wall brushes
+  const decor = [];
+  let endWall = null;
+  if (WET) {
+    endWall = new THREE.Group(); endWall.name = 'l1ChamberEnd';
+    const P = K.portal, Rk = radiusAt(K.end);
+    // the end wall: the drum's lavender metal round the portal (it reaches past the chamber's walls; below the water it is hidden)
+    const wallM = new THREE.MeshStandardMaterial({ color: 0xcdbff4, metalness: 0.75, roughness: 0.3, envMap: env, envMapIntensity: 1.1, emissive: 0x3a2a78, emissiveIntensity: 0.45, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(new THREE.RingGeometry(P.r, Rk + 1.2, 96, 2), wallM); ring.position.y = P.h; endWall.add(ring);
+    // perforations as a darker band of round holes round the portal, and two silver bands
+    for (const [r0, w, m] of [[P.r + 0.55, 0.16, silverM], [Rk - 0.6, 0.22, violM], [P.r + 1.6, 0.1, silverM]]) {
+      const band = new THREE.Mesh(new THREE.TorusGeometry(r0, w, 10, 96), m); band.position.y = P.h; band.position.z = -0.05; endWall.add(band);
+    }
+    // the portal's frame: gold, a silver outer ring, small lights, a glow on its rim and the crown on top (the gate's look)
+    const frame = new THREE.Mesh(new THREE.TorusGeometry(P.r, 0.34, 18, 96), goldM); frame.position.y = P.h; endWall.add(frame);
+    const frame2 = new THREE.Mesh(new THREE.TorusGeometry(P.r + 0.42, 0.13, 12, 96), silverM); frame2.position.y = P.h; endWall.add(frame2);
+    const lights = new THREE.InstancedMesh(bulbG, bulbM, 24);
+    for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2; lights.setMatrixAt(i, M4.makeTranslation(Math.sin(a) * (P.r + 0.42), P.h + Math.cos(a) * (P.r + 0.42), -0.12)); }
+    endWall.add(lights);
+    const glow = new THREE.Mesh(new THREE.RingGeometry(P.r - 0.5, P.r + 0.05, 96), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 1.35, 1.9), transparent: true, opacity: 0.45, depthWrite: false, side: THREE.DoubleSide }));
+    glow.position.set(0, P.h, -0.15); endWall.add(glow);
+    const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.78, 0.6, 5, 1, true), goldM); crown.position.set(0, P.h + P.r + 0.85, -0.1); endWall.add(crown);
+    for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.15), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.5, 0.4, 1.4) })); gem.position.set(Math.sin(a) * 0.68, P.h + P.r + 1.22, Math.cos(a) * 0.68 - 0.1); endWall.add(gem); }
+    TR.map(0, 0, K.end, endWall.position); TR.quaternion(K.end, endWall.quaternion); endWall.rotateY(Math.PI); root.add(endWall);
+    // waterfalls pouring from the end wall into the chamber's water either side of the portal
+    const fallWM = new THREE.ShaderMaterial({ uniforms: { uTime: timeU }, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+      vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `uniform float uTime; varying vec2 vUv; ${NOISE} void main() { float n = l1f(vec2(vUv.x * 5.0, vUv.y * 2.4 + uTime * 1.9)); vec3 c = mix(vec3(0.22, 0.55, 1.0), vec3(0.92, 0.98, 1.0), smoothstep(0.42, 0.78, n));
+        float a = smoothstep(0.0, 0.18, vUv.x) * smoothstep(1.0, 0.82, vUv.x) * (0.7 + 0.3 * n) * smoothstep(0.0, 0.08, vUv.y); gl_FragColor = vec4(c * 1.1, a * 0.9); }` });
+    for (const s of [-1, 1]) {
+      const fh = Rk + C.axisH - 0.6, fall = new THREE.Mesh(new THREE.PlaneGeometry(1.5, fh), fallWM);
+      TR.map(s * (P.r + 1.55), fh / 2 - 0.1, K.end - 0.25, fall.position); TR.quaternion(K.end, fall.quaternion); fall.name = 'l1ChamberFall'; root.add(fall); decor.push({ o: fall, u: K.end });
+    }
+    // decorative fluffy brushes on the chamber's walls at the water's edge (not in her lanes: they never knock her), spinning
+    for (const [u, side] of K.brushes) {
+      const x = side * (halfAt(u) - 1.0), holder = new THREE.Group(), spinner = new THREE.Group();
+      const look = makeFluffyBrush(side > 0, { balls: true }); look.scale.setScalar(1.0); spinner.add(look); holder.add(spinner);
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 1.6, 12), brushHub); arm.rotation.z = Math.PI / 2; arm.position.set(-side * 0.95, 0, -0.2); holder.add(arm);
+      TR.map(x, 0.95, u, holder.position); TR.quaternion(u, holder.quaternion); holder.rotateY(Math.PI); holder.name = 'l1ChamberBrush'; root.add(holder);
+      decor.push({ o: holder, u, spinner, dir: side });
+    }
+    report.parts.push('chamber');
+  }
 
   // ---------------- collectibles: added to the game's own lists (collect(), resetRun())
   const nBefore = { coins: ctx.counts().coins, gems: ctx.counts().gems, socks: ctx.counts().socks };
@@ -527,6 +631,10 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   // stop taps on the panel from reaching the game's own input
   for (const ev of ['pointerdown', 'touchstart', 'mousedown']) done.addEventListener(ev, (e) => e.stopPropagation());
 
+  // (wet) the Screen 4 drum's far-end light planes (game.js exitLight; their placement kept, so a restart shows them again)
+  const exitPlanes = WET && ctx.mats && ctx.mats.exitLight ? ctx.mats.exitLight.filter(Boolean).map((m) => ({ m, base: m.matrix.clone(), k: 1 })) : [];
+  const exitS = new THREE.Matrix4();
+
   // ---------------- per frame
   const tmpP = new THREE.Vector3();
   let lastPhase = '';
@@ -538,11 +646,25 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     if (running) state.level1Gems = state.gems - (state.level1Gems0 ?? state.gems);
     if (!gemsIn && u > C.tube[0] + 2.4) { ctx.gemsList.push(...myGems); gemsIn = true; }
     lastPhase = phase;
-    // sky only out in the kingdom
-    sky.visible = u > C.gate - 30; sky.position.copy(camU.value);
-    kingdom.visible = u > C.gate - 60;
-    // only what is near her is drawn (the far course is hidden behind the drum's glow anyway)
-    for (const c of chunks) c.visible = c.userData.u[0] < u + DRAW_AHEAD && c.userData.u[1] > u - DRAW_BEHIND;
+    if (!WET) {
+      // sky only out in the kingdom
+      sky.visible = u > C.gate - 30; sky.position.copy(camU.value);
+      kingdom.visible = u > C.gate - 60;
+      // only what is near her is drawn (the far course is hidden behind the drum's glow anyway)
+      for (const c of chunks) c.visible = c.userData.u[0] < u + DRAW_AHEAD && c.userData.u[1] > u - DRAW_BEHIND;
+    } else {
+      // (wet) once she nears the chamber, all of it is drawn to its end wall (no gap, no wall or water popping in), the kingdom
+      // and its sky only beyond the portal (the chamber encloses everything else)
+      const nearK = u > K.u0 - 60;
+      sky.visible = nearK; sky.position.copy(camU.value); kingdom.visible = nearK; endWall.visible = nearK;
+      for (const c of chunks) c.visible = c.userData.u[1] > u - DRAW_BEHIND && (c.userData.u[0] < u + DRAW_AHEAD || (nearK && c.userData.u[0] >= K.u0 - 15));
+      for (const d of decor) { d.o.visible = nearK && d.u - u > -3; if (d.spinner && d.o.visible) d.spinner.rotation.z += dt * 2.4 * d.dir; }
+      // the Screen 4 drum's far-end light planes shrink away as she nears the drum's end (they never come between her and the camera)
+      for (const e of exitPlanes) {
+        const k = 1 - smooth(K.exit[0], K.exit[1], u);
+        if (k !== e.k) { e.k = k; e.m.visible = k > 0.001; if (e.m.visible) { e.m.matrix.copy(e.base).multiply(exitS.makeScale(k, k, 1)); e.m.matrixWorldNeedsUpdate = true; } }
+      }
+    }
     for (const it of myItems) if (it.pop < 0 && it.live && !(it.u < u + DRAW_AHEAD && it.u > u - DRAW_BEHIND)) it.obj.visible = false;   // (in range: as the game left it)
     gate.visible = u > C.gate - DRAW_AHEAD && u < C.gate + 20; finish.visible = u > C.finish - 60;
     // bubbles drift and wobble
