@@ -36,6 +36,14 @@ const server = http.createServer((req, res) => {
     let s = 0;
     for (const t of SEQ) { while (s < t - 1e-6) { const d = Math.min(1 / 30, t - s); s += d; await page.evaluate(([a, b, dd]) => window.__bwO3D.seek(a, b, dd), [6 + s, s, d]); } await page.waitForTimeout(250); await shot(`seq_${t.toFixed(2)}.png`); }
   }
-  console.log(JSON.stringify({ logs, state: await page.evaluate(() => window.__bwO3D && window.__bwO3D.state()) }));
+  if (process.env.GAME === '1') {   // the hand-over: the game draws under the fading opening, then its Tap to Start, then the run
+    let s = SEQ.length ? SEQ[SEQ.length - 1] : 0;
+    while (s < 5.3) { s += 1 / 30; await page.evaluate(([a, b]) => window.__bwO3D && window.__bwO3D.seek(a, b), [6 + s, s]); }
+    await page.evaluate(() => window.__bw.advance(0.1)); await page.waitForTimeout(350); await shot('handover_mid.png');
+    while (s < 6.2) { s += 1 / 30; await page.evaluate(([a, b]) => window.__bwO3D && window.__bwO3D.seek(a, b), [6 + s, s]); }
+    await page.waitForTimeout(900); await page.evaluate(() => window.__bw.advance(0.1)); await shot('game_tap_to_start.png');
+    await page.evaluate(() => window.__bw.tap()); await page.evaluate(() => window.__bw.advance(3.0)); await page.waitForTimeout(400); await shot('game_3s.png');
+  }
+  console.log(JSON.stringify({ logs, home: await page.evaluate(() => !!document.getElementById('bwHome')), state: await page.evaluate(() => window.__bwO3D && window.__bwO3D.state()) }));
   await browser.close(); server.close();
 })().catch((e) => { console.error(e); process.exit(1); });

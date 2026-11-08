@@ -369,3 +369,5 @@ _[2 images attached]_
 
 Now wiring it into Screen 2 (`screens12.js`), gated so it only replaces the painted picture when `level1` is on:
 
+Before committing, the gameplay tests. Reading how the previous step ran them:
+

@@ -450,6 +450,11 @@ export function buildLevel1(ctx) {
   if (ctx.addSock) for (const [lane, h, u] of C.socks) ctx.addSock(lane, h, u);
   const nAfter = ctx.counts();
   report.drawn.coins = nAfter.coins - nBefore.coins; report.drawn.gems = nAfter.gems - nBefore.gems; report.drawn.socks = nAfter.socks - nBefore.socks;
+  // the game's own loop draws a random number for every gem on the list each frame (its sparkles): the course's gems join the
+  // list only once she has left the Screen 4 drum, so the game's seeded sequence is untouched until then (Tap to Start and the
+  // drum are drawn exactly as without level1)
+  const myGems = ctx.gemsList ? ctx.gemsList.splice(nBefore.gems) : [];
+  let gemsIn = false;
 
   // ---------------- the HUD: section banner, progress bar, Level Complete
   const css = document.createElement('style');
@@ -524,6 +529,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     riderU.value.set(m.x, u, Math.min(1, (m.speed || 0) / W.CRUISE) * (m.air ? 0.2 : 1), m.xv);
     if (phase === 'running' && lastPhase !== 'running') { state.level1Coins0 = state.coins; state.level1Gems = 0; state.level1Gems0 = state.gems; }
     if (running) state.level1Gems = state.gems - (state.level1Gems0 ?? state.gems);
+    if (!gemsIn && u > C.tube[0] + 2.4) { ctx.gemsList.push(...myGems); gemsIn = true; }
     lastPhase = phase;
     // sky only out in the kingdom
     sky.visible = u > C.gate - 30; sky.position.copy(camU.value);
@@ -596,6 +602,8 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     window.__bwLevel1 = { u: +u.toFixed(2), section: C.sections[k].name, progress: +p.toFixed(4), complete, socks: state.socks, report };
   }
   function reset() {
+    if (gemsIn) { for (const g of myGems) { const i = ctx.gemsList.indexOf(g); if (i >= 0) ctx.gemsList.splice(i, 1); } gemsIn = false; }
+    for (const g of myGems) { g.live = true; g.pop = -1; g.obj.visible = true; g.obj.scale.setScalar(1); g.obj.position.copy(g.home); }
     for (const b of brushes) { b.hit = false; b.bonk = 0; }
     for (const b of bars) b.hit = false;
     for (const e of enemies) { e.u = e.u0; e.hit = false; }

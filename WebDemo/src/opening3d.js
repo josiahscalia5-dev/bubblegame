@@ -217,7 +217,7 @@ function buildWasher(env) {
   front.position.set(x0, 0, zf - 0.06); g.add(front);
   // the body behind the front panel is hollow (its front would close the opening): top, bottom, sides and back
   const zb = zf - 0.06 - (D - 0.06) / 2, dd = D - 0.06;
-  for (const [w, h, d, x, y, z] of [[W, 0.06, dd, x0, H - 0.03, zb], [W, 0.06, dd, x0, 0.03, zb], [0.06, H, dd, x0 - W / 2 + 0.03, H / 2, zb], [0.06, H, dd, x0 + W / 2 - 0.03, H / 2, zb], [W, H, 0.06, x0, H / 2, zb - dd / 2 + 0.03]]) {
+  for (const [w, h, d, x, y, z] of [[W, 0.06, dd, x0, H - 0.03, zb], [W, 0.06, dd, x0, 0.03, zb], [0.06, H, dd, x0 - W / 2 + 0.03, H / 2, zb], [0.06, H, dd, x0 + W / 2 - 0.03, H / 2, zb]]) {   // (no back panel: the tunnel runs on through it)
     const b = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 3, 0.025), silver); b.position.set(x, y, z); g.add(b);
   }
   // the gold rim, a silver lip inside it and a silver bezel outside
@@ -246,7 +246,7 @@ function buildVortex() {
   const P = OPENING3D.porthole, len = 9, n = 90, nA = 48;
   const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);   // (hidden behind the washer and the wall until the camera is inside)
   const pos = [], uv = [], idx = [];
-  for (let i = 0; i <= n; i++) { const d = (i / n) * len; for (let j = 0; j <= nA; j++) { const a = (j / nA) * Math.PI * 2, r = rad(d); pos.push(P.x + Math.sin(a) * r, P.y + Math.cos(a) * r, P.z - d); uv.push(a, d); } }
+  for (let i = 0; i <= n; i++) { const d = (i / n) * len; for (let j = 0; j <= nA; j++) { const a = -Math.PI + (j / nA) * Math.PI * 2, r = rad(d); /* (0 at the top: the pattern's seam is at the bottom, under the water) */ pos.push(P.x + Math.sin(a) * r, P.y + Math.cos(a) * r, P.z - d); uv.push(a, d); } }
   for (let i = 0; i < n; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aAD', new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx);
   const U = { uTime: { value: 0 }, uFlow: { value: 0 }, uGlow: { value: 1 } };
@@ -255,19 +255,23 @@ function buildVortex() {
     fragmentShader: /* glsl */ `uniform float uTime, uFlow, uGlow; varying vec2 vAD; ${NOISE}
       void main() {
         float a = vAD.x, d = vAD.y, t = uTime;
-        float w = o3f(vec2(a * 1.2 + t * 0.4, d * 0.9 - uFlow));
-        float sw = sin((d * 2.2 + a * 0.32 + w * 1.5 - uFlow * 1.4 - t * 0.6) * 6.2832);
+        // noise blended across the angle's wrap (at the bottom), so the pattern has no seam
+        float a2 = a - 6.2832 * sign(a), bw = 0.5 * smoothstep(1.9, 3.1416, abs(a));
+        float w = mix(o3f(vec2(a * 1.2 + t * 0.4, d * 0.9 - uFlow)), o3f(vec2(a2 * 1.2 + t * 0.4, d * 0.9 - uFlow)), bw);
+        float sw = sin((d * 2.2 + a * 0.15915 + w * 1.5 - uFlow * 1.4 - t * 0.6) * 6.2832);
         vec3 c = mix(vec3(0.05, 0.16, 0.85), vec3(0.18, 0.55, 1.0), smoothstep(-0.7, 0.3, sw));
         c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * 0.75);
-        c = mix(c, vec3(1.0), smoothstep(0.9, 0.99, sw) * smoothstep(0.35, 0.65, o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0))) * 0.9);
-        c = mix(c, vec3(0.75, 0.6, 1.0), smoothstep(0.65, 0.9, o3f(vec2(a * 0.8 + 3.0, d * 0.5))) * 0.35);
+        c = mix(c, vec3(1.0), smoothstep(0.9, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
+        c = mix(c, vec3(0.75, 0.6, 1.0), smoothstep(0.65, 0.9, mix(o3f(vec2(a * 0.8 + 3.0, d * 0.5)), o3f(vec2(a2 * 0.8 + 3.0, d * 0.5)), bw)) * 0.35);
         float ring = exp(-pow((fract(d * 0.8 - uFlow * 0.5) - 0.5) / 0.08, 2.0));
         c = mix(c, vec3(0.75, 0.95, 1.0), ring * 0.4);
         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.3, smoothstep(3.0, 8.8, d) * 0.85 * uGlow);
         gl_FragColor = vec4(c, 1.0);
       }` });
   const tube = new THREE.Mesh(g, mat); tube.name = 'vortex';
-  const cap = new THREE.Mesh(new THREE.CircleGeometry(0.9, 40), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.2, 1.35, 1.5) })); cap.position.set(P.x, P.y, P.z - len + 0.05);
+  const cap = new THREE.Mesh(new THREE.CircleGeometry(0.9, 48), new THREE.ShaderMaterial({ uniforms: U,
+    vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: 'uniform float uGlow; varying vec2 vUv; void main() { float r = length(vUv - 0.5) * 2.0; vec3 c = mix(vec3(1.25, 1.35, 1.45), vec3(0.2, 0.55, 1.0), smoothstep(0.1 + 0.25 * uGlow, 0.95, r)); gl_FragColor = vec4(c, 1.0); }' })); cap.position.set(P.x, P.y, P.z - len + 0.05);
   // the water along its floor, flowing in
   const wl = OPENING3D.waterY, wpos = [], wuv = [], widx = [], nx = 16;
   for (let i = 0; i <= n; i++) { const d = (i / n) * len, r = rad(d), hw = Math.sqrt(Math.max(0.0001, r * r - (P.y - wl) * (P.y - wl))) + 0.02;
@@ -299,7 +303,11 @@ function buildRoom(env, rnd) {
   const g = new THREE.Group(); g.name = 'room';
   const wallM = new THREE.ShaderMaterial({ vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: 'varying vec2 vUv; void main() { vec3 a = vec3(0.62, 0.5, 0.95), b = vec3(0.95, 0.72, 0.95); vec3 c = mix(b, a, smoothstep(0.0, 1.0, vUv.y)); c *= 0.85 + 0.15 * smoothstep(0.0, 0.5, vUv.x); gl_FragColor = vec4(c, 1.0); }' });
-  const wall = new THREE.Mesh(new THREE.PlaneGeometry(6, 4), wallM); wall.position.set(0.2, 1.6, -1.25); g.add(wall);
+  // the back wall, with a round opening where the washer's tunnel runs on behind it (seen only through the washer's door)
+  const ws = new THREE.Shape(); ws.moveTo(-3, -2); ws.lineTo(3, -2); ws.lineTo(3, 2); ws.lineTo(-3, 2); ws.lineTo(-3, -2);
+  const wh = new THREE.Path(); wh.absarc(OPENING3D.porthole.x - 0.2, OPENING3D.porthole.y - 1.6, 0.44, 0, Math.PI * 2, true); ws.holes.push(wh);
+  const wg = new THREE.ShapeGeometry(ws, 48); { const pa = wg.attributes.position, uv = wg.attributes.uv; for (let i = 0; i < pa.count; i++) uv.setXY(i, (pa.getX(i) + 3) / 6, (pa.getY(i) + 2) / 4); }
+  const wall = new THREE.Mesh(wg, wallM); wall.position.set(0.2, 1.6, -1.25); g.add(wall);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 4), toon(0xe9c6ef, { glow: 0.25 })); floor.rotation.x = -Math.PI / 2; floor.position.set(0.2, 0, 0.6); g.add(floor);
   // a bright window at the upper left
   const win = new THREE.Group(); win.position.set(-0.75, 1.75, -1.2); g.add(win);
