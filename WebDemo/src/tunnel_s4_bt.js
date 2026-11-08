@@ -135,8 +135,10 @@ export const STRUCT_PARTS = { water: STRUCT_ON && LIST.includes('mounds') && !LI
   // combed down her dome, a spikier outline: ,nomatch5 draws the match4 look
   match5: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4') && !LIST.includes('nomatch5'),
   // the user's priority 3 of 8 November (~02:35 UTC: her rear silhouette full, round and fluffy like the ORIGINAL): her side nubs
-  // kept apart from her dome and her strands radiating from a whorl on her back (session 8140e507): ,nomatch6 draws the match5 look
-  match6: STRUCT_ON && !LIST.includes('noswim3') && !LIST.includes('nomatch4') && !LIST.includes('nomatch5') && !LIST.includes('nomatch6') };
+  // kept apart from her dome and her strands radiating from a whorl on her back (session 8140e507). A CANDIDATE until the user
+  // approves it (the user's order of 8 November ~10:30 UTC: not merged into the default look): opt-in with ,match6
+  // (?s3=intunnel,structmatch,match6); without it the match5 look exactly
+  match6: STRUCT_ON && LIST.includes('match6') && !LIST.includes('noswim3') && !LIST.includes('nomatch4') && !LIST.includes('nomatch5') && !LIST.includes('nomatch6') };
 export const SWIM2_ON = BT_ON && (LIST.includes('swim2') || LIST.includes('blend') || LIST.includes('structmatch') || (INTUNNEL_ON && LIST.every((f) => f === 'intunnel')));
 export const WATER5_ON = BT_ON && LIST.includes('water5');   // (R5, below: water4 with the texture's registration corrected)
 export const WATER9_ON = BT_ON && LIST.includes('water9');   // (R9, below: water8 with the swell kept only where the water touches her)
