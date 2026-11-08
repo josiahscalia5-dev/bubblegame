@@ -144,3 +144,390 @@ Bundle `54c3001b` builds from the current sources. Now the first pass 17 capture
 
 Pass 17 built with no errors: rows and far machinery, 520 glints, 11 camera-facing machines replaced, and both shaders patched. That's 410 draw calls against v5's 392. Now the visual comparison.
 
+---
+
+### You (sent while Claude was working) · 2026-11-08 22:24 UTC
+
+[attached file: BubbleWash_Background_Reference_Pack.zip] BUBBLE WASH KINGDOM — MANDATORY BACKGROUND SCENERY RECONSTRUCTION
+
+PRIORITY: HIGH — ONE TASK ONLY
+
+I want you to work exclusively on correcting the 3D background scenery of my EXISTING, PLAYABLE Bubble Wash Kingdom Screen 4.
+
+THIS IS NOT A RACE. TAKE THE TIME NECESSARY TO GET THE VISUAL MATCH RIGHT.
+
+I am not requesting a new game scene, a redesign, a concept image, or another experimental interpretation. I want my current game background reconstructed to match my ORIGINAL APPROVED SCREEN as accurately as technically possible.
+
+1. THE ONLY APPROVED VISUAL TARGET
+
+I have provided three screenshots:
+
+- LEFT: ORIGINAL APPROVED SCREEN — the only valid visual target.
+- MIDDLE: CURRENT V4 — the existing game that needs correction.
+- RIGHT: IMPROVED V5 — NOT APPROVED. Do not use this as the design target.
+
+I have also attached a reference pack with the images and a visual comparison guide.
+
+The GitHub repository is "josiahscalia5-dev/bubblegame".
+
+The original clean approved image is already stored at:
+
+"Design/ReferencePacks/2026-11-04_Round6_Construction_Guide/01_Original_Approved_Screen_4.jpg"
+
+Use that file as your primary visual reference.
+
+The white circle I drew on the screenshot is ONLY an example. It does not mean you should fix only that area.
+
+I WANT THE ENTIRE VISIBLE BACKGROUND SCENERY CORRECTED.
+
+2. WHAT YOU MUST RECONSTRUCT
+
+Carefully study every visible background detail in the approved screen, including:
+
+1. Pink washing-machine structures: Recreate the distinctive pink tube, curved machinery, metallic housing, side structures, pipes, rims, and surrounding mechanical details. Match their shapes, proportions, positions, materials, and colors to the approved scene.
+
+2. Deep laundry tunnel: The approved environment has a rich, densely layered interior with machinery receding into the distance. The current environment looks much emptier and flatter. Restore the depth, layering, curvature, and complexity.
+
+3. Gold coins and background objects: Match the approved gold coin appearance and visible arrangement as closely as possible. Preserve all existing collectible behavior, collision detection, and rewards. Any additional decorative coins must not create false collectible targets.
+
+4. Bubbles and decorative elements: Restore the numerous colorful bubbles, reflective details, surrounding mechanical components, and other background elements visible in the approved screen.
+
+5. Colors, lighting, and materials: Match the saturated blue, pink, purple, gold, and metallic colors of the approved environment. Recreate appropriate reflections, highlights, glow, shadows, and material depth without washing everything out into pale lavender.
+
+6. Perspective and composition: Use the existing gameplay camera as the constraint. Position the background objects in actual 3D space so they appear in the correct locations, sizes, and depths when viewed during gameplay.
+
+Do not simply add random pipes, rings, bubbles, or decorations. Every major addition should be justified by something visible in the approved image.
+
+3. WHAT YOU ARE STRICTLY FORBIDDEN TO CHANGE
+
+Do NOT modify:
+
+- My pink fluffy character, its appearance, scale, or animation.
+- My existing water appearance, movement, or swimming behavior.
+- Enemy characters, their gameplay logic, or animations.
+- The HUD, buttons, hearts, coin counter, or text.
+- Touch controls, swiping, movement, or camera behavior.
+- Level progression, obstacles, collision detection, or collectible logic.
+- Other game screens or unrelated project features.
+
+Do not destroy or replace anything already working.
+
+THIS IS A BACKGROUND-ONLY CORRECTION.
+
+4. IMPLEMENT THE ACTUAL 3D ENVIRONMENT
+
+Do not use the approved image as a static wallpaper, billboard, full-screen texture, or fake background.
+
+I want actual Three.js/WebGL scenery inside my existing playable game.
+
+Inspect the active code and identify where Screen 4's background objects and materials are constructed. Relevant existing files may include:
+
+- "WebDemo/src/game.js"
+- "WebDemo/src/tunnel_s4.js"
+- "WebDemo/src/tunnel_r9_focus.js"
+- "WebDemo/src/tunnel_s4_struct.js"
+- "WebDemo/src/tunnel_r9_match.js"
+- "WebDemo/src/decor.js"
+
+"WebDemo/src/scenery.js" also exists, but inspect its Screen 3 responsibilities before changing anything shared.
+
+Verify my current active branch and running build first. Do not blindly switch to an older implementation or overwrite my latest work.
+
+Reuse existing models, meshes, materials, shaders, and assets where they are useful. Build or correct missing 3D elements when necessary. Do not spend paid Tripo credits or generate expensive new assets without my approval.
+
+Prefer keeping the changes isolated to Screen 4's environment layer.
+
+5. VISUAL MATCHING — REQUIRED WORKFLOW
+
+I do not want you to make a few changes and assume the job is finished.
+
+Follow this workflow:
+
+STEP A — INSPECT: Compare the approved image with my current rendered gameplay at matching portrait dimensions. Identify the exact background features that are missing, misplaced, incorrectly shaped, or incorrectly colored.
+
+STEP B — MAP: Create a visual placement plan for the background elements using the approved image as the reference. Separate foreground gameplay objects from the actual background environment.
+
+STEP C — BUILD: Reconstruct the background in the real 3D game using appropriate geometry, materials, texture details, and object placement.
+
+STEP D — CAPTURE: Launch the actual playable game and take a real screenshot from the same gameplay camera and a comparable moment.
+
+STEP E — COMPARE: Place that screenshot next to the original approved image. Check background structure, object scale and positioning, tunnel depth, pink machinery, coins, colors, and lighting. Compare the relevant background regions rather than scoring the entire screen, since the foreground and HUD are intentionally unchanged.
+
+STEP F — CORRECT: Fix the remaining visible mismatches. Repeat the render-and-compare process until you have achieved the closest practical result, prioritizing the largest visual differences first.
+
+STEP G — VERIFY PLAYABILITY: Run the actual game and confirm that the background looks correct as the character moves through the tunnel, not just in a frozen screenshot.
+
+Aim for at least a 90% perceived visual match in the background composition where technically feasible. Do not claim a numerical score without a documented evaluation, and do not claim an exact match if visible differences remain.
+
+6. NON-NEGOTIABLE SUCCESS CONDITIONS
+
+Your final result must:
+
+- Look clearly recognizable as the environment from my ORIGINAL APPROVED SCREEN.
+- Have the correct pink mechanical background structures.
+- Restore the approved tunnel's detail and visual depth.
+- Match the approved background's colors, gold objects, bubbles, and decorative scenery.
+- Be actual working 3D geometry and effects, not a screenshot illusion.
+- Preserve my character, water, HUD, camera, and existing gameplay.
+- Work correctly when the character moves through the environment.
+
+Do not replace the approved look with a cleaner, simpler, more modern, or personally preferred design.
+
+Visual accuracy to my approved screen matters more than your own artistic interpretation.
+
+7. WHAT I EXPECT YOU TO DELIVER
+
+I want you to actually implement the changes, not just write a plan or explain how you would do it.
+
+When finished, provide:
+
+1. A real screenshot of the updated playable game next to my original approved screen.
+2. A short actual gameplay recording showing the corrected environment.
+3. A brief summary of exactly which background structures and materials you changed.
+4. Verification that the character, water, camera, controls, and gameplay remain functional.
+5. The committed changes on the correct working branch, without overwriting other work.
+
+If parts of the background still do not match, identify them clearly. Do not label an unfinished attempt as approved.
+
+FINAL MANDATE: FIX THE BACKGROUND SCENERY OF MY EXISTING GAME TO MATCH MY ORIGINAL APPROVED SCREEN. NOTHING ELSE.
+
+_[2 images attached]_
+
+---
+
+### Note · 2026-11-08 22:26 UTC
+
+_(You interrupted Claude here.)_
+
+---
+
+### You · 2026-11-08 22:26 UTC
+
+STRICT MANDATE — RESTORE MY COMPLETE CLAUDE CODE DEVELOPMENT ENVIRONMENT
+
+I am transferring my existing Bubble Wash Kingdom development project from my original Claude Code account to this account.
+
+YOUR FIRST PRIORITY IS TO RESTORE AND VERIFY MY ENTIRE DEVELOPMENT ENVIRONMENT — NOT JUST MY GAME.
+
+I want all my specialist agents, design agents, MCP servers, plugins, commands, skills, development tools, testing tools, integrations, autosave systems, and workflows restored as closely as possible to my original account.
+
+My GitHub repository:
+"josiahscalia5-dev/bubblegame"
+
+My development branch:
+"claude/bubble-wash-account-switch-e1nndb"
+
+Last verified handoff commit:
+"c63d064783ca9317d3f2eac039bb2c726962d397"
+
+Use the newest valid commit on this branch, not an outdated checkpoint.
+
+1. Restore the complete environment
+
+Read these existing project files:
+
+- "CLAUDE.md"
+- "BUBBLE_WASH_ACCOUNT_SWITCH_HANDOFF.md"
+- "Tools/FULL_AGENT_PLUGIN_TOOL_INVENTORY.md"
+
+Run:
+
+"bash Tools/restore_session.sh"
+
+Follow the documented environment setup and restore all supported configurations.
+
+Do not recreate anything that is already properly configured.
+
+2. Restore and test ALL 8 specialist agents
+
+Verify my five custom specialist agents:
+
+1. "game-art-director"
+2. "gameplay-visual-testing"
+3. "lighting-visual-matching"
+4. "water-vfx-engineer"
+5. "bubble-wash-screen-matcher"
+
+Also restore and verify the three Parallax specialist agents using their exact names from the saved inventory.
+
+I want every agent to be registered, discoverable, callable, and capable of actually completing a small test task.
+
+Do not simply tell me that its configuration file exists.
+
+3. Restore every MCP server and plugin
+
+Verify:
+
+- "parallax-threejs"
+- Chrome DevTools MCP
+- Three.js DevTools MCP
+- Playwright MCP
+- Spector
+- Every additional MCP server, plugin, command and skill documented in my inventory
+
+Check plugin availability, activation, permissions, server connectivity, and whether the agents can actually access their required tools.
+
+If Parallax reviewers still have the known browser-tool limitation, report it accurately rather than claiming full functionality.
+
+If a plugin requires manual installation or authorization, provide the exact steps I must perform in this account.
+
+4. Restore my development and design tools
+
+Verify all tools recorded in my inventory, including:
+
+- GitHub integration and repository permissions
+- Three.js and WebGL development environment
+- Browser automation and gameplay capture
+- Image and visual comparison tools
+- Screenshot and video recording tools
+- Rendering and performance diagnostics
+- Tripo CLI and API connectivity
+- Existing 3D models and asset workflows
+- Build and testing commands
+- Autosave and GitHub backup automation
+- Existing custom scripts, commands and skills
+
+Preserve existing working configurations.
+
+Never expose API keys. Do not spend Tripo credits or generate paid assets without my permission.
+
+5. Verify the full environment through REAL tests
+
+Perform one lightweight functional test for each previously unverified specialist agent and required tool.
+
+Reuse recent verified test results when reliable, instead of repeating costly work.
+
+Classify everything as:
+
+WORKING: Installed, connected, and successfully tested.
+
+LIMITED: Available but missing some capability or permission.
+
+MISSING: Not installed, not connected, or unavailable.
+
+For each LIMITED or MISSING component, explain exactly what is required to restore it.
+
+Do not claim that the restoration is complete if anything essential remains disconnected.
+
+6. Preserve my entire existing game
+
+Do not restart Bubble Wash Kingdom.
+
+Do not redesign approved screens.
+
+Do not overwrite my original assets.
+
+Preserve my accepted Classic Screen 4 and its regression baseline.
+
+My current Screen 09 candidate is v5, bundle "a359dad4", unless the latest GitHub branch contains newer verified work.
+
+Screen 09 is NOT approved.
+
+Continue from the newest verified project checkpoint only after the environment is restored sufficiently for development.
+
+7. Save everything for future account transfers
+
+Update the existing handoff and inventory with:
+
+- Every specialist agent and its exact configuration
+- Every plugin and MCP server
+- Every required permission and integration
+- All installed skills and commands
+- Setup and restoration instructions
+- Autosave and GitHub configuration
+- Known limitations
+- Exact versions when available
+- The latest verified development checkpoint
+
+Save all transferable configurations, scripts, and documentation to my existing GitHub development branch.
+
+Do not commit passwords, API keys, access tokens or secrets.
+
+Do not force-push.
+
+Verify the final remote commit hash.
+
+8. Minimize my Claude usage
+
+This is a ONE-PROMPT setup mandate.
+
+Run independent lightweight checks together where appropriate, without duplicating expensive tests.
+
+Do not repeatedly ask me questions already answered in the GitHub handoff.
+
+Do not redo completed development work.
+
+Only interrupt me when manual account authorization, a missing secret, or an important decision is genuinely required.
+
+FINAL REQUIRED RESULT
+
+Give me one complete environment-readiness report showing:
+
+- All 8 specialist agents and their status
+- All MCP servers and their status
+- All plugins, commands and skills
+- Development and design tools
+- Tripo integration status
+- GitHub backup and autosave status
+- Any missing manual account connections
+- The newest verified GitHub commit
+
+I do not want a partial restoration described as complete. I want the entire environment verified and ready to continue development.
+
+Once the essential tools are functioning, continue my existing Screen 09 work without restarting the project.
+
+START WITH THE SAVED INVENTORY AND RESTORATION SCRIPT. DO NOT START BUILDING OR REDESIGNING THE GAME BEFORE VERIFYING THE ENVIRONMENT.
+Claudia, I have added my Tripo API key securely to my "bubblegame" cloud environment as a network secret for "openapi.tripo3d.ai".
+
+Please verify that the Tripo CLI can authenticate using the network secret.
+
+Run only the free authentication and balance checks. Do not display my API key, spend credits, or generate any 3D models during verification.
+
+Confirm whether Tripo is connected and show my available API credit balance.
+
+Then continue my existing Bubble Wash Kingdom project from the latest verified GitHub checkpoint.
+
+---
+
+### You (sent while Claude was working) · 2026-11-08 22:28 UTC
+
+[attached file: BubbleWash_Corrected_Avoid_Enemies_Background_Pack.zip] IMPORTANT CORRECTION — PLEASE READ BEFORE CONTINUING.
+
+You correctly identified that the GitHub file previously labeled as my approved reference is actually the older Classic blue-tunnel image. That reference was provided to you by mistake.
+
+My actual approved target is the LEFT screenshot showing “Avoid Enemies!”, with the detailed pink washing-machine environment, pink tubes, colorful machinery, gold coins, bubbles, and rich background scenery.
+
+There is also a relevant reference in my repository:
+
+"Design/ApprovedScreens/09_Avoid_Enemies.png"
+
+However, prioritize the LEFT screenshot I uploaded, because that is the exact visual version I approved.
+
+Please do not confuse the artwork's Screen 9 filename with my current playable Screen 4. I am only asking you to transfer the approved background's visual appearance into my existing gameplay environment.
+
+The middle screenshot is my current game. The right screenshot is NOT approved.
+
+Regarding the "11Hoops" rings you are investigating: please first determine whether those rings actually help recreate the environment in my LEFT approved image. Do not spend time perfecting the older Classic ring-tunnel appearance if it does not match my intended background.
+
+Continue implementing the background correction only. Preserve my current pink character, blue water, enemy behavior, HUD, camera, movement, and gameplay.
+
+Do not restart the project or redesign anything. Reconstruct the approved background as closely as possible in actual playable 3D, and show me a side-by-side comparison when finished.
+
+The LEFT “Avoid Enemies!” image is the approved source of truth for this task.
+
+---
+
+### Claude · 2026-11-08 22:28 UTC
+
+The lighting agent identified PASTEL16's whitening of the hall materials (k 0.34) as the main cause of the "pale lavender" look. Now a real run of the screen-matcher skill's comparison tool.
+
+The project's Spector server answers; it needs a page loaded first. A real frame capture on its built-in light playground will confirm it works end to end.
+
+A Babylon playground would need an external site, so I'll use a tiny local WebGL page served from the scratchpad.
+
+Spector is fully working: a real frame capture of the WebGL test page found 1 draw call and no GL errors. The water-motion agent saw one 404 in the console; I'll identify it from the server log.
+
+The only 404 is `/favicon.ico` from the plain test server, which is harmless. I'll check the autosave state and then write the environment results into the inventory and handoff.
+
+Autosave is healthy: one process, every round `github=VERIFIED`, and local HEAD `cd4c4468` matches GitHub. I'll register this session for future autosave restarts.
+

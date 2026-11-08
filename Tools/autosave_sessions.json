@@ -67,5 +67,12 @@
     "title": "Session f70c9bd1 (8 November, account switch): restoration and Screen 09 on branch claude/bubble-wash-account-switch-e1nndb",
     "url": "https://claude.ai/code/session_019Rgj5g6iZsturQ5pdRxSux",
     "parent": "ccr-8cd911d8-0m96gr"
+  },
+  "bb87ba9f-9df1-5d94-9b9c-75a7e04a090e": {
+    "chat": "ChatHistory/2026-11-08_session_bb87ba9f.md",
+    "agents": "ChatHistory/2026-11-08_session_bb87ba9f_design_agent_transcripts.md",
+    "title": "Session bb87ba9f (8 November, account transfer): full environment restore and Screen 09 pass 17 on branch claude/bubble-wash-account-transfer-52t7ym",
+    "url": "https://claude.ai/code/session_01L8bvJdqHherLnTY4v7jTWP",
+    "parent": "claude/bubble-wash-account-switch-e1nndb"
   }
 }
