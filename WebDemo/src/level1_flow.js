@@ -107,6 +107,20 @@ export function flowCourse(B) {
   };
 }
 
+// finale2 (opt-in): the chamber goes on and widens into a Bubble Kingdom hall (radius hall.R between hall.u0 and hall.u1) closed by
+// its end wall (the portal behind the castle); the castle stands in the hall's water up close (fitted to size wide and maxH high),
+// islands with pastel towers stand in the water at its sides, waterfalls pour from the castle; the finish (Level Complete) is at the
+// castle's moat. Everything stays inside the wet washer chamber: water from wall to wall, no open sky but the glimpse in the portal.
+export function finaleCourse(F) {
+  const K = F.chamber;
+  return { ...F, finish: 386, length: 470,   // (the path is built to its length; beyond it track.js clamps)
+    sections: [...F.sections, { u: 344, name: 'Bubble Kingdom', short: 'Castle', banner: ['Welcome to the', 'Bubble Kingdom!'] }],
+    chamber: { ...K, end: 440, hall: { u0: 328, u1: 352, R: 9.0 },
+      castle: { u: 410, size: 15, maxH: 8.2, h: -0.7 },
+      islands: [[356, -6.6, -0.25, 2.2], [366, 6.8, -0.25, 2.4], [376, -7.0, -0.25, 2.0], [398, 6.9, -0.25, 2.2], [420, -6.4, -0.25, 2.6], [424, 6.5, -0.25, 2.4]],
+      falls: [[-3.2, 404, 6.5], [3.2, 404, 6.5]] } };
+}
+
 /**
  * The side paths' and the drop's structures, the bounce pad, the arrows, and the flow's rules. ctx: level1's build context plus
  * { root, radiusAt, timeU, mats: { goldM, silverM, violM, env }, fx, sfx, padJump, hint(text) }.

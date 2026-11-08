@@ -29,7 +29,7 @@
 import * as THREE from 'three';
 import { makeFluffyBrush } from './fluffy_brush.js';
 import { HOOK as W_HOOK } from './world.js';
-import { flowCourse, flowLift, flowLaneX, buildFlow, widen as flowWiden } from './level1_flow.js';   // flow (session b0abcf95)
+import { flowCourse, finaleCourse, flowLift, flowLaneX, buildFlow, widen as flowWiden } from './level1_flow.js';   // flow (session b0abcf95)
 
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -54,6 +54,12 @@ export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), open
   // on any route, Level Complete with the board's goals and rewards (level1_flow.js). Needs wet. ,noflow draws the previous level1 exactly
   flow: LEVEL1_ON && !LIST.includes('nowet') && !LIST.includes('noflow') };
 const WET = LEVEL1_PARTS.wet, FLOW = LEVEL1_PARTS.flow;
+// roof2 and finale2 (8 November ~13:45 UTC, session b0abcf95, the user's correction brief BWK_04 / BWK_05: "the original board is the
+// authority"): OPT-IN candidates on top of flow, nothing changes without them. roof2: the course's upper tunnel is blue water lit from
+// above (no continuous lilac crown), the washer's metal kept as silver / lavender rims with gold edges. finale2: the wet chamber
+// widens into a Bubble Kingdom hall with the castle standing in the water up close (no open sky), the finish at its moat, and the
+// board 12 celebration (she faces the player and bounces with rescued socks; the goals above her, the rewards below)
+const ROOF2 = FLOW && LIST.includes('roof2'), FINALE2 = FLOW && LIST.includes('finale2');
 if (FLOW) W_HOOK.lift = flowLift;   // (world.js baseHeight: her riding height, the camera, the spray, the water all see the routes)
 
 // The course (u = metres along the path; the Screen 4 drum is 3.9-37.2). Turns are radians per metre (+ to screen-left),
@@ -100,7 +106,7 @@ const COURSE0 = {
     islands: [[372, -11, 0.4, 3.6], [380, 12, 0.6, 4.2], [390, -16, 0.8, 4.6], [402, 15, 0.5, 4.0], [410, -8, 1.0, 3.4]],
     brushes: [[296, 1], [306, -1], [318, 1], [330, -1], [348, 1], [356, -1]], exit: [30.5, 35.5] },
 };
-export const COURSE = FLOW ? flowCourse(COURSE0) : COURSE0;
+export const COURSE = FLOW ? (FINALE2 ? finaleCourse(flowCourse(COURSE0)) : flowCourse(COURSE0)) : COURSE0;
 
 const f4 = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const lin = (hex) => new THREE.Color(hex);   // three.js converts hex to linear working colour
@@ -131,7 +137,7 @@ void main() { vTU = aTU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz;
 // (wet: the chamber's radius varies along it, so its patterns use each point's own radius, vR, keeping the drum's scale)
 const WALL_VERT_WET = WALL_VERT.replace('attribute vec2 aTU; varying vec2 vTU; varying vec3 vW;', 'attribute vec2 aTU; attribute float aR; varying vec2 vTU; varying vec3 vW; varying float vR;')
   .replace('void main() { vTU = aTU;', 'void main() { vTU = aTU; vR = aR;');
-function wallFrag(R, wet = false, flow = false) {
+function wallFrag(R, wet = false, flow = false, roof2 = false) {
   const C = { deep: lin('#1838c8'), cobalt: lin('#2f66f4'), azure: lin('#4fa8ff'), turq: lin('#3fe0ff'), white: lin('#f4fbff'), lav: lin('#cbb8f4'), silver: lin('#f1ecfd'),
     purple: lin('#7a5ac8'), hole: lin('#5a46a8'), glow: lin('#e6f8ff'), gold: lin('#ffcf7a'), pink: lin('#ffb4e6'), lilac: lin('#b9a4ff') };
   const src = wallFragSrc(R, wet, C);
@@ -160,6 +166,17 @@ function wallFrag(R, wet = false, flow = false) {
   col = mix(col, ${v3(C.white)}, (1.0 - smoothstep(0.0, 0.05, wl)) * 0.25 * hand * (0.55 + 0.45 * l1n(vec2(u * 3.0 - t * 4.0, a * 9.0))));
   col = mix(col, ${v3(C.gold)}, (1.0 - smoothstep(0.0, 0.02, abs(ra - 0.88) * edge)) * 0.35 * hand);`);
   s = rep(s, `  col = mix(col, ${v3(C.glow)} * 1.3, smoothstep(10.0, 55.0, d) * 0.92);`, `  col = mix(col, mix(${v3(C.azure)}, ${v3(C.glow)}, 0.6) * 1.2, smoothstep(12.0, 60.0, d) * 0.7);`);
+  if (!roof2) return s;
+  // (roof2, the user's brief BWK_04 / BWK_05: "the whole inner tunnel surrounded by dimensional saturated blue, turquoise and aqua water
+  // and watery lighting, including above"): no lilac crown and no waterline outlines (the washer's metal is the rims: the hoops);
+  // the upper wall is the same streaming water, lit from above: brighter aqua currents and soft moving caustics toward the top
+  s = rep(s, 'hand = smoothstep(41.0, 52.0, u);', 'hand = 0.0 * smoothstep(41.0, 52.0, u);');
+  s = rep(s, '  // the far tunnel\'s bright heart\n', `  float upw = smoothstep(-0.2, 0.9, cos(a));
+  float cs = l1n(vec2(ca * 2.2 + t * 0.6, u * 1.6 - t * 1.1)) * l1n(vec2(ca * 3.1 - t * 0.4, u * 2.3 + t * 0.7));
+  col = mix(col, ${v3(lin('#2a9cff'))}, upw * 0.22);
+  col += ${v3(lin('#6fe6ff'))} * smoothstep(0.32, 0.62, cs) * upw * 0.35 * (1.0 - aaR);
+  // the far tunnel's bright heart
+`);
   return s;
 }
 function wallFragSrc(R, wet, C) {
@@ -311,10 +328,11 @@ export function buildLevel1(ctx) {
   const riderU = { value: new THREE.Vector4() };
 
   // ---------------- the drum tunnel (chunks of 15 m, each culled by the camera on its own)
-  const wallMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uFade: { value: 1 } }, vertexShader: WET ? WALL_VERT_WET : WALL_VERT, fragmentShader: wallFrag(C.radius, WET, FLOW), side: THREE.DoubleSide });
+  const wallMat = new THREE.ShaderMaterial({ uniforms: { uTime: timeU, uCam: camU, uFade: { value: 1 } }, vertexShader: WET ? WALL_VERT_WET : WALL_VERT, fragmentShader: wallFrag(C.radius, WET, FLOW, ROOF2), side: THREE.DoubleSide });
   // (wet) the drum's radius along the path: C.radius, then widening into the chamber between K.u0 and K.u1 (flow: and round the
   // side paths and the drop)
-  const K = C.chamber, radiusAt = FLOW ? (u) => C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) + flowWiden(u)
+  const K = C.chamber, radiusAt = FINALE2 ? (u) => C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) + flowWiden(u) + (K.hall.R - K.R) * smooth(K.hall.u0, K.hall.u1, u)   // (finale2: the Kingdom hall)
+    : FLOW ? (u) => C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) + flowWiden(u)
     : (u) => (WET ? C.radius + (K.R - C.radius) * smooth(K.u0, K.u1, u) : C.radius);
   const halfAt = (u) => Math.sqrt(Math.max(0.01, radiusAt(u) ** 2 - C.axisH ** 2)) + 0.15;   // the water reaches the wall
   const tubeChunk = (u0, u1) => {
@@ -386,7 +404,7 @@ export function buildLevel1(ctx) {
       g.setAttribute('aUp', new THREE.BufferAttribute(up, 3)); g.setAttribute('aHalf', new THREE.BufferAttribute(hf, 1)); g.setIndex(idx); g.computeBoundingSphere(); g.boundingSphere.radius += 0.3;
       const m = new THREE.Mesh(g, wetWaterMat); m.name = 'l1Water'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
     };
-    const wEnd = K.castle.u + 20;
+    const wEnd = FINALE2 ? Math.max(K.castle.u + 20, K.end + 4) : K.castle.u + 20;   // (finale2: on to the hall's end wall)
     for (let u = C.water[0]; u < wEnd; u += 15) wetChunk(u, Math.min(wEnd, u + 15));
   });
   report.parts.push('water');
@@ -394,7 +412,7 @@ export function buildLevel1(ctx) {
   // ---------------- the washer's hoops: silver-lavender bands with a gold edge and small lights, round the drum's upper wall
   // (fixed to the world every 8 m: the clearest sign of travel, one passing her about every second)
   const hoopU = []; for (let u = 44; u < (WET ? K.end - 4 : C.gate - 4); u += 8) hoopU.push(u);   // (wet: on through the chamber, scaled to it)
-  const arc = THREE.MathUtils.degToRad(170);
+  const arc = THREE.MathUtils.degToRad(ROOF2 ? 220 : 170);   // (roof2: the rims frame the sides too, down toward the water)
   const hoopG = new THREE.TorusGeometry(C.radius - 0.06, 0.11, 10, 72, arc); hoopG.rotateZ(Math.PI / 2 - arc / 2);
   const goldG = new THREE.TorusGeometry(C.radius - 0.13, 0.045, 8, 72, arc); goldG.rotateZ(Math.PI / 2 - arc / 2); goldG.translate(0, 0, -0.14);
   const violG = new THREE.TorusGeometry(C.radius - 0.1, 0.06, 8, 72, arc); violG.rotateZ(Math.PI / 2 - arc / 2); violG.translate(0, 0, 0.16);
@@ -404,7 +422,10 @@ export function buildLevel1(ctx) {
   const violM = new THREE.MeshStandardMaterial({ color: 0x8a64d8, metalness: 0.7, roughness: 0.32, envMap: env, emissive: 0x2a1460, emissiveIntensity: 0.5 });
   const bulbG = new THREE.SphereGeometry(0.075, 12, 8);
   const bulbM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.3, 1.9) });
-  const nb = 7, hoops = [new THREE.InstancedMesh(hoopG, silverM, hoopU.length), new THREE.InstancedMesh(goldG, goldM, hoopU.length), new THREE.InstancedMesh(violG, violM, hoopU.length)];
+  // (roof2: the rims are the washer's metal now: silver-lavender with a bright gold edge and a lavender inner band, their own materials)
+  const rimM = ROOF2 ? [silverM.clone(), goldM.clone(), violM.clone()] : [silverM, goldM, violM];
+  if (ROOF2) { rimM[0].color.set(0xeae2ff); rimM[0].emissive.set(0x6c5cb8); rimM[0].emissiveIntensity = 0.5; rimM[1].color.set(0xffd98a); rimM[1].emissive.set(0x8a5a24); rimM[1].metalness = 0.8; rimM[1].roughness = 0.28; rimM[2].color.set(0xc4b0f6); rimM[2].emissive.set(0x4a3a98); }
+  const nb = 7, hoops = [new THREE.InstancedMesh(hoopG, rimM[0], hoopU.length), new THREE.InstancedMesh(goldG, rimM[1], hoopU.length), new THREE.InstancedMesh(violG, rimM[2], hoopU.length)];
   const bulbs = new THREE.InstancedMesh(bulbG, bulbM, hoopU.length * nb);
   const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), S1 = new THREE.Vector3(1, 1, 1), P0 = new THREE.Vector3();
   hoopU.forEach((u, i) => {
@@ -569,10 +590,19 @@ export function buildLevel1(ctx) {
   if (ctx.castleModel) {
     const c = ctx.castleModel.clone(true); const holder = new THREE.Group(); holder.add(c);
     const box = new THREE.Box3().setFromObject(c), size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
-    const s = (WET ? K.castle.size : 30) / Math.max(size.x, size.z); c.scale.setScalar(s); c.position.set(-mid.x * s, -box.min.y * s, -mid.z * s);
+    const s = FINALE2 ? Math.min(K.castle.size / Math.max(size.x, size.z), K.castle.maxH / size.y) : (WET ? K.castle.size : 30) / Math.max(size.x, size.z);   // (finale2: fitted inside the hall)
+    c.scale.setScalar(s); c.position.set(-mid.x * s, -box.min.y * s, -mid.z * s);
     // (wet: standing in the lagoon beyond the chamber's portal, sized to be framed by it from the finish)
     if (WET) { TR.map(0, K.castle.h, K.castle.u, holder.position); TR.quaternion(K.castle.u, holder.quaternion); } else { TR.map(0, -9, C.castle, holder.position); TR.quaternion(C.castle, holder.quaternion); }
     holder.name = 'l1Castle'; kingdom.add(holder); report.parts.push('castle');
+    if (FINALE2) {   // (finale2) the castle's waterfalls pouring into its moat, and its size in the report
+      report.castle = { scale: +s.toFixed(3), w: +(Math.max(size.x, size.z) * s).toFixed(2), h: +(size.y * s).toFixed(2) };
+      const fm = new THREE.ShaderMaterial({ uniforms: { uTime: timeU }, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+        vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+        fragmentShader: `uniform float uTime; varying vec2 vUv; ${NOISE} void main() { float n = l1f(vec2(vUv.x * 5.0, vUv.y * 2.4 + uTime * 1.9)); vec3 c = mix(vec3(0.2, 0.6, 1.0), vec3(0.92, 0.98, 1.0), smoothstep(0.42, 0.78, n));
+          float a = smoothstep(0.0, 0.2, vUv.x) * smoothstep(1.0, 0.8, vUv.x) * (0.7 + 0.3 * n); gl_FragColor = vec4(c * 1.1, a * 0.9); }` });
+      for (const [fx, fu, fh] of K.falls) { const f = new THREE.Mesh(new THREE.PlaneGeometry(1.4, fh), fm); TR.map(fx, fh / 2 - 0.2, fu, f.position); TR.quaternion(fu, f.quaternion); f.name = 'l1CastleFall'; kingdom.add(f); }
+    }
   }
   // the finish: a gold and pink arch with a ribbon
   const finish = new THREE.Group(); finish.name = 'l1Finish';
@@ -718,6 +748,25 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
 #l1Done.flow button { background: linear-gradient(#74f029, #0eb31c); }
 #l1Done.flow button.again { margin-top: calc(var(--u, 2px) * 4); height: calc(var(--u, 2px) * 26); font-size: calc(var(--u, 2px) * 12); background: linear-gradient(#5aa8ff, #2f6ff0); box-shadow: 0 calc(var(--u, 2px) * 3) 0 #1a3f9e; }
 #l1Done.flow #l1Soon { min-height: calc(var(--u, 2px) * 11); font-weight: 700; color: #1578d0; } #l1Done.flow #l1Soon.on { animation: l1pop .4s cubic-bezier(.3,1.6,.5,1); }`;
+  // (finale2: board 12's layout: the stars, title and goals at the top, the open middle where she celebrates with the socks, the
+  // blue and gold rewards and Next Level at the bottom; no big white card over the scene)
+  if (FINALE2) css.textContent += `
+#l1Done.f2 { background: none; flex-direction: column; justify-content: space-between; align-items: center; padding: calc(var(--u, 2px) * 48) 0 calc(var(--u, 2px) * 10); box-sizing: border-box; }
+body.l1f2done #blastBtn, body.l1f2done #turboBtn { opacity: 0 !important; pointer-events: none !important; }   /* (the power-ups do nothing after the finish) */
+#l1Done.f2 .f2bot { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u, 2px) * 4); align-items: center; }
+#l1Done.f2 .f2bot .rewards { grid-column: 1 / 3; margin: 0; padding: calc(var(--u, 2px) * 3) calc(var(--u, 2px) * 6) calc(var(--u, 2px) * 4); }
+#l1Done.f2 .f2bot button { height: calc(var(--u, 2px) * 30); font-size: calc(var(--u, 2px) * 14); width: 100%; } #l1Done.f2 .f2bot #l1Soon { grid-column: 1 / 3; min-height: 0; margin: 0; }
+#l1Done.f2 .f2top, #l1Done.f2 .f2bot { width: 84%; text-align: center; animation: l1pop .5s cubic-bezier(.3,1.6,.5,1); }
+#l1Done.f2 .stars { font-size: calc(var(--u, 2px) * 40); line-height: 1; letter-spacing: calc(var(--u, 2px) * 4); color: #ffd23a; text-shadow: 0 calc(var(--u, 2px) * 2.5) 0 #c77d10, 0 0 calc(var(--u, 2px) * 14) rgba(255,230,120,.9); }
+#l1Done.f2 h2 { display: inline-block; margin: calc(var(--u, 2px) * 2) 0 calc(var(--u, 2px) * 5); padding: calc(var(--u, 2px) * 3) calc(var(--u, 2px) * 18); font-size: calc(var(--u, 2px) * 21); color: #fff; border-radius: 99px;
+  background: linear-gradient(#4fb2ff, #1a6fe0); border: calc(var(--u, 2px) * 2.5) solid #ffd76a; box-shadow: 0 calc(var(--u, 2px) * 3) 0 #0e4aa8, 0 0 calc(var(--u, 2px) * 16) rgba(120,200,255,.8); text-shadow: 0 calc(var(--u, 2px) * 2) 0 #0e3f9a; }
+#l1Done.f2 .goals { background: rgba(236, 246, 255, 0.9); border: calc(var(--u, 2px) * 2) solid #9fd4ff; border-radius: calc(var(--u, 2px) * 12); padding: calc(var(--u, 2px) * 3) calc(var(--u, 2px) * 6); box-shadow: 0 calc(var(--u, 2px) * 3) calc(var(--u, 2px) * 10) rgba(10, 40, 120, .35); }
+#l1Done.f2 .row { background: none; margin: 0; padding: calc(var(--u, 2px) * 2.5) calc(var(--u, 2px) * 2); font-size: calc(var(--u, 2px) * 11); color: #202e83; }
+#l1Done.f2 .rewards { margin: 0 0 calc(var(--u, 2px) * 6); background: linear-gradient(#5cb6ff, #1f73e6); border: calc(var(--u, 2px) * 2.5) solid #ffd76a; box-shadow: 0 calc(var(--u, 2px) * 3) 0 #0e4aa8; }
+#l1Done.f2 .rewards b { color: #fff; text-shadow: 0 calc(var(--u, 2px) * 1.5) 0 #0e3f9a; } #l1Done.f2 .rewards .rw { color: #fff; text-shadow: 0 calc(var(--u, 2px) * 1.5) 0 #0e3f9a; }
+#l1Done.f2 .rewards .rw span { background: rgba(255,255,255,.18); border: calc(var(--u, 2px) * 1.5) solid #ffd76a; border-radius: calc(var(--u, 2px) * 10); padding: calc(var(--u, 2px) * 2) calc(var(--u, 2px) * 9); }
+#l1Done.f2 button { margin-top: 0; } #l1Done.f2 #l1Soon { color: #fff; text-shadow: 0 1px 2px rgba(10,30,90,.9); }
+#l1Done.f2 button.again { width: 100%; margin-top: 0; font-size: calc(var(--u, 2px) * 11); }`;
   document.head.appendChild(css);
   const stage = ctx.stage;
   const banner = document.createElement('div'); banner.id = 'l1Banner'; stage.appendChild(banner);
@@ -740,7 +789,8 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
   let hintCool = 0;
   const hint = (lines) => { if (hintCool > 0) return; hintCool = 1.2; showBanner({ banner: lines }); bannerT = 1.4; };
   const GOALS = { socks: 5, coins: 50, gems: 1 }, REWARDS = { coins: 300, gems: 10, socks: 5 };
-  let rewarded = false, celebT = 1.15;
+  let rewarded = false, celebT = 1.15, sparkT = 0;
+  const party = [], sparkRnd = mulberry(0x9a77);   // (finale2: the celebration's socks; sparkle places on their own random sequence)
   const showCompleteFlow = () => {
     const socks = Math.min(5, state.socks), gemsGot = state.level1Gems || 0, coinsGot = state.coins - (state.level1Coins0 ?? state.coins);
     const ok = [socks >= GOALS.socks, coinsGot >= GOALS.coins, gemsGot >= GOALS.gems], stars = Math.max(1, ok.filter(Boolean).length);
@@ -750,11 +800,15 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
       if (ctx.refreshHud) ctx.refreshHud();
     }
     const row = (label, have, need, good) => `<div class="row"><span>${label}</span><span>${have}/${need} <i class="${good ? '' : 'no'}">${good ? '✔' : '✖'}</i></span></div>`;
-    done.innerHTML = `<div class="card"><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div><h2>Level Complete!</h2>
+    if (FINALE2) done.innerHTML = `<div class="f2top"><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div><h2>Level Complete!</h2>
+      <div class="goals">${row('🧦 Rescue 5 lost socks', socks, 5, ok[0])}${row('🪙 Collect 50 coins', Math.min(coinsGot, GOALS.coins), GOALS.coins, ok[1])}${row('💎 Find 1 special gem', Math.min(1, gemsGot), 1, ok[2])}</div></div>
+      <div class="f2bot"><div class="rewards"><b>Rewards</b><div class="rw"><span><em>🪙</em>+${REWARDS.coins}</span><span><em>💎</em>+${REWARDS.gems}</span><span><em>🧦</em>+${REWARDS.socks}</span></div></div>
+      <button type="button" id="l1Again" class="again">↻ Play again</button><button type="button" id="l1Next">Next Level ▶</button><small id="l1Soon"></small></div>`;
+    else done.innerHTML = `<div class="card"><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div><h2>Level Complete!</h2>
       ${row('🧦 Rescue 5 lost socks', socks, 5, ok[0])}${row('🪙 Collect 50 coins', Math.min(coinsGot, GOALS.coins), GOALS.coins, ok[1])}${row('💎 Find 1 special gem', Math.min(1, gemsGot), 1, ok[2])}
       <div class="rewards"><b>Rewards</b><div class="rw"><span><em>🪙</em>+${REWARDS.coins}</span><span><em>💎</em>+${REWARDS.gems}</span><span><em>🧦</em>+${REWARDS.socks}</span></div></div>
       <button type="button" id="l1Next">Next Level ▶</button><small id="l1Soon">&nbsp;</small><button type="button" id="l1Again" class="again">↻ Play Level 1 again</button></div>`;
-    done.classList.add('show', 'flow');
+    done.classList.add('show', 'flow'); if (FINALE2) { done.classList.add('f2'); document.body.classList.add('l1f2done'); }
     // (Level 2 is not built: the button says so plainly instead of starting a fake level)
     done.querySelector('#l1Next').addEventListener('click', (e) => { e.stopPropagation(); const n = done.querySelector('#l1Soon'); n.textContent = 'Level 2, Soap Lagoon, is coming soon!'; n.classList.add('on'); });
     done.querySelector('#l1Again').addEventListener('click', (e) => { e.stopPropagation(); done.classList.remove('show'); if (ctx.restart) ctx.restart(); });
@@ -902,6 +956,17 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     if (running && !complete && u >= C.finish) { complete = true; completeT = 0; ctx.sfx && ctx.sfx('gem'); ctx.finish(); }
     if (complete) { completeT += dt; if (completeT > 1.1 && !done.classList.contains('show')) showComplete(); }
     // (flow) board 10's celebration: she turns to the player (the game's own look-back pose) and bounces happily on the water
+    if (FINALE2 && complete && completeT > 0.6) {   // (finale2) three rescued socks bob beside her, and sparkles burst round them
+      if (!party.length && ctx.socksList && ctx.socksList.length) for (const [dx, du, ph] of [[-1.05, -0.35, 0], [1.05, -0.3, 2.1], [0.55, 0.9, 4.2]]) {
+        const o = ctx.socksList[0].obj.clone(true); o.visible = true; o.traverse((c) => { c.visible = true; }); ctx.scene.add(o); party.push({ o, dx, du, ph });
+      }
+      for (const c of party) {
+        c.o.visible = true; const hu = m.z + c.du, hx = m.x + c.dx, hop = Math.abs(Math.sin(t * 4.2 + c.ph)) * 0.32;
+        TR.map(hx, W.surface(L, hx, hu, t) + 0.55 + hop, hu, c.o.position); TR.quaternion(hu, c.o.quaternion); c.o.rotateZ(Math.sin(t * 3 + c.ph) * 0.15);
+        c.o.scale.setScalar(Math.min(1, (completeT - 0.6) / 0.4));
+      }
+      if (ctx.fx && (sparkT -= dt) <= 0) { sparkT = 0.3; const p = m.root.position.clone(); p.x += (sparkRnd() - 0.5) * 2.2; p.y += 0.3 + sparkRnd() * 1.1; ctx.fx.sparkle(p, 10); }
+    }
     if (FLOW && complete) {
       if (completeT > 0.6) m.lookT = -0.5;   // (held: she keeps facing the player while she celebrates)
       if (completeT > 0.9 && !m.air && (celebT += dt) > 1.15) { celebT = 0; m.air = true; m.vy = 4.4; m.falling = true; m.sqV += 5; }
@@ -918,7 +983,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     for (const e of enemies) { e.u = e.u0; e.hit = false; }
     shown = -1; complete = false; completeT = 0; bannerT = 0; banner.classList.remove('show'); done.classList.remove('show');
     state.level1Coins0 = undefined;
-    if (FLOW) { flow.reset(); park(); for (const e of enemies) e.dead = false; rewarded = false; celebT = 1.15; lastSocks = 0; hintCool = 0; done.classList.remove('flow'); }
+    if (FLOW) { flow.reset(); park(); for (const e of enemies) e.dead = false; rewarded = false; celebT = 1.15; lastSocks = 0; hintCool = 0; done.classList.remove('flow', 'f2'); document.body.classList.remove('l1f2done'); for (const c of party) c.o.visible = false; }
   }
   // her swimming, drawn on her model only: a stroke rhythm (alternating roll and a forward surge with each stroke), small
   // paddle splashes at her sides, and a stronger lean and turn into each swipe
