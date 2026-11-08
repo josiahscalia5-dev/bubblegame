@@ -8,7 +8,7 @@ import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   //
 import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately, structShellFur } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
 import { HOME_ON, homeHolds } from './screens12.js';   // ?s3=...,home: Screen 1 (Home) and Screen 2 (Laundry Toss) in front of the live game
 import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
-import { TRIPO1_ON, applyTripo1 } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
+import { TRIPO1_ON, SCENE07_ON, applyTripo1 } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
 import { flowCamX } from './level1_flow.js';   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -1720,7 +1720,7 @@ async function main() {
         fx, refreshHud, padJump: (vy) => { if (mascot.air) return; jump(); mascot.vy = vy; },   // (flow: the pops, the rewards, the bounce pad)
         restart: () => { if (R2) restartRound2(); else { resetRun(); state.phase = 'intro'; document.body.classList.remove('running', 'inDrum'); refreshHud(); } } }));
     }
-    if (level1 && TRIPO1_ON) await applyTripo1({ scene, loader: gltfLoader, env: mats.env });   // ?s3=...,level1,tripo1 (tripo_l1.js): looks only
+    if (level1 && (TRIPO1_ON || SCENE07_ON)) await applyTripo1({ scene, loader: gltfLoader, env: mats.env, TR, camera });   // ?s3=...,level1,tripo1 / scene07 (tripo_l1.js): looks only
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
     resize();
     resetRun();
