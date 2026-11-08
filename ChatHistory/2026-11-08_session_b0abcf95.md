@@ -658,3 +658,25 @@ Claudia, yes, proceed exactly with the plan you described. My two highest visual
 
 Proceeding. The current jobs come first; I'm checking where they are:
 
+The existing course's track is only 400 m long, and the hall now reaches 440 m. Checking how the track handles positions past its end, before relying on it:
+
+Positions past the end are clamped to it, so `finale2` must extend the track (to 470 m). This only applies with `finale2` on.
+
+Now the hall geometry in `level1.js`: radius, water reaching the end wall, the castle fitted inside the hall, and its waterfalls.
+
+Next, `roof2`: the course wall shader with the crown removed and the upper wall lit as water, plus the hoops as silver/lavender rims with gold edges. Both only apply with `roof2` on.
+
+Built (`47e7095b`). Everything new sits behind the two opt-in switches; the frozen baseline (`8363541c`) is what the running jobs use. Checking whether they've finished before I render anything:
+
+Rebuilt (`e97a4d3b`). Saving the candidate source:
+
+The code for both candidates is written and saved on GitHub (`c196ae0`, `ccr-50c66592-kcnqoy`). They are opt-in switches only, so your approved Classic Screen 4 and the frozen Level 1 baseline (build `8363541c`) are unchanged. Neither candidate has been compared against your board yet.
+
+- **`roof2` (purple ceiling):** in the Level 1 sections only, the lilac band over the top is gone. The upper wall is now the same streaming blue water as the sides, brighter toward the top with moving light patterns. The washer metal is kept as silver/lavender rings with gold edges, which now run further down the sides.
+- **`finale2` (Kingdom and ending):** the wet chamber opens into a larger hall where the pastel castle stands in the water close up, with waterfalls and towers on islands. There is no open sky. The run now ends at the castle's moat.
+- **`finale2` celebration:** the ending follows board 12's layout, with stars, title and goals at the top and the rewards with Next Level (Level 2 coming soon) at the bottom. The middle is left open for her: she faces you and bounces, with three rescued socks and sparkles around her.
+
+One check run at small size finished at the castle with 5/5 socks, 3 stars and no errors. Its Level Complete frame had the rewards covering her, so I compacted that block and hid the Bubble Blast / Turbo Spin buttons on this screen. That fix hasn't been rendered yet.
+
+The existing proofs are still running and come first: 9 of 12 identity checks are done, all 0 pixels different, and the recording is at frame 353. When they finish I'll take short captures of both candidates at matching points beside your original crops, and run one check that nothing changes with the switches off. Then I'll show you the screenshots and what still doesn't match.
+
