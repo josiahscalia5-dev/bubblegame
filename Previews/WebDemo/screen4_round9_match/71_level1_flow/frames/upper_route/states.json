@@ -1,0 +1,613 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1"
+ ],
+ "route": "upper",
+ "frames": [
+  [
+   "tap",
+   {
+    "u": 1.592,
+    "x": 0,
+    "y": 0.405,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Washer drum",
+    "socks": 0,
+    "coins": 1280,
+    "gems": 36,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "intro",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 124,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   3.5,
+   {
+    "u": 3.768,
+    "x": -0.592,
+    "y": 0.294,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Washer drum",
+    "socks": 1,
+    "coins": 1281,
+    "gems": 36,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Let's go!\nInto the washing machine!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 124,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   40,
+   {
+    "u": 40.493,
+    "x": 0,
+    "y": 0.434,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue the socks",
+    "socks": 3,
+    "coins": 1299,
+    "gems": 37,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Rescue 5 lost socks!\nSwipe ← → to swim",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 138,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   59,
+   {
+    "u": 59.423,
+    "x": 1.561,
+    "y": 1.897,
+    "lane": -1,
+    "air": true,
+    "route": "side path",
+    "lift": 0,
+    "section": "Side paths",
+    "socks": 3,
+    "coins": 1310,
+    "gems": 37,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Swipe ←\nonto the side path!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 144,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   66,
+   {
+    "u": 66.268,
+    "x": 1.62,
+    "y": 1.272,
+    "lane": -1,
+    "air": false,
+    "route": "side path",
+    "lift": 0.9,
+    "section": "Side paths",
+    "socks": 3,
+    "coins": 1312,
+    "gems": 37,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 149,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   78,
+   {
+    "u": 78.124,
+    "x": 1.62,
+    "y": 1.298,
+    "lane": -1,
+    "air": false,
+    "route": "side path",
+    "lift": 0.9,
+    "section": "Side paths",
+    "socks": 3,
+    "coins": 1319,
+    "gems": 37,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 158,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   108,
+   {
+    "u": 108.055,
+    "x": 0,
+    "y": 0.426,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1327,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Drop down to\nthe lower path!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 162,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   113.5,
+   {
+    "u": 113.766,
+    "x": 0,
+    "y": 0.209,
+    "lane": 1,
+    "air": false,
+    "route": "lower path",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1328,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Drop down to\nthe lower path!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 163,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   116,
+   {
+    "u": 116.284,
+    "x": 0,
+    "y": 0.408,
+    "lane": 1,
+    "air": false,
+    "route": "lower path",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1329,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Drop down to\nthe lower path!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 164,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   124,
+   {
+    "u": 124.499,
+    "x": 0,
+    "y": 0.398,
+    "lane": 1,
+    "air": false,
+    "route": "lower path",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1335,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 164,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   150,
+   {
+    "u": 150.445,
+    "x": 0,
+    "y": 0.288,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Spinning brushes",
+    "socks": 4,
+    "coins": 1345,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Watch out!\nSpinning brushes!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 168,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   170,
+   {
+    "u": 170.045,
+    "x": 0.699,
+    "y": 0.408,
+    "lane": 0,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Spinning brushes",
+    "socks": 4,
+    "coins": 1354,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 170,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   197,
+   {
+    "u": 197.345,
+    "x": -0.7,
+    "y": 0.3,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Treasure",
+    "socks": 4,
+    "coins": 1359,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Collect coins, gems\n& rescue socks!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 199,
+     "textures": 36
+    },
+    "result": null
+   }
+  ],
+  [
+   226,
+   {
+    "u": 226.045,
+    "x": -0.7,
+    "y": 0.279,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Grime balls",
+    "socks": 4,
+    "coins": 1365,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Avoid enemies!\nTap to spin-attack them",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 291,
+     "textures": 37
+    },
+    "result": null
+   }
+  ],
+  [
+   258,
+   {
+    "u": 258.32,
+    "x": 0,
+    "y": 0.425,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Bubble Kingdom",
+    "socks": 4,
+    "coins": 1386,
+    "gems": 38,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "running",
+    "complete": false,
+    "banner": "Enter the\nBubble Kingdom!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 295,
+     "textures": 37
+    },
+    "result": null
+   }
+  ],
+  [
+   285,
+   {
+    "u": 285.126,
+    "x": 0,
+    "y": 0.385,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Bubble Kingdom",
+    "socks": 4,
+    "coins": 1392,
+    "gems": 38,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 299,
+     "textures": 37
+    },
+    "result": null
+   }
+  ],
+  [
+   312,
+   {
+    "u": 312.286,
+    "x": 0,
+    "y": 0.35,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue progress",
+    "socks": 5,
+    "coins": 1400,
+    "gems": 38,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "running",
+    "complete": false,
+    "banner": "All 5 socks rescued!\nSwim to the finish",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 303,
+     "textures": 37
+    },
+    "result": null
+   }
+  ],
+  [
+   336,
+   {
+    "u": 336.408,
+    "x": 0,
+    "y": 0.387,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue progress",
+    "socks": 5,
+    "coins": 1405,
+    "gems": 38,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 303,
+     "textures": 37
+    },
+    "result": null
+   }
+  ],
+  [
+   "end",
+   {
+    "u": 341.773,
+    "x": 0,
+    "y": 0.282,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue progress",
+    "socks": 5,
+    "coins": 1705,
+    "gems": 48,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "complete",
+    "complete": true,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 303,
+     "textures": 37
+    },
+    "result": {
+     "socks": 5,
+     "coins": 125,
+     "gems": 2,
+     "stars": 3,
+     "rewards": {
+      "coins": 300,
+      "gems": 10,
+      "socks": 5
+     }
+    }
+   }
+  ]
+ ],
+ "events": {
+  "swipes": 11,
+  "blocked": [],
+  "spins": 3,
+  "events": [
+   [
+    "sock",
+    3,
+    1,
+    "main"
+   ],
+   [
+    "sock",
+    6.6,
+    2,
+    "main"
+   ],
+   [
+    "sock",
+    21.5,
+    3,
+    "main"
+   ],
+   [
+    "swipe onto side path",
+    56.6,
+    0.86
+   ],
+   [
+    "sock",
+    126.6,
+    4,
+    "lower path"
+   ],
+   [
+    "spin",
+    228.1
+   ],
+   [
+    "spin",
+    234.4
+   ],
+   [
+    "KNOCK (heart lost)",
+    240.7,
+    "lane 1",
+    "near: {\"brushes\":[],\"enemies\":[[241.41,0,0.7,false],[241.41,2,-0.7,false]],\"bars\":[],\"drum\":[]}"
+   ],
+   [
+    "spin",
+    240.7
+   ],
+   [
+    "sock",
+    304,
+    5,
+    "main"
+   ]
+  ]
+ },
+ "logs": []
+}

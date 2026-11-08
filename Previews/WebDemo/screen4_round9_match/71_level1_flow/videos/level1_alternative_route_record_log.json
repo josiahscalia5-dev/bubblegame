@@ -1,0 +1,75 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1"
+ ],
+ "fps": 12,
+ "frames": 127,
+ "log": [
+  [
+   "opening done at frame",
+   0
+  ],
+  [
+   1.67,
+   62.22,
+   "Side paths",
+   "main",
+   2
+  ],
+  [
+   3.33,
+   76.22,
+   "Side paths",
+   "main",
+   2
+  ],
+  [
+   5,
+   90.22,
+   "Side paths",
+   "main",
+   2
+  ],
+  [
+   6.67,
+   104.22,
+   "Lower path",
+   "main",
+   2
+  ],
+  [
+   8.33,
+   118.37,
+   "Lower path",
+   "upper ledge",
+   2
+  ],
+  [
+   10,
+   132.78,
+   "Lower path",
+   "upper ledge",
+   3
+  ]
+ ],
+ "final": {
+  "phase": "running",
+  "coins": 1322,
+  "gems": 37,
+  "socks": 3,
+  "hearts": 5,
+  "knocks": 0,
+  "l1": {
+   "u": 138.61,
+   "section": "Lower path",
+   "complete": false,
+   "route": "main",
+   "popped": 0,
+   "result": null
+  }
+ },
+ "route": "ledge",
+ "errors": []
+}
