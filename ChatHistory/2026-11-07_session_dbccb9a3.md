@@ -693,3 +693,270 @@ Card shown above. While you enable it, I'm resuming the unfinished work on the f
 
 While those run, I'm recording the restoration in the handoff file: what was restored and what still needs you. I'm also marking the old account's "not implemented yet" note as superseded.
 
+---
+
+### You (sent while Claude was working) · 2026-11-08 01:11 UTC
+
+CLAUDIA — STRICT VISUAL MATCH MANDATE FOR BUBBLE WASH KINGDOM
+
+This is a mandatory correction task for my EXISTING Bubble Wash Kingdom mobile game.
+
+Do NOT redesign the game.
+Do NOT make a new concept.
+Do NOT give me a plan instead of implementation.
+Do NOT replace the approved direction with your own interpretation.
+
+Your task is to visually correct and improve the FIRST 3 MOST IMPORTANT SCREENS / SEQUENCES so they match my approved proof screens as closely as technically possible while remaining a real playable 3D mobile game.
+
+PRIORITY:
+Match the approved screens as closely as possible — ideally exact-feeling, or at minimum very close / premium / faithful.
+The main goal is to fix the visual look, staging, and motion of the first 3 key moments:
+
+1. SCREEN 1 — HOME / OPENING
+2. SCREEN 2 — LAUNDRY TOSS / INTO THE WASHER
+3. SCREEN 3 — INSIDE THE LAUNDRY MACHINE / SWIMMING GAMEPLAY
+
+Use my approved reference images as the ONLY authority.
+The original approved screens are the master.
+My current build is not the authority.
+Do not drift away from the approved visuals.
+
+==================================================
+CORE RULES
+==================================================
+
+1. PRESERVE THE EXISTING GAME
+- Keep my existing Bubble Wash Kingdom project.
+- Keep the current repository and current working branch.
+- Keep the game playable.
+- Do not reset, rebuild from scratch, or redesign unrelated systems.
+- Make reversible checkpoints before major edits.
+
+2. FIRST 3 SCREENS ONLY
+Do not spread effort across the whole app right now.
+Focus mainly on the first 3 key screens / scenes:
+- Home / Opening
+- Laundry Toss / Washer Entry
+- Washer Tunnel / Swimming Gameplay
+
+3. REAL PLAYABLE GAME
+These screens must not become static posters.
+Everything must still function as a real mobile game experience.
+Animation, motion, transition, water, character movement, and gameplay must feel real.
+
+4. PROOF SCREEN MATCHING
+You must use the uploaded proof / approved screens as the exact visual target for:
+- composition
+- framing
+- colors
+- mood
+- UI feel
+- character placement
+- washer placement
+- tunnel look
+- water look
+- premium polish
+
+==================================================
+SCREEN 1 — HOME / OPENING
+==================================================
+
+Fix the Home / Opening screen so it feels visually like the approved proof screen.
+
+REQUIRED VISUAL ELEMENTS:
+- Bubble Wash Kingdom logo/title in the same playful premium style
+- bright magical bubble-wash kingdom feeling
+- friendly cartoon girl
+- pink fluffy character
+- washing machine clearly visible
+- premium bright polished mobile-game UI
+- clean top HUD
+- readable play / start button
+- bubbly, magical, colorful environment
+- clear premium lighting, not dull or flat
+
+REQUIRED QUALITY:
+- must look polished and finished
+- must feel like a real mobile game screen, not a rough mockup
+- the layout and visual hierarchy should closely follow the approved screen
+- characters should look cute, professional, consistent, and readable
+- no awkward empty spacing
+- no flat or generic background
+- no cheap-looking UI
+
+IMPORTANT:
+The home screen must immediately feel like the approved world and style.
+It should visually prepare the player for the washer adventure.
+
+==================================================
+SCREEN 2 — LAUNDRY TOSS / INTO THE WASHER
+==================================================
+
+This is one of the most important parts and it currently is not correct.
+
+I need a real animated scene where the cartoon girl and the pink fluffy character interact with the washer in a believable, readable, premium way.
+
+REQUIRED ACTION:
+- the girl must be a real animated character, not a static image
+- she must visibly move
+- she must lift / tip / throw laundry
+- socks and laundry should visibly fly
+- the pink fluffy character must get caught in the laundry action
+- the pink fluffy character must visibly travel toward the washer
+- the audience must clearly see the pink fluffy character go into the washing machine
+- the washer opening must clearly show the magical blue tunnel inside
+- transition must be smooth and premium
+
+REQUIRED STAGING:
+- the girl should face the scene properly and be readable
+- the basket should not hide the important action
+- the flying laundry should be clearly visible on screen
+- the washer body should look correct and not block the tunnel view
+- the tunnel should only appear where it logically should, inside the washer opening
+- the character’s path into the washer should be obvious and visually satisfying
+
+VISUAL TARGET:
+This screen should look like the approved “Let’s go / into the washing machine / laundry toss” direction:
+- cheerful
+- magical
+- bright
+- premium
+- cute
+- dynamic
+- very readable
+
+DO NOT:
+- make it a static poster
+- hide the toss action
+- hide the character entry
+- make the girl feel lifeless
+- abruptly cut to gameplay with no clear washer entry
+- use weak or confusing staging
+
+==================================================
+SCREEN 3 — INSIDE THE LAUNDRY MACHINE / SWIMMING GAMEPLAY
+==================================================
+
+This is the other major priority.
+
+The inside of the washer must match the approved proof screen feeling as closely as possible.
+The pink fluffy character must feel like it is truly traveling / swimming through the laundry machine.
+
+REQUIRED VISUAL ELEMENTS:
+- magical circular laundry tunnel
+- bright saturated blue water
+- dimensional depth
+- gold/yellow paw coins
+- smiling socks / collectibles
+- bubbles / sparkles / foam
+- premium colorful tunnel atmosphere
+- proper HUD and gameplay UI
+- pink fluffy character clearly visible
+
+REQUIRED MOTION / GAMEPLAY FEEL:
+- the character must not feel stuck in place
+- the character must visibly feel like it is traveling deeper into the tunnel
+- water must move around the character
+- the character must bob naturally with buoyancy
+- the character must steer left and right naturally
+- character body should lean / react during steering
+- coins must approach and pass by naturally
+- socks / collectibles must feel like they exist in the path
+- tunnel walls / rings / water / motion patterns must reinforce forward travel
+- the tunnel must feel like a real 3D space, not a flat moving background
+
+WATER REQUIREMENTS:
+- blue water must match the approved screen much more closely
+- the pink character must sit naturally on / in the water
+- no ugly white film or fake white cloud behind the character
+- water must feel dimensional, lively, and premium
+- splashes / ripples / bubbles should support the feeling of motion
+
+VISUAL TARGET:
+This gameplay screen should feel as close as possible to the approved classic screen:
+- rich blue water
+- magical washer tunnel
+- coins and socks clearly visible
+- premium, playful, polished, cute
+- real mobile runner gameplay
+
+==================================================
+OVERALL VISUAL MATCH REQUIREMENTS
+==================================================
+
+Across all 3 screens / scenes:
+- maintain one cohesive art style
+- keep the same pink fluffy character identity
+- keep the same cartoon girl identity
+- keep the same UI language
+- keep the same bright premium Bubble Wash Kingdom tone
+- use stronger polish, stronger readability, better framing, and better composition
+- improve any low-quality, flat, or awkward-looking visual areas
+
+I want these first 3 screens to feel like the approved screens I have been asking for.
+
+==================================================
+IMPLEMENTATION STRATEGY
+==================================================
+
+Do this as a practical implementation task, not a vague discussion.
+
+1. Inspect the existing project and identify exactly what is visually wrong in these first 3 screens.
+2. Fix the home/opening screen to better match the proof screen.
+3. Fix the Laundry Toss sequence so the girl really animates, the toss is visible, and the pink character clearly enters the washer.
+4. Fix the washer-entry transition so it smoothly flows into the gameplay tunnel.
+5. Fix the inside-the-washer gameplay visuals, especially:
+   - water look
+   - tunnel depth
+   - coins / socks placement
+   - swimming feel
+   - forward-travel illusion
+   - overall polish
+6. Keep the game playable throughout.
+7. After implementing, produce proof:
+   - screenshots of the first 3 corrected screens
+   - a gameplay video showing the full sequence from home -> laundry toss -> inside washer
+   - a file-change summary
+   - an honest similarity assessment compared to the approved screens
+
+==================================================
+DELIVERABLES
+==================================================
+
+When finished, give me:
+1. The exact files changed
+2. What you changed for Screen 1
+3. What you changed for Screen 2
+4. What you changed for Screen 3
+5. A new video of the corrected sequence
+6. Side-by-side comparisons against the approved screens
+7. An honest rating for each of the 3 screens
+8. The commit SHA and branch name
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+Success means:
+- the first 3 screens look much closer to my proof screens
+- the girl really moves
+- the pink character clearly gets thrown / carried into the washer
+- the washer opening and tunnel transition are believable
+- the tunnel gameplay feels like real swimming/travel through the laundry machine
+- the water, coins, socks, and tunnel feel premium and visually right
+- the game remains real and playable
+
+FINAL MANDATE:
+Do not give me another generic explanation.
+Do not stop at analysis.
+Implement the changes in my existing game and show real visual proof.
+Focus on getting the first 3 screens as close as possible to the approved proof screens.
+
+_[1 image attached]_
+
+---
+
+### Claude · 2026-11-08 01:20 UTC
+
+The identity checks keep coming back clean: the candidate is 0 px at Tap to Start and +1 s too. Now implementing the Screen 1-2 corrections in `opening3d.js`:
+

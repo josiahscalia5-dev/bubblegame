@@ -259,13 +259,13 @@ function buildVortex() {
         float a2 = a - 6.2832 * sign(a), bw = 0.5 * smoothstep(1.9, 3.1416, abs(a));
         float w = mix(o3f(vec2(a * 1.2 + t * 0.4, d * 0.9 - uFlow)), o3f(vec2(a2 * 1.2 + t * 0.4, d * 0.9 - uFlow)), bw);
         float sw = sin((d * 2.2 + a * 0.15915 + w * 1.5 - uFlow * 1.4 - t * 0.6) * 6.2832);
-        vec3 c = mix(vec3(0.05, 0.16, 0.85), vec3(0.18, 0.55, 1.0), smoothstep(-0.7, 0.3, sw));
+        vec3 c = mix(vec3(0.06, 0.22, 0.95), vec3(0.2, 0.62, 1.0), smoothstep(-0.7, 0.3, sw));
         c = mix(c, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * 0.75);
         c = mix(c, vec3(1.0), smoothstep(0.9, 0.99, sw) * smoothstep(0.35, 0.65, mix(o3f(vec2(a * 3.0, d * 2.0 - uFlow * 2.0)), o3f(vec2(a2 * 3.0, d * 2.0 - uFlow * 2.0)), bw)) * 0.9);
         c = mix(c, vec3(0.75, 0.6, 1.0), smoothstep(0.65, 0.9, mix(o3f(vec2(a * 0.8 + 3.0, d * 0.5)), o3f(vec2(a2 * 0.8 + 3.0, d * 0.5)), bw)) * 0.35);
         float ring = exp(-pow((fract(d * 0.8 - uFlow * 0.5) - 0.5) / 0.08, 2.0));
         c = mix(c, vec3(0.75, 0.95, 1.0), ring * 0.4);
-        c = mix(c, vec3(0.88, 0.97, 1.0) * 1.3, smoothstep(3.0, 8.8, d) * 0.85 * uGlow);
+        c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(1.6, 8.0, d) * 0.9 * uGlow);
         gl_FragColor = vec4(c, 1.0);
       }` });
   const tube = new THREE.Mesh(g, mat); tube.name = 'vortex';
@@ -299,33 +299,59 @@ function buildVortex() {
 }
 
 // ---------------------------------------------------------------- the room
+function pawLabel(col) {
+  const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  g.fillStyle = '#ffffff'; g.beginPath(); g.roundRect(6, 10, 52, 44, 10); g.fill(); g.fillStyle = col;
+  g.beginPath(); g.ellipse(32, 38, 10, 8, 0, 0, Math.PI * 2); g.fill();
+  for (const [x, y] of [[20, 26], [28, 21], [36, 21], [44, 26]]) { g.beginPath(); g.ellipse(x, y, 4, 5, 0, 0, Math.PI * 2); g.fill(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
 function buildRoom(env, rnd) {
   const g = new THREE.Group(); g.name = 'room';
+  // the wall: deep violet above, pink-lavender low, warm light from the window side
   const wallM = new THREE.ShaderMaterial({ vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: 'varying vec2 vUv; void main() { vec3 a = vec3(0.62, 0.5, 0.95), b = vec3(0.95, 0.72, 0.95); vec3 c = mix(b, a, smoothstep(0.0, 1.0, vUv.y)); c *= 0.85 + 0.15 * smoothstep(0.0, 0.5, vUv.x); gl_FragColor = vec4(c, 1.0); }' });
-  // the back wall, with a round opening where the washer's tunnel runs on behind it (seen only through the washer's door)
+    fragmentShader: 'varying vec2 vUv; void main() { vec3 top = vec3(0.42, 0.28, 0.86), low = vec3(0.96, 0.66, 0.93); vec3 c = mix(low, top, smoothstep(0.25, 0.95, vUv.y));' +
+      ' c += vec3(0.35, 0.3, 0.2) * exp(-pow(length((vUv - vec2(0.22, 0.72)) * vec2(1.6, 1.0)) / 0.28, 2.0)); gl_FragColor = vec4(c, 1.0); }' });
   const ws = new THREE.Shape(); ws.moveTo(-3, -2); ws.lineTo(3, -2); ws.lineTo(3, 2); ws.lineTo(-3, 2); ws.lineTo(-3, -2);
   const wh = new THREE.Path(); wh.absarc(OPENING3D.porthole.x - 0.2, OPENING3D.porthole.y - 1.6, 0.44, 0, Math.PI * 2, true); ws.holes.push(wh);
   const wg = new THREE.ShapeGeometry(ws, 48); { const pa = wg.attributes.position, uv = wg.attributes.uv; for (let i = 0; i < pa.count; i++) uv.setXY(i, (pa.getX(i) + 3) / 6, (pa.getY(i) + 2) / 4); }
   const wall = new THREE.Mesh(wg, wallM); wall.position.set(0.2, 1.6, -1.25); g.add(wall);
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 4), toon(0xe9c6ef, { glow: 0.25 })); floor.rotation.x = -Math.PI / 2; floor.position.set(0.2, 0, 0.6); g.add(floor);
-  // a bright window at the upper left
-  const win = new THREE.Group(); win.position.set(-0.75, 1.75, -1.2); g.add(win);
-  const sky = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 0.95), new THREE.MeshBasicMaterial({ color: new THREE.Color(0.75, 0.95, 1.4) })); win.add(sky);
-  const frameM = toon(0xffffff, { glow: 0.4 });
-  for (const [w, h, x, y] of [[0.78, 0.05, 0, 0.5], [0.78, 0.05, 0, -0.5], [0.05, 1.0, -0.37, 0], [0.05, 1.0, 0.37, 0], [0.03, 0.95, 0, 0], [0.7, 0.03, 0, 0.1]]) { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.04), frameM); b.position.set(x, y, 0.02); win.add(b); }
-  // shelves with towels and bottles at the upper right
-  const shelfM = toon(0xf3d7c9, { glow: 0.25 });
-  const towelCols = [0xffd85c, 0xff9fd2, 0xb7a0ff, 0x8fd2ff, 0xffb37a];
-  for (let s = 0; s < 2; s++) {
-    const y = 1.45 + s * 0.42, sh = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.04, 0.3), shelfM); sh.position.set(1.05, y, -1.08); g.add(sh);
-    for (let i = 0; i < 3; i++) { const t = new THREE.Mesh(new RoundedBoxGeometry(0.3, 0.07, 0.24, 3, 0.03), toon(towelCols[(i + s * 2) % 5], { glow: 0.3 })); t.position.set(0.62 + s * 0.15, y + 0.06 + i * 0.075, -1.05); g.add(t); }
-    for (let i = 0; i < 2; i++) {
-      const pts = [[0, 0], [0.06, 0], [0.065, 0.02], [0.065, 0.13], [0.04, 0.16], [0.02, 0.18], [0.02, 0.22], [0, 0.22]].map(([x, y2]) => new THREE.Vector2(x, y2));
-      const b = new THREE.Mesh(new THREE.LatheGeometry(pts, 20), new THREE.MeshStandardMaterial({ color: [0x9fd8ff, 0xffa8de, 0xc7b2ff][(i + s) % 3], roughness: 0.15, metalness: 0, envMap: env, transparent: true, opacity: 0.85, emissive: 0x302050, emissiveIntensity: 0.4 }));
-      b.position.set(1.05 + i * 0.22 + s * 0.05, y + 0.02, -1.05); g.add(b);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 4), toon(0xf0b8e8, { glow: 0.3 })); floor.rotation.x = -Math.PI / 2; floor.position.set(0.2, 0, 0.6); g.add(floor);
+  // the arched window at the upper left, bright sky and soft rays
+  const win = new THREE.Group(); win.position.set(-0.62, 1.78, -1.2); g.add(win);
+  const sky = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.8), new THREE.MeshBasicMaterial({ color: new THREE.Color(0.8, 1.05, 1.5) })); sky.position.y = -0.08; win.add(sky);
+  const arch = new THREE.Mesh(new THREE.CircleGeometry(0.31, 32, 0, Math.PI), new THREE.MeshBasicMaterial({ color: new THREE.Color(0.9, 1.1, 1.5) })); arch.position.y = 0.32; win.add(arch);
+  const frameM = toon(0xffffff, { glow: 0.45 });
+  const archF = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.03, 8, 32, Math.PI), frameM); archF.position.set(0, 0.32, 0.02); win.add(archF);
+  for (const [w, h, x, y] of [[0.68, 0.05, 0, -0.5], [0.05, 0.82, -0.33, -0.08], [0.05, 0.82, 0.33, -0.08], [0.03, 1.05, 0, 0.0], [0.64, 0.03, 0, 0.12], [0.64, 0.03, 0, -0.22]]) { const bx = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.04), frameM); bx.position.set(x, y, 0.02); win.add(bx); }
+  const rayM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.0, 0.95, 0.85), transparent: true, opacity: 0.12, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+  for (let i = 0; i < 3; i++) { const r = new THREE.Mesh(new THREE.PlaneGeometry(0.22 + i * 0.05, 2.2), rayM); r.position.set(-0.3 + i * 0.18, 1.0, -0.6 + i * 0.1); r.rotation.set(0, 0, 0.55); g.add(r); }
+  // shelves full of folded towels and soap bottles with paw labels (right side), and a lower shelf on the left
+  const shelfM = toon(0xf6c9d8, { glow: 0.3 });
+  const towelCols = [0xff9fd2, 0xffd85c, 0x8fd2ff, 0xc3a6ff, 0xff7fb8, 0x9be8d8];
+  const bottleCols = [[0xff9fd6, '#ff5fb0'], [0x9fd8ff, '#3f8cff'], [0xc7b2ff, '#8a5cff'], [0x9ff0d8, '#20b890']];
+  const shelf = (x0, x1, y, z, nTowel, nBottle) => {
+    const sh = new THREE.Mesh(new RoundedBoxGeometry(x1 - x0, 0.045, 0.3, 2, 0.015), shelfM); sh.position.set((x0 + x1) / 2, y, z); g.add(sh);
+    let x = x0 + 0.06;
+    for (let i = 0; i < nTowel; i++) {
+      const stack = 2 + Math.floor(rnd() * 2);
+      for (let k = 0; k < stack; k++) { const t = new THREE.Mesh(new RoundedBoxGeometry(0.28, 0.065, 0.22, 3, 0.03), toon(towelCols[Math.floor(rnd() * towelCols.length)], { glow: 0.35 })); t.position.set(x + 0.14 + (rnd() - 0.5) * 0.02, y + 0.055 + k * 0.068, z + 0.02); g.add(t); }
+      x += 0.32;
     }
-  }
+    for (let i = 0; i < nBottle; i++) {
+      const [bc, lc] = bottleCols[Math.floor(rnd() * bottleCols.length)], hgt = 0.18 + rnd() * 0.08;
+      const pts = [[0, 0], [0.055, 0], [0.06, 0.02], [0.06, hgt * 0.72], [0.04, hgt * 0.85], [0.022, hgt * 0.9], [0.022, hgt], [0, hgt]].map(([a, b2]) => new THREE.Vector2(a, b2));
+      const bo = new THREE.Mesh(new THREE.LatheGeometry(pts, 24), new THREE.MeshStandardMaterial({ color: bc, roughness: 0.12, metalness: 0, envMap: env, envMapIntensity: 1.2, transparent: true, opacity: 0.9, emissive: bc, emissiveIntensity: 0.25 }));
+      bo.position.set(x + 0.07, y + 0.022, z); g.add(bo);
+      const lab = new THREE.Mesh(new THREE.PlaneGeometry(0.075, 0.075), new THREE.MeshBasicMaterial({ map: pawLabel(lc), transparent: true })); lab.position.set(x + 0.07, y + 0.022 + hgt * 0.4, z + 0.062); g.add(lab);
+      const pump = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.05, 8), toon(0xffffff)); pump.position.set(x + 0.07, y + 0.022 + hgt + 0.025, z); g.add(pump);
+      x += 0.15;
+    }
+  };
+  shelf(0.28, 1.4, 1.38, -1.08, 2, 2); shelf(0.28, 1.4, 1.78, -1.08, 1, 3); shelf(0.28, 1.4, 2.16, -1.08, 3, 0); shelf(-1.1, -0.35, 0.72, -1.08, 1, 2);
+  // a second basket with a pink towel, low on the left
+  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.18, 0.2, 24, 1, true), toon(0xf0b080, { glow: 0.25, extra: { side: THREE.DoubleSide } })); b2.position.set(-0.78, 0.1, 0.25); g.add(b2);
+  const t2 = new THREE.Mesh(new THREE.SphereGeometry(0.16, 16, 10), toon(0xffa8d8, { glow: 0.3 })); t2.scale.set(1.3, 0.55, 1); t2.position.set(-0.78, 0.21, 0.25); g.add(t2);
   return g;
 }
 
@@ -379,12 +405,13 @@ export function mountOpening3D(container, opts = {}) {
   container.prepend(canvas);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: !!opts.test });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
-  renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.1;
-  const scene = new THREE.Scene(); scene.background = new THREE.Color(0xd9c4f5);
+  renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.18;
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(0xb59af0);
   const camera = new THREE.PerspectiveCamera(34, 0.5, 0.02, 60);
   // light: a soft lavender sky, a warm key from the window side, the washer's cyan glow
-  scene.add(new THREE.HemisphereLight(0xf2e8ff, 0xd8a6e6, 2.2));
-  const key0 = new THREE.DirectionalLight(0xfff1e0, 2.2); key0.position.set(-2, 3, 3); scene.add(key0);
+  scene.add(new THREE.HemisphereLight(0xf4e6ff, 0xff9fdc, 2.1));
+  const rim = new THREE.DirectionalLight(0xff9fe0, 1.4); rim.position.set(3, 2, -1); scene.add(rim);
+  const key0 = new THREE.DirectionalLight(0xfff0dc, 2.4); key0.position.set(-2.5, 3, 2.5); scene.add(key0);
   const glowL = new THREE.PointLight(0x6fd8ff, 2.5, 3.0, 1.5); glowL.position.copy(OPENING3D.porthole).add(new THREE.Vector3(0, 0, 0.4)); scene.add(glowL);
   // a small environment for the metals
   const pmrem = new THREE.PMREMGenerator(renderer);
@@ -525,7 +552,7 @@ export function mountOpening3D(container, opts = {}) {
       L.o.position.copy(p); L.o.rotation.set(L.spin.x * s, L.spin.y * s, L.spin.z * s); L.o.scale.setScalar(k > 1 ? Math.max(0.01, 1 - (k - 1) * 0.6) : 1);
     }
     // ---- the washer's glow and the tunnel's flow (it speeds up as he is pulled in)
-    vortex.U.uGlow.value = 0.25 + 0.75 * sm(3.0, 4.4, s); vortex.U.uTime.value = it; vortex.U.uFlow.value = s > 0 ? key(s, [[0, 0], [2, 1.5], [3.2, 5.0], [5, 8.0]]) + s * 0.4 : 0;
+    vortex.U.uGlow.value = 0.62 + 0.38 * sm(3.0, 4.4, s); vortex.U.uTime.value = it; vortex.U.uFlow.value = s > 0 ? key(s, [[0, 0], [2, 1.5], [3.2, 5.0], [5, 8.0]]) + s * 0.4 : 0;
     glowL.intensity = 2.5 + 1.5 * Math.sin(it * 2.0) * 0.3 + sm(1.5, 2.6, s) * 3.0;
     // ---- the camera: one continuous move, following him through the door into the tunnel
     // (its end: the game's Tap to Start framing at her scale: 1.03 m above her and 3.58 m behind for a 1.04 m body, looking
