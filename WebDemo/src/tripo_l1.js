@@ -34,8 +34,15 @@ export const SCENE07 = {
     [1, 256, 1.9, 1.95, 1.0], [-1, 262, 1.95, 2.05, 0.9]],
   // [side, u, x, h, radius, spin]
   gears: [[-1, 232, 1.45, 2.65, 0.75, -1], [1, 238, 1.5, 2.6, 0.65, 1], [-1, 245, 1.45, 2.65, 0.75, 1], [1, 252, 1.5, 2.6, 0.65, -1], [-1, 259, 1.45, 2.65, 0.75, -1]],
-  bubbles: { n: 18, u0: 222, u1: 264 }, drawDist: 34,
+  bubbles: { n: 18, u0: 222, u1: 264 }, drawDist: 46,
   particles: 0.55, stretch: [222, 268],   // the bursts' size while the camera is in this stretch (u)
+  // pass 6 (the user's environment correction: "not another pass that only adds decorations to the wrong tunnel"): the tube is OPENED
+  // above the water in this stretch (level1.js's wall shader patched at run time, its hoops hidden here) into one large, open laundry
+  // CHAMBER: a pink-lavender facade shell, platforms either side of the water, gold-pink portal rings where the tube enters and leaves
+  chamber: { u0: 218, u1: 270, halfW: 7.2, height: 6.2, open: 2.3, portalR: 2.62, deck: 0.12, deckIn: 2.25 },
+  // the original's LEFT big circular washer housing [u, x, h, ring radius] and RIGHT curved pink-gold star tubs [u, inner x, radius, height]
+  housings: [[239, 3.7, 2.35, 1.75], [257, 3.7, 2.35, 1.6]],
+  tubs: [[234, 2.35, 2.1, 1.45], [249, 2.35, 1.9, 1.35], [263, 2.35, 2.0, 1.4]],
 };
 export const TRIPO1_FILES = { enemy: 'models/l1_enemy_tripo.glb' };
 // the new look's diameter against the code ball's (its bounding sphere); (v2, the user's "Avoid Enemies!" mandate: "larger, raised so
@@ -106,9 +113,111 @@ function buildArchitecture(root, TR, env, items) {
   }
 }
 
+// pass 6: open the tube in this stretch and build the chamber (real geometry along the track)
+function facadeTexture() {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#b58ae8'); gr.addColorStop(0.45, '#e2a6f2'); gr.addColorStop(1, '#ff9fd2');
+  g.fillStyle = gr; g.fillRect(0, 0, 512, 256);
+  for (let i = 0; i < 4; i++) {   // columns, arched windows with a warm glow, gold frames
+    const x = 18 + i * 128; g.fillStyle = 'rgba(255,240,255,0.45)'; g.fillRect(x - 10, 0, 12, 256);
+    for (const [y, h] of [[40, 70], [150, 70]]) {
+      g.beginPath(); g.moveTo(x + 22, y + h); g.lineTo(x + 22, y + 22); g.arc(x + 54, y + 22, 32, Math.PI, 0); g.lineTo(x + 86, y + h); g.closePath();
+      const wg = g.createLinearGradient(0, y, 0, y + h); wg.addColorStop(0, '#fff3b0'); wg.addColorStop(1, '#8fd8ff'); g.fillStyle = wg; g.fill();
+      g.lineWidth = 6; g.strokeStyle = '#f2c14a'; g.stroke();
+    }
+  }
+  g.fillStyle = '#f2c14a'; g.fillRect(0, 128, 512, 8); g.fillRect(0, 0, 512, 6);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 4; return t;
+}
+function openTube(scene, TR, Ch) {
+  let wallMat = null; const hoops = [];
+  scene.traverse((o) => { if (o.name === 'l1Wall' && o.material && !wallMat) wallMat = o.material; if (o.name === 'l1Hoops' && o.isInstancedMesh) hoops.push(o); });
+  if (wallMat && wallMat.fragmentShader && wallMat.uniforms) {
+    wallMat.uniforms.uOpen07 = { value: new THREE.Vector3(Ch.u0, Ch.u1, Ch.open) };
+    wallMat.fragmentShader = wallMat.fragmentShader.replace(/void main\(\)\s*\{/, 'uniform vec3 uOpen07;\nvoid main() { if (vTU.y > uOpen07.x && vTU.y < uOpen07.y && abs(vTU.x) < uOpen07.z) discard;');
+    wallMat.needsUpdate = true;
+  }
+  const M = new THREE.Matrix4(), P = new THREE.Vector3(), Z = new THREE.Matrix4().makeScale(0, 0, 0), ctr = [];
+  for (let u = Ch.u0; u <= Ch.u1; u += 1) ctr.push(TR.map(0, 1.5, u));
+  let hidden = 0;
+  for (const h of hoops) { for (let i = 0; i < h.count; i++) { h.getMatrixAt(i, M); P.setFromMatrixPosition(M); if (ctr.some((c) => c.distanceTo(P) < 3.4)) { h.setMatrixAt(i, Z); hidden++; } } h.instanceMatrix.needsUpdate = true; }
+  return { patched: !!wallMat, hoopsHidden: hidden };
+}
+function buildChamber(root, TR, env) {
+  const Ch = SCENE07.chamber, P = new THREE.Vector3();
+  const tex = facadeTexture();
+  const shellM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15, envMap: env || null, envMapIntensity: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.45, side: THREE.DoubleSide });
+  // the shell: a half-ellipse over the stretch, from the deck on one side over the top to the other
+  const pos = [], uv = [], idx = [], nA = 36, step = 1; let rows = 0;
+  for (let u = Ch.u0 - 1; u <= Ch.u1 + 1 + 1e-6; u += step, rows++) {
+    for (let j = 0; j <= nA; j++) { const a = -Math.PI / 2 + Math.PI * j / nA; TR.map(Math.sin(a) * Ch.halfW, Ch.deck + Math.cos(a) * Ch.height, u, P); pos.push(P.x, P.y, P.z); uv.push((u - Ch.u0) / 4, j / nA * 6); }
+  }
+  for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+  const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); sg.setIndex(idx); sg.computeVertexNormals();
+  const shell = new THREE.Mesh(sg, shellM); shell.name = 'scene07_chamberShell'; root.add(shell);
+  // the decks either side of the water: lavender with a gold edge at the water
+  const deckM = new THREE.MeshStandardMaterial({ color: 0xc7a2f0, roughness: 0.45, metalness: 0.2, envMap: env || null, envMapIntensity: 0.6, emissive: 0x6a4aa8, emissiveIntensity: 0.45, side: THREE.DoubleSide });
+  const goldM = new THREE.MeshStandardMaterial({ color: 0xffdc7a, metalness: 1, roughness: 0.22, envMap: env || null, envMapIntensity: 1.4, emissive: 0x7a5a1c, emissiveIntensity: 0.55 });
+  for (const side of [1, -1]) {
+    const dp = [], di = [], edge = []; let k = 0;
+    for (let u = Ch.u0 - 1; u <= Ch.u1 + 1 + 1e-6; u += step, k++) {
+      TR.map(side * Ch.deckIn, Ch.deck, u, P); dp.push(P.x, P.y, P.z); edge.push(P.clone());
+      TR.map(side * Ch.halfW, Ch.deck, u, P); dp.push(P.x, P.y, P.z);
+      if (k) { const a = 2 * (k - 1); di.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    }
+    const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.Float32BufferAttribute(dp, 3)); dg.setIndex(di); dg.computeVertexNormals();
+    const deck = new THREE.Mesh(dg, deckM); deck.name = 'scene07_deck'; root.add(deck);
+    const lip = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(edge), edge.length * 2, 0.07, 8, false), goldM); lip.name = 'scene07_deckGold'; root.add(lip);
+  }
+  // the end walls with the portal where the tube enters and leaves: the chamber's cross-section with a round hole, a gold-pink ring
+  const pinkM = new THREE.MeshStandardMaterial({ color: 0xff6cbc, metalness: 0.35, roughness: 0.33, envMap: env || null, envMapIntensity: 1.0, emissive: 0xff4fa8, emissiveIntensity: 0.3 });
+  for (const u of [Ch.u0, Ch.u1]) {
+    const sh = new THREE.Shape(); for (let j = 0; j <= 48; j++) { const a = -Math.PI / 2 + Math.PI * j / 48, x = Math.sin(a) * Ch.halfW, y = Ch.deck + Math.cos(a) * Ch.height; if (j) sh.lineTo(x, y); else sh.moveTo(x, y); }
+    sh.lineTo(-Ch.halfW, Ch.deck - 1.5); sh.lineTo(Ch.halfW, Ch.deck - 1.5); sh.closePath();
+    const hole = new THREE.Path(); hole.absarc(0, 1.5, Ch.portalR, 0, Math.PI * 2, true); sh.holes.push(hole);
+    const wall = new THREE.Mesh(new THREE.ShapeGeometry(sh, 48), shellM); const ring = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.12, 0.26, 16, 72), goldM);
+    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(Ch.portalR + 0.62, 0.3, 14, 72), pinkM); ring.position.y = ring2.position.y = 1.5;
+    const g = new THREE.Group(); g.add(wall, ring, ring2); g.name = 'scene07_portal';
+    TR.map(0, 0, u, g.position); TR.quaternion(u, g.quaternion); root.add(g);
+  }
+  return goldM;
+}
+function buildLandmarks(root, TR, env, goldM, items) {
+  // LEFT: the original's big circular washer housing: a thick pink drum ring, gold rims, a lavender back, an iridescent bubble
+  const pinkM = new THREE.MeshStandardMaterial({ color: 0xff70be, metalness: 0.35, roughness: 0.32, envMap: env || null, envMapIntensity: 1.0, emissive: 0xff4fa8, emissiveIntensity: 0.32 });
+  const lavM = new THREE.MeshStandardMaterial({ color: 0xc9a8ff, metalness: 0.4, roughness: 0.3, envMap: env || null, envMapIntensity: 1.0, emissive: 0x6a52b0, emissiveIntensity: 0.4 });
+  const glassM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.05, envMap: env || null, envMapIntensity: 1.6, transparent: true, opacity: 0.5, iridescence: 1, iridescenceIOR: 1.3, clearcoat: 1, depthWrite: false });
+  for (const [u, x, h, R] of SCENE07.housings) {
+    const g = new THREE.Group(); g.name = 'scene07_housing';
+    const drum = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.15, R * 1.15, R * 0.9, 48, 1, true), lavM); drum.rotation.x = Math.PI / 2; drum.position.z = -R * 0.45; g.add(drum);
+    const back = new THREE.Mesh(new THREE.CircleGeometry(R * 1.15, 48), lavM); back.position.z = -R * 0.9; g.add(back);
+    g.add(new THREE.Mesh(new THREE.TorusGeometry(R, R * 0.26, 20, 64), pinkM));
+    for (const rr of [R * 1.27, R * 0.74]) { const rim = new THREE.Mesh(new THREE.TorusGeometry(rr, R * 0.05, 8, 64), goldM); rim.position.z = R * 0.12; g.add(rim); }
+    const bub = new THREE.Mesh(new THREE.SphereGeometry(R * 0.62, 32, 20), glassM); bub.position.z = R * 0.1; g.add(bub);
+    TR.map(x, h, u, g.position); TR.quaternion(u, g.quaternion); g.rotateY(-Math.PI / 2 - 0.75);
+    root.add(g); items.push({ holder: g, turn: null, spin: 0, pos: g.position.clone() });
+  }
+  // RIGHT: the original's curved pink-gold structure: big round star tubs at the water's edge, gold rims
+  const tex = starTexture();
+  for (const [u, inner, R, H] of SCENE07.tubs) {
+    const g = new THREE.Group(); g.name = 'scene07_tub'; const t = tex.clone(); t.needsUpdate = true; t.repeat.set(Math.round(R * 4), 1);
+    const m = new THREE.MeshStandardMaterial({ map: t, roughness: 0.42, metalness: 0.2, envMap: env || null, envMapIntensity: 0.8, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.35, side: THREE.DoubleSide });
+    const drum = new THREE.Mesh(new THREE.CylinderGeometry(R, R * 1.05, H, 56, 1, true), m); drum.position.y = H / 2 - 0.1; g.add(drum);
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(R, 0.11, 12, 64), goldM); rim.rotation.x = Math.PI / 2; rim.position.y = H - 0.1; g.add(rim);
+    const top = new THREE.Mesh(new THREE.CircleGeometry(R * 0.97, 48), lavM); top.rotation.x = -Math.PI / 2; top.position.y = H - 0.14; g.add(top);
+    TR.map(-(inner + R), 0, u, g.position); TR.quaternion(u, g.quaternion);
+    root.add(g); items.push({ holder: g, turn: null, spin: 0, pos: g.position.clone() });
+  }
+}
+
 async function applyScene07({ scene, env, TR, camera, fx, report }) {
   const root = new THREE.Group(); root.name = 'scene07'; scene.add(root);
   const items = [];
+  const opened = openTube(scene, TR, SCENE07.chamber);
+  const goldM = buildChamber(root, TR, env);
+  buildLandmarks(root, TR, env, goldM, items);
+  SCENE07.enclosures.length = 0; SCENE07.portholes.length = 0;   // (pass 6: the chamber's landmarks replace pass 5's small pieces)
+  for (const gr of SCENE07.gears) { gr[2] = 4.2; gr[3] = 4.4; gr[4] *= 1.6; }   // gears high on the chamber's walls
   buildArchitecture(root, TR, env, items);
   // big iridescent bubbles near the walls (board 07's large bubbles at its sides); a fixed pattern, no random numbers
   const bubM = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.06, metalness: 0, envMap: env || null, envMapIntensity: 1.6, transparent: true,
@@ -134,7 +243,7 @@ async function applyScene07({ scene, env, TR, camera, fx, report }) {
     }
     if (base !== null) { const k = cam.clone().sub(ends[0]).dot(seg) / segL2; fx.u.uScale.value = k > 0 && k < 1 ? base * SCENE07.particles : base; }
   };
-  report.scene07 = { enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
+  report.scene07 = { opened, enclosures: SCENE07.enclosures.length, portholes: SCENE07.portholes.length, gears: SCENE07.gears.length, bubbles: SCENE07.bubbles.n, particleBase: base };
 }
 
 export async function applyTripo1({ scene, loader, env, TR, camera, fx }) {
