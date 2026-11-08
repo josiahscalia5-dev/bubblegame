@@ -1709,7 +1709,7 @@ async function main() {
     if (LEVEL1_ON && !SIDE) {   // ?s3=...,level1: Level 1's sections after the drum (level1.js), built with its own random numbers
       level1 = withPrivateRandom(makeRandom(0x1e71), () => buildLevel1({ scene, camera, TR, L, W, state, mascot, mats, stage, sfx,
         castleModel: castle.scene, addCoin: mats.l1AddCoin, addGem: mats.l1AddGem, addSock: mats.l1AddSock,
-        counts: () => ({ coins: coins.length, gems: gems.length, socks: socks.length }), gemsList: gems,
+        counts: () => ({ coins: coins.length, gems: gems.length, socks: socks.length }), gemsList: gems, coinsList: coins, socksList: socks,
         bumpMascot: (s) => withPrivateRandom(makeRandom(0x1e72 + (state.bumps || 0)), () => bumpMascot(s)),
         finish: () => { state.phase = 'complete'; },
         restart: () => { if (R2) restartRound2(); else { resetRun(); state.phase = 'intro'; document.body.classList.remove('running', 'inDrum'); refreshHud(); } } }));

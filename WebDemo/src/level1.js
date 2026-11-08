@@ -32,7 +32,7 @@ import { makeFluffyBrush } from './fluffy_brush.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const LEVEL1_ON = LIST.includes('level1');
-export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), opening: LEVEL1_ON && !LIST.includes('noopening3d') };
+export const LEVEL1_PARTS = { swim: LEVEL1_ON && !LIST.includes('noswim1'), opening: LEVEL1_ON && !LIST.includes('noopening3d'), girl2: LEVEL1_ON && !LIST.includes('nogirl2') };   // girl2: the user's Tripo girl, rigged (8 November)
 
 // The course (u = metres along the path; the Screen 4 drum is 3.9-37.2). Turns are radians per metre (+ to screen-left),
 // pitch radians (+ climbs); both are bumps that are zero before the drum's end.
@@ -221,6 +221,8 @@ export function buildLevel1(ctx) {
   const C = COURSE, rnd = mulberry(0x1e7e1), F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
   const root = new THREE.Group(); root.name = 'level1'; scene.add(root);
   const report = { parts: [], drawn: {} };
+  // drawn only near her (mobile cost): course pieces and items from DRAW_BEHIND m behind to DRAW_AHEAD m ahead
+  const DRAW_AHEAD = 45, DRAW_BEHIND = 6, chunks = [];
   const timeU = { value: 0 }, camU = { value: new THREE.Vector3() };
   const riderU = { value: new THREE.Vector4() };
 
@@ -240,7 +242,7 @@ export function buildLevel1(ctx) {
     for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nA; j++) { const a = i * cols + j, b = a + cols; idx.push(a, b, a + 1, b, b + 1, a + 1); }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aTU', new THREE.BufferAttribute(tu, 2)); g.setIndex(idx);
     g.computeBoundingSphere();
-    const m = new THREE.Mesh(g, wallMat); m.name = 'l1Wall'; root.add(m); return m;
+    const m = new THREE.Mesh(g, wallMat); m.name = 'l1Wall'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
   };
   for (let u = C.tube[0]; u < C.tube[1]; u += 15) tubeChunk(u, Math.min(C.tube[1], u + 15));
   report.parts.push('tube');
@@ -262,7 +264,7 @@ export function buildLevel1(ctx) {
     for (let i = 0; i < rows - 1; i++) for (let j = 0; j < nx; j++) { const a = i * cols + j, b = a + cols; idx.push(a, a + 1, b, b, a + 1, b + 1); }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aXU', new THREE.BufferAttribute(xu, 2));
     g.setAttribute('aUp', new THREE.BufferAttribute(up, 3)); g.setIndex(idx); g.computeBoundingSphere(); g.boundingSphere.radius += 0.3;
-    const m = new THREE.Mesh(g, mat); m.name = 'l1Water'; root.add(m); return m;
+    const m = new THREE.Mesh(g, mat); m.name = 'l1Water'; m.userData.u = [u0, u1]; chunks.push(m); root.add(m); return m;
   };
   for (let u = C.water[0]; u < C.gate + 1; u += 15) waterChunk(u, Math.min(C.gate + 1, u + 15), 2.2, waterMat);
   for (let u = C.gate - 1; u < C.water[1]; u += 15) waterChunk(u, Math.min(C.water[1], u + 15), 1.45, kWaterMat);
@@ -458,6 +460,7 @@ export function buildLevel1(ctx) {
   // list only once she has left the Screen 4 drum, so the game's seeded sequence is untouched until then (Tap to Start and the
   // drum are drawn exactly as without level1)
   const myGems = ctx.gemsList ? ctx.gemsList.splice(nBefore.gems) : [];
+  const myItems = [...(ctx.coinsList ? ctx.coinsList.slice(nBefore.coins) : []), ...(ctx.socksList ? ctx.socksList.slice(nBefore.socks) : []), ...myGems];
   let gemsIn = false;
 
   // ---------------- the HUD: section banner, progress bar, Level Complete
@@ -538,6 +541,10 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // sky only out in the kingdom
     sky.visible = u > C.gate - 30; sky.position.copy(camU.value);
     kingdom.visible = u > C.gate - 60;
+    // only what is near her is drawn (the far course is hidden behind the drum's glow anyway)
+    for (const c of chunks) c.visible = c.userData.u[0] < u + DRAW_AHEAD && c.userData.u[1] > u - DRAW_BEHIND;
+    for (const it of myItems) if (it.pop < 0 && it.live && !(it.u < u + DRAW_AHEAD && it.u > u - DRAW_BEHIND)) it.obj.visible = false;   // (in range: as the game left it)
+    gate.visible = u > C.gate - DRAW_AHEAD && u < C.gate + 20; finish.visible = u > C.finish - 60;
     // bubbles drift and wobble
     for (let i = 0; i < bubData.length; i++) {
       const b = bubData[i], ahead = b.u - u;
@@ -550,7 +557,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // brushes spin; a brush in her lane knocks her
     for (const b of brushes) {
       const ahead = b.u - u;
-      b.holder.visible = ahead > -2.2 && ahead < 60;
+      b.holder.visible = ahead > -2.2 && ahead < DRAW_AHEAD;
       // once she is past it, it folds back into the drum's wall (so it never fills the screen between her and the camera)
       const gone = smooth(-0.3, -2.0, ahead);
       b.holder.scale.setScalar(1 - 0.9 * gone);
@@ -567,7 +574,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
     // soap bars: jump them
     for (const b of bars) {
       const ahead = b.u - u;
-      b.holder.visible = ahead > -1.8 && ahead < 70;
+      b.holder.visible = ahead > -1.8 && ahead < DRAW_AHEAD;
       b.holder.scale.setScalar(1 - 0.95 * smooth(-0.4, -1.8, ahead));
       if (!running) continue;
       if (Math.abs(ahead) > 0.42) { if (ahead < -1.5) b.hit = false; continue; }
@@ -579,7 +586,7 @@ body.running #l1Prog, #l1Prog.on { opacity: 1; }
       const near = e.u0 - u;
       if (running && near < 26 && near > -6) e.u = Math.max(e.u0 - 9, e.u - dt * 1.6);
       const ahead = e.u - u;
-      e.holder.visible = ahead > -1.8 && ahead < 60;
+      e.holder.visible = ahead > -1.8 && ahead < DRAW_AHEAD;
       if (!e.holder.visible) continue;
       const bob = Math.abs(Math.sin(t * 4.2 + e.ph)) * 0.16;
       TR.map(e.x + Math.sin(t * 1.3 + e.ph) * 0.08, 0.36 + bob, e.u, e.holder.position); TR.quaternion(e.u, e.holder.quaternion); e.holder.rotateY(Math.PI);

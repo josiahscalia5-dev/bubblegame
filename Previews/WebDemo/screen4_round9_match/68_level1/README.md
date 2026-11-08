@@ -82,3 +82,20 @@ A real-time three.js scene in its own canvas behind the real UI (top bar, titles
   `videos/full_sequence_contact_sheet.jpg`.
 - **Screens** (`screens/`): the approved Screens 1-2 against the new live 3D versions; the toss, entry and landing;
   `seed7_TapToStart_ORIGINAL_BEFORE_AFTER.jpg` and `seed7_3.0s_ORIGINAL_BEFORE_AFTER.jpg` against the ORIGINAL Screen 4.
+
+## 8 November, later: the user's priorities 5 and 1 (session `dbccb9a3` after the restart)
+
+- **Priority 5, rendering cost:** the course's pieces (tube and water chunks), its 114 coins, socks and gems, brushes, soap bars,
+  grime balls, the gate and the finish are drawn only from 6 m behind to 45 m ahead of her. GL draw calls counted by wrapping
+  WebGL's draw functions (`WebDemo/tools/level1/cost_probe.cjs`, seed 7, 412 x 915): Tap to Start 322 -> **222** (the candidate
+  without level1: 211), +3 s 270 -> 167, +8 s 206 -> 119, +20 s 186 -> 105, +40 s 125 -> 121; triangles at Tap to Start 3.13 M ->
+  2.76 M. The whole level still plays to Level Complete (1,371 coins, 6 socks, 5 hearts, no errors). Accepted, normal game and
+  candidate: 0 px. (The candidate's own 2.5 M triangles come mostly from her shell fur and the fluffy brushes: a separate
+  decision, since lighter versions change the candidate's look.)
+- **Priority 1, the girl (`girl2`, on by default under level1; `,nogirl2` = the code-built girl):** the user's Tripo girl
+  rigged in Blender (`Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/rig/`: `measure_girl.py` measured her proportions
+  and painted eyes, `rig_girl.py` built a skeleton from her own geometry and bound it with automatic weights, every vertex
+  weighted, texture 2048 for phones, test pose `girl_test_pose.png`) -> `WebDemo/models/opening/girl_rigged.glb` (1.1 MB). In the
+  opening (`opening3d.js` GIRL2): the same timeline on her own bones (hands on the basket's handles by two-bone IK, spine lean,
+  head turn, the wave), eyelids on her head bone over her painted eyes for blinks, a step stool by the washer. Sheets:
+  `screens/girl2_tripo_girl_APPROVED_vs_NEW.jpg`, `screens/girl2_blink_open_half.jpg`.

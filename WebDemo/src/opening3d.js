@@ -20,6 +20,15 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { LEVEL1_PARTS } from './level1.js';
+// girl2 (8 November, the user's priority 1): the user's Tripo girl (Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/,
+// "cartoon girl 3d model.glb"), rigged in Blender by rig/rig_girl.py (hips, spine, chest, neck, head, shoulders, arms, hands,
+// legs; automatic weights; texture 2048) -> models/opening/girl_rigged.glb. Driven here by the same timeline as the code-built
+// girl: the hands on the basket's handles by two-bone IK on her own bones, the spine and head, the wave, and eyelids fixed to
+// her head bone over her painted eyes (measured in Blender: 0.723 m high, x -0.058 / +0.052, radius about 0.025 m) for blinks.
+// ?s3=...,nogirl2: the code-built girl as before.
+export const GIRL2 = { file: 'models/opening/girl_rigged.glb', scale: 1.62, pos: [-0.42, 0.4, -0.27], rotY: 0.24,
+  eyes: [[-0.058, 0.723], [0.052, 0.723]], eyeR: 0.028, skin: 0xeab08e, stool: { h: 0.4, col: 0xff9fd6 } };
 
 export const OPENING3D = {
   seqEnd: 6.1, handOver: 5.15, fade: 0.8,       // seconds after START: the game is released and the view fades into it
@@ -162,6 +171,25 @@ function reach(arm, target, pole) {
   arm.up.updateWorldMatrix(false, false); arm.up.getWorldQuaternion(_qp).invert();
   const T = _S.clone().addScaledVector(_d, dist);
   _q.setFromUnitVectors(DOWN, T.sub(_E).normalize()); arm.el.quaternion.copy(_qp).multiply(_q);
+}
+
+const _q1 = new THREE.Quaternion(), _q2 = new THREE.Quaternion(), _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _v3 = new THREE.Vector3();
+function rotateBoneWorld(b, axis, ang) {   // turn a bone about a world axis, whatever its own axes are
+  b.getWorldQuaternion(_q1); _q2.setFromAxisAngle(axis, ang).multiply(_q1);
+  b.parent.getWorldQuaternion(_q1).invert(); b.quaternion.copy(_q1.multiply(_q2)); b.updateMatrixWorld(true);
+}
+function aimBone(b, child, dir) {   // turn bone b (about its own head) so that its child joint lies along world direction dir
+  b.getWorldPosition(_v1); child.getWorldPosition(_v2); _v2.sub(_v1).normalize();
+  _q2.setFromUnitVectors(_v2, _v3.copy(dir).normalize()); b.getWorldQuaternion(_q1); _q2.multiply(_q1);
+  b.parent.getWorldQuaternion(_q1).invert(); b.quaternion.copy(_q1.multiply(_q2)); b.updateMatrixWorld(true);
+}
+function reachBones(up, fo, hand, target, pole) {   // two-bone IK on real bones
+  up.getWorldPosition(_S); fo.getWorldPosition(_E); const a = _S.distanceTo(_E); hand.getWorldPosition(_v1); const bl = _E.distanceTo(_v1);
+  _d.copy(target).sub(_S); const dist = THREE.MathUtils.clamp(_d.length(), 0.02, a + bl - 1e-4); _d.normalize();
+  const A = Math.acos(THREE.MathUtils.clamp((a * a + dist * dist - bl * bl) / (2 * a * dist), -1, 1));
+  _n.copy(pole).sub(_S); _n.addScaledVector(_d, -_n.dot(_d)).normalize();
+  const elbow = _S.clone().addScaledVector(_d, Math.cos(A) * a).addScaledVector(_n, Math.sin(A) * a);
+  aimBone(up, fo, elbow.clone().sub(_S)); const T = _S.clone().addScaledVector(_d, dist); fo.getWorldPosition(_E); aimBone(fo, hand, T.sub(_E));
 }
 
 // ---------------------------------------------------------------- the laundry basket and laundry
@@ -427,12 +455,35 @@ export function mountOpening3D(container, opts = {}) {
   const vortex = buildVortex(); scene.add(vortex.tube, vortex.cap, vortex.water);
   const girl = buildGirl(rnd); girl.root.position.set(-0.36, 0.42, -0.2); girl.root.rotation.y = 0.18; girl.root.scale.setScalar(1.08); scene.add(girl.root);
   const basket = buildBasket(); scene.add(basket);
+  // girl2: the user's Tripo girl, rigged (the code-built girl stays as the fallback until she has loaded)
+  const g2 = { ready: false };
+  if (LEVEL1_PARTS.girl2) new GLTFLoader().load(GIRL2.file, (gl) => {
+    const root = new THREE.Group(); root.name = 'girl2'; root.add(gl.scene); scene.add(root);
+    root.position.set(...GIRL2.pos); root.rotation.y = GIRL2.rotY; root.scale.setScalar(GIRL2.scale);
+    const B = {}; gl.scene.traverse((o) => { if (o.isBone) B[o.name.replace(/[^A-Za-z]/g, '')] = o; if (o.isMesh) { o.frustumCulled = false; o.material.emissive = new THREE.Color(0x3a2a40); o.material.emissiveIntensity = 0.35; o.material.envMap = env; o.material.envMapIntensity = 0.5; } });
+    for (const b of Object.values(B)) b.userData.rest = b.quaternion.clone();
+    // eyelids on her head bone over the painted eyes (skin-coloured caps, scaled shut for a blink)
+    root.updateMatrixWorld(true);
+    const lidM = new THREE.MeshStandardMaterial({ color: GIRL2.skin, roughness: 0.75, emissive: 0x4a2414, emissiveIntensity: 0.2 });
+    const lids = GIRL2.eyes.map(([ex, ey]) => {
+      const surf = new THREE.Raycaster(root.localToWorld(new THREE.Vector3(ex, ey, 0.6)), root.localToWorld(new THREE.Vector3(ex, ey, -1)).sub(root.localToWorld(new THREE.Vector3(ex, ey, 0.6))).normalize());
+      const hit = surf.intersectObject(gl.scene, true)[0];
+      const lid = new THREE.Mesh(new THREE.SphereGeometry(GIRL2.eyeR, 20, 14), lidM);   // closes from both edges to a line (a cartoon blink)
+      const p = hit ? hit.point : root.localToWorld(new THREE.Vector3(ex, ey, 0.19));
+      B.head.attach(lid); lid.position.copy(B.head.worldToLocal(p.clone())); lid.scale.set(1, 0.05, 0.55); lid.visible = false;
+      return lid;
+    });
+    const stool = new THREE.Mesh(new RoundedBoxGeometry(0.42, GIRL2.stool.h, 0.34, 3, 0.05), toon(GIRL2.stool.col, { glow: 0.3 }));
+    stool.position.set(GIRL2.pos[0], GIRL2.stool.h / 2, GIRL2.pos[2]); scene.add(stool);
+    Object.assign(g2, { ready: true, root, B, lids, stool });
+    girl.root.visible = false;
+  });
   // laundry that flies: two socks, three towels
   const laundry = [];
   for (let i = 0; i < 5; i++) {
     const o = i < 2 ? buildSock(rnd) : buildTowel([0xffd34d, 0x6fb6ff, 0xff8ccf][i - 2]);
     o.scale.setScalar(1.45); o.userData.k = 1.45; o.visible = false; scene.add(o);
-    laundry.push({ o, t0: 0.42 + i * 0.06, t1: 1.45 + i * 0.1, from: V([-0.02 + (rnd() - 0.5) * 0.08, 1.35, 0.15]), apex: V([0.32 + rnd() * 0.35, 2.3 + rnd() * 0.25, 0.45 + rnd() * 0.2]),
+    laundry.push({ o, t0: 0.42 + i * 0.06, t1: 1.45 + i * 0.1, from: (LEVEL1_PARTS.girl2 ? V([-0.16, 1.25, 0.06]) : V([-0.02, 1.35, 0.15])).add(V([(rnd() - 0.5) * 0.08, 0, 0])), apex: V([0.32 + rnd() * 0.35, 2.3 + rnd() * 0.25, 0.45 + rnd() * 0.2]),
       to: V([OPENING3D.porthole.x + (rnd() - 0.5) * 0.15, OPENING3D.porthole.y + (rnd() - 0.5) * 0.12, OPENING3D.porthole.z - 0.2]), spin: V([rnd() * 9 - 4.5, rnd() * 9 - 4.5, rnd() * 9 - 4.5]) });
   }
   // bubbles: a heap in the foreground and some floating up through the room
@@ -505,8 +556,8 @@ export function mountOpening3D(container, opts = {}) {
   // ------------------------------------------------ the timeline
   const P = OPENING3D.porthole;
   const blinkAt = (t, every, off) => { const k = ((t + off) % every); return k < 0.13 ? Math.sin(k / 0.13 * Math.PI) : 0; };
-  const basketHome = V([-0.3, 1.04, 0.16]);
-  const heroLaunch = V([-0.02, 1.47, 0.24]), heroApex = V([0.5, 2.05, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
+  const basketHome = LEVEL1_PARTS.girl2 ? V([-0.37, 0.95, -0.01]) : V([-0.3, 1.04, 0.16]);   // (girl2: in front of her chest, within her shorter arms' reach)
+  const heroLaunch = LEVEL1_PARTS.girl2 ? basketHome.clone().add(V([0.42, 0.5, 0.15])) : V([-0.02, 1.47, 0.24]), heroApex = V([0.5, 2.05, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
   const heroIn = V([P.x, P.y - 0.02, P.z - 1.3]), heroLand = V([P.x, OPENING3D.waterY + 0.1 * OPENING3D.heroW / 0.34, P.z - 2.8]);
   let seq = -1, idle = 0, landed = false, fadeStarted = false, doneCalled = false, sparkCarry = 0;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
@@ -537,7 +588,23 @@ export function mountOpening3D(container, opts = {}) {
     const wave = sm(1.5, 1.9, s), hrW = V([0.12, 1.62 + 0.04 * Math.sin(s * 10), 0.08 + 0.05 * Math.sin(s * 10)]);
     const chestW = girl.chest.getWorldPosition(new THREE.Vector3());
     reach(girl.armL, hl, chestW.clone().add(V([-0.4, -0.3, -0.1])));
-    reach(girl.armR, hr.lerp(hrW, wave), chestW.clone().add(V([0.4, -0.3 + wave * 0.5, -0.1])));
+    reach(girl.armR, hr.clone().lerp(hrW, wave), chestW.clone().add(V([0.4, -0.3 + wave * 0.5, -0.1])));
+    if (g2.ready) {   // girl2: the same motion on the Tripo girl's own bones
+      const B = g2.B;
+      for (const b of Object.values(B)) b.quaternion.copy(b.userData.rest);
+      g2.root.updateMatrixWorld(true);
+      g2.root.position.y = GIRL2.pos[1] + 0.006 * Math.sin(it * 2.2);
+      rotateBoneWorld(B.hips, V([0, 0, 1]), 0.03 * Math.sin(it * 1.1));
+      rotateBoneWorld(B.spine, V([1, 0, 0]), lean * 0.8 + 0.03 * Math.sin(it * 1.3));
+      rotateBoneWorld(B.chest, V([0, 1, 0]), key(s, [[0, 0], [0.6, 0.25], [2, 0.12]]));
+      rotateBoneWorld(B.head, V([0, 1, 0]), 0.1 + lookSide * 0.8 + 0.07 * Math.sin(it * 0.6));
+      rotateBoneWorld(B.head, V([1, 0, 0]), -lookUp * 0.8 + 0.04 * Math.sin(it * 0.8));
+      rotateBoneWorld(B.head, V([0, 0, 1]), -0.06 + 0.06 * Math.sin(it * 0.7));
+      const cw = B.chest.getWorldPosition(new THREE.Vector3());
+      reachBones(B.upperarmL, B.forearmL, B.handL, hr.clone().lerp(hrW, wave), cw.clone().add(V([0.45, -0.35 + wave * 0.5, -0.15])));
+      reachBones(B.upperarmR, B.forearmR, B.handR, hl, cw.clone().add(V([-0.45, -0.35, -0.15])));
+      const bl = Math.max(blink, 0); for (const l of g2.lids) { l.visible = bl > 0.04; l.scale.set(1.08, 0.04 + bl * 1.02, 0.5); }
+    }
     // ---- the pink character
     let hp, spin = new THREE.Euler(), sq = 1, surprise = 0, faceAway = 0;
     if (s < 0.55) {   // sitting on the laundry, bouncing; hops in surprise as the basket swings
@@ -589,7 +656,7 @@ export function mountOpening3D(container, opts = {}) {
     camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix();
     // the room is out of sight once the camera is inside the drum
     const inDrum = camera.position.z < P.z - 0.05;
-    room.visible = washer.g.visible = girl.root.visible = basket.visible = !inDrum; bubbles.visible = front.visible = foam.visible = !inDrum;
+    room.visible = washer.g.visible = basket.visible = !inDrum; girl.root.visible = !inDrum && !g2.ready; if (g2.ready) g2.root.visible = g2.stool.visible = !inDrum; bubbles.visible = front.visible = foam.visible = !inDrum;
   }
   function stepFx(dt, s) {
     sparks.update(dt, 0.15); splash.update(dt, 2.6);
@@ -624,7 +691,7 @@ export function mountOpening3D(container, opts = {}) {
     if (seq >= OPENING3D.seqEnd && !doneCalled) { doneCalled = true; if (opts.onDone) opts.onDone(); }
   }
   if (!opts.test) raf = requestAnimationFrame(frame);
-  if (typeof window !== 'undefined') window.__bwO3D = { seek: (it, st, dt = 1 / 30) => { idle = it; seq = st; tick(dt); }, state: () => ({ idle, seq, landed, heroReady: heroFace.ready, laundry: laundry.map((L) => [L.o.visible, L.o.position.toArray().map((v) => +v.toFixed(2)), L.o.children.length]), cam: camera.position.toArray().map((v) => +v.toFixed(2)) }) };
+  if (typeof window !== 'undefined') window.__bwO3D = { seek: (it, st, dt = 1 / 30) => { idle = it; seq = st; tick(dt); }, state: () => ({ idle, seq, landed, heroReady: heroFace.ready && (!LEVEL1_PARTS.girl2 || g2.ready), laundry: laundry.map((L) => [L.o.visible, L.o.position.toArray().map((v) => +v.toFixed(2)), L.o.children.length]), cam: camera.position.toArray().map((v) => +v.toFixed(2)) }) };
   return {
     play() { if (seq < 0) { seq = 0; landed = false; } },
     playing: () => seq >= 0,
