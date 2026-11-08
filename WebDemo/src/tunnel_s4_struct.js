@@ -280,8 +280,8 @@ export const SHELL_FUR6 = { layers: 8, len: 0.2, lean: 0.4, comb: 0.6, grav: 0.3
   crown: { R: 0.98, h0: 0.34, h1: 0.56 },
   // her fur's look (match6FurGLSL): the whorl's direction (up, toward the camera), bundles round it, rows of them outward,
   // their wobble, the grooves' and the bundles' shade, the base's shade over height (hgt -1 at the water .. +1 on top), the crown
-  look: { whorl: [0.85, 0.5], bundles: 46, rings: 13, wave: 0.25, groove: 0.66, lift: 0.22, tuftShare: 0.3, specks: 150, speckShare: 0.012,
-    speckK: 0.7, baseMul: [1.0, 1.0, 0.8], baseAdd: [0.0, 0.05, 0.0], baseH: [-0.6, 0.6],
+  look: { whorl: [0.85, 0.5], bundles: 46, rings: 13, wave: 0.25, groove: 0.8, lift: 0.25, tuftShare: 0.3, specks: 150, speckShare: 0.012,
+    speckK: 0.7, baseMul: [0.88, 1.0, 0.95], baseAdd: [0.0, 0.09, 0.0], baseH: [-0.6, 0.6],
     crownMul: 0.72, crownAdd: [0.2, 0.16, 0.3], crownH: [0.35, 0.95] } };   // (structCrown: her crown a broader arc, as the ORIGINAL's dome)   // (structCrown: the nubs' drawn mesh moved out and down)
 export const SHELL_FUR = { layers: 6, len: 0.1, lean: 0.35, density: 52, thick: 0.34, tip: 0.08, root: 0.7 };   // (len, density: her model's own units; she is about 2.2 wide in them)
 const SHELL_VERTEX = /* glsl */ `
