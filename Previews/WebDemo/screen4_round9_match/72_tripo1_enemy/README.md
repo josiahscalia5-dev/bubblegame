@@ -24,6 +24,21 @@ triangles, textures 1024 / 512 / 512 px, glTF Validator 0 errors). Its jobs, inp
 **Still different from the board:** board 07's enemy floats larger, mid-screen above the water; the game's balls sit on the water in their
 lanes, two side by side. That is placement in `level1.js` (session `b0abcf95`'s file), not the model; not changed here.
 
+## v2 (about 15:30 UTC, the user's "Avoid Enemies!" mandate): placement, scale, material and lighting first, no new Tripo job
+Measured on the original crop (`original_crops/07_avoid_enemies.png`): the enemy's centre at about 72 % across and 39 % down, its diameter
+about 13.5 % of the screen height. v1 at u 236: centre about 45 % down, about 8 % of the height, and HALF SUNK (its centre 0.36 m above
+the water, its radius about 0.73 m). v2 (`TRIPO1_SIZE` in `tripo_l1.js`, looks only): the look raised 0.45 in its own frame so the whole
+ball clears the water (about 0.2 m gap), 13 % larger, glossier (roughness x 0.7, reflections 1.3), a faint navy self-light, a soft light
+halo behind it. `02_original_before_v1_after_v2.jpg` (frames `frames/tripo1_v2/`): it now floats, reads as the board's character,
+about twice the on-screen size of the code balls at u 236. Gameplay: the same route's events and states are identical with v2 (through
+Level Complete). Recording of the approach: `videos/` (below). Identity without `tripo1`: `proofs/identity_v2.txt`.
+
+**Remaining differences (honest list):** the board's enemy is right of centre and higher in the frame (its lane and patrol path are
+`level1.js`'s, session `b0abcf95`'s file, not changed); its blue reads more violet under the tunnel's purple light than the board's deeper
+navy; the hit test is still 0.56 m from her centre, so the bigger look overhangs the next lane (forgiving, not unfair; aligning it is a
+one-line change in `level1.js` for its owner); the tunnel around it is plainer than the board's (big wheel brushes on the walls, layered
+washer machinery, more bubbles): the user's order puts that after the opening and the Screen 4 baseline.
+
 ## Proofs
 - **Gameplay unchanged** (`proofs/route_upper_base.json.log`, `proofs/route_upper_tripo1.json.log`): the same route with and without
   `tripo1` gives the identical event log and identical states at every frame (position, lane, route, socks, coins, gems, hearts, enemies
