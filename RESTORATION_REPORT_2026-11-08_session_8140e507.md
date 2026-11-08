@@ -52,3 +52,21 @@ Session link: https://claude.ai/code/session_019Rgj5g6rGF39SnNVz1TmuP. Nothing i
   (`Previews/WebDemo/screen4_round9_match/69_match6/proofs/identity.txt`).
 - The branch `ccr-76d4bc77-rqhl8o` was verified on its own exact files (an export of its commit, not this session's tree):
   `Previews/WebDemo/ccr_branch_verification_2026-11-08/README.md`.
+
+## State for the next session (8 November, about 05:00 UTC)
+- **Two branches, one game.** `ccr-76d4bc77-rqhl8o` (`7e5dd685`, the old session `dbccb9a3`: the girl, the opening, level1; idle
+  since 02:56 UTC) and this session's `claude/bubble-wash-kingdom-continue-z9nmm1` (it contains ALL of `ccr-76d4bc77-rqhl8o`,
+  merged with normal merges, plus `match6`). Nothing of this session is on `ccr-76d4bc77-rqhl8o`: this session never writes the
+  old session's branch. To bring `match6` onto `ccr-76d4bc77-rqhl8o`, the user decides; the merge is clean (this branch contains
+  that one), so it is a fast-forward of `ccr-76d4bc77-rqhl8o` to this branch's head.
+- **Waiting for the user:** `match6` (her rear silhouette, `Previews/WebDemo/screen4_round9_match/69_match6/README.md`; rollback
+  `,nomatch6`); the level1 opening and course (`68_level1/`, verified on its own branch in `ccr_branch_verification_2026-11-08/`);
+  the six Tripo models' KEEP / REJECT / REWORK (the user's 02:35 message decided two: the pink creature is not to replace her, the
+  washer not without its porthole cut open); permission for the parallax-threejs scaffold (Deno + `/parallax-threejs:init` +
+  `window.scene` behind a debug flag).
+- **Next (this session's files, `SESSION_FILE_RESERVATIONS.md`):** priority 4, the water: the crest in front of her hides her lower
+  body and right nub (the ORIGINAL shows her down to about y 1330 of 1536, ours about 1275) and draws a hard white "torn paper"
+  line (the swell's crest foam, `tunnel_r8_liquid.js` LQ_FOAM, reachable through `structSwellGLSL` in `tunnel_s4_struct.js`);
+  then the metal housing, the brushes, the lighting.
+- **For the old session (priority 5, not this session's files):** per `dispose_check`, 20 hidden meshes still hold geometry
+  (three of 174,806 vertices): freeing or not creating them would save phone memory.
