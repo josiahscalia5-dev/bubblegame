@@ -7,6 +7,7 @@ import { SWIM2_ON, SWIM2, SWIM2_POINT, swim2CapPx } from './tunnel_s4_swim2.js';
 import { BLEND_ON, blendPose, blendFurCentre } from './tunnel_s4_blend.js';   // ?s3=intunnel,blend: her drawn proportions, ride height and landing (visual only)
 import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUniforms, structPrivately, structShellFur } from './tunnel_s4_struct.js';   // ?s3=intunnel,structmatch: the fill between her legs (and, with ,hero2, her crown and fur); visual only
 import { HOME_ON, homeHolds } from './screens12.js';   // ?s3=...,home: Screen 1 (Home) and Screen 2 (Laundry Toss) in front of the live game
+import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -216,6 +217,7 @@ function bakedMaterial(src, opts = {}) {
 
 // ------------------------------------------------------------------ world
 let water, waterU, mascot, rig, fx, scenery, decor, opening = null;
+let level1 = null;   // ?s3=...,level1 (level1.js)
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -734,6 +736,7 @@ function buildCollectibles(gemGltf, face, coinP2 = null) {
     scene.add(holder);
     gems.push({ obj: holder, home: p.clone(), kind: 'gem', live: true, pop: -1, phase: Math.random() * 6, spin: Math.random() * 6, compose, u: u0 });
   };
+  if (LEVEL1_ON) { mats.l1AddCoin = addCoin; mats.l1AddGem = addGem; }   // ?s3=...,level1: the course's coins and gems go in the same lists
   if (R2) { for (const [lane, u, h] of R2_RULES.gems) addGem(onWater(W.laneX(lane), h ?? R2_RULES.gemH, u)); return; }   // h: ?s3=hero only (its own height)
   addGem(onLanes(L.gem4), true);
   addGem(onWater(W.laneX(1), 1.7, L.tunnelEnd - 1.5));
@@ -772,7 +775,7 @@ function buildSocks(gltf) {
   // h: ?s3=hero only (a sock's own height)
   const spots = R2 ? R2_RULES.socks.map(([lane, u, h]) => [lane, h ?? R2_RULES.sockH, u]) : [[1, 0.8, ts + 7.5], [0, 0.95, ts + 11.8], [2, 1.0, ts + 15.6], [1, 0.85, ts + 21.0], [0, 0.9, ts + 26.4]];
   if (R2) src.traverse((o) => { if (o.isMesh) o.material.emissiveIntensity = 0.42; });   // a cleaner, brighter white knit
-  for (const [lane, above, u] of spots) {
+  const addSockAt = (lane, above, u) => {
     const x = W.laneX(lane);
     const holder = new THREE.Group(), turn = new THREE.Group(), inner = src.clone();
     inner.scale.setScalar(s); inner.position.copy(mid).multiplyScalar(-s);
@@ -783,7 +786,9 @@ function buildSocks(gltf) {
     if (R2) withPrivateRandom(makeRandom(0x50c0 + socks.length), () => holder.add(haloSprite('sock', 1.25)));
     scene.add(holder);
     socks.push({ obj: holder, turn, home: holder.position.clone(), kind: 'sock', live: true, pop: -1, phase: Math.random() * 6, u });
-  }
+  };
+  for (const [lane, above, u] of spots) addSockAt(lane, above, u);
+  if (LEVEL1_ON) mats.l1AddSock = addSockAt;   // ?s3=...,level1: the course's socks
 }
 
 // ------------------------------------------------------------------ particles (splashes, foam, sparkles)
@@ -928,6 +933,7 @@ function resetRun() {
   state.socks = 0; if (state.phase !== 'loading') refreshHud();
   if (side) side.n = 0;
   rig.snap = true;
+  if (level1) level1.reset();   // ?s3=...,level1
 }
 
 function changeLane(dir) {
@@ -1045,6 +1051,7 @@ function updateMascot(dt) {
     m.tilt.rotation.x += sp.pitch; m.tilt.rotation.z += sp.roll;
     m.squash.scale.y *= sp.sy;
   }
+  if (level1) level1.swim(m, t, dt, running, surf, fx);   // ?s3=...,level1: her swim strokes, drawn only (level1.js); her state is untouched
   if (BLEND_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend: drawn only (tunnel_s4_blend.js); her state is untouched
 
   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
@@ -1092,7 +1099,7 @@ function updateMascot(dt) {
 
   document.body.classList.toggle('inDrum', (running || INTUNNEL_ON && state.phase === 'intro') && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // (?s3=intunnel: the tunnel's HUD from Tap to Start)   // round7: the mission card at the hero moment
   if (side) sideTrail();
-  if (running && m.z > L.tunnelEnd - 2.0) loopRun();   // flash back to the slide just before the drum ends
+  if (running && m.z > L.tunnelEnd - 2.0 && !LEVEL1_ON) loopRun();   // flash back to the slide just before the drum ends (?s3=...,level1: no loop, the course goes on)
 }
 
 // ------------------------------------------------------------------ round2 (?s3=round2): hearts, Bubble Blast, Turbo Spin, pause
@@ -1607,6 +1614,7 @@ function step(dt) {
   fx.update(dt);
   if (SWIM2_ON && fx.u.uMaxPx) fx.u.uMaxPx.value = swim2CapPx(renderer.domElement.height, WATER7.maxPx);   // ?s3=intunnel,swim2: the cap eases in as she starts
   updateCamera(dt);
+  if (level1) level1.update(dt, state.time, state.phase);   // ?s3=...,level1 (after the camera: its water and walls use the camera's place)
   fadeStartPanels();
   if (opening) opening.update(dt, state.time, state.phase);
 }
@@ -1646,7 +1654,7 @@ async function main() {
   try {
     const layoutRes = await fetch(files.layout);
     L = await layoutRes.json();
-    TR = makeTrack(L, R4 ? { straight: ROUND4.straight, ...(R5 ? { curve: ROUND5.path.curve } : {}) } : {});   // round4: a longer straight start in the drum; round5: a gentler tube
+    TR = makeTrack(L, { ...(R4 ? { straight: ROUND4.straight, ...(R5 ? { curve: ROUND5.path.curve } : {}) } : {}), ...(LEVEL1_ON ? { course: COURSE } : {}) });   // round4: a longer straight start in the drum; round5: a gentler tube; level1: the course beyond the drum
     buildSky();
     const [castle, drum, mascotG, roller, gem, sock, machineryG, towerG, gearG, pipeG, crownG, coinFace] = await Promise.all([
       ...['castle', 'drum', 'mascot', 'roller', 'gem', 'sock', 'machinery', 'tower', 'gear', 'pipe', 'crown'].map(loadGltf), new THREE.TextureLoader().loadAsync('ui/coin_face.png')]);
@@ -1698,6 +1706,14 @@ async function main() {
       await withPrivateRandomAsync(makeRandom(0x0be6), opening.loadExtras);   // a roller candidate, only with ?roller=1|2
     }
     if (SIDE) buildSideView();
+    if (LEVEL1_ON && !SIDE) {   // ?s3=...,level1: Level 1's sections after the drum (level1.js), built with its own random numbers
+      level1 = withPrivateRandom(makeRandom(0x1e71), () => buildLevel1({ scene, camera, TR, L, W, state, mascot, mats, stage, sfx,
+        castleModel: castle.scene, addCoin: mats.l1AddCoin, addGem: mats.l1AddGem, addSock: mats.l1AddSock,
+        counts: () => ({ coins: coins.length, gems: gems.length, socks: socks.length }),
+        bumpMascot: (s) => withPrivateRandom(makeRandom(0x1e72 + (state.bumps || 0)), () => bumpMascot(s)),
+        finish: () => { state.phase = 'complete'; },
+        restart: () => { if (R2) restartRound2(); else { resetRun(); state.phase = 'intro'; document.body.classList.remove('running', 'inDrum'); refreshHud(); } } }));
+    }
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
     resize();
     resetRun();

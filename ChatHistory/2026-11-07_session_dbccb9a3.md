@@ -181,3 +181,179 @@ Stage A's causes are confirmed in the code. I'm capturing the current candidate 
 
 Now writing the code. First the track: under the new switch only, the path is extended with turns and a drop beyond the hero tunnel. Without the switch it's computed exactly as before.
 
+Writing the new module `WebDemo/src/level1.js`: the course sections, the tube, washer hoops, water, hazards, enemies, the Bubble Kingdom, banners, the progress bar and Level Complete.
+
+Now the gated hooks in `game.js`. Each one does nothing without the switch.
+
+Now building the course after the mascot, with its own private random numbers:
+
+The first build of the new course compiles. Now running it in a real browser with a steering autopilot and capturing frames across the whole level.
+
+---
+
+### You (sent while Claude was working) · 2026-11-08 00:16 UTC
+
+Yes — I can show you exactly how it should happen.
+You want two things clearly instructed:
+How the pink character enters the laundry tunnel from the girl screen
+How the pink character swims through the laundry machine with the yellow coins, water, socks, etc.
+1. How the pink character should go into the laundry tunnel
+Use the girl + laundry machine image as the direction.
+Correct action flow
+Step 1 — Opening screen setup
+Show the cartoon girl beside the washing machine
+Show the pink fluffy character near the laundry basket / clothes
+Show the washer door already visible and glowing
+The scene should feel alive, not like a still image
+Step 2 — Girl animation
+The girl should:
+move her head
+blink
+smile
+move her arms naturally
+lift or tip the laundry basket
+toss socks / towels / laundry toward the washer
+Step 3 — Pink character gets caught in the laundry toss
+The pink character should:
+react with surprise/excitement
+bounce upward a little
+get carried along with the tossed laundry
+move in a clear curved path toward the washer opening
+Step 4 — Clear washer-entry motion
+The pink character should visibly enter the washer, not just cut to the tunnel.
+It should look like this:
+pink character leaves the girl area
+travels through the air with laundry
+moves toward the circular washer opening
+reaches the door rim
+passes through the washer opening
+gets pulled inward by the glowing tunnel
+Step 5 — Inside-the-door transition
+As he enters:
+the camera should follow him inward
+the tunnel glow should get bigger
+he can do a small tumble / flip / bounce
+then the camera transitions smoothly into the playable washer tunnel
+What should NOT happen
+no sudden cut where he just appears in the tunnel
+no static image pretending to be animation
+no girl frozen like a poster
+no washer entry that feels fake or unclear
+2. How the pink character should swim through the laundry machine
+Use the gameplay screens with the blue tunnel, yellow coins, socks, and water as the direction.
+Correct gameplay feeling
+The pink character should feel like he is:
+traveling forward
+floating on and through water
+swimming / bobbing
+moving deeper into the washer tunnel
+passing through real space
+not just sitting still while the tunnel scrolls
+Swimming behavior instructions
+A. Position on screen
+keep the pink character mostly in the lower-middle area of the screen
+but he must still feel like he is moving forward through the tunnel
+he should not look glued in one place
+B. Body motion
+The pink character should:
+bob gently up and down
+tilt left when moving left
+tilt right when moving right
+bounce slightly from water movement
+feel soft and buoyant
+have a “swimming through water” feel
+C. Water interaction
+The water should:
+visibly move around the character
+splash around the bottom of the fur
+support him naturally
+show wake/ripple motion behind and around him
+not have a white cloud or white film separating him from the water
+D. Forward travel feeling
+To make him feel like he is truly going deeper:
+coins should approach him and pass by him
+socks should appear ahead and be reached
+tunnel rings / washer interior should move toward camera and past him
+brushes and obstacles should pass by him in 3D space
+background elements should not feel like one flat scrolling image
+3. Exact tunnel path feeling
+Inside the washer tunnel, the pink character should move like this:
+Beginning of tunnel
+enters from washer opening
+lands naturally into the blue water
+begins floating/swimming forward
+Main tunnel travel
+goes forward through circular glowing laundry tunnel
+passes yellow paw coins
+passes smiling socks
+water splashes around him
+brushes and side objects appear along the tunnel
+player swipes left/right to steer him
+Steering
+When player swipes:
+character shifts left or right smoothly
+body leans in that direction
+water splash direction changes slightly
+motion should feel responsive but soft
+Collecting items
+When reaching coins or socks:
+character should visually pass through or touch them
+collectibles should feel placed in the tunnel path
+coins should not feel pasted onto screen
+4. What the yellow coins and tunnel should do
+Yellow coins
+The yellow paw coins should:
+float ahead in the tunnel
+be placed in curved or centered paths
+get larger as the character approaches
+move past him naturally if not collected
+feel like actual objects in the path
+Socks
+The socks should:
+be clear rescue targets
+appear ahead in the water path
+feel reachable
+not look flat or pasted
+Tunnel
+The laundry tunnel should:
+look circular and magical
+glow blue / cyan / purple
+feel deep
+feel like the character is traveling inside a washing machine
+have enough motion to show progress
+5. Best short instruction for Claudia
+You can send this:
+Copy-paste instruction for Claudia
+Claudia, follow these exact motion instructions.
+A. Girl / washer opening sequence
+Use the girl + washer image as the direction.
+The girl must be a real animated cartoon character, not a static image.
+She should blink, move her arms, and toss laundry toward the washing machine.
+The pink fluffy character should get caught in the tossed laundry and travel in a clear curved path toward the washer opening.
+The audience must clearly see the pink character enter the washer door.
+Do not cut abruptly. Show him moving from the girl scene into the glowing circular washer opening, then transition smoothly inside the machine.
+B. Washer tunnel swimming
+Once inside the washer, the pink character must feel like he is really swimming/traveling through the tunnel.
+Keep him near the lower-middle of the screen, but make him feel alive and moving.
+Add natural bobbing, buoyancy, left/right leaning, and water interaction.
+Water must splash around him naturally and support him without a white film/cloud behind him.
+Make coins, socks, tunnel rings, and obstacles approach and pass him to create a strong sense of forward travel.
+The yellow paw coins should feel like real objects inside the tunnel path.
+The smiling socks should feel like real rescue collectibles.
+Steering left and right must visibly affect his body motion and swimming direction.
+The tunnel must feel deep, magical, circular, and like the inside of a washing machine.
+C. Do not do this
+Do not leave the girl static.
+Do not make the pink character suddenly appear inside the tunnel.
+Do not make him feel stuck in one place while the background scrolls.
+Do not flatten the tunnel or collectibles.
+Goal
+The girl really moves.
+The pink character clearly enters the washer.
+The tunnel gameplay clearly shows him swimming/traveling through blue water with yellow coins and socks.
+6. Even simpler version
+If you want a very short version:
+The pink character should be tossed with the laundry by the animated girl, fly in a visible curved path into the glowing washer door, and then smoothly transition into the washer tunnel. Inside the tunnel, he should float/swim through blue water with natural bobbing, steering, splashes, and forward travel, while yellow paw coins and smiling socks appear ahead and pass by him like real collectibles inside a deep magical laundry tunnels
+
+_[2 images attached]_
+
