@@ -664,3 +664,202 @@ I'll save your new reconstruction-map pack unchanged into the repository, as the
 
 _(You interrupted Claude here.)_
 
+---
+
+### Claude · 2026-11-08 23:20 UTC
+
+No response requested.
+
+---
+
+### You · 2026-11-08 23:22 UTC
+
+[attached file: BubbleWash_6_Scenes_FRESH.zip] BUBBLE WASH KINGDOM — BUILD ALL SIX SCENES IN MY EXISTING 3D GAME
+
+THIS IS A DIRECT IMPLEMENTATION REQUEST, NOT A REQUEST FOR ANOTHER DESIGN PLAN.
+
+Claude, I have finally chosen the new six-scene visual direction for Bubble Wash Kingdom. I am attaching the original storyboard and six individually extracted reference images.
+
+I WANT YOU TO BUILD ALL SIX SCENES AS ACTUAL ANIMATED 3D GAME CONTENT, MATCHING THE SUPPLIED ARTWORK AS CLOSELY AS TECHNICALLY POSSIBLE.
+
+I am tired of spending endless sessions correcting individual background objects. I want to move forward and finish this part of Level 1.
+
+1. DO NOT START OVER
+
+My existing game is in "josiahscalia5-dev/bubblegame".
+
+Inspect the currently active branch, the latest Pass 18 work, the existing assets, and the actual playable game before changing anything.
+
+You have already built much of the 3D washing-machine environment and swimming gameplay represented by Screens 5 and 6.
+
+REUSE EVERYTHING THAT IS WORKING.
+
+Preserve the existing playable version on GitHub before making changes. Work in a reversible implementation branch.
+
+The six new references are now the visual direction for this sequence. Do not keep trying to reproduce my older "Avoid Enemies!" artwork instead.
+
+2. BUILD THE SIX SCENES
+
+SCREEN 1 — THE HIDDEN PINK CHARACTER
+
+Recreate the supplied artwork showing the cartoon girl, purple laundry basket, blue towel, pink fluffy character, and beautiful pink-and-gold washing machine.
+
+IMPORTANT: Although the illustration makes it look as if the girl notices the pink character, she must NEVER actually see him.
+
+The pink character is secretly hiding underneath the blue towel among the clothes.
+
+Animate the girl naturally as she prepares to do laundry, completely unaware that he is there.
+
+Use the existing girl and mascot 3D assets wherever possible. Preserve recognizable character appearances and make any necessary improvements to their animation or materials.
+
+SCREEN 2 — SHE LOADS THE LAUNDRY
+
+Recreate the scene where the girl picks up a blue towel or bundle of clothing from the basket.
+
+The pink character is accidentally caught underneath or inside that bundle.
+
+The girl looks toward the washing machine, not toward him.
+
+Animate her picking up the clothing, turning, and placing or tossing it into the open machine.
+
+This must flow naturally from Screen 1, without a sudden change of characters or environment.
+
+SCREEN 3 — HE ACCIDENTALLY GOES INSIDE
+
+Recreate the third reference where the fluffy pink character tumbles into the washing-machine drum with the clothing.
+
+He realizes what is happening and reacts with surprise.
+
+He must not deliberately jump inside, and the girl must not knowingly throw him in.
+
+Animate the clothing, his movement, and the transition into the circular drum.
+
+Keep the same pink-and-gold washing machine, reflective lavender metal, circular interior, and overall art style.
+
+SCREEN 4 — THE WASHING MACHINE STARTS
+
+Recreate the fourth reference.
+
+The girl closes the washing-machine door without noticing the character.
+
+Show him through the glass circular window as he realizes he is inside.
+
+The machine begins its magical washing cycle. The water starts moving and the drum lights illuminate.
+
+Make the transition fun and cinematic, not frightening.
+
+The washing machine shown here must be the same machine used in Screens 1–3.
+
+SCREEN 5 — INTO THE MAGICAL LAUNDRY TUNNEL
+
+This is where I want you to reuse the 3D environment and water gameplay you have already built.
+
+Make the transition physically and visually believable: the character travels from the washing-machine drum into the beautiful internal water tunnel.
+
+Use the fifth reference for the visual target.
+
+The interior should have curved silver-lavender metallic drum walls, pink-and-gold machinery, blue water, gears, pipes, glowing lights, and transparent bubbles.
+
+The character must travel naturally into the tunnel and remain in the water.
+
+Do not make him teleport, suddenly appear in another environment, or pop out of the tunnel.
+
+SCREEN 6 — THE ACTUAL PLAYABLE GAME
+
+Use my existing playable swimming section.
+
+Match the supplied sixth reference's premium 3D appearance as closely as possible while retaining the real gameplay.
+
+Preserve the pink fluffy character swimming on the moving blue water, collectible gold coins, enemies, brushes, bubbles, obstacles, sock-rescue objective, and existing power-ups.
+
+The character must visibly swim forward and respond naturally to touch controls, including moving left and right.
+
+Preserve the approved blue-water relationship around the character. Do not put a white foam cloud behind him or replace his existing swimming behavior with a static animation.
+
+The environment should look like a seamless continuation of Screen 5.
+
+3. MATCH THE ARTWORK — NOT JUST THE COLORS
+
+I don't want you to create another generic interpretation of these scenes.
+
+Study the six reference images carefully and match their recognizable characters, silhouettes, washing-machine shapes, pink-and-gold structures, blue water, materials, lighting, environment, and composition.
+
+Use actual 3D geometry, working materials, character animation, and a real game camera.
+
+Keep everything optimized for a mobile game.
+
+These pictures are reference keyframes, so adapt their composition to the existing portrait gameplay camera without unnecessarily changing its behavior.
+
+Do not simply display the reference images as static screens.
+
+4. USE MY EXISTING 3D ASSETS AND TRIPO
+
+Check all the current GLB models, including the girl, pink character, basket, towels, socks, and washer.
+
+Verify whether each model is actually rigged and animated in the playable game.
+
+You may use my connected Tripo account and existing credits to generate missing 3D assets where genuinely necessary.
+
+I am willing to spend credits to get these six scenes working properly. Prioritize useful models over repeated experimental generations, and keep a record of paid jobs and their costs.
+
+Do not purchase additional credit packages automatically.
+
+First verify that my Tripo authentication and download access work. If the API key or network access is still blocked, report the exact issue and continue using the existing project assets and available modeling tools instead of stopping the entire project.
+
+Never expose my API key.
+
+5. BUILD THE FULL CONTINUOUS SEQUENCE
+
+I want one connected Level 1 experience:
+
+Hidden in basket → Girl loads laundry → Accidental tumble → Door closes → Water begins → Character enters tunnel → Playable swimming adventure.
+
+The characters, washing machine, drum interior, textures, colors, lighting, and environmental design must remain consistent throughout.
+
+Reuse the existing game systems rather than building disconnected demonstrations.
+
+Do not remove functionality that already works.
+
+6. STOP REPEATING THE OLD CORRECTION CYCLE
+
+Please don't spend another entire session adjusting one gear, changing a single shade of blue, or repeatedly auditing tools that already work.
+
+Make meaningful progress across the complete six-scene sequence.
+
+Use the available design, animation, Three.js, visual-testing, and game-development agents if they help. Delegate independent tasks without allowing agents to overwrite one another's work.
+
+Do not return only a proposal. IMPLEMENT THE SCENES.
+
+7. PROVE IT WORKS
+
+Before reporting completion, I want:
+
+1. Six real screenshots from the running 3D game, one corresponding to each uploaded reference.
+2. A full side-by-side visual comparison showing the reference artwork and your actual game renders.
+3. One continuous gameplay recording from the girl and laundry basket through the swimming tunnel.
+4. Verification that the character, water, touch controls, enemies, coins, and gameplay work correctly.
+5. All changes saved safely to GitHub, including the working branch and commit information.
+6. A clear explanation of any differences you could not reproduce.
+
+Do not substitute generated images or staged mockups for proof of real gameplay.
+
+FINAL REQUIREMENT
+
+I want the six scenes I uploaded, in the same premium 3D cartoon style, implemented in my EXISTING Bubble Wash Kingdom game.
+
+Screens 5 and 6 already have a substantial foundation. Reuse that work and prioritize completing Screens 1–4 and joining everything together.
+
+I do not need another endless series of tiny revisions. I need a real, connected, playable result.
+
+Do not call the implementation approved until I review the actual six-scene gameplay.
+
+PLEASE BUILD IT. DO NOT RESTART MY GAME.
+
+_[2 images attached]_
+
+---
+
+### Claude · 2026-11-08 23:22 UTC
+
+New direction understood: build all six storyboard scenes as one connected, animated 3D sequence, reusing the existing opening, tunnel and gameplay, with Screens 1-4 the priority. I'll keep it reversible. First I'll save the current pass 18 state to GitHub as the preserved version, and check the regression proof that was running.
+
