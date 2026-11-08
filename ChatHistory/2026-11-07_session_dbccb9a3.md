@@ -1318,3 +1318,264 @@ While they run, comparing the finished `s3_func` gameplay test, the candidate ag
 
 [attached file: Bubble_Wash_Six_Tripo_3D_Assets_Handoff.zip] [attached file: Bubble_Wash_Tripo_GLB_Review.md] [attached file: Bubble_Wash_Tripo_Claude_Import_Prompt.txt]
 
+---
+
+### You (sent while Claude was working) · 2026-11-08 02:02 UTC
+
+CLAUDE CODE — MANDATORY COMPLETE GITHUB BACKUP AND ACCOUNT TRANSFER VERIFICATION
+
+PROJECT: BUBBLE WASH KINGDOM
+
+PRIORITY: CRITICAL — PRESERVE EVERYTHING BEFORE SWITCHING CLAUDE ACCOUNTS
+
+Claudia, I need you to perform a COMPLETE backup, preservation audit, and VERIFIED GitHub handoff of my existing Bubble Wash Kingdom mobile game and AI development environment.
+
+I switch between Claude accounts because of usage limits. My goal is to open my project on another Claude account and continue the EXACT SAME game with the SAME source code, approved designs, custom AI agents, design specialists, plugins, MCP configurations, tools, and development progress.
+
+DO NOT simply tell me everything is saved. I want actual evidence that everything transferable has been preserved and uploaded to GitHub.
+
+1. VERIFY MY EXISTING GITHUB REPOSITORY
+
+My repository is:
+
+https://github.com/josiahscalia5-dev/bubblegame
+
+Identify and verify:
+
+- Exact current development branch
+- Current local HEAD commit SHA
+- Actual remote GitHub branch commit SHA
+- Whether all appropriate local changes are committed
+- Whether the latest commits were successfully pushed
+- Any untracked, ignored, or uncommitted project files
+- Missing Git LFS assets or external dependencies
+- Whether a fresh clone can reproduce the current project
+
+Preserve the existing development branch and history.
+
+Do not reset, delete, force-push, rebuild, or switch to an unrelated branch.
+
+2. SAVE MY COMPLETE EXISTING MOBILE GAME
+
+Ensure all appropriate reproducible materials are preserved:
+
+- Three.js/WebGL game source
+- Mobile UI and HUD
+- Home and opening screens
+- Animated cartoon girl
+- Laundry basket and laundry-toss sequence
+- Pink fluffy mascot
+- Washer-entry animation
+- Washing-machine model and geometry
+- Blue laundry tunnel
+- Swimming and steering systems
+- Dimensional water effects and shaders
+- Yellow paw coins
+- Smiling sock collectibles
+- Towels, brushes, bubbles, particles, and gems
+- Camera systems and transitions
+- Gameplay progression, collisions, and controls
+- Original approved Screen 3 and Classic Screen 4 references
+- Proof screenshots, comparison files, and essential gameplay recordings
+- Build scripts, tests, manifests, lockfiles, and configuration
+
+Also preserve the six Tripo GLB models I supplied: the cartoon girl, pink fluffy character, purple basket, sock character, soft towels, and washing machine.
+
+Verify that the actual 3D files are saved, not merely mentioned in documentation. Preserve their source and license information where available.
+
+If large files require Git LFS or an external artifact store, verify that they are actually uploaded and accessible.
+
+Never silently exclude important game assets.
+
+3. SAVE ALL MY CUSTOM AI AGENTS AND DESIGN SPECIALISTS
+
+Audit and preserve my existing project agents:
+
+- "game-art-director"
+- "gameplay-visual-testing"
+- "lighting-visual-matching"
+- "water-vfx-engineer"
+- "screen4-water-motion-engineer"
+
+For each agent, verify that its complete original instruction file is saved to the repository.
+
+Include its responsibilities, capabilities, required tools, permissions, and dependencies.
+
+Also inspect all other actual agents or subagents currently installed or configured.
+
+Preserve project-scoped configurations under their supported locations, including ".claude/agents/".
+
+Do not create fictional agent definitions or replace original agents with generic ones.
+
+4. SAVE PLUGINS, MCP SERVERS, SKILLS, AND COMMANDS
+
+Perform a complete inventory of the tools used in my previous Claude development environment.
+
+Pay special attention to:
+
+parallax-threejs plugin 0.4.12
+
+Audit its documented components:
+
+- chrome-devtools-mcp
+- threejs-devtools-mcp
+- playwright-mcp
+- Spector graphics server, if supported
+- scenario-author
+- shader-reviewer
+- visual-debugger
+- Associated checkpoint, diff, sweep, and ship-check commands
+
+Also verify and preserve:
+
+- "bubble-wash-screen-matcher"
+- All project-specific Claude skills
+- Supported custom slash commands
+- Project MCP configurations
+- ".mcp.json", if applicable
+- Project hooks
+- Start-of-session instructions
+- Five-minute GitHub autosave configuration
+- All relevant project settings
+
+IMPORTANT: Account-installed plugins and account-specific MCP permissions may not transfer through GitHub automatically.
+
+For anything that cannot be exported, document the exact plugin name, version, original source, installation steps, required permissions, and how my other Claude account can restore it.
+
+Do not claim an account-specific plugin is transferred merely because its name appears in a file.
+
+5. PRESERVE MY DEVELOPMENT TOOLS
+
+Inventory the exact installed versions and restoration procedures for all actual development tools, including:
+
+- Blender
+- Tripo CLI and API integration
+- Playwright and Chromium
+- OpenCV and scikit-image
+- PyTorch, LPIPS, and Optuna
+- glTF Transform and glTF Validator
+- Vite
+- Spector.js
+- Android SDK, where applicable
+
+Preserve shareable installation scripts and configuration.
+
+Inspect and preserve "Tools/cloud_env_setup.sh" where appropriate.
+
+Record how to reinstall tools in a fresh Claude Code cloud environment.
+
+Do not upload installed program binaries, temporary caches, or operating-system files unnecessarily.
+
+Never commit actual Tripo API keys, passwords, OAuth credentials, session cookies, tokens, or other secrets.
+
+Use placeholder configuration files and document how to reconnect securely.
+
+6. VERIFY MY APPROVED VISUAL DESIGN REFERENCES
+
+My original approved Bubble Wash Kingdom artwork must remain the visual authority.
+
+Clearly distinguish:
+
+1. Original approved Screen 3.
+2. ORIGINAL CLASSIC approved Screen 4.
+3. Girl and Laundry Toss reference.
+4. Full 12-screen Level 1 design board.
+5. Later explanation and animation storyboards.
+6. Latest actual playable gameplay captures.
+
+Do not accidentally replace the original approved images with newer generated alternatives.
+
+Document the exact visual requirements for the cartoon girl, pink mascot, washer, tunnel, saturated blue water, coins, socks, lighting, and overall premium mobile-game appearance.
+
+7. CREATE A COMPLETE NEW-ACCOUNT RESTORATION MANUAL
+
+Create or update:
+
+"HANDOFF_FOR_NEW_CLAUDE_ACCOUNT.md"
+
+Include:
+
+- Verified repository URL
+- Exact current development branch
+- Verified latest remote commit SHA
+- Current game-development progress
+- Unfinished gameplay and visual corrections
+- All original AI agents
+- All skills and commands
+- All plugins and MCP servers
+- Every relevant configuration file
+- Tool versions and installation commands
+- Required account-specific permissions
+- Required secure API reconnections
+- Tripo and Blender restoration steps
+- How to resume the five-minute autosave
+- How to run and test the existing playable game
+- How to retrieve large assets and Git LFS files
+- How to restore my complete AI design and game-development workflow
+
+Include one copy-paste first-session prompt that I can send to my other Claude account to restore the environment and resume the exact existing game.
+
+8. CHECK FOR ANYTHING MISSING
+
+Compare the original account's documented environment against the current repository.
+
+Produce a detailed table with:
+
+Item | Previously Used | Saved in GitHub | Verified Remotely | Transfers Automatically | Manual Restoration Required
+
+Do this for every agent, skill, plugin, MCP server, tool, approved image, important model, and project configuration.
+
+Do not classify a tool as successfully transferred unless it can be recovered and used on the other account.
+
+For anything missing, explain exactly what is missing and whether it can still be recovered.
+
+9. COMMIT, PUSH, AND VERIFY
+
+Once the backup audit is complete:
+
+1. Inspect all appropriate uncommitted files.
+2. Scan staged changes for credentials and secrets.
+3. Create a reversible checkpoint.
+4. Commit appropriate new project materials and handoff documentation.
+5. Push to the EXISTING intended development branch.
+6. Fetch the remote branch and compare the remote commit SHA with local HEAD.
+7. Verify the important project assets, agent definitions, skills, configurations, and handoff document exist in the remote repository.
+8. Confirm large assets and Git LFS objects are accessible.
+9. Attempt a clean-clone restoration test where practical.
+
+If any push or verification fails, report the exact failure.
+
+Do not claim the backup is complete until the remote GitHub repository has been verified.
+
+10. REQUIRED FINAL REPORT
+
+Give me:
+
+A. Verified GitHub repository URL, branch, and latest commit SHA.
+
+B. Confirmation of the saved game, original approved images, and all required 3D assets.
+
+C. Full inventory of saved AI agents and specialists.
+
+D. Full inventory of saved plugins, MCP servers, skills, commands, and tools.
+
+E. Exact list of anything that cannot transfer automatically between Claude accounts.
+
+F. Exact instructions for reconnecting account-specific plugins and secure API services.
+
+G. Results of an actual clean-clone or restoration test.
+
+H. One complete first-message prompt for my other Claude account.
+
+I. Any unresolved missing files, configurations, permissions, or failed checks.
+
+FINAL MANDATE
+
+I am not starting over. I am continuing the SAME Bubble Wash Kingdom mobile game across Claude accounts.
+
+I need the complete transferable project, approved designs, development instructions, AI agents, specialist tools, plugin configurations, and current progress preserved and verified.
+
+Do not delete anything, redesign anything, reset anything, expose credentials, or claim the transfer is complete without remote verification.
+
+Begin the complete preservation audit now, then commit, push, verify, and provide my account-transfer report.
+

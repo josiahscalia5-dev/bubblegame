@@ -1,0 +1,25 @@
+{
+ "file": "mascot.glb",
+ "meshes": 1,
+ "triangles": 137111,
+ "vertices": 58997,
+ "loose_parts": 74,
+ "materials": [
+  "Material_0"
+ ],
+ "textures": [
+  [
+   "Image_0",
+   1024,
+   1024
+  ]
+ ],
+ "armatures": 0,
+ "actions": 0,
+ "skinned": false,
+ "size_xyz_blender": [
+  1.8953,
+  1.5876,
+  1.7879
+ ]
+}
