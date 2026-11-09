@@ -281,14 +281,22 @@ export function installSix2(ctx) {
   // ---- the hero's path and the cloth
   const inDoor = V(P.x - 0.06, P.y + 0.04, P.z - 0.02), heroSit = V(P.x + 0.03, OPENING3D.waterY + 0.1 * hk + 0.02, P.z - 0.36), heroLand = V(P.x, OPENING3D.waterY + 0.1 * hk, P.z - 2.8);
   const lieBlue = V(P.x - 0.02, OPENING3D.waterY + 0.02, P.z - 0.4), lieYel = V(P.x - 0.17, OPENING3D.waterY + 0.05, P.z - 0.3);
-  let landed = false, scene0 = 0;
+  let landed = false, scene0 = 0, irisDone = false;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
   const sparkWin = [3.95, 4.5];
   function pose(it, st0) {
     const s = st0 < 0 ? -1 : st0, t = Math.max(0, s);
     // ---- captions
     let sc = 1; for (const [t0, n] of S.scenes) if (s >= t0) sc = n; if (sc !== scene0) { scene0 = sc; if (ctx.onScene) ctx.onScene(sc); }
-    // ---- basket on the rug (badge to the camera)
+    // ---- the camera first (everything that faces the camera uses this frame's camera)
+    const C = S.cam; camPos.fromArray(keys(s, C.map(([tt, c]) => [tt, c]))); camTgt.fromArray(keys(s, C.map(([tt, , g]) => [tt, g]))); camera.fov = keys(s, C.map(([tt, , , f]) => [tt, f]));
+    if (s < 0) camPos.add(V(0.015 * Math.sin(it * 0.3), 0.01 * Math.sin(it * 0.4), 0));
+    if (s > 6.37 && s < 6.6) camPos.y += 0.005 * Math.sin((s - 6.37) * 60) * (1 - sm(6.37, 6.6, s));   // the latch's thunk
+    camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+    // the hero's eyes: the references' dark brown (his face is built on load in opening3d.js with blue irises)
+    if (!irisDone && heroBody.children.length > 1) { irisDone = true; heroBody.traverse((o) => { if (o.isMesh && o.material && o.material.isMeshBasicMaterial && o.material.color.getHex() === 0x2f86e8) { o.material = o.material.clone(); o.material.color.setHex(0x5a3218); } }); }
+    // ---- basket on the rug (badge to the camera; tripo2 hides the basket's own children when it loads, so the badge is re-shown here)
+    badge.visible = true;
     const BS = S.basket; basket.position.set(BS.pos[0], 0.135 * BS.scale, BS.pos[1]); basket.rotation.set(0, BS.yaw, 0); basket.scale.set(BS.scale * 1.18, BS.scale * 0.86, BS.scale * 1.1);
     badge.position.set(0, 0.03, 0.262); badge.rotation.set(-0.16, 0, 0);
     R2.rug.position.set(BS.pos[0] + 0.05, 0.004, BS.pos[1] - 0.02);
@@ -378,7 +386,7 @@ export function installSix2(ctx) {
     heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
     // the "!" marks: while he peeks (waiting) and when the towel is lifted off him
     const mk = s < 0 ? 0.6 + 0.4 * Math.max(0, Math.sin(it * 1.4)) : sm(0.55, 0.7, s) * (1 - sm(1.4, 1.6, s));
-    marks.visible = mk > 0.02; marks.position.copy(hp).add(V(0.02, 0.2 * scl / 0.62 + 0.04, 0.02)); marks.quaternion.copy(camera.quaternion); marks.scale.setScalar(0.9 + 0.15 * Math.sin(it * 8)); marks.userData.m.opacity = mk;
+    marks.visible = mk > 0.02; marks.position.copy(hp).add(V(0.07, 0.15 * scl / 0.62, 0.04)); marks.quaternion.copy(camera.quaternion); marks.scale.setScalar(0.9 + 0.15 * Math.sin(it * 8)); marks.userData.m.opacity = mk;
     if (!landed && s >= 4.75) { landed = true; for (let i = 0; i < 60; i++) { const a = rnd() * Math.PI * 2, v = 0.3 + rnd() * 0.7; splash.emit(V(hp.x + Math.cos(a) * 0.12, OPENING3D.waterY + 0.02, hp.z + Math.sin(a) * 0.1), V(Math.cos(a) * v * 0.5, 0.6 + rnd() * 0.9, Math.sin(a) * v * 0.3), 0.5 + rnd() * 0.4); } vortex.WU.uHit.value.set(hp.x - P.x, 1, P.z - hp.z); }
     if (s < 0) landed = false;
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
@@ -421,11 +429,6 @@ export function installSix2(ctx) {
     vortex.WU.uFrom.value = s < 3.6 ? 9.5 : 9.5 * (1 - sm(3.6, 4.6, s));
     const rise = S.water.rise * sm(6.6, 7.4, s) * (1 - sm(7.6, 8.4, s));
     vortex.water.position.y = rise; vortex.water.scale.x = 1 + rise * 2.2;
-    // ---- the camera
-    const C = S.cam; camPos.fromArray(keys(s, C.map(([tt, c]) => [tt, c]))); camTgt.fromArray(keys(s, C.map(([tt, , g]) => [tt, g]))); camera.fov = keys(s, C.map(([tt, , , f]) => [tt, f]));
-    if (s < 0) camPos.add(V(0.015 * Math.sin(it * 0.3), 0.01 * Math.sin(it * 0.4), 0));
-    if (s > 6.37 && s < 6.6) camPos.y += 0.005 * Math.sin((s - 6.37) * 60) * (1 - sm(6.37, 6.6, s));   // the latch's thunk
-    camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix();
     const inDrum = camera.position.z < P.z - 0.05;
     R2.g.visible = washer.g.visible = basket.visible = !inDrum;
     if (g2.ready) { g2.root.visible = !inDrum; g2.stool.visible = false; }
