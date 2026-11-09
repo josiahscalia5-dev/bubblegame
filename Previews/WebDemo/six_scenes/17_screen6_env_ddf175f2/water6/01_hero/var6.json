@@ -25,24 +25,33 @@
  },
  "vars": [
   {
-   "tag": "p1",
+   "tag": "f0",
+   "ret": 1
+  },
+  {
+   "tag": "f1",
    "ret": null
   },
   {
-   "tag": "p2",
+   "tag": "f2",
    "ret": null
   },
   {
-   "tag": "p3",
+   "tag": "f3",
    "ret": null
   },
   {
-   "tag": "p4",
+   "tag": "f4",
    "ret": null
   },
   {
-   "tag": "p5",
-   "ret": null
+   "tag": "f5",
+   "ret": [
+    [
+     "BubbleWash_PinkFuzzyMascot_Small",
+     "Mesh"
+    ]
+   ]
   }
  ],
  "errors": []
