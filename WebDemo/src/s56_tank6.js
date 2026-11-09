@@ -25,10 +25,12 @@ export const TANK6 = {
   // the glowing liquid: [edge violet, mid magenta, hot centre] (linear, HDR), the centre's width, the swirl, the end fade
   // (first in-game test: the column read pale white-lilac; the approved is deep violet with ONE small white-hot glow in the middle: the body kept
   // under the Neutral tone mapping's ~0.76 knee, the hot spot a small blob at hotY, sigma hotH of the height, facing power hotW)
-  core: { edge: [0.07, 0.0, 0.32], mid: [0.42, 0.02, 0.76], hot: [3.6, 2.1, 3.8], hotW: 2.5, hotY: 0.52, hotH: 0.24, swirl: 0.18, speed: 1.2, ends: 0.2, alpha: 0.9 },
+  // (fin6 pass, measured in linear HDR: the tank region averaged (1.63, 0.72, 1.94), all above white, so the tone mapping flattened it to one pale
+  // lilac: the body darker violet, the hot spot small and very bright, the halo smaller and dimmer)
+  core: { edge: [0.06, 0.0, 0.26], mid: [0.32, 0.0, 0.62], hot: [5.0, 3.2, 5.2], hotW: 6.0, hotY: 0.52, hotH: 0.13, swirl: 0.18, speed: 1.2, ends: 0.2, alpha: 0.9 },
   // the glow spilling out of the glass (a camera-facing additive disc at the hot spot; HDR so the bloom spreads it): colour, radius in glass radii
-  halo: { color: [1.1, 0.25, 1.3], r: 1.8, y: 0.52 },   // (in-game test: 1.1 / 1.8 kept the glass crisper than 1.6 / 2.1 or 2.2 / 2.6)
-  glass: { tint: [0.30, 0.10, 0.70], rim: [0.9, 0.6, 1.3], a0: 0.06, aRim: 0.45, rimPow: 3.0, streak: 0.5 },
+  halo: { color: [0.5, 0.04, 0.8], r: 1.35, y: 0.52 },   // (in-game test: 1.1 / 1.8 kept the glass crisper than 1.6 / 2.1 or 2.2 / 2.6)
+  glass: { tint: [0.30, 0.10, 0.70], rim: [0.7, 0.35, 1.2], a0: 0.04, aRim: 0.35, rimPow: 3.0, streak: 0.5 },
   bubble: [1.6, 1.1, 2.0],
 };
 if (TANK6_ON && typeof window !== 'undefined') window.__bwTank6 = TANK6;
