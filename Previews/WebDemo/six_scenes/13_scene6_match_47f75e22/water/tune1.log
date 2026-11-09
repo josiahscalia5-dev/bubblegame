@@ -3,3 +3,8 @@
 36.3s frame tap full  tm 7 exp 1.05
 44.9s frame tap lean16  
 54.2s frame tap lean30  
+62.5s frame tap crestLo  
+69.5s frame tap crestHi  
+78.3s frame tap chop14  
+86.5s frame tap height0  
+86.6s checkpoint 206 {"phase":"running","z":208.864,"x":0,"coins":1281,"socks":0,"hearts":5}
