@@ -18,6 +18,7 @@
 //    for) inside the s56 tunnel, so arch56's inverse turns itself off (uA56Ungrade = 1 - uHero) and the water uses its hero palette.
 import { S56 } from './s56_tunnel.js';
 import { BRUSH6 } from './s56_brush6.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const ENV6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('env6');
 
@@ -32,6 +33,9 @@ if (ENV6_ON && typeof window !== 'undefined') window.__bwEnv6 = ENV6;
 //    (the art director: "see-through spikes, no distinct white tier").
 export const FIN6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('fin6');
 export const FIN6 = {
+  // the final grade (before tone mapping; measured: the game's walls L 0.62 / S 0.32 vs the approved 0.51 / 0.36, the mid tunnel S 0.42 vs
+  // 0.68, the hero L 0.65 vs 0.48): vibrance lifts the washed pastels most, a little saturation, contrast about mid-grey, exposure down
+  grade: { on: 1, vib: 0.6, sat: 1.15, con: 1.0, exp: 0.72, tint: [0.97, 0.94, 1.06] },   // (measured variants: exp 0.86 / 0.70 / 0.60; 0.70-0.72 closest)
   brush: { dark1: '#a596d2', med1: '#e6def9', lite1: '#ffffff', fur: { spike: 0.07, stray: 0.03, strands: 260, scallop: 0.16, tufts: 36 } },
 };
 if (FIN6_ON) {
@@ -51,4 +55,27 @@ export function env6Post(bloom) {
   if (!bloom) return;
   const B = ENV6.bloom;
   bloom.strength = B.strength; bloom.radius = B.radius; bloom.threshold = B.threshold;
+}
+
+// the fin6 grade pass: inserted once before the output pass (tone mapping), only with fin6 (game.js calls it after the s56 tunnel is built)
+export function installFin6Grade(composer) {
+  if (!FIN6_ON || !composer || installFin6Grade.done) return null;
+  const G = FIN6.grade;
+  const pass = new ShaderPass({
+    uniforms: { tDiffuse: { value: null }, uVib: { value: G.vib }, uSat: { value: G.sat }, uCon: { value: G.con }, uExp: { value: G.exp }, uTint: { value: G.tint.slice() }, uOn: { value: G.on } },
+    vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform sampler2D tDiffuse; uniform float uVib, uSat, uCon, uExp, uOn; uniform vec3 uTint; varying vec2 vUv;
+      void main() { vec4 t = texture2D(tDiffuse, vUv); vec3 c = max(t.rgb, 0.0); vec3 o = c;
+        float l = dot(c, vec3(0.2126, 0.7152, 0.0722)), mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b)), s = (mx - mn) / max(mx, 1e-4);
+        c = max(mix(vec3(l), c, uSat * (1.0 + uVib * (1.0 - s) * smoothstep(0.02, 0.15, l))), 0.0);
+        c = pow(c / 0.18 + 1e-6, vec3(uCon)) * 0.18;
+        c *= uExp * uTint;
+        gl_FragColor = vec4(mix(o, c, uOn), t.a); }`,
+  });
+  pass.name = 'fin6Grade';
+  composer.insertPass(pass, composer.passes.length - 1);
+  installFin6Grade.done = true;
+  const sync = () => { const U = pass.uniforms, Q = FIN6.grade; U.uVib.value = Q.vib; U.uSat.value = Q.sat; U.uCon.value = Q.con; U.uExp.value = Q.exp; U.uTint.value = Q.tint.slice(); U.uOn.value = Q.on; };
+  FIN6.syncGrade = sync;
+  return pass;
 }
