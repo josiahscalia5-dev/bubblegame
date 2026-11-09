@@ -33,15 +33,31 @@ export const ARCH56 = {
   // the rings: ring 0 is 6.4 m ahead of the camera at Tap to Start (the near arch, radius ~412 px) and ring 55 the same at u 206 (Scene 6)
   ring: { u0: 5.0, step: 3.768, band: 0.16, z: 1.1, strips: [-0.72, 0.72], topStrip: true },
   lampEvery: 5,         // a hanging lamp (and its thick pipe down the right wall) on every fifth ring: rings 0 and 55 (Scenes 5 and 6)
-  mod: { off: -1.6, aEvery: 5 },   // the modules of ring k stand at its u + off on both banks; every fifth the tall housing (A), else a glass chamber (B)
+  mod: { off: -1.6, aEvery: 5 },   // the modules of ring k stand at its u + off on both banks; every fifth the tall housing (A), else a model bay (M; B with ,notm)
   gearK: [0, 7, 14, 21, 28, 35, 42, 49, 56, 63],   // rings with the cobalt gear on the right wall (dz behind the ring)
-  gear: { d: 1.9, x: 1.95, h: 1.1, dz: 1.0, yaw: 0.6, spin: 0.45 },
+  // (session 47f75e22, the user's Scene 6 mandate) the user's Tripo cobalt gear blue_jt (mobile LOD1), d 1.4 m, its axle turned to the oncoming
+  // camera and 20 degrees out to the wall: at u 206 (ring 56) it stands ~9.5 m ahead, centre ~(0.78, 0.39), d ~0.20 W, behind the right chamber
+  // as in approved Scene 6; ring 0 has its own place for Scene 5 (gear0: centre ~(0.815, 0.44), d ~0.23 W)
+  gear: { d: 1.4, x: 1.95, h: 1.8, dz: -0.6, out: 0.35, spin: 0.45 },
+  gear0: { d: 1.35, x: 1.86, h: 1.15, dz: 1.6, out: 0.35 },
   pipe: { r: 0.12, x: 1.38 },
-  // the camera (track frame, from his ride height): s56's [0, 0.58, -3.0] -> [0, 0.45, 6.0] put the vanishing point at ~0.46 H (approved
-  // Scene 5: ~0.485); 0.10 m lower and pitched up 1.85 degrees keeps his place and size and moves the vanishing point to the reference's
-  cam: { off: [0, 0.48, -3.0], look: [0, 0.64, 6.0], fov: 66 },
+  // (session 47f75e22) the user's Tripo models in every bay that is not a tall housing (A): left the Machinery cluster (control box with two
+  // screen eyes, glass chamber, pink paw housing, railings, brass elbow), right a pink star housing with the violet glass chamber 913_914 on its
+  // near outer corner. h = drawn height (m), inner = the clear distance from the track centre (lanes +/-0.7, his half-width 0.45), ang = the
+  // front turned toward the oncoming camera (rad), dz = along the run from the bay's centre. LOD1 near him, LOD2 further on (per chunk).
+  // (the art director's measure, approved Scene 6: the machine tops, with their brass elbows, reach y 0.26-0.30 -> ~2.4 m tall)
+  tm: {
+    mach: { h: 2.4, inner: 1.25, ang: 0.4, dz: -0.1, y: -0.08 },
+    star: { r: 0.62, zs: 1.55, h: 1.05, inner: 1.25, dz: 0.0 },
+    ch: { h: 1.15, x: 2.05, y: 1.08, dz: -0.95, ang: 0.55 },
+    near: 22,   // metres ahead of him drawn with LOD1
+  },
+  // the camera: null = s56's own (S56.cam). (session 47f75e22) the coordinator's call: keep it (his width and the vanishing point already match;
+  // his height in the water is the water lane's S56.hero.sink). Set { off, look, fov } (track frame, from his ride height) to own the framing.
+  cam: null,
   hideDecoBrushes: true,   // the old drum's high decorative wall brushes (s4Brush with hazard false: they never collide) cover the gear and the crown
 };
+const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B) instead of the user's models
 if (ARCH56_ON && typeof window !== 'undefined') window.__bwArch56 = ARCH56;
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
