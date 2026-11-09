@@ -49,8 +49,8 @@ export const S56 = {
   water: {
     deep: [0.0, 0.035, 0.32], mid: [0.0, 0.2, 0.7], turq: [0.0, 0.52, 0.8], foam: [0.86, 0.93, 1.02],
     chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: colour, light and crest lines)
-    crest: 0.12,    // where the thin crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
-    lace: 0.35,     // lace strength (only in the band just behind a crest)
+    crest: -0.1,    // where the thin crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
+    lace: 0.5,      // lace strength (only in the band just behind a crest)
     collar: 1.0,    // the narrow broken splash line where the water meets his body
     wake: 1.0,      // the two narrow wake lines toward the camera
     spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
@@ -102,11 +102,11 @@ ${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(
   r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cos(ph), ${f(A * CHOP_K * ku)} * s * cos(ph));`).join('\n')}
   return r;
 }
-// each chop wave's crest proximity (exp(30 (sin - 1)): a line ~7 % of its wavelength wide), weighted by its amplitude, faded where the line
+// each chop wave's crest proximity (exp(45 (sin - 1)): a line ~5 % of its wavelength wide), weighted by its amplitude, faded where the line
 // would alias: the thin white crest lines ride the real crests
 float s56Crest(vec2 p, float t) {
   float r = 0.0, ph;
-${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; r = max(r, exp(30.0 * (sin(ph) - 1.0)) * (1.0 - smoothstep(0.15, 0.45, fwidth(ph))) * ${f(Math.sqrt(A / CHOP[0][0]))});`).join('\n')}
+${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; r = max(r, exp(45.0 * (sin(ph) - 1.0)) * (1.0 - smoothstep(0.15, 0.45, fwidth(ph))) * ${f(Math.sqrt(A / CHOP[0][0]))});`).join('\n')}
   return r;
 }`;
 
@@ -412,7 +412,9 @@ export async function buildS56(ctx) {
       void main() {
         vec3 V = normalize(cameraPosition - vW);
         // the short sharp-crested rolling waves: height (normalised) and slopes, on top of the geometry's swells
-        vec3 ch = s56Chop(vXU, uTime) * uW1.x;
+        // (a slow domain warp bends the chop's straight crests into rounded, irregular travelling shapes)
+        vec2 wp = vXU + (vec2(s5f(vXU * vec2(1.6, 0.9) + vec2(0.0, -uTime * 0.5)), s5f(vXU * vec2(1.3, 0.8) + vec2(5.2, -uTime * 0.6))) - 0.47) * 0.6;
+        vec3 ch = s56Chop(wp, uTime) * uW1.x;
         vec3 N = normalize(normalize(vN) - ch.y * vR - ch.z * vT);
         vec2 rq = vec2(vXU.x * 10.0, vXU.y * 5.0 - uTime * 3.4);
         N = normalize(N + (vR * (s5n(rq) - 0.5) + vT * (s5n(rq * 1.7 + 3.1) - 0.5)) * 0.08);   // fine ripples (normal detail only)
@@ -440,7 +442,8 @@ export async function buildS56(ctx) {
         // crest lines: white only where the sharp chop crests stand highest, broken; lace just behind them
         float brk = s5f(vXU * vec2(6.0, 2.5) + vec2(0.0, -uTime * 1.1));
         float lift = ch.x + vH * 1.5;
-        float crest = smoothstep(0.45, 0.8, s56Crest(vXU, uTime)) * smoothstep(uW1.y, uW1.y + 0.15, lift) * smoothstep(0.3, 0.5, brk);
+        float crest = smoothstep(0.45, 0.8, s56Crest(wp, uTime)) * smoothstep(uW1.y, uW1.y + 0.15, lift) * smoothstep(0.3, 0.5, brk)
+          * smoothstep(0.25, 0.6, s5n(vXU * vec2(34.0, 20.0) + vec2(0.0, -uTime * 2.0)));   // frothy, broken edges (never a solid stripe)
         float lace = smoothstep(uW1.y - 0.1, uW1.y + 0.1, lift) * smoothstep(0.64, 0.74, s5f(vXU * vec2(13.0, 6.0) + vec2(uTime * 0.4, -uTime * 1.8))) * uW1.z;
         // where the water meets him: lifted turquoise water and a NARROW broken splash line (per pixel), no foam ring
         vec2 dq = vec2((vXU.x - uHero.x) / 0.66, (vXU.y - uHero.y) / 0.6);
@@ -448,7 +451,7 @@ export async function buildS56(ctx) {
         c = mix(c, uTurq, exp(-pow((rr - 1.05) / 0.3, 2.0)) * 0.45 * pw);
         float ringL = exp(-pow((rr - 0.97) / 0.075, 2.0)) * pw;
         float gapN = s5f(vXU * vec2(9.0, 7.0) + vec2(1.3, -uTime * 2.4)), keep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, gapN);
-        float collar = smoothstep(0.4, 0.75, ringL * (0.45 + 0.9 * s5f(vXU * vec2(16.0, 11.0) + vec2(0.0, -uTime * 3.0)))) * keep * uW1.w;
+        float collar = smoothstep(0.32, 0.68, ringL * (0.45 + 0.9 * s5f(vXU * vec2(16.0, 11.0) + vec2(0.0, -uTime * 3.0)))) * keep * uW1.w;
         // the wake toward the camera: two narrow broken lines, the churned water between them a lighter azure (no white)
         float bu = vXU.y - uHero.y, side = abs(vXU.x - uHero.x), arm = 0.55 + 0.32 * max(-bu, 0.0);
         float behind = bu < 0.0 ? exp(bu / (0.6 + 2.9 * uW3.w)) * pw : 0.0;
