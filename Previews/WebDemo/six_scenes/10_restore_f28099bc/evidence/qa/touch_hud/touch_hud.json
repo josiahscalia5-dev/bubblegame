@@ -1,0 +1,606 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "scene07",
+  "six",
+  "tripo3",
+  "s56"
+ ],
+ "stage": {
+  "x": 0,
+  "y": 0,
+  "width": 412,
+  "height": 915
+ },
+ "tapPoint": [
+  206,
+  412
+ ],
+ "hud": [
+  {
+   "id": "pauseBtn",
+   "hidden": false,
+   "disabled": false,
+   "vis": "visible",
+   "op": "1",
+   "rect": [
+    352,
+    73,
+    57,
+    58
+   ],
+   "topmost": "pauseBtn (inside)"
+  },
+  {
+   "id": "blastBtn",
+   "hidden": false,
+   "disabled": false,
+   "vis": "visible",
+   "op": "1",
+   "rect": [
+    21,
+    825,
+    138,
+    86
+   ],
+   "topmost": "svg (inside)"
+  },
+  {
+   "id": "turboBtn",
+   "hidden": false,
+   "disabled": false,
+   "vis": "visible",
+   "op": "1",
+   "rect": [
+    270,
+    825,
+    138,
+    86
+   ],
+   "topmost": "use (inside)"
+  }
+ ],
+ "results": [
+  {
+   "label": "touch tap at Tap to Start -> run starts",
+   "ok": true,
+   "before": {
+    "phase": "intro",
+    "t": 3.517,
+    "z": 1.592,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1280,
+    "socks": 0,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 3.517,
+    "z": 1.592,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1280,
+    "socks": 0,
+    "s56": true
+   }
+  },
+  {
+   "label": "touch swipe left -> lane -1",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 5.017,
+    "z": 12.334,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1282,
+    "socks": 0,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 5.017,
+    "z": 12.334,
+    "x": 0,
+    "lane": 0,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1282,
+    "socks": 0,
+    "s56": true
+   }
+  },
+  {
+   "label": "touch swipe right -> lane +1",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 5.617,
+    "z": 16.447,
+    "x": 0.693,
+    "lane": 0,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1286,
+    "socks": 0,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 5.617,
+    "z": 16.447,
+    "x": 0.693,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1286,
+    "socks": 0,
+    "s56": true
+   }
+  },
+  {
+   "label": "touch swipe right again -> lane +1",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 6.217,
+    "z": 20.263,
+    "x": 0.007,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1288,
+    "socks": 0,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 6.217,
+    "z": 20.263,
+    "x": 0.007,
+    "lane": 2,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 5,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1288,
+    "socks": 0,
+    "s56": true
+   }
+  },
+  {
+   "label": "touch swipe up -> jump (air)",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 7.017,
+    "z": 25.641,
+    "x": -0.661,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1291,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 7.017,
+    "z": 25.641,
+    "x": -0.661,
+    "lane": 1,
+    "air": true,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1291,
+    "socks": 1,
+    "s56": true
+   }
+  },
+  {
+   "label": "touch tap while running -> spin",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 8.217,
+    "z": 33.615,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1296,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 8.217,
+    "z": 33.615,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 6.28,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1296,
+    "socks": 1,
+    "s56": true
+   }
+  },
+  {
+   "label": "tap Pause button -> paused, game stands still",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 9.017,
+    "z": 39.216,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1296,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 9.017,
+    "z": 39.216,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": true,
+    "coins": 1296,
+    "socks": 1,
+    "s56": true
+   },
+   "note": "tapped; z 39.216 -> 39.216 after advance(0.5)"
+  },
+  {
+   "label": "tap Resume -> running again",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 9.017,
+    "z": 39.216,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": true,
+    "coins": 1296,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 9.017,
+    "z": 39.216,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1296,
+    "socks": 1,
+    "s56": true
+   },
+   "note": "tapped; z 39.216 -> 41.332"
+  },
+  {
+   "label": "tap Bubble Blast button",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 9.317,
+    "z": 41.332,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 3,
+    "turbos": 3,
+    "blastT": 0,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1297,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 9.317,
+    "z": 41.332,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 2,
+    "turbos": 3,
+    "blastT": 3,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1297,
+    "socks": 1,
+    "s56": true
+   },
+   "note": "tapped"
+  },
+  {
+   "label": "tap Turbo Spin button",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 9.817,
+    "z": 44.843,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 2,
+    "turbos": 3,
+    "blastT": 2.5,
+    "turboT": 0,
+    "paused": false,
+    "coins": 1300,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 9.817,
+    "z": 44.843,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0,
+    "hearts": 4,
+    "blasts": 2,
+    "turbos": 2,
+    "blastT": 2.5,
+    "turboT": 2.5,
+    "paused": false,
+    "coins": 1300,
+    "socks": 1,
+    "s56": true
+   },
+   "note": "tapped"
+  },
+  {
+   "label": "keyboard P pauses and P resumes",
+   "ok": true,
+   "before": {
+    "phase": "running",
+    "t": 10.117,
+    "z": 47.232,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0.39,
+    "hearts": 4,
+    "blasts": 2,
+    "turbos": 2,
+    "blastT": 2.2,
+    "turboT": 2.2,
+    "paused": false,
+    "coins": 1301,
+    "socks": 1,
+    "s56": true
+   },
+   "after": {
+    "phase": "running",
+    "t": 10.117,
+    "z": 47.232,
+    "x": 0,
+    "lane": 1,
+    "air": false,
+    "spinLeft": 0.39,
+    "hearts": 4,
+    "blasts": 2,
+    "turbos": 2,
+    "blastT": 2.2,
+    "turboT": 2.2,
+    "paused": false,
+    "coins": 1301,
+    "socks": 1,
+    "s56": true
+   },
+   "note": "paused after first P: true"
+  }
+ ],
+ "pointerEvents": [
+  [
+   "down",
+   "touch",
+   "view"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "view"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "view"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "view"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "view"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "view"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "pauseBtn"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "resumeBtn"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "path"
+  ],
+  [
+   "up",
+   "touch"
+  ],
+  [
+   "down",
+   "touch",
+   "use"
+  ],
+  [
+   "up",
+   "touch"
+  ]
+ ],
+ "logs": []
+}

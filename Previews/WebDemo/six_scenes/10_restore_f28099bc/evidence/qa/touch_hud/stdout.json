@@ -1,0 +1,116 @@
+{
+ "results": [
+  [
+   "PASS",
+   "touch tap at Tap to Start -> run starts",
+   "",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "touch swipe left -> lane -1",
+   "",
+   "lane 1->0"
+  ],
+  [
+   "PASS",
+   "touch swipe right -> lane +1",
+   "",
+   "lane 0->1"
+  ],
+  [
+   "PASS",
+   "touch swipe right again -> lane +1",
+   "",
+   "lane 1->2"
+  ],
+  [
+   "PASS",
+   "touch swipe up -> jump (air)",
+   "",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "touch tap while running -> spin",
+   "",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "tap Pause button -> paused, game stands still",
+   "tapped; z 39.216 -> 39.216 after advance(0.5)",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "tap Resume -> running again",
+   "tapped; z 39.216 -> 41.332",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "tap Bubble Blast button",
+   "tapped",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "tap Turbo Spin button",
+   "tapped",
+   "lane 1->1"
+  ],
+  [
+   "PASS",
+   "keyboard P pauses and P resumes",
+   "paused after first P: true",
+   "lane 1->1"
+  ]
+ ],
+ "hud": [
+  {
+   "id": "pauseBtn",
+   "hidden": false,
+   "disabled": false,
+   "vis": "visible",
+   "op": "1",
+   "rect": [
+    352,
+    73,
+    57,
+    58
+   ],
+   "topmost": "pauseBtn (inside)"
+  },
+  {
+   "id": "blastBtn",
+   "hidden": false,
+   "disabled": false,
+   "vis": "visible",
+   "op": "1",
+   "rect": [
+    21,
+    825,
+    138,
+    86
+   ],
+   "topmost": "svg (inside)"
+  },
+  {
+   "id": "turboBtn",
+   "hidden": false,
+   "disabled": false,
+   "vis": "visible",
+   "op": "1",
+   "rect": [
+    270,
+    825,
+    138,
+    86
+   ],
+   "topmost": "use (inside)"
+  }
+ ],
+ "logs": [],
+ "pointerEvents": 20
+}

@@ -1,3 +1,50 @@
+# Tools and plugins: restore and verify (NEWEST: 9 November 2026 ~13:10 UTC, session f28099bc, statuses tested LIVE this session)
+
+## A. One command, safe to repeat
+`bash Tools/restore_session.sh` -> runs `Tools/cloud_env_setup.sh` only if an essential tool is missing (idempotent, ~10 s when complete), then checks
+git, versions, the build (`Tools/verify_restore.sh --build`: the committed bundle must equal a fresh build), the 40 GLB models (`Tools/check_models.cjs`),
+the plugin sync, the threejs-devtools cache, that the Spector MCP server starts, the single autosave, the lanes and the free Tripo balance.
+This session: `27 passed, 2 notes, 0 failed`; models `40 checked, 0 failed`; autosave processes `1`.
+
+**Install order (`Tools/cloud_env_setup.sh`, fixed this session):** Blender -> Mesa EGL -> visual venv (OpenCV, scikit-image) -> Node tools (glTF Transform,
+glTF Validator, Vite, Tripo CLI, gltfpack) -> Git LFS -> WebDemo npm -> checks + Deno + the Spector MCP build + the threejs-devtools npx cache ->
+LAST the optional metrics venv (PyTorch, LPIPS, Optuna; ~5.6 GB, 10-minute cap). Before the fix, the environment's setup was cut off inside PyTorch at
+session start and nothing after it ran, so Spector and threejs-devtools failed to connect.
+
+## B. Live results in this session (each tool actually executed)
+| Tool | Version | Live test this session | Status |
+|---|---|---|---|
+| Git + GitHub | git, GitHub MCP | fetch, ancestry check, pushes verified with `git ls-remote` | WORKING |
+| Node.js / npm | 22.23.4 / 10.9.9 | `npm ci`, `node build.mjs` (bundle byte-identical to the commit) | WORKING |
+| three.js | 0.170 (r170) | the game builds and renders | WORKING |
+| Playwright + Chromium | 1.63.0 / 153 | all captures (shots6, shots56, flow_routes) | WORKING |
+| chrome-devtools MCP (plugin) | chrome-devtools-mcp 1.6.0 | `list_pages` | WORKING |
+| playwright MCP (plugin) | @playwright/mcp 0.0.78 | `browser_tabs` | WORKING |
+| threejs-devtools MCP (plugin) | threejs-devtools-mcp 0.2.1 | CONNECT_TIMEOUT at session start (package not cached); now cached | NEEDS `/mcp` RECONNECT |
+| Spector MCP (project `.mcp.json` + plugin link) | Spector.js main + Playwright 1.63 | failed at start (build missing); rebuilt; `Tools/spector_live.cjs` on the real game: load_url, list_canvases, get_context_info (WebGL2), capture_frame (253 draw calls, 41 programs, no GL errors) | WORKING via stdio; `/mcp` reconnect for in-session tools |
+| Blender | 5.2.3 LTS | imported girl_v2_rigged.glb (1 armature, 3 images) | WORKING |
+| FFmpeg | 6.1.1 | H.264 encode + ffprobe | WORKING |
+| glTF Transform | 4.5.1 | `inspect` girl_v2_rigged.glb | WORKING |
+| gltfpack | 0.25 | repacked coin_v2_tripo.glb | WORKING |
+| glTF Validator | 2.0.0-dev.3.10 | 40 GLB, 0 errors (`Tools/check_models.cjs`) | WORKING |
+| Tripo CLI + API | 0.11.2 | `tripo doctor` ok, `tripo balance` 1,060 (0 frozen); no paid job | WORKING (0 credits spent) |
+| Deno | 2.9.6 | version; the plugin's `check-shader-bindings.ts` ran under it | WORKING (subagent shells may not have it on PATH: `source Tools/bw_tools_env.sh`) |
+| Python | 3.13 | | WORKING |
+| OpenCV / scikit-image | 5.0.0 / 0.26.0 | imports; art director's measurements | WORKING |
+| PyTorch / LPIPS / Optuna | 2.15 / lpips / 5.0.0 | LPIPS of ref 02 vs the real game frame = 0.473 | WORKING |
+| ImageMagick, Git LFS | 6.9.12 / 3.4.1 | versions | WORKING |
+
+## C. Troubleshooting
+- A plugin MCP server "failed" at start: type `/mcp`, pick it, reconnect. If still failing: `bash Tools/cloud_env_setup.sh` (re-caches threejs-devtools,
+  rebuilds Spector, links it into the plugin) and reconnect again.
+- The plugin's agents (scenario-author, shader-reviewer, visual-debugger) get NO MCP tools (their frontmatter names `mcp__playwright-mcp` etc., which do
+  not match the plugin's real tool names): they work with Read / Bash. Give them the project's scripts (shots56.cjs EVAL, spector_live.cjs).
+- `screen4-water-motion-engineer` lists the plugin's real chrome-devtools / threejs-devtools tool names, so it gets them when those servers are connected.
+- Software WebGL on 4 CPUs: one browser at a time (`flock /tmp/bw_browser.lock`); close MCP pages after use (a page running the game costs ~120 % CPU).
+- Never run `playwright install` (the image's Chromium is used). Never put a key in Git or chat: Tripo uses the environment's network secret
+  (`TRIPO_API_KEY=tsk_proxy-injected` is a placeholder the proxy replaces).
+
+---
 # Tools and plugins: what transfers and how to restore (8 November 2026, session bb87ba9f; statuses tested LIVE this session)
 
 **NEWEST (9 November 2026 ~02:45 UTC, session 6ddc157f, new account): THE ACTIVE GAME CHANGED.** The user selected the six-scene game with their
