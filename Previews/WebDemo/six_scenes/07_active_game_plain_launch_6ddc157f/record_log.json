@@ -1,0 +1,160 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "home",
+  "level1"
+ ],
+ "fps": 12,
+ "frames": 512,
+ "log": [
+  [
+   "opening done at frame",
+   141
+  ],
+  [
+   0.75,
+   8.03,
+   "Washer drum",
+   "main",
+   1
+  ],
+  [
+   2.42,
+   21.48,
+   "Washer drum",
+   "main",
+   2
+  ],
+  [
+   4.08,
+   36.21,
+   "Washer drum",
+   "main",
+   2
+  ],
+  [
+   5.75,
+   50.32,
+   "Side paths",
+   "main",
+   2
+  ],
+  [
+   7.42,
+   64.21,
+   "Side paths",
+   "side path",
+   2
+  ],
+  [
+   9.08,
+   78.12,
+   "Side paths",
+   "side path",
+   2
+  ],
+  [
+   10.75,
+   92.99,
+   "Side paths",
+   "main",
+   2
+  ],
+  [
+   12.42,
+   107.35,
+   "Lower path",
+   "main",
+   2
+  ],
+  [
+   14.08,
+   122.35,
+   "Lower path",
+   "lower path",
+   2
+  ],
+  [
+   15.75,
+   136.44,
+   "Lower path",
+   "main",
+   3
+  ],
+  [
+   17.42,
+   150.44,
+   "Spinning brushes",
+   "main",
+   3
+  ],
+  [
+   19.08,
+   164.44,
+   "Spinning brushes",
+   "main",
+   3
+  ],
+  [
+   20.75,
+   178.44,
+   "Spinning brushes",
+   "main",
+   3
+  ],
+  [
+   22.42,
+   192.44,
+   "Treasure",
+   "main",
+   3
+  ],
+  [
+   24.08,
+   206.44,
+   "Treasure",
+   "main",
+   3
+  ],
+  [
+   25.75,
+   220.44,
+   "Grime balls",
+   "main",
+   3
+  ],
+  [
+   27.42,
+   234.44,
+   "Grime balls",
+   "main",
+   3
+  ],
+  [
+   29.08,
+   247.23,
+   "Grime balls",
+   "main",
+   3
+  ]
+ ],
+ "final": {
+  "phase": "running",
+  "coins": 1387,
+  "gems": 38,
+  "socks": 3,
+  "hearts": 4,
+  "knocks": 1,
+  "l1": {
+   "u": 255.52,
+   "section": "Grime balls",
+   "complete": false,
+   "route": "main",
+   "popped": 2,
+   "result": null
+  }
+ },
+ "route": "upper",
+ "errors": []
+}
