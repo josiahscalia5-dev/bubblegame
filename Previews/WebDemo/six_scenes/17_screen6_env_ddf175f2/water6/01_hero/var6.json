@@ -25,23 +25,23 @@
  },
  "vars": [
   {
-   "tag": "r1",
+   "tag": "s1",
    "ret": null
   },
   {
-   "tag": "r2",
+   "tag": "s2",
    "ret": null
   },
   {
-   "tag": "r3",
+   "tag": "s3",
    "ret": null
   },
   {
-   "tag": "r4",
+   "tag": "s4",
    "ret": null
   },
   {
-   "tag": "r5",
+   "tag": "s5",
    "ret": null
   }
  ],
