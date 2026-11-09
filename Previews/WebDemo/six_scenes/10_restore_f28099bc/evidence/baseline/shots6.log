@@ -1,0 +1,10 @@
+1.8s loaded
+5.3s {"ready":false,"o3d":true,"hero":false,"t2":false,"t3":false} []
+9.3s ready
+39.9s shot -1
+142.2s shot 2.4
+265.0s shot 4.8
+361.1s shot 7
+425.9s shot 8.4
+{"logs":[],"state":{"idle":14.399999999999979,"seq":8.399999999999979,"landed":false,"heroReady":true,"laundry":[[false,[0,0,0],2],[false,[0,0,0],2],[false,[0,0,0],3],[false,[0,0,0],3],[false,[0,0,0],3]],"cam":[0.3,0.65,0.46]}}
+exit 0

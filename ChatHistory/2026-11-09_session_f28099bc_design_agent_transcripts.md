@@ -123,6 +123,10 @@ The review lines up with my plan. Let me check whether the diagnosis frames are 
 - 12:57 `Bash`: Check diag progress and the lock queue
 - 12:57 `Bash`: Build a before-root and stop the queued run
 - 12:57 `Bash`: Locate world baseHeight and waves
+**Lead → agent** (13:00 UTC):
+
+[Request interrupted by user]
+
 
 _30 tool steps._
 
@@ -191,8 +195,16 @@ Let me look at the previous baseline evidence and the targets.
 - 12:53 `Bash`: Inspect the Tripo door glass handling
 - 12:53 `Bash`: Read tripo3 door and glass setup
 - 12:57 `Bash`: Read bubbles, foam and splash setup
+- 12:58 `Bash`: Check render pipeline and noise helper
+- 12:58 `Bash`: Read NOISE GLSL and exports
+- 12:58 `Bash`: Sample approved Scene 4 porthole colours and crop
+- 12:58 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref04_port.png
+**Lead → agent** (13:00 UTC):
 
-_29 tool steps._
+[Request interrupted by user]
+
+
+_33 tool steps._
 
 ---
 
@@ -253,6 +265,10 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:52 `Bash`: Solve Scene 2 corner towel placements
 - 12:53 `Bash`: Create a probe variant of the shot tool
 - 12:54 `Bash`: Probe girl bone positions in current build
+**Lead → agent** (13:00 UTC):
+
+[Request interrupted by user for tool use]
+
 
 _31 tool steps._
 
@@ -318,6 +334,10 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:56 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref01_logo.png
 - 12:56 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref01_bot.png
 - 12:56 `Bash`: Wait for opening capture to finish
+**Lead → agent** (13:00 UTC):
+
+[Request interrupted by user for tool use]
+
 
 _38 tool steps._
 
@@ -375,6 +395,10 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (which tools worked)
 - 12:55 `Read`: /home/user/bubblegame_lanes/_evidence/qa/route_upper/upper_u066.0.jpg
 - 12:55 `Read`: /home/user/bubblegame_lanes/_evidence/qa/route_upper/upper_level_complete.jpg
 - 12:55 `Bash`: Wait for start-checkpoint identity captures
+**Lead → agent** (13:00 UTC):
+
+[Request interrupted by user for tool use]
+
 
 _35 tool steps._
 
@@ -561,8 +585,13 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` with the MCP availab
 - 12:55 `Bash`: Find the current browser lock holder
 - 12:55 `Bash`: Write post-processing script for run output
 - 12:55 `Bash`: Wait for my capture run to finish
+- 13:00 `Bash`: Post-process run output and list evidence
+**Lead → agent** (13:00 UTC):
 
-_17 tool steps._
+[Request interrupted by user]
+
+
+_18 tool steps._
 
 ---
 

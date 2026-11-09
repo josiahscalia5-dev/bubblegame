@@ -1,12 +1,38 @@
-# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026, session ac4e3449)
+# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026 ~13:10 UTC, session f28099bc)
 
 This is the EXISTING game (three.js r170, `WebDemo/`). Do not restart, redesign or rebuild it. Nothing in this repository is a secret; never commit keys.
 
-## 0. The one message to send a new Claude account (copy and paste)
-> Continue my existing Bubble Wash Kingdom game in josiahscalia5-dev/bubblegame. Work on branch claude/bubble-wash-account-transfer-52t7ym
-> (fetch the newest head first; never force-push, never use the default branch). Read START_HERE_NEXT_CLAUDE_ACCOUNT.md and CLAUDE.md, run
-> `bash Tools/restore_session.sh`, do the preflight's LIVE CHECKS (one call per MCP server, the agent list), tell me only what needs my action,
-> recover the specialist lanes with `bash Tools/lanes.sh create`, then continue the exact next task in CURRENT_PROJECT_STATUS.md.
+## 0. The one message to send a new Claude account (copy and paste all of it)
+> Continue my EXISTING Bubble Wash Kingdom 3D mobile game in josiahscalia5-dev/bubblegame. My branch is claude/bubble-wash-account-transfer-52t7ym:
+> fetch its newest head first; if this session opened on another branch, check that branch contains it, work there and fast-forward my branch to it
+> at every verified save (never force-push, never use the default branch claude/new-session-oth0dd, keep every rollback branch). Do not restart,
+> redesign or rebuild anything. Steps:
+> 1. Read CLAUDE.md ("READ FIRST", newest block) and START_HERE_NEXT_CLAUDE_ACCOUNT.md.
+> 2. Run `bash Tools/restore_session.sh`; it must end with `0 failed` (it installs only missing tools, essential ones first).
+> 3. Live-test every MCP server with one real call: chrome-devtools `list_pages`, playwright `browser_tabs`, threejs-devtools `bridge_status`,
+>    spector `list_canvases`. If one failed at startup, tell me to type `/mcp` and reconnect it. Prove Spector on the real game with
+>    `flock /tmp/bw_browser.lock node Tools/spector_live.cjs $PWD/WebDemo /tmp/s.png '?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56'`.
+> 4. Restore the specialist lanes: `bash Tools/lanes.sh create` then `bash Tools/lanes.sh status`. Read PARALLEL_LANES.md "Lane status" and continue
+>    each lane from its last pushed commit with its specialist (girl12 = lighting-visual-matching, washer34 = water-vfx-engineer,
+>    s56 = screen4-water-motion-engineer, ui = general-purpose, QA = gameplay-visual-testing + game-art-director). Each agent's first task is its live test.
+>    Every browser run goes through `flock /tmp/bw_browser.lock`. Review each lane before merging, in the order s56, ui, washer34, girl12.
+> 5. The ONLY visual targets are Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06 (864x1536). Compare real game
+>    frames at 864x1536 (Scene 5 at real ~8.9 s and the live Tap to Start; Scene 6 at u 206), fix the largest differences first, report honestly,
+>    never call anything approved; I review.
+> 6. Keep gameplay working (swipes, lanes, jump, spin, coins, socks, gems, enemies, hearts, power-ups) and `?s3=intunnel` pixel-identical.
+> 7. No Tripo credits and no new models without my explicit approval. Keep the one 5-minute autosave running and verify every push.
+> Then tell me only what needs my action, and continue the next task in CURRENT_PROJECT_STATUS.md.
+
+**What only YOU (the user) can do on a new account (cannot travel through Git):**
+1. GitHub connected on claude.ai and the Claude GitHub App installed on `josiahscalia5-dev/bubblegame`.
+2. The `parallax-threejs` plugin (0.4.12, Anthropic Directory, community publisher): claude.ai -> Customize -> Plugins -> enable it, then start a
+   NEW session (plugins load at session start). It brings chrome-devtools, playwright, threejs-devtools, spector and the agents scenario-author,
+   shader-reviewer, visual-debugger.
+3. A cloud environment for the repository: limited network, package registries and MCP servers allowed; hosts `download.blender.org`,
+   `download.pytorch.org`, `dl.google.com`, `openapi-dl.data.tripo3d.com`; setup script
+   `if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then bash bubblegame/Tools/cloud_env_setup.sh || echo "Bubble Wash setup: a step failed"; fi`.
+4. The Tripo key as a NETWORK SECRET for host `openapi.tripo3d.ai`, header `Authorization`, Bearer, in that environment's settings. Never in chat or Git.
+5. If an MCP server shows "failed": type `/mcp` and reconnect it (threejs-devtools and spector can miss the first start).
 
 ## 1. Where everything is
 | | |
