@@ -28,9 +28,9 @@ export const TRIPO3 = {
     lights: [[0.302, -0.052], [0.302, -0.133], [0.29, 0.04]], lightR: 0.03, lightZ: 0.045,   // its own buttons: cyan, yellow, lavender
     plate: [-0.255, -0.01, 0.125, 0.275] },   // the gold latch plate over the old door's hinge cut: centre x, y, width, height (model units)
   // the door model: ring centre at its origin, inner face to +Z, hinge on +X; ring radius 0.488, hinge pin x 0.499, hinge depth -0.079
-  door: { file: 'models/opening/door_tripo_oit748.glb', ring: 0.488, hinge: 0.499, hingeZ: -0.079, pivotZ: 0.03 },
+  door: { file: 'models/opening/door_tripo_oit748.glb', ring: 0.488, hinge: 0.499, hingeZ: -0.079, pivotZ: 0.03, glass: 0.25 },
   basket: { file: 'models/opening/basket_v2_tripo.glb', on: LIST.includes('basket3'), width: 0.5, top: 0.185, turn: Math.PI },
-  look: { env: 0.6, emissive: 0.22 },
+  look: { env: 0.6, emissive: 0.3, metal: 0.55 },   // (metal: a factor on the models' ORM metalness; at 1 the washer's pink body reads dark magenta)
 };
 
 export function tripo3Loader(loader) { if (TRIPO3_ON) loader.setMeshoptDecoder(MeshoptDecoder); return loader; }
@@ -42,7 +42,7 @@ function dress(root, env) {
     o.frustumCulled = false;
     for (const m of [].concat(o.material)) {
       if (!m.isMeshStandardMaterial) continue;
-      m.envMap = env; m.envMapIntensity = TRIPO3.look.env;
+      m.envMap = env; m.envMapIntensity = TRIPO3.look.env; m.metalness = TRIPO3.look.metal;
       if (m.map) { m.emissiveMap = m.map; m.emissive = new THREE.Color(0xffffff); m.emissiveIntensity = TRIPO3.look.emissive; }   // (the opening's toon glow)
     }
   });
@@ -71,6 +71,11 @@ export function applyTripo3({ washer, six, basket, env, P }) {
     // the door on the opening's door pivot (its rotation is the timeline's: open 1.95 rad -> shut in scene 4)
     const d = gd.scene; dress(d, env); const k = W.bezel * S / D.ring; d.scale.setScalar(k); d.position.set(-D.hinge * k, 0, -D.hingeZ * k); d.name = 'doorTripo3';
     washer.door.position.set(P.x + D.hinge * k, P.y, zf + D.pivotZ); washer.door.add(d);
+    // its glass dome was removed in Blender: the opening's own translucent glass and highlight (six) fill the gold bezel, so he stays visible
+    // through the shut door in scene 4 and the camera passes through it in scene 5, as before
+    const hl = washer.door.children.find((c) => c !== washer.glass && c.isMesh && c.material.isMeshBasicMaterial && c.material.transparent);
+    const gs = (D.glass * k) / washer.glass.geometry.parameters.radius;
+    for (const c of [washer.glass, hl]) { if (!c) continue; c.visible = true; c.position.set(-D.hinge * k, 0, -D.hingeZ * k + (c === hl ? 0.006 : 0)); c.scale.setScalar(gs); }
     report.parts.push('door');
     if (gb) {   // ,basket3: the new basket in place of the basket's visible children (code or tripo2), its damaged side turned away
       const holder = new THREE.Group(); holder.name = 'basketTripo3'; const b = gb.scene; dress(b, env); holder.add(b);
