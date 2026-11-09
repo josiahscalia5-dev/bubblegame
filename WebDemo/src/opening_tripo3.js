@@ -84,11 +84,15 @@ export function applyTripo3({ washer, six, basket, env, P, vortex }) {
     // the door on the opening's door pivot (its rotation is the timeline's: open 1.95 rad -> shut in scene 4)
     const d = gd.scene; dress(d, env); const k = W.bezel * S / D.ring; d.scale.setScalar(k); d.position.set(-D.hinge * k, 0, -D.hingeZ * k); d.name = 'doorTripo3';
     washer.door.position.set(P.x + D.hinge * k, P.y, zf + D.pivotZ); washer.door.add(d);
+    // (six2, session 9ee07777: the user's references 03 / 04 put the hinge on the LEFT, where the washer model's own hinge cut and gold plate are:
+    // the door is mirrored onto a pivot at the porthole's left; the six2 timeline swings it open toward the camera and shut again)
+    const M = LIST.includes('six2') ? -1 : 1;
+    if (M < 0) { d.scale.x = -k; d.position.x = D.hinge * k; washer.door.position.x = P.x - D.hinge * k; washer.door.rotation.y = 0; washer.door.userData.edge = 2 * D.hinge * k; }
     // its glass dome was removed in Blender: the opening's own translucent glass and highlight (six) fill the gold bezel, so he stays visible
     // through the shut door in scene 4 and the camera passes through it in scene 5, as before
     const hl = washer.door.children.find((c) => c !== washer.glass && c.isMesh && c.material.isMeshBasicMaterial && c.material.transparent);
     const gs = (D.glass * k) / washer.glass.geometry.parameters.radius;
-    for (const c of [washer.glass, hl]) { if (!c) continue; c.visible = true; c.position.set(-D.hinge * k, 0, -D.hingeZ * k + (c === hl ? 0.006 : 0)); c.scale.setScalar(gs); }
+    for (const c of [washer.glass, hl]) { if (!c) continue; c.visible = true; c.position.set(-M * D.hinge * k, 0, -D.hingeZ * k + (c === hl ? 0.006 : 0)); c.scale.setScalar(gs); }
     // (the art director: as the camera passes through the shut door in scene 5 the glass disc showed as a flat plane cutting diagonally across
     // him) the glass and its highlight fade out within 0.9 m of the camera, fully gone at 0.3 m; from the scene 4 cameras (about 2 m) unchanged
     const wp = new THREE.Vector3();

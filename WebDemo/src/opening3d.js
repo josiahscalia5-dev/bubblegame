@@ -23,6 +23,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { LEVEL1_PARTS } from './level1.js';
 import { TRIPO2_ON, applyTripo2 } from './opening_tripo.js';   // ?s3=...,level1,tripo2 (session 57091b57): the user's Tripo basket and towels, looks only
 import { TRIPO3_ON, TRIPO3, applyTripo3, tripo3Loader, tripo3GirlMaterial } from './opening_tripo3.js';   // ?s3=...,six,tripo3 (session 6ddc157f): the user's new Tripo girl, washer and door
+import { SIX2_ON, SIX2, installSix2 } from './opening_six2.js';   // ?s3=...,six,tripo3,six2 (session 9ee07777): the user's six approved portrait screens
 // girl2 (8 November, the user's priority 1): the user's Tripo girl (Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/,
 // "cartoon girl 3d model.glb"), rigged in Blender by rig/rig_girl.py (hips, spine, chest, neck, head, shoulders, arms, hands,
 // legs; automatic weights; texture 2048) -> models/opening/girl_rigged.glb. Driven here by the same timeline as the code-built
@@ -49,6 +50,7 @@ const LIST6 = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((locati
 export const SIX_ON = LIST6.includes('six');
 export const SIX = { handOver: 7.9, seqEnd: 8.7, inBasket: 0.68, towel: 0x5aa8ff };
 if (SIX_ON) Object.assign(OPENING3D, { handOver: SIX.handOver, seqEnd: SIX.seqEnd });
+if (SIX2_ON) Object.assign(OPENING3D, { handOver: SIX2.handOver, seqEnd: SIX2.seqEnd });   // (six2: the longer storyboard of the six portrait screens)
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -670,12 +672,16 @@ export function mountOpening3D(container, opts = {}) {
   // ------------------------------------------------ the timeline
   const P = OPENING3D.porthole;
   const blinkAt = (t, every, off) => { const k = ((t + off) % every); return k < 0.13 ? Math.sin(k / 0.13 * Math.PI) : 0; };
+  // six2 (opening_six2.js): the staging and timeline of the six approved portrait screens (the same objects; the six timeline is not used with it)
+  const six2 = SIX2_ON && six ? installSix2({ scene, camera, env, room, washer, basket, g2, GIRL2, girl, hero, heroBody, heroExpr, six, vortex, laundry, splash, glowL, bubbles, front, foam, bub, fb,
+    rotateBoneWorld, aimBone, reachBones, blinkAt, bez, OPENING3D, onScene: opts.onScene }) : null;
   const basketHome = LEVEL1_PARTS.girl2 ? V([-0.37, 0.95, -0.01]) : V([-0.3, 1.04, 0.16]);   // (girl2: in front of her chest, within her shorter arms' reach)
   const heroLaunch = LEVEL1_PARTS.girl2 ? basketHome.clone().add(V([0.42, 0.5, 0.15])) : V([-0.02, 1.47, 0.24]), heroApex = V([0.5, 2.05, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
   const heroIn = V([P.x, P.y - 0.02, P.z - 1.3]), heroLand = V([P.x, OPENING3D.waterY + 0.1 * OPENING3D.heroW / 0.34, P.z - 2.8]);
   let seq = -1, idle = 0, landed = false, fadeStarted = false, doneCalled = false, sparkCarry = 0;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
   function pose(it, st) {
+    if (six2) return six2.pose(it, st);
     if (six) return poseSix(it, st);
     const s = st < 0 ? -1 : st;
     // ---- basket (both hands on its handles)
@@ -881,7 +887,7 @@ export function mountOpening3D(container, opts = {}) {
   }
   function stepFx(dt, s) {
     sparks.update(dt, 0.15); splash.update(dt, 2.6);
-    if (s > (six ? 1.6 : 0.5) && s < 2.4) { sparkCarry += dt * 70; for (; sparkCarry >= 1; sparkCarry--) sparks.emit(hero.position.clone().add(V([(rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1])), V([(rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2]), 0.5 + rnd() * 0.4); }
+    if (six2 ? (s > six2.sparkWin[0] && s < six2.sparkWin[1]) : (s > (six ? 1.6 : 0.5) && s < 2.4)) { sparkCarry += dt * 70; for (; sparkCarry >= 1; sparkCarry--) sparks.emit(hero.position.clone().add(V([(rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1, (rnd() - 0.5) * 0.1])), V([(rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2, (rnd() - 0.5) * 0.2]), 0.5 + rnd() * 0.4); }
     const M = new THREE.Matrix4(), Q = new THREE.Quaternion();
     bub.forEach((b, i) => { const y = b.rise ? (b.p.y + ((idle * b.rise + b.ph * 0.2) % 1.8)) : b.p.y + 0.01 * Math.sin(idle * 1.5 + b.ph); const s2 = b.s * (1 + 0.04 * Math.sin(idle * 3 + b.ph));
       M.compose(V([b.p.x + 0.02 * Math.sin(idle + b.ph), y, b.p.z]), Q, V([s2, s2, s2])); bubbles.setMatrixAt(i, M); });
