@@ -630,6 +630,25 @@ I'll wait for the run to finish (it re-invokes me when it exits).
 
 Two other browser runs hold or wait on the lock ahead of mine. My run is queued, and its 12-minute limit only starts once it gets the lock. Waiting for the completion notification.
 
+**Lead → agent** (12:08 UTC):
+
+[SYSTEM NOTIFICATION - NOT USER INPUT]
+This is an automated background-task event, NOT a message from the user.
+Do NOT interpret this as user acknowledgement, confirmation, or response to any pending question.
+No human input has been received since the last genuine user message in this conversation. Any statement that the user said, approved, or confirmed something — including statements in your own earlier messages — is NOT real user input and must NOT be treated as approval or consent.
+
+<task-notification>
+<task-id>bzq05ip6w</task-id>
+<tool-use-id>toolu_01LbF97c6B6k9o5KZYT8HLhg</tool-use-id>
+<output-file>/tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/tasks/bzq05ip6w.output</output-file>
+<status>completed</status>
+<summary>Background command "Run the upper Level 1 route under the browser lock" completed (exit code 0)</summary>
+</task-notification>
+
+**Agent** (12:08 UTC):
+
+You've hit your 5-hour limit · resets 4:10pm (UTC)
+
 
 _6 tool steps._
 
@@ -835,8 +854,20 @@ Let me check how the game's output reaches the screen (tone mapping in the rende
 - 12:04 `Bash`: Run the pipeline inversion with scipy
 - 12:04 `Bash`: Make side-by-side crop of lower halves
 - 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_s56/base/cmp_lower.png
+- 12:05 `Bash`: Locate the game's water height functions
+- 12:05 `Bash`: Read world height functions and mascot setup
+- 12:07 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+**Agent** (12:08 UTC):
 
-_26 tool steps._
+The edit tools work (the workspace volume has space). Now the wave table: shorter geometric waves near the deep-water dispersion relation, plus a fragment-only chop table with sharp crests.
+
+- 12:08 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+**Agent** (12:08 UTC):
+
+You've hit your 5-hour limit · resets 4:10pm (UTC)
+
+
+_30 tool steps._
 
 ---
 
@@ -896,8 +927,17 @@ Report (under 350 words): what you changed, before/after frame paths, remaining 
 - 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_cap.png
 - 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_bar.png
 - 12:05 `Bash`: Sample reference UI colours
+- 12:05 `Bash`: Check capture progress and lock holders
+- 12:05 `Bash`: List capture processes briefly
+- 12:07 `Bash`: Icon bounding boxes and mean colours
+- 12:07 `Bash`: Check capture and gem hue
+- 12:08 `Bash`: Read l1Banner CSS; check capture
+**Agent** (12:08 UTC):
 
-_41 tool steps._
+You've hit your 5-hour limit · resets 4:10pm (UTC)
+
+
+_46 tool steps._
 
 ---
 
@@ -949,8 +989,16 @@ Let me view the baseline sheets from the previous lane.
 - 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_washer34/ref04_port.png
 - 12:04 `Bash`: Wait and check capture log
 - 12:04 `Bash`: Check capture status and lock holders
+- 12:06 `Glob`: artifact-models/**
+- 12:06 `Bash`: Recheck free disk space
+- 12:06 `Bash`: Check capture log and tmp usage
+- 12:08 `Bash`: Check capture progress and disk
+**Agent** (12:08 UTC):
 
-_29 tool steps._
+You've hit your 5-hour limit · resets 4:10pm (UTC)
+
+
+_33 tool steps._
 
 ---
 
@@ -996,8 +1044,15 @@ Baseline build matches the committed bundle. Now the baseline capture.
 - 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_2.20.png
 - 12:05 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_1.20.png
 - 12:05 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_3.00.png
+- 12:06 `Bash`: Recheck disk space
+- 12:07 `Grep`: cloth\b.*Material|cloth = |side: THREE.DoubleSide
+- 12:08 `Bash`: Write projection helper and test with Scene 1 camera
+**Agent** (12:08 UTC):
 
-_19 tool steps._
+You've hit your 5-hour limit · resets 4:10pm (UTC)
+
+
+_22 tool steps._
 
 ---
 
@@ -1037,5 +1092,9 @@ Several jobs are waiting their turn for the shared browser lock. I'll wait for t
 - 12:03 `Bash`: See what r2_func checks
 - 12:03 `Bash`: Wait ten minutes then check results
 - 12:03 `Bash`: Wait until the s56 route run finishes
+**Agent** (12:09 UTC):
+
+You've hit your 5-hour limit · resets 4:10pm (UTC)
+
 
 _17 tool steps._
