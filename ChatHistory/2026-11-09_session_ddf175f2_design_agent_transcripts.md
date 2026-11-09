@@ -76,8 +76,24 @@ FINAL REPORT (your last message, concise): the commit hash pushed; what is built
 - 18:25 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
 - 18:25 `Bash`: Cap the ungrade knee inverse
 - 18:25 `Bash`: Drum radius ramp and shifted arch glow
+- 18:26 `Bash`: Scene 6 rings, strips and lamp
+- 18:26 `Bash`: Add Scene 6 module builders
+- 18:26 `Bash`: Find lampPipe line
+- 18:26 `Bash`: Fix lampPipe route
+**Agent** (18:26 UTC):
 
-_35 tool steps._
+Now the module builders (written to a script file this time).
+
+- 18:27 `Bash`: Insert Scene 6 module builders
+- 18:27 `Bash`: Wire Scene 6 modules into bays and build
+- 18:27 `Bash`: Capture first Scene 6 pass
+- 18:29 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/arch56/01_s6/s6.png
+- 18:29 `Bash`: Side-by-side crop approved vs first pass
+- 18:29 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs1.png
+- 18:30 `Bash`: Find brush placement code
+- 18:30 `Bash`: Check import graph for cycles
+
+_47 tool steps._
 
 ---
 
@@ -208,8 +224,34 @@ Outward normals confirmed. Build and capture.
 Brush triangles dropped from 138k to 74k. Let me look at the crops (approved | before | new).
 
 - 18:25 `Bash`: Make approved/before/new crop sheet
+- 18:25 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/p1_crops.png
+- 18:26 `Bash`: List nearby transparent objects in the frame
+- 18:27 `Bash`: Zoom into the left brush's lower tiers
+- 18:27 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/p1_leftlow.png
+- 18:27 `Bash`: Measure rendered tier colours vs approved
+- 18:28 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:28 UTC):
 
-_37 tool steps._
+Now the per-side stretch and flare, with geometry rebuilt live when the flare changes, and the measure using the effective tip radius (ridges included).
+
+- 18:28 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:28 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:29 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:29 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:29 UTC):
+
+Now the `tiersFor` helper and the drawReport scale.
+
+- 18:29 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:29 `Bash`: Fix drawReport scale and find side settings
+- 18:29 `Bash`: Add side settings, write the var6 fit tool, build
+**Agent** (18:29 UTC):
+
+Build OK. Now one run: the fit, then live variants for the specular/sheen reduction, a nearer depth pull, and a particle-free frame for clean colour measurement.
+
+- 18:29 `Bash`: Fit placement and test colour and depth variants
+
+_51 tool steps._
 
 ---
 
@@ -279,5 +321,21 @@ I'll start by reading the targets, my lane's handoff, and the water parts of the
 - 18:25 `Bash`: Invert the colour probe LUT for the target water colours
 - 18:25 `Bash`: List LUT outputs for R=0 inputs
 - 18:25 `Bash`: Run aw56 on approved and baseline
+- 18:26 `Bash`: Run hero dome variants and measure pink box
+- 18:27 `Bash`: Run prolate hero dome variants and measure
+- 18:29 `Bash`: Build a hero crop comparison strip
+- 18:29 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/01_hero/crop_h.png
+**Lead → agent** (18:29 UTC):
 
-_28 tool steps._
+[Image: original 2574x400, displayed at 2000x311. Multiply coordinates by 1.29 to map to original image.]
+
+- 18:29 `Bash`: Find the fur shell parameters
+- 18:29 `Bash`: Test fur comb and deeper-sink prolate variants
+- 18:30 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/01_hero/crop_f.png
+**Lead → agent** (18:30 UTC):
+
+[Image: original 3096x400, displayed at 2000x258. Multiply coordinates by 1.55 to map to original image.]
+
+- 18:30 `Bash`: Test short radial fur with larger round body variants
+
+_36 tool steps._
