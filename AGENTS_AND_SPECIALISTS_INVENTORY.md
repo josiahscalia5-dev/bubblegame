@@ -1,5 +1,29 @@
 # Agents and specialists: inventory
 
+## NEWEST: live tests of 9 November 2026, session f28099bc (account transfer). Each agent's live test was a REAL task.
+
+| Agent / skill | Source | Tools it really had | Live test this session | Result |
+|---|---|---|---|---|
+| game-art-director | project `.claude/agents/` | Read, Grep, Glob, Bash (+ image viewing, Python/OpenCV) | per-scene ranking of the six approved scenes vs the real baseline (`evidence/qa/art_director_ranking.md`) | WORKING |
+| gameplay-visual-testing | project | Read, Grep, Glob, Bash | route test + `?s3=intunnel` identity proof (see PARALLEL_LANES.md for its result) | see lane status |
+| lighting-visual-matching | project | + Edit, Write | girl12 lane: Scenes 1-2 pass | see lane status |
+| water-vfx-engineer | project | + Edit, Write | washer34 lane: Scenes 3-4 pass | see lane status |
+| screen4-water-motion-engineer | project | + chrome-devtools MCP; threejs-devtools MCP only when connected | s56 lane: controlled pale-water diagnosis + fix | see lane status |
+| parallax-threejs:shader-reviewer | plugin 0.4.12 | Read, Grep, Bash (+ Deno); NO MCP | review of the s56 lane's GLSL: no blockers; foam colour above the bloom threshold (P1), stale crest lines (W1), 2 latent compile traps (B1, B2) (`evidence/shader_review/REVIEW.md`) | PARTIALLY WORKING (no MCP) |
+| parallax-threejs:scenario-author | plugin 0.4.12 | Read, Glob, Write, Bash; NO MCP | regression scenario for the pickup fix (offset on m.tilt), type-checked against `test/visual/lib/types.ts` (`evidence/qa/scenario_draft/`) | PARTIALLY WORKING (no MCP; not yet replayed) |
+| parallax-threejs:visual-debugger | plugin 0.4.12 | Bash; NO MCP | runtime GL state at Tap to Start (`evidence/visual_debugger/FINDINGS.md`) | see lane status |
+| general-purpose | Claude Code | all | ui lane: HUD restyle under body.s56 | see lane status |
+| skill bubble-wash-screen-matcher | project `.claude/skills/` | instructions | used by the coordinator for the six-scene sheets | present |
+
+**How to verify each agent in the next session (small real tests, ~5-10 min each; every browser run through `flock /tmp/bw_browser.lock`):**
+- game-art-director: "rank the 3 largest differences of `<baseline frame>` vs `01_Surprise_Hideout.png`, with measurements" (read-only).
+- gameplay-visual-testing: `S3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56 ROUTE=upper node WebDemo/tools/level1/flow_routes.cjs $PWD/WebDemo <out>`; report coins, socks, enemies, errors.
+- lighting-visual-matching / water-vfx-engineer / screen4-water-motion-engineer: one capture of their lane's scene (`shots6.cjs` / `shots56.cjs`) and a list of differences vs the reference, in their lane worktree.
+- shader-reviewer: review `WebDemo/src/s56_tunnel.js` GLSL + bindings (read-only); scenario-author: draft a scenario into a scratch folder;
+  visual-debugger: collect renderer / bloom / water-material state with `shots56.cjs EVAL=...`.
+- MCP: the coordinator calls one tool per server itself (subagents of the plugin get none).
+
+
 ## NEWEST: live tests of 9 November 2026, session ac4e3449 (a new account)
 
 Machine-readable: `Tools/agents_inventory.json`. The parallel lanes these agents work in are in `PARALLEL_LANES.md`.

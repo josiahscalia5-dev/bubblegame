@@ -81,6 +81,20 @@ if [ "$remote" = "$HEAD_SHA" ]; then
 else
   echo "Push:      FAILED, GitHub's $BRANCH is at ${remote:-nothing}; local is ${HEAD_SHA:0:7}"
 fi
+# (9 November 2026, session f28099bc; updated session d847dce2: the user's PRIMARY branch is now claude/bubble-wash-restore-transfer-kc4ecl,
+# and claude/bubble-wash-account-transfer-52t7ym is historical only): when this session works on another branch (a harness ccr-* branch) that
+# CONTAINS the user's branch, fast-forward the user's branch to the same verified commit. A plain push (never --force): if the user's branch has
+# commits this one lacks, GitHub refuses it and nothing changes.
+USER_BRANCH="${BW_USER_BRANCH:-claude/bubble-wash-restore-transfer-kc4ecl}"
+if [ "$remote" = "$HEAD_SHA" ] && [ "$BRANCH" != "$USER_BRANCH" ]; then
+  ub="$(git ls-remote origin "refs/heads/$USER_BRANCH" 2>/dev/null | cut -f1)"
+  if [ -n "$ub" ] && [ "$ub" != "$HEAD_SHA" ] && git merge-base --is-ancestor "$ub" "$HEAD_SHA" 2>/dev/null; then
+    git push -q origin "$HEAD_SHA:refs/heads/$USER_BRANCH" 2>/dev/null
+    [ "$(git ls-remote origin "refs/heads/$USER_BRANCH" 2>/dev/null | cut -f1)" = "$HEAD_SHA" ] && echo "User branch: VERIFIED, GitHub's $USER_BRANCH fast-forwarded to ${HEAD_SHA:0:7}" \
+      || echo "User branch: $USER_BRANCH NOT updated (push refused or failed; it stays at ${ub:0:7})"
+  elif [ "$ub" = "$HEAD_SHA" ]; then echo "User branch: $USER_BRANCH already at ${HEAD_SHA:0:7}"
+  elif [ -n "$ub" ]; then echo "User branch: $USER_BRANCH has commits this branch lacks: NOT touched (merge it here first)"; fi
+fi
 if [ -n "$files" ]; then
   echo "Files saved ($(printf '%s\n' "$files" | wc -l)):"; printf '%s\n' "$files" | sed 's/^/  /' | head -60
 else

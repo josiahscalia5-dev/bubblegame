@@ -1,0 +1,6 @@
+4.2s loaded
+4.4s {"ready":false,"o3d":true,"hero":false,"t2":false,"t3":false} []
+page.waitForTimeout: Target page, context or browser has been closed
+    at /home/user/bubblegame_lanes/ui/WebDemo/tools/six2/shots6.cjs:24:187 {
+  log: []
+}

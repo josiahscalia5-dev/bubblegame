@@ -1,5 +1,31 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
+## READ FIRST, NEWEST (9 November 2026 ~13:30 UTC, session d847dce2, account restore). This block overrides anything older below.
+- **Branch:** the user's PRIMARY branch is now `claude/bubble-wash-restore-transfer-kc4ecl` (the user's instruction of 9 November). `claude/bubble-wash-account-transfer-52t7ym`
+  is historical recovery information only. If the session opens on a `ccr-*` branch, check it CONTAINS kc4ecl, develop there; `Tools/save_now.sh`
+  (and so the autosave) fast-forwards kc4ecl to every verified save (never force). Scripts: `save_now.sh` USER_BRANCH, `restore_session.sh` / `session_preflight.sh` WORK.
+- **Tripo:** the key is a network secret for `openapi.tripo3d.ai` on the environment `bubblegame` (saved this session; balance 1,060, 0 frozen). Still NO credits without the user's approval.
+- **Plugins on this account:** `parallax-threejs` is NOT enabled (ListPlugins empty; only the org's synced `playwright` (Microsoft) and `typescript-lsp`), so there is no
+  chrome-devtools / threejs-devtools MCP and no scenario-author / shader-reviewer / visual-debugger agents until the user enables it and starts a new session.
+  The project's Spector MCP (`.mcp.json`) and the synced Playwright MCP work. Report: `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`.
+
+## READ FIRST, NEWEST (9 November 2026, session f28099bc, account transfer). This block overrides anything older below.
+- **Branch:** the user's branch is `claude/bubble-wash-account-transfer-52t7ym`. If the session opens on another branch (`claude/...-kc4ecl`, `ccr-*`),
+  check that it CONTAINS 52t7ym, develop there and fast-forward 52t7ym to it at every verified save (`git push origin HEAD:refs/heads/claude/bubble-wash-account-transfer-52t7ym`, never force).
+- **Restore in one command:** `bash Tools/restore_session.sh` (runs the idempotent setup whenever an ESSENTIAL tool is missing; build check; 40 GLB models
+  via `Tools/check_models.cjs`; plugin sync; threejs-devtools cache; the Spector server's start; autosave; lanes; free Tripo balance). Must say `0 failed`.
+- **Setup order (fixed this session):** `Tools/cloud_env_setup.sh` installs the essential tools first and the optional ~5.6 GB PyTorch LAST: the environment's
+  setup had been cut off inside PyTorch, leaving Tripo CLI / glTF tools / npm / Spector uninstalled, so Spector and threejs-devtools failed to connect.
+- **MCP:** chrome-devtools and playwright connect at start. threejs-devtools and spector may fail at a session's first start: `/mcp` -> reconnect.
+  Spector can be proven without the session connection: `flock /tmp/bw_browser.lock node Tools/spector_live.cjs $PWD/WebDemo <png> '?s3=...'`
+  (this session: 253 draw calls, 41 programs, no GL errors). Subagents get NO MCP tools from the plugin (known defect): give them Bash scripts.
+- **Lanes:** `bash Tools/lanes.sh create` then `status`; each lane's state and next step is in `PARALLEL_LANES.md` ("Lane status"). Every browser run: `flock /tmp/bw_browser.lock`.
+- **Targets:** ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06` (the user re-sent the same six images this session:
+  pixel-identical). Compare at 864x1536: Scene 5 = the opening at real ~8.9 s (NOT the 8.4 s mid-turn frame) and the live game's Tap to Start; Scene 6 = u 206.
+- **Tripo: the user's instruction of 9 November (this session) overrides the older standing authorization below: NO credits and NO new models without the
+  user's explicit approval.** Free calls (`tripo doctor`, `tripo balance`) are fine. Balance at 13:00 UTC: 1,060.
+- **Nothing is approved** until the user reviews it. Status of every scene: `CURRENT_PROJECT_STATUS.md` (top). Handoff: `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 0.
+
 ## READ FIRST, NEWEST (9 November 2026, session ac4e3449). This block overrides anything older below.
 0. **THE ACTIVE GAME (the user's direction of 9 November: ONE pink-and-gold lavender laundry world from the girl's washer into the actual swimming
    game; the old blue spiral tunnel is a rollback only):** a plain launch runs `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56`.

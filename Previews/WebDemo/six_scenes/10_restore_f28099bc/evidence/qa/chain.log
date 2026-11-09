@@ -1,0 +1,5 @@
+touch start 12:43:46
+touch exit 0 12:53:45
+start old exit 0 13:00:44
+start new exit 0 13:01:07
+T3.0 old exit 0 13:01:30

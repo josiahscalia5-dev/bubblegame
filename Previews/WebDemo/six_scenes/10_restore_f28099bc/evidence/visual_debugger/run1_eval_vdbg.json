@@ -1,0 +1,1361 @@
+{
+ "errors": [],
+ "shots": [
+  {
+   "z": "tap",
+   "state": {
+    "phase": "intro",
+    "z": 1.592,
+    "x": 0,
+    "coins": 1280,
+    "socks": 0,
+    "hearts": 5
+   },
+   "s56": {
+    "on": true,
+    "parts": [
+     "shell x14",
+     "arches x62",
+     "banks (135 tanks)",
+     "housing_tripo_821",
+     "gear_v2_tripo x7",
+     "water x14"
+    ],
+    "hidden": [
+     "Group",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "tunnelDecor",
+     "s3Castle",
+     "s3Entrance",
+     "s3Machinery",
+     "s3Brush",
+     "s3IcyEdge",
+     "s3IcyEdge",
+     "r3Swirl",
+     "heroWalls",
+     "r6Porthole",
+     "r6Face",
+     "r6Bezel",
+     "r6Flanges",
+     "r6BowWave",
+     "r7Glow",
+     "heroCollar",
+     "heroGlow",
+     "heroBubbles",
+     "heroSwell",
+     "heroSplash",
+     "lqFloor",
+     "lqSpraySheets",
+     "lqWaterlineBubbles",
+     "spCurls",
+     "spLumps",
+     "mwTunnelBubbles",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops"
+    ],
+    "errors": []
+   },
+   "eval": {
+    "errs": [],
+    "renderer": {
+     "toneMapping": "Neutral (7)",
+     "toneMappingExposure": 1.05,
+     "outputColorSpace": "srgb",
+     "pixelRatio": 1,
+     "drawingBuffer": [
+      432,
+      768
+     ],
+     "webgl2": true,
+     "glRenderer": "WebKit WebGL",
+     "ctx": {
+      "alpha": true,
+      "antialias": false,
+      "depth": true,
+      "desynchronized": false,
+      "failIfMajorPerformanceCaveat": false,
+      "powerPreference": "high-performance",
+      "premultipliedAlpha": true,
+      "preserveDrawingBuffer": false,
+      "stencil": false,
+      "xrCompatible": false
+     },
+     "sortObjects": true
+    },
+    "composer": {
+     "size": [
+      432,
+      768
+     ],
+     "rtType": 1016,
+     "rtColorSpace": "",
+     "samples": 0,
+     "renderToScreen": true,
+     "passes": [
+      {
+       "i": 0,
+       "enabled": true,
+       "needsSwap": false,
+       "renderToScreen": false,
+       "kind": "RenderPass",
+       "clear": true,
+       "overrideMaterial": false
+      },
+      {
+       "i": 1,
+       "enabled": true,
+       "needsSwap": false,
+       "renderToScreen": false,
+       "kind": "UnrealBloomPass",
+       "strength": 0.16,
+       "radius": 0.42,
+       "threshold": 1,
+       "resolution": [
+        216,
+        384
+       ],
+       "nMips": 5
+      },
+      {
+       "i": 2,
+       "enabled": true,
+       "needsSwap": true,
+       "renderToScreen": false,
+       "kind": "GradeShader ShaderPass",
+       "uniforms": {
+        "uSat": 1.32,
+        "uContrast": 1.12,
+        "uVignette": 0.18,
+        "uOpen": 0.2985641262004184,
+        "uOpenExposure": 0.9,
+        "uOpenVibrance": 0.35,
+        "uOpenDepth": 0.16,
+        "uS4Grade": 1,
+        "uHero": 1
+       }
+      },
+      {
+       "i": 3,
+       "enabled": true,
+       "needsSwap": true,
+       "renderToScreen": true,
+       "kind": "OutputPass"
+      }
+     ]
+    },
+    "infoFullFrame": {
+     "calls": 253,
+     "triangles": 4082651,
+     "points": 2900,
+     "lines": 0
+    },
+    "infoScenePassOnly": {
+     "calls": 238,
+     "triangles": 4082636,
+     "points": 2900,
+     "lines": 0
+    },
+    "memory": {
+     "geometries": 196,
+     "textures": 38,
+     "programs": 75
+    },
+    "programLogs": [],
+    "waterGroups": [
+     {
+      "name": "lqFloor",
+      "objType": "Mesh",
+      "visible": false,
+      "n": 1,
+      "renderOrder": -1,
+      "frustumCulled": false
+     },
+     {
+      "name": "lqWaterlineBubbles",
+      "objType": "Mesh",
+      "visible": false,
+      "n": 1,
+      "renderOrder": 7,
+      "frustumCulled": false
+     },
+     {
+      "name": "l1Water",
+      "objType": "Mesh",
+      "visible": false,
+      "n": 28,
+      "renderOrder": 0,
+      "frustumCulled": true
+     },
+     {
+      "name": "s56Shell",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "ShaderMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 1,
+        "uniforms": [
+         "uTime",
+         "uArch"
+        ],
+        "glslColours": [
+         "vec3 far = mix(vec3(0.16, 0.10, 0.62), vec3(0.42, 0.55, 1.02), smoothstep(26.0, 75.0, d));",
+         "c += vec3(0.55, 0.20, 0.55) * st;",
+         "c += vec3(0.45, 0.22, 0.48) * lip * clamp(0.6 - q.y * 2.2, 0.0, 1.0) * vis;",
+         "c += vec3(0.78, 0.05, 0.41) * glow * 0.5 * (0.4 + 0.6 * smoothstep(-0.6, 0.6, up));",
+         "c += vec3(1.0, 0.62, 0.25) * glow * 0.35 * (exp(-pow((abs(a) - 0.65) / 0.22, 2.0)) + exp(-a * a / 0.05));",
+         "c += vec3(0.55, 0.22, 0.55) * fr * 0.6;"
+        ],
+        "includesTonemapping": false,
+        "includesColorspace": true
+       }
+      ]
+     },
+     {
+      "name": "s56Arches",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 62,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.352,
+         0.162,
+         0.631
+        ],
+        "emissive": [
+         0.068,
+         0.01,
+         0.162
+        ],
+        "emissiveIntensity": 0.45,
+        "envMapIntensity": 1.1
+       }
+      ]
+     },
+     {
+      "name": "s56Arches",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 62,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.807,
+         0.06,
+         0.347
+        ],
+        "emissive": [
+         0.352,
+         0.005,
+         0.144
+        ],
+        "emissiveIntensity": 0.5,
+        "envMapIntensity": 0.9
+       }
+      ]
+     },
+     {
+      "name": "s56Arches",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 62,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.913,
+         0.287,
+         0.855
+        ],
+        "emissive": [
+         0.323,
+         0.023,
+         0.254
+        ],
+        "emissiveIntensity": 0.55,
+        "envMapIntensity": 1.2
+       }
+      ]
+     },
+     {
+      "name": "s56Arches",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 62,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         2.2,
+         1.35,
+         0.55
+        ]
+       }
+      ]
+     },
+     {
+      "name": "s56Lamps",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 31,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         1,
+         0.451,
+         0.063
+        ],
+        "emissive": [
+         0.102,
+         0.04,
+         0
+        ],
+        "emissiveIntensity": 0.55,
+        "envMapIntensity": 1.25
+       }
+      ]
+     },
+     {
+      "name": "s56Lamps",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 31,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         2.2,
+         1.35,
+         0.55
+        ]
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.323,
+         0.159,
+         0.687
+        ],
+        "emissive": [
+         0.042,
+         0.01,
+         0.162
+        ],
+        "emissiveIntensity": 0.4,
+        "envMapIntensity": 1
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         1,
+         0.451,
+         0.063
+        ],
+        "emissive": [
+         0.102,
+         0.04,
+         0
+        ],
+        "emissiveIntensity": 0.55,
+        "envMapIntensity": 1.25
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.807,
+         0.06,
+         0.347
+        ],
+        "emissive": [
+         0.352,
+         0.005,
+         0.144
+        ],
+        "emissiveIntensity": 0.5,
+        "envMapIntensity": 0.9
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         1,
+         0.761,
+         0.352
+        ],
+        "emissive": [
+         0.254,
+         0.102,
+         0.005
+        ],
+        "emissiveIntensity": 0.6,
+        "envMapIntensity": 1
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.5,
+         1.9,
+         2.2
+        ]
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         2.2,
+         1.35,
+         0.55
+        ]
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": true,
+        "opacity": 0.82,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.392,
+         0.023,
+         0.807
+        ],
+        "emissive": [
+         0.254,
+         0.009,
+         0.687
+        ],
+        "emissiveIntensity": 0.75,
+        "envMapIntensity": 1.4
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         2.2,
+         1.1,
+         2.4
+        ]
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         0.791,
+         0.042,
+         0.323
+        ],
+        "emissive": [
+         0.254,
+         0.004,
+         0.091
+        ],
+        "emissiveIntensity": 0.35,
+        "envMapIntensity": 0.8
+       }
+      ]
+     },
+     {
+      "name": "s56Bank#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 13,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         2,
+         1.7,
+         0.4
+        ]
+       }
+      ]
+     },
+     {
+      "name": "s56Housing#",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "instances": 9,
+      "materials": [
+       {
+        "type": "MeshStandardMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         1,
+         1,
+         1
+        ],
+        "emissive": [
+         0.051,
+         0.005,
+         0.023
+        ],
+        "emissiveIntensity": 0.45,
+        "map": true,
+        "envMapIntensity": 1.1
+       }
+      ]
+     },
+     {
+      "name": "s56Water",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 14,
+      "renderOrder": 0,
+      "frustumCulled": true,
+      "materials": [
+       {
+        "type": "ShaderMaterial",
+        "transparent": false,
+        "opacity": 1,
+        "blending": "Normal",
+        "depthWrite": true,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "uniforms": [
+         "uTime",
+         "uHero"
+        ],
+        "glslColours": [
+         "vec3 far = mix(vec3(0.16, 0.10, 0.62), vec3(0.42, 0.55, 1.02), smoothstep(26.0, 75.0, d));",
+         "vec3 deep = vec3(0.0, 0.02, 0.3), cob = vec3(0.0, 0.15, 0.66), turq = vec3(0.015, 0.4, 0.74);",
+         "c += vec3(0.85, 0.97, 1.2) * sp * 1.1 + vec3(0.8, 0.9, 1.1) * gl * 0.3;",
+         "vec3(0.86, 0.93, 1.02), white * 0.85);"
+        ],
+        "includesTonemapping": false,
+        "includesColorspace": true
+       }
+      ]
+     },
+     {
+      "name": "s56Splash",
+      "objType": "Mesh",
+      "visible": true,
+      "n": 1,
+      "renderOrder": 3,
+      "frustumCulled": false,
+      "instances": 220,
+      "materials": [
+       {
+        "type": "MeshBasicMaterial",
+        "transparent": true,
+        "opacity": 0.9,
+        "blending": "Normal",
+        "depthWrite": false,
+        "depthTest": true,
+        "toneMapped": true,
+        "side": 0,
+        "color": [
+         1.15,
+         1.25,
+         1.35
+        ]
+       }
+      ]
+     }
+    ],
+    "visibleDrawables": 328,
+    "hiddenLegacyCount": 82,
+    "brightOrTransparentNearCamera": {
+     "geometry_#|MeshStandardMaterial": {
+      "n": 11,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1,
+       1,
+       1
+      ],
+      "emissiveX": 0.18,
+      "nearestDist": 1.687
+     },
+     "(noname)|ShaderMaterial": {
+      "n": 12,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": null,
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "(noname)|MeshStandardMaterial": {
+      "n": 55,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       0.888,
+       0.397,
+       0.044
+      ],
+      "emissiveX": 0.025,
+      "nearestDist": 1.772
+     },
+     "s3Bubbles|ShaderMaterial": {
+      "n": 2,
+      "transparent": true,
+      "opacity": 1,
+      "blending": "Custom",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": null,
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "s4Bubbles|ShaderMaterial": {
+      "n": 1,
+      "transparent": true,
+      "opacity": 1,
+      "blending": "Custom",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": null,
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "l1Bubbles|ShaderMaterial": {
+      "n": 1,
+      "transparent": true,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": null,
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "s56Arches|MeshStandardMaterial": {
+      "n": 2,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       0.807,
+       0.06,
+       0.347
+      ],
+      "emissiveX": 0.176,
+      "nearestDist": 1.772
+     },
+     "s56Arches|MeshBasicMaterial": {
+      "n": 1,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       2.2,
+       1.35,
+       0.55
+      ],
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "s56Lamps|MeshStandardMaterial": {
+      "n": 1,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1,
+       0.451,
+       0.063
+      ],
+      "emissiveX": 0.056,
+      "nearestDist": 1.772
+     },
+     "s56Lamps|MeshBasicMaterial": {
+      "n": 1,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       2.2,
+       1.35,
+       0.55
+      ],
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "s56Bank#|MeshStandardMaterial": {
+      "n": 70,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1,
+       0.451,
+       0.063
+      ],
+      "emissiveX": 0.056,
+      "nearestDist": 1.772
+     },
+     "s56Bank#|MeshBasicMaterial": {
+      "n": 55,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       0.5,
+       1.9,
+       2.2
+      ],
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "s56Housing#|MeshStandardMaterial": {
+      "n": 14,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1,
+       1,
+       1
+      ],
+      "emissiveX": 0.023,
+      "nearestDist": 1.772
+     },
+     "s56Splash|MeshBasicMaterial": {
+      "n": 1,
+      "transparent": true,
+      "opacity": 0.9,
+      "blending": "Normal",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": [
+       1.15,
+       1.25,
+       1.35
+      ],
+      "emissiveX": 0,
+      "nearestDist": 1.772
+     },
+     "(noname)|SpriteMaterial": {
+      "n": 2,
+      "transparent": true,
+      "opacity": 0.45,
+      "blending": "Additive",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": [
+       0.25,
+       0.75,
+       1.6
+      ],
+      "emissiveX": 0,
+      "nearestDist": 4.638
+     },
+     "mesh_#|MeshLambertMaterial": {
+      "n": 3,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1,
+       1,
+       1
+      ],
+      "emissiveX": 0.42,
+      "nearestDist": 4.677
+     },
+     "r2Halo|SpriteMaterial": {
+      "n": 3,
+      "transparent": true,
+      "opacity": 0.7,
+      "blending": "Additive",
+      "depthWrite": false,
+      "toneMapped": true,
+      "color": [
+       1,
+       1,
+       1
+      ],
+      "emissiveX": 0,
+      "nearestDist": 4.988
+     },
+     "(noname)|MeshBasicMaterial": {
+      "n": 5,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1.941,
+       1.493,
+       0.709
+      ],
+      "emissiveX": 0,
+      "nearestDist": 5.575
+     },
+     "#|MeshStandardMaterial": {
+      "n": 3,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       0.7,
+       0.45,
+       1
+      ],
+      "emissiveX": 0.507,
+      "nearestDist": 7.208
+     },
+     "tripo_node_d218d0c1-8682-44fe-a24d-46babeba#|MeshStandardMaterial": {
+      "n": 2,
+      "transparent": false,
+      "opacity": 1,
+      "blending": "Normal",
+      "depthWrite": true,
+      "toneMapped": true,
+      "color": [
+       1,
+       1,
+       1
+      ],
+      "emissiveX": 0.021,
+      "nearestDist": 8.778
+     }
+    },
+    "bloomEnabledAtCapture": true,
+    "ablation": {
+     "base": {
+      "waterPx": 109645,
+      "palePct": 19.953,
+      "whitePct": 2.908,
+      "meanRGB": [
+       74,
+       125,
+       211
+      ],
+      "paleMeanRGB": [
+       196,
+       211,
+       245
+      ]
+     },
+     "noBloom": {
+      "waterPx": 109645,
+      "palePct": 19.678,
+      "whitePct": 2.799,
+      "meanRGB": [
+       73,
+       124,
+       210
+      ],
+      "paleMeanRGB": [
+       196,
+       211,
+       245
+      ]
+     },
+     "noGrade": {
+      "waterPx": 109645,
+      "palePct": 20.891,
+      "whitePct": 2.369,
+      "meanRGB": [
+       78,
+       124,
+       204
+      ],
+      "paleMeanRGB": [
+       195,
+       210,
+       242
+      ]
+     },
+     "noToneMap(None)": {
+      "waterPx": 109645,
+      "palePct": 23.219,
+      "whitePct": 14.419,
+      "meanRGB": [
+       88,
+       134,
+       212
+      ],
+      "paleMeanRGB": [
+       222,
+       238,
+       253
+      ]
+     },
+     "noSplash": {
+      "waterPx": 109645,
+      "palePct": 19.902,
+      "whitePct": 2.78,
+      "meanRGB": [
+       74,
+       125,
+       211
+      ],
+      "paleMeanRGB": [
+       196,
+       211,
+       245
+      ]
+     },
+     "water:noSpecGlint": {
+      "waterPx": 109645,
+      "palePct": 10.901,
+      "whitePct": 2.563,
+      "meanRGB": [
+       38,
+       102,
+       198
+      ],
+      "paleMeanRGB": [
+       203,
+       215,
+       240
+      ]
+     },
+     "water:noWhiteCrestCollarWake": {
+      "waterPx": 109645,
+      "palePct": 10.219,
+      "whitePct": 0.123,
+      "meanRGB": [
+       51,
+       111,
+       206
+      ],
+      "paleMeanRGB": [
+       187,
+       205,
+       250
+      ]
+     },
+     "water:noHaze": {
+      "waterPx": 109645,
+      "palePct": 19.975,
+      "whitePct": 2.908,
+      "meanRGB": [
+       74,
+       125,
+       211
+      ],
+      "paleMeanRGB": [
+       196,
+       211,
+       245
+      ]
+     },
+     "allOff(noBloom,noGrade,noSplash,noSpec,noWhite)": {
+      "waterPx": 109645,
+      "palePct": 0.036,
+      "whitePct": 0.002,
+      "meanRGB": [
+       11,
+       84,
+       183
+      ],
+      "paleMeanRGB": [
+       219,
+       195,
+       229
+      ]
+     }
+    },
+    "maskCoverage": "33.048% of frame",
+    "paleGrid48px_base": [
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     "....1....",
+     "..4221.2.",
+     "2157.22..",
+     "002...100",
+     "066...500",
+     "235224660",
+     "300003524",
+     "034320000",
+     "000000000"
+    ],
+    "paleGrid48px_noWhite": [
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     "....1....",
+     "..3220.2.",
+     "2012.01..",
+     "002...100",
+     "001...000",
+     "000003110",
+     "000003522",
+     "034320000",
+     "000000000"
+    ],
+    "paleGrid48px_allOff": [
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     ".........",
+     "....0....",
+     "..0000.0.",
+     "0000.00..",
+     "000...000",
+     "000...000",
+     "000000000",
+     "000000000",
+     "000000000",
+     "000000000"
+    ],
+    "hdrWater": {
+     "glErrorAfterFloatRead": 0,
+     "waterPx": 109645,
+     "meanLinear": [
+      0.223,
+      0.306,
+      0.678
+     ],
+     "pctPeakOver0_76": 28.668,
+     "pctPeakOver1": 14.722,
+     "pctLumOverBloomThreshold": 3.071,
+     "pctPeakOver0_76_afterGradeAndExposure": 59.831,
+     "pctPeakOver1_2_afterGradeAndExposure": 17.022,
+     "palePixels_meanLinear_preGrade": [
+      0.696,
+      0.824,
+      1.154
+     ],
+     "palePixels_meanAfterGradeExposure": [
+      0.749,
+      0.947,
+      1.46
+     ],
+     "palePixelCount": 21878
+    },
+    "glErrorEnd": 0
+   }
+  }
+ ]
+}

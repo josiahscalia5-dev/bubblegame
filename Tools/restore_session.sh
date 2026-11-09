@@ -5,9 +5,16 @@
 # Then continue START_HERE_NEXT_CLAUDE_ACCOUNT.md -> SIX_SCENE_IMPLEMENTATION_STATUS.md (the user's six-scene direction).
 set -u
 cd "$(dirname "$0")/.." || exit 1
-WORK=claude/bubble-wash-account-transfer-52t7ym   # (session bb87ba9f: the newest working branch; rollback checkpoint: claude/bubble-wash-account-switch-e1nndb at 0aa21621)
+WORK=claude/bubble-wash-restore-transfer-kc4ecl   # (9 November 2026, session d847dce2: the user's PRIMARY branch; 52t7ym is historical only; rollback checkpoints: see START_HERE_NEXT_CLAUDE_ACCOUNT.md)
 T=$(mktemp -d)
-[ -d "$HOME/.bubblewash-tools" ] || { echo "== ~/.bubblewash-tools missing: running Tools/cloud_env_setup.sh once (Blender, Tripo CLI, glTF tools, Vite, metrics, Spector)"; bash Tools/cloud_env_setup.sh > "$T/setup.log" 2>&1 || echo "   setup reported a failed step: see $T/setup.log"; }
+# (9 November 2026, session f28099bc) run the idempotent setup whenever an ESSENTIAL tool is missing, not only when the whole folder is: at that
+# session's start the folder existed but the environment's setup had been cut off inside the PyTorch download, so the Tripo CLI, glTF tools,
+# the game's npm packages and the Spector build were missing. The setup skips what is installed (about 10 s when complete).
+need=""; [ -d "$HOME/.bubblewash-tools" ] || need="tool folder"
+for c in tripo gltf-transform gltfpack; do [ -x "$HOME/.bubblewash-tools/node/node_modules/.bin/$c" ] || need="$need $c"; done
+[ -f "$HOME/.bubblewash-tools/spector/mcp/dist/index.js" ] || need="$need spector-build"
+[ -d WebDemo/node_modules ] || need="$need WebDemo/node_modules"
+[ -n "$need" ] && { echo "== missing:$need -> running Tools/cloud_env_setup.sh (idempotent; essential tools first, the optional PyTorch last)"; bash Tools/cloud_env_setup.sh > "$T/setup.log" 2>&1 || echo "   setup reported a failed step: see $T/setup.log"; }
 source Tools/bw_tools_env.sh > /dev/null 2>&1
 
 ( echo "== Git"
@@ -30,6 +37,13 @@ source Tools/bw_tools_env.sh > /dev/null 2>&1
   [ -f .claude/skills/bubble-wash-screen-matcher/SKILL.md ] && echo "  skill: bubble-wash-screen-matcher"
   grep -q session-start .claude/settings.json && echo "  SessionStart hook registered (starts ONE autosave)"
   grep -q '"spector"' .mcp.json && echo "  .mcp.json: project Spector server (built into ~/.bubblewash-tools/spector by the setup script)"
+  echo "== Models (Tools/check_models.cjs: real GLB, not LFS pointers, not truncated, Khronos validator 0 errors)"; echo "  $(node Tools/check_models.cjs 2>&1 | tail -1)"
+  echo "== MCP servers (startable from this machine; the live call is Claude's)"
+  pj=$(ls "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json 2>/dev/null | xargs grep -l '"parallax-threejs"' 2>/dev/null | head -1)
+  [ -n "$pj" ] && echo "  parallax-threejs plugin synced: $(grep -o '"version": *"[^"]*"' "$pj" | head -1)" || echo "  parallax-threejs plugin NOT synced in this session (claude.ai -> Customize / plugins -> enable it, then a NEW session)"
+  ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 && echo "  threejs-devtools-mcp cached (if it timed out at start: /mcp -> reconnect)" || echo "  threejs-devtools-mcp NOT cached (bash Tools/cloud_env_setup.sh, then /mcp -> reconnect)"
+  sp=$( (printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"restore","version":"1"}}}' '{"jsonrpc":"2.0","method":"notifications/initialized"}' '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'; sleep 5) | timeout 25 node "$HOME/.bubblewash-tools/spector/mcp/dist/index.js" 2>/dev/null | grep -o '"name":"capture_frame"' | head -1)
+  [ -n "$sp" ] && echo "  Spector MCP server starts and lists capture_frame (if Claude shows it failed: /mcp -> reconnect spector; live proof: Tools/spector_live.cjs)" || echo "  Spector MCP server does NOT start (bash Tools/cloud_env_setup.sh)"
   echo "== Autosave"; n=$(ps -eo cmd | grep -c '[a]utosave.sh'); echo "  autosave processes: $n (expected 1)"
   tail -1 "$HOME/.bubblewash-autosave/save_history.log" 2>/dev/null | sed 's/^/  last: /'
   echo "== Specialist lanes (PARALLEL_LANES.md; recover any missing worktree: bash Tools/lanes.sh create)"; bash Tools/lanes.sh status 2>&1 | sed 's/^/  /'
