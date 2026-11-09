@@ -1,5 +1,14 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
+## READ FIRST, NEWEST (9 November 2026 ~13:30 UTC, session d847dce2, account restore). This block overrides anything older below.
+- **Branch:** the user's PRIMARY branch is now `claude/bubble-wash-restore-transfer-kc4ecl` (the user's instruction of 9 November). `claude/bubble-wash-account-transfer-52t7ym`
+  is historical recovery information only. If the session opens on a `ccr-*` branch, check it CONTAINS kc4ecl, develop there; `Tools/save_now.sh`
+  (and so the autosave) fast-forwards kc4ecl to every verified save (never force). Scripts: `save_now.sh` USER_BRANCH, `restore_session.sh` / `session_preflight.sh` WORK.
+- **Tripo:** the key is a network secret for `openapi.tripo3d.ai` on the environment `bubblegame` (saved this session; balance 1,060, 0 frozen). Still NO credits without the user's approval.
+- **Plugins on this account:** `parallax-threejs` is NOT enabled (ListPlugins empty; only the org's synced `playwright` (Microsoft) and `typescript-lsp`), so there is no
+  chrome-devtools / threejs-devtools MCP and no scenario-author / shader-reviewer / visual-debugger agents until the user enables it and starts a new session.
+  The project's Spector MCP (`.mcp.json`) and the synced Playwright MCP work. Report: `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`.
+
 ## READ FIRST, NEWEST (9 November 2026, session f28099bc, account transfer). This block overrides anything older below.
 - **Branch:** the user's branch is `claude/bubble-wash-account-transfer-52t7ym`. If the session opens on another branch (`claude/...-kc4ecl`, `ccr-*`),
   check that it CONTAINS 52t7ym, develop there and fast-forward 52t7ym to it at every verified save (`git push origin HEAD:refs/heads/claude/bubble-wash-account-transfer-52t7ym`, never force).
