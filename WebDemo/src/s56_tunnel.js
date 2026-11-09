@@ -65,10 +65,10 @@ export const S56 = {
     // deep (0, 0.09, 0.60) -> ~#0060da, mid (0, 0.36, 0.76) -> ~#10aaee, turq (0.06, 0.72, 0.98) -> ~#3ad6f5
     deepH: [0.0, 0.09, 0.60], midH: [0.0, 0.36, 0.76], turqH: [0.06, 0.72, 0.98],
     foam: [0.9, 0.97, 1.06],
-    chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
-    crest: 0.18,    // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none) (ddf175f2: 0.3 -> 0.18)
+    chop: 1.4,      // (ddf175f2: 1.0 -> 1.4) the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
+    crest: 0.10,    // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none) (ddf175f2: 0.3 -> 0.10)
     ripple: 1.0,    // the churned water round him: thin broken rings spreading from his sides
-    collar: 1.0,    // the thin broken splash line where the water meets his body (strongest at his sides)
+    collar: 1.5,    // (ddf175f2: 1.0 -> 1.5) the thin broken splash line where the water meets his body (strongest at his sides)
     wake: 0.6,      // the two thin wake lines toward the camera
     spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
     glint: 1.0,     // the sky glints
@@ -76,16 +76,16 @@ export const S56 = {
     // (ddf175f2) lean 3 -> 4, height 0.45 -> 4, bias 0 -> -0.12, turqAt 0.5 -> 0.6: the swells' heights now carry broad rolling bands (cobalt
     // troughs, azure bodies, turquoise lifted faces); measured fg cob 0.2 -> 15 %, p5 0.44 -> 0.31 (approved 9.5 %, 0.32), water6/02_water/x5
     lean: 4.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
-    height: 4.0,    // the wave height's share of the shading (lifted water lighter)
-    hSwell: 2.4, hChop: 0.8,   // (ddf175f2) inside that share: the geometry swells' height and the chop's (v2: 2.4 / 0.8)
+    height: 3.0,    // the wave height's share of the shading (lifted water lighter)
+    hSwell: 0.8, hChop: 2.0,   // (ddf175f2) inside that share: the geometry swells' height and the chop's (v2: 2.4 / 0.8; the long swells made whole-foreground light / dark bands that came and went, water6/03_pass1)
     gap: 0.35,      // the share of the collar / wake / ripple lines broken away (0 = continuous lines)
     line: 1.4,      // crest line half-width in screen pixels (at the canvas's resolution) (ddf175f2: 1.2 -> 1.4)
     churn: 0.8,     // the chop's extra strength round him
     churnCrest: 0.25,   // how much lower the crest threshold is round him (more white lines where he swims)
-    froth: 1.0,     // the frothy splash band at his sides
+    froth: 2.0,     // (ddf175f2: 1.0 -> 2.0) the frothy splash band at his sides
     // (session 3849f5c8) the chop's waves, live: [wavelength m, angle deg to the run, A m, phase]. v2's spread (+-12..58 deg) crossed into a net of
     // contour lines; the approved Scene 6's wavelets roll ACROSS the run (crests near horizontal on screen, curved by the domain warp)
-    bias: -0.12,    // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
+    bias: -0.07,    // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
     turqAt: 0.6,    // (3849f5c8) where on the shade the turquoise begins (higher: turquoise only on the most lit faces)
     glint2: 0.0,    // (3849f5c8) the arch lamps' and far glow's glints on the chop's faces (white, per pixel)
     glintExp: 60.0, // (3849f5c8) their sharpness
@@ -100,7 +100,7 @@ export const S56 = {
   // radial (the approved's dense short fur radiating from his crown; match5's long combed strands made a bush), only with water6 + hero6
   hero6: { sink: 0.78, squash: 1.6, wide: 1.0, fur: { len: 0.06, comb: 0.0, lean: 0.05 } },
   water6Hero: { sink: 0.4, squash: 1.0, wide: 1.0 },   // (ddf175f2) water6 WITHOUT hero6: v2's body as before
-  splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4, n: 220 },   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
+  splash6: { rate: 110, size: [0.010, 0.026], stretch: 3.0, speed: 2.4, n: 220 },   // (ddf175f2: finer, more, longer streaks: v2's round drops read as white dots)   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 
