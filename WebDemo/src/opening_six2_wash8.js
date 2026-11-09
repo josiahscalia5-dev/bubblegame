@@ -19,7 +19,7 @@ const sm = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (
 // every number (window.__bwWash8 in the browser). Times are STORY seconds (real seconds - 0.5 after the warp).
 export const WASH8 = {
   fill: [6.45, 6.9],            // the water rises
-  level: { from: -0.3, front: -0.135, back: -0.07 },   // waterline heights relative to the porthole's centre (m): start, the front body, the body behind him
+  level: { from: -0.3, front: -0.11, back: -0.045 },   // waterline heights relative to the porthole's centre (m): start, the front body, the body behind him
   slosh: { amp: [0.07, 0.3], rate: [2.2, 5.5] },        // the waterline's rocking (rad; rad/s), from the wash's start to the spin
   spin: [7.3, 7.72],             // the waterline tips into the ring
   ring: { rin: [0.03, 0.2], open: [7.45, 7.9] },        // the ring's inner radius as it opens

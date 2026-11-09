@@ -21,10 +21,10 @@ const server = http.createServer((req, res) => {
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text()); });
   page.on('pageerror', (e) => logs.push(e.message));
-  await page.addInitScript((s3) => {
-    window.__BW_S3__ = s3; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
+  await page.addInitScript(([s3, notest]) => {
+    window.__BW_S3__ = s3; if (!notest) { window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art']; }   // NOTEST=1: the real player flow (the game's own real-time loop, the opening plays by itself)
     let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  }, S3);
+  }, [S3, process.env.NOTEST === '1']);
   await page.goto(`http://localhost:${server.address().port}/index.html${process.env.QUERY ? '?' + process.env.QUERY : ''}`);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   const stage = await page.locator('#stage').boundingBox();

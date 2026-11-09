@@ -24,7 +24,8 @@ import { BRUSH6_ON, buildBrush6 } from './s56_brush6.js';   // (session 47f75e22
 import { TRIPO6_ON, buildTripo6 } from './s56_tripo6.js';   // (session ddf175f2, coordinator hook) the user's new Tripo models of Screen 6 `tripo6`
 import { TANK6_ON, buildTank6 } from './s56_tank6.js';   // (session ddf175f2, coordinator hook) the modelled glowing glass tank `tank6`
 import { CROWN6_ON, buildCrown6 } from './s56_crown6.js';   // (session ddf175f2, coordinator hook, fin6) the white splash crown round him
-import { HERO7_ON, buildHero7 } from './s56_hero7.js';   // (session ddf175f2, coordinator hook) the approved Screen 6 fur dome `hero7`
+import { HERO7_ON, buildHero7 } from './s56_hero7.js';
+import { JOURNEY8_ON, J8, j8WaterHalf, J8FOAM } from './journey8.js';   // (session 8da775c4, coordinator hook) `journey8`: the tunnel goes on to the washer portal; the falls' foam on the water   // (session ddf175f2, coordinator hook) the approved Screen 6 fur dome `hero7`
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
@@ -39,7 +40,7 @@ const HERO6W = WATER6_ON && LIST.includes('hero6');
 
 // every number (window.__bwS56 in the browser)
 export const S56 = {
-  u0: -4, u1: 262, chunk: 20,
+  u0: -4, u1: JOURNEY8_ON ? J8.end + 0.5 : 262, chunk: 20,   // (journey8: on to the portal wall; 262 = the end of the enemy stretch as before)
   R: 2.42, axisH: 1.5,
   arch: { step: 4.2, from: 3.4 },
   bank: { step: 3.9, inner: 1.5 },
@@ -536,7 +537,7 @@ export async function buildS56(ctx) {
     try { const d = window.__bw && window.__bw.debug && window.__bw.debug(), ps = d && d.composer && d.composer.passes; const g = ps && ps.find((p) => p.uniforms && p.uniforms.uHero); if (g) gradeU = g.uniforms.uHero; } catch (e) { gradeU = false; } };
   syncWater(); if (WATER6_ON && typeof window !== 'undefined') window.__bwS56Sync = syncWater;
   const waterMat = !WATER6_ON ? waterMatS56() : new THREE.ShaderMaterial({
-    uniforms: { uTime: timeU, uHero: heroU, uHeroR: heroR, ...wU },
+    uniforms: { uTime: timeU, uHero: heroU, uHeroR: heroR, ...wU, ...(JOURNEY8_ON ? { uJ8Foam: J8FOAM } : {}) },
     vertexShader: /* glsl */ `
       attribute vec2 aXU; attribute vec3 aR; attribute vec3 aUp;
       uniform float uTime; uniform vec4 uHero; uniform vec2 uHeroR;   // hero x, u, speed across, swim power; (ddf175f2) his water-contact radii (m)
@@ -557,6 +558,7 @@ export async function buildS56(ctx) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
+      ${JOURNEY8_ON ? `uniform vec4 uJ8Foam[${J8.foam}];` : ''}
       uniform float uTime; uniform vec4 uHero; uniform vec2 uHeroR; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5, uW6; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
@@ -615,6 +617,10 @@ export async function buildS56(ctx) {
         float wkeep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, s5f(vXU * vec2(7.0, 4.0) + vec2(3.7, -uTime * 1.6)));
         float wk = s56Line(side - arm, 1.8) * behind * wkeep * uW2.x;
         float white = clamp(crest + collar + ripple + wk + spark + glint2, 0.0, 1.0);
+        ${JOURNEY8_ON ? `// (journey8) where a fall lands: churned white water on the surface itself, spreading and breaking up outward
+        for (int i = 0; i < ${J8.foam}; i++) { vec4 jf = uJ8Foam[i]; vec2 jd = (vXU - jf.xy) / jf.z; float jr = length(jd);
+          if (jr < 1.6) { float ja = atan(jd.y, jd.x), jn = s5f(vec2(ja * 2.2 + jf.x, jr * 3.2 - uTime * 1.7));
+            white = max(white, clamp((1.0 - smoothstep(0.25, 1.0 + 0.5 * jn, jr)) * smoothstep(0.28, 0.62, jn + 0.5 * (1.0 - jr)) + (1.0 - smoothstep(0.0, 0.5, jr)) * 0.85, 0.0, 1.0) * min(1.0, jf.w)); } }` : ''}
         c = mix(c, uFoam, white * 0.95);
         c = mix(c, s56Haze(c, vW), uW2.w);
         gl_FragColor = vec4(c, 1.0);
@@ -630,7 +636,7 @@ export async function buildS56(ctx) {
       for (let i = 0; i < rows; i++) {
         const u = ua + (ub - ua) * (i / (rows - 1)); TR.frame(u, F);
         for (let j = 0; j <= NX; j++) {
-          const x = X0 + (X1 - X0) * (j / NX), k = i * (NX + 1) + j, b = W.baseHeight(ctx.L, x, u);
+          const hw8 = JOURNEY8_ON ? j8WaterHalf(u, X1) : X1, x = (JOURNEY8_ON ? -hw8 : X0) + ((JOURNEY8_ON ? hw8 : X1) - (JOURNEY8_ON ? -hw8 : X0)) * (j / NX), k = i * (NX + 1) + j, b = W.baseHeight(ctx.L, x, u);   // (journey8: to the chamber's walls)
           const p = F.P.clone().addScaledVector(F.R, x).addScaledVector(F.U, b);
           pos.set([p.x, p.y, p.z], k * 3); xu.set([x, u], k * 2); aR.set([F.R.x, F.R.y, F.R.z], k * 3); aUp.set([F.U.x, F.U.y, F.U.z], k * 3);
         }
@@ -678,11 +684,12 @@ export async function buildS56(ctx) {
   // ------------------------------------------------ 7. hiding the old blue tunnel's water and overlays where s56 is drawn
   // sticky: these stay hidden whatever later code sets (the old blue tunnel's water, swell, overlays, rings and Screen 3/4 props); gameplay
   // objects (coins, gems, socks, enemies, the lane brushes, soap bars, paths) are never touched
+  const LEGACY_J8 = /^(l1Gate|l1Kingdom|l1Sky|l1ChamberEnd|l1ChamberFall|l1ChamberBrush|l1Finish)$/;   // (journey8: the old Bubble Kingdom hall, its portal, sky and finish arch; the washer portal stands there)
   const LEGACY = /^(heroSwell|heroSplash|heroFloor|heroWalls|heroCollar|heroGlow|heroBubbles|lqFloor|lqWaterlineBubbles|lqSpraySheets|spCurls|spLumps|matchFloor|matchWall|r3Swirl|r6Walls|r6BowWave|r6Porthole|r6Bezel|r6Face|r6Flanges|r7Glow|mwTunnelBubbles|structWater|btBaseDomes|s3IcyEdge|s3Paint|s3Castle|s3Entrance|s3Machinery|s3Brush|BubbleWash_SideWashingRoller|waterChunk|wetChunk|l1Water|l1Hoops|l1Wall|tunnelDecor|swirl)/i;
   const lock = (o) => { if (o.userData.s56Hidden) return; o.userData.s56Hidden = true; Object.defineProperty(o, 'visible', { get: () => false, set: () => {}, configurable: true }); report.hidden.push(o.name || o.type); };
   function hideLegacy() {
     for (const o of ctx.legacy || []) if (o) lock(o);
-    scene.traverse((o) => { if (o === root || !o.name || o.userData.s56Hidden) return; let p = o.parent; while (p) { if (p === root) return; p = p.parent; } if (LEGACY.test(o.name)) lock(o); });
+    scene.traverse((o) => { if (o === root || !o.name || o.userData.s56Hidden) return; let p = o.parent; while (p) { if (p === root) return; p = p.parent; } if (LEGACY.test(o.name) || (JOURNEY8_ON && LEGACY_J8.test(o.name))) lock(o); });
     if (WATER6_ON) hideSuds();
   }
   // Pass 3 (lane s56, session d847dce2): the Screen 3 opening's soap SUDS (opening.js `suds`: 20 large translucent bubbles that ride against

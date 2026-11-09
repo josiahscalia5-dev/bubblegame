@@ -22,6 +22,7 @@ import * as THREE from 'three';
 // swims onto its foot with a swipe), the bounce pad is not built into the route, and the soap bars are dived under. Without it: as before.
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 const SWIM7 = LIST.includes('swim7');
+const JOURNEY8 = LIST.includes('journey8') && LIST.includes('s56') && LIST.includes('arch56');   // (session 8da775c4) the washer portal ends the level, not the Bubble Kingdom hall
 const RAMP = SWIM7 ? 8 : 0.3;      // the length of the side path's rise (0.3: the previous step up)
 
 // the raised side path (screen-left, +X): its centre x, half width, height above the main water, start, end of its level part,
@@ -86,7 +87,7 @@ export function flowCourse(B) {
       { u: 141, name: 'Spinning brushes', short: 'Brushes', banner: ['Watch out!', 'Spinning brushes!'], warn: true },
       { u: 186, name: 'Treasure', short: 'Treasure', banner: ['Collect coins, gems', '& rescue socks!'] },
       { u: 213, name: 'Grime balls', short: 'Enemies', banner: ['Avoid enemies!', SWIM7 ? 'Tap to spin · swipe ↓ to dive' : 'Tap to spin-attack them'], warn: true },
-      { u: 256, name: 'Bubble Kingdom', short: 'Kingdom', banner: ['Enter the', 'Bubble Kingdom!'] },
+      JOURNEY8 ? { u: 262, name: 'The Great Washer', short: 'Portal', banner: ['Swim to the', 'Great Washer Portal!'] } : { u: 256, name: 'Bubble Kingdom', short: 'Kingdom', banner: ['Enter the', 'Bubble Kingdom!'] },
       { u: 294, name: 'Rescue progress', short: 'Rescue', banner: ['Rescue 5 lost socks', '{socks}/5'] },
     ],
     // [u, lane]: the side paths' main route (the raised path avoids them), then the brushes

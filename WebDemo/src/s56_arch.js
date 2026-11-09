@@ -21,7 +21,8 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';   // (fin6) the control boxes' rounded glossy bodies
 import { widen as flowWiden, ledgeLift } from './level1_flow.js';
-import { BRUSH6_ON, BRUSH6 } from './s56_brush6.js';   // (ddf175f2) read only: where lane brush6's roller brushes stand (their bays keep low modules)
+import { BRUSH6_ON, BRUSH6 } from './s56_brush6.js';
+import { JOURNEY8_ON, j8Widen, j8Bay, buildJourney8 } from './journey8.js';   // (session 8da775c4, coordinator hook) `journey8`: the connected swimming journey's machinery and the final washer portal   // (ddf175f2) read only: where lane brush6's roller brushes stand (their bays keep low modules)
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const ARCH56_ON = LIST.includes('arch56') && LIST.includes('s56') && LIST.includes('level1');
@@ -133,7 +134,7 @@ export async function buildArch56(ctx) {
   const rnd = mulberry(0xa5c56);
   const priv = (fn) => { const save = Math.random; Math.random = rnd; try { return fn(); } finally { Math.random = save; } };
   const U0 = S.u0, U1 = S.u1, nCh = Math.ceil((U1 - U0) / P.chunk);
-  const wid = (u) => (FLOW ? flowWiden(u) : 0);
+  const wid = (u) => (FLOW ? flowWiden(u) : 0) + j8Widen(u);   // (journey8: + the finishing chamber's extra radius; 0 without the switch)
   const lift = (u) => (FLOW ? ledgeLift(u) : 0);
   // (ddf175f2) the drum's radius along the run: P.R (Scene 5) widening to s6.R past s6.from; the arches past s6.from shifted by s6.shift
   const Q6 = P.s6, sm01 = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -712,7 +713,8 @@ vec3 a56Ungrade(vec3 c) {
     for (const [k, ur] of ringUs) {
       const u = ur + (in6(ur) ? Q6.off : P.mod.off); if (u < U0 + 0.5) continue;
       if (in6(u) && u >= Q6.from + Q6.ramp) {   // (ddf175f2) the approved Scene 6 modules in every bay; low ones where a roller brush stands
-        for (const s of [1, -1]) { const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0), low = brushNear(u, s), ci = chunk6(u);
+        for (const s of [1, -1]) { if (j8Bay(k, s)) continue;   // (journey8: this bay holds one of the journey's own machines)
+          const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0), low = brushNear(u, s), ci = chunk6(u);
           const useM = TM && TM.m911 && !low && !(FIN6 && s > 0);   // (fin6: the left bank's procedural station, not the 911 / 912 housings)
           for (const [g, m] of (s > 0 ? (low ? MOD.L6low : useM ? MOD.L6m : MOD.L6) : (low ? MOD.R6low : useM ? MOD.R6m : MOD.R6))) put(u, g, m, L);
           if (FIN6 && TANK6 && s < 0 && low) {   // (fin6) the approved right bank's big glowing tank stands above / behind the right roller brush too
@@ -809,6 +811,11 @@ vec3 a56Ungrade(vec3 c) {
   // (session 47f75e22) the user's newer Tripo cobalt gear blue_jt (mobile LOD1, 16k triangles; its axle is the model's x, a gold hub on both faces):
   // the approved Scene 6 gear (cobalt #1e3cda, gold hub, nearly face-on). Its axle points back to the oncoming camera, turned `out` toward the
   // wall; no violet glow (the art director: s56's magenta emissive turned it navy-violet), its own texture lit a little instead. gear_v2 with ,gearv2.
+  // (session 8da775c4, coordinator hook) `journey8`: its machines, waterfalls and the washer portal are built with this file's own helpers and
+  // materials and merged into the same chunks; it returns the extra gears it wants (placed below with the user's gear model)
+  let j8 = null;
+  if (JOURNEY8_ON) { try { j8 = priv(() => buildJourney8({ put, G, merge, pipe, collar, seg, railing, starG, tank, ovalCab, onOvalAt, facing, MT, std, basic, wid, Ru, frameM,
+    bayU: (k) => P.ring.u0 + k * P.ring.step + Q6.shift + Q6.off, timeU, group, P, Q6, report })); } catch (e) { report.errors.push('journey8: ' + ((e && e.message) || e)); } }
   const gears = [];
   try {
     const V2 = LIST.includes('gearv2');
@@ -833,6 +840,13 @@ vec3 a56Ungrade(vec3 c) {
         const m = dressed.clone(true); m.scale.setScalar(kg); m.position.copy(gc).multiplyScalar(-kg); spin.add(m);
         group.add(holder); gears.push(spin); stats.gears++;
       }
+      for (const g of (j8 ? j8.gears : [])) {   // (journey8) its own gears: beside the pipe falls and flanking the portal (x absolute, either wall)
+        const holder = new THREE.Group(); holder.name = 'a56GearJ8'; holder.matrixAutoUpdate = false;
+        holder.matrix.copy(frameM(g.u).multiply(T4(g.s * g.x, g.h, 0, 0, axleX ? Math.PI / 2 - g.s * g.out : Math.PI - g.s * g.out, 0)));
+        const spin = new THREE.Group(); holder.add(spin); spin.userData.axleX = axleX;
+        const kg = g.d / dia, m = dressed.clone(true); m.scale.setScalar(kg); m.position.copy(gc).multiplyScalar(-kg); spin.add(m);
+        group.add(holder); gears.push(spin); stats.gears++;
+      }
     });
   } catch (e) { report.errors.push('arch56 gear: ' + ((e && e.message) || e)); }
 
@@ -849,6 +863,7 @@ vec3 a56Ungrade(vec3 c) {
     if (gp) { UNG.value = P.ungrade * (1 - (gp.uniforms.uHero ? gp.uniforms.uHero.value : 0)); US4.value = gp.uniforms.uS4Grade.value; }
     else if (m) { UNG.value = P.ungrade * (1 - heroGradeOn(m.z)); US4.value = 1; }
     for (const g of gears) { if (g.userData.axleX) g.rotation.x = time * P.gear.spin; else g.rotation.z = time * P.gear.spin; }
+    if (j8) j8.update(dt, time, phase, m);   // (journey8: the landings' foam and droplets)
     if (m && lodSets.length) { const a = m.z - 6, b = m.z + P.tm.near;
       for (const [ua, ub, near, far] of lodSets) { const n = ub > a && ua < b; for (const x of near) x.visible = n; for (const x of far) x.visible = !n; } }
     if (m && lodSets6.length) { const a = m.z - 1, b = m.z + Q6.near;
