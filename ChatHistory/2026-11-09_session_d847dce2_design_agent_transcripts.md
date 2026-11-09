@@ -249,8 +249,18 @@ Resuming. I'll plan the layout from measurements first, then build, and keep cap
 - 14:04 `Bash`: List model renders
 - 14:05 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/06_tripo_new_models_6ddc157f/renders/sheet_new_12_m821.png
 - 14:05 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/06_tripo_new_models_6ddc157f/renders/coin_enemy_gear_sheet.png
+- 14:06 `Bash`: Find env map, tone mapping, model list
+- 14:06 `Bash`: Read env scene and lights setup
+- 14:08 `Bash`: Find flow flag, widen usage, track frame API
+- 14:08 `Bash`: Read LEVEL1_PARTS and track frame
+- 14:09 `Bash`: Check fog and legacy handling
+**Agent** (14:09 UTC):
 
-_35 tool steps._
+No fog is set, so I'll add the s56 haze to my standard materials myself so the far machinery fades the same way as the shell and the water. Next I'll sample the reference colours for the materials.
+
+- 14:10 `Bash`: Sample reference colours by region
+
+_41 tool steps._
 
 ---
 
@@ -322,8 +332,28 @@ Address this before completing your current task.
 
 [Image: original 2592x458, displayed at 2000x353. Multiply coordinates by 1.30 to map to original image.]
 
+- 14:05 `Bash`: List all visible layer names
+- 14:05 `Bash`: Find openingLook and structFill sources
+- 14:05 `Bash`: Read openingLook construction
+- 14:05 `Bash`: Footprint the hero-attached layers to find the bubble ring
+- 14:06 `Bash`: Measure footprints of hero-attached layers
+- 14:06 `Bash`: Crop the hero area with and without the mascot model
+- 14:06 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/foot/ring.png
+- 14:07 `Bash`: Find composer passes and waterline bubble sources
+- 14:07 `Bash`: Search waterline bubbles in candidate modules
+- 14:07 `Bash`: List visible objects near the mascot at Tap to Start
+- 14:07 `Bash`: Read the l1Bubbles construction in level1.js
+- 14:07 `Bash`: Footprint the remaining layers around the ring zone
+- 14:09 `Bash`: Crop the ring zone with water or particles hidden
+- 14:09 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/foot2/ring2.png
+- 14:09 `Bash`: List unnamed visible objects with screen positions
+- 14:09 `Bash`: Footprint the unnamed bubble instance meshes
+- 14:10 `Bash`: Crop ring zone with openingLook bubbles hidden
+- 14:10 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/foot3/ring3.png
+- 14:10 `Bash`: Find the openingLook bubble meshes
+- 14:10 `Bash`: Read opening bubble and suds code
 
-_33 tool steps._
+_53 tool steps._
 
 ---
 
