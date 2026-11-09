@@ -206,6 +206,8 @@ export async function buildS56(ctx) {
   const frameM = (u, out = new THREE.Matrix4()) => { TR.frame(u, F); return out.makeBasis(F.R, F.U, F.T).setPosition(F.P); };
   const U0 = S.u0, U1 = S.u1, nCh = Math.ceil((U1 - U0) / S.chunk);
   const timeU = { value: 0 }, heroU = { value: new THREE.Vector4(0, 0, 0, 0) };
+  // (ddf175f2, coordinator) the water-contact radii round him (water6's pile-up, dip and collar): the old body's footprint 0.66 x 0.6 m; hero7 sets its own
+  const heroR = { value: new THREE.Vector2(0.66, 0.6) }; if (typeof window !== 'undefined') window.__bwS56HeroR = heroR;
 
   // ------------------------------------------------ materials
   const M = {
@@ -240,7 +242,7 @@ export async function buildS56(ctx) {
   let tank6 = null;
   if (TANK6_ON) { try { tank6 = await buildTank6({ env, loader, root, report, arch }); } catch (e) { report.errors.push('tank6: ' + ((e && e.message) || e)); } }
   let crown6 = null; if (CROWN6_ON) { try { crown6 = buildCrown6(); } catch (e) { report.errors.push('crown6: ' + ((e && e.message) || e)); } }   // (fin6)
-  let hero7 = null; if (HERO7_ON) { try { hero7 = buildHero7({ mascot: ctx.mascot, report }); } catch (e) { report.errors.push('hero7: ' + ((e && e.message) || e)); } }   // (hero7)
+  let hero7 = null; if (HERO7_ON) { try { hero7 = buildHero7({ mascot: ctx.mascot, report, S }); } catch (e) { report.errors.push('hero7: ' + ((e && e.message) || e)); } }   // (hero7)
 
   // ------------------------------------------------ 1. the drum shell (perforated lavender metal), in chunks so each can be culled
   const shellMat = new THREE.ShaderMaterial({
@@ -534,16 +536,16 @@ export async function buildS56(ctx) {
     try { const d = window.__bw && window.__bw.debug && window.__bw.debug(), ps = d && d.composer && d.composer.passes; const g = ps && ps.find((p) => p.uniforms && p.uniforms.uHero); if (g) gradeU = g.uniforms.uHero; } catch (e) { gradeU = false; } };
   syncWater(); if (WATER6_ON && typeof window !== 'undefined') window.__bwS56Sync = syncWater;
   const waterMat = !WATER6_ON ? waterMatS56() : new THREE.ShaderMaterial({
-    uniforms: { uTime: timeU, uHero: heroU, ...wU },
+    uniforms: { uTime: timeU, uHero: heroU, uHeroR: heroR, ...wU },
     vertexShader: /* glsl */ `
       attribute vec2 aXU; attribute vec3 aR; attribute vec3 aUp;
-      uniform float uTime; uniform vec4 uHero;   // hero x, u, speed across, swim power
+      uniform float uTime; uniform vec4 uHero; uniform vec2 uHeroR;   // hero x, u, speed across, swim power; (ddf175f2) his water-contact radii (m)
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${WAVE_GLSL}
       void main() {
         vec3 wv = s56Wave(aXU.x, aXU.y, uTime);
         // the water piles round him (a rounded collar) and dips just inside it; a V wake behind him (geometry only: the look is per pixel)
-        vec2 d = vec2((aXU.x - uHero.x) / 0.66, (aXU.y - uHero.y) / 0.6);
+        vec2 d = vec2((aXU.x - uHero.x) / uHeroR.x, (aXU.y - uHero.y) / uHeroR.y);
         float rr = length(d), ring = exp(-pow((rr - 1.0) / 0.28, 2.0)) * uHero.w;
         float bu = aXU.y - uHero.y, side = abs(aXU.x - uHero.x);
         float wake = bu < 0.0 ? exp(-pow((side - 0.55 - 0.32 * (-bu)) / 0.16, 2.0)) * exp(bu / 4.5) * uHero.w : 0.0;
@@ -555,7 +557,7 @@ export async function buildS56(ctx) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5, uW6; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
+      uniform float uTime; uniform vec4 uHero; uniform vec2 uHeroR; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5, uW6; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
       ${HAZE}
@@ -565,7 +567,7 @@ export async function buildS56(ctx) {
       void main() {
         vec3 V = normalize(cameraPosition - vW);
         // round him (rr = 1 at his waterline): the churned water
-        vec2 dq = vec2((vXU.x - uHero.x) / 0.66, (vXU.y - uHero.y) / 0.6);
+        vec2 dq = vec2((vXU.x - uHero.x) / uHeroR.x, (vXU.y - uHero.y) / uHeroR.y);
         float rr = length(dq), pw = uHero.w, near = smoothstep(2.6, 1.05, rr) * pw;
         float sideW = smoothstep(0.15, 0.85, abs(dq.x) / max(rr, 1e-3));   // 1 at his sides, 0 straight ahead / behind
         // the short sharp-crested rolling waves: height (normalised), slopes and their crest lines, on top of the geometry's swells

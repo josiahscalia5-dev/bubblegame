@@ -18,20 +18,26 @@ const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((locatio
 export const HERO7_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('hero7');
 
 export const HERO7 = {
-  R: 0.35,         // body radius (m) (fitted on the u 206 frame by render difference: width / top / water line vs the approved)
+  R: 0.32,         // body radius (m) (fitted on the u 206 frame by render difference: width / top / water line vs the approved)
   y: -0.24,        // body centre relative to the game's water-line estimate (m) (fitted)
   sink: 0.78,      // = S56.hero6.sink (the game's sunk body: its water line sits this far above tilt.position.y)
-  nub: { r: 0.5, x: 0.95, y: -0.4, z: -0.22 },   // the nubs: radius and centre in body radii (x out to the sides, z toward the camera = -)
-  shells: 32, len: 0.22, comb: 0.8, droop: 0.1,   // shell count; strand length (body radii); comb along the surface away from the pole; droop
+  nub: { r: 0.52, x: 1.02, y: -0.28, z: -0.3 },   // the nubs: radius and centre in body radii (x out to the sides, z toward the camera = -)
+  shells: 32, len: 0.26, comb: 0.9, droop: 0.1,   // shell count; strand length (body radii); comb along the surface away from the pole; droop
   pole: [0.0, 0.62, -0.79],   // the point the strands radiate from (body frame: +y up, -z toward the camera)
   // strands: two layers of cells per body radius, strand radius (cell units) at the root, length variation, softness
-  dens: [24.0, 37.0], rad: 0.36, lenVar: 0.45, soft: 1.2,
+  dens: [30.0, 46.0], rad: 0.42, lenVar: 0.45, soft: 0.7,
   // tufts (the approved fur is plush clumps with light tips and darker gaps): clump cells per body radius, how far the strands gather toward
   // their clump's centre at the tip, the clump's own length and shade variation
-  clump: { dens: 9.0, k: 0.75, len: 0.35, shade: 0.3 },
+  clump: { dens: 18.0, k: 0.45, len: 0.3, shade: 0.2 },
   // colours (linear, before the grade): the measured ramp base -> lower -> upper -> top; root occlusion; tip lift; highlight
-  base: [0.45, 0.0, 0.24], lower: [1.0, 0.03, 0.45], upper: [1.0, 0.12, 0.72], top: [1.0, 0.45, 0.95],
-  ao: 0.55, tip: 0.22, spec: 0.35, specExp: 40.0, rim: 0.25, light: [0.25, 0.9, -0.45],
+  // (measured band medians, game vs approved: top #ee69ec / #fb67e9, upper #eb1dc2 / #f935bb, lower #eb10ac / #f21ca6, base #d80699 / #b70891)
+  base: [0.28, 0.0, 0.15], lower: [1.3, 0.03, 0.55], upper: [1.35, 0.12, 0.85], top: [1.35, 0.45, 1.25],
+  ramp: [-0.25, 0.1, 0.5, 0.92], vary: 0.7,   // the colour ramp's heights on the body (body radii) and the per-strand light / dark spread
+  ao: 0.62, tip: 0.25, spec: 0.8, specExp: 24.0, rim: 0.25, light: [0.25, 0.9, -0.45],
+  contact: [0.58, 0.5],   // the water's contact radii round him (m: across, along): the pile-up and the white collar hug the dome and nubs
+  // the water's white at his base: its foam over white so it survives the scene grade (fin6 exposure 0.72 dimmed white to grey: 0 % near-white at
+  // his base vs the approved 11 %); its collar and side froth stronger and less broken (measured: 5.2 % near-white with these). S56.water fields.
+  water: { foam: [2.2, 2.3, 2.5], collar: 3.0, froth: 4.0, gap: 0.2 },
   hideOld: 1,   // hide the game mascot's drawn body while hero7 shows (0: both, for comparison)
 };
 if (HERO7_ON && typeof window !== 'undefined') window.__bwHero7 = HERO7;
@@ -52,7 +58,7 @@ void main() {
   gl_Position = projectionMatrix * viewMatrix * w;
 }`;
 const FRAG = /* glsl */ `
-uniform vec2 uDens; uniform vec4 uClump; uniform float uRad, uLenVar, uSoft, uAO, uTip, uSpec, uSpecExp, uRim; uniform vec3 uBase, uLower, uUpper, uTop, uLight;
+uniform vec2 uDens; uniform vec4 uClump, uRamp; uniform float uVary; uniform float uRad, uLenVar, uSoft, uAO, uTip, uSpec, uSpecExp, uRim; uniform vec3 uBase, uLower, uUpper, uTop, uLight;
 varying vec3 vRoot; varying vec3 vN; varying vec3 vT; varying vec3 vV; varying float vH; varying vec3 vBody;
 float h31(vec3 p) { p = fract(p * vec3(0.1031, 0.1030, 0.0973)); p += dot(p, p.yxz + 33.33); return fract((p.x + p.y) * p.z); }
 vec3 h33(vec3 p) { p = fract(p * vec3(0.1031, 0.1030, 0.0973)); p += dot(p, p.yxz + 33.33); return fract((p.xxy + p.yxx) * p.zyx); }
@@ -87,10 +93,10 @@ void main() {
   if (a < 0.02) discard;
   // the measured colour ramp by height on the body (base -> lower -> upper -> top), varied per strand
   float y = vBody.y;
-  vec3 c = mix(uBase, uLower, smoothstep(-0.45, -0.05, y));
-  c = mix(c, uUpper, smoothstep(-0.05, 0.45, y));
-  c = mix(c, uTop, smoothstep(0.45, 0.95, y));
-  c *= (0.86 + 0.28 * var) * cs;
+  vec3 c = mix(uBase, uLower, smoothstep(uRamp.x, uRamp.y, y));   // (the ramp over the VISIBLE body: the water line is ~0.2 R below the centre)
+  c = mix(c, uUpper, smoothstep(uRamp.y, uRamp.z, y));
+  c = mix(c, uTop, smoothstep(uRamp.z, uRamp.w, y));
+  c *= (1.0 - uVary * 0.5 + uVary * var) * cs;
   // occlusion toward the roots, lighter tips
   c *= mix(1.0 - uAO, 1.0, smoothstep(0.0, 0.85, hc));
   c += uTip * smoothstep(0.55, 1.0, hc) * vec3(1.0, 0.32, 0.5);
@@ -116,10 +122,11 @@ function shellGeometry(seg, rings, N) {
 /** ctx: { mascot (the game's mascot state), report }. Returns { update(dt, time, phase, m) }. */
 export function buildHero7(ctx) {
   const P = HERO7, report = ctx.report;
+  if (ctx.S && ctx.S.water) Object.assign(ctx.S.water, P.water);   // (water6's own settings, only with hero7)
   const U = {
     uN: { value: P.shells }, uLen: { value: P.len }, uComb: { value: P.comb }, uDroop: { value: P.droop }, uScaleR: { value: 1 }, uPole: { value: new THREE.Vector3(...P.pole) },
     uDens: { value: new THREE.Vector2(...P.dens) }, uClump: { value: new THREE.Vector4(P.clump.dens, P.clump.k, P.clump.len, P.clump.shade) }, uRad: { value: P.rad }, uLenVar: { value: P.lenVar }, uSoft: { value: P.soft },
-    uAO: { value: P.ao }, uTip: { value: P.tip }, uSpec: { value: P.spec }, uSpecExp: { value: P.specExp }, uRim: { value: P.rim },
+    uRamp: { value: new THREE.Vector4(...P.ramp) }, uVary: { value: P.vary }, uAO: { value: P.ao }, uTip: { value: P.tip }, uSpec: { value: P.spec }, uSpecExp: { value: P.specExp }, uRim: { value: P.rim },
     uBase: { value: new THREE.Color(...P.base) }, uLower: { value: new THREE.Color(...P.lower) }, uUpper: { value: new THREE.Color(...P.upper) }, uTop: { value: new THREE.Color(...P.top) },
     uLight: { value: new THREE.Vector3(...P.light) },
   };
@@ -132,7 +139,7 @@ export function buildHero7(ctx) {
   const sync = () => {
     U.uN.value = P.shells; U.uLen.value = P.len; U.uComb.value = P.comb; U.uDroop.value = P.droop; U.uPole.value.set(...P.pole);
     U.uDens.value.set(...P.dens); U.uClump.value.set(P.clump.dens, P.clump.k, P.clump.len, P.clump.shade); U.uRad.value = P.rad; U.uLenVar.value = P.lenVar; U.uSoft.value = P.soft;
-    U.uAO.value = P.ao; U.uTip.value = P.tip; U.uSpec.value = P.spec; U.uSpecExp.value = P.specExp; U.uRim.value = P.rim;
+    U.uRamp.value.set(...P.ramp); U.uVary.value = P.vary; U.uAO.value = P.ao; U.uTip.value = P.tip; U.uSpec.value = P.spec; U.uSpecExp.value = P.specExp; U.uRim.value = P.rim;
     U.uBase.value.setRGB(...P.base); U.uLower.value.setRGB(...P.lower); U.uUpper.value.setRGB(...P.upper); U.uTop.value.setRGB(...P.top); U.uLight.value.set(...P.light);
     for (const n of nubs) { const N = P.nub; n.position.set(n.userData.s * N.x * P.R, N.y * P.R, N.z * P.R); n.scale.setScalar(N.r * P.R); }
     body.scale.setScalar(P.R);
@@ -146,6 +153,7 @@ export function buildHero7(ctx) {
     sync();
     const on = phase === 'running';
     group.visible = on;
+    if (typeof window !== 'undefined' && window.__bwS56HeroR) { if (on) window.__bwS56HeroR.value.set(...P.contact); else window.__bwS56HeroR.value.set(0.66, 0.6); }
     if (P.hideOld && m.squash) m.squash.visible = !on;
     if (!on) return;
     // his drawn motion: the tilt's rotation (roll, pitch, lean, yaw, spin), the squash's stretch and swim bob, the water line from the tilt's sink
