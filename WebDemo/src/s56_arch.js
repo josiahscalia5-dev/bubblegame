@@ -46,8 +46,9 @@ export const ARCH56 = {
   // near outer corner. h = drawn height (m), inner = the clear distance from the track centre (lanes +/-0.7, his half-width 0.45), ang = the
   // front turned toward the oncoming camera (rad), dz = along the run from the bay's centre. LOD1 near him, LOD2 further on (per chunk).
   // (the art director's measure, approved Scene 6: the machine tops, with their brass elbows, reach y 0.26-0.30 -> ~2.4 m tall)
+  // (the R 2.55 drum is only ~1.2 m deep beside the lanes: the Machinery's depth is squashed by sx so its tall front stays inside the wall)
   tm: {
-    mach: { h: 2.4, inner: 1.25, ang: 0.4, dz: -0.1, y: -0.08 },
+    mach: { h: 2.7, sx: 0.6, inner: 1.25, ang: 0.25, dz: -0.9, y: -0.08 },
     star: { r: 0.62, zs: 1.55, h: 1.05, inner: 1.25, dz: 0.0 },
     ch: { h: 1.15, x: 2.05, y: 1.08, dz: -0.95, ang: 0.55 },
     near: 22,   // metres ahead of him drawn with LOD1
@@ -55,6 +56,7 @@ export const ARCH56 = {
   // the camera: null = s56's own (S56.cam). (session 47f75e22) the coordinator's call: keep it (his width and the vanishing point already match;
   // his height in the water is the water lane's S56.hero.sink). Set { off, look, fov } (track frame, from his ride height) to own the framing.
   cam: null,
+  ungrade: 1.0,   // how much of the base grade the lit arch56 materials undo past the old drum (see UNGRADE)
   hideDecoBrushes: true,   // the old drum's high decorative wall brushes (s4Brush with hazard false: they never collide) cover the gear and the crown
 };
 const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B) instead of the user's models
@@ -94,16 +96,27 @@ export async function buildArch56(ctx) {
 
   // ------------------------------------------------ materials (colours from the reference's own pixels; linear values kept under the Neutral
   // tone-mapping knee ~0.76 so they stay saturated; glow only in small cores). Every one fades into the far end's haze like the s56 water.
+  // (session 47f75e22) past the old drum's end (L.tunnelEnd) the game's hero grade (uHero, tunnel_r7_hero.js: saturation 1.16) gives way to the
+  // base grade (shaders.js GradeShader: saturation 1.32 then contrast 1.12 per channel, on linear values before tone mapping): every gold turned
+  // orange-red and every pink red at u 206 (measured: rail #f53c3b, housing #df4262; the lights are the same at tap and 206). The lit arch56
+  // materials undo that base grade themselves (its exact inverse, by P.ungrade) wherever the hero grade is off, so they read as designed all run.
+  const UNG = { value: 0 };
+  const UNGRADE = /* glsl */ `
+uniform float uA56Ungrade;
+vec3 a56Ungrade(vec3 c) { vec3 g = (c - 0.18) / 1.12 + 0.18; float l = dot(g, vec3(0.2126, 0.7152, 0.0722)); return max(vec3(l) + (g - l) / 1.32, 0.0); }`;
   const hazeIt = (m) => {
     m.onBeforeCompile = (sh) => {
+      sh.uniforms.uA56Ungrade = UNG;
       sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;')
         .replace('#include <project_vertex>', '#include <project_vertex>\n{ vec4 hz = vec4(transformed, 1.0);\n#ifdef USE_INSTANCING\n hz = instanceMatrix * hz;\n#endif\n vHzW = (modelMatrix * hz).xyz; }');
-      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;\n' + HAZE)
-        .replace('#include <opaque_fragment>', 'outgoingLight = a56Haze(outgoingLight, vHzW);\n#include <opaque_fragment>');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;\n' + HAZE + UNGRADE)
+        .replace('#include <opaque_fragment>', 'outgoingLight = a56Haze(outgoingLight, vHzW);\noutgoingLight = mix(outgoingLight, a56Ungrade(outgoingLight), uA56Ungrade);\n#include <opaque_fragment>');
     };
     m.customProgramCacheKey = () => 'a56haze';
     return m;
   };
+  const heroGradeOn = (z) => { const L = ctx.L, sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    return L ? sm(L.tunnelStart - 12, L.tunnelStart - 8, z) * (1 - sm(L.tunnelEnd - 2, L.tunnelEnd + 4, z)) : 1; };   // = tunnel_r7_hero.js's uHero
   const std = (o) => hazeIt(new THREE.MeshStandardMaterial({ envMap: env, ...o }));
   const basic = (r, g, b, o = {}) => hazeIt(new THREE.MeshBasicMaterial({ color: new THREE.Color(r, g, b), ...o }));
   const MT = priv(() => ({
@@ -408,19 +421,20 @@ export async function buildArch56(ctx) {
         if (type === 'M') {
           const ci = chunkOf(u);
           if (s > 0) {   // left: the Machinery cluster, its front to the channel, turned toward the camera, its far-front corner at `inner`
-            const T = P.tm.mach, z = TM.mach[0].size, ext = (z.x / 2) * Math.cos(T.ang) + (z.z / 2) * Math.sin(T.ang);
-            const Lm = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.inner + ext), T.y, T.dz)).multiply(ry(turn(s, T.ang)));
+            const T = P.tm.mach, z = TM.mach[0].size, sx = T.sx || 1, ext = (z.x * sx / 2) * Math.cos(T.ang) + (z.z / 2) * Math.sin(T.ang);
+            const Lm = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.inner + ext), T.y, T.dz)).multiply(ry(turn(s, T.ang))).multiply(new THREE.Matrix4().makeScale(sx, 1, 1));
             inst.mach[ci].push(frameM(u).multiply(Lm));
-            // the glow in its glass chamber (original model coordinates, from the model's own front view)
-            const hp = TM.mach[0].at(0.06, 0.09, -0.26);
-            put(u, G.sph(0.07 * TM.mach[0].k, 14, 10).scale(0.8, 1.15, 0.8), MT.tmHalo, Lm.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
+            // the glow on its glass chamber's front (original model coordinates, from the model's own front view); additive, so it shows on the glass
+            const hp = TM.mach[0].at(0.16, 0.09, -0.26), kk = TM.mach[0].k;
+            put(u, G.sph(0.085 * kk, 14, 10).scale(0.7 / sx, 1.2, 1), MT.tmHalo, Lm.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
+            put(u, G.sph(0.03 * kk, 10, 8).scale(1 / sx, 1, 1), MT.tmCore, Lm.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x + 0.02 * kk, hp.y, hp.z)));
           } else {   // right: the pink star housing (none in the bay right after the Scene 5 gear: the gear stands there)
             if (!(firstGear === 0 && k - 1 === 0)) { for (const [g, m] of MOD.S[s]) put(u, g, m, L); stats.stars = (stats.stars || 0) + 1; }
             const T = P.tm.ch, Lc = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * T.x, T.y, T.dz)).multiply(ry(turn(s, T.ang)));
             inst.ch[ci].push(frameM(u).multiply(Lc));
-            const hp = TM.ch[0].at(0.1, -0.02, 0), kk = TM.ch[0].k;
-            put(u, G.sph(0.2 * kk, 16, 12).scale(0.7, 1.2, 1), MT.tmHalo, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
-            put(u, G.sph(0.075 * kk, 12, 8), MT.tmCore, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x + 0.05 * kk, hp.y, hp.z)));
+            const hp = TM.ch[0].at(0.15, -0.02, 0), kk = TM.ch[0].k;
+            put(u, G.sph(0.2 * kk, 16, 12).scale(0.55, 1.25, 1), MT.tmHalo, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
+            put(u, G.sph(0.07 * kk, 12, 8), MT.tmCore, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x + 0.06 * kk, hp.y, hp.z)));
           }
           stats.modsM = (stats.modsM || 0) + 1; continue;
         }
@@ -487,6 +501,7 @@ export async function buildArch56(ctx) {
   if (typeof window !== 'undefined') window.__bwArch56Info = { stats, meshes, mats: MT };
 
   function update(dt, time, phase, m) {
+    if (m) UNG.value = P.ungrade * (1 - heroGradeOn(m.z));
     for (const g of gears) { if (g.userData.axleX) g.rotation.x = time * P.gear.spin; else g.rotation.z = time * P.gear.spin; }
     if (m && lodSets.length) { const a = m.z - 6, b = m.z + P.tm.near;
       for (const [ua, ub, near, far] of lodSets) { const n = ub > a && ua < b; for (const x of near) x.visible = n; for (const x of far) x.visible = !n; } }
