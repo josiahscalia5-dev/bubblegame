@@ -757,3 +757,285 @@ Her `m.yAbs`, lanes, collisions and the camera stay untouched. The 0.22 m floor 
 
 
 _43 tool steps._
+
+---
+
+## screen4-water-motion-engineer: S3 lane: Scene 5/6 tunnel water (started 12:01 UTC)
+
+**Lead → agent** (12:01 UTC):
+
+You are SPECIALIST 3 (tunnel / gameplay world, Scenes 5-6) in a coordinator + specialists setup for Bubble Wash Kingdom (three.js r170, plain JS). Your standing instructions talk about Classic Screen 4: for THIS task they do not apply; the target is the user's approved Scene 5 and Scene 6:
+/workspace/bubblegame_lanes/s56/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/01_APPROVED_SCENE_5_FULL.png and 02_APPROVED_SCENE_6_FULL.png (864x1536; crops 05-10; README_FIRST.txt; 11_ is the OLD blue tunnel = NOT the target).
+
+YOUR LANE (work ONLY here): /workspace/bubblegame_lanes/s56 (a sparse git worktree on branch `claude/lane-s56-tunnel-ac4e3449`). You own ONLY: WebDemo/src/s56_tunnel.js and WebDemo/tools/s56/. Do not edit any other file, and never touch /workspace/bubblegame (the coordinator's checkout) or other lanes. If you need a change elsewhere (game.js etc.), describe it in your report.
+
+Context (the coordinator built s56 this session; it is now in the DEFAULT launch): s56_tunnel.js builds, along the live game's track (TR.frame(u) gives P, R (+R = screen-LEFT), U, T), a perforated lavender drum shell, instanced arches with lamps, merged pink-gold machine banks (tanks, pipes, railings, paw medallions), the user's Tripo housing + gear, a displaced 3D wave water (WAVES table -> GLSL + JS s56Wave), splashes, and the Scene 5/6 camera (S56.cam). The hero rides the same waves via heroOffset() on m.tilt (NEVER m.root: pickups measure from m.root.position). Old blue-tunnel layers are hidden by hideLegacy().
+Diagnosis already done (don't repeat): the game renders with Neutral tone mapping (toneMapping 7), which desaturates any channel above ~0.76 to white; water colours must stay under that knee (that caused pale periwinkle patches). Measured targets (lighting specialist, from the reference): water deep #004dd5, mid #068cf9, turquoise #48c2fd, crest #e9f5ff, ~12 % near-white (all channels >= 200) in the water area; reference water median (side regions) #158af8, saturation 0.73, 10th-percentile brightness 0.86-0.89. Current game: #5d93fa-ish, white too low and the foreground foam (lace/collar) too broad and soft. Art director targets: vanishing point (0.50, ~0.48); his back 0.41 of the frame width at y 0.57-0.72; gear centre ~(0.86-0.88, 0.46), ~0.18-0.21 of the frame height; brushes framing both edges in Scene 6 (those are gameplay objects owned by level1.js: you may only report on them).
+
+YOUR TASK, in priority order (two correction passes at most, then stop and report):
+1. The water: saturated cobalt with real rolling waves and crisp, broken white crests (~10-12 % of the water area), lace only near crests, a tight foam collar and side splashes round him, a wake; no soft white blanket in the foreground. Keep colours under the tone-mapping knee.
+2. His swim: lower body submerged, round fluffy back visible (not flattened), bob/roll/pitch from the same wave function; splash particles that respond to lane changes (all drawn only).
+3. Composition vs Scene 5: camera (S56.cam), first arch and ring spacing, the near banks' housings framing the lower sides, the gear on the right near the camera at Tap to Start (S56.gears: [u, side], side -1 = screen-right).
+
+Build and capture (browser runs MUST use the shared lock; 4 CPUs, software WebGL; at most 3 capture runs per pass):
+  cd /workspace/bubblegame_lanes/s56/WebDemo && node build.mjs
+  ZS=tap,46,206 flock /tmp/bw_browser.lock node tools/s56/shots56.cjs /workspace/bubblegame_lanes/s56/WebDemo <outdir>
+  (shots56.cjs header: TUNE='{json}' live-tunes window.__bwS56; EVAL runs JS in the page; TAG suffixes files.) Put outputs under /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_s56/.
+Use Python (PIL/numpy) to measure water colour / white fraction against the reference side regions (x 0-0.22 and 0.78-1, y 0.66-0.78 of REF5).
+Save: commit in your lane with clear messages and `git push origin claude/lane-s56-tunnel-ac4e3449` (never force; the autosave also checkpoints the lane). Gameplay must stay untouched: no change to collisions, lanes, pickups, timings; private random numbers only.
+Report (under 400 words): what you changed (file sections), before/after frame paths, measured numbers before/after, remaining differences, your last pushed commit hash, and in one line which MCP tools you had.
+
+**Agent** (12:01 UTC):
+
+I'll start by looking at the lane, the reference kit and the current module.
+
+- 12:01 `Bash`: Inspect lane status, reference kit and module size
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/README_FIRST.txt
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/shots56.cjs
+**Agent** (12:01 UTC):
+
+Now the reference images.
+
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/01_APPROVED_SCENE_5_FULL.png
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/02_APPROVED_SCENE_6_FULL.png
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/08_SC5_PINK_HERO_AND_MOVING_WATER.png
+- 12:01 `Read`: /workspace/bubblegame_lanes/s56/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/10_SC6_SWIMMER_WATER_WAKE.png
+**Agent** (12:01 UTC):
+
+Let me build the lane and capture the current state (baseline).
+
+- 12:01 `Bash`: Build the lane's game bundle
+- 12:01 `Bash`: Check default switches and s56 hooks in game.js
+- 12:01 `Bash`: Read default switch list and hero placement code
+**Agent** (12:01 UTC):
+
+Baseline capture (pass 0) with the shared lock.
+
+- 12:01 `Bash`: Capture baseline frames of the s56 tunnel
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_s56/base/s56_tap.png
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_s56/base/s56_46.png
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_s56/base/s56_206.png
+- 12:02 `Write`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/water56.py
+- 12:02 `Bash`: Measure reference and baseline water metrics
+**Agent** (12:02 UTC):
+
+The blue mask includes lavender machinery. Let me tighten it to the water's hue and add a "pale" measure (light but not white: the soft blanket).
+
+- 12:03 `Bash`: Refine water mask, add pale measure, re-measure
+**Agent** (12:03 UTC):
+
+Let me check how the game's output reaches the screen (tone mapping in the renderer or a post pass), since my ShaderMaterials don't include `tonemapping_fragment`.
+
+- 12:03 `Bash`: Find tone mapping and post-processing setup
+- 12:03 `Bash`: Read renderer and bloom configuration
+- 12:03 `Bash`: Inspect the grade pass and its per-switch settings
+- 12:04 `Bash`: Invert the colour pipeline for target water colours
+- 12:04 `Bash`: Check for scipy in the metrics environment
+- 12:04 `Bash`: Run the pipeline inversion with scipy
+- 12:04 `Bash`: Make side-by-side crop of lower halves
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_s56/base/cmp_lower.png
+
+_26 tool steps._
+
+---
+
+## general-purpose: S4 lane: UI and HUD (started 12:01 UTC)
+
+**Lead → agent** (12:01 UTC):
+
+You are SPECIALIST 4 (UI / HUD / interface across Scenes 1-6) in a coordinator + specialists setup for Bubble Wash Kingdom, a real three.js mobile game (plain JS, esbuild). Read /workspace/bubblegame_lanes/ui/PARALLEL_LANES.md first.
+
+YOUR LANE (work ONLY here): /workspace/bubblegame_lanes/ui (sparse git worktree, branch `claude/lane-ui-hud-ac4e3449`). You own ONLY WebDemo/src/six2_ui.js and WebDemo/src/hud56.js. Do not edit any other file and never touch /workspace/bubblegame or other lanes; ask the coordinator (in your report) for anything else.
+
+Targets: the user's six approved portrait screens, /workspace/bubblegame_lanes/ui/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_...png .. 06_...png (864x1536). They share one interface: a top bar (heart "5 Full +", coins "2,450 +", gems "128 +" pills with green + buttons), the "Bubble Wash Kingdom" logo with a crown, a gear (settings) button left and a mail button right, the magenta "Laundry Toss!" plaque with gold paw and stars, a numbered caption pill near the bottom ("5 Into the laundry tunnel!"), a green "Start" button with Home and Shop buttons on a pink bar.
+- six2_ui.js is the opening's interface (Scenes 1-5, over the 3D opening): compare it with the references and fix sizes, positions, fonts, colours.
+- hud56.js is the live game's HUD restyle, active only with ?s3=...,s56 (body gets class `s56`); it is currently an empty stub that installHud56() injects as a <style>. The live game's HUD markup is in WebDemo/src/page.html (read it; do not edit it) and game.js. Restyle the in-game top bar (hearts / coins / gems), the mission card and the Tap to Start pill toward the approved look using CSS scoped to `body.s56` ONLY (every other switch list must stay pixel-identical). Gameplay controls (Bubble Blast, Turbo Spin, pause, swipes, taps) must keep working and stay visible and tappable; do not hide them. Do not add the Laundry Toss plaque / Home / Shop over active gameplay unless it is in the Tap to Start view (phase intro).
+Build: cd /workspace/bubblegame_lanes/ui/WebDemo && node build.mjs. Capture the live game HUD: ZS=tap,206 flock /tmp/bw_browser.lock node tools/s56/shots56.cjs /workspace/bubblegame_lanes/ui/WebDemo <out> ; the opening UI: TIMES=-1,2.0,6.5 UI=1 S3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs /workspace/bubblegame_lanes/ui/WebDemo <out>. Every browser run MUST use `flock /tmp/bw_browser.lock` (4 CPUs, software WebGL; at most 3 capture runs per pass; two passes max). Outputs under /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/.
+Save: commit in your lane and `git push origin claude/lane-ui-hud-ac4e3449` (never force).
+Report (under 350 words): what you changed, before/after frame paths, remaining differences, last pushed commit hash.
+
+- 12:01 `Bash`: Read lane instructions and status
+- 12:01 `Bash`: List lane worktree contents
+- 12:01 `Bash`: Search for PARALLEL_LANES.md
+- 12:01 `Bash`: Read lanes documentation (read-only)
+- 12:01 `Bash`: List references and owned files
+- 12:01 `Read`: /workspace/bubblegame_lanes/ui/WebDemo/src/six2_ui.js
+- 12:01 `Read`: /workspace/bubblegame_lanes/ui/WebDemo/src/hud56.js
+- 12:01 `Read`: /workspace/bubblegame_lanes/ui/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png
+- 12:01 `Read`: /workspace/bubblegame_lanes/ui/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
+- 12:01 `Bash`: Read capture scripts
+- 12:01 `Bash`: Find usage of owned modules
+- 12:01 `Bash`: Read screens12.js
+- 12:01 `Bash`: Read page.html HUD markup and CSS
+- 12:01 `Read`: /root/.claude/projects/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/tool-results/budo49oca.txt
+- 12:01 `Bash`: Find --u and body classes in game.js
+- 12:01 `Bash`: Read HUD related game.js sections
+- 12:01 `Bash`: Find body classes added by modules
+- 12:02 `Bash`: Read struct HUD CSS and level1 HUD
+- 12:02 `Bash`: Build the bundle in the lane
+- 12:02 `Bash`: Capture before frames of HUD and opening UI
+- 12:02 `Bash`: Crop reference top and bottom regions
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/ref01_top.png
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/ref01_bot.png
+- 12:02 `Bash`: Make gridded zoom crops of reference top
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_tl.png
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_tr.png
+- 12:02 `Bash`: Gridded crops of logo and plaque
+- 12:02 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_logo.png
+- 12:03 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_plaque.png
+- 12:03 `Bash`: Check before capture outputs
+- 12:03 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/before_hud/s56_tap.png
+- 12:03 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/before_hud/s56_206.png
+- 12:03 `Bash`: Find HUD text updates in game.js
+- 12:04 `Bash`: Check hand-over logic and icon sizes
+- 12:04 `Bash`: Check whether opening auto-starts run
+- 12:04 `Bash`: Find hand-over and run start
+- 12:04 `Bash`: Check opening UI capture progress
+- 12:04 `Bash`: Gridded crops of caption and bottom bar
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_cap.png
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_ui/g_bar.png
+- 12:05 `Bash`: Sample reference UI colours
+
+_41 tool steps._
+
+---
+
+## Water & VFX specialist: S2 lane: Scenes 3-4 washer (started 12:01 UTC)
+
+**Lead → agent** (12:01 UTC):
+
+You are SPECIALIST 2 (washer accident / wash start, Scenes 3-4) in a coordinator + specialists setup for Bubble Wash Kingdom (three.js r170, plain JS). Your standing instructions talk about Classic Screen 4 (`?s3=match`): for THIS task they do not apply. Read /workspace/bubblegame_lanes/washer34/PARALLEL_LANES.md first.
+
+YOUR LANE (work ONLY here): /workspace/bubblegame_lanes/washer34 (sparse git worktree, branch `claude/lane-s34-washer-ac4e3449`). You own ONLY: WebDemo/src/opening_six2_water.js; WebDemo/src/opening_six2_tunnel.js (the washer look; leave its scene-5 props as they are); in WebDemo/src/opening3d.js only the SIX2_DRUM_END GLSL constant; and in WebDemo/src/opening_six2.js only the blocks "the door", "the hero", "the yellow towel", "the washer", SIX2.door, SIX2.water and camera keys with 3.25 <= t <= 7.4. Another specialist owns the girl / blue towel / basket blocks of opening_six2.js at the same time: do not touch them. Never touch /workspace/bubblegame or other lanes.
+
+References: /workspace/bubblegame_lanes/washer34/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/03_Oops_He_Goes_In.png and 04_The_Wash_Begins.png (864x1536). Story rule: the girl NEVER notices him; he is carried in by accident in the yellow laundry bundle and slides out behind the rim, tumbles into the drum, the blue towel flops on his head; ONE pink character, no teleport.
+This resumes an interrupted lane of the previous account (no code was saved): its baseline frames and live probe are in /workspace/bubblegame/Previews/WebDemo/six_scenes/08_six_portrait_scenes_9ee07777/specialist_lanes/water/ (evidence/probe/p76.json: at real 7.6 s the porthole spans px y 309-531 of 768, the water plane is seen edge-on at y ~458-466 so only a thin band of water shows; vortex.U.uFill only tints the wall).
+TASK (two passes max): (1) Scene 4: clearly visible moving cobalt water INSIDE the porthole round him: filling the lower ~50-60 % of the glass, rounded swirling waves, white crests, bubbles, him sitting IN it with his face visible; real geometry (e.g. a curved swirling water shell inside the drum round heroSit that rises from story ~6.6 and rotates), not a flat tint. The washer: glossy hot pink, deep polished gold rim, paw badge, lights (keep the tunnel lane's richPinkGold work, it is merged). (2) Scene 3: first water along the drum bottom as he lands; make the accident read clearly ("Oops!"). Colours: the game uses Neutral tone mapping (desaturates channels above ~0.76 to white): keep water colours under that. Private random numbers only (never Math.random); modest mobile cost.
+Build: cd /workspace/bubblegame_lanes/washer34/WebDemo && node build.mjs. Capture (REAL seconds; scene 3 = real 3.5-5.8, scene 4 = real 5.8-7.8): TIMES=4.6,5.4,6.9,7.6 S3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56 UI=0 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs /workspace/bubblegame_lanes/washer34/WebDemo <out> ; sheet: python3 tools/six2/sheet.py 640 sheet.png "REF04=<path>" "7.6=<frame>" ... Every browser run MUST use flock /tmp/bw_browser.lock (4 CPUs, software WebGL; at most 3 capture runs per pass; a capture takes a few minutes). Outputs under /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_washer34/.
+Save: commit in your lane and `git push origin claude/lane-s34-washer-ac4e3449` (never force). No Tripo, no new models.
+Report (under 400 words): diagnosis, what you changed (file/block), before/after frame paths, remaining differences, last pushed commit hash.
+
+- 12:01 `Bash`: Read lane instructions and git state
+- 12:01 `Bash`: List lane worktree contents
+- 12:01 `Bash`: Look for lane registry files
+- 12:01 `Bash`: List previous water lane evidence
+- 12:01 `Bash`: Read lane docs and previous water lane patch/probe
+- 12:01 `Bash`: Check sizes and compare old water source
+- 12:01 `Bash`: Read water module and file sizes
+- 12:01 `Read`: /workspace/bubblegame_lanes/washer34/WebDemo/src/opening_six2.js
+- 12:01 `Read`: /workspace/bubblegame_lanes/washer34/WebDemo/src/opening_six2_tunnel.js
+- 12:01 `Bash`: Find vortex and water definitions in opening3d.js
+- 12:01 `Read`: /workspace/bubblegame_lanes/washer34/WebDemo/src/opening3d.js
+- 12:02 `Read`: /workspace/bubblegame_lanes/washer34/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/04_The_Wash_Begins.png
+- 12:02 `Read`: /workspace/bubblegame_lanes/washer34/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/03_Oops_He_Goes_In.png
+**Agent** (12:02 UTC):
+
+Let me view the baseline sheets from the previous lane.
+
+- 12:02 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/08_six_portrait_scenes_9ee07777/specialist_lanes/water/evidence/base_sheet1.png
+- 12:02 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/08_six_portrait_scenes_9ee07777/specialist_lanes/water/evidence/base_sheet2.png
+- 12:02 `Bash`: Check capture tools in lane
+- 12:02 `Bash`: Build the lane's game bundle
+- 12:02 `Bash`: Capture baseline frames of scenes 3-4
+- 12:02 `Read`: /workspace/bubblegame_lanes/washer34/WebDemo/src/opening3d.js
+- 12:02 `Read`: /workspace/bubblegame_lanes/washer34/WebDemo/src/opening3d.js
+- 12:02 `Bash`: Inspect Puffs, bubbles and NOISE helpers
+- 12:02 `Bash`: Inspect NOISE, bubble material, tripo3 glass
+- 12:04 `Bash`: Find render loop and foam usage
+- 12:04 `Read`: /workspace/bubblegame_lanes/washer34/WebDemo/src/opening3d.js
+- 12:04 `Bash`: Check capture progress and python libs
+- 12:04 `Bash`: Crop ref04 porthole and sample water colours
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_washer34/ref04_port.png
+- 12:04 `Bash`: Wait and check capture log
+- 12:04 `Bash`: Check capture status and lock holders
+
+_29 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: S1 lane: Scenes 1-2 girl and room (started 12:01 UTC)
+
+**Lead → agent** (12:01 UTC):
+
+You are SPECIALIST 1 (girl / laundry room / opening, Scenes 1-2) in a coordinator + specialists setup for Bubble Wash Kingdom (three.js r170, plain JS). Your standing instructions talk about the Screen 4 tunnel: for THIS task they do not apply. Read /workspace/bubblegame_lanes/girl12/PARALLEL_LANES.md first.
+
+YOUR LANE (work ONLY here): /workspace/bubblegame_lanes/girl12 (sparse git worktree, branch `claude/lane-s12-girl-room-ac4e3449`). You own ONLY: WebDemo/src/opening_six2_room.js, and in WebDemo/src/opening_six2.js only the blocks "the girl's knee timeline", "basket on the rug", "the girl", "the blue towel", SIX2.girl, SIX2.basket and the SIX2.cam keys with t <= 3.2. Another specialist edits the door / hero / yellow towel / washer blocks of opening_six2.js at the same time: do not touch them. Never touch /workspace/bubblegame or other lanes.
+
+References: /workspace/bubblegame_lanes/girl12/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png and 02_She_Loads_Laundry.png (864x1536), and the user's checklist in /workspace/bubblegame/Design/ReferencePacks/2026-11-09_Scene1_2_Checklist_from_user/ (read-only). Story rule: the girl NEVER notices or looks at the pink character.
+State: your previous pass (room pass 2: window, curtains, shelves, tiles, rug, light) was merged into the integration branch this session WITHOUT a visual verification; its own note: "the foreground towels still need moving off her legs". The girl is the user's rigged Tripo girl (girl_v2_rigged via tripo3: pink jacket, curly hair, pink bow, backpack) posed with code (IK hands, knee timeline) in opening_six2.js.
+TASK (two passes max): (1) verify your merged room pass in real frames and fix what is wrong (the towels off her legs; the window, curtains, shelves and washer composition vs reference 01). (2) Scene 1: her kneeling pose beside the purple basket, the hero hidden under the blue towel with only his eyes peeking, the camera/proportions of reference 01. (3) Scene 2: she visibly reaches, grips and lifts the blue towel with both hands, turns toward the open washer and pushes it in; arms, hands, head and ponytail move naturally; the towel stays attached to her hands; the hero stays in the basket unseen by her. Improve the existing rig/pose code; do not replace the model.
+Build: cd /workspace/bubblegame_lanes/girl12/WebDemo && node build.mjs. Capture (REAL seconds; -1 = Scene 1 waiting; scene 2 = real 0.9-3.4): TIMES=-1,1.2,2.2,3.0 S3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56 UI=0 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs /workspace/bubblegame_lanes/girl12/WebDemo <out> ; sheet: python3 tools/six2/sheet.py 640 sheet.png "REF01=<path>" "-1=<frame>" ... Every browser run MUST use flock /tmp/bw_browser.lock (4 CPUs, software WebGL, shared with 4 other specialists; at most 3 capture runs per pass). Outputs under /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/.
+Save: commit in your lane and `git push origin claude/lane-s12-girl-room-ac4e3449` (never force). No Tripo, no new models.
+Report (under 400 words): what you changed (file/block), before/after frame paths, remaining differences, last pushed commit hash.
+
+- 12:01 `Bash`: Read lane instructions and git state
+- 12:01 `Bash`: List lane worktree contents
+- 12:01 `Bash`: Look for PARALLEL_LANES.md
+- 12:01 `Bash`: Read PARALLEL_LANES.md and lanes.json
+- 12:01 `Bash`: List checklist and reference files
+- 12:01 `Bash`: Read the user's Scene 1-2 checklist
+- 12:02 `Read`: /workspace/bubblegame_lanes/girl12/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png
+- 12:02 `Read`: /workspace/bubblegame_lanes/girl12/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/02_She_Loads_Laundry.png
+- 12:02 `Read`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 12:02 `Read`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2_room.js
+- 12:02 `Bash`: Inspect capture tools
+- 12:02 `Bash`: Build lane bundle and check status
+**Agent** (12:02 UTC):
+
+Baseline build matches the committed bundle. Now the baseline capture.
+
+- 12:02 `Bash`: Capture baseline frames of Scenes 1-2
+- 12:04 `Bash`: Build baseline comparison sheet
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/sheet.png
+**Lead → agent** (12:04 UTC):
+
+[Image: original 2190x662, displayed at 2000x605. Multiply coordinates by 1.09 to map to original image.]
+
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_-1.00.png
+- 12:04 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_2.20.png
+- 12:05 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_1.20.png
+- 12:05 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/lane_girl12/base/t_3.00.png
+
+_19 tool steps._
+
+---
+
+## Gameplay & Visual Testing specialist: S5 QA: gameplay + identity proof (started 12:02 UTC)
+
+**Lead → agent** (12:02 UTC):
+
+You are SPECIALIST 5 (QA / matching / capture, read-only) in a coordinator + specialists setup for Bubble Wash Kingdom. Do NOT edit any file in /workspace/bubblegame or in /workspace/bubblegame_lanes/*; write outputs only under /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/qa/. Every browser run MUST be prefixed with `flock /tmp/bw_browser.lock` (4 CPUs, software WebGL; 4 other specialists queue on the same lock, so expect waits). Never run playwright install.
+
+Context: this session made the DEFAULT launch the new environment: plain launch = ?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56 (s56 = the approved Scene 5/6 lavender tunnel, WebDemo/src/s56_tunnel.js; it supersedes scene07's LOOK only; gameplay is level1.js/level1_flow.js unchanged; the hero's wave offset is drawn on m.tilt only; with s56 the enemy and coin models are the user's purple Tripo enemy and paw coin, looks only). Integration head: /workspace/bubblegame (branch claude/bubble-wash-account-transfer-52t7ym).
+
+Jobs, in order:
+1. GAMEPLAY on the new default's gameplay switches: read the header of /workspace/bubblegame/WebDemo/tools/level1/flow_routes.cjs, then run the upper route with
+   S3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56 ROUTE=upper (and, if time allows, the same without s56 as the control) ; report per check: lane changes / swipes, coins, socks (5), gems, enemy pops/hits, brushes knocks, hearts, Bubble Blast, Turbo Spin, Level Complete reached, console/page errors. A difference in pickups between s56 and the control is a FAIL to report precisely (the s56 hero offset must not change pickups).
+2. IDENTITY: the accepted Classic Screen 4 must be pixel-identical to the session's starting build. Old build: /workspace/bubblegame_lanes/_base_a18890e/WebDemo (commit a18890ef, bundle ed7688f8). New: /workspace/bubblegame/WebDemo. Use /workspace/bubblegame/Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/scripts/identity.sh (read its header; run it as `bash identity.sh /workspace/bubblegame <scratch> <old demo dir> <new demo dir>`, or reproduce its method) for ?s3=intunnel (and, if the script covers them, the other non-s56 lists: they must also be 0 px changed). Report max px difference per checkpoint.
+3. One line: which tools you had.
+Report under 350 words with PASS/FAIL per item and the output paths.
+
+- 12:02 `Bash`: Read route test and identity script headers
+- 12:02 `Bash`: Read rest of route test, list lanes
+- 12:02 `Bash`: Check bundle hashes and tools
+- 12:02 `Bash`: Run upper route with s56 and control
+- 12:02 `Bash`: Read layer_diag header and default lists
+- 12:02 `Bash`: Check what changed since base
+- 12:02 `Bash`: Diff shared source since base
+- 12:02 `Bash`: Inspect s56 hero offset code
+- 12:02 `Bash`: Read heroOffset implementation
+- 12:03 `Bash`: Write scratch identity script
+- 12:03 `Bash`: Run identity comparisons old vs new
+- 12:03 `Bash`: Read r2_func header and info()
+- 12:03 `Bash`: Run hearts/blast/turbo checks s56 and control
+- 12:03 `Bash`: Check progress and lock queue
+**Agent** (12:03 UTC):
+
+Several jobs are waiting their turn for the shared browser lock. I'll wait for them to finish.
+
+- 12:03 `Bash`: See what r2_func checks
+- 12:03 `Bash`: Wait ten minutes then check results
+- 12:03 `Bash`: Wait until the s56 route run finishes
+
+_17 tool steps._
