@@ -38,7 +38,7 @@ export const HERO7 = {
   contact: [0.58, 0.5],   // the water's contact radii round him (m: across, along): the pile-up and the white collar hug the dome and nubs
   // the water's white at his base: its foam over white so it survives the scene grade (fin6 exposure 0.72 dimmed white to grey: 0 % near-white at
   // his base vs the approved 11 %); its collar and side froth stronger and less broken (measured: 5.2 % near-white with these). S56.water fields.
-  water: { foam: [2.2, 2.3, 2.5], collar: 3.0, froth: 4.0, gap: 0.2, ripple: 0.4 },   // (ripple 1.0 -> 0.4: the spreading ring lines read as white rings; the contact white kept)
+  water: { foam: [2.2, 2.3, 2.5], collar: 2.2, froth: 4.5, gap: 0.45, ripple: 0.4 },   // (waterline test: broken white highlights, not a continuous collar; contact 0.58 / 0.5 keeps the nubs above the water)   // (ripple 1.0 -> 0.4: the spreading ring lines read as white rings; the contact white kept)
   hideOld: 1,   // hide the game mascot's drawn body while hero7 shows (0: both, for comparison)
 };
 if (HERO7_ON && typeof window !== 'undefined') window.__bwHero7 = HERO7;
