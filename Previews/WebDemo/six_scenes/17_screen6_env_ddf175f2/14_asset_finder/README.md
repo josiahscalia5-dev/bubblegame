@@ -141,3 +141,14 @@ Licences: Sketchfab CC Attribution = free, credit the author; CC0 (Poly Haven) =
 | 19 | cgaxis | Factory Machine | CGAxis licence | plan / credits (via CGAxis Hub) | None | https://cgaxis.com/product/factory-machine-3/ |
 | 20 | cgaxis | Factory Machine | CGAxis licence | plan / credits (via CGAxis Hub) | None | https://cgaxis.com/product/factory-machine-4/ |
 | 21 | cgaxis | Factory Machine | CGAxis licence | plan / credits (via CGAxis Hub) | None | https://cgaxis.com/product/factory-machine/ |
+
+## The first library asset tested in the game: "Glass Enclosure" (Sketchfab, CC BY 4.0, free) as the glowing tank
+Downloaded with the user's free token (`Design/LibraryAssets/2026-11-09_Screen6/sketchfab_glass_enclosure/`, CREDIT.json). Found: its material is
+named `tripo_material_...`: it is itself a Tripo-made model, one opaque mesh (painted glass), 17,308 triangles, dark sci-fi caps
+(`glass_enclosure_6views_as_downloaded.png`). Placed in every tank slot behind `,tanklib` (with tank6): its caps shaded gold, its glass band
+(measured in Blender: radius 0.241, y 0.20-0.85 of its height) turned into the violet glow. First import showed it broken
+(`crop_left_library_first_import_bug.png`: gltfpack's quantized positions were transformed in place) - fixed.
+Result (`crop_left_approved_before_modelled_library.png`, `SBS_approved_vs_game_u206_library_tank.png`): it works through the whole pipeline
+and is COMPARABLE to the modelled tank, not clearly better: a cleaner glass column, but an even lilac glow without the approved white-hot centre,
+and detailed sci-fi caps where the approved has smooth gold bands and a dome. Gameplay route with it = the baseline; plain launch and Classic
+Screen 4 0 px.
