@@ -22,6 +22,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { LEVEL1_PARTS } from './level1.js';
 import { TRIPO2_ON, applyTripo2 } from './opening_tripo.js';   // ?s3=...,level1,tripo2 (session 57091b57): the user's Tripo basket and towels, looks only
+import { TRIPO3_ON, TRIPO3, applyTripo3, tripo3Loader, tripo3GirlMaterial } from './opening_tripo3.js';   // ?s3=...,six,tripo3 (session 6ddc157f): the user's new Tripo girl, washer and door
 // girl2 (8 November, the user's priority 1): the user's Tripo girl (Design/TripoDeliveries/2026-11-08_Six_Assets_from_user/,
 // "cartoon girl 3d model.glb"), rigged in Blender by rig/rig_girl.py (hips, spine, chest, neck, head, shoulders, arms, hands,
 // legs; automatic weights; texture 2048) -> models/opening/girl_rigged.glb. Driven here by the same timeline as the code-built
@@ -30,6 +31,7 @@ import { TRIPO2_ON, applyTripo2 } from './opening_tripo.js';   // ?s3=...,level1
 // ?s3=...,nogirl2: the code-built girl as before.
 export const GIRL2 = { file: 'models/opening/girl_rigged.glb', scale: 1.62, pos: [-0.42, 0.4, -0.27], rotY: 0.24,
   eyes: [[-0.058, 0.723], [0.052, 0.723]], eyeR: 0.028, skin: 0xeab08e, stool: { h: 0.4, col: 0xff9fd6 } };
+if (TRIPO3_ON) Object.assign(GIRL2, TRIPO3.girl);   // (tripo3: the new rigged girl, same bones; her eyelids at her own painted eyes)
 
 export const OPENING3D = {
   seqEnd: 6.1, handOver: 5.15, fade: 0.8,       // seconds after START: the game is released and the view fades into it
@@ -482,10 +484,10 @@ export function mountOpening3D(container, opts = {}) {
   const basket = buildBasket(); scene.add(basket);
   // girl2: the user's Tripo girl, rigged (the code-built girl stays as the fallback until she has loaded)
   const g2 = { ready: false };
-  if (LEVEL1_PARTS.girl2) new GLTFLoader().load(GIRL2.file, (gl) => {
+  if (LEVEL1_PARTS.girl2) tripo3Loader(new GLTFLoader()).load(GIRL2.file, (gl) => {   // (tripo3Loader: the meshopt decoder, only with tripo3)
     const root = new THREE.Group(); root.name = 'girl2'; root.add(gl.scene); scene.add(root);
     root.position.set(...GIRL2.pos); root.rotation.y = GIRL2.rotY; root.scale.setScalar(GIRL2.scale);
-    const B = {}; gl.scene.traverse((o) => { if (o.isBone) B[o.name.replace(/[^A-Za-z]/g, '')] = o; if (o.isMesh) { o.frustumCulled = false; o.material.emissive = new THREE.Color(0x3a2a40); o.material.emissiveIntensity = 0.35; o.material.envMap = env; o.material.envMapIntensity = 0.5; } });
+    const B = {}; gl.scene.traverse((o) => { if (o.isBone) B[o.name.replace(/[^A-Za-z]/g, '')] = o; if (o.isMesh) { o.frustumCulled = false; o.material.emissive = new THREE.Color(0x3a2a40); o.material.emissiveIntensity = 0.35; o.material.envMap = env; o.material.envMapIntensity = 0.5; tripo3GirlMaterial(o.material); } });
     for (const b of Object.values(B)) b.userData.rest = b.quaternion.clone();
     // eyelids on her head bone over the painted eyes (skin-coloured caps, scaled shut for a blink)
     root.updateMatrixWorld(true);
@@ -662,6 +664,7 @@ export function mountOpening3D(container, opts = {}) {
     const bubT = bubbleMaterial(); for (let i = 0; i < 9; i++) { const b = new THREE.Mesh(new THREE.SphereGeometry(0.035 + 0.03 * ((i * 7) % 3), 18, 12), bubT); b.position.copy(at6(i % 2 ? 1 : -1, 2.2 + i * 0.6, wy + 0.3 + 0.06 * (i % 3))); tun.add(b); }
     return { pinkM, lights6, dial, med, stand, towel, cloth, drape, tun };
   })() : null;
+  if (TRIPO3_ON && six) applyTripo3({ washer, six, basket, env, P: OPENING3D.porthole });   // (tripo3: opening_tripo3.js; looks only)
 
   // ------------------------------------------------ the timeline
   const P = OPENING3D.porthole;
