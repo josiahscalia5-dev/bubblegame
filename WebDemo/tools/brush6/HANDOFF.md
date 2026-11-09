@@ -1,36 +1,42 @@
-# Lane brush6 handoff (session 47f75e22, 9 November 2026). Branch `claude/lane-s6-brush-47f75e22`, worktree /home/user/bubblegame_lanes/brush6
+# Lane brush6 handoff (session ddf175f2, pass 2, 9 November 2026). Branch `claude/lane-s6-brush-47f75e22`, worktree /home/user/bubblegame_lanes/brush6
 
-Target: ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png` (864x1536): the two
-large rotating roller brushes at the left/right foreground. Art director's measures: `Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/art_director_ranking.md` section 1.
+Target: ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png` (864x1536), the two large
+roller brushes at the left / right foreground. Measured targets: `WebDemo/tools/env6/TARGETS.md`. Judge in the integrated candidate
+`S3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56,coin6,hero6,water6,brush6,arch56,env6` at u 206 (var6.cjs).
 
-## DONE (built, compiles, fit run; NOT yet visually verified in a frame, see IN PROGRESS)
-- Switch `,brush6` (with `s56`, `level1`); file `WebDemo/src/s56_brush6.js` only (called by the coordinator hook in s56_tunnel.js section 0).
-  Without `,brush6` nothing is built (BRUSH6_ON false).
-- Built in code (no model fitted: brush_p2.glb = pink scale ball, s3_brush.glb = round wheel brush, Meshy WashingRoller = wrong band order, 133k tris):
-  gold top drum (left only), studded gold flange, glossy pink bell with 8 gold 4-point stars, gold rim band, four flared bristle skirts
-  (pink 26 %, white-lavender 23 %, royal blue 34 %, pale blue 17 % of the bristle height), fluffy_brush.js's shell-fur technique on cones:
-  7 instanced shells, discard-drawn tapered strands, tufts, ragged lobed tips, dark roots / pale tips, strand gloss, sheen, s56 haze.
-  Colours kept under the ~0.76 linear knee. Cap uses s56's `M.gold`. Spin 3.0 rad/s about each brush's own axis.
-- Placement: track-fixed pairs at u = anchor(206) + k*26 + du inside spans [[150, 258]] (5 pairs: 157,183,209,235,261 approx); drawn only
-  within -4..60 m of him. Numbers in `BRUSH6` (window.__bwBrush6; after a change call `__bwBrush6.place()`).
-- Fit: `tools/brush6/fit_eval.js` (EVAL body for tools/s56/shots56.cjs) fits du/x/h/s per side to the AD's screen targets with the lane
-  bound (inner bristle tips |x| >= 1.25 m). Result now the defaults: left du 5.431 x 2.057 h -0.632 s 0.612; right du 5.379 x -1.89 h -0.618 s 0.485.
-- Cost: 23,872 (left) / 22,272 (right) triangles per brush (18,816 of them the 7 bristle shells); 3 draw calls per brush; at u 206 one pair
-  (plus far pairs within 60 m) is drawn.
+## State (pass 2, commit 3c0a67c2 and later)
+- File `WebDemo/src/s56_brush6.js` only (switch `,brush6` with `s56`; the coordinator hook in s56_tunnel.js section 0). Off: nothing is built.
+- Bristles: the see-through shell fur is gone. Each tier = two staggered rows of OPAQUE scalloped cones (BRUSH6.fur: 30 tufts, a ridge per
+  tuft, rounded clump tips with a ragged fringe `jag`, fine strands `strands`/`contrast` kept down to ~1.5 px, a few stray strands, the tier
+  above's shadow `shade`), a convex skirt profile, strand gloss tinted by the tier's light colour (`light.specWhite`). One draw call per brush.
+- Colours (BRUSH6.colours, light.amb 0.75) corrected by the measured linear ratios approved / frame under env6's hero grade (`tools/brush6/tiers.py`):
+  pink, white-lavender, blue within ~5-10 % in the main channels; the blue tier still a little light (R/G high).
+- Placement refitted with `tools/brush6/fit6.js` (runs as a var6 variant on the frozen u 206 frame; fits du, x, h, s, sy, flare per side;
+  lane bound minX 1.05 m). Per side `sy` (vertical proportion) and `flare` (the lower tiers widened as a pagoda, root and tip alike).
+- Depth pull: near 2.6 m, k 0.01 (the anchor pair draws at ~2.6 m over the near water and the bank; at the old 3.45/0.15 and at 3.2 the near
+  water cut the right brush's lower tiers off at y 0.60-0.67). He is 3.0 m ahead of the camera, never under the brushes on screen.
+- LOD: brushes more than `lod.dist` (14 m) ahead draw the light bristle mesh (back row, 2 segments per tuft).
 
-## KNOWN PROBLEM (design conflict, report to the coordinator)
-- The approved placement needs the inner edge at ~0.75 m (AD) = over the side lanes. With |x| >= 1.25 m the brushes must stand ~2.3 m ahead
-  of him, and the waterline/bank deck hides their foot at screen y ~0.62 (approved 0.70-0.72). Top, cap and inner edges fit (errors < 0.03).
-- Captures with `home` in S3 show the Home menu over a blank scene in this worktree (both tap and 206): use the list WITHOUT `home`
-  (being checked: capture c3 compares the brush6-off frames to the coordinator's baseline).
+## Measured at u 206 (var6, measure()): approved -> now
+- Left: top 0.34 -> 0.341; bell inner x 0.13 -> 0.134; tier inner x 0.17/0.19/0.20/0.21 -> 0.167/0.188/0.202/0.210; tier tips y
+  0.551/0.597/0.656/0.714 -> 0.546/0.598/0.662/0.714; inner bristle tips 1.27 m from the centre-line.
+- Right: top 0.44 -> 0.437; bell inner 0.89 -> 0.879; tier inner x 0.86/0.84/0.82/0.80 -> 0.869/0.842/0.820/0.800; tips y
+  0.565/0.617/0.669/0.714 -> 0.573/0.617/0.669/0.711; inner tips 1.17 m.
+- renderer.info at u 206 (all passes): with brushes 122 calls / 2,134,454 triangles, hidden 104 / 2,049,398 -> brushes 18 calls, 85,056
+  triangles (pass 1: 138,432).
 
-## IN PROGRESS (where I stopped)
-- Verifying that S3 without `home` reproduces the coordinator's baseline (scratch c3), then the first real look at the brushes at 206.
+## Still differs (next steps, in order)
+1. LEFT brush look: seen almost side-on, its strands read as long diagonal streaks and the tuft clumps are too subtle; the approved shows plump
+   rounded clumps on each tier's face. Try fur.scallop 0.18-0.22 with tufts 20-24, a shorter visible strand (more tier overlap) and a
+   stronger clump shading; judge on `b6_pass2_left_crop2x.png`-style crops.
+2. Left cap: the pink bell is too tall and matte; the approved has a glossy, lower bell (y 0.41-0.46) under a separate taller gold drum
+   with a flange (y 0.34-0.40). Lower cap.bell, raise `hat`, add gloss (bell rough 0.12, env 1.6).
+3. Blue tier slightly light: lite '#1b94fa' -> ~'#0a84fa' (R/G lin ratios 0.03/0.7).
+4. The game's white spray particles are drawn over the lower tiers (nearer than 2.6 m, or no depth test): water lane's call.
+5. Pixel proof that the build with `brush6` off is unchanged (by construction: only s56_brush6.js changed and it builds nothing when off),
+   and a Tap to Start capture (by construction: the first pair is at u 159.3 and drawn only within 60 m ahead of him; the run starts at
+   u ~3.9).
 
-## NEXT STEPS for a fresh agent
-1. `cd WebDemo && node build.mjs`; capture: `S3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,brush6 ZS=tap,206 VW=432 VH=768 DPR=2
-   EVAL="$(cat tools/brush6/fit_eval.js)" flock /tmp/bw_browser.lock node tools/s56/shots56.cjs $PWD <out> > <out>/out.json` (window.__b6NoFit=1 to only measure).
-2. Look at the brushes: shape, band colours, strand look, lathe faces (gold/bell may render inside-out: reverse the profile if so), intersections
-   with the bank machinery and drum shell; tune `BRUSH6` and re-fit.
-3. Check the tap frame (Scene 5) shows no brushes; check the hook-off frames are identical to the baseline.
-4. Side-by-side vs approved into `Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/brush6/`; commit, push.
+## Tools
+- `tools/env6/var6.cjs` (coordinator's, frozen frame) + `tools/brush6/fit6.js` (the fit as a variant) + `tools/brush6/tiers.py` (tier colours).
+- Evidence: `Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/brush6/` (b6_pass2_*).
