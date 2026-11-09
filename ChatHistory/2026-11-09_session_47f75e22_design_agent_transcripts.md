@@ -121,8 +121,46 @@ Two long diagonal lines found in the u206 frame (about 37-40 and -50 degrees), n
 - 15:46 `Bash`
 - 15:46 `Bash`
 - 15:47 `Bash`
+**Agent** (15:47 UTC):
 
-_47 tool steps._
+Water numbers are solid (gradient 3.92 vs 1.28; thin white 17 % vs 1 %). Now the upper bank zone, where the approved has tall machinery and the game shows bare wall, plus the near tanks.
+
+- 15:47 `Bash`
+**Agent** (15:47 UTC):
+
+Let me look at the bank machinery side by side at zoom to describe the differences precisely.
+
+- 15:47 `Bash`
+- 15:47 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/left_banks.png
+- 15:48 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/right_banks.png
+**Agent** (15:48 UTC):
+
+The crops make the machinery gap concrete. Let me sample the railing, tank glass and tank cap colours, and the drum wall, in both frames.
+
+- 15:48 `Bash`
+**Agent** (15:48 UTC):
+
+Railing colour changes along the run (orange-gold H 25 at Tap to Start, red-orange H 12 at u 206). Let me pin down the enemy and coin numbers.
+
+- 15:48 `Bash`
+**Agent** (15:48 UTC):
+
+Enemy body is too pale (S 0.55 vs 0.76) and coins are about twice the approved size. Last measurements: arch rhythm and lamp glow down the tunnel, and the big foreground bubbles.
+
+- 15:49 `Bash`
+**Agent** (15:49 UTC):
+
+Arch rhythm is comparable (9-10 light peaks per ray in both), so it is not a priority. Last sample: the brush band colours, to give the 3D artist concrete targets.
+
+- 15:50 `Bash`
+**Agent** (15:51 UTC):
+
+I have all the numbers. One quick check on the tools environment, since `$BW_PY` came back empty earlier.
+
+- 15:51 `Bash`
+- 15:51 `Bash`
+
+_57 tool steps._
 
 ---
 
@@ -229,8 +267,63 @@ Let me zoom into the approved Scene 6's left and right banks to read the machine
 - 15:46 `Bash`: Crop approved left and right banks with tick marks
 - 15:46 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/appr_left.png
 - 15:46 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/appr_right.png
+**Agent** (15:47 UTC):
 
-_39 tool steps._
+I have clear readings of the approved banks now. Before changing anything, one probe capture of the current arch56 state to get exact projected numbers (vanishing point, mascot bounds, gear).
+
+- 15:47 `Bash`: Probe capture of current arch56 state
+**Agent** (15:47 UTC):
+
+Noted. The coordinator's update changes my asset choices: blue_jt is a cobalt gear and gold_jj is a pipe. Let me look at those while the probe runs.
+
+- 15:47 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/eval8/out/blue_jt_tiny.png
+- 15:47 `Bash`: List renders and mobile LODs
+**Agent** (15:47 UTC):
+
+The blue_jt gear is a near-exact match to the approved gear (cobalt, gold hub, hub on both sides). Let me find the render script's view convention to orient the models correctly.
+
+- 15:47 `Bash`: Find the model render script's view angles
+- 15:48 `Bash`: Locate render script for model sheets
+- 15:48 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/tasks/bodiv4gra.output
+- 15:48 `Bash`: Find the model sheet render tool
+- 15:48 `Bash`: Read view directions in glb_sheet.cjs
+- 15:48 `Bash`: Read glb_sheet usage and view angles
+**Agent** (15:49 UTC):
+
+The sheet renderer puts `front` at +z and `side` at +x. The probe should be done soon; let me check it.
+
+- 15:49 `Bash`: Read the probe capture results
+**Agent** (15:49 UTC):
+
+Still waiting for the shared browser lock. Meanwhile, the texture sizes of the candidate mobile LODs.
+
+- 15:49 `Bash`: Inspect mobile LOD triangles and textures
+- 15:49 `Bash`: Copy chosen mobile model LODs into the lane
+**Agent** (15:49 UTC):
+
+Now a quick orientation sheet of the three models (side = +x, front = +z) through the lock, queued after the probe.
+
+- 15:50 `Bash`: Render orientation sheet of chosen models
+**Agent** (15:50 UTC):
+
+While those wait, let me see how game.js applies `camera(off, look)` so I can reason about the framing numerically.
+
+- 15:50 `Bash`: Find s56 camera use in game.js
+- 15:50 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/src/game.js
+**Agent** (15:50 UTC):
+
+The camera sits in the mascot's own track frame at `rideY + off.y`, aimed at `rideY + look.y` ahead, so the framing can be solved analytically from the probe numbers. Waiting for the probe.
+
+- 15:50 `Bash`: Wait for and print the probe results
+- 15:52 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/orient.png
+- 15:52 `Bash`: Check why the orientation sheet failed
+**Agent** (15:52 UTC):
+
+The sheet tool fails on meshopt-compressed files (no decoder). I'll write a small orientation renderer of my own in `tools/arch56/` that renders +x, -x, +z and -z views with the meshopt decoder.
+
+- 15:52 `Bash`: Write and run orientation renderer
+
+_58 tool steps._
 
 ---
 
@@ -309,8 +402,25 @@ Now build, then commit the merge/restructure.
 - 15:46 `Bash`: Push lane branch
 - 15:47 `Bash`: Read A/B metric script
 - 15:47 `Bash`: Run layer/term ablations on default build
+- 15:49 `Bash`: Read diag and trace tools
+- 15:50 `Bash`: Montage of cause ablation frames
+- 15:50 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/cause.png
+- 15:50 `Bash`: Montage of mask frames
+- 15:50 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/mask.png
+- 15:50 `Bash`: Crop lower water for ablations
+- 15:50 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/cause2.png
+- 15:50 `Bash`: Dump post passes and uniforms at tap and 206
+- 15:51 `Bash`: Locate grade shader
+- 15:51 `Bash`: Find grade uses in tunnel_s4.js
+- 15:51 `Bash`: Read the drum grade shader
+- 15:51 `Bash`: Find grade parameter tables
+- 15:51 `Bash`: Read hero grade function
+- 15:52 `Bash`: Crop the approved water band
+- 15:52 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/10_SC6_SWIMMER_WATER_WAKE.png
+- 15:52 `Bash`: Measure approved and current water palette
+- 15:52 `Bash`: Capture water6 WIP and compare
 
-_53 tool steps._
+_70 tool steps._
 
 ---
 
@@ -394,5 +504,7 @@ Let me check the approved Scene 5 (the Tap to Start view) so brushes don't appea
 Scene 5 shows no brushes, so I'll keep them out of the opening stretch. Let me check what the flow course places beyond u 150.
 
 - 15:46 `Bash`: Read flow course section definitions
+- 15:48 `Bash`: Find water extent and bank placement code
+- 15:50 `Bash`: Check fog and body radius definitions
 
-_30 tool steps._
+_32 tool steps._
