@@ -71,7 +71,7 @@ export const ARCH56 = {
     from: 30, ramp: 10, R: 3.0, shift: 0.5, off: -1.884,
     bar: { a: 0.68, len: 0.78, r: 0.075 }, dash: { a: [-1.08, -0.32, 0.32, 1.08], len: 0.42, r: 0.05 },
     lamp: { y: 2.57, z: 0.0 },   // the lamp's top under the crown (axis frame) and its z behind the ring
-    lampPipe: [[-0.17, 2.4, 0], [-0.95, 1.8, 0], [-1.3, 1.5, 0], [-1.3, 1.42, 0.0], [-1.3, 1.42, 1.3]],   // axis frame (y from the axis), from the bell
+    lampPipe: [[-0.17, 2.4, 0], [-0.95, 1.8, 0], [-1.3, 1.45, 0], [-1.3, 1.45, 1.3]],   // axis frame (y from the axis), from the bell
     gear: { dz: -2.35, h: 1.95 },
     L: { cab: { x: 1.95, rx: 0.65, rz: 1.62, top: 1.05, z: 0.0 }, paw: { ang: 0.62, y: 0.55, r: 0.24 },
       tank: { x: 1.56, z: 0.1, ped: 1.6, rg: 0.31, hg: 0.82 }, box: { x: 2.0, z: -0.65, y0: 1.62, w: 0.56, h: 0.56, d: 0.44, ang: 0.45 },
@@ -200,6 +200,9 @@ vec3 a56Ungrade(vec3 c) {
     strip: basic(2.3, 1.3, 0.42),        // the arches' amber light strips (yellow-white cores)
     teal: basic(0.25, 1.35, 1.55),       // the turquoise fittings and indicator lights
     amberLight: basic(1.9, 1.3, 0.3),
+    // (ddf175f2) the control box's dark glossy screen and its two glowing white-violet bulbs
+    screen: std({ color: 0x241050, emissive: 0x1a0848, emissiveIntensity: 0.6, metalness: 0.3, roughness: 0.14, envMapIntensity: 1.2 }),
+    bulb: basic(1.8, 1.5, 2.4),
   }));
 
   // ------------------------------------------------ helpers: geometry merged per chunk and per material (as s56's banks), indexed
@@ -326,11 +329,15 @@ vec3 a56Ungrade(vec3 c) {
     return [[arcG(RB, P.ring.band, 10, 96, P.ring.z, 0), MT.ring], [arcG(Ri + 0.02, 0.045, 8, 96, 1, -0.11), MT.lip], [arcG(P.R - 0.02, 0.03, 6, 96, 1, -0.1), MT.gold], [merge(riv), MT.gold]];
   });
   const stripG = (a, len = 0.66, r = 0.055) => { const g = new THREE.CapsuleGeometry(r, len, 4, 10); g.rotateZ(Math.PI / 2 - a); g.translate(Math.sin(a) * RB, Math.cos(a) * RB, -P.ring.band * P.ring.z - 0.005); return g; };
-  const LAMP = priv(() => {   // axis coordinates; hanging from the crown 0.5 m behind its ring
-    const z = 0.5, ly = Ri + 0.15, out = [];
+  const LAMP = priv(() => makeLamp(P.R, Ri + 0.15, 0.5, null));
+  // (ddf175f2) the Scene 6 lamp, built at s6.R: its top at s6.lamp.y under the crown (the approved lamp spans y 0.216-0.278 at u 206), its
+  // thick pipe to the right ending above the gear, then back along the run into the wall (s6.lampPipe)
+  const LAMP6 = S6 ? priv(() => makeLamp(Q6.R, Q6.lamp.y, Q6.lamp.z, Q6.lampPipe)) : null;
+  function makeLamp(RR, lyy, zz, pipePts) {   // axis coordinates; hanging from the crown zz behind its ring
+    const z = zz, ly = lyy, out = [], P_R = RR;
     // a solid brass lamp housing (~0.5 m wide, as the reference's): a short fitting, a domed top, a cylinder with two gold bands, a flared rim,
     // the white-gold glass under it and a warm halo
-    out.push([G.cyl(0.05, 0.05, P.R + 0.02 - ly, 10).translate(0, (P.R + 0.02 + ly) / 2, z), MT.brass]);
+    out.push([G.cyl(0.05, 0.05, P_R + 0.02 - ly, 10).translate(0, (P_R + 0.02 + ly) / 2, z), MT.brass]);
     const prof = [[0.0, 0.02], [0.1, 0.02], [0.2, -0.02], [0.245, -0.07], [0.245, -0.3], [0.285, -0.33], [0.285, -0.37], [0.2, -0.38]].map(([r, y]) => new THREE.Vector2(r, y));
     out.push([new THREE.LatheGeometry(prof, 32).translate(0, ly, z), MT.brass]);
     for (const y of [-0.12, -0.24]) out.push([G.tor(0.25, 0.024, 32, 6).rotateX(Math.PI / 2).translate(0, ly + y, z), MT.gold]);
@@ -338,22 +345,39 @@ vec3 a56Ungrade(vec3 c) {
     out.push([G.sph(0.32, 16, 10).scale(1, 0.8, 1).translate(0, ly - 0.47, z), MT.lampHalo]);
     // the thick brass supply pipe: out of the bell to the right (-x), along under the crown, a rounded elbow down the right wall (outside the
     // lanes' clear space), then out into the wall above the gear; gold joint collars
-    const r = P.pipe.r, xe = -P.pipe.x, y0 = ly - 0.18, yh = 1.9, yb = 1.05, xw = -(Math.sqrt(P.R * P.R - (yb - 0.07) ** 2) + 0.06);
+    const r = P.pipe.r, xe = -P.pipe.x, y0 = ly - 0.18, yh = 1.9, yb = 1.05, xw = -(Math.sqrt(P_R * P_R - (yb - 0.07) ** 2) + 0.06);
+    if (pipePts) {   // (ddf175f2) the Scene 6 route, given in the lamp's axis frame (z added to the lamp's)
+      const pts = pipePts.map(([x, y, zz2]) => [x, y, z + zz2]);
+      out.push([pipe(pts, r * 1.1, 0.4), MT.brass]);
+      for (let i = 1; i < pts.length - 1; i++) { const a = pts[i - 1], b = pts[i]; const m = a.map((v, j) => (v + b[j]) / 2); const dd = b.map((v, j) => v - a[j]); if (Math.hypot(...dd) > 0.3) out.push([collar(m, dd, r * 1.45, 0.08), MT.gold]); }
+      return out;
+    }
     out.push([pipe([[-0.17, y0, z], [xe, yh, z], [xe, yb, z], [xw, yb - 0.07, z]], r, 0.42), MT.brass]);
     for (const [p, d] of [[[-0.26, y0 - 0.01, z], [1, -0.07, 0]], [[-0.85, (y0 + yh) / 2, z], [1, -0.07, 0]], [[xe, 1.45, z], [0, 1, 0]], [[(xe + xw) / 2, yb - 0.035, z], [1, -0.07, 0]]]) out.push([collar(p, d, r * 1.35), MT.gold]);
     return out;
-  });
+  }
   const ringUs = [];
-  for (let k = Math.ceil((U0 + 1 - P.ring.u0) / P.ring.step); ; k++) { const u = P.ring.u0 + k * P.ring.step; if (u > U1 - 1) break; ringUs.push([k, u]); }
+  for (let k = Math.ceil((U0 + 1 - P.ring.u0) / P.ring.step); ; k++) { let u = P.ring.u0 + k * P.ring.step; if (in6(u)) u += Q6.shift; if (u > U1 - 1) break; ringUs.push([k, u]); }
   const mod = (k, n) => ((k % n) + n) % n;
   priv(() => {
     for (const [k, u] of ringUs) {
-      const sc = (P.R + wid(u)) / P.R, L = new THREE.Matrix4().makeTranslation(0, P.A, 0).multiply(new THREE.Matrix4().makeScale(sc, sc, 1));
+      const sc = (Ru(u) + wid(u)) / P.R, L = new THREE.Matrix4().makeTranslation(0, P.A, 0).multiply(new THREE.Matrix4().makeScale(sc, sc, 1));
       for (const [g, m] of RING) put(u, g, m, L);
-      const lampRing = mod(k, P.lampEvery) === 0, strips = P.ring.strips.map((a) => stripG(a));
-      if (P.ring.topStrip && !lampRing) strips.push(stripG(0, 0.5));
+      const lampRing = mod(k, P.lampEvery) === 0;
+      let strips;
+      if (in6(u)) {   // (ddf175f2) big capsule lamp bars at +-bar.a, smaller warm dashes round the arch, a dash on top unless the lamp hangs there
+        strips = [-Q6.bar.a, Q6.bar.a].map((a) => stripG(a, Q6.bar.len, Q6.bar.r)).concat(Q6.dash.a.map((a) => stripG(a, Q6.dash.len, Q6.dash.r)));
+        if (!lampRing) strips.push(stripG(0, Q6.dash.len, Q6.dash.r));
+      } else {
+        strips = P.ring.strips.map((a) => stripG(a));
+        if (P.ring.topStrip && !lampRing) strips.push(stripG(0, 0.5));
+      }
       put(u, merge(strips), MT.strip, L);
-      if (lampRing) { for (const [g, m] of LAMP) put(u, g, m, L); stats.lamps++; }
+      if (lampRing) {
+        if (in6(u) && LAMP6) { const s6 = (Ru(u) + wid(u)) / Q6.R, L6 = new THREE.Matrix4().makeTranslation(0, P.A, 0).multiply(new THREE.Matrix4().makeScale(s6, s6, 1)); for (const [g, m] of LAMP6) put(u, g, m, L6); }
+        else for (const [g, m] of LAMP) put(u, g, m, L);
+        stats.lamps++;
+      }
       stats.rings++;
     }
   });
@@ -434,7 +458,93 @@ vec3 a56Ungrade(vec3 c) {
     for (const y of [T.h + 0.42, T.h + 0.26]) out.push([G.cyl(0.028, 0.028, len, 10).rotateX(Math.PI / 2).translate(xr, y, 0), MT.gold]);
     return out;
   }
-  const MOD = priv(() => ({ A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) }, S: { [-1]: moduleStar(-1), 1: moduleStar(1) } }));
+  // ------------------------------------------------ 3c. (session ddf175f2) the approved Scene 6 modules (ARCH56.s6.L / .Rt), real geometry
+  // module frame as above (x across, +x screen-left; y up from the water; z along the run from the bay's centre); s = +1 left, -1 right
+  const seg = (a, b, r, n = 10) => { const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b), d = B.clone().sub(A), g = G.cyl(r, r, d.length(), n);
+    g.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize())); g.translate(...A.clone().add(B).multiplyScalar(0.5).toArray()); return g; };
+  const railing = (pts, y0, h, step = 0.34) => {   // gold posts with ball knobs and two rails along a polyline at deck height y0
+    const posts = [], rails = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [ax, az] = pts[i], [bx, bz] = pts[i + 1], L = Math.hypot(bx - ax, bz - az), n = Math.max(1, Math.round(L / step));
+      for (let j = 0; j <= n; j++) { if (i > 0 && j === 0) continue; const t = j / n, x = ax + (bx - ax) * t, z = az + (bz - az) * t;
+        posts.push(G.cyl(0.024, 0.024, h, 8).translate(x, y0 + h / 2, z), G.sph(0.04, 8, 6).translate(x, y0 + h + 0.02, z)); }
+      for (const y of [y0 + h, y0 + h * 0.55]) rails.push(seg([ax, y, az], [bx, y, bz], 0.026, 8));
+    }
+    return [[merge(posts), MT.gold], [merge(rails), MT.gold]];
+  };
+  const ovalCab = (out, x, z, rx, rz, top, mat) => {   // a glossy oval drum standing in the water: gold bands, a gold rim, a lavender deck, rivets
+    const ov = (g) => g.scale(1, 1, rz / rx).translate(x, 0, z);
+    out.push([ov(G.cyl(rx, rx + 0.02, top + 0.35, 48).translate(0, (top - 0.35) / 2, 0)), mat]);
+    for (const y of [0.1, top - 0.12]) out.push([ov(G.tor(rx + 0.012, 0.042, 48, 6).rotateX(Math.PI / 2).translate(0, y, 0)), MT.gold]);
+    out.push([ov(G.cyl(rx + 0.05, rx + 0.05, 0.08, 48).translate(0, top, 0)), MT.gold], [ov(G.cyl(rx + 0.02, rx + 0.04, 0.05, 48).translate(0, top + 0.06, 0)), MT.lav]);
+    const riv = []; for (let i = 0; i < 28; i++) { const a = (i / 28) * Math.PI * 2; for (const y of [0.22, top - 0.24]) riv.push(G.sph(0.02, 6, 4).translate(Math.cos(a) * (rx + 0.01), y, Math.sin(a) * (rx + 0.01) * rz / rx)); }
+    out.push([merge(riv).translate(x, 0, z), MT.gold]);
+  };
+  const onOvalAt = (x, z, rx, rz, s, ang, y, list, lift0 = 0) => {   // facing-+z pieces on an oval's surface, turned toward the channel by ang
+    const n = dirN(s, ang), t = 1 / Math.sqrt((n[0] * n[0]) / (rx * rx) + (n[1] * n[1]) / (rz * rz));
+    return list.map(([g, m]) => [g.clone().applyMatrix4(facing(x + n[0] * (t + lift0), y, z + n[1] * (t + lift0), n[0], n[1])), m]);
+  };
+  // a violet glowing glass tank: gold foot, glass with a hot white-pink core, a violet halo and bubbles, gold struts and rings, gold cap, a dome
+  const tank = (out, x, z, y0, rg, hg) => {
+    const yg = y0 + 0.12, yc = yg + hg;
+    out.push([G.cyl(rg + 0.07, rg + 0.09, 0.12, 36).translate(x, y0 + 0.06, z), MT.gold]);
+    out.push([G.cyl(rg, rg, hg, 32).translate(x, yg + hg / 2, z), MT.glass]);
+    out.push([G.sph(rg * 0.42, 16, 12).scale(1, 1.5, 1).translate(x, yg + hg * 0.5, z), MT.core], [G.sph(rg * 0.8, 16, 12).scale(1, 1.3, 1).translate(x, yg + hg * 0.5, z), MT.halo]);
+    for (const [dx, dy, dz, rr] of [[0.38, 0.2, 0.3, 0.2], [-0.35, 0.72, -0.3, 0.24], [0.2, 0.84, 0.42, 0.16], [-0.42, 0.3, 0.36, 0.18]]) out.push([G.sph(rg * rr, 10, 8).translate(x + dx * rg, yg + dy * hg, z + dz * rg), MT.bub]);
+    for (let i = 0; i < 4; i++) { const a = (i / 4) * Math.PI * 2 + Math.PI / 4; out.push([G.cyl(0.022, 0.022, hg, 8).translate(x + Math.cos(a) * (rg + 0.01), yg + hg / 2, z + Math.sin(a) * (rg + 0.01)), MT.gold]); }
+    for (const y of [yg + 0.03, yc - 0.03]) out.push([G.tor(rg + 0.012, 0.03, 32, 6).rotateX(Math.PI / 2).translate(x, y, z), MT.gold]);
+    out.push([G.cyl(rg + 0.06, rg + 0.06, 0.15, 36).translate(x, yc + 0.075, z), MT.gold], [G.tor(rg + 0.06, 0.03, 36, 6).rotateX(Math.PI / 2).translate(x, yc + 0.15, z), MT.gold]);
+    const riv = []; for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI * 2; riv.push(G.sph(0.018, 6, 4).translate(x + Math.cos(a) * (rg + 0.065), yc + 0.075, z + Math.sin(a) * (rg + 0.065))); }
+    out.push([merge(riv), MT.paw]);
+    out.push([new THREE.SphereGeometry(rg * 0.85, 24, 8, 0, Math.PI * 2, 0, Math.PI / 2).scale(1, 0.55, 1).translate(x, yc + 0.15, z), MT.gold]);
+    return yc + 0.15 + rg * 0.47;   // the dome's top
+  };
+  function moduleL6(s) {   // the approved Scene 6 left bank (TARGETS.md "Left machinery")
+    const Q = Q6.L, out = [], X = (v) => s * v, C = Q.cab;
+    ovalCab(out, X(C.x), C.z, C.rx, C.rz, C.top, MT.pink);
+    out.push(...onOvalAt(X(C.x), C.z, C.rx, C.rz, s, Q.paw.ang, Q.paw.y, pawMedal().map(([g, m]) => [g.clone().scale(Q.paw.r / 0.24, Q.paw.r / 0.24, 1), m])));
+    // the gold railing on the deck: along the deck's front edge (toward the camera) and its inner edge
+    const yd = C.top + 0.08, xi = C.x - C.rx + 0.1;
+    out.push(...railing([[X(C.x + C.rx * 0.75), C.z - C.rz * 0.72], [X(xi + 0.05), C.z - C.rz * 0.72], [X(xi), C.z - C.rz * 0.45], [X(xi), C.z + C.rz * 0.8]], yd, 0.3));
+    // the tank on a pink pedestal with a gold band
+    const T = Q.tank;
+    out.push([G.cyl(T.rg + 0.05, T.rg + 0.1, T.ped - yd, 32).translate(X(T.x), (T.ped + yd) / 2, T.z), MT.pink], [G.tor(T.rg + 0.08, 0.035, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), T.ped - 0.1, T.z), MT.gold]);
+    const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg);
+    // the lavender control box on a column: two glowing white-violet bulbs in a dark screen; below it a panel with a yellow and a teal light
+    const B = Q.box, R0 = new THREE.Matrix4().makeRotationY(s * B.ang), bx = X(B.x), bz = B.z, ph = Q.panel.h, by1 = B.y0 + ph + B.h;
+    const pc = (g, x, y, z) => { g.translate(x, 0, z); g.applyMatrix4(R0); g.translate(bx, y, bz); return g; };
+    out.push([pc(G.box(B.w * 0.7, B.y0 - yd + 0.02, B.d * 0.7), 0, (B.y0 + yd) / 2, 0), MT.lav]);
+    out.push([pc(G.box(B.w + 0.06, ph, B.d), 0, B.y0 + ph / 2, 0), MT.lav], [pc(G.box(B.w + 0.1, 0.04, B.d + 0.04), 0, B.y0 + ph, 0), MT.gold]);
+    out.push([pc(G.box(B.w, B.h, B.d), 0, B.y0 + ph + B.h / 2, 0), MT.lav], [pc(G.box(B.w + 0.06, 0.05, B.d + 0.06), 0, by1, 0), MT.gold]);
+    for (const xx of [-1, 1]) out.push([pc(G.box(0.035, B.h + ph, 0.035), xx * (B.w / 2 + 0.03), B.y0 + (B.h + ph) / 2, -B.d / 2 - 0.01), MT.gold]);
+    const fz = -B.d / 2 - 0.012, ys = B.y0 + ph + B.h * 0.55;   // the front face (toward the camera)
+    out.push([pc(G.box(B.w * 0.78, B.h * 0.5, 0.03), 0, ys, fz), MT.screen]);
+    for (const xx of [-0.12, 0.12]) out.push([pc(G.sph(0.072, 16, 12).scale(1, 1, 0.6), xx, ys, fz - 0.02), MT.bulb], [pc(G.tor(0.082, 0.014, 20, 6), xx, ys, fz - 0.01), MT.gold]);
+    for (const [xx, mm] of [[-0.13, MT.amberLight], [0.13, MT.teal]]) out.push([pc(G.sph(0.075, 16, 12).scale(1, 1, 0.55), xx, B.y0 + ph * 0.5, fz - 0.015), mm], [pc(G.tor(0.088, 0.02, 20, 6), xx, B.y0 + ph * 0.5, fz - 0.01), MT.gold]);
+    // the gold elbow pipe: up out of the box's top, over, down into the tank's dome; a second one from the dome back into the machinery
+    const tx = X(T.x), ptop = Math.max(by1, dome) + 0.32;
+    out.push([pipe([[bx, by1, bz], [bx, ptop, bz], [tx, ptop, T.z], [tx, dome - 0.05, T.z]], 0.08, 0.22), MT.brass]);
+    out.push([collar([bx, by1 + 0.08, bz], [0, 1, 0], 0.105), MT.gold], [collar([tx, dome + 0.05, T.z], [0, 1, 0], 0.105), MT.gold]);
+    out.push([pipe([[tx, dome - 0.05, T.z + 0.02], [tx, ptop - 0.1, T.z + 0.35], [X(T.x + 0.5), ptop - 0.1, T.z + 1.2]], 0.07, 0.25), MT.brass]);
+    return out;
+  }
+  function moduleR6(s) {   // the approved Scene 6 right bank (TARGETS.md "Right machinery"; the gear is placed with the gears below)
+    const Q = Q6.Rt, out = [], X = (v) => s * v, C = Q.cab;
+    ovalCab(out, X(C.x), C.z, C.rx, C.rz, C.top, MT.pink);
+    const big = (ang, y, r) => onOvalAt(X(C.x), C.z, C.rx, C.rz, s, ang, y, [[starG(r), MT.gold]], -0.005);
+    out.push(...big(0.22, 0.58, 0.25), ...big(0.95, 0.58, 0.23), ...big(-0.55, 0.62, 0.15));
+    const yd = C.top + 0.08, xi = C.x - C.rx + 0.1;
+    out.push(...railing([[X(xi + 0.12), C.z - C.rz * 0.85], [X(xi), C.z - C.rz * 0.5], [X(xi), C.z + C.rz * 0.85]], yd, 0.3));
+    // the near tank on a pink pedestal standing in the water, a gold elbow pipe up out of its dome and into the wall
+    const T = Q.tank;
+    out.push([G.cyl(T.rg + 0.06, T.rg + 0.1, T.ped + 0.35, 32).translate(X(T.x), (T.ped - 0.35) / 2, T.z), MT.pink]);
+    for (const y of [0.15, T.ped - 0.12]) out.push([G.tor(T.rg + 0.09, 0.038, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), y, T.z), MT.gold]);
+    const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg);
+    const tx = X(T.x), ptop = dome + 0.35;
+    out.push([pipe([[tx, dome - 0.05, T.z], [tx, ptop, T.z], [X(T.x + 0.9), ptop + 0.05, T.z]], 0.085, 0.22), MT.brass], [collar([tx, dome + 0.06, T.z], [0, 1, 0], 0.11), MT.gold]);
+    return out;
+  }
+  const MOD = priv(() => ({ L6: S6 ? moduleL6(1) : null, R6: S6 ? moduleR6(-1) : null, A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) }, S: { [-1]: moduleStar(-1), 1: moduleStar(1) } }));
   const gearSet = new Set(P.gearK);
 
   // ------------------------------------------------ 3b. (session 47f75e22) the user's Tripo models, mobile copies in models/s56tm/ (made from the
@@ -470,7 +580,11 @@ vec3 a56Ungrade(vec3 c) {
   const firstGear = P.gearK.length ? P.gearK[0] : null;
   priv(() => {
     for (const [k, ur] of ringUs) {
-      const u = ur + P.mod.off; if (u < U0 + 0.5) continue;
+      const u = ur + (in6(ur) ? Q6.off : P.mod.off); if (u < U0 + 0.5) continue;
+      if (in6(u) && u >= Q6.from + Q6.ramp) {   // (ddf175f2) the approved Scene 6 modules in every bay
+        for (const s of [1, -1]) { const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0); for (const [g, m] of (s > 0 ? MOD.L6 : MOD.R6)) put(u, g, m, L); }
+        stats.mods6 = (stats.mods6 || 0) + 2; continue;
+      }
       const type = mod(k, P.mod.aEvery) === 0 ? 'A' : TM ? 'M' : 'B';
       for (const s of [1, -1]) {
         const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0);
@@ -536,7 +650,7 @@ vec3 a56Ungrade(vec3 c) {
       const axleX = !V2, dia = axleX ? Math.max(gs.y, gs.z) : Math.max(gs.x, gs.y);
       for (const [k, ur] of ringUs) {
         if (!gearSet.has(k)) continue;
-        const Q = k === 0 && P.gear0 ? { ...P.gear, ...P.gear0 } : P.gear, kg = Q.d / dia;
+        const Q = k === 0 && P.gear0 ? { ...P.gear, ...P.gear0 } : in6(ur) ? { ...P.gear, ...Q6.gear } : P.gear, kg = Q.d / dia;
         const u = ur + Q.dz, s = -1;
         const holder = new THREE.Group(); holder.name = 'a56Gear'; holder.matrixAutoUpdate = false;
         // the axle (local +x after the turn) to (-sin out, 0, -cos out) in the track frame (back to the camera, out to the right wall)
@@ -553,7 +667,7 @@ vec3 a56Ungrade(vec3 c) {
   priv(() => {
     chunks.forEach((c, ci) => { for (const [mat, list] of c) { const g = mergeGeometries(list, false); for (const x of list) x.dispose(); if (!g) continue; g.computeBoundingSphere(); const mesh = new THREE.Mesh(g, mat); mesh.name = 'a56Chunk' + ci; group.add(mesh); meshes++; } });
   });
-  report.parts.push(`arch56: drum (axis ${P.A} m, R ${P.R} m), rings x${stats.rings}, lamps x${stats.lamps}, modules A x${stats.modsA} B x${stats.modsB} M x${stats.modsM || 0}, gears x${stats.gears}, ${meshes} chunk meshes, ${lodSets.length} model chunks`);
+  report.parts.push(`arch56: drum (axis ${P.A} m, R ${P.R} m${S6 ? ` -> ${Q6.R} m past u ${Q6.from}` : ''}), rings x${stats.rings}, lamps x${stats.lamps}, modules A x${stats.modsA} B x${stats.modsB} M x${stats.modsM || 0} S6 x${stats.mods6 || 0}, gears x${stats.gears}, ${meshes} chunk meshes, ${lodSets.length} model chunks`);
   if (typeof window !== 'undefined') window.__bwArch56Info = { stats, meshes, mats: MT };
 
   function update(dt, time, phase, m) {
