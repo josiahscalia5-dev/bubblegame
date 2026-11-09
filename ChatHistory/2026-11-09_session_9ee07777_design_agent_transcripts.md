@@ -546,5 +546,163 @@ It has freed. I'll make the remaining zoom crops small (JPEG) and check free spa
 - 10:25 `Bash`: Check space and make body-region zoom crops
 - 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_body.jpg
 - 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g1_body.jpg
+**Agent** (10:27 UTC):
 
-_20 tool steps._
+Body read. Next, the washer and window regions in both Scene 1 frames.
+
+- 10:27 `Bash`: Zoom crops of washer and window regions
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_wash.jpg
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g1_wash.jpg
+**Agent** (10:27 UTC):
+
+Washer and window read. Now the UI bands (top 0 to 0.25, bottom 0.74 to 1.0) in both Scene 1 frames.
+
+- 10:27 `Bash`: Zoom crops of the top and bottom UI bands
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_top.jpg
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g1_top.jpg
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_bot.jpg
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g1_bot.jpg
+**Agent** (10:28 UTC):
+
+Scene 1 UI read. Now Scene 2: the head and arm region in REF02 and both game frames.
+
+- 10:28 `Bash`: Zoom crops of Scene 2 head, arms and towel
+- 10:28 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r2_up.jpg
+- 10:28 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2_up.jpg
+- 10:28 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2b_up.jpg
+**Agent** (10:29 UTC):
+
+Scene 2's upper body read. Now the Scene 2 washer and basket regions.
+
+- 10:29 `Bash`: Zoom crops of Scene 2 washer and basket
+- 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r2_wash.jpg
+- 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2_wash.jpg
+- 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r2_bask.jpg
+- 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2_bask.jpg
+
+_37 tool steps._
+
+---
+
+## Water & VFX specialist: Water: Scene 4/5 visible water (started 10:26 UTC)
+
+**Lead → agent** (10:26 UTC):
+
+Your lane (your own copy of the game's source; work ONLY here): /home/user/bubblegame_lanes/water/WebDemo. You own ONE file there: src/opening_six2_water.js. Edit no other file anywhere (the main repository /home/user/bubblegame is the lead's; do not touch it). Build in your lane: `cd /home/user/bubblegame_lanes/water/WebDemo && node build_lane.mjs`. Game: Bubble Wash Kingdom, three.js r170, plain JS.
+
+References (the user's approved portraits): /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/ (03_Oops_He_Goes_In.png, 04_The_Wash_Begins.png, 05_Into_The_Laundry_Tunnel.png). The user's correction pack and mandate for Scenes 4-5: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck45/ (read CLAUDE_SCENES_4_5_MANDATE.txt, look at SCENE_4_Approved_vs_Current.jpg and SCENE_5_Approved_vs_Current.jpg).
+
+Context: the six-scene opening (`six2` switch) is staged in src/opening_six2.js (lead's file: read it, don't edit) on top of src/opening3d.js buildVortex() (the drum tunnel `vortex.tube` with uniforms vortex.U {uTime,uFlow,uGlow,uFill}, and the floor water plane `vortex.water` with vortex.WU {uTime,uFlow,uHit,uFrom}; its six2 shader variant adds wave relief vH and crests). Your file's installSix2Water(ctx) is called once (ctx: scene, camera, env, washer, vortex, hero, heroBody, OPENING3D, splash, ...) and update(s, it, o) every frame; s = the STORY clock in seconds after START (real 2.65-4.45 s maps to story 2.65-3.95 s; after that real = story + 0.5); o = { hero (his world position), heroSit, heroLand, lit (0..1, the wash lights) }. The porthole centre OPENING3D.porthole = (0.3, 0.62, 0.27), the drum opening radius ~0.28, the water plane at OPENING3D.waterY = 0.385; the hero sits at heroSit behind the glass (story 4.75-7.7) and is carried into the tunnel to heroLand (story 7.65-8.45). Cameras: SIX2.cam in opening_six2.js (scene 4 front view story 5.4-7.4; push through the porthole 7.4-8.0; behind him in the tunnel 8.45-9.15).
+
+The user's top complaint: in Scene 4 there is almost no visible blue water round him inside the porthole (the water is a horizontal plane seen edge-on from the porthole camera: a thin band; the drum wall's uFill swirl barely shows). REF04: rich cobalt water swirling round him, filling the lower ~60 % of the porthole, rounded waves, white crests, bubbles, his face clearly visible, him sitting IN the water. Scene 3 (REF03): first cobalt water and foam along the drum bottom as he lands. Scene 5 (REF05): seen from behind, low centre, flowing cobalt water with waves rising and falling round him, splashes, a small wake, reflections; no flat floor, no white foam cloud.
+
+Do: (1) diagnose precisely (numbers) why the existing systems don't show the water; (2) fix it in your file only: e.g. a curved swirling water shell/surface inside the drum round heroSit that rises (story ~6.6-7.4) and rotates, real wave geometry round him, instanced bubbles, crest/foam accents; drive vortex.U.uFill / vortex.water as needed; scene 5 waves, splash and wake round o.hero. Private random numbers only (never Math.random). Modest mobile cost. (3) Verify with REAL frames; `flock /tmp/bw_browser.lock` is MANDATORY for any browser run (4 CPUs, software WebGL, other specialists share it): `cd /home/user/bubblegame_lanes/water/WebDemo && node build_lane.mjs && TIMES=5.5,7.2,7.6,8.9,9.4 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs /home/user/bubblegame_lanes/water/WebDemo <out dir>` (TIMES are REAL seconds); sheet: `python3 tools/six2/sheet.py 640 sheet.png "REF04=<path>" "7.6=<frame>" ...`. At most two correction passes. Save final frames and sheet in /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_water/. Report: diagnosis, what you changed, remaining differences, frame paths. No Tripo/Ludo, no new models.
+
+**Agent** (10:26 UTC):
+
+I'll start by reading the mandate, the references and the relevant source files.
+
+- 10:26 `Bash`: Read mandate and list lane files
+- 10:26 `Bash`: Read my file, capture tool, sheet tool
+- 10:26 `Read`: /home/user/bubblegame_lanes/water/WebDemo/src/opening_six2.js
+- 10:26 `Grep`: buildVortex|uFill|waterY|WU\b|vortex\.|six2|porthole|heroW
+- 10:26 `Read`: /home/user/bubblegame_lanes/water/WebDemo/src/opening3d.js
+- 10:26 `Read`: /home/user/bubblegame_lanes/water/WebDemo/src/opening3d.js
+- 10:26 `Bash`: Read tunnel file and tripo3 door/glass lines
+**Agent** (10:26 UTC):
+
+Now let me look at the references and the current state frames.
+
+- 10:26 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck45/SCENE_4_Approved_vs_Current.jpg
+- 10:26 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck45/SCENE_5_Approved_vs_Current.jpg
+- 10:27 `Bash`: Build lane and capture baseline frames
+- 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/04_The_Wash_Begins.png
+- 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/05_Into_The_Laundry_Tunnel.png
+- 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/03_Oops_He_Goes_In.png
+- 10:29 `Bash`: Check baseline capture progress
+- 10:29 `Bash`: Check capture output and read Puffs class
+- 10:29 `Read`: /home/user/bubblegame_lanes/water/WebDemo/src/opening3d.js
+- 10:29 `Bash`: Check baseline capture progress
+- 10:30 `Write`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_water/probe.cjs
+- 10:30 `Bash`: Wait for baseline frames to finish
+- 10:30 `Read`: /home/user/bubblegame_lanes/water/WebDemo/src/opening_tripo3.js
+- 10:30 `Bash`: Check capture progress
+- 10:30 `Bash`: Make a sheet of baseline scene 4 frames
+- 10:30 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_water/base_sheet1.png
+- 10:30 `Bash`: Wait for the last baseline frame
+**Agent** (10:31 UTC):
+
+Baseline done. Now the live probe at real 7.6 s for the numbers.
+
+- 10:31 `Bash`: Sheet for scene 5 baseline and run the live probe
+
+_25 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: Lighting: washer + tunnel richness (started 10:26 UTC)
+
+**Lead → agent** (10:26 UTC):
+
+Your lane (your own copy of the game's source; work ONLY here): /home/user/bubblegame_lanes/tunnel/WebDemo. You own src/opening_six2_tunnel.js and, in src/opening3d.js, ONLY the `SIX2_DRUM_END` GLSL constant (the six2 drum wall colour). Edit nothing else anywhere (the main repository /home/user/bubblegame is the lead's). Build: `cd /home/user/bubblegame_lanes/tunnel/WebDemo && node build_lane.mjs`. Game: Bubble Wash Kingdom, three.js r170.
+
+References (the user's approved portraits): /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/04_The_Wash_Begins.png and 05_Into_The_Laundry_Tunnel.png (03_Oops_He_Goes_In.png for the drum interior). The user's annotated comparisons and mandate: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck45/ (read CLAUDE_SCENES_4_5_MANDATE.txt and both SCENE_*_Approved_vs_Current.jpg).
+
+Context: the six-scene opening (`six2`) is staged in src/opening_six2.js (lead's file: read, don't edit). Your installSix2Tunnel(ctx) is called once (ctx: scene, camera, env, washer {g, goldM, door, glass, ...}, six {housings (12 tripo3 machine housings 'housing_tripo_821' along the tunnel), gear (tripo3 cobalt gear), lights6, dial, tun (the six tunnel props group), ...}, vortex, OPENING3D) and update(s, it) each frame (s = STORY clock after START; real = story + 0.5 after real 4.45 s). The washer is the user's Tripo washer_tripo_hj748.glb + door_tripo_oit748_gold.glb, dressed in src/opening_tripo3.js (TRIPO3.look env 0.4, emissive 0.15, metal 0.25: read it; override materials at runtime from YOUR file via washer.g.traverse, do not edit opening_tripo3.js). Scene 4 camera: SIX2.cam story 5.4-7.4 front view; Scene 5: story 8.45-9.15 behind the hero in the tunnel (hand-over to the game at real 9.65).
+
+The user's complaints: Scene 4 washer: the door ring looks pale yellow and flat; REF04 has vibrant glossy hot-pink body, rich deep polished metallic gold (warm orange-gold with dark reflections), a golden paw emblem, purple-pink jewel lights, cyan and yellow controls, a luminous lavender-blue interior. Scene 5: too empty and plain vs REF05: a magical purple-lavender perforated drum tunnel lined with glowing pink-and-gold machinery on BOTH sides, repeated illuminated arches toward a bright vanishing point, a large cobalt gear on the right, gold pipes and railings, glowing purple tanks, warm lamps, bubbles. Diagnose with numbers which existing props (six.housings, six.gear, six.tun, the T5 arches/tanks/pipes in your file) are missing, too small, hidden, badly lit or outside the camera, then fix by reusing and re-placing them (simple code geometry where needed); darken/enrich the drum wall and avoid the white blow-out at the far end.
+
+Verify with REAL frames; `flock /tmp/bw_browser.lock` is MANDATORY for every browser run (4 CPUs, software WebGL, shared): `cd /home/user/bubblegame_lanes/tunnel/WebDemo && node build_lane.mjs && TIMES=7.6,8.9,9.4 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs /home/user/bubblegame_lanes/tunnel/WebDemo <out>`; sheet: `python3 tools/six2/sheet.py 640 sheet.png "REF04=<path>" "7.6=<frame>" ...`. At most two passes. Save final frames under /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/. Report the diagnosis, changes, remaining differences, and any camera recommendation for the lead (numbers). No Tripo/Ludo, no new models.
+
+**Agent** (10:26 UTC):
+
+I'll start by reading the mandate, the references and my lane's files.
+
+- 10:26 `Bash`: Read mandate and list lane files
+- 10:26 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck45/SCENE_5_Approved_vs_Current.jpg
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck45/SCENE_4_Approved_vs_Current.jpg
+- 10:27 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening_six2_tunnel.js
+- 10:27 `Bash`: Inspect lane files and tools
+- 10:27 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening_six2.js
+- 10:27 `Bash`: Find relevant symbols in opening3d.js
+- 10:27 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening3d.js
+- 10:27 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening3d.js
+- 10:27 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening_tripo3.js
+- 10:27 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening_six2_water.js
+- 10:27 `Bash`: List reference images
+- 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/05_Into_The_Laundry_Tunnel.png
+- 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/04_The_Wash_Begins.png
+- 10:27 `Bash`: Build lane and back up originals
+- 10:28 `Bash`: Write diagnostic capture script and run baseline
+
+_16 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: Lighting: laundry room scenes 1-2 (started 10:27 UTC)
+
+**Lead → agent** (10:27 UTC):
+
+Your lane (your own copy of the game's source; work ONLY here): /home/user/bubblegame_lanes/room/WebDemo. You own ONE file there: src/opening_six2_room.js (buildRoom2(env): the laundry room of Scenes 1-2; applyRoomLight(scene): the scenes' light). Edit nothing else anywhere (the main repository /home/user/bubblegame is the lead's). Build: `cd /home/user/bubblegame_lanes/room/WebDemo && node build_lane.mjs`. Game: Bubble Wash Kingdom, three.js r170.
+
+References: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png and 02_She_Loads_Laundry.png. The user's own annotated comparison and strict brief: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/ (SCENE_01_SIDE_BY_SIDE_ANNOTATED.jpg, SCENE_02_SIDE_BY_SIDE_ANNOTATED.jpg, CLAUDE_STRICT_SCENE1_SCENE2_FIX_PROMPT.txt: read its room and lighting parts).
+
+Context: the opening is staged in src/opening_six2.js (lead's file, read only; the lead is changing the girl, basket and cameras in the main repository, so small differences there are expected). Cameras fitted to the references: Scene 1 camera (0.436, 0.45, 3.508) looking at (-0.296, 0.581, 0.661), vertical fov 52.8, aspect 864/1536; Scene 2 (0.78, 0.507, 3.358) -> (-0.198, 0.627, 0.619), fov 43.8. Washer porthole centre (0.3, 0.62, 0.27); basket at (-0.055, 0, 1.47); the girl kneels at about (-0.36, 0, 1.12). Renderer: NeutralToneMapping, exposure 1.18, a hemisphere light 0xf4e6ff/0xff9fdc 2.1 (applyRoomLight scales it), directional keys, a cyan point light at the porthole (src/opening3d.js ~L466-471). The user's complaint: the room looks too empty, flat and PALE (washed-out bright pink) and the window is hidden. REF01/REF02 have a warm glowing multi-pane sunlit window at the rear right behind/right of the girl's head (reference screen box x 0.60-0.79, y 0.21-0.42; it must stay visible at the Scene 1 camera below the UI title plaque, which covers y ~0.11-0.23), hanging blue curtains either side (x ~0.52-0.61 and 0.78-0.92), shelves full of folded pastel towels and detergent bottles on the left (x 0-0.5, y 0.13-0.52), soft purple/lavender walls, a plush purple rug under the basket, glossy floor reflections, contact shadows, bubbles and rich warm light. Place things for the camera exactly (Vector3.unproject; the projection maths in tools/six2/camfit3.mjs). Richer colour and contrast without making the girl or the washer muddy.
+
+Verify with REAL frames; `flock /tmp/bw_browser.lock` is MANDATORY for every browser run (4 CPUs, software WebGL, shared): `cd /home/user/bubblegame_lanes/room/WebDemo && node build_lane.mjs && TIMES=-1,2.1 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs /home/user/bubblegame_lanes/room/WebDemo <out>` (-1 = the waiting Scene 1 screen, 2.1 = Scene 2); sheet: `python3 tools/six2/sheet.py 640 sheet.png "REF01=<path>" "wait=<frame>" "REF02=<path>" "2.1=<frame>"`. At most two passes. Save final frames under /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/. Report changes and remaining differences. No Tripo/Ludo, no new models.
+
+- 10:27 `Bash`: List lane files and references
+- 10:27 `Read`: /home/user/bubblegame_lanes/room/WebDemo/src/opening_six2_room.js
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/CLAUDE_STRICT_SCENE1_SCENE2_FIX_PROMPT.txt
+- 10:27 `Read`: /home/user/bubblegame_lanes/room/WebDemo/src/opening_six2.js
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/SCENE_01_SIDE_BY_SIDE_ANNOTATED.jpg
+- 10:27 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/SCENE_02_SIDE_BY_SIDE_ANNOTATED.jpg
+- 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png
+- 10:27 `Bash`: Read capture, build, sheet and camfit tools
+**Agent** (10:27 UTC):
+
+Let me take a baseline capture of the lane as it is now.
+
+- 10:27 `Bash`: Build lane and capture baseline frames
+
+_9 tool steps._

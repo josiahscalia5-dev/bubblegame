@@ -30,7 +30,7 @@ export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
 // every number the staging uses (window.__bwSix2 in the browser, for live tuning; the timeline reads them each frame)
 export const SIX2 = {
   handOver: 9.65, seqEnd: 10.45, warp: [2.65, 4.45, 3.95],   // (real 2.65..4.45 s = story 2.65..3.95 s: the trip back to the basket; later story times +0.5 s)
-  girl: { scale: 1.42, k1: [-0.36, 1.12], yaw1: 1.5, k2: [-0.27, 0.64], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
+  girl: { scale: 1.42, k1: [-0.52, 1.5], yaw1: 1.3, k2: [-0.27, 0.64], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
   basket: { pos: [-0.055, 1.47], scale: 1.12, yaw: 0.0 },
   door: { open: -2.92 },
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
@@ -167,7 +167,7 @@ export function installSix2(ctx) {
   let heap = null;
   Promise.resolve(typeof window !== 'undefined' && window.__bwTripo2Ready).then(() => {
     const h = []; basket.traverse((o) => { if (o.name === 'heapTripo') h.push(o); });
-    if (h.length >= 3) { h[1].visible = false; h[2].traverse((o) => { if (o.isMesh) { o.material = o.material.clone(); o.material.color = new THREE.Color(0xc9a6ff); } }); heap = h; }
+    if (h.length >= 3) { h[1].visible = false; h[0].position.set(-0.05, 0.215, 0.1); h[0].scale.multiplyScalar(1.35); h[2].position.set(0.11, 0.2, 0.07); h[2].scale.multiplyScalar(1.3); h[2].traverse((o) => { if (o.isMesh) { o.material = o.material.clone(); o.material.color = new THREE.Color(0xc9a6ff); } }); heap = h; }
   });
   // the girl's measured legs (filled when her model has loaded)
   const legs = { ready: false };
@@ -184,7 +184,7 @@ export function installSix2(ctx) {
   // ---- the girl's knee timeline: states (knee midpoint on the floor, yaw, sit) and the steps between them (one knee swings, the other stays planted)
   const st = (kx, kz, yaw, sit) => ({ kx, kz, yaw, sit });
   const G = S.girl;
-  const S1 = st(G.k1[0], G.k1[1], G.yaw1, 0.62), S1u = st(G.k1[0], G.k1[1], G.yaw1 + 0.12, 0.08);
+  const S1 = st(G.k1[0], G.k1[1], G.yaw1, 0.55), S1u = st(G.k1[0], G.k1[1], G.yaw1 + 0.15, 0.1);
   const mid = st((G.k1[0] + G.k2[0]) / 2 + 0.02, (G.k1[1] + G.k2[1]) / 2, (G.yaw1 + G.yaw2) / 2 + 0.1, 0.08), S2 = st(G.k2[0], G.k2[1], G.yaw2, 0.08);
   const S2b = st(-0.29, 1.06, 0.45, 0.12);   // back at the basket (two knee steps) for the second armful
   const S3 = st(-0.66, 1.12, 1.0, 0.1);   // back, out of the door's sweep, to swing it shut
@@ -250,11 +250,12 @@ export function installSix2(ctx) {
     let gripA, gripB;   // the two hands (screen-left hand, screen-right hand)
     const lat = latOf(s0.yaw);
     const hold = (c, w) => [c.clone().addScaledVector(lat, w), c.clone().addScaledVector(lat, -w)];
-    if (s < 0) { const pat = 0.015 * Math.max(0, Math.sin(it * 2.6)); gripA = rimC.clone().add(V(-0.02, 0.17 + pat, 0.04)); gripB = V(s0.kx, 0.36 * G.scale, s0.kz).addScaledVector(fwd, 0.2).addScaledVector(lat, -0.14); }
-    else if (s < 0.45) { const k = sm(0.0, 0.45, s); [gripA, gripB] = [rimC.clone().add(V(-0.02, 0.17, 0.04)).lerp(bluePickL, k), V(s0.kx, 0.36 * G.scale, s0.kz).addScaledVector(fwd, 0.2).addScaledVector(lat, -0.14).lerp(bluePickR, k)]; }
-    else if (s < 0.95) { const k = sm(0.45, 0.95, s), c = rimC.clone().add(V(0, 0.1, 0.06)).lerp(chestFront(0.3, 0.68), k); [gripA, gripB] = hold(c, 0.12); }
-    else if (s < 1.95) { [gripA, gripB] = hold(chestFront(0.3, 0.68 + 0.02 * Math.sin(s * 9)), 0.12); }
-    else if (s < 2.55) { const k = sm(1.95, 2.45, s), c = chestFront(0.3, 0.68).lerp(inDoor.clone().add(V(0.0, 0.0, 0.05)), k); [gripA, gripB] = hold(c, 0.12 - 0.04 * k); }
+    const onTowelL = rimC.clone().add(V(-0.13, 0.12, 0.06)), onTowelTop = rimC.clone().add(V(0.0, 0.21, -0.02));
+    if (s < 0) { const pat = 0.012 * Math.max(0, Math.sin(it * 2.6)); gripA = onTowelL.clone().add(V(0, pat, 0)); gripB = onTowelTop.clone().add(V(0, 0.006 * Math.sin(it * 1.7), 0)); }
+    else if (s < 0.45) { const k = sm(0.0, 0.45, s); [gripA, gripB] = [onTowelL.clone().lerp(bluePickL, k), onTowelTop.clone().lerp(bluePickR, k)]; }
+    else if (s < 0.95) { const k = sm(0.45, 0.95, s), c = rimC.clone().add(V(0, 0.12, 0.06)).lerp(chestFront(0.34, 0.47), k); [gripA, gripB] = hold(c, 0.13); }
+    else if (s < 1.95) { [gripA, gripB] = hold(chestFront(0.34, 0.47 + 0.012 * Math.sin(s * 9)), 0.13); }
+    else if (s < 2.55) { const k = sm(1.95, 2.45, s), c = chestFront(0.34, 0.47).lerp(inDoor.clone().add(V(0.02, 0.0, -0.02)), k); [gripA, gripB] = hold(c, 0.13 - 0.03 * k); }
     else if (s < 3.25) { const k = sm(2.6, 3.15, s), c = inDoor.clone().lerp(rimC.clone().add(V(0, 0.06, 0.04)), k); [gripA, gripB] = hold(c, 0.08 + 0.05 * k); }
     else if (s < 3.95) { const k = sm(3.3, 3.85, s), c = rimC.clone().add(V(0, 0.12, 0.04)).lerp(inDoor.clone().add(V(0.02, 0.0, 0.0)), k); [gripA, gripB] = hold(c, 0.13 - 0.05 * k); }
     else if (s < 5.5) { [gripA, gripB] = hold(chestFront(0.18, 0.4), 0.16); }
@@ -276,14 +277,14 @@ export function installSix2(ctx) {
         const sd = fwd.clone().multiplyScalar(-Math.cos(0.62)).add(V(0, Math.sin(0.62), 0)); aimBone(sh, legs['tail' + side], sd);
       }
       // body: lean, turn, breathing; the head looks at the washer (never at the basket's hero)
-      const lean = keys(s, [[-1, 0.18], [0.3, 0.25], [0.9, 0.05], [1.95, 0.08], [2.4, 0.3], [2.6, 0.12], [3.1, 0.42], [3.3, 0.2], [3.85, 0.3], [4.2, 0.08], [5.6, 0.25], [6.1, 0.1]]);
+      const lean = keys(s, [[-1, 0.55], [0.0, 0.55], [0.3, 0.45], [0.9, 0.08], [1.95, 0.08], [2.4, 0.3], [2.6, 0.12], [3.1, 0.42], [3.3, 0.2], [3.85, 0.3], [4.2, 0.08], [5.6, 0.25], [6.1, 0.1]]);
       const lat2 = latOf(s0.yaw);
       rotateBoneWorld(B.spine, lat2, lean * 0.7 + 0.02 * Math.sin(it * 1.3));
       rotateBoneWorld(B.chest, lat2, lean * 0.35);
       rotateBoneWorld(B.chest, V(0, 1, 0), 0.03 * Math.sin(it * 0.9));
       const toWasher = Math.atan2(P.x - s0.kx, P.z - s0.kz) - s0.yaw;   // the washer's bearing from her body
-      const headYaw = keys(s, [[-1, -0.35], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
-      const headUp = keys(s, [[-1, 0.18], [0.4, 0.1], [1.0, 0.0], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
+      const headYaw = keys(s, [[-1, -0.3], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
+      const headUp = keys(s, [[-1, 0.42], [0.0, 0.42], [0.4, 0.15], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
       rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher);
       rotateBoneWorld(B.head, lat2, -headUp * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
@@ -304,7 +305,8 @@ export function installSix2(ctx) {
     // yellow towel; tumbling into the drum; sitting in the drum (towel on his head); the water rises; carried into the tunnel
     let hp, scl = 0.62, surprise = 0; const rot = new THREE.Euler();
     const camYaw = Math.atan2(camera.position.x - rimC.x, camera.position.z - rimC.z);
-    const inBasket = rimC.clone().add(V(0.0, 0.085 + 0.008 * Math.abs(Math.sin(it * 1.6)), 0.0));
+    const duck = s < 0 ? 0 : 0.07 * sm(0.5, 0.7, s) * (1 - sm(1.7, 1.95, s)) + 0.06 * sm(2.55, 2.75, s);
+    const inBasket = rimC.clone().add(V(0.0, 0.045 - duck + 0.006 * Math.abs(Math.sin(it * 1.6)), 0.0));
     if (s < 2.95) { hp = inBasket; rot.set(0.05 * Math.sin(it * 0.9), camYaw + 0.12 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); surprise = sm(0.5, 0.65, s) * (1 - sm(1.6, 1.9, s)) + sm(2.5, 2.6, s); if (s > 2.7) hp.y -= sm(2.7, 2.95, s) * 0.05; }
     else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0, -0.06, 0)); rot.set(0.1 * Math.sin(s * 6), camYaw - 0.3, 0.1 * Math.sin(s * 5)); surprise = 1; scl = 0.62; }
     else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.62 + (1 - 0.62) * k; surprise = 1; }
@@ -320,7 +322,7 @@ export function installSix2(ctx) {
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
     // ---- the blue towel: draped over him (a hood) -> lifted by both hands (hanging cloth) -> pushed into the drum -> lying in the drum -> flipped onto his head
     const rB = OPENING3D.heroW * 0.5 * 0.62, camRight = V(1, 0, 0).applyQuaternion(camera.quaternion);
-    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.08, rB * 2.5, -0.78, camYaw, rB * 1.0, it, 0.33);
+    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.1, rB * 2.7, -0.52, camYaw + 0.18, rB * 1.25, it, 0.24);   // (front edge at his brow, flaps down past his cheeks, asymmetric)
     bG.visible = true; bG.position.set(0, 0, 0); bG.rotation.set(0, 0, 0); bG.scale.setScalar(1);
     const placeLocal = (src, pos, rx, ry, rz, k = 1) => { const m = new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz, 'YXZ')), V(k, k, k)); const o = new Float32Array(src.length); const v = new THREE.Vector3(); for (let i = 0; i < src.length; i += 3) { v.set(src[i], src[i + 1], src[i + 2]).applyMatrix4(m); o[i] = v.x; o[i + 1] = v.y; o[i + 2] = v.z; } return o; };
     const hoodPos = inBasket.clone().add(V(0, 0.012, -0.01)), hoodRot = [-0.32, camYaw, 0];
