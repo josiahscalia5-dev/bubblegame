@@ -1,5 +1,22 @@
 # Agents and specialists: inventory
 
+## NEWEST: 9 November 2026 ~16:20 UTC, session 47f75e22 (emergency backup). A saved definition does NOT activate anything on another account.
+PROJECT-owned (travel with Git, `.claude/`): 5 agents, 1 skill, the SessionStart hook (`.claude/hooks/session-start.sh`, registered in `.claude/settings.json`),
+the project Spector MCP server (`.mcp.json`, enabled in settings). PLUGIN-supplied (do NOT travel with Git; need the parallax-threejs 0.4.12 plugin on the account):
+3 agents, 9 commands/skills (checkpoint, diff, export-report, init, memcheck, replay, ship-check, sweep, sync-view), 4 MCP servers.
+| Agent / skill | Owner | Live test this session | Status |
+|---|---|---|---|
+| game-art-director | PROJECT `.claude/agents/game-art-director.md` | finished a real task: measured Scene 6 ranking (`Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/art_director_ranking.md`) | WORKING AND VERIFIED |
+| lighting-visual-matching | PROJECT | two instances running on lanes arch56 and brush6: built, captured and committed real code (s56_arch.js +483 lines, 5 model LODs; s56_brush6.js +258) | WORKING (mid-task at the backup; resume from each lane's HANDOFF.md) |
+| screen4-water-motion-engineer | PROJECT | running on lane s56: committed s56_tunnel.js water work (+202 lines), probe / tune captures in `.../13_scene6_match_47f75e22/water/` | WORKING (mid-task; HANDOFF.md) |
+| water-vfx-engineer | PROJECT | not launched this session (no free lane; avoid extra launches) | SAVED BUT NOT TESTED |
+| gameplay-visual-testing | PROJECT | not launched yet (runs the route test on the merged Scene 6 candidate) | SAVED BUT NOT TESTED |
+| bubble-wash-screen-matcher (skill) | PROJECT `.claude/skills/bubble-wash-screen-matcher/` | listed by the session; not invoked | SAVED BUT NOT TESTED |
+| parallax-threejs:shader-reviewer | PLUGIN | launched: review of the s56 water GLSL / bindings (result in the chat history) | see BACKUP_VERIFICATION.md |
+| parallax-threejs:scenario-author | PLUGIN | launched: a scenario protecting the accepted `?s3=intunnel` in `test/visual/scenarios/` | see BACKUP_VERIFICATION.md |
+| parallax-threejs:visual-debugger | PLUGIN | listed by the Agent tool; not launched | INSTALLED (plugin) BUT NOT TESTED |
+Known plugin defect (unchanged): the plugin agents' frontmatter names `mcp__playwright-mcp` etc., which do not match the real tool names, so they get no MCP tools.
+
 ## NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2 (account-transfer backup). Saving a definition does NOT activate it on another account.
 | Agent / skill | Owner (where it lives) | Declared tools | Live test this session (a real task) | Status | Restore on the next account |
 |---|---|---|---|---|---|

@@ -1,5 +1,22 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
+## READ FIRST, NEWEST (9 November 2026 ~16:20 UTC, session 47f75e22, EMERGENCY BACKUP). This block overrides anything older below.
+- **Next account: paste `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 000.** Backup proof: `BACKUP_VERIFICATION.md` (top). Branch: primary
+  `claude/bubble-wash-restore-transfer-kc4ecl` (= this session's `claude/bubble-wash-restore-tamzio`; contains `ccr-212bb6a5-36pep9`); `save_now.sh` fast-forwards it.
+- **Current task (the user's highest priority): SCENE 6.** Target ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png`
+  vs the game at u 206 (864x1536). Measured gaps: `Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/art_director_ranking.md`. Lanes (each with
+  `WebDemo/tools/<lane>/HANDOFF.md` on its branch): **brush6** (NEW, `claude/lane-s6-brush-47f75e22`, `s56_brush6.js`, switch `,brush6`, coordinator hook in
+  `s56_tunnel.js` section 0), **arch56** (gear, machinery, camera; uses the user's Tripo LODs), **s56** (water, mascot height). Nothing merged into the
+  default game; nothing approved. Merge only into ONE reversible candidate switch after review, then show the user.
+- **The user's eight Tripo models (received this session, exact bytes verified):** `Design/TripoDeliveries/2026-11-09_Eight_Models_from_user/` + `mobile/` LODs;
+  verdicts `Previews/WebDemo/six_scenes/12_eight_models_47f75e22/README.md`; inventory `MODEL_INVENTORY_2026-11-09_session_47f75e22.md`. LOD lesson: gltf-transform
+  `simplify` smears Tripo textures at UV seams; use `gltfpack -si` (LOD0) as in `mobile/optimize_mobile.sh`.
+- **Plugin:** parallax-threejs 0.4.12 arrived through the organization's synced plugins (`~/.claude/plugins/synced/...`), so `ListPlugins` shows nothing although it
+  is loaded. threejs-devtools timed out at session start but starts from a shell in 1.4 s: the user types `/mcp` -> reconnect.
+- **Identity proofs:** `shots56.cjs` frames at a placed u (e.g. 206) are NOT bit-reproducible (the game runs live ~150 ms before the shot); prove 0 px with
+  `tools/screen4/layer_diag.cjs` (fixed clock, as `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/scripts/identity.sh`). Tap frames are reproducible.
+- **Disk:** the metrics venv (PyTorch) needs ~6 GB; after it installs, `uv cache clean` frees ~10 GB (the venv's files are hard links and survive).
+
 ## READ FIRST, NEWEST (9 November 2026 ~14:50 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP). This block overrides anything older below.
 - **Next account: start with `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 00 (copy-ready prompt).** Backup proof: `BACKUP_VERIFICATION.md` (top);
   models: `MODEL_INVENTORY_2026-11-09_session_d847dce2.md`; lanes and next steps: `PARALLEL_LANES.md`; status: `CURRENT_PROJECT_STATUS.md`.
