@@ -27,7 +27,7 @@ import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
 import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
 import { S3 as S3_SWITCHES } from './screen3_models.js';
-import { SOCK3_ON, COIN3_ON, PLAY3, play3Loader, coin3Prepare } from './play_tripo3.js';   // ?s3=...,six,sock3 / coin3 (session 6ddc157f): the user's new Tripo sock and paw coin, looks only
+import { SOCK3_ON, COIN3_ON, COIN6_ON, PLAY3, play3Loader, coin3Prepare } from './play_tripo3.js';   // ?s3=...,six,sock3 / coin3 (session 6ddc157f): the user's new Tripo sock and paw coin, looks only
 import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
 import { ROUND3, mulberry } from './tunnel_r3.js';
 import { ROUND4 } from './tunnel_r4.js';
@@ -693,6 +693,7 @@ function buildCollectibles(gemGltf, face, coinP2 = null) {
     p = TR.map(p.x, p.y, p.z);   // straight layout -> 3D path
     const m = paw ? withPrivateRandom(makeRandom(0x9a3d + coins.length), () => { const lod = new THREE.LOD(); lod.addLevel(new THREE.Mesh(paw.hi, paw.mat), 0); lod.addLevel(new THREE.Mesh(paw.lo, paw.mat), 9);
       if (HERO_ON) for (const lv of lod.levels) lv.object.scale.setScalar(HERO.coinScale);   // ?s3=hero: the approved picture's bigger coins
+      if (COIN6_ON) for (const lv of lod.levels) lv.object.scale.multiplyScalar(PLAY3.coin6Scale);   // ?s3=...,coin6 (session 3849f5c8): approved Screen 6's smaller coins, looks only
       return lod; })
       : new THREE.Mesh(coinGeo, coinMats);
     m.position.copy(p); scene.add(m);
