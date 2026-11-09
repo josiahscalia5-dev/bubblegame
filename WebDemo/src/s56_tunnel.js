@@ -38,27 +38,57 @@ export const S56 = {
   glide: { secs: 1.8, off: [0, 0.38, -1.15], look: [0, 0.32, 6.0], fov: 60 },
   hero: { sink: 0.1, follow: 1.0 },
   splash: { rate: 26, burst: 22, speed: 2.1 },
+  // pass 2 (lane s56): the water's look, live-tunable (window.__bwS56.water, read every frame). Colours are SHADER-LINEAR, fitted through the
+  // game's own chain (grade sat 1.32 / contrast 1.12, Neutral tone mapping at 1.05, sRGB) to the lighting specialist's display targets
+  // (WebDemo/tools/s56/pipe56.py): deep -> #004dd5, mid -> ~#0b8ceb, turquoise -> #49c2f8, foam -> near-white #e9f5ff.
+  water: {
+    deep: [0.036, 0.088, 0.469], mid: [0.06, 0.245, 0.62], turq: [0.155, 0.62, 1.0], foam: [1.45, 1.7, 2.0],
+    chop: 1.0,      // the fragment chop's strength (the short rolling waves)
+    crest: 0.8,     // the crest lines' threshold on each chop wave's crest proximity (higher = thinner, less white)
+    lace: 0.55,     // lace strength (only in the band just behind a crest)
+    collar: 1.0,    // the tight foam collar round his body
+    wake: 1.0,      // the V wake toward the camera
+  },
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 
 // ---------------------------------------------------------------- the waves (one table: GLSL and JS stay in step)
-// [amplitude m, k across, k along, angular speed, phase]: h = sum A sin(kx x + ku u - w t + p). Phase speeds 2-3 m/s forward (he swims at 7.2).
+// [amplitude m, k across, k along, angular speed, phase]: h = sum A sin(kx x + ku u - w t + p). Phase speeds 1.5-3.5 m/s forward (he swims at 7.2).
+// Pass 2 (lane s56): shorter rolling swells (wavelengths 8.4 / 3.5 / 1.9 / 1.3 m, angular speeds near deep water's sqrt(g k)) instead of
+// the long smooth 10 m swell that read as a flat sheet; he rides them averaged over his body's footprint (heroOffset), so his bob stays calm.
 export const WAVES = [
-  [0.12, 0.22, 0.60, 2.0, 0.0],
-  [0.085, -0.85, 1.30, 3.1, 1.3],
-  [0.045, 1.60, 2.60, 4.4, 0.4],
-  [0.018, -2.40, 4.90, 6.2, 2.1],
-  [0.022, 2.10, 0.45, -1.2, 0.7],
+  [0.085, 0.22, 0.75, 2.8, 0.0],
+  [0.07, -0.85, 1.60, 4.2, 1.3],
+  [0.05, 1.50, 2.90, 5.6, 0.4],
+  [0.03, -2.30, 4.40, 6.9, 2.1],
+  [0.02, 2.10, 0.45, -1.2, 0.7],
 ];
 export function s56Wave(x, u, t) {
   let h = 0; for (const [A, kx, ku, w, p] of WAVES) h += A * Math.sin(kx * x + ku * u - w * t + p);
   return h;
 }
+// the fragment-only chop: short sharp-crested rolling waves (exp(K (sin - 1)): sharp crests, broad troughs), wavelengths 1.46-0.42 m, deep-water
+// speeds, mostly across the channel at a spread of angles; each fades out where it would alias. [A m, k across, k along, w, phase]
+export const CHOP = [
+  [0.05, 0.9, 4.2, 6.5, 0.3],
+  [0.036, -1.9, 5.5, 7.55, 2.2],
+  [0.024, 2.8, 7.6, 8.9, 4.1],
+  [0.015, -4.4, 10.2, 10.4, 1.1],
+  [0.009, 6.2, 13.5, 12.1, 5.3],
+];
+const CHOP_K = 2.2, CHOP_MEAN = 0.291, CHOP_MAX = CHOP.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0);   // (mean of exp(K (sin - 1)) = e^-K I0(K))
 const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const WAVE_GLSL = /* glsl */ `
 vec3 s56Wave(float x, float u, float t) {   // (height, d/dx, d/du)
   vec3 r = vec3(0.0); float ph;
 ${WAVES.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * x + ${f(ku)} * u - ${f(w)} * t + ${f(p)}; r += vec3(${f(A)} * sin(ph), ${f(A * kx)} * cos(ph), ${f(A * ku)} * cos(ph));`).join('\n')}
+  return r;
+}`;
+const CHOP_GLSL = /* glsl */ `
+vec3 s56Chop(vec2 p, float t) {   // (height normalised to its maximum, d/dx m/m, d/du m/m); each wave faded by its own pixel footprint
+  vec3 r = vec3(0.0); float ph, s, fd;
+${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
+  r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cos(ph), ${f(A * CHOP_K * ku)} * s * cos(ph));`).join('\n')}
   return r;
 }`;
 
