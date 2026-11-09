@@ -1,4 +1,37 @@
-# Agents and specialists (8 November 2026, session bb87ba9f; every status below was tested LIVE in this account this session)
+# Agents and specialists: inventory
+
+## NEWEST: live tests of 9 November 2026, session ac4e3449 (a new account)
+
+Machine-readable: `Tools/agents_inventory.json`. The parallel lanes these agents work in are in `PARALLEL_LANES.md`.
+
+Project agents (`.claude/agents/`) and the project skill load from the repository on any account. The three `parallax-threejs:` agents and the
+four MCP servers need the plugin enabled on the account (claude.ai, Customize, plugins), followed by a new session.
+
+| Agent / skill | Source | Tools it really had | Live test (this session) | Lane / use |
+|---|---|---|---|---|
+| game-art-director | project | Read, Grep, Glob, Bash | PASSED: Scene 5/6 gap ranking with measurements | QA (read-only) |
+| gameplay-visual-testing | project | Read, Grep, Glob, Bash | running: route test + identity proof | QA |
+| lighting-visual-matching | project | + Edit, Write | PASSED: Scene 5 colour/geometry targets | girl12 (Scenes 1-2) |
+| water-vfx-engineer | project | + Edit, Write | PASSED: track/water API audit | washer34 (Scenes 3-4) |
+| screen4-water-motion-engineer | project | + chrome-devtools, threejs-devtools MCP | PARTIALLY WORKING: chrome-devtools fine; threejs-devtools picks the opening's renderer, `run_js` timed out under load. It found the pickup-offset bug | s56 (Scenes 5-6) |
+| parallax-threejs:scenario-author | plugin 0.4.12 | Read, Glob, Write, Bash (no Playwright MCP: plugin naming defect) | PASSED: capability check; the harness has no scenarios yet | after the user accepts a scene |
+| parallax-threejs:shader-reviewer | plugin 0.4.12 | Read, Grep, Glob, Bash (no MCP) | PASSED: tunnel lane GLSL review, 2 fixes applied | GLSL review before merges |
+| parallax-threejs:visual-debugger | plugin 0.4.12 | Bash + Spector MCP (12 tools) | PASSED: Spector `list_canvases`; hero screen box | runtime diagnosis |
+| general-purpose (built in) | Claude Code | all | running | ui lane (HUD) |
+| skill bubble-wash-screen-matcher | project | (instructions) | present; written for Screens 3/4, so give it the six-scene references | comparisons |
+
+MCP servers, each called live by the coordinator this session:
+
+| Server | Tools called | Status |
+|---|---|---|
+| chrome-devtools | `list_pages`, `navigate_page` | ACTIVE AND TESTED |
+| threejs-devtools | `bridge_status`, `renderer_info`, through the `localhost:9222` proxy | ACTIVE AND TESTED |
+| playwright | `browser_tabs` | ACTIVE AND TESTED |
+| spector | `load_url`, `list_canvases` | ACTIVE AND TESTED |
+
+If one is listed but fails, type `/mcp` and reconnect it. Park pages on `about:blank` after use: a page left running the game costs about 120 % CPU.
+
+---
 
 **NEWEST (9 November 2026 ~02:45 UTC, session 6ddc157f, new account): THE ACTIVE GAME CHANGED.** The user selected the six-scene game with their
 new Tripo models ("tripo3 final", the "second row") as THE game: a plain launch of `WebDemo/index.html` (no `?s3=`) now runs
