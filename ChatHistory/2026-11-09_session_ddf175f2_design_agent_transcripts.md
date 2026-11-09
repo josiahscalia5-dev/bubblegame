@@ -770,3 +770,83 @@ Crops for checking are in `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-537
 
 
 _17 tool steps._
+
+---
+
+## Game Art Director: Art director: final fin6 review (started 20:00 UTC)
+
+**Lead → agent** (20:00 UTC):
+
+You are the game-art-director for Bubble Wash Kingdom (read-only reviewer). Judge the WHOLE Screen 6 composition of the real playable game against the user's exact approved Screen 6, before and after the latest finishing pass ("fin6").
+
+Images (864x1536, the game frozen at u 206, the same camera):
+- APPROVED (the only target): /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png (top band y<0.30 and bottom band y>0.78 are UI; the game's HUD covers the same bands)
+- BEFORE fin6 (your previous review's frame): /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/game_u206_integrated.png
+- AFTER fin6: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/15_fin6/F_game_u206_fin6_final.png
+- What fin6 changed: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/15_fin6/README.md
+Your previous ranked list was: 1 glow/depth, 2 left bank palette and missing control box, 3 hero shape/fur, 4 water, 5 right bank (glowing tank missing, gear hidden by coins), 6 brushes (no white tier).
+
+Do (Read the PNGs yourself; crops with python3 + PIL into /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/):
+1. For each of your six previous items: improved / unchanged / worse, one line each with what you see.
+2. Anything fin6 made worse or that looks broken (e.g. the splash crown round the hero: does it read as the approved white splash, or as artefacts?).
+3. The 4 biggest remaining differences now, ranked by visual impact, each with zone, approved vs game, and a concrete fix achievable in three.js with the existing assets.
+4. No similarity percentages unless you define how measured. Under 350 words.
+
+- 20:01 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
+- 20:01 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/game_u206_integrated.png
+- 20:01 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/15_fin6/F_game_u206_fin6_final.png
+- 20:01 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/15_fin6/README.md
+- 20:01 `Bash`: Crop approved/before/after zones side by side
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/hero.png
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/left.png
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/right.png
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/centre.png
+- 20:01 `Bash`: Zoom crown, crop brushes, measure luminance and hot-white shares
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/crown_zoom.png
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/lbrush.png
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/rbrush.png
+- 20:01 `Bash`: Sample crown colours and white share around hero
+- 20:01 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/full3.png
+**Agent** (20:02 UTC):
+
+**Screen 6 review, fin6 vs before, at u 206, judged only against `06_Swim_Collect_Avoid_Enemies.png`**
+
+fin6 is a little closer on the two banks and the brushes. The splash crown pulls the most important spot, the hero, further from the approved image, so overall it is about level with before. I recommend leaving the crown out by default (`,nocrown6`) until it is rebuilt.
+
+**1. Your six previous items**
+1. **Glow and depth: unchanged.** The tank cores are hotter, but there is still no lit vanishing point. In the centre box, the share of near-white pixels (all channels above 225) is 3.2 % approved, 0.2 % before and 0.0 % now.
+2. **Left bank: improved.** The lavender control box, its bulbs and lights, and the paw cabinet are now there. The box is flat-shaded and the pedestals are still hot magenta.
+3. **Hero: unchanged.** His colour is a deeper magenta, closer to the approved one. He is still a squat, speckled mound, and the crown now hides his base.
+4. **Water: unchanged.** It is still pale cyan with ink-line streaks and no white crests.
+5. **Right bank: unchanged.** The gear is still behind the coins, the tank core doesn't show, and the gold-star cabinet is missing.
+6. **Brushes: improved.** The white tier is there now. The lower tiers are periwinkle instead of royal blue, and the bristles look streaky.
+
+**2. What fin6 broke: the crown reads as artefacts, not as splash**
+- **Wrong colour:** its whitish pixels have a median of (199, 211, 247), a grey periwinkle; the approved splash is (237, 237, 255), a crisp white.
+- **Too big:** whitish pixels cover 21 % of the band round him, against 14.8 % approved.
+- **Checker pattern:** visible inside the blades, which looks like dithered alpha (alpha hash).
+- **Wrong shape:** symmetric flame-like spikes, like a tiara, instead of irregular breaking spray.
+- **Broken base:** the foam ring is an opaque flat band that cuts straight across his lower body, with pink chips showing through below it, which looks like a sorting fault.
+
+**3. The four biggest remaining differences**
+1. **Splash round the hero** (y 0.62-0.80)
+   - Approved: crisp white curls and droplets hugging his base, with blue water between them.
+   - Game: the crown described above.
+   - Fix in `s56_crown6.js`: drop the ring. Use 20-30 small sprites cut from the approved image's own splash, with normal blending, `depthWrite:false`, `toneMapped:false`, drawn after the hero, and no alpha hash. Keep them below 15 % of his height.
+2. **Vanishing glow** (y 0.33-0.50)
+   - Approved: a cyan-white pinpoint inside many glowing rings.
+   - Game: broad arches round an unlit centre.
+   - Fix: an additive glow sprite with `toneMapped:false` at the tunnel's far end, plus emissive ring lamps that fade with depth.
+3. **Hero shape and fur**
+   - Approved: a tall round dome with radial strands and a bright rim.
+   - Game: a squat mound with speckled fur.
+   - Fix: under `hero6`, scale `m.tilt` (y about 1.25, x about 0.9), never `m.root`, so pickups are unaffected. Add a fresnel rim and radial strand normals to the fur.
+4. **Foreground water**
+   - Approved: royal blue with cobalt troughs and white caps. Lower-water brightness is 0.495, with 10.4 % near-white pixels.
+   - Game: brightness 0.539, with 0.4 % near-white pixels.
+   - Fix in `water6`: darker troughs, and foam on the wave tops only.
+
+The crops are in `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad2/`; the crown close-up is `crown_zoom.png`.
+
+
+_15 tool steps._

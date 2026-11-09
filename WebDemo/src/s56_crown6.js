@@ -6,7 +6,7 @@
 // root (lanes, jumps) at the water line and fades out while he is in the air. Drawn only: no gameplay effect. Without fin6 nothing is built.
 import * as THREE from 'three';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
-export const CROWN6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('fin6') && !LIST.includes('nocrown6');
+export const CROWN6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('crown6');   // (opt-in only: the art director and the user rejected it as a white ring / artefacts round his base)
 
 export const CROWN6 = {
   n: 84, R: 0.54, y: -0.4, foamY: 0.12,   // (y: measured in game, -0.30 too high / -0.50 hidden; foamY: the foam lifted over the wave troughs)   // blades, ring radius (m, round his drawn body), height offset of the ring over the water line
