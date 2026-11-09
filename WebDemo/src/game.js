@@ -11,7 +11,7 @@ import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
 import { TRIPO1_ON, SCENE07_ON, applyTripo1, scene07Camera } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
 import { flowCamX } from './level1_flow.js';
 import { S56_ON, buildS56 } from './s56_tunnel.js';
-import { ENV6_ON, env6Post } from './s56_env6.js';   // ?s3=...,s56,...,env6 (session ddf175f2): the integrated Screen 6 candidate's post (bloom only on HDR lights)
+import { ENV6_ON, env6Post, env6Grade } from './s56_env6.js';   // ?s3=...,s56,...,env6 (session ddf175f2): the integrated Screen 6 candidate's post (bloom only on HDR lights)
 import { installHud56 } from './hud56.js';   // ?s3=...,s56: the approved screens' HUD look (hud56.js, CSS under body.s56 only)   // ?s3=...,level1,s56 (session ac4e3449): the approved Scene 5 / 6 lavender laundry-machine tunnel as the run's environment (s56_tunnel.js)   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -1632,6 +1632,7 @@ function step(dt) {
   if (SWIM2_ON && fx.u.uMaxPx) fx.u.uMaxPx.value = swim2CapPx(renderer.domElement.height, WATER7.maxPx);   // ?s3=intunnel,swim2: the cap eases in as she starts
   updateCamera(dt);
   if (level1) level1.update(dt, state.time, state.phase);   // ?s3=...,level1 (after the camera: its water and walls use the camera's place)
+  if (ENV6_ON && s56) env6Grade(gradePass, mascot);   // ?s3=...,env6: the hero grade inside the s56 tunnel (s56_env6.js), read by s56 / arch56 below
   if (s56) s56.update(dt, state.time, state.phase, mascot);   // ?s3=...,s56: the tunnel's water, gears and splashes
   fadeStartPanels();
   if (opening) opening.update(dt, state.time, state.phase);
@@ -1645,7 +1646,7 @@ function render() {
     renderer.render(scene, side.cam);
   } else {
     if (fx) fx.u.uScale.value = (stage.clientHeight * pixelRatio * 0.5) / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
-    if (ENV6_ON && s56) env6Post(bloom);   // ?s3=...,env6: the last word on the bloom (s56_env6.js)
+    if (ENV6_ON && s56) { env6Grade(gradePass, mascot); env6Post(bloom); }   // ?s3=...,env6: the last word on the bloom (s56_env6.js)
     composer.render();
   }
   if (side || SHOW_TOUCHES) drawOverlay();

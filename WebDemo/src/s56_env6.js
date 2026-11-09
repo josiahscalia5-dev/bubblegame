@@ -9,14 +9,28 @@
 //    tunnel: the perforated walls, arches and machinery lost their darks. With it off the walls are the approved dark violet metal with
 //    black holes. env6 keeps a glow ONLY on what is brighter than white in linear light (the lamps, tank cores, the arch lamp bars):
 //    threshold above 1, a small radius.
+// 2. The grade. Past the old Classic Screen 4 drum (tunnel_r7_hero.js: uHero 0 after L.tunnelEnd) the whole run, u 206 included, runs the old
+//    drum chain: the base grade, then uS4Grade's round4 contrast 1.4 round 0.5 (pink -> red, gold -> orange, green below ~0.2 crushed to violet).
+//    Every lane worked round it on its own: the water (lane s56) with a second palette per grade; the architecture (lane arch56) by inverting the
+//    chain in its materials, whose knee inverse divides by max(1 - 1.6 b, 0.05): every bright lamp, strip and tank core (linear ~2.2) left
+//    the shader at up to x20 (measured: linear luminance up to 214, 1.6 % of the frame above 6), and the bloom smeared those pixels over the
+//    whole tunnel (the peach veil). env6 runs the hero grade (uHero 1, the grade of Tap to Start / Scene 5, which the lanes' materials were made
+//    for) inside the s56 tunnel, so arch56's inverse turns itself off (uA56Ungrade = 1 - uHero) and the water uses its hero palette.
+import { S56 } from './s56_tunnel.js';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const ENV6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('env6');
 
 export const ENV6 = {
   bloom: { strength: 0.3, radius: 0.35, threshold: 1.05 },
+  grade: { hero: 1.0 },
 };
 if (ENV6_ON && typeof window !== 'undefined') window.__bwEnv6 = ENV6;
 
+// called by game.js just before s56.update() (so arch56 and the water read it in the same step) and again in render()
+export function env6Grade(grade, m) {
+  if (!grade || !grade.uniforms || !grade.uniforms.uHero || !m) return;
+  if (m.z > S56.u0 && m.z < S56.u1) grade.uniforms.uHero.value = ENV6.grade.hero;
+}
 // called by game.js render() just before composer.render() (the last word over every module's bloom updater), only when ENV6_ON
 export function env6Post(bloom) {
   if (!bloom) return;
