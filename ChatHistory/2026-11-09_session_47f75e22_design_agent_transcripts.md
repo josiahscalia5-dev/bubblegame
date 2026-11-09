@@ -381,8 +381,53 @@ Far copy: 6,573 triangles, 256 textures. Now the code: I'm reverting the camera 
 
 - 15:57 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
 - 15:57 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+**Agent** (15:58 UTC):
 
-_69 tool steps._
+Let me check what tints the gold red-orange around u 206 (lights near the enemy stretch) before choosing material values.
+
+- 15:58 `Bash`: Find scene lights that may tint gold
+- 15:58 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 15:58 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+**Agent** (15:59 UTC):
+
+Now the star housing, the model bays (instanced per chunk, LOD1 near him and the far copy beyond) and the chamber glows. They replace section 3's placement loop.
+
+- 15:59 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+**Agent** (15:59 UTC):
+
+Now the gear section: blue_jt instead of gear_v2, Scene 5's own place for ring 0, axle toward the camera and turned out to the wall, cobalt self-lit with no violet glow.
+
+- 15:59 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 16:00 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+**Agent** (16:00 UTC):
+
+Now the gear numbers for the art director's target (centre 0.807, 0.392; about 0.24 W) at about 8.3 m ahead, keeping the inner edge at 1.2 m or more.
+
+- 16:00 `Bash`: Set gear params, build, extend probe
+**Agent** (16:00 UTC):
+
+Build OK. Capturing tap and 206 with the probe.
+
+- 16:00 `Bash`: Capture with models and gear, print probe
+- 16:01 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c3/s56_206.png
+- 16:01 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c3/s56_tap.png
+- 16:02 `Bash`: Search section-dependent lighting or grade changes
+- 16:02 `Bash`: Find grade uniform changes by section
+- 16:02 `Bash`: Read the drum grade and hero grade activation
+**Agent** (16:02 UTC):
+
+The hero grade (`uHero`) switches off after the old drum's `L.tunnelEnd`, so at u 206 my materials render without it. Let me measure the actual colours at tap and at 206 against the approved values.
+
+- 16:02 `Bash`: Sample material colours at tap, 206 and approved
+- 16:02 `Bash`: Find the env map passed to s56
+- 16:02 `Bash`: Read how the env scene is built
+**Agent** (16:02 UTC):
+
+The environment map is world-fixed (a lavender sky with pink, cyan and white panels), with no red in it. I need data: one capture dumping the post passes, grade uniforms and lights at tap and at 206.
+
+- 16:03 `Bash`: Dump post passes and lights at tap and 206
+
+_86 tool steps._
 
 ---
 
@@ -498,8 +543,27 @@ Now I'll write the water6 material improvements. First let me view the current w
 - 15:56 `Bash`: Invert LUT with scipy venv
 - 15:56 `Bash`: Find buildS56 context in game.js
 - 15:57 `Bash`: Check HERO exports and grade window
+- 15:58 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:58 `Bash`: Replace chop tables with finer water6 chop and screen-space crest lines
+- 15:58 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:58 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:59 `Bash`: Replace S56.water with calibrated water6 settings
+- 15:59 `Bash`: Locate water6 material lines
+**Agent** (15:59 UTC):
 
-_86 tool steps._
+Now I'll replace lines 463-555 (the water6 uniforms, sync and material) with the calibrated version.
+
+- 15:59 `Bash`: Write the calibrated water6 material
+- 15:59 `Bash`: Check module import order for safe import
+- 15:59 `Bash`: Find who imports tunnel_r7_hero
+- 15:59 `Bash`: Where game.js imports r7_hero
+- 16:00 `Bash`: Read hero grade weight from the grade uniform
+- 16:00 `Bash`: Add water6 hero sink and side splash emitter
+- 16:00 `Bash`: Fix evidence path comments and build
+- 16:01 `Bash`: Save probe evidence; write and validate aw56.py
+- 16:01 `Bash`: Render water6 tuning variants and measure
+
+_101 tool steps._
 
 ---
 
@@ -619,5 +683,99 @@ The frame shows the Home menu over a blank scene (1 draw call), so this capture 
 I deviated from the given command (ZS=206 only); the 'tap' step first is probably needed to get past Home. I'll rerun exactly as instructed, saving the JSON output.
 
 - 15:57 `Bash`: Capture tap and 206 with measurement saved to JSON
+- 15:57 `Bash`: Read capture error log
+**Agent** (15:58 UTC):
 
-_46 tool steps._
+The tap view has the anchor pair behind the camera, so the ring lists are empty. I'll make `measure` robust to that.
+
+- 15:58 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 15:58 `Write`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/fit_eval.js
+- 15:58 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/fit_eval.js
+- 15:58 `Bash`: Rebuild, capture and fit brush placement at u 206
+- 16:00 `Bash`: Patch fit script guard and screenshot lead
+- 16:00 `Bash`: Run the placement fit at the Scene 6 moment
+**Agent** (16:02 UTC):
+
+The fit converged with both inner edges exactly at the 1.25 m lane bound; the foot is cut by the waterline at y ~0.62 instead of 0.70-0.72, as the geometry predicted. Let me look at the frame.
+
+- 16:02 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c2/s56_206.png
+**Agent** (16:02 UTC):
+
+The 206 shot is still covered by the Home overlay even though the run is going (phase running, z 209.1). Let me check the tap frame and how screens12's Home overlay is dismissed.
+
+- 16:02 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c2/s56_tap.png
+- 16:02 `Bash`: Find how the Home overlay is skipped in tests
+**Agent** (16:02 UTC):
+
+The overlay persists in both shots. My lane is a sparse checkout (6% of files), so some opening assets may be missing. Let me check.
+
+- 16:02 `Bash`: Compare worktree assets with the main checkout
+**Agent** (16:02 UTC):
+
+Assets are all present. Let me read how screens12 holds the Home screen and what lets a test skip it.
+
+- 16:02 `Bash`: Read screens12 home hold logic
+- 16:03 `Bash`: Compare capture tool and screens12 with the main checkout
+- 16:03 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/baseline/s56_tap.png
+
+_60 tool steps._
+
+---
+
+## parallax-threejs:shader-reviewer: shader-reviewer: s56 water GLSL (started 16:01 UTC)
+
+**Lead → agent** (16:01 UTC):
+
+LIVE TEST + real review for Bubble Wash Kingdom (three.js r170, repo /home/user/bubblegame). Note: in this session the threejs-devtools MCP server failed to connect, so work from the source with Read/Grep/Bash only (Deno is available after `source /home/user/bubblegame/Tools/bw_tools_env.sh`; the plugin's own `check-shader-bindings.ts` may help if you can find it under ~/.claude/plugins).
+
+Review the GLSL and its JS bindings in /home/user/bubblegame/WebDemo/src/s56_tunnel.js (the integration branch's committed version; it is the live game's Scene 5/6 tunnel): the water ShaderMaterial / onBeforeCompile code (section 5, the displaced wave surface with WAVES/CHOP, crests, contact ring and wake) and any other shader in that file. Find: uniforms declared in GLSL but not bound in JS (or bound but unused), attribute/varying declaration drift between vertex and fragment stages, type/precision mismatches, GLSL that would fail or silently misbehave in WebGL2 / GLSL ES 3.00, the JS wave table vs GLSL wave function staying in step (the file claims "one table: GLSL and JS stay in step" — verify), and anything that would push water colours above ~0.76 linear (the game uses Neutral tone mapping, which desaturates above that knee — relevant because the water reads pale/flat). Do NOT edit any file (another specialist is changing this water right now on a separate branch; your findings go to them).
+
+Final reply (at most 300 words): live-test result (which tools worked), then findings ranked by severity with file:line, each with the concrete fix. Say plainly if you found nothing wrong in a category.
+
+**Agent** (16:01 UTC):
+
+I'll start by locating the static analysis script and the target file.
+
+- 16:01 `Bash`: Locate shader-check script and target file info
+- 16:02 `Bash`: Check file is unmodified and view script header
+- 16:02 `Read`: /home/user/bubblegame/WebDemo/src/s56_tunnel.js
+- 16:02 `Bash`: Identify integration branch and read rest of script
+- 16:02 `Bash`: Check available compilers, browsers, and running servers
+- 16:02 `Bash`: Inspect browser harness and listening ports
+- 16:02 `Bash`: Find playwright and chromium installs
+- 16:02 `Bash`: Locate chromium binary used by Spector
+
+_8 tool steps._
+
+---
+
+## parallax-threejs:scenario-author: scenario-author: protect intunnel (started 16:01 UTC)
+
+**Lead → agent** (16:01 UTC):
+
+LIVE TEST + real task for Bubble Wash Kingdom (three.js r170 game in /home/user/bubblegame/WebDemo; the Parallax visual regression harness is installed at /home/user/bubblegame/test/visual/ with deno tasks in /home/user/bubblegame/deno.json: visual:run / visual:accept; test/visual/scenarios/ is EMPTY). Note: your playwright MCP tools are not available in this session (plugin naming defect); use Read/Glob/Write/Bash. Run `source /home/user/bubblegame/Tools/bw_tools_env.sh` for Deno.
+
+The ONLY view the user has accepted is the Classic Screen 4: the game opened with `?s3=intunnel` (WebDemo/index.html?s3=intunnel) at Tap to Start; it must stay pixel-identical forever (CLAUDE.md). Write ONE scenario file under /home/user/bubblegame/test/visual/scenarios/ that protects it: read test/visual/lib/types.ts, capture.ts, manifest.ts and run.ts first and follow their scenario format exactly; the scenario should serve WebDemo statically, load index.html?s3=intunnel with the game's deterministic test hooks (look at /home/user/bubblegame/WebDemo/tools/s56/shots56.cjs for how captures seed Math.random and set window.__BW_TEST__ / window.__BW_S3__, wait for body.ready, and use window.__bw.advance), and capture the Tap to Start keyframe at a 432x768 viewport. Then validate it WITHOUT launching a browser: `deno check` the scenario (and run the harness's unit tests `deno test test/visual/lib` if they run without a browser). Do NOT run visual:run or visual:accept (the browser is busy with other specialists; the coordinator will run it later under `flock /tmp/bw_browser.lock`). Do not edit any other file.
+
+Final reply (at most 250 words): live-test result, the scenario path, what it captures, the deno check / test results, and the exact command the coordinator should run to record and accept its baseline.
+
+**Agent** (16:01 UTC):
+
+I'll start by reading the harness files and the reference capture script.
+
+- 16:01 `Bash`: List harness files and deno config
+- 16:01 `Read`: /home/user/bubblegame/test/visual/lib/types.ts
+- 16:01 `Read`: /home/user/bubblegame/test/visual/lib/capture.ts
+- 16:01 `Read`: /home/user/bubblegame/test/visual/lib/manifest.ts
+- 16:01 `Read`: /home/user/bubblegame/test/visual/run.ts
+**Agent** (16:01 UTC):
+
+Now the reference capture script and the remaining harness pieces.
+
+- 16:01 `Read`: /home/user/bubblegame/WebDemo/tools/s56/shots56.cjs
+- 16:01 `Bash`: Check scripts/lib dirs, diff and git helpers
+- 16:02 `Bash`: Find test hooks, seed and URL parsing in game source
+- 16:02 `Bash`: Find what TEST gates and where __bw is exposed
+- 16:02 `Bash`: Read game loop, ready, and __bw test API
+
+_10 tool steps._
