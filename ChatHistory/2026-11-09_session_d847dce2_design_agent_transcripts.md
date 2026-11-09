@@ -279,8 +279,29 @@ Built cleanly. Next is the first capture with arch56 at Tap to Start and u 206, 
 - 14:25 `Bash`: Read brush placement in tunnel_s4.js
 - 14:26 `Bash`: Find brush heights and deco list
 - 14:26 `Bash`: Confirm only hazard brushes collide
+- 14:26 `Bash`: Measure vanishing point and compare colours
+- 14:27 `Bash`: Make vanishing point crop comparison
+- 14:27 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/m/vp_crops.png
+- 14:29 `Bash`: Apply second-pass layout and colour edits
+**Agent** (14:29 UTC):
 
-_57 tool steps._
+The coordinator has supplied the user's own Tripo bank models (`t911`, `mach`). I'll check the files and the evaluation renders before wiring them in.
+
+- 14:29 `Bash`: List new models and evaluation renders
+- 14:29 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/tmach/04_t911_lod0_6views.png
+- 14:29 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/tmach/01_original_6views_game_lighting.png
+- 14:29 `Bash`: Find the render script for model views
+- 14:29 `Bash`: Read view script and copy models into lane
+**Agent** (14:30 UTC):
+
+The existing view tool has no meshopt decoder, so I'll write a small one in `tools/arch56/` that renders the model along +Z, +X, -Z and -X, to find which face carries the paw medallion.
+
+**Lead → agent** (14:30 UTC):
+
+[Request interrupted by user]
+
+
+_66 tool steps._
 
 ---
 
@@ -423,8 +444,18 @@ Now I'll replace the water material with the per-pixel version.
 - 14:24 `Bash`: Add thin per-wave crest lines and retune defaults
 - 14:24 `Bash`: Fix the join newline and rebuild
 - 14:25 `Bash`: Sweep crest-line candidates at tap and 206
+- 14:26 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/tune3.png
+- 14:27 `Bash`: Rebuild with warped curved crests and re-measure at tap
+- 14:27 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/tune4.png
+- 14:28 `Bash`: Set defaults, rebuild, and trace motion on the before and after builds
+- 14:28 `Bash`: Compare before and after motion traces
+- 14:28 `Bash`: Capture before and after frames at 864x1536
+**Lead → agent** (14:30 UTC):
 
-_88 tool steps._
+[Request interrupted by user for tool use]
+
+
+_94 tool steps._
 
 ---
 
