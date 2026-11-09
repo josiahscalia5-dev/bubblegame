@@ -121,8 +121,16 @@ Now the brush-bay split, the glowing tank shader, and the hot pink material.
 - 18:40 `Bash`: Restore tracked LODs and check tool files
 - 18:40 `Bash`: Commit and push checkpoint
 - 18:40 `Bash`: Measure arch56 render cost by part
+- 18:42 `Bash`: LOD chunks for models, darker S6 wall, pink arches
+- 18:42 `Bash`: Capture pass 2 with wall variants and cost
+- 18:44 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs5.png
+- 18:44 `Bash`: Side-by-side of darker wall variant
+- 18:44 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs6.png
+- 18:44 `Bash`: Final tweaks, capture, side-by-sides
+- 18:46 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/arch56/07_final/sbs_crop_scenery.png
+- 18:46 `Bash`: Measure screen bounds of near model instances
 
-_72 tool steps._
+_80 tool steps._
 
 ---
 
@@ -318,8 +326,63 @@ With the 2.6 m pull, the right brush shows all four tiers down to its foot at y 
 They are tracked (the lane autosave committed them before my commit). Now the evidence: a full-frame side-by-side (approved, before, after) and 2x crops of each brush.
 
 - 18:41 `Bash`: Write evidence frames, side-by-side and 2x crops
+- 18:41 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/brush6/b6_pass2_side_by_side.png
+**Agent** (18:41 UTC):
 
-_70 tool steps._
+At half size both brushes now read as four-band roller brushes in the right places. Let me check the 2x left crop for detail.
+
+- 18:41 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/brush6/b6_pass2_left_crop2x.png
+- 18:42 `Write`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/HANDOFF.md
+- 18:42 `Bash`: Commit and push the handoff
+**Agent** (18:42 UTC):
+
+Both brushes are now dense and opaque with crisp bands, and they sit on the measured targets. The left brush still looks too side-on and streaky, though, and I did not pixel-check the build with the switch off or capture the Tap to Start. Pushed to `claude/lane-s6-brush-47f75e22`: code at `3c0a67c2`, handoff update at `08ab9105` (head of the branch, never forced).
+
+**What changed (only `WebDemo/src/s56_brush6.js` and `WebDemo/tools/brush6/`)**
+- **Bristles:** the see-through shell fur is replaced. Each of the four tiers is now two staggered rows of opaque cones, with one ridge per tuft, rounded clumps, a ragged fringe, visible fine strands and a shadow under the tier above. One draw call per brush.
+- **Colours:** corrected to the approved under env6's hero grade, using a new tool, `tools/brush6/tiers.py`. Pink, white-lavender and blue now match within about 5–10 % in their main channels. All bristle colours stay under the 0.76 linear tone-mapping knee except the blue and pale peaks (0.9–1.0), which lose only about 1 % saturation.
+- **Placement:** refitted with a new fit tool, `tools/brush6/fit6.js` (it runs as a var6 variant, so no rebuild), using the new 1.05 m lane bound. I added a per-side height proportion and a "flare" that widens the lower tiers.
+- **Depth pull:** the near pair is now drawn at about 2.6 m, over the near water and the bank deck. At the old setting the near water cut the right brush's lower tiers off at y 0.60–0.67. The mascot is 3.0 m ahead of the camera and never overlaps the brushes on screen.
+- **Far brushes:** brushes more than 14 m ahead now use a light mesh.
+
+**Measured extents at u 206 (approved → now)**
+
+| | Top | Bell inner x | Tier inner x | Tier tips y |
+|---|---|---|---|---|
+| Left | 0.34 → 0.341 | 0.13 → 0.134 | 0.17/0.19/0.20/0.21 → 0.167/0.188/0.202/0.210 | 0.551/0.597/0.656/0.714 → 0.546/0.598/0.662/0.714 |
+| Right | 0.44 → 0.437 | 0.89 → 0.879 | 0.86/0.84/0.82/0.80 → 0.869/0.842/0.820/0.800 | 0.565/0.617/0.669/0.714 → 0.573/0.617/0.669/0.711 |
+
+The inner bristle tips are 1.27 m (left) and 1.17 m (right) from the centre-line, so the 1.05 m bound holds. Both feet now meet the water at about y 0.71, so the architecture lane's bank deck does not need any change.
+
+**renderer.info at u 206 (all passes):** 122 calls / 2,134,454 triangles with the brushes, 104 / 2,049,398 with them hidden. The brushes cost 18 calls and 85,056 triangles, under the 120k budget (they were 138,432 before).
+
+**No gameplay effect:** the module only adds meshes to its own scene group. There are no colliders, pickups, lane changes or raycast targets, and it draws no random numbers.
+
+**Not checked with a capture:**
+- **Build with `brush6` off:** no pixel test. Only my file changed, and with the switch off it builds nothing, so the frame should be unchanged.
+- **Scene 5's Tap to Start:** the first pair is at u 159.3 and is drawn only within 60 m ahead of the mascot. The run starts at u about 3.9, so no brushes should show there.
+
+**What still differs**
+1. **Left brush look:** it is seen almost side-on, so its strands read as long diagonal streaks and the tuft clumps are too subtle. The approved shows plump, rounded clumps on each tier.
+2. **Left cap:** the pink bell is too tall and matte. The approved has a lower, glossy bell under a separate, taller gold drum.
+3. **Blue tier:** still slightly light.
+
+The next settings to try are in the handoff.
+
+**Request to the water lane (`WebDemo/src/s56_tunnel.js` or the game's particles):** the white spray dots are drawn over the brushes' lower tiers. They are either nearer than 2.6 m or drawn without a depth test. In the approved there are droplets only at the brushes' feet, so please keep the spray inside about x 0.22–0.78 or below y 0.69 near the sides.
+
+Files are in `/home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/brush6/`:
+- b6_pass2_u206_final.png
+- b6_pass2_u206_brushes_hidden.png
+- b6_pass1_u206_before.png
+- b6_pass2_side_by_side.png (approved | before | after)
+- b6_pass2_left_crop2x.png
+- b6_pass2_right_crop2x.png
+
+Handoff: `/home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/HANDOFF.md`
+
+
+_74 tool steps._
 
 ---
 
@@ -445,5 +508,20 @@ Now the water palette/shading values and the fur-shell hook.
 - 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
 - 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
 - 18:41 `Bash`: Locate the hero6 sink/squash usage lines
+- 18:41 `Bash`: Gate the deep sink and stretch on hero6, then rebuild
+- 18:41 `Bash`: Read the rest of shots56
+- 18:41 `Bash`: Capture the built pass 1 at u 206 plus motion and jump frames
+- 18:42 `Bash`: Side-by-side of motion frames
+- 18:42 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/03_pass1/sbs_motion.png
+**Lead → agent** (18:42 UTC):
 
-_60 tool steps._
+[Image: original 2350x394, displayed at 2000x335. Multiply coordinates by 1.18 to map to original image.]
+
+- 18:43 `Bash`: Commit and push pass 1 on the lane branch
+- 18:43 `Bash`: Check whether the struct file change was committed
+- 18:43 `Bash`: Investigate why edits were not fully committed
+- 18:43 `Bash`: Check recent lane commits
+- 18:43 `Bash`: Add swell/chop shading split, rebuild, and trace his drawn bob
+- 18:45 `Bash`: Compensate swim bob, rebuild, and tune swell/chop shading shares
+
+_71 tool steps._

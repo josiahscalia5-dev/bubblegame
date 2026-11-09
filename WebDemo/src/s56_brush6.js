@@ -362,5 +362,5 @@ export async function buildBrush6(ctx) {
       if (on) b.spin.rotation.y = b.phase + time * P.spin * P[b.side].dir;
     }
   }
-  return { update, place, measure, report: drawReport, brushes, mats: mats0 };
+  return { update, place, measure, report: drawReport, brushes, mats: mats0, pullStd };   // (pullStd: session ddf175f2, for tripo6's model brushes)
 }
