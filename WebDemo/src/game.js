@@ -9,7 +9,8 @@ import { STRUCT_PARTS, structCrown, structFurFragment, structFill, structFurUnif
 import { HOME_ON, homeHolds } from './screens12.js';   // ?s3=...,home: Screen 1 (Home) and Screen 2 (Laundry Toss) in front of the live game
 import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
 import { TRIPO1_ON, SCENE07_ON, applyTripo1, scene07Camera } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
-import { flowCamX } from './level1_flow.js';   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
+import { flowCamX } from './level1_flow.js';
+import { S56_ON, buildS56 } from './s56_tunnel.js';   // ?s3=...,level1,s56 (session ac4e3449): the approved Scene 5 / 6 lavender laundry-machine tunnel as the run's environment (s56_tunnel.js)   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -222,6 +223,7 @@ function bakedMaterial(src, opts = {}) {
 // ------------------------------------------------------------------ world
 let water, waterU, mascot, rig, fx, scenery, decor, opening = null;
 let level1 = null;   // ?s3=...,level1 (level1.js)
+let s56 = null;   // ?s3=...,level1,s56 (s56_tunnel.js)
 const coins = [], gems = [], socks = [], rollers = [], fallsU = [];
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpQ = new THREE.Quaternion();
 
@@ -1060,6 +1062,7 @@ function updateMascot(dt) {
   }
   if (level1) level1.swim(m, t, dt, running, surf, fx);   // ?s3=...,level1: her swim strokes, drawn only (level1.js); her state is untouched
   if (BLEND_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend: drawn only (tunnel_s4_blend.js); her state is untouched
+  if (s56) s56.heroOffset(m, t, dt);   // ?s3=...,s56: he rides the s56 water's own waves, a little submerged (drawn only; his state is untouched)
 
   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
   // side spray while changing lanes, gentle ripples while bobbing at the start.
@@ -1220,8 +1223,9 @@ function updateCamera(dt) {
   const m = mascot;
   const k = THREE.MathUtils.smoothstep(m.z, -4, L.tunnelStart + (R6_ON ? ROUND6.camBlendEnd : 3));   // round6: the drum framing is set before the mouth
   const off = S3.off.clone().lerp(S4.off, k), lk = S3.look.clone().lerp(S4.look, k);
-  const fovV = THREE.MathUtils.lerp(S3.fov, S4.fov, k);
-  if (SCENE07_ON) scene07Camera(m.z, off, lk);   // ?s3=...,scene07 (pass 13, session ce30359f): the Avoid Enemies stretch's own aim (tripo_l1.js)
+  let fovV = THREE.MathUtils.lerp(S3.fov, S4.fov, k);
+  if (s56) fovV = s56.camera(off, lk);   // ?s3=...,s56: the approved Scene 5 / 6 framing for the whole run (one camera, one tunnel)
+  else if (SCENE07_ON) scene07Camera(m.z, off, lk);   // ?s3=...,scene07 (pass 13, session ce30359f): the Avoid Enemies stretch's own aim (tripo_l1.js)
   // Follow: 55 % of lane moves, the ride height fully (smoothed), 35 % of jumps and bobbing.
   const rideY = W.baseHeight(L, m.x, m.z) + W.FLOAT_H;
   const targetX = level1 && level1.flow ? flowCamX(m.x) : m.x * 0.55, targetY = rideY + (m.yAbs - rideY) * 0.35;   // (flow: more of a move onto a side path or ledge)
@@ -1343,6 +1347,7 @@ function startRun() {
   if (state.phase !== 'intro') return;
   state.phase = 'running';
   state.startedAt = state.time;
+  if (s56) s56.hideLegacy();   // ?s3=...,s56 (anything the run made since loading)
   if (INTUNNEL_ON) mascot.speed = INTUNNEL.speed;   // ?s3=intunnel: she is already riding the tunnel's water when the run starts
   document.body.classList.add('running');
   unlockAudio();
@@ -1623,6 +1628,7 @@ function step(dt) {
   if (SWIM2_ON && fx.u.uMaxPx) fx.u.uMaxPx.value = swim2CapPx(renderer.domElement.height, WATER7.maxPx);   // ?s3=intunnel,swim2: the cap eases in as she starts
   updateCamera(dt);
   if (level1) level1.update(dt, state.time, state.phase);   // ?s3=...,level1 (after the camera: its water and walls use the camera's place)
+  if (s56) s56.update(dt, state.time, state.phase, mascot);   // ?s3=...,s56: the tunnel's water, gears and splashes
   fadeStartPanels();
   if (opening) opening.update(dt, state.time, state.phase);
 }
@@ -1726,6 +1732,7 @@ async function main() {
     }
     if (level1 && (TRIPO1_ON || SCENE07_ON)) await applyTripo1({ scene, loader: gltfLoader, env: mats.env, TR, camera, fx });   // ?s3=...,level1,tripo1 / scene07 (tripo_l1.js): looks only
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
+    if (S56_ON && level1) { s56 = await buildS56({ scene, TR, L, W, env: mats.env, loader: gltfLoader, mascot }); s56.hideLegacy(); }   // ?s3=...,level1,s56 (s56_tunnel.js)
     resize();
     resetRun();
     state.phase = 'intro';
