@@ -32,6 +32,7 @@ source Tools/bw_tools_env.sh > /dev/null 2>&1
   grep -q '"spector"' .mcp.json && echo "  .mcp.json: project Spector server (built into ~/.bubblewash-tools/spector by the setup script)"
   echo "== Autosave"; n=$(ps -eo cmd | grep -c '[a]utosave.sh'); echo "  autosave processes: $n (expected 1)"
   tail -1 "$HOME/.bubblewash-autosave/save_history.log" 2>/dev/null | sed 's/^/  last: /'
+  echo "== Specialist lanes (PARALLEL_LANES.md; recover any missing worktree: bash Tools/lanes.sh create)"; bash Tools/lanes.sh status 2>&1 | sed 's/^/  /'
   echo "== Tripo (free calls only)"; echo "  $(TRIPO_API_KEY=tsk_proxy-injected tripo balance 2>&1 | tail -1)" ) > "$T/4" 2>&1 &
 wait
 cat "$T/1" "$T/2" "$T/3" "$T/4"
