@@ -24,6 +24,7 @@ import { BRUSH6_ON, buildBrush6 } from './s56_brush6.js';   // (session 47f75e22
 import { TRIPO6_ON, buildTripo6 } from './s56_tripo6.js';   // (session ddf175f2, coordinator hook) the user's new Tripo models of Screen 6 `tripo6`
 import { TANK6_ON, buildTank6 } from './s56_tank6.js';   // (session ddf175f2, coordinator hook) the modelled glowing glass tank `tank6`
 import { CROWN6_ON, buildCrown6 } from './s56_crown6.js';   // (session ddf175f2, coordinator hook, fin6) the white splash crown round him
+import { HERO7_ON, buildHero7 } from './s56_hero7.js';   // (session ddf175f2, coordinator hook) the approved Screen 6 fur dome `hero7`
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
@@ -239,6 +240,7 @@ export async function buildS56(ctx) {
   let tank6 = null;
   if (TANK6_ON) { try { tank6 = await buildTank6({ env, loader, root, report, arch }); } catch (e) { report.errors.push('tank6: ' + ((e && e.message) || e)); } }
   let crown6 = null; if (CROWN6_ON) { try { crown6 = buildCrown6(); } catch (e) { report.errors.push('crown6: ' + ((e && e.message) || e)); } }   // (fin6)
+  let hero7 = null; if (HERO7_ON) { try { hero7 = buildHero7({ mascot: ctx.mascot, report }); } catch (e) { report.errors.push('hero7: ' + ((e && e.message) || e)); } }   // (hero7)
 
   // ------------------------------------------------ 1. the drum shell (perforated lavender metal), in chunks so each can be culled
   const shellMat = new THREE.ShaderMaterial({
@@ -712,7 +714,8 @@ export async function buildS56(ctx) {
     if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
     if (tripo6 && tripo6.update) tripo6.update(dt, time, phase, m);
     if (tank6 && tank6.update) tank6.update(dt, time, phase, m);
-    if (crown6) crown6.update(dt, time, m, phase);   // (after brush6: tripo6 hides the procedural brush under its model)
+    if (crown6) crown6.update(dt, time, m, phase);
+    if (hero7) hero7.update(dt, time, phase, m);   // (after brush6: tripo6 hides the procedural brush under its model)
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;
