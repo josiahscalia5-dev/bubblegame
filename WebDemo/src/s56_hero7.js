@@ -23,22 +23,22 @@ export const HERO7 = {
   airY: 0.0,       // the body centre above his root while in the air (the old body's centre)
   sink: 0.78,      // = S56.hero6.sink (the game's sunk body: its water line sits this far above tilt.position.y)
   nub: { r: 0.52, x: 1.02, y: -0.28, z: -0.3 },   // the nubs: radius and centre in body radii (x out to the sides, z toward the camera = -)
-  shells: 32, len: 0.26, comb: 0.9, droop: 0.1,   // shell count; strand length (body radii); comb along the surface away from the pole; droop
+  shells: 32, len: 0.22, comb: 0.75, droop: 0.1,   // shell count; strand length (body radii); comb along the surface away from the pole; droop
   pole: [0.0, 0.62, -0.79],   // the point the strands radiate from (body frame: +y up, -z toward the camera)
   // strands: two layers of cells per body radius, strand radius (cell units) at the root, length variation, softness
-  dens: [30.0, 46.0], rad: 0.42, lenVar: 0.45, soft: 0.7,
+  dens: [24.0, 36.0], rad: 0.45, lenVar: 0.45, soft: 0.35,   // (2x crops: soft 0.7 read smudged; 0.35 crisp)
   // tufts (the approved fur is plush clumps with light tips and darker gaps): clump cells per body radius, how far the strands gather toward
   // their clump's centre at the tip, the clump's own length and shade variation
-  clump: { dens: 18.0, k: 0.45, len: 0.3, shade: 0.2 },
+  clump: { dens: 14.0, k: 0.9, len: 0.3, shade: 0.25 },   // (strong gathering: pointed tufts with gaps, as the approved)
   // colours (linear, before the grade): the measured ramp base -> lower -> upper -> top; root occlusion; tip lift; highlight
   // (measured band medians, game vs approved: top #ee69ec / #fb67e9, upper #eb1dc2 / #f935bb, lower #eb10ac / #f21ca6, base #d80699 / #b70891)
   base: [0.28, 0.0, 0.15], lower: [1.3, 0.03, 0.55], upper: [1.35, 0.12, 0.85], top: [1.35, 0.45, 1.25],
-  ramp: [-0.25, 0.1, 0.5, 0.92], vary: 0.7,   // the colour ramp's heights on the body (body radii) and the per-strand light / dark spread
-  ao: 0.62, tip: 0.25, spec: 0.8, specExp: 24.0, rim: 0.25, light: [0.25, 0.9, -0.45],
+  ramp: [-0.25, 0.1, 0.5, 0.92], vary: 0.8,   // the colour ramp's heights on the body (body radii) and the per-strand light / dark spread
+  ao: 0.62, tip: 0.42, spec: 0.8, specExp: 24.0, rim: 0.25, light: [0.25, 0.9, -0.45],
   contact: [0.58, 0.5],   // the water's contact radii round him (m: across, along): the pile-up and the white collar hug the dome and nubs
   // the water's white at his base: its foam over white so it survives the scene grade (fin6 exposure 0.72 dimmed white to grey: 0 % near-white at
   // his base vs the approved 11 %); its collar and side froth stronger and less broken (measured: 5.2 % near-white with these). S56.water fields.
-  water: { foam: [2.2, 2.3, 2.5], collar: 3.0, froth: 4.0, gap: 0.2 },
+  water: { foam: [2.2, 2.3, 2.5], collar: 3.0, froth: 4.0, gap: 0.2, ripple: 0.4 },   // (ripple 1.0 -> 0.4: the spreading ring lines read as white rings; the contact white kept)
   hideOld: 1,   // hide the game mascot's drawn body while hero7 shows (0: both, for comparison)
 };
 if (HERO7_ON && typeof window !== 'undefined') window.__bwHero7 = HERO7;
