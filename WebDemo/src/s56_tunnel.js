@@ -183,6 +183,7 @@ vec3 s56Haze(vec3 c, vec3 wp) {
   float d = length(wp - cameraPosition);
   float k = smoothstep(9.0, 70.0, d);
   vec3 far = mix(vec3(0.16, 0.10, 0.62), vec3(0.42, 0.55, 1.02), smoothstep(26.0, 75.0, d));
+  ${LIST.includes('fin6') ? 'far = mix(vec3(0.20, 0.10, 0.66), vec3(1.10, 1.28, 1.85), smoothstep(30.0, 80.0, d));   // (fin6, coordinator) the same icy vanishing point as the shell' : ''}
   return mix(c, far, k * 0.9);
 }`;
 

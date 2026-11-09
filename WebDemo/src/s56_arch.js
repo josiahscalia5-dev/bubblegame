@@ -86,6 +86,7 @@ export const ARCH56 = {
     mtank: { x: 1.62, z: 1.42, ped: 1.55, rg: 0.3, hg: 0.85 },
     ch6: { h: 1.5, ped: 1.0, ang: 0.5, glow: [0.15, -0.02, 0.0] }, jj: { k: 0.62, up: 0.0 },
     bigTank: { rg: 0.42, hg: 1.0, dx: 0.0, dy: 0.0, dz: 0.0 },
+    fin: { strip: [3.4, 2.7, 1.0], lamp: [3.4, 2.9, 1.6] },   // (fin6) lamp colours (linear HDR)
     box6: { screenY: 0.56, screenH: 0.6, bulbX: 0.13, bulbR: 0.1, lightR: 0.085, halo: 1.9 },   // (fin6) the control box's face   // (tank6) the right bank's big glowing tank (glass radius / height, offsets)
     chunk: 15, near: 18,   // the models' instancing chunks (m) and their LOD1 window ahead of him (behind him from 1 m: LOD2)
     wall: [0.6, 0.5, 0.8],   // the drum's metal past `from` (multiplier; the approved walls are a deeper violet-grey with black holes)
@@ -118,6 +119,7 @@ vec3 a56Haze(vec3 c, vec3 wp) {
   float d = length(wp - cameraPosition);
   float k = smoothstep(9.0, 70.0, d);
   vec3 far = mix(vec3(0.16, 0.10, 0.62), vec3(0.40, 0.40, 0.98), smoothstep(26.0, 75.0, d));
+  ${FIN6 ? 'far = mix(vec3(0.20, 0.10, 0.66), vec3(1.10, 1.28, 1.85), smoothstep(30.0, 80.0, d));   // (fin6) the approved icy blue-white vanishing point (HDR: the bloom spreads it)' : ''}
   return mix(c, far, k * 0.9);
 }`;
 
@@ -587,7 +589,7 @@ vec3 a56Ungrade(vec3 c) {
     const Q = Q6.L, out = [], X = (v) => s * v, C = Q.cab;
     if (tall === 'model') {   // beside the user's housing model: the tall glowing tank on a pink pedestal, a gold elbow pipe from its dome into the wall
       const T = Q6.mtank;
-      out.push([G.cyl(T.rg + 0.06, T.rg + 0.12, T.ped + 0.35, 32).translate(X(T.x), (T.ped - 0.35) / 2, T.z), MT.pink6]);
+      out.push([G.cyl(T.rg + 0.06, T.rg + 0.12, T.ped + 0.35, 32).translate(X(T.x), (T.ped - 0.35) / 2, T.z), FIN6 ? MT.lav : MT.pink6]);
       for (const y of [0.12, T.ped * 0.55, T.ped - 0.1]) out.push([G.tor(T.rg + 0.1, 0.035, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), y, T.z), MT.gold]);
       const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg), ptop = dome + 0.28;
       out.push([pipe([[X(T.x), dome - 0.05, T.z], [X(T.x), ptop, T.z], [X(T.x + 0.95), ptop + 0.05, T.z]], 0.08, 0.2), MT.brass], [collar([X(T.x), dome + 0.06, T.z], [0, 1, 0], 0.105), MT.gold]);
@@ -601,7 +603,7 @@ vec3 a56Ungrade(vec3 c) {
     if (!tall) return [];   // a brush's bay: the brush stands there (above it the approved shows only the arch and a pipe)
     // the tank on a pink pedestal with a gold band
     const T = Q.tank;
-    out.push([G.cyl(T.rg + 0.05, T.rg + 0.1, T.ped - yd, 32).translate(X(T.x), (T.ped + yd) / 2, T.z), MT.pink6], [G.tor(T.rg + 0.08, 0.035, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), T.ped - 0.1, T.z), MT.gold]);
+    out.push([G.cyl(T.rg + 0.05, T.rg + 0.1, T.ped - yd, 32).translate(X(T.x), (T.ped + yd) / 2, T.z), FIN6 ? MT.lav : MT.pink6], [G.tor(T.rg + 0.08, 0.035, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), T.ped - 0.1, T.z), MT.gold]);   // (fin6: the tank stands on lavender machinery, not a pink pillar)
     const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg);
     // the lavender control box on a column: two glowing white-violet bulbs in a dark screen; below it a panel with a yellow and a teal light
     const B = Q.box, R0 = new THREE.Matrix4().makeRotationY(s * B.ang), bx = X(B.x), bz = B.z, ph = Q.panel.h, by1 = B.y0 + ph + B.h;
@@ -647,7 +649,7 @@ vec3 a56Ungrade(vec3 c) {
     // the near tank on a pink pedestal standing in the water, a gold elbow pipe up out of its dome and into the wall
     const T = Q.tank;
     const ped = tall === 'model' ? Q6.ch6.ped : T.ped;
-    out.push([G.cyl(T.rg + 0.06, T.rg + 0.1, ped + 0.35, 32).translate(X(T.x), (ped - 0.35) / 2, T.z), MT.pink6]);
+    out.push([G.cyl(T.rg + 0.06, T.rg + 0.1, ped + 0.35, 32).translate(X(T.x), (ped - 0.35) / 2, T.z), FIN6 ? MT.lav : MT.pink6]);
     for (const y of [0.15, ped - 0.12]) out.push([G.tor(T.rg + 0.09, 0.038, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), y, T.z), MT.gold]);
     if (tall === 'model') { out.push([G.cyl(T.rg + 0.12, T.rg + 0.12, 0.08, 32).translate(X(T.x), Q6.ch6.ped + 0.0, T.z), MT.gold]); return out; }
     const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg);
@@ -655,6 +657,7 @@ vec3 a56Ungrade(vec3 c) {
     out.push([pipe([[tx, dome - 0.05, T.z], [tx, ptop, T.z], [X(T.x + 0.9), ptop + 0.05, T.z]], 0.085, 0.22), MT.brass], [collar([tx, dome + 0.06, T.z], [0, 1, 0], 0.11), MT.gold]);
     return out;
   }
+  if (FIN6) { MT.strip.color.setRGB(...Q6.fin.strip); MT.lamp.color.setRGB(...Q6.fin.lamp); }   // (fin6) the approved capsule lamps and the ceiling bulb read hot yellow-white, not peach
   const MOD = priv(() => ({ L6m: S6 ? moduleL6(1, 'model') : null, R6m: S6 ? moduleR6(-1, 'model') : null, L6: S6 ? moduleL6(1) : null, R6: S6 ? moduleR6(-1) : null, L6low: S6 ? moduleL6(1, false) : null, R6low: S6 ? moduleR6(-1, false) : null, A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) }, S: { [-1]: moduleStar(-1), 1: moduleStar(1) } }));
   const gearSet = new Set(P.gearK);
   // (ddf175f2) lane brush6's roller brushes (read only, BRUSH6's placement rule): a bay within 2.4 m of one on its side keeps its low parts
