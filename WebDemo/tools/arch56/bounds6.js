@@ -8,6 +8,6 @@ const box = (b, mw) => { const p = []; for (let i = 0; i < 8; i++) { const v = n
 for (const o of a56.children) {
   if (o.isInstancedMesh && o.visible) { o.geometry.computeBoundingBox(); for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, M); const w = new V().setFromMatrixPosition(M); const dist = w.distanceTo(cam.position);
     const q = w.clone().project(cam); if (dist < 14 && q.z < 1 && q.x > -1.4 && q.x < 1.4) out.push({ n: o.name, dist: +dist.toFixed(2), ...box(o.geometry.boundingBox, M) }); } }
-  if (o.name === 'a56Gear') { const w = o.getWorldPosition(new V()), dist = w.distanceTo(cam.position), q = w.clone().project(cam); if (dist < 14 && q.z < 1) out.push({ n: 'gear', dist: +dist.toFixed(2), hub: [cl((q.x + 1) / 2), cl((1 - q.y) / 2)], ...box(new (o.children[0].children[0].geometry ? Object : Object)() && (() => { const b = new (cam.position.constructor === V ? window.THREE_Box3 || Object : Object)(); return null; })() || { min: new V(-0.71, -0.71, -0.71), max: new V(0.71, 0.71, 0.71) }, o.matrixWorld) }); }
+  if (o.name === 'a56Gear') { const w = o.getWorldPosition(new V()), dist = w.distanceTo(cam.position), q = w.clone().project(cam); if (dist < 14 && q.z < 1) out.push({ n: 'gear', dist: +dist.toFixed(2), hub: [cl((q.x + 1) / 2), cl((1 - q.y) / 2)], ...box({ min: new V(-0.71, -0.71, -0.71), max: new V(0.71, 0.71, 0.71) }, o.matrixWorld) }); }
 }
 return out.sort((a, b) => a.dist - b.dist);
