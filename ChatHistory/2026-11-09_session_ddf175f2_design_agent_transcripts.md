@@ -1,0 +1,211 @@
+# Session ddf175f2, design agents
+
+Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
+
+
+---
+
+## Tunnel & Lighting specialist: arch56: rebuild Screen 6 scenery (started 18:16 UTC)
+
+**Lead → agent** (18:16 UTC):
+
+You are the ARCHITECTURE specialist (lane arch56) of Bubble Wash Kingdom, a real three.js mobile game. The user's URGENT mandate (9 November 2026): rebuild the COMPLETE approved Screen 6 environment in the playable game. Big structural scenery first, not polish. You have PRIMARY responsibility for the large missing scenery.
+
+WORK ONLY in the worktree /home/user/bubblegame_lanes/arch56 (branch claude/lane-s56-arch-d847dce2, already at the integration head df3b4256, which merges all three Screen 6 lanes). Edit ONLY: WebDemo/src/s56_arch.js and WebDemo/tools/arch56/. Never edit another lane's file (s56_tunnel.js = water lane, s56_brush6.js = brush lane, game.js / s56_env6.js = coordinator). If you need a change there, put the exact request in your final report.
+
+READ FIRST: WebDemo/tools/env6/TARGETS.md (measured target positions, the integrated candidate list, the fast tuning tool var6.cjs, the rules), then WebDemo/tools/arch56/HANDOFF.md (your lane's previous state), then s56_arch.js. Look at the approved image /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png, the grid version /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/approved_grid.png, and the current combined frame /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/02_haze/c_env6_herograde_bloom030_t105.png.
+
+What changed since your lane's handoff (the coordinator, this session):
+- The u 206 "red tint" and the peach haze are SOLVED by the coordinator's `env6` switch: inside the s56 tunnel the game now runs the HERO grade (uHero = 1). So under env6 your a56Ungrade inverse is OFF (uA56Ungrade = 1 - uHero = 0). Design every colour for the hero grade (as at Tap to Start). Measured bug for you to also fix (for runs without env6): a56Ungrade's knee inverse `(0.62 + b / max(1.0 - 1.6 * b, 0.05))` multiplies every bright basic material (lamp, strip, core, ~2.2 linear) by up to 20x (linear luminance up to 214 measured); cap it (e.g. clamp the input luminance to ~1.2 before the knee inverse, or skip the inverse for colours above 1) so lamps never exceed ~3 linear.
+- Bloom now only catches HDR lights (threshold 1.05), so lamps/tank cores above 1 linear glow; everything else stays crisp.
+
+YOUR TASK (in this order, each a real visible step):
+1. Foreground machinery with real VOLUME on both banks at the target places (TARGETS.md "Left machinery", "Right machinery"): the nearest modules must reach up to y ~0.33-0.35 on screen (today they top out low and read small). Left: lavender control box with two glowing bulbs + a panel with yellow/teal round lights; a tall violet GLOWING glass tank with a gold cap and rings; gold elbow pipes arcing over; gold railing on a deck; pink cabinet with a gold paw medallion. Right: big violet glowing tank with gold cap and a gold elbow pipe above; pink drum housing with two big gold STARS; gold railing. Then the same modules RECEDING densely toward the vanishing point on both banks (the approved image is packed: no bare wall between modules). Reuse the user's Tripo models already in WebDemo/models/s56tm/ (Machinery_tiny, 913_914 glass chambers, blue_jt gear; see HANDOFF) where they fit, and build the rest as real geometry in three.js (lathe/extrude/instancing). No flat images, no painted backdrops.
+2. The large COBALT GEAR facing the camera at the upper right (x 0.685-0.865, y 0.327-0.45, gold hub ~(0.80, 0.39)), turning. At u 206 the game's right-lane coins may sit in front of it: that is gameplay, do not move pickups; place the gear right anyway.
+3. Overhead: the brass ceiling LAMP at the top centre (x 0.45-0.55, y 0.216-0.278) with a hot white-gold bulb (HDR, so it blooms), the thick gold pipe from it to the right and down to above the gear, and big yellow-white capsule lamp bars on the nearest pink arch (x 0.09-0.22 and 0.77-0.90, y 0.23-0.30), smaller warm lamp dashes on every arch receding. Keep the dark violet perforated walls with black holes between the arches.
+4. Leave the frame's edges for the brush lane's roller brushes (they stand at |x| ~1.6-2.4 m, ~2.3-2.7 m ahead of the mascot, track-fixed pairs every 26 m near u 157, 183, 209, 235, 261; window.__bwBrush6 holds the live numbers). Your nearest modules sit just behind/above them, as in the approved image. If your bank deck hides the brushes' feet where they meet the water (approved y ~0.71), lower or cut the deck locally in front of each brush and say so.
+
+HOW TO WORK:
+- `cd /home/user/bubblegame_lanes/arch56/WebDemo && node build.mjs` after code changes (node_modules is a symlink, never commit it).
+- Capture the integrated candidate at u 206 with the frozen-frame tool (fast; settings can be tuned live via window.__bwArch56 without rebuilding):
+  `S3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56,coin6,hero6,water6,brush6,arch56,env6 VARS='[["a",""]]' DPR=2 flock /tmp/bw_browser.lock node tools/env6/var6.cjs $PWD <out>`
+  ALWAYS under `flock /tmp/bw_browser.lock` (3 other specialists share 4 CPUs and one software-WebGL browser lock). Keep each run short.
+- Put evidence under /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/arch56/ (the main checkout; evidence only, the coordinator commits it). Make side-by-sides with PIL: approved | yours, both full 864x1536 (or half size), and LOOK at them yourself (Read the PNG).
+- Judge only by real captures next to the approved image. Revert anything that looks less like it.
+- Without `arch56` the build must be unchanged; check with one capture at u 206 of the list without arch56 against the same list from the main checkout's current bundle (/home/user/bubblegame/WebDemo) if you touched shared code paths (you should not have).
+- Performance: instanced meshes per chunk as now; keep the extra triangles drawn at u 206 under ~400k and draw calls modest; report renderer.info.render (calls, triangles) at u 206.
+- Commit and push your lane branch at each tested step (`git -C /home/user/bubblegame_lanes/arch56 push origin claude/lane-s56-arch-d847dce2`, never force), with clear messages ending with:
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+- Update WebDemo/tools/arch56/HANDOFF.md at the end (state, numbers, next steps).
+- Time box: about 75 minutes of work. Deliver the first big visible pass (step 1 + gear) as early as you can, commit it, then continue with 3 and 4. Stop with a pushed checkpoint.
+
+FINAL REPORT (your last message, concise): the commit hash pushed; what is built (with positions measured in the frame vs targets); the path of your final u 206 frame and side-by-side; renderer.info at u 206; what still differs from the approved image and why; any request to other lanes (exact file, numbers).
+
+- 18:16 `Bash`: Check lane worktree state
+- 18:16 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/tools/env6/TARGETS.md
+- 18:16 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/tools/arch56/HANDOFF.md
+- 18:16 `Bash`: Check file sizes and models
+- 18:16 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 18:16 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/tools/env6/var6.cjs
+- 18:16 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/approved_grid.png
+- 18:16 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/02_haze/c_env6_herograde_bloom030_t105.png
+- 18:16 `Bash`: Read probe tools
+- 18:16 `Bash`: Build lane bundle and compare
+- 18:17 `Bash`: Find frameM definition
+- 18:17 `Write`: /home/user/bubblegame_lanes/arch56/WebDemo/tools/arch56/proj6.js
+- 18:17 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/tools/arch56/proj6.js
+- 18:17 `Bash`: Capture baseline frame with projection probe
+- 18:17 `Bash`: Print projection probe results
+- 18:17 `Bash`: Print far grid projections
+- 18:18 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/arch56/00_base/base.png
+- 18:19 `Bash`: Crop approved middle band
+- 18:19 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/appr_mid.png
+- 18:19 `Bash`: Fit camera model to probe grid
+- 18:19 `Bash`: Find python with scipy
+- 18:19 `Bash`: Fit camera with numpy LM
+- 18:19 `Bash`: Invert approved left-module screen points to 3D
+- 18:20 `Bash`: Project ring points for several radii
+- 18:20 `Bash`: Invert approved right-side items to 3D
+
+_25 tool steps._
+
+---
+
+## Tunnel & Lighting specialist: brush6: rebuild both roller brushes (started 18:16 UTC)
+
+**Lead → agent** (18:16 UTC):
+
+You are the BRUSH specialist (lane brush6) of Bubble Wash Kingdom, a real three.js mobile game. The user's URGENT mandate (9 November 2026): rebuild the complete approved Screen 6 environment; you own the two large pink / white / blue cylindrical ROLLER BRUSHES at the left and right foreground.
+
+WORK ONLY in the worktree /home/user/bubblegame_lanes/brush6 (branch claude/lane-s6-brush-47f75e22, already at the integration head df3b4256, which merges all three Screen 6 lanes). Edit ONLY: WebDemo/src/s56_brush6.js and WebDemo/tools/brush6/. Never edit another lane's file (s56_arch.js = architecture lane, which owns the bank deck and machinery; s56_tunnel.js = water lane; game.js / s56_env6.js = coordinator). If you need a change there, put the exact request in your final report.
+
+READ FIRST: WebDemo/tools/env6/TARGETS.md (measured target positions, the integrated candidate, the fast tuning tool var6.cjs, the rules), WebDemo/tools/brush6/HANDOFF.md (your lane's previous state), then s56_brush6.js. Look at the approved image /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png, the grid version /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/approved_grid.png, and the current combined frame /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/02_haze/c_env6_herograde_bloom030_t105.png.
+
+Where the brushes are today (combined frame at u 206): left brush only x 0-0.09 wide, bristles y ~0.50-0.66 as thin, see-through wisps; band colours blur pink -> lavender -> blue; the right brush small. The approved brushes are BIG and dense: left from the top drum at y 0.34 to the bristle skirt's foot at y 0.714, the skirt flaring out to x 0.21; four SEPARATE, overlapping, flared tiers of dense, opaque bristles with crisp colour bands (pink, white-lavender, royal blue, pale blue-white), a glossy pink bell with gold star studs and a gold rim band; the right one mirrored and cut by the frame's right edge (numbers in TARGETS.md).
+
+What changed (coordinator, this session): the `env6` switch runs the game's HERO grade inside the s56 tunnel and bloom only on HDR lights (threshold 1.05), so colours now render as designed (no red/violet shift, no haze). Design for that. The coordinator's decision on your lane bound: the brushes are decorative bank brushes beside the side lanes (as in the approved image); their inner bristle tips may come in to |x| >= 1.05 m (was 1.25). They must have NO gameplay effect (no colliders, no pickups touched); confirm that in your report.
+
+YOUR TASK:
+1. Geometry and look of each brush to match the approved one: proportions (top drum, bell, rim band, four flared tiers with the measured heights), DENSE opaque bristles (many more strands / thicker shells; no see-through wisps), crisp tier separation (each tier's lower edge overhangs the next with a slight shadow), the colours of the approved bands under the hero grade (stay under the ~0.76 linear Neutral tone-mapping knee for saturated colours), spinning about the vertical axis. Real 3D (your shell-fur technique, instancing, cones/lathes); no flat images.
+2. Placement and size to the measured targets at u 206 (refit with tools/brush6/fit_eval.js or by hand), with the new lane bound. Check the right brush too.
+3. The foot: the lowest tier should meet the water at y ~0.71. If the architecture lane's bank deck hides it, report exactly what it must lower or cut (u range, x range, height), and do not hack around it with depth tricks that look wrong.
+4. Make sure the brushes do not show in Scene 5's Tap to Start view unless they belong there (they did not before) and that without `brush6` the build is unchanged.
+
+HOW TO WORK:
+- `cd /home/user/bubblegame_lanes/brush6/WebDemo && node build.mjs` after code changes (node_modules is a symlink, never commit it).
+- Capture the integrated candidate at u 206 with the frozen-frame tool (fast; settings tune live through window.__bwBrush6 and __bwBrush6.place() without rebuilding):
+  `S3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56,coin6,hero6,water6,brush6,arch56,env6 VARS='[["a",""]]' DPR=2 flock /tmp/bw_browser.lock node tools/env6/var6.cjs $PWD <out>`
+  ALWAYS under `flock /tmp/bw_browser.lock` (other specialists share 4 CPUs and one software-WebGL browser lock). Keep runs short.
+- Evidence under /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/brush6/ (main checkout, evidence only). Make side-by-sides with PIL (approved | yours at full or half size, plus a 2x crop of each brush) and LOOK at them (Read the PNG). Judge only by real captures; revert anything that looks less like the approved image.
+- Performance: report renderer.info.render (calls, triangles) at u 206 with and without brush6; keep the brushes under ~120k triangles drawn at u 206.
+- Commit and push your lane branch at each tested step (`git -C /home/user/bubblegame_lanes/brush6 push origin claude/lane-s6-brush-47f75e22`, never force), messages ending with:
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+- Update WebDemo/tools/brush6/HANDOFF.md at the end.
+- Time box: about 60 minutes. Deliver the first big visible pass early, commit, then refine. Stop with a pushed checkpoint.
+
+FINAL REPORT (last message, concise): commit hash pushed; what changed; the measured brush extents in the u 206 frame vs targets; paths of the final frame, side-by-side and crops; renderer.info; what still differs and why; any request to other lanes (exact file and numbers).
+
+**Agent** (18:16 UTC):
+
+I'll start by reading the targets, the lane handoff, and the current brush code.
+
+- 18:16 `Bash`: Show lane branch state and tool folders
+- 18:16 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/env6/TARGETS.md
+- 18:16 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/HANDOFF.md
+- 18:16 `Bash`: Count lines of lane files and their history
+- 18:16 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:16 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/env6/var6.cjs
+- 18:16 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/fit_eval.js
+**Agent** (18:16 UTC):
+
+Now the images: the approved, the grid, and the current combined frame.
+
+- 18:16 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/approved_grid.png
+- 18:16 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/02_haze/c_env6_herograde_bloom030_t105.png
+**Agent** (18:17 UTC):
+
+Let me crop the approved brushes at 2x to study their structure.
+
+- 18:17 `Bash`: Crop the approved left and right brushes at 2x
+- 18:17 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/appr_left2x.png
+- 18:17 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/appr_right2x.png
+**Agent** (18:17 UTC):
+
+Now let me build the worktree and capture the current integrated candidate as my baseline.
+
+- 18:17 `Bash`: Build the game bundle in the brush6 worktree
+- 18:17 `Grep`: debug\s*[:(]|render\s*[:(]\s*\(|__bw\s*=
+- 18:17 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/src/game.js
+**Agent** (18:17 UTC):
+
+Let me capture the baseline (current state) with renderer.info, with and without the brushes.
+
+- 18:17 `Bash`: Capture the baseline frame at u 206 with renderer info
+- 18:18 `Bash`: Print renderer info and make baseline crops
+- 18:18 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/base_crops.png
+- 18:19 `Bash`: Diagnose depth occlusion of the brushes
+
+_19 tool steps._
+
+---
+
+## screen4-water-motion-engineer: water6: Screen 6 water and hero dome (started 18:17 UTC)
+
+**Lead → agent** (18:17 UTC):
+
+You are the WATER specialist (lane s56) of Bubble Wash Kingdom, a real three.js mobile game. The user's URGENT mandate (9 November 2026): rebuild the complete approved Screen 6 environment; you own the WATER (saturated cobalt / turquoise with dimensional waves, white crests, splash and natural interaction round the mascot) and the mascot's drawn DOME shape in the water.
+
+WORK ONLY in the worktree /home/user/bubblegame_lanes/s56 (branch claude/lane-s56-tunnel-ac4e3449, already at the integration head df3b4256, which merges all three Screen 6 lanes). Edit ONLY: WebDemo/src/s56_tunnel.js (NOT its section 0 hook block, which is the coordinator's), WebDemo/tools/s56/, and, granted for this pass, the single value STRUCT.match4.scaleS6 in WebDemo/src/tunnel_s4_struct.js (the `hero6` dome; it only applies with s56 + hero6, Classic Screen 4 `?s3=intunnel` must stay pixel-identical). Never edit s56_arch.js, s56_brush6.js, game.js or s56_env6.js; put requests in your final report. The live DevTools MCP tools may not be connected for you: use Bash + the capture tools below.
+
+READ FIRST: WebDemo/tools/env6/TARGETS.md (measured targets, the integrated candidate, the fast tuning tool var6.cjs, the rules), WebDemo/tools/s56/HANDOFF.md (your lane's previous state: water6 v2), then the water parts of s56_tunnel.js (S56.water, S56.hero6, sections 5-7). Look at the approved image /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png and the current combined frame /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/02_haze/c_env6_herograde_bloom030_t105.png.
+
+What changed (coordinator, this session): the `env6` switch runs the game's HERO grade inside the s56 tunnel (grade uniform uHero = 1 at u 206 too) and bloom only on HDR lights (threshold 1.05). So at u 206 under env6 your palette blend uses the *H (hero) palette, as at Tap to Start. Design for that. The peach haze is gone.
+
+Where the water and the mascot are today (combined frame at u 206, env6): the water reads as a pale, low-contrast pool cyan, nearly flat, few dark troughs, thin faint white lines; no splash crown round him. The mascot reads as a FLAT blob: hero6's scaleS6 [0.89, 0.80, 0.89] (squashed) plus S56.hero6.sink 0.4 leave a flat-topped oblate mound. The approved: a ROUND dome (the upper ~60 % of a ball: x 0.255-0.74, top y 0.59, waterline ~0.76) with a lighter top, sitting IN saturated azure-cobalt water (troughs ~#0a5bdc, body ~#1e90f5, lit faces ~#6fd6fb) with clear rolling relief, many thin sharp broken WHITE crest lines, sparkles, and a white SPLASH CROWN at his sides (spray up to y ~0.65) and waterline (foam, droplets y ~0.70-0.785). No large pale or white sheets; no flat violet; his outline never hidden behind a water wall.
+
+YOUR TASK:
+1. The hero dome: a round (not squashed) body (e.g. scaleS6 back toward uniform), sunk so the waterline is near his widest line, measured in the u 206 frame against the target box. Drawn only: his gameplay size, position, lanes and pickups are untouched (offsets on m.tilt, never m.root).
+2. The water colour and relief under the hero grade: deeper cobalt troughs, azure body, turquoise lit faces, contrast and visible rolling waves toward the camera; thin white crest lines and sparkles; no pale sheet.
+3. The splash crown and contact round him while swimming (sides and front), and natural motion (check a second frame 0.3 s later with shots56 ZS=206 or a tapR run, to see it moves).
+4. Without `water6` (and without hero6) the s56 build must be unchanged: prove 0 px at tap and u 206 for the list without your switches, against the main checkout's bundle (/home/user/bubblegame/WebDemo) built from df3b4256, or by building your lane with the switch off before/after.
+
+HOW TO WORK:
+- `cd /home/user/bubblegame_lanes/s56/WebDemo && node build.mjs` after code changes (node_modules is a symlink, never commit it).
+- Capture the integrated candidate at u 206 with the frozen-frame tool (S56.water is live as window.__bwS56.water; window.__bwS56Sync() pushes it; no rebuild needed for settings):
+  `S3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56,coin6,hero6,water6,brush6,arch56,env6 VARS='[["a",""]]' DPR=2 flock /tmp/bw_browser.lock node tools/env6/var6.cjs $PWD <out>`
+  and real motion with tools/s56/shots56.cjs (see its header). ALWAYS under `flock /tmp/bw_browser.lock` (other specialists share 4 CPUs and one browser lock). Keep runs short.
+- Measure with your tools/s56/aw56.py (approved fg numbers are in your HANDOFF) AND look at side-by-sides (approved | yours, full 864x1536 or half, plus a 2x crop of the hero and water) with your own eyes (Read the PNG). Revert anything that looks less like the approved image.
+- Evidence under /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/ (main checkout, evidence only).
+- Commit and push your lane branch at each tested step (`git -C /home/user/bubblegame_lanes/s56 push origin claude/lane-s56-tunnel-ac4e3449`, never force), messages ending with:
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+- Update WebDemo/tools/s56/HANDOFF.md at the end.
+- Time box: about 70 minutes. Deliver the first big visible pass early (dome + colour), commit, then refine. Stop with a pushed checkpoint.
+
+FINAL REPORT (last message, concise): commit hash pushed; what changed (settings and code); measured hero box and aw56 numbers vs approved; paths of the final frame and side-by-side; the identity proof result; what still differs and why; any request to other lanes.
+
+**Agent** (18:17 UTC):
+
+I'll start by reading the targets, my lane's handoff, and the water parts of the tunnel code.
+
+- 18:17 `Bash`: Check lane worktree state and tool folders
+- 18:17 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/tools/env6/TARGETS.md
+- 18:17 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/HANDOFF.md
+- 18:17 `Grep`: water6|WATER6_ON|hero6|HERO6|splash6|S56\.water|sink
+- 18:17 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
+- 18:17 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/02_haze/c_env6_herograde_bloom030_t105.png
+- 18:17 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:17 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:17 `Grep`: scaleS6|hero6
+- 18:17 `Bash`: Read the var6 and shots56 tool headers
+- 18:17 `Bash`: Read hero6 scale code in tunnel_s4_struct.js
+- 18:17 `Bash`: Find debug hook and heroOffset calls in game.js
+- 18:17 `Bash`: Read the mascot drawing section and __bw API
+- 18:17 `Bash`: Build lane bundle and compare with main checkout
+- 18:17 `Bash`: Snapshot baseline bundle for identity proofs
+- 18:17 `Bash`: Capture baseline integrated candidate and probe hero structure
+- 18:19 `Bash`: Read aw56 measurement script header
+- 18:19 `Bash`: Measure approved and baseline water with aw56
+- 18:19 `Bash`: Find a Python with scipy
+- 18:19 `Bash`: Create a small venv with scipy for measurements
+
+_20 tool steps._
