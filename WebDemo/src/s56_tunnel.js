@@ -22,6 +22,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { ARCH56_ON, buildArch56 } from './s56_arch.js';   // (session d847dce2, coordinator hook) the Scene 5 / 6 architecture pass `arch56`
 import { BRUSH6_ON, buildBrush6 } from './s56_brush6.js';   // (session 47f75e22, coordinator hook) Scene 6's rotating side brushes `brush6`
 import { TRIPO6_ON, buildTripo6 } from './s56_tripo6.js';   // (session ddf175f2, coordinator hook) the user's new Tripo models of Screen 6 `tripo6`
+import { TANK6_ON, buildTank6 } from './s56_tank6.js';   // (session ddf175f2, coordinator hook) the modelled glowing glass tank `tank6`
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
@@ -232,6 +233,9 @@ export async function buildS56(ctx) {
   // (session ddf175f2, coordinator hook) `?s3=...,tripo6`: the user's new Tripo models (s56_tripo6.js), mounted in brush6's places and on the banks. Off: nothing changes.
   let tripo6 = null;
   if (TRIPO6_ON) { try { tripo6 = await buildTripo6({ TR, W, L: ctx.L, env, loader, root, report, brush6, arch }); } catch (e) { report.errors.push('tripo6: ' + ((e && e.message) || e)); } }
+  // (session ddf175f2, coordinator hook) `?s3=...,arch56,tank6`: the modelled glowing glass tank in arch56's tank places (s56_tank6.js). Off: nothing changes.
+  let tank6 = null;
+  if (TANK6_ON) { try { tank6 = await buildTank6({ env, loader, root, report, arch }); } catch (e) { report.errors.push('tank6: ' + ((e && e.message) || e)); } }
 
   // ------------------------------------------------ 1. the drum shell (perforated lavender metal), in chunks so each can be culled
   const shellMat = new THREE.ShaderMaterial({
@@ -703,7 +707,8 @@ export async function buildS56(ctx) {
     if (HERO6W && m && m.squash) furShort(m);
     if (arch && arch.update) arch.update(dt, time, phase, m);
     if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
-    if (tripo6 && tripo6.update) tripo6.update(dt, time, phase, m);   // (after brush6: tripo6 hides the procedural brush under its model)
+    if (tripo6 && tripo6.update) tripo6.update(dt, time, phase, m);
+    if (tank6 && tank6.update) tank6.update(dt, time, phase, m);   // (after brush6: tripo6 hides the procedural brush under its model)
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;

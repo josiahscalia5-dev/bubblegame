@@ -84,6 +84,7 @@ export const ARCH56 = {
     M: { h: 2.85, sx: 0.62, inner: 1.25, ang: 0.32, dz: -0.35, y: -0.1, pink: 1.0, gold: 1.0 },
     mtank: { x: 1.62, z: 1.42, ped: 1.55, rg: 0.3, hg: 0.85 },
     ch6: { h: 1.5, ped: 1.0, ang: 0.5, glow: [0.15, -0.02, 0.0] }, jj: { k: 0.62, up: 0.0 },
+    bigTank: { rg: 0.42, hg: 1.0, dx: 0.0, dy: 0.0, dz: 0.0 },   // (tank6) the right bank's big glowing tank (glass radius / height, offsets)
     chunk: 15, near: 18,   // the models' instancing chunks (m) and their LOD1 window ahead of him (behind him from 1 m: LOD2)
     wall: [0.6, 0.5, 0.8],   // the drum's metal past `from` (multiplier; the approved walls are a deeper violet-grey with black holes)
   },
@@ -91,6 +92,7 @@ export const ARCH56 = {
 const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B) instead of the user's models
 const S6 = !LIST.includes('noarch6');   // (session ddf175f2) the Scene 6 pass (see ARCH56.s6); ,noarch6 = before it
 const T6DRUM = LIST.includes('tripo6');   // (session ddf175f2, coordinator) the user's Tripo star drum (s56_tripo6.js) replaces moduleR6's procedural oval cab, stars and railing; their places are recorded in drumSlots
+const TANK6 = LIST.includes('tank6');   // (session ddf175f2, coordinator) the modelled glowing glass tank (models/s6assets/glow_tank.glb, s56_tank6.js) replaces every procedural tank and the right bank's 913_914 chamber; tank() records slots instead (tankSlots)
 if (ARCH56_ON && typeof window !== 'undefined') window.__bwArch56 = ARCH56;
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -274,7 +276,9 @@ vec3 a56Ungrade(vec3 c) {
   // ------------------------------------------------ helpers: geometry merged per chunk and per material (as s56's banks), indexed
   const chunks = Array.from({ length: nCh }, () => new Map());
   const chunkOf = (u) => Math.min(nCh - 1, Math.max(0, Math.floor((u - U0) / P.chunk)));
+  const tankSlots = [];   // (tank6) the procedural tanks' places: { u, M (track frame at the tank's foot centre), rg (glass radius), hg (glass height) }
   const put = (u, geo, mat, local) => {   // geo in a local frame (x across, +x screen-left; y up from the water; z along), at track distance u
+    if (geo && geo.tank6) { const T = geo.tank6; tankSlots.push({ u, M: frameM(u).multiply(local ? local.clone() : new THREE.Matrix4()).multiply(new THREE.Matrix4().makeTranslation(T.x, T.y0, T.z)), rg: T.rg, hg: T.hg }); return; }
     const g = geo.clone();
     if (!g.index) g.setIndex([...Array(g.attributes.position.count).keys()]);
     for (const k of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(k)) g.deleteAttribute(k);
@@ -554,6 +558,7 @@ vec3 a56Ungrade(vec3 c) {
   // a violet glowing glass tank: gold foot, glass with a hot white-pink core, a violet halo and bubbles, gold struts and rings, gold cap, a dome
   const tank = (out, x, z, y0, rg, hg) => {
     const yg = y0 + 0.12, yc = yg + hg;
+    if (TANK6) { out.push([{ tank6: { x, z, y0, rg, hg } }, null]); return yc + 0.15 + rg * 0.47; }   // (tank6: a slot for s56_tank6.js, the same dome top for the pipes)
     out.push([G.cyl(rg + 0.07, rg + 0.09, 0.12, 36).translate(x, y0 + 0.06, z), MT.gold]);
     out.push([new THREE.CylinderGeometry(rg, rg, hg, 32, 1, true).translate(x, yg + hg / 2, z), glass6]);
     for (let i = 0; i < 4; i++) { const a = (i / 4) * Math.PI * 2 + Math.PI / 4; out.push([G.cyl(0.022, 0.022, hg, 8).translate(x + Math.cos(a) * (rg + 0.01), yg + hg / 2, z + Math.sin(a) * (rg + 0.01)), MT.gold]); }
@@ -687,6 +692,14 @@ vec3 a56Ungrade(vec3 c) {
           } else {   // the user's glass chamber on the star drum's pedestal (glowing core), the user's gold elbow on top into the wall
             const T = Q6.Rt.tank, C6 = Q6.ch6;
             const Lc = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * T.x, C6.ped + 0.04, T.z)).multiply(ry(turn(s, C6.ang)));
+            if (TANK6) {   // (tank6) the approved right bank's big glowing glass tank stands here (s56_tank6.js), the gold elbow on its neck
+              const B6 = Q6.bigTank;
+              tankSlots.push({ u, M: frameM(u).multiply(L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.x + B6.dx), C6.ped + 0.04 + B6.dy, T.z + B6.dz))), rg: B6.rg, hg: B6.hg, big: true });
+              const top = C6.ped + 0.04 + B6.dy + 0.12 + B6.hg * (1 + 1.04 / 2.4);
+              const Lj = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.x + B6.dx + 0.05), top - 0.06 + Q6.jj.up, T.z + B6.dz)).multiply(ry(-s * Math.PI / 2));
+              inst.jj[ci].push(frameM(u).multiply(Lj));
+              stats.tank6big = (stats.tank6big || 0) + 1; continue;
+            }
             inst.ch6[ci].push(frameM(u).multiply(Lc));
             const hp = TM.ch6[0].at(...C6.glow), kk = TM.ch6[0].k;
             put(u, G.sph(0.22 * kk, 16, 12).scale(0.6, 1.3, 1), MT.tmHalo, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
@@ -805,5 +818,5 @@ vec3 a56Ungrade(vec3 c) {
     if (m && lodSets6.length) { const a = m.z - 1, b = m.z + Q6.near;
       for (const [ua, ub, near, far] of lodSets6) { const n = ub > a && ua < b; for (const x of near) x.visible = n; for (const x of far) x.visible = !n; } }
   }
-  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: P.cam, drumSlots };
+  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: P.cam, drumSlots, tankSlots };
 }
