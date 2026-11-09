@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
   for (let i = 0; i < Math.round(1.4 * FPS); i++) { idle += DT; await page.evaluate((x) => window.__bwO3D.seek(x, -1), idle); await frame(); }
   await page.click('#bwHome .screen:not(.off) .go');
   for (let i = 0; i < Math.round(1.6 * FPS); i++) { idle += DT; await page.evaluate((x) => window.__bwO3D.seek(x, -1), idle); await frame(); }
-  await badge('tap START'); await page.click('#bwHome .screen:not(.off) .go'); badgeT = 0.6;
+  await badge('tap START'); await page.click((await page.$('#bwHome .s6bar .startgo')) ? '#bwHome .s6bar .startgo' : '#bwHome .screen:not(.off) .go'); badgeT = 0.6;   // (six2, session 9ee07777: its own Start button)
   // 2. the toss, the flight, the washer entry; then the cross-fade into the game's Tap to Start
   const O_END = +(process.env.O_END || 6.25), O_HAND = +(process.env.O_HAND || 5.15);   // (session bb87ba9f: the six-scene opening is longer: O_END=8.85 O_HAND=7.9)
   for (let s = DT; s < O_END; s += DT) {

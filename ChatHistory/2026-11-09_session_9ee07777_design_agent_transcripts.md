@@ -731,8 +731,11 @@ Now let me look at the references and the current state frames.
 Baseline done. Now the live probe at real 7.6 s for the numbers.
 
 - 10:31 `Bash`: Sheet for scene 5 baseline and run the live probe
+- 10:37 `Bash`: List probe output
+- 10:37 `Bash`: Rerun probe with output to file
+- 10:39 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_water/base_sheet2.png
 
-_25 tool steps._
+_28 tool steps._
 
 ---
 
@@ -780,8 +783,18 @@ While the baseline capture runs, I'll sample the reference colours (REF05 wall r
 - 10:36 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/base_sheet.png
 - 10:36 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/base/t_8.90.png
 - 10:36 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/base/t_7.60.png
+- 10:36 `Bash`: Inspect washer materials and sample colours
+- 10:38 `Bash`: Check bloom, lights, env in opening
+- 10:38 `Read`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening3d.js
+- 10:38 `Bash`: Sheet of REF02 and REF03
+- 10:38 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/ref23.png
+- 10:38 `Bash`: Region colour stats REF05 vs baseline
+- 10:40 `Bash`: Read GLB JSON bounds and materials
+- 10:40 `Bash`: Extract GLB textures and analyse hues
+- 10:41 `Bash`: Crop REF05 middle band
+- 10:41 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/ref05_mid.png
 
-_22 tool steps._
+_32 tool steps._
 
 ---
 
@@ -824,5 +837,19 @@ Let me take a baseline capture of the lane as it is now.
 - 10:34 `Bash`: Check env setup and other users of room objects
 - 10:34 `Bash`: Find other uses of room2 objects and bubbles
 - 10:36 `Bash`: Compute visible wall/floor extents and fg towel projections
+- 10:36 `Bash`: Find other lights in opening modules
+- 10:37 `Bash`: Check imports of six2 sibling modules
+- 10:37 `Bash`: Crop game frame window and left regions
+- 10:37 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/base/t_-1.00_win.png
+- 10:37 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/base/t_-1.00_left.png
+- 10:37 `Bash`: Build a room-only preview harness and render the current room
+- 10:37 `Bash`: Rebuild harness and render current room
+- 10:39 `Bash`: Sheet of harness renders vs reference
+- 10:39 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/harness/out0/sheet.png
+- 10:40 `Bash`: Compute world placements for window, curtains, shelves, rug
+- 10:40 `Bash`: Solve foreground towel pile placement for both cameras
+- 10:41 `Bash`: Copy lead's new Scene 1 camera into lane and tools
+- 10:41 `Bash`: Recompute placements for the new Scene 1 camera
+- 10:41 `Bash`: Solve foreground towel piles for the new camera
 
-_23 tool steps._
+_37 tool steps._

@@ -30,13 +30,13 @@ export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
 // every number the staging uses (window.__bwSix2 in the browser, for live tuning; the timeline reads them each frame)
 export const SIX2 = {
   handOver: 9.65, seqEnd: 10.45, warp: [2.65, 4.45, 3.95],   // (real 2.65..4.45 s = story 2.65..3.95 s: the trip back to the basket; later story times +0.5 s)
-  girl: { scale: 1.42, k1: [-0.52, 1.5], yaw1: 1.3, k2: [-0.4, 0.66], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
-  basket: { pos: [-0.055, 1.47], scale: 1.12, yaw: 0.0 },
+  girl: { scale: 1.42, k1: [-0.52, 1.5], yaw1: 1.3, k2: [-0.26, 0.6], yaw2: 1.75, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
+  basket: { pos: [-0.2, 1.47], scale: 1.12, yaw: 0.0 },
   door: { open: -2.92 },
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
-    [-1, [0.436, 0.45, 3.508], [-0.296, 0.581, 0.661], 52.8],   // reference 01 (fitted)
-    [0.0, [0.436, 0.45, 3.508], [-0.296, 0.581, 0.661], 52.8],
-    [0.9, [0.55, 0.47, 3.45], [-0.25, 0.6, 0.64], 49],
+    [-1, [0.154, 0.5, 3.697], [-0.297, 0.473, 1.181], 49.7],   // reference 01: fitted to 13 measured landmarks (her eyes, knee, shoe, hip, hands; basket rim, base; his eyes; porthole), 57 px rms
+    [0.0, [0.154, 0.5, 3.697], [-0.297, 0.473, 1.181], 49.7],
+    [0.9, [0.45, 0.5, 3.5], [-0.25, 0.56, 0.9], 47],
     [2.0, [0.78, 0.507, 3.358], [-0.198, 0.627, 0.619], 43.8],   // reference 02 (fitted)
     [3.2, [0.78, 0.507, 3.358], [-0.198, 0.627, 0.619], 43.8],
     [4.0, [0.18, 0.8, 1.55], [0.32, 0.6, -0.2], 50],
@@ -278,14 +278,14 @@ export function installSix2(ctx) {
         const sd = fwd.clone().multiplyScalar(-Math.cos(0.62)).add(V(0, Math.sin(0.62), 0)); aimBone(sh, legs['tail' + side], sd);
       }
       // body: lean, turn, breathing; the head looks at the washer (never at the basket's hero)
-      const lean = keys(s, [[-1, 0.55], [0.0, 0.55], [0.3, 0.45], [0.9, 0.08], [1.95, 0.08], [2.4, 0.3], [2.6, 0.12], [3.1, 0.42], [3.3, 0.2], [3.85, 0.3], [4.2, 0.08], [5.6, 0.25], [6.1, 0.1]]);
+      const lean = keys(s, [[-1, 0.78], [0.0, 0.78], [0.3, 0.55], [0.9, 0.08], [1.95, 0.04], [2.4, -0.06], [2.6, 0.02], [3.1, 0.42], [3.3, 0.2], [3.85, 0.3], [4.2, 0.08], [5.6, 0.25], [6.1, 0.1]]);
       const lat2 = latOf(s0.yaw);
       rotateBoneWorld(B.spine, lat2, lean * 0.7 + 0.02 * Math.sin(it * 1.3));
       rotateBoneWorld(B.chest, lat2, lean * 0.35);
       rotateBoneWorld(B.chest, V(0, 1, 0), 0.03 * Math.sin(it * 0.9));
       const toWasher = Math.atan2(P.x - s0.kx, P.z - s0.kz) - s0.yaw;   // the washer's bearing from her body
       const headYaw = keys(s, [[-1, -0.3], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
-      const headUp = keys(s, [[-1, 0.42], [0.0, 0.42], [0.4, 0.15], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
+      const headUp = keys(s, [[-1, 0.2], [0.0, 0.2], [0.4, 0.12], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
       rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher);
       rotateBoneWorld(B.head, lat2, -headUp * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
@@ -306,18 +306,18 @@ export function installSix2(ctx) {
     // yellow towel; tumbling into the drum; sitting in the drum (towel on his head); the water rises; carried into the tunnel
     let hp, scl = 0.56, surprise = 0; const rot = new THREE.Euler();
     const camYaw = Math.atan2(camera.position.x - rimC.x, camera.position.z - rimC.z);
-    const duck = s < 0 ? 0 : 0.07 * sm(0.5, 0.7, s) * (1 - sm(1.7, 1.95, s)) + 0.06 * sm(2.55, 2.75, s);
+    const duck = s < 0 ? 0 : 0.07 * sm(0.5, 0.7, s) * (1 - sm(1.7, 1.95, s)) - 0.06 * sm(1.95, 2.2, s) * (1 - sm(2.45, 2.65, s)) + 0.06 * sm(2.55, 2.75, s);   // ducks / peeks over the rim while her back is turned (reference 02) / hides
     const inBasket = rimC.clone().add(V(0.015, 0.03 - duck + 0.006 * Math.abs(Math.sin(it * 1.6)), 0.0));
     if (s < 2.95) { hp = inBasket; rot.set(0.05 * Math.sin(it * 0.9), camYaw + 0.12 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); surprise = sm(0.5, 0.65, s) * (1 - sm(1.6, 1.9, s)) + sm(2.5, 2.6, s); if (s > 2.7) hp.y -= sm(2.7, 2.95, s) * 0.05; }
-    else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0, -0.06, 0)); rot.set(0.1 * Math.sin(s * 6), camYaw - 0.3, 0.1 * Math.sin(s * 5)); surprise = 1; scl = 0.62; }
-    else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.62 + (1 - 0.62) * k; surprise = 1; }
+    else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0.012 * Math.sin(s * 11), -0.06 + 0.01 * Math.sin(s * 8.3), 0)); rot.set(0.12 * Math.sin(s * 6), camYaw - 0.3, 0.12 * Math.sin(s * 5)); surprise = 1; scl = 0.56; }   // wriggling, hidden in the yellow bundle
+    else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.56 + (1 - 0.56) * k; surprise = 1; }
     else if (s < 7.7) { const wet = sm(6.6, 7.2, s); hp = heroSit.clone(); hp.y += 0.01 * Math.sin((s - 4.75) * 9) * Math.exp(-(s - 4.75) * 3) + wet * (0.03 + 0.015 * Math.sin((s - 6.6) * 6.5)); rot.set(0.04 * Math.sin(s * 3), 0.25 * Math.sin((s - 4.6) * 1.7) * (s < 6.6 ? 1 : 0.4), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 6.7 ? 1 : 0; }
     else { const k = sm(7.65, 8.45, s), tn = sm(7.7, 8.2, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 7.7) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
     hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
     heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
     // the "!" marks: while he peeks (waiting) and when the towel is lifted off him
     const mk = s < 0 ? 0.6 + 0.4 * Math.max(0, Math.sin(it * 1.4)) : sm(0.55, 0.7, s) * (1 - sm(1.4, 1.6, s));
-    marks.visible = mk > 0.02; marks.position.copy(hp).add(V(0.09, 0.115 * scl / 0.62, 0.05)); marks.quaternion.copy(camera.quaternion); marks.scale.setScalar(0.9 + 0.15 * Math.sin(it * 8)); marks.userData.m.opacity = mk;
+    marks.visible = mk > 0.02; marks.position.copy(hp).add(V(0.09, 0.115 * scl / 0.56, 0.05)); marks.quaternion.copy(camera.quaternion); marks.scale.setScalar(0.9 + 0.15 * Math.sin(it * 8)); marks.userData.m.opacity = mk;
     if (!landed && s >= 4.75) { landed = true; for (let i = 0; i < 60; i++) { const a = rnd() * Math.PI * 2, v = 0.3 + rnd() * 0.7; splash.emit(V(hp.x + Math.cos(a) * 0.12, OPENING3D.waterY + 0.02, hp.z + Math.sin(a) * 0.1), V(Math.cos(a) * v * 0.5, 0.6 + rnd() * 0.9, Math.sin(a) * v * 0.3), 0.5 + rnd() * 0.4); } vortex.WU.uHit.value.set(hp.x - P.x, 1, P.z - hp.z); }
     if (s < 0) landed = false;
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
