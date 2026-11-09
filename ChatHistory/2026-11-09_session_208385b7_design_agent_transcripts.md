@@ -50,8 +50,32 @@ Say plainly if something cannot be judged from these still frames.
 
 - 22:06 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
 - 22:07 `Bash`: Measure the pink character's size, position and colour in each frame and in the approved image
+- 22:08 `Bash`: Check for duplicated frames between sheets and measure silhouette profile, fur colour and splash around the base
+**Agent** (22:08 UTC):
 
-_7 tool steps._
+TOOLS: Read, Grep, Glob and Bash were available; I used Read (the README and all five images opened) and Bash (two quick Python measurements). No browser, no edits.
+
+Evidence fault: in the dive sheet, frame 6 is pixel-identical to burst frame 6 (the coin counter drops from 1,329 to 1,324), and frame 1 already shows him nearly under. Recapture it.
+
+**Does it read as swimming?**
+- **Burst: partly.** In frames 4-5 he only grows: no wake or spray behind him at the surge. In frame 3 the pink star sparkles cover him.
+- **Dive: no.** In frames 2-3 he vanishes entirely, with no shape under the surface, no bubble trail and no ring. It reads as a despawn.
+- **Steer: partly, the best of the four** (spray on the trailing side). In frames 2-4 he rolls so far he becomes a two-lobed heart, lifted clear of the water.
+- **Ramp: partly.** In frames 5-6 a gold rail crosses in front of him and the lower third, and the ramp is a flat dark-blue slab with a hard edge, not rising water.
+
+**Change first (ranked):**
+1. **Dive:** keep him visible as a darker, blurred magenta shape under the surface, with white bubbles above and a white ring where he goes under and surfaces.
+2. **Splash and wake:** add a white splash collar at his base and a V wake behind him, strongest in the burst. White round his base measures 7-9 % against the approved 16 % (my rough mask on the JPEG sheets).
+3. **Silhouette:** remove the flat "hat brim" (0.41 W at the waterline under a 0.30 W dome). Make the dome rounder and wider (approved about 0.37 W) with two small side paws.
+4. **Steer:** halve the roll and keep his base in the water.
+5. **Ramp:** lower or remove the camera-side rail, and give the ramp's side waves and foam. Keep sparkles off him.
+
+Cannot be judged from stills: bob, acceleration smoothness, fur flow, timing.
+
+Sheets: `/home/user/bubblegame/Previews/WebDemo/six_scenes/18_journey_8da775c4/01_swim7/`
+
+
+_8 tool steps._
 
 ---
 
@@ -76,8 +100,15 @@ Report (plain text, max ~350 words):
 - 22:07 `Bash`: Run the plugin's static shader binding check on journey8.js
 - 22:07 `Read`: /home/user/bubblegame/WebDemo/src/journey8.js
 - 22:07 `Bash`: Read the static check script to understand how it classifies inputs
+- 22:11 `Bash`: Check repo state, source file list, three.js version and any GLSL validator
+- 22:11 `Grep`: journey8|buildJourney8|J8FOAM|j8Widen|j8WaterHalf|j8Bay
+- 22:11 `Grep`: toneMapping|toneMapped|EffectComposer|OutputPass|tonemapping_fragment|colorspace_fragment|outputColorSpace|toneMappingExposure
+**Agent** (22:11 UTC):
 
-_6 tool steps._
+You've hit your 5-hour limit · resets 2:50am (UTC)
+
+
+_9 tool steps._
 
 ---
 
@@ -108,8 +139,33 @@ Report (plain text, max ~300 words): first line "TOOLS: " + what you had and use
 - 22:07 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/g01_left.png
 - 22:07 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/g01_right.png
 - 22:07 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/g03_fall.png
+- 22:08 `Bash`: Make zoomed labelled crops of each water zone
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/z01_left.png
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/z01_col.png
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/z01_chute.png
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/z03_fall.png
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/g06.png
+- 22:08 `Bash`: Zoom the channel water in scene 06
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/z06_a.png
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/z06_b.png
+- 22:09 `Bash`: Define measurement polygons and draw overlays to check them
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/ovz_01_left.png
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/ovz_01_right.png
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/ovz_03.png
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/ovz_06.png
+- 22:10 `Bash`: Tighten foam and portal polygons, redraw overlays
+- 22:10 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/ovz_01_foams.png
+- 22:10 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/ovz_03b.png
+- 22:11 `Bash`: Write and run the zone measurement script
+- 22:11 `Bash`: Render debug views of the masks and pixel classes
+- 22:11 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/dbg_b_pipe_column.png
+- 22:11 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/watervfx/dbg_e_channel_water.png
+**Agent** (22:11 UTC):
 
-_8 tool steps._
+You've hit your 5-hour limit · resets 2:50am (UTC)
+
+
+_29 tool steps._
 
 ---
 
@@ -141,8 +197,26 @@ Report (plain text, max ~300 words): first line "TOOLS: " + what you had and use
 - 22:07 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/portal_grid.png
 - 22:07 `Bash`: Polar-unwrap the portal about its estimated centre
 - 22:07 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/polar_545_569.png
+- 22:08 `Bash`: Print radial colour profiles of the portal rings
+- 22:08 `Bash`: Rerun radial colour profiles after fixing the integer overflow
+- 22:08 `Bash`: Zoom the portal's upper-left quadrant with a fine grid
+- 22:08 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/portal_ul_zoom.png
+- 22:09 `Bash`: Fit circles to the portal's gold trim, opening and water disc
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/fit_vis.png
+- 22:09 `Bash`: Crop the portal's right and lower-left sides at 3x
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/portal_right.png
+- 22:09 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/portal_lowleft.png
+- 22:10 `Bash`: Detect the gold trim's edge points round the whole visible arc
+- 22:10 `Read`: /tmp/claude-0/-home-user-bubblegame/208385b7-04ad-5d68-a47a-9e2df11ebba8/scratchpad/lighting/gold_pts.png
+- 22:10 `Bash`: Print hue profiles across the bezel's right, left and top edges
+- 22:10 `Bash`: Refit the outer bezel circle with top and side points added
+- 22:12 `Bash`: Fit the portal's inner opening and water disc and find the vortex eye
+**Agent** (22:12 UTC):
 
-_9 tool steps._
+You've hit your 5-hour limit · resets 2:50am (UTC)
+
+
+_23 tool steps._
 
 ---
 
@@ -164,8 +238,48 @@ Report (plain text, max ~150 words): "TOOLS: ..." (the exact list), which path o
 
 - 22:07 `Bash`: Check browser lock, running browsers, and both local servers
 - 22:07 `mcp__spector__load_url`
+- 22:08 `mcp__spector__list_canvases`
+- 22:08 `mcp__spector__capture_frame`
+- 22:08 `mcp__spector__get_console_logs`
+- 22:09 `mcp__spector__get_console_logs`
+- 22:09 `mcp__spector__list_canvases`
+- 22:09 `mcp__spector__get_console_logs`
+- 22:09 `mcp__spector__load_url`
+- 22:09 `Bash`: Find where the game creates renderers or canvas contexts, and show the Spector MCP config
+- 22:10 `mcp__spector__get_console_logs`
+- 22:10 `mcp__spector__list_canvases`
+- 22:10 `mcp__spector__get_console_logs`
+- 22:10 `mcp__spector__capture_frame`
+- 22:10 `mcp__spector__get_console_logs`
+- 22:10 `mcp__spector__load_url`
+- 22:11 `Bash`: Sample current CPU use to confirm the game page stopped rendering
+**Agent** (22:11 UTC):
 
-_2 tool steps._
+TOOLS: `Bash` plus 12 `mcp__spector__*` tools: `load_url`, `load_playground`, `list_canvases`, `select_canvas`, `capture_frame`, `get_draw_calls`, `get_command_details`, `get_shaders`, `get_textures`, `get_webgl_state`, `get_context_info`, `get_console_logs`, `take_screenshot`. Nothing else.
+
+- **spector:** present and working (the project's `.mcp.json` server).
+- **threejs-devtools:** none.
+- **chrome-devtools:** none, although a `chrome-devtools-mcp` process is running on the machine.
+- **playwright:** none.
+
+So the defect still holds for all three plugin families.
+
+PATH: Spector, on `http://127.0.0.1:3000/index.html?s3=intunnel`.
+- **Canvases:** 2 — `#view` 540×1080 webgl2, and `#overlay` 300×150 (not WebGL).
+- **Capture 1:** 209 draw calls, 15 clears, 51 shader programs, 1,409 commands, no GL errors.
+- **Capture 2:** identical except 1,444 commands.
+- **Screenshot:** Tap to Start over the tunnel renders normally.
+
+CONSOLE: empty after load and after `list_canvases`. Only after `capture_frame`:
+- 2 errors, "THREE.WebGLRenderer: A WebGL context could not be created … existing context of a different type" (both captures);
+- about 256 warnings, "INVALID_OPERATION: getTranslatedShaderSource: attempt to use a deleted object" (read after capture 1 only).
+
+These are artefacts of the capture, not game errors.
+
+Page left on `about:blank`; CPU 99.8% idle afterwards.
+
+
+_17 tool steps._
 
 ---
 
@@ -193,5 +307,65 @@ Report in plain text, max ~180 words, starting with "TOOLS: ...". No pleasantrie
 - 22:07 `Read`: /home/user/bubblegame/WebDemo/src/swim7.js
 - 22:07 `Read`: /home/user/bubblegame/WebDemo/tools/journey/jrun.cjs
 - 22:07 `Read`: /home/user/bubblegame/WebDemo/tools/journey/p_swim_motion.cjs
+- 22:08 `Bash`: List replay script, helper lib, deno binary and repo root
+- 22:08 `Glob`: **/{replay.ts,renderer-info.ts,checkpoint.ts}
+- 22:08 `Read`: /home/user/bubblegame/scripts/replay.ts
+- 22:08 `Bash`: Search game source for test-mode hooks; list tool directories
+- 22:08 `Bash`: Check renderer exposure, test API gating, deno presence
+- 22:08 `Read`: /home/user/bubblegame/WebDemo/src/page.html
+- 22:08 `Read`: /home/user/bubblegame/WebDemo/tools/journey/identity.sh
+- 22:08 `Read`: /home/user/bubblegame/WebDemo/src/game.js
+- 22:08 `Read`: /home/user/bubblegame/WebDemo/src/game.js
+- 22:08 `Bash`: List Playwright browser cache and Deno npm cache
+- 22:08 `Bash`: Locate Playwright browsers and Deno's Playwright package
+**Agent** (22:09 UTC):
 
-_12 tool steps._
+TOOLS: Read, Glob, Write, Bash. No Playwright MCP tool is available; no `mcp__*` tool of any kind is callable in this run.
+
+HARNESS: scaffolded, but empty.
+- `/home/user/bubblegame/test/visual/` has `run.ts` and `lib/` (capture, diff, manifest, memory-gate, types).
+- `scenarios/` holds only `.gitkeep`: no scenarios, no baselines.
+- `visual:run`, `visual:accept` and `replay` are Deno tasks in `/home/user/bubblegame/deno.json`, not npm scripts; `WebDemo/package.json` has only `build`.
+- `AGENTS.md` and `aidlc-docs/` are absent.
+
+SWIM7 SCENARIO:
+1. File: `test/visual/scenarios/swim7-swipe-up-burst.json`, `device` viewport 864x1536.
+2. Start: `path` `/index.html?s3=<list with level1>,swim7`, then `waitForSelector` `body.ready`.
+3. Steps (`evaluate`): `__bw.advance(0.5); __bw.tap()`, step to u 93, `__bw.swipe('up')`, advance 0.3 s, then to 1.0 s.
+4. Keyframes: `open-water-before-burst`, `burst-dip-kick-spray`, `burst-settled`.
+5. Blocker: `jrun.cjs` sets `__BW_TEST__` (`game.js:82`, stops the live loop) and seeds `Math.random` before load. `captureScenario` has no pre-load hook, so frames would not reproduce.
+6. Also missing: a server at `VISUAL_TEST_BASE_URL`, jrun's SwiftShader launch flags, and Playwright in Deno's npm cache.
+7. Verdict: not authorable today. `parallax-threejs:init` is not the gap; a seeded test entry (page or query flag, or a harness init-script field) is.
+8. Nothing was run or validated in this run.
+
+
+_23 tool steps._
+
+---
+
+## screen4-water-motion-engineer: Water engineer: live uniform check (started 22:11 UTC)
+
+**Lead → agent** (22:11 UTC):
+
+You are being run in a freshly restored environment (session 208385b7, a new Claude account). This is both your live functional test (your MCP tools especially) and a small piece of real work. Repository: /home/user/bubblegame. Do NOT edit any file, do not build, do not commit.
+
+Setup already running: a static server for WebDemo on http://127.0.0.1:3000, and the threejs-devtools proxy http://localhost:9222 -> 3000 (open the game THROUGH http://localhost:9222 so the bridge connects). Software WebGL on 4 CPUs: open the game in ONE page only, and when you finish navigate that page to about:blank (a page left running the game costs ~120 % CPU).
+
+Task. The next work item, `journey8` (WebDemo/src/journey8.js, written, not yet wired), draws waterfalls that pour into the Screen 6 channel water. Its fall colours are `J8.water` at the top of that file: deep [0.0, 0.10, 0.62], mid [0.0, 0.36, 0.76], turq [0.06, 0.72, 0.98], white [1.9, 2.0, 2.15] (shader-linear, before the Neutral tone mapping and the grade). They are meant to equal the channel water's own calibrated ramp so a fall and the water it lands in read as the same water.
+
+1. With your chrome-devtools tools open http://localhost:9222/index.html?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7,swim7 (wait until `document.body.classList.contains('ready')`), then with evaluate_script run: `window.__bw.advance(0.5); window.__bw.tap(); const B = window.__bw; let g = 0; while (B.state().z < 206 && B.state().phase === 'running' && g++ < 4000) B.step(1/30, 30);` and return `B.state()` (z, phase, hearts).
+2. Call threejs-devtools `bridge_status`, then find the channel water (meshes named `s56Water`) and read its ShaderMaterial's LIVE uniform values: uDeep, uMid, uTurq, uFoam (and uHero.w, uW2.w). Use material_details / object_details / run_js, whichever works; say which tool gave the numbers. Cross-check against the source (WebDemo/src/s56_tunnel.js: `S56.water` deep/mid/turq and deepH/midH/turqH, blended by the hero grade's weight `gradeHero`).
+3. Answer: at u 206 on this candidate, what ramp is the channel water actually drawing with (the three colours, and the hero-grade weight)? Do J8.water's deep / mid / turq equal it (difference per channel)? Should the falls follow the live uniforms (share the `uDeep/uMid/uTurq` objects) instead of fixed constants, given the ramp is blended per grade along the run? One recommendation, with the exact lines in s56_tunnel.js where those uniform objects are created (so the coordinator can pass them to journey8).
+4. Navigate the page to about:blank.
+
+Report (plain text, max ~250 words): first line "TOOLS: " + the MCP tools you actually called and whether each call succeeded (name any that failed and its error); then the numbers and the recommendation. No pleasantries.
+
+- 22:11 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 22:11 `Grep`: uDeep|uMid|uTurq|uFoam|gradeHero|deepH|midH|turqH|uHero|uW2
+- 22:11 `Grep`: water\s*:|deep|mid\b|turq|white
+**Agent** (22:11 UTC):
+
+You've hit your 5-hour limit · resets 2:50am (UTC)
+
+
+_3 tool steps._
