@@ -456,6 +456,10 @@ Now the Machinery placement with the depth squash, and the glows moved to the gl
 - 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
 - 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
 - 16:07 `Bash`: Build and capture tap, 206, 198
+**Agent** (16:10 UTC):
+
+You've hit your 5-hour limit · resets 8:20pm (UTC)
+
 
 _104 tool steps._
 
@@ -604,8 +608,14 @@ Now I'll replace lines 463-555 (the water6 uniforms, sync and material) with the
 - 16:06 `Bash`: Wait for tune2 to progress
 - 16:06 `Write`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/sbs56.py
 - 16:06 `Bash`: Wait for tune2 output
+- 16:09 `Bash`: Side by side tune1 vs tune2 crop
+- 16:09 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/t2.png
+**Agent** (16:09 UTC):
 
-_113 tool steps._
+You've hit your 5-hour limit · resets 8:20pm (UTC)
+
+
+_115 tool steps._
 
 ---
 
@@ -789,8 +799,16 @@ Waiting for the brush6-off capture to finish (it holds the shared lock).
 - 16:07 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c4/s56_206.png
 - 16:08 `Bash`: Zoom crops of both brushes in the capture
 - 16:08 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c4_zoom.png
+- 16:08 `Bash`: Find the game's lights and environment map
+- 16:08 `Bash`: Read the light setup lines
+- 16:09 `Write`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/view.cjs
+- 16:09 `Bash`: Apply density and gold changes, run the viewer
+**Agent** (16:11 UTC):
 
-_74 tool steps._
+You've hit your 5-hour limit · resets 8:20pm (UTC)
+
+
+_78 tool steps._
 
 ---
 
@@ -835,6 +853,10 @@ Now I'll extract the two materials' GLSL into separate .vert/.frag files (templa
 - 16:05 `Bash`: Check three build files and playwright versions
 - 16:06 `Bash`: Compile and measure shaders in headless Chromium WebGL2
 - 16:08 `Bash`: Rerun live test with per-term attribution
+**Agent** (16:10 UTC):
+
+You've hit your 5-hour limit · resets 8:20pm (UTC)
+
 
 _19 tool steps._
 
@@ -884,5 +906,13 @@ Now the reference capture script and the remaining harness pieces.
 - 16:07 `Bash`: List the distinct URL query checks in the bundle
 - 16:07 `Bash`: Show remaining location.search checks and DOMContentLoaded use
 - 16:08 `Bash`: Find wall-clock time use in game source
+- 16:08 `Bash`: List CSS animations and transitions in index.html
+- 16:08 `Bash`: Check whether the hand and start panel show at Tap to Start
+- 16:09 `Bash`: Check fonts and images referenced by index.html
+- 16:09 `Bash`: Identify which launcher class adds SwiftShader flag
+**Agent** (16:09 UTC):
 
-_26 tool steps._
+You've hit your 5-hour limit · resets 8:20pm (UTC)
+
+
+_30 tool steps._

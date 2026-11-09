@@ -8,3 +8,10 @@
 64.9s frame tap chop13  
 72.2s frame tap line18  
 72.4s checkpoint 206 {"phase":"running","z":208.864,"x":0,"coins":1281,"socks":0,"hearts":5}
+89.1s frame 206 full  tm 7 exp 1.05
+95.7s frame 206 crest15  
+101.5s frame 206 crest45  
+107.7s frame 206 lean20  
+113.8s frame 206 lean45  
+119.9s frame 206 chop13  
+125.9s frame 206 line18  
