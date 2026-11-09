@@ -1,6 +1,21 @@
 # Bubble Wash Kingdom: current project status (8 November 2026 ~23:55 UTC, session bb87ba9f)
 
-## NEWEST: 9 November 2026 ~13:10 UTC, session f28099bc. Visual status of the ACTIVE game. NOTHING here is approved by the user.
+## NEWEST: 9 November 2026 ~14:00 UTC, session d847dce2 (new account). NOTHING here is approved by the user.
+- **Branch:** the user's primary branch `claude/bubble-wash-restore-transfer-kc4ecl` (fast-forwarded at every verified save); environment record
+  `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`.
+- **The user's task (9 November ~13:35 UTC):** Scene 5 / 6 visual accuracy in the REAL game against the reference pack
+  `Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user/` (02 = Scene 5, 03 = Scene 6; pixel-equivalent to the six-scene refs 05/06).
+  Order: machinery / gear / violet vessels / lamp + pipes / tunnel geometry -> water + mascot -> PBR, lighting, rails, arches, depth -> Scene 6 props -> small details.
+- **Root cause found (ID-buffer coverage at Tap to Start, `11_scene56_match_d847dce2/`):** the s56 machinery exists but is out of frame (banks at
+  x 1.5-2.4 m, housings ~2.0 m; the portrait frame is only ~+/-1.1 m wide 3 m ahead): banks + housings cover ~3.7 % of the frame; water 31 %, shell 17 %,
+  arches 8.5 %, the s4Brush lane brushes 16 % (top corners), coins ~6.5 %. Transparent bubble layers (s3Bubbles) cover much of the lower screen (pale-water lead).
+- **Coordinator hook:** `s56_tunnel.js` section 0 calls `s56_arch.js` under `?s3=...,arch56` (may skip sections 1-4, own the camera); proven 0 px without it.
+- **Running specialists:** arch56 (lighting-visual-matching), s56 water (screen4-water-motion-engineer), washer34 continuity (water-vfx-engineer),
+  art director inventory, QA baseline. Paused: girl12, ui.
+- **Next:** review each lane's evidence, merge s56 then arch56 into the integration branch, put `arch56` into the plain launch only after a visual
+  check, then Scene 6 props (brushes, enemies, coins), the continuous recording (washer -> Scene 6) and the route test.
+
+## 9 November 2026 ~13:10 UTC, session f28099bc. Visual status of the ACTIVE game. NOTHING here is approved by the user.
 - **Accepted by the user:** only the Classic Screen 4 `?s3=intunnel` (must stay pixel-identical).
 - **Latest running build (the plain launch):** `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56`, bundle `c0361e72`
   (reproducible from source). The six-scene opening (Scenes 1-5, `opening_six2*.js`) hands over inside the drum at real 8.95 s to the live game in

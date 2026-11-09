@@ -1,9 +1,11 @@
-# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026 ~13:10 UTC, session f28099bc)
+# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026 ~14:00 UTC, session d847dce2)
+
+**Session d847dce2 (new account, 9 November ~13:30 UTC):** the user's PRIMARY branch is now **`claude/bubble-wash-restore-transfer-kc4ecl`** (`52t7ym` is historical). Verification record: `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`. Current task: the user's Scene 5/6 visual-accuracy mandate and reference pack `Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user/`; work and evidence in `Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/`; new lane `arch56` (`s56_arch.js`, switch `,arch56`).
 
 This is the EXISTING game (three.js r170, `WebDemo/`). Do not restart, redesign or rebuild it. Nothing in this repository is a secret; never commit keys.
 
 ## 0. The one message to send a new Claude account (copy and paste all of it)
-> Continue my EXISTING Bubble Wash Kingdom 3D mobile game in josiahscalia5-dev/bubblegame. My branch is claude/bubble-wash-account-transfer-52t7ym:
+> Continue my EXISTING Bubble Wash Kingdom 3D mobile game in josiahscalia5-dev/bubblegame. My branch is claude/bubble-wash-restore-transfer-kc4ecl:
 > fetch its newest head first; if this session opened on another branch, check that branch contains it, work there and fast-forward my branch to it
 > at every verified save (never force-push, never use the default branch claude/new-session-oth0dd, keep every rollback branch). Do not restart,
 > redesign or rebuild anything. Steps:
@@ -14,7 +16,7 @@ This is the EXISTING game (three.js r170, `WebDemo/`). Do not restart, redesign 
 >    `flock /tmp/bw_browser.lock node Tools/spector_live.cjs $PWD/WebDemo /tmp/s.png '?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56'`.
 > 4. Restore the specialist lanes: `bash Tools/lanes.sh create` then `bash Tools/lanes.sh status`. Read PARALLEL_LANES.md "Lane status" and continue
 >    each lane from its last pushed commit with its specialist (girl12 = lighting-visual-matching, washer34 = water-vfx-engineer,
->    s56 = screen4-water-motion-engineer, ui = general-purpose, QA = gameplay-visual-testing + game-art-director). Each agent's first task is its live test.
+>    s56 = screen4-water-motion-engineer, arch56 = lighting-visual-matching, ui = general-purpose, QA = gameplay-visual-testing + game-art-director). Each agent's first task is its live test.
 >    Every browser run goes through `flock /tmp/bw_browser.lock`. Review each lane before merging, in the order s56, ui, washer34, girl12.
 > 5. The ONLY visual targets are Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06 (864x1536). Compare real game
 >    frames at 864x1536 (Scene 5 at real ~8.9 s and the live Tap to Start; Scene 6 at u 206), fix the largest differences first, report honestly,
@@ -38,7 +40,7 @@ This is the EXISTING game (three.js r170, `WebDemo/`). Do not restart, redesign 
 | | |
 |---|---|
 | Repository | https://github.com/josiahscalia5-dev/bubblegame |
-| Work branch | **`claude/bubble-wash-account-transfer-52t7ym`** (head moves with the 5-minute autosave: `git ls-remote origin claude/bubble-wash-account-transfer-52t7ym`; the last verified backup SHA is in `BACKUP_VERIFICATION.md`) |
+| Work branch | **`claude/bubble-wash-restore-transfer-kc4ecl`** (since session d847dce2; `52t7ym` is historical; head moves with the 5-minute autosave: `git ls-remote origin claude/bubble-wash-restore-transfer-kc4ecl`; the last verified backup SHA is in `BACKUP_VERIFICATION.md`) |
 | Rollbacks (never overwrite) | `claude/bubble-wash-rollback-before-s56-default` (before the plain launch became six2 + s56), `claude/bubble-wash-rollback-before-s56-lanes`, `claude/bubble-wash-rollback-before-tripo3-default`, `claude/bubble-wash-account-switch-e1nndb` |
 | Active game | plain launch = `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56` (CLAUDE.md READ FIRST item 0) |
 | Approved references | `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06_*.png` (the six scenes); `Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/` (Scene 5/6 kit, crops, asset maps; `11_` = the OLD blue tunnel, NOT a target) |
