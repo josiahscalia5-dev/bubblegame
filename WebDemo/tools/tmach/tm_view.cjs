@@ -46,7 +46,7 @@ window.DONE = true;
 </script>`);
   const br = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] }); const p = await br.newPage({ viewport: { width: 384 * 3, height: 384 * 2 } });
   p.on('pageerror', (e) => console.log('ERR', e.message)); p.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') console.log(m.type(), m.text().slice(0, 200)); });
-  try { await p.goto(`http://localhost:${server.address().port}/${PAGE}`); await p.waitForFunction(() => window.DONE, null, { timeout: 600000 });
+  try { await p.goto(`http://localhost:${server.address().port}/${PAGE}`, { timeout: 300000 }); await p.waitForFunction(() => window.DONE, null, { timeout: 600000 });
     console.log(JSON.stringify(await p.evaluate(() => window.STATS))); await p.screenshot({ path: OUT }); }
   finally { await br.close(); server.close(); fs.unlinkSync(path.join(ROOT, PAGE)); }
 })().catch((e) => { console.error(e); process.exit(1); });

@@ -261,8 +261,16 @@ No fog is set, so I'll add the s56 haze to my standard materials myself so the f
 - 14:10 `Bash`: Sample reference colours by region
 - 14:15 `Write`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
 - 14:15 `Read`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 14:18 `Write`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 14:18 `Bash`: Build with arch56 and check debug API
+- 14:19 `Bash`: Check __bw.advance implementation
+**Agent** (14:19 UTC):
 
-_43 tool steps._
+Built cleanly. Next is the first capture with arch56 at Tap to Start and u 206, without EVAL so the frames stay comparable to the baseline.
+
+- 14:19 `Bash`: Capture arch56 frames at tap and 206
+
+_47 tool steps._
 
 ---
 
@@ -383,8 +391,13 @@ Now I'll replace the water material with the per-pixel version.
 - 14:15 `Bash`: Read the before A/B table
 - 14:15 `Bash`: Check the background A/B progress
 - 14:15 `Bash`: Create a before-build copy of WebDemo using symlinks
+- 14:15 `Bash`: Wait for the before A/B to finish and print it
+- 14:16 `Bash`: Measure the before A/B at u 206
+- 14:16 `Bash`: Find the grade uHero injection
+- 14:16 `Bash`: Read the hero grade injection
+- 14:17 `Bash`: Run the after A/B on the new water build
 
-_74 tool steps._
+_79 tool steps._
 
 ---
 
