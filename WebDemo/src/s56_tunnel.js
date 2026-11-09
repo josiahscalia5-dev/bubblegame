@@ -712,7 +712,7 @@ export async function buildS56(ctx) {
     if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
     if (tripo6 && tripo6.update) tripo6.update(dt, time, phase, m);
     if (tank6 && tank6.update) tank6.update(dt, time, phase, m);
-    if (crown6) crown6.update(dt, time, m);   // (after brush6: tripo6 hides the procedural brush under its model)
+    if (crown6) crown6.update(dt, time, m, phase);   // (after brush6: tripo6 hides the procedural brush under its model)
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;

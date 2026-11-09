@@ -84,7 +84,7 @@ export function buildCrown6() {
   foam.frustumCulled = false; foam.renderOrder = 4; foam.name = 'crown6Foam';
   foam.position.y = P.foamY; group.add(foam, blades);
   let attached = null;
-  function update(dt, time, m) {
+  function update(dt, time, m, phase) {
     if (!m || !m.root) return;
     if (attached !== m.root) { if (group.parent) group.parent.remove(group); m.root.add(group); attached = m.root; }
     uT.value = time; uR.value = P.R; uCol.value.setRGB(...P.color); uEdge.value.setRGB(...P.edge); uSpeed.value = P.speed;
@@ -92,7 +92,8 @@ export function buildCrown6() {
     // the water line in his root frame: his drawn body (tilt) is sunk by `sink` below it
     const wl = (m.tilt ? m.tilt.position.y : 0) + P.sink;
     group.position.set(0, wl + P.y, 0);
-    const target = m.air ? 0 : 1; uFade.value += (target - uFade.value) * Math.min(1, dt * 8);
+    const swimming = !phase || phase === 'running';   // (Tap to Start, pause overlays and Level Complete pose him differently: no crown there)
+    const target = m.air || !swimming ? 0 : 1; uFade.value += (target - uFade.value) * Math.min(1, dt * 8); if (!swimming && phase === 'complete') uFade.value = 0;
     group.visible = uFade.value > 0.02;
   }
   return { update, group };
