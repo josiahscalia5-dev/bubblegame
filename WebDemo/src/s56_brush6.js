@@ -229,8 +229,9 @@ export async function buildBrush6(ctx) {
       const S = P[b.side], m = new THREE.Matrix4().copy(b.holder.matrixWorld).multiply(new THREE.Matrix4().makeScale(S.s, S.s, S.s));
       const proj = (r, y, a) => { v.set(Math.cos(a) * r, y, Math.sin(a) * r).applyMatrix4(m).project(camera); return [(v.x + 1) / 2, (1 - v.y) / 2, v.z]; };
       const ring = (r, y) => { const pts = []; for (let i = 0; i < 64; i++) { const p = proj(r, y, (i / 64) * Math.PI * 2); if (p[2] < 1) pts.push(p); } return pts; };
-      const inner = (pts) => (b.side === 'left' ? Math.max(...pts.map((p) => p[0])) : Math.min(...pts.map((p) => p[0])));
-      const innerPt = (pts) => pts.reduce((best, p) => ((b.side === 'left' ? p[0] > best[0] : p[0] < best[0]) ? p : best), pts[0]);
+      if (!ring(1.0, 2.0).length) { out[b.side] = null; continue; }   // (behind the camera)
+      const inner = (pts) => (!pts.length ? NaN : b.side === 'left' ? Math.max(...pts.map((p) => p[0])) : Math.min(...pts.map((p) => p[0])));
+      const innerPt = (pts) => (!pts.length ? [NaN, NaN] : pts.reduce((best, p) => ((b.side === 'left' ? p[0] > best[0] : p[0] < best[0]) ? p : best), pts[0]));
       const topY = P.cap.flange[0] + S.hat, wl = -S.h / S.s;   // the water base height in bell radii (local y)
       out[b.side] = {
         top: +Math.min(...ring(0.45, topY).map((p) => p[1])).toFixed(4),
