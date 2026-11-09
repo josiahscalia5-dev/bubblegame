@@ -295,8 +295,17 @@ The integration head (`ccr-68def37c-grxgz1`, 95ea62d4) has coin6 in game.js. Onc
 - 17:44 `Bash`: Inspect what the merge changed in s56_arch.js
 - 17:44 `Bash`: Build and capture the before frame with coin6, then restore
 - 17:45 `Bash`: List AD scripts; capture after with coin6
+- 17:46 `Bash`: Read the art director's measurement scripts
+- 17:46 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/arch56/s6_step1_grade_coin6/s56_206.png
+- 17:46 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/arch56/s6_before_coin6/s56_206.png
+- 17:46 `Bash`: Print projected gear and model boxes
+- 17:48 `Bash`: Crop the approved left and right banks
+**Agent** (17:48 UTC):
 
-_71 tool steps._
+You've hit your 5-hour limit · resets 10pm (UTC)
+
+
+_76 tool steps._
 
 ---
 
@@ -468,8 +477,15 @@ Good point from the coordinator: I'll prove which nodes draw him at u 206. Let m
 - 17:44 `Write`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/heroprobe.js
 - 17:44 `Bash`: Check what __bw.debug() exposes
 - 17:44 `Bash`: Probe the mascot scene graph and ablate its nodes at u 206
+- 17:46 `Write`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/heroab.js
+- 17:46 `Write`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/heroab_save.py
+- 17:46 `Bash`: A/B his drawn pitch, squash and sink on the frozen u 206 frame
+**Agent** (17:47 UTC):
 
-_92 tool steps._
+You've hit your 5-hour limit · resets 10pm (UTC)
+
+
+_95 tool steps._
 
 ---
 
@@ -545,5 +561,18 @@ Now the code changes: the depth pull for all three brush parts, the denser brist
 - 17:45 `Bash`: Update the fit for the pull and rebuild
 - 17:45 `Bash`: Show the build error
 - 17:45 `Bash`: Rename the report function and rebuild
+**Agent** (17:45 UTC):
 
-_44 tool steps._
+Now a capture script that takes several variants and rotation moments from one page load, so I hold the shared lock only once.
+
+- 17:45 `Write`: /workspace/bubblegame_lanes/brush6/WebDemo/tools/brush6/shots_b6.cjs
+- 17:46 `Bash`: Write the second capture script
+- 17:46 `Bash`: Capture identity tap and brush variants under the lock
+- 17:46 `Bash`: List approved scenes
+- 17:46 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/05_Into_The_Laundry_Tunnel.png
+**Agent** (17:46 UTC):
+
+You've hit your 5-hour limit · resets 10pm (UTC)
+
+
+_49 tool steps._

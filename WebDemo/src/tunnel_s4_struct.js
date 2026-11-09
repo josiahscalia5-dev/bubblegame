@@ -19,6 +19,13 @@
 import * as THREE from 'three';
 import { STRUCT_ON, STRUCT_PARTS } from './tunnel_s4_bt.js';
 export { STRUCT_ON, STRUCT_PARTS };
+// (9 November 2026, session 3849f5c8, the user's Screen 6 mandate: "rounded and naturally swimming, not a tall fuzzy ball") `hero6`, only with `s56`:
+// match5's body proportions [0.89, 0.985, 0.89] (made for the CLASSIC Screen 4's taller dome under long strands) stretch him 1.11x taller than wide
+// in the Scene 5 / 6 tunnel (measured at u 206: model scale [0.488, 0.541, 0.488]). hero6 keeps match5's width (his width already matches approved
+// Screen 6, 0.468 vs 0.476 W) and makes the body a rounded dome, height 0.9 x width. Drawn only (structScale); his gameplay size, position and pickups
+// are unchanged; the water lane sinks him on m.tilt. Without `hero6` (and always for ?s3=intunnel) nothing changes.
+const LIST6 = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+export const HERO6_ON = LIST6.includes('s56') && LIST6.includes('hero6');
 
 export const STRUCT = {
   hero: {
@@ -111,6 +118,8 @@ export const STRUCT = {
     scale5: [0.89, 0.985, 0.89],
     // match6: her nubs' fur shorter, so her outline narrower than match5's at the same body: the body a little wider again
     scale6: [0.93, 0.985, 0.93],
+    // hero6 (s56 only, session 3849f5c8): match5's width, a rounded dome (height 0.9 x width) instead of 1.11 x width
+    scaleS6: [0.89, 0.80, 0.89],
     tunnel: { pull: 0.6, sat: 1.32, satAdd: 0.05, warmSat: 1.0, core: { r: [0.03, 0.09], k: 0.0, tint: [1, 1, 1], add: [0, 0, 0] } } },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
@@ -362,7 +371,7 @@ export function structShellFur(model, furUniforms, furFragment) {
 
 // her drawn size once Screen 3's stretch is off (round her centre, as opening.js applies the stretch)
 export function structScale(model) {
-  const k = new THREE.Vector3(...(STRUCT_PARTS.match6 ? STRUCT.match4.scale6 : STRUCT_PARTS.match5 ? STRUCT.match4.scale5 : STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
+  const k = new THREE.Vector3(...(HERO6_ON ? STRUCT.match4.scaleS6 : STRUCT_PARTS.match6 ? STRUCT.match4.scale6 : STRUCT_PARTS.match5 ? STRUCT.match4.scale5 : STRUCT_PARTS.match4 ? STRUCT.match4.scale : STRUCT.hero.scale));
   model.scale.multiply(k); model.position.multiply(k);
   model.position.y += STRUCT.hero.lift;
 }
