@@ -49,13 +49,16 @@ export const S56 = {
   water: {
     deep: [0.0, 0.035, 0.32], mid: [0.0, 0.2, 0.7], turq: [0.0, 0.52, 0.8], foam: [0.86, 0.93, 1.02],
     chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: colour, light and crest lines)
-    crest: 0.5,     // the crest lines' threshold on the normalised chop height (higher = thinner, less white; 9 = none)
+    crest: 0.12,    // where the thin crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
     lace: 0.35,     // lace strength (only in the band just behind a crest)
     collar: 1.0,    // the narrow broken splash line where the water meets his body
     wake: 1.0,      // the two narrow wake lines toward the camera
     spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
     glint: 1.0,     // the sky glints
     haze: 1.0,      // the far violet-white glow
+    lean: 0.9,      // wave faces leaning toward the camera lit turquoise, the backs and creases deep cobalt (the travelling shapes)
+    turqAmt: 0.5,   // how much of the lifted water turns turquoise
+    gap: 0.3,       // the share of the collar / wake splash lines broken away (0 = continuous lines)
   },
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
@@ -97,6 +100,13 @@ vec3 s56Chop(vec2 p, float t) {   // (height normalised to its maximum, d/dx m/m
   vec3 r = vec3(0.0); float ph, s, fd;
 ${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
   r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cos(ph), ${f(A * CHOP_K * ku)} * s * cos(ph));`).join('\n')}
+  return r;
+}
+// each chop wave's crest proximity (exp(30 (sin - 1)): a line ~7 % of its wavelength wide), weighted by its amplitude, faded where the line
+// would alias: the thin white crest lines ride the real crests
+float s56Crest(vec2 p, float t) {
+  float r = 0.0, ph;
+${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; r = max(r, exp(30.0 * (sin(ph) - 1.0)) * (1.0 - smoothstep(0.15, 0.45, fwidth(ph))) * ${f(Math.sqrt(A / CHOP[0][0]))});`).join('\n')}
   return r;
 }`;
 
@@ -368,9 +378,9 @@ export async function buildS56(ctx) {
   // varyings interpolated over 0.3 m rows: broad smooth bands); no horizon "sun" lobe (it lit broad soft blotches); the short chop
   // (CHOP_GLSL, fragment only) gives the travelling wave shapes, their light and the narrow crest lines. Tunables: S56.water.
   const wU = { uDeep: { value: new THREE.Vector3() }, uMid: { value: new THREE.Vector3() }, uTurq: { value: new THREE.Vector3() }, uFoam: { value: new THREE.Vector3() },
-    uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uMask: { value: 0 } };
+    uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uW3: { value: new THREE.Vector4(0, 0, 0, 0.35) }, uMask: { value: 0 } };
   const syncWater = () => { const w = S.water; wU.uDeep.value.set(...w.deep); wU.uMid.value.set(...w.mid); wU.uTurq.value.set(...w.turq); wU.uFoam.value.set(...w.foam);
-    wU.uW1.value.set(w.chop, w.crest, w.lace, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uMask.value = w.mask ? 1 : 0; };
+    wU.uW1.value.set(w.chop, w.crest, w.lace, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uW3.value.set(w.lean, w.turqAmt, w.gap, wU.uW3.value.w); wU.uMask.value = w.mask ? 1 : 0; };
   syncWater(); if (S56_ON && typeof window !== 'undefined') window.__bwS56Sync = syncWater;
   const waterMat = new THREE.ShaderMaterial({
     uniforms: { uTime: timeU, uHero: heroU, ...wU },
@@ -394,7 +404,7 @@ export async function buildS56(ctx) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2; uniform float uMask;
+      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
       ${HAZE}
@@ -412,7 +422,11 @@ export async function buildS56(ctx) {
         float hh = vH * 2.4 + ch.x * 0.6 + (n1 - 0.5) * 0.25;
         float face = clamp(dot(N, normalize(V + vec3(0.0, 0.6, 0.0))), 0.0, 1.0);
         vec3 c = mix(uDeep, uMid, smoothstep(-0.4, 0.05, hh));
-        c = mix(c, uTurq, smoothstep(0.0, 0.55, hh) * (0.35 + 0.65 * face) * 0.9);
+        c = mix(c, uTurq, smoothstep(0.12, 0.7, hh) * (0.35 + 0.65 * face) * uW3.y);
+        // the travelling shapes: faces leaning toward the camera catch the light (turquoise), backs and creases fall to deep cobalt
+        float lean = dot(N, -vT);
+        c = mix(c, uTurq, smoothstep(0.04, 0.3, lean) * 0.55 * uW3.x);
+        c = mix(c, uDeep * 0.85, smoothstep(0.04, 0.3, -lean) * 0.7 * uW3.x);
         c *= 0.7 + 0.36 * face;
         // the drum's blue-violet reflected at grazing angles (never pale)
         float fr = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);
@@ -425,21 +439,23 @@ export async function buildS56(ctx) {
         float spark = smoothstep(0.86, 0.97, s5n(tq)) * smoothstep(0.15, 0.6, ch.x) * (1.0 - smoothstep(0.25, 0.8, length(fwidth(tq)))) * uW2.y;
         // crest lines: white only where the sharp chop crests stand highest, broken; lace just behind them
         float brk = s5f(vXU * vec2(6.0, 2.5) + vec2(0.0, -uTime * 1.1));
-        float crest = smoothstep(uW1.y, uW1.y + 0.1 + fwidth(ch.x), ch.x) * smoothstep(0.3, 0.55, brk);
-        float lace = smoothstep(uW1.y - 0.22, uW1.y - 0.05, ch.x) * (1.0 - smoothstep(uW1.y, uW1.y + 0.1, ch.x))
-          * smoothstep(0.62, 0.72, s5f(vXU * vec2(13.0, 6.0) + vec2(uTime * 0.4, -uTime * 1.8))) * uW1.z;
+        float lift = ch.x + vH * 1.5;
+        float crest = smoothstep(0.45, 0.8, s56Crest(vXU, uTime)) * smoothstep(uW1.y, uW1.y + 0.15, lift) * smoothstep(0.3, 0.5, brk);
+        float lace = smoothstep(uW1.y - 0.1, uW1.y + 0.1, lift) * smoothstep(0.64, 0.74, s5f(vXU * vec2(13.0, 6.0) + vec2(uTime * 0.4, -uTime * 1.8))) * uW1.z;
         // where the water meets him: lifted turquoise water and a NARROW broken splash line (per pixel), no foam ring
         vec2 dq = vec2((vXU.x - uHero.x) / 0.66, (vXU.y - uHero.y) / 0.6);
         float rr = length(dq), pw = uHero.w;
         c = mix(c, uTurq, exp(-pow((rr - 1.05) / 0.3, 2.0)) * 0.45 * pw);
         float ringL = exp(-pow((rr - 0.97) / 0.075, 2.0)) * pw;
-        float collar = smoothstep(0.4, 0.75, ringL * (0.45 + 0.9 * s5f(vXU * vec2(16.0, 11.0) + vec2(0.0, -uTime * 3.0)))) * uW1.w;
+        float gapN = s5f(vXU * vec2(9.0, 7.0) + vec2(1.3, -uTime * 2.4)), keep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, gapN);
+        float collar = smoothstep(0.4, 0.75, ringL * (0.45 + 0.9 * s5f(vXU * vec2(16.0, 11.0) + vec2(0.0, -uTime * 3.0)))) * keep * uW1.w;
         // the wake toward the camera: two narrow broken lines, the churned water between them a lighter azure (no white)
         float bu = vXU.y - uHero.y, side = abs(vXU.x - uHero.x), arm = 0.55 + 0.32 * max(-bu, 0.0);
-        float behind = bu < 0.0 ? exp(bu / 3.5) * pw : 0.0;
+        float behind = bu < 0.0 ? exp(bu / (0.6 + 2.9 * uW3.w)) * pw : 0.0;
         c = mix(c, uMid * 1.15 + vec3(0.0, 0.06, 0.04), smoothstep(arm, arm - 0.3, side) * behind * 0.35 * uW2.x);
-        float wl = exp(-pow((side - arm) / 0.06, 2.0)) * behind;
-        float wk = smoothstep(0.35, 0.7, wl * (0.45 + 0.9 * s5f(vXU * vec2(12.0, 6.0) + vec2(0.0, -uTime * 2.0)))) * uW2.x;
+        float wl = exp(-pow((side - arm) / 0.045, 2.0)) * behind;
+        float wkeep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, s5f(vXU * vec2(7.0, 4.0) + vec2(3.7, -uTime * 1.6)));
+        float wk = smoothstep(0.35, 0.7, wl * (0.45 + 0.9 * s5f(vXU * vec2(12.0, 6.0) + vec2(0.0, -uTime * 2.0)))) * wkeep * uW2.x;
         float white = clamp(max(crest, lace * 0.6) + collar + wk * 0.85 + spark, 0.0, 1.0);
         c = mix(c, uFoam, white * 0.9);
         c = mix(c, s56Haze(c, vW), uW2.w);
@@ -520,6 +536,7 @@ export async function buildS56(ctx) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;
       const running = phase === 'running', inWater = !m.air;
       heroU.value.set(m.x, m.z, vx, inWater ? 1 : Math.max(0, heroU.value.w - dt * 4));
+      wU.uW3.value.w += ((running ? 1 : 0.35) - wU.uW3.value.w) * Math.min(1, dt * 2);   // the wake grows as he sets off
       if (inWater) {
         carry += dt * S.splash.rate * (running ? 1 : 0.35) * (1 + Math.min(2, Math.abs(vx) * 0.5));
         const n = Math.floor(carry); carry -= n; if (n) emit(m, time, n, running ? 1 : 0.6);
