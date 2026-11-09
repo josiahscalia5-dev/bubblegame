@@ -28,7 +28,7 @@ export const BRUSH6_ON = LIST.includes('brush6') && LIST.includes('s56');
 export const BRUSH6 = {
   // placement: a pair at u = anchor + k * every (inside spans), each side at u + du, lateral x (track frame, + = screen-left), height h
   // above the water's centre-line base height (m), scale s = the pink bell's radius in metres (the brush is built in bell radii, below)
-  anchor: 206, every: 26, spans: [[150, 258]], far: 60, near: -4, minX: 1.25,
+  anchor: 206, every: 26, spans: [[150, 258]], far: 60, near: -4, minX: 1.05,   // (minX: the coordinator's bound of session ddf175f2, was 1.25)
   // (fitted by tools/brush6/fit_eval.js at shots56's `206` shot, hero at u 209.1 in the picture: inner tips exactly at minX)
   left: { du: 5.431, x: 2.057, h: -0.632, s: 0.612, hat: 0.5, dir: 1 },
   right: { du: 5.379, x: -1.89, h: -0.618, s: 0.485, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
@@ -39,14 +39,20 @@ export const BRUSH6 = {
   // shading are exactly the same; only the depth test changes): view depth d > near maps to near + (d - near) * k, blending back to the true
   // depth between far[0] and far[1] (the far pairs are untouched). near = just behind him (the camera is 3.0 m behind him), so he, his splash
   // and everything nearer than him are still drawn in front of the brushes. on 0 = the true depth (the bank hides the bristles).
-  pull: { on: 1, near: 3.45, k: 0.15, far: [10, 15] },
-  // the skirts, top to bottom: [yRoot, yTip, rRoot, rTip] in bell radii (y from the lowest tips). The art director's measured shares of the
-  // bristle height (qa/art_director_ranking.md): pink 26 %, white-lavender 23 %, royal blue 34 %, pale blue 17 %; bristles 62 % of the brush
-  tiers: [[2.80, 2.00, 0.62, 1.08], [2.30, 1.38, 0.70, 1.20], [1.75, 0.46, 0.74, 1.27], [0.95, 0.0, 0.78, 1.32]],
+  // (session ddf175f2, pass 2) near 3.2 m (he is 3.0 m ahead of the camera) and k 0.03: the anchor pair is drawn over the near water and the
+  // bank (on the right the water nearer than the old pulled depth, ~3.8 m, cut its lower tiers off at y 0.60); he and his splash stay in front
+  pull: { on: 1, near: 3.2, k: 0.03, far: [10, 15] },
+  // the skirts, top to bottom: [yRoot, yTip, rRoot, rTip] in bell radii (y from the lowest tips). Visible tier heights (TARGETS.md, approved
+  // left brush): pink y 0.486-0.551, white-lavender 0.551-0.597, royal blue 0.597-0.656, pale blue-white 0.656-0.714
+  tiers: [[2.80, 2.00, 0.62, 1.08], [2.30, 1.38, 0.70, 1.20], [1.75, 0.62, 0.74, 1.27], [1.05, 0.0, 0.78, 1.32]],
   cap: { rim: [2.70, 2.93, 0.94], bell: 3.54, flange: [3.86, 0.66] },
-  // shells, their depth and the tips' lift (bell radii), strands and tufts round the brush, strand width (root, tip; of its cell), how far
-  // down the solid inner shell reaches (of the strand length), the cone's mesh
-  fur: { layers: 7, thick: 0.15, flare: 0.1, strands: 210, tufts: 26, wide: [0.5, 0.2], solid: 0.88, around: 56, along: 6 },
+  // (session ddf175f2, pass 2: the see-through shell fur replaced) every skirt is two staggered rows of OPAQUE scalloped cones: one ridge per
+  // tuft (the tufts' relief catches the light), the tuft tips cut to spikes (spike: share of the strand length), fine strands (striations,
+  // faded where they get smaller than a pixel), a few stray strands past the tips; the front row stands `gap` bell radii out, turned half a
+  // tuft, `short` shorter, so the back row's spikes show between its own. around: mesh segments per tuft; along: rings root to tip.
+  // lod: brushes farther than lod.dist metres draw the light mesh (lod.seg segments per tuft, lod.along rings, the back row only).
+  fur: { tufts: 18, seg: 8, along: 9, rows: 2, gap: 0.07, short: 0.1, scallop: 0.16, spike: 0.34, strands: 150, stray: 0.1, shade: 0.5 },
+  lod: { dist: 14, seg: 3, along: 4 },
   // the approved's colours (band medians, 20 % / 80 % luminance means), the lit body kept under the Neutral tone mapping's ~0.76 knee
   // (linear): pink (0.72, 0.01, 0.29), white-lavender (0.40, 0.24, 0.72), royal blue (0.0, 0.10, 0.72), pale blue (0.05, 0.21, 0.70)
   colours: {
@@ -54,7 +60,7 @@ export const BRUSH6 = {
     med: ['#dd1993', '#aa86dd', '#0459dd', '#3f7edb'],
     lite: ['#f064d0', '#e8d8f8', '#3a9cf0', '#b8cdf4'],
   },
-  light: { amb: 0.5, dif: 0.62, spec: 0.5, sheen: 0.1, side: 1.1 },
+  light: { amb: 0.52, dif: 0.6, spec: 0.45, sheen: 0.08, side: 1.1 },
   // the cap's gold: the approved's warm gold (#f08a53, light #ffeab9); s56's M.gold reads red-orange at this distance
   gold: { color: '#ffc45a', emissive: '#7a4a08', ei: 0.5, metal: 0.85, rough: 0.24 },
   bell: { color: '#f86fc8', emissive: '#8a1a5a', ei: 0.45, metal: 0.25, rough: 0.2 },
@@ -80,19 +86,15 @@ vec4 b6Project(vec4 mv) {   // the same picture position; the view depth pulled 
 }`;
 
 const BRISTLE_VERTEX = /* glsl */ `
-attribute float aLayer;   // instanced: 0 the solid inner shell .. 1 the outer shell
-attribute vec4 aS;        // t (root 0 .. tip 1), angle (0..1 round the axis), tier (0 pink .. 3 pale), unused
+attribute vec4 aS;        // t (root 0 .. tip 1), angle (0..1 round the axis), tier (0 pink .. 3 pale), row (0 back, 1 front)
 attribute vec3 aDir;      // the strand's direction, root to tip
-uniform float uThick, uFlare, uSide;
-varying vec4 vS; varying float vH; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
+uniform float uSide;
+varying vec4 vS; varying float vY; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
 ${PULL}
 void main() {
-  float h = aLayer, t = aS.x;
-  vec3 n = normalize(normal);
-  vec3 p = position + n * uThick * (h - 1.0) + n * uFlare * h * t * t;   // inner shells inset; the outer shells' tips lift (fluff)
-  vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz;
-  vN = normalize(mat3(modelMatrix) * n); vD = normalize(mat3(modelMatrix) * aDir);
-  vS = aS; vH = h;
+  vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vY = position.y;
+  vN = normalize(mat3(modelMatrix) * normal); vD = normalize(mat3(modelMatrix) * aDir);
+  vS = aS;
   // light from the tunnel's middle, toward the viewer and above: the side facing the channel is lit, the outer side falls off
   vec3 C = (modelMatrix * vec4(0.0, 2.0, 0.0, 1.0)).xyz, toCam = cameraPosition - C; toCam.y = 0.0;
   vec3 camR = vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
@@ -100,61 +102,68 @@ void main() {
   gl_Position = b6Project(viewMatrix * w);
 }`;
 const BRISTLE_FRAGMENT = /* glsl */ `
-uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSheen, uSolid; uniform vec2 uWide;
-uniform vec3 uDark[4], uMed[4], uLite[4];
-varying vec4 vS; varying float vH; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
+uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSheen, uSpike, uShort, uStray, uShade;
+uniform vec3 uDark[4], uMed[4], uLite[4]; uniform float uUpper[4];
+varying vec4 vS; varying float vY; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
 // sine-free hash (fluffy_brush.js fbH: stable for large cell indices)
 float b6H(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
 ${HAZE}
 void main() {
-  float t = vS.x, h = vH; int k = int(vS.z + 0.5);
-  float a = vS.y * uTufts, ti = floor(a), tf = fract(a) - 0.5;
-  float tr = b6H(vec2(ti, vS.z * 7.0 + 1.0));
-  // the tuft: strands gathered toward its middle at the root, splayed at the tip
-  float sc = (ti + 0.5 + tf * mix(0.62, 1.06, t)) * (uStrands / uTufts) + h * 3.7 + vS.z * 1.3;
-  float si = floor(sc), sf = fract(sc) - 0.5, sr = b6H(vec2(si, h * 31.0 + vS.z * 13.0));
-  // each tuft ends in a lobe (its edge strands shorter), every strand a little different
-  float len = 1.0 - 0.12 * sr - 0.26 * (4.0 * tf * tf) - 0.07 * tr;
-  float w = mix(uWide.x, uWide.y, clamp(t / len, 0.0, 1.0));
-  if (h < 0.01) { if (t > len * uSolid) discard; }
-  else if (abs(sf) > w || t > len) discard;
+  float t = vS.x, row = vS.w; int k = int(vS.z + 0.5);
+  // the tuft (the front row turned half a tuft) and its strand
+  float a = vS.y * uTufts + row * 0.5, ti = floor(a), tf = fract(a) - 0.5;
+  float tr = b6H(vec2(ti, vS.z * 7.0 + row * 3.0 + 1.0));
+  float sa = vS.y * uStrands * (1.0 + 0.37 * row) + row * 0.31, si = floor(sa), sf = fract(sa) - 0.5;
+  float sr = b6H(vec2(si, vS.z * 13.0 + row * 5.0 + 2.0));
+  // the tuft ends in a spike: its middle strands longest, every strand a little different; a few stray strands reach past the tips
+  float len = (1.0 - uShort * row) * (1.0 - uSpike * pow(abs(tf) * 2.0, 1.3) - 0.07 * sr - 0.05 * tr);
+  float fw = fwidth(sa), aa = 1.0 - smoothstep(0.35, 0.9, fw);   // the strands fade where they get smaller than a pixel
+  if (t > len) { if (t > len + uStray * sr || sr < 0.8 || abs(sf) > 0.22 + 0.3 * (1.0 - aa)) discard; }
   vec3 dk = uDark[k], md = uMed[k], lt = uLite[k];
-  vec3 col = mix(md, lt, 0.08 + 0.22 * tr) * (0.86 + 0.26 * sr);
-  col = mix(dk, col, smoothstep(0.0, 0.5, t));                          // darker roots
-  col = mix(col, lt, 0.42 * smoothstep(0.62, 1.0, t / len));             // pale tips
-  float ao = mix(0.45, 1.0, h) * mix(0.72, 1.0, smoothstep(0.5, 0.25, abs(tf)) * 0.6 + 0.4 * h);   // deeper shells and the gaps darker
+  vec3 col = mix(md, lt, 0.06 + 0.2 * tr) * mix(1.0, 0.8 + 0.4 * sr, aa);   // every strand its own shade
+  col *= 1.0 - 0.28 * aa * smoothstep(0.3, 0.5, abs(sf));                     // the dark gaps between the strands
+  col = mix(dk, col, smoothstep(0.02, 0.5, t));                                 // darker roots
+  col = mix(col, lt, 0.5 * smoothstep(0.55, 1.0, t / len));                    // pale tips
+  // the tier above overhangs this one: a soft shadow just under its tips (local y uUpper[k]); the tufts' sides darker than their ridges
+  float sh = 1.0 - uShade * smoothstep(uUpper[k] - 0.42, uUpper[k] - 0.02, vY);
+  float ao = sh * mix(0.74, 1.0, smoothstep(0.5, 0.12, abs(tf))) * mix(0.82, 1.0, row);
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW), L = normalize(vL), D = normalize(vD);
+  if (!gl_FrontFacing) N = -N;
   float dif = clamp(dot(N, L) * 0.5 + 0.5, 0.0, 1.0);
-  vec3 H = normalize(L + V); float th = dot(D, H), spec = pow(sqrt(max(0.0, 1.0 - th * th)), 64.0);   // gloss along the strands
-  vec3 c = col * (uAmb + uDif * dif) * ao + mix(lt, vec3(1.0), 0.5) * spec * uSpec * h * dif;
-  c += vec3(1.0, 0.95, 1.0) * pow(1.0 - abs(dot(N, V)), 3.0) * uSheen * h;
+  vec3 H = normalize(L + V); float th = dot(D, H), spec = pow(sqrt(max(0.0, 1.0 - th * th)), 48.0);   // gloss along the strands
+  vec3 c = col * (uAmb + uDif * dif) * ao + mix(lt, vec3(1.0), 0.45) * spec * uSpec * dif * sh * (0.6 + 0.4 * sr);
+  c += vec3(1.0, 0.95, 1.0) * pow(1.0 - abs(dot(N, V)), 3.0) * uSheen;
   gl_FragColor = vec4(b6Haze(c, vW), 1.0);
 }`;
 
 // ---------------------------------------------------------------- geometry (bell-radius units, axis +Y, y = 0 at the lowest tips)
-function bristleGeometry(P) {
-  const F = P.fur, pos = [], nrm = [], sAt = [], dir = [], idx = [];
+// every skirt: `rows` scalloped cones (one ridge per tuft, the relief growing toward the tips), the front row `gap` out and half a tuft round
+function bristleGeometry(P, seg, along, rows) {
+  const F = P.fur, pos = [], sAt = [], dir = [], idx = [];
   let base = 0;
+  const around = F.tufts * seg, cols = around + 1;
   P.tiers.forEach(([y0, y1, r0, r1], tier) => {
-    const cols = F.around + 1, dy = y1 - y0;
-    for (let j = 0; j <= F.along; j++) {
-      const t = j / F.along, r = r0 + (r1 - r0) * (0.55 * t + 0.45 * t * t), dr = (r1 - r0) * (0.55 + 0.9 * t), y = y0 + dy * t;
-      const l = Math.hypot(dy, dr);
-      for (let i = 0; i < cols; i++) {
-        const a = i / F.around, ph = a * Math.PI * 2, c = Math.cos(ph), s = Math.sin(ph);
-        pos.push(r * c, y, r * s); nrm.push((-dy / l) * c, dr / l, (-dy / l) * s); dir.push((dr / l) * c, dy / l, (dr / l) * s); sAt.push(t, a, tier, 0);
-        if (i < F.around && j < F.along) { const q = base + j * cols + i; idx.push(q, q + 1, q + cols, q + 1, q + cols + 1, q + cols); }   // (front faces outward)
+    for (let row = 0; row < rows; row++) {
+      const dy = y1 - y0, out = row * F.gap;   // (the front row's shorter tips are cut in the shader, uShort)
+      for (let j = 0; j <= along; j++) {
+        const t = j / along, rc = r0 + out * 0.5 + (r1 + out - r0 - out * 0.5) * (0.55 * t + 0.45 * t * t);
+        const dr = (r1 + out * 0.5 - r0) * (0.55 + 0.9 * t), y = y0 + dy * t, l = Math.hypot(dy, dr);
+        for (let i = 0; i < cols; i++) {
+          const a = i / around, tf = ((a * F.tufts + row * 0.5) % 1) - 0.5, bump = 1 - 4 * tf * tf;
+          const r = rc * (1 + F.scallop * (0.3 + 0.7 * t) * (bump - 0.55));
+          const ph = a * Math.PI * 2, c = Math.cos(ph), s = Math.sin(ph);
+          pos.push(r * c, y, r * s); dir.push((dr / l) * c, dy / l, (dr / l) * s); sAt.push(t, a, tier, row);
+          if (i < around && j < along) { const q = base + j * cols + i; idx.push(q, q + 1, q + cols, q + 1, q + cols + 1, q + cols); }   // (front faces outward)
+        }
       }
+      base += cols * (along + 1);
     }
-    base += cols * (F.along + 1);
   });
-  const g = new THREE.InstancedBufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3));
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   g.setAttribute('aS', new THREE.Float32BufferAttribute(sAt, 4)); g.setAttribute('aDir', new THREE.Float32BufferAttribute(dir, 3));
-  g.setIndex(idx);
-  const h = new Float32Array(F.layers); for (let i = 0; i < F.layers; i++) h[i] = i / (F.layers - 1);
-  g.setAttribute('aLayer', new THREE.InstancedBufferAttribute(h, 1)); g.instanceCount = F.layers;
-  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 2.0, 0), 3.0);
+  g.setIndex(idx); g.computeVertexNormals();
+  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 2.0, 0), 3.2);
   return g;
 }
 function star4(size, depth) {   // a gold four-point star (a low pyramid on an eight-point outline), lying in XY, facing +Z
@@ -211,11 +220,12 @@ export async function buildBrush6(ctx) {
     mat.customProgramCacheKey = () => 'b6pull_' + key;
     return mat;
   };
+  const upper = P.tiers.map((tr, k) => (k === 0 ? P.cap.rim[0] : P.tiers[k - 1][1]));   // where the tier above ends (its shadow)
   const mkBristleMat = (side) => new THREE.ShaderMaterial({
     uniforms: {
-      uPull,
-      uThick: { value: P.fur.thick }, uFlare: { value: P.fur.flare }, uSide: { value: side * P.light.side },
-      uStrands: { value: P.fur.strands }, uTufts: { value: P.fur.tufts }, uWide: { value: new THREE.Vector2(...P.fur.wide) }, uSolid: { value: P.fur.solid },
+      uPull, uSide: { value: side * P.light.side },
+      uStrands: { value: P.fur.strands }, uTufts: { value: P.fur.tufts }, uSpike: { value: P.fur.spike }, uShort: { value: P.fur.short },
+      uStray: { value: P.fur.stray }, uShade: { value: P.fur.shade }, uUpper: { value: upper },
       uAmb: { value: P.light.amb }, uDif: { value: P.light.dif }, uSpec: { value: P.light.spec }, uSheen: { value: P.light.sheen },
       uDark: { value: col(C.dark) }, uMed: { value: col(C.med) }, uLite: { value: col(C.lite) },
     },
@@ -225,9 +235,10 @@ export async function buildBrush6(ctx) {
   const bellMat = pullStd(new THREE.MeshStandardMaterial({ color: new THREE.Color(B.color), emissive: new THREE.Color(B.emissive), emissiveIntensity: B.ei, metalness: B.metal, roughness: B.rough, envMap: env, envMapIntensity: 1.2 }), 'bell');
   const G = P.gold, goldMat = pullStd(new THREE.MeshStandardMaterial({ color: new THREE.Color(G.color), emissive: new THREE.Color(G.emissive), emissiveIntensity: G.ei, metalness: G.metal, roughness: G.rough, envMap: env, envMapIntensity: 1.25 }), 'gold');
   const mats0 = { bell: bellMat, gold: goldMat };
-  const bristleG = bristleGeometry(P), caps = { left: capGeometries(P, P.left.hat), right: capGeometries(P, P.right.hat) };
+  const bristleG = bristleGeometry(P, P.fur.seg, P.fur.along, P.fur.rows), liteG = bristleGeometry(P, P.lod.seg, P.lod.along, 1);
+  const caps = { left: capGeometries(P, P.left.hat), right: capGeometries(P, P.right.hat) };
   const mats = { left: mkBristleMat(1), right: mkBristleMat(-1) };
-  const tris = { bristles: (bristleG.index.count / 3) * P.fur.layers, left: 0, right: 0 };
+  const tris = { bristles: bristleG.index.count / 3, lite: liteG.index.count / 3, left: 0, right: 0 };
   for (const k of ['left', 'right']) tris[k] = tris.bristles + caps[k].gold.attributes.position.count / 3 + caps[k].bell.index.count / 3;
 
   const brushes = [], F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
@@ -235,10 +246,11 @@ export async function buildBrush6(ctx) {
     const holder = new THREE.Group(); holder.name = 'b6Brush_' + sideKey; holder.matrixAutoUpdate = false;
     const spin = new THREE.Group(); holder.add(spin);
     const fur = new THREE.Mesh(bristleG, mats[sideKey]); fur.name = 'b6Bristles';
+    const lite = new THREE.Mesh(liteG, mats[sideKey]); lite.name = 'b6BristlesLod'; lite.visible = false;
     const gold = new THREE.Mesh(caps[sideKey].gold, goldMat); gold.name = 'b6Gold';
     const bell = new THREE.Mesh(caps[sideKey].bell, bellMat); bell.name = 'b6Bell';
-    spin.add(fur, gold, bell); group.add(holder);
-    return { holder, spin, side: sideKey, u: 0, phase: 0 };
+    spin.add(fur, lite, gold, bell); group.add(holder);
+    return { holder, spin, fur, lite, side: sideKey, u: 0, phase: 0 };
   }
   // (re)places every pair from the numbers in BRUSH6 (live: __bwBrush6.place())
   function place() {
@@ -315,7 +327,7 @@ export async function buildBrush6(ctx) {
   }
 
   P.place = place; P.measure = measure; P.report = drawReport; P.tris = tris;
-  report.parts.push(`brush6 x${brushes.filter((b) => b.holder.visible).length} (${tris.left} / ${tris.right} triangles each, 3 draw calls each)`);
+  report.parts.push(`brush6 x${brushes.filter((b) => b.holder.visible).length} (${tris.left} / ${tris.right} triangles each near, ${tris.lite} bristle triangles far; 3 draw calls each)`);
 
   function update(dt, time, phase, m) {
     const hu = m ? m.z : 0; setPull();
@@ -323,6 +335,7 @@ export async function buildBrush6(ctx) {
       if (!b.holder.visible) continue;
       const d = b.u - hu, on = d > P.near && d < P.far;   // only the brushes near him are drawn (the rest are far down the tunnel or behind)
       b.spin.visible = on;
+      const near = d < P.lod.dist; b.fur.visible = near; b.lite.visible = !near;   // the far brushes: the light bristle mesh
       if (on) b.spin.rotation.y = b.phase + time * P.spin * P[b.side].dir;
     }
   }
