@@ -269,8 +269,18 @@ No fog is set, so I'll add the s56 haze to my standard materials myself so the f
 Built cleanly. Next is the first capture with arch56 at Tap to Start and u 206, without EVAL so the frames stay comparable to the baseline.
 
 - 14:19 `Bash`: Capture arch56 frames at tap and 206
+- 14:22 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/r1/s56_tap.png
+- 14:22 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/r1/s56_206.png
+- 14:22 `Bash`: Capture arch56 with the default list
+- 14:24 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/r1/s56_tap.png
+- 14:24 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/r1/s56_206.png
+- 14:25 `Bash`: Identify the wall pom-pom brushes
+- 14:25 `Bash`: Find where wall brushes are built
+- 14:25 `Bash`: Read brush placement in tunnel_s4.js
+- 14:26 `Bash`: Find brush heights and deco list
+- 14:26 `Bash`: Confirm only hazard brushes collide
 
-_47 tool steps._
+_57 tool steps._
 
 ---
 
@@ -396,8 +406,25 @@ Now I'll replace the water material with the per-pixel version.
 - 14:16 `Bash`: Find the grade uHero injection
 - 14:16 `Bash`: Read the hero grade injection
 - 14:17 `Bash`: Run the after A/B on the new water build
+- 14:21 `Bash`: Compose reference, before and after crops
+- 14:21 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/after1.png
+**Lead → agent** (14:21 UTC):
 
-_79 tool steps._
+[Image: original 2160x468, displayed at 2000x433. Multiply coordinates by 1.08 to map to original image.]
+
+- 14:21 `Bash`: Add lean shading, broken splash lines and run-scaled wake
+- 14:21 `Bash`: Fix the tunable name clash and rebuild
+- 14:22 `Bash`: Sweep crest, lace, lean and turquoise candidates at tap and 206
+- 14:24 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/tune2.png
+**Lead → agent** (14:24 UTC):
+
+[Image: original 2160x438, displayed at 2000x406. Multiply coordinates by 1.08 to map to original image.]
+
+- 14:24 `Bash`: Add thin per-wave crest lines and retune defaults
+- 14:24 `Bash`: Fix the join newline and rebuild
+- 14:25 `Bash`: Sweep crest-line candidates at tap and 206
+
+_88 tool steps._
 
 ---
 
