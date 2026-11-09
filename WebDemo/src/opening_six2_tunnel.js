@@ -17,6 +17,17 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { six2Sm as sm, six2V as V } from './opening_six2.js';
 
+// seq7 (session 3849f5c8, lane arch56, CANDIDATE, not approved): the washer-to-tunnel transition. Without `seq7` nothing below the SEQ7 checks runs.
+//   Cause (measured): the room's back wall (z -1.3) stands INSIDE the drum tube (d 1.57 m behind the porthole), its curtains at d ~1.41 and the
+//   window's light shafts down to d 1.094, so through the porthole the room was what showed behind him (scenes 2-4) and at real 8.5 s.
+//   Fix: (1) a closed, perforated drum back (approved 03 / 04) at d 1.02 (dish centre 1.07, in front of every room piece), opaque;
+//   (2) the room's MESHES (never its lights: the washer's light must not jump) hidden once the washer's face covers the whole frame
+//       (the four frame corners land inside a conservative rectangle of the face; measured story ~7.79 = real ~8.29 s);
+//   (3) the fly-through: its holes glow (the tunnel's light behind), a six-blade iris opens onto the tunnel's violet light (story 7.45-7.82),
+//       and only once the room is hidden does that light dissolve, centre first, into the real tunnel (discard, opaque: no sorting issues).
+const LIST7 = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+export const SEQ7_ON = LIST7.includes('seq7');
+
 // every number (window.__bwSix2Tunnel in the browser)
 export const SIX2T = {
   glowIn: { z: -0.08, k: 0.32 },   // scene 4: glowL behind the glass (porthole z + this), its intensity x k
@@ -24,6 +35,9 @@ export const SIX2T = {
   banks: { scale: 1.25, x: 0.54, yaw: 0.12, left: [2.75, 3.6, 4.45, 5.3, 6.15, 7.0], right: [2.75, 3.6, 5.3, 6.15, 7.0, 7.85] },
   gear: { d: 4.4, x: 0.6, y: 0.13, diam: 0.6, turn: 0.85 },
   arches: { from: 2.2, step: 0.62, to: 8.7, lampAt: 0.72 },
+  // seq7 only: the drum back (d m behind the porthole, dish m deeper at its centre), its holes' glow, the iris, the dissolve (story seconds),
+  // the washer face's conservative rectangle [x0, x1, y0, y1] on the plane z = faceZ (measured on the real 6.7 s frame, inset 0.08 m)
+  back: { d: 1.02, dish: 0.05, holes: [7.25, 7.5], open: [7.45, 7.82], fade: 0.13, from: 7.3, face: [-0.12, 0.74, 0.2, 1.0], faceZ: 0.26 },
 };
 
 export function installSix2Tunnel(ctx) {
