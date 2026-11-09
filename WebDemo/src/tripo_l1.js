@@ -10,6 +10,7 @@
 // code-built meshes are hidden, not removed (level1.js still turns the ball, and the wobble on `body` moves the new look too).
 // No random numbers. Report: window.__bwTripo1.
 import * as THREE from 'three';
+import { ENEMY3_ON, PLAY3 } from './play_tripo3.js';   // ?s3=...,six,enemy3 (session 6ddc157f): the user's new purple Tripo enemy, looks only
 import { WALL15_ON, WALL15, buildWall15 } from './scene07_wall15.js';   // scene07 pass 15 (session f70c9bd1): opt-in `,norecon16,wall15` only
 import { RECON16_ON, RECON16, buildRecon16, reconFacadeTexture, ART16_ON, applyArt16, FAR16_ON, applyFar16, MACH16 } from './scene07_recon16.js';
 import { RECON17_ON, JEWEL17_ON, R17, jewelFacadeTexture, prepRecon17, buildRecon17, patchShaders17 } from './scene07_recon17.js';
@@ -75,7 +76,7 @@ export function scene07Camera(z, off, lk) {
   if (w <= 0) return;
   off.x += (C.offX || 0) * w; off.y += (C.offY || 0) * w; off.z += (C.offZ || 0) * w; lk.x += C.lookX * w; lk.y += C.lookY * w;
 }
-export const TRIPO1_FILES = { enemy: 'models/l1_enemy_tripo.glb' };
+export const TRIPO1_FILES = { enemy: ENEMY3_ON ? PLAY3.enemy : 'models/l1_enemy_tripo.glb' };   // (enemy3: same sizing, halo and motion)
 // the new look's diameter against the code ball's (its bounding sphere); (v2, the user's "Avoid Enemies!" mandate: "larger, raised so
 // it clearly floats above the water, its lighting separating it from the tunnel") the look raised in its own frame so the whole ball
 // clears the water (v1 sat half sunk: centre 0.36 m, radius ~0.73 m), a little larger, glossier, a faint navy self-light and a soft

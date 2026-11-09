@@ -63,8 +63,84 @@ For EACH asset (girl, washer, porthole door, basket, sock, gem, coin, enemy, gea
 - 01:54 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/gem.png
 - 01:54 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/06_tripo_new_models_6ddc157f/in_game/current_six_seq_0.30.png
 - 01:54 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/06_tripo_new_models_6ddc157f/in_game/tripo3_toss_idle_1.5.png
+- 01:54 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/06_tripo_new_models_6ddc157f/renders/decimation_check.png
+**Lead → agent** (01:54 UTC):
 
-_29 tool steps._
+[Image: original 1024x2048, displayed at 1000x2000. Multiply coordinates by 1.02 to map to original image.]
+
+**Agent** (01:55 UTC):
+
+## Tripo review against the six-scene storyboard: what to keep and what to replace
+
+### Asset verdicts
+
+**Girl: REPLACE WITH NEW.** Images: comparison sheet; `tripo3_seq_0.30.png`; board panel 1.
+- The new model wears panel 1's outfit: pink jacket, lavender hood, backpack, pink bow and curly ponytail. The existing girl wears lavender overalls.
+- Her face still reads clearly at phone size.
+- Defects: the hair is stiff and stringy, with loose curl tips sticking out (`girl_v2_face_crop.png`). The freckles are faint and the crown badge sits on her sleeve. Her open-mouth grin in `tripo3_toss_idle_1.5.png` looks slightly like a grimace.
+
+**Washer (HJ 748): REPLACE WITH NEW.** Images: comparison sheet; `sheet_new_05_hj748.png`; panel 4.
+- It has panel 4's pink rounded body, gold paw badge, riveted gold top band, gems, cyan/yellow light pod and brass pipe. The existing one is a grey box.
+- Defects:
+  - The porthole is clearly smaller relative to the body than in panel 4.
+  - The jars on top push the porthole down, and in-game it is cut off by the right edge (`tripo3_seq_0.30.png`).
+  - The code-made gold plate covering the removed door's hinge cut reads as a flat, featureless placeholder slab (`opening_tripo3.js` `W.plate`).
+
+**Porthole door (OIT 748): REPLACE WITH NEW, then fix in code.** Images: `tripo3_seq_4.90.png` against `current_six_seq_4.90.png`; panels 3 and 4.
+- It has the hinge, latch and glass that the existing plain rings lack.
+- Fixes needed:
+  - Recolour the pink outer ring gold, as panel 4's bezel is.
+  - The hinge appears to be on the right: the latch shows at the left in 4.90, and the door swings in from the right at 3.60 in the strip. Panels 3 and 4 hinge on the left.
+  - The mobile version has thin crack lines on the glass (`decimation_check.png`).
+
+**Basket: KEEP EXISTING.** Images: comparison sheet; panel 1.
+- Panel 1's basket is low and wide, with oval slots and a rolled rim. The existing one matches that.
+- The new one is a tall tapered bin, and on its back the holes merge into irregular blobs, which is a mesh defect.
+
+**Sock: KEEP EXISTING.**
+- No panel shows a sock.
+- The existing sock has a knit texture and a clear face. The new one has stray brown marks at the toe, and its side view shows a misplaced, eye-like squiggle.
+
+**Gem: KEEP EXISTING.**
+- No panel shows a gem.
+- The new gem's facets are mushy and pastel, so it reads less well at phone size. Its colour does match the HUD's purple gem, so recolour the existing gem if you want them consistent.
+
+**Coin: REPLACE WITH NEW.** Images: comparison sheet; panel 6.
+- It is brighter gold, with a bevelled rim and highlights on a raised paw. The existing coin is dull, matte orange.
+- Remaining gap: it is still a little more orange than the board's lemon gold.
+
+**Enemy: REPLACE WITH NEW.** Images: comparison sheet; panel 6.
+- Panel 6's enemy is a violet ball with separate angry brows and pink eyes. The existing one is blue with a black mask band.
+- Defect: the small pink nose and mouth blob looks like a smear at phone size.
+
+**Gear: REPLACE WITH NEW.** Images: comparison sheet; panel 5.
+- Panel 5's gear is cobalt with a brass hub. The existing gear is mostly gold.
+- Defect: its turbine-style vanes don't match panel 5's plain concentric rings.
+
+**Towel: NEW NEEDS WORK.** Images: comparison sheet; panels 1 to 3; `tripo3_seq_2.75.png`.
+- The terry texture is convincing, unlike the existing flat blue cloth cap.
+- But it is sky blue rather than the board's periwinkle, and it is shaped like a cloth hung from a peg, so it can't drape over her. Suggestion: put its texture, hue-shifted, on the existing code-made cloth. That costs no Tripo credits.
+
+### Biggest remaining differences between tripo3 and panels 1 to 5
+
+1. **Panel 5 against `tripo3_seq_6.30.png`.** This frame is unchanged by tripo3: only 0.76% of pixels differ from `current_six_seq_6.30.png`, which I measured myself.
+   - The tunnel is a pale white-lavender dotted tube. It has none of the board's purple-pink metal, lamps, gold rails or white-crested splash.
+   - She covers about half the width and hides the vanishing point.
+   - A flat translucent plane cuts diagonally across her fur and the water. This was already there before tripo3.
+2. **Panel 3 against `tripo3_seq_2.75.png`.**
+   - The back of the drum is see-through: the tunnel's pink pillars, blue gear and light show through it. The board has a closed silver steel drum, with the open gold door at the left.
+   - She looks frightened, with googly eyes, where the board shows her happy.
+3. **Panel 4 against `tripo3_seq_4.90.png`.**
+   - Through the glass you see sky, a cloud and a pink tower. The board shows a purple-blue swirl of light and churning foam up to her chin.
+   - A thin pink line runs across her eyes. It is in the current build too.
+4. **Panels 1 and 2 against `tripo3_seq_0.30.png`:** the flat gold slab, the hinge on the wrong side, and the porthole cut off at the right edge.
+5. **Panel 1:** she should peek out from under a draped towel on a heap of yellow and lavender towels. In-game she sits on top of the basket wearing a flat cap. The background has flat towel stacks instead of the laundry room's shelves and window.
+6. **Panel 2:** inside the open drum the game shows a lavender interior with blue swirl stripes and a gear. The board shows a darker steel drum.
+
+None of the in-game frames I looked at breaks the story rule: the girl never looks at the character.
+
+
+_30 tool steps._
 
 ---
 
@@ -100,8 +176,41 @@ Measure (Python with numpy/PIL is available at ~/.bubblewash-tools/visual/bin/py
 - 01:53 `Bash`: Enlarge storyboard porthole ring region
 - 01:53 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/lighting/sb04_ring.png
 - 01:54 `Bash`: Measure masked mean colour/HSV for pink and gold regions
+- 01:54 `Bash`: Read glTF material JSON and glow timeline lines
+- 01:55 `Bash`: Stats of washer base colour and ORM textures in memory
+**Agent** (01:56 UTC):
 
-_17 tool steps._
+I measured the washer in both game frames against panels 04 and 01. The game's pink is not too dark: it is too bright, too flat and shifted toward violet. The gold is not too orange: it is too yellow, while the storyboard's gold is copper. The model's own colour map already matches the storyboard (pink hue 333°, gold 30°), so the lighting causes the shift, not the texture.
+
+**Measurements.** Mean colour inside colour masks. Boxes are (x0,y0,x1,y1). Pink mask: hue 285–5°, S>0.25, V>0.35. Gold mask: hue 12–65°, S>0.3, V>0.35.
+
+| Region | Game | Storyboard |
+|---|---|---|
+| Pink body, washer-wide | 4.90 s (0,140,412,735), porthole excluded: #eb6fd9, hue 307°, S 0.54, V 0.94, darkest 10% V 0.87 | 04 (45,0,500,290): #d9619f, hue 329°, S 0.55, V 0.85, darkest 10% V 0.64 |
+| Pink, small boxes | 4.90 s (15,295,90,345): hue 308°. Idle frame (150,400,230,500): hue 312° | 04 (30,165,90,275): hue 327°. Panel 01's washer: hue 333° |
+| Gold, washer-wide | 4.90 s: #e8ba51, hue 42°, darkest 10% V 0.80. Ring (365,440,395,560): hue 57°, a yellow-green tint | 04: #da8753, hue 23°, darkest 10% V 0.61. Ring (376,150,395,250): hue 20° |
+| Gold paw medallion | (185,150,295,240): hue 49° | (232,5,300,60): hue 33° |
+
+The model has one material. Its texture marks the pink body as metal (median 0.96) with roughness 0.09, so it behaves like polished metal.
+
+**Likely causes**
+1. **Metalness factor 0.55** (`opening_tripo3.js:33`, `:45`) leaves the pink about half mirror metal. A metal reflects the environment tinted by its own colour. The environment is mostly the bluish background `0x8f7fd0`, plus a cyan plane `[1.4,2.4,3.0]` (`opening3d.js:474–478`). Pink multiplied by that background works out to about hue 303°, which matches the game's violet.
+2. **The cyan PointLight glowL** (`opening3d.js:471`) has intensity `2.0+4.0·on` after the lights switch on (`:869`), so about 6 at 4.90 s. It sits 0.4 m from the porthole front, and at about 0.5 m the falloff roughly triples its strength. Cyan on gold gives the yellow-green ring (57°) and lifts the medallion to 49°; cyan on pink adds blue.
+3. **Emissive = colour map × 0.3** (`opening_tripo3.js:46`), on top of HemisphereLight 2.1 and the key light 2.4 (`:468–470`) and exposure 1.18 (`:464`). Together they push the red channel into the tone curve's top end (game red 232–244). The shading flattens (darkest 10% V 0.87 against 0.64), and hues drift: pink toward blue, gold toward green.
+4. **envMapIntensity 0.6** (`:45`) at roughness 0.09 reflects the planes as hard lavender streaks (the region above the ring: hue 296°, S 0.39).
+
+**Four values to try, all behind `tripo3`**
+1. `look.metal` 0.55 → **0.25**: the pink mostly lit like paint, from the warm key light.
+2. glowL intensity × **0.35** when tripo3 is on (lines 758 and 869). It also lights whatever else is near the porthole, so check the character and the girl.
+3. `look.emissive` 0.3 → **0.15**: brings back the shading range and lowers the red channel.
+4. `look.env` 0.6 → **0.4**.
+
+Try items 1–3 first. Re-measure afterwards; the targets are pink hue about 330° and gold about 25°.
+
+I changed no repository files and ran no builds or browsers. The measurement script and crops are in `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/lighting/` (script: `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/lighting/measure.py`).
+
+
+_19 tool steps._
 
 ---
 
@@ -207,5 +316,35 @@ One finding on line 757 looks serious: the `uTime`/`uFlow` assignments seem to s
 - 01:53 `Bash`: Find all uTime/uFlow writes and inspect line 757
 - 01:53 `Bash`: Blame line 757, locate enclosing function, check bundle
 - 01:53 `Bash`: Locate six vs non-six update branches
+- 01:55 `Bash`: Check tripo3 for shader code, vortex parenting, GLSL validators
+- 01:55 `Bash`: Extract expanded vortex shaders into scratchpad files
+- 01:55 `Bash`: Run shader-binding script on raw and normalized extracts
+**Agent** (01:55 UTC):
 
-_11 tool steps._
+The binding script is clean on every variant once the comma declarations are split. Last, a quick check for a running dev server, since the devtools MCP failed to connect anyway.
+
+- 01:55 `Bash`: List listening TCP ports for a dev server
+**Agent** (01:55 UTC):
+
+I found no binding mismatch in the new shader code. There is one existing bug in the opening without `six`: the tunnel's time and flow values never update.
+
+**Tools:** I had Read, Grep, Glob and Bash. The threejs-devtools-mcp server is configured but timed out, Spector failed to connect too, and no dev server is running. So all of this comes from reading the code; nothing was compiled or checked in a live game.
+
+**The checker script needed help.** Run on `opening3d.js` directly, it reported "no findings", which is wrong: it can't read `uniforms: U` or comma declarations like `uniform float uTime, uFlow, uGlow;`. I pulled the shaders out with six/port on and off, split those declarations, and gave it literal uniform lists. It then found nothing in the tube or water. The cap's flags for `uTime`/`uFlow` are false positives, because it shares the `U` object on purpose.
+
+**Findings in `/home/user/bubblegame/WebDemo/src/opening3d.js`:**
+- **757, likely bug, not a declaration issue:** in `pose()` (the opening without `six`), `vortex.U.uTime.value = it; vortex.U.uFlow.value = ...` comes after a `//` on the same line, so it never runs. The tube swirl, water ripple and hit rings stay frozen at 0. The built `game.bundle.js` is the same, and the line is at least as old as commit 10c4ccd. Fixing it would change frames that are meant to stay pixel-identical, so the lead should decide. The six path (line 870) sets everything correctly.
+- **293 and 320, works on most GPUs but not guaranteed:** `pow(x, 2.0)` where `x` can be negative. GLSL leaves that undefined, and some GPUs return NaN. `x*x` is the safe form.
+- **Bindings all match:** `aAD`/`aXD` are vec2 attributes with 2 components, `vAD`/`vXD` match between stages, and all of `uTime`, `uFlow`, `uGlow`, `uHit`, `uFrom` are declared, bound, used and the right types. Nothing would fail to compile in WebGL2 (no int/float mixing, loops have fixed bounds, three.js's default precision is the same in both stages).
+- **297/316, tidy-up only:** `SIX_DRUM` is an empty leftover. In the six path the lower blue band gets the far-end glow twice (lines 322 and 296).
+
+**`/home/user/bubblegame/WebDemo/src/opening_tripo3.js`:**
+- It adds no shader code (no ShaderMaterial, onBeforeCompile or GLSL).
+- **Line 45:** `metalness` is assigned, not multiplied, so repeat visits don't stack. It only sets a per-material number and leaves the shared ORM texture alone. The models are dressed before they're first drawn, so no `needsUpdate` is needed.
+- **Line 68:** changing `transparent`/`blending` changes three.js's compiled shader, and the lights may already have been drawn, so `needsUpdate = true` is needed. It's there, and each light has its own material.
+- **Line 60:** hiding every mesh in the washer group doesn't reach the tube, cap, water or tunnel props, which hang directly off the scene (lines 482, 642).
+
+The extracted shaders are in `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/out/`.
+
+
+_15 tool steps._

@@ -25,6 +25,7 @@ import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
 import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
 import { S3 as S3_SWITCHES } from './screen3_models.js';
+import { SOCK3_ON, COIN3_ON, PLAY3, play3Loader, coin3Prepare } from './play_tripo3.js';   // ?s3=...,six,sock3 / coin3 (session 6ddc157f): the user's new Tripo sock and paw coin, looks only
 import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
 import { ROUND3, mulberry } from './tunnel_r3.js';
 import { ROUND4 } from './tunnel_r4.js';
@@ -118,7 +119,8 @@ scene.add(rimLight);
 // ------------------------------------------------------------------ loading
 const files = {
   layout: 'models/layout.json', castle: 'models/castle.glb', drum: 'models/drum.glb',
-  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: 'models/sock.glb', machinery: 'models/machinery.glb',
+  mascot: 'models/mascot.glb', roller: 'models/roller.glb', gem: 'models/gem.glb', sock: SOCK3_ON ? PLAY3.sock : 'models/sock.glb', machinery: 'models/machinery.glb',
+  coin3: PLAY3.coin, coin3Lo: PLAY3.coinLo,   // (?s3=...,six,coin3 only)
   tower: 'models/tower.glb', gear: 'models/gear.glb', pipe: 'models/pipe.glb', crown: 'models/crown.glb',
   // ?s3=round5: the gold paw coin generated with Tripo P2 from the user's coin sheet (both faces embossed), and a light copy
   coinP2: 'models/coin_p2.glb', coinP2Lo: 'models/coin_p2_lo.glb',
@@ -131,7 +133,7 @@ function showProgress() {
   $('loadBar').style.width = pct + '%';
   $('loadPct').textContent = pct + '%';
 }
-const gltfLoader = new GLTFLoader();
+const gltfLoader = play3Loader(new GLTFLoader());   // (the meshopt decoder only with sock3 / coin3 / enemy3)
 async function fetchBytes(url, key) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url}: ${res.status}`);
@@ -1699,7 +1701,8 @@ async function main() {
     state.decorClear = decor.clear;
     buildBubbles();
     const coinP2 = R5 ? await Promise.all([loadGltf('coinP2'), loadGltf('coinP2Lo')]) : null;   // round5 only: the Tripo coin
-    buildCollectibles(gem, coinFace, coinP2);
+    const coin3 = !coinP2 && COIN3_ON && R2 ? coin3Prepare(await Promise.all([loadGltf('coin3'), loadGltf('coin3Lo')])) : null;   // six,coin3: the user's new paw coin
+    buildCollectibles(gem, coinFace, coinP2 || coin3);   // (coin3: the same tripoCoin() path)
     buildSocks(sock);
     if (MATCH_ON) matchCollectibles({ coins, gems, socks });   // ?s3=match: visual sizes and looks only (tunnel_r9_match.js)
     buildMascot(mascotG);
