@@ -19,6 +19,7 @@
 // banks move outward with level1_flow.js's own widen(), and the modules stand on the drop's raised ledges (ledgeLift): no route is blocked.
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';   // (fin6) the control boxes' rounded glossy bodies
 import { widen as flowWiden, ledgeLift } from './level1_flow.js';
 import { BRUSH6_ON, BRUSH6 } from './s56_brush6.js';   // (ddf175f2) read only: where lane brush6's roller brushes stand (their bays keep low modules)
 
@@ -84,7 +85,8 @@ export const ARCH56 = {
     M: { h: 2.85, sx: 0.62, inner: 1.25, ang: 0.32, dz: -0.35, y: -0.1, pink: 1.0, gold: 1.0 },
     mtank: { x: 1.62, z: 1.42, ped: 1.55, rg: 0.3, hg: 0.85 },
     ch6: { h: 1.5, ped: 1.0, ang: 0.5, glow: [0.15, -0.02, 0.0] }, jj: { k: 0.62, up: 0.0 },
-    bigTank: { rg: 0.42, hg: 1.0, dx: 0.0, dy: 0.0, dz: 0.0 },   // (tank6) the right bank's big glowing tank (glass radius / height, offsets)
+    bigTank: { rg: 0.42, hg: 1.0, dx: 0.0, dy: 0.0, dz: 0.0 },
+    box6: { screenY: 0.56, screenH: 0.6, bulbX: 0.13, bulbR: 0.1, lightR: 0.085, halo: 1.9 },   // (fin6) the control box's face   // (tank6) the right bank's big glowing tank (glass radius / height, offsets)
     chunk: 15, near: 18,   // the models' instancing chunks (m) and their LOD1 window ahead of him (behind him from 1 m: LOD2)
     wall: [0.6, 0.5, 0.8],   // the drum's metal past `from` (multiplier; the approved walls are a deeper violet-grey with black holes)
   },
@@ -93,6 +95,12 @@ const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B
 const S6 = !LIST.includes('noarch6');   // (session ddf175f2) the Scene 6 pass (see ARCH56.s6); ,noarch6 = before it
 const T6DRUM = LIST.includes('tripo6');   // (session ddf175f2, coordinator) the user's Tripo star drum (s56_tripo6.js) replaces moduleR6's procedural oval cab, stars and railing; their places are recorded in drumSlots
 const TANK6 = LIST.includes('tank6');   // (session ddf175f2, coordinator) the modelled glowing glass tank (models/s6assets/glow_tank.glb, s56_tank6.js) replaces every procedural tank and the right bank's 913_914 chamber; tank() records slots instead (tankSlots)
+// (session ddf175f2, coordinator) `fin6`, the Screen 6 finishing pass (the user: "finish Screen 6 with the existing models and Blender / three.js
+// pieces"): the left bank's procedural station (lavender control box, glowing bulbs, panel lights, railing, pink cabinet with the paw medallion,
+// glowing tank) instead of the 911 / 912 housings (the art director: the approved left bank is lavender machinery, not pink-gold housings); the
+// control box finished (rounded glossy body, violet screen, big glowing bulbs with halos, three small blue lights, glowing panel lights); the big
+// glowing tank also above the right roller brush (that bay dropped it). Without fin6 nothing changes.
+const FIN6 = LIST.includes('fin6');
 if (ARCH56_ON && typeof window !== 'undefined') window.__bwArch56 = ARCH56;
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -234,6 +242,12 @@ vec3 a56Ungrade(vec3 c) {
     // (ddf175f2) the control box's dark glossy screen and its two glowing white-violet bulbs
     screen: std({ color: 0x241050, emissive: 0x1a0848, emissiveIntensity: 0.6, metalness: 0.3, roughness: 0.14, envMapIntensity: 1.2 }),
     bulb: basic(1.8, 1.5, 2.4),
+    // (fin6) the bulbs' and panel lights' soft halos (additive, HDR: the env6 bloom spreads them) and the screen's small blue lights
+    bulbHalo: basic(1.0, 0.45, 1.25, { transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false }),
+    tealHalo: basic(0.1, 0.8, 0.9, { transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }),
+    amberHalo: basic(1.0, 0.65, 0.12, { transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }),
+    blueLight: basic(0.7, 1.5, 2.8),
+    bulb6: basic(2.6, 1.9, 2.9),
     // (ddf175f2) the approved Scene 6 cabinets' glossy hot pink (#e83ca0 lit, #c02a80 shade)
     ring6: std({ color: 0xd8309c, emissive: 0x6a0a48, emissiveIntensity: 0.45, metalness: 0.45, roughness: 0.3, envMapIntensity: 0.8 }),
     pink6: std({ color: 0xf04aa8, emissive: 0x7a0a48, emissiveIntensity: 0.55, metalness: 0.2, roughness: 0.2, envMapIntensity: 0.9 }),
@@ -593,6 +607,18 @@ vec3 a56Ungrade(vec3 c) {
     const B = Q.box, R0 = new THREE.Matrix4().makeRotationY(s * B.ang), bx = X(B.x), bz = B.z, ph = Q.panel.h, by1 = B.y0 + ph + B.h;
     const pc = (g, x, y, z) => { g.translate(x, 0, z); g.applyMatrix4(R0); g.translate(bx, y, bz); return g; };
     out.push([pc(G.box(B.w * 0.7, B.y0 - yd + 0.02, B.d * 0.7), 0, (B.y0 + yd) / 2, 0), MT.lav]);
+    if (FIN6) {   // (fin6) the approved control box: rounded glossy lavender body and panel, a violet screen with two big glowing bulbs, three small blue lights
+      const rb = (w, h, d, r) => new RoundedBoxGeometry(w, h, d, 3, r), F = Q6.box6;
+      out.push([pc(rb(B.w + 0.08, ph, B.d, 0.05), 0, B.y0 + ph / 2, 0), MT.lav], [pc(rb(B.w + 0.12, 0.045, B.d + 0.05, 0.02), 0, B.y0 + ph, 0), MT.gold]);
+      out.push([pc(rb(B.w, B.h, B.d, 0.07), 0, B.y0 + ph + B.h / 2, 0), MT.lav], [pc(rb(B.w + 0.07, 0.055, B.d + 0.07, 0.025), 0, by1, 0), MT.gold]);
+      const fz = -B.d / 2 - 0.01, ys = B.y0 + ph + B.h * F.screenY;
+      out.push([pc(rb(B.w * 0.84, B.h * F.screenH, 0.05, 0.025), 0, ys, fz + 0.01), MT.screen]);
+      for (const xx of [-F.bulbX, F.bulbX]) out.push([pc(G.sph(F.bulbR, 20, 14).scale(1, 1, 0.55), xx, ys, fz - 0.02), MT.bulb6], [pc(G.tor(F.bulbR + 0.012, 0.014, 24, 6), xx, ys, fz - 0.012), MT.gold],
+        [pc(G.sph(F.bulbR * F.halo, 16, 10).scale(1, 1, 0.3), xx, ys, fz - 0.05), MT.bulbHalo]);
+      for (const xx of [-0.1, 0, 0.1]) out.push([pc(G.sph(0.026, 10, 8).scale(1, 1, 0.6), xx, by1 - B.h * 0.12, fz - 0.01), MT.blueLight]);
+      for (const [xx, mm, hm] of [[-0.14, MT.amberLight, MT.amberHalo], [0.14, MT.teal, MT.tealHalo]]) out.push([pc(G.sph(F.lightR, 18, 12).scale(1, 1, 0.55), xx, B.y0 + ph * 0.52, fz - 0.015), mm], [pc(G.tor(F.lightR + 0.014, 0.02, 24, 6), xx, B.y0 + ph * 0.52, fz - 0.01), MT.gold],
+        [pc(G.sph(F.lightR * F.halo, 14, 10).scale(1, 1, 0.3), xx, B.y0 + ph * 0.52, fz - 0.05), hm]);
+    } else {
     out.push([pc(G.box(B.w + 0.06, ph, B.d), 0, B.y0 + ph / 2, 0), MT.lav], [pc(G.box(B.w + 0.1, 0.04, B.d + 0.04), 0, B.y0 + ph, 0), MT.gold]);
     out.push([pc(G.box(B.w, B.h, B.d), 0, B.y0 + ph + B.h / 2, 0), MT.lav], [pc(G.box(B.w + 0.06, 0.05, B.d + 0.06), 0, by1, 0), MT.gold]);
     for (const xx of [-1, 1]) out.push([pc(G.box(0.035, B.h + ph, 0.035), xx * (B.w / 2 + 0.03), B.y0 + (B.h + ph) / 2, -B.d / 2 - 0.01), MT.gold]);
@@ -600,6 +626,7 @@ vec3 a56Ungrade(vec3 c) {
     out.push([pc(G.box(B.w * 0.78, B.h * 0.5, 0.03), 0, ys, fz), MT.screen]);
     for (const xx of [-0.12, 0.12]) out.push([pc(G.sph(0.072, 16, 12).scale(1, 1, 0.6), xx, ys, fz - 0.02), MT.bulb], [pc(G.tor(0.082, 0.014, 20, 6), xx, ys, fz - 0.01), MT.gold]);
     for (const [xx, mm] of [[-0.13, MT.amberLight], [0.13, MT.teal]]) out.push([pc(G.sph(0.075, 16, 12).scale(1, 1, 0.55), xx, B.y0 + ph * 0.5, fz - 0.015), mm], [pc(G.tor(0.088, 0.02, 20, 6), xx, B.y0 + ph * 0.5, fz - 0.01), MT.gold]);
+    }
     // the gold elbow pipe: up out of the box's top, over, down into the tank's dome; a second one from the dome back into the machinery
     const tx = X(T.x), ptop = Math.max(by1, dome) + 0.32;
     out.push([pipe([[bx, by1, bz], [bx, ptop, bz], [tx, ptop, T.z], [tx, dome - 0.05, T.z]], 0.08, 0.22), MT.brass]);
@@ -681,8 +708,12 @@ vec3 a56Ungrade(vec3 c) {
       const u = ur + (in6(ur) ? Q6.off : P.mod.off); if (u < U0 + 0.5) continue;
       if (in6(u) && u >= Q6.from + Q6.ramp) {   // (ddf175f2) the approved Scene 6 modules in every bay; low ones where a roller brush stands
         for (const s of [1, -1]) { const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0), low = brushNear(u, s), ci = chunk6(u);
-          const useM = TM && TM.m911 && !low;
+          const useM = TM && TM.m911 && !low && !(FIN6 && s > 0);   // (fin6: the left bank's procedural station, not the 911 / 912 housings)
           for (const [g, m] of (s > 0 ? (low ? MOD.L6low : useM ? MOD.L6m : MOD.L6) : (low ? MOD.R6low : useM ? MOD.R6m : MOD.R6))) put(u, g, m, L);
+          if (FIN6 && TANK6 && s < 0 && low) {   // (fin6) the approved right bank's big glowing tank stands above / behind the right roller brush too
+            const T = Q6.Rt.tank, C6 = Q6.ch6, B6 = Q6.bigTank;
+            tankSlots.push({ u, M: frameM(u).multiply(L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.x + B6.dx), C6.ped + 0.04 + B6.dy, T.z + B6.dz))), rg: B6.rg, hg: B6.hg, big: true, low: true });
+          }
           if (s < 0 && T6DRUM) { const C = Q6.Rt.cab; drumSlots.push({ u, M: frameM(u).multiply(L.clone().multiply(new THREE.Matrix4().makeTranslation(s * C.x, 0, C.z))), rx: C.rx, rz: C.rz, top: C.top }); }
           if (!useM) continue;
           if (s > 0) {   // the user's housing (911 / 912 alternating), front (model +x) to the channel turned toward the camera, squashed in depth

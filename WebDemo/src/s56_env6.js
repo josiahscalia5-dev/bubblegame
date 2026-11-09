@@ -17,6 +17,7 @@
 //    whole tunnel (the peach veil). env6 runs the hero grade (uHero 1, the grade of Tap to Start / Scene 5, which the lanes' materials were made
 //    for) inside the s56 tunnel, so arch56's inverse turns itself off (uA56Ungrade = 1 - uHero) and the water uses its hero palette.
 import { S56 } from './s56_tunnel.js';
+import { BRUSH6 } from './s56_brush6.js';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const ENV6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('env6');
 
@@ -25,6 +26,20 @@ export const ENV6 = {
   grade: { hero: 1.0 },
 };
 if (ENV6_ON && typeof window !== 'undefined') window.__bwEnv6 = ENV6;
+
+// 3. `fin6` (the Screen 6 finishing pass; with s56): settings of the merged lanes changed BEFORE they build (their own files untouched).
+//    Brushes: the approved second tier is WHITE (#f4f0fc with a lavender shade), not lavender; rounder, denser tufts with fewer stray spikes
+//    (the art director: "see-through spikes, no distinct white tier").
+export const FIN6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('fin6');
+export const FIN6 = {
+  brush: { dark1: '#a596d2', med1: '#e6def9', lite1: '#ffffff', fur: { spike: 0.07, stray: 0.03, strands: 260, scallop: 0.16, tufts: 36 } },
+};
+if (FIN6_ON) {
+  const C = BRUSH6.colours, B = FIN6.brush;
+  C.dark[1] = B.dark1; C.med[1] = B.med1; C.lite[1] = B.lite1;
+  Object.assign(BRUSH6.fur, B.fur);
+  if (typeof window !== 'undefined') window.__bwFin6 = FIN6;
+}
 
 // called by game.js just before s56.update() (so arch56 and the water read it in the same step) and again in render()
 export function env6Grade(grade, m) {
