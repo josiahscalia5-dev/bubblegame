@@ -25,3 +25,10 @@ Three servers failed in this session. Their registrations, executables and a rea
    - Only a symlink; never overwrites; installs nothing; does not delay the session.
 
 **Without the in-session connection:** `flock /tmp/bw_browser.lock node Tools/spector_live.cjs $PWD/WebDemo <png> '?s3=...'` drives the same Spector server over stdio against the real game. The result is in `spector_live.txt` here.
+
+**Spector live proof (this session, `spector_live.txt`):** `Tools/spector_live.cjs` drove the project Spector server over stdio.
+- The real game was `?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,six2,s56`, bundle baa37bd5.
+- load_url (63 s, 2 canvases), list_canvases, get_context_info (WebGL 2) and capture_frame: **253 draw calls, 41 shader programs, no GL errors**.
+- Its console shows two `THREE.WebGLRenderer: A WebGL context could not be created ... existing context of a different type` errors. Those come from Spector taking a context on the canvas during capture.
+- The normal game run logged 0 console errors (`../stills/log.json`).
+- Plus "GPU stall due to ReadPixels" performance warnings from the capture's readback.

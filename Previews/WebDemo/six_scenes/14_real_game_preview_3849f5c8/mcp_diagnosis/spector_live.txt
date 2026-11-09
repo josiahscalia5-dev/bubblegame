@@ -61,3 +61,74 @@ Use select_canvas to choose which one to debug.
   ]
 }
 ```
+
+### capture_frame (34.8 s)
+**Frame Capture Summary**
+- Total commands: 1310
+- Draw calls: 253
+- Clear calls: 15
+- Shader programs: 41
+- WebGL version: 2
+- Canvas: 540×1080
+- Duration: 16606200ms
+- No GL errors detected
+
+
+### get_draw_calls (0.0 s)
+**Draw Calls (268)**
+```
+[2] clear([17664]) status=0
+[37] drawElements([4,2880,5123,0]) status=0
+[50] drawElementsInstanced([4,504,5123,0,130]) status=0
+[57] drawArraysInstanced([4,0,900,130]) status=0
+[62] drawElements([4,3456,5123,0]) status=0
+[65] drawElements([4,3456,5123,0]) status=0
+[68] drawElements([4,3456,5123,0]) status=0
+[71] drawElements([4,3456,5123,0]) status=0
+[91] drawElements([4,142437,5123,0]) status=0
+[95] drawElements([4,142437,5123,0]) status=0
+[114] drawElements([4,33558,5123,0]) status=0
+[118] drawElements([4,33558,5123,0]) status=0
+[122] drawElements([4,33558,5123,0]) status=0
+[126] drawElements([4,33558,5123,0]) status=0
+[131] drawElements([4,4500,5123,0]) status=0
+[135] drawElements([4,4500,5123,0]) status=0
+[139] drawElements([4,4500,5123,0]) status=0
+[143] drawElements([4,4500,5123,0]) status=0
+[146] drawElements([4,4500,5123,0]) status=0
+[150] drawElements([4,4500,5123,0]) status=0
+[154] drawElements([4,4500,5123,0]) status=0
+[158] drawElements([4,4500,5123,0]) status=0
+[162] drawElements([4,4500,5123,0]) status=0
+[166] drawElements([4,4500,5123,0]) status=0
+[170] drawElements([4,4500,5123,0]) status=0
+[174] drawElements([4,4500,5123,0]) status=0
+[178] drawElements([4,4500,5123,0]) status=0
+[182] drawElements([4,4500,5123,0]) status=0
+[186] drawElements([4,4500,5123,0]) status=0
+[190] drawElements([4,4500,5123,0]) status=0
+[194] drawElements([4,4500,5123,0]) status=0
+[198] drawElements([4,4500,5123,0]) status=0
+[213] drawElements([4,42804,5123,0]) status=0
+[217] drawElements([4,42804,5123,0]) status=0
+[221] drawElements([4,42804,5123,0]) status=0
+[231] drawElements([4,41157,5123,0]) status=0
+[234] drawElements([4,41157,5123,0]) status=0
+[237] drawElements([4,41157,5123,0]) status=0
+[248] drawElements([4,411333,5123,0]) status=0
+[257] drawEle
+
+### get_console_logs (0.0 s)
+**Console Logs (259)**
+```
+[WARNING] [.WebGL-0x7cc00193e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (http://localhost:34457/index.html?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,six2,s56)
+[WARNING] [.WebGL-0x7cc00193e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (http://localhost:34457/index.html?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,six2,s56)
+[WARNING] [.WebGL-0x7cc00193e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (http://localhost:34457/index.html?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,six2,s56)
+[WARNING] [.WebGL-0x7cc00193e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat) (http://localhost:34457/index.html?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,six2,s56)
+[ERROR] THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Canvas has an existing context of a different type (http://localhost:34457/game.bundle.js?v=baa37bd5)
+[ERROR] THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Canvas has an existing context of a different type (http://localhost:34457/game.bundle.js?v=baa37bd5)
+[WARNING] WebGL: INVALID_OPERATION: getTranslatedShaderSource: attempt to use a deleted object
+[WARNING] WebGL: INVALID_OPERATION: getTranslatedShaderSource: attempt to use a deleted object
+[WARNING] WebGL: INVALID_OPERATION: getTranslatedShaderSource: attempt to use a deleted object
+[WARNING] WebGL: INVALID_OPERATION: getTranslatedShaderSource: attempt to use a deleted object
+[WARNING] WebGL: INVALID_OPERATION: getTranslatedShaderSource: attempt to use a deleted obje
