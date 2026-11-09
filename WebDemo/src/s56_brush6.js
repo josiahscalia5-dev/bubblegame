@@ -29,8 +29,9 @@ export const BRUSH6 = {
   // placement: a pair at u = anchor + k * every (inside spans), each side at u + du, lateral x (track frame, + = screen-left), height h
   // above the water's centre-line base height (m), scale s = the pink bell's radius in metres (the brush is built in bell radii, below)
   anchor: 206, every: 26, spans: [[150, 258]], far: 60, near: -4, minX: 1.25,
-  left: { du: 3.0, x: 2.05, h: -0.35, s: 0.62, hat: 0.5, dir: 1 },
-  right: { du: 3.4, x: -2.1, h: -0.35, s: 0.6, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
+  // (fitted by tools/brush6/fit_eval.js at shots56's `206` shot, hero at u 209.1 in the picture: inner tips exactly at minX)
+  left: { du: 5.431, x: 2.057, h: -0.632, s: 0.612, hat: 0.5, dir: 1 },
+  right: { du: 5.379, x: -1.89, h: -0.618, s: 0.485, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
   spin: 3.0,   // rad/s about the brush's own axis (about 0.5 rev/s: faster strobes the strands at 30-60 fps)
   // the skirts, top to bottom: [yRoot, yTip, rRoot, rTip] in bell radii (y from the lowest tips). The art director's measured shares of the
   // bristle height (qa/art_director_ranking.md): pink 26 %, white-lavender 23 %, royal blue 34 %, pale blue 17 %; bristles 62 % of the brush
