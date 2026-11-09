@@ -259,8 +259,10 @@ Resuming. I'll plan the layout from measurements first, then build, and keep cap
 No fog is set, so I'll add the s56 haze to my standard materials myself so the far machinery fades the same way as the shell and the water. Next I'll sample the reference colours for the materials.
 
 - 14:10 `Bash`: Sample reference colours by region
+- 14:15 `Write`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 14:15 `Read`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
 
-_41 tool steps._
+_43 tool steps._
 
 ---
 
@@ -352,8 +354,37 @@ Address this before completing your current task.
 - 14:10 `Read`: /tmp/claude-0/-workspace-bubblegame/d847dce2-344d-57f3-a41b-9aa2e05bff12/scratchpad/foot3/ring3.png
 - 14:10 `Bash`: Find the openingLook bubble meshes
 - 14:10 `Bash`: Read opening bubble and suds code
+- 14:10 `Bash`: Read foam bubble/suds creation and hideLegacy calls
+- 14:11 `Bash`: Read the composer grade pass and bubble shader
+- 14:11 `Bash`: Read the grade shader uniforms
+- 14:11 `Bash`: Inspect post-processing state at tap and u 206
+- 14:11 `Bash`: Find the uS4Grade grade code
+- 14:12 `Bash`: Read the Screen 4 grade injection
+- 14:12 `Bash`: Add opening bubble layer keys, bloom and S4-grade variants
+- 14:12 `Bash`: Rerun the before A/B at tap and u 206 with all variants
+- 14:13 `Bash`: Read the hideLegacy call context in game.js
+- 14:13 `Bash`: Wait for and read the A/B result
+**Agent** (14:13 UTC):
 
-_53 tool steps._
+While the A/B runs in the background, I'll write the new water shader (section 5) and the tunables.
+
+- 14:13 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 14:13 `Bash`: Read the background A/B output so far
+- 14:13 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 14:14 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 14:14 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+**Agent** (14:14 UTC):
+
+Now I'll replace the water material with the per-pixel version.
+
+- 14:15 `Bash`: Replace the water material with the per-pixel shader
+- 14:15 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 14:15 `Bash`: Add the suds hide and per-frame water sync, then build
+- 14:15 `Bash`: Read the before A/B table
+- 14:15 `Bash`: Check the background A/B progress
+- 14:15 `Bash`: Create a before-build copy of WebDemo using symlinks
+
+_74 tool steps._
 
 ---
 

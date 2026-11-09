@@ -98,14 +98,23 @@
   "blending": 1,
   "renderOrder": 0
  },
- "(noname:openingLook)": {
-  "n": 2,
+ "@foamBubbles": {
+  "n": 1,
   "type": "Mesh",
   "mat": "ShaderMaterial",
   "transparent": true,
   "depthWrite": false,
   "blending": 5,
   "renderOrder": 5
+ },
+ "@suds": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 5,
+  "renderOrder": 6
  },
  "s3Bubbles": {
   "n": 2,
