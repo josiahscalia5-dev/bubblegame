@@ -1,5 +1,17 @@
 # Agents and specialists: inventory
 
+## NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2 (account-transfer backup). Saving a definition does NOT activate it on another account.
+| Agent / skill | Owner (where it lives) | Declared tools | Live test this session (a real task) | Status | Restore on the next account |
+|---|---|---|---|---|---|
+| game-art-director | PROJECT: `.claude/agents/game-art-director.md` | Read, Grep, Glob, Bash | launched (Scene 5/6 inventory); stopped by the user's pause before its report | INVOKED, result not delivered | loads from the repo by itself; relaunch with a real task |
+| gameplay-visual-testing | PROJECT: `.claude/agents/gameplay-visual-testing.md` | Read, Grep, Glob, Bash | ran the route test: 3 routes to Level Complete, 5 socks, 0 errors (`Previews/.../11_scene56_match_d847dce2/qa/routes/`) | WORKING (Bash + Playwright scripts) | loads from the repo |
+| lighting-visual-matching | PROJECT: `.claude/agents/lighting-visual-matching.md` | Read, Grep, Glob, Bash, Edit, Write | wrote `s56_arch.js` (+361 lines, builds) on lane arch56 | WORKING, task unfinished | loads from the repo; continue lane arch56 |
+| screen4-water-motion-engineer | PROJECT: `.claude/agents/screen4-water-motion-engineer.md` | Read, Grep, Glob, Bash, Edit, Write + plugin chrome-devtools / threejs-devtools tools | water A/B tools and frames on lane s56; its MCP tools were ABSENT (plugin not enabled) | PARTIAL (works with Bash; no DevTools) | loads from the repo; DevTools need the plugin |
+| water-vfx-engineer | PROJECT: `.claude/agents/water-vfx-engineer.md` | Read, Grep, Glob, Bash, Edit, Write | launched on lane washer34; confirmed its tools; stopped by the pause before any edit | INVOKED, no output | loads from the repo |
+| bubble-wash-screen-matcher (skill) | PROJECT: `.claude/skills/bubble-wash-screen-matcher/SKILL.md` | (instructions) | loaded with the Skill tool; header updated with the current Scene 5/6 targets and the no-credits rule | WORKING | loads from the repo |
+| scenario-author, shader-reviewer, visual-debugger | PLUGIN `parallax-threejs` 0.4.12 (not in the repo) | Read / Bash only (known plugin defect: no MCP tools in subagents) | not available: the plugin is not enabled on this account (ListPlugins empty) | MISSING, NEEDS USER ACTION | the user enables `parallax-threejs` (claude.ai -> Customize -> Plugins), then a NEW session; test each with a real task |
+| SessionStart hook | PROJECT: `.claude/hooks/session-start.sh` + `.claude/settings.json` | runs `Tools/session_preflight.sh`, starts ONE autosave | ran at this session's start and resume | WORKING | loads from the repo |
+
 ## NEWEST: live tests of 9 November 2026, session f28099bc (account transfer). Each agent's live test was a REAL task.
 
 | Agent / skill | Source | Tools it really had | Live test this session | Result |

@@ -1,6 +1,22 @@
 # Bubble Wash Kingdom: current project status (8 November 2026 ~23:55 UTC, session bb87ba9f)
 
-## NEWEST: 9 November 2026 ~14:00 UTC, session d847dce2 (new account). NOTHING here is approved by the user.
+## NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP. NOTHING here is approved by the user.
+- **In the DEFAULT game (the plain launch, `WebDemo/index.html` with no `?s3=`):** `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56`,
+  bundle `6a78d7ae` (= the f28099bc look; this session added only the arch56 hook, proven 0 px). None of this session's Scene 5/6 visual work is in it yet.
+- **Behind switches / on lane branches (NOT in the default game, NOT reviewed):**
+  - `?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,arch56` on lane `claude/lane-s56-arch-d847dce2` (`b8ca82a6`): the new
+    architecture module (`s56_arch.js`, procedural pink housings / glass chambers / gears), builds, not captured yet.
+  - lane `claude/lane-s56-tunnel-ac4e3449` (`50f77c6a`): the water A/B tools and an unfinished per-pixel water material (plain launch URL on that lane).
+  - the user's Tripo models (`WebDemo/models/s56tm/`): evaluated + optimized; model 911 recommended as the bank housing (MODIFY: add a glowing chamber
+    core), the machinery model at most a variant; neither is in the game yet. `MODEL_INVENTORY_2026-11-09_session_d847dce2.md`.
+- **Measured this session:** the machinery is out of the portrait frame (coverage numbers below); LPIPS approved Scene 5 vs game Tap to Start = 0.609
+  (alexnet, 432x768; lower = closer); gameplay routes upper / ledge / blocked all reach Level Complete with 5 socks, 0 console errors.
+- **Evidence:** `Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/` (baseline/ frames + sheet, tmach/ model renders, water56/ A/B, qa/routes/).
+  Comparison sheets: `python3 Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/scripts/sheets56.py <out> <ref5> <ref6> label=<tap.png>,<206.png>`.
+- **Next:** PARALLEL_LANES.md "Lane status" (arch56 first, then s56 water); merge only reviewed, tested improvements; then the 864x1536 sheets with the
+  ceiling / far-left / far-right / water / character crops, the continuous recording (washer -> Scene 6) and the route test.
+
+## 9 November 2026 ~14:00 UTC, session d847dce2 (new account). NOTHING here is approved by the user.
 - **Branch:** the user's primary branch `claude/bubble-wash-restore-transfer-kc4ecl` (fast-forwarded at every verified save); environment record
   `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`.
 - **The user's task (9 November ~13:35 UTC):** Scene 5 / 6 visual accuracy in the REAL game against the reference pack

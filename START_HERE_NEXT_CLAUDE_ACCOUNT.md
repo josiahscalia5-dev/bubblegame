@@ -1,4 +1,42 @@
-# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026 ~14:00 UTC, session d847dce2)
+# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026 ~14:40 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP)
+
+## 00. COPY-READY PROMPT FOR THE NEXT CLAUDE ACCOUNT (paste all of it as the first message)
+> Continue my EXISTING Bubble Wash Kingdom 3D mobile game (three.js, WebDemo/) in the GitHub repository josiahscalia5-dev/bubblegame.
+> My branch is claude/bubble-wash-restore-transfer-kc4ecl. Do not restart, redesign or replace anything; never force-push; never use the default branch.
+> 1. Fetch my branch's newest head (`git fetch origin claude/bubble-wash-restore-transfer-kc4ecl`). If this session opened on another branch (ccr-*), check
+>    it CONTAINS my branch, work there; `bash Tools/save_now.sh` fast-forwards my branch at every verified save.
+> 2. Read CLAUDE.md (newest "READ FIRST" block), this file (sections 00-2), CURRENT_PROJECT_STATUS.md (top), PARALLEL_LANES.md ("Lane status"),
+>    Tools/lanes.json, TOOLS_AND_PLUGINS_RESTORE.md (top), AGENTS_AND_SPECIALISTS_INVENTORY.md (top), MODEL_INVENTORY_2026-11-09_session_d847dce2.md.
+> 3. Review, then run `bash Tools/restore_session.sh`. It must end with `0 failed` (it installs only missing tools, essential first; never spends Tripo credits).
+> 4. Check what is ACTIVE in THIS session with real calls: ListPlugins; ToolSearch for chrome-devtools / threejs-devtools (plugin parallax-threejs),
+>    playwright and spector; call one tool of each (spector: load_url on the running game + capture_frame). Confirm the Agent tool lists
+>    game-art-director, gameplay-visual-testing, lighting-visual-matching, water-vfx-engineer, screen4-water-motion-engineer (project) and
+>    parallax-threejs:scenario-author / shader-reviewer / visual-debugger (plugin). Tell me AT ONCE what needs my action (plugin enable + new session,
+>    /mcp reconnect, the Tripo network secret for openapi.tripo3d.ai). Never call anything working without a live test.
+> 5. Verify the game builds and renders: `cd WebDemo && npm ci && node build.mjs`, then a real 864x1536 capture
+>    (`S3= ZS=tap,206 VW=432 VH=768 DPR=2 flock /tmp/bw_browser.lock node tools/s56/shots56.cjs $PWD <out>`).
+> 6. Restore the lanes: `bash Tools/lanes.sh create` then `bash Tools/lanes.sh status`; continue each from its last pushed commit with its specialist
+>    (PARALLEL_LANES.md "Lane status": what is done and the exact next step). Each agent's first task is its live test. Browser runs: `flock /tmp/bw_browser.lock`.
+> 7. Check exactly ONE autosave runs (`ps -eo pid,etime,args | grep '[a]utosave.sh'`; the SessionStart hook starts it) and that a save shows `Push: VERIFIED`.
+> 8. Continue the Scene 5/6 visual-match work (CURRENT_PROJECT_STATUS.md top): targets ONLY
+>    Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user/02_APPROVED_SCENE_5.png and 03_APPROVED_SCENE_6.png (and the six
+>    approved scenes in Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06). First: finish lane arch56 (bring the machinery,
+>    glowing chambers, cobalt gear, ceiling lamp and pipes, gold rails and the far-left/far-right scenery into the visible portrait frame, with my
+>    Tripo model 911 as the bank housing) and lane s56 (the pale water and transparent overlays), review, merge only tested improvements.
+> 9. No Tripo or Ludo credits and no new models without my explicit approval. Nothing is approved until I review it. Keep gameplay working.
+> 10. Give me a truthful verification report (WORKING / PARTIAL / FAILED / MISSING / NEEDS USER ACTION) before claiming anything works.
+
+**What cannot travel through Git (the user does it once per account):** (1) GitHub connected on claude.ai + the Claude GitHub App on the repository;
+(2) the `parallax-threejs` plugin (0.4.12): claude.ai -> Customize -> Plugins -> enable it, then start a NEW session; (3) a cloud environment for the
+repository (limited network, package registries + MCP servers allowed, hosts `download.blender.org`, `download.pytorch.org`, `dl.google.com`,
+`openapi-dl.data.tripo3d.com`; setup script `if [ -d bubblegame ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`); (4) the Tripo key as a NETWORK
+SECRET for `openapi.tripo3d.ai` (Authorization: Bearer) in that environment (Claude can open the secure form with request_credential); (5) `/mcp` ->
+reconnect any MCP server that failed at start. Claude's background agents, running processes and in-memory context do NOT transfer: their work is on the
+lane branches and in the files listed in PARALLEL_LANES.md.
+
+**State at the backup (9 November ~14:40 UTC):** see `BACKUP_VERIFICATION.md` (top) for the final commit, the clean-restore test and the per-component labels.
+
+---
 
 **Session d847dce2 (new account, 9 November ~13:30 UTC):** the user's PRIMARY branch is now **`claude/bubble-wash-restore-transfer-kc4ecl`** (`52t7ym` is historical). Verification record: `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`. Current task: the user's Scene 5/6 visual-accuracy mandate and reference pack `Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user/`; work and evidence in `Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/`; new lane `arch56` (`s56_arch.js`, switch `,arch56`).
 
