@@ -1,5 +1,28 @@
 # Bubble Wash Kingdom: current project status (8 November 2026 ~23:55 UTC, session bb87ba9f)
 
+## NEWEST: 9 November 2026 ~13:10 UTC, session f28099bc. Visual status of the ACTIVE game. NOTHING here is approved by the user.
+- **Accepted by the user:** only the Classic Screen 4 `?s3=intunnel` (must stay pixel-identical).
+- **Latest running build (the plain launch):** `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56`, bundle `c0361e72`
+  (reproducible from source). The six-scene opening (Scenes 1-5, `opening_six2*.js`) hands over inside the drum at real 8.95 s to the live game in
+  the s56 lavender tunnel (Scenes 5-6, `s56_tunnel.js`), Level 1 gameplay unchanged. Working code: the m.tilt pickup fix; water kept under the
+  Neutral tone-mapping knee.
+- **Baseline frames (864x1536) and the art director's ranking:** `Previews/WebDemo/six_scenes/10_restore_f28099bc/evidence/baseline/` and
+  `.../evidence/qa/art_director_ranking.md`. Outstanding differences (largest first):
+  - Scene 1: she stands instead of kneeling; a foreground towel stack hides her legs; the blue towel is a rigid dome; flat pale room light; the
+    washer shows the room through its drum.
+  - Scene 2: the open washer has no drum (room visible); her face hidden (camera behind her); the towel hangs as a flat sheet.
+  - Scene 3: he faces away (no "Oops" face); the drum is open at the back; camera too close; flat water band.
+  - Scene 4: no blue water behind the glass (azure-cobalt 2.9 % vs 30.3 %); his face too big; the rim dull bronze; lights unlit.
+  - Scene 5 (opening, compare at ~8.9 s, the 8.4 s frame is mid-turn): the drum's open end shows the room before the hand-over.
+  - Scenes 5-6 (live game): pale white cloud patches on the water and a broad foam film round him (cyan 0 % vs 14 %, thin crests 1 % vs 15 %);
+    missing side machinery / gear on the right / lamp arches; orange railings instead of gold; oversized coins; cylindrical side brushes missing;
+    he rides high; the hint card covers the vanishing point.
+- **In progress (unreviewed, on lane branches, see PARALLEL_LANES.md "Lane status"):** s56 water (diagnosis + S56.water), ui HUD restyle,
+  washer34 Scenes 3-4, girl12 Scenes 1-2.
+- **Next:** review and merge the lanes (s56, ui, washer34, girl12), rebuild, the six-scene sheet at 864x1536, the continuous recording
+  (`WebDemo/tools/level1/record_flow.cjs`, `O_HAND=8.95 O_END=9.75`), the route test and the identity proof.
+
+
 **NEWEST (9 November 2026 ~02:45 UTC, session 6ddc157f, new account): THE ACTIVE GAME CHANGED.** The user selected the six-scene game with their
 new Tripo models ("tripo3 final", the "second row") as THE game: a plain launch of `WebDemo/index.html` (no `?s3=`) now runs
 `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3` (bundle `45f21c4a`, stamped `game.bundle.js?v=45f21c4a`). New models in it:
