@@ -298,15 +298,16 @@ const SIX_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 
         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(2.4, 8.0, d) * 0.85 * uGlow);`;
 const SIX_DRUM = '';
 const SIX2_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 at the bottom
-        vec3 m6 = mix(vec3(0.30, 0.20, 0.54), vec3(0.66, 0.52, 0.90), 0.5 + 0.5 * up6);
+        vec3 m6 = mix(vec3(0.24, 0.13, 0.44), vec3(0.56, 0.38, 0.82), 0.5 + 0.5 * up6);
         m6 = mix(m6, vec3(0.86, 0.80, 1.0), smoothstep(0.55, 0.95, up6) * (1.0 - smoothstep(0.6, 2.2, d)) * 0.55);   // the silver sheen by the door
         vec2 hp6 = vec2(a * 7.0, d * 3.2); vec2 hc6 = (fract(hp6 + vec2(0.0, 0.5 * mod(floor(hp6.x), 2.0))) - 0.5) * vec2(1.0, 1.35); float hr6 = length(hc6);
         m6 = mix(m6, vec3(0.10, 0.05, 0.24), (1.0 - smoothstep(0.19, 0.25, hr6)) * 0.88);
         m6 += vec3(0.22, 0.18, 0.32) * smoothstep(0.25, 0.3, hr6) * (1.0 - smoothstep(0.3, 0.38, hr6)) * 0.7;   // a bright lip round each hole
         float rb6 = exp(-pow((fract(d * 0.85) - 0.5) / 0.045, 2.0)), gb6 = exp(-pow((fract(d * 0.85) - 0.56) / 0.012, 2.0)) + exp(-pow((fract(d * 0.85) - 0.44) / 0.012, 2.0));
         m6 = mix(m6, vec3(0.95, 0.4, 0.78), rb6 * 0.8); m6 = mix(m6, vec3(1.0, 0.8, 0.36), min(1.0, gb6) * 0.85);
-        c = mix(blue6, m6, smoothstep(-0.9, -0.72, up6));
-        c = mix(c, vec3(0.88, 0.78, 1.0), smoothstep(5.0, 9.0, d) * 0.55 * uGlow);`;
+        float fl6 = -0.9 + uFill * 0.95 + 0.07 * sin(a * 3.0 - uTime * 2.4 + d * 2.0) * uFill;   // the water's edge: it climbs and swirls round the drum as the wash begins
+        c = mix(blue6, m6, smoothstep(fl6, fl6 + 0.18, up6));
+        c = mix(c, vec3(0.88, 0.78, 1.0), smoothstep(5.5, 9.0, d) * 0.4 * uGlow);`;
 function buildVortex() {
   const P = OPENING3D.porthole, len = 9, n = 90, nA = 48;
   const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);   // (hidden behind the washer and the wall until the camera is inside)
@@ -314,10 +315,10 @@ function buildVortex() {
   for (let i = 0; i <= n; i++) { const d = (i / n) * len; for (let j = 0; j <= nA; j++) { const a = -Math.PI + (j / nA) * Math.PI * 2, r = rad(d); /* (0 at the top: the pattern's seam is at the bottom, under the water) */ pos.push(P.x + Math.sin(a) * r, P.y + Math.cos(a) * r, P.z - d); uv.push(a, d); } }
   for (let i = 0; i < n; i++) for (let j = 0; j < nA; j++) { const a = i * (nA + 1) + j, b = a + nA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aAD', new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx);
-  const U = { uTime: { value: 0 }, uFlow: { value: 0 }, uGlow: { value: 1 } };
+  const U = { uTime: { value: 0 }, uFlow: { value: 0 }, uGlow: { value: 1 }, uFill: { value: 0 } };   // (uFill: six2 only)
   const mat = new THREE.ShaderMaterial({ uniforms: U, side: THREE.DoubleSide,
     vertexShader: 'attribute vec2 aAD; varying vec2 vAD; void main() { vAD = aAD; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: /* glsl */ `uniform float uTime, uFlow, uGlow; varying vec2 vAD; ${NOISE}
+    fragmentShader: /* glsl */ `uniform float uTime, uFlow, uGlow; ${SIX2_ON ? 'uniform float uFill;' : ''} varying vec2 vAD; ${NOISE}
       void main() {
         float a = vAD.x, d = vAD.y, t = uTime;
         // noise blended across the angle's wrap (at the bottom), so the pattern has no seam

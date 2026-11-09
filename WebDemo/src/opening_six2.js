@@ -36,11 +36,11 @@ export const SIX2 = {
     [0.9, [0.55, 0.47, 3.45], [-0.25, 0.6, 0.64], 49],
     [2.0, [0.78, 0.507, 3.358], [-0.198, 0.627, 0.619], 43.8],   // reference 02 (fitted)
     [3.2, [0.78, 0.507, 3.358], [-0.198, 0.627, 0.619], 43.8],
-    [4.0, [0.22, 0.74, 1.3], [0.32, 0.6, -0.2], 52],
-    [4.9, [0.25, 0.7, 1.05], [0.33, 0.58, -0.3], 50],
-    [5.35, [0.28, 0.78, 3.0], [0.3, 0.72, 0.27], 36],
-    [6.85, [0.3, 0.76, 2.7], [0.3, 0.71, 0.27], 36],
-    [7.6, [0.3, 0.64, 0.24], [0.3, 0.56, -2.0], 54],
+    [4.0, [0.18, 0.8, 1.55], [0.32, 0.6, -0.2], 50],
+    [4.9, [0.22, 0.74, 1.15], [0.33, 0.58, -0.3], 50],
+    [5.4, [0.3, 0.73, 3.29], [0.3, 0.72, 0.27], 36],   // reference 04: the washer fills the frame, the porthole centred at 55 % height
+    [7.4, [0.3, 0.72, 3.25], [0.3, 0.71, 0.27], 36],
+    [8.0, [0.3, 0.64, 0.24], [0.3, 0.56, -2.0], 54],
   ],
   scenes: [[-1, 1], [0.0, 2], [3.25, 3], [5.3, 4], [7.3, 5], [9.15, 6]],   // [from t, scene number] for the captions
   water: { rise: 0.17 },
@@ -223,7 +223,7 @@ export { keys as six2Keys, sm as six2Sm, clamp01 as six2Clamp, V as six2V, terry
 export function installSix2(ctx) {
   const { scene, camera, env, washer, basket, g2, GIRL2, hero, heroBody, heroExpr, six, vortex, splash, glowL, rotateBoneWorld, aimBone, reachBones, blinkAt, bez, OPENING3D } = ctx;
   const P = OPENING3D.porthole, S = SIX2, hk = OPENING3D.heroW / 0.34;
-  { const hl = [P.x, OPENING3D.waterY + 0.1 * hk, P.z - 2.8]; if (S.cam[S.cam.length - 1][0] < 8.6) S.cam.push([8.6, [hl[0], hl[1] + 0.33 * hk, hl[2] + 1.17 * hk], [hl[0], hl[1] + 0.12 * hk, hl[2] - 2.1 * hk], 60]); }
+  { const hl = [P.x, OPENING3D.waterY + 0.1 * hk, P.z - 2.8]; if (S.cam[S.cam.length - 1][0] < 8.6) S.cam.push([8.45, [hl[0], hl[1] + 0.2 * hk, hl[2] + 0.78 * hk], [hl[0], hl[1] + 0.16 * hk, hl[2] - 2.1 * hk], 56], [8.75, [hl[0], hl[1] + 0.21 * hk, hl[2] + 0.8 * hk], [hl[0], hl[1] + 0.16 * hk, hl[2] - 2.1 * hk], 56], [9.15, [hl[0], hl[1] + 0.33 * hk, hl[2] + 1.17 * hk], [hl[0], hl[1] + 0.12 * hk, hl[2] - 2.1 * hk], 60]); }   // reference 05 held, then the game's Tap to Start framing for the hand-over
   ctx.room.visible = false; ctx.room.userData.six2Hidden = true;
   // the light: less flat sky fill (the references' rich colour), a warmer key
   scene.traverse((o) => { if (o.isHemisphereLight) o.intensity *= 0.7; if (o.isDirectionalLight && o.color.r > 0.99 && o.color.b < 0.9) { o.color.setHex(0xffe2c0); o.intensity *= 1.1; } });
@@ -238,6 +238,30 @@ export function installSix2(ctx) {
   six.towel.visible = false;   // (the six towel is replaced by the cloths below; the six timeline never runs with six2)
   const bG = new THREE.Group(), yG = new THREE.Group(); bG.add(blue.mesh); yG.add(yel.mesh); scene.add(bG, yG); bG.name = 'six2BlueTowel'; yG.name = 'six2YellowTowel';
   const marks = alertMarks(); scene.add(marks);
+  washer.glass.material.opacity = 0.07; washer.glass.material.color = new THREE.Color(0xd8e8ff);
+  // scene 5 (reference 05): repeated pink-and-gold ring arches over the water, glowing violet tanks on both banks, brass pipes along the crown, lamps
+  const T5 = new THREE.Group(); T5.name = 'six2TunnelArches'; scene.add(T5);
+  const radT = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);
+  const pinkA = new THREE.MeshStandardMaterial({ color: 0xff6ec4, emissive: 0xd02a90, emissiveIntensity: 0.7, metalness: 0.4, roughness: 0.3, envMap: env });
+  const goldA = washer.goldM, tankM = new THREE.MeshStandardMaterial({ color: 0xd6a8ff, emissive: 0xa45cff, emissiveIntensity: 1.3, roughness: 0.1, transparent: true, opacity: 0.88, envMap: env });
+  const lampA = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.9, 1.5, 1.0) });
+  const wyT = OPENING3D.waterY;
+  for (let d = 2.2; d <= 8.6; d += 0.62) {
+    const r = radT(d) * 0.985, half = Math.acos(THREE.MathUtils.clamp((wyT - P.y) / r, -1, 1));   // the arch above the water line
+    const arc = Math.PI * 2 - 2 * (Math.PI - half), a0 = Math.PI / 2 - arc / 2 + Math.PI;
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(r, 0.022, 8, 48, arc), pinkA); ring.rotation.z = -Math.PI / 2 - arc / 2 + Math.PI / 2; ring.position.set(P.x, P.y, P.z - d); T5.add(ring);
+    for (const k of [-1, 1]) { const g = new THREE.Mesh(new THREE.TorusGeometry(r - 0.028, 0.008, 6, 48, arc), goldA); g.rotation.copy(ring.rotation); g.position.set(P.x, P.y, P.z - d + k * 0.03); T5.add(g); }
+    const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 8), lampA); lamp.position.set(P.x, P.y + r - 0.04, P.z - d); T5.add(lamp);
+    for (const side of [-1, 1]) {   // a glowing tank on each bank, gold-capped
+      const x = P.x + side * Math.sqrt(Math.max(0, (r * 0.86) ** 2 - (wyT + 0.15 - P.y) ** 2)), z = P.z - d - 0.3;
+      const tk = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.2, 18), tankM); tk.position.set(x, wyT + 0.2, z); T5.add(tk);
+      for (const y of [0.09, 0.31]) { const cp = new THREE.Mesh(new THREE.CylinderGeometry(0.064, 0.064, 0.025, 18), goldA); cp.position.set(x, wyT + y, z); T5.add(cp); }
+    }
+  }
+  for (const side of [-1, 1]) {   // brass pipes along the crown
+    const pts = []; for (let d = 1.8; d <= 9; d += 0.4) { const r = radT(d) * 0.9; pts.push(V(P.x + side * r * 0.42, P.y + r * 0.88, P.z - d)); }
+    T5.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 60, 0.02, 8), goldA));
+  }
   // the heap in the basket (tripo2's yellow, blue, pink towels): the blue heap towel is the cloth now; the pink one becomes lavender
   let heap = null;
   Promise.resolve(typeof window !== 'undefined' && window.__bwTripo2Ready).then(() => {
@@ -383,8 +407,8 @@ export function installSix2(ctx) {
     if (s < 2.95) { hp = inBasket; rot.set(0.05 * Math.sin(it * 0.9), camYaw + 0.12 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); surprise = sm(0.5, 0.65, s) * (1 - sm(1.6, 1.9, s)) + sm(2.5, 2.6, s); if (s > 2.7) hp.y -= sm(2.7, 2.95, s) * 0.05; }
     else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0, -0.06, 0)); rot.set(0.1 * Math.sin(s * 6), camYaw - 0.3, 0.1 * Math.sin(s * 5)); surprise = 1; scl = 0.62; }
     else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.62 + (1 - 0.62) * k; surprise = 1; }
-    else if (s < 7.45) { const wet = sm(6.6, 7.2, s); hp = heroSit.clone(); hp.y += 0.01 * Math.sin((s - 4.75) * 9) * Math.exp(-(s - 4.75) * 3) + wet * (0.03 + 0.015 * Math.sin((s - 6.6) * 6.5)); rot.set(0.04 * Math.sin(s * 3), 0.25 * Math.sin((s - 4.6) * 1.7) * (s < 6.6 ? 1 : 0.4), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 6.7 ? 1 : 0; }
-    else { const k = sm(7.4, 8.6, s), tn = sm(7.45, 8.0, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 7.45) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
+    else if (s < 7.7) { const wet = sm(6.6, 7.2, s); hp = heroSit.clone(); hp.y += 0.01 * Math.sin((s - 4.75) * 9) * Math.exp(-(s - 4.75) * 3) + wet * (0.03 + 0.015 * Math.sin((s - 6.6) * 6.5)); rot.set(0.04 * Math.sin(s * 3), 0.25 * Math.sin((s - 4.6) * 1.7) * (s < 6.6 ? 1 : 0.4), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 6.7 ? 1 : 0; }
+    else { const k = sm(7.65, 8.45, s), tn = sm(7.7, 8.2, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 7.7) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
     hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
     heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
     // the "!" marks: while he peeks (waiting) and when the towel is lifted off him
@@ -428,12 +452,13 @@ export function installSix2(ctx) {
     six.dial.rotation.y = on(0) * Math.max(0, s - 6.55) * 3;
     const lit = on(2);
     glowL.intensity = 2.0 + lit * 4.0 + 0.6 * Math.sin(it * 2.0);
-    vortex.U.uTime.value = it; vortex.U.uGlow.value = 0.55 + 0.45 * lit; vortex.U.uFlow.value = s > 0 ? Math.max(0, s - 6.6) * lit * 1.8 + sm(7.4, 9.0, s) * 6 : 0;
+    vortex.U.uTime.value = it; vortex.U.uGlow.value = 0.55 + 0.45 * lit; vortex.U.uFlow.value = s > 0 ? Math.max(0, s - 6.6) * lit * 1.8 + sm(7.7, 9.2, s) * 6 : 0;
     vortex.WU.uFrom.value = s < 3.6 ? 9.5 : 9.5 * (1 - sm(3.6, 4.6, s));
-    const rise = S.water.rise * sm(6.6, 7.4, s) * (1 - sm(7.6, 8.4, s));
+    const rise = S.water.rise * sm(6.6, 7.4, s) * (1 - sm(7.9, 8.5, s));
     vortex.water.position.y = rise; vortex.water.scale.x = 1 + rise * 2.2;
+    vortex.U.uFill.value = sm(6.6, 7.3, s) * (1 - sm(7.9, 8.6, s)) * 0.75;   // the water climbs round the drum (the swirl of reference 04)
     const inDrum = camera.position.z < P.z - 0.05;
-    R2.g.visible = washer.g.visible = basket.visible = badge.visible = !inDrum;
+    R2.g.visible = washer.g.visible = basket.visible = badge.visible = !inDrum; T5.visible = s > 7.6;
     if (g2.ready) { g2.root.visible = !inDrum; g2.stool.visible = false; }
     ctx.girl.root.visible = false;
     ctx.bubbles.visible = !inDrum; ctx.front.visible = false; ctx.foam.visible = !inDrum && s > 4.0;
