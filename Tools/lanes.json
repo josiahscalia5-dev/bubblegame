@@ -1,0 +1,45 @@
+{
+  "note": "Parallel specialist lanes (session ac4e3449, 9 November 2026). The coordinator (the main Claude session on claude/bubble-wash-account-transfer-52t7ym) owns every file not listed under a lane, merges lanes in the order below after a visual review, rebuilds and tests. A lane edits ONLY its own files (and, in WebDemo/src/opening_six2.js, only its own named blocks). Nothing is approved until the user reviews it. Human-readable version: PARALLEL_LANES.md.",
+  "merge_order": ["s56", "ui", "washer34", "girl12"],
+  "lanes": {
+    "girl12": {
+      "branch": "claude/lane-s12-girl-room-ac4e3449",
+      "specialist": "SPECIALIST 1 - girl / laundry room / opening (Scenes 1-2)",
+      "agent": "lighting-visual-matching",
+      "files": ["WebDemo/src/opening_six2_room.js"],
+      "blocks_in_opening_six2_js": ["SIX2.girl", "SIX2.basket", "SIX2.cam entries with t <= 3.2", "the girl's knee timeline", "basket on the rug", "the girl", "the blue towel"],
+      "task": "Scene 1 kneeling girl + hidden hero under the blue towel, room (window, curtains, shelves, rug, light); Scene 2 she lifts the towel, turns and loads it into the open washer, never noticing him; the girl alive and moving"
+    },
+    "washer34": {
+      "branch": "claude/lane-s34-washer-ac4e3449",
+      "specialist": "SPECIALIST 2 - washer accident / wash start (Scenes 3-4)",
+      "agent": "water-vfx-engineer",
+      "files": ["WebDemo/src/opening_six2_water.js", "WebDemo/src/opening_six2_tunnel.js (the washer look; its scene-5 props are frozen)", "WebDemo/src/opening3d.js: the SIX2_DRUM_END GLSL constant only"],
+      "blocks_in_opening_six2_js": ["SIX2.door", "SIX2.water", "SIX2.cam entries with 3.25 <= t <= 7.4", "the door", "the hero", "the yellow towel", "the washer"],
+      "task": "Scene 3 the believable accident (he slides out of the yellow bundle behind the rim, tumbles into the drum; she never notices); Scene 4 the approved washer look (glossy pink, deep gold rim, paw badge, lights, purple-blue interior) with clearly visible moving cobalt water swirling round him behind the glass. Resumes the interrupted water lane of session 9ee07777 (no code was saved; its diagnosis is in Previews/WebDemo/six_scenes/08_six_portrait_scenes_9ee07777/specialist_lanes/water/)"
+    },
+    "s56": {
+      "branch": "claude/lane-s56-tunnel-ac4e3449",
+      "specialist": "SPECIALIST 3 - tunnel / gameplay world (Scenes 5-6)",
+      "agent": "screen4-water-motion-engineer",
+      "files": ["WebDemo/src/s56_tunnel.js", "WebDemo/tools/s56/"],
+      "blocks_in_opening_six2_js": [],
+      "task": "The approved Scene 5/6 lavender laundry-machine tunnel (s56) in the live game: water (saturated cobalt, real waves, crests, no pale foam blanket), his swim on the same wave height (submerged lower body, round fluffy back), splashes/wake, arches/holes/machinery/tanks/gear/pipes placement against the references; gameplay untouched"
+    },
+    "ui": {
+      "branch": "claude/lane-ui-hud-ac4e3449",
+      "specialist": "SPECIALIST 4 - UI / HUD / interface (all scenes)",
+      "agent": "general-purpose",
+      "files": ["WebDemo/src/six2_ui.js", "WebDemo/src/hud56.js"],
+      "blocks_in_opening_six2_js": [],
+      "task": "One coherent mobile interface across Scenes 1-6 matched to the approved screens: top bar (hearts / coins / gems with + buttons), Bubble Wash Kingdom logo, Laundry Toss plaque, numbered caption pill, Start button, Home and Shop buttons; the in-game HUD restyled to the same look (hud56.js injects CSS under body.s56 only)"
+    },
+    "qa": {
+      "branch": null,
+      "specialist": "SPECIALIST 5 - QA / matching / capture (read-only)",
+      "agent": "gameplay-visual-testing + game-art-director (+ the bubble-wash-screen-matcher skill run by the coordinator)",
+      "files": [],
+      "task": "Side-by-sides of all six scenes vs the approved references, mismatch checklists, measurements, gameplay route tests, continuity Scene 1 -> 6; runs on the integration branch after each merge"
+    }
+  }
+}
