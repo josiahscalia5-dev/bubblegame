@@ -1981,3 +1981,9 @@ Recording and identity proof are both running in the background; I'll be re-invo
 - **Six scenes, built as real 3D behind the opt-in `six` switch:** the cloth towel, the bundle, the tumble with the towel on his head, the door, the wash seen through the porthole, and the drum tunnel with machinery. The reference-versus-game sheet is at `Previews/WebDemo/six_scenes/04_final_8823adc8/SIX_SCENES_REFERENCE_vs_GAME.png`.
 - **Tripo:** connected, 1,060 credits. Model downloads now work after I added the download host to your environment's allowlist. No credits were spent; every asset already existed.
 
+---
+
+### Automatic notice · 2026-11-09 00:06 UTC
+
+_Background command "Run the five-checkpoint identity proof against v5" completed (exit code 0)_
+
