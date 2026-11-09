@@ -72,8 +72,85 @@ Now the baseline stills.
 Let me look at the mascot model's proportions to place the cradle and understand the face placement.
 
 - 17:29 `Bash`: Measure the mascot model's shape
+**Agent** (17:29 UTC):
 
-_23 tool steps._
+I'll skip the offline measurement and write the module directly; the frames will show the result.
+
+- 17:30 `Write`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2_girl12.js
+**Agent** (17:30 UTC):
+
+Now hook it into `opening_six2.js` (my owned blocks only), all gated on `seq7`.
+
+- 17:30 `Bash`: Fade the tumble pitch into the landing
+- 17:30 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:30 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:30 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:31 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:31 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Edit`: /workspace/bubblegame_lanes/girl12/WebDemo/src/opening_six2.js
+- 17:32 `Bash`: Tune numbers and build
+**Agent** (17:32 UTC):
+
+Build is clean. First capture at DPR 1 of the key moments.
+
+- 17:32 `Bash`: Capture seq7 frames at DPR 1
+**Agent** (17:33 UTC):
+
+The coordinator asked me to pause. A capture is running in the background holding the browser lock, so I'll check how far it got and then stop it to free the CPUs.
+
+- 17:33 `Bash`: Check capture progress
+- 17:33 `ToolSearch`
+- 17:33 `TaskStop`
+- 17:33 `Bash`: Confirm no leftover capture processes
+**Agent** (17:33 UTC):
+
+My capture never got the browser lock (other lanes held it), so it produced no frames and is now stopped. No girl12 processes remain. Next I'll check how other lanes commit built files, then commit.
+
+- 17:33 `Bash`: Check status and other lanes' commit conventions
+**Agent** (17:33 UTC):
+
+Other lanes commit the rebuilt bundle and page stamp with their sources, so I'll do the same. Now the HANDOFF.
+
+- 17:34 `Write`: /workspace/bubblegame_lanes/girl12/WebDemo/tools/girl12/HANDOFF.md
+- 17:34 `Bash`: Rebuild, commit and push the lane branch
+- 17:34 `Bash`: Verify the push landed on the remote
+**Agent** (17:34 UTC):
+
+I've paused as asked. The lane builds and is committed and pushed, but none of the new Screen 2 and Screen 3 work has been seen in a single frame yet.
+
+- **Commit:** `1ffd6b8b` on `claude/lane-s12-girl-room-ac4e3449`, pushed. I checked the remote and it points at that commit.
+- **Frames:** none. My only capture never got the browser lock because other lanes held it, and I stopped it when your message arrived. No girl12 browser processes are left running, and the evidence folder `/workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/girl12/` has nothing in it.
+- **Without `seq7`:** not proven yet. Every new piece of code is skipped or adds exactly 0 when `seq7` is off, and the private random sequence is untouched, so the opening should stay pixel-identical. The frame diff against `t_2.40.png` and `t_5.00.png` has not been run.
+
+**What I changed (all behind `seq7`):**
+- **New file `WebDemo/src/opening_six2_girl12.js`.** It holds the tunable numbers (`window.__bwSeq7` in the browser for live tuning) and three helpers:
+  - `softHang`: the blue towel hangs from both hands with soft folds, an uneven hem and nearly constant width, instead of the stiff cone.
+  - `cradle`: the yellow towel wraps his lower half with its corners flopping over the edge, so his head and eyes stay out, instead of the smooth dome.
+  - `tumble`: a readable arc from the door into the drum. He spins around the line to the camera instead of flipping face-down, so his face stays toward the viewer. This is meant to fix the detached eyes.
+- **Hooks in `WebDemo/src/opening_six2.js`, only in my blocks:**
+  - At the washer she now faces the camera's side more, with her chest turned toward the door and her head turned back toward the camera. This is aimed at her 3/4 face at 2.4 s.
+  - New hand targets for scooping the yellow towel, carrying it and pushing it in. Her hands no longer jump back to her chest after the push.
+  - He stays visible the whole way. He sits in the basket until her hands arrive, rises in the towel facing the camera with a surprised "O" face, eyes open and the "!" marks, then slips out at about real 4.35 s and tumbles into the drum. The 5.6 s landing code is unchanged.
+  - The yellow towel opens and falls in beside him.
+
+`WebDemo/game.bundle.js` and the `index.html` stamp are rebuilt and committed with the sources, as the other lanes do.
+
+**HANDOFF:** `WebDemo/tools/girl12/HANDOFF.md` on the branch lists what is done, what is unverified and the next steps in order:
+1. Capture `seq7` at DPR 1 and look at every frame.
+2. Fix and tune Screen 3: visibility at 3.3 / 3.7 / 4.2 s, the face at 4.7 / 5.0 s, and the 5.6 s landing kept.
+3. Check Screen 2 (her face at 2.4 s, the soft towel). Only then touch the camera keys at 2.0 / 3.2 s if her face still hides.
+4. Run the frame diff without `seq7` (must be 0 differing pixels).
+5. Make the DPR 2 approved | before | after sheets.
+
+**Still different from approved Screens 2 and 3:** everything listed in the 14_real_game_preview gap list for Screens 2 and 3 still stands in the running game. The new code may address it, but no frame confirms that yet. The Screen 2 camera keys are not changed.
+
+
+_46 tool steps._
 
 ---
 
@@ -148,8 +225,15 @@ Now the code. Let me find the relevant pieces.
 Let me compute the geometry numerically: where the room's objects intrude into the drum tube, and when the washer face covers the whole frame during the approach.
 
 - 17:29 `Bash`: Compute room intrusion depth and coverage timing
+- 17:31 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/14_real_game_preview_3849f5c8/stills/t_2.40.png
+- 17:34 `Bash`: Check bubble material and seq7 usage
+**Agent** (17:34 UTC):
 
-_25 tool steps._
+Checkpointing Task 1 first. Nothing was written yet, so I'll put the designed drum back into code behind `seq7`, check that it builds, record it in HANDOFF.md, push, then switch to Screen 6.
+
+- 17:34 `Edit`: /workspace/bubblegame_lanes/arch56/WebDemo/src/opening_six2_tunnel.js
+
+_28 tool steps._
 
 ---
 
@@ -229,8 +313,42 @@ Let me write a fast opening capture/probe tool for my lane (same page setup as s
 - 17:27 `Write`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/op56.cjs
 - 17:27 `Bash`: Build the lane bundle to check it matches the committed one
 - 17:27 `Bash`: Probe the current opening at the scene 3-5 moments
+**Agent** (17:33 UTC):
 
-_28 tool steps._
+The coordinator changed the priority to Screen 6. I'll check the running probe, then checkpoint and switch.
+
+- 17:33 `Bash`: Check the probe's progress
+- 17:33 `TaskStop`
+- 17:33 `Bash`: Stop the waiting opening probe
+**Agent** (17:33 UTC):
+
+Checkpointing first: the only Screens 3-4 work so far is the probe tool (no seq7 code yet). I'll note it in the HANDOFF and commit.
+
+- 17:33 `Bash`: Commit the checkpoint and push the lane branch
+**Agent** (17:34 UTC):
+
+Now the Screen 6 water. Let me read s56_tunnel.js fully.
+
+- 17:34 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:34 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:34 `Bash`: Read the live-game capture tool and the water measure
+- 17:34 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
+- 17:34 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/14_real_game_preview_3849f5c8/game/s56_206.png
+**Agent** (17:34 UTC):
+
+Let me capture "before" (no water6) and the current water6 v2 WIP at u 206, DPR 1, in one queued job.
+
+- 17:34 `Bash`: Capture u 206 before and with the water6 WIP at DPR 1
+- 17:34 `Bash`: List the earlier water evidence and QA
+- 17:34 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/water/tune1/ab_206_full.png
+- 17:34 `Bash`: Crop the approved water region
+- 17:34 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/ap_water.png
+- 17:34 `Bash`: Check capture progress and lock queue
+- 17:34 `Bash`: Check capture progress and lock queue
+- 17:34 `Bash`: Read the A/B tool and rest of aw56
+- 17:34 `Bash`: Read the rest of ab56.cjs
+
+_46 tool steps._
 
 ---
 
@@ -263,5 +381,22 @@ What changed, the pushed commit hash, before/after frame paths and sheet, identi
 - 17:25 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/14_real_game_preview_3849f5c8/game/s56_206.png
 - 17:25 `Bash`: Check hook, node_modules, bundle md5, load
 - 17:25 `Bash`: Capture pre-change no-brush6 tap baseline
+- 17:33 `Bash`: Wait for baseline capture
+- 17:33 `Bash`: Crop approved brushes for close look
+- 17:33 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/appr_left.png
+- 17:33 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/appr_right.png
+- 17:34 `Bash`: Check baseline capture progress
+- 17:34 `Bash`: Read the s56 coordinator hook context
+- 17:34 `Bash`: Check capture and lock holders
+- 17:34 `Bash`: Snapshot the pre-change bundle tree for identity captures
+- 17:34 `Bash`: Cancel the queued baseline capture
+**Agent** (17:34 UTC):
 
-_9 tool steps._
+Now one locked job: pre-change no-brush6 tap (identity baseline), then the first look with brush6 at tap and 206 (measure only, no fit).
+
+- 17:34 `Bash`: Write combined capture script
+- 17:34 `Bash`: Run baseline and first brush6 look captures under the lock
+- 17:35 `Write`: /workspace/bubblegame_lanes/brush6/WebDemo/tools/brush6/sheet.py
+- 17:35 `Bash`: Check capture progress and lock queue
+
+_22 tool steps._
