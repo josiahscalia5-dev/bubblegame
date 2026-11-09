@@ -734,8 +734,9 @@ Baseline done. Now the live probe at real 7.6 s for the numbers.
 - 10:37 `Bash`: List probe output
 - 10:37 `Bash`: Rerun probe with output to file
 - 10:39 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_water/base_sheet2.png
+- 10:42 `Bash`: Sample palette clusters from REF04/REF05 water
 
-_28 tool steps._
+_29 tool steps._
 
 ---
 
@@ -793,8 +794,27 @@ While the baseline capture runs, I'll sample the reference colours (REF05 wall r
 - 10:40 `Bash`: Extract GLB textures and analyse hues
 - 10:41 `Bash`: Crop REF05 middle band
 - 10:41 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/ref05_mid.png
+- 10:43 `Bash`: Find install order and glowL uses
+- 10:43 `Bash`: Verify shader chunk availability
+**Agent** (10:45 UTC):
 
-_32 tool steps._
+Root causes are becoming clear from the numbers. Next I'll check where the six.tun lamps/bubbles live so I can reuse them.
+
+- 10:45 `Bash`: Check BufferGeometryUtils import path
+- 10:45 `Bash`: Check mergeGeometries export
+**Agent** (10:45 UTC):
+
+Now I'll write the pass-1 version of my tunnel/washer-look file.
+
+- 10:46 `Write`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening_six2_tunnel.js
+**Agent** (10:46 UTC):
+
+Now the drum wall constant in opening3d.js (the only part of that file I own).
+
+- 10:46 `Edit`: /home/user/bubblegame_lanes/tunnel/WebDemo/src/opening3d.js
+- 10:46 `Bash`: Build and capture pass 1 frames
+
+_39 tool steps._
 
 ---
 
@@ -851,5 +871,9 @@ Let me take a baseline capture of the lane as it is now.
 - 10:41 `Bash`: Copy lead's new Scene 1 camera into lane and tools
 - 10:41 `Bash`: Recompute placements for the new Scene 1 camera
 - 10:41 `Bash`: Solve foreground towel piles for the new camera
+- 10:44 `Bash`: Compute a few more placement checks
+- 10:45 `Bash`: Copy new Scene 2 camera and recheck placements
+- 10:45 `Bash`: Solve foreground piles for both new cameras
+- 10:45 `Read`: /home/user/bubblegame_lanes/room/WebDemo/src/opening_six2.js
 
-_37 tool steps._
+_41 tool steps._

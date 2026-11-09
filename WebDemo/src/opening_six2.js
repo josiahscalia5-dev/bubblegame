@@ -30,15 +30,15 @@ export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
 // every number the staging uses (window.__bwSix2 in the browser, for live tuning; the timeline reads them each frame)
 export const SIX2 = {
   handOver: 9.65, seqEnd: 10.45, warp: [2.65, 4.45, 3.95],   // (real 2.65..4.45 s = story 2.65..3.95 s: the trip back to the basket; later story times +0.5 s)
-  girl: { scale: 1.42, k1: [-0.52, 1.5], yaw1: 1.3, k2: [-0.26, 0.6], yaw2: 1.75, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
+  girl: { scale: 1.2, k1: [-0.5, 1.5], yaw1: 1.3, k2: [-0.26, 0.6], yaw2: 1.75, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
   basket: { pos: [-0.2, 1.47], scale: 1.12, yaw: 0.0 },
   door: { open: -2.92 },
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
-    [-1, [0.154, 0.5, 3.697], [-0.297, 0.473, 1.181], 49.7],   // reference 01: fitted to 13 measured landmarks (her eyes, knee, shoe, hip, hands; basket rim, base; his eyes; porthole), 57 px rms
-    [0.0, [0.154, 0.5, 3.697], [-0.297, 0.473, 1.181], 49.7],
-    [0.9, [0.45, 0.5, 3.5], [-0.25, 0.56, 0.9], 47],
-    [2.0, [0.78, 0.507, 3.358], [-0.198, 0.627, 0.619], 43.8],   // reference 02 (fitted)
-    [3.2, [0.78, 0.507, 3.358], [-0.198, 0.627, 0.619], 43.8],
+    [-1, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],   // reference 01: fitted to 13 measured landmarks (her eyes, knee, shoe, hip, hands; basket rim, base; his eyes; porthole), 60 px rms
+    [0.0, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],
+    [0.9, [0.3, 0.52, 4.05], [-0.25, 0.49, 0.68], 40],
+    [2.0, [0.524, 0.538, 3.976], [-0.155, 0.515, 0.796], 39.1],   // reference 02: fitted to 11 measured landmarks (her eye, hands, hip; basket; his eyes; drum opening), 91 px rms
+    [3.2, [0.524, 0.538, 3.976], [-0.155, 0.515, 0.796], 39.1],
     [4.0, [0.18, 0.8, 1.55], [0.32, 0.6, -0.2], 50],
     [4.9, [0.22, 0.74, 1.15], [0.33, 0.58, -0.3], 50],
     [5.4, [0.3, 0.73, 3.29], [0.3, 0.72, 0.27], 36],   // reference 04: the washer fills the frame, the porthole centred at 55 % height
@@ -278,14 +278,14 @@ export function installSix2(ctx) {
         const sd = fwd.clone().multiplyScalar(-Math.cos(0.62)).add(V(0, Math.sin(0.62), 0)); aimBone(sh, legs['tail' + side], sd);
       }
       // body: lean, turn, breathing; the head looks at the washer (never at the basket's hero)
-      const lean = keys(s, [[-1, 0.78], [0.0, 0.78], [0.3, 0.55], [0.9, 0.08], [1.95, 0.04], [2.4, -0.06], [2.6, 0.02], [3.1, 0.42], [3.3, 0.2], [3.85, 0.3], [4.2, 0.08], [5.6, 0.25], [6.1, 0.1]]);
+      const lean = keys(s, [[-1, 0.5], [0.0, 0.5], [0.3, 0.42], [0.9, 0.08], [1.95, 0.04], [2.4, -0.06], [2.6, 0.02], [3.1, 0.42], [3.3, 0.2], [3.85, 0.3], [4.2, 0.08], [5.6, 0.25], [6.1, 0.1]]);
       const lat2 = latOf(s0.yaw);
       rotateBoneWorld(B.spine, lat2, lean * 0.7 + 0.02 * Math.sin(it * 1.3));
       rotateBoneWorld(B.chest, lat2, lean * 0.35);
       rotateBoneWorld(B.chest, V(0, 1, 0), 0.03 * Math.sin(it * 0.9));
       const toWasher = Math.atan2(P.x - s0.kx, P.z - s0.kz) - s0.yaw;   // the washer's bearing from her body
       const headYaw = keys(s, [[-1, -0.3], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
-      const headUp = keys(s, [[-1, 0.2], [0.0, 0.2], [0.4, 0.12], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
+      const headUp = keys(s, [[-1, 0.08], [0.0, 0.08], [0.4, 0.08], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
       rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher);
       rotateBoneWorld(B.head, lat2, -headUp * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
@@ -307,7 +307,7 @@ export function installSix2(ctx) {
     let hp, scl = 0.56, surprise = 0; const rot = new THREE.Euler();
     const camYaw = Math.atan2(camera.position.x - rimC.x, camera.position.z - rimC.z);
     const duck = s < 0 ? 0 : 0.07 * sm(0.5, 0.7, s) * (1 - sm(1.7, 1.95, s)) - 0.06 * sm(1.95, 2.2, s) * (1 - sm(2.45, 2.65, s)) + 0.06 * sm(2.55, 2.75, s);   // ducks / peeks over the rim while her back is turned (reference 02) / hides
-    const inBasket = rimC.clone().add(V(0.015, 0.03 - duck + 0.006 * Math.abs(Math.sin(it * 1.6)), 0.0));
+    const inBasket = rimC.clone().add(V(0.015, 0.05 - duck + 0.006 * Math.abs(Math.sin(it * 1.6)), 0.0));
     if (s < 2.95) { hp = inBasket; rot.set(0.05 * Math.sin(it * 0.9), camYaw + 0.12 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); surprise = sm(0.5, 0.65, s) * (1 - sm(1.6, 1.9, s)) + sm(2.5, 2.6, s); if (s > 2.7) hp.y -= sm(2.7, 2.95, s) * 0.05; }
     else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0.012 * Math.sin(s * 11), -0.06 + 0.01 * Math.sin(s * 8.3), 0)); rot.set(0.12 * Math.sin(s * 6), camYaw - 0.3, 0.12 * Math.sin(s * 5)); surprise = 1; scl = 0.56; }   // wriggling, hidden in the yellow bundle
     else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.56 + (1 - 0.56) * k; surprise = 1; }
@@ -323,7 +323,7 @@ export function installSix2(ctx) {
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
     // ---- the blue towel: draped over him (a hood) -> lifted by both hands (hanging cloth) -> pushed into the drum -> lying in the drum -> flipped onto his head
     const rB = OPENING3D.heroW * 0.5 * 0.62, camRight = V(1, 0, 0).applyQuaternion(camera.quaternion);
-    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.1, rB * 2.7, -0.52, camYaw + 0.18, rB * 1.25, it, 0.24);   // (front edge at his brow, flaps down past his cheeks, asymmetric)
+    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.1, rB * 2.7, -0.74, camYaw + 0.18, rB * 1.25, it, 0.26);   // (front edge at his brow, flaps down past his cheeks, asymmetric)
     bG.visible = true; bG.position.set(0, 0, 0); bG.rotation.set(0, 0, 0); bG.scale.setScalar(1);
     const placeLocal = (src, pos, rx, ry, rz, k = 1) => { const m = new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz, 'YXZ')), V(k, k, k)); const o = new Float32Array(src.length); const v = new THREE.Vector3(); for (let i = 0; i < src.length; i += 3) { v.set(src[i], src[i + 1], src[i + 2]).applyMatrix4(m); o[i] = v.x; o[i + 1] = v.y; o[i + 2] = v.z; } return o; };
     const hoodPos = inBasket.clone().add(V(0, 0.012, -0.01)), hoodRot = [-0.32, camYaw, 0];
