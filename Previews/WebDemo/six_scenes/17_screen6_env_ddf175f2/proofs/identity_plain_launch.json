@@ -1,0 +1,8 @@
+{
+ "what": "WebGL canvas pixels (no DOM HUD) of the frozen seeded frame, bundle 1aab2563 (before session ddf175f2) vs the integration bundle (lanes merged + env6 hook), same list without env6",
+ "plain_launch_list": "intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56 (home omitted: it covers the game)",
+ "u206_canvas_px_differing": 0,
+ "u60_canvas_px_differing": 0,
+ "classic_screen4 ?s3=intunnel u30 page px differing": 0,
+ "note": "page screenshots differ only in the hint banner (x 192-671, y 348-494): a CSS fade timed by wall clock; the old bundle run twice was 0 px"
+}

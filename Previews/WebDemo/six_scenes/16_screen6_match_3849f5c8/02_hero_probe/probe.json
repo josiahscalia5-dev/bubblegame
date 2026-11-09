@@ -1,0 +1,287 @@
+{
+ "errors": [],
+ "shots": [
+  {
+   "z": "206",
+   "state": {
+    "phase": "running",
+    "z": 209.1,
+    "x": 0,
+    "coins": 1281,
+    "socks": 0,
+    "hearts": 5
+   },
+   "s56": {
+    "on": true,
+    "parts": [
+     "shell x14",
+     "arches x62",
+     "banks (135 tanks)",
+     "housing_tripo_821",
+     "gear_v2_tripo x7",
+     "water x14"
+    ],
+    "hidden": [
+     "Group",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "tunnelDecor",
+     "s3Castle",
+     "s3Entrance",
+     "s3Machinery",
+     "s3Brush",
+     "s3IcyEdge",
+     "s3IcyEdge",
+     "r3Swirl",
+     "heroWalls",
+     "r6Porthole",
+     "r6Face",
+     "r6Bezel",
+     "r6Flanges",
+     "r6BowWave",
+     "r7Glow",
+     "heroCollar",
+     "heroGlow",
+     "heroBubbles",
+     "heroSwell",
+     "heroSplash",
+     "lqFloor",
+     "lqSpraySheets",
+     "lqWaterlineBubbles",
+     "spCurls",
+     "spLumps",
+     "mwTunnelBubbles",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops"
+    ],
+    "errors": []
+   },
+   "eval": {
+    "nodes": 7,
+    "meshes": 3,
+    "chain": [
+     {
+      "k": "root",
+      "pos": [
+       6.37,
+       -1.097,
+       206.966
+      ],
+      "scale": [
+       1,
+       1,
+       1
+      ],
+      "rot": [
+       0,
+       -0.072,
+       0.012
+      ]
+     },
+     {
+      "k": "tilt",
+      "pos": [
+       0,
+       -0.28,
+       0
+      ],
+      "scale": [
+       1,
+       1,
+       1
+      ],
+      "rot": [
+       0.098,
+       0,
+       0.112
+      ]
+     }
+    ],
+    "mascotKeys": [
+     "root",
+     "tilt",
+     "squash",
+     "height",
+     "lane",
+     "x",
+     "xv",
+     "z",
+     "y",
+     "speed",
+     "air",
+     "vy",
+     "yAbs",
+     "visSpeed",
+     "pitch",
+     "lean",
+     "yaw",
+     "flip",
+     "spin",
+     "spinV",
+     "sq",
+     "sqV",
+     "look",
+     "lookT",
+     "lastSlope",
+     "downhill",
+     "wakeCarry",
+     "foamCarry",
+     "bobRipple",
+     "swimK",
+     "bowCarry",
+     "restBubbles",
+     "r3Spray",
+     "r3Spark"
+    ],
+    "rows": [
+     {
+      "name": "BubbleWash_PinkFuzzyMascot_Small",
+      "parent": "Group",
+      "type": "Mesh",
+      "vis": true,
+      "layers": 1,
+      "ro": 0,
+      "mat": "ShaderMaterial:onBeforeCompile(){}",
+      "verts": 61062,
+      "inst": 0,
+      "scaleLocal": [
+       0.948,
+       0.948,
+       0.948
+      ],
+      "scaleWorld": [
+       0.463,
+       0.518,
+       0.463
+      ],
+      "geoSize": [
+       2,
+       1.817,
+       1.675
+      ],
+      "screen": [
+       0.258,
+       0.557,
+       0.762,
+       0.852
+      ]
+     },
+     {
+      "name": "structFill",
+      "parent": "BubbleWash_PinkFuzzyMascot_Small",
+      "type": "Mesh",
+      "vis": true,
+      "layers": 1,
+      "ro": 0,
+      "mat": "ShaderMaterial:onBeforeCompile(){}",
+      "verts": 551,
+      "inst": 0,
+      "scaleLocal": [
+       1,
+       1,
+       1
+      ],
+      "scaleWorld": [
+       0.463,
+       0.518,
+       0.463
+      ],
+      "geoSize": null,
+      "screen": [
+       0.388,
+       0.701,
+       0.623,
+       0.828
+      ]
+     },
+     {
+      "name": "structShellFur",
+      "parent": "BubbleWash_PinkFuzzyMascot_Small",
+      "type": "Mesh",
+      "vis": true,
+      "layers": 1,
+      "ro": 0,
+      "mat": "ShaderMaterial:onBeforeCompile(){}",
+      "verts": 61062,
+      "inst": 0,
+      "scaleLocal": [
+       1,
+       1,
+       1
+      ],
+      "scaleWorld": [
+       0.463,
+       0.518,
+       0.463
+      ],
+      "geoSize": null,
+      "screen": [
+       0.258,
+       0.557,
+       0.762,
+       0.852
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

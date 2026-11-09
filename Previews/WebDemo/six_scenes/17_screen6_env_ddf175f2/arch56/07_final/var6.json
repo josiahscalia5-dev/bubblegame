@@ -1,0 +1,95 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "scene07",
+  "six",
+  "tripo3",
+  "s56",
+  "coin6",
+  "hero6",
+  "water6",
+  "brush6",
+  "arch56",
+  "env6"
+ ],
+ "z": 206,
+ "state": {
+  "phase": "running",
+  "z": 208.864,
+  "x": 0,
+  "coins": 1281,
+  "hearts": 5
+ },
+ "vars": [
+  {
+   "tag": "full",
+   "ret": null
+  },
+  {
+   "tag": "nobanner",
+   "ret": null
+  },
+  {
+   "tag": "cost",
+   "ret": {
+    "all": {
+     "calls": 134,
+     "tris": 2287363
+    },
+    "shell": {
+     "calls": 3,
+     "tris": 28896,
+     "n": 9
+    },
+    "chunks": {
+     "calls": 31,
+     "tris": 348016,
+     "n": 122
+    },
+    "gears": {
+     "calls": 2,
+     "tris": 32320,
+     "n": 10
+    },
+    "M_mach": {
+     "calls": 0,
+     "tris": 0,
+     "n": 2
+    },
+    "M_ch": {
+     "calls": 4,
+     "tris": 58116,
+     "n": 17
+    },
+    "M_m911": {
+     "calls": 4,
+     "tris": 82052,
+     "n": 15
+    },
+    "M_m912": {
+     "calls": 4,
+     "tris": 60183,
+     "n": 15
+    },
+    "M_ch6": {
+     "calls": 4,
+     "tris": 58116,
+     "n": 15
+    },
+    "M_jj": {
+     "calls": 4,
+     "tris": 59952,
+     "n": 15
+    },
+    "arch56": {
+     "calls": 52,
+     "tris": 669535
+    }
+   }
+  }
+ ],
+ "errors": []
+}

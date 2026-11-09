@@ -1,0 +1,131 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "scene07",
+  "six",
+  "tripo3",
+  "s56",
+  "coin6",
+  "hero6",
+  "water6",
+  "brush6",
+  "arch56",
+  "env6"
+ ],
+ "z": 206,
+ "state": {
+  "phase": "running",
+  "z": 208.864,
+  "x": 0,
+  "coins": 1281,
+  "hearts": 5
+ },
+ "vars": [
+  {
+   "tag": "a",
+   "ret": null
+  },
+  {
+   "tag": "probe",
+   "ret": {
+    "tiltPos": [
+     0,
+     -0.4190912365592853,
+     0
+    ],
+    "tiltScale": [
+     1,
+     1,
+     1
+    ],
+    "sq": [
+     1,
+     1.0109754869992607,
+     1
+    ],
+    "sqPos": [
+     0,
+     0.03955902496690161,
+     0
+    ],
+    "kids": [
+     [
+      "",
+      "Group",
+      [
+       0.488,
+       0.439,
+       0.488
+      ],
+      [
+       -0.002,
+       0.07,
+       -0.003
+      ],
+      ""
+     ],
+     [
+      "BubbleWash_PinkFuzzyMascot_Small",
+      "Mesh",
+      [
+       0.948,
+       0.948,
+       0.948
+      ],
+      [
+       0.004,
+       0.001,
+       0.007
+      ],
+      ""
+     ],
+     [
+      "structFill",
+      "Mesh",
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       0,
+       0,
+       0
+      ],
+      "BubbleWash_PinkFuzzyMascot_Small"
+     ],
+     [
+      "structShellFur",
+      "Mesh",
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       0,
+       0,
+       0
+      ],
+      "BubbleWash_PinkFuzzyMascot_Small"
+     ]
+    ],
+    "box": {
+     "x0": 0.3084441549753053,
+     "x1": 0.7340723730794436,
+     "top": 0.6204176436158145,
+     "bot": 0.8271425840030097
+    },
+    "sink": {
+     "sink": 0.4,
+     "squash": 1,
+     "wide": 1
+    }
+   }
+  }
+ ],
+ "errors": []
+}

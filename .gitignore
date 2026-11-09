@@ -72,3 +72,6 @@ __pycache__/
 .parallax/
 # playwright-mcp (parallax-threejs) page snapshots and console logs, written to the working directory: local only
 .playwright-mcp/
+
+# (session 3849f5c8) raw recording frames: only the encoded mp4 is kept in Git
+Previews/WebDemo/six_scenes/*/recording_frames/*.jpg

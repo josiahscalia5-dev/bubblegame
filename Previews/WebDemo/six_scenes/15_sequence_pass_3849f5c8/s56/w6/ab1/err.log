@@ -1,0 +1,9 @@
+5.7s ready
+8.3s checkpoint 206 {"phase":"running","z":208.864,"x":0,"coins":1281,"socks":0,"hearts":5}
+16.3s frame 206 mask  
+19.0s frame 206 full  tm 7 exp 1.05
+21.5s frame 206 c3  
+24.0s frame 206 c3_lean6  
+26.4s frame 206 c3_lean6_deep  
+28.7s frame 206 c3_lean6_deep_cr  
+31.2s frame 206 c3x13_lean6_deep_cr  

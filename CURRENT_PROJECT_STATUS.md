@@ -1,3 +1,52 @@
+# CURRENT PROJECT STATUS (updated 9 November 2026 ~20:40 UTC, session ddf175f2). NOTHING below is approved until the user reviews it.
+
+## The user's current priorities (9 November 2026)
+A. Finish Screen 6 visual matching against the ORIGINAL approved artwork (`06_Swim_Collect_Avoid_Enemies.png`).
+B. The pink furry character: shape, fur, colour, swimming motion, natural interaction with the blue water.
+C. Replace unnatural JUMPING in normal gameplay with smooth SWIMMING controls (swipe left / right = swim to that side; swipe up = swim forward with
+   acceleration; gentle bob, tilt, flowing fur; wake and small splashes; always connected to the water).
+D. The opening girl-and-laundry scene closer to the approved opening (references 01-04); the girl must NEVER notice the hidden pink character.
+E. An exciting washing-machine entrance: he tumbles in with the clothes, a magical spin in the drum, the drum becomes the tunnel, the camera follows him
+   into Screen 6 gameplay without a teleport, pop or unrelated fade.
+
+## Screen 6 switches (all reversible; the candidate is `?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7`)
+| Switch | What | State |
+|---|---|---|
+| (lanes) arch56, brush6, water6, coin6, hero6 | the three specialist lanes' scenery, brushes, water; coins drawn smaller; hero dome | merged, tested in the candidate |
+| env6 | hero grade inside the s56 tunnel + bloom only on HDR lights (removed the peach haze; arch56's ungrade bug measured and capped) | tested |
+| tank6 | the glowing glass tank as a Blender-modelled asset (glow_tank.glb) with glass / glowing-core / halo materials in every tank slot | tested |
+| fin6 | finishing pass: lavender control-box station on the left bank, white brush tier, final grade, lavender pedestals, hotter lamps, icy far haze, bigger wall holes | tested |
+| hero7 | the approved pink fur character: real-time shell fur dome + 2 nubs (s56_hero7.js), water contact fitted, broken white highlights | tested (route, motion, perf) |
+| tripo6 | the user's 3 new Tripo models (brush, star drum; tank rejected) | opt-in; NOT better than the procedural ones (art director) |
+| tanklib | Sketchfab "Glass Enclosure" (CC BY 4.0) as the tank | opt-in experiment; comparable, not better |
+| crown6 | a splash crown round him | opt-in only; REJECTED (read as a white ring / artefacts) |
+
+Measured (u 206, 864x1536): the character's silhouette IoU with the approved one 0.722 (old body) -> 0.855 (hero7); its colour bands within a few
+units of the approved; its cost 1.23 M -> 186 k triangles. Gameplay: the Level 1 route (`WebDemo/tools/level1/flow_routes.cjs`, ROUTE=upper) on the
+candidate = the baseline (Level Complete, 5 socks, 125 coins, 2 gems, 3 stars, 0 console errors). The plain launch's 3D canvas and Classic Screen 4
+(`?s3=intunnel`) are 0 px changed. Tripo: 360 credits spent with approval (balance 700); no other paid job.
+
+## Remaining Screen 6 differences (the art director's last ranking + measurements)
+1. The tunnel's glowing far end (the tunnel curves at u 206; the approved straight vanishing glow cannot show there).
+2. The water: lighter / more cyan than the approved royal blue; few white caps (near-white 1 % vs 15 %).
+3. The right bank: the gear hidden behind the gameplay coin arc at u 206; the star cabinet's stars hidden.
+4. The splash at his base: broken white lines (5 %) vs the approved tall curling crests (11 %). The fur a little darker / softer than approved.
+
+## Next tasks, in order (C first; nothing of C, D, E is implemented yet)
+C. SWIMMING CONTROLS (gameplay; game.js `changeLane`, `jump`, `level1_flow.js`, `s56_tunnel.js heroOffset`). Facts found this session:
+   - `swipe up` = `jump()` (game.js:961). Jump is a GAMEPLAY dependency: the raised side path needs a jump or the bounce pad
+     (`level1_flow.js:224-249`, "Jump first! Use the bounce pad"); enemies and soap bars are avoided while airborne (`level1.js:907, 938`).
+   - Plan: behind a switch (e.g. `swim7`), make `up` a forward swim burst (speed + surge, drawn as a dive-and-surface stroke, not a hop), keep a SHORT
+     surface leap only where the course needs it (bounce pad auto-launch onto the side path; a "dive under" for enemies/bars instead of a jump:
+     same airborne flag for collisions, drawn below / through the surface), smooth lateral swimming for lane changes (ease, roll, wake), the bob /
+     tilt already in hero7. Then rerun the Level 1 routes (upper, ledge, blocked) and the motion sheet (`WebDemo/tools/hero7/motion.json`).
+D. OPENING (Screens 1-4): code `WebDemo/src/opening_six2*.js` (switch six2, in the plain launch), `opening_tripo3.js` (models), the rigged girl
+   `WebDemo/models/opening/girl_v2_rigged.glb`, washer `washer_tripo_hj748.glb`, basket `basket_v2_tripo.glb`; agent `character-animation-specialist`
+   (lane girl12, branch claude/lane-s12-girl-room-ac4e3449). First: capture the opening at each approved scene's moment, compare with 01-04, check
+   the girl's head / gaze keys so she never looks at him.
+E. WASHER ENTRANCE: the arch56 lane's `seq7` (closed perforated drum back, iris and dissolve into the tunnel, `opening_six2_tunnel.js`, NOT yet judged)
+   and the s56 lane's opening water plan (its HANDOFF) are the starting points; the opening hands over at real 8.95 s into the s56 tunnel.
+
 # Bubble Wash Kingdom: current project status (8 November 2026 ~23:55 UTC, session bb87ba9f)
 
 ## NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP. NOTHING here is approved by the user.

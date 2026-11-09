@@ -1,0 +1,254 @@
+{
+ "errors": [],
+ "shots": [
+  {
+   "z": "206",
+   "state": {
+    "phase": "running",
+    "z": 209.1,
+    "x": 0,
+    "coins": 1281,
+    "socks": 0,
+    "hearts": 5
+   },
+   "s56": {
+    "on": true,
+    "parts": [
+     "arch56: drum (axis 0.84 m, R 2.55 m), rings x70, lamps x14, modules A x28 B x0 M x110, gears x10, 135 chunk meshes, 9 model chunks",
+     "water x14"
+    ],
+    "hidden": [
+     "Group",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "tunnelDecor",
+     "s3Castle",
+     "s3Entrance",
+     "s3Machinery",
+     "s3Brush",
+     "s3IcyEdge",
+     "s3IcyEdge",
+     "r3Swirl",
+     "heroWalls",
+     "r6Porthole",
+     "r6Face",
+     "r6Bezel",
+     "r6Flanges",
+     "r6BowWave",
+     "r7Glow",
+     "heroCollar",
+     "heroGlow",
+     "heroBubbles",
+     "heroSwell",
+     "heroSplash",
+     "lqFloor",
+     "lqSpraySheets",
+     "lqWaterlineBubbles",
+     "spCurls",
+     "spLumps",
+     "mwTunnelBubbles",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops"
+    ],
+    "errors": []
+   },
+   "eval": {
+    "probe": {
+     "camH": 0.934,
+     "heroH": 0.348,
+     "camPos": [
+      6.504,
+      -0.511,
+      203.969
+     ],
+     "fov": 66,
+     "mz": 208.86360442844236,
+     "vp": {
+      "8": [
+       0.5129,
+       0.4925,
+       0.9828
+      ],
+      "15": [
+       0.51,
+       0.4902,
+       0.9899
+      ],
+      "30": [
+       0.4028,
+       0.4928,
+       0.9949
+      ],
+      "60": [
+       0.2287,
+       0.4991,
+       0.9977
+      ]
+     },
+     "mascot": {
+      "x0": "0.258",
+      "x1": "0.762",
+      "y0": "0.557",
+      "y1": "0.852"
+     },
+     "gears": [
+      {
+       "c": [
+        0.8162,
+        0.3967,
+        0.9767
+       ],
+       "box": {
+        "x0": "0.663",
+        "x1": "0.970",
+        "y0": "0.314",
+        "y1": "0.477"
+       },
+       "dist": 8.53
+      },
+      {
+       "c": [
+        0.4568,
+        0.4696,
+        0.9953
+       ],
+       "box": {
+        "x0": "0.421",
+        "x1": "0.492",
+        "y0": "0.451",
+        "y1": "0.489"
+       },
+       "dist": 34.95
+      }
+     ],
+     "models": []
+    },
+    "post": {
+     "exposure": 1.05,
+     "tone": 7,
+     "passes": [
+      {
+       "n": "Xh",
+       "on": true,
+       "u": {}
+      },
+      {
+       "n": "n",
+       "on": true,
+       "strength": 0.16,
+       "u": {}
+      },
+      {
+       "n": "ac",
+       "on": true,
+       "u": {
+        "uSat": 1.32,
+        "uContrast": 1.12,
+        "uVignette": 0.18,
+        "uOpen": 0,
+        "uOpenExposure": 0.9,
+        "uOpenVibrance": 0.35,
+        "uOpenDepth": 0.16,
+        "uS4Grade": 1,
+        "uHero": 0
+       }
+      },
+      {
+       "n": "Kh",
+       "on": true,
+       "u": {
+        "toneMappingExposure": 1.05
+       }
+      }
+     ],
+     "lights": [
+      {
+       "t": "HemisphereLight",
+       "n": "",
+       "vis": true,
+       "i": 1.1,
+       "c": "ffe9ff",
+       "g": "6ea8ff"
+      },
+      {
+       "t": "DirectionalLight",
+       "n": "",
+       "vis": true,
+       "i": 1.7,
+       "c": "fff2e6",
+       "g": null
+      },
+      {
+       "t": "DirectionalLight",
+       "n": "",
+       "vis": true,
+       "i": 1.3,
+       "c": "cfe8ff",
+       "g": null
+      }
+     ],
+     "env": null,
+     "bg": null
+    }
+   }
+  }
+ ]
+}

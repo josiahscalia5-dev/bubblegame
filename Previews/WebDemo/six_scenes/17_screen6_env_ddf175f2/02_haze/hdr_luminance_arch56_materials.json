@@ -1,0 +1,46 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "scene07",
+  "six",
+  "tripo3",
+  "s56",
+  "coin6",
+  "hero6",
+  "water6",
+  "brush6",
+  "arch56",
+  "env6"
+ ],
+ "z": 206,
+ "state": {
+  "phase": "running",
+  "z": 208.864,
+  "x": 0,
+  "coins": 1281,
+  "hearts": 5
+ },
+ "vars": [
+  {
+   "tag": "lum2",
+   "ret": {
+    "all": [
+     1.59,
+     214.7,
+     0.52,
+     0.34
+    ],
+    "MeshBasicMaterial:ffffad:1: (n9:a56Chunk0)": [
+     0.61,
+     214.7,
+     0.59,
+     0.37
+    ]
+   }
+  }
+ ],
+ "errors": []
+}

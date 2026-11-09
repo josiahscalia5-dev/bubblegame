@@ -17,6 +17,13 @@
 // ,noflow draws the previous level1 exactly.
 import * as THREE from 'three';
 
+// swim7 (9 November 2026, session 8da775c4, the user's swimming mandate: "using water currents or ramps to reach elevated paths"; no jump gesture):
+// with `?s3=...,swim7` the raised side path is reached by a WATER RAMP (its water rises from the main water over RAMP metres before FL.u0 and he
+// swims onto its foot with a swipe), the bounce pad is not built into the route, and the soap bars are dived under. Without it: as before.
+const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
+const SWIM7 = LIST.includes('swim7');
+const RAMP = SWIM7 ? 8 : 0.3;      // the length of the side path's rise (0.3: the previous step up)
+
 // the raised side path (screen-left, +X): its centre x, half width, height above the main water, start, end of its level part,
 // ramp back down into the main water; the bounce pad before it (lane, u, launch speed)
 export const FL = { x: 1.62, half: 0.4, lift: 0.9, u0: 62, u1: 86, ramp: 5, pad: { lane: 0, u: 56.6, vy: 7.4 } };
@@ -24,7 +31,7 @@ export const FL = { x: 1.62, half: 0.4, lift: 0.9, u0: 62, u1: 86, ramp: 5, pad:
 // raised by the same amount (ledges that stay level) until e0, then ramps down to the lower path; lanes spread to sp between s0..s3
 export const DR = { d0: 112, pitch: 0.46, half: 0.68, wall: 0.1, e0: 129, ramp: 6, sp: 1.38, s0: 100, s1: 106, s2: 136, s3: 142 };
 // the tunnel widens round both (radius + dR between a..d)
-export const WD = { a: 42, b: 50, c: 140, d: 148, dR: 0.85 };
+export const WD = { a: SWIM7 ? 38 : 42, b: SWIM7 ? 46 : 50, c: 140, d: 148, dR: 0.85 };   // (swim7: wide a little earlier, for the open water before the ramp's foot)
 
 const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 const bump = (u, a, b, c, d) => sm(a, b, u) * (1 - sm(c, d, u));   // the same as track.js bump
@@ -43,10 +50,10 @@ export function ledgeLift(u) {
   const h = i >= LD.n - 1 ? LD.a[LD.n - 1] : LD.a[i] + (LD.a[i + 1] - LD.a[i]) * (k - i);
   return h * (1 - sm(DR.e0, DR.e0 + DR.ramp, u));
 }
-const flumeLevel = (u) => FL.lift * sm(FL.u0 - 0.3, FL.u0, u) * (1 - sm(FL.u1, FL.u1 + FL.ramp, u));
+const flumeLevel = (u) => FL.lift * sm(FL.u0 - RAMP, FL.u0, u) * (1 - sm(FL.u1, FL.u1 + FL.ramp, u));
 export function flowLift(x, u) {
   let h = 0;
-  if (u > FL.u0 - 0.3 && u < FL.u1 + FL.ramp) {
+  if (u > FL.u0 - RAMP && u < FL.u1 + FL.ramp) {
     const inX = 1 - sm(FL.half - 0.03, FL.half + 0.03, Math.abs(x - FL.x));
     if (inX > 0) h += flumeLevel(u) * inX;
   }
@@ -70,12 +77,15 @@ export function flowCourse(B) {
     turn: (u, bmp) => 0.024 * bmp(u, 150, 156, 164, 170) - 0.026 * bmp(u, 190, 196, 204, 210) + 0.022 * bmp(u, 220, 226, 236, 242) - 0.014 * bmp(u, 286, 292, 304, 310),
     sections: [
       { u: 1.6, name: 'Washer drum', short: 'Drum' },
-      { u: 39, name: 'Rescue the socks', short: 'Socks', banner: ['Rescue 5 lost socks!', 'Swipe ← → to swim'] },
-      { u: 49, name: 'Side paths', short: 'Side', banner: ['Jump to', 'Side Paths!'], hint: ['Bounce pad, then', 'swipe ← onto the side path'] },
+      ...(SWIM7 ? [{ u: 10, name: 'Washer drum', short: 'Swim', banner: ['Swipe ↑ to surge', 'Swipe ↓ to dive'] }] : []),
+      { u: SWIM7 ? 27 : 39, name: 'Rescue the socks', short: 'Socks', banner: ['Rescue 5 lost socks!', 'Swipe ← → to swim'] },
+      SWIM7 ? { u: 43, name: 'Side paths', short: 'Side', banner: ['Side path ahead!', 'Swipe ← onto the water ramp'] }
+        : { u: 49, name: 'Side paths', short: 'Side', banner: ['Jump to', 'Side Paths!'], hint: ['Bounce pad, then', 'swipe ← onto the side path'] },
       { u: 101, name: 'Lower path', short: 'Drop', banner: ['Drop down to', 'the lower path!'] },
+      ...(SWIM7 ? [{ u: 110, name: 'Lower path', short: 'Dive', banner: ['Soap bars on the ledges', 'Swipe ↓ to dive under'] }] : []),
       { u: 141, name: 'Spinning brushes', short: 'Brushes', banner: ['Watch out!', 'Spinning brushes!'], warn: true },
       { u: 186, name: 'Treasure', short: 'Treasure', banner: ['Collect coins, gems', '& rescue socks!'] },
-      { u: 213, name: 'Grime balls', short: 'Enemies', banner: ['Avoid enemies!', 'Tap to spin-attack them'], warn: true },
+      { u: 213, name: 'Grime balls', short: 'Enemies', banner: ['Avoid enemies!', SWIM7 ? 'Tap to spin · swipe ↓ to dive' : 'Tap to spin-attack them'], warn: true },
       { u: 256, name: 'Bubble Kingdom', short: 'Kingdom', banner: ['Enter the', 'Bubble Kingdom!'] },
       { u: 294, name: 'Rescue progress', short: 'Rescue', banner: ['Rescue 5 lost socks', '{socks}/5'] },
     ],
@@ -89,6 +99,7 @@ export function flowCourse(B) {
     // [lane, u0, count, step, height, arc] (lane -1: the raised side path)
     coins: [[1, 41, 5, 1.5, 0.55, 0],
       [0, 50, 4, 1.4, 0.55, 0], [1, 52, 3, 1.5, 0.55, 0],
+      ...(SWIM7 ? [[-1, 53.5, 6, 1.6, 0.55, 0]] : []),   // (swim7) a trail up the water ramp
       [-1, 64.5, 9, 1.5, 0.55, 0.45],
       [0, 69, 3, 1.4, 0.55, 0], [2, 75, 3, 1.1, 0.55, 0], [0, 81, 3, 1.4, 0.55, 0], [1, 91, 5, 1.4, 0.55, 0],
       [1, 102, 6, 1.4, 0.55, 0], [1, 116, 7, 1.3, 0.5, 0], [0, 113, 4, 1.4, 0.55, 0], [2, 119.5, 4, 1.3, 0.55, 0], [1, 136, 4, 1.4, 0.55, 0],
@@ -172,7 +183,7 @@ void main() {
 
   // ---------------- 03: the raised side path, a golden-rimmed trough of water standing in the main water
   {
-    const ua = FL.u0 - 0.32, ub = FL.u1 + FL.ramp, top = (u) => flumeLevel(Math.max(u, FL.u0)) + 0.14, bot = () => -0.25;
+    const ua = SWIM7 ? FL.u0 - RAMP + 2.6 : FL.u0 - 0.32, ub = FL.u1 + FL.ramp, top = (u) => flumeLevel(SWIM7 ? u : Math.max(u, FL.u0)) + 0.14, bot = () => -0.25;   // (swim7: the ramp's foot is open, its rims rise with it)
     for (const s of [-1, 1]) {
       const xw = FL.x + s * (FL.half + 0.05);
       wall(xw, 0.05, bot, top, ua, ub, troughM, 'l1FlowFlumeWall');
@@ -182,7 +193,7 @@ void main() {
     const w = 2 * (FL.half + 0.1), h = FL.lift + 0.39, fg = new THREE.PlaneGeometry(w, h, 4, 4);
     { const p = fg.attributes.position, a = new Float32Array(p.count * 2); for (let i = 0; i < p.count; i++) { a[i * 2] = ua + p.getX(i); a[i * 2 + 1] = p.getY(i) + h / 2 - 0.25; } fg.setAttribute('aUH', new THREE.BufferAttribute(a, 2)); }
     const front = new THREE.Mesh(fg, troughM);
-    TR.map(FL.x, -0.25 + h / 2, ua, front.position); TR.quaternion(ua, front.quaternion); front.name = 'l1FlowFlumeFront'; root.add(front); items.push({ o: front, u0: ua, u1: ua });
+    TR.map(FL.x, -0.25 + h / 2, ua, front.position); TR.quaternion(ua, front.quaternion); front.name = 'l1FlowFlumeFront'; if (!SWIM7) { root.add(front); items.push({ o: front, u0: ua, u1: ua }); }   // (swim7: no front wall, the water ramp is the way in)
     const lip = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, w, 12), rimGoldM); lip.rotation.z = Math.PI / 2; lip.position.y = h / 2; front.add(lip);
   }
   // ---------------- 04: the lower path's walls (cobalt glass with gold rims) between it and the upper ledges
@@ -201,7 +212,7 @@ void main() {
     const dome = new THREE.Mesh(new THREE.SphereGeometry(0.4, 28, 10, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x5bbff4, transparent: true, opacity: 0.72,
       roughness: 0.15, metalness: 0.1, envMap: env, emissive: 0x1a6fd0, emissiveIntensity: 0.6, depthWrite: false })); dome.scale.y = 0.35; pad.add(dome);
     const px = flowLaneX(FL.pad.lane, FL.pad.u); TR.map(px, W.baseHeight(L, px, FL.pad.u) + 0.02, FL.pad.u, pad.position); TR.quaternion(FL.pad.u, pad.quaternion); root.add(pad);
-    items.push({ o: pad, u0: FL.pad.u, u1: FL.pad.u });
+    if (SWIM7) root.remove(pad); else items.push({ o: pad, u0: FL.pad.u, u1: FL.pad.u });   // (swim7: no bounce pad; the water ramp)
   }
   const arrowM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.25, 0.5, 1.05), transparent: true, opacity: 0.88, depthWrite: false, side: THREE.DoubleSide });
   const arrowShape = new THREE.Shape([[-0.13, 0.3], [0.13, 0.3], [0.13, 0], [0.3, 0], [0, -0.34], [-0.3, 0], [-0.13, 0]].map(([x, y]) => new THREE.Vector2(x, y)));
@@ -209,17 +220,23 @@ void main() {
   const arrows = [];
   const addArrow = (x, h, u, rz) => { const a = new THREE.Mesh(arrowG, arrowM); const g = new THREE.Group(); g.add(a); a.rotation.z = rz; TR.map(x, h, u, g.position); TR.quaternion(u, g.quaternion); g.rotateY(Math.PI); g.name = 'l1FlowArrow'; root.add(g); arrows.push({ g, h, x, u }); items.push({ o: g, u0: u, u1: u }); };
   const chev = new THREE.Mesh(arrowG, arrowM); chev.scale.setScalar(0.55); chev.rotation.z = Math.PI; chev.position.set(0, 0.42, 0); pad.add(chev);   // up chevron on the pad
-  addArrow(1.35, 1.75, FL.u0 - 1.2, -0.75);   // to the side path, down and to the left
+  if (SWIM7) { addArrow(FL.x, 1.0, FL.u0 - RAMP - 0.5, 0); addArrow(FL.x, 1.35, FL.u0 - RAMP + 3.5, 0); }   // (swim7) over the ramp's foot and up it
+  else addArrow(1.35, 1.75, FL.u0 - 1.2, -0.75);   // to the side path, down and to the left
   addArrow(0, 1.25, DR.d0 - 1.5, 0);          // down the chute
 
   // ---------------- the rules
   const rideAt = (x, u) => W.baseHeight(L, x, u) + W.FLOAT_H;
-  const flumeOpen = (u) => u > FL.u0 - 7 && u < FL.u1 + FL.ramp - 1.5;
+  const RAMP0 = FL.u0 - RAMP, RAMP_IN = [RAMP0 - 8, RAMP0 + 0.5];   // (swim7) the ramp's foot and where he can swim onto it (its water under 0.12 m there)
+  const flumeOpen = (u) => u > (SWIM7 ? RAMP_IN[0] : FL.u0 - 7) && u < FL.u1 + FL.ramp - 1.5;
   let padUsed = false, padGlow = 0, hintT = 0;
   // a swipe: the lane she would go to, or her own lane if the move is not possible here (the game then squashes her)
   function changeLane(dir) {
     const u = m.z, to = m.lane + dir;
     if (to > 2 || to < (flumeOpen(u) ? -1 : 0)) return m.lane;
+    if (to === -1 && SWIM7) {   // (swim7) onto the side path: only at the water ramp's foot
+      if (u < RAMP_IN[1]) return to;
+      ctx.hint(['Too late!', 'The water ramp starts earlier']); return m.lane;
+    }
     if (to === -1) {   // onto the raised side path: only from the air, high enough to clear its rim
       const peak = m.yAbs + (m.air && m.vy > 0 ? (m.vy * m.vy) / (2 * W.GRAVITY) : 0) - rideAt(flowLaneX(0, u), u);
       if (!m.air || peak < FL.lift - 0.05) { ctx.hint(['Jump first!', 'Use the bounce pad']); return m.lane; }
@@ -232,7 +249,8 @@ void main() {
   // where her lane is (and the side path's own rules: she lands on it only if she clears its rim; it ends in the main water)
   function laneTarget() {
     const u = m.z;
-    if (m.lane === -1) {
+    if (m.lane === -1 && SWIM7) { if (u > FL.u1 + FL.ramp - 1 || u < RAMP_IN[0]) m.lane = 0; }   // (swim7: he swam up the ramp; the path ends in the main water)
+    else if (m.lane === -1) {
       const over = Math.abs(m.x - FL.x) < FL.half + 0.08;
       if (u > FL.u1 + FL.ramp - 1 || (!m.air && flowLift(m.x, u) < 0.3 && !over) || (!flumeOpen(u) && u < FL.u0)) m.lane = 0;
       else if (m.air && !over && m.vy < 0 && m.yAbs < rideAt(FL.x, Math.max(u, FL.u0)) - 0.12) { m.lane = 0; m.sqV += 4; }   // missed: back off its rim
@@ -246,7 +264,7 @@ void main() {
     padGlow = Math.max(0, padGlow - dt * 2);
     pad.children[1].material.emissiveIntensity = 0.6 + 0.8 * padGlow + 0.2 * Math.sin(t * 5);
     chev.position.y = 0.42 + 0.08 * Math.sin(t * 6);
-    if (running && !padUsed && !m.air && Math.abs(u - FL.pad.u) < 0.55 && Math.abs(m.x - flowLaneX(FL.pad.lane, u)) < 0.38) {
+    if (!SWIM7 && running && !padUsed && !m.air && Math.abs(u - FL.pad.u) < 0.55 && Math.abs(m.x - flowLaneX(FL.pad.lane, u)) < 0.38) {
       padUsed = true; padGlow = 1; ctx.padJump(FL.pad.vy);
       if (ctx.fx) ctx.fx.sparkle(pad.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0, 0.3, 0)), 16);
       ctx.hint(['Swipe ←', 'onto the side path!']);
@@ -256,5 +274,5 @@ void main() {
     hintT = Math.max(0, hintT - dt);
   }
   function reset() { padUsed = false; padGlow = 0; }
-  return { changeLane, laneTarget, update, reset, report: { flume: [FL.u0, FL.u1 + FL.ramp], drop: [DR.d0, DR.e0 + DR.ramp], dropTotal: +DROP_TOTAL.toFixed(3), pad: FL.pad.u } };
+  return { changeLane, laneTarget, update, reset, report: { flume: [FL.u0, FL.u1 + FL.ramp], drop: [DR.d0, DR.e0 + DR.ramp], dropTotal: +DROP_TOTAL.toFixed(3), pad: SWIM7 ? null : FL.pad.u, ramp: SWIM7 ? [RAMP0, FL.u0] : null, rampIn: SWIM7 ? RAMP_IN : null } };
 }

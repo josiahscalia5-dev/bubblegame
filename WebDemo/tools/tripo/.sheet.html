@@ -1,0 +1,31 @@
+<!doctype html><meta charset=utf-8><body style="margin:0;background:#c9d3e6;font:12px sans-serif">
+<script type=importmap>{"imports":{"three":"/WebDemo/node_modules/three/build/three.module.js","three/addons/":"/WebDemo/node_modules/three/examples/jsm/"}}</script>
+<div id=g style="display:grid;grid-template-columns:repeat(3,260px);gap:4px;padding:4px"></div>
+<script type=module>
+import * as THREE from 'three'; import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'; import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); r.setSize(260, 260); r.setClearColor('#c9d3e6');
+r.toneMapping = THREE.ACESFilmicToneMapping; r.outputColorSpace = THREE.SRGBColorSpace;
+const pm = new THREE.PMREMGenerator(r); const env = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+window.sheet = async (files, views) => {
+  const g = document.getElementById('g'); const info = [];
+  for (const f of files) {
+    const gl = await new GLTFLoader().loadAsync('/' + f); const s = new THREE.Scene(); s.environment = env;
+    s.add(new THREE.HemisphereLight(0xffffff, 0x8899bb, 1.2)); const d = new THREE.DirectionalLight(0xffffff, 2); d.position.set(3, 5, 4); s.add(d);
+    s.add(gl.scene); const box = new THREE.Box3().setFromObject(gl.scene); const c = box.getCenter(new THREE.Vector3()); const sz = box.getSize(new THREE.Vector3());
+    let tris = 0, meshes = 0; const tex = new Set();
+    gl.scene.traverse((o) => { if (o.isMesh) { meshes++; tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3;
+      for (const m of [].concat(o.material)) for (const k of ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'emissiveMap']) if (m[k] && m[k].image) tex.add(m[k].image.width + 'x' + m[k].image.height); } });
+    const R = sz.length() * 0.62; const cam = new THREE.PerspectiveCamera(35, 1, R / 50, R * 20);
+    for (const v of views) {
+      const a = { front: 0, '34': Math.PI / 4, side: Math.PI / 2, back: Math.PI }[v] ?? 0; const e = v === 'top' ? 1.2 : 0.18;
+      cam.position.set(c.x + Math.sin(a) * Math.cos(e) * R * 2.1, c.y + Math.sin(e) * R * 2.1, c.z + Math.cos(a) * Math.cos(e) * R * 2.1); cam.lookAt(c);
+      r.render(s, cam); const cell = document.createElement('div'); const im = new Image(); im.src = r.domElement.toDataURL(); im.width = 260; cell.appendChild(im);
+      const t = document.createElement('div'); t.style.cssText = 'height:30px;overflow:hidden;line-height:14px';
+      t.textContent = v === views[0] ? f.split('/').pop() + ' | ' + Math.round(tris).toLocaleString() + ' tris, ' + meshes + ' meshes, tex ' + [...tex].join(' ') + ' | ' + sz.toArray().map((x) => x.toFixed(2)).join(' x ') : v;
+      cell.appendChild(t); g.appendChild(cell);
+    }
+    info.push({ file: f, tris: Math.round(tris), meshes, textures: [...tex], size: sz.toArray().map((x) => +x.toFixed(3)) });
+  }
+  return info;
+};
+</script>

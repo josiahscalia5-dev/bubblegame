@@ -1,0 +1,242 @@
+{
+ "errors": [],
+ "shots": [
+  {
+   "z": "206",
+   "state": {
+    "phase": "running",
+    "z": 209.1,
+    "x": 0,
+    "coins": 1281,
+    "socks": 0,
+    "hearts": 5
+   },
+   "s56": {
+    "on": true,
+    "parts": [
+     "shell x14",
+     "arches x62",
+     "banks (135 tanks)",
+     "housing_tripo_821",
+     "gear_v2_tripo x7",
+     "water x14"
+    ],
+    "hidden": [
+     "Group",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "BubbleWash_SideWashingRoller_UltraLite",
+     "BubbleWash_SideWashingRoller_UltraLite_1",
+     "tunnelDecor",
+     "s3Castle",
+     "s3Entrance",
+     "s3Machinery",
+     "s3Brush",
+     "s3IcyEdge",
+     "s3IcyEdge",
+     "r3Swirl",
+     "heroWalls",
+     "r6Porthole",
+     "r6Face",
+     "r6Bezel",
+     "r6Flanges",
+     "r6BowWave",
+     "r7Glow",
+     "heroCollar",
+     "heroGlow",
+     "heroBubbles",
+     "heroSwell",
+     "heroSplash",
+     "lqFloor",
+     "lqSpraySheets",
+     "lqWaterlineBubbles",
+     "spCurls",
+     "spLumps",
+     "mwTunnelBubbles",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Wall",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Water",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops",
+     "l1Hoops",
+     "openingLook suds"
+    ],
+    "errors": []
+   },
+   "eval": {
+    "haveMascot": true,
+    "chain": [
+     "(noname):Group s(1.00,1.00,1.00)",
+     "  (noname):Group s(1.00,1.00,1.00)",
+     "    (noname):Group s(1.00,1.01,1.00)",
+     "      (noname):Group s(0.49,0.54,0.49)",
+     "        BubbleWash_PinkFuzzyMascot_Small:Mesh ShaderMaterial FUR vtrue tris 137111 s(0.95,0.95,0.95)"
+    ],
+    "furMeshes": [
+     {
+      "name": "BubbleWash_PinkFuzzyMascot_Small",
+      "parent": "Group",
+      "visible": true,
+      "underTilt": true
+     },
+     {
+      "name": "structFill",
+      "parent": "BubbleWash_PinkFuzzyMascot_Small",
+      "visible": true,
+      "underTilt": true
+     },
+     {
+      "name": "structShellFur",
+      "parent": "BubbleWash_PinkFuzzyMascot_Small",
+      "visible": true,
+      "underTilt": true
+     },
+     {
+      "name": "r4SplashCrown",
+      "parent": "Scene",
+      "visible": false,
+      "underTilt": false
+     }
+    ],
+    "full": {
+     "n": 5872,
+     "x": [
+      0.176,
+      0.819
+     ],
+     "y": [
+      0.448,
+      0.771
+     ]
+    },
+    "ablate": {
+     "0:BubbleWash_PinkFuzzyMascot_Small": {
+      "n": 746,
+      "x": [
+       0.176,
+       0.819
+      ],
+      "y": [
+       0.448,
+       0.612
+      ]
+     }
+    },
+    "tiltScaleY06": {
+     "n": 4066,
+     "x": [
+      0.176,
+      0.819
+     ],
+     "y": [
+      0.448,
+      0.771
+     ]
+    },
+    "tiltDown03": {
+     "n": 2819,
+     "x": [
+      0.176,
+      0.819
+     ],
+     "y": [
+      0.448,
+      0.768
+     ]
+    },
+    "squashHidden": {
+     "n": 746,
+     "x": [
+      0.176,
+      0.819
+     ],
+     "y": [
+      0.448,
+      0.612
+     ]
+    },
+    "tilt": {
+     "pos": [
+      0,
+      -0.419,
+      0
+     ],
+     "rot": [
+      0.018,
+      0,
+      0.1
+     ],
+     "scale": [
+      1,
+      1,
+      1
+     ]
+    },
+    "squashNode": {
+     "pos": [
+      0,
+      0.04,
+      0
+     ],
+     "scale": [
+      1,
+      1.011,
+      1
+     ]
+    }
+   }
+  }
+ ]
+}
