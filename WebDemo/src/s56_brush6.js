@@ -12,7 +12,7 @@
 //   - the bristles use fluffy_brush.js's fur technique turned to a roller: each skirt is a cone of stacked shells, every shell draws
 //     tapered strands (discard), strands gather into tufts at the root and splay to ragged lobed tips, darker roots and pale tips,
 //     an anisotropic gloss along the strands and a sheen at the silhouette; the innermost shell is solid (no see-through);
-//   - the cap reuses s56's gold (M.gold) and a pink gloss in the style of M.pinkGloss;
+//   - the cap: a warm gold and a pink gloss in the style of s56's M.gold / M.pinkGloss, tuned to the approved's cap;
 //   - fixed to the track (TR.frame), a pair every BRUSH6.every metres inside BRUSH6.spans, one pair at BRUSH6.anchor (the Scene 6
 //     moment, u 206) in the approved places; outside the play lanes (inner bristle tips at |x| >= BRUSH6.minX); each turns about its
 //     own vertical axis. Decoration only: no collisions, lanes, pickups or the game's own brushes are touched.
@@ -37,7 +37,9 @@ export const BRUSH6 = {
   // bristle height (qa/art_director_ranking.md): pink 26 %, white-lavender 23 %, royal blue 34 %, pale blue 17 %; bristles 62 % of the brush
   tiers: [[2.80, 2.00, 0.62, 1.08], [2.30, 1.38, 0.70, 1.20], [1.75, 0.46, 0.74, 1.27], [0.95, 0.0, 0.78, 1.32]],
   cap: { rim: [2.70, 2.93, 0.94], bell: 3.54, flange: [3.86, 0.66] },
-  fur: { layers: 7, thick: 0.15, flare: 0.1, strands: 210, tufts: 26, around: 56, along: 6 },
+  // shells, their depth and the tips' lift (bell radii), strands and tufts round the brush, strand width (root, tip; of its cell), how far
+  // down the solid inner shell reaches (of the strand length), the cone's mesh
+  fur: { layers: 7, thick: 0.15, flare: 0.1, strands: 210, tufts: 26, wide: [0.5, 0.2], solid: 0.88, around: 56, along: 6 },
   // the approved's colours (band medians, 20 % / 80 % luminance means), the lit body kept under the Neutral tone mapping's ~0.76 knee
   // (linear): pink (0.72, 0.01, 0.29), white-lavender (0.40, 0.24, 0.72), royal blue (0.0, 0.10, 0.72), pale blue (0.05, 0.21, 0.70)
   colours: {
@@ -45,7 +47,9 @@ export const BRUSH6 = {
     med: ['#dd1993', '#aa86dd', '#0459dd', '#3f7edb'],
     lite: ['#f064d0', '#e8d8f8', '#3a9cf0', '#b8cdf4'],
   },
-  light: { amb: 0.5, dif: 0.62, spec: 0.5, sheen: 0.22, side: 1.1 },
+  light: { amb: 0.5, dif: 0.62, spec: 0.5, sheen: 0.1, side: 1.1 },
+  // the cap's gold: the approved's warm gold (#f08a53, light #ffeab9); s56's M.gold reads red-orange at this distance
+  gold: { color: '#ffc45a', emissive: '#7a4a08', ei: 0.5, metal: 0.85, rough: 0.24 },
   bell: { color: '#f86fc8', emissive: '#8a1a5a', ei: 0.45, metal: 0.25, rough: 0.2 },
 };
 if (BRUSH6_ON && typeof window !== 'undefined') window.__bwBrush6 = BRUSH6;
@@ -78,7 +82,7 @@ void main() {
   gl_Position = projectionMatrix * viewMatrix * w;
 }`;
 const BRISTLE_FRAGMENT = /* glsl */ `
-uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSheen;
+uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSheen, uSolid; uniform vec2 uWide;
 uniform vec3 uDark[4], uMed[4], uLite[4];
 varying vec4 vS; varying float vH; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
 // sine-free hash (fluffy_brush.js fbH: stable for large cell indices)
@@ -93,8 +97,8 @@ void main() {
   float si = floor(sc), sf = fract(sc) - 0.5, sr = b6H(vec2(si, h * 31.0 + vS.z * 13.0));
   // each tuft ends in a lobe (its edge strands shorter), every strand a little different
   float len = 1.0 - 0.12 * sr - 0.26 * (4.0 * tf * tf) - 0.07 * tr;
-  float w = mix(0.42, 0.1, clamp(t / len, 0.0, 1.0));
-  if (h < 0.01) { if (t > len * 0.7) discard; }
+  float w = mix(uWide.x, uWide.y, clamp(t / len, 0.0, 1.0));
+  if (h < 0.01) { if (t > len * uSolid) discard; }
   else if (abs(sf) > w || t > len) discard;
   vec3 dk = uDark[k], md = uMed[k], lt = uLite[k];
   vec3 col = mix(md, lt, 0.08 + 0.22 * tr) * (0.86 + 0.26 * sr);
@@ -173,13 +177,13 @@ function capGeometries(P, hat) {
 
 /** ctx: { scene, TR, W, L, env, loader, root, S (S56), M (s56 materials), F, frameM, T4, timeU, heroU, report, arch, ctx }. */
 export async function buildBrush6(ctx) {
-  const { TR, W, L, env, root, M, report } = ctx, P = BRUSH6;
+  const { TR, W, L, env, root, report } = ctx, P = BRUSH6;
   const group = new THREE.Group(); group.name = 'b6Brushes'; root.add(group);
   const C = P.colours, col = (a) => a.map((h) => new THREE.Color(h));
   const mkBristleMat = (side) => new THREE.ShaderMaterial({
     uniforms: {
       uThick: { value: P.fur.thick }, uFlare: { value: P.fur.flare }, uSide: { value: side * P.light.side },
-      uStrands: { value: P.fur.strands }, uTufts: { value: P.fur.tufts },
+      uStrands: { value: P.fur.strands }, uTufts: { value: P.fur.tufts }, uWide: { value: new THREE.Vector2(...P.fur.wide) }, uSolid: { value: P.fur.solid },
       uAmb: { value: P.light.amb }, uDif: { value: P.light.dif }, uSpec: { value: P.light.spec }, uSheen: { value: P.light.sheen },
       uDark: { value: col(C.dark) }, uMed: { value: col(C.med) }, uLite: { value: col(C.lite) },
     },
@@ -187,7 +191,7 @@ export async function buildBrush6(ctx) {
   });
   const B = P.bell;
   const bellMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(B.color), emissive: new THREE.Color(B.emissive), emissiveIntensity: B.ei, metalness: B.metal, roughness: B.rough, envMap: env, envMapIntensity: 1.2 });
-  const goldMat = M.gold;
+  const G = P.gold, goldMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(G.color), emissive: new THREE.Color(G.emissive), emissiveIntensity: G.ei, metalness: G.metal, roughness: G.rough, envMap: env, envMapIntensity: 1.25 });
   const bristleG = bristleGeometry(P), caps = { left: capGeometries(P, P.left.hat), right: capGeometries(P, P.right.hat) };
   const mats = { left: mkBristleMat(1), right: mkBristleMat(-1) };
   const tris = { bristles: (bristleG.index.count / 3) * P.fur.layers, left: 0, right: 0 };
