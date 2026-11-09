@@ -29,9 +29,10 @@ export const BRUSH6 = {
   // placement: a pair at u = anchor + k * every (inside spans), each side at u + du, lateral x (track frame, + = screen-left), height h
   // above the water's centre-line base height (m), scale s = the pink bell's radius in metres (the brush is built in bell radii, below)
   anchor: 206, every: 26, spans: [[150, 258]], far: 60, near: -4, minX: 1.05,   // (minX: the coordinator's bound of session ddf175f2, was 1.25)
-  // (fitted by tools/brush6/fit_eval.js at shots56's `206` shot, hero at u 209.1 in the picture: inner tips exactly at minX)
-  left: { du: 5.431, x: 2.057, h: -0.632, s: 0.612, sy: 1, flare: 0, hat: 0.5, dir: 1 },
-  right: { du: 5.379, x: -1.89, h: -0.618, s: 0.485, sy: 1, flare: 0, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
+  // (session ddf175f2: refitted with tools/brush6/fit6.js on var6's frozen u 206 frame to TARGETS.md's tier extents; sy: the vertical
+  // proportion, flare: the lower tiers widened (pagoda); all errors < 0.012 of the frame; inner tips 1.27 m (left) / 1.17 m (right))
+  left: { du: 5.299, x: 2.144, h: -0.639, s: 0.672, sy: 0.923, flare: -0.1, hat: 0.5, dir: 1 },
+  right: { du: 5.983, x: -2.279, h: -1.016, s: 0.605, sy: 0.922, flare: 0.284, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
   spin: 3.0,   // rad/s about the brush's own axis (about 0.5 rev/s: faster strobes the strands at 30-60 fps)
   // the depth pull (session 3849f5c8, after the first real frame): within the lane bound the brushes' bodies stand at x 1.25-2.85 m, INSIDE the
   // bank (deck face ~1.5 m, rail 1.56 m, tanks beyond), so the bank's rail, deck and machinery were drawn over most of the bristles. The near
@@ -39,9 +40,10 @@ export const BRUSH6 = {
   // shading are exactly the same; only the depth test changes): view depth d > near maps to near + (d - near) * k, blending back to the true
   // depth between far[0] and far[1] (the far pairs are untouched). near = just behind him (the camera is 3.0 m behind him), so he, his splash
   // and everything nearer than him are still drawn in front of the brushes. on 0 = the true depth (the bank hides the bristles).
-  // (session ddf175f2, pass 2) near 3.2 m (he is 3.0 m ahead of the camera) and k 0.03: the anchor pair is drawn over the near water and the
-  // bank (on the right the water nearer than the old pulled depth, ~3.8 m, cut its lower tiers off at y 0.60); he and his splash stay in front
-  pull: { on: 1, near: 3.2, k: 0.03, far: [10, 15] },
+  // (session ddf175f2, pass 2) near 2.6 m and k 0.01: the anchor pair is drawn at ~2.6-2.65 m, over the near water and the bank (on the right
+  // the water nearer than the old pulled depth, ~3.8 m, cut the lower tiers off at y 0.60; at 3.2 m still the pale foot). He is 3.0 m ahead
+  // of the camera but never under the brushes on screen (they stay outside x 0.21-0.80); his nearest splash (< 2.6 m) is still in front.
+  pull: { on: 1, near: 2.6, k: 0.01, far: [10, 15] },
   // the skirts, top to bottom: [yRoot, yTip, rRoot, rTip] in bell radii (y from the lowest tips). Visible tier heights (TARGETS.md, approved
   // left brush): pink y 0.486-0.551, white-lavender 0.551-0.597, royal blue 0.597-0.656, pale blue-white 0.656-0.714
   tiers: [[2.80, 2.00, 0.62, 1.08], [2.30, 1.38, 0.70, 1.20], [1.75, 0.62, 0.74, 1.27], [1.05, 0.0, 0.78, 1.32]],
@@ -51,17 +53,17 @@ export const BRUSH6 = {
   // faded where they get smaller than a pixel), a few stray strands past the tips; the front row stands `gap` bell radii out, turned half a
   // tuft, `short` shorter, so the back row's spikes show between its own. around: mesh segments per tuft; along: rings root to tip.
   // lod: brushes farther than lod.dist metres draw the light mesh (lod.seg segments per tuft, lod.along rings, the back row only).
-  fur: { tufts: 30, seg: 6, along: 9, rows: 2, gap: 0.06, short: 0.08, scallop: 0.1, spike: 0.15, jag: 0.12, strands: 190, contrast: 0.45, stray: 0.1, shade: 0.62 },
+  fur: { tufts: 30, seg: 6, along: 9, rows: 2, gap: 0.06, short: 0.08, scallop: 0.1, spike: 0.15, jag: 0.12, strands: 190, contrast: 0.45, stray: 0.1, shade: 0.45 },
   lod: { dist: 14, seg: 2, along: 4 },
   // the approved's colours (band medians, 20 % / 80 % luminance means), the lit body kept under the Neutral tone mapping's ~0.76 knee
   // (linear): pink (0.72, 0.01, 0.29), white-lavender (0.40, 0.24, 0.72), royal blue (0.0, 0.10, 0.72), pale blue (0.05, 0.21, 0.70)
   colours: {
     // (session ddf175f2: corrected by the measured linear ratios approved / frame under env6's hero grade, tools/brush6/tiers.py)
     dark: ['#c8026c', '#7d58b8', '#0130b8', '#0c4cb0'],
-    med: ['#f20e9e', '#af86f1', '#0258ee', '#3a7ce8'],
+    med: ['#f20e9e', '#af86f1', '#0254ff', '#4282fc'],
     lite: ['#fa6ee2', '#ecd6fc', '#1b94fa', '#9cc4fa'],
   },
-  light: { amb: 0.52, dif: 0.6, spec: 0.45, specWhite: 0.12, sheen: 0.03, side: 1.1, rightGain: 1.12 },
+  light: { amb: 0.75, dif: 0.6, spec: 0.45, specWhite: 0.12, sheen: 0.03, side: 1.1, rightGain: 1.12 },
   // the cap's gold: the approved's warm gold (#f08a53, light #ffeab9); s56's M.gold reads red-orange at this distance
   gold: { color: '#ffc45a', emissive: '#7a4a08', ei: 0.5, metal: 0.85, rough: 0.24 },
   bell: { color: '#f74fbd', emissive: '#8a1a5a', ei: 0.45, metal: 0.25, rough: 0.2 },

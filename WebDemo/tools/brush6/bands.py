@@ -7,7 +7,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-A = '/workspace/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png'
+A = '/home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png'
 
 
 def hsv(img):
