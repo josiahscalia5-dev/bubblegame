@@ -20,6 +20,7 @@ export const HERO7_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.
 export const HERO7 = {
   R: 0.32,         // body radius (m) (fitted on the u 206 frame by render difference: width / top / water line vs the approved)
   y: -0.24,        // body centre relative to the game's water-line estimate (m) (fitted)
+  airY: 0.0,       // the body centre above his root while in the air (the old body's centre)
   sink: 0.78,      // = S56.hero6.sink (the game's sunk body: its water line sits this far above tilt.position.y)
   nub: { r: 0.52, x: 1.02, y: -0.28, z: -0.3 },   // the nubs: radius and centre in body radii (x out to the sides, z toward the camera = -)
   shells: 32, len: 0.26, comb: 0.9, droop: 0.1,   // shell count; strand length (body radii); comb along the surface away from the pole; droop
@@ -135,7 +136,7 @@ export function buildHero7(ctx) {
   const body = new THREE.Mesh(shellGeometry(56, 36, P.shells), mat); body.name = 'hero7Body'; body.frustumCulled = false; body.renderOrder = 2;
   const nubs = [-1, 1].map((s) => { const n = new THREE.Mesh(shellGeometry(28, 18, P.shells), mat); n.name = 'hero7Nub'; n.frustumCulled = false; n.renderOrder = 2; n.userData.s = s; return n; });
   group.add(body, ...nubs);
-  let attached = null;
+  let attached = null, waterK = 1;
   const sync = () => {
     U.uN.value = P.shells; U.uLen.value = P.len; U.uComb.value = P.comb; U.uDroop.value = P.droop; U.uPole.value.set(...P.pole);
     U.uDens.value.set(...P.dens); U.uClump.value.set(P.clump.dens, P.clump.k, P.clump.len, P.clump.shade); U.uRad.value = P.rad; U.uLenVar.value = P.lenVar; U.uSoft.value = P.soft;
@@ -157,8 +158,11 @@ export function buildHero7(ctx) {
     if (P.hideOld && m.squash) m.squash.visible = !on;
     if (!on) return;
     // his drawn motion: the tilt's rotation (roll, pitch, lean, yaw, spin), the squash's stretch and swim bob, the water line from the tilt's sink
-    const wl = m.tilt.position.y + P.sink;
-    group.position.set(m.tilt.position.x, wl + P.y + (m.squash ? m.squash.position.y : 0), m.tilt.position.z);
+    // in the water: the body centre sits P.y from the water line (tilt.position.y + sink); in the air (the game's heroOff eases to 0) it eases
+    // to the old body's place (the root), at the same rate as the game's own sink (dt * 14), so jumps keep their height and stay in frame
+    waterK += ((m.air ? 0 : 1) - waterK) * Math.min(1, dt * 14);
+    const cy = m.tilt.position.y + (P.sink + P.y) * waterK + P.airY * (1 - waterK);
+    group.position.set(m.tilt.position.x, cy + (m.squash ? m.squash.position.y : 0), m.tilt.position.z);
     group.quaternion.copy(m.tilt.quaternion);
     if (m.squash) group.scale.copy(m.squash.scale); else group.scale.set(1, 1, 1);
   }
