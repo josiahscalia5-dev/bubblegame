@@ -346,23 +346,24 @@ export async function buildS56(ctx) {
       void main() {
         vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
         // fine moving ripples on top of the geometry's waves (normal detail)
-        vec2 rp = vec2(vXU.x * 3.2, vXU.y * 1.6 - uTime * 2.2);
+        vec2 rp = vec2(vXU.x * 3.2, vXU.y * 1.6 - uTime * 2.2), rq = vec2(vXU.x * 10.0, vXU.y * 5.0 - uTime * 3.4);
         float n1 = s5f(rp), n2 = s5f(rp * 2.3 + vec2(4.1, -uTime * 1.3));
-        N = normalize(N + vec3(n1 - 0.5, 0.0, n2 - 0.5) * 0.35);
+        N = normalize(N + vec3(s5n(rq) - 0.5, 0.0, s5n(rq * 1.7 + 3.1) - 0.5) * 0.12);   // fine ripples only (large tilts made pale glint blotches)
         float ndv = clamp(dot(N, V), 0.0, 1.0);
         // body colour: deep cobalt in the troughs, saturated azure on the slopes, turquoise on the lifted faces (lighting measurements:
         // deep #004dd5, mid #068cf9, turquoise #48c2fd, crest #e9f5ff, ~12 % white)
-        vec3 deep = vec3(0.0, 0.025, 0.36), cob = vec3(0.0, 0.2, 0.9), turq = vec3(0.02, 0.5, 1.0);
+        // (kept under ~0.75 per channel: the game's Neutral tone mapping desaturates anything brighter toward white, which read as pale patches)
+        vec3 deep = vec3(0.0, 0.02, 0.3), cob = vec3(0.0, 0.15, 0.66), turq = vec3(0.015, 0.4, 0.74);
         float hh = vH + (n1 - 0.5) * 0.07;
         vec3 c = mix(deep, cob, smoothstep(-0.16, 0.06, hh));
         c = mix(c, turq, smoothstep(0.04, 0.2, hh) * 0.8);
         float face = clamp(dot(N, normalize(V + vec3(0.0, 0.6, 0.0))), 0.0, 1.0);
-        c *= 0.62 + 0.5 * face;
+        c *= 0.72 + 0.3 * face;
         float fr = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);
-        c = mix(c, vec3(0.25, 0.5, 1.0), fr * 0.25);
+        c = mix(c, vec3(0.2, 0.4, 0.75), fr * 0.25);
         vec3 Rf = reflect(-V, N), Dv = vW - cameraPosition; Dv.y = 0.0; Dv = normalize(Dv);
-        float sp = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.12, 0.0))), 0.0, 1.0), 90.0);
-        float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 45.0);
+        float sp = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.12, 0.0))), 0.0, 1.0), 240.0);
+        float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 160.0);
         c += vec3(0.85, 0.97, 1.2) * sp * 1.1 + vec3(0.8, 0.9, 1.1) * gl * 0.3;
         // crests: thin broken white lines riding the two main waves' real crests (not blotches), lace foam on their lee side
         float p1 = 0.22 * vXU.x + 0.60 * vXU.y - 2.0 * uTime, p2 = -0.85 * vXU.x + 1.30 * vXU.y - 3.1 * uTime + 1.3;
@@ -373,7 +374,6 @@ export async function buildS56(ctx) {
         crest = max(crest, lace);
         float collar = smoothstep(0.4, 0.8, vRing * (0.55 + 0.8 * s5f(vXU * vec2(9.0, 7.0) + vec2(0.0, -uTime * 3.0))));
         float wk = smoothstep(0.35, 0.75, vWake * (0.5 + s5f(vXU * vec2(8.0, 5.0) + vec2(0.0, -uTime * 2.0))));
-        float streak = smoothstep(0.8, 0.88, s5f(vec2(vXU.x * 2.0, vXU.y * 0.5 - uTime * 0.9))) * 0.3 * smoothstep(0.0, 0.15, hh);
         float white = clamp(crest + collar + wk * 0.8, 0.0, 1.0);
         c = mix(c, vec3(0.86, 0.93, 1.02), white * 0.85);
         c = s56Haze(c, vW);
