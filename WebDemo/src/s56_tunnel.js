@@ -59,22 +59,23 @@ export const S56 = {
     deepH: [0.0, 0.11, 0.63], midH: [0.025, 0.29, 0.75], turqH: [0.15, 0.81, 1.12],
     foam: [0.9, 0.97, 1.06],
     chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
-    crest: 0.05,    // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
+    crest: 0.3,     // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
     ripple: 1.0,    // the churned water round him: thin broken rings spreading from his sides
     collar: 1.0,    // the thin broken splash line where the water meets his body (strongest at his sides)
     wake: 0.6,      // the two thin wake lines toward the camera
     spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
     glint: 1.0,     // the sky glints
     haze: 1.0,      // the far violet-white glow
-    lean: 2.2,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
+    lean: 3.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
     height: 0.45,   // the wave height's share of the shading (lifted water lighter)
     gap: 0.35,      // the share of the collar / wake / ripple lines broken away (0 = continuous lines)
-    line: 1.4,      // crest line half-width in screen pixels (at the canvas's resolution)
+    line: 1.2,      // crest line half-width in screen pixels (at the canvas's resolution)
     churn: 0.8,     // the chop's extra strength round him
     churnCrest: 0.25,   // how much lower the crest threshold is round him (more white lines where he swims)
+    froth: 1.0,     // the frothy splash band at his sides
   },
   hero6: { sink: 0.4 },   // `water6`: his drawn body sunk to about its widest line (the art director: visible height 0.238 H vs 0.158 approved)
-  splash6: { rate: 46, size: [0.012, 0.03], stretch: 2.2, speed: 2.3 },   // `water6`: crisp droplets thrown from his sides
+  splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4 },   // `water6`: crisp droplets thrown from his sides
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 
@@ -109,7 +110,8 @@ const CHOP_SPEC = [
   [0.32, 22, 0.010, 5.3], [0.22, -35, 0.007, 0.7], [0.155, 58, 0.005, 3.6],
 ];
 export const CHOP = CHOP_SPEC.map(([L, deg, A, p]) => { const k = 2 * Math.PI / L, a = deg * Math.PI / 180; return [A, k * Math.sin(a), k * Math.cos(a), Math.sqrt(9.8 * k), p]; });   // [A, kx, ku, w, phase]
-const CHOP_K = 2.2, CHOP_MEAN = 0.291, CHOP_MAX = CHOP.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0);   // (mean of exp(K (sin - 1)) = e^-K I0(K))
+const CHOP_K = 1.4, CHOP_MEAN = Math.exp(-CHOP_K) * [0, 1, 2, 3, 4, 5].reduce((a, n) => a + Math.pow(CHOP_K / 2, 2 * n) / Math.pow([1, 1, 2, 6, 24, 120][n], 2), 0);   // (rounded crests; mean of exp(K (sin - 1)) = e^-K I0(K))
+const CHOP_MAX = CHOP.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0);
 const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const WAVE_GLSL = /* glsl */ `
 vec3 s56Wave(float x, float u, float t) {   // (height, d/dx, d/du)
@@ -117,14 +119,12 @@ vec3 s56Wave(float x, float u, float t) {   // (height, d/dx, d/du)
 ${WAVES.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * x + ${f(ku)} * u - ${f(w)} * t + ${f(p)}; r += vec3(${f(A)} * sin(ph), ${f(A * kx)} * cos(ph), ${f(A * ku)} * cos(ph));`).join('\n')}
   return r;
 }`;
-// the chop and, from the same phases, its crest lines: a line along each crest whose width is set in SCREEN pixels (lw = half-width in px,
-// never wider than 0.45 rad of the wave), so near the camera it stays a thin line and never a cloud; lines fade before they would alias
+// the chop (rounded crests), each wave faded by its own pixel footprint before it would alias
 const CHOP_GLSL = /* glsl */ `
-vec3 s56Chop(vec2 p, float t, float lw, out float line) {   // (height normalised to its maximum, d/dx m/m, d/du m/m)
-  vec3 r = vec3(0.0); float ph, s, fd, fw, sn, cs, dc; line = 0.0;
-${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; fw = fwidth(ph); fd = 1.0 - smoothstep(0.3, 1.0, fw); sn = sin(ph); cs = cos(ph);
-  s = exp(${f(CHOP_K)} * (sn - 1.0)) * fd; r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cs, ${f(A * CHOP_K * ku)} * s * cs);
-  dc = abs(mod(ph + 1.5708, 6.28319) - 3.14159); line = max(line, (1.0 - smoothstep(0.45, 1.0, dc / max(min(lw * fw, 0.45), 1e-4))) * (1.0 - smoothstep(0.14, 0.5, fw)) * ${f(Math.pow(A / CHOP[0][0], 0.25))});`).join('\n')}
+vec3 s56Chop(vec2 p, float t) {   // (height normalised to its maximum, d/dx m/m, d/du m/m)
+  vec3 r = vec3(0.0); float ph, s, fd;
+${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
+  r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cos(ph), ${f(A * CHOP_K * ku)} * s * cos(ph));`).join('\n')}
   return r;
 }`;
 
@@ -469,7 +469,7 @@ export async function buildS56(ctx) {
   const syncWater = () => { const w = S.water, k = gradeHero;
     mixV(wU.uDeep.value, w.deep, w.deepH, k); mixV(wU.uMid.value, w.mid, w.midH, k); mixV(wU.uTurq.value, w.turq, w.turqH, k); wU.uFoam.value.set(...w.foam);
     wU.uW1.value.set(w.chop, w.crest, w.ripple, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uW3.value.set(w.lean, w.height, w.gap, wU.uW3.value.w);
-    wU.uW4.value.set(w.line, w.churn, w.churnCrest, 0); wU.uMask.value = w.mask ? 1 : 0; };
+    wU.uW4.value.set(w.line, w.churn, w.churnCrest, w.froth); wU.uMask.value = w.mask ? 1 : 0; };
   // the hero grade's weight is read from the grade pass's own uniform (uHero, set by tunnel_r7_hero.js every frame) through the game's
   // read-only hook (game.js window.__bw.debug(): ctx has no composer); 0 (the drum ramp) where there is no hero grade
   let gradeU = null;
@@ -514,14 +514,16 @@ export async function buildS56(ctx) {
         // the short sharp-crested rolling waves: height (normalised), slopes and their crest lines, on top of the geometry's swells
         // (a slow domain warp bends the straight crests into rounded, irregular travelling shapes)
         vec2 wp = vXU + (vec2(s5f(vXU * vec2(1.6, 0.9) + vec2(0.0, -uTime * 0.5)), s5f(vXU * vec2(1.3, 0.8) + vec2(5.2, -uTime * 0.6))) - 0.47) * 0.6;
-        float line; vec3 ch = s56Chop(wp, uTime, uW4.x, line) * uW1.x * (1.0 + uW4.y * near);
+        wp += (vec2(s5n(wp * vec2(3.1, 2.3) + vec2(1.7, -uTime * 0.8)), s5n(wp * vec2(2.6, 3.4) + vec2(8.3, -uTime * 0.9))) - 0.5) * 0.16;   // (a finer warp: the small crests curve too)
+        vec3 ch = s56Chop(wp, uTime) * uW1.x * (1.0 + uW4.y * near);
         vec3 N = normalize(normalize(vN) - ch.y * vR - ch.z * vT);
         vec2 rq = vec2(vXU.x * 10.0, vXU.y * 5.0 - uTime * 3.4);
         N = normalize(N + (vR * (s5n(rq) - 0.5) + vT * (s5n(rq * 1.7 + 3.1) - 0.5)) * 0.05);   // fine ripples (normal detail only)
         // the shade along the ramp: faces leaning toward the camera lit (turquoise), backs and troughs cobalt; lifted water lighter
         float lean = dot(N, -vT);
         float hh = vH * 2.4 + ch.x * 0.8;
-        float sh = clamp(0.48 + uW3.x * lean + uW3.y * hh, 0.0, 1.0);
+        float sx = uW3.x * lean + uW3.y * hh;
+        float sh = 0.5 + 0.5 * sx / (1.0 + abs(sx));   // (a soft limit: the shade rolls into the ramp's ends, never clipped into flat facets)
         vec3 c = mix(mix(uDeep, uMid, smoothstep(0.0, 0.5, sh)), uTurq, smoothstep(0.5, 1.0, sh));
         // the sky glints (small) and pinpoint sparkles on the chop's crests (sparse, faded where they would alias)
         vec3 Rf = reflect(-V, N), Dv = vW - cameraPosition; Dv.y = 0.0; Dv = normalize(Dv);
@@ -529,14 +531,19 @@ export async function buildS56(ctx) {
         c += vec3(0.5, 0.75, 1.0) * gl * 0.25 * uW2.z;
         vec2 tq = vXU * vec2(38.0, 20.0) + vec2(uTime * 0.7, -uTime * 2.6);
         float spark = smoothstep(0.86, 0.97, s5n(tq)) * smoothstep(0.2, 0.6, ch.x) * (1.0 - smoothstep(0.25, 0.8, length(fwidth(tq)))) * uW2.y;
-        // crest lines: white where the sharp crests stand highest (lower threshold round him: more lines where he swims), broken
+        // crest lines: a thin contour of the water's height near its tops (curved, closed round each wavelet's crest; its half-width in screen
+        // pixels, so it never thickens into a cloud near the camera), frothy and broken; lower round him (more lines where he swims)
         float lift = ch.x + vH * 1.5, thr = uW1.y - uW4.z * near;
-        float brk = s5f(wp * vec2(7.0, 4.0) + vec2(0.0, -uTime * 1.1));
-        float crest = line * smoothstep(thr, thr + 0.15, lift) * smoothstep(0.32, 0.5, brk);
+        float brk = s5f(wp * vec2(9.0, 6.0) + vec2(0.0, -uTime * 1.3));
+        float crest = s56Line(lift - thr, uW4.x) * smoothstep(0.3, 0.48, brk) * smoothstep(0.15, 0.45, s5n(wp * vec2(40.0, 26.0)));
+        c = mix(c, uTurq, smoothstep(thr - 0.12, thr, lift) * 0.35);   // the lit cap just under each crest
         // where the water meets him: a thin broken splash line at his waterline, strongest at his sides, and thin broken rings spreading out
         float ang = atan(dq.y, dq.x);
         float keep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, s5f(vec2(ang * 5.0, rr * 3.0 - uTime * 2.4)));
         float collar = s56Line(rr - 0.99, 2.2) * keep * (0.35 + 0.65 * sideW) * pw * uW1.w;
+        // the splash crowns at his sides: a frothy broken band (fine noise in his own angle, never a smooth ring), strongest at the sides
+        float fz = s5f(vec2(ang * 14.0, rr * 9.0 - uTime * 3.2)) * 0.65 + s5n(vXU * vec2(46.0, 30.0) + vec2(0.0, -uTime * 4.0)) * 0.35;
+        collar = max(collar, smoothstep(1.32, 0.98, rr) * step(0.97, rr) * smoothstep(0.5, 0.62, fz) * sideW * pw * uW4.w);
         float rp = fract(rr * 3.2 - uTime * 1.7) - 0.5;
         float rkeep = smoothstep(uW3.z + 0.05, uW3.z + 0.2, s5f(vec2(ang * 7.0 + 3.0, rr * 4.0 - uTime * 1.9)));
         float ripple = s56Line(rp, 1.6) * rkeep * near * (0.3 + 0.7 * sideW) * step(1.02, rr) * uW1.z;
