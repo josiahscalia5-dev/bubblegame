@@ -11,7 +11,7 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 REPO="$(pwd)"; LANES_DIR="${BW_LANES_DIR:-${REPO}_lanes}"; REG=Tools/lanes.json
-SPARSE="WebDemo Tools .claude Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user Design/ReferencePacks/Six_Scene_New_Direction"
+SPARSE="WebDemo Tools .claude Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user Design/ReferencePacks/Six_Scene_New_Direction"
 lanes() { python3 -I -c "import json,sys; [print(k, v['branch']) for k, v in json.load(open(sys.argv[1]))['lanes'].items() if v.get('branch')]" "$REG"; }
 cmd="${1:-status}"; shift || true
 case "$cmd" in

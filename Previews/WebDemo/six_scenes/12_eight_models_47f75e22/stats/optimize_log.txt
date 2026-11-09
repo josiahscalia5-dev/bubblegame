@@ -1,0 +1,43 @@
+== 913_914 15:42:50
+  original triangles: 1910446
+  lod0: 40000 triangles, 1322168 bytes
+  lod1: 14988 triangles, 473440 bytes
+  lod2: 4996 triangles, 173812 bytes
+== 911_tiny 15:43:07
+  original triangles: 1921884
+  lod0: 39998 triangles, 486948 bytes
+  lod1: 15000 triangles, 286612 bytes
+  lod2: 4998 triangles, 119848 bytes
+== 912_tiny 15:43:24
+  original triangles: 1893624
+  lod0: 39998 triangles, 1309512 bytes
+  lod1: 15000 triangles, 465660 bytes
+  lod2: 4996 triangles, 167988 bytes
+== Machinery_tiny 15:43:42
+  original triangles: 1926433
+  lod0: 39997 triangles, 668188 bytes
+  lod1: 14997 triangles, 470800 bytes
+  lod2: 4999 triangles, 181352 bytes
+== blue_jt_tiny 15:43:58
+  original triangles: 1956578
+  lod0: 39998 triangles, 653424 bytes
+  lod1: 15000 triangles, 451244 bytes
+  lod2: 4998 triangles, 163740 bytes
+== dave_tiny 15:44:15
+  original triangles: 1910446
+  lod0: 40000 triangles, 672288 bytes
+  lod1: 14988 triangles, 472896 bytes
+  lod2: 4996 triangles, 175508 bytes
+== gold_jj_tiny 15:44:32
+  original triangles: 1913762
+  lod0: 40000 triangles, 518836 bytes
+  lod1: 14998 triangles, 338696 bytes
+  lod2: 5000 triangles, 124064 bytes
+== yo_jj_optimized 15:44:51
+  original triangles: 1956578
+  lod0: 39998 triangles, 565604 bytes
+  lod1: 15000 triangles, 215668 bytes
+  lod2: 4998 triangles, 75288 bytes
+== validate
+models: 24 GLB checked, 0 failed, 24 validator warnings (not failures)
+== done 15:45:08

@@ -1,0 +1,46 @@
+{
+  "archive_set": "BubbleWash_Tripo_Claude_6packs",
+  "version": 1,
+  "assets": {
+    "BubbleWash_Tripo_Machinery_tiny.glb": {
+      "bytes": 10358984,
+      "sha256": "999ebdd3ad1d4d39230f92c70f64714c0fbb81b98078520086931219bd7be019"
+    },
+    "BubbleWash_Tripo_911_tiny.glb": {
+      "bytes": 10150020,
+      "sha256": "4345fd777bccb7fcc16f70acd1f059e3957d128ebd89f42edfede485dd51e29c"
+    },
+    "BubbleWash_Tripo_912_tiny.glb": {
+      "bytes": 10791824,
+      "sha256": "16b4878d64f506324123842b2059ff2a7aa63138be49064bdff536a169898f88"
+    },
+    "BubbleWash_Tripo_yo_jj_optimized.glb": {
+      "bytes": 43780888,
+      "sha256": "61869bb5b5556a54f5cf40a6f32edccd333b967d769dfb8d7b00475675946a7e",
+      "parts": [
+        "BubbleWash_Tripo_yo_jj_optimized.glb.part01",
+        "BubbleWash_Tripo_yo_jj_optimized.glb.part02"
+      ],
+      "part_sha256": [
+        "77a513d7f052aed2f62d88b99af683a268269ad1188a16b3358b70ccf540c9a3",
+        "cf5ff394ad2942cc2be5af2586132b9d16a732a0d426f07f10f3d63729872a6c"
+      ]
+    },
+    "913 914.glb": {
+      "bytes": 18866372,
+      "sha256": "661687e63236c7368b94cb86ccda4222618b90a7f071eacdff1c372aef450643"
+    },
+    "BubbleWash_Tripo_blue_jt_tiny.glb": {
+      "bytes": 10254232,
+      "sha256": "086b0652cb8786060c691b8b627afd381a8088a5c19c022f7cda8a67ee63e95b"
+    },
+    "BubbleWash_Tripo_dave_tiny.glb": {
+      "bytes": 10084252,
+      "sha256": "5e599f37e4270e07b157f2c9c9d6ecc383651a29cdfa8bc75e3598a093533567"
+    },
+    "BubbleWash_Tripo_gold_jj_tiny.glb": {
+      "bytes": 9386348,
+      "sha256": "94593bdb007cd517fd7115a34fb50dc8338cd3bb41b7d6ffc0b58b1a15e4fddc"
+    }
+  }
+}

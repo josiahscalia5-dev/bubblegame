@@ -1,0 +1,479 @@
+{
+ "0": {
+  "n": 3,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "(noname:)": {
+  "n": 57,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": false,
+  "blending": 1,
+  "renderOrder": -10
+ },
+ "@particles": {
+  "n": 1,
+  "type": "Points",
+  "mat": "ShaderMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 5,
+  "renderOrder": 6
+ },
+ "(noname:scenery)": {
+  "n": 14,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "geometry_0": {
+  "n": 11,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "(noname:entranceDecor)": {
+  "n": 4,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "mesh_0": {
+  "n": 3,
+  "type": "Mesh",
+  "mat": "MeshLambertMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "r2Halo": {
+  "n": 3,
+  "type": "Sprite",
+  "mat": "SpriteMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 2,
+  "renderOrder": 4
+ },
+ "BubbleWash_PinkFuzzyMascot_Small": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "structFill": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "structShellFur": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "@foamBubbles": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 5,
+  "renderOrder": 5
+ },
+ "s3Bubbles": {
+  "n": 2,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 5,
+  "renderOrder": 5
+ },
+ "fluffyShells": {
+  "n": 7,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "fluffyFringe": {
+  "n": 7,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "(noname:s4Brush)": {
+  "n": 7,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s4Bubbles": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 5,
+  "renderOrder": 5
+ },
+ "l1Bubbles": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Shell": {
+  "n": 14,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Arches": {
+  "n": 4,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Lamps": {
+  "n": 2,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank0": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank1": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank2": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank3": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank4": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank5": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank6": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank7": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank8": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank9": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank10": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank11": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank12": {
+  "n": 10,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Bank13": {
+  "n": 9,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing0": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing1": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing2": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing3": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing4": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing5": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing6": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing7": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing8": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing9": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing10": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing11": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing12": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Housing13": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "tripo_node_d218d0c1-8682-44fe-a24d-46babeba9030": {
+  "n": 7,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "(noname:s56Gear)": {
+  "n": 7,
+  "type": "Mesh",
+  "mat": "MeshStandardMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Water": {
+  "n": 14,
+  "type": "Mesh",
+  "mat": "ShaderMaterial",
+  "transparent": false,
+  "depthWrite": true,
+  "blending": 1,
+  "renderOrder": 0
+ },
+ "s56Splash": {
+  "n": 1,
+  "type": "Mesh",
+  "mat": "MeshBasicMaterial",
+  "transparent": true,
+  "depthWrite": false,
+  "blending": 1,
+  "renderOrder": 3
+ }
+}

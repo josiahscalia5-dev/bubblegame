@@ -1,4 +1,21 @@
-# Tools and plugins: restore and verify (NEWEST: 9 November 2026 ~13:10 UTC, session f28099bc, statuses tested LIVE this session)
+# Tools and plugins: restore and verify (NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2, account-transfer backup; tested LIVE)
+
+## 0. Session d847dce2 (new account): what was really active
+| Item | Version | Live test | Status | Next account |
+|---|---|---|---|---|
+| parallax-threejs plugin | 0.4.12 (Anthropic Directory, community publisher) | ListPlugins: none enabled on this account | NOT ENABLED | REQUIRES ACCOUNT ACTION: claude.ai -> Customize -> Plugins -> enable `parallax-threejs`, then a NEW session (plugins load at start). Test: ToolSearch "chrome-devtools" + "threejs-devtools", call `list_pages` and `bridge_status` on the running game |
+| chrome-devtools MCP, threejs-devtools MCP | (from the plugin: chrome-devtools-mcp 1.6.0, threejs-devtools-mcp 0.2.1 cached by the setup) | no tools in the session | MISSING (plugin) | come back with the plugin; `/mcp` -> reconnect if "failed" |
+| Spector MCP (project `.mcp.json`, built by `Tools/cloud_env_setup.sh` into `~/.bubblewash-tools/spector`) | Spector.js + Playwright 1.63 | load_url on the game, list_canvases, get_context_info, capture_frame: 209 draw calls, 51 programs, no GL errors | WORKING | restored by the setup script; `/mcp` -> reconnect if "failed" |
+| Playwright MCP (the org-synced `playwright` plugin, Microsoft) | @playwright/mcp | browser_tabs / navigate / evaluate on the game | PARTIAL (screenshots of the live game time out at 5 s) | arrives with the account's synced plugins; else the project scripts |
+| Node / npm / esbuild / three.js | 22.23.4 / 10.9 / pinned / r170 | `npm ci`, `node build.mjs` (bundle rebuilds byte-identically) | WORKING | `cd WebDemo && npm ci` |
+| Playwright + Chromium | 1.63.0 + the image's /opt/pw-browsers | every capture this session | WORKING | never `playwright install` |
+| Blender | 5.2.3 LTS | imported `gear_v2_tripo.glb` (1 mesh, 11,774 verts) | WORKING | setup script (host download.blender.org) |
+| glTF Transform / gltfpack / Khronos validator | 4.5.1 / 0.25 / 2.0.0-dev | inspect; weld + simplify + resize + meshopt of the user's models; 48 GLB 0 errors | WORKING | setup script |
+| FFmpeg / ImageMagick / Git LFS / Deno | 6.1.1 / 6.9.12 / 3.4.1 / 2.9.6 | H.264 encode + ffprobe; versions | WORKING | system packages / setup script |
+| Python visual venv (OpenCV 5.0, scikit-image 0.26) and metrics venv (PyTorch 2.15, LPIPS, Optuna) | | imports; LPIPS ref 5 vs game = 0.609 | WORKING | setup script (PyTorch last, host download.pytorch.org) |
+| Tripo CLI + API | 0.11.2 | network secret saved for openapi.tripo3d.ai via the secure form; `tripo balance` 1,060 (0 frozen), `tripo doctor` ok; 0 credits spent | WORKING on THIS environment | REQUIRES ACCOUNT ACTION if the environment differs: the network secret for `openapi.tripo3d.ai` (Authorization: Bearer); run the CLI with `TRIPO_API_KEY=tsk_proxy-injected` (placeholder) |
+| Ludo.ai | - | not connected, not used | NOT CONFIGURED | only with the user's approval |
+New tool this session: `WebDemo/tools/tmach/tm_view.cjs` (any GLB in an isolated three.js scene with the game's lighting, 6 views + stats).
 
 ## A. One command, safe to repeat
 `bash Tools/restore_session.sh` -> runs `Tools/cloud_env_setup.sh` only if an essential tool is missing (idempotent, ~10 s when complete), then checks

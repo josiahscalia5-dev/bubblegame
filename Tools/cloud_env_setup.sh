@@ -67,7 +67,9 @@ if "$T/visual/bin/python" -c "import cv2, skimage, numpy, PIL, scipy" 2>/dev/nul
 else
   UV="$(command -v uv || true)"; [ -z "$UV" ] && [ -x "$HOME/.local/bin/uv" ] && UV="$HOME/.local/bin/uv"
   if [ -n "$UV" ]; then
-    "$UV" venv -q --python "$(command -v python3)" "$T/visual" && "$UV" pip install -q --python "$T/visual/bin/python" $PY_PACKAGES
+    # (9 November 2026, session 3849f5c8: --allow-existing, so a venv left EMPTY by a setup cut off mid-install is filled on the next run
+    # instead of failing at once on "A virtual environment already exists"; it happened at this session's start)
+    "$UV" venv -q --allow-existing --python "$(command -v python3)" "$T/visual" && "$UV" pip install -q --python "$T/visual/bin/python" $PY_PACKAGES
   else
     python3 -m venv "$T/visual" && "$T/visual/bin/pip" install -q $PY_PACKAGES
   fi && echo "  installed" || fail "Python visual tools"
