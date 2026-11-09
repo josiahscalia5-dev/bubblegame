@@ -27,15 +27,15 @@ export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
 // every number the staging uses (window.__bwSix2 in the browser, for live tuning; the timeline reads them each frame)
 export const SIX2 = {
   handOver: 9.15, seqEnd: 9.95,
-  girl: { scale: 1.42, k1: [-0.5, 1.06], yaw1: 1.0, k2: [-0.5, 0.66], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
+  girl: { scale: 1.42, k1: [-0.5, 1.1], yaw1: 1.5, k2: [-0.5, 0.66], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
   basket: { pos: [-0.14, 1.16], scale: 1.12, yaw: 0.0 },
   door: { open: -2.92 },
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
     [-1, [-0.04, 0.6, 3.35], [-0.28, 0.56, 0.76], 52],
     [0.0, [-0.04, 0.6, 3.35], [-0.28, 0.56, 0.76], 52],
     [0.9, [-0.02, 0.62, 3.3], [-0.24, 0.58, 0.74], 51],
-    [2.2, [0.02, 0.66, 3.1], [-0.2, 0.6, 0.6], 50],
-    [3.2, [0.02, 0.66, 3.1], [-0.2, 0.6, 0.6], 50],
+    [2.2, [0.05, 0.7, 2.75], [-0.18, 0.6, 0.55], 50],
+    [3.2, [0.05, 0.7, 2.75], [-0.18, 0.6, 0.55], 50],
     [4.0, [0.22, 0.74, 1.3], [0.32, 0.6, -0.2], 52],
     [4.9, [0.25, 0.7, 1.05], [0.33, 0.58, -0.3], 50],
     [5.35, [0.28, 0.78, 3.0], [0.3, 0.72, 0.27], 36],
@@ -85,21 +85,36 @@ export function makeCloth(material, n = 24) {
     }
   };
   // hanging from two corners (world points pL, pR), side length S, swaying; the result is in WORLD space (the mesh then sits at the origin)
-  const hangW = (out, pL, pR, S, t, sway, inward) => {
-    const across = new THREE.Vector3().subVectors(pR, pL), w = across.length(); across.normalize();
+  const hangW = (out, pL, pR, S, t, sway, inward, camRight = null) => {
+    const across = new THREE.Vector3().subVectors(pR, pL), w = Math.max(0.05, across.length()); across.normalize();
     const fwd = new THREE.Vector3(-across.z, 0, across.x).normalize();   // horizontal, perpendicular to the held edge
+    const cr = camRight ? V(camRight.x, 0, camRight.z).normalize() : null, cf = cr ? V(-cr.z, 0, cr.x) : null;
     for (let i = 0; i < cnt; i++) {
       const u = U[i * 3] + 0.5, v = 0.5 - U[i * 3 + 1];   // u 0..1 along the held edge, v 0 (held) .. 1 (bottom)
       const drop = v * S * 0.98, sag = Math.sin(u * Math.PI) * 0.06 * (1 - v * 0.5) * (w / S);
       const fold = 0.025 * Math.sin(u * 15 + v * 4 + t * 2.1) * (0.3 + v) + 0.018 * Math.sin(u * 31 - v * 9) * v;
       const sw = sway * Math.sin(t * 3.1 + v * 2.2) * v * v * 0.06, bunch = (u - 0.5) * (1 - 0.35 * v);   // corners gather toward the middle lower down
-      const px = pL.x + across.x * w * (0.5 + bunch) + fwd.x * (fold + sw + inward * v * v * 0.25), pz = pL.z + across.z * w * (0.5 + bunch) + fwd.z * (fold + sw + inward * v * v * 0.25);
+      let px = pL.x + across.x * w * (0.5 + bunch) + fwd.x * (fold + sw + inward * v * v * 0.25), pz = pL.z + across.z * w * (0.5 + bunch) + fwd.z * (fold + sw + inward * v * v * 0.25);
+      if (cr) { const mx = (pL.x + pR.x) / 2, mz = (pL.z + pR.z) / 2, fan = (u - 0.5) * S * (0.35 + 0.5 * Math.sin(Math.min(1, v * 1.6) * Math.PI / 2));
+        px = mx + cr.x * fan + cf.x * (fold * 1.6 + sw) + fwd.x * inward * v * v * 0.25; pz = mz + cr.z * fan + cf.z * (fold * 1.6 + sw) + fwd.z * inward * v * v * 0.25; }
       const py = pL.y + (pR.y - pL.y) * u - drop - sag + 0.02 * Math.sin(u * 9 + t) * v;
       out[i * 3] = px; out[i * 3 + 1] = py; out[i * 3 + 2] = pz;
     }
   };
+  const _q = new THREE.Quaternion(), _e = new THREE.Euler(), _p = new THREE.Vector3(), _b = new THREE.Vector3();
+  const hood = (out, c, r, L, rx, ry, hang, t, sh, flut = 0.3) => {
+    _q.setFromEuler(_e.set(rx, ry, 0, 'YXZ')); const arc = r * Math.PI * 0.5;
+    for (let i = 0; i < cnt; i++) {
+      const u = U[i * 3] * 2, v = U[i * 3 + 1] * 2 - sh, d = Math.hypot(u, v) * L, th = Math.atan2(v, u);
+      const wr = 0.01 * Math.sin(th * 7 + d * 22) * Math.min(1, d / L) * (r / 0.12), f = flut * Math.min(1, d / L) * Math.sin(t * 2.2 + d * 14 + th * 2) * 0.006;
+      if (d < arc) { const ph = d / r, rr = r + wr; _p.set(Math.sin(ph) * Math.cos(th) * rr, Math.cos(ph) * rr, Math.sin(ph) * Math.sin(th) * rr).applyQuaternion(_q).add(c); }
+      else { const e = d - arc; _b.set(Math.cos(th) * (r + wr), 0, Math.sin(th) * (r + wr)).applyQuaternion(_q); const o = V(_b.x, 0, _b.z).normalize();
+        _p.copy(_b).add(c).addScaledVector(o, 0.012 + e * 0.16 + wr * 1.5).add(V(0, -Math.min(e, hang) - Math.max(0, e - hang) * 0.12, 0)); }
+      out[i * 3] = _p.x + f; out[i * 3 + 1] = _p.y; out[i * 3 + 2] = _p.z + f * 0.5;
+    }
+  };
   const apply = (src) => { const pa = geo.attributes.position; pa.array.set(src); pa.needsUpdate = true; geo.computeVertexNormals(); };
-  return { mesh, A, B, drape, hangW, apply, blend: (k) => { const o = new Float32Array(cnt * 3); for (let i = 0; i < o.length; i++) o[i] = A[i] + (B[i] - A[i]) * k; return o; } };
+  return { mesh, A, B, drape, hangW, hood, apply, blend: (k) => { const o = new Float32Array(cnt * 3); for (let i = 0; i < o.length; i++) o[i] = A[i] + (B[i] - A[i]) * k; return o; } };
 }
 
 // ---------------------------------------------------------------- the laundry room of references 01 / 02
@@ -274,7 +289,7 @@ export function installSix2(ctx) {
     // ---- captions
     let sc = 1; for (const [t0, n] of S.scenes) if (s >= t0) sc = n; if (sc !== scene0) { scene0 = sc; if (ctx.onScene) ctx.onScene(sc); }
     // ---- basket on the rug (badge to the camera)
-    const BS = S.basket; basket.position.set(BS.pos[0], 0.135 * BS.scale, BS.pos[1]); basket.rotation.set(0, BS.yaw, 0); basket.scale.setScalar(BS.scale);
+    const BS = S.basket; basket.position.set(BS.pos[0], 0.135 * BS.scale, BS.pos[1]); basket.rotation.set(0, BS.yaw, 0); basket.scale.set(BS.scale * 1.18, BS.scale * 0.86, BS.scale * 1.1);
     badge.position.set(0, 0.03, 0.262); badge.rotation.set(-0.16, 0, 0);
     R2.rug.position.set(BS.pos[0] + 0.05, 0.004, BS.pos[1] - 0.02);
     R2.shadows.basket.position.set(BS.pos[0], 0.008, BS.pos[1] + 0.02);
@@ -333,7 +348,7 @@ export function installSix2(ctx) {
       const toWasher = Math.atan2(P.x - s0.kx, P.z - s0.kz) - s0.yaw;   // the washer's bearing from her body
       const headYaw = keys(s, [[-1, -0.35], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
       const headUp = keys(s, [[-1, 0.18], [0.4, 0.1], [1.0, 0.0], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
-      rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.25 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher);
+      rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher);
       rotateBoneWorld(B.head, lat2, -headUp * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
       // arms: two-bone IK to the hand targets (the hand nearer each target takes it)
@@ -368,19 +383,19 @@ export function installSix2(ctx) {
     if (s < 0) landed = false;
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
     // ---- the blue towel: draped over him (a hood) -> lifted by both hands (hanging cloth) -> pushed into the drum -> lying in the drum -> flipped onto his head
-    const rB = OPENING3D.heroW * 0.5 * 0.62;
-    const drapeHood = (out) => blue.drape(out, rB * 1.06, rB * 2.7, 0, rB * 1.15, it, 0.3, 0.42);
+    const rB = OPENING3D.heroW * 0.5 * 0.62, camRight = V(1, 0, 0).applyQuaternion(camera.quaternion);
+    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.08, rB * 2.4, -0.95, camYaw, rB * 0.95, it, 0.35);
     bG.visible = true; bG.position.set(0, 0, 0); bG.rotation.set(0, 0, 0); bG.scale.setScalar(1);
     const placeLocal = (src, pos, rx, ry, rz, k = 1) => { const m = new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz, 'YXZ')), V(k, k, k)); const o = new Float32Array(src.length); const v = new THREE.Vector3(); for (let i = 0; i < src.length; i += 3) { v.set(src[i], src[i + 1], src[i + 2]).applyMatrix4(m); o[i] = v.x; o[i + 1] = v.y; o[i + 2] = v.z; } return o; };
     const hoodPos = inBasket.clone().add(V(0, 0.012, -0.01)), hoodRot = [-0.32, camYaw, 0];
-    if (s < 0.45) { drapeHood(blue.A); blue.apply(placeLocal(blue.A, hoodPos, ...hoodRot)); }
+    if (s < 0.45) { hoodAt(blue.A, hoodPos); blue.apply(blue.A); }
     else if (s < 2.55) {
-      drapeHood(blue.A); const A = placeLocal(blue.A, hoodPos, ...hoodRot);
-      const pL = hA[0].clone(), pR = hA[1].clone(); blue.hangW(blue.B, pL, pR, 0.42, it, s < 1.95 ? 1 : 0.4, s > 1.95 ? sm(1.95, 2.45, s) * -0.6 : 0);
+      hoodAt(blue.A, hoodPos); const A = blue.A;
+      const pL = hA[0].clone(), pR = hA[1].clone(); blue.hangW(blue.B, pL, pR, 0.46, it, s < 1.95 ? 1 : 0.4, s > 1.95 ? sm(1.95, 2.45, s) * -0.6 : 0, camRight);
       const k = sm(0.45, 0.85, s); const o = new Float32Array(A.length); for (let i = 0; i < A.length; i++) o[i] = A[i] + (blue.B[i] - A[i]) * k; blue.apply(o);
     } else if (s < 4.75) {   // in the drum: let go at the door, it slides in and lies on the drum floor
       const k = sm(2.5, 2.9, s); blue.drape(blue.A, 0.08, 0.2, 0, 0.02, it, 0.2); const A = placeLocal(blue.A, lieBlue.clone().add(V(0, -0.06, 0)), 0, 0.3, 0, 1);
-      blue.hangW(blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.42, it, 0.4, -0.6);
+      blue.hangW(blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.46, it, 0.4, -0.6, camRight);
       const o = new Float32Array(A.length); for (let i = 0; i < A.length; i++) o[i] = blue.B[i] + (A[i] - blue.B[i]) * k; blue.apply(o);
     } else {   // flipped onto his head by his landing; the water lifts it off and carries it away in scene 4
       const off = sm(6.7, 7.3, s), kk = scl, flip = sm(4.75, 5.05, s);
