@@ -162,6 +162,12 @@ for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do   # 
     && ln -s "$T/spector" "$pr/vendor/spector" && echo "  Spector linked into the parallax-threejs plugin (reconnect: /mcp)"
 done
 echo "  $(deno --version 2>/dev/null | sed -n 1p || echo 'Deno: MISSING (optional)')"
+# (9 November 2026, session 6ddc157f) the plugin starts threejs-devtools-mcp with `npx -y threejs-devtools-mcp@0.2.1`: on a fresh machine that
+# first download made the server miss Claude's connection timeout (CONNECT_TIMEOUT at session start). Run it once here, before Claude starts,
+# with no input (it exits on end of input or at the time limit), so npx has it cached and the server connects at once.
+ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 \
+  || { DEV_PORT=3000 HEADLESS=true timeout 90 npx -y threejs-devtools-mcp@0.2.1 < /dev/null > /dev/null 2>&1; true; }
+ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 && echo "  threejs-devtools-mcp cached for the plugin" || echo "  threejs-devtools-mcp: not cached (optional)"
 
 if [ ${#failed[@]} -gt 0 ]; then
   printf '\nFAILED steps: %s\n' "${failed[*]}"

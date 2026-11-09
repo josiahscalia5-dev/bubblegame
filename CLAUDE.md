@@ -1,5 +1,36 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
+## READ FIRST: the user's PERMANENT requirements (9 November 2026, session 6ddc157f). They override anything older below.
+1. **THE ACTIVE GAME is the six-scene game with the user's new Tripo models ("tripo3 final", the user's selected "second row").** A plain launch of
+   `WebDemo/index.html` (no `?s3=`) runs `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3` (set in `WebDemo/src/page.html`,
+   built into `index.html` by `node build.mjs`, which also stamps the bundle URL `game.bundle.js?v=<md5>` so no stale bundle is served).
+   Models: `WebDemo/models/opening/girl_v2_rigged.glb`, `washer_tripo_hj748.glb`, `door_tripo_oit748_gold.glb`, `gear_v2_tripo.glb`,
+   `housing_tripo_821.glb` (code: `WebDemo/src/opening_tripo3.js`). Explicit `?s3=...` runs exactly as before: `?s3=intunnel` is the accepted
+   Classic Screen 4 (keep it pixel-identical), `?s3=,` the previous plain launch. Opt-in only, awaiting the user's review: `sock3`, `coin3`,
+   `enemy3` (art director: coin and enemy better, sock keep), `basket3` (not recommended: no handles, damaged side), `doorpink`.
+   **Do NOT redesign, rebuild or revert this version.** Fix only what the user asks. Evidence: `Previews/WebDemo/six_scenes/07_active_game_plain_launch_6ddc157f/`.
+2. **Branch:** the user's development branch is `claude/bubble-wash-account-transfer-52t7ym`: work there (if the session starts on a `ccr-*`
+   branch, fast-forward the work branch to it and check it out; never force-push, never rewrite). Rollback branches, never overwrite:
+   `claude/bubble-wash-rollback-before-tripo3-default` (`33bf67ba`, before the plain launch became six + tripo3) and
+   `claude/bubble-wash-account-switch-e1nndb` (`0aa21621`). Do not use the default branch `claude/new-session-oth0dd`.
+3. **STANDING PROCEDURE, every session, before any specialist task** (the user asked five times; never make them ask again):
+   a. The SessionStart hook runs `Tools/session_preflight.sh` (read-only, ~3 s: branch, active game and bundle stamp, the 5 agents, the skill,
+      the parallax plugin and its Spector link, the project Spector build, tools, Tripo balance (free), autosave) and restarts the autosave.
+      Read its summary; rerun it any time with `bash Tools/session_preflight.sh`.
+   b. Check live what a shell cannot: ToolSearch `mcp__plugin_parallax-threejs` (chrome-devtools, playwright, threejs-devtools) and
+      `mcp__spector`; the Agent tool must list game-art-director, gameplay-visual-testing, lighting-visual-matching, water-vfx-engineer,
+      screen4-water-motion-engineer and parallax-threejs:scenario-author / shader-reviewer / visual-debugger.
+   c. Report to the user AT ONCE anything MISSING or NEEDS USER, with the fix: a server that failed at startup -> the user types `/mcp` and
+      reconnects it (or a new session); the plugin missing -> claude.ai, Customize / plugins, enable `parallax-threejs`, then a NEW session;
+      Tripo failing -> the environment's network secret for `openapi.tripo3d.ai`. Never call a tool, plugin, agent or MCP server working
+      without a live check in THIS session, and never run a specialist-dependent task as if the specialist worked.
+   d. A full functional check when asked: `bash Tools/restore_session.sh` plus the agent tests of `ENVIRONMENT_VERIFICATION_2026-11-09_session_6ddc157f.md`.
+      Do not reinstall tools that work (`Tools/cloud_env_setup.sh` skips what is installed).
+   Known limits (9 November): the parallax agents get no MCP tools (a plugin naming defect: they work with Read / Bash only);
+   screen4-water-motion-engineer gets chrome-devtools, and its threejs-devtools tools only when that server connected.
+4. **Tripo:** no new paid jobs unless a genuine missing asset or defect is shown first (the user, 9 November); the standing authorization below
+   still requires `Tools/tripo_job.sh`, a dry run and the log.
+
 **NEWEST (8 November ~23:55 UTC, session `bb87ba9f`): READ `START_HERE_NEXT_CLAUDE_ACCOUNT.md` FIRST. The user's CURRENT direction is the NEW
 SIX-SCENE storyboard (`Design/ReferencePacks/Six_Scene_New_Direction/`; status and next step: `SIX_SCENE_IMPLEMENTATION_STATUS.md`; switch `six`). It
 supersedes the "Avoid Enemies!" / Classic background matching FOR THAT SEQUENCE; do not resume the background-matching cycle unless asked. The rules

@@ -27,6 +27,8 @@ FLOW_BUNDLE_MD5=8363541c3cff0474bc2bbc3cdcf97732            # + level1's 10-beat
 SCENE07C_BUNDLE_MD5=a359dad4963be8e248bd44e4b241ef3c         # + scene07 pass 16 v5 (final bundle of session f70c9bd1; accepted, normal, home, level1 0 px vs 6579f556: 77_scene07_pass15_upper/proofs/identity_a359dad4.txt)
 SCENE07B_BUNDLE_MD5=6579f556e0104ac0d9531e72631d4293         # + scene07 pass 13b opt-in (session ce30359f, ccr-8cd911d8-0m96gr 6b719c7; accepted, normal, home, level1 0 px vs d2a666bd: 75_scene07_pass9_shell/proofs/identity_6579f556.txt; added by session f70c9bd1)
 SCENE07_BUNDLE_MD5=d2a666bd70926c4a1360dc08d02ecc41          # + tripo1, tripo2, scene07 pass 8 opt-in (session 57091b57, ccr-b67aeffb-d94mmq 4c7868eb; accepted, normal, home, level1 0 px: 74_scene07_avoid_enemies/proofs/identity.txt; added by session ce30359f)
+ACTIVE6_BUNDLE_MD5=45f21c4aef0e2510403d7fa074176ecd           # THE ACTIVE GAME (9 November, session 6ddc157f, the user's decision): the plain launch = six + tripo3 (index.html default); old switches 0 px: Previews/WebDemo/six_scenes/07_active_game_plain_launch_6ddc157f/
+ACTIVE6_INDEX_MD5=dd151b1792d2e6511b593457f0d200c0 ACTIVE6_ARTIFACT_MD5=0d0e07b434b81dcb12c1d97bf2aa830b   # (their pages: the six + tripo3 default and the bundle's version stamp)
 ACCEPTED_BUNDLE_MD5=5bb24e2828a6f2ef17146252c69b413a          # ?s3=intunnel and the normal game (accepted build)
 SWIM2_BUNDLE_MD5=1199348a80352be29327134230a1b6a1            # the same + ?s3=intunnel,swim2 behind its flag (7 November, user-approved)
 BLEND_BUNDLE_MD5=38466b676bd36b05568023b5240818dd            # the accepted ?s3=intunnel (swim2) + ?s3=intunnel,blend behind its flag (7 November; accepted frames 0 px: 59_blend/proofs/)
@@ -59,6 +61,7 @@ echo "== The accepted game (must be unchanged)"
 m() { md5sum < "$1" 2>/dev/null | cut -c1-32; }
 bm="$(m WebDemo/game.bundle.js)"
 if [ "$bm" = "$SCENE07C_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (scene07 pass 16 v5 opt-in; accepted frames 0 px: 77_scene07_pass15_upper/proofs/identity_a359dad4.txt)"
+elif [ "$bm" = "$ACTIVE6_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (THE ACTIVE GAME: plain launch = six + tripo3; accepted, normal, home, level1 0 px: six_scenes/07_active_game_plain_launch_6ddc157f/)"
 elif [ "$bm" = "$SCENE07B_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (scene07 pass 13b opt-in; accepted frames 0 px: 75_scene07_pass9_shell/proofs/identity_6579f556.txt)"
 elif [ "$bm" = "$SCENE07_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (tripo1, tripo2, scene07 pass 8 opt-in on the flow build; accepted frames 0 px: 74_scene07_avoid_enemies/proofs/identity.txt)"
 elif [ "$bm" = "$FLOW_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $bm (level1 flow, the 10-beat Level 1, on top of wet + port; match6 opt-in; 71_level1_flow/)"
@@ -72,8 +75,8 @@ elif [ "$bm" = "$ACCEPTED_SWIM2_MD5" ]; then pass "WebDemo/game.bundle.js md5 $A
 elif [ "$bm" = "$BLEND_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $BLEND_BUNDLE_MD5 (the accepted Screen 4 + ?s3=intunnel,blend behind its flag; accepted frames 0 px: 59_blend/proofs/)"
 elif [ "$bm" = "$SWIM2_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $SWIM2_BUNDLE_MD5 (accepted + ?s3=intunnel,swim2 behind its flag; accepted frames 0 px different: 57_swim2/proofs/)"
 else fail "WebDemo/game.bundle.js md5 $bm, expected $MATCH6_BUNDLE_MD5..., $GIRL2_BUNDLE_MD5, $LEVEL1_BUNDLE_MD5, $STRUCT_BUNDLE_MD5, $BLEND_BUNDLE_MD5, $ACCEPTED_SWIM2_MD5, $SWIM2_BUNDLE_MD5 or $ACCEPTED_BUNDLE_MD5: the accepted bundle changed"; fi
-[ "$(m WebDemo/index.html)" = "$ACCEPTED_INDEX_MD5" ] && pass "WebDemo/index.html unchanged" || fail "WebDemo/index.html changed"
-[ "$(m WebDemo/artifact.html)" = "$ACCEPTED_ARTIFACT_MD5" ] && pass "WebDemo/artifact.html unchanged" || fail "WebDemo/artifact.html changed"
+if [ "$(m WebDemo/index.html)" = "$ACTIVE6_INDEX_MD5" ]; then pass "WebDemo/index.html = the active game page (six + tripo3 default)"; else [ "$(m WebDemo/index.html)" = "$ACCEPTED_INDEX_MD5" ] && pass "WebDemo/index.html unchanged" || fail "WebDemo/index.html changed"; fi
+if [ "$(m WebDemo/artifact.html)" = "$ACTIVE6_ARTIFACT_MD5" ]; then pass "WebDemo/artifact.html = the active game page"; else [ "$(m WebDemo/artifact.html)" = "$ACCEPTED_ARTIFACT_MD5" ] && pass "WebDemo/artifact.html unchanged" || fail "WebDemo/artifact.html changed"; fi
 pin="$(python3 -c "import json;d=json.load(open('WebDemo/package.json'));print(d['devDependencies']['three'],d['devDependencies']['esbuild'])")"
 [ "$pin" = "0.170.0 0.24.0" ] && pass "package.json pins three 0.170.0 and esbuild 0.24.0" || fail "package.json pins changed: $pin"
 if [ -f WebDemo/node_modules/three/package.json ]; then

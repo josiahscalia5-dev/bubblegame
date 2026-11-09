@@ -61,7 +61,7 @@ if have tripo; then b="$(TRIPO_API_KEY=tsk_proxy-injected timeout 12 tripo balan
   case "$b" in *balance*) say OK "Tripo API reachable: $b (free call, no credits spent)";; *) say "NEEDS USER" "Tripo balance failed ('${b:0:80}'): the network secret for openapi.tripo3d.ai (TOOLS_AND_PLUGINS_RESTORE.md section 1)";; esac; fi
 
 # --- autosave (started by the same hook right after this)
-n="$(pgrep -fc 'bash Tools/autosave.sh' 2>/dev/null || echo 0)"; [ "$n" -le 1 ] && say OK "autosave processes: $n (the hook starts one if 0)" || say WARN "autosave processes: $n (expected 1)"
+n="$(pgrep -fc 'bash Tools/autosave.sh' 2>/dev/null)"; n="${n:-0}"; [ "$n" -le 1 ] && say OK "autosave processes: $n (the hook starts one if 0)" || say WARN "autosave processes: $n (expected 1)"
 
 { echo "Bubble Wash Kingdom preflight $(date -u +%Y-%m-%dT%H:%MZ) session ${ID}"; printf '%s\n' "${LINES[@]}"; } > "$REP"
 echo "BUBBLE WASH PREFLIGHT: $ok OK, $warn WARN, $miss MISSING, $user NEEDS USER (report: $REP)"
