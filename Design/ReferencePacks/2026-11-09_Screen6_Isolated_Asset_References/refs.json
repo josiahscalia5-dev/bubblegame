@@ -1,0 +1,102 @@
+{
+ "01_roller_brush_machine": {
+  "approved_box_px": [
+   0,
+   505,
+   196,
+   1105
+  ],
+  "approved_box_frac": [
+   0.0,
+   0.329,
+   0.227,
+   0.719
+  ],
+  "out_px": [
+   1680,
+   1680
+  ],
+  "mirrored": true,
+  "fg_share": 0.634
+ },
+ "02_glowing_glass_tank": {
+  "approved_box_px": [
+   706,
+   440,
+   860,
+   705
+  ],
+  "approved_box_frac": [
+   0.817,
+   0.286,
+   0.995,
+   0.459
+  ],
+  "out_px": [
+   740,
+   740
+  ],
+  "mirrored": false,
+  "fg_share": 0.471
+ },
+ "03_pink_star_drum_housing": {
+  "approved_box_px": [
+   620,
+   640,
+   790,
+   830
+  ],
+  "approved_box_frac": [
+   0.718,
+   0.417,
+   0.914,
+   0.54
+  ],
+  "out_px": [
+   530,
+   530
+  ],
+  "mirrored": false,
+  "fg_share": 0.52
+ },
+ "04_control_box_glowing_screen": {
+  "approved_box_px": [
+   84,
+   495,
+   214,
+   705
+  ],
+  "approved_box_frac": [
+   0.097,
+   0.322,
+   0.248,
+   0.459
+  ],
+  "out_px": [
+   587,
+   587
+  ],
+  "mirrored": false,
+  "fg_share": 0.514
+ },
+ "05_overhead_brass_lamp_and_pipe": {
+  "approved_box_px": [
+   368,
+   318,
+   652,
+   545
+  ],
+  "approved_box_frac": [
+   0.426,
+   0.207,
+   0.755,
+   0.355
+  ],
+  "out_px": [
+   795,
+   795
+  ],
+  "mirrored": false,
+  "fg_share": 0.214
+ }
+}
