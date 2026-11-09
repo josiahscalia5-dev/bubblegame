@@ -66,8 +66,18 @@ FINAL REPORT (your last message, concise): the commit hash pushed; what is built
 - 18:19 `Bash`: Invert approved left-module screen points to 3D
 - 18:20 `Bash`: Project ring points for several radii
 - 18:20 `Bash`: Invert approved right-side items to 3D
+- 18:20 `Bash`: Read s56 tunnel settings
+- 18:20 `Bash`: Find water width in s56
+- 18:20 `Bash`: Read water mesh extent
+- 18:20 `Bash`: Check other lanes' dependencies on arch56
+- 18:23 `Bash`: Invert lamp/pipe targets and strip positions
+- 18:24 `Bash`: Strip positions for ring depth/radius options
+- 18:25 `Bash`: Locate uArch usage
+- 18:25 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 18:25 `Bash`: Cap the ungrade knee inverse
+- 18:25 `Bash`: Drum radius ramp and shifted arch glow
 
-_25 tool steps._
+_35 tool steps._
 
 ---
 
@@ -144,8 +154,62 @@ Let me capture the baseline (current state) with renderer.info, with and without
 - 18:18 `Bash`: Print renderer info and make baseline crops
 - 18:18 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/base_crops.png
 - 18:19 `Bash`: Diagnose depth occlusion of the brushes
+- 18:20 `Bash`: Make crops comparing depth diagnosis variants
+- 18:20 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/diag_crops.png
+- 18:21 `Bash`: Show the band-colour and sheet tools
+**Agent** (18:21 UTC):
 
-_19 tool steps._
+Let me sample the approved tier colours (median, dark and light ends) from the left and right brushes.
+
+- 18:21 `Bash`: Sample approved brush tier colours
+- 18:23 `Grep`: brush6|Brush6|BRUSH6
+**Agent** (18:23 UTC):
+
+Now I'll write the new bristle system into s56_brush6.js: settings first.
+
+- 18:23 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:23 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:23 UTC):
+
+Now the shaders.
+
+- 18:23 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:23 UTC):
+
+Now the geometry builder.
+
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:24 UTC):
+
+The front row should keep the full geometric length (the shader shortens it), so I'll remove the double shortening.
+
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:24 UTC):
+
+Now the material, the meshes (full and LOD), and the update.
+
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 18:24 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (18:24 UTC):
+
+Lane bound to 1.05 m as the coordinator decided, then a quick numeric check that the cone faces point outward.
+
+- 18:24 `Bash`: Set lane bound and check cone face winding
+**Agent** (18:24 UTC):
+
+Outward normals confirmed. Build and capture.
+
+- 18:24 `Bash`: Build and capture the first opaque-tuft pass
+**Agent** (18:25 UTC):
+
+Brush triangles dropped from 138k to 74k. Let me look at the crops (approved | before | new).
+
+- 18:25 `Bash`: Make approved/before/new crop sheet
+
+_37 tool steps._
 
 ---
 
@@ -207,5 +271,13 @@ I'll start by reading the targets, my lane's handoff, and the water parts of the
 - 18:19 `Bash`: Measure approved and baseline water with aw56
 - 18:19 `Bash`: Find a Python with scipy
 - 18:19 `Bash`: Create a small venv with scipy for measurements
+- 18:24 `Bash`: Make a water-band side-by-side of approved vs baseline
+- 18:24 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/00_base/sbs_water.png
+- 18:24 `Bash`: Read the coordinator's env6 module
+- 18:24 `Bash`: Sample water colour percentiles approved vs baseline
+- 18:24 `Bash`: Inspect the colour probe LUT from the earlier session
+- 18:25 `Bash`: Invert the colour probe LUT for the target water colours
+- 18:25 `Bash`: List LUT outputs for R=0 inputs
+- 18:25 `Bash`: Run aw56 on approved and baseline
 
-_20 tool steps._
+_28 tool steps._
