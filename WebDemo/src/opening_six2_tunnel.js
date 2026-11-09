@@ -46,7 +46,7 @@ export function installSix2Tunnel(ctx) {
         .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
         totalEmissiveRadiance *= mix(1.0, ${R.goldGlow.toFixed(3)}, gold6);`);
     };
-    m.customProgramCacheKey = () => 'six2rich'; m.needsUpdate = true;
+    m.customProgramCacheKey = () => 'six2rich:' + JSON.stringify(T.rich);   // (shader review, session ac4e3449: the key follows the tuned numbers) m.needsUpdate = true;
   };
   const deepGold = new THREE.MeshStandardMaterial({ color: 0xd9822a, metalness: 0.85, roughness: 0.3, envMap: env, envMapIntensity: 0.9, emissive: 0x4a1e00, emissiveIntensity: 0.4 });
   Promise.resolve(typeof window !== 'undefined' && window.__bwTripo3Ready).then(() => {
@@ -62,7 +62,7 @@ export function installSix2Tunnel(ctx) {
   // ------------------------------------------------ the drum's far end: a violet glow, not a white disc (vortex.cap; reference 05's luminous violet end)
   vortex.cap.material.fragmentShader = `uniform float uGlow; varying vec2 vUv; void main() { float r = length(vUv - 0.5) * 2.0;
     vec3 c = mix(vec3(0.94, 0.86, 1.0), vec3(0.72, 0.52, 1.0), smoothstep(0.0, 0.14 + 0.1 * uGlow, r)); c = mix(c, vec3(0.44, 0.27, 0.84), smoothstep(0.3, 0.95, r));
-    c += vec3(0.25, 0.08, 0.2) * exp(-pow((r - 0.55) / 0.08, 2.0));   // a pink ring of distant lamps
+    float q6 = (r - 0.55) / 0.08; c += vec3(0.25, 0.08, 0.2) * exp(-q6 * q6);   // a pink ring of distant lamps
     gl_FragColor = vec4(c, 1.0); }`;
   vortex.cap.material.needsUpdate = true;
 

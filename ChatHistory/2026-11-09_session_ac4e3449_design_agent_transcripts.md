@@ -297,8 +297,59 @@ Give a compact table. Under 450 words. Also state in one line which tools you ha
 - 11:38 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/watermask.png
 - 11:38 `Bash`: Measure the most turquoise water highlight
 - 11:39 `Bash`: Compare geometric vs equal-spacing ring fits
+- 11:39 `Bash`: Convert the reported sRGB hexes to linear values
+**Agent** (11:39 UTC):
 
-_58 tool steps._
+**Scene 5 targets for the three.js build, measured from the approved image (read-only; nothing in the repo was changed)**
+
+All values come from `01_APPROVED_SCENE_5_FULL.png` (864x1536). Crops 05, 06 and 07 are exact crops of it (offsets (0,320), (0,425), (530,460), zero difference). r = screen distance from the vanishing point (VP).
+
+| Item | sRGB | linear |
+|---|---|---|
+| Near drum metal, upper left / upper right (r>520) | #8a4ea0 / #9660c3 (top patch #68387f, by lamps #a35aa1) | .25,.08,.35 / .30,.12,.55 |
+| Wall just inside the near arch (r 325-405) | #8e4b9d | .27,.07,.34 |
+| Mid wall (r 190-255) / far wall (r 80-100) | #6e52c8 / #6c66f3 | .16,.08,.58 / .15,.13,.90 |
+| Holes: near / mid | #401e5c / #3d349f | .05,.01,.11 / .05,.03,.35 |
+| Sheen: near / mid (pink-lit near the lamps #f08cbf) | #f9a4f9 / #e0b6fe | .95,.37,.95 / .75,.47,.99 |
+| Arch pink band (lit) | #e441ab (#fb6baa) | .78,.05,.41 |
+| Arch glossy outer rim / groove | #f592ee / #3e1d6c | .91,.29,.85 |
+| Deeper ring bands (r 172 to r 27) | #ec56c3 to #e97bfa | .84,.09,.55 to .81,.20,.96 |
+| Lamp bar: core / body / amber frame / pink halo | #fefefd / #fed796 / #fca543 / #fc9093 | body .99,.68,.30; frame .97,.38,.06 |
+| Far glow at VP (brightest #bfc7ff); water at VP | #9bbffa; #8af3fd | .33,.52,.96 |
+| Housing pink: lit / median / shadow | #fc7ff6 / #dc3db0 / #a91b89 | .97,.21,.92 / .72,.05,.43 / .40,.01,.25 |
+| Gold trim: lit / median / shadow | #ffd675 / #f7993f / #cb621f | 1.0,.67,.18 / .93,.32,.05 |
+| Tank: core (r<14 px) / halo / glass / rim | #fefefd / #f562fa / #d845f7 / #be43f8 (highlight #ffe8fe) | glass .69,.06,.93 |
+| Gold pipe: lit / median / shadow | #ffc980 / #d66a3b / #9e421e | median .67,.14,.04 |
+| Gear blue: lit / median / shadow | #8793fb / #0c3aea / #0010a1 | .24,.29,.96 / .00,.04,.82 / .00,.01,.36 |
+| Gear hub gold: lit / median / shadow | #fdc866 / #dc7843 / #9b492a | median .72,.19,.06 |
+| Water: deep / mid / turquoise / crest white | #004dd5 / #068cf9 / #48c2fd (peak #9ee2ff) / #e9f5ff | .00,.07,.67 / .00,.26,.95 / .06,.54,.98 / .81,.91,1.0 |
+
+**Geometry**
+- **Vanishing point:** about (438, 749), within 3 px.
+- **Ring radii** (top of each ring, measured from the VP): 428 (near arch, top hidden by the banner), 271, 172, 109, 70, 44, 28, 18. That is 8 distinct rings, then 2-3 more blend into the glow.
+- **Ring ratio:** each ring is 0.63 times the size of the one before. The fit's error is 0.4 px. Rings evenly spaced in depth fit worse (error 1.5 px) and would put the VP at y 816, below the glow. So place each ring about 1.59 times deeper than the last.
+- **Lamps:** the lamp rings show three lamps each, at 0° and ±37°. The near arch has lamps at ±43° plus the gold lamp hanging at the top. The r 271 ring shows no lamps.
+- **Gold edges:** there is no continuous gold edge on the arches. The gold comes from the amber lamp frames and brass rivets.
+- **Holes:** the long axis runs around the tunnel.
+
+| Zone | Dark core size | Aspect ratio |
+|---|---|---|
+| Near drum | 63-73 x 28-31 px | 2.3 (about 1.6 including the lit lower lip) |
+| Inside the near arch | 35-42 x 11-15 px | 2.9 |
+| Mid wall | 15-34 x 4-8 px slits | 4-8 |
+
+- **Hole spacing at the first ring:** about 10° apart around the tunnel (rows aligned, not staggered). Each row is about 33 px further out than the next (radius ratio 0.916), which gives about 5 rows per ring interval.
+- **Near-left housing:** x 0-140, y 635-990 (gold cap at y 635-720, paw medallion centred at (85, 905), radius about 55).
+- **Near-right housing:** x 750-864, y 640-990 (cap at x 830 and beyond, lights at about (785, 875) and (828, 875)).
+- **Gear:** centre about (762, 720), outer diameter about 325 px, root radius about 137 px, hub radius about 45 px. About 20 teeth (17-19° apart). It is cut off on the right by the arch at x 805 and lower right by the housing.
+- **Water:** 12.0% of the water area is near-white (all channels at least 200), or 13.7% with a looser cut. Hue runs 198-220°.
+
+**Tools this session:** Bash, Read, Grep, Glob, Edit and Write. Python had PIL, numpy, scipy, OpenCV 5.0 and scikit-image 0.26. I had no MCP, browser or DevTools tools, and no sub-agents.
+
+Overlays used to check the measurements are in `/tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/`: `logpolar.png`, `holes_vis.png`, `gearmask.png` and `watermask.png`.
+
+
+_59 tool steps._
 
 ---
 
@@ -343,8 +394,33 @@ Report under 450 words: tool availability (worked / failed / missing), then the 
 - 11:38 `Grep`: \.name = 
 - 11:38 `Grep`: mwFloor|'tunnelWater'|drumWater|name: 'mw|\.name = `
 - 11:38 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:39 `Bash`: Check both servers respond
+- 11:39 `Grep`: m\.(squash|tilt|root)\.(position|rotation|scale)
+- 11:39 `Bash`: Check recent edits to game.js and s56 references
+- 11:39 `Read`: /workspace/bubblegame/WebDemo/src/game.js
+- 11:39 `Grep`: heroOffset|heroOff
+- 11:39 `Grep`: mascot\.(root|yAbs)|m\.yAbs
+- 11:39 `Read`: /workspace/bubblegame/WebDemo/src/game.js
+- 11:39 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:40 `Grep`: tilt[,:= ]+.*new THREE\.Group|squash[,:= ]+.*new THREE\.Group|root\.add\(tilt|tilt\.add\(squash
+- 11:40 `Grep`: updateCollectibles\(|updateMascot\(|stepRound3\(|function frame|function tick|function loop
+- 11:40 `Grep`: root\.position|\.yAbs
+- 11:40 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__bridge_status`
+- 11:41 `Bash`: Check machine load
+- 11:41 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:41 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__renderer_info`
+- 11:41 `Grep`: __BW_TEST__|__BW_OPENING_OFF__|Math\.random|addInitScript|evaluateOnNewDocument
+- 11:41 `Grep`: __BW_TEST__
+- 11:41 `Grep`: TEST\b
+- 11:41 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 11:42 `Bash`: Check whether my browser's GPU load dropped
+- 11:42 `Bash`: List the GPU process's busiest threads
+- 11:42 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:43 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:44 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__scene_tree`
+- 11:44 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 
-_28 tool steps._
+_53 tool steps._
 
 ---
 

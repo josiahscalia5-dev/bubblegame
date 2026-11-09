@@ -69,8 +69,8 @@ const HAZE = /* glsl */ `
 vec3 s56Haze(vec3 c, vec3 wp) {
   float d = length(wp - cameraPosition);
   float k = smoothstep(9.0, 70.0, d);
-  vec3 far = mix(vec3(0.62, 0.48, 1.0), vec3(1.25, 1.15, 1.45), smoothstep(30.0, 75.0, d));
-  return mix(c, far, k * 0.92);
+  vec3 far = mix(vec3(0.16, 0.10, 0.62), vec3(0.42, 0.55, 1.02), smoothstep(26.0, 75.0, d));
+  return mix(c, far, k * 0.9);
 }`;
 
 // ---------------------------------------------------------------- helpers
@@ -92,16 +92,17 @@ export async function buildS56(ctx) {
 
   // ------------------------------------------------ materials
   const M = {
-    pink: new THREE.MeshStandardMaterial({ color: 0xff4fae, emissive: 0xb01468, emissiveIntensity: 0.42, metalness: 0.15, roughness: 0.3, envMap: env, envMapIntensity: 0.9 }),
+    pink: new THREE.MeshStandardMaterial({ color: 0xe8459f, emissive: 0xa0106a, emissiveIntensity: 0.5, metalness: 0.15, roughness: 0.3, envMap: env, envMapIntensity: 0.9 }),
     pinkDeep: new THREE.MeshStandardMaterial({ color: 0xe63a9a, emissive: 0x8a0e55, emissiveIntensity: 0.35, metalness: 0.2, roughness: 0.35, envMap: env, envMapIntensity: 0.8 }),
-    gold: new THREE.MeshStandardMaterial({ color: 0xffb13b, emissive: 0x6a3000, emissiveIntensity: 0.55, metalness: 0.92, roughness: 0.26, envMap: env, envMapIntensity: 1.25 }),
-    lav: new THREE.MeshStandardMaterial({ color: 0xb79cf0, emissive: 0x4a2a8a, emissiveIntensity: 0.45, metalness: 0.75, roughness: 0.28, envMap: env, envMapIntensity: 1.1 }),
+    gold: new THREE.MeshStandardMaterial({ color: 0xf7993f, emissive: 0x7a2c00, emissiveIntensity: 0.6, metalness: 0.92, roughness: 0.26, envMap: env, envMapIntensity: 1.25 }),
+    lav: new THREE.MeshStandardMaterial({ color: 0xa070d0, emissive: 0x4a1a70, emissiveIntensity: 0.45, metalness: 0.75, roughness: 0.28, envMap: env, envMapIntensity: 1.1 }),
     deck: new THREE.MeshStandardMaterial({ color: 0x9a6fd8, emissive: 0x3a1a70, emissiveIntensity: 0.4, metalness: 0.6, roughness: 0.35, envMap: env }),
-    glass: new THREE.MeshStandardMaterial({ color: 0xd0a8ff, emissive: 0xa040ff, emissiveIntensity: 1.25, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.82, envMap: env, envMapIntensity: 1.4 }),
+    glass: new THREE.MeshStandardMaterial({ color: 0xd845f7, emissive: 0xb020f0, emissiveIntensity: 1.35, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.82, envMap: env, envMapIntensity: 1.4 }),
     core: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 1.35, 2.6) }),
     amber: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 1.35, 0.55) }),
     cyan: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.5, 1.9, 2.2) }),
     yellow: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.0, 1.7, 0.4) }),
+    pinkGloss: new THREE.MeshStandardMaterial({ color: 0xf592ee, emissive: 0x9a2a8a, emissiveIntensity: 0.55, metalness: 0.3, roughness: 0.15, envMap: env, envMapIntensity: 1.2 }),
     cream: new THREE.MeshStandardMaterial({ color: 0xffe2a0, emissive: 0x8a5a10, emissiveIntensity: 0.6, metalness: 0.7, roughness: 0.3, envMap: env }),
   };
 
@@ -118,12 +119,14 @@ export async function buildS56(ctx) {
       void main() {
         float a = vAU.x, u = vAU.y, up = cos(a), s = a * ${f(S.R)};
         // lavender metal: lighter toward the crown, violet toward the water, brushed streaks round the drum
-        vec3 c = mix(vec3(0.30, 0.17, 0.62), vec3(0.62, 0.50, 0.95), smoothstep(-0.75, 0.85, up));
-        c = mix(c, vec3(0.78, 0.66, 1.0), smoothstep(0.55, 1.0, up) * 0.45);
+        float dc = length(vW - cameraPosition);
+        vec3 c = mix(vec3(0.14, 0.05, 0.30), vec3(0.28, 0.10, 0.48), smoothstep(-0.75, 0.6, up));
+        c = mix(c, vec3(0.34, 0.15, 0.60), smoothstep(0.55, 1.0, up) * 0.6);
+        c = mix(c, vec3(0.16, 0.08, 0.58), smoothstep(5.0, 16.0, dc) * 0.8);
         c *= 0.88 + 0.22 * s5f(vec2(s * 6.0, u * 0.35));
         // polished streaks along the run (the bright sheen of the reference's upper walls)
         float st = pow(0.5 + 0.5 * cos(a * 5.0 + 0.35), 12.0) * smoothstep(-0.5, 0.6, up);
-        c += vec3(0.42, 0.36, 0.55) * st;
+        c += vec3(0.55, 0.20, 0.55) * st;
         // seams between panels and their rivets
         float pu = fract(u / 1.3 + 0.5);
         float seam = 1.0 - smoothstep(0.0, 0.025 + fwidth(u / 1.3), min(pu, 1.0 - pu));
@@ -134,16 +137,16 @@ export async function buildS56(ctx) {
         float hr = length(q), aa = max(0.04, 2.0 * length(fwidth(g)));
         float hole = 1.0 - smoothstep(0.26 - aa, 0.26 + aa, hr), lip = smoothstep(0.24, 0.30, hr) * (1.0 - smoothstep(0.30, 0.38 + aa, hr));
         float vis = 1.0 - smoothstep(0.25, 0.6, aa);
-        c = mix(c, vec3(0.07, 0.03, 0.17), hole * 0.9 * vis);
-        c += vec3(0.30, 0.24, 0.42) * lip * clamp(0.6 - q.y * 2.2, 0.0, 1.0) * vis;
+        c = mix(c, mix(vec3(0.05, 0.01, 0.11), vec3(0.05, 0.03, 0.35), smoothstep(5.0, 14.0, dc)), hole * 0.92 * vis);
+        c += vec3(0.45, 0.22, 0.48) * lip * clamp(0.6 - q.y * 2.2, 0.0, 1.0) * vis;
         // warm pink-gold glow round every arch, amber lamp light on the upper walls
         float da = u - uArch.y, ka = da - uArch.x * floor(da / uArch.x + 0.5);
         float glow = exp(-ka * ka / 0.35) * step(uArch.y - 1.0, u);
-        c += vec3(0.95, 0.30, 0.62) * glow * 0.45 * (0.4 + 0.6 * smoothstep(-0.6, 0.6, up));
-        c += vec3(1.0, 0.62, 0.25) * glow * 0.35 * exp(-pow((abs(a) - 0.84) / 0.25, 2.0));
+        c += vec3(0.78, 0.05, 0.41) * glow * 0.5 * (0.4 + 0.6 * smoothstep(-0.6, 0.6, up));
+        c += vec3(1.0, 0.62, 0.25) * glow * 0.35 * (exp(-pow((abs(a) - 0.65) / 0.22, 2.0)) + exp(-a * a / 0.05));
         // the view: a soft sheen where the wall turns from the camera
         vec3 V = normalize(cameraPosition - vW); float fr = pow(1.0 - abs(dot(V, vN)), 3.0);
-        c += vec3(0.30, 0.22, 0.45) * fr;
+        c += vec3(0.55, 0.22, 0.55) * fr * 0.6;
         // darker just above the water line (the water's shadow), a turquoise reflection on it
         c = mix(c, c * vec3(0.55, 0.6, 1.0) + vec3(0.0, 0.08, 0.18), smoothstep(-0.45, -0.68, up));
         c = s56Haze(c, vW);
@@ -182,8 +185,8 @@ export async function buildS56(ctx) {
     const parts = [
       [ring(r, 0.11, 10, 72, 2.2), M.lav],
       [ring(r - 0.1, 0.05, 8, 72, 3.2), M.pink],
-      [mergeGeometries([ring(r - 0.05, 0.026, 6, 72, 1, 0.24), ring(r - 0.05, 0.026, 6, 72, 1, -0.24)]), M.gold],
-      [mergeGeometries([lampAt(0.84, r - 0.14), lampAt(-0.84, r - 0.14)]), M.amber],
+      [mergeGeometries([ring(r - 0.03, 0.03, 6, 72, 1, 0.25), ring(r - 0.03, 0.03, 6, 72, 1, -0.25)]), M.pinkGloss],
+      [mergeGeometries([lampAt(0.65, r - 0.14), lampAt(-0.65, r - 0.14), lampAt(0.0, r - 0.14)]), M.amber],
     ];
     const us = []; for (let u = S.arch.from; u < U1; u += S.arch.step) us.push(u);
     const mm = new THREE.Matrix4();
@@ -343,7 +346,7 @@ export async function buildS56(ctx) {
         N = normalize(N + vec3(n1 - 0.5, 0.0, n2 - 0.5) * 0.35);
         float ndv = clamp(dot(N, V), 0.0, 1.0);
         // body colour: deep cobalt in the troughs, saturated azure on the slopes, turquoise on the lifted crests
-        vec3 deep = vec3(0.012, 0.06, 0.55), cob = vec3(0.03, 0.22, 0.95), turq = vec3(0.06, 0.62, 1.0);
+        vec3 deep = vec3(0.0, 0.07, 0.67), cob = vec3(0.0, 0.26, 0.95), turq = vec3(0.06, 0.54, 0.98);
         float lift = smoothstep(-0.12, 0.16, vH + (n1 - 0.5) * 0.08);
         vec3 c = mix(deep, cob, smoothstep(-0.2, 0.05, vH));
         c = mix(c, turq, lift * 0.75);
