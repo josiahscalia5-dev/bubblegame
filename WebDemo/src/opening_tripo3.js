@@ -89,6 +89,11 @@ export function applyTripo3({ washer, six, basket, env, P, vortex }) {
     const hl = washer.door.children.find((c) => c !== washer.glass && c.isMesh && c.material.isMeshBasicMaterial && c.material.transparent);
     const gs = (D.glass * k) / washer.glass.geometry.parameters.radius;
     for (const c of [washer.glass, hl]) { if (!c) continue; c.visible = true; c.position.set(-D.hinge * k, 0, -D.hingeZ * k + (c === hl ? 0.006 : 0)); c.scale.setScalar(gs); }
+    // (the art director: as the camera passes through the shut door in scene 5 the glass disc showed as a flat plane cutting diagonally across
+    // him) the glass and its highlight fade out within 0.9 m of the camera, fully gone at 0.3 m; from the scene 4 cameras (about 2 m) unchanged
+    const wp = new THREE.Vector3();
+    for (const c of [washer.glass, hl]) { if (!c) continue; const m = c.material, o0 = m.opacity;
+      c.onBeforeRender = (r, s, cam) => { c.getWorldPosition(wp); m.opacity = o0 * THREE.MathUtils.smoothstep(cam.position.distanceTo(wp), 0.3, 0.9); }; }
     report.parts.push('door');
     if (gb) {   // ,basket3: the new basket in place of the basket's visible children (code or tripo2), its damaged side turned away
       const holder = new THREE.Group(); holder.name = 'basketTripo3'; const b = gb.scene; dress(b, env); holder.add(b);

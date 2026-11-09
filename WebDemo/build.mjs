@@ -8,6 +8,8 @@ await build({
   outfile: 'game.bundle.js', legalComments: 'eof', logLevel: 'warning',
 });
 const page = fs.readFileSync('src/page.html', 'utf8');
+// (9 November 2026, session 6ddc157f) the page asks for the bundle with its content hash, so a browser never runs a stale cached bundle
+const bundleVer = (await import('node:crypto')).createHash('md5').update(fs.readFileSync('game.bundle.js')).digest('hex').slice(0, 8);
 fs.writeFileSync('index.html', `<!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +17,7 @@ fs.writeFileSync('index.html', `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 </head>
 <body>
-${page}
+${page.replace('<script type="module" src="game.bundle.js"></script>', `<script type="module" src="game.bundle.js?v=${bundleVer}"></script>`)}
 </body>
 </html>
 `);

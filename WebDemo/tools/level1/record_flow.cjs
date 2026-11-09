@@ -26,11 +26,12 @@ const server = http.createServer((req, res) => {
   page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text().slice(0, 300)); });
   page.on('pageerror', (e) => logs.push(e.message));
   await page.addInitScript((s3) => {
-    window.__BW_S3__ = s3; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
+    if (s3) window.__BW_S3__ = s3;   /* NOS3=1 (session 6ddc157f): the plain launch, as a player opens the game */ window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art'];
     let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  }, S3);
+  }, process.env.NOS3 === '1' ? null : S3);
   await page.goto(`http://localhost:${server.address().port}/index.html`);
   await page.waitForFunction(() => document.body.classList.contains('ready') && (!window.__bwO3D || window.__bwO3D.state().heroReady), null, { timeout: 300000 });
+  if (process.env.WAIT) await page.waitForFunction(process.env.WAIT, null, { timeout: 180000 });   // optional (session 6ddc157f): e.g. WAIT='window.__bwTripo3 && window.__bwTripo3.ready'
   const OPENING = START_U === null && !!(await page.evaluate(() => !!window.__bwO3D));
   // the swipe badge (recording annotation only) and no CSS transitions (every frame is set explicitly)
   await page.addStyleTag({ content: `#recBadge { position: fixed; left: 50%; bottom: 23%; transform: translateX(-50%); z-index: 99999; padding: 6px 14px; border-radius: 99px;

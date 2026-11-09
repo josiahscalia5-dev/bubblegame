@@ -340,4 +340,14 @@
     <p class="t" id="loadMsg">Filling the washing machine… <span id="loadPct">0%</span></p>
   </div>
 </div>
+<script>
+// THE ACTIVE GAME (9 November 2026, session 6ddc157f, the user's decision: the "tripo3 final" six-scene game is the version a plain launch
+// shows). Every visual pass is an ?s3= switch list; a plain launch (no ?s3= in the address, no ?classic and no test override) now runs the
+// full six-scene game with the user's new Tripo girl, washer, door, gear and machine housings. Any explicit ?s3=... runs exactly as before,
+// e.g. ?s3=intunnel (the accepted Classic Screen 4) or ?s3=, (the previous plain launch); rollback branch: claude/bubble-wash-rollback-before-tripo3-default.
+if (!window.__BW_S3__ && !/[?&]s3=/.test(location.search) && !/[?&]classic(=|&|$)/.test(location.search)) {
+  window.__BW_S3__ = ['intunnel', 'structmatch', 'home', 'level1', 'tripo1', 'tripo2', 'scene07', 'six', 'tripo3'];
+  window.__BW_DEFAULT_GAME__ = 'six+tripo3';
+}
+</script>
 <script type="module" src="game.bundle.js"></script>
