@@ -20,6 +20,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { ARCH56_ON, buildArch56 } from './s56_arch.js';   // (session d847dce2, coordinator hook) the Scene 5 / 6 architecture pass `arch56`
+import { BRUSH6_ON, buildBrush6 } from './s56_brush6.js';   // (session 47f75e22, coordinator hook) Scene 6's rotating side brushes `brush6`
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
@@ -119,6 +120,9 @@ export async function buildS56(ctx) {
   let arch = null;
   if (ARCH56_ON) { try { arch = await buildArch56({ scene, TR, W, L: ctx.L, env, loader, root, S, M, F, frameM, T4, timeU, heroU, report }); } catch (e) { report.errors.push('arch56: ' + ((e && e.message) || e)); } }
   const skip = (arch && arch.skip) || {};
+  // (session 47f75e22, coordinator hook) `?s3=...,brush6`: Scene 6's rotating side brushes (s56_brush6.js, lane brush6). Off: nothing changes.
+  let brush6 = null;
+  if (BRUSH6_ON) { try { brush6 = await buildBrush6({ scene, TR, W, L: ctx.L, env, loader, root, S, M, F, frameM, T4, timeU, heroU, report, arch, ctx }); } catch (e) { report.errors.push('brush6: ' + ((e && e.message) || e)); } }
 
   // ------------------------------------------------ 1. the drum shell (perforated lavender metal), in chunks so each can be culled
   const shellMat = new THREE.ShaderMaterial({
@@ -445,6 +449,7 @@ export async function buildS56(ctx) {
   function update(dt, time, phase, m) {
     timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
     if (arch && arch.update) arch.update(dt, time, phase, m);
+    if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;

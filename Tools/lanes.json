@@ -3,6 +3,7 @@
   "merge_order": [
     "s56",
     "arch56",
+    "brush6",
     "ui",
     "washer34",
     "girl12"
@@ -58,7 +59,7 @@
       ],
       "blocks_in_opening_six2_js": [],
       "task": "The approved Scene 5/6 lavender laundry-machine tunnel (s56) in the live game: water (saturated cobalt, real waves, crests, no pale foam blanket), his swim on the same wave height (submerged lower body, round fluffy back), splashes/wake, arches/holes/machinery/tanks/gear/pipes placement against the references; gameplay untouched",
-      "status": "d847dce2 backup: 50f77c6a, water A/B tools + frames; per-pixel water material mid-edit; builds; not reviewed. Next: PARALLEL_LANES.md"
+      "status": "47f75e22: Scene 6 water mandate: saturated cobalt / turquoise dimensional waves, no pale-white patches or white cloud round him"
     },
     "ui": {
       "branch": "claude/lane-ui-hud-ac4e3449",
@@ -90,7 +91,19 @@
       ],
       "blocks_in_opening_six2_js": [],
       "task": "Switch ?s3=...,arch56 (s56_arch.js, called by the coordinator hook in s56_tunnel.js section 0; it may skip sections 1-4 and own the camera via arch.cam). Rebuild the approved Scene 5 architecture: perforated lavender drum + reflective rings, LEFT pink-and-gold cylindrical housings with gold paw medallion, turquoise fitting, violet glass chambers, curved gold pipes and rounded gold rails; RIGHT cobalt toothed gear (gear_v2_tripo.glb) with gold hub, violet vessels, lights, stars; TOP amber lamp + thick brass pipes with elbows, warm arch light strips; banks close enough to frame the view like the reference (~+/-0.9-1.2 m at his depth) while the lanes +/-0.7 m stay clear; depth repetition; PBR + lighting under the Neutral tone-mapping knee.",
-      "status": "d847dce2 backup: b8ca82a6, s56_arch.js +361 (procedural modules A/B, gears, skips sections 1-4), builds, not captured/reviewed; the user Tripo model 911 copied but not used yet. Next: PARALLEL_LANES.md"
+      "status": "47f75e22: Scene 6 mandate: left/right machinery density, cobalt gear upper right behind the right machinery, camera/composition vs approved Scene 6 at u 206"
+    },
+    "brush6": {
+      "branch": "claude/lane-s6-brush-47f75e22",
+      "specialist": "SPECIALIST 7 - Scene 6 rotating laundry brushes (the user's Scene 6 mandate, 9 November ~15:35 UTC, session 47f75e22)",
+      "agent": "lighting-visual-matching",
+      "files": [
+        "WebDemo/src/s56_brush6.js",
+        "WebDemo/tools/brush6/"
+      ],
+      "blocks_in_opening_six2_js": [],
+      "task": "Switch ?s3=...,s56,brush6 (s56_brush6.js, called by the coordinator hook in s56_tunnel.js section 0 after arch56). The approved Scene 6's large fluffy rotating laundry brushes at the left and right foreground: vertical roller brushes with a glossy pink cap and gold band, bristle bands pink / white / blue / pale blue, cut by the frame edges at about x 0-0.2 and 0.8-1.0 W, y 0.37-0.72 of the 864x1536 frame at the Scene 6 moment (u 206); reuse the existing brush code/models first (fluffy_brush.js shell fur, models/brush_p2.glb, s3_brush.glb, Design/MeshyDeliveries/WashingRoller); rotation animation; gameplay brushes, hitboxes and lanes untouched.",
+      "status": "47f75e22: created; hook + empty stub on the integration branch"
     }
   },
   "status_doc": "PARALLEL_LANES.md, section \"Lane status\""

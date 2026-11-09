@@ -1,5 +1,16 @@
 # Parallel specialist lanes: ownership plan (9 November 2026, session ac4e3449)
 
+## Lane status (9 November 2026 ~15:45 UTC, session 47f75e22, the user's SCENE 6 MANDATE: brushes, cobalt gear, side machinery, water, camera)
+Target: ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png`, compared at 864x1536 with
+the live game at u 206 (`ZS=tap,206 VW=432 VH=768 DPR=2`). Baseline (bundle 6a78d7ae): `Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/baseline/`.
+Every change is behind a switch; the plain launch is unchanged until the user approves. No Tripo credits.
+| Lane | Specialist | Task this session |
+|---|---|---|
+| arch56 | lighting-visual-matching | left / right machinery density (pink-gold housings, glowing violet chambers, control panel with lights, brass pipes, gold railings), the cobalt gear upper right behind the right machinery, ceiling lamp + pipes, camera / composition vs the approved Scene 6 |
+| s56 | screen4-water-motion-engineer | the water: saturated cobalt / turquoise dimensional waves, thin white crests, no pale-white patches or white cloud round him |
+| brush6 (NEW) | lighting-visual-matching | `WebDemo/src/s56_brush6.js` + `WebDemo/tools/brush6/`, switch `,brush6` (coordinator hook in `s56_tunnel.js` section 0): the large rotating pink / white / blue side brushes |
+| qa | gameplay-visual-testing + game-art-director | ranking of the differences; after the merge: routes, identity proof, side by sides |
+
 ## Lane status (9 November 2026 ~14:40 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP; refresh with `bash Tools/lanes.sh status`)
 Every specialist was STOPPED for the account switch; each lane's unfinished work was committed and pushed as is (`lanes.sh save`, VERIFIED). No agent
 or process transfers to the next account: relaunch each specialist on its lane with the "next step" below (its first task is its live test).
