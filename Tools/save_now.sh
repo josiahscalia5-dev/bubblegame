@@ -85,7 +85,9 @@ fi
 # and claude/bubble-wash-account-transfer-52t7ym is historical only): when this session works on another branch (a harness ccr-* branch) that
 # CONTAINS the user's branch, fast-forward the user's branch to the same verified commit. A plain push (never --force): if the user's branch has
 # commits this one lacks, GitHub refuses it and nothing changes.
-USER_BRANCH="${BW_USER_BRANCH:-claude/bubble-wash-restore-transfer-kc4ecl}"
+# (9 November 2026, session 3849f5c8: the user named claude/bubble-wash-restore-tamzio as the transfer branch; it equals kc4ecl, so BOTH are
+# fast-forwarded, each only when it is an ancestor of the verified commit.)
+for USER_BRANCH in ${BW_USER_BRANCH:-claude/bubble-wash-restore-tamzio claude/bubble-wash-restore-transfer-kc4ecl}; do
 if [ "$remote" = "$HEAD_SHA" ] && [ "$BRANCH" != "$USER_BRANCH" ]; then
   ub="$(git ls-remote origin "refs/heads/$USER_BRANCH" 2>/dev/null | cut -f1)"
   if [ -n "$ub" ] && [ "$ub" != "$HEAD_SHA" ] && git merge-base --is-ancestor "$ub" "$HEAD_SHA" 2>/dev/null; then
@@ -95,6 +97,7 @@ if [ "$remote" = "$HEAD_SHA" ] && [ "$BRANCH" != "$USER_BRANCH" ]; then
   elif [ "$ub" = "$HEAD_SHA" ]; then echo "User branch: $USER_BRANCH already at ${HEAD_SHA:0:7}"
   elif [ -n "$ub" ]; then echo "User branch: $USER_BRANCH has commits this branch lacks: NOT touched (merge it here first)"; fi
 fi
+done
 if [ -n "$files" ]; then
   echo "Files saved ($(printf '%s\n' "$files" | wc -l)):"; printf '%s\n' "$files" | sed 's/^/  /' | head -60
 else
