@@ -1,0 +1,17 @@
+{
+ "errors": [],
+ "shots": [
+  {
+   "z": "206",
+   "state": {
+    "phase": "running",
+    "z": 208.864,
+    "x": 0,
+    "coins": 1281,
+    "socks": 0,
+    "hearts": 5
+   },
+   "missing": {}
+  }
+ ]
+}

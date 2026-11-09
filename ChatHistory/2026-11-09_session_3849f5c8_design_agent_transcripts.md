@@ -270,8 +270,33 @@ My Task 1 check is still queued behind three other browser jobs. Since Task 1 is
 - 17:40 `Bash`: Find uHero grade code
 - 17:40 `Bash`: Find the hero grade implementation
 - 17:40 `Bash`: Read heroGrade
+- 17:40 `Bash`: Dump the live grade pass fragment shader
+- 17:41 `Bash`: Find how arch56 is called and grade access
+- 17:41 `Bash`: Check whether __bw.debug is always exposed
+- 17:42 `Bash`: Verify the grade inversion numerically
+- 17:43 `Edit`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 17:43 `Bash`: Wire the inversion into the shell, glows and update; build
+**Agent** (17:43 UTC):
 
-_54 tool steps._
+Built. Capturing u 206 after the grade fix.
+
+- 17:43 `Bash`: Capture u 206 after the grade inversion
+- 17:43 `Bash`: Check whether the integration head has coin6
+**Agent** (17:43 UTC):
+
+The integration head (`ccr-68def37c-grxgz1`, 95ea62d4) has coin6 in game.js. Once the running capture finishes I'll merge it into my lane, so that I measure with the integration list.
+
+- 17:43 `Bash`: Wait for the step 1 capture
+- 17:43 `Bash`: Fetch the integration head and inspect differences
+- 17:44 `Bash`: Wait for the step 1 capture to finish
+- 17:44 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/arch56/s6_step1_grade/s56_206.png
+- 17:44 `Bash`: Merge the integration head into the lane
+- 17:44 `Bash`: Resolve generated files, commit merge, restore work
+- 17:44 `Bash`: Inspect what the merge changed in s56_arch.js
+- 17:44 `Bash`: Build and capture the before frame with coin6, then restore
+- 17:45 `Bash`: List AD scripts; capture after with coin6
+
+_71 tool steps._
 
 ---
 
@@ -407,8 +432,44 @@ While the capture waits for the lock, I'll make the chop table live-tunable unde
 - 17:40 `Bash`: Measure the approved image and the before frame
 - 17:40 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/before/s56_206.png
 - 17:40 `Bash`: Wait for the wip capture and measure it
+- 17:40 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/wip/s56_206.png
+- 17:40 `Bash`: Build v3 and A/B seven water variants at u 206
+- 17:41 `Bash`: Build A/B sheets and measure the variants
+- 17:41 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/ab1/sheet_a.png
+- 17:41 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/ab1/sheet_b.png
+- 17:42 `Bash`: Find what drives the mascot's tilt node
+- 17:42 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/game.js
+- 17:42 `Bash`: Measure the A/B variants in the art director's terms
+- 17:42 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:42 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:42 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+**Agent** (17:42 UTC):
 
-_64 tool steps._
+Now the shader hooks (ramp bias, where turquoise starts, lamp glints), all as live S56.water fields defaulting to v2's behaviour.
+
+- 17:42 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:43 `Bash`: Rebuild and A/B palette bias and glint variants at u 206
+**Agent** (17:43 UTC):
+
+Good point from the coordinator: I'll prove which nodes draw him at u 206. Let me read how the mascot is assembled.
+
+- 17:43 `Bash`: Find the mascot hierarchy construction
+- 17:43 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/game.js
+- 17:44 `Bash`: Check whether play_tripo3 replaces the drawn mascot
+- 17:44 `Bash`: Read the A/B measures
+- 17:44 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/ab2/sheet_a.png
+- 17:44 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/ab2/sheet_b.png
+- 17:44 `Write`: /workspace/bubblegame_lanes/s56/WebDemo/tools/s56/heroprobe.js
+- 17:44 `Bash`: Check what __bw.debug() exposes
+- 17:44 `Bash`: Probe the mascot scene graph and ablate its nodes at u 206
+
+_92 tool steps._
 
 ---
 
@@ -468,5 +529,21 @@ Now one locked job: pre-change no-brush6 tap (identity baseline), then the first
 - 17:39 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/look1/s56_206.png
 - 17:39 `Bash`: Make edge crop comparison
 - 17:39 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/look1/crop.png
+- 17:40 `Bash`: Zoom the left and right edge of the first look
+- 17:40 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/look1/zl.png
+- 17:41 `Bash`: Render the brush alone in the stand-alone viewer
+- 17:41 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/view0.png
+- 17:44 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/look1/zr.png
+- 17:44 `Bash`: Check hideLegacy, coin6 and render order in s56
+- 17:44 `Bash`: Read hideLegacy implementation
+**Agent** (17:44 UTC):
 
-_32 tool steps._
+Now the code changes: the depth pull for all three brush parts, the denser bristle shading, and a `report()` for the draw proof.
+
+- 17:44 `Bash`: Add the depth pull GLSL to the bristle shader
+- 17:45 `Bash`: Add pull to cap materials and a draw report
+- 17:45 `Bash`: Update the fit for the pull and rebuild
+- 17:45 `Bash`: Show the build error
+- 17:45 `Bash`: Rename the report function and rebuild
+
+_44 tool steps._
