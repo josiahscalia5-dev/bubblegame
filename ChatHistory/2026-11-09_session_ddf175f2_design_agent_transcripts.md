@@ -109,8 +109,20 @@ Now the brush-bay split, the glowing tank shader, and the hot pink material.
 - 18:35 `Bash`: Inspect model bounds and LOD script
 - 18:35 `Bash`: Check capture and orient tool usage
 - 18:35 `Bash`: Copy LODs and render orientation sheet
+- 18:36 `Bash`: Check capture results
+- 18:36 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/orient.png
+- 18:37 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs3.png
+- 18:37 `Bash`: Locate model loading code
+- 18:37 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 18:38 `Bash`: Integrate 911/912/913_914/gold_jj models into Scene 6 bays
+- 18:38 `Bash`: Capture model pass and side-by-side
+- 18:40 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs4.png
+- 18:40 `Bash`: Stage checkpoint files
+- 18:40 `Bash`: Restore tracked LODs and check tool files
+- 18:40 `Bash`: Commit and push checkpoint
+- 18:40 `Bash`: Measure arch56 render cost by part
 
-_60 tool steps._
+_72 tool steps._
 
 ---
 
@@ -282,8 +294,32 @@ The fit lands within 0.008 of every target (left inner tips 1.40 m from the cent
 - 18:34 `Bash`: Apply denser strand look, colours, profile and flare changes, then build
 - 18:34 `Bash`: Refit and capture pass 3, measure colours, zoom
 - 18:35 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/zoom3.png
+- 18:36 `Bash`: Save the fit, test brighter light, colours and nearer pull
+- 18:37 `Bash`: Check what the variant run produced
+**Agent** (18:37 UTC):
 
-_58 tool steps._
+The run stopped after the first variant. Let me rerun the remaining two with the error shown.
+
+- 18:37 `Bash`: Rerun the pull and particle-free variants
+- 18:37 `Bash`: Rerun pull variant with fixed code and measure
+- 18:38 `Bash`: Show the variant error message
+- 18:38 `Bash`: Rerun the pull variant with renamed variable
+- 18:39 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/p4_crops.png
+**Agent** (18:39 UTC):
+
+With the 2.6 m pull, the right brush shows all four tiers down to its foot at y 0.71, close to the approved. I'll save these settings into the file, then build, commit and push this first checkpoint.
+
+- 18:39 `Bash`: Save settings, build, commit and push checkpoint
+- 18:40 `Bash`: Verify commit contents and capture the final frame
+- 18:41 `Bash`: Check why the new tool files were not committed
+- 18:41 `Bash`: List the lane tool folder and tracked files
+**Agent** (18:41 UTC):
+
+They are tracked (the lane autosave committed them before my commit). Now the evidence: a full-frame side-by-side (approved, before, after) and 2x crops of each brush.
+
+- 18:41 `Bash`: Write evidence frames, side-by-side and 2x crops
+
+_70 tool steps._
 
 ---
 
@@ -382,5 +418,32 @@ I'll start by reading the targets, my lane's handoff, and the water parts of the
 [Image: original 3096x400, displayed at 2000x258. Multiply coordinates by 1.55 to map to original image.]
 
 - 18:35 `Bash`: Test vertical stretch with deeper sink so nubs sit at the waterline
+- 18:37 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/01_hero/crop_s.png
+**Lead → agent** (18:37 UTC):
 
-_41 tool steps._
+[Image: original 3096x400, displayed at 2000x258. Multiply coordinates by 1.55 to map to original image.]
+
+- 18:37 `Bash`: Test water palette, contrast, crest variants and particle ablations
+- 18:38 `Bash`: Side-by-side of water variants
+- 18:38 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/02_water/sbs_w.png
+- 18:39 `Bash`: Test stronger shading contrast variants
+- 18:40 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/02_water/sbs_x.png
+- 18:40 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/tunnel_s4_struct.js
+- 18:41 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/tunnel_s4_struct.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/tunnel_s4_struct.js
+**Agent** (18:41 UTC):
+
+Now the water palette/shading values and the fur-shell hook.
+
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 18:41 `Bash`: Locate the hero6 sink/squash usage lines
+
+_60 tool steps._
