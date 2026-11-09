@@ -11,7 +11,7 @@ CY, CZ, XF, RO = 0.0, -0.065, 0.035, 0.176   # porthole centre (y, z), front pla
 bm = bmesh.new(); bm.from_mesh(o.data); n0 = len(bm.faces)
 door = [f for f in bm.faces if all(v.co.y < -0.165 and -0.38 < v.co.z and ((v.co.x > 0.058 and v.co.z < 0.15) or (v.co.x > 0.10 and v.co.z < 0.23)) for v in f.verts)]   # (spares the round gem at the upper left)
 bmesh.ops.delete(bm, geom=door, context='FACES'); n1 = len(bm.faces)
-drum = [f for f in bm.faces if (lambda c: math.hypot(c.y - CY, c.z - CZ) < RO and c.x < 0.0)(f.calc_center_median())]
+drum = [f for f in bm.faces if (lambda c, r: (r < RO and c.x < 0.0) or (r < 0.245 and c.x < -0.02))(f.calc_center_median(), math.hypot(f.calc_center_median().y - CY, f.calc_center_median().z - CZ))]   # (also the drum wall's fragments behind the bezel)
 bmesh.ops.delete(bm, geom=drum, context='FACES')
 loose = [v for v in bm.verts if not v.link_faces]; bmesh.ops.delete(bm, geom=loose, context='VERTS')
 rep = {'faces_in': n0, 'door_faces_removed': n0 - n1, 'drum_faces_removed': n1 - len(bm.faces), 'faces_out': len(bm.faces)}
