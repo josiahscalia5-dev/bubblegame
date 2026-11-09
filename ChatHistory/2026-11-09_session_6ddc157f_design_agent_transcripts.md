@@ -433,5 +433,43 @@ Now I'll look at the baseline frames while the new run works.
 
 - 02:09 `Bash`: Build the base vs new contact sheets
 - 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/gameplay_base_vs_new.png
+**Agent** (02:10 UTC):
+
+**Gameplay identical: PASS.** Both runs printed the same values at every frame (route, lane, u, x, y, socks, coins, gems, hearts, pops, phase, banner, result). The event lists match too, and my comparison script counted 0 differences.
+
+| frame (u) | lane | socks | coins | gems | hearts | popped |
+|---|---|---|---|---|---|---|
+| tap 1.592 | 1 | 0 | 1280 | 36 | 5 | 0 |
+| 6.597 | 2 | 2 | 1281 | 36 | 5 | 0 |
+| 12.314 | 1 | 2 | 1282 | 36 | 5 | 0 |
+| 20.244 | 2 | 2 | 1291 | 37 | 5 | 0 |
+| 28.683 | 1 | 3 | 1296 | 37 | 5 | 0 |
+| 36.211 | 1 | 3 | 1298 | 37 | 5 | 0 |
+| 46.119 | 0 | 3 | 1302 | 37 | 5 | 0 |
+| end 341.773 | 1 | 5 | 1705 | 48 | 4 | 2 |
+
+- **Route:** "main" at every frame. Swipes 11, spins 3 (at u 228.1, 234.4, 240.7), blocked moves none. Socks rescued at u 3, 6.6, 21.5, 126.6 (lower path) and 304. She jumped onto the side path at u 56.6 and lost one heart at u 240.7.
+- **Level Complete:** 3 stars, socks 5, coins 125, gems 2, rewards +300 coins / +10 gems / +5 socks.
+- **Errors:** none. `logs` is `[]` in both runs, with no GLTF or meshopt messages. Both runs exited 0.
+- **Build:** the bundle (md5 `87243676...`) did not change during any run.
+
+**Extra pair of runs.** The six requested shots all fall before the enemy stretch (u 222-246), so I ran a second pair with SHOTS=219,224,230,236,242. Those also showed 0 differences (popped 0, 0, 1, 2, 2; the heart drops 5 to 4 between the u 236 and u 242 frames).
+
+**What the frames show (new run):**
+- **Sock (tap, u6 at the right edge):** white knit, lavender cuff stripes, glossy eyes, blush, blue toe. It faces the camera, is about the same size as the old sock, and is not black. Its toe is smooth blue where the old one looked fuzzy.
+- **Paw coin (all shots):** gold, right size, facing the camera, spinning as before. Its paw is slightly flatter than the old coin's.
+- **Enemy (u219-242):** lilac-purple ball with angry brows and pink eyes. Same size as the old ball, faces the camera, not black. The distant enemy at u224 looks faded in both runs, so that comes from the scene, not the model.
+- **Other pixel differences:** besides the three models, base and new differ only in bubble outlines, sparkle glints and HUD text fades. These are real-time effects; none affects play.
+
+Frames are in `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/` (this folder holds all the files below):
+- `base/`, `new/`: the requested runs
+- `base_enemy/`, `new_enemy/`: the enemy-stretch runs
+- `gameplay_base_vs_new.png`: the contact sheet
+- `gameplay_enemy_base_vs_new.png`: the enemy contact sheet
+- `zoom_models_base_vs_new.png`: 2x close-ups of the sock, coin and enemy
+- `diff/`: difference maps
+- `compare.txt`, `compare_enemy.txt`: the comparison output
+- `base.log`, `new.log`: the raw run logs
+
 
 _48 tool steps._
