@@ -2,21 +2,361 @@
 // Targets (the user's reference pack of 9 November, the ONLY targets): Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user/
 // 02_APPROVED_SCENE_5.png, 03_APPROVED_SCENE_6.png and the crops 04-08. Lane arch56 (Tools/lanes.json) owns this file; s56_tunnel.js calls it
 // (coordinator hook, section 0) and skips the sections it replaces. Real 3D only (no painted backgrounds); gameplay is game.js's own, untouched.
-// Private random numbers only (the game's seeded Math.random is never used).
+// Private random numbers only: every three.js object here is made with Math.random swapped for a private generator (three.js draws each new
+// object's UUID from Math.random), so the game's seeded sequence is not consumed by this pass.
+//
+// The layout is solved from measurements of approved Scene 5 at 864x1536 (fractions of the frame) against the game's Tap to Start camera
+// (s56: 3.0 m behind him, 0.92 m above the water, vertical fov 66, so f ~ 1183 px):
+//   - the near arch is a circle of radius ~412 px round the vanishing point (0.50, 0.49): the camera is ON the drum's axis, so the drum's axis
+//     is at the camera's height (0.95 m above the water; s56's 1.5 m centred every ring above the vanishing point);
+//   - the near-left pink housing's inner face at x 0.16 W, its cap top 0.41 H, its paw medallion (0.10, 0.59); the near-right housing from 0.87 W:
+//     housings ~4.8 m ahead of the camera with their inner faces at 1.23 m (the lanes are +/-0.7 m and his half-width 0.45 m, so |x| < 1.2 m
+//     stays clear up to his jump's top, 1.9 m above the water);
+//   - the violet glass chambers (0.18, 0.41), (0.30, 0.44), ... receding on the left; the cobalt gear's hub at (0.87, 0.465), radius ~160 px;
+//   - the amber lamp (0.50, 0.255) hanging under the crown; a thick brass pipe (~0.25 m) from it to the right and down (elbow ~(0.73, 0.33));
+//     warm light strips at +/-41 degrees on the near arch.
+// In Level 1's wider sections (flow: the raised side path u 62-91 at x 1.22-2.02, the drop's lanes at +/-1.38 m for u 100-142) the drum and the
+// banks move outward with level1_flow.js's own widen(), and the modules stand on the drop's raised ledges (ledgeLift): no route is blocked.
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { widen as flowWiden, ledgeLift } from './level1_flow.js';
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const ARCH56_ON = LIST.includes('arch56') && LIST.includes('s56') && LIST.includes('level1');
+const FLOW = LIST.includes('level1') && !LIST.includes('nowet') && !LIST.includes('noflow');
 
-// every number (window.__bwArch56 in the browser, live-tunable)
-export const ARCH56 = {};
+// every number (window.__bwArch56 in the browser; read at build time)
+export const ARCH56 = {
+  A: 0.95,              // the drum's axis above the water (= the camera's height: the rings are concentric with the vanishing point)
+  R: 2.55,              // the drum's wall radius (the rings stand 0.32 m proud of it)
+  chunk: 30,
+  ring: { u0: 5.0, step: 3.8, band: 0.16, z: 1.1, strips: [-0.72, 0.72], topStrip: true },
+  lampEvery: 2,         // a hanging lamp (and its pipe down the right wall) on every second ring, from the first ring ahead
+  mod: { off: -1.6, aEvery: 3 },   // the modules of ring k stand at its u + off on both banks; every third is the tall housing (A), else a glass chamber (B)
+  gearK: [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60],   // rings with the cobalt gear on the right wall (dz behind the ring)
+  gear: { d: 1.9, x: 1.95, h: 1.19, dz: 1.0, yaw: 0.6, spin: 0.45 },
+  pipe: { r: 0.12, x: 1.38 },
+};
 if (ARCH56_ON && typeof window !== 'undefined') window.__bwArch56 = ARCH56;
+
+function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
+
+const NOISE = /* glsl */ `
+float a5h(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float a5n(vec2 p) { vec2 i = floor(p), q = fract(p); q = q * q * (3.0 - 2.0 * q);
+  return mix(mix(a5h(i), a5h(i + vec2(1.0, 0.0)), q.x), mix(a5h(i + vec2(0.0, 1.0)), a5h(i + vec2(1.0, 1.0)), q.x), q.y); }
+float a5f(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { s += a * a5n(p); p = p * 2.03 + vec2(1.7, 9.2); a *= 0.5; } return s; }
+`;
+// the far end: the reference's lavender-white glow (#b0adfa), the same reach as s56's water haze, so the walls and the water meet in it
+const HAZE = /* glsl */ `
+vec3 a56Haze(vec3 c, vec3 wp) {
+  float d = length(wp - cameraPosition);
+  float k = smoothstep(9.0, 70.0, d);
+  vec3 far = mix(vec3(0.16, 0.10, 0.62), vec3(0.40, 0.40, 0.98), smoothstep(26.0, 75.0, d));
+  return mix(c, far, k * 0.9);
+}`;
 
 /**
  * ctx: { scene, TR, W, L, env, loader, root, S (S56), M (s56 materials), F, frameM(u) -> Matrix4, T4(x,y,z,rx,ry,rz,s), timeU, heroU, report }.
  * Returns { skip: { shell, arches, banks, models }, update(dt, time, phase, m), cam: null | { off: [x,y,z], look: [x,y,z], fov } }.
  */
 export async function buildArch56(ctx) {
-  ctx.report.parts.push('arch56 (stub)');
-  return { skip: {}, update() {}, cam: null };
+  const { TR, env, loader, root, S, F, frameM, T4, timeU, report } = ctx, P = ARCH56;
+  const rnd = mulberry(0xa5c56);
+  const priv = (fn) => { const save = Math.random; Math.random = rnd; try { return fn(); } finally { Math.random = save; } };
+  const U0 = S.u0, U1 = S.u1, nCh = Math.ceil((U1 - U0) / P.chunk);
+  const wid = (u) => (FLOW ? flowWiden(u) : 0);
+  const lift = (u) => (FLOW ? ledgeLift(u) : 0);
+  const group = priv(() => new THREE.Group()); group.name = 'arch56'; root.add(group);
+  const stats = { rings: 0, lamps: 0, modsA: 0, modsB: 0, gears: 0 };
+
+  // ------------------------------------------------ materials (colours from the reference's own pixels; linear values kept under the Neutral
+  // tone-mapping knee ~0.76 so they stay saturated; glow only in small cores). Every one fades into the far end's haze like the s56 water.
+  const hazeIt = (m) => {
+    m.onBeforeCompile = (sh) => {
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;')
+        .replace('#include <project_vertex>', '#include <project_vertex>\n{ vec4 hz = vec4(transformed, 1.0);\n#ifdef USE_INSTANCING\n hz = instanceMatrix * hz;\n#endif\n vHzW = (modelMatrix * hz).xyz; }');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;\n' + HAZE)
+        .replace('#include <opaque_fragment>', 'outgoingLight = a56Haze(outgoingLight, vHzW);\n#include <opaque_fragment>');
+    };
+    m.customProgramCacheKey = () => 'a56haze';
+    return m;
+  };
+  const std = (o) => hazeIt(new THREE.MeshStandardMaterial({ envMap: env, ...o }));
+  const basic = (r, g, b, o = {}) => hazeIt(new THREE.MeshBasicMaterial({ color: new THREE.Color(r, g, b), ...o }));
+  const MT = priv(() => ({
+    // glossy pink housings (#be2963 .. #eb478b), magenta on the right (#df22ca)
+    pink: std({ color: 0xd42c74, emissive: 0x6a0834, emissiveIntensity: 0.45, metalness: 0.25, roughness: 0.26, envMapIntensity: 1.0 }),
+    magenta: std({ color: 0xd02ab8, emissive: 0x640a5a, emissiveIntensity: 0.45, metalness: 0.25, roughness: 0.26, envMapIntensity: 1.0 }),
+    // metallic gold (#ec8c5a with #fdd98b highlights); the lamp's and pipes' darker copper brass (#9d4333 .. #cb6948)
+    gold: std({ color: 0xf2a856, emissive: 0x4a2400, emissiveIntensity: 0.4, metalness: 1.0, roughness: 0.24, envMapIntensity: 1.3 }),
+    brass: std({ color: 0xd88a4a, emissive: 0x3a1600, emissiveIntensity: 0.4, metalness: 1.0, roughness: 0.3, envMapIntensity: 1.2 }),
+    paw: std({ color: 0xffd98a, emissive: 0x6a4a10, emissiveIntensity: 0.5, metalness: 0.85, roughness: 0.3, envMapIntensity: 1.1 }),
+    // the arches: magenta-lavender metal (#c739ad, #e448be lit, #7f2f8a dark), a lighter glossy lip
+    ring: std({ color: 0xc040b0, emissive: 0x4a0c50, emissiveIntensity: 0.4, metalness: 0.6, roughness: 0.28, envMapIntensity: 1.1 }),
+    lip: std({ color: 0xe8a8f0, emissive: 0x5a2070, emissiveIntensity: 0.35, metalness: 0.7, roughness: 0.18, envMapIntensity: 1.3 }),
+    // lavender-silver metal for walkways, bands, panels and mounts
+    lav: std({ color: 0xa88ae0, emissive: 0x2a1450, emissiveIntensity: 0.35, metalness: 0.75, roughness: 0.3, envMapIntensity: 1.1 }),
+    // violet glass with a light inside (#9c1ff1 .. #f65cfb)
+    glass: std({ color: 0xb03af0, emissive: 0x8a18d8, emissiveIntensity: 0.7, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.8, envMapIntensity: 1.4 }),
+    bub: std({ color: 0xd8b8ff, emissive: 0x5a3aa0, emissiveIntensity: 0.5, metalness: 0.2, roughness: 0.1, transparent: true, opacity: 0.55, envMapIntensity: 1.4 }),
+    core: basic(2.0, 0.95, 2.3),
+    lamp: basic(2.0, 1.55, 0.85),        // the hanging lamp's hot white-gold glass (#fefefc with gold edges)
+    strip: basic(1.9, 0.9, 0.28),        // the arches' amber light strips
+    teal: basic(0.25, 1.35, 1.55),       // the turquoise fittings and indicator lights
+    amberLight: basic(1.9, 1.3, 0.3),
+  }));
+
+  // ------------------------------------------------ helpers: geometry merged per chunk and per material (as s56's banks), indexed
+  const chunks = Array.from({ length: nCh }, () => new Map());
+  const chunkOf = (u) => Math.min(nCh - 1, Math.max(0, Math.floor((u - U0) / P.chunk)));
+  const put = (u, geo, mat, local) => {   // geo in a local frame (x across, +x screen-left; y up from the water; z along), at track distance u
+    const g = geo.clone();
+    if (!g.index) g.setIndex([...Array(g.attributes.position.count).keys()]);
+    for (const k of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(k)) g.deleteAttribute(k);
+    if (!g.attributes.uv) g.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));
+    if (local) g.applyMatrix4(local); g.applyMatrix4(frameM(u));
+    const c = chunks[chunkOf(u)]; if (!c.has(mat)) c.set(mat, []); c.get(mat).push(g);
+  };
+  const G = {
+    cyl: (rt, rb, h, n = 28) => new THREE.CylinderGeometry(rt, rb, h, n),
+    tor: (r, t, n = 32, rs = 6, arc = Math.PI * 2) => new THREE.TorusGeometry(r, t, rs, n, arc),
+    sph: (r, w = 12, h = 8) => new THREE.SphereGeometry(r, w, h),
+    box: (x, y, z) => new THREE.BoxGeometry(x, y, z),
+  };
+  const merge = (list) => mergeGeometries(list.map((g) => { const q = g.index ? g : g.clone(); if (!q.index) q.setIndex([...Array(q.attributes.position.count).keys()]); return q; }));
+  // a tube along a polyline with rounded elbows (corner radius rc): the reference's thick brass pipes
+  const pipe = (pts, r, rc = 0.3, seg = 12) => {
+    const path = new THREE.CurvePath(), V = pts.map((p) => new THREE.Vector3(...p));
+    let cur = V[0].clone();
+    for (let i = 1; i < V.length; i++) {
+      const b = V[i];
+      if (i < V.length - 1) {
+        const a = V[i - 1], c = V[i + 1], la = Math.min(rc, a.distanceTo(b) / 2), lc = Math.min(rc, c.distanceTo(b) / 2);
+        const p1 = b.clone().addScaledVector(a.clone().sub(b).normalize(), la), p2 = b.clone().addScaledVector(c.clone().sub(b).normalize(), lc);
+        path.add(new THREE.LineCurve3(cur, p1)); path.add(new THREE.QuadraticBezierCurve3(p1, b.clone(), p2)); cur = p2;
+      } else path.add(new THREE.LineCurve3(cur, b.clone()));
+    }
+    return new THREE.TubeGeometry(path, Math.max(12, Math.round(path.getLength() / 0.07)), r, seg, false);
+  };
+  const collar = (p, dir, r, len = 0.07) => {   // a gold joint ring round a pipe at p, along dir
+    const g = G.cyl(r, r, len, 20); g.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(...dir).normalize())); g.translate(...p); return g;
+  };
+  const facing = (x, y, z, nx, nz) => T4(x, y, z, 0, Math.atan2(nx, nz), 0);   // local +z turned to the horizontal direction (nx, nz)
+
+  // ------------------------------------------------ 1. the drum: perforated violet metal, its axis at the camera's height
+  const shellMat = priv(() => new THREE.ShaderMaterial({
+    uniforms: { uTime: timeU, uArch: { value: new THREE.Vector2(P.ring.step, P.ring.u0) } },
+    vertexShader: /* glsl */ `
+      attribute vec2 aAU; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
+      void main() { vAU = aAU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(normal); gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: /* glsl */ `
+      uniform float uTime; uniform vec2 uArch; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
+      ${NOISE}
+      ${HAZE}
+      void main() {
+        float a = vAU.x, u = vAU.y, up = cos(a), s = a * ${f(P.R)};
+        float dc = length(vW - cameraPosition);
+        // the reference's metal: mauve-violet near (#98519a, dark #592a6b), blue-violet in the depth (#684dca), lighter toward the crown
+        vec3 c = mix(vec3(0.09, 0.025, 0.15), vec3(0.27, 0.085, 0.33), smoothstep(-0.75, 0.55, up));
+        c = mix(c, vec3(0.32, 0.12, 0.42), smoothstep(0.55, 1.0, up) * 0.5);
+        c = mix(c, vec3(0.13, 0.07, 0.52), smoothstep(5.0, 18.0, dc) * 0.85);
+        c *= 0.85 + 0.25 * a5f(vec2(s * 6.0, u * 0.35));
+        // polished streaks along the run (the reference's bright sheen, #dc98b1 / #cd9abc)
+        float st = pow(0.5 + 0.5 * cos(a * 5.0 + 0.35), 14.0) * smoothstep(-0.4, 0.5, up);
+        c += vec3(0.42, 0.17, 0.30) * st;
+        // panel seams
+        float pu = fract(u / 1.27 + 0.5);
+        float seam = 1.0 - smoothstep(0.0, 0.025 + fwidth(u / 1.27), min(pu, 1.0 - pu));
+        c *= 1.0 - 0.35 * seam;
+        // the oval perforations: dark violet holes with a lit lip, staggered rows, faded where they would alias
+        vec2 g = vec2(s / 0.34, u / 0.27); g.x += 0.5 * mod(floor(g.y), 2.0);
+        vec2 q = (fract(g) - 0.5) * vec2(1.0, 1.7);
+        float hr = length(q), aa = max(0.04, 2.0 * length(fwidth(g)));
+        float hole = 1.0 - smoothstep(0.27 - aa, 0.27 + aa, hr), lip = smoothstep(0.25, 0.31, hr) * (1.0 - smoothstep(0.31, 0.39 + aa, hr));
+        float vis = 1.0 - smoothstep(0.25, 0.6, aa);
+        c = mix(c, mix(vec3(0.035, 0.008, 0.09), vec3(0.05, 0.03, 0.30), smoothstep(5.0, 14.0, dc)), hole * 0.92 * vis);
+        c += vec3(0.38, 0.18, 0.40) * lip * clamp(0.6 - q.y * 2.2, 0.0, 1.0) * vis;
+        // warm light round every arch (its light strips), a pool round each hanging lamp on the crown
+        float da = u - uArch.y, ka = da - uArch.x * floor(da / uArch.x + 0.5);
+        float glow = exp(-ka * ka / 0.3);
+        c += vec3(0.62, 0.05, 0.36) * glow * 0.4 * (0.4 + 0.6 * smoothstep(-0.6, 0.6, up));
+        c += vec3(1.0, 0.55, 0.18) * glow * 0.32 * exp(-pow((abs(a) - 0.72) / 0.2, 2.0));
+        float kl = da - 0.5 - uArch.x * 2.0 * floor((da - 0.5) / (uArch.x * 2.0) + 0.5);
+        c += vec3(1.0, 0.6, 0.25) * exp(-kl * kl / 0.6) * exp(-a * a / 0.08) * 0.45;
+        // a soft sheen where the wall turns from the camera
+        vec3 V = normalize(cameraPosition - vW); float fr = pow(1.0 - abs(dot(V, vN)), 3.0);
+        c += vec3(0.42, 0.18, 0.46) * fr * 0.5;
+        // darker toward the water line, the water's turquoise reflected on it
+        c = mix(c, c * vec3(0.5, 0.55, 1.0) + vec3(0.0, 0.07, 0.16), smoothstep(-0.25, -0.5, up));
+        c = a56Haze(c, vW);
+        gl_FragColor = vec4(c, 1.0);
+        #include <colorspace_fragment>
+      }`,
+    side: THREE.BackSide,
+  }));
+  priv(() => {
+    const NA = 84, A0 = -2.3, A1 = 2.3, du = 0.5, p = new THREE.Vector3();
+    for (let ci = 0; ci < nCh; ci++) {
+      const ua = U0 + ci * P.chunk, ub = Math.min(U1, ua + P.chunk); if (ub <= ua) continue;
+      const rows = Math.round((ub - ua) / du) + 1;
+      const pos = new Float32Array(rows * (NA + 1) * 3), nor = new Float32Array(rows * (NA + 1) * 3), au = new Float32Array(rows * (NA + 1) * 2), idx = [];
+      for (let i = 0; i < rows; i++) {
+        const u = ua + (ub - ua) * (i / (rows - 1)); TR.frame(u, F); const Rr = P.R + wid(u);
+        for (let j = 0; j <= NA; j++) {
+          const a = A0 + (A1 - A0) * (j / NA), sx = Math.sin(a), cy = Math.cos(a), k = i * (NA + 1) + j;
+          p.copy(F.P).addScaledVector(F.R, Rr * sx).addScaledVector(F.U, P.A + Rr * cy);
+          const n = F.R.clone().multiplyScalar(-sx).addScaledVector(F.U, -cy);
+          pos.set([p.x, p.y, p.z], k * 3); nor.set([n.x, n.y, n.z], k * 3); au.set([a, u], k * 2);
+        }
+      }
+      for (let i = 0; i < rows - 1; i++) for (let j = 0; j < NA; j++) { const a = i * (NA + 1) + j, b = a + NA + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+      g.setAttribute('aAU', new THREE.BufferAttribute(au, 2)); g.setIndex(idx); g.computeBoundingSphere();
+      const mesh = new THREE.Mesh(g, shellMat); mesh.name = 'a56Shell'; group.add(mesh);
+    }
+  });
+
+  // ------------------------------------------------ 2. the arches: magenta-lavender rings 0.32 m proud of the wall with a glossy lip, a gold edge,
+  // rivets and amber light strips; on every second ring a hanging brass lamp with a white-gold glass and a thick brass pipe down the right wall
+  const RB = P.R - P.ring.band, Ri = P.R - 2 * P.ring.band;   // band centre radius, inner radius
+  const amax = Math.acos(-(P.A + 0.35) / Ri);                // the rings reach 0.35 m under the water
+  const arcG = (rad, tube, rs, ts, zs, z) => { const g = new THREE.TorusGeometry(rad, tube, rs, ts, 2 * amax); g.rotateZ(Math.PI / 2 - amax); g.scale(1, 1, zs); g.translate(0, 0, z); return g; };
+  const RING = priv(() => {
+    const riv = [];
+    for (let a = -amax + 0.08; a <= amax - 0.05; a += 0.16) riv.push(G.sph(0.028, 6, 4).translate(Math.sin(a) * (P.R - 0.07), Math.cos(a) * (P.R - 0.07), -0.13));
+    return [[arcG(RB, P.ring.band, 10, 96, P.ring.z, 0), MT.ring], [arcG(Ri + 0.02, 0.045, 8, 96, 1, -0.11), MT.lip], [arcG(P.R - 0.02, 0.03, 6, 96, 1, -0.1), MT.gold], [merge(riv), MT.gold]];
+  });
+  const stripG = (a, len = 0.66, r = 0.055) => { const g = new THREE.CapsuleGeometry(r, len, 4, 10); g.rotateZ(Math.PI / 2 - a); g.translate(Math.sin(a) * RB, Math.cos(a) * RB, -P.ring.band * P.ring.z - 0.005); return g; };
+  const LAMP = priv(() => {   // axis coordinates; hanging from the crown 0.5 m behind its ring
+    const z = 0.5, ly = Ri + 0.15, out = [];
+    out.push([G.cyl(0.035, 0.035, P.R + 0.02 - ly, 10).translate(0, (P.R + 0.02 + ly) / 2, z), MT.brass]);
+    const prof = [[0.02, 0.0], [0.13, 0.0], [0.2, -0.03], [0.21, -0.06], [0.17, -0.08], [0.17, -0.24], [0.22, -0.27], [0.235, -0.31], [0.2, -0.335], [0.12, -0.34]].map(([r, y]) => new THREE.Vector2(r, y));
+    out.push([new THREE.LatheGeometry(prof, 28).translate(0, ly, z), MT.brass]);
+    for (const y of [-0.11, -0.2]) out.push([G.tor(0.18, 0.022, 28, 6).rotateX(Math.PI / 2).translate(0, ly + y, z), MT.gold]);
+    out.push([G.sph(0.15, 20, 14).scale(1, 0.9, 1).translate(0, ly - 0.44, z), MT.lamp]);
+    out.push([G.sph(0.045, 10, 6).translate(0, ly - 0.6, z), MT.brass]);
+    // the thick brass supply pipe: out of the bell to the right (-x), along under the crown, a rounded elbow down the right wall (outside the
+    // lanes' clear space), then out into the wall above the gear; gold joint collars
+    const r = P.pipe.r, xe = -P.pipe.x, y0 = ly - 0.17, yh = 1.9, yb = 1.05, xw = -(Math.sqrt(P.R * P.R - (yb - 0.07) ** 2) + 0.06);
+    out.push([pipe([[-0.17, y0, z], [xe, yh, z], [xe, yb, z], [xw, yb - 0.07, z]], r, 0.42), MT.brass]);
+    for (const [p, d] of [[[-0.26, y0 - 0.01, z], [1, -0.07, 0]], [[-0.85, (y0 + yh) / 2, z], [1, -0.07, 0]], [[xe, 1.45, z], [0, 1, 0]], [[(xe + xw) / 2, yb - 0.035, z], [1, -0.07, 0]]]) out.push([collar(p, d, r * 1.35), MT.gold]);
+    return out;
+  });
+  const ringUs = [];
+  for (let k = Math.ceil((U0 + 1 - P.ring.u0) / P.ring.step); ; k++) { const u = P.ring.u0 + k * P.ring.step; if (u > U1 - 1) break; ringUs.push([k, u]); }
+  const mod = (k, n) => ((k % n) + n) % n;
+  priv(() => {
+    for (const [k, u] of ringUs) {
+      const sc = (P.R + wid(u)) / P.R, L = new THREE.Matrix4().makeTranslation(0, P.A, 0).multiply(new THREE.Matrix4().makeScale(sc, sc, 1));
+      for (const [g, m] of RING) put(u, g, m, L);
+      const lampRing = mod(k, P.lampEvery) === 0, strips = P.ring.strips.map((a) => stripG(a));
+      if (P.ring.topStrip && !lampRing) strips.push(stripG(0, 0.5));
+      put(u, merge(strips), MT.strip, L);
+      if (lampRing) { for (const [g, m] of LAMP) put(u, g, m, L); stats.lamps++; }
+      stats.rings++;
+    }
+  });
+
+  // ------------------------------------------------ 3. the banks: pink-and-gold modules standing in the water on both sides
+  // module frame: x across (s = +1 screen-left, -1 screen-right), y up from the water, z along the run; n = the face turned to the channel and
+  // toward the oncoming camera
+  const pawMedal = () => {   // facing +z: a gold disc and rim, a raised pale-gold paw
+    const out = [[G.cyl(0.24, 0.24, 0.05, 36).rotateX(Math.PI / 2), MT.gold], [G.tor(0.23, 0.03, 36, 6).translate(0, 0, 0.025), MT.gold],
+      [G.sph(0.085, 14, 10).scale(1.1, 0.85, 0.35).translate(0, -0.045, 0.03), MT.paw]];
+    for (const [x, y] of [[-0.105, 0.055], [-0.04, 0.115], [0.04, 0.115], [0.105, 0.055]]) out.push([G.sph(0.04, 10, 8).scale(1, 1.25, 0.45).translate(x, y, 0.03), MT.paw]);
+    return out;
+  };
+  const starG = (r = 0.13) => { const sh = new THREE.Shape(); for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2 + Math.PI / 2, rr = i % 2 ? r * 0.45 : r; if (i) sh.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); else sh.moveTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+    return new THREE.ExtrudeGeometry(sh, { depth: 0.03, bevelEnabled: true, bevelThickness: 0.015, bevelSize: 0.012, bevelSegments: 2 }); };
+  const onFace = (list, cx, cy, cz, rad, n, extra = 0) => list.map(([g, m]) => [g.clone().applyMatrix4(facing(cx + n[0] * (rad + extra), cy, cz + n[1] * (rad + extra), n[0], n[1])), m]);
+  const dirN = (s, ang) => [-s * Math.cos(ang), -Math.sin(ang)];   // toward the channel, turned ang toward the camera (-z)
+  function moduleA(s) {   // the tall pink housing (Scene 5's near housings): gold bands and cap; left a paw medallion, right a panel with lights and stars
+    const out = [], x = s * 1.78, r = 0.55;
+    out.push([G.cyl(r, r + 0.02, 1.75, 44).translate(x, 0.4, 0), s > 0 ? MT.pink : MT.magenta]);
+    for (const y of [0.1, 1.07]) out.push([G.tor(r + 0.015, 0.045, 44, 6).rotateX(Math.PI / 2).translate(x, y, 0), MT.gold]);
+    out.push([G.cyl(r + 0.05, r + 0.05, 0.15, 44).translate(x, 1.34, 0), MT.gold], [G.cyl(r - 0.06, r + 0.02, 0.07, 44).translate(x, 1.45, 0), MT.gold]);
+    const riv = []; for (let i = 0; i < 14; i++) { const a = (i / 14) * Math.PI * 2; for (const y of [0.19, 0.98]) riv.push(G.sph(0.022, 6, 4).translate(x + Math.cos(a) * (r + 0.01), y, Math.sin(a) * (r + 0.01))); }
+    out.push([merge(riv), MT.gold]);
+    const n = dirN(s, 0.6);
+    if (s > 0) out.push(...onFace(pawMedal(), x, 0.36, 0, r, n));
+    else {
+      out.push(...onFace([[G.box(0.46, 0.22, 0.07), MT.lav]], x, 0.42, 0, r, n, -0.01), ...onFace([[G.box(0.5, 0.26, 0.04), MT.gold]], x, 0.42, 0, r, n, -0.035));
+      out.push(...onFace([[G.sph(0.065, 14, 10).translate(-0.11, 0, 0.03), MT.amberLight], [G.sph(0.065, 14, 10).translate(0.11, 0, 0.03), MT.teal],
+        [G.tor(0.075, 0.018, 20, 6).translate(-0.11, 0, 0.035), MT.gold], [G.tor(0.075, 0.018, 20, 6).translate(0.11, 0, 0.035), MT.gold]], x, 0.42, 0, r, n));
+      out.push(...onFace([[starG(), MT.gold]], x, 0.82, 0, r, dirN(s, 1.05), -0.005), ...onFace([[starG(0.11), MT.gold]], x, 0.85, 0, r, dirN(s, 0.15), -0.005));
+    }
+    return out;
+  }
+  function moduleB(s, len) {   // a pink base with a lavender band and a turquoise porthole; a violet glass chamber with gold brackets and a light;
+    // a lid and a thick brass elbow pipe into the wall; the walkway at the bases' top with a rounded gold railing (len = the bay's length)
+    const out = [], x = s * 1.75, r = 0.42;
+    out.push([G.cyl(r, r + 0.02, 1.45, 40).translate(x, 0.27, 0), MT.pink], [G.cyl(r + 0.015, r + 0.015, 0.2, 40).translate(x, 0.66, 0), MT.lav]);
+    for (const y of [0.04, 0.99]) out.push([G.tor(r + 0.012, 0.035, 40, 6).rotateX(Math.PI / 2).translate(x, y, 0), MT.gold]);
+    out.push(...onFace([[G.tor(0.15, 0.035, 28, 6), MT.gold], [G.cyl(0.125, 0.125, 0.03, 24).rotateX(Math.PI / 2), MT.teal]], x, 0.34, 0, r, dirN(s, 0.55), 0.01));
+    out.push([G.cyl(0.41, 0.43, 0.1, 36).translate(x, 1.05, 0), MT.gold], [G.cyl(0.34, 0.34, 0.74, 32).translate(x, 1.47, 0), MT.glass], [G.sph(0.15, 16, 12).translate(x, 1.43, 0), MT.core]);
+    for (const [dx, dy, dz, rr] of [[0.14, 1.3, 0.1, 0.08], [-0.12, 1.62, -0.08, 0.09], [0.06, 1.68, 0.14, 0.06], [-0.15, 1.25, 0.12, 0.07]]) out.push([G.sph(rr, 10, 8).translate(x + dx, dy, dz), MT.bub]);
+    for (let i = 0; i < 4; i++) { const a = (i / 4) * Math.PI * 2 + Math.PI / 4; out.push([G.cyl(0.024, 0.024, 0.74, 8).translate(x + Math.cos(a) * 0.355, 1.47, Math.sin(a) * 0.355), MT.gold]); }
+    for (const y of [1.2, 1.74]) out.push([G.tor(0.35, 0.02, 32, 6).rotateX(Math.PI / 2).translate(x, y, 0), MT.gold]);
+    out.push([G.cyl(0.41, 0.41, 0.1, 36).translate(x, 1.88, 0), MT.gold], [new THREE.SphereGeometry(0.27, 24, 8, 0, Math.PI * 2, 0, Math.PI / 2).translate(x, 1.93, 0), MT.lav]);
+    const hy = 2.42, xw = s * (Math.sqrt(P.R * P.R - (hy - P.A) ** 2) + 0.08);
+    out.push([pipe([[x, 2.12, 0], [x, hy, 0], [xw, hy + 0.05, 0]], 0.085, 0.2), MT.brass]);
+    out.push([collar([x, 2.16, 0], [0, 1, 0], 0.11), MT.gold], [collar([x + s * 0.3, hy + 0.03, 0], [1, 0.1, 0], 0.11), MT.gold]);
+    const wx0 = 1.3, wx1 = 2.25;
+    out.push([G.box(wx1 - wx0, 0.06, len).translate(s * (wx0 + wx1) / 2, 1.0, 0), MT.lav], [G.cyl(0.03, 0.03, len, 10).rotateX(Math.PI / 2).translate(s * wx0, 1.0, 0), MT.gold]);
+    const posts = [];
+    for (let z = -len / 2 + 0.2; z <= len / 2 - 0.1; z += 0.48) { posts.push(G.cyl(0.026, 0.026, 0.34, 8).translate(s * (wx0 + 0.03), 1.2, z), G.sph(0.042, 8, 6).translate(s * (wx0 + 0.03), 1.39, z)); }
+    out.push([merge(posts), MT.gold]);
+    for (const y of [1.36, 1.2]) out.push([G.cyl(0.03, 0.03, len, 10).rotateX(Math.PI / 2).translate(s * (wx0 + 0.03), y, 0), MT.gold]);
+    return out;
+  }
+  const MOD = priv(() => ({ A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) } }));
+  const gearSet = new Set(P.gearK);
+  priv(() => {
+    for (const [k, ur] of ringUs) {
+      const u = ur + P.mod.off; if (u < U0 + 0.5) continue;
+      const type = mod(k, P.mod.aEvery) === 0 ? 'A' : 'B';
+      for (const s of [1, -1]) {
+        if (s < 0 && gearSet.has(k - 1)) continue;   // the gear stands in that bay (right after a gear ring, on the right)
+        const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0);
+        for (const [g, m] of MOD[type][s]) put(u, g, m, L);
+        if (type === 'A') stats.modsA++; else stats.modsB++;
+      }
+    }
+  });
+
+  // ------------------------------------------------ 4. the user's Tripo cobalt gear (gear_v2_tripo.glb), large on the right wall, turned toward
+  // the oncoming camera, turning on its gold hub; a lavender mount into the wall behind it
+  const gears = [];
+  try {
+    const gg = await new Promise((ok, no) => loader.load('models/opening/gear_v2_tripo.glb', ok, undefined, no));
+    priv(() => {
+      const gb = new THREE.Box3().setFromObject(gg.scene), gs = gb.getSize(new THREE.Vector3()), gc = gb.getCenter(new THREE.Vector3()), kg = P.gear.d / Math.max(gs.x, gs.y);
+      const dressed = gg.scene.clone(true);
+      dressed.traverse((c) => { if (c.isMesh) { c.material = c.material.clone(); c.material.envMap = env; c.material.envMapIntensity = 1.1; c.material.emissive = new THREE.Color(0x0a1250); c.material.emissiveIntensity = 0.5; hazeIt(c.material); } });
+      const mountG = G.cyl(0.32, 0.4, 0.9, 24).rotateX(Math.PI / 2);
+      for (const [k, ur] of ringUs) {
+        if (!gearSet.has(k)) continue;
+        const u = ur + P.gear.dz, s = -1;
+        const holder = new THREE.Group(); holder.name = 'a56Gear'; holder.matrixAutoUpdate = false;
+        holder.matrix.copy(frameM(u).multiply(T4(s * (P.gear.x + wid(u)), P.gear.h + lift(u), 0, 0, Math.PI / 2 + P.gear.yaw, 0)));
+        const spin = new THREE.Group(); holder.add(spin);
+        const m = dressed.clone(true); m.scale.setScalar(kg); m.position.copy(gc).multiplyScalar(-kg); spin.add(m);
+        const mount = new THREE.Mesh(mountG, MT.lav); mount.position.z = -0.5; holder.add(mount);
+        group.add(holder); gears.push(spin); stats.gears++;
+      }
+    });
+  } catch (e) { report.errors.push('arch56 gear: ' + ((e && e.message) || e)); }
+
+  // ------------------------------------------------ merge: one mesh per chunk and material (culled per chunk)
+  let meshes = 0;
+  priv(() => {
+    chunks.forEach((c, ci) => { for (const [mat, list] of c) { const g = mergeGeometries(list, false); for (const x of list) x.dispose(); if (!g) continue; g.computeBoundingSphere(); const mesh = new THREE.Mesh(g, mat); mesh.name = 'a56Chunk' + ci; group.add(mesh); meshes++; } });
+  });
+  report.parts.push(`arch56: drum (axis ${P.A} m, R ${P.R} m), rings x${stats.rings}, lamps x${stats.lamps}, modules A x${stats.modsA} B x${stats.modsB}, gears x${stats.gears}, ${meshes} chunk meshes`);
+  if (typeof window !== 'undefined') window.__bwArch56Info = { stats, meshes, mats: MT };
+
+  function update(dt, time) { for (const g of gears) g.rotation.z = time * P.gear.spin; }
+  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: null };
 }
