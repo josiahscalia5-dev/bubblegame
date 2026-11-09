@@ -196,6 +196,27 @@ The drum failure is an artifact of my extraction (a stray backtick), not the bra
 The stray backtick is in my harness's `NOISE` slice (off by one: it took the closing `` `; `` line), not in the branch. Fixing and rerunning.
 
 - 11:33 `Bash`: Fix NOISE slice and recompile all shaders
+**Agent** (11:34 UTC):
+
+**Verdict: no blockers, safe to merge.** There are two risks, each with a one-line fix. Everything below refers to branch commit 6aeab9f3, in `/workspace/bubblegame/WebDemo/src/opening3d.js` and `/workspace/bubblegame/WebDemo/src/opening_six2_tunnel.js`.
+
+**Findings**
+1. **`opening3d.js:303-319` (`SIX2_DRUM_END`): fine.** Every name it uses exists with the right type:
+   - `a` and `d` are floats (line 332) and `c` is a vec3 (line 337).
+   - `uTime` and `uGlow` are declared at line 330. `uFill` is declared only when `SIX2_ON`, which is the only case that inserts this string. It is set in `opening_six2_water.js:13`.
+   - `cameraPosition` is declared by three.js for every `ShaderMaterial` and uploaded by the renderer.
+   - `out6` is not a reserved word, because `out` is only reserved on its own. No new name clashes with the shader's existing locals or the noise functions.
+2. **`opening_six2_tunnel.js:39-47` (the `richPinkGold` replacements): fine.** In r170 (`meshphysical.glsl.js:177-183`) the chunks come in the order roughnessmap, metalnessmap, emissivemap, all directly inside `main()`. `diffuseColor`, `roughnessFactor`, `metalnessFactor` and `totalEmissiveRadiance` are all declared before the inserted code, and `gold6` is still visible in the second insertion. One look note: the colour thresholds see linear values, so pale pinks count as more saturated than they look.
+3. **`opening_six2_tunnel.js:49` (cache key `'six2rich'`): risk, not a blocker.** With fixed numbers, every material gets the same shader, so sharing one program is correct. The default key would collide the same way anyway, since the closure source is identical. The problem is live tuning: the file exposes these numbers as `window.__bwSix2Tunnel`. In my test, changing `goldMetal` to 0.123 and setting `needsUpdate` reused the old program, which still had 0.800. Fix: `() => 'six2rich:' + JSON.stringify(T.rich)`. I tested that version and it picks up the new value.
+4. **`opening_six2_tunnel.js:63-66` (cap shader): fine.** Its `vUv` (vec2) matches the vertex shader at `opening3d.js:350`, `uGlow` is in the shared uniforms object, and `needsUpdate` builds a new program from the new source.
+5. **`opening_six2_tunnel.js:65`: low risk.** `pow((r - 0.55) / 0.08, 2.0)` has a negative base inside the ring, which the GLSL spec leaves undefined. It rendered correctly in software, and the same pattern already ships at `opening3d.js:342`. Fix: `float q = (r - 0.55) / 0.08; ... exp(-q * q)`.
+
+**Static script:** its six "CLEANLINESS" lines are all false positives. It can't read the comma-list `uniform float uTime, uFlow, uGlow;`, and the cap shares the tunnel's uniforms object on purpose. With the declarations split it reports nothing.
+
+**Compile check:** the drum, the cap, and `richPinkGold` on Standard (with and without maps) and Physical materials all compile and link with no errors under three r170 in headless Chromium (WebGL2, software renderer). The test files are in `/tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/shaders/harness/`. I did not edit any repo files.
+
+**Tools I had:** Read, Grep, Glob and Bash only. No threejs-devtools tool and no MCP tools at all were available, and no dev server was running. The compile check used Playwright through Bash, not MCP.
+
 
 _24 tool steps._
 
@@ -251,8 +272,33 @@ Give a compact table. Under 450 words. Also state in one line which tools you ha
 - 11:33 `Bash`: Zoom the near arch right leg and ring A
 - 11:33 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/rarch_x3.png
 - 11:33 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/ringA_x3.png
+- 11:34 `Bash`: Measure lamp bar core, yellow and orange rim colours
+- 11:34 `Bash`: Measure lamp amber edges and ring pink bands
+- 11:34 `Bash`: Fit VP and ring radii from magenta band peaks
+- 11:34 `Bash`: Fit vanishing point and ring ratio from top lamp rows
+- 11:34 `Bash`: Measure the far glow colour around the vanishing point
+- 11:35 `Bash`: Zoom both near machinery housings with ticks
+- 11:35 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/lhouse.png
+- 11:35 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/rhouse.png
+- 11:35 `Bash`: Segment housings and measure pink and gold colours
+- 11:35 `Bash`: Check housing extents with class strings
+- 11:35 `Bash`: Measure the violet tank glow core and rim
+- 11:36 `Bash`: Measure gold pipe, hub and cap colours
+- 11:36 `Bash`: Segment the blue gear, fit its hub and outer radius
+- 11:36 `Bash`: Zoom the gear with pixel ticks
+- 11:36 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/gear_x2.png
+- 11:37 `Bash`: Fit gear centre and count teeth from the outline
+- 11:37 `Bash`: Refit gear with stricter cobalt mask and save mask view
+- 11:37 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/gearmask.png
+- 11:37 `Bash`: Refit gear with a hue-based mask and overlay circles
+- 11:37 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/gearmask.png
+- 11:37 `Bash`: Measure gear blue and hub gold colours
+- 11:38 `Bash`: Measure water colours and near-white fraction
+- 11:38 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_lighting/watermask.png
+- 11:38 `Bash`: Measure the most turquoise water highlight
+- 11:39 `Bash`: Compare geometric vs equal-spacing ring fits
 
-_33 tool steps._
+_58 tool steps._
 
 ---
 
@@ -281,8 +327,24 @@ Report under 450 words: tool availability (worked / failed / missing), then the 
 - 11:32 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 11:33 `Grep`: \.name = '[^']*'|name: '[^']*'
 - 11:33 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__renderer_info`
+- 11:34 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__scene_tree`
+- 11:34 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:34 `Bash`: Check machine load again
+- 11:34 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__run_js`
+- 11:35 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__renderer_info`
+- 11:35 `Bash`: Find the browser debugging port
+- 11:35 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 11:36 `Bash`: Check load and screenshot folder
+- 11:36 `Bash`: Create the scratchpad screenshot folder
+- 11:36 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:37 `Grep`: renderOrder|depthWrite|transparent|heroSwell|r3Swirl|mwFloor|Floor|r6Walls|heroWalls|lining
+- 11:37 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__object_details`
+- 11:38 `Grep`: name = '(mw[A-Za-z]+|s4[A-Za-z]+|struct[A-Za-z]*|bt[A-Za-z]+|swim2[A-Za-z]*|fur[A-Za-z]*|mascot[A-Za-z]*|lq[A-Za-z]+)'
+- 11:38 `Grep`: \.name = 
+- 11:38 `Grep`: mwFloor|'tunnelWater'|drumWater|name: 'mw|\.name = `
+- 11:38 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 
-_12 tool steps._
+_28 tool steps._
 
 ---
 
@@ -321,6 +383,29 @@ The mascot root is an unnamed Group added directly to the scene, and its positio
 The run worked. As a sanity check that the projected box really sits on her, I'll count her magenta pixels inside and outside the box.
 
 - 11:33 `Bash`: Check magenta pixels against the projected mascot box
+**Agent** (11:34 UTC):
+
+I had the Spector MCP tools and Bash, and the probe run worked: no console errors, and her projected box is x0=0.234, y0=0.663, x1=0.691, y1=0.971.
+
+**Tools in this session:** the 12 `mcp__spector__*` tools and Bash. No threejs-devtools, chrome-devtools or playwright MCP tools were given to me, which fits the known plugin naming defect. The harmless read, `mcp__spector__list_canvases`, worked and listed two canvases: `#view` (540×1080, WebGL2) and `#overlay` (no context). I didn't check which page the Spector browser had open.
+
+**The run:** the script ran under `flock /tmp/bw_browser.lock` with the URL and settings you gave. The page reached `ready` after 13.2 s; after the 3 s wait it was still on Tap to Start (`intro`).
+
+**Console errors:** none. There were no page errors or failed requests either.
+
+**Finding the mascot:** `window.__bw` (`WebDemo/src/game.js:1750`) only gives her position (`state().world`) and `project()`, not her model. To get the model I used three.js's own devtools hook, set from the init script, so no game files were edited. Her model sits under an unnamed group placed at that position.
+
+**Her screen box** (432×768 frame; the canvas fills the whole page):
+- World box: min (-0.458, 0.024, 1.205), max (0.467, 0.968, 1.977).
+- Pixels: (100.9, 509.3) to (298.3, 745.9).
+- **As fractions of the frame: x0=0.234, y0=0.663, x1=0.691, y1=0.971.**
+- This box is drawn around the 3D box's corners, so it is a little larger than her outline.
+- Cross-check: 53% of the screenshot's magenta pixels fall inside this box, which covers about 14% of the frame. Pink scenery elsewhere also counts, so this supports the box without proving it.
+
+Files are in /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_vdebug:
+- mascot_probe_432x768.png
+- mascot_box.cjs
+
 
 _9 tool steps._
 
