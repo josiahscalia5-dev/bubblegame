@@ -1,0 +1,234 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "tripo2",
+  "scene07",
+  "six",
+  "tripo3",
+  "six2",
+  "s56",
+  "coin6",
+  "hero6",
+  "water6",
+  "brush6",
+  "arch56",
+  "env6"
+ ],
+ "route": "upper",
+ "frames": [
+  [
+   "tap",
+   {
+    "u": 1.592,
+    "x": 0,
+    "y": 0.405,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Washer drum",
+    "socks": 0,
+    "coins": 1280,
+    "gems": 36,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "intro",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 174,
+     "textures": 56
+    },
+    "result": null
+   }
+  ],
+  [
+   60,
+   {
+    "u": 60.123,
+    "x": 1.597,
+    "y": 1.73,
+    "lane": -1,
+    "air": true,
+    "route": "side path",
+    "lift": 0,
+    "section": "Side paths",
+    "socks": 3,
+    "coins": 1310,
+    "gems": 37,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Swipe ←\nonto the side path!",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 215,
+     "textures": 62
+    },
+    "result": null
+   }
+  ],
+  [
+   206,
+   {
+    "u": 206.445,
+    "x": -0.7,
+    "y": 0.344,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Treasure",
+    "socks": 4,
+    "coins": 1361,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 224,
+     "textures": 66
+    },
+    "result": null
+   }
+  ],
+  [
+   240,
+   {
+    "u": 240.045,
+    "x": -0.7,
+    "y": 0.357,
+    "lane": 2,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Grime balls",
+    "socks": 4,
+    "coins": 1379,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 2,
+    "phase": "running",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 286,
+     "textures": 67
+    },
+    "result": null
+   }
+  ],
+  [
+   "end",
+   {
+    "u": 341.773,
+    "x": 0,
+    "y": 0.282,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue progress",
+    "socks": 5,
+    "coins": 1705,
+    "gems": 48,
+    "hearts": 4,
+    "popped": 2,
+    "phase": "complete",
+    "complete": true,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 290,
+     "textures": 67
+    },
+    "result": {
+     "socks": 5,
+     "coins": 125,
+     "gems": 2,
+     "stars": 3,
+     "rewards": {
+      "coins": 300,
+      "gems": 10,
+      "socks": 5
+     }
+    }
+   }
+  ]
+ ],
+ "events": {
+  "swipes": 11,
+  "blocked": [],
+  "spins": 3,
+  "events": [
+   [
+    "sock",
+    3,
+    1,
+    "main"
+   ],
+   [
+    "sock",
+    6.6,
+    2,
+    "main"
+   ],
+   [
+    "sock",
+    21.5,
+    3,
+    "main"
+   ],
+   [
+    "swipe onto side path",
+    56.6,
+    0.86
+   ],
+   [
+    "sock",
+    126.6,
+    4,
+    "lower path"
+   ],
+   [
+    "spin",
+    228.1
+   ],
+   [
+    "spin",
+    234.4
+   ],
+   [
+    "KNOCK (heart lost)",
+    240.7,
+    "lane 1",
+    "near: {\"brushes\":[],\"enemies\":[[241.41,0,0.7,false],[241.41,2,-0.7,false]],\"bars\":[],\"drum\":[]}"
+   ],
+   [
+    "spin",
+    240.7
+   ],
+   [
+    "sock",
+    304,
+    5,
+    "main"
+   ]
+  ]
+ },
+ "logs": []
+}
