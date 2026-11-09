@@ -14,6 +14,8 @@
 // Nothing here runs without the switch; the game's state, input and seeded Math.random are untouched (it uses none).
 import { LEVEL1_PARTS } from './level1.js';
 import { mountOpening3D } from './opening3d.js';
+import { SIX2_ON } from './opening_six2.js';   // six2 (session 9ee07777): the interface of the six approved portrait screens
+import { SIX2_CSS, buildSix2UI } from './six2_ui.js';
 const CLASSIC = typeof window !== 'undefined' && (window.__BW_CLASSIC__ || /[?&]classic(=|&|$)/.test(location.search));
 const LIST = typeof window === 'undefined' || CLASSIC ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const HOME_ON = LIST.includes('home');
@@ -103,7 +105,7 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 const $g = (id) => document.getElementById(id);
 
 function build() {
-  const st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
+  const st = document.createElement('style'); st.textContent = CSS + (SIX2_ON ? SIX2_CSS : ''); document.head.appendChild(st);
   const root = el('div'); root.id = 'bwHome'; root.setAttribute('role', 'application'); root.setAttribute('aria-label', 'Bubble Wash Kingdom');
   const art = el('div', 'art');
   const bg = el('img', 'bg'); bg.src = 'ui/screens12/laundry_scene.jpg'; bg.alt = 'The girl tosses the pink fluffy character toward the golden washing machine';
@@ -133,7 +135,7 @@ function build() {
   const bLevels = navBtn('★', 'Levels'), bChars = navBtn('♥', 'Characters'), bShop = navBtn('◆', 'Shop'), bSet = navBtn('⚙', 'Settings');
   b1.append(play, nav); s1.appendChild(b1);
   // Screen 2: Laundry Toss
-  const s2 = el('div', 'screen off');
+  const s2 = el('div', SIX2_ON ? 'screen off s2' : 'screen off');
   s2.append(el('div', 'title toss', '<b>Laundry Toss!</b>'));
   const back = el('button', 'back', '‹'); back.setAttribute('aria-label', 'Back to the home screen'); s2.appendChild(back);
   const b2 = el('div', 'bottom');
@@ -144,12 +146,16 @@ function build() {
   const card = el('div', 'card'); modal.appendChild(card);
   root.append(s1, s2, top, modal, glow);
   document.body.appendChild(root);
+  let ui6 = null;   // (six2's interface, built below)
   if (O3D_ON) {   // ?s3=...,home,level1: the live 3D scene behind both screens instead of the painted picture
     art.style.display = 'none';
-    o3d = mountOpening3D(root, { test: !!window.__BW_TEST__,
+    o3d = mountOpening3D(root, { test: !!window.__BW_TEST__, onScene: (n) => { if (ui6) ui6.setScene(n); },
       onHandOver: () => { holding = false; root.style.transition = 'opacity .8s ease'; root.style.opacity = '0'; root.style.pointerEvents = 'none'; },
       onDone: () => { clearInterval(syncT); o3d.dispose(); root.remove(); window.dispatchEvent(new Event('bw:home-done')); } });
   }
+
+  // six2: the reference screens' interface (six2_ui.js) over the 3D scene
+  if (SIX2_ON) ui6 = buildSix2UI({ root, top, startBtn: start, onHome: () => show(s2, s1), onShop: () => bShop.click(), onSettings: () => settings() });
 
   // layout: the artwork covers the screen (cropped at the sides on narrow phones, a little more on the right so the girl
   // stays whole); --a is one artwork pixel on screen
@@ -170,7 +176,7 @@ function build() {
   const gate = () => { start.disabled = !ready(); start.firstChild.textContent = ready() ? 'START ' : 'LOADING… '; };
   gate(); const gateT = setInterval(gate, 300);
 
-  const show = (a, b) => { a.classList.add('off'); b.classList.remove('off'); };
+  const show = (a, b) => { a.classList.add('off'); b.classList.remove('off'); if (ui6) { if (b === s2) ui6.showToss(); else ui6.showHome(); } };
   const open = (html) => { card.innerHTML = html; modal.hidden = false; const c = card.querySelector('[data-close]'); if (c) c.focus(); };
   const close = () => { modal.hidden = true; };
   modal.addEventListener('click', (e) => {
@@ -204,7 +210,7 @@ function build() {
   start.addEventListener('click', () => {
     if (!ready()) return;
     clearInterval(gateT);
-    s2.classList.add('off'); top.style.transition = 'opacity .35s'; top.style.opacity = '0';
+    s2.classList.add('off'); if (!ui6) { top.style.transition = 'opacity .35s'; top.style.opacity = '0'; } else { root.classList.add('playing'); window.addEventListener('bw:home-done', () => { ui6.dispose(); ui6.gameCaption(); }, { once: true }); }
     if (o3d) { o3d.play(); return; }   // ?s3=...,home,level1: the 3D toss, the washer entry and the hand-over (opening3d.js)
     const S = ART.sprite, w = art.clientWidth, k = w / ART.w;   // screen px per artwork px
     const p0 = { x: S.x + S.w / 2, y: S.y + S.h / 2 }, p1 = ART.arrow, p2 = ART.tunnel;
