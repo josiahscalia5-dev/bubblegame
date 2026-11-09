@@ -51,19 +51,20 @@ export const BRUSH6 = {
   // faded where they get smaller than a pixel), a few stray strands past the tips; the front row stands `gap` bell radii out, turned half a
   // tuft, `short` shorter, so the back row's spikes show between its own. around: mesh segments per tuft; along: rings root to tip.
   // lod: brushes farther than lod.dist metres draw the light mesh (lod.seg segments per tuft, lod.along rings, the back row only).
-  fur: { tufts: 18, seg: 8, along: 9, rows: 2, gap: 0.07, short: 0.1, scallop: 0.16, spike: 0.34, strands: 150, stray: 0.1, shade: 0.5 },
-  lod: { dist: 14, seg: 3, along: 4 },
+  fur: { tufts: 30, seg: 6, along: 9, rows: 2, gap: 0.06, short: 0.08, scallop: 0.1, spike: 0.15, jag: 0.12, strands: 190, contrast: 0.45, stray: 0.1, shade: 0.62 },
+  lod: { dist: 14, seg: 2, along: 4 },
   // the approved's colours (band medians, 20 % / 80 % luminance means), the lit body kept under the Neutral tone mapping's ~0.76 knee
   // (linear): pink (0.72, 0.01, 0.29), white-lavender (0.40, 0.24, 0.72), royal blue (0.0, 0.10, 0.72), pale blue (0.05, 0.21, 0.70)
   colours: {
-    dark: ['#b0035f', '#7d5cb0', '#0134a8', '#1452a8'],
-    med: ['#dd1993', '#aa86dd', '#0459dd', '#3f7edb'],
-    lite: ['#f064d0', '#e8d8f8', '#3a9cf0', '#b8cdf4'],
+    // (session ddf175f2: corrected by the measured linear ratios approved / frame under env6's hero grade, tools/brush6/tiers.py)
+    dark: ['#c8026c', '#7d58b8', '#0130b8', '#0c4cb0'],
+    med: ['#f20e9e', '#af86f1', '#0258ee', '#3a7ce8'],
+    lite: ['#fa6ee2', '#ecd6fc', '#1b94fa', '#9cc4fa'],
   },
-  light: { amb: 0.52, dif: 0.6, spec: 0.45, sheen: 0.08, side: 1.1 },
+  light: { amb: 0.52, dif: 0.6, spec: 0.45, specWhite: 0.12, sheen: 0.03, side: 1.1, rightGain: 1.12 },
   // the cap's gold: the approved's warm gold (#f08a53, light #ffeab9); s56's M.gold reads red-orange at this distance
   gold: { color: '#ffc45a', emissive: '#7a4a08', ei: 0.5, metal: 0.85, rough: 0.24 },
-  bell: { color: '#f86fc8', emissive: '#8a1a5a', ei: 0.45, metal: 0.25, rough: 0.2 },
+  bell: { color: '#f74fbd', emissive: '#8a1a5a', ei: 0.45, metal: 0.25, rough: 0.2 },
 };
 if (BRUSH6_ON && typeof window !== 'undefined') window.__bwBrush6 = BRUSH6;
 
@@ -102,7 +103,7 @@ void main() {
   gl_Position = b6Project(viewMatrix * w);
 }`;
 const BRISTLE_FRAGMENT = /* glsl */ `
-uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSheen, uSpike, uShort, uStray, uShade;
+uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSpecWhite, uSheen, uSpike, uJag, uContrast, uShort, uStray, uShade, uGain;
 uniform vec3 uDark[4], uMed[4], uLite[4]; uniform float uUpper[4];
 varying vec4 vS; varying float vY; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
 // sine-free hash (fluffy_brush.js fbH: stable for large cell indices)
@@ -115,32 +116,34 @@ void main() {
   float tr = b6H(vec2(ti, vS.z * 7.0 + row * 3.0 + 1.0));
   float sa = vS.y * uStrands * (1.0 + 0.37 * row) + row * 0.31, si = floor(sa), sf = fract(sa) - 0.5;
   float sr = b6H(vec2(si, vS.z * 13.0 + row * 5.0 + 2.0));
-  // the tuft ends in a spike: its middle strands longest, every strand a little different; a few stray strands reach past the tips
-  float len = (1.0 - uShort * row) * (1.0 - uSpike * pow(abs(tf) * 2.0, 1.3) - 0.07 * sr - 0.05 * tr);
-  float fw = fwidth(sa), aa = 1.0 - smoothstep(0.35, 0.9, fw);   // the strands fade where they get smaller than a pixel
+  // the tuft ends in a rounded clump: its middle strands longest, every strand a little different (jag: a fine ragged fringe); a few stray
+  // strands reach past the tips
+  float len = (1.0 - uShort * row) * (1.0 - uSpike * 4.0 * tf * tf - uJag * sr - 0.05 * tr);
+  float fw = fwidth(sa), aa = 1.0 - smoothstep(0.6, 1.2, fw);   // the strands fade only where they get smaller than ~1.5 px
   if (t > len) { if (t > len + uStray * sr || sr < 0.8 || abs(sf) > 0.22 + 0.3 * (1.0 - aa)) discard; }
   vec3 dk = uDark[k], md = uMed[k], lt = uLite[k];
-  vec3 col = mix(md, lt, 0.06 + 0.2 * tr) * mix(1.0, 0.8 + 0.4 * sr, aa);   // every strand its own shade
-  col *= 1.0 - 0.28 * aa * smoothstep(0.3, 0.5, abs(sf));                     // the dark gaps between the strands
+  vec3 col = mix(md, lt, 0.06 + 0.2 * tr) * mix(1.0, 0.72 + 0.56 * sr, aa);   // every strand its own shade
+  col *= 1.0 - uContrast * aa * smoothstep(0.22, 0.5, abs(sf));                 // the dark gaps between the strands
   col = mix(dk, col, smoothstep(0.02, 0.5, t));                                 // darker roots
   col = mix(col, lt, 0.5 * smoothstep(0.55, 1.0, t / len));                    // pale tips
   // the tier above overhangs this one: a soft shadow just under its tips (local y uUpper[k]); the tufts' sides darker than their ridges
-  float sh = 1.0 - uShade * smoothstep(uUpper[k] - 0.42, uUpper[k] - 0.02, vY);
+  float sh = 1.0 - uShade * smoothstep(uUpper[k] - 0.5, uUpper[k] - 0.04, vY);
   float ao = sh * mix(0.74, 1.0, smoothstep(0.5, 0.12, abs(tf))) * mix(0.82, 1.0, row);
   vec3 N = normalize(vN), V = normalize(cameraPosition - vW), L = normalize(vL), D = normalize(vD);
   if (!gl_FrontFacing) N = -N;
   float dif = clamp(dot(N, L) * 0.5 + 0.5, 0.0, 1.0);
   vec3 H = normalize(L + V); float th = dot(D, H), spec = pow(sqrt(max(0.0, 1.0 - th * th)), 48.0);   // gloss along the strands
-  vec3 c = col * (uAmb + uDif * dif) * ao + mix(lt, vec3(1.0), 0.45) * spec * uSpec * dif * sh * (0.6 + 0.4 * sr);
+  vec3 c = (col * (uAmb + uDif * dif) * ao + mix(lt, vec3(1.0), uSpecWhite) * spec * uSpec * dif * sh * (0.4 + 0.6 * sr)) * uGain;
   c += vec3(1.0, 0.95, 1.0) * pow(1.0 - abs(dot(N, V)), 3.0) * uSheen;
   gl_FragColor = vec4(b6Haze(c, vW), 1.0);
 }`;
 
 // ---------------------------------------------------------------- geometry (bell-radius units, axis +Y, y = 0 at the lowest tips)
-// a side's skirts: the tip radii flared by S.flare toward the foot (pink x 1, white x (1 + flare/3), blue x (1 + 2 flare/3), pale x (1 + flare))
+// a side's skirts widened by S.flare toward the foot, root and tip alike (a pagoda: the strands keep their angle): pink x 1,
+// white x (1 + flare/3), blue x (1 + 2 flare/3), pale x (1 + flare)
 function tiersFor(P, sk) {
   const fl = P[sk].flare || 0;
-  return P.tiers.map(([y0, y1, r0, r1], k) => [y0, y1, r0, r1 * (1 + (fl * k) / 3)]);
+  return P.tiers.map(([y0, y1, r0, r1], k) => [y0, y1, r0 * (1 + (fl * k) / 3), r1 * (1 + (fl * k) / 3)]);
 }
 // every skirt: `rows` scalloped cones (one ridge per tuft, the relief growing toward the tips), the front row `gap` out and half a tuft round
 function bristleGeometry(P, seg, along, rows) {
@@ -151,8 +154,8 @@ function bristleGeometry(P, seg, along, rows) {
     for (let row = 0; row < rows; row++) {
       const dy = y1 - y0, out = row * F.gap;   // (the front row's shorter tips are cut in the shader, uShort)
       for (let j = 0; j <= along; j++) {
-        const t = j / along, rc = r0 + out * 0.5 + (r1 + out - r0 - out * 0.5) * (0.55 * t + 0.45 * t * t);
-        const dr = (r1 + out * 0.5 - r0) * (0.55 + 0.9 * t), y = y0 + dy * t, l = Math.hypot(dy, dr);
+        const t = j / along, rc = r0 + out * 0.5 + (r1 + out - r0 - out * 0.5) * (1.25 * t - 0.25 * t * t);   // (a convex skirt)
+        const dr = (r1 + out * 0.5 - r0) * (1.25 - 0.5 * t), y = y0 + dy * t, l = Math.hypot(dy, dr);
         for (let i = 0; i < cols; i++) {
           const a = i / around, tf = ((a * F.tufts + row * 0.5) % 1) - 0.5, bump = 1 - 4 * tf * tf;
           const r = rc * (1 + F.scallop * (0.3 + 0.7 * t) * (bump - 0.55));
@@ -231,7 +234,8 @@ export async function buildBrush6(ctx) {
       uPull, uSide: { value: side * P.light.side },
       uStrands: { value: P.fur.strands }, uTufts: { value: P.fur.tufts }, uSpike: { value: P.fur.spike }, uShort: { value: P.fur.short },
       uStray: { value: P.fur.stray }, uShade: { value: P.fur.shade }, uUpper: { value: upper },
-      uAmb: { value: P.light.amb }, uDif: { value: P.light.dif }, uSpec: { value: P.light.spec }, uSheen: { value: P.light.sheen },
+      uJag: { value: P.fur.jag }, uContrast: { value: P.fur.contrast }, uGain: { value: side < 0 ? P.light.rightGain : 1 },
+      uAmb: { value: P.light.amb }, uDif: { value: P.light.dif }, uSpec: { value: P.light.spec }, uSpecWhite: { value: P.light.specWhite }, uSheen: { value: P.light.sheen },
       uDark: { value: col(C.dark) }, uMed: { value: col(C.med) }, uLite: { value: col(C.lite) },
     },
     vertexShader: BRISTLE_VERTEX, fragmentShader: BRISTLE_FRAGMENT,

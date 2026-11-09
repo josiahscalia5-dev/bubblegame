@@ -25,7 +25,7 @@ function cost(side, v) {
   let c = 0; for (const k in r.e) c += (WT[k] || 1) * r.e[k] * r.e[k];
   if (r.m.innerX_m < b.minX) c += 50 * (b.minX - r.m.innerX_m) ** 2;           // never over the play lanes
   if (v[3] < 0.2) c += 10;
-  if (v[4] < 0.8 || v[4] > 1.25) c += 5 * (v[4] < 0.8 ? 0.8 - v[4] : v[4] - 1.25) ** 2;   // keep the proportions near the built ones
+  if (v[4] < 0.92 || v[4] > 1.12) c += 20 * (v[4] < 0.92 ? 0.92 - v[4] : v[4] - 1.12) ** 2;   // keep the proportions near the built ones
   if (v[5] < -0.15 || v[5] > 0.4) c += 5 * (v[5] < -0.15 ? -0.15 - v[5] : v[5] - 0.4) ** 2;
   return c;
 }
