@@ -678,6 +678,9 @@ export function buildLevel1(ctx) {
   // (flow) the Screen 4 drum's far socks are parked (kept in the game's list, so its seeded random sequence is unchanged): with
   // them the goal was reached inside the drum; now two drum socks + one per route of the side paths and the drop + the Kingdom's = 5
   const parked = FLOW && ctx.socksList ? ctx.socksList.filter((s) => s.u > C.parkDrumSocks[0] && s.u < C.parkDrumSocks[1]) : [];
+  // (swim7, session 8da775c4: the drum's first sock is 1.6 m from the start line, out of reach of the smoother lane change; the nearer of the two
+  // parked ones is put back, so five can still be rescued on any route: six are out, the HUD and the goal count five)
+  if (LIST.includes('swim7') && parked.length > 1) { parked.sort((a, b) => a.u - b.u); parked.shift(); }
   const park = () => { for (const s of parked) { s.live = false; s.pop = -1; s.obj.visible = false; } };
   park();
   report.parkedDrumSocks = parked.map((s) => s.u);
