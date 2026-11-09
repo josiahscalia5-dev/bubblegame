@@ -1,6 +1,12 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-## READ FIRST, NEWEST (9 November 2026 ~13:30 UTC, session d847dce2, account restore). This block overrides anything older below.
+## READ FIRST, NEWEST (9 November 2026 ~14:50 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP). This block overrides anything older below.
+- **Next account: start with `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 00 (copy-ready prompt).** Backup proof: `BACKUP_VERIFICATION.md` (top);
+  models: `MODEL_INVENTORY_2026-11-09_session_d847dce2.md`; lanes and next steps: `PARALLEL_LANES.md`; status: `CURRENT_PROJECT_STATUS.md`.
+- **Disk lesson:** never run `git ls-tree --long` (or anything that needs blob sizes) in a `--filter=blob:none` clone: it downloads every blob (~6 GB of
+  Previews) and filled the disk. Use `--name-only`.
+
+## READ FIRST, (9 November 2026 ~13:30 UTC, session d847dce2, account restore). This block overrides anything older below.
 - **Branch:** the user's PRIMARY branch is now `claude/bubble-wash-restore-transfer-kc4ecl` (the user's instruction of 9 November). `claude/bubble-wash-account-transfer-52t7ym`
   is historical recovery information only. If the session opens on a `ccr-*` branch, check it CONTAINS kc4ecl, develop there; `Tools/save_now.sh`
   (and so the autosave) fast-forwards kc4ecl to every verified save (never force). Scripts: `save_now.sh` USER_BRANCH, `restore_session.sh` / `session_preflight.sh` WORK.

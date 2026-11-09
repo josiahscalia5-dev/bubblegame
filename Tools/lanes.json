@@ -3,6 +3,7 @@
   "merge_order": [
     "s56",
     "arch56",
+    "brush6",
     "ui",
     "washer34",
     "girl12"
@@ -25,7 +26,7 @@
         "the blue towel"
       ],
       "task": "Scene 1 kneeling girl + hidden hero under the blue towel, room (window, curtains, shelves, rug, light); Scene 2 she lifts the towel, turns and loads it into the open washer, never noticing him; the girl alive and moving",
-      "status": "f28099bc: relaunched; before frames only"
+      "status": "d847dce2 backup: 8b2fa7e9, paused"
     },
     "washer34": {
       "branch": "claude/lane-s34-washer-ac4e3449",
@@ -46,7 +47,7 @@
         "the washer"
       ],
       "task": "Scene 3 the believable accident (he slides out of the yellow bundle behind the rim, tumbles into the drum; she never notices); Scene 4 the approved washer look (glossy pink, deep gold rim, paw badge, lights, purple-blue interior) with clearly visible moving cobalt water swirling round him behind the glass. Resumes the interrupted water lane of session 9ee07777 (no code was saved; its diagnosis is in Previews/WebDemo/six_scenes/08_six_portrait_scenes_9ee07777/specialist_lanes/water/)",
-      "status": "f28099bc: relaunched; before frames only"
+      "status": "d847dce2 backup: 605b8951, no code change (stopped after its tool check). Next: close the drum far end before the hand-over"
     },
     "s56": {
       "branch": "claude/lane-s56-tunnel-ac4e3449",
@@ -58,7 +59,7 @@
       ],
       "blocks_in_opening_six2_js": [],
       "task": "The approved Scene 5/6 lavender laundry-machine tunnel (s56) in the live game: water (saturated cobalt, real waves, crests, no pale foam blanket), his swim on the same wave height (submerged lower body, round fluffy back), splashes/wake, arches/holes/machinery/tanks/gear/pipes placement against the references; gameplay untouched",
-      "status": "f28099bc: pass 2/3 WIP pushed (water diagnosis + S56.water); not merged"
+      "status": "47f75e22: Scene 6 water mandate: saturated cobalt / turquoise dimensional waves, no pale-white patches or white cloud round him"
     },
     "ui": {
       "branch": "claude/lane-ui-hud-ac4e3449",
@@ -70,7 +71,7 @@
       ],
       "blocks_in_opening_six2_js": [],
       "task": "One coherent mobile interface across Scenes 1-6 matched to the approved screens: top bar (hearts / coins / gems with + buttons), Bubble Wash Kingdom logo, Laundry Toss plaque, numbered caption pill, Start button, Home and Shop buttons; the in-game HUD restyled to the same look (hud56.js injects CSS under body.s56 only)",
-      "status": "f28099bc: hud56.js restyle WIP pushed; not merged"
+      "status": "d847dce2 backup: be6a5681, hud56.js WIP, paused"
     },
     "qa": {
       "branch": null,
@@ -78,7 +79,7 @@
       "agent": "gameplay-visual-testing + game-art-director (+ the bubble-wash-screen-matcher skill run by the coordinator)",
       "files": [],
       "task": "Side-by-sides of all six scenes vs the approved references, mismatch checklists, measurements, gameplay route tests, continuity Scene 1 -> 6; runs on the integration branch after each merge",
-      "status": "f28099bc: art director ranking done; route test running"
+      "status": "d847dce2: routes upper/ledge/blocked all Level Complete, 5 socks, 0 console errors (Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/qa/routes)"
     },
     "arch56": {
       "branch": "claude/lane-s56-arch-d847dce2",
@@ -90,7 +91,19 @@
       ],
       "blocks_in_opening_six2_js": [],
       "task": "Switch ?s3=...,arch56 (s56_arch.js, called by the coordinator hook in s56_tunnel.js section 0; it may skip sections 1-4 and own the camera via arch.cam). Rebuild the approved Scene 5 architecture: perforated lavender drum + reflective rings, LEFT pink-and-gold cylindrical housings with gold paw medallion, turquoise fitting, violet glass chambers, curved gold pipes and rounded gold rails; RIGHT cobalt toothed gear (gear_v2_tripo.glb) with gold hub, violet vessels, lights, stars; TOP amber lamp + thick brass pipes with elbows, warm arch light strips; banks close enough to frame the view like the reference (~+/-0.9-1.2 m at his depth) while the lanes +/-0.7 m stay clear; depth repetition; PBR + lighting under the Neutral tone-mapping knee.",
-      "status": "d847dce2: created; stub + hook only"
+      "status": "47f75e22: Scene 6 mandate: left/right machinery density, cobalt gear upper right behind the right machinery, camera/composition vs approved Scene 6 at u 206"
+    },
+    "brush6": {
+      "branch": "claude/lane-s6-brush-47f75e22",
+      "specialist": "SPECIALIST 7 - Scene 6 rotating laundry brushes (the user's Scene 6 mandate, 9 November ~15:35 UTC, session 47f75e22)",
+      "agent": "lighting-visual-matching",
+      "files": [
+        "WebDemo/src/s56_brush6.js",
+        "WebDemo/tools/brush6/"
+      ],
+      "blocks_in_opening_six2_js": [],
+      "task": "Switch ?s3=...,s56,brush6 (s56_brush6.js, called by the coordinator hook in s56_tunnel.js section 0 after arch56). The approved Scene 6's large fluffy rotating laundry brushes at the left and right foreground: vertical roller brushes with a glossy pink cap and gold band, bristle bands pink / white / blue / pale blue, cut by the frame edges at about x 0-0.2 and 0.8-1.0 W, y 0.37-0.72 of the 864x1536 frame at the Scene 6 moment (u 206); reuse the existing brush code/models first (fluffy_brush.js shell fur, models/brush_p2.glb, s3_brush.glb, Design/MeshyDeliveries/WashingRoller); rotation animation; gameplay brushes, hitboxes and lanes untouched.",
+      "status": "47f75e22: created; hook + empty stub on the integration branch"
     }
   },
   "status_doc": "PARALLEL_LANES.md, section \"Lane status\""

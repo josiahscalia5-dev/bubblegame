@@ -1,6 +1,27 @@
 # Backup verification (8 November 2026, session bb87ba9f, emergency account-transfer backup)
 
-## NEWEST: verified backup of 9 November 2026 ~13:15 UTC, session f28099bc (account transfer)
+## NEWEST: verified backup of 9 November 2026 ~14:50 UTC, session d847dce2 (account-transfer backup to the user's next Claude account)
+Primary transfer branch: **`claude/bubble-wash-restore-transfer-kc4ecl`** (repository josiahscalia5-dev/bubblegame). The session worked on the harness branch
+`ccr-212bb6a5-36pep9`; every verified save fast-forwarded kc4ecl to the same commit (never force). The final commit is the last `Push: VERIFIED` line of
+`~/.bubblewash-autosave/save_history.log` and the head of kc4ecl on GitHub (`git ls-remote origin claude/bubble-wash-restore-transfer-kc4ecl`).
+
+| Component | Label | Evidence |
+|---|---|---|
+| Game source, bundle, package-lock | BACKED UP AND VERIFIED | clean partial clone of kc4ecl from GitHub (0aa9ddd): 54 src files + bundle + lockfile identical; `npm ci` (3 s) + `node build.mjs` = bundle BYTE-IDENTICAL (6a78d7ae); the game launched in Chromium from the clone: Tap to Start 0 px different from the working build, tap -> running (z 1.6 -> 15.8, coins 1280 -> 1286), 0 page errors |
+| Gameplay | BACKED UP AND VERIFIED | route test (same source) upper / ledge / blocked: all Level Complete, 5 socks, enemies popped, blocked moves refused, 0 console errors (`Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/qa/routes/`) |
+| Six approved scenes + Scene 5/6 pack + Scene 5/6 kit | BACKED UP AND VERIFIED | 10 + 11 + 15 files identical in the clone (`Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06`, `..._Scenes5_6_Approved_Visual_Reference_Pack_from_user/02, 03`) |
+| 3D models | BACKED UP AND VERIFIED | 110 GLB in the tree, all real glTF binaries, no LFS pointers (`MODEL_INVENTORY_2026-11-09_session_d847dce2.md`); the 48 game models identical in the clone; all 35 model paths named in the code resolve; Khronos validator 48 / 0 failed. The user's uploads: Machinery_small and 911_small (912 = byte-identical copy) saved; the "tiny" files, a distinct 912, yo_jj_optimized and "913 914" were NEVER uploaded to this session: MISSING (the user must re-send them) |
+| Project agents (5), skill, SessionStart hook, settings, .mcp.json | BACKED UP AND VERIFIED (files) / REQUIRES a live test on the next account | identical in the clone; they load from the repository by themselves |
+| Plugin agents scenario-author / shader-reviewer / visual-debugger, chrome-devtools + threejs-devtools MCP | REQUIRES ACCOUNT RECONNECTION | the parallax-threejs 0.4.12 plugin was NOT enabled on this account; enable it, new session, live test (TOOLS_AND_PLUGINS_RESTORE.md section 0) |
+| Spector MCP, Playwright | REQUIRES REINSTALLATION (automatic) | `Tools/cloud_env_setup.sh` (via `restore_session.sh`) builds Spector and the tool venvs; Playwright's Chromium is in the cloud image |
+| Tripo key / Ludo | REQUIRES ACCOUNT RECONNECTION | network secret for openapi.tripo3d.ai in the next environment; never in Git |
+| Lanes | BACKED UP AND VERIFIED | all 5 lane branches on GitHub after `lanes.sh save` (VERIFIED pushes): arch56 b8ca82a6, s56 50f77c6a, washer34 605b8951, girl12 8b2fa7e9, ui be6a5681; arch56 + s56 build; next steps in PARALLEL_LANES.md |
+| Rollback branches | BACKED UP AND VERIFIED | rollback-before-s56-default, rollback-before-tripo3-default, account-switch-e1nndb, account-transfer-52t7ym on GitHub |
+| Secrets | VERIFIED CLEAN | pattern scan (Tripo tsk_, GitHub ghp_/gho_/github_pat_, sk-ant-/sk-, AWS, Slack, Google, private keys) over every tracked file of kc4ecl and all 5 lane branches: 0 matches; `.env.example` holds placeholders only |
+| Autosave | WORKING in this session; RESTARTS by itself on the next account | exactly 1 process; every round `github=VERIFIED`; the SessionStart hook starts ONE on the next session (check: `ps -eo pid,etime,args \| grep '[a]utosave.sh'`) |
+| Previews evidence (6,367 files) | BACKED UP, not re-downloaded in the clone test | present in the clone's tree listing (names only, to save disk: a full download did not fit the 7.7 GB free) |
+
+## Earlier: verified backup of 9 November 2026 ~13:15 UTC, session f28099bc (account transfer)
 | Item | Result |
 |---|---|
 | Repository / branch | `josiahscalia5-dev/bubblegame`, `claude/bubble-wash-account-transfer-52t7ym` (= this session's `claude/bubble-wash-restore-transfer-kc4ecl`) |
