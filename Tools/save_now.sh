@@ -87,7 +87,7 @@ fi
 # commits this one lacks, GitHub refuses it and nothing changes.
 # (9 November 2026, session 3849f5c8: the user named claude/bubble-wash-restore-tamzio as the transfer branch; it equals kc4ecl, so BOTH are
 # fast-forwarded, each only when it is an ancestor of the verified commit.)
-for USER_BRANCH in ${BW_USER_BRANCH:-claude/bubble-wash-restore-tamzio claude/bubble-wash-restore-transfer-kc4ecl}; do
+for USER_BRANCH in ${BW_USER_BRANCH:-claude/bubble-wash-transfer-screen6-to82gp claude/bubble-wash-restore-tamzio claude/bubble-wash-restore-transfer-kc4ecl}; do   # (session 8da775c4: to82gp, the user's ACTIVE development branch, first)
 if [ "$remote" = "$HEAD_SHA" ] && [ "$BRANCH" != "$USER_BRANCH" ]; then
   ub="$(git ls-remote origin "refs/heads/$USER_BRANCH" 2>/dev/null | cut -f1)"
   if [ -n "$ub" ] && [ "$ub" != "$HEAD_SHA" ] && git merge-base --is-ancestor "$ub" "$HEAD_SHA" 2>/dev/null; then
