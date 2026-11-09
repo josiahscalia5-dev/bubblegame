@@ -78,6 +78,12 @@ export const ARCH56 = {
       tank: { x: 1.56, z: 0.1, ped: 1.6, rg: 0.31, hg: 0.82 }, box: { x: 2.0, z: -0.65, y0: 1.62, w: 0.56, h: 0.56, d: 0.44, ang: 0.45 },
       panel: { y: 1.62, h: 0.42 } },
     Rt: { cab: { x: 2.15, rx: 0.62, rz: 1.15, top: 1.2, z: 0.45 }, tank: { x: 2.12, z: -1.45, ped: 1.36, rg: 0.33, hg: 0.68 } },
+    // (ddf175f2, the coordinator's relay of the user's directive: MODELED assets as the main machinery) the user's Tripo housings 911 / 912
+    // (alternating) as the left bank's main module, large; the procedural glowing tank stands behind each (mtank); on the right the user's
+    // 913_914 glass chamber (glowing) on the star drum's pedestal with the user's gold_jj elbow on top. Colour: violet -> the approved hot pink.
+    M: { h: 2.85, sx: 0.62, inner: 1.25, ang: 0.32, dz: -0.35, y: -0.1, pink: 1.0, gold: 1.0 },
+    mtank: { x: 1.62, z: 1.42, ped: 1.55, rg: 0.3, hg: 0.85 },
+    ch6: { h: 1.5, ped: 1.0, ang: 0.5, glow: [0.15, -0.02, 0.0] }, jj: { k: 0.62, up: 0.0 },
   },
 };
 const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B) instead of the user's models
@@ -167,6 +173,25 @@ vec3 a56Ungrade(vec3 c) {
     m.customProgramCacheKey = () => (ungrade ? 'a56haze' : 'a56haze0');
     return m;
   };
+  // (ddf175f2) the user's housings 911 / 912 and the gold elbow: violet texels toward the approved hot pink (#e8459f), golds brighter and
+  // yellower (the coordinator's relay: a material colour change in code is fine); the emissive follows the shifted colour
+  const PINK6 = { value: 1 }, GOLD6 = { value: 1 };
+  const pinkShift = (m) => {
+    const prev = m.onBeforeCompile;
+    m.onBeforeCompile = (sh, r) => { prev(sh, r); sh.uniforms.uPink6 = PINK6; sh.uniforms.uGold6 = GOLD6;
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uPink6, uGold6;')
+        .replace('#include <map_fragment>', `#include <map_fragment>
+  { vec3 t = diffuseColor.rgb;
+    float pur = smoothstep(0.01, 0.08, min(t.r, t.b) - t.g) * smoothstep(-0.05, 0.05, t.b - t.g * 1.5);
+    vec3 pk = vec3((t.r + t.b) * 1.15, t.g * 1.3 + 0.01, t.b * 0.72);
+    float gol = smoothstep(0.02, 0.08, t.r - t.b) * smoothstep(0.0, 0.04, t.g - t.b);
+    vec3 gd = t * vec3(1.3, 1.38, 0.95);
+    diffuseColor.rgb = mix(mix(t, pk, pur * uPink6), gd, gol * uGold6); }`)
+        .replace('#include <emissivemap_fragment>', 'totalEmissiveRadiance = emissive * diffuseColor.rgb;');
+    };
+    m.customProgramCacheKey = () => 'a56haze_pk6';
+    return m;
+  };
   let gradePass = null;   // the game's grade pass (its live uHero / uS4Grade), found once
   const liveGrade = () => { if (gradePass === null) { try { gradePass = window.__bw.debug().composer.passes.find((p) => p.uniforms && p.uniforms.uS4Grade) || false; } catch (e) { gradePass = false; } } return gradePass; };
   const heroGradeOn = (z) => { const L = ctx.L, sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -223,15 +248,15 @@ vec3 a56Ungrade(vec3 c) {
         vec3 V = normalize(cameraPosition - vW), N = normalize(vN);
         float ndv = abs(dot(V, N)), h = vUv.y, mid = 1.0 - pow(abs(h - 0.5) * 2.0, 2.0);
         // (the approved tanks: blue-violet silhouette #5020c0, vivid violet body #a040f0, a round white-pink glowing core in the middle)
-        vec3 c = mix(vec3(0.10, 0.02, 0.50), vec3(0.36, 0.05, 0.80), smoothstep(0.05, 0.55, ndv));
-        float rr = length(vec2((1.0 - ndv) * 3.2, (h - 0.5) * 2.4));
-        c = mix(c, vec3(0.75, 0.18, 0.95), exp(-rr * rr * 1.6) * 0.85);
-        c += vec3(1.6, 0.9, 1.5) * exp(-rr * rr * 7.0);
+        vec3 c = mix(vec3(0.05, 0.01, 0.30), vec3(0.28, 0.03, 0.62), smoothstep(0.05, 0.55, ndv));
+        float rr = length(vec2((1.0 - ndv) * 3.4, (h - 0.5) * 2.6));
+        c = mix(c, vec3(0.55, 0.08, 0.72), exp(-rr * rr * 2.0) * 0.8);
+        c += vec3(1.5, 0.75, 1.4) * exp(-rr * rr * 14.0);
         // bubbles rising inside (bright rims)
         vec2 bq = vec2(vUv.x * 14.0, h * 7.0 - uTime * 0.35); vec2 bi = floor(bq), bf = fract(bq) - 0.5;
         float br = 0.18 + 0.16 * a5h(bi), bd = length(bf + (vec2(a5h(bi + 3.1), a5h(bi + 7.7)) - 0.5) * 0.4);
         float bub = step(0.55, a5h(bi + 1.3)) * smoothstep(br, br - 0.05, bd) * smoothstep(br - 0.13, br - 0.04, bd);
-        c += vec3(0.9, 0.7, 1.1) * bub * smoothstep(0.3, 0.8, ndv) * 0.7;
+        c += vec3(0.6, 0.4, 0.8) * bub * smoothstep(0.3, 0.8, ndv) * 0.6;
         // the sharp vertical highlight on the glass (the arch lamps' reflection)
         float side = dot(N, normalize(cross(vec3(0.0, 1.0, 0.0), V)));
         c += vec3(1.0, 0.85, 1.0) * smoothstep(0.55, 0.62, side) * smoothstep(0.75, 0.64, side) * 0.8;
@@ -536,6 +561,14 @@ vec3 a56Ungrade(vec3 c) {
   };
   function moduleL6(s, tall = true) {   // the approved Scene 6 left bank (TARGETS.md "Left machinery"); tall false: the low parts only (a brush's bay)
     const Q = Q6.L, out = [], X = (v) => s * v, C = Q.cab;
+    if (tall === 'model') {   // beside the user's housing model: the tall glowing tank on a pink pedestal, a gold elbow pipe from its dome into the wall
+      const T = Q6.mtank;
+      out.push([G.cyl(T.rg + 0.06, T.rg + 0.12, T.ped + 0.35, 32).translate(X(T.x), (T.ped - 0.35) / 2, T.z), MT.pink6]);
+      for (const y of [0.12, T.ped * 0.55, T.ped - 0.1]) out.push([G.tor(T.rg + 0.1, 0.035, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), y, T.z), MT.gold]);
+      const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg), ptop = dome + 0.28;
+      out.push([pipe([[X(T.x), dome - 0.05, T.z], [X(T.x), ptop, T.z], [X(T.x + 0.95), ptop + 0.05, T.z]], 0.08, 0.2), MT.brass], [collar([X(T.x), dome + 0.06, T.z], [0, 1, 0], 0.105), MT.gold]);
+      return out;
+    }
     ovalCab(out, X(C.x), C.z, C.rx, C.rz, C.top, MT.pink6);
     out.push(...onOvalAt(X(C.x), C.z, C.rx, C.rz, s, Q.paw.ang, Q.paw.y, pawMedal().map(([g, m]) => [g.clone().scale(Q.paw.r / 0.24, Q.paw.r / 0.24, 1), m])));
     // the gold railing on the deck: along the deck's front edge (toward the camera) and its inner edge
@@ -574,14 +607,16 @@ vec3 a56Ungrade(vec3 c) {
     if (!tall) return out;
     // the near tank on a pink pedestal standing in the water, a gold elbow pipe up out of its dome and into the wall
     const T = Q.tank;
-    out.push([G.cyl(T.rg + 0.06, T.rg + 0.1, T.ped + 0.35, 32).translate(X(T.x), (T.ped - 0.35) / 2, T.z), MT.pink6]);
-    for (const y of [0.15, T.ped - 0.12]) out.push([G.tor(T.rg + 0.09, 0.038, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), y, T.z), MT.gold]);
+    const ped = tall === 'model' ? Q6.ch6.ped : T.ped;
+    out.push([G.cyl(T.rg + 0.06, T.rg + 0.1, ped + 0.35, 32).translate(X(T.x), (ped - 0.35) / 2, T.z), MT.pink6]);
+    for (const y of [0.15, ped - 0.12]) out.push([G.tor(T.rg + 0.09, 0.038, 32, 6).rotateX(Math.PI / 2).translate(X(T.x), y, T.z), MT.gold]);
+    if (tall === 'model') { out.push([G.cyl(T.rg + 0.12, T.rg + 0.12, 0.08, 32).translate(X(T.x), Q6.ch6.ped + 0.0, T.z), MT.gold]); return out; }
     const dome = tank(out, X(T.x), T.z, T.ped, T.rg, T.hg);
     const tx = X(T.x), ptop = dome + 0.35;
     out.push([pipe([[tx, dome - 0.05, T.z], [tx, ptop, T.z], [X(T.x + 0.9), ptop + 0.05, T.z]], 0.085, 0.22), MT.brass], [collar([tx, dome + 0.06, T.z], [0, 1, 0], 0.11), MT.gold]);
     return out;
   }
-  const MOD = priv(() => ({ L6: S6 ? moduleL6(1) : null, R6: S6 ? moduleR6(-1) : null, L6low: S6 ? moduleL6(1, false) : null, R6low: S6 ? moduleR6(-1, false) : null, A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) }, S: { [-1]: moduleStar(-1), 1: moduleStar(1) } }));
+  const MOD = priv(() => ({ L6m: S6 ? moduleL6(1, 'model') : null, R6m: S6 ? moduleR6(-1, 'model') : null, L6: S6 ? moduleL6(1) : null, R6: S6 ? moduleR6(-1) : null, L6low: S6 ? moduleL6(1, false) : null, R6low: S6 ? moduleR6(-1, false) : null, A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) }, S: { [-1]: moduleStar(-1), 1: moduleStar(1) } }));
   const gearSet = new Set(P.gearK);
   // (ddf175f2) lane brush6's roller brushes (read only, BRUSH6's placement rule): a bay within 2.4 m of one on its side keeps its low parts
   const brushUs = { 1: [], [-1]: [] };
@@ -594,12 +629,12 @@ vec3 a56Ungrade(vec3 c) {
   const loadG = (url) => new Promise((ok, no) => loader.load(url, ok, undefined, no));
   let TM = null;
   if (!NOTM) try {
-    const files = ['Machinery_tiny_lod1', 'Machinery_tiny_far', '913_914_lod1', '913_914_lod2'];
+    const files = ['Machinery_tiny_lod1', 'Machinery_tiny_far', '913_914_lod1', '913_914_lod2'].concat(S6 ? ['911_tiny_lod1', '911_tiny_lod2', '912_tiny_lod1', '912_tiny_lod2', 'gold_jj_tiny_lod1', 'gold_jj_tiny_lod2'] : []);
     const got = await Promise.all(files.map((n) => loadG(`models/s56tm/${n}.glb`)));
     TM = priv(() => {
       const toF = (a) => { const o = new Float32Array(a.count * 3); for (let i = 0; i < a.count; i++) { o[i * 3] = a.getX(i); o[i * 3 + 1] = a.getY(i); o[i * 3 + 2] = a.getZ(i); } return new THREE.BufferAttribute(o, 3); };
       // h: drawn height; the model is re-based (its base at y 0, centred across and along) in metres; at(p) maps a point of the original model
-      const prep = (gltf, h, emis) => {
+      const prep = (gltf, h, emis, pinkIt = false) => {
         let mesh = null; gltf.scene.updateMatrixWorld(true); gltf.scene.traverse((c) => { if (c.isMesh && !mesh) mesh = c; });
         const g = new THREE.BufferGeometry(); g.setAttribute('position', toF(mesh.geometry.attributes.position)); g.setAttribute('normal', toF(mesh.geometry.attributes.normal));
         g.setAttribute('uv', mesh.geometry.attributes.uv); g.setIndex(mesh.geometry.index);
@@ -609,13 +644,21 @@ vec3 a56Ungrade(vec3 c) {
         const mat = mesh.material.clone(); mat.envMap = env; mat.envMapIntensity = 0.9;
         if (mat.map) { mat.emissiveMap = mat.map; mat.emissive = new THREE.Color(...emis); mat.emissiveIntensity = 1.0; }
         hazeIt(mat);
+        if (pinkIt) pinkShift(mat);
         return { g, mat, size: g.boundingBox.getSize(new THREE.Vector3()), at: (x, y, z) => new THREE.Vector3(x, y, z).add(off).multiplyScalar(k), k };
       };
-      return { mach: [prep(got[0], P.tm.mach.h, [0.3, 0.27, 0.32]), prep(got[1], P.tm.mach.h, [0.3, 0.27, 0.32])],
+      const out = { mach: [prep(got[0], P.tm.mach.h, [0.3, 0.27, 0.32]), prep(got[1], P.tm.mach.h, [0.3, 0.27, 0.32])],
         ch: [prep(got[2], P.tm.ch.h, [0.34, 0.26, 0.38]), prep(got[3], P.tm.ch.h, [0.34, 0.26, 0.38])] };
+      if (S6) {
+        out.m911 = [prep(got[4], Q6.M.h, [0.32, 0.26, 0.3], true), prep(got[5], Q6.M.h, [0.32, 0.26, 0.3], true)];
+        out.m912 = [prep(got[6], Q6.M.h, [0.32, 0.26, 0.3], true), prep(got[7], Q6.M.h, [0.32, 0.26, 0.3], true)];
+        out.ch6 = [prep(got[2], Q6.ch6.h, [0.36, 0.26, 0.42]), prep(got[3], Q6.ch6.h, [0.36, 0.26, 0.42])];
+        out.jj = [prep(got[8], 0.924 * Q6.jj.k, [0.3, 0.24, 0.12], true), prep(got[9], 0.924 * Q6.jj.k, [0.3, 0.24, 0.12], true)];
+      }
+      return out;
     });
   } catch (e) { report.errors.push('arch56 models: ' + ((e && e.message) || e)); TM = null; }
-  const inst = { mach: Array.from({ length: nCh }, () => []), ch: Array.from({ length: nCh }, () => []) };
+  const inst = {}; for (const key of ['mach', 'ch', 'm911', 'm912', 'ch6', 'jj']) inst[key] = Array.from({ length: nCh }, () => []);
   const ry = (t) => new THREE.Matrix4().makeRotationY(t);
   const turn = (s, ang) => (s > 0 ? Math.PI - ang : ang);   // the models' front (local +x) to the channel, ang toward the oncoming camera
   const firstGear = P.gearK.length ? P.gearK[0] : null;
@@ -623,8 +666,26 @@ vec3 a56Ungrade(vec3 c) {
     for (const [k, ur] of ringUs) {
       const u = ur + (in6(ur) ? Q6.off : P.mod.off); if (u < U0 + 0.5) continue;
       if (in6(u) && u >= Q6.from + Q6.ramp) {   // (ddf175f2) the approved Scene 6 modules in every bay; low ones where a roller brush stands
-        for (const s of [1, -1]) { const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0), low = brushNear(u, s);
-          for (const [g, m] of (s > 0 ? (low ? MOD.L6low : MOD.L6) : (low ? MOD.R6low : MOD.R6))) put(u, g, m, L); }
+        for (const s of [1, -1]) { const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0), low = brushNear(u, s), ci = chunkOf(u);
+          const useM = TM && TM.m911 && !low;
+          for (const [g, m] of (s > 0 ? (low ? MOD.L6low : useM ? MOD.L6m : MOD.L6) : (low ? MOD.R6low : useM ? MOD.R6m : MOD.R6))) put(u, g, m, L);
+          if (!useM) continue;
+          if (s > 0) {   // the user's housing (911 / 912 alternating), front (model +x) to the channel turned toward the camera, squashed in depth
+            const T = Q6.M, key = mod(k, 2) ? 'm912' : 'm911', z = TM[key][0].size, ext = (z.x * T.sx / 2) * Math.cos(T.ang) + (z.z / 2) * Math.sin(T.ang);
+            const Lm = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.inner + ext), T.y, T.dz)).multiply(ry(turn(s, T.ang))).multiply(new THREE.Matrix4().makeScale(T.sx, 1, 1));
+            inst[key][ci].push(frameM(u).multiply(Lm));
+          } else {   // the user's glass chamber on the star drum's pedestal (glowing core), the user's gold elbow on top into the wall
+            const T = Q6.Rt.tank, C6 = Q6.ch6;
+            const Lc = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * T.x, C6.ped + 0.04, T.z)).multiply(ry(turn(s, C6.ang)));
+            inst.ch6[ci].push(frameM(u).multiply(Lc));
+            const hp = TM.ch6[0].at(...C6.glow), kk = TM.ch6[0].k;
+            put(u, G.sph(0.22 * kk, 16, 12).scale(0.6, 1.3, 1), MT.tmHalo, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
+            put(u, G.sph(0.075 * kk, 12, 8).scale(1, 1.3, 1), MT.core, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x + 0.07 * kk, hp.y, hp.z)));
+            const top = C6.ped + 0.04 + TM.ch6[0].size.y;
+            const Lj = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.x + 0.05), top - 0.06 + Q6.jj.up, T.z)).multiply(ry(-s * Math.PI / 2));
+            inst.jj[ci].push(frameM(u).multiply(Lj));
+          }
+        }
         stats.mods6 = (stats.mods6 || 0) + 2; continue;
       }
       const type = mod(k, P.mod.aEvery) === 0 ? 'A' : TM ? 'M' : 'B';
@@ -660,8 +721,8 @@ vec3 a56Ungrade(vec3 c) {
   if (TM) priv(() => {
     for (let ci = 0; ci < nCh; ci++) {
       const near = [], far = [];
-      for (const key of ['mach', 'ch']) {
-        const list = inst[key][ci]; if (!list.length) continue;
+      for (const key of ['mach', 'ch', 'm911', 'm912', 'ch6', 'jj']) {
+        const list = inst[key][ci]; if (!list.length || !TM[key]) continue;
         TM[key].forEach((lod, li) => {
           const im = new THREE.InstancedMesh(lod.g, lod.mat, list.length); im.name = 'a56M_' + key + li + '_' + ci;
           list.forEach((mm, i) => im.setMatrixAt(i, mm)); im.instanceMatrix.needsUpdate = true; im.computeBoundingSphere(); im.visible = li === 1;
