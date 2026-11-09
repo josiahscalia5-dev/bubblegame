@@ -77,6 +77,7 @@ export const S56 = {
     // troughs, azure bodies, turquoise lifted faces); measured fg cob 0.2 -> 15 %, p5 0.44 -> 0.31 (approved 9.5 %, 0.32), water6/02_water/x5
     lean: 4.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
     height: 4.0,    // the wave height's share of the shading (lifted water lighter)
+    hSwell: 2.4, hChop: 0.8,   // (ddf175f2) inside that share: the geometry swells' height and the chop's (v2: 2.4 / 0.8)
     gap: 0.35,      // the share of the collar / wake / ripple lines broken away (0 = continuous lines)
     line: 1.4,      // crest line half-width in screen pixels (at the canvas's resolution) (ddf175f2: 1.2 -> 1.4)
     churn: 0.8,     // the chop's extra strength round him
@@ -504,14 +505,14 @@ export async function buildS56(ctx) {
   // moves only along the calibrated ramp (S56.water: deep -> mid -> turq), one ramp per grade, blended by the hero grade's weight (gradeHero)
   const wU = { uDeep: { value: new THREE.Vector3() }, uMid: { value: new THREE.Vector3() }, uTurq: { value: new THREE.Vector3() }, uFoam: { value: new THREE.Vector3() },
     uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uW3: { value: new THREE.Vector4(0, 0, 0, 0.35) }, uW4: { value: new THREE.Vector4() }, uMask: { value: 0 },
-    uW5: { value: new THREE.Vector4(0, 0.5, 0, 60) }, uC1: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector4()) }, uC2: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector2()) } };
+    uW5: { value: new THREE.Vector4(0, 0.5, 0, 60) }, uW6: { value: new THREE.Vector4(2.4, 0.8, 0, 0) }, uC1: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector4()) }, uC2: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector2()) } };
   let gradeHero = 0;   // the hero grade's weight this frame (tunnel_r7_hero.js heroGrade: it replaces the drum grade while he is in the hero stretch)
   const mixV = (o, a, b, k) => o.set(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k);
   const syncWater = () => { const w = S.water, k = gradeHero;
     mixV(wU.uDeep.value, w.deep, w.deepH, k); mixV(wU.uMid.value, w.mid, w.midH, k); mixV(wU.uTurq.value, w.turq, w.turqH, k); wU.uFoam.value.set(...w.foam);
     wU.uW1.value.set(w.chop, w.crest, w.ripple, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uW3.value.set(w.lean, w.height, w.gap, wU.uW3.value.w);
     wU.uW4.value.set(w.line, w.churn, w.churnCrest, w.froth); wU.uMask.value = w.mask ? 1 : 0;
-    wU.uW5.value.set(w.bias ?? 0, w.turqAt ?? 0.5, w.glint2 ?? 0, w.glintExp ?? 60);
+    wU.uW5.value.set(w.bias ?? 0, w.turqAt ?? 0.5, w.glint2 ?? 0, w.glintExp ?? 60); wU.uW6.value.set(w.hSwell ?? 2.4, w.hChop ?? 0.8, 0, 0);
     if (w.chopSpec) chopUniforms(w.chopSpec, wU.uC1.value, wU.uC2.value); };
   // the hero grade's weight is read from the grade pass's own uniform (uHero, set by tunnel_r7_hero.js every frame) through the game's
   // read-only hook (game.js window.__bw.debug(): ctx has no composer); 0 (the drum ramp) where there is no hero grade
@@ -541,7 +542,7 @@ export async function buildS56(ctx) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
+      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5, uW6; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
       ${HAZE}
@@ -564,7 +565,7 @@ export async function buildS56(ctx) {
         N = normalize(N + (vR * (s5n(rq) - 0.5) + vT * (s5n(rq * 1.7 + 3.1) - 0.5)) * 0.05);   // fine ripples (normal detail only)
         // the shade along the ramp: faces leaning toward the camera lit (turquoise), backs and troughs cobalt; lifted water lighter
         float lean = dot(N, -vT);
-        float hh = vH * 2.4 + ch.x * 0.8;
+        float hh = vH * uW6.x + ch.x * uW6.y;   // (ddf175f2: the swell's and the chop's shares, S56.water.hSwell / hChop)
         float sx = uW3.x * lean + uW3.y * hh;
         float sh = 0.5 + 0.5 * sx / (1.0 + abs(sx)) + uW5.x;   // (a soft limit: the shade rolls into the ramp's ends, never clipped into flat facets)
         vec3 c = mix(mix(uDeep, uMid, smoothstep(0.0, uW5.y, sh)), uTurq, smoothstep(uW5.y, 1.0, sh));
@@ -730,7 +731,8 @@ export async function buildS56(ctx) {
     // a gentle roll and pitch with the slope of the water under him
     const e = 0.25, hx = s56Wave(m.x + e, m.z, t) - s56Wave(m.x - e, m.z, t), hu = s56Wave(m.x, m.z + e, t) - s56Wave(m.x, m.z - e, t);
     if (!m.air) { m.tilt.rotation.z += hx * 0.9; m.tilt.rotation.x -= hu * 0.6; }
-    if (WATER6_ON) { const H6 = HERO6W ? S.hero6 : S.water6Hero, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw); }   // (his drawn dome; back to round in the air)
+    if (WATER6_ON) { const H6 = HERO6W ? S.hero6 : S.water6Hero, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw);
+      if (HERO6W) m.tilt.position.y -= m.squash.position.y * (sy - 1); }   // (his drawn dome; back to round in the air) (ddf175f2: the swim bob, m.squash.position.y inside the stretch, kept at its own size)
   }
   let heroSq = 1;
   // the fur's light centre follows his drawn body
