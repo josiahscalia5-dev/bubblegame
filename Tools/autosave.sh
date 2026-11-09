@@ -42,6 +42,9 @@ for ((i = 1; i <= ROUNDS; i++)); do
     python3 -I Tools/snapshot_agent_worktrees.py "$SESSION_DIR" "$BW_WIP_DIR" 2>&1 | tail -1 \
       || echo "$(date -u +%H:%M) agent work snapshot failed"
   fi
+  # (session ac4e3449) the parallel specialist lanes: each lane's unfinished CODE is committed as a checkpoint and pushed to its own branch
+  # (Tools/lanes.sh, registry Tools/lanes.json), so parallel work is never left only in a worktree
+  [ -f Tools/lanes.json ] && bash Tools/lanes.sh save "autosave $(date -u '+%H:%M') UTC" 2>&1 | sed "s/^/$(date -u +%H:%M) /" || true
   bash Tools/save_now.sh "Auto-save $(date -u '+%Y-%m-%d %H:%M') UTC: latest work in progress, chat history and design agents" \
     "Automatic save at the user's request (every ${MINUTES} minutes): the chat history, the design agents' transcripts and a snapshot of each agent's unfinished work. Work branch only; nothing is merged."
   # (8 November, session 57091b57) BW_PARENT_BRANCH: the branch this one continues (another session may still be writing it). Report only,
