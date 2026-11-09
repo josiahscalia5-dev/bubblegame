@@ -90,8 +90,29 @@ Now the metric script that uses the green-flag frame as the exact water mask.
 
 - 12:44 `Write`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/diag56.py
 - 12:44 `Bash`: Run the stage diagnosis on the before build
+**Agent** (12:50 UTC):
 
-_17 tool steps._
+Noted. I'll read the art director's measurement file while the diagnosis runs, so my after-measure uses the same classes.
+
+- 12:50 `Bash`: Read art director water measurements
+**Agent** (12:50 UTC):
+
+I'll add the art director's hue classes to my metric so the numbers are directly comparable. Let me find their `measure.py`.
+
+- 12:50 `Bash`: Find art director measure script; check diag progress
+- 12:50 `Bash`: Read the art director measure functions
+- 12:50 `Bash`: Show the S5/S6 zone boxes
+- 12:50 `Bash`: Add AD classes; measure references and checkpoint frames
+- 12:50 `Bash`: Check diag run progress
+- 12:50 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/tasks/bxt57f4vy.output
+**Agent** (12:51 UTC):
+
+While the run waits on the shared browser lock, let me check the pipeline forward mapping of the current colours and candidate cyan values (no browser needed).
+
+- 12:51 `Bash`: Map shader colours through the game's pipeline
+- 12:52 `Bash`: Wait for the diagnosis run to finish
+
+_26 tool steps._
 
 ---
 
@@ -135,8 +156,20 @@ Let me look at the previous baseline evidence and the targets.
 - 12:41 `Bash`: Read buildVortex and SIX2_DRUM_END
 - 12:41 `Bash`: Build the lane worktree bundle
 - 12:41 `Bash`: Capture before frames of scenes 3-4
+- 12:50 `Bash`: Read the art director's ranking
+- 12:50 `Read`: /home/user/bubblegame_lanes/_evidence/baseline/sheet_s1_s4.png
+**Lead → agent** (12:50 UTC):
 
-_14 tool steps._
+[Image: original 2402x622, displayed at 2000x518. Multiply coordinates by 1.20 to map to original image.]
+
+- 12:50 `Bash`: Find where vortex tube visibility is set
+- 12:50 `Bash`: Check baseline capture log for errors
+- 12:50 `Bash`: Inspect room geometry positions
+- 12:51 `Bash`: Check renderer stencil and hero object types
+- 12:52 `Bash`: Read room layout parameters
+- 12:53 `Bash`: List before frames and sheet tool usage
+
+_22 tool steps._
 
 ---
 
@@ -181,8 +214,23 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:47 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_2.00.png
 - 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_1.20.png
 - 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_2.80.png
+- 12:48 `Bash`: Find girl hand bones definitions
+- 12:48 `Bash`: Find bone mapping for girl model
+- 12:48 `Bash`: Read IK helpers and girl model load
+- 12:48 `Bash`: Inspect girl model arm and hand bones
+- 12:49 `Bash`: Sample floor and wall colours in references vs game
+- 12:49 `Bash`: Sample lower floor and left shelf colours
+- 12:50 `Bash`: Write a camera projection helper and test it
+- 12:50 `Bash`: Read the art director ranking
+- 12:50 `Read`: /home/user/bubblegame_lanes/_evidence/baseline/t_2.40.png
+- 12:50 `Bash`: Find porthole position constants
+- 12:50 `Bash`: Project key points in both cameras
+- 12:51 `Bash`: Search foreground towel placements for both cameras
+- 12:52 `Bash`: Solve corner towel placements per camera
+- 12:52 `Bash`: Solve Scene 2 corner towel placements
+- 12:53 `Bash`: Create a probe variant of the shot tool
 
-_15 tool steps._
+_30 tool steps._
 
 ---
 
@@ -222,8 +270,22 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:41 `Bash`: Capture before frames of the live game HUD
 - 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/ui/before/s56_tap.png
 - 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/ui/before/s56_206.png
+- 12:48 `Bash`: Read HUD markup and struct class usage
+- 12:48 `Bash`: Find how --u is computed and soundBtn handling
+- 12:49 `Bash`: Inspect start panel fade and running class
+- 12:49 `Bash`: Check running class lifecycle and button visibility
+- 12:49 `Bash`: Read refreshHud and soundBtn logic
+- 12:49 `Bash`: Read soundBtn fade logic and list UI images
+- 12:49 `Bash`: Crop reference top/bottom and sample colours
+- 12:49 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref_top.png
+- 12:49 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref_bot.png
+- 12:49 `Bash`: Find opening top bar CSS in screens12.js
+- 12:49 `Bash`: Read screens12 top bar markup and scale
+- 12:51 `Bash`: Check --r variable is unused and where opening root mounts
+- 12:52 `Bash`: Read UI defects from art director ranking
+- 12:52 `Bash`: Capture before frames of the opening scenes
 
-_14 tool steps._
+_28 tool steps._
 
 ---
 
@@ -269,8 +331,10 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (which tools worked)
 - 12:43 `Bash`: Wait for the route or touch run to finish
 - 12:43 `Bash`: Read prior flow route results for reference
 - 12:43 `Bash`: Block until the first QA run completes
+- 12:52 `Bash`: Parse the upper route results
+- 12:52 `Bash`: Look for earlier route test outputs to compare
 
-_25 tool steps._
+_27 tool steps._
 
 ---
 
@@ -357,8 +421,11 @@ Now the baseline frames captured so far.
 - 12:46 `Bash`: Compute SSIM, histogram correlation and gold stats per scene
 - 12:46 `Bash`: Measure hero bounding boxes in scenes 5 and 6
 - 12:47 `Bash`: Locate drum-end shader and hand-over timing in source
+- 12:48 `Bash`: Copy side-by-side sheets and measure scripts to the QA evidence folder
+- 12:49 `Bash`: Write the art director ranking file
+- 12:49 `SubagentHandback`
 
-_56 tool steps._
+_59 tool steps._
 
 ---
 
@@ -403,8 +470,22 @@ Deno is not installed, but Node 22 can strip TypeScript types. I'll read the scr
 - 12:46 `Read`: /home/user/bubblegame/WebDemo/src/track.js
 - 12:46 `Read`: /home/user/bubblegame/WebDemo/src/track.js
 - 12:46 `Bash`: Compile the generated shaders in headless Chrome WebGL2
+**Agent** (12:48 UTC):
 
-_18 tool steps._
+The run timed out. Before retrying I'll clean up my own Chrome processes (matched by my scratch profile path only) and check whether another session holds the browser lock.
+
+- 12:48 `Bash`: Kill my headless Chrome and check browser lock state
+- 12:48 `Bash`: Wait for browser lock, then compile shaders in headless Chrome
+- 12:48 `Bash`: Identify browser lock holder; test f() edge cases
+- 12:49 `Bash`: Get matching line numbers in both versions
+- 12:49 `Bash`: Check background compile status and lock queue
+**Agent** (12:50 UTC):
+
+The compile is still queued behind `washer34`'s capture. I'll wait on my own queued process's exit rather than poll, capped at 7 minutes.
+
+- 12:50 `Bash`: Wait for the queued compile run to finish
+
+_24 tool steps._
 
 ---
 
@@ -502,5 +583,21 @@ The fix is at lines 456-466: `heroOffset` writes only `m.tilt.position.y`. Next 
 
 - 12:47 `Bash`: Check base bubble mesh naming and add
 - 12:47 `Bash`: Get s56 camera offset and heart/restart rules
+- 12:49 `Bash`: Check R2 flag and look for a playwright MCP process
+- 12:49 `Bash`: Show coin collect accounting and create output dir
+- 12:49 `Bash`: Check updateMascot for early returns and late state writes
+- 12:50 `Write`: /home/user/bubblegame_lanes/_evidence/qa/scenario_draft/scenario_source.mjs
+- 12:50 `Bash`: Generate scenario JSON and validate its structure
+- 12:50 `Bash`: Type-check scenario JSON against types.ts with tsc
+- 12:50 `Bash`: Inspect the tsc parse error location
+- 12:50 `Bash`: Rerun tsc type check with negative control
+- 12:51 `Bash`: Run scenario probe scripts against a mock game in Node
+- 12:51 `Write`: /home/user/bubblegame_lanes/_evidence/qa/scenario_draft/README.md
+**Agent** (12:51 UTC):
 
-_37 tool steps._
+Last, I'll confirm I left nothing inside the repo, and list the deliverables.
+
+- 12:51 `Bash`: Confirm repo untouched and list deliverables
+- 12:52 `SubagentHandback`
+
+_49 tool steps._
