@@ -232,8 +232,46 @@ Let me compute the geometry numerically: where the room's objects intrude into t
 Checkpointing Task 1 first. Nothing was written yet, so I'll put the designed drum back into code behind `seq7`, check that it builds, record it in HANDOFF.md, push, then switch to Screen 6.
 
 - 17:34 `Edit`: /workspace/bubblegame_lanes/arch56/WebDemo/src/opening_six2_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/arch56/WebDemo/src/opening_six2_tunnel.js
+- 17:35 `Bash`: Check ctx contains camera
+- 17:35 `Bash`: Build the bundle with the seq7 drum back
+- 17:35 `Bash`: Check build warnings
+- 17:35 `Bash`: Capture seq7 opening frames at low resolution
+- 17:35 `Bash`: Read the art director's Scene 6 ranking
+**Agent** (17:35 UTC):
 
-_28 tool steps._
+While the check runs, I'll update the HANDOFF with the Task 1 checkpoint.
+
+- 17:35 `Bash`: Add the Task 1 checkpoint to the lane handoff
+- 17:35 `Bash`: Commit and push the Task 1 checkpoint
+**Agent** (17:35 UTC):
+
+Task 1 is checkpointed and pushed (`a861e2f0`). Now Screen 6: my current arch56 code and last frames.
+
+- 17:35 `Read`: /workspace/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 17:35 `Bash`: List earlier arch56 frames and probe script
+- 17:35 `Bash`: Check capture progress and live-game capture tool
+- 17:36 `Bash`: Check the background capture status
+- 17:36 `Bash`: List running capture processes
+**Agent** (17:36 UTC):
+
+My Task 1 check is still queued behind three other browser jobs. Since Task 1 is postponed, I'll cancel it so the lock goes to Screen 6, and queue the "before" capture at u 206 instead.
+
+- 17:36 `Bash`: Cancel the queued Task 1 capture
+- 17:36 `Bash`: Read postdump probe and rest of shots56
+- 17:36 `Read`: /workspace/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
+- 17:36 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/arch56/step1_models_gear_c3/s56_206.png
+- 17:36 `Bash`: Capture current arch56 state at u 206 with probes
+- 17:39 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/arch56/s6_before/s56_206.png
+- 17:39 `Bash`: Print probe and post-pass data
+- 17:40 `Bash`: Find grade uniforms in shaders.js
+- 17:40 `Bash`: Read GradeShader and uS4Grade hooks
+- 17:40 `Bash`: Read the uS4Grade path in tunnel_s4.js
+- 17:40 `Bash`: Find uHero grade code
+- 17:40 `Bash`: Find the hero grade implementation
+- 17:40 `Bash`: Read heroGrade
+
+_54 tool steps._
 
 ---
 
@@ -347,8 +385,30 @@ Let me capture "before" (no water6) and the current water6 v2 WIP at u 206, DPR 
 - 17:34 `Bash`: Check capture progress and lock queue
 - 17:34 `Bash`: Read the A/B tool and rest of aw56
 - 17:34 `Bash`: Read the rest of ab56.cjs
+- 17:35 `Bash`: Check external uses of the chop/wave tables and hero offset
+- 17:35 `Read`: /workspace/bubblegame_lanes/s56/WebDemo/src/game.js
+**Agent** (17:35 UTC):
 
-_46 tool steps._
+While the capture waits for the lock, I'll make the chop table live-tunable under `water6` (uniform arrays, so wave directions can be A/B'd in one browser run) and gate the crown pipes.
+
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Edit`: /workspace/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 17:35 `Bash`: Check capture progress
+- 17:36 `Bash`: Check the side-by-side and A/B measure scripts
+- 17:36 `Bash`: Wait for the before/wip captures to finish
+- 17:40 `Bash`: Check the coordinator's match6 measure tool
+- 17:40 `Bash`: Check capture wait status
+- 17:40 `Bash`: Measure the approved image and the before frame
+- 17:40 `Read`: /workspace/bubblegame/Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/s56/w6/before/s56_206.png
+- 17:40 `Bash`: Wait for the wip capture and measure it
+
+_64 tool steps._
 
 ---
 
@@ -398,5 +458,15 @@ Now one locked job: pre-change no-brush6 tap (identity baseline), then the first
 - 17:34 `Bash`: Run baseline and first brush6 look captures under the lock
 - 17:35 `Write`: /workspace/bubblegame_lanes/brush6/WebDemo/tools/brush6/sheet.py
 - 17:35 `Bash`: Check capture progress and lock queue
+- 17:35 `Bash`: Look at the AD's measurement scripts
+- 17:35 `Bash`: Read the AD's brush measurement script
+- 17:35 `Write`: /workspace/bubblegame_lanes/brush6/WebDemo/tools/brush6/bands.py
+- 17:35 `Bash`: Test the band measure on approved and current game
+- 17:35 `Bash`: Check capture progress
+- 17:35 `Bash`: Wait for the baseline capture to finish
+- 17:39 `Bash`: Wait for the first brush6 look and print measures
+- 17:39 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/look1/s56_206.png
+- 17:39 `Bash`: Make edge crop comparison
+- 17:39 `Read`: /tmp/claude-0/-workspace-bubblegame/3849f5c8-ece3-5752-8001-f100361f932c/scratchpad/b6/look1/crop.png
 
-_22 tool steps._
+_32 tool steps._
