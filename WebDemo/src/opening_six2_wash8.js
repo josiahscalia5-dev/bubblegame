@@ -18,7 +18,7 @@ const sm = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (
 
 // every number (window.__bwWash8 in the browser). Times are STORY seconds (real seconds - 0.5 after the warp).
 export const WASH8 = {
-  fill: [6.45, 7.05],            // the water rises
+  fill: [6.45, 6.9],            // the water rises
   level: { from: -0.3, front: -0.135, back: -0.07 },   // waterline heights relative to the porthole's centre (m): start, the front body, the body behind him
   slosh: { amp: [0.07, 0.3], rate: [2.2, 5.5] },        // the waterline's rocking (rad; rad/s), from the wash's start to the spin
   spin: [7.3, 7.72],             // the waterline tips into the ring
@@ -26,7 +26,7 @@ export const WASH8 = {
   drum: { from: 6.5, w0: 0.8, w1: 15.0, until: 7.9 },   // the drum back's turning speed (rad/s)
   front: { dz: -0.085, r: 0.272, hide: 7.98 }, back: { dz: -0.6, r: 0.4, hide: 8.3 },
   hero: { bob: 0.012, rock: 0.55, roll: [7.32, 7.74] },
-  tunnel: { amp: 1.0 },
+  tunnel: { amp: 0.5 },
 };
 if (typeof window !== 'undefined') window.__bwWash8 = WASH8;
 
@@ -95,9 +95,9 @@ export function installWash8(ctx) {
         float h = w8W(vXD, t), e = 0.012;
         vec2 sl = (vec2(w8W(vXD + vec2(e, 0.0), t), w8W(vXD + vec2(0.0, e), t)) - h) / e;
         float fine = w8f(vec2(x * 15.0, d * 7.0 - t * 2.6));
-        float lit = clamp(0.48 - sl.y * 1.5 + h * 9.0 + (fine - 0.5) * 0.35, 0.0, 1.0);
-        vec3 c = mix(vec3(0.0, 0.10, 0.60), vec3(0.0, 0.33, 0.86), smoothstep(0.12, 0.52, lit));
-        c = mix(c, vec3(0.10, 0.74, 1.0), smoothstep(0.58, 0.95, lit));
+        float lit = clamp(0.56 - sl.y * 1.5 + h * 9.0 + (fine - 0.5) * 0.4, 0.0, 1.0);
+        vec3 c = mix(vec3(0.0, 0.17, 0.74), vec3(0.02, 0.43, 0.96), smoothstep(0.12, 0.5, lit));
+        c = mix(c, vec3(0.2, 0.85, 1.05), smoothstep(0.56, 0.95, lit));
         float aa = fwidth(h) * 1.5 + 0.004;
         float crest = smoothstep(0.036 - aa, 0.036 + aa, h + (fine - 0.5) * 0.02) * smoothstep(0.35, 0.65, w8f(vec2(x * 6.0 + 2.0, d * 3.0 - t * 1.5)));
         c = mix(c, vec3(1.08, 1.12, 1.18), crest * 0.92);

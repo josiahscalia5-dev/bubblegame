@@ -51,7 +51,10 @@ export const SIX2 = {
 };
 // (s56, session ac4e3449) the live game behind is the approved Scene 5 / 6 tunnel: the opening hands over as soon as its camera is inside the drum
 // behind him (the crossfade runs from the washer's drum into the same lavender tunnel; the game's camera then follows him in, s56_tunnel.js)
-if (SIX2_ON && LIST.includes('s56')) Object.assign(SIX2, { handOver: 8.95, seqEnd: 9.75 });   // (real seconds: story 8.45, inside the drum)
+if (SIX2_ON && LIST.includes('s56')) Object.assign(SIX2, { handOver: 8.95, seqEnd: 9.75 });
+// (session 8da775c4, seq7) THE WASH BEGINS gets time to be seen: story 6.85..7.30 (the water up round him, the drum turning, before the spin) plays over
+// 1.3 s of real time instead of 0.45 s (wash: [story start, story length, real length]); the hand-over and the end move back by the same 0.85 s
+if (SIX2_ON && LIST.includes('s56') && LIST.includes('seq7')) Object.assign(SIX2, { wash: [6.85, 0.45, 1.3], handOver: 8.95 + 0.85, seqEnd: 9.75 + 0.85 });   // (real seconds: story 8.45, inside the drum)
 if (SIX2_ON && typeof window !== 'undefined') window.__bwSix2 = SIX2;
 
 // ---------------------------------------------------------------- small helpers
@@ -218,7 +221,8 @@ export function installSix2(ctx) {
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
   const sparkWin = [4.45, 5.0];
   function pose(it, st0) {
-    const [w0, w1, w2] = S.warp, s = st0 < 0 ? -1 : st0 < w0 ? st0 : st0 < w1 ? w0 + (st0 - w0) * (w2 - w0) / (w1 - w0) : st0 - (w1 - w2), t = Math.max(0, s);   // the story clock
+    const [w0, w1, w2] = S.warp, sA = st0 < 0 ? -1 : st0 < w0 ? st0 : st0 < w1 ? w0 + (st0 - w0) * (w2 - w0) / (w1 - w0) : st0 - (w1 - w2),
+      s = S.wash && sA > S.wash[0] ? (sA < S.wash[0] + S.wash[2] ? S.wash[0] + (sA - S.wash[0]) * S.wash[1] / S.wash[2] : sA - (S.wash[2] - S.wash[1])) : sA, t = Math.max(0, s);   // the story clock
     // ---- captions
     let sc = 1; for (const [t0, n] of S.scenes) if (s >= t0) sc = n; if (sc !== scene0) { scene0 = sc; if (ctx.onScene) ctx.onScene(sc); }
     // ---- the camera first (everything that faces the camera uses this frame's camera)
