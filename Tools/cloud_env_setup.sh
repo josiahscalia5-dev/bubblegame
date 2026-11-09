@@ -73,26 +73,6 @@ else
   fi && echo "  installed" || fail "Python visual tools"
 fi
 
-step "Python metrics tools (PyTorch on CPU, LPIPS with its AlexNet weights, Optuna) in their own environment"
-# (6 November, the user's request: LPIPS and Optuna for the Screen 4 comparisons; kept apart from visual/ so it never
-# disturbs it. PyPI's torch build, about 5.6 GB; the CPU-only index redirects to a host the network does not allow. LPIPS
-# fetches its AlexNet weights from download.pytorch.org, allowed in the bubblegame environment.)
-if "$T/metrics/bin/python" -c "import torch, lpips, optuna, skimage, cv2" 2>/dev/null; then
-  echo "  already installed"
-else
-  UV="$(command -v uv || true)"; [ -z "$UV" ] && [ -x "$HOME/.local/bin/uv" ] && UV="$HOME/.local/bin/uv"
-  # (7 November, the user's request: a 10-minute limit, so a fresh session still starts if this optional download stalls;
-  # it hung for over an hour once. On a stop, the next run of this script tries again: the check above fails.)
-  if [ -n "$UV" ]; then
-    # (8 November, session ce30359f: --allow-existing, so a run stopped by the time limit, which leaves an empty venv behind, is retried
-    # by the next run instead of failing at once on "A virtual environment already exists")
-    "$UV" venv -q --allow-existing --python "$(command -v python3)" "$T/metrics" && timeout "${BW_METRICS_TIMEOUT:-600}" "$UV" pip install -q --python "$T/metrics/bin/python" \
-      torch torchvision lpips optuna scikit-image opencv-python-headless pillow scipy \
-      && timeout 300 "$T/metrics/bin/python" -c "import lpips; lpips.LPIPS(net='alex', verbose=False)" > /dev/null 2>&1 && echo "  installed" \
-      || fail "Python metrics tools (stopped or failed within the ${BW_METRICS_TIMEOUT:-600} s limit; optional: run bash Tools/cloud_env_setup.sh again later)"
-  else fail "Python metrics tools (needs uv)"; fi
-fi
-
 step "Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI, gltfpack)"
 mkdir -p "$T/node"
 [ -f "$T/node/package.json" ] || echo '{"name":"bubblewash-dev-tools","private":true,"description":"Dev tools for Bubble Wash Kingdom, outside the game"}' > "$T/node/package.json"
@@ -168,6 +148,29 @@ echo "  $(deno --version 2>/dev/null | sed -n 1p || echo 'Deno: MISSING (optiona
 ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 \
   || { DEV_PORT=3000 HEADLESS=true timeout 90 npx -y threejs-devtools-mcp@0.2.1 < /dev/null > /dev/null 2>&1; true; }
 ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 && echo "  threejs-devtools-mcp cached for the plugin" || echo "  threejs-devtools-mcp: not cached (optional)"
+
+# (9 November 2026, session f28099bc) the optional PyTorch / LPIPS / Optuna step now runs LAST: at this session's start the environment's
+# setup phase was cut off inside this ~5.6 GB download, so the Node tools (Tripo CLI, glTF Transform, gltfpack, the validator), the
+# game's npm packages, the Spector MCP build and the threejs-devtools cache never ran and both Spector servers failed to connect.
+step "Python metrics tools (PyTorch on CPU, LPIPS with its AlexNet weights, Optuna) in their own environment"
+# (6 November, the user's request: LPIPS and Optuna for the Screen 4 comparisons; kept apart from visual/ so it never
+# disturbs it. PyPI's torch build, about 5.6 GB; the CPU-only index redirects to a host the network does not allow. LPIPS
+# fetches its AlexNet weights from download.pytorch.org, allowed in the bubblegame environment.)
+if "$T/metrics/bin/python" -c "import torch, lpips, optuna, skimage, cv2" 2>/dev/null; then
+  echo "  already installed"
+else
+  UV="$(command -v uv || true)"; [ -z "$UV" ] && [ -x "$HOME/.local/bin/uv" ] && UV="$HOME/.local/bin/uv"
+  # (7 November, the user's request: a 10-minute limit, so a fresh session still starts if this optional download stalls;
+  # it hung for over an hour once. On a stop, the next run of this script tries again: the check above fails.)
+  if [ -n "$UV" ]; then
+    # (8 November, session ce30359f: --allow-existing, so a run stopped by the time limit, which leaves an empty venv behind, is retried
+    # by the next run instead of failing at once on "A virtual environment already exists")
+    "$UV" venv -q --allow-existing --python "$(command -v python3)" "$T/metrics" && timeout "${BW_METRICS_TIMEOUT:-600}" "$UV" pip install -q --python "$T/metrics/bin/python" \
+      torch torchvision lpips optuna scikit-image opencv-python-headless pillow scipy \
+      && timeout 300 "$T/metrics/bin/python" -c "import lpips; lpips.LPIPS(net='alex', verbose=False)" > /dev/null 2>&1 && echo "  installed" \
+      || fail "Python metrics tools (stopped or failed within the ${BW_METRICS_TIMEOUT:-600} s limit; optional: run bash Tools/cloud_env_setup.sh again later)"
+  else fail "Python metrics tools (needs uv)"; fi
+fi
 
 if [ ${#failed[@]} -gt 0 ]; then
   printf '\nFAILED steps: %s\n' "${failed[*]}"
