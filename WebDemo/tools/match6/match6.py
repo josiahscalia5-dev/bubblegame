@@ -124,14 +124,14 @@ print('   THREE LARGEST MISMATCHES (by score): ' + '; '.join(f"{i + 1}. {r['zone
 PW, PH = 432, 768
 def small(img): return Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8)).resize((PW, PH), Image.LANCZOS)
 ov = 0.5 * A + 0.5 * G
-hm = np.clip(dE / 40.0, 0, 1)
+hm = np.clip(dE / 80.0, 0, 1)
 heat = np.stack([hm, 0.15 + 0.0 * hm, 1 - hm], -1) * 0.85 + 0.15 * (G.mean(-1, keepdims=True))
 heat[ui] = 0.35
 panels = [small(A), small(G), small(ov), small(heat)]
 sheet = Image.new('RGB', (4 * PW + 5 * 8, PH + 60), (28, 20, 44)); d = ImageDraw.Draw(sheet)
 try: f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 15)
 except OSError: f = ImageFont.load_default()
-titles = ['APPROVED Screen 6', f'REAL GAME: {label}'[:48], 'OVERLAY 50/50', f'COLOUR DIFFERENCE (blue 0 .. red dE>=40), mean {glob["dE_all_unmasked"]}']
+titles = ['APPROVED Screen 6', f'REAL GAME: {label}'[:48], 'OVERLAY 50/50', f'COLOUR DIFFERENCE (blue 0 .. red dE>=80), mean {glob["dE_all_unmasked"]}']
 for i, p in enumerate(panels):
     x = 8 + i * (PW + 8); sheet.paste(p, (x, 52))
     d.text((x, 8), titles[i][:52], fill=(255, 230, 120), font=f)

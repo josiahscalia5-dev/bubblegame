@@ -1,0 +1,8 @@
+
+### load_url (63.0 s)
+**Page loaded:** Bubble Wash Kingdom Screen 3
+**URL:** http://localhost:34457/index.html?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3,six2,s56
+**Canvases found:** 2
+
+Canvas #0 is selected by default. Use list_canvases to see all canvases and select_canvas to switch.
+Ready for capture_frame.
