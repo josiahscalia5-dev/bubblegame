@@ -1,0 +1,48 @@
+EXISTING VERIFIED REPOSITORY ASSET AND CODE INVENTORY (read-only GitHub listing)
+Repository: https://github.com/josiahscalia5-dev/bubblegame
+Main branch: claude/bubble-wash-account-transfer-52t7ym
+GitHub main branch was inspected 2026-11-09; refetch latest head on restore.
+
+APPROVED REFERENCE IMAGES (THE EXACT UPLOADED ARTWORK IN THIS ZIP):
+01_APPROVED_SCENE_5_FULL.png
+02_APPROVED_SCENE_6_FULL.png
+Also preserve repository Design/ReferencePacks/Six_Scene_New_Direction/
+
+EXISTING GLBs IN WebDemo/models/opening/: 
+gear_v2_tripo.glb — blue gear candidate
+housing_tripo_821.glb — machinery housing candidate
+washer_tripo_hj748.glb — premium pink/gold washer used earlier
+door_tripo_oit748_gold.glb — gold-rimmed washer door
+basket_tripo.glb; girl_rigged.glb; towels_tripo.glb — opening continuity
+
+EXISTING GLBs IN WebDemo/models/: 
+drum.glb, liner.glb — washer/tunnel structural meshes
+machinery.glb, machinery_lod.glb, pipe.glb — tunnel machinery and pipes
+roller.glb, brush_p2.glb, s3_brush.glb — brush/roller candidates
+coin_p2.glb, coin_p2_lo.glb, coin_v2_tripo.glb, coin_v2_tripo_lo.glb — coin candidates
+l1_enemy_tripo.glb, l1_enemy_v2_tripo.glb — enemy candidates
+mascot.glb, mascot_furshell.glb — hero options
+sock.glb, sock_v2_tripo.glb — collectible sock options
+gear.glb — gear alternative
+
+SCENE SOURCE (files verified on main branch):
+WebDemo/src/opening3d.js — 3D opening, washer and vortex shader, Scene 4/5 handoff
+WebDemo/src/opening_six2.js — six2 story staging
+WebDemo/src/opening_six2_water.js — six2 water module; drives vortex uFill and rise
+WebDemo/src/opening_six2_tunnel.js — washer look, Scene 5 arches, purple tank machinery and lights
+WebDemo/src/opening_tripo3.js — newer Tripo3 opening model integration
+WebDemo/src/play_tripo3.js — optional alternative collectible/enemy models; preserve gameplay behavior
+WebDemo/src/tunnel_s4.js — tunnel gameplay context
+WebDemo/src/tunnel_s4_swim.js — swimming logic to inspect
+WebDemo/src/tunnel_s4_water2.js — extra water logic to inspect
+WebDemo/src/tripo_l1.js — level model integration
+WebDemo/src/scene07_build18.js — Pass 18 existing game behavior
+WebDemo/src/level1.js, WebDemo/src/game.js — game rules and main logic
+WebDemo/src/screens12.js, WebDemo/src/six2_ui.js — opening UI
+
+Do not assume all names are actively loaded or material-ready. Claude must prove import paths, render visibility, scale, fit and camera-facing orientation in the live build. No additional asset generators until auditing these files first.
+
+SPECIALIST REVIEW BRANCHES PRESERVED BY PREVIOUS SESSION:
+claude/six2-lane-room-9ee07777
+claude/six2-lane-tunnel-9ee07777
+Compare and integrate after review, never blind cherry-pick/merge.
