@@ -348,3 +348,90 @@ The extracted shaders are in `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-
 
 
 _15 tool steps._
+
+---
+
+## Gameplay & Visual Testing specialist: Gameplay route test + captures (started 02:04 UTC)
+
+**Lead → agent** (02:04 UTC):
+
+Bubble Wash Kingdom (repo /home/user/bubblegame, demo dir /home/user/bubblegame/WebDemo, already built: do NOT rebuild, do NOT edit any repository file). Write outputs only under OUT=/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/ . Software WebGL is slow: run ONE browser at a time, sequentially. In each shell first run: source /home/user/bubblegame/Tools/bw_tools_env.sh
+
+Goal: prove that three new opt-in model switches (sock3, coin3, enemy3: looks only, the user's new Tripo sock, paw coin and purple enemy) leave the Level 1 gameplay unchanged, and capture real gameplay frames showing them.
+
+1. Baseline run (current six-scene game):
+   cd /home/user/bubblegame/WebDemo && S3=intunnel,structmatch,level1,tripo1,scene07,six ROUTE=upper SHOTS=6,12,20,28,36,46 timeout 1800 node tools/level1/flow_routes.cjs $PWD $OUT/base > $OUT/base.log 2>&1
+2. Same with the new models:
+   S3=intunnel,structmatch,level1,tripo1,scene07,six,sock3,coin3,enemy3 ROUTE=upper SHOTS=6,12,20,28,36,46 timeout 1800 node tools/level1/flow_routes.cjs $PWD $OUT/new > $OUT/new.log 2>&1
+   (Read the header of tools/level1/flow_routes.cjs first to confirm the usage; adjust SHOTS only if the times fall outside the run.)
+3. Compare the two printed results (route at each frame, socks rescued, coins, hearts, pops, blocked moves, Level Complete result): they must be IDENTICAL (state any difference exactly). Check both logs for console errors (especially GLTF / meshopt decode errors) and report them.
+4. Look at the frames (Read the PNGs): for each shot time, say whether a sock, coin or enemy is visible in the new run and whether it renders correctly (right size, facing the camera, not black, not missing). Build a side-by-side contact sheet $OUT/gameplay_base_vs_new.png (top row base, bottom row new, each frame scaled to ~206 px wide) with ~/.bubblewash-tools/visual/bin/python (PIL).
+5. Optionally, if time allows, also check window.__bwPlay3 and window.__bwTripo1 report objects are not needed — skip if the tool does not expose them.
+Report (under 350 words): PASS/FAIL for "gameplay identical", the exact numbers from both runs, errors, which shots show which new model, any rendering problem, and the paths of the frames and the contact sheet.
+
+- 02:04 `Bash`: Read flow_routes tool header and create output folder
+- 02:04 `Read`: /home/user/bubblegame/WebDemo/tools/level1/flow_routes.cjs
+- 02:04 `Grep`: sock3|coin3|enemy3
+- 02:04 `Read`: /home/user/bubblegame/WebDemo/src/play_tripo3.js
+- 02:04 `Grep`: enemies
+- 02:04 `Bash`: Find six-scene source files and enemy positions
+- 02:04 `Bash`: Find six switch usages and read status
+- 02:04 `Bash`: Run the baseline Level 1 upper route capture
+**Agent** (02:04 UTC):
+
+Meanwhile, I'll check the model files and the sock/enemy placement to know where they should appear.
+
+- 02:04 `Bash`: Check model files and sock placement references
+- 02:04 `Bash`: Confirm bundle contains new model switches
+- 02:05 `Bash`: Write the contact sheet script to scratch
+- 02:05 `Bash`: Check baseline run progress
+- 02:05 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/base/upper_u001.6_tap.jpg
+- 02:05 `Bash`: Check baseline progress again
+- 02:05 `Bash`: Wait for the baseline run process to finish
+**Agent** (02:05 UTC):
+
+Baseline done. Now the run with the new models.
+
+- 02:05 `Bash`: Run the Level 1 upper route with sock3, coin3, enemy3
+- 02:05 `Bash`: Inspect the baseline log output
+- 02:06 `Bash`: Write the run comparison script to scratch
+**Agent** (02:06 UTC):
+
+Now I'll look at the baseline frames while the new run works.
+
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/base/upper_u006.0.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/base/upper_u020.0.jpg
+- 02:06 `Bash`: Wait for the new-model run to finish
+- 02:06 `Bash`: Compare the two runs' gameplay results
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u001.6_tap.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u006.0.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u012.0.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/base/upper_u012.0.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u020.0.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u028.0.jpg
+- 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u036.0.jpg
+- 02:07 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_u046.0.jpg
+- 02:07 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new/upper_level_complete.jpg
+- 02:07 `Bash`: Locate pixel differences between base and new frames
+- 02:07 `Bash`: Make diff visualisations of base vs new frames
+- 02:07 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/diff/upper_u001.6_tap_diff.png
+- 02:07 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/diff/upper_u020.0_diff.png
+- 02:07 `Bash`: Check capture timing of the runs
+- 02:07 `Bash`: Run supplementary captures at the enemy stretch, base and new
+- 02:09 `Bash`: Compare the enemy-stretch runs
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new_enemy/upper_u219.0.jpg
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new_enemy/upper_u224.0.jpg
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new_enemy/upper_u230.0.jpg
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/base_enemy/upper_u224.0.jpg
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new_enemy/upper_u236.0.jpg
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/new_enemy/upper_u242.0.jpg
+- 02:09 `Bash`: Make 2x zoom crops of sock, coin and enemy base vs new
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/zoom_models_base_vs_new.png
+**Lead → agent** (02:09 UTC):
+
+[Image: original 2792x400, displayed at 2000x287. Multiply coordinates by 1.40 to map to original image.]
+
+- 02:09 `Bash`: Build the base vs new contact sheets
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/gameplay/gameplay_base_vs_new.png
+
+_48 tool steps._
