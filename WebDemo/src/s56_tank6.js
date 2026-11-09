@@ -10,7 +10,14 @@ import * as THREE from 'three';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const TANK6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('arch56') && LIST.includes('tank6');
 
+// `tanklib` (with tank6): the asset-finder's library candidate instead of the modelled shell: Sketchfab "Glass Enclosure" by zainaumer.ar,
+// CC Attribution 4.0 (https://sketchfab.com/3d-models/glass-enclosure-db8b6674dc5845dfb3f8b58964ba3e4b; Design/LibraryAssets/.../CREDIT.json),
+// imported by Tools/assetfinder/import_sketchfab.py. Its look adjusted in the shader: the caps' dark metal -> polished gold, the painted glass band
+// -> the violet glow with a white-hot centre; placed in the same tank slots (its glass band fitted to each slot's glass radius and height).
+export const TANKLIB_ON = TANK6_ON && LIST.includes('tanklib');
 export const TANK6 = {
+  lib: { url: 'models/s6library/glass_enclosure.glb', band: [0.20, 0.85], r: 0.241,   // (measured in Blender: glass radius 0.241 of the height, band 0.20-0.85)
+    gold: [1.0, 0.70, 0.28], goldK: 3.6, glow: [0.42, 0.02, 0.76], hot: [3.0, 1.8, 3.2], hotW: 2.5, glass: 0.55 },
   url: 'models/s6assets/glow_tank.glb', H: 2.4,   // the model's glass height (its glass radius is 1)
   window: [-3, 72],   // drawn from 3 m behind him to 72 m ahead
   scale: 1.0, big: 1.0,   // every tank / the big right tanks: extra scale of the glass radius and height
@@ -97,12 +104,54 @@ export async function buildTank6(ctx) {
   const N = Math.max(1, slots.length);
   const mk = (name, mat, order) => { const g = parts[name]; if (!g) { report.errors.push('tank6: part ' + name + ' missing'); return null; }
     const im = new THREE.InstancedMesh(g, mat, N); im.name = 'tank6_' + name; im.frustumCulled = false; im.count = 0; im.renderOrder = order; root.add(im); return im; };
-  const IM = [mk('t6gold', gold, 0), mk('t6rivet', rivet, 0), mk('t6core', core, 1), mk('t6bubbles', bubble, 2), mk('t6glass', glass, 3), mk('t6halo', halo, 4)].filter(Boolean);
+  let IM = [mk('t6gold', gold, 0), mk('t6rivet', rivet, 0), mk('t6core', core, 1), mk('t6bubbles', bubble, 2), mk('t6glass', glass, 3), mk('t6halo', halo, 4)].filter(Boolean);
+  let libFit = null;
+  if (TANKLIB_ON) {   // the library shell replaces every part but the halo
+    const Lb = P.lib, lg = await new Promise((ok, no) => loader.load(Lb.url, ok, undefined, no));
+    let mesh = null; lg.scene.traverse((o) => { if (o.isMesh && !mesh) mesh = o; });
+    lg.scene.updateMatrixWorld(true); const geo = mesh.geometry.clone();
+    // gltfpack stores positions as quantized integers (KHR_mesh_quantization): convert every attribute to float before transforming it
+    for (const k of Object.keys(geo.attributes)) { const a = geo.attributes[k], n = a.itemSize, o = new Float32Array(a.count * n);
+      for (let i = 0; i < a.count; i++) { o[i * n] = a.getX(i); if (n > 1) o[i * n + 1] = a.getY(i); if (n > 2) o[i * n + 2] = a.getZ(i); if (n > 3) o[i * n + 3] = a.getW(i); }
+      geo.setAttribute(k, new THREE.BufferAttribute(o, n)); }
+    geo.applyMatrix4(mesh.matrixWorld); geo.computeBoundingBox();
+    const bb = geo.boundingBox, c = bb.getCenter(new THREE.Vector3()), hgt = bb.max.y - bb.min.y;
+    geo.translate(-c.x, -bb.min.y, -c.z); geo.scale(1 / hgt, 1 / hgt, 1 / hgt);   // height 1, base at 0, centred on its axis
+    const m = mesh.material.clone(); m.envMap = env; m.envMapIntensity = 1.2;
+    const uL = { uBand: { value: new THREE.Vector2(...Lb.band) }, uR: { value: Lb.r }, uGold: { value: col(Lb.gold) }, uGoldK: { value: Lb.goldK }, uGlow: { value: col(Lb.glow) }, uHot: { value: col(Lb.hot) }, uHotW: { value: Lb.hotW }, uGlassK: { value: Lb.glass } };
+    m.onBeforeCompile = (sh) => { Object.assign(sh.uniforms, uL);
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vLp; varying vec3 vWn; varying vec3 vWv;')
+        .replace('#include <begin_vertex>', '#include <begin_vertex>\nvLp = position;')
+        .replace('#include <project_vertex>', '#include <project_vertex>\n{ mat4 IMm = modelMatrix;\n#ifdef USE_INSTANCING\n IMm = modelMatrix * instanceMatrix;\n#endif\n vec4 ww = IMm * vec4(transformed, 1.0); vWv = normalize(cameraPosition - ww.xyz); vWn = normalize(mat3(IMm) * objectNormal); }');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec2 uBand; uniform float uR, uGoldK, uHotW, uGlassK; uniform vec3 uGold, uGlow, uHot; varying vec3 vLp; varying vec3 vWn; varying vec3 vWv; float t6glassMask;')
+        .replace('#include <map_fragment>', `#include <map_fragment>
+  { float rr = length(vLp.xz); t6glassMask = step(uBand.x, vLp.y) * step(vLp.y, uBand.y) * step(uR * 0.8, rr);
+    float lum = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    diffuseColor.rgb = mix(uGold * clamp(0.35 + lum * uGoldK, 0.35, 1.0), diffuseColor.rgb * 0.15, t6glassMask); }`)
+        .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\n metalnessFactor = mix(0.9, 0.1, t6glassMask);')
+        .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n roughnessFactor = mix(clamp(roughnessFactor, 0.18, 0.4), 0.08, t6glassMask);')
+        .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+  { float f = clamp(abs(dot(normalize(vWn), normalize(vWv))), 0.0, 1.0); float yy = (vLp.y - uBand.x) / (uBand.y - uBand.x), dy = (yy - 0.52) / 0.26;
+    vec3 g = mix(uGlow * 0.35, uGlow, smoothstep(0.0, 0.6, f)); g = mix(g, uHot, clamp(pow(f, uHotW) * exp(-dy * dy), 0.0, 1.0));
+    totalEmissiveRadiance += g * uGlassK * t6glassMask * 1.8; }`); };
+    m.customProgramCacheKey = () => 't6lib';
+    for (const im of IM) if (im.name !== 'tank6_t6halo') { root.remove(im); }
+    const shell = new THREE.InstancedMesh(geo, m, N); shell.name = 'tank6_lib'; shell.frustumCulled = false; shell.count = 0; root.add(shell);
+    IM = [shell, ...IM.filter((im) => im.name === 'tank6_t6halo')];
+    libFit = { r: Lb.r, b0: Lb.band[0], b1: Lb.band[1], tris: geo.index ? geo.index.count / 3 : geo.attributes.position.count / 3 };
+  }
   const mats = slots.map((s) => {
     const k = P.scale * (s.big ? P.big : 1), sx = s.rg * k, sy = (s.hg * k) / P.H;
-    return s.M.clone().multiply(new THREE.Matrix4().makeTranslation(0, 0.12, 0)).multiply(new THREE.Matrix4().makeScale(sx, sy, sx));   // the glass's bottom at the foot + 0.12 m (as arch56's tank)
+    const M = s.M.clone().multiply(new THREE.Matrix4().makeTranslation(0, 0.12, 0)).multiply(new THREE.Matrix4().makeScale(sx, sy, sx));   // the glass's bottom at the foot + 0.12 m (as arch56's tank)
+    if (!libFit) return M;
+    // the library shell: its glass band [b0, b1] (of its height 1) spans the slot's glass height, its glass radius r = the slot's glass radius
+    const ly = (s.hg * k) / (libFit.b1 - libFit.b0), lx = (s.rg * k) / libFit.r;
+    return s.M.clone().multiply(new THREE.Matrix4().makeTranslation(0, 0.12 - libFit.b0 * ly, 0)).multiply(new THREE.Matrix4().makeScale(lx, ly, lx));
   });
-  report.parts.push(`tank6: ${slots.length} slots (${slots.filter((s) => s.big).length} big right tanks), ${IM.reduce((a, im) => a + (im.geometry.index ? im.geometry.index.count : im.geometry.attributes.position.count) / 3, 0)} triangles per tank`);
+  // (the halo keeps the modelled tank's frame: its matrix is the modelled one, so for the library shell the halo uses a second list)
+  const haloMats = slots.map((s) => { const k = P.scale * (s.big ? P.big : 1), sx = s.rg * k, sy = (s.hg * k) / P.H;
+    return s.M.clone().multiply(new THREE.Matrix4().makeTranslation(0, 0.12, 0)).multiply(new THREE.Matrix4().makeScale(sx, sy, sx)); });
+  report.parts.push(`tank6${libFit ? ' (library shell, ' + libFit.tris + ' tris)' : ''}: ${slots.length} slots (${slots.filter((s) => s.big).length} big right tanks), ${IM.reduce((a, im) => a + (im.geometry.index ? im.geometry.index.count : im.geometry.attributes.position.count) / 3, 0)} triangles per tank`);
   const tmp = new THREE.Matrix4();
   const sync = () => { const U = core.uniforms, C2 = P.core; U.uEdge.value.setRGB(...C2.edge); U.uMid.value.setRGB(...C2.mid); U.uHot.value.setRGB(...C2.hot);
     U.uA.value = C2.alpha; uHalo.value.setRGB(...P.halo.color); uHaloR.value = P.halo.r; uHaloY.value = P.halo.y * P.H;
@@ -114,7 +163,7 @@ export async function buildTank6(ctx) {
     sync(); uT.value = time; const hu = m ? m.z : 0; let n = 0;
     for (let i = 0; i < slots.length; i++) {
       const d = slots[i].u - hu; if (d < P.window[0] || d > P.window[1]) continue;
-      for (const im of IM) im.setMatrixAt(n, mats[i]); n++;
+      for (const im of IM) im.setMatrixAt(n, im.name === 'tank6_t6halo' ? haloMats[i] : mats[i]); n++;
     }
     for (const im of IM) { im.count = n; im.instanceMatrix.needsUpdate = true; }
   }
