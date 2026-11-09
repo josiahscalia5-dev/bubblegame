@@ -111,8 +111,20 @@ While the run waits on the shared browser lock, let me check the pipeline forwar
 
 - 12:51 `Bash`: Map shader colours through the game's pipeline
 - 12:52 `Bash`: Wait for the diagnosis run to finish
+**Agent** (12:57 UTC):
 
-_26 tool steps._
+I'll read the shader review in full so the rewrite covers every point.
+
+- 12:57 `Bash`: Read the shader review
+**Agent** (12:57 UTC):
+
+The review lines up with my plan. Let me check whether the diagnosis frames are done.
+
+- 12:57 `Bash`: Check diag progress and the lock queue
+- 12:57 `Bash`: Build a before-root and stop the queued run
+- 12:57 `Bash`: Locate world baseHeight and waves
+
+_30 tool steps._
 
 ---
 
@@ -168,8 +180,19 @@ Let me look at the previous baseline evidence and the targets.
 - 12:51 `Bash`: Check renderer stencil and hero object types
 - 12:52 `Bash`: Read room layout parameters
 - 12:53 `Bash`: List before frames and sheet tool usage
+- 12:53 `Bash`: Build before comparison sheet
+- 12:53 `Read`: /home/user/bubblegame_lanes/_evidence/washer34/before_sheet.png
+**Lead → agent** (12:53 UTC):
 
-_22 tool steps._
+[Image: original 2556x662, displayed at 2000x518. Multiply coordinates by 1.28 to map to original image.]
+
+- 12:53 `Read`: /home/user/bubblegame_lanes/_evidence/washer34/before/t_4.80.png
+- 12:53 `Read`: /home/user/bubblegame_lanes/_evidence/washer34/before/t_7.20.png
+- 12:53 `Bash`: Inspect the Tripo door glass handling
+- 12:53 `Bash`: Read tripo3 door and glass setup
+- 12:57 `Bash`: Read bubbles, foam and splash setup
+
+_29 tool steps._
 
 ---
 
@@ -229,8 +252,9 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:52 `Bash`: Solve corner towel placements per camera
 - 12:52 `Bash`: Solve Scene 2 corner towel placements
 - 12:53 `Bash`: Create a probe variant of the shot tool
+- 12:54 `Bash`: Probe girl bone positions in current build
 
-_30 tool steps._
+_31 tool steps._
 
 ---
 
@@ -284,8 +308,18 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:51 `Bash`: Check --r variable is unused and where opening root mounts
 - 12:52 `Bash`: Read UI defects from art director ranking
 - 12:52 `Bash`: Capture before frames of the opening scenes
+- 12:53 `Bash`: Compare gem icon hue against reference
+- 12:54 `Write`: /home/user/bubblegame_lanes/ui/WebDemo/src/hud56.js
+- 12:54 `Read`: /home/user/bubblegame_lanes/ui/WebDemo/src/hud56.js
+- 12:55 `Write`: /home/user/bubblegame_lanes/ui/WebDemo/src/hud56.js
+- 12:55 `Bash`: Wait for and check opening capture
+- 12:55 `Bash`: Check opening capture progress
+- 12:55 `Bash`: Crop Scene 1 reference logo and bottom
+- 12:56 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref01_logo.png
+- 12:56 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/ref01_bot.png
+- 12:56 `Bash`: Wait for opening capture to finish
 
-_28 tool steps._
+_38 tool steps._
 
 ---
 
@@ -333,8 +367,16 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (which tools worked)
 - 12:43 `Bash`: Block until the first QA run completes
 - 12:52 `Bash`: Parse the upper route results
 - 12:52 `Bash`: Look for earlier route test outputs to compare
+- 12:54 `Bash`: List flow proofs folder and chain progress
+- 12:55 `Bash`: Check prior knocks and touch run output
+- 12:55 `Bash`: Compare with the earlier upper route record
+- 12:55 `Bash`: Show touch test state transitions
+- 12:55 `Bash`: Stop stray grep and check identity progress
+- 12:55 `Read`: /home/user/bubblegame_lanes/_evidence/qa/route_upper/upper_u066.0.jpg
+- 12:55 `Read`: /home/user/bubblegame_lanes/_evidence/qa/route_upper/upper_level_complete.jpg
+- 12:55 `Bash`: Wait for start-checkpoint identity captures
 
-_27 tool steps._
+_35 tool steps._
 
 ---
 
@@ -484,8 +526,11 @@ The run timed out. Before retrying I'll clean up my own Chrome processes (matche
 The compile is still queued behind `washer34`'s capture. I'll wait on my own queued process's exit rather than poll, capped at 7 minutes.
 
 - 12:50 `Bash`: Wait for the queued compile run to finish
+- 12:55 `Bash`: Confirm compile did not run; look for offline GLSL validators
+- 12:56 `Bash`: Write the review findings to REVIEW.md
+- 12:56 `SubagentHandback`
 
-_24 tool steps._
+_27 tool steps._
 
 ---
 
@@ -512,8 +557,12 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` with the MCP availab
 - 12:43 `Bash`: Check bundle stamp and shader strings present in bundle
 - 12:44 `Bash`: Write EVAL diagnostic script and syntax-check it
 - 12:45 `Bash`: Run headless capture with diagnostic EVAL under browser lock
+- 12:55 `Bash`: Check run progress and lock holders
+- 12:55 `Bash`: Find the current browser lock holder
+- 12:55 `Bash`: Write post-processing script for run output
+- 12:55 `Bash`: Wait for my capture run to finish
 
-_13 tool steps._
+_17 tool steps._
 
 ---
 
