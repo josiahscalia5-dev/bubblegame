@@ -31,6 +31,8 @@ export const WATER6_ON = S56_ON && LIST.includes('water6');
 // (session 3849f5c8, the coordinator) the two orange crown pipes running from the top corners (section 3, ang +-0.98) are not in the approved
 // Scene 6: off with `water6` or the sequence candidate `seq7` (arch56 skips section 3 under its own switch)
 const NOPIPES6 = S56_ON && (LIST.includes('water6') || LIST.includes('seq7'));
+// (session ddf175f2) his drawn dome's fur (S56.hero6.fur): only with both the water pass and the hero6 body
+const HERO6W = WATER6_ON && LIST.includes('hero6');
 
 // every number (window.__bwS56 in the browser)
 export const S56 = {
@@ -60,35 +62,46 @@ export const S56 = {
   //   hero: deep (0, 0.11, 0.63) -> #0159dd, mid (0.025, 0.29, 0.75) -> #1493ec, turq (0.15, 0.81, 1.12) -> #4ed4f6
   water: {
     deep: [0.15, 0.25, 0.51], mid: [0.125, 0.39, 0.65], turq: [0.125, 0.87, 1.12],
-    deepH: [0.0, 0.11, 0.63], midH: [0.025, 0.29, 0.75], turqH: [0.15, 0.81, 1.12],
+    // (session ddf175f2, env6: the hero grade runs at u 206 too) the hero ramp re-picked from the probe for the approved's R ~ 0 saturation:
+    // deep (0, 0.09, 0.60) -> ~#0060da, mid (0, 0.36, 0.76) -> ~#10aaee, turq (0.06, 0.72, 0.98) -> ~#3ad6f5
+    deepH: [0.0, 0.09, 0.60], midH: [0.0, 0.36, 0.76], turqH: [0.06, 0.72, 0.98],
     foam: [0.9, 0.97, 1.06],
-    chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
-    crest: 0.3,     // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
+    chop: 1.4,      // (ddf175f2: 1.0 -> 1.4) the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
+    crest: 0.10,    // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none) (ddf175f2: 0.3 -> 0.10)
     ripple: 1.0,    // the churned water round him: thin broken rings spreading from his sides
-    collar: 1.0,    // the thin broken splash line where the water meets his body (strongest at his sides)
+    collar: 1.5,    // (ddf175f2: 1.0 -> 1.5) the thin broken splash line where the water meets his body (strongest at his sides)
     wake: 0.6,      // the two thin wake lines toward the camera
     spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
     glint: 1.0,     // the sky glints
     haze: 1.0,      // the far violet-white glow
-    lean: 3.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
-    height: 0.45,   // the wave height's share of the shading (lifted water lighter)
+    // (ddf175f2) lean 3 -> 4, height 0.45 -> 4, bias 0 -> -0.12, turqAt 0.5 -> 0.6: the swells' heights now carry broad rolling bands (cobalt
+    // troughs, azure bodies, turquoise lifted faces); measured fg cob 0.2 -> 15 %, p5 0.44 -> 0.31 (approved 9.5 %, 0.32), water6/02_water/x5
+    lean: 4.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
+    height: 3.0,    // the wave height's share of the shading (lifted water lighter)
+    hSwell: 0.8, hChop: 2.0,   // (ddf175f2) inside that share: the geometry swells' height and the chop's (v2: 2.4 / 0.8; the long swells made whole-foreground light / dark bands that came and went, water6/03_pass1)
     gap: 0.35,      // the share of the collar / wake / ripple lines broken away (0 = continuous lines)
-    line: 1.2,      // crest line half-width in screen pixels (at the canvas's resolution)
+    line: 1.4,      // crest line half-width in screen pixels (at the canvas's resolution) (ddf175f2: 1.2 -> 1.4)
     churn: 0.8,     // the chop's extra strength round him
     churnCrest: 0.25,   // how much lower the crest threshold is round him (more white lines where he swims)
-    froth: 1.0,     // the frothy splash band at his sides
+    froth: 2.0,     // (ddf175f2: 1.0 -> 2.0) the frothy splash band at his sides
     // (session 3849f5c8) the chop's waves, live: [wavelength m, angle deg to the run, A m, phase]. v2's spread (+-12..58 deg) crossed into a net of
     // contour lines; the approved Scene 6's wavelets roll ACROSS the run (crests near horizontal on screen, curved by the domain warp)
-    bias: 0.0,      // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
-    turqAt: 0.5,    // (3849f5c8) where on the shade the turquoise begins (higher: turquoise only on the most lit faces)
+    bias: -0.07,    // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
+    turqAt: 0.6,    // (3849f5c8) where on the shade the turquoise begins (higher: turquoise only on the most lit faces)
     glint2: 0.0,    // (3849f5c8) the arch lamps' and far glow's glints on the chop's faces (white, per pixel)
     glintExp: 60.0, // (3849f5c8) their sharpness
     chopSpec: [[1.40, 12, 0.040, 0.3], [0.95, -28, 0.030, 2.2], [0.66, 40, 0.022, 4.1], [0.46, -50, 0.015, 1.1], [0.32, 22, 0.010, 5.3], [0.22, -35, 0.007, 0.7], [0.155, 58, 0.005, 3.6]],
   },
   // `water6`: his drawn body sunk to about its widest line (the art director: visible height 0.238 H vs 0.158 approved); (session 3849f5c8) squash:
   // his drawn body's height (m.tilt.scale.y; wide: x and z) for the approved low rounded dome; drawn only, his state and pickups untouched
-  hero6: { sink: 0.4, squash: 1.0, wide: 1.0 },
-  splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4, n: 220 },   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
+  // (session ddf175f2, env6 pass) his model is a squat ball (x +-1, y -0.94..0.87 in its units) whose side nubs sit high (y ~0.3), so sunk
+  // to the nubs it showed a flat-topped trapezoid. Measured on the frozen u 206 frame (tools/env6/var6.cjs, water6/01_hero/): stretched 1.6
+  // tall while in the water (back to round in the air) and sunk 0.78 m, the waterline runs through his nubs and the dome above is round
+  // (approved: x 0.26-0.74, top 0.600); with scaleS6 [1.07, 1, 1.07] (tunnel_s4_struct.js) his width matches. fur: the shell fur short and
+  // radial (the approved's dense short fur radiating from his crown; match5's long combed strands made a bush), only with water6 + hero6
+  hero6: { sink: 0.78, squash: 1.6, wide: 1.0, fur: { len: 0.06, comb: 0.0, lean: 0.05 } },
+  water6Hero: { sink: 0.4, squash: 1.0, wide: 1.0 },   // (ddf175f2) water6 WITHOUT hero6: v2's body as before
+  splash6: { rate: 110, size: [0.010, 0.026], stretch: 3.0, speed: 2.4, n: 220 },   // (ddf175f2: finer, more, longer streaks: v2's round drops read as white dots)   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 
@@ -496,14 +509,14 @@ export async function buildS56(ctx) {
   // moves only along the calibrated ramp (S56.water: deep -> mid -> turq), one ramp per grade, blended by the hero grade's weight (gradeHero)
   const wU = { uDeep: { value: new THREE.Vector3() }, uMid: { value: new THREE.Vector3() }, uTurq: { value: new THREE.Vector3() }, uFoam: { value: new THREE.Vector3() },
     uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uW3: { value: new THREE.Vector4(0, 0, 0, 0.35) }, uW4: { value: new THREE.Vector4() }, uMask: { value: 0 },
-    uW5: { value: new THREE.Vector4(0, 0.5, 0, 60) }, uC1: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector4()) }, uC2: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector2()) } };
+    uW5: { value: new THREE.Vector4(0, 0.5, 0, 60) }, uW6: { value: new THREE.Vector4(2.4, 0.8, 0, 0) }, uC1: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector4()) }, uC2: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector2()) } };
   let gradeHero = 0;   // the hero grade's weight this frame (tunnel_r7_hero.js heroGrade: it replaces the drum grade while he is in the hero stretch)
   const mixV = (o, a, b, k) => o.set(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k);
   const syncWater = () => { const w = S.water, k = gradeHero;
     mixV(wU.uDeep.value, w.deep, w.deepH, k); mixV(wU.uMid.value, w.mid, w.midH, k); mixV(wU.uTurq.value, w.turq, w.turqH, k); wU.uFoam.value.set(...w.foam);
     wU.uW1.value.set(w.chop, w.crest, w.ripple, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uW3.value.set(w.lean, w.height, w.gap, wU.uW3.value.w);
     wU.uW4.value.set(w.line, w.churn, w.churnCrest, w.froth); wU.uMask.value = w.mask ? 1 : 0;
-    wU.uW5.value.set(w.bias ?? 0, w.turqAt ?? 0.5, w.glint2 ?? 0, w.glintExp ?? 60);
+    wU.uW5.value.set(w.bias ?? 0, w.turqAt ?? 0.5, w.glint2 ?? 0, w.glintExp ?? 60); wU.uW6.value.set(w.hSwell ?? 2.4, w.hChop ?? 0.8, 0, 0);
     if (w.chopSpec) chopUniforms(w.chopSpec, wU.uC1.value, wU.uC2.value); };
   // the hero grade's weight is read from the grade pass's own uniform (uHero, set by tunnel_r7_hero.js every frame) through the game's
   // read-only hook (game.js window.__bw.debug(): ctx has no composer); 0 (the drum ramp) where there is no hero grade
@@ -533,7 +546,7 @@ export async function buildS56(ctx) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
+      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5, uW6; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
       ${HAZE}
@@ -556,7 +569,7 @@ export async function buildS56(ctx) {
         N = normalize(N + (vR * (s5n(rq) - 0.5) + vT * (s5n(rq * 1.7 + 3.1) - 0.5)) * 0.05);   // fine ripples (normal detail only)
         // the shade along the ramp: faces leaning toward the camera lit (turquoise), backs and troughs cobalt; lifted water lighter
         float lean = dot(N, -vT);
-        float hh = vH * 2.4 + ch.x * 0.8;
+        float hh = vH * uW6.x + ch.x * uW6.y;   // (ddf175f2: the swell's and the chop's shares, S56.water.hSwell / hChop)
         float sx = uW3.x * lean + uW3.y * hh;
         float sh = 0.5 + 0.5 * sx / (1.0 + abs(sx)) + uW5.x;   // (a soft limit: the shade rolls into the ramp's ends, never clipped into flat facets)
         vec3 c = mix(mix(uDeep, uMid, smoothstep(0.0, uW5.y, sh)), uTurq, smoothstep(uW5.y, 1.0, sh));
@@ -677,9 +690,17 @@ export async function buildS56(ctx) {
   const mm = new THREE.Matrix4(), q = new THREE.Quaternion(), sv = new THREE.Vector3(), pv = new THREE.Vector3();
   const Y6 = new THREE.Vector3(0, 1, 0);
   let heroOff = 0;
+  // `water6` + `hero6` (session ddf175f2): his shell fur short and radial (S.hero6.fur, live); the shell materials are struct's
+  // (tunnel_s4_struct.js structShellFur), only their three length / direction uniforms are set here, every frame (cheap, live-tunable)
+  let furMats = null;
+  function furShort(m) {
+    if (!furMats) { furMats = []; m.squash.traverse((o) => { if (o.name === 'structShellFur' && o.material && o.material.uniforms && o.material.uniforms.uShLen) furMats.push(o.material.uniforms); }); if (!furMats.length) { furMats = null; return; } }
+    const F = S.hero6.fur; for (const u of furMats) { u.uShLen.value = F.len; u.uShComb.value = F.comb; u.uShLean.value = F.lean; }
+  }
   function update(dt, time, phase, m) {
     timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
     if (WATER6_ON) { findGrade(); gradeHero = gradeU ? gradeU.value : 0; syncWater(); hideSuds(); }   // (hideSuds: the suds get their renderOrder in the opening's first update)
+    if (HERO6W && m && m.squash) furShort(m);
     if (arch && arch.update) arch.update(dt, time, phase, m);
     if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
     if (tripo6 && tripo6.update) tripo6.update(dt, time, phase, m);   // (after brush6: tripo6 hides the procedural brush under its model)
@@ -709,13 +730,14 @@ export async function buildS56(ctx) {
   // On m.tilt (in his root's track-up frame), NEVER m.root: the pickups measure from m.root.position (the water-motion specialist's audit).
   // additive: another pass (tunnel_s4_blend.js) already wrote m.tilt.position.y this frame
   function heroOffset(m, t, dt, additive = false) {
-    const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - (WATER6_ON ? S.hero6.sink : S.hero.sink);   // (water6: sunk to about his widest line)
+    const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - (HERO6W ? S.hero6.sink : WATER6_ON ? S.water6Hero.sink : S.hero.sink);   // (water6: sunk to about his widest line; with hero6 to his nubs)
     heroOff += (target - heroOff) * Math.min(1, dt * 14);
     m.tilt.position.y = (additive ? m.tilt.position.y : 0) + heroOff;
     // a gentle roll and pitch with the slope of the water under him
     const e = 0.25, hx = s56Wave(m.x + e, m.z, t) - s56Wave(m.x - e, m.z, t), hu = s56Wave(m.x, m.z + e, t) - s56Wave(m.x, m.z - e, t);
     if (!m.air) { m.tilt.rotation.z += hx * 0.9; m.tilt.rotation.x -= hu * 0.6; }
-    if (WATER6_ON) { const H6 = S.hero6, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw); }   // (his drawn dome; back to round in the air)
+    if (WATER6_ON) { const H6 = HERO6W ? S.hero6 : S.water6Hero, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw);
+      if (HERO6W) m.tilt.position.y -= m.squash.position.y * (sy - 1); }   // (his drawn dome; back to round in the air) (ddf175f2: the swim bob, m.squash.position.y inside the stretch, kept at its own size)
   }
   let heroSq = 1;
   // the fur's light centre follows his drawn body

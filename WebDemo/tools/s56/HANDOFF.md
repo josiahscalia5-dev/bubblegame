@@ -1,3 +1,33 @@
+# Lane s56 (water): session ddf175f2 update (9 November ~19:05 UTC, env6 integrated candidate). NOTHING is approved.
+
+Judge in the integrated list `intunnel,structmatch,level1,tripo1,scene07,six,tripo3,s56,coin6,hero6,water6,brush6,arch56,env6` (env6 = the hero
+grade at u 206 too, so the water uses its `*H` palette). Evidence: `/home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/`.
+Tools: `tools/env6/var6.cjs` (frozen u 206 frame, live variants; `B.advance(0.3)` inside a variant gives real motion frames on the same run).
+Measures need scipy: `uv venv` + `uv pip install scipy numpy pillow` (the metrics venv is not installed in this environment).
+
+## Done (commits a60ebeee, then this one)
+- His dome (`hero6`, only with water6 + hero6, `HERO6W`): his model is a squat ball (x +-1, y -0.94..0.87, side nubs HIGH at y ~0.3), so
+  sunk to the nubs it was a flat trapezoid. Now: `STRUCT.match4.scaleS6` [1.07, 1, 1.07] (round, approved width), `S56.hero6` squash 1.6
+  (m.tilt.scale.y in the water, eased back to round in the air), sink 0.78 (waterline through his nubs), the swim bob (m.squash.position.y)
+  kept at its own size under the stretch, shell fur short and radial (`hero6.fur` len 0.06, comb 0, lean 0.05: struct's shell uniforms set
+  from s56_tunnel.js). water6 WITHOUT hero6 keeps v2's body (`S56.water6Hero`).
+- Water (hero ramp, R ~ 0): deepH (0, 0.09, 0.60), midH (0, 0.36, 0.76), turqH (0.06, 0.72, 0.98); the height shading split into the
+  swell's and the chop's shares (`hSwell` 0.8, `hChop` 2.0, new uniform uW6; the long swells alone made whole-foreground light/dark bands);
+  lean 4, height 3, bias -0.07, turqAt 0.6, chop 1.4, crest 0.10, line 1.4, collar 1.5, froth 2.0. splash6: rate 110, size 0.010-0.026, stretch 3.
+- Measured at u 206 (aw56, fg): approved cob 9.5 az 40.8 tq 21.3 pale 19.7 grad 3.86 p5 0.32 ring 33.4 % | before cob 0.2 az 55.5 tq 28.8
+  pale 10.9 grad 1.89 p5 0.44 ring 5.8 % | now cob 22.7 az 25.2 tq 33.2 pale 13.0 grad 2.84 p5 0.31 ring 7.9 %. Hero box (pink): approved
+  x 0.260-0.736 top 0.600 bot 0.758; now x 0.303-0.753 top 0.612 bot 0.772, widths at 10/25/50/75 % of its height 0.148/0.231/0.391/0.353
+  (approved 0.172/0.279/0.366/0.418; before 0.182/0.345/0.449/0.378 = flat top).
+- Identity: without water6 + hero6 the build is 0 px different at u 206 (var6) and tap (shots56) from the df3b4256 bundle (`water6/06_identity/`).
+
+## Next (in order)
+1. The swells between him and the camera cover his base at +0.3 / +0.6 s (pink height 0.115-0.119 H vs 0.160 at the placed frame): in the
+   vertex shader damp the geometry waves inside ~1.5 m behind him toward his own wave height (the ring), or make his ride follow the
+   higher of his own and the near-side wave.
+2. The splash crown: still too little white at his sides (ring pale 7.9 % vs 33.4 %): spiky upward spray sheets at both sides, not dots.
+3. Cobalt now above approved (22.7 vs 9.5 %) and azure below (25 vs 41 %): move midH toward azure (G ~0.30) and bias ~ -0.04.
+4. His fur colour: approved lighter pink with a lighter crown (struct's fur, ask the coordinator).
+
 # Lane s56 (water): session 3849f5c8 update (9 November ~17:40 UTC). NOTHING is approved.
 
 ## Priority (coordinator, the user): SCREEN 6 water FIRST (water6 v2 at u 206), then Screen 5; the wash water of Screens 3-4 is POSTPONED.
