@@ -159,8 +159,48 @@ I have all the numbers. One quick check on the tools environment, since `$BW_PY`
 
 - 15:51 `Bash`
 - 15:51 `Bash`
+- 15:52 `Bash`
+**Agent** (15:53 UTC):
 
-_57 tool steps._
+**Live test:** everything I needed worked on this account. I could read images (both approved scenes and both game captures), run Bash, and run Python measurements (system Python with PIL/NumPy, and the visual venv with OpenCV, scikit-image and SciPy). No browser was launched and no game code was edited.
+
+The five priorities, in your order. Fractions are of frame width (W) and height (H); "impact" is how much each gap shows on screen, 1 = most.
+
+1. **Brushes (impact 2):** there is no brush at u 206, and `s56_brush6.js` is still an empty stub. At Tap to Start the old round pom-poms show instead.
+   - **Target:** left bristle cylinder at x 0–0.20, y 0.483–0.72, with its pink-and-gold cap from y 0.34; right one at x 0.82–1.0, y 0.502–0.70.
+   - **Bands from the top:** pink 26 % (#f519a1), white-lavender 23 %, royal blue 34 % (#045ee6), pale blue 17 %.
+2. **Gear (impact 6):** it is on the wrong side, seen edge-on (shape 0.43 instead of nearly round) and navy-violet (#3023b9).
+   - **Target:** centre at (0.807, 0.392), about 0.24 W across, nearly face-on, cobalt #1e3cda.
+   - **Fix:** in `S56.gears`, change the nearby entry `[214,1]` to `[211,-1]` and turn it about 60° toward the camera. The magenta glow added in `dress()` is what turns it violet.
+3. **Machinery (impact 4):** the upper banks are mostly bare wall. Upper-left has pink 10.9 % against 23.3 %, gold 0.8 % against 4.8 %, and violet glow 2.9 % against 12.5 %.
+   - **Target:** machine tops reach y 0.26–0.30 (today about 0.42), so modules need to be about twice as tall.
+   - Tank glass should be #dc52f6; today it is pale #c483fc.
+4. **Water (impact 1):**
+   - Turquoise is 0 % against 21 %. Cobalt is 52 % against 9.5 %.
+   - Detail is 1.28 against 3.92, so it is about three times flatter.
+   - The white is the same amount (about 20 %) but 1 % of it is thin crest lines against 17 %, so it reads as soft clouds.
+   - **Target:** water body #1495f7 in the final frame, crests no thicker than 6 px.
+   - At Tap to Start, 66 % of the foreground water is white.
+   - The colour step after the water shader appears to strip the green; check it with a test patch before tuning.
+5. **Camera (impact 3):** width and vanishing point already match (0.468 W against 0.476; about 0.44–0.455).
+   - **Gap:** his visible height is 0.238 H against 0.158, so his top sits about 0.09 H too high and he blocks the view down the tunnel.
+   - **Fix:** sink him about 0.3 m by raising `S56.hero.sink` from 0.1 to about 0.4, applied to `m.tilt` only. Keep the camera.
+
+**Other:**
+- The two orange diagonal lines from the top corners are the ceiling ("crown") pipes in `s56_tunnel.js`; remove them.
+- Coins are about twice the approved size (0.20–0.27 W against 0.10–0.12) and float in the air instead of sitting on the water.
+- At u 206 the railings turn red-orange and the tank domes salmon.
+- Enemies are washed out (saturation 0.55 against 0.76).
+
+None of this is approved; it's for your review. Motion and Pixel 7 framing were not checked (they need the browser).
+
+Files are in `/home/user/bubblegame/Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/`:
+- `art_director_ranking.md`
+- `sbs_approved_u206_tap.png`
+- `scripts/`
+
+
+_58 tool steps._
 
 ---
 
@@ -322,8 +362,27 @@ The camera sits in the mascot's own track frame at `rideY + off.y`, aimed at `ri
 The sheet tool fails on meshopt-compressed files (no decoder). I'll write a small orientation renderer of my own in `tools/arch56/` that renders +x, -x, +z and -z views with the meshopt decoder.
 
 - 15:52 `Bash`: Write and run orientation renderer
+- 15:53 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/orient.png
+- 15:55 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 15:56 `Bash`: Check regenerated LOD timestamps
+- 15:56 `Bash`: Re-copy regenerated LODs and inspect them
+- 15:56 `Bash`: Re-copy regenerated LODs and inspect them
+- 15:57 `Bash`: Report triangle counts and bounds of copied LODs
+**Agent** (15:57 UTC):
 
-_58 tool steps._
+The regenerated Machinery LOD2 is not reduced (27,359 vs 27,381 triangles). I'll make a lighter far copy in the lane with gltfpack.
+
+- 15:57 `Bash`: Simplify Machinery original into a far LOD
+- 15:57 `Bash`: Simplify the Machinery LOD2 to about 8k triangles
+- 15:57 `Bash`: Aggressive simplify for the far Machinery LOD
+**Agent** (15:57 UTC):
+
+Far copy: 6,573 triangles, 256 textures. Now the code: I'm reverting the camera to s56's own (as the coordinator asked) and writing the model bays, the star housing and the new gear.
+
+- 15:57 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 15:57 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+
+_69 tool steps._
 
 ---
 
@@ -419,8 +478,28 @@ Now build, then commit the merge/restructure.
 - 15:52 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/10_SC6_SWIMMER_WATER_WAKE.png
 - 15:52 `Bash`: Measure approved and current water palette
 - 15:52 `Bash`: Capture water6 WIP and compare
+- 15:53 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/w6wip.png
+- 15:53 `Bash`: Crop WIP vs approved lower water
+- 15:53 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/w6wip_crop.png
+**Agent** (15:54 UTC):
 
-_70 tool steps._
+Now I'll write the water6 material improvements. First let me view the current water6 shader block once more to edit precisely.
+
+- 15:54 `Bash`: Locate chop definitions
+- 15:54 `Bash`: Read art director's water metric definitions
+- 15:54 `Bash`: Read water section of art director ranking
+- 15:54 `Bash`: Read how to run art director water scripts
+- 15:54 `Bash`: Read rest of water.py and common.py
+- 15:54 `Bash`: Read water2.py metrics
+- 15:55 `Bash`: Write colour-probe shader variants
+- 15:55 `Bash`: Run the colour-patch probe at tap and 206
+- 15:56 `Bash`: Decode the probe into a LUT
+- 15:56 `Bash`: Invert the probe LUT for target colours
+- 15:56 `Bash`: Invert LUT with scipy venv
+- 15:56 `Bash`: Find buildS56 context in game.js
+- 15:57 `Bash`: Check HERO exports and grade window
+
+_86 tool steps._
 
 ---
 
@@ -506,5 +585,39 @@ Scene 5 shows no brushes, so I'll keep them out of the opening stretch. Let me c
 - 15:46 `Bash`: Read flow course section definitions
 - 15:48 `Bash`: Find water extent and bank placement code
 - 15:50 `Bash`: Check fog and body radius definitions
+- 15:52 `Write`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 15:52 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 15:54 `Write`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (15:54 UTC):
 
-_32 tool steps._
+The coordinator sent the art director's measured targets. I'll read the brush part of that file.
+
+- 15:54 `Grep`: (?i)brush
+- 15:54 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/art_director_ranking.md
+- 15:55 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 15:55 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+**Agent** (15:55 UTC):
+
+Now build.
+
+- 15:55 `Bash`: Build the game bundle
+**Agent** (15:55 UTC):
+
+Build works (the warnings are pre-existing). First capture at u 206 with a measurement of the placed pair.
+
+- 15:55 `Bash`: Capture u 206 with brush6 and measure placement
+- 15:57 `Bash`: List capture output
+- 15:57 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c1/s56_206.png
+**Agent** (15:57 UTC):
+
+The frame shows the Home menu over a blank scene (1 draw call), so this capture did not reach gameplay. Let me check how the coordinator captured the baseline.
+
+- 15:57 `Bash`: Look for the baseline capture command
+- 15:57 `Bash`: Read hook-off identity proof for the command used
+**Agent** (15:57 UTC):
+
+I deviated from the given command (ZS=206 only); the 'tap' step first is probably needed to get past Home. I'll rerun exactly as instructed, saving the JSON output.
+
+- 15:57 `Bash`: Capture tap and 206 with measurement saved to JSON
+
+_46 tool steps._
