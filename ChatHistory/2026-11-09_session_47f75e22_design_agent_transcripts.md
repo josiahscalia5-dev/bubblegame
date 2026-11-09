@@ -426,8 +426,38 @@ The hero grade (`uHero`) switches off after the old drum's `L.tunnelEnd`, so at 
 The environment map is world-fixed (a lavender sky with pink, cyan and white panels), with no red in it. I need data: one capture dumping the post passes, grade uniforms and lights at tap and at 206.
 
 - 16:03 `Bash`: Dump post passes and lights at tap and 206
+**Agent** (16:04 UTC):
 
-_86 tool steps._
+The coordinator asked for a backup, so I'll save now. First the current frames go into the evidence folder, then HANDOFF.md, then a commit and push.
+
+- 16:04 `Bash`: Copy evidence frames into evidence folder
+- 16:04 `Write`: /home/user/bubblegame_lanes/arch56/WebDemo/tools/arch56/HANDOFF.md
+- 16:05 `Bash`: Commit lane work and push, verify remote
+**Agent** (16:05 UTC):
+
+Pushed and verified: `2c796e93` is on the remote (the autosave had already checkpointed the code). Now the post-dump result.
+
+- 16:05 `Bash`: Read the post-dump comparison
+- 16:05 `Bash`: Wait for and print post-dump comparison
+- 16:05 `Bash`: Print post pass and light differences
+- 16:05 `Bash`: Read the base GradeShader
+- 16:05 `Bash`: Crop the left and right banks at u 206
+- 16:05 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c3_left_zoom.png
+- 16:06 `Bash`: Find hero grade values and tunnelEnd
+- 16:07 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c3_right_zoom.png
+- 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+**Agent** (16:07 UTC):
+
+Now the Machinery placement with the depth squash, and the glows moved to the glass fronts.
+
+- 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 16:07 `Edit`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_arch.js
+- 16:07 `Bash`: Build and capture tap, 206, 198
+
+_104 tool steps._
 
 ---
 
@@ -562,8 +592,20 @@ Now I'll replace lines 463-555 (the water6 uniforms, sync and material) with the
 - 16:00 `Bash`: Fix evidence path comments and build
 - 16:01 `Bash`: Save probe evidence; write and validate aw56.py
 - 16:01 `Bash`: Render water6 tuning variants and measure
+- 16:04 `Write`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/HANDOFF.md
+- 16:05 `Bash`: Commit backup and push lane
+- 16:05 `Bash`: Read tuning results
+- 16:05 `Bash`: Montage tune1 vs approved
+- 16:05 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/t1.png
+- 16:05 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/t1c.png
+- 16:06 `Bash`: Rounder chop, soft shading, contour crests, side froth; build
+- 16:06 `Bash`: Render tune2 variants and measure
+- 16:06 `Bash`: Read trace56 sampling code
+- 16:06 `Bash`: Wait for tune2 to progress
+- 16:06 `Write`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/sbs56.py
+- 16:06 `Bash`: Wait for tune2 output
 
-_101 tool steps._
+_113 tool steps._
 
 ---
 
@@ -717,8 +759,38 @@ Assets are all present. Let me read how screens12 holds the Home screen and what
 - 16:02 `Bash`: Read screens12 home hold logic
 - 16:03 `Bash`: Compare capture tool and screens12 with the main checkout
 - 16:03 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/baseline/s56_tap.png
+**Agent** (16:03 UTC):
 
-_60 tool steps._
+The coordinator's baseline has no Home overlay, so it was evidently taken without `home` in effect. I'll try the same list minus `home` and compare against the baseline.
+
+- 16:03 `Bash`: Capture brush6-off frames without home and compare to baseline
+**Agent** (16:04 UTC):
+
+I'll put the fitted placement into the defaults, write the handoff, then commit and push.
+
+- 16:04 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 16:05 `Write`: /home/user/bubblegame_lanes/brush6/WebDemo/tools/brush6/HANDOFF.md
+- 16:05 `Bash`: Check lane status before committing
+- 16:05 `Bash`: Build, commit and push the lane, verify remote
+**Agent** (16:05 UTC):
+
+Pushed and verified (`93fdcc99`). Now the background capture.
+
+- 16:05 `Bash`: Check background capture result
+- 16:05 `Edit`: /home/user/bubblegame_lanes/brush6/WebDemo/src/s56_brush6.js
+- 16:05 `Bash`: Check capture progress and other browser users
+- 16:05 `Bash`: Rebuild with the winding fix
+**Agent** (16:05 UTC):
+
+Waiting for the brush6-off capture to finish (it holds the shared lock).
+
+- 16:05 `Bash`: Wait for the capture output then show results
+- 16:06 `Bash`: Capture with brush6 at tap and 206 with fit
+- 16:07 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c4/s56_206.png
+- 16:08 `Bash`: Zoom crops of both brushes in the capture
+- 16:08 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/c4_zoom.png
+
+_74 tool steps._
 
 ---
 
@@ -744,8 +816,27 @@ I'll start by locating the static analysis script and the target file.
 - 16:02 `Bash`: Inspect browser harness and listening ports
 - 16:02 `Bash`: Find playwright and chromium installs
 - 16:02 `Bash`: Locate chromium binary used by Spector
+**Agent** (16:04 UTC):
 
-_8 tool steps._
+Next I'll check how the game renders these materials (tone mapping and output path) and how `update` and `heroOffset` get their time and height inputs, since the wave-sync claim depends on both.
+
+- 16:04 `Bash`: Find tone mapping setup and s56 call sites
+- 16:04 `Bash`: Read composer setup and mascot time/height sources
+- 16:04 `Bash`: Trace mascot height and time variable
+- 16:04 `Bash`: Read ride height and track frame construction
+- 16:04 `Bash`: Read track frame handedness construction
+- 16:04 `Bash`: Read baseHeight definition
+**Agent** (16:04 UTC):
+
+Now I'll extract the two materials' GLSL into separate .vert/.frag files (template interpolations evaluated exactly as the module does) and run the plugin's checker on each material.
+
+- 16:04 `Bash`: Extract inline GLSL into separate stage files
+- 16:05 `Bash`: Run plugin shader-binding checker per material
+- 16:05 `Bash`: Check three build files and playwright versions
+- 16:06 `Bash`: Compile and measure shaders in headless Chromium WebGL2
+- 16:08 `Bash`: Rerun live test with per-term attribution
+
+_19 tool steps._
 
 ---
 
@@ -777,5 +868,21 @@ Now the reference capture script and the remaining harness pieces.
 - 16:02 `Bash`: Find test hooks, seed and URL parsing in game source
 - 16:02 `Bash`: Find what TEST gates and where __bw is exposed
 - 16:02 `Bash`: Read game loop, ready, and __bw test API
+- 16:03 `Bash`: Inspect debug hook and adaptive-quality variables
+- 16:04 `Bash`: Locate Math.random consumers in game source
+- 16:05 `Bash`: Read replay script and check unit tests for browser use
+- 16:05 `Bash`: Inspect index.html script tags and frame dependencies
+- 16:05 `Bash`: Inspect capture unit tests and index.html script block
+- 16:05 `Bash`: Check Deno and Playwright default Chromium switches
+- 16:05 `Bash`: Inspect Deno npm cache and installed Playwright switches
+- 16:05 `Bash`: Locate Playwright installs and Chromium switch files
+- 16:05 `Bash`: Check installed Playwright version and default switches
+- 16:05 `Bash`: Search Playwright for SwiftShader default flags
+- 16:06 `Bash`: Read Playwright's SwiftShader flag logic
+- 16:07 `Bash`: Check game for URL/frame dependencies that srcdoc would break
+- 16:07 `Bash`: Check bundle location usage, storage, and head tag
+- 16:07 `Bash`: List the distinct URL query checks in the bundle
+- 16:07 `Bash`: Show remaining location.search checks and DOMContentLoaded use
+- 16:08 `Bash`: Find wall-clock time use in game source
 
-_10 tool steps._
+_26 tool steps._
