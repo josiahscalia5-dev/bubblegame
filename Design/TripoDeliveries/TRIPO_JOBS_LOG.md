@@ -13,3 +13,5 @@ enforces it with Tripo's account-wide history); never buy credits, top up or upg
 | 2026-11-08 14:40 | - | - | the user's purchase (+900 API credits) | - | - | - | 400 -> 1300 |
 | 2026-11-08 17:08 | 57091b57 | ccr-b67aeffb-d94mmq | s09_housing | `2414a436-d703-4458-b25f-81da91890435` | 120 | success | 1300 -> 1180 |
 | 2026-11-08 17:11 | 57091b57 | ccr-b67aeffb-d94mmq | s09_machinery | `b1e382e3-389f-4f29-b14c-4224b6d31241` | 120 | success | 1180 -> 1060 |
+
+2026-11-09, session 6ddc157f: NO paid job. The user's 12 new models were their own uploads (evaluated and optimized, no credits); balance 1,060 (0 frozen) before and after (`tripo balance`, free).
