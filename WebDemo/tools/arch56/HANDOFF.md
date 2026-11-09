@@ -1,3 +1,29 @@
+# Lane arch56: Task 1 checkpoint (9 November 2026 ~18:00 UTC, session 3849f5c8). POSTPONED by the coordinator (Screen 6 first). NOT approved.
+
+**Task 1 = the washer-to-tunnel transition, switch `seq7`** (add `,seq7` to the plain launch list). Code: `WebDemo/src/opening_six2_tunnel.js`
+(`SEQ7_ON`, `SIX2T.back`, the `S7` block before `update`). Nothing else changed; without `seq7` the `S7` block never runs.
+- **Measured cause:** the room's back wall (z -1.3) stands INSIDE the drum tube, 1.57 m behind the porthole; its curtains reach d ~1.41
+  and the window's light shafts reach d 1.094 (computed from `opening_six2_room.js`). Everything seen through the porthole past d ~1.1 was the room.
+- **What is built:**
+  1. A closed, perforated drum back, `seq7DrumBack`, at d 1.02 (dish centre 1.07, in front of every room piece). It is an opaque ShaderMaterial
+     with lavender-silver metal, ring holes with lit lips, a hub with a gold ring, six iris-blade seams, the tube's deep navy when seen from
+     outside (camera z > 1.8) and the tube's uFill water swirl.
+  2. The room's MESHES (never its lights, so the washer's light does not jump) are hidden once the washer's face covers the whole frame. The
+     test: the four frame corners land inside the face rectangle `back.face` [-0.12, 0.74, 0.2, 1.0] on z 0.26. Computed: story ~7.79 = real ~8.29 s.
+  3. The fly-through:
+     - The holes glow violet (story 7.25-7.5).
+     - The iris opens onto the tunnel's violet light (story 7.45-7.82).
+     - Only while the room is hidden does the light dissolve, centre first, into the real tunnel (`fade` 0.13 s of story time, discard).
+     - The hero's front reaches d 1.02 at story ~7.88.
+- **State:** it builds. The first low-resolution check frames are in
+  `Previews/WebDemo/six_scenes/15_sequence_pass_3849f5c8/arch56/task1_wip/`. NOT yet judged against approved 03 / 04 / 05, NOT yet proven identical without seq7.
+- **Next when resumed:**
+  1. Look at real 4.2 / 5.0 / 5.6 / 6.4 / 7.2 / 8.0-8.95 (every 0.05 s) at DPR 1.
+  2. Tune the back's look against 03 / 04.
+  3. Check that the camera's stop at the porthole (keys() eases to zero speed at story 8.0 = real 8.5) reads as continuous. The camera keys are not
+     this lane's: propose a change to the coordinator.
+  4. Prove 0 px without seq7 at real 5.60 / 8.50, DPR 2, against `14_real_game_preview_3849f5c8/stills/`.
+
 # Lane arch56 handoff (9 November 2026 ~16:15 UTC, session 47f75e22, lighting-visual-matching). NOTHING here is approved.
 
 Switch: `?s3=...,s56,arch56` (needs `level1`). Without `arch56` nothing changes. `,notm` = procedural modules B instead of the models; `,gearv2` = old gear.

@@ -153,9 +153,79 @@ export function installSix2Tunnel(ctx) {
     for (let i = 0; i < 16; i++) { const side = i % 2 ? 1 : -1, d = 2.5 + rr() * 4.8, low = rr() < 0.4, x = P.x + side * (low ? 0.3 + rr() * 0.3 : rr() * 0.6), y = low ? wy + 0.12 + rr() * 0.25 : P.y + 0.15 + rr() * 0.45;
       const b = new THREE.Mesh(new THREE.SphereGeometry(0.022 + rr() * 0.035, 16, 12), bubM[0]); b.position.set(x, y, P.z - d); b.userData.y0 = y; b.userData.ph = rr() * 6.28; T5.add(b); bubs.push(b); } }
 
+  // ------------------------------------------------ seq7: the closed drum back, its iris and the dissolve into the tunnel (see the header)
+  const S7 = SEQ7_ON ? (() => {
+    const K = T.back, R = THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, K.d)) + 0.43 * sm(1.6, 2.6, K.d) + 0.02;   // (buildVortex's radius at d, a little over)
+    const geo = new THREE.CircleGeometry(R, 120, 0, Math.PI * 2); { const pa = geo.attributes.position; for (let i = 0; i < pa.count; i++) { const q = Math.hypot(pa.getX(i), pa.getY(i)) / R; pa.setZ(i, -K.dish * (1 - q * q)); } }
+    // (CircleGeometry has one ring: subdivide radially so the dish is curved)
+    const ring = new THREE.RingGeometry(0.0005, R, 120, 24); { const pa = ring.attributes.position; for (let i = 0; i < pa.count; i++) { const q = Math.hypot(pa.getX(i), pa.getY(i)) / R; pa.setZ(i, -K.dish * (1 - q * q)); } }
+    geo.dispose();
+    const U = { uTime: vortex.U.uTime, uGlow: vortex.U.uGlow, uFill: vortex.U.uFill, uR: { value: R }, uOpen: { value: 0 }, uDiss: { value: 0 }, uHoles: { value: 0 } };
+    const mat = new THREE.ShaderMaterial({ uniforms: U,
+      vertexShader: 'uniform float uR; varying vec2 vXY; void main() { vXY = position.xy / uR; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: /* glsl */ `uniform float uTime, uGlow, uFill, uOpen, uDiss, uHoles; varying vec2 vXY;
+        float h7(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+        float n7(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(h7(i), h7(i + vec2(1.0, 0.0)), f.x), mix(h7(i + vec2(0.0, 1.0)), h7(i + vec2(1.0, 1.0)), f.x), f.y); }
+        void main() {
+          float r = length(vXY), th = atan(vXY.y, vXY.x), up = vXY.y, out7 = smoothstep(1.8, 2.7, cameraPosition.z);
+          // the dissolve into the tunnel (only once the room is hidden): a ragged front from the centre outward
+          float e = r + n7(vec2(th * 3.0, r * 6.0)) * 0.3 + n7(vec2(th * 9.0, r * 14.0)) * 0.12 - (uDiss * 1.75 - 0.3);
+          if (uDiss > 0.0 && e < 0.0) discard;
+          // perforated lavender-silver drum metal, lit from above, darker toward the hub (approved 03)
+          vec3 m = mix(vec3(0.19, 0.15, 0.46), vec3(0.58, 0.52, 0.88), smoothstep(0.1, 0.95, r) * (0.72 + 0.28 * up));
+          m += vec3(0.16, 0.14, 0.24) * smoothstep(0.1, 0.95, up) * smoothstep(0.3, 0.9, r);
+          float st = pow(0.5 + 0.5 * cos(th * 7.0 + 0.4), 12.0) * smoothstep(0.25, 0.8, r); m += vec3(0.22, 0.2, 0.32) * st * (0.4 + 0.6 * smoothstep(-0.3, 0.8, up));
+          m = mix(m, vec3(0.70, 0.64, 0.95), smoothstep(0.9, 0.94, r) * 0.6); m += vec3(0.25, 0.2, 0.3) * exp(-pow((r - 0.935) / 0.012, 2.0));   // the back's rolled edge
+          float dr = 0.082, ri = floor(r / dr), rc = (ri + 0.5) * dr, nh = max(6.0, floor(6.2832 * rc / 0.082));
+          vec2 hc = vec2(fract(th / 6.2832 * nh + 0.5 * mod(ri, 2.0)) - 0.5, (r - rc) / dr); float hr = length(hc * vec2(1.0, 1.15));
+          float hole = (1.0 - smoothstep(0.24, 0.3, hr)) * step(1.5, ri) * step(ri, 10.5);
+          m += vec3(0.28, 0.24, 0.40) * smoothstep(0.3, 0.33, hr) * (1.0 - smoothstep(0.33, 0.42, hr)) * clamp(0.5 - hc.y * 2.5, 0.0, 1.0) * step(1.5, ri) * step(ri, 10.5);   // lit lips
+          m = mix(m, mix(vec3(0.09, 0.05, 0.24), vec3(0.80, 0.62, 1.0), uHoles), hole * 0.9);
+          float b = fract((th + 2.4 * r) * 0.95493);   // six iris blades (a pinwheel), their seams
+          m = mix(m, vec3(0.10, 0.06, 0.26), (1.0 - smoothstep(0.0, 0.035, min(b, 1.0 - b))) * smoothstep(0.12, 0.16, r) * (1.0 - smoothstep(0.84, 0.88, r)) * 0.7);
+          m = mix(m, mix(vec3(0.16, 0.12, 0.40), vec3(0.42, 0.34, 0.78), smoothstep(-0.12, 0.12, up)), 1.0 - smoothstep(0.12, 0.135, r));   // the hub
+          m += vec3(0.55, 0.42, 0.25) * exp(-pow((r - 0.13) / 0.01, 2.0));   // its gold ring
+          m = mix(m, mix(vec3(0.07, 0.09, 0.34), vec3(0.24, 0.30, 0.72), smoothstep(-0.8, 0.9, up)) + vec3(0.12, 0.10, 0.24) * st, out7 * 0.85 * (1.0 - hole * uHoles));   // from outside: the tube's deep navy
+          // the water climbing round the drum (the tube's uFill swirl)
+          float fl = -0.9 + uFill * 0.95 + 0.07 * sin(th * 3.0 - uTime * 2.4) * uFill;
+          float sw = sin((r * 2.2 + th * 0.15915 + n7(vec2(th * 1.2 + uTime * 0.4, r * 3.0)) * 1.5 - uTime * 0.6) * 6.2832);
+          vec3 bl = mix(vec3(0.02, 0.1, 0.78), vec3(0.08, 0.4, 1.0), smoothstep(-0.7, 0.3, sw)); bl = mix(bl, vec3(0.3, 0.9, 1.0), smoothstep(0.4, 0.95, sw) * 0.6);
+          vec3 c = mix(bl, m, smoothstep(fl, fl + 0.18, up));
+          // the iris: inside its aperture, the tunnel's violet light (the far end's glow, not white)
+          float ap = uOpen * (1.0 + 0.22 * b);
+          vec3 L = mix(vec3(0.92, 0.82, 1.0), vec3(0.70, 0.50, 0.98), smoothstep(0.0, 0.55, r)); L = mix(L, vec3(0.52, 0.34, 0.90), smoothstep(0.5, 1.0, r));
+          float q = (r - 0.55) / 0.08; L += vec3(0.25, 0.08, 0.2) * exp(-q * q);
+          c = mix(c, L, 1.0 - smoothstep(ap - 0.012, ap, r));
+          c += vec3(0.5, 0.25, 0.55) * exp(-pow((r - ap) / 0.025, 2.0)) * step(0.001, uOpen);   // the blades' hot edge
+          c += vec3(0.7, 0.4, 0.9) * (1.0 - smoothstep(0.0, 0.06, e)) * step(0.001, uDiss);   // the dissolve's glowing edge
+          gl_FragColor = vec4(c, 1.0);
+        }` });
+    const back = new THREE.Mesh(ring, mat); back.name = 'seq7DrumBack'; back.position.set(P.x, P.y, P.z - K.d); scene.add(back);
+    // the washer face covers the whole frame: the four frame corners land inside its rectangle (convex: the whole frame does)
+    const _v = new THREE.Vector3(), cam = ctx.camera;
+    const covered = () => { for (const [x, y] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { _v.set(x, y, 0.5).unproject(cam).sub(cam.position);
+      if (_v.z > -1e-4) return false; const k = (K.faceZ - cam.position.z) / _v.z; if (k < 0) return false; const px = cam.position.x + _v.x * k, py = cam.position.y + _v.y * k;
+      if (px < K.face[0] || px > K.face[1] || py < K.face[2] || py > K.face[3]) return false; } return true; };
+    // the room's meshes (not its lights) off / on
+    let roomGroup = null, roomOff = false;
+    const setRoom = (off) => { if (off === roomOff) return; roomOff = off; if (!roomGroup) roomGroup = scene.getObjectByName('six2Room'); if (!roomGroup) return;
+      for (const c of roomGroup.children) { if (c.isLight || !c.isObject3D || c.type === 'Object3D') continue; if (off) { c.userData.s7v = c.visible; c.visible = false; } else if (c.userData.s7v !== undefined) c.visible = c.userData.s7v; } };
+    let lastS = -9, dk = 0;
+    return { back, U, update(s) {
+      const dt = Math.min(0.1, Math.max(0, s - lastS)); lastS = s; if (s < K.from) dk = 0;
+      const cov = s >= K.from && covered(); setRoom(cov);
+      if (cov) dk = Math.min(1, dk + dt / K.fade);
+      const lit = THREE.MathUtils.clamp((vortex.U.uGlow.value - 0.55) / 0.45, 0, 1);
+      U.uHoles.value = 0.2 * lit + 0.8 * sm(K.holes[0], K.holes[1], s);
+      U.uOpen.value = 1.12 * sm(K.open[0], K.open[1], s); U.uDiss.value = dk;
+      back.visible = dk < 1;
+    } };
+  })() : null;
+
   // per frame: s = the story clock (seconds after START), it = the idle clock
   const glow0 = glowL.position.clone();
   function update(s, it) {
+    if (S7) S7.update(s);
     T5.visible = s > 7.6;
     // scene 4: the porthole light behind the glass (the drum and him glow; the washer's pink and gold front keeps its own colours)
     const inW = sm(4.9, 5.4, s) * (1 - sm(7.7, 8.0, s));
