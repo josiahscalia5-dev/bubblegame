@@ -1,0 +1,11 @@
+import { C1, C2, proj, onPlane } from './proj.mjs';
+const P = (n, a) => console.log(n.padEnd(34), JSON.stringify(a));
+const o = []; for (const [sx, sy] of [[0, 0], [1, 0], [0, 1], [1, 1]]) o.push(onPlane(C2, sx, sy, -1.3)); P('C2 backwall corners', o);
+P('win TL/BR c2 (-0.47,1.76)/(0.068,0.72)', [proj(C2, [-0.47, 1.76, -1.26]), proj(C2, [0.068, 0.72, -1.26])]);
+P('REF02 win box on z-1.26 TL .613,.215', onPlane(C2, 0.613, 0.215, -1.26)); P('BR .786,.40', onPlane(C2, 0.786, 0.40, -1.26));
+P('curL c2', [proj(C2, [-0.642, 1.36, -1.18]), proj(C2, [-0.461, 1.36, -1.18])]); P('curR c2', [proj(C2, [-0.006, 1.34, -1.18]), proj(C2, [0.289, 1.34, -1.18])]);
+P('porthole c2', proj(C2, [0.3, 0.62, 0.27])); P('near unit right front c2', proj(C2, [-1.22, 1.6, -0.32])); P('near unit right y.97', proj(C2, [-1.22, 0.97, -0.32]));
+P('mid unit (-1.1..-0.62, 1.84) c2', [proj(C2, [-1.1, 1.84, -1.0]), proj(C2, [-0.62, 1.84, -1.0])]);
+for (const [n, p] of [['fgL inner', [-0.325, 0.155, 2.55]], ['fgL outer', [-0.725, 0, 2.25]], ['fgR inner', [0.184, 0.175, 2.55]], ['fgR outer', [0.584, 0, 2.25]]]) P(n, [proj(C1, p), proj(C2, p)]);
+P('c2 floor y1 x.5', onPlane(C2, 0.5, 1, 0, 'y')); P('c2 floor .05,.80', onPlane(C2, 0.05, 0.8, 0, 'y')); P('c2 floor .93,.80', onPlane(C2, 0.93, 0.8, 0, 'y'));
+P('rug c2 (-0.15±0.62, 1.45)', [proj(C2, [-0.77, 0, 1.45]), proj(C2, [0.47, 0, 1.45]), proj(C2, [-0.15, 0, 1.9])]);

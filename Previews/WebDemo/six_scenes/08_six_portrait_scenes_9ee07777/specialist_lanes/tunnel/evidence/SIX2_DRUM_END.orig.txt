@@ -1,0 +1,11 @@
+const SIX2_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 at the bottom
+        vec3 m6 = mix(vec3(0.24, 0.13, 0.44), vec3(0.56, 0.38, 0.82), 0.5 + 0.5 * up6);
+        m6 = mix(m6, vec3(0.86, 0.80, 1.0), smoothstep(0.55, 0.95, up6) * (1.0 - smoothstep(0.6, 2.2, d)) * 0.55);   // the silver sheen by the door
+        vec2 hp6 = vec2(a * 7.0, d * 3.2); vec2 hc6 = (fract(hp6 + vec2(0.0, 0.5 * mod(floor(hp6.x), 2.0))) - 0.5) * vec2(1.0, 1.35); float hr6 = length(hc6);
+        m6 = mix(m6, vec3(0.10, 0.05, 0.24), (1.0 - smoothstep(0.19, 0.25, hr6)) * 0.88);
+        m6 += vec3(0.22, 0.18, 0.32) * smoothstep(0.25, 0.3, hr6) * (1.0 - smoothstep(0.3, 0.38, hr6)) * 0.7;   // a bright lip round each hole
+        float rb6 = exp(-pow((fract(d * 0.85) - 0.5) / 0.045, 2.0)), gb6 = exp(-pow((fract(d * 0.85) - 0.56) / 0.012, 2.0)) + exp(-pow((fract(d * 0.85) - 0.44) / 0.012, 2.0));
+        m6 = mix(m6, vec3(0.95, 0.4, 0.78), rb6 * 0.8); m6 = mix(m6, vec3(1.0, 0.8, 0.36), min(1.0, gb6) * 0.85);
+        float fl6 = -0.9 + uFill * 0.95 + 0.07 * sin(a * 3.0 - uTime * 2.4 + d * 2.0) * uFill;   // the water's edge: it climbs and swirls round the drum as the wash begins
+        c = mix(blue6, m6, smoothstep(fl6, fl6 + 0.18, up6));
+        c = mix(c, vec3(0.88, 0.78, 1.0), smoothstep(5.5, 9.0, d) * 0.4 * uGlow);`;

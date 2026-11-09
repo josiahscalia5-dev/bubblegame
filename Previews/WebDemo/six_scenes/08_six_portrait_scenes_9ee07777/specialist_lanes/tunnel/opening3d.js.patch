@@ -1,0 +1,36 @@
+--- a/WebDemo/src/opening3d.js
++++ b/WebDemo/src/opening3d.js
+@@ -297,17 +297,26 @@
+         c = mix(blue6, m6, smoothstep(-0.9, -0.72, up6));
+         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(2.4, 8.0, d) * 0.85 * uGlow);`;
+ const SIX_DRUM = '';
++// (six2 pass 4, the lighting specialist: REF03 lavender-silver drum by the door; REF05 violet tunnel, magenta toward the crown, pink glow round each
++// arch of opening_six2_tunnel.js (d = 2.2 + 0.62 k), polished streaks, holes with a lit lip that fade with distance; seen from outside the washer
++// (camera z > 1.8: scenes 1, 2, 4; REF02 / REF04) deep navy blue-violet; a violet, not white, far end)
+ const SIX2_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 at the bottom
+-        vec3 m6 = mix(vec3(0.24, 0.13, 0.44), vec3(0.56, 0.38, 0.82), 0.5 + 0.5 * up6);
+-        m6 = mix(m6, vec3(0.86, 0.80, 1.0), smoothstep(0.55, 0.95, up6) * (1.0 - smoothstep(0.6, 2.2, d)) * 0.55);   // the silver sheen by the door
++        float out6 = smoothstep(1.8, 2.7, cameraPosition.z), tun6 = smoothstep(1.3, 2.5, d), far6 = smoothstep(3.0, 8.5, d);
++        float ak6 = fract((d - 2.2) / 0.62), ar6 = exp(-pow(min(ak6, 1.0 - ak6) / 0.17, 2.0)) * tun6;
++        float pol6 = pow(0.5 + 0.5 * cos(a * 6.0 + 0.5), 10.0) * (0.35 + 0.65 * smoothstep(-0.4, 0.9, up6));
++        vec3 m6 = mix(vec3(0.17, 0.15, 0.44), vec3(0.56, 0.50, 0.86), smoothstep(-0.8, 0.9, up6));
++        m6 = mix(m6, mix(vec3(0.26, 0.13, 0.50), vec3(0.66, 0.32, 0.76), smoothstep(-0.6, 0.9, up6)), tun6 * 0.75);
++        m6 = mix(m6, vec3(0.86, 0.36, 0.78), ar6 * 0.5);
++        m6 = mix(m6, vec3(0.38, 0.27, 0.80), far6 * 0.55);
++        m6 += vec3(0.30, 0.26, 0.40) * pol6;
+         vec2 hp6 = vec2(a * 7.0, d * 3.2); vec2 hc6 = (fract(hp6 + vec2(0.0, 0.5 * mod(floor(hp6.x), 2.0))) - 0.5) * vec2(1.0, 1.35); float hr6 = length(hc6);
+-        m6 = mix(m6, vec3(0.10, 0.05, 0.24), (1.0 - smoothstep(0.19, 0.25, hr6)) * 0.88);
+-        m6 += vec3(0.22, 0.18, 0.32) * smoothstep(0.25, 0.3, hr6) * (1.0 - smoothstep(0.3, 0.38, hr6)) * 0.7;   // a bright lip round each hole
+-        float rb6 = exp(-pow((fract(d * 0.85) - 0.5) / 0.045, 2.0)), gb6 = exp(-pow((fract(d * 0.85) - 0.56) / 0.012, 2.0)) + exp(-pow((fract(d * 0.85) - 0.44) / 0.012, 2.0));
+-        m6 = mix(m6, vec3(0.95, 0.4, 0.78), rb6 * 0.8); m6 = mix(m6, vec3(1.0, 0.8, 0.36), min(1.0, gb6) * 0.85);
++        float hk6 = (1.0 - 0.6 * smoothstep(4.5, 8.5, d)) * (1.0 - 0.6 * out6);
++        m6 = mix(m6, vec3(0.09, 0.05, 0.24), (1.0 - smoothstep(0.18, 0.24, hr6)) * 0.85 * hk6);
++        m6 += vec3(0.30, 0.26, 0.42) * smoothstep(0.24, 0.27, hr6) * (1.0 - smoothstep(0.27, 0.36, hr6)) * clamp(0.5 - hc6.y * 2.5, 0.0, 1.0) * hk6;
++        m6 = mix(m6, mix(vec3(0.07, 0.09, 0.34), vec3(0.24, 0.30, 0.72), smoothstep(-0.8, 0.9, up6)) + vec3(0.18, 0.16, 0.36) * pol6, out6 * 0.85);
+         float fl6 = -0.9 + uFill * 0.95 + 0.07 * sin(a * 3.0 - uTime * 2.4 + d * 2.0) * uFill;   // the water's edge: it climbs and swirls round the drum as the wash begins
+         c = mix(blue6, m6, smoothstep(fl6, fl6 + 0.18, up6));
+-        c = mix(c, vec3(0.88, 0.78, 1.0), smoothstep(5.5, 9.0, d) * 0.4 * uGlow);`;
++        c = mix(c, vec3(0.70, 0.54, 1.0), smoothstep(5.5, 9.0, d) * 0.45 * uGlow);`;
+ function buildVortex() {
+   const P = OPENING3D.porthole, len = 9, n = 90, nA = 48;
+   const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);   // (hidden behind the washer and the wall until the camera is inside)
