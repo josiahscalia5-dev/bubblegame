@@ -27,6 +27,9 @@ export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
 // `water6` (lane s56, session 47f75e22, the user's Scene 6 mandate): the water pass (sections 5-7 below: the per-pixel water material, the
 // shorter rolling swells, the chop, Scene 6's spray at his sides). Off: the s56 water exactly as before (?s3=...,s56 unchanged).
 export const WATER6_ON = S56_ON && LIST.includes('water6');
+// (session 3849f5c8, the coordinator) the two orange crown pipes running from the top corners (section 3, ang +-0.98) are not in the approved
+// Scene 6: off with `water6` or the sequence candidate `seq7` (arch56 skips section 3 under its own switch)
+const NOPIPES6 = S56_ON && (LIST.includes('water6') || LIST.includes('seq7'));
 
 // every number (window.__bwS56 in the browser)
 export const S56 = {
@@ -73,6 +76,9 @@ export const S56 = {
     churn: 0.8,     // the chop's extra strength round him
     churnCrest: 0.25,   // how much lower the crest threshold is round him (more white lines where he swims)
     froth: 1.0,     // the frothy splash band at his sides
+    // (session 3849f5c8) the chop's waves, live: [wavelength m, angle deg to the run, A m, phase]. v2's spread (+-12..58 deg) crossed into a net of
+    // contour lines; the approved Scene 6's wavelets roll ACROSS the run (crests near horizontal on screen, curved by the domain warp)
+    chopSpec: [[1.40, 12, 0.040, 0.3], [0.95, -28, 0.030, 2.2], [0.66, 40, 0.022, 4.1], [0.46, -50, 0.015, 1.1], [0.32, 22, 0.010, 5.3], [0.22, -35, 0.007, 0.7], [0.155, 58, 0.005, 3.6]],
   },
   hero6: { sink: 0.4 },   // `water6`: his drawn body sunk to about its widest line (the art director: visible height 0.238 H vs 0.158 approved)
   splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4 },   // `water6`: crisp droplets thrown from his sides
@@ -112,6 +118,11 @@ const CHOP_SPEC = [
 export const CHOP = CHOP_SPEC.map(([L, deg, A, p]) => { const k = 2 * Math.PI / L, a = deg * Math.PI / 180; return [A, k * Math.sin(a), k * Math.cos(a), Math.sqrt(9.8 * k), p]; });   // [A, kx, ku, w, phase]
 const CHOP_K = 1.4, CHOP_MEAN = Math.exp(-CHOP_K) * [0, 1, 2, 3, 4, 5].reduce((a, n) => a + Math.pow(CHOP_K / 2, 2 * n) / Math.pow([1, 1, 2, 6, 24, 120][n], 2), 0);   // (rounded crests; mean of exp(K (sin - 1)) = e^-K I0(K))
 const CHOP_MAX = CHOP.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0);
+// `water6` (session 3849f5c8): the same chop with its table in uniforms (S56.water.chopSpec, live-tunable): uC1[i] = (A / max, A K, kx, ku), uC2[i] = (w, phase)
+const chopUniforms = (spec, c1, c2) => { const rows = spec.map(([L, deg, A, p]) => { const k = 2 * Math.PI / L, a = deg * Math.PI / 180; return [A, k * Math.sin(a), k * Math.cos(a), Math.sqrt(9.8 * k), p]; });
+  const mx = rows.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0) || 1;
+  rows.forEach(([A, kx, ku, w, p], i) => { if (i < c1.length) { c1[i].set(A / mx, A * CHOP_K, kx, ku); c2[i].set(w, p); } });
+  for (let i = rows.length; i < c1.length; i++) { c1[i].set(0, 0, 0, 0); c2[i].set(0, 0); } };
 const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const WAVE_GLSL = /* glsl */ `
 vec3 s56Wave(float x, float u, float t) {   // (height, d/dx, d/du)
@@ -125,6 +136,17 @@ vec3 s56Chop(vec2 p, float t) {   // (height normalised to its maximum, d/dx m/m
   vec3 r = vec3(0.0); float ph, s, fd;
 ${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
   r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cos(ph), ${f(A * CHOP_K * ku)} * s * cos(ph));`).join('\n')}
+  return r;
+}`;
+const CHOP_N = 8;
+const CHOP_GLSL_U = /* glsl */ `
+uniform vec4 uC1[${CHOP_N}]; uniform vec2 uC2[${CHOP_N}];
+vec3 s56Chop(vec2 p, float t) {   // (as above, the table in uniforms)
+  vec3 r = vec3(0.0); float ph, s, fd;
+  for (int i = 0; i < ${CHOP_N}; i++) {
+    ph = uC1[i].z * p.x + uC1[i].w * p.y - uC2[i].x * t + uC2[i].y; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
+    r += vec3(uC1[i].x * (s - ${f(CHOP_MEAN)} * fd), uC1[i].y * uC1[i].z * s * cos(ph), uC1[i].y * uC1[i].w * s * cos(ph));
+  }
   return r;
 }`;
 
@@ -347,7 +369,7 @@ export async function buildS56(ctx) {
     }
   }
   // crown pipes along the ceiling (both sides of the lamps), with flanges at every arch
-  for (const side of [-1, 1]) {
+  for (const side of NOPIPES6 ? [] : [-1, 1]) {
     const ang = side * 0.98, rr = S.R - 0.16;
     for (let ci = 0; ci < nCh; ci++) {
       const ua = U0 + ci * S.chunk, ub = Math.min(U1, ua + S.chunk), pts = [];
@@ -463,13 +485,15 @@ export async function buildS56(ctx) {
   // `water6` (lane s56, session 47f75e22): every white and light term PER PIXEL, the crest lines' width set in screen pixels; the colour
   // moves only along the calibrated ramp (S56.water: deep -> mid -> turq), one ramp per grade, blended by the hero grade's weight (gradeHero)
   const wU = { uDeep: { value: new THREE.Vector3() }, uMid: { value: new THREE.Vector3() }, uTurq: { value: new THREE.Vector3() }, uFoam: { value: new THREE.Vector3() },
-    uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uW3: { value: new THREE.Vector4(0, 0, 0, 0.35) }, uW4: { value: new THREE.Vector4() }, uMask: { value: 0 } };
+    uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uW3: { value: new THREE.Vector4(0, 0, 0, 0.35) }, uW4: { value: new THREE.Vector4() }, uMask: { value: 0 },
+    uC1: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector4()) }, uC2: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector2()) } };
   let gradeHero = 0;   // the hero grade's weight this frame (tunnel_r7_hero.js heroGrade: it replaces the drum grade while he is in the hero stretch)
   const mixV = (o, a, b, k) => o.set(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k);
   const syncWater = () => { const w = S.water, k = gradeHero;
     mixV(wU.uDeep.value, w.deep, w.deepH, k); mixV(wU.uMid.value, w.mid, w.midH, k); mixV(wU.uTurq.value, w.turq, w.turqH, k); wU.uFoam.value.set(...w.foam);
     wU.uW1.value.set(w.chop, w.crest, w.ripple, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uW3.value.set(w.lean, w.height, w.gap, wU.uW3.value.w);
-    wU.uW4.value.set(w.line, w.churn, w.churnCrest, w.froth); wU.uMask.value = w.mask ? 1 : 0; };
+    wU.uW4.value.set(w.line, w.churn, w.churnCrest, w.froth); wU.uMask.value = w.mask ? 1 : 0;
+    if (w.chopSpec) chopUniforms(w.chopSpec, wU.uC1.value, wU.uC2.value); };
   // the hero grade's weight is read from the grade pass's own uniform (uHero, set by tunnel_r7_hero.js every frame) through the game's
   // read-only hook (game.js window.__bw.debug(): ctx has no composer); 0 (the drum ramp) where there is no hero grade
   let gradeU = null;
@@ -502,7 +526,7 @@ export async function buildS56(ctx) {
       varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
       ${HAZE}
-      ${CHOP_GLSL}
+      ${CHOP_GLSL_U}
       // a thin line along the level set f = 0, its half-width in screen pixels
       float s56Line(float f, float px) { return 1.0 - smoothstep(0.5, 1.0, abs(f) / max(fwidth(f) * px, 1e-5)); }
       void main() {
