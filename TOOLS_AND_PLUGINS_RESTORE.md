@@ -1,3 +1,34 @@
+# TOOLS AND PLUGINS RESTORE (updated 9 November 2026 ~20:40 UTC, session ddf175f2). Statuses below are LIVE results of this session.
+
+## 0. Status of every tool (W = working, tested this session; P = partly; C = configured, not live-called; N = not connected / not installed)
+| Tool | Status | How it was checked | What a new account must do |
+|---|---|---|---|
+| Git + GitHub (repo josiahscalia5-dev/bubblegame) | W | pushes verified with git ls-remote; branch creation via the GitHub MCP tool | connect GitHub on claude.ai; Claude GitHub App on the repo. Note: this session's git proxy refused TAG pushes; branches work |
+| Node 22, npm, three r170, esbuild build (`cd WebDemo && npm ci && node build.mjs`) | W | `Tools/verify_restore.sh --build`: 28 passed, 0 failed | nothing (npm ci) |
+| Playwright 1.63 + Chromium (`/opt/pw-browsers`) | W | every capture (var6.cjs, shots56.cjs, flow_routes.cjs) | nothing (cloud image) |
+| chrome-devtools-mcp (parallax plugin, 1.6.0) | W | list_pages, new_page on the game | enable the plugin (below) |
+| threejs-devtools-mcp (parallax plugin, 0.2.1) | P | bridge connected + renderer_info on the live game (port 3000 via 9222); after a session resume: CONNECT_TIMEOUT | `/mcp` -> reconnect; serve WebDemo on port 3000 (`python3 -m http.server 3000` in WebDemo) |
+| playwright-mcp (parallax plugin, 0.0.78) | W | browser_tabs | enable the plugin |
+| playwright (org synced plugin, Microsoft) | P | "browser already in use" while the parallax playwright ran | use one at a time |
+| Spector MCP: project `spector` (.mcp.json) and `plugin:parallax-threejs:spector` | C | failed at first start (build missing); after `Tools/cloud_env_setup.sh` both servers start and list capture_frame (restore check); tools appeared after resume, not called | `/mcp` -> reconnect if failed; live proof `Tools/spector_live.cjs` |
+| serena (org synced plugin) | N | CONNECT_TIMEOUT | not used by this project |
+| Blender 5.2.3 (headless) | W | built glow_tank.glb (`Tools/blender_glow_tank.py`), cut Tripo parts (`Tools/blender_drop_parts.py`) | `bash Tools/cloud_env_setup.sh` (downloads, checksum) |
+| gltf-transform 4.5.1, gltfpack, Khronos validator | W | `Tools/tripo_mobile_lods.sh`, `node Tools/check_models.cjs`: 72 GLB, 0 failed | cloud_env_setup.sh |
+| FFmpeg 6.1, ImageMagick, git-lfs | W | versions (restore check) | cloud image |
+| Python visual venv (OpenCV 5, scikit-image 0.26, NumPy, Pillow) | W | all measurements | cloud_env_setup.sh |
+| PyTorch / LPIPS / Optuna (metrics venv) | N | not installed (needs ~16 GB disk at peak) | optional: cloud_env_setup.sh (last step) |
+| Tripo CLI 0.11.2 + API | W | `tripo balance` = 700; 3 jobs this session (360 credits, approved) | NETWORK SECRET for host `openapi.tripo3d.ai` (Bearer) in the environment settings; run with `TRIPO_API_KEY=tsk_proxy-injected`; paid jobs only through `Tools/tripo_job.sh` and only with the user's approval |
+| Sketchfab API (downloads) | W | `/v3/me` ok, one free CC model downloaded (`Tools/assetfinder/import_sketchfab.py`) | optional NETWORK SECRET for `api.sketchfab.com` (Authorization: Token) |
+| CGAxis remote MCP `https://mcp.cgaxis.com/mcp` | W (read-only) | initialize, tools/list, search_assets via `Tools/assetfinder/mcp_http.py` | nothing (no sign-in) |
+| Meshy, Hyper3D Rodin, Poly Pizza, Blender MCP (princicode) | N | not configured | not needed (see Tools/assetfinder/README.md) |
+| Autosave (5 min) + SessionStart hook | W | 1 process; pushes VERIFIED; also fast-forwards kc4ecl and tamzio | starts by itself (`.claude/hooks/session-start.sh`) |
+| Project agents (6) + skill bubble-wash-screen-matcher | W | game-art-director, lighting-visual-matching, screen4-water-motion-engineer used live this session | load from `.claude/` automatically |
+| parallax-threejs 0.4.12 plugin agents (scenario-author, shader-reviewer, visual-debugger) | C | listed by the Agent tool | the plugin must be enabled on the account (org synced plugins / claude.ai Customize -> plugins), then a NEW session. Text copy: `Tools/plugin_snapshots/parallax-threejs-0.4.12/` (MIT) |
+
+Manual per account (cannot travel through Git; never commit a key): GitHub connection + app; the parallax-threejs plugin; the network secrets
+(Tripo; optionally Sketchfab); the cloud environment's network access (this session ran on the Default environment with UNRESTRICTED network) and,
+optionally, its setup script `if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`.
+
 # Tools and plugins: restore and verify (NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2, account-transfer backup; tested LIVE)
 
 ## 0. Session d847dce2 (new account): what was really active

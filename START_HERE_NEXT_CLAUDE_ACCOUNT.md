@@ -1,3 +1,33 @@
+# START HERE: Bubble Wash Kingdom on a new Claude account (updated 9 November 2026 ~20:40 UTC, session ddf175f2, ACCOUNT-TRANSFER BACKUP)
+
+## 0000. COPY-READY RESTORATION PROMPT (session ddf175f2; paste ALL of it as the first message on the next account)
+> Continue my EXISTING Bubble Wash Kingdom 3D mobile game (three.js r170, `WebDemo/`) in the GitHub repository josiahscalia5-dev/bubblegame.
+> Do not restart, redesign or replace anything. Never force-push, delete or rewrite a branch. Do not spend Tripo or other paid credits without my approval.
+> 1. Start from branch `claude/bubble-wash-transfer-screen6-to82gp` (the newest work, autosaved; it CONTAINS ccr-68def37c-grxgz1, claude/bubble-wash-restore-transfer-kc4ecl and
+>    claude/bubble-wash-restore-tamzio). A fixed, verified snapshot of it is `claude/bubble-wash-account-transfer-backup-ddf175f2`. If the session opens on another branch, check it
+>    contains one of these and develop there (git merge-base --is-ancestor).
+> 2. Read, in order: `CLAUDE.md` (top block), this file's section 0000, `CURRENT_PROJECT_STATUS.md` (top), `TOOLS_AND_PLUGINS_RESTORE.md` (top), `PARALLEL_LANES.md` (top).
+> 3. Run `bash Tools/restore_session.sh` (safe to rerun; installs only missing essentials). It must say "0 failed" for the build and models. Then do the
+>    live checks it prints (ToolSearch the parallax-threejs MCP tools and mcp__spector, call each once; the Agent tool must list the project agents).
+>    Tell me at once what needs my action (plugin, /mcp reconnect, network secrets) - see TOOLS_AND_PLUGINS_RESTORE.md section 0.
+> 4. Resume the FIRST open task: natural SWIMMING controls in the Screen 6 gameplay (CURRENT_PROJECT_STATUS.md "Next tasks", task C), then the opening
+>    girl-and-laundry scene (D) and the washing-machine entrance and magical spin into Screen 6 (E). Screen 6 = the 6th approved screen of the sequence, not Level 6.
+> 5. Every visual change behind a reversible `?s3=` switch, judged only by real 864x1536 captures next to the approved image; prove the plain launch and
+>    Classic Screen 4 (`?s3=intunnel`) unchanged; run the Level 1 route test; commit and push each tested step.
+
+## 0001. What is where (verified 9 November 2026 ~20:40 UTC)
+- The Screen 6 candidate (NOT approved, the user reviews it): `?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7`. The plain launch is unchanged (proved 0 px).
+- Approved references: `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06` (01 Surprise hideout, 02 She loads laundry,
+  03 Oops he goes in, 04 The wash begins, 05 Into the laundry tunnel, 06 Swim, collect and avoid enemies). Isolated Screen 6 asset cuts:
+  `Design/ReferencePacks/2026-11-09_Screen6_Isolated_Asset_References/`.
+- Evidence of this session: `Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/` (README per step; final side-by-side `16_hero7/SBS_FINAL_approved_vs_game_hero7.png`).
+- Models: 72 GLB in the repository (no Git LFS; every model is a normal Git file; `node Tools/check_models.cjs` validates them). New this session:
+  `WebDemo/models/s6tripo/` (3 Tripo models, 360 credits), `WebDemo/models/s6assets/glow_tank.glb` (Blender-modelled), `WebDemo/models/s6library/`
+  (Sketchfab CC BY 4.0, credited in CREDITS.md).
+- Agents: project agents in `.claude/agents/` (6) and the skill `.claude/skills/bubble-wash-screen-matcher/` load from the repository by themselves.
+  The plugin agents (scenario-author, shader-reviewer, visual-debugger) need the parallax-threejs plugin enabled on the account; a reference copy
+  of their text is in `Tools/plugin_snapshots/parallax-threejs-0.4.12/`.
+
 # START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026 ~16:20 UTC, session 47f75e22, EMERGENCY BACKUP)
 
 ## 000. COPY-READY RESTORATION PROMPT (session 47f75e22; paste ALL of it as the first message on the next account)

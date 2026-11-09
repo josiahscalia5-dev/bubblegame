@@ -10,7 +10,7 @@
 # Full report: ~/.bubblewash-autosave/preflight_<id>.txt
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 0
-WORK=claude/bubble-wash-restore-transfer-kc4ecl          # the user's PRIMARY branch (session d847dce2; 52t7ym is historical)
+WORK=${BW_WORK_BRANCH:-claude/bubble-wash-transfer-screen6-to82gp}   # (session ddf175f2: contains ccr-68def37c-grxgz1, kc4ecl, tamzio)
 ROLLBACKS="claude/bubble-wash-rollback-before-s56-default claude/bubble-wash-rollback-before-tripo3-default claude/bubble-wash-account-switch-e1nndb"
 T="${BUBBLEWASH_TOOLS:-$HOME/.bubblewash-tools}"
 ID="${1:-manual}"; OUTD="$HOME/.bubblewash-autosave"; mkdir -p "$OUTD"; REP="$OUTD/preflight_${ID:0:8}.txt"

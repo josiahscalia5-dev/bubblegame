@@ -1,3 +1,17 @@
+# PARALLEL LANES (updated 9 November 2026 ~20:40 UTC, session ddf175f2)
+Lane status (all pushed, 0 uncommitted; `bash Tools/lanes.sh status`; recreate worktrees: `bash Tools/lanes.sh create`):
+| Lane | Branch | Head | State |
+|---|---|---|---|
+| arch56 (lighting-visual-matching) | claude/lane-s56-arch-d847dce2 | 818d4014 | Screen 6 pass 2 merged into claude/bubble-wash-transfer-screen6-to82gp; seq7 (washer transition) unjudged |
+| brush6 (lighting-visual-matching) | claude/lane-s6-brush-47f75e22 | 08ab9105 | pass 2 merged |
+| s56 water (screen4-water-motion-engineer) | claude/lane-s56-tunnel-ac4e3449 | b29d4a10 | water6 + hero6 pass 2 merged; opening water plan in its HANDOFF |
+| girl12 (character-animation-specialist) | claude/lane-s12-girl-room-ac4e3449 | 1ffd6b8b | not touched this session; use for task D |
+| washer34 (water-vfx-engineer) | claude/lane-s34-washer-ac4e3449 | 4c40aa5d | not touched this session; use for task E |
+| ui | claude/lane-ui-hud-ac4e3449 | be6a5681 | not touched this session |
+After this session the coordinator (main session) also owns: `src/s56_env6.js`, `s56_tank6.js`, `s56_tripo6.js`, `s56_crown6.js`, `s56_hero7.js` and the
+section-0 hooks in `s56_tunnel.js`. A lane starting from an older head must merge `claude/bubble-wash-transfer-screen6-to82gp` first. Specialists get the measured targets in
+`WebDemo/tools/env6/TARGETS.md` and the frozen-frame tool `WebDemo/tools/env6/var6.cjs`.
+
 # Parallel specialist lanes: ownership plan (9 November 2026, session ac4e3449)
 
 ## Lane status (9 November 2026 ~17:25 UTC, session 3849f5c8, new account: THE USER'S SEQUENCE PRIORITY CORRECTION)
