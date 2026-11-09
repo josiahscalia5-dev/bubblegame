@@ -24,6 +24,12 @@ import { BRUSH6_ON, buildBrush6 } from './s56_brush6.js';   // (session 47f75e22
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
+// `water6` (lane s56, session 47f75e22, the user's Scene 6 mandate): the water pass (sections 5-7 below: the per-pixel water material, the
+// shorter rolling swells, the chop, Scene 6's spray at his sides). Off: the s56 water exactly as before (?s3=...,s56 unchanged).
+export const WATER6_ON = S56_ON && LIST.includes('water6');
+// (session 3849f5c8, the coordinator) the two orange crown pipes running from the top corners (section 3, ang +-0.98) are not in the approved
+// Scene 6: off with `water6` or the sequence candidate `seq7` (arch56 skips section 3 under its own switch)
+const NOPIPES6 = S56_ON && (LIST.includes('water6') || LIST.includes('seq7'));
 
 // every number (window.__bwS56 in the browser)
 export const S56 = {
@@ -40,27 +46,113 @@ export const S56 = {
   glide: { secs: 1.8, off: [0, 0.38, -1.15], look: [0, 0.32, 6.0], fov: 60 },
   hero: { sink: 0.1, follow: 1.0 },
   splash: { rate: 26, burst: 22, speed: 2.1 },
+  // `water6` only: the water's look, live-tunable (window.__bwS56.water, pushed to the shader every frame; window.__bwS56Sync() pushes it
+  // without stepping). The cause of the pale patches (measured on the s56 default by ablation, tools/s56/ab56.cjs; frames in Previews/.../13_scene6_match_47f75e22/water/cause_default/):
+  // the water shader's own terms, the horizon "sun" lobe (blocky blotches where the value-noise ripples tilt the reflection) and the
+  // collar / wake whites computed per VERTEX (rows 0.3 m apart: broad smooth bands); the soap-bubble layers changed 0.0 % of the pale.
+  // The palette is CALIBRATED through the real post chain with a colour-patch probe (the water drew a grid of 210 known colours, water/probe/): inside
+  // the drum (u 206) the drum grade (tunnel_s4.js round2Light: round4/5 contrast about a 0.5 pivot) crushes any green below ~0.2 to the red
+  // level, (0, 0.15, 0.61) -> #1d1df0 violet, while under the hero grade (Tap to Start) the same input shows #006edb. So: one ramp per grade,
+  // blended by the hero grade's own weight, and the shading only moves ALONG the ramp (trough -> body -> lit face), never multiplied toward
+  // black. Shader-linear inputs and the frame colours they measured (approved targets in brackets):
+  //   drum: deep (0.15, 0.25, 0.51) -> #055dd8 (#025bdb), mid (0.125, 0.39, 0.65) -> #1496ec (#1495f7), turq (0.125, 0.87, 1.12) -> #4bd3f8 (#75d4fb)
+  //   hero: deep (0, 0.11, 0.63) -> #0159dd, mid (0.025, 0.29, 0.75) -> #1493ec, turq (0.15, 0.81, 1.12) -> #4ed4f6
+  water: {
+    deep: [0.15, 0.25, 0.51], mid: [0.125, 0.39, 0.65], turq: [0.125, 0.87, 1.12],
+    deepH: [0.0, 0.11, 0.63], midH: [0.025, 0.29, 0.75], turqH: [0.15, 0.81, 1.12],
+    foam: [0.9, 0.97, 1.06],
+    chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
+    crest: 0.3,     // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
+    ripple: 1.0,    // the churned water round him: thin broken rings spreading from his sides
+    collar: 1.0,    // the thin broken splash line where the water meets his body (strongest at his sides)
+    wake: 0.6,      // the two thin wake lines toward the camera
+    spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
+    glint: 1.0,     // the sky glints
+    haze: 1.0,      // the far violet-white glow
+    lean: 3.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
+    height: 0.45,   // the wave height's share of the shading (lifted water lighter)
+    gap: 0.35,      // the share of the collar / wake / ripple lines broken away (0 = continuous lines)
+    line: 1.2,      // crest line half-width in screen pixels (at the canvas's resolution)
+    churn: 0.8,     // the chop's extra strength round him
+    churnCrest: 0.25,   // how much lower the crest threshold is round him (more white lines where he swims)
+    froth: 1.0,     // the frothy splash band at his sides
+    // (session 3849f5c8) the chop's waves, live: [wavelength m, angle deg to the run, A m, phase]. v2's spread (+-12..58 deg) crossed into a net of
+    // contour lines; the approved Scene 6's wavelets roll ACROSS the run (crests near horizontal on screen, curved by the domain warp)
+    bias: 0.0,      // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
+    turqAt: 0.5,    // (3849f5c8) where on the shade the turquoise begins (higher: turquoise only on the most lit faces)
+    glint2: 0.0,    // (3849f5c8) the arch lamps' and far glow's glints on the chop's faces (white, per pixel)
+    glintExp: 60.0, // (3849f5c8) their sharpness
+    chopSpec: [[1.40, 12, 0.040, 0.3], [0.95, -28, 0.030, 2.2], [0.66, 40, 0.022, 4.1], [0.46, -50, 0.015, 1.1], [0.32, 22, 0.010, 5.3], [0.22, -35, 0.007, 0.7], [0.155, 58, 0.005, 3.6]],
+  },
+  // `water6`: his drawn body sunk to about its widest line (the art director: visible height 0.238 H vs 0.158 approved); (session 3849f5c8) squash:
+  // his drawn body's height (m.tilt.scale.y; wide: x and z) for the approved low rounded dome; drawn only, his state and pickups untouched
+  hero6: { sink: 0.4, squash: 1.0, wide: 1.0 },
+  splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4, n: 220 },   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 
 // ---------------------------------------------------------------- the waves (one table: GLSL and JS stay in step)
 // [amplitude m, k across, k along, angular speed, phase]: h = sum A sin(kx x + ku u - w t + p). Phase speeds 2-3 m/s forward (he swims at 7.2).
-export const WAVES = [
+const WAVES_S56 = [
   [0.12, 0.22, 0.60, 2.0, 0.0],
   [0.085, -0.85, 1.30, 3.1, 1.3],
   [0.045, 1.60, 2.60, 4.4, 0.4],
   [0.018, -2.40, 4.90, 6.2, 2.1],
   [0.022, 2.10, 0.45, -1.2, 0.7],
 ];
+// `water6`: shorter rolling swells (wavelengths 8.4 / 3.5 / 1.9 / 1.3 m, angular speeds near deep water's sqrt(g k), phase speeds 1.5-3.5 m/s)
+// instead of the long smooth 10 m swell that read as a flat sheet
+const WAVES_W6 = [
+  [0.085, 0.22, 0.75, 2.8, 0.0],
+  [0.07, -0.85, 1.60, 4.2, 1.3],
+  [0.05, 1.50, 2.90, 5.6, 0.4],
+  [0.03, -2.30, 4.40, 6.9, 2.1],
+  [0.02, 2.10, 0.45, -1.2, 0.7],
+];
+export const WAVES = WATER6_ON ? WAVES_W6 : WAVES_S56;
 export function s56Wave(x, u, t) {
   let h = 0; for (const [A, kx, ku, w, p] of WAVES) h += A * Math.sin(kx * x + ku * u - w * t + p);
   return h;
 }
+// `water6`: the fragment-only chop: short sharp-crested rolling waves (exp(K (sin - 1)): sharp crests, broad troughs), wavelengths 1.4-0.155 m
+// (the approved Scene 6's wavelets are fine: ~20 px apart round the coins, ~60 px at the bottom of the frame), deep-water speeds
+// (w = sqrt(9.8 k)), at a spread of angles to the run; each fades out where it would alias. Built from [wavelength m, angle deg, A m, phase].
+const CHOP_SPEC = [
+  [1.40, 12, 0.040, 0.3], [0.95, -28, 0.030, 2.2], [0.66, 40, 0.022, 4.1], [0.46, -50, 0.015, 1.1],
+  [0.32, 22, 0.010, 5.3], [0.22, -35, 0.007, 0.7], [0.155, 58, 0.005, 3.6],
+];
+export const CHOP = CHOP_SPEC.map(([L, deg, A, p]) => { const k = 2 * Math.PI / L, a = deg * Math.PI / 180; return [A, k * Math.sin(a), k * Math.cos(a), Math.sqrt(9.8 * k), p]; });   // [A, kx, ku, w, phase]
+const CHOP_K = 1.4, CHOP_MEAN = Math.exp(-CHOP_K) * [0, 1, 2, 3, 4, 5].reduce((a, n) => a + Math.pow(CHOP_K / 2, 2 * n) / Math.pow([1, 1, 2, 6, 24, 120][n], 2), 0);   // (rounded crests; mean of exp(K (sin - 1)) = e^-K I0(K))
+const CHOP_MAX = CHOP.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0);
+// `water6` (session 3849f5c8): the same chop with its table in uniforms (S56.water.chopSpec, live-tunable): uC1[i] = (A / max, A K, kx, ku), uC2[i] = (w, phase)
+const chopUniforms = (spec, c1, c2) => { const rows = spec.map(([L, deg, A, p]) => { const k = 2 * Math.PI / L, a = deg * Math.PI / 180; return [A, k * Math.sin(a), k * Math.cos(a), Math.sqrt(9.8 * k), p]; });
+  const mx = rows.reduce((s, c) => s + c[0] * (1 - CHOP_MEAN), 0) || 1;
+  rows.forEach(([A, kx, ku, w, p], i) => { if (i < c1.length) { c1[i].set(A / mx, A * CHOP_K, kx, ku); c2[i].set(w, p); } });
+  for (let i = rows.length; i < c1.length; i++) { c1[i].set(0, 0, 0, 0); c2[i].set(0, 0); } };
 const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(+v.toFixed(5)));
 const WAVE_GLSL = /* glsl */ `
 vec3 s56Wave(float x, float u, float t) {   // (height, d/dx, d/du)
   vec3 r = vec3(0.0); float ph;
 ${WAVES.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * x + ${f(ku)} * u - ${f(w)} * t + ${f(p)}; r += vec3(${f(A)} * sin(ph), ${f(A * kx)} * cos(ph), ${f(A * ku)} * cos(ph));`).join('\n')}
+  return r;
+}`;
+// the chop (rounded crests), each wave faded by its own pixel footprint before it would alias
+const CHOP_GLSL = /* glsl */ `
+vec3 s56Chop(vec2 p, float t) {   // (height normalised to its maximum, d/dx m/m, d/du m/m)
+  vec3 r = vec3(0.0); float ph, s, fd;
+${CHOP.map(([A, kx, ku, w, p]) => `  ph = ${f(kx)} * p.x + ${f(ku)} * p.y - ${f(w)} * t + ${f(p)}; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
+  r += vec3(${f(A / CHOP_MAX)} * (s - ${f(CHOP_MEAN)} * fd), ${f(A * CHOP_K * kx)} * s * cos(ph), ${f(A * CHOP_K * ku)} * s * cos(ph));`).join('\n')}
+  return r;
+}`;
+const CHOP_N = 8;
+const CHOP_GLSL_U = /* glsl */ `
+uniform vec4 uC1[${CHOP_N}]; uniform vec2 uC2[${CHOP_N}];
+vec3 s56Chop(vec2 p, float t) {   // (as above, the table in uniforms)
+  vec3 r = vec3(0.0); float ph, s, fd;
+  for (int i = 0; i < ${CHOP_N}; i++) {
+    ph = uC1[i].z * p.x + uC1[i].w * p.y - uC2[i].x * t + uC2[i].y; fd = 1.0 - smoothstep(0.3, 1.0, fwidth(ph)); s = exp(${f(CHOP_K)} * (sin(ph) - 1.0)) * fd;
+    r += vec3(uC1[i].x * (s - ${f(CHOP_MEAN)} * fd), uC1[i].y * uC1[i].z * s * cos(ph), uC1[i].y * uC1[i].w * s * cos(ph));
+  }
   return r;
 }`;
 
@@ -283,7 +375,7 @@ export async function buildS56(ctx) {
     }
   }
   // crown pipes along the ceiling (both sides of the lamps), with flanges at every arch
-  for (const side of [-1, 1]) {
+  for (const side of NOPIPES6 ? [] : [-1, 1]) {
     const ang = side * 0.98, rr = S.R - 0.16;
     for (let ci = 0; ci < nCh; ci++) {
       const ua = U0 + ci * S.chunk, ub = Math.min(U1, ua + S.chunk), pts = [];
@@ -331,7 +423,8 @@ export async function buildS56(ctx) {
   } catch (e) { report.errors.push('models: ' + ((e && e.message) || e)); }
 
   // ------------------------------------------------ 5. the water: a real displaced wave surface along the run
-  const waterMat = new THREE.ShaderMaterial({
+  // the s56 water as before (`water6` off: unchanged)
+  const waterMatS56 = () => new THREE.ShaderMaterial({
     uniforms: { uTime: timeU, uHero: heroU },
     vertexShader: /* glsl */ `
       attribute vec2 aXU; attribute vec3 aR; attribute vec3 aUp;
@@ -395,6 +488,112 @@ export async function buildS56(ctx) {
         #include <colorspace_fragment>
       }`,
   });
+  // `water6` (lane s56, session 47f75e22): every white and light term PER PIXEL, the crest lines' width set in screen pixels; the colour
+  // moves only along the calibrated ramp (S56.water: deep -> mid -> turq), one ramp per grade, blended by the hero grade's weight (gradeHero)
+  const wU = { uDeep: { value: new THREE.Vector3() }, uMid: { value: new THREE.Vector3() }, uTurq: { value: new THREE.Vector3() }, uFoam: { value: new THREE.Vector3() },
+    uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uW3: { value: new THREE.Vector4(0, 0, 0, 0.35) }, uW4: { value: new THREE.Vector4() }, uMask: { value: 0 },
+    uW5: { value: new THREE.Vector4(0, 0.5, 0, 60) }, uC1: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector4()) }, uC2: { value: Array.from({ length: CHOP_N }, () => new THREE.Vector2()) } };
+  let gradeHero = 0;   // the hero grade's weight this frame (tunnel_r7_hero.js heroGrade: it replaces the drum grade while he is in the hero stretch)
+  const mixV = (o, a, b, k) => o.set(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k);
+  const syncWater = () => { const w = S.water, k = gradeHero;
+    mixV(wU.uDeep.value, w.deep, w.deepH, k); mixV(wU.uMid.value, w.mid, w.midH, k); mixV(wU.uTurq.value, w.turq, w.turqH, k); wU.uFoam.value.set(...w.foam);
+    wU.uW1.value.set(w.chop, w.crest, w.ripple, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uW3.value.set(w.lean, w.height, w.gap, wU.uW3.value.w);
+    wU.uW4.value.set(w.line, w.churn, w.churnCrest, w.froth); wU.uMask.value = w.mask ? 1 : 0;
+    wU.uW5.value.set(w.bias ?? 0, w.turqAt ?? 0.5, w.glint2 ?? 0, w.glintExp ?? 60);
+    if (w.chopSpec) chopUniforms(w.chopSpec, wU.uC1.value, wU.uC2.value); };
+  // the hero grade's weight is read from the grade pass's own uniform (uHero, set by tunnel_r7_hero.js every frame) through the game's
+  // read-only hook (game.js window.__bw.debug(): ctx has no composer); 0 (the drum ramp) where there is no hero grade
+  let gradeU = null;
+  const findGrade = () => { if (gradeU !== null || typeof window === 'undefined') return; gradeU = false;
+    try { const d = window.__bw && window.__bw.debug && window.__bw.debug(), ps = d && d.composer && d.composer.passes; const g = ps && ps.find((p) => p.uniforms && p.uniforms.uHero); if (g) gradeU = g.uniforms.uHero; } catch (e) { gradeU = false; } };
+  syncWater(); if (WATER6_ON && typeof window !== 'undefined') window.__bwS56Sync = syncWater;
+  const waterMat = !WATER6_ON ? waterMatS56() : new THREE.ShaderMaterial({
+    uniforms: { uTime: timeU, uHero: heroU, ...wU },
+    vertexShader: /* glsl */ `
+      attribute vec2 aXU; attribute vec3 aR; attribute vec3 aUp;
+      uniform float uTime; uniform vec4 uHero;   // hero x, u, speed across, swim power
+      varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
+      ${WAVE_GLSL}
+      void main() {
+        vec3 wv = s56Wave(aXU.x, aXU.y, uTime);
+        // the water piles round him (a rounded collar) and dips just inside it; a V wake behind him (geometry only: the look is per pixel)
+        vec2 d = vec2((aXU.x - uHero.x) / 0.66, (aXU.y - uHero.y) / 0.6);
+        float rr = length(d), ring = exp(-pow((rr - 1.0) / 0.28, 2.0)) * uHero.w;
+        float bu = aXU.y - uHero.y, side = abs(aXU.x - uHero.x);
+        float wake = bu < 0.0 ? exp(-pow((side - 0.55 - 0.32 * (-bu)) / 0.16, 2.0)) * exp(bu / 4.5) * uHero.w : 0.0;
+        float h = wv.x + 0.09 * ring - 0.08 * exp(-rr * rr * 2.5) * uHero.w + 0.05 * wake;
+        vec3 aT = cross(aR, aUp);
+        vec3 p = position + aUp * h;
+        vN = normalize(aUp - wv.y * aR - wv.z * aT); vR = aR; vT = aT;
+        vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz; vXU = aXU; vH = wv.x;
+        gl_Position = projectionMatrix * viewMatrix * w;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2, uW3, uW4, uW5; uniform float uMask;   // uW3.w: 1 while he swims the run, 0.35 at Tap to Start (the wake's length)
+      varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
+      ${NOISE}
+      ${HAZE}
+      ${CHOP_GLSL_U}
+      // a thin line along the level set f = 0, its half-width in screen pixels
+      float s56Line(float f, float px) { return 1.0 - smoothstep(0.5, 1.0, abs(f) / max(fwidth(f) * px, 1e-5)); }
+      void main() {
+        vec3 V = normalize(cameraPosition - vW);
+        // round him (rr = 1 at his waterline): the churned water
+        vec2 dq = vec2((vXU.x - uHero.x) / 0.66, (vXU.y - uHero.y) / 0.6);
+        float rr = length(dq), pw = uHero.w, near = smoothstep(2.6, 1.05, rr) * pw;
+        float sideW = smoothstep(0.15, 0.85, abs(dq.x) / max(rr, 1e-3));   // 1 at his sides, 0 straight ahead / behind
+        // the short sharp-crested rolling waves: height (normalised), slopes and their crest lines, on top of the geometry's swells
+        // (a slow domain warp bends the straight crests into rounded, irregular travelling shapes)
+        vec2 wp = vXU + (vec2(s5f(vXU * vec2(1.6, 0.9) + vec2(0.0, -uTime * 0.5)), s5f(vXU * vec2(1.3, 0.8) + vec2(5.2, -uTime * 0.6))) - 0.47) * 0.6;
+        wp += (vec2(s5n(wp * vec2(3.1, 2.3) + vec2(1.7, -uTime * 0.8)), s5n(wp * vec2(2.6, 3.4) + vec2(8.3, -uTime * 0.9))) - 0.5) * 0.16;   // (a finer warp: the small crests curve too)
+        vec3 ch = s56Chop(wp, uTime) * uW1.x * (1.0 + uW4.y * near);
+        vec3 N = normalize(normalize(vN) - ch.y * vR - ch.z * vT);
+        vec2 rq = vec2(vXU.x * 10.0, vXU.y * 5.0 - uTime * 3.4);
+        N = normalize(N + (vR * (s5n(rq) - 0.5) + vT * (s5n(rq * 1.7 + 3.1) - 0.5)) * 0.05);   // fine ripples (normal detail only)
+        // the shade along the ramp: faces leaning toward the camera lit (turquoise), backs and troughs cobalt; lifted water lighter
+        float lean = dot(N, -vT);
+        float hh = vH * 2.4 + ch.x * 0.8;
+        float sx = uW3.x * lean + uW3.y * hh;
+        float sh = 0.5 + 0.5 * sx / (1.0 + abs(sx)) + uW5.x;   // (a soft limit: the shade rolls into the ramp's ends, never clipped into flat facets)
+        vec3 c = mix(mix(uDeep, uMid, smoothstep(0.0, uW5.y, sh)), uTurq, smoothstep(uW5.y, 1.0, sh));
+        // the sky glints (small) and pinpoint sparkles on the chop's crests (sparse, faded where they would alias)
+        vec3 Rf = reflect(-V, N), Dv = vW - cameraPosition; Dv.y = 0.0; Dv = normalize(Dv);
+        float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 160.0);
+        c += vec3(0.5, 0.75, 1.0) * gl * 0.25 * uW2.z;
+        // (3849f5c8) the lamps' and far glow's glints: the chop's faces mirroring the light ahead and above (white, crisp, sparse)
+        float g2 = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.42, 0.0))), 0.0, 1.0), uW5.w);
+        float glint2 = smoothstep(0.45, 0.9, g2) * uW5.z;
+        vec2 tq = vXU * vec2(38.0, 20.0) + vec2(uTime * 0.7, -uTime * 2.6);
+        float spark = smoothstep(0.86, 0.97, s5n(tq)) * smoothstep(0.2, 0.6, ch.x) * (1.0 - smoothstep(0.25, 0.8, length(fwidth(tq)))) * uW2.y;
+        // crest lines: a thin contour of the water's height near its tops (curved, closed round each wavelet's crest; its half-width in screen
+        // pixels, so it never thickens into a cloud near the camera), frothy and broken; lower round him (more lines where he swims)
+        float lift = ch.x + vH * 1.5, thr = uW1.y - uW4.z * near;
+        float brk = s5f(wp * vec2(9.0, 6.0) + vec2(0.0, -uTime * 1.3));
+        float crest = s56Line(lift - thr, uW4.x) * smoothstep(0.3, 0.48, brk) * smoothstep(0.15, 0.45, s5n(wp * vec2(40.0, 26.0)));
+        c = mix(c, uTurq, smoothstep(thr - 0.12, thr, lift) * 0.35);   // the lit cap just under each crest
+        // where the water meets him: a thin broken splash line at his waterline, strongest at his sides, and thin broken rings spreading out
+        float ang = atan(dq.y, dq.x);
+        float keep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, s5f(vec2(ang * 5.0, rr * 3.0 - uTime * 2.4)));
+        float collar = s56Line(rr - 0.99, 2.2) * keep * (0.35 + 0.65 * sideW) * pw * uW1.w;
+        // the splash crowns at his sides: a frothy broken band (fine noise in his own angle, never a smooth ring), strongest at the sides
+        float fz = s5f(vec2(ang * 14.0, rr * 9.0 - uTime * 3.2)) * 0.65 + s5n(vXU * vec2(46.0, 30.0) + vec2(0.0, -uTime * 4.0)) * 0.35;
+        collar = max(collar, smoothstep(1.32, 0.98, rr) * step(0.97, rr) * smoothstep(0.5, 0.62, fz) * sideW * pw * uW4.w);
+        float rp = fract(rr * 3.2 - uTime * 1.7) - 0.5;
+        float rkeep = smoothstep(uW3.z + 0.05, uW3.z + 0.2, s5f(vec2(ang * 7.0 + 3.0, rr * 4.0 - uTime * 1.9)));
+        float ripple = s56Line(rp, 1.6) * rkeep * near * (0.3 + 0.7 * sideW) * step(1.02, rr) * uW1.z;
+        // the wake toward the camera: two thin broken lines
+        float bu = vXU.y - uHero.y, side = abs(vXU.x - uHero.x), arm = 0.6 + 0.32 * max(-bu, 0.0);
+        float behind = bu < 0.0 ? exp(bu / (0.5 + 2.0 * uW3.w)) * pw : 0.0;
+        float wkeep = smoothstep(uW3.z - 0.06, uW3.z + 0.06, s5f(vXU * vec2(7.0, 4.0) + vec2(3.7, -uTime * 1.6)));
+        float wk = s56Line(side - arm, 1.8) * behind * wkeep * uW2.x;
+        float white = clamp(crest + collar + ripple + wk + spark + glint2, 0.0, 1.0);
+        c = mix(c, uFoam, white * 0.95);
+        c = mix(c, s56Haze(c, vW), uW2.w);
+        gl_FragColor = vec4(c, 1.0);
+        if (uMask > 0.5) gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);   // (the A/B tool's exact water mask)
+        #include <colorspace_fragment>
+      }`,
+  });
   {
     const NX = 44, X0 = -2.08, X1 = 2.08, du = 0.3;
     for (let ci = 0; ci < nCh; ci++) {
@@ -417,11 +616,11 @@ export async function buildS56(ctx) {
   }
 
   // ------------------------------------------------ 6. splashes: small droplets thrown from his sides, more when he steers or strokes
-  const NS = 220, drops = [], dropMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.15, 1.25, 1.35), transparent: true, opacity: 0.9, depthWrite: false });
+  const NS = WATER6_ON ? S.splash6.n : 220, drops = [], dropMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.15, 1.25, 1.35), transparent: true, opacity: 0.9, depthWrite: false });
   const dropMesh = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 1), dropMat, NS); dropMesh.name = 's56Splash'; dropMesh.frustumCulled = false; dropMesh.renderOrder = 3; root.add(dropMesh);
   for (let i = 0; i < NS; i++) drops.push({ life: 0, max: 1, p: new THREE.Vector3(), v: new THREE.Vector3(), s: 0.02 });
   let dropI = 0, carry = 0, lastX = null;
-  const emit = (m, t, n, power) => {
+  const emitS56 = (m, t, n, power) => {
     for (let i = 0; i < n; i++) {
       const d = drops[dropI]; dropI = (dropI + 1) % NS;
       const side = rnd() < 0.5 ? -1 : 1, ang = (rnd() - 0.5) * 1.9, x = m.x + side * (0.5 + rnd() * 0.12) * Math.cos(ang * 0.5), u = m.z + Math.sin(ang) * 0.42 - 0.05;
@@ -432,6 +631,21 @@ export async function buildS56(ctx) {
       d.life = 0; d.max = 0.35 + rnd() * 0.35; d.s = 0.018 + rnd() * 0.03;
     }
   };
+  // `water6`: crisp droplets from his SIDES (the approved Scene 6: splash crowns left and right of his base, no ring), thrown up and out,
+  // each drawn a little stretched along its flight
+  const emit6 = (m, t, n, power) => {
+    const P6 = S.splash6;
+    for (let i = 0; i < n; i++) {
+      const d = drops[dropI]; dropI = (dropI + 1) % NS;
+      const side = rnd() < 0.5 ? -1 : 1, ang = (rnd() - 0.5) * 1.3, x = m.x + side * (0.5 + rnd() * 0.14) * Math.cos(ang * 0.5), u = m.z + Math.sin(ang) * 0.36 - 0.08;
+      const h = W.baseHeight(ctx.L, x, u) + s56Wave(x, u, t) + 0.03;
+      TR.frame(u, F); d.p.copy(F.P).addScaledVector(F.R, x).addScaledVector(F.U, h);
+      const sp = P6.speed * power * (0.55 + rnd() * 0.6);
+      d.v.copy(F.R).multiplyScalar(side * sp * (0.25 + rnd() * 0.45)).addScaledVector(F.U, sp * (0.75 + rnd() * 0.55)).addScaledVector(F.T, (rnd() - 0.65) * sp * 0.45);
+      d.life = 0; d.max = 0.3 + rnd() * 0.3; d.s = P6.size[0] + rnd() * (P6.size[1] - P6.size[0]);
+    }
+  };
+  const emit = WATER6_ON ? emit6 : emitS56;
 
   // ------------------------------------------------ 7. hiding the old blue tunnel's water and overlays where s56 is drawn
   // sticky: these stay hidden whatever later code sets (the old blue tunnel's water, swell, overlays, rings and Screen 3/4 props); gameplay
@@ -441,13 +655,27 @@ export async function buildS56(ctx) {
   function hideLegacy() {
     for (const o of ctx.legacy || []) if (o) lock(o);
     scene.traverse((o) => { if (o === root || !o.name || o.userData.s56Hidden) return; let p = o.parent; while (p) { if (p === root) return; p = p.parent; } if (LEGACY.test(o.name)) lock(o); });
+    if (WATER6_ON) hideSuds();
+  }
+  // Pass 3 (lane s56, session d847dce2): the Screen 3 opening's soap SUDS (opening.js `suds`: 20 large translucent bubbles that ride against
+  // his lower edge on the OLD water's surface) were the transparent ring round him (the A/B: they, not the s3 / s4 / l1 soap bubbles, are
+  // the overlay at his waterline). They are unnamed, so they are found by what they are: an instanced bubble layer of `openingLook` drawn
+  // at renderOrder 6 (opening.js sets it on the suds every frame). Looks only: nothing in the game reads them. The small foam bubbles and
+  // the opening's floating bubbles stay.
+  let sudsDone = false;
+  function hideSuds() {
+    if (sudsDone) return;
+    const ol = scene.getObjectByName('openingLook'); if (!ol) { sudsDone = true; return; }
+    for (const o of ol.children) if (o.isMesh && o.renderOrder === 6 && o.geometry && o.geometry.isInstancedBufferGeometry && o.geometry.attributes.motion) { lock(o); report.hidden[report.hidden.length - 1] = 'openingLook suds'; sudsDone = true; }
   }
 
   // ------------------------------------------------ per frame
   const mm = new THREE.Matrix4(), q = new THREE.Quaternion(), sv = new THREE.Vector3(), pv = new THREE.Vector3();
+  const Y6 = new THREE.Vector3(0, 1, 0);
   let heroOff = 0;
   function update(dt, time, phase, m) {
     timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
+    if (WATER6_ON) { findGrade(); gradeHero = gradeU ? gradeU.value : 0; syncWater(); hideSuds(); }   // (hideSuds: the suds get their renderOrder in the opening's first update)
     if (arch && arch.update) arch.update(dt, time, phase, m);
     if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
@@ -455,8 +683,9 @@ export async function buildS56(ctx) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;
       const running = phase === 'running', inWater = !m.air;
       heroU.value.set(m.x, m.z, vx, inWater ? 1 : Math.max(0, heroU.value.w - dt * 4));
+      if (WATER6_ON) wU.uW3.value.w += ((running ? 1 : 0.35) - wU.uW3.value.w) * Math.min(1, dt * 2);   // the wake grows as he sets off
       if (inWater) {
-        carry += dt * S.splash.rate * (running ? 1 : 0.35) * (1 + Math.min(2, Math.abs(vx) * 0.5));
+        carry += dt * (WATER6_ON ? S.splash6.rate : S.splash.rate) * (running ? 1 : 0.35) * (1 + Math.min(2, Math.abs(vx) * 0.5));
         const n = Math.floor(carry); carry -= n; if (n) emit(m, time, n, running ? 1 : 0.6);
         if (Math.abs(vx) > 2.5 && rnd() < dt * 8) emit(m, time, S.splash.burst / 4, 1.3);
       }
@@ -465,7 +694,9 @@ export async function buildS56(ctx) {
       const d = drops[i];
       if (d.life >= d.max) { mm.makeScale(0, 0, 0); dropMesh.setMatrixAt(i, mm); continue; }
       d.life += dt; d.v.y -= 9.8 * dt; d.p.addScaledVector(d.v, dt);
-      const k = 1 - d.life / d.max; sv.setScalar(d.s * (0.4 + 0.6 * k)); mm.compose(d.p, q, sv); dropMesh.setMatrixAt(i, mm);
+      const k = 1 - d.life / d.max; sv.setScalar(d.s * (0.4 + 0.6 * k));
+      if (WATER6_ON) { pv.copy(d.v).normalize(); q.setFromUnitVectors(Y6, pv); sv.y *= 1 + (S.splash6.stretch - 1) * Math.min(1, d.v.length() / 2.5); }
+      mm.compose(d.p, q, sv); dropMesh.setMatrixAt(i, mm);
     }
     dropMesh.instanceMatrix.needsUpdate = true;
   }
@@ -473,13 +704,15 @@ export async function buildS56(ctx) {
   // On m.tilt (in his root's track-up frame), NEVER m.root: the pickups measure from m.root.position (the water-motion specialist's audit).
   // additive: another pass (tunnel_s4_blend.js) already wrote m.tilt.position.y this frame
   function heroOffset(m, t, dt, additive = false) {
-    const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - S.hero.sink;
+    const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - (WATER6_ON ? S.hero6.sink : S.hero.sink);   // (water6: sunk to about his widest line)
     heroOff += (target - heroOff) * Math.min(1, dt * 14);
     m.tilt.position.y = (additive ? m.tilt.position.y : 0) + heroOff;
     // a gentle roll and pitch with the slope of the water under him
     const e = 0.25, hx = s56Wave(m.x + e, m.z, t) - s56Wave(m.x - e, m.z, t), hu = s56Wave(m.x, m.z + e, t) - s56Wave(m.x, m.z - e, t);
     if (!m.air) { m.tilt.rotation.z += hx * 0.9; m.tilt.rotation.x -= hu * 0.6; }
+    if (WATER6_ON) { const H6 = S.hero6, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw); }   // (his drawn dome; back to round in the air)
   }
+  let heroSq = 1;
   // the fur's light centre follows his drawn body
   function furCentre(c, m) { TR.frame(m.z, F); c.addScaledVector(F.U, heroOff); }
   let introT = 0, glideOn = typeof window !== 'undefined' && !!window.__bwO3D;
