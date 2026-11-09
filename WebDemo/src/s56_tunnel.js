@@ -30,6 +30,8 @@ export const WATER6_ON = S56_ON && LIST.includes('water6');
 // (session 3849f5c8, the coordinator) the two orange crown pipes running from the top corners (section 3, ang +-0.98) are not in the approved
 // Scene 6: off with `water6` or the sequence candidate `seq7` (arch56 skips section 3 under its own switch)
 const NOPIPES6 = S56_ON && (LIST.includes('water6') || LIST.includes('seq7'));
+// (session ddf175f2) his drawn dome's fur (S56.hero6.fur): only with both the water pass and the hero6 body
+const HERO6W = WATER6_ON && LIST.includes('hero6');
 
 // every number (window.__bwS56 in the browser)
 export const S56 = {
@@ -59,34 +61,43 @@ export const S56 = {
   //   hero: deep (0, 0.11, 0.63) -> #0159dd, mid (0.025, 0.29, 0.75) -> #1493ec, turq (0.15, 0.81, 1.12) -> #4ed4f6
   water: {
     deep: [0.15, 0.25, 0.51], mid: [0.125, 0.39, 0.65], turq: [0.125, 0.87, 1.12],
-    deepH: [0.0, 0.11, 0.63], midH: [0.025, 0.29, 0.75], turqH: [0.15, 0.81, 1.12],
+    // (session ddf175f2, env6: the hero grade runs at u 206 too) the hero ramp re-picked from the probe for the approved's R ~ 0 saturation:
+    // deep (0, 0.09, 0.60) -> ~#0060da, mid (0, 0.36, 0.76) -> ~#10aaee, turq (0.06, 0.72, 0.98) -> ~#3ad6f5
+    deepH: [0.0, 0.09, 0.60], midH: [0.0, 0.36, 0.76], turqH: [0.06, 0.72, 0.98],
     foam: [0.9, 0.97, 1.06],
     chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: light and crest lines)
-    crest: 0.3,     // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none)
+    crest: 0.18,    // where the crest lines turn white: threshold on the water's lift there (chop + swell; higher = fewer; 9 = none) (ddf175f2: 0.3 -> 0.18)
     ripple: 1.0,    // the churned water round him: thin broken rings spreading from his sides
     collar: 1.0,    // the thin broken splash line where the water meets his body (strongest at his sides)
     wake: 0.6,      // the two thin wake lines toward the camera
     spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
     glint: 1.0,     // the sky glints
     haze: 1.0,      // the far violet-white glow
-    lean: 3.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
-    height: 0.45,   // the wave height's share of the shading (lifted water lighter)
+    // (ddf175f2) lean 3 -> 4, height 0.45 -> 4, bias 0 -> -0.12, turqAt 0.5 -> 0.6: the swells' heights now carry broad rolling bands (cobalt
+    // troughs, azure bodies, turquoise lifted faces); measured fg cob 0.2 -> 15 %, p5 0.44 -> 0.31 (approved 9.5 %, 0.32), water6/02_water/x5
+    lean: 4.0,      // the slope shading: faces leaning toward the camera up the ramp (lit turquoise), backs down it (cobalt trough)
+    height: 4.0,    // the wave height's share of the shading (lifted water lighter)
     gap: 0.35,      // the share of the collar / wake / ripple lines broken away (0 = continuous lines)
-    line: 1.2,      // crest line half-width in screen pixels (at the canvas's resolution)
+    line: 1.4,      // crest line half-width in screen pixels (at the canvas's resolution) (ddf175f2: 1.2 -> 1.4)
     churn: 0.8,     // the chop's extra strength round him
     churnCrest: 0.25,   // how much lower the crest threshold is round him (more white lines where he swims)
     froth: 1.0,     // the frothy splash band at his sides
     // (session 3849f5c8) the chop's waves, live: [wavelength m, angle deg to the run, A m, phase]. v2's spread (+-12..58 deg) crossed into a net of
     // contour lines; the approved Scene 6's wavelets roll ACROSS the run (crests near horizontal on screen, curved by the domain warp)
-    bias: 0.0,      // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
-    turqAt: 0.5,    // (3849f5c8) where on the shade the turquoise begins (higher: turquoise only on the most lit faces)
+    bias: -0.12,    // (3849f5c8) shifts the shade along the ramp (negative: toward the azure body and cobalt troughs)
+    turqAt: 0.6,    // (3849f5c8) where on the shade the turquoise begins (higher: turquoise only on the most lit faces)
     glint2: 0.0,    // (3849f5c8) the arch lamps' and far glow's glints on the chop's faces (white, per pixel)
     glintExp: 60.0, // (3849f5c8) their sharpness
     chopSpec: [[1.40, 12, 0.040, 0.3], [0.95, -28, 0.030, 2.2], [0.66, 40, 0.022, 4.1], [0.46, -50, 0.015, 1.1], [0.32, 22, 0.010, 5.3], [0.22, -35, 0.007, 0.7], [0.155, 58, 0.005, 3.6]],
   },
   // `water6`: his drawn body sunk to about its widest line (the art director: visible height 0.238 H vs 0.158 approved); (session 3849f5c8) squash:
   // his drawn body's height (m.tilt.scale.y; wide: x and z) for the approved low rounded dome; drawn only, his state and pickups untouched
-  hero6: { sink: 0.4, squash: 1.0, wide: 1.0 },
+  // (session ddf175f2, env6 pass) his model is a squat ball (x +-1, y -0.94..0.87 in its units) whose side nubs sit high (y ~0.3), so sunk
+  // to the nubs it showed a flat-topped trapezoid. Measured on the frozen u 206 frame (tools/env6/var6.cjs, water6/01_hero/): stretched 1.6
+  // tall while in the water (back to round in the air) and sunk 0.78 m, the waterline runs through his nubs and the dome above is round
+  // (approved: x 0.26-0.74, top 0.600); with scaleS6 [1.07, 1, 1.07] (tunnel_s4_struct.js) his width matches. fur: the shell fur short and
+  // radial (the approved's dense short fur radiating from his crown; match5's long combed strands made a bush), only with water6 + hero6
+  hero6: { sink: 0.78, squash: 1.6, wide: 1.0, fur: { len: 0.06, comb: 0.0, lean: 0.05 } },
   splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4, n: 220 },   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
@@ -673,9 +684,17 @@ export async function buildS56(ctx) {
   const mm = new THREE.Matrix4(), q = new THREE.Quaternion(), sv = new THREE.Vector3(), pv = new THREE.Vector3();
   const Y6 = new THREE.Vector3(0, 1, 0);
   let heroOff = 0;
+  // `water6` + `hero6` (session ddf175f2): his shell fur short and radial (S.hero6.fur, live); the shell materials are struct's
+  // (tunnel_s4_struct.js structShellFur), only their three length / direction uniforms are set here, every frame (cheap, live-tunable)
+  let furMats = null;
+  function furShort(m) {
+    if (!furMats) { furMats = []; m.squash.traverse((o) => { if (o.name === 'structShellFur' && o.material && o.material.uniforms && o.material.uniforms.uShLen) furMats.push(o.material.uniforms); }); if (!furMats.length) { furMats = null; return; } }
+    const F = S.hero6.fur; for (const u of furMats) { u.uShLen.value = F.len; u.uShComb.value = F.comb; u.uShLean.value = F.lean; }
+  }
   function update(dt, time, phase, m) {
     timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
     if (WATER6_ON) { findGrade(); gradeHero = gradeU ? gradeU.value : 0; syncWater(); hideSuds(); }   // (hideSuds: the suds get their renderOrder in the opening's first update)
+    if (HERO6W && m && m.squash) furShort(m);
     if (arch && arch.update) arch.update(dt, time, phase, m);
     if (brush6 && brush6.update) brush6.update(dt, time, phase, m);
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;

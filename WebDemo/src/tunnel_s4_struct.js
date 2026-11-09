@@ -119,7 +119,7 @@ export const STRUCT = {
     // match6: her nubs' fur shorter, so her outline narrower than match5's at the same body: the body a little wider again
     scale6: [0.93, 0.985, 0.93],
     // hero6 (s56 only, session 3849f5c8): match5's width, a rounded dome (height 0.9 x width) instead of 1.11 x width
-    scaleS6: [0.89, 0.80, 0.89],
+    scaleS6: [1.07, 1.0, 1.07],   // (session ddf175f2, lane s56: round, as wide as approved Screen 6; the dome's height is s56_tunnel.js hero6.squash)
     tunnel: { pull: 0.6, sat: 1.32, satAdd: 0.05, warmSat: 1.0, core: { r: [0.03, 0.09], k: 0.0, tint: [1, 1, 1], add: [0, 0, 0] } } },
   tunnel: {
     band: [0.035, 0.07],    // screen radius (widths) from which the grade acts (the core inside it is warmed instead)
