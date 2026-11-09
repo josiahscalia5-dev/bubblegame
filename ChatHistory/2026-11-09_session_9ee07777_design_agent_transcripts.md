@@ -467,3 +467,84 @@ I checked everything live and wrote no files. I can author scenario JSON here, b
 
 
 _5 tool steps._
+
+---
+
+## web-fetch: Read Ludo.ai Claude integration page (started 10:21 UTC)
+
+**Lead → agent** (10:21 UTC):
+
+Read https://ludo.ai/tools/game-assets-in-claude and, if linked from it, Ludo.ai's pricing page (try https://ludo.ai/pricing) and any page describing its 3D features (image-to-3D, rigging, animation, sprite/texture generation, MCP/Claude Code integration). Report factually, as a list: (1) exactly what the Claude Code integration is (MCP server? API key? which tools/functions it exposes); (2) its 3D capabilities: image-to-3D (input types, output formats such as GLB/FBX, polygon counts, texture resolution, PBR?), auto-rigging (humanoid only? bone names/skeleton standard?), animation (preset library or text-to-motion? retargeting to an existing rig?), any cloth/fabric simulation; (3) 2D/other assets (sprites, backgrounds, UI, textures, video); (4) pricing: plans, credit costs per 3D generation/rig/animation, whether the API/MCP requires a paid plan; (5) any stated limitations. Quote numbers exactly as the pages state them and say clearly when a page does not state something. Under 450 words.
+
+- 10:21 `WebFetch`
+- 10:21 `WebFetch`
+**Agent** (10:21 UTC):
+
+I could not read any Ludo.ai page, so I have no facts to report for items (1) through (5).
+
+- **Fetch failed:** https://ludo.ai/tools/game-assets-in-claude returned a DNS error: `getaddrinfo ENOTFOUND ludo.ai`. This is a permanent failure for this session, so re-sending the same URL will fail the same way.
+- **Pricing page not attempted:** https://ludo.ai/pricing failed with the same DNS error. I did not try it again or try variants, since the host itself does not resolve.
+- **Pages not reached:** Any 3D feature pages were not reached, because the tools page was the only entry point and it could not be fetched.
+- **Likely cause:** The error text says a host fails to resolve like this when it is outside the session's allowed network domains. Ludo.ai has to be added to the session's network settings before these pages can be read.
+
+Once ludo.ai is allowed, send the request again and I will fetch the tools page, the pricing page, and any linked 3D feature pages, then report the items as a list.
+
+
+_2 tool steps._
+
+---
+
+## Game Art Director: Art director: scenes 1-2 landmark chart (started 10:24 UTC)
+
+**Lead → agent** (10:24 UTC):
+
+Read-only task. Targets: the user's approved portraits /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png and 02_She_Loads_Laundry.png (864x1536). Current real game frames (432x768, same 9:16 aspect): Scene 1 waiting /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/c6/t_-1.00.png, Scene 2 /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/c6/t_2.10.png and c4/t_1.00.png (lifting). The user's own annotated comparisons: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/SCENE_01_SIDE_BY_SIDE_ANNOTATED.jpg and SCENE_02_SIDE_BY_SIDE_ANNOTATED.jpg; their brief ck/CLAUDE_STRICT_SCENE1_SCENE2_FIX_PROMPT.txt.
+
+Produce, for the lead developer (under 600 words): (1) a measured landmark chart, reference vs game, in fractions of width/height for: girl face centre, top of hair, chin, near shoulder, both hands, near knee, near shoe, hip; basket rim centre/left/right, basket badge; hero eyes centre and how much of the hero is visible (fraction of his face/body); washer porthole centre + radius, door state; window box; UI boxes (logo, plaque, caption, Start, Home, Shop). Measure with python3 + PIL (zoom crops) rather than guessing. (2) For the girl in REF01: her pose described joint by joint as a 3D animator would set it (torso lean angle toward the basket, hip height relative to knee, thigh and shin angles, which knee is forward, where each hand is, head yaw/tilt relative to the body and camera). Same for REF02 (side profile, arms extended: shoulder/elbow/hand heights relative to the porthole). (3) The 8 most visible differences remaining, ranked, each with a concrete correction (numbers). Do not edit files.
+
+**Agent** (10:24 UTC):
+
+I'll start by viewing the references, the game frames and the user's annotations.
+
+- 10:24 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01_Surprise_Hideout.png
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/c6/t_-1.00.png
+- 10:24 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/02_She_Loads_Laundry.png
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/c6/t_2.10.png
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/c4/t_1.00.png
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/CLAUDE_STRICT_SCENE1_SCENE2_FIX_PROMPT.txt
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/SCENE_01_SIDE_BY_SIDE_ANNOTATED.jpg
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ck/SCENE_02_SIDE_BY_SIDE_ANNOTATED.jpg
+**Agent** (10:24 UTC):
+
+Now I'll make gridded versions (lines every 0.05) so the landmarks can be measured in fractions.
+
+- 10:24 `Bash`: Create gridded fraction overlays of references and game frames
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_grid.png
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g1_grid.png
+**Agent** (10:24 UTC):
+
+The grid works. Now finer zoom crops of the girl's head region (step 0.02) in both.
+
+- 10:24 `Bash`: Zoom crops of the girl's head region with 0.02 grid
+- 10:24 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_head.png
+**Agent** (10:25 UTC):
+
+Both are empty. I'll work from the full-frame 0.05 grids, which are good to about ±0.01, plus the two head zooms.
+
+- 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r2_grid.png
+- 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2_grid.png
+- 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2b_grid.png
+**Agent** (10:25 UTC):
+
+I'll check once more whether the disk has freed, so I can make finer crops.
+
+- 10:25 `Bash`: Test whether shell output works again
+**Agent** (10:25 UTC):
+
+It has freed. I'll make the remaining zoom crops small (JPEG) and check free space first.
+
+- 10:25 `Bash`: Check space and make body-region zoom crops
+- 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r1_body.jpg
+- 10:25 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g1_body.jpg
+
+_20 tool steps._
