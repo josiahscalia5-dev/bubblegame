@@ -22,7 +22,7 @@ const OLD = {
 };
 // [tag, { hide: [names], patch: [[from, to]], post: {...}, water: {S56.water overrides}, mask: bool }]
 const VARIANTS = [
-  ['mask', { mask: true, hide: ['s56Splash', 's3Bubbles', 's4Bubbles', 'l1Bubbles', '@particles'] }],
+  ['mask', { mask: true, hide: ['s56Splash', 's3Bubbles', 's4Bubbles', 'l1Bubbles', '@particles', '@suds', '@foamBubbles', '@staticBubbles'] }],
   ['full', {}],
   // the coordinator's lead: the transparent soap-bubble layers and the drops
   ['no_s3Bubbles', { hide: ['s3Bubbles'] }],
@@ -31,6 +31,11 @@ const VARIANTS = [
   ['no_allBubbles', { hide: ['s3Bubbles', 's4Bubbles', 'l1Bubbles'] }],
   ['no_s56Splash', { hide: ['s56Splash'] }],
   ['no_particles', { hide: ['@particles'] }],
+  // the opening's (opening.js, `openingLook`) unnamed bubble layers: the suds ring against his lower edge, the small foam bubbles round him,
+  // the slide's static bubbles
+  ['no_suds', { hide: ['@suds'] }],
+  ['no_foamBubbles', { hide: ['@foamBubbles'] }],
+  ['no_staticBubbles', { hide: ['@staticBubbles'] }],
   // the s56 water shader's terms
   ['w_nospec', { patch: [[OLD.spec, 'c += vec3(0.8, 0.9, 1.1) * gl * 0.3;']], water: { spec: 0 } }],
   ['w_noglint', { patch: [[OLD.spec, 'c += vec3(0.85, 0.97, 1.2) * sp * 1.1;']], water: { glint: 0 } }],
@@ -43,6 +48,7 @@ const VARIANTS = [
   // post
   ['p_nobloom', { post: { bloom: false } }],
   ['p_nograde', { post: { nograde: true } }],
+  ['p_nos4grade', { post: { nos4grade: true } }],
   ['p_notonemap', { post: { notm: true } }],
   ['p_exp090', { post: { exposure: 0.9 } }],
 ];
@@ -78,7 +84,8 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     const layers = await page.evaluate(() => {
       const d = window.__bw.debug(), seen = {};
       d.scene.traverse((o) => { if (!o.isMesh && !o.isPoints && !o.isSprite && !o.isLine) return; let vis = true, p = o; while (p) { if (!p.visible) { vis = false; break; } p = p.parent; } if (!vis) return;
-        const m = Array.isArray(o.material) ? o.material[0] : o.material, n = o === d.particles ? '@particles' : (o.name || '(noname:' + (o.parent && o.parent.name) + ')');
+        const ob = o.parent && o.parent.name === 'openingLook' && o.geometry && o.geometry.isInstancedBufferGeometry && o.geometry.attributes.motion;
+        const m = Array.isArray(o.material) ? o.material[0] : o.material, n = o === d.particles ? '@particles' : ob ? (o.renderOrder === 6 ? '@suds' : o.geometry.attributes.motion.getW(0) === -1 ? '@foamBubbles' : '@staticBubbles') : (o.name || '(noname:' + (o.parent && o.parent.name) + ')');
         const k = seen[n] || (seen[n] = { n: 0, type: o.type, mat: m && m.type, transparent: !!(m && m.transparent), depthWrite: !!(m && m.depthWrite), blending: m && m.blending, renderOrder: o.renderOrder });
         k.n++; });
       return seen;
@@ -87,7 +94,7 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     const missing = {};
     const renderVariant = async (tag, v) => page.evaluate(({ tag, v }) => {
       const B = window.__bw, d = B.debug(), A = window.__ab, mat = A.mat, cp = d.composer.passes;
-      const bloomPass = cp.find((p) => p.constructor && /Bloom/.test(p.constructor.name)), grade = cp.find((p) => p.uniforms && p.uniforms.uSat);
+      const bloomPass = cp[1], grade = cp.find((p) => p.uniforms && p.uniforms.uSat);   // (the bundle is minified: the bloom is the composer's second pass)
       const miss = [];
       let f = A.frag;
       for (const [a, b] of v.patch || []) { if (f.includes(a)) f = f.replace(a, b); else miss.push(a.slice(0, 50)); }
@@ -95,17 +102,19 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
       const S = window.__bwS56; if (S && S.water && A.water0) { Object.assign(S.water, A.water0); if (v.water) for (const k in v.water) if (k in S.water) S.water[k] = v.water[k]; if (v.mask) S.water.mask = 1; }
       if (f !== mat.fragmentShader) { mat.fragmentShader = f; mat.needsUpdate = true; }
       const hidden = [];
-      for (const n of v.hide || []) d.scene.traverse((o) => { const nm = o === d.particles ? '@particles' : (o.name || '(noname:' + (o.parent && o.parent.name) + ')'); if (nm === n && o.visible) { o.visible = false; if (!o.visible) hidden.push(o); } });
+      for (const n of v.hide || []) d.scene.traverse((o) => { const ob = o.parent && o.parent.name === 'openingLook' && o.geometry && o.geometry.isInstancedBufferGeometry && o.geometry.attributes.motion;
+        const nm = o === d.particles ? '@particles' : ob ? (o.renderOrder === 6 ? '@suds' : o.geometry.attributes.motion.getW(0) === -1 ? '@foamBubbles' : '@staticBubbles') : (o.name || '(noname:' + (o.parent && o.parent.name) + ')'); if (nm === n && o.visible) { o.visible = false; if (!o.visible) hidden.push(o); } });
       const bl = bloomPass ? bloomPass.enabled : null, sat = grade && grade.uniforms.uSat.value, con = grade && grade.uniforms.uContrast.value, tm = d.renderer.toneMapping, ex = d.renderer.toneMappingExposure;
       const P = v.post || {};
       if (bloomPass && 'bloom' in P) bloomPass.enabled = P.bloom;
       if (grade && P.nograde) { grade.uniforms.uSat.value = 1; grade.uniforms.uContrast.value = 1; }
+      const s4g = grade && grade.uniforms.uS4Grade ? grade.uniforms.uS4Grade.value : null; if (grade && P.nos4grade && grade.uniforms.uS4Grade) grade.uniforms.uS4Grade.value = 0;
       if (P.notm) d.renderer.toneMapping = 0;
       if (P.exposure) d.renderer.toneMappingExposure = P.exposure;
       // (the water's per-frame uniforms come from S56.water in update(); push them without stepping the game)
       if (window.__bwS56Sync) window.__bwS56Sync();
       B.render(); const url = d.renderer.domElement.toDataURL('image/png');
-      if (bloomPass) bloomPass.enabled = bl; if (grade) { grade.uniforms.uSat.value = sat; grade.uniforms.uContrast.value = con; } d.renderer.toneMapping = tm; d.renderer.toneMappingExposure = ex;
+      if (bloomPass) bloomPass.enabled = bl; if (grade) { grade.uniforms.uSat.value = sat; grade.uniforms.uContrast.value = con; if (s4g !== null) grade.uniforms.uS4Grade.value = s4g; } d.renderer.toneMapping = tm; d.renderer.toneMappingExposure = ex;
       for (const o of hidden) o.visible = true;
       if (mat.fragmentShader !== A.frag) { mat.fragmentShader = A.frag; mat.needsUpdate = true; }
       if (S && S.water && A.water0) { Object.assign(S.water, A.water0); delete S.water.mask; if (window.__bwS56Sync) window.__bwS56Sync(); }

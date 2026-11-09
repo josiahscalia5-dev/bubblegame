@@ -39,16 +39,23 @@ export const S56 = {
   glide: { secs: 1.8, off: [0, 0.38, -1.15], look: [0, 0.32, 6.0], fov: 60 },
   hero: { sink: 0.1, follow: 1.0 },
   splash: { rate: 26, burst: 22, speed: 2.1 },
-  // pass 2 (lane s56): the water's look, live-tunable (window.__bwS56.water, read every frame). Colours are SHADER-LINEAR, fitted through the
-  // game's own chain (grade sat 1.32 / contrast 1.12, Neutral tone mapping at 1.05, sRGB) to the lighting specialist's display targets
-  // (WebDemo/tools/s56/pipe56.py): deep -> #004dd5, mid -> ~#0b8ceb, turquoise -> #49c2f8, foam -> near-white #e9f5ff.
+  // the water's look, live-tunable (window.__bwS56.water, pushed to the shader every frame; window.__bwS56Sync() pushes it without stepping).
+  // Pass 3 (lane s56, session d847dce2): the measured cause of the pale patches (Previews/.../11_scene56_match_d847dce2/water56/README.md)
+  // was the water shader's own terms: a horizon "sun" lobe that lit broad soft blotches wherever the ripples tilted the reflection a few
+  // degrees above the horizon, and the collar / wake whites computed per VERTEX (rows 0.3 m apart) into broad smooth bands. Now: no
+  // horizon lobe (pinpoint sparkles only), the collar and wake per PIXEL as narrow broken lines, white only on the sharp chop crests, and
+  // the body colour cobalt in the troughs -> turquoise on the lifted faces. Colours are SHADER-LINEAR (before the grade and the Neutral
+  // tone mapping; kept under its ~0.76 knee so they stay saturated).
   water: {
-    deep: [0.036, 0.088, 0.469], mid: [0.06, 0.245, 0.62], turq: [0.155, 0.62, 1.0], foam: [1.45, 1.7, 2.0],
-    chop: 1.0,      // the fragment chop's strength (the short rolling waves)
-    crest: 0.8,     // the crest lines' threshold on each chop wave's crest proximity (higher = thinner, less white)
-    lace: 0.55,     // lace strength (only in the band just behind a crest)
-    collar: 1.0,    // the tight foam collar round his body
-    wake: 1.0,      // the V wake toward the camera
+    deep: [0.0, 0.035, 0.32], mid: [0.0, 0.2, 0.7], turq: [0.0, 0.52, 0.8], foam: [0.86, 0.93, 1.02],
+    chop: 1.0,      // the fragment chop's strength (the short sharp-crested rolling waves: colour, light and crest lines)
+    crest: 0.5,     // the crest lines' threshold on the normalised chop height (higher = thinner, less white; 9 = none)
+    lace: 0.35,     // lace strength (only in the band just behind a crest)
+    collar: 1.0,    // the narrow broken splash line where the water meets his body
+    wake: 1.0,      // the two narrow wake lines toward the camera
+    spec: 1.0,      // pinpoint sparkles (the arch lamps caught in the wave faces)
+    glint: 1.0,     // the sky glints
+    haze: 1.0,      // the far violet-white glow
   },
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
@@ -357,16 +364,24 @@ export async function buildS56(ctx) {
   } catch (e) { report.errors.push('models: ' + ((e && e.message) || e)); }
 
   // ------------------------------------------------ 5. the water: a real displaced wave surface along the run
+  // Pass 3 (lane s56, session d847dce2): every white and light term is computed PER PIXEL (the old collar / wake whites were per-vertex
+  // varyings interpolated over 0.3 m rows: broad smooth bands); no horizon "sun" lobe (it lit broad soft blotches); the short chop
+  // (CHOP_GLSL, fragment only) gives the travelling wave shapes, their light and the narrow crest lines. Tunables: S56.water.
+  const wU = { uDeep: { value: new THREE.Vector3() }, uMid: { value: new THREE.Vector3() }, uTurq: { value: new THREE.Vector3() }, uFoam: { value: new THREE.Vector3() },
+    uW1: { value: new THREE.Vector4() }, uW2: { value: new THREE.Vector4() }, uMask: { value: 0 } };
+  const syncWater = () => { const w = S.water; wU.uDeep.value.set(...w.deep); wU.uMid.value.set(...w.mid); wU.uTurq.value.set(...w.turq); wU.uFoam.value.set(...w.foam);
+    wU.uW1.value.set(w.chop, w.crest, w.lace, w.collar); wU.uW2.value.set(w.wake, w.spec, w.glint, w.haze); wU.uMask.value = w.mask ? 1 : 0; };
+  syncWater(); if (S56_ON && typeof window !== 'undefined') window.__bwS56Sync = syncWater;
   const waterMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: timeU, uHero: heroU },
+    uniforms: { uTime: timeU, uHero: heroU, ...wU },
     vertexShader: /* glsl */ `
       attribute vec2 aXU; attribute vec3 aR; attribute vec3 aUp;
       uniform float uTime; uniform vec4 uHero;   // hero x, u, speed across, swim power
-      varying vec3 vW; varying vec3 vN; varying vec2 vXU; varying float vH; varying float vRing; varying float vWake;
+      varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${WAVE_GLSL}
       void main() {
         vec3 wv = s56Wave(aXU.x, aXU.y, uTime);
-        // the water piles round him (a rounded collar) and dips just inside it; a V wake behind him
+        // the water piles round him (a rounded collar) and dips just inside it; a V wake behind him (geometry only: the look is per pixel)
         vec2 d = vec2((aXU.x - uHero.x) / 0.66, (aXU.y - uHero.y) / 0.6);
         float rr = length(d), ring = exp(-pow((rr - 1.0) / 0.28, 2.0)) * uHero.w;
         float bu = aXU.y - uHero.y, side = abs(aXU.x - uHero.x);
@@ -374,50 +389,62 @@ export async function buildS56(ctx) {
         float h = wv.x + 0.09 * ring - 0.08 * exp(-rr * rr * 2.5) * uHero.w + 0.05 * wake;
         vec3 aT = cross(aR, aUp);
         vec3 p = position + aUp * h;
-        vN = normalize(aUp - wv.y * aR - wv.z * aT);
-        vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz; vXU = aXU; vH = wv.x; vRing = ring; vWake = wake;
+        vN = normalize(aUp - wv.y * aR - wv.z * aT); vR = aR; vT = aT;
+        vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz; vXU = aXU; vH = wv.x;
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform vec4 uHero;
-      varying vec3 vW; varying vec3 vN; varying vec2 vXU; varying float vH; varying float vRing; varying float vWake;
+      uniform float uTime; uniform vec4 uHero; uniform vec3 uDeep, uMid, uTurq, uFoam; uniform vec4 uW1, uW2; uniform float uMask;
+      varying vec3 vW; varying vec3 vN; varying vec3 vR; varying vec3 vT; varying vec2 vXU; varying float vH;
       ${NOISE}
       ${HAZE}
+      ${CHOP_GLSL}
       void main() {
-        vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
-        // fine moving ripples on top of the geometry's waves (normal detail)
-        vec2 rp = vec2(vXU.x * 3.2, vXU.y * 1.6 - uTime * 2.2), rq = vec2(vXU.x * 10.0, vXU.y * 5.0 - uTime * 3.4);
-        float n1 = s5f(rp), n2 = s5f(rp * 2.3 + vec2(4.1, -uTime * 1.3));
-        N = normalize(N + vec3(s5n(rq) - 0.5, 0.0, s5n(rq * 1.7 + 3.1) - 0.5) * 0.12);   // fine ripples only (large tilts made pale glint blotches)
+        vec3 V = normalize(cameraPosition - vW);
+        // the short sharp-crested rolling waves: height (normalised) and slopes, on top of the geometry's swells
+        vec3 ch = s56Chop(vXU, uTime) * uW1.x;
+        vec3 N = normalize(normalize(vN) - ch.y * vR - ch.z * vT);
+        vec2 rq = vec2(vXU.x * 10.0, vXU.y * 5.0 - uTime * 3.4);
+        N = normalize(N + (vR * (s5n(rq) - 0.5) + vT * (s5n(rq * 1.7 + 3.1) - 0.5)) * 0.08);   // fine ripples (normal detail only)
         float ndv = clamp(dot(N, V), 0.0, 1.0);
-        // body colour: deep cobalt in the troughs, saturated azure on the slopes, turquoise on the lifted faces (lighting measurements:
-        // deep #004dd5, mid #068cf9, turquoise #48c2fd, crest #e9f5ff, ~12 % white)
-        // (kept under ~0.75 per channel: the game's Neutral tone mapping desaturates anything brighter toward white, which read as pale patches)
-        vec3 deep = vec3(0.0, 0.02, 0.3), cob = vec3(0.0, 0.15, 0.66), turq = vec3(0.015, 0.4, 0.74);
-        float hh = vH + (n1 - 0.5) * 0.07;
-        vec3 c = mix(deep, cob, smoothstep(-0.16, 0.06, hh));
-        c = mix(c, turq, smoothstep(0.04, 0.2, hh) * 0.8);
+        float n1 = s5f(vec2(vXU.x * 3.2, vXU.y * 1.6 - uTime * 2.2));
+        // body colour: deep cobalt in the troughs and creases, saturated azure on the slopes, turquoise where the water lifts to the light
+        float hh = vH * 2.4 + ch.x * 0.6 + (n1 - 0.5) * 0.25;
         float face = clamp(dot(N, normalize(V + vec3(0.0, 0.6, 0.0))), 0.0, 1.0);
-        c *= 0.72 + 0.3 * face;
+        vec3 c = mix(uDeep, uMid, smoothstep(-0.4, 0.05, hh));
+        c = mix(c, uTurq, smoothstep(0.0, 0.55, hh) * (0.35 + 0.65 * face) * 0.9);
+        c *= 0.7 + 0.36 * face;
+        // the drum's blue-violet reflected at grazing angles (never pale)
         float fr = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);
-        c = mix(c, vec3(0.2, 0.4, 0.75), fr * 0.25);
+        c = mix(c, vec3(0.08, 0.2, 0.62), fr * 0.3);
+        // the sky glints (small) and pinpoint sparkles on the chop's crests (a sparse twinkle, faded where it would alias)
         vec3 Rf = reflect(-V, N), Dv = vW - cameraPosition; Dv.y = 0.0; Dv = normalize(Dv);
-        float sp = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.12, 0.0))), 0.0, 1.0), 240.0);
         float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 160.0);
-        c += vec3(0.85, 0.97, 1.2) * sp * 1.1 + vec3(0.8, 0.9, 1.1) * gl * 0.3;
-        // crests: thin broken white lines riding the two main waves' real crests (not blotches), lace foam on their lee side
-        float p1 = 0.22 * vXU.x + 0.60 * vXU.y - 2.0 * uTime, p2 = -0.85 * vXU.x + 1.30 * vXU.y - 3.1 * uTime + 1.3;
-        float ridge = 0.62 * sin(p1) + 0.38 * sin(p2) + (n2 - 0.5) * 0.35;
+        c += vec3(0.6, 0.8, 1.0) * gl * 0.25 * uW2.z;
+        vec2 tq = vXU * vec2(38.0, 20.0) + vec2(uTime * 0.7, -uTime * 2.6);
+        float spark = smoothstep(0.86, 0.97, s5n(tq)) * smoothstep(0.15, 0.6, ch.x) * (1.0 - smoothstep(0.25, 0.8, length(fwidth(tq)))) * uW2.y;
+        // crest lines: white only where the sharp chop crests stand highest, broken; lace just behind them
         float brk = s5f(vXU * vec2(6.0, 2.5) + vec2(0.0, -uTime * 1.1));
-        float crest = smoothstep(0.66, 0.84, ridge) * smoothstep(0.35, 0.55, brk);
-        float lace = smoothstep(0.62, 0.7, s5f(vXU * vec2(13.0, 6.0) + vec2(uTime * 0.4, -uTime * 1.8))) * smoothstep(0.3, 0.7, ridge) * 0.85;
-        crest = max(crest, lace);
-        float collar = smoothstep(0.4, 0.8, vRing * (0.55 + 0.8 * s5f(vXU * vec2(9.0, 7.0) + vec2(0.0, -uTime * 3.0))));
-        float wk = smoothstep(0.35, 0.75, vWake * (0.5 + s5f(vXU * vec2(8.0, 5.0) + vec2(0.0, -uTime * 2.0))));
-        float white = clamp(crest + collar + wk * 0.8, 0.0, 1.0);
-        c = mix(c, vec3(0.86, 0.93, 1.02), white * 0.85);
-        c = s56Haze(c, vW);
+        float crest = smoothstep(uW1.y, uW1.y + 0.1 + fwidth(ch.x), ch.x) * smoothstep(0.3, 0.55, brk);
+        float lace = smoothstep(uW1.y - 0.22, uW1.y - 0.05, ch.x) * (1.0 - smoothstep(uW1.y, uW1.y + 0.1, ch.x))
+          * smoothstep(0.62, 0.72, s5f(vXU * vec2(13.0, 6.0) + vec2(uTime * 0.4, -uTime * 1.8))) * uW1.z;
+        // where the water meets him: lifted turquoise water and a NARROW broken splash line (per pixel), no foam ring
+        vec2 dq = vec2((vXU.x - uHero.x) / 0.66, (vXU.y - uHero.y) / 0.6);
+        float rr = length(dq), pw = uHero.w;
+        c = mix(c, uTurq, exp(-pow((rr - 1.05) / 0.3, 2.0)) * 0.45 * pw);
+        float ringL = exp(-pow((rr - 0.97) / 0.075, 2.0)) * pw;
+        float collar = smoothstep(0.4, 0.75, ringL * (0.45 + 0.9 * s5f(vXU * vec2(16.0, 11.0) + vec2(0.0, -uTime * 3.0)))) * uW1.w;
+        // the wake toward the camera: two narrow broken lines, the churned water between them a lighter azure (no white)
+        float bu = vXU.y - uHero.y, side = abs(vXU.x - uHero.x), arm = 0.55 + 0.32 * max(-bu, 0.0);
+        float behind = bu < 0.0 ? exp(bu / 3.5) * pw : 0.0;
+        c = mix(c, uMid * 1.15 + vec3(0.0, 0.06, 0.04), smoothstep(arm, arm - 0.3, side) * behind * 0.35 * uW2.x);
+        float wl = exp(-pow((side - arm) / 0.06, 2.0)) * behind;
+        float wk = smoothstep(0.35, 0.7, wl * (0.45 + 0.9 * s5f(vXU * vec2(12.0, 6.0) + vec2(0.0, -uTime * 2.0)))) * uW2.x;
+        float white = clamp(max(crest, lace * 0.6) + collar + wk * 0.85 + spark, 0.0, 1.0);
+        c = mix(c, uFoam, white * 0.9);
+        c = mix(c, s56Haze(c, vW), uW2.w);
         gl_FragColor = vec4(c, 1.0);
+        if (uMask > 0.5) gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);   // (the A/B tool's exact water mask)
         #include <colorspace_fragment>
       }`,
   });
@@ -467,6 +494,18 @@ export async function buildS56(ctx) {
   function hideLegacy() {
     for (const o of ctx.legacy || []) if (o) lock(o);
     scene.traverse((o) => { if (o === root || !o.name || o.userData.s56Hidden) return; let p = o.parent; while (p) { if (p === root) return; p = p.parent; } if (LEGACY.test(o.name)) lock(o); });
+    hideSuds();
+  }
+  // Pass 3 (lane s56, session d847dce2): the Screen 3 opening's soap SUDS (opening.js `suds`: 20 large translucent bubbles that ride against
+  // his lower edge on the OLD water's surface) were the transparent ring round him (the A/B: they, not the s3 / s4 / l1 soap bubbles, are
+  // the overlay at his waterline). They are unnamed, so they are found by what they are: an instanced bubble layer of `openingLook` drawn
+  // at renderOrder 6 (opening.js sets it on the suds every frame). Looks only: nothing in the game reads them. The small foam bubbles and
+  // the opening's floating bubbles stay.
+  let sudsDone = false;
+  function hideSuds() {
+    if (sudsDone) return;
+    const ol = scene.getObjectByName('openingLook'); if (!ol) { sudsDone = true; return; }
+    for (const o of ol.children) if (o.isMesh && o.renderOrder === 6 && o.geometry && o.geometry.isInstancedBufferGeometry && o.geometry.attributes.motion) { lock(o); report.hidden[report.hidden.length - 1] = 'openingLook suds'; sudsDone = true; }
   }
 
   // ------------------------------------------------ per frame
@@ -474,6 +513,7 @@ export async function buildS56(ctx) {
   let heroOff = 0;
   function update(dt, time, phase, m) {
     timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
+    syncWater(); hideSuds();   // (hideSuds: the suds get their renderOrder in the opening's first update)
     if (arch && arch.update) arch.update(dt, time, phase, m);
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
