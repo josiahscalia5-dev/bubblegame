@@ -24,6 +24,10 @@ export const SEQ7 = {
   hold: 0.125,           // half the spacing of her hands on the yellow towel
   sitUp: 0.035,          // his centre above her hands' midpoint while she carries him
   tumble: { start: 3.88, end: 4.75, roll: -2 * Math.PI, lift: 0.26, pitch: 0.32 },
+  // (session 8da775c4, the user's story rule: SHE NEVER NOTICES HIM) from on[0..1] to on[2..3] (story s: the second armful, the carry and the push) her
+  // head is aimed at the washer's opening, not at the basket or the towel in her hands (she reaches for the laundry without looking at it); max = the
+  // neck's reach (rad), up = how much her face lifts against her lean; idle = while waiting, an occasional look up at the washer
+  gaze: { on: [2.45, 2.8, 4.3, 4.7], max: 1.15, up: 0.75, idle: 0.85 },
 };
 if (SEQ7_ON && typeof window !== 'undefined') window.__bwSeq7 = SEQ7;
 

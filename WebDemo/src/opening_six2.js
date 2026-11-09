@@ -300,8 +300,15 @@ export function installSix2(ctx) {
       const toWasher = Math.atan2(P.x - s0.kx, P.z - s0.kz) - s0.yaw;   // the washer's bearing from her body
       const headYaw = keys(s, [[-1, -0.3], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
       const headUp = keys(s, [[-1, 0.08], [0.0, 0.08], [0.4, 0.08], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
-      rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher + (g12 ? keys(s, G12N.head) : 0));
-      rotateBoneWorld(B.head, lat2, -headUp * 0.8 + 0.03 * Math.sin(it * 0.8));
+      let yawH = (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher + (g12 ? keys(s, G12N.head) : 0), upH = headUp;
+      if (g12 && G12N.gaze) {   // (session 8da775c4, seq7) SHE NEVER NOTICES HIM: her head on the washer's opening while she reaches back for the towel he is in
+        const Z = G12N.gaze, tw = Math.atan2(Math.sin(toWasher), Math.cos(toWasher)), twist7 = G12N.chestTwist * sm(1.0, 1.6, s) * (1 - sm(4.9, 5.4, s));
+        const look = Math.max(-Z.max, Math.min(Z.max, tw - twist7)), glance = s < 0 ? sm(0.3, 0.8, Math.sin(it * 0.55)) * Z.idle : 0;
+        const k = Math.max(sm(Z.on[0], Z.on[1], s) * (1 - sm(Z.on[2], Z.on[3], s)), glance);
+        yawH += (look - yawH) * k; upH += (Z.up * lean + 0.08) * k;
+      }
+      rotateBoneWorld(B.head, V(0, 1, 0), yawH);
+      rotateBoneWorld(B.head, lat2, -upH * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
       // arms: two-bone IK to the hand targets (the hand nearer each target takes it)
       const cw = B.chest.getWorldPosition(new THREE.Vector3());
@@ -336,6 +343,7 @@ export function installSix2(ctx) {
         hp = T.hp; rot.copy(T.rot); scl = 0.56 + 0.44 * T.k; surprise = 1; }
     }
     hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
+    if (W2.hero) W2.hero(hero, s, it);   // (seq7, wash8) he bobs, rocks and rolls with the wash water
     heroExpr({ lid: g12 && s >= 2.95 && s < 5.3 ? 0 : blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
     // the "!" marks: while he peeks (waiting) and when the towel is lifted off him
     const mk = s < 0 ? 0.6 + 0.4 * Math.max(0, Math.sin(it * 1.4)) : sm(0.55, 0.7, s) * (1 - sm(1.4, 1.6, s)) + (g12 ? sm(3.12, 3.22, s) * (1 - sm(3.6, 3.75, s)) : 0);   // (seq7: "!" again as he is lifted)
