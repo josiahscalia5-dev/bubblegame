@@ -21,3 +21,12 @@ Rollback: branch `claude/bubble-wash-rollback-before-tripo3-default` (`33bf67ba`
 - `second_row_vs_plain_launch_metrics.md`: SSIM 0.82-0.90 against the user's 192 x 390 JPEG crops (a scaled screenshot, so not pixel-exact).
 - Live MCP checks of the plain URL: Playwright MCP read `__BW_DEFAULT_GAME__ = six+tripo3`, bundle `?v=45f21c4a`, `tripo3` ready (washer, door, gear, 12 housings).
 - Identity of the older configurations on this bundle: `proofs/` (see below). Gameplay with the active build: `../06_tripo_new_models_6ddc157f/gameplay/`.
+- **Continuous video of the PLAIN launch** (no `?s3=`, seed 7, software WebGL, 12 frames per game second, 42.7 s): `PLAIN_LAUNCH_continuous_laundry_toss_to_swimming.mp4`
+  (`record_flow.cjs` with `NOS3=1`, ROUTE upper): Home -> Laundry Toss (the new girl) -> START -> the toss -> the door (OIT 748, gold) shuts -> the porthole ->
+  the scene 5 tunnel (821 housings, cobalt gear) -> Tap to Start -> live Level 1 (socks 3/5, coins 1,280 -> 1,387, 2 grime balls popped) into the Pass 18
+  "Avoid Enemies!" stretch. Contact strip: `VIDEO_CONTACT_STRIP.png`; log: `record_log.json` (its `s3` field is the tool's unused default; the page ran the plain-launch default).
+- **Identity on this bundle** (`proofs/identity_45f21c4a.txt`): `?s3=intunnel`, `?s3=,`, `?s3=intunnel,structmatch,home`, level1 at Tap to Start and 20 s: 0 px vs `7d39b9e6`.
+- `pass18_baseline/`: real frames of the CURRENT Pass 18 enemy stretch in the active build (u 219-242), the baseline for the user's next task (Scene 6).
+
+**Known and NOT yet done (the user's next task, `Design/ReferencePacks/2026-11-09_P18_Reuse_Scene6_Pack_from_user/SCENE6_TASK_from_user_message.md`):** after the
+cinematic, Level 1 (scene07 Pass 18) still has its own tunnel look (cobalt rings, brushes), visibly different from the new scenes 1-5 (see the video from ~11 s).

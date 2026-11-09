@@ -23,7 +23,7 @@ Installed and enabled in this account: **parallax-threejs 0.4.12** (synced plugi
 |---|---|---|
 | parallax-threejs:shader-reviewer | PARTIALLY WORKING | a real static GLSL / binding review of the opening's shaders (found a genuine old bug: `opening3d.js` ~757, a statement commented out by a `//` on the same line in the non-six opening; left as is, it would change accepted frames); no MCP tools attached |
 | parallax-threejs:visual-debugger | PARTIALLY WORKING | runtime check by Bash + Playwright (r170, WebGL2, 0 errors, screenshot); NO MCP tools attached (threejs / chrome / playwright / spector) |
-| parallax-threejs:scenario-author | see section 7 | |
+| parallax-threejs:scenario-author | NOT TESTED | its test was started (tool listing + a draft scenario, no file writes) but had not returned when this report was saved |
 Known plugin limit (also in the previous account): the plugin's agents declare MCP tool names that do not match the attached servers' names, so they get no MCP tools; the project agent screen4-water-motion-engineer declares the real names and does get chrome-devtools.
 
 ## 3. MCP servers (this session)
@@ -66,5 +66,6 @@ Known plugin limit (also in the previous account): the plugin's agents declare M
 1. In this session, `/mcp` -> reconnect **threejs-devtools-mcp** and **spector** (both work when started; they missed the session start). A new session should connect both by itself now.
 2. Nothing else: the plugin, GitHub, Tripo key and network were already set on this account.
 
-## 7. scenario-author
-(filled in below when its test returns)
+## 7. Final proofs of this session
+- The ACTIVE game (plain launch = six + tripo3): `Previews/WebDemo/six_scenes/07_active_game_plain_launch_6ddc157f/` (8 checkpoints vs the user's second row, the 42.7 s continuous video, identity 0 px on bundle `45f21c4a`).
+- Session preflight: `Tools/session_preflight.sh` = 17 OK / 0 WARN / 0 MISSING / 0 NEEDS USER (2.7 s); the hook tested with a simulated session start (1 autosave process kept).

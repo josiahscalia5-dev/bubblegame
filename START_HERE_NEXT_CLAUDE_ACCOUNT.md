@@ -8,6 +8,9 @@ user's review: `sock3`, `coin3`, `enemy3`, `basket3`, `doorpink`. Evidence: `Pre
 frames vs the user's second-row pack, the continuous video) and `06_tripo_new_models_6ddc157f/` (all 12 models). Rollback branch:
 `claude/bubble-wash-rollback-before-tripo3-default` (`33bf67ba`). Environment: `ENVIRONMENT_VERIFICATION_2026-11-09_session_6ddc157f.md`; every session
 runs `Tools/session_preflight.sh` (SessionStart hook) and follows CLAUDE.md "READ FIRST". Do not redesign this version; do not revert to the first row.
+**EXACT NEXT TASK (the user's message of 9 November ~02:50 UTC, not started):** Scene 6 = REUSE the built Pass 18 gameplay (scene07: `tripo_l1.js`,
+`scene07_build18.js`, `scene07_recon16/17.js`) and improve its LOOK toward storyboard Scene 6 (~90 %), continuous with the new scenes 1-5; full brief:
+`Design/ReferencePacks/2026-11-09_P18_Reuse_Scene6_Pack_from_user/SCENE6_TASK_from_user_message.md`; baseline frames: `Previews/WebDemo/six_scenes/07_active_game_plain_launch_6ddc157f/pass18_baseline/`.
 
 
 This is the EXISTING game. Do not restart, redesign or rebuild it. Nothing in this repository is a secret; never commit keys.
