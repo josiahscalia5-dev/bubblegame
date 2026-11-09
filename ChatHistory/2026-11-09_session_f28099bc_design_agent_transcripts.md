@@ -79,8 +79,19 @@ I'll check where `s56.update` runs (step vs render), so re-rendering a fixed fra
 
 - 12:42 `Bash`: Rebuild bundle and check status
 - 12:42 `Bash`: Save before bundle, check canvas element
+**Agent** (12:43 UTC):
 
-_14 tool steps._
+Now I'll write the diagnostic tool: one browser load, freeze the frame at each checkpoint, then re-render the identical frame once per component stage (canvas pixels read directly, no HUD).
+
+- 12:43 `Write`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/diag56.cjs
+**Agent** (12:43 UTC):
+
+Now the metric script that uses the green-flag frame as the exact water mask.
+
+- 12:44 `Write`: /home/user/bubblegame_lanes/s56/WebDemo/tools/s56/diag56.py
+- 12:44 `Bash`: Run the stage diagnosis on the before build
+
+_17 tool steps._
 
 ---
 
@@ -160,8 +171,18 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:41 `Read`: /home/user/bubblegame_lanes/girl12/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/02_She_Loads_Laundry.png
 - 12:41 `Bash`: Build the lane bundle
 - 12:41 `Bash`: Capture before frames of Scenes 1-2
+- 12:47 `Bash`: Build a before comparison sheet
+- 12:47 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before_sheet.png
+**Lead → agent** (12:47 UTC):
 
-_9 tool steps._
+[Image: original 2556x662, displayed at 2000x518. Multiply coordinates by 1.28 to map to original image.]
+
+- 12:47 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_-1.00.png
+- 12:47 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_2.00.png
+- 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_1.20.png
+- 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/girl12/before/t_2.80.png
+
+_15 tool steps._
 
 ---
 
@@ -199,8 +220,10 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (Read/Bash/Edit, bui
 - 12:41 `Bash`: Inspect capture tool scripts
 - 12:41 `Bash`: Build the game bundle in the lane worktree
 - 12:41 `Bash`: Capture before frames of the live game HUD
+- 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/ui/before/s56_tap.png
+- 12:48 `Read`: /home/user/bubblegame_lanes/_evidence/ui/before/s56_206.png
 
-_12 tool steps._
+_14 tool steps._
 
 ---
 
@@ -241,8 +264,13 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` (which tools worked)
 - 12:42 `Bash`: Run the upper route test on the s56 build
 - 12:42 `Bash`: Verify the route test process is running
 - 12:42 `Bash`: Read loop and startRun for the opening flow
+- 12:43 `Bash`: Write the touch and HUD Playwright test script
+- 12:43 `Bash`: Start the touch and identity capture chain detached
+- 12:43 `Bash`: Wait for the route or touch run to finish
+- 12:43 `Bash`: Read prior flow route results for reference
+- 12:43 `Bash`: Block until the first QA run completes
 
-_20 tool steps._
+_25 tool steps._
 
 ---
 
@@ -303,8 +331,34 @@ Now the baseline frames captured so far.
 - 12:42 `Bash`: Crop hero/basket and washer regions side by side
 - 12:42 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s1_hero.png
 - 12:42 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s2_wash.png
+- 12:42 `Bash`: Side-by-side crops for scenes 5 and 6
+- 12:43 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s6.png
+- 12:43 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s5tap.png
+- 12:43 `Bash`: Check capture progress
+- 12:43 `Bash`: Side-by-side for scene 3
+- 12:43 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s3.png
+- 12:44 `Bash`: Measure colour classes and hero fur per scene zone
+- 12:44 `Bash`: Check capture progress
+- 12:44 `Bash`: Crop scene 3 game hero area
+- 12:44 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s3_game_hero.png
+- 12:44 `Bash`: Check background wait output
+- 12:44 `Bash`: Crop UI top and bottom side by side
+- 12:44 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/ui_top.png
+- 12:44 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/ui_bot.png
+- 12:44 `Bash`: Wait until the scene 4 frame exists
+- 12:44 `Bash`: Read lane registry for ownership
+- 12:44 `Bash`: Block until scene 4 frame appears
+- 12:45 `Bash`: Side-by-side for scene 4
+- 12:45 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s4.png
+- 12:45 `Bash`: Block until scene 5 opening frame appears
+- 12:45 `Bash`: Side-by-side for scene 5 opening frame
+- 12:45 `Read`: /tmp/claude-0/-home-user-bubblegame/f28099bc-d645-5651-bec0-35d23872a8b1/scratchpad/qa/s5o.png
+- 12:46 `Bash`: Measure scene 4 and opening scene 5 zones
+- 12:46 `Bash`: Compute SSIM, histogram correlation and gold stats per scene
+- 12:46 `Bash`: Measure hero bounding boxes in scenes 5 and 6
+- 12:47 `Bash`: Locate drum-end shader and hand-over timing in source
 
-_30 tool steps._
+_56 tool steps._
 
 ---
 
@@ -337,8 +391,20 @@ Deno is not installed, but Node 22 can strip TypeScript types. I'll read the scr
 
 - 12:41 `Bash`: Inspect the binding check script's structure and Deno usage
 - 12:41 `Read`: /root/.claude/plugins/synced/03384b90-e6d1-47fc-b86a-e5794965776e_165568ea-8c96-4316-89af-35e1d004b4f8/b89c3ace-b56c-48b2-ac2c-3b9ee1b1100f/scripts/check-shader
+- 12:43 `Bash`: Check compilers, browsers, listening servers, lane dirs
+- 12:43 `Bash`: Verify deno binary and check listening ports
+- 12:44 `Bash`: Generate the real GLSL per material for both versions
+- 12:44 `Bash`: Run the binding checker per material and grep new-symbol usage
+- 12:44 `Bash`: Find pipe56.py and the game's tone mapping setup
+- 12:44 `Bash`: Read the colour pipeline model and composer setup
+- 12:45 `Bash`: Locate and read the GradeShader definition
+- 12:45 `Bash`: Compute tone-mapped colours, bloom luminance, chop stats, crest drift
+- 12:46 `Bash`: Check track curvature and headless browser availability
+- 12:46 `Read`: /home/user/bubblegame/WebDemo/src/track.js
+- 12:46 `Read`: /home/user/bubblegame/WebDemo/src/track.js
+- 12:46 `Bash`: Compile the generated shaders in headless Chrome WebGL2
 
-_6 tool steps._
+_18 tool steps._
 
 ---
 
@@ -362,8 +428,11 @@ REPORT (concise): first line `LIVE TEST: PASS|PARTIAL|FAIL` with the MCP availab
 - 12:41 `Bash`: Read s56 settings, haze, and game.js bloom references
 - 12:41 `Bash`: Read adaptive quality code and GradeShader
 - 12:42 `Bash`: Read render() and __bw API
+- 12:43 `Bash`: Check bundle stamp and shader strings present in bundle
+- 12:44 `Bash`: Write EVAL diagnostic script and syntax-check it
+- 12:45 `Bash`: Run headless capture with diagnostic EVAL under browser lock
 
-_10 tool steps._
+_13 tool steps._
 
 ---
 
@@ -409,5 +478,29 @@ The fix is at lines 456-466: `heroOffset` writes only `m.tilt.position.y`. Next 
 
 - 12:42 `Bash`: Check how __BW_TEST__ and s3 switches are set
 - 12:42 `Bash`: Check Math.random seeding, resetRun, rest of __bw
+- 12:43 `Bash`: Check RAF users, minify, coin phase, INTUNNEL start
+- 12:44 `Bash`: Check INTUNNEL.clock and whether coins use private random
+- 12:44 `Bash`: Check level1 plan exposure and coin list access
+- 12:44 `Bash`: Show collectible build context and tool usage of hooks
+- 12:44 `Bash`: Check HUD CSS animations and transitions
+- 12:44 `Bash`: List page CSS transitions and available tooling
+- 12:44 `Bash`: Inspect layout coin positions near start
+- 12:44 `Bash`: Show coin layout entries and coin builder
+- 12:45 `Bash`: Find other writes to mascot root position and TR.map signature
+- 12:45 `Bash`: Show S56 hero settings and wave function
+- 12:45 `Bash`: Find what server/root the harness expects
+- 12:45 `Bash`: Look for AGENTS.md, harness docs, and the dev server root
+- 12:46 `Bash`: Show step() call order and bumpMascot
+- 12:46 `Bash`: Find level1 writes to mascot x/yAbs/z and jump()
+- 12:46 `Bash`: Show rest of bumpMascot
+- 12:46 `Bash`: Check where tripo3 models load relative to ready
+- 12:46 `Read`: /home/user/bubblegame/test/visual/lib/diff.ts
+- 12:47 `Bash`: Count load-time Math.random use in scene builders
+**Agent** (12:47 UTC):
 
-_17 tool steps._
+`buildBubbles()` scatters the tunnel bubbles with the unseeded native random at load. Whether that matters depends on whether s56 hides them. Let me check their name against the `LEGACY` hide list.
+
+- 12:47 `Bash`: Check base bubble mesh naming and add
+- 12:47 `Bash`: Get s56 camera offset and heart/restart rules
+
+_37 tool steps._
