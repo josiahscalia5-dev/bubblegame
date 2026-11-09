@@ -15,7 +15,9 @@ const MAIL = '<svg viewBox="0 0 100 100"><rect x="12" y="26" width="76" height="
 export const SIX2_CSS = `
 #bwHome.six2 .s2 .title.toss, #bwHome.six2 .s2 .back, #bwHome.six2 .s2 .bottom { display: none; }
 #bwHome.six2 .top .pill { background: linear-gradient(#6a34b8, #4a1f92); border: calc(var(--a) * 4) solid #c9a2ff; box-shadow: 0 calc(var(--a) * 4) 0 #2a0c5e, inset 0 calc(var(--a) * 3) 0 rgba(255,255,255,.25);
-  font-size: calc(var(--a) * 30); height: calc(var(--a) * 56); top: calc(var(--a) * -8); }
+  font-size: calc(var(--a) * 26); height: calc(var(--a) * 52); top: calc(var(--a) * -8); }
+#bwHome.six2 .top .pill span { padding-left: calc(var(--a) * 22); padding-right: calc(var(--a) * 22); }
+#bwHome.six2 .top .pill img { height: 118%; left: calc(var(--a) * -14); }
 #bwHome.six2 .top .pill .plus { width: calc(var(--a) * 40); height: calc(var(--a) * 40); right: calc(var(--a) * 4); border-radius: 50%; background: radial-gradient(circle at 40% 35%, #b8ff7a, #3cc33a 70%); color: #fff; font-size: calc(var(--a) * 36);
   display: flex; align-items: center; justify-content: center; line-height: 1; border: calc(var(--a) * 3) solid #eaffd0; box-sizing: border-box; text-shadow: 0 calc(var(--a) * 2) 0 #157a1a; }
 #bwHome.six2 .top .gear { display: none; }
@@ -25,10 +27,10 @@ export const SIX2_CSS = `
 #bwHome .s6layer { position: absolute; inset: 0; pointer-events: none; transition: opacity .5s ease; }
 #bwHome .s6layer > * { pointer-events: auto; }
 #bwHome .s6logo { position: absolute; left: 50%; top: calc(var(--a) * 4 + env(safe-area-inset-top, 0px)); transform: translateX(-50%); text-align: center; line-height: .86; pointer-events: none; }
-#bwHome .s6logo .crown { width: calc(var(--a) * 96); height: calc(var(--a) * 56); display: block; margin: 0 auto calc(var(--a) * -12); }
-#bwHome .s6logo b { display: block; font-size: calc(var(--a) * 52); font-weight: 700; color: #fff; letter-spacing: calc(var(--a) * -0.5);
+#bwHome .s6logo .crown { width: calc(var(--a) * 84); height: calc(var(--a) * 50); display: block; margin: 0 auto calc(var(--a) * -12); }
+#bwHome .s6logo b { display: block; font-size: calc(var(--a) * 50); font-weight: 700; color: #fff; letter-spacing: calc(var(--a) * -0.5);
   text-shadow: 0 0 0 #2a5fd8, calc(var(--a) * 3) 0 0 #2a5fd8, calc(var(--a) * -3) 0 0 #2a5fd8, 0 calc(var(--a) * 3) 0 #2a5fd8, 0 calc(var(--a) * -3) 0 #2a5fd8, 0 calc(var(--a) * 7) 0 #173a9e; transform: rotate(-4deg); }
-#bwHome .s6logo i { display: block; font-style: normal; font-size: calc(var(--a) * 60); font-weight: 700; color: #ffd23a; margin-top: calc(var(--a) * 2);
+#bwHome .s6logo i { display: block; font-style: normal; font-size: calc(var(--a) * 56); font-weight: 700; color: #ffd23a; margin-top: calc(var(--a) * 2);
   text-shadow: calc(var(--a) * 3) 0 0 #e0560e, calc(var(--a) * -3) 0 0 #e0560e, 0 calc(var(--a) * 3) 0 #e0560e, 0 calc(var(--a) * -3) 0 #e0560e, 0 calc(var(--a) * 7) 0 #a0300a; transform: rotate(-4deg); }
 #bwHome .s6logo .foam { position: absolute; left: -12%; right: -12%; bottom: calc(var(--a) * -6); height: calc(var(--a) * 34); z-index: -1;
   background: radial-gradient(circle at 12% 60%, #fff 0 22%, transparent 23%), radial-gradient(circle at 30% 45%, #f4f0ff 0 26%, transparent 27%), radial-gradient(circle at 52% 60%, #fff 0 24%, transparent 25%),
@@ -52,8 +54,8 @@ export const SIX2_CSS = `
   text-shadow: 0 calc(var(--a) * 3) 0 #3a0c7a; box-sizing: border-box; }
 #bwHome .s6bar { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--a) * 196 + env(safe-area-inset-bottom, 0px)); background: linear-gradient(#ff7ec0, #f04aa0 40%, #e0358e);
   border-top: calc(var(--a) * 5) solid #ffb2dc; border-radius: calc(var(--a) * 40) calc(var(--a) * 40) 0 0; transition: opacity .35s ease, transform .35s ease; }
-#bwHome .s6bar .home, #bwHome .s6bar .shop { position: absolute; top: calc(var(--a) * 50); width: calc(var(--a) * 122); height: calc(var(--a) * 112); left: calc(var(--a) * 32); }
-#bwHome .s6bar .shop { left: auto; right: calc(var(--a) * 30); }
+#bwHome.six2 .s6bar .home, #bwHome.six2 .s6bar .shop { position: absolute; top: calc(var(--a) * 50); width: calc(var(--a) * 122); height: calc(var(--a) * 112); left: calc(var(--a) * 32); }
+#bwHome.six2 .s6bar .shop { left: auto; right: calc(var(--a) * 30); }
 #bwHome .s6bar .startgo { position: absolute; left: 50%; top: calc(var(--a) * 10); transform: translateX(-50%); width: calc(var(--a) * 444); height: calc(var(--a) * 150); border-radius: calc(var(--a) * 75);
   background: linear-gradient(#c8ff7a 0 18%, #6ae03a 45%, #2fb02a 80%, #1f8e22); border: calc(var(--a) * 7) solid #f0ffd8; box-shadow: 0 calc(var(--a) * 9) 0 #136a18, 0 calc(var(--a) * 16) calc(var(--a) * 24) rgba(60,0,60,.3);
   color: #fff; font-size: calc(var(--a) * 84); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: calc(var(--a) * 24);
@@ -78,7 +80,7 @@ export function buildSix2UI({ root, top, startBtn, onHome, onShop, onSettings })
   const mail = el('button', 's6sq', MAIL + '<i style="position:absolute;right:-18%;top:-18%;width:42%;height:42%;border-radius:50%;background:#ff3a4a;border:calc(var(--a)*3) solid #fff;color:#fff;font-style:normal;font-weight:700;font-size:calc(var(--a)*26);display:flex;align-items:center;justify-content:center">!</i>');
   mail.setAttribute('aria-label', 'Messages'); Object.assign(mail.style, { right: `${24 / 864 * 100}%`, top: 'calc(var(--a) * 92 + env(safe-area-inset-top, 0px))' });
   set.addEventListener('click', onSettings); mail.addEventListener('click', onSettings);
-  const logo = el('div', 's6logo', `<span class="crown">${CROWN}</span><div style="position:relative"><b>Bubble Wash</b><i>Kingdom</i><span class="foam"></span></div>`);
+  const logo = el('div', 's6logo', `<span class="crown">${CROWN}</span><div style="position:relative"><b>Bubble Wash</b><i>Kingdom</i></div>`);
   const plaque = el('div', 's6plaque', `<span class="paw">${PAW}</span><span class="star l">${STAR}</span><span>Laundry Toss!</span><span class="star r">${STAR}</span>`);
   const cap = el('div', 's6cap', '<span class="n">1</span><span class="t"></span>');
   const bar = el('div', 's6bar');

@@ -297,6 +297,16 @@ const SIX_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 
         c = mix(blue6, m6, smoothstep(-0.9, -0.72, up6));
         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(2.4, 8.0, d) * 0.85 * uGlow);`;
 const SIX_DRUM = '';
+const SIX2_DRUM_END = `vec3 blue6 = c; float up6 = cos(a);   // 1 at the top, -1 at the bottom
+        vec3 m6 = mix(vec3(0.30, 0.20, 0.54), vec3(0.66, 0.52, 0.90), 0.5 + 0.5 * up6);
+        m6 = mix(m6, vec3(0.86, 0.80, 1.0), smoothstep(0.55, 0.95, up6) * (1.0 - smoothstep(0.6, 2.2, d)) * 0.55);   // the silver sheen by the door
+        vec2 hp6 = vec2(a * 7.0, d * 3.2); vec2 hc6 = (fract(hp6 + vec2(0.0, 0.5 * mod(floor(hp6.x), 2.0))) - 0.5) * vec2(1.0, 1.35); float hr6 = length(hc6);
+        m6 = mix(m6, vec3(0.10, 0.05, 0.24), (1.0 - smoothstep(0.19, 0.25, hr6)) * 0.88);
+        m6 += vec3(0.22, 0.18, 0.32) * smoothstep(0.25, 0.3, hr6) * (1.0 - smoothstep(0.3, 0.38, hr6)) * 0.7;   // a bright lip round each hole
+        float rb6 = exp(-pow((fract(d * 0.85) - 0.5) / 0.045, 2.0)), gb6 = exp(-pow((fract(d * 0.85) - 0.56) / 0.012, 2.0)) + exp(-pow((fract(d * 0.85) - 0.44) / 0.012, 2.0));
+        m6 = mix(m6, vec3(0.95, 0.4, 0.78), rb6 * 0.8); m6 = mix(m6, vec3(1.0, 0.8, 0.36), min(1.0, gb6) * 0.85);
+        c = mix(blue6, m6, smoothstep(-0.9, -0.72, up6));
+        c = mix(c, vec3(0.88, 0.78, 1.0), smoothstep(5.0, 9.0, d) * 0.55 * uGlow);`;
 function buildVortex() {
   const P = OPENING3D.porthole, len = 9, n = 90, nA = 48;
   const rad = (d) => THREE.MathUtils.lerp(OPENING3D.rOpen, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);   // (hidden behind the washer and the wall until the camera is inside)
@@ -322,7 +332,7 @@ function buildVortex() {
         float ring = exp(-pow((fract(d * 0.8 - uFlow * 0.5) - 0.5) / 0.08, 2.0));
         c = mix(c, vec3(0.75, 0.95, 1.0), ring * ${LEVEL1_PARTS.port ? '0.22' : '0.4'});
         c = mix(c, vec3(0.88, 0.97, 1.0) * 1.35, smoothstep(${LEVEL1_PARTS.port ? '3.4, 8.6' : '1.6, 8.0'}, d) * ${LEVEL1_PARTS.port ? '0.85' : '0.9'} * uGlow);   // (port: deep blue spiral, the bright heart only at its far end)
-        ${SIX_ON ? SIX_DRUM_END : ''}
+        ${SIX_ON ? (SIX2_ON ? SIX2_DRUM_END : SIX_DRUM_END) : ''}
         gl_FragColor = vec4(c, 1.0);
       }` });
   const tube = new THREE.Mesh(g, mat); tube.name = 'vortex';
@@ -337,8 +347,9 @@ function buildVortex() {
   const wg = new THREE.BufferGeometry(); wg.setAttribute('position', new THREE.Float32BufferAttribute(wpos, 3)); wg.setAttribute('aXD', new THREE.Float32BufferAttribute(wuv, 2)); wg.setIndex(widx);
   const WU = { uTime: U.uTime, uFlow: U.uFlow, uHit: { value: new THREE.Vector3(0, 0, -99) }, uFrom: { value: 2.4 } };   // uFrom: where the water begins (m in); deep while waiting, so the opening shows the swirl
   const wmat = new THREE.ShaderMaterial({ uniforms: WU,
-    vertexShader: 'attribute vec2 aXD; uniform float uTime; varying vec2 vXD; void main() { vXD = aXD; vec3 p = position; p.y += 0.012 * sin(aXD.y * 7.0 - uTime * 4.0 + aXD.x * 9.0); gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }',
-    fragmentShader: /* glsl */ `uniform float uTime, uFlow, uFrom; uniform vec3 uHit; varying vec2 vXD; ${NOISE}
+    vertexShader: SIX2_ON ? 'attribute vec2 aXD; uniform float uTime, uFlow; varying vec2 vXD; varying float vH; void main() { vXD = aXD; vec3 p = position; float df = aXD.y - uTime * 0.9 - uFlow; float h = 0.022 * sin(df * 9.0 + aXD.x * 6.0) + 0.014 * sin(df * 17.0 - aXD.x * 11.0 + 1.3) + 0.008 * sin(aXD.x * 23.0 + uTime * 3.0); vH = h; p.y += h; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }'
+      : 'attribute vec2 aXD; uniform float uTime; varying vec2 vXD; void main() { vXD = aXD; vec3 p = position; p.y += 0.012 * sin(aXD.y * 7.0 - uTime * 4.0 + aXD.x * 9.0); gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }',
+    fragmentShader: /* glsl */ `uniform float uTime, uFlow, uFrom; uniform vec3 uHit; varying vec2 vXD; ${SIX2_ON ? 'varying float vH;' : ''} ${NOISE}
       void main() {
         float x = vXD.x, d = vXD.y, df = d - uTime * 0.9 - uFlow;
         if (d < uFrom) discard;
@@ -349,7 +360,10 @@ function buildVortex() {
         float r = length(vec2(x - uHit.x, (d - uHit.z) * 1.2));
         float rings = (1.0 - smoothstep(0.0, 0.025, abs(fract(r * 9.0 - uTime * 2.2) - 0.5) - 0.4)) * (1.0 - smoothstep(0.05, 0.45, r)) * uHit.y;
         c = mix(c, vec3(0.95, 1.0, 1.0), rings * 0.7);
-        c = mix(c, vec3(0.85, 0.96, 1.0) * 1.2, smoothstep(3.5, 8.8, d) * 0.75);
+        ${SIX2_ON ? `c = mix(c, vec3(0.02, 0.12, 0.62), smoothstep(0.004, -0.03, vH) * 0.55);   // deep troughs
+        c = mix(c, vec3(0.75, 0.95, 1.0), smoothstep(0.022, 0.036, vH) * 0.8);   // bright crests
+        c = mix(c, vec3(1.0), smoothstep(0.7, 0.82, o3f(vec2(x * 16.0, df * 7.0))) * smoothstep(0.012, 0.03, vH) * 0.9);   // white foam on the crests
+        c = mix(c, vec3(0.88, 0.95, 1.0), smoothstep(5.0, 9.0, d) * 0.3);` : 'c = mix(c, vec3(0.85, 0.96, 1.0) * 1.2, smoothstep(3.5, 8.8, d) * 0.75);'}
         gl_FragColor = vec4(c, 1.0);
       }` });
   const water = new THREE.Mesh(wg, wmat); water.name = 'vortexWater';
