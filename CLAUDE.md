@@ -1,6 +1,30 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
-## READ FIRST: the user's PERMANENT requirements (9 November 2026, session 6ddc157f). They override anything older below.
+## READ FIRST, NEWEST (9 November 2026, session ac4e3449). This block overrides anything older below.
+0. **THE ACTIVE GAME (the user's direction of 9 November: ONE pink-and-gold lavender laundry world from the girl's washer into the actual swimming
+   game; the old blue spiral tunnel is a rollback only):** a plain launch runs `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56`.
+   - `six2` is the six approved portrait scenes as the opening (`opening_six2*.js`).
+   - `s56` is the approved Scene 5 / 6 tunnel as the run's environment (`WebDemo/src/s56_tunnel.js`; it supersedes scene07's look; gameplay is level1's, unchanged).
+   - The opening hands over at real 8.95 s (inside the drum) and the game camera follows him in.
+   - Targets: `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06` and `2026-11-09_Scene5_Scene6_Full_Kit_from_user/`.
+   - Rollback: `claude/bubble-wash-rollback-before-s56-default`; the previous plain launch is `?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3`.
+   - `?s3=intunnel` (Classic Screen 4) stays pixel-identical.
+   - NOTHING is approved until the user reviews it.
+1. **Parallel specialists:** coordinator + lanes, `PARALLEL_LANES.md`, registry `Tools/lanes.json`.
+   - Each lane is a sparse worktree on its own branch: `bash Tools/lanes.sh create|status|save`.
+   - The autosave checkpoints and pushes every lane's code each round.
+   - One owner per file or block; the coordinator merges in the order s56, ui, washer34, girl12 after a visual review.
+2. **Every session start:** the SessionStart hook runs `Tools/session_preflight.sh`. Its labels are ACTIVE AND TESTED / CONFIGURED BUT NOT LIVE-TESTED /
+   PARTIALLY WORKING / NOT CONNECTED / NOT INSTALLED / NEEDS USER ACTION / OPTIONAL. Then do its LIVE CHECKS block: call one tool of each MCP server
+   and check the agent list, then tell the user at once what needs action.
+   - Full check: `bash Tools/restore_session.sh`.
+   - New account entry point: `START_HERE_NEXT_CLAUDE_ACCOUNT.md`.
+3. **Rendering facts found this session:**
+   - The game uses Neutral tone mapping, which desaturates any linear channel above ~0.76 toward white. Keep saturated colours under that knee.
+   - Pickups measure from `mascot.root.position`, so drawn-only offsets go on `m.tilt`, never on `m.root`.
+   - Software WebGL on 4 CPUs: one capture at a time (`flock /tmp/bw_browser.lock`). Close MCP browser pages after use: a page left running the game costs about 120 % CPU.
+
+## READ FIRST: the user's PERMANENT requirements (9 November 2026, session 6ddc157f). Item 1's plain launch is superseded by item 0 above.
 1. **THE ACTIVE GAME is the six-scene game with the user's new Tripo models ("tripo3 final", the user's selected "second row").** A plain launch of
    `WebDemo/index.html` (no `?s3=`) runs `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3` (set in `WebDemo/src/page.html`,
    built into `index.html` by `node build.mjs`, which also stamps the bundle URL `game.bundle.js?v=<md5>` so no stale bundle is served).

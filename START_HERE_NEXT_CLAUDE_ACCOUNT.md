@@ -1,3 +1,57 @@
+# START HERE: Bubble Wash Kingdom on any new Claude account or session (updated 9 November 2026, session ac4e3449)
+
+This is the EXISTING game (three.js r170, `WebDemo/`). Do not restart, redesign or rebuild it. Nothing in this repository is a secret; never commit keys.
+
+## 0. The one message to send a new Claude account (copy and paste)
+> Continue my existing Bubble Wash Kingdom game in josiahscalia5-dev/bubblegame. Work on branch claude/bubble-wash-account-transfer-52t7ym
+> (fetch the newest head first; never force-push, never use the default branch). Read START_HERE_NEXT_CLAUDE_ACCOUNT.md and CLAUDE.md, run
+> `bash Tools/restore_session.sh`, do the preflight's LIVE CHECKS (one call per MCP server, the agent list), tell me only what needs my action,
+> recover the specialist lanes with `bash Tools/lanes.sh create`, then continue the exact next task in CURRENT_PROJECT_STATUS.md.
+
+## 1. Where everything is
+| | |
+|---|---|
+| Repository | https://github.com/josiahscalia5-dev/bubblegame |
+| Work branch | **`claude/bubble-wash-account-transfer-52t7ym`** (head moves with the 5-minute autosave: `git ls-remote origin claude/bubble-wash-account-transfer-52t7ym`; the last verified backup SHA is in `BACKUP_VERIFICATION.md`) |
+| Rollbacks (never overwrite) | `claude/bubble-wash-rollback-before-s56-default` (before the plain launch became six2 + s56), `claude/bubble-wash-rollback-before-s56-lanes`, `claude/bubble-wash-rollback-before-tripo3-default`, `claude/bubble-wash-account-switch-e1nndb` |
+| Active game | plain launch = `intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56` (CLAUDE.md READ FIRST item 0) |
+| Approved references | `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-06_*.png` (the six scenes); `Design/ReferencePacks/2026-11-09_Scene5_Scene6_Full_Kit_from_user/` (Scene 5/6 kit, crops, asset maps; `11_` = the OLD blue tunnel, NOT a target) |
+| Models | `WebDemo/models/` (plain files in Git, no LFS pointers): opening `girl_v2_rigged`, `washer_tripo_hj748`, `door_tripo_oit748_gold`, `gear_v2_tripo`, `housing_tripo_821`, `basket_tripo`, `towels_tripo`; game `mascot`, `l1_enemy_v2_tripo`, `coin_v2_tripo(_lo)`, `sock_v2_tripo`, brushes, drum, machinery (`ASSET_AND_MODEL_INVENTORY.md`) |
+| Parallel specialist work | `PARALLEL_LANES.md` + `Tools/lanes.json` (owner, files, branch, task); each lane's code is pushed to its own branch by the autosave |
+| Status and next task | `CURRENT_PROJECT_STATUS.md`, `SIX_SCENE_IMPLEMENTATION_STATUS.md` |
+
+## 2. Restore (one command, safe to repeat)
+`bash Tools/restore_session.sh` (about 1 minute). It checks git, tool versions, the build (`Tools/verify_restore.sh --build`: the committed
+bundle must equal a fresh build of its source), agents, the skill, hooks, the autosave, the lanes, and the free Tripo balance. It installs tools
+only if `~/.bubblewash-tools` is missing (`Tools/cloud_env_setup.sh`, idempotent). It never spends Tripo credits, buys anything, or prints a key.
+
+**What runs by itself:** the SessionStart hook (`.claude/hooks/session-start.sh`, registered in `.claude/settings.json`) runs
+`Tools/session_preflight.sh` (read-only, about 5 s, labelled report) and starts exactly ONE autosave pinned to the checked-out branch. The
+autosave commits and pushes every 5 minutes (chat history, agent transcripts, unfinished work, and every lane's code), never force.
+
+**What only Claude can check (the preflight prints it):** call one tool of each MCP server and confirm the Agent tool lists the 8 agents.
+
+**What only YOU can do (cannot travel through Git):**
+1. GitHub connected on claude.ai, with the Claude GitHub App on the repository.
+2. The `parallax-threejs` plugin enabled (claude.ai, Customize, plugins), then a NEW session. It provides chrome-devtools, playwright,
+   threejs-devtools, spector and the agents scenario-author, shader-reviewer and visual-debugger.
+3. The environment: limited network, package managers and MCP servers allowed. Hosts: `download.blender.org`, `download.pytorch.org`,
+   `openapi-dl.data.tripo3d.com`. Setup script: `if [ -f bubblegame/Tools/cloud_env_setup.sh ]; then bash bubblegame/Tools/cloud_env_setup.sh; fi`.
+4. The Tripo key as a network SECRET for `openapi.tripo3d.ai` (Authorization: Bearer) in the environment settings.
+5. If an MCP server shows "failed": type `/mcp` and reconnect it.
+
+## 3. Run, capture, test
+- Build: `cd WebDemo && npm ci && node build.mjs`.
+- Serve: `python3 -m http.server 3000`, then open `index.html` (the plain launch is the active game).
+- Opening frames: `WebDemo/tools/six2/shots6.cjs`. TIMES are real seconds; Scene 1 = -1, Scene 2 = 0.9-3.4, Scene 3 = 3.5-5.8, Scene 4 = 5.8-7.8, Scene 5 = 7.8-, game from 8.95.
+- Live-game Scenes 5/6: `WebDemo/tools/s56/shots56.cjs` (`ZS=tap,46,206`; `EVAL`/`TUNE`/`TAG`).
+- Gameplay routes: `WebDemo/tools/level1/flow_routes.cjs`. Continuous video: `WebDemo/tools/level1/record_flow.cjs` (`O_HAND=8.95 O_END=9.75` with s56).
+- Identity proof: `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/scripts/identity.sh`.
+- Every browser run goes through `flock /tmp/bw_browser.lock`.
+
+---
+## History (older sections, kept for the record)
+
 # START HERE: Bubble Wash Kingdom on a new Claude account (written 8 November 2026 ~23:55 UTC, session bb87ba9f)
 
 **NEWEST (9 November 2026 ~02:45 UTC, session 6ddc157f, new account): THE ACTIVE GAME CHANGED.** The user selected the six-scene game with their

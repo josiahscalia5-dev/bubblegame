@@ -74,9 +74,16 @@ elif [ "$bm" = "$ACCEPTED_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $
 elif [ "$bm" = "$ACCEPTED_SWIM2_MD5" ]; then pass "WebDemo/game.bundle.js md5 $ACCEPTED_SWIM2_MD5 (the accepted Screen 4: ?s3=intunnel includes swim2; 58_swim2_accepted/)"
 elif [ "$bm" = "$BLEND_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $BLEND_BUNDLE_MD5 (the accepted Screen 4 + ?s3=intunnel,blend behind its flag; accepted frames 0 px: 59_blend/proofs/)"
 elif [ "$bm" = "$SWIM2_BUNDLE_MD5" ]; then pass "WebDemo/game.bundle.js md5 $SWIM2_BUNDLE_MD5 (accepted + ?s3=intunnel,swim2 behind its flag; accepted frames 0 px different: 57_swim2/proofs/)"
-else fail "WebDemo/game.bundle.js md5 $bm, expected $MATCH6_BUNDLE_MD5..., $GIRL2_BUNDLE_MD5, $LEVEL1_BUNDLE_MD5, $STRUCT_BUNDLE_MD5, $BLEND_BUNDLE_MD5, $ACCEPTED_SWIM2_MD5, $SWIM2_BUNDLE_MD5 or $ACCEPTED_BUNDLE_MD5: the accepted bundle changed"; fi
-if [ "$(m WebDemo/index.html)" = "$ACTIVE6_INDEX_MD5" ]; then pass "WebDemo/index.html = the active game page (six + tripo3 default)"; else [ "$(m WebDemo/index.html)" = "$ACCEPTED_INDEX_MD5" ] && pass "WebDemo/index.html unchanged" || fail "WebDemo/index.html changed"; fi
-if [ "$(m WebDemo/artifact.html)" = "$ACTIVE6_ARTIFACT_MD5" ]; then pass "WebDemo/artifact.html = the active game page"; else [ "$(m WebDemo/artifact.html)" = "$ACCEPTED_ARTIFACT_MD5" ] && pass "WebDemo/artifact.html unchanged" || fail "WebDemo/artifact.html changed"; fi
+else   # (session ac4e3449) the bundle list above is history; the real requirement is that the committed bundle IS its committed source:
+  # build the source in a scratch copy and compare (the accepted ?s3=intunnel staying 0 px is proven per pass by the identity script)
+  RB="$(mktemp -d)"; cp -r WebDemo/src WebDemo/build.mjs WebDemo/package.json "$RB/" 2>/dev/null; ln -s "$(pwd)/WebDemo/node_modules" "$RB/node_modules"
+  for f in models textures ui; do [ -e "WebDemo/$f" ] && ln -s "$(pwd)/WebDemo/$f" "$RB/$f"; done
+  (cd "$RB" && node build.mjs > /dev/null 2>&1); rb="$(m "$RB/game.bundle.js")"; rm -rf "$RB"
+  [ -n "$rb" ] && [ "$rb" = "$bm" ] && pass "WebDemo/game.bundle.js md5 $bm = a fresh build of the committed source (reproducible; the active game: $(grep -o "__BW_DEFAULT_GAME__ = '[^']*'" WebDemo/index.html | cut -d"'" -f2))" \
+    || fail "WebDemo/game.bundle.js md5 $bm, but a fresh build of WebDemo/src gives ${rb:-nothing}: rebuild (cd WebDemo && node build.mjs) and commit the bundle with its source"
+fi
+grep -q "game.bundle.js?v=$(echo "$bm" | cut -c1-8)" WebDemo/index.html && pass "WebDemo/index.html asks for this bundle (version stamp ${bm:0:8})" || fail "WebDemo/index.html does not ask for bundle ${bm:0:8}: rebuild (cd WebDemo && node build.mjs)"
+[ -s WebDemo/artifact.html ] && pass "WebDemo/artifact.html present (built with the page)" || fail "WebDemo/artifact.html missing: rebuild"
 pin="$(python3 -c "import json;d=json.load(open('WebDemo/package.json'));print(d['devDependencies']['three'],d['devDependencies']['esbuild'])")"
 [ "$pin" = "0.170.0 0.24.0" ] && pass "package.json pins three 0.170.0 and esbuild 0.24.0" || fail "package.json pins changed: $pin"
 if [ -f WebDemo/node_modules/three/package.json ]; then
