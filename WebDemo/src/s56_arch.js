@@ -90,6 +90,7 @@ export const ARCH56 = {
 };
 const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B) instead of the user's models
 const S6 = !LIST.includes('noarch6');   // (session ddf175f2) the Scene 6 pass (see ARCH56.s6); ,noarch6 = before it
+const T6DRUM = LIST.includes('tripo6');   // (session ddf175f2, coordinator) the user's Tripo star drum (s56_tripo6.js) replaces moduleR6's procedural oval cab, stars and railing; their places are recorded in drumSlots
 if (ARCH56_ON && typeof window !== 'undefined') window.__bwArch56 = ARCH56;
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -603,11 +604,13 @@ vec3 a56Ungrade(vec3 c) {
   }
   function moduleR6(s, tall = true) {   // the approved Scene 6 right bank (TARGETS.md "Right machinery"; the gear is placed with the gears below)
     const Q = Q6.Rt, out = [], X = (v) => s * v, C = Q.cab;
-    ovalCab(out, X(C.x), C.z, C.rx, C.rz, C.top, MT.pink6);
-    const big = (ang, y, r) => onOvalAt(X(C.x), C.z, C.rx, C.rz, s, ang, y, [[starG(r), MT.gold]], -0.005);
-    out.push(...big(0.22, 0.58, 0.25), ...big(0.95, 0.58, 0.23), ...big(-0.55, 0.62, 0.15));
-    const yd = C.top + 0.08, xi = C.x - C.rx + 0.1;
-    out.push(...railing([[X(xi + 0.12), C.z - C.rz * 0.85], [X(xi), C.z - C.rz * 0.5], [X(xi), C.z + C.rz * 0.85]], yd, 0.3));
+    if (!T6DRUM) {   // (under tripo6 the user's Tripo star drum stands here instead: s56_tripo6.js, at drumSlots)
+      ovalCab(out, X(C.x), C.z, C.rx, C.rz, C.top, MT.pink6);
+      const big = (ang, y, r) => onOvalAt(X(C.x), C.z, C.rx, C.rz, s, ang, y, [[starG(r), MT.gold]], -0.005);
+      out.push(...big(0.22, 0.58, 0.25), ...big(0.95, 0.58, 0.23), ...big(-0.55, 0.62, 0.15));
+      const yd = C.top + 0.08, xi = C.x - C.rx + 0.1;
+      out.push(...railing([[X(xi + 0.12), C.z - C.rz * 0.85], [X(xi), C.z - C.rz * 0.5], [X(xi), C.z + C.rz * 0.85]], yd, 0.3));
+    }
     if (!tall) return out;
     // the near tank on a pink pedestal standing in the water, a gold elbow pipe up out of its dome and into the wall
     const T = Q.tank;
@@ -667,6 +670,7 @@ vec3 a56Ungrade(vec3 c) {
   const ry = (t) => new THREE.Matrix4().makeRotationY(t);
   const turn = (s, ang) => (s > 0 ? Math.PI - ang : ang);   // the models' front (local +x) to the channel, ang toward the oncoming camera
   const firstGear = P.gearK.length ? P.gearK[0] : null;
+  const drumSlots = [];   // (tripo6) where moduleR6's star drum would stand: { u, M (track frame at the cab's base centre), rx, rz, top }
   priv(() => {
     for (const [k, ur] of ringUs) {
       const u = ur + (in6(ur) ? Q6.off : P.mod.off); if (u < U0 + 0.5) continue;
@@ -674,6 +678,7 @@ vec3 a56Ungrade(vec3 c) {
         for (const s of [1, -1]) { const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0), low = brushNear(u, s), ci = chunk6(u);
           const useM = TM && TM.m911 && !low;
           for (const [g, m] of (s > 0 ? (low ? MOD.L6low : useM ? MOD.L6m : MOD.L6) : (low ? MOD.R6low : useM ? MOD.R6m : MOD.R6))) put(u, g, m, L);
+          if (s < 0 && T6DRUM) { const C = Q6.Rt.cab; drumSlots.push({ u, M: frameM(u).multiply(L.clone().multiply(new THREE.Matrix4().makeTranslation(s * C.x, 0, C.z))), rx: C.rx, rz: C.rz, top: C.top }); }
           if (!useM) continue;
           if (s > 0) {   // the user's housing (911 / 912 alternating), front (model +x) to the channel turned toward the camera, squashed in depth
             const T = Q6.M, key = mod(k, 2) ? 'm912' : 'm911', z = TM[key][0].size, ext = (z.x * T.sx / 2) * Math.cos(T.ang) + (z.z / 2) * Math.sin(T.ang);
@@ -800,5 +805,5 @@ vec3 a56Ungrade(vec3 c) {
     if (m && lodSets6.length) { const a = m.z - 1, b = m.z + Q6.near;
       for (const [ua, ub, near, far] of lodSets6) { const n = ub > a && ua < b; for (const x of near) x.visible = n; for (const x of far) x.visible = !n; } }
   }
-  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: P.cam };
+  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: P.cam, drumSlots };
 }

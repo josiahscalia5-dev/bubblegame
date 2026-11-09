@@ -6,7 +6,10 @@
 //   - brush: the Tripo roller brush machine replaces the procedural brushes' look (brush6's fitted places, scale, spin and depth pull are kept:
 //     the model is mounted in each brush's own spin group). Its wall bracket (Tripo built one from the wall beside the approved brush) is cut away
 //     at load: the brush's own radius per height is measured on the bracket-free side, triangles beyond it on the bracket side are dropped.
-//   - tank / drum: the tall glowing glass tank and the pink star drum housing, placed on the banks (TRIPO6.tank / .drum), LOD by distance.
+//   - drum: the pink star drum housing stands where lane arch56's procedural star drum stood (arch.drumSlots; under tripo6 arch56 leaves its
+//     oval cab, stars and railing out), its violet shifted to the approved hot pink in the shader (TRIPO6.drum.pink), LOD by distance.
+//   - tank: generated (task 5bafa5d6) but REJECTED: Tripo split it into a small pink box on legs and a squat opaque violet tank with no glow;
+//     arch56's procedural glowing tank is closer to the approved one and stays. Kept off (TRIPO6.tank.on 0); the files stay for the record.
 import * as THREE from 'three';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const TRIPO6_ON = LIST.includes('s56') && LIST.includes('level1') && LIST.includes('tripo6');
@@ -20,8 +23,10 @@ export const TRIPO6 = {
     cut: { on: 1, axis: '-x', margin: 1.06, add: 0.012, bins: 24 },   // the bracket cut (model units after centring)
     hideProc: 1,   // hide brush6's procedural bristles and cap (1) or show both (0, for comparison)
   },
-  tank: { on: 1, url: 'models/s6tripo/tank_lod0.glb', far: 'models/s6tripo/tank_lod2.glb', height: 2.2, place: [] },
-  drum: { on: 1, url: 'models/s6tripo/drum_lod0.glb', far: 'models/s6tripo/drum_lod2.glb', height: 1.2, place: [] },
+  tank: { on: 0, url: 'models/s6tripo/tank_lod0.glb', far: 'models/s6tripo/tank_lod2.glb', height: 2.2, place: [] },   // REJECTED (see above)
+  // drum: scaled so its height (railing included) = slot.top + rail, its front (model +z) turned to the channel by yaw (rad, about the
+  // bank's up axis; +x of the track frame = screen-left), lifted by y; pink: the violet -> hot pink shift (0 = Tripo's own colours)
+  drum: { on: 1, url: 'models/s6tripo/drum_lod0.glb', far: 'models/s6tripo/drum_lod2.glb', rail: 0.32, k: 1.0, yaw: 2.2, y: 0.0, dx: 0.0, dz: 0.0, pink: 1.0 },
 };
 if (TRIPO6_ON && typeof window !== 'undefined') window.__bwTripo6 = TRIPO6;
 
@@ -91,33 +96,39 @@ export async function buildTripo6(ctx) {
     } catch (e) { report.errors.push('tripo6 brush: ' + ((e && e.message) || e)); }
   }
 
-  // ------------------------------------------------ bank models (tank, drum): [u, x (+ = screen-left), h above the water base, s, yaw]
-  const banks = [];
-  for (const key of ['tank', 'drum']) {
-    const D = P[key]; if (!D.on) continue;
+  // ------------------------------------------------ the star drum, in arch56's slots (arch.drumSlots); near = LOD0 within 16 m, then LOD2
+  const pinkU = { value: P.drum.pink };
+  const pinkShift = (m) => {   // the drum's violet (b > g, r > g) toward the approved hot pink; gold and white untouched
+    m.onBeforeCompile = (sh) => { sh.uniforms.uT6Pink = pinkU;
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uT6Pink;')
+        .replace('#include <map_fragment>', `#include <map_fragment>
+  { vec3 c = diffuseColor.rgb; float vio = smoothstep(0.02, 0.12, min(c.b - c.g, c.r - c.g)) * smoothstep(-0.25, 0.05, c.b - c.r * 0.6);
+    vec3 pk = vec3(max(c.r, c.b) * 1.05, c.g * 0.85, c.b * 0.62 + c.r * 0.08); diffuseColor.rgb = mix(c, pk, vio * uT6Pink); }`); };
+    m.customProgramCacheKey = () => 't6pink'; };
+  const drums = [];
+  const slots = (ctx.arch && ctx.arch.drumSlots) || [];
+  if (P.drum.on && slots.length) {
     try {
-      const g = await load(D.url); const n = normalise(g); prep(n.node, key, null);
-      let far = null; try { far = normalise(await load(D.far)); prep(far.node, key + 'F', null); } catch (e) { far = null; }
-      banks.push({ key, D, n, far, items: [] });
-    } catch (e) { report.errors.push('tripo6 ' + key + ': ' + ((e && e.message) || e)); }
-  }
-  const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
-  function placeBanks() {
-    for (const B of banks) {
-      for (const it of B.items) group.remove(it.near, it.far);
-      B.items = [];
-      for (const [u, x, h, s, yaw] of B.D.place) {
-        TR.frame(u, F); const base = W.baseHeight(L, 0, u), k = (B.D.height / B.n.size.y) * (s || 1);
-        const M = new THREE.Matrix4().makeBasis(F.R, F.U, F.T).setPosition(F.P.clone().addScaledVector(F.R, x).addScaledVector(F.U, base + h));
-        const mk = (src) => { if (!src) return null; const o = src.node.clone(); o.matrixAutoUpdate = false;
-          o.matrix.copy(M).multiply(new THREE.Matrix4().makeRotationY(yaw || 0)).multiply(new THREE.Matrix4().makeScale(k, k, k)); group.add(o); return o; };
-        B.items.push({ u, near: mk(B.n), far: mk(B.far) });
+      const n = normalise(await load(P.drum.url)); prep(n.node, 'drum', null); n.node.traverse((o) => { if (o.isMesh) pinkShift(o.material); });
+      let far = null; try { far = normalise(await load(P.drum.far)); prep(far.node, 'drumF', null); far.node.traverse((o) => { if (o.isMesh) pinkShift(o.material); }); } catch (e) { far = null; }
+      for (const sl of slots) {
+        const mk = (src) => { if (!src) return null; const o = src.node.clone(); o.matrixAutoUpdate = false; group.add(o); return o; };
+        drums.push({ sl, near: mk(n), far: mk(far), size: n.size });
       }
-    }
-    return banks.map((B) => B.key + ' x' + B.items.length);
+    } catch (e) { report.errors.push('tripo6 drum: ' + ((e && e.message) || e)); }
   }
-  placeBanks(); P.place = placeBanks;
-  report.parts.push(`tripo6: brush ${brushModel ? 'x' + brush6.brushes.length : 'off'}; ${placeBanks().join(', ')}`);
+  function placeDrums() {
+    const D = P.drum;
+    for (const d of drums) {
+      const k = ((d.sl.top + D.rail) / d.size.y) * D.k;
+      const M = d.sl.M.clone().multiply(new THREE.Matrix4().makeTranslation(D.dx, D.y, D.dz)).multiply(new THREE.Matrix4().makeRotationY(D.yaw)).multiply(new THREE.Matrix4().makeScale(k, k, k));
+      for (const o of [d.near, d.far]) if (o) { o.matrix.copy(M); o.matrixWorldNeedsUpdate = true; }
+    }
+    pinkU.value = D.pink;
+    return 'drum x' + drums.length;
+  }
+  P.place = placeDrums;
+  report.parts.push(`tripo6: brush ${brushModel ? 'x' + brush6.brushes.length : 'off'}; ${placeDrums()}`);
   P.stats = stats;
 
   function update(dt, time, phase, m) {
@@ -127,10 +138,10 @@ export async function buildTripo6(ctx) {
       b.t6.visible = b.spin.visible;
       if (show) { b.fur.visible = false; b.lite.visible = false; for (const c of b.spin.children) if (c.name === 'b6Gold' || c.name === 'b6Bell') c.visible = false; }
     }
-    for (const B of banks) for (const it of B.items) {
-      const d = it.u - hu, on = d > -4 && d < 70, near = d < 16 || !it.far;
+    for (const it of drums) {
+      const d = it.sl.u - hu, on = d > -4 && d < 70, near = d < 16 || !it.far;
       if (it.near) it.near.visible = on && near; if (it.far) it.far.visible = on && !near;
     }
   }
-  return { update, place: placeBanks, stats };
+  return { update, place: placeDrums, stats };
 }
