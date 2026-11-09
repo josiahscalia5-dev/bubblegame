@@ -1,5 +1,21 @@
 # Parallel specialist lanes: ownership plan (9 November 2026, session ac4e3449)
 
+## Lane status (9 November 2026 ~17:25 UTC, session 3849f5c8, new account: THE USER'S SEQUENCE PRIORITY CORRECTION)
+The user's priority is now the PLAYABLE SEQUENCE: girl -> laundry -> accidental fall -> washer -> tunnel -> Screen 6 gameplay
+(`Design/ReferencePacks/2026-11-09_Sequence_Priority_Correction_from_user/README.md`).
+- Real-game preview and gap list: `Previews/WebDemo/six_scenes/14_real_game_preview_3849f5c8/README.md`.
+- Every lane was checkpointed (local = GitHub) and then brought up to the integration head `4c40aa5d` before the redirect (normal merges).
+- Candidate switch for all new work: `,seq7`. The plain launch is unchanged until the user approves.
+
+| Lane | Specialist | Branch @ start | Task (in this order) |
+|---|---|---|---|
+| girl12 | character-animation-specialist (new definition; this session: general-purpose with it) | `claude/lane-s12-girl-room-ac4e3449` @ 4c40aa5d | 1. Screen 3: he stays visible from the basket into the washer. 2. No detached eyes in the tumble. 3. Screen 2: her face visible while loading; the blue towel soft in her hands. |
+| arch56 | lighting-visual-matching | `claude/lane-s56-arch-d847dce2` @ 6fabf71b | 1. A closed perforated drum back from 4.2 s, so the laundry room is never seen through the drum. 2. The fly-through opens into the glowing tunnel, with no room at 8.5 s. 3. Then the Scene 6 machinery, gear and the red tint at u 206. |
+| s56 | screen4-water-motion-engineer | `claude/lane-s56-tunnel-ac4e3449` @ 541a07ea | 1. Screens 3-4 wash water churning round him behind the glass, with foam; he bobs. 2. Waves in the drum fly-through. 3. Then the Screen 6 water (water6 v2). |
+| brush6 | lighting-visual-matching | `claude/lane-s6-brush-47f75e22` @ 83916bf6 | The Screen 6 rotating brushes: first real look at u 206, then tune. Gameplay untouched. |
+| washer34 | paused | `claude/lane-s34-washer-ac4e3449` @ 4c40aa5d | Its files moved to arch56 (drum, tunnel look) and s56 (water). |
+| girl12 -> qa | game-art-director + gameplay-visual-testing | none | After the lanes deliver: approved / before / after for every screen; route test; identity proof. |
+
 ## Lane status (9 November 2026 ~15:45 UTC, session 47f75e22, the user's SCENE 6 MANDATE: brushes, cobalt gear, side machinery, water, camera)
 Target: ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png`, compared at 864x1536 with
 the live game at u 206 (`ZS=tap,206 VW=432 VH=768 DPR=2`). Baseline (bundle 6a78d7ae): `Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/baseline/`.

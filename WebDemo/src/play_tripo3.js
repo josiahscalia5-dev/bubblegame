@@ -22,6 +22,12 @@ export const PLAY3 = {
   sock: 'models/sock_v2_tripo.glb', coin: 'models/coin_v2_tripo.glb', coinLo: 'models/coin_v2_tripo_lo.glb', enemy: 'models/l1_enemy_v2_tripo.glb',
   coinD: 0.6, coinThick: 0.75,
 };
+// (9 November 2026, session 3849f5c8, the user's Screen 6 visual-match mandate) `coin6`: the coins DRAWN about half size, as on approved Screen 6
+// (near pair ~0.10-0.12 W at u 206, art director's O2; today ~0.21-0.27 W). Applied in game.js addCoin() to each coin's LOD levels (the coin used
+// at u 206 is round5's Tripo coin, not coin3), like ?s3=hero's coinScale. Looks only: the pickup radius, placement, spin, pop and counting are the
+// game's own code, unchanged. Without `coin6` nothing changes.
+export const COIN6_ON = LIST.includes('coin6');
+PLAY3.coin6Scale = 0.53;
 export function play3Loader(loader) { if (SOCK3_ON || COIN3_ON || ENEMY3_ON) loader.setMeshoptDecoder(MeshoptDecoder); return loader; }
 // the new coin's geometry, centred and sized to the Tripo coin the game's tripoCoin() / LOD code was made for (its face on +Z)
 export function coin3Prepare(gltfs) {

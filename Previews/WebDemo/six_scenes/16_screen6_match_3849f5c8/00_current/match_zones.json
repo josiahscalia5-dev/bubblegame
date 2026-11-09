@@ -1,0 +1,224 @@
+{
+ "game": "Previews/WebDemo/six_scenes/16_screen6_match_3849f5c8/00_current/game_u206_before.png",
+ "approved": "/workspace/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png",
+ "label": "current game u 206",
+ "global": {
+  "dE_all_unmasked": 56.8,
+  "unmasked_pct": 54.4,
+  "hero_approved": [
+   0.26,
+   0.6,
+   0.736,
+   0.758
+  ],
+  "hero_game": [
+   0.272,
+   0.508,
+   0.738,
+   0.742
+  ]
+ },
+ "zones": [
+  {
+   "zone": "left brush",
+   "area_pct": 7.6,
+   "dE": 60.8,
+   "share_gap": 42.2,
+   "score": 193.79,
+   "approved": {
+    "pink": 25.7,
+    "gold": 8.5,
+    "violet glow": 3.9,
+    "cobalt": 5.0,
+    "azure": 23.6,
+    "pale": 8.9,
+    "lavender wall": 3.5
+   },
+   "game": {
+    "pink": 7.0,
+    "gold": 4.1,
+    "violet glow": 28.7,
+    "cobalt": 10.7,
+    "azure": 3.0,
+    "pale": 2.8
+   }
+  },
+  {
+   "zone": "right brush",
+   "area_pct": 4.7,
+   "dE": 50.9,
+   "share_gap": 31.3,
+   "score": 74.85,
+   "approved": {
+    "pink": 26.0,
+    "gold": 7.5,
+    "violet glow": 1.7,
+    "cobalt": 6.3,
+    "azure": 23.0,
+    "pale": 12.6,
+    "lavender wall": 2.6
+   },
+   "game": {
+    "pink": 7.6,
+    "gold": 8.1,
+    "violet glow": 15.7,
+    "cobalt": 15.0,
+    "azure": 7.5,
+    "pale": 9.9
+   }
+  },
+  {
+   "zone": "upper-left machinery",
+   "area_pct": 3.5,
+   "dE": 58.8,
+   "share_gap": 37.2,
+   "score": 77.08,
+   "approved": {
+    "pink": 21.5,
+    "gold": 8.8,
+    "violet glow": 12.4,
+    "pale": 9.8,
+    "lavender wall": 5.2
+   },
+   "game": {
+    "pink": 12.9,
+    "gold": 1.4,
+    "violet glow": 50.8,
+    "cobalt": 5.6
+   }
+  },
+  {
+   "zone": "upper-right machinery + gear",
+   "area_pct": 5.6,
+   "dE": 88.2,
+   "share_gap": 53.5,
+   "score": 263.22,
+   "approved": {
+    "pink": 15.3,
+    "gold": 13.9,
+    "violet glow": 8.3,
+    "cobalt": 19.5,
+    "pale": 8.5,
+    "lavender wall": 5.1
+   },
+   "game": {
+    "pink": 3.3,
+    "gold": 64.6,
+    "violet glow": 22.4,
+    "lavender wall": 2.9
+   }
+  },
+  {
+   "zone": "tunnel centre (depth, arches, lamp)",
+   "area_pct": 5.4,
+   "dE": 42.0,
+   "share_gap": 33.2,
+   "score": 75.15,
+   "approved": {
+    "pink": 20.8,
+    "gold": 1.8,
+    "violet glow": 13.1,
+    "cobalt": 3.2,
+    "pale": 9.3,
+    "lavender wall": 5.7
+   },
+   "game": {
+    "pink": 11.2,
+    "gold": 8.3,
+    "violet glow": 48.5,
+    "lavender wall": 3.0
+   }
+  },
+  {
+   "zone": "lower banks (rails, medallion, star drum)",
+   "area_pct": 3.1,
+   "dE": 91.6,
+   "share_gap": 29.3,
+   "score": 82.98,
+   "approved": {
+    "pink": 16.8,
+    "gold": 16.6,
+    "violet glow": 6.7,
+    "cobalt": 9.5,
+    "azure": 10.4,
+    "pale": 7.3,
+    "lavender wall": 1.4
+   },
+   "game": {
+    "pink": 7.6,
+    "gold": 44.2,
+    "violet glow": 4.5,
+    "cobalt": 7.6
+   }
+  },
+  {
+   "zone": "mid water (coins, enemies)",
+   "area_pct": 13.8,
+   "dE": 67.0,
+   "share_gap": 34.7,
+   "score": 322.14,
+   "approved": {
+    "pink": 22.4,
+    "gold": 16.0,
+    "violet glow": 2.3,
+    "cobalt": 4.2,
+    "azure": 26.7,
+    "turquoise": 1.2,
+    "pale": 9.0
+   },
+   "game": {
+    "pink": 53.6,
+    "gold": 12.8,
+    "violet glow": 2.3,
+    "cobalt": 7.4,
+    "azure": 2.9,
+    "pale": 2.4
+   }
+  },
+  {
+   "zone": "foreground water",
+   "area_pct": 6.7,
+   "dE": 32.1,
+   "share_gap": 13.6,
+   "score": 28.98,
+   "approved": {
+    "pink": 25.3,
+    "cobalt": 1.4,
+    "azure": 38.4,
+    "turquoise": 7.8,
+    "pale": 15.2
+   },
+   "game": {
+    "pink": 23.2,
+    "cobalt": 7.0,
+    "azure": 30.1,
+    "pale": 12.7
+   }
+  },
+  {
+   "zone": "hero",
+   "area_pct": 9.6,
+   "dE": 46.5,
+   "share_gap": 36.1,
+   "score": 160.93,
+   "approved": {
+    "pink": 44.7,
+    "gold": 11.9,
+    "violet glow": 1.2,
+    "azure": 17.8,
+    "pale": 11.7
+   },
+   "game": {
+    "pink": 79.6,
+    "cobalt": 2.8,
+    "azure": 3.8,
+    "pale": 4.0
+   }
+  }
+ ],
+ "top3": [
+  "mid water (coins, enemies)",
+  "upper-right machinery + gear",
+  "left brush"
+ ]
+}
