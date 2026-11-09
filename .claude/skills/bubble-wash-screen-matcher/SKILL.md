@@ -5,6 +5,15 @@ description: Bubble Wash Exact Screen Matcher. Compares the real, playable Bubbl
 
 # Bubble Wash Exact Screen Matcher
 
+**NEWEST (9 November 2026, session d847dce2): read this first; it overrides older lines below.**
+- Current targets: Scenes 5 / 6 = `Design/ReferencePacks/2026-11-09_Scenes5_6_Approved_Visual_Reference_Pack_from_user/02_APPROVED_SCENE_5.png`,
+  `03_APPROVED_SCENE_6.png` (crops 04-08), Scenes 1-4 = `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/01-04`.
+  Classic Screen 4 (below) is the accepted `?s3=intunnel` only: keep it pixel-identical, do not match it.
+- Capture: live game `WebDemo/tools/s56/shots56.cjs` (`ZS=tap,206`, `VW=432 VH=768 DPR=2` = 864x1536); opening `WebDemo/tools/six2/shots6.cjs`.
+  Every browser run through `flock /tmp/bw_browser.lock`. Compare the 3D world, not the intro UI against the live HUD.
+- Tripo / Ludo: the user's instruction of 9 November overrides the 8 November authorization below: NO credits and NO new models without the
+  user's explicit approval (free `tripo balance` / `tripo doctor` only).
+
 The approved images are exact art targets for the real game. Reproduce their look with live 3D objects, animated shaders,
 particles and lighting. **Never** show an approved image, or a piece of one, in the game as scenery, a backdrop or an
 overlay. Keep these as they are unless the user says otherwise:

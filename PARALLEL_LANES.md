@@ -1,6 +1,14 @@
 # Parallel specialist lanes: ownership plan (9 November 2026, session ac4e3449)
 
-## Lane status (9 November 2026 ~13:10 UTC, session f28099bc; refresh with `bash Tools/lanes.sh status`)
+## Lane status (9 November 2026 ~14:00 UTC, session d847dce2, new account; refresh with `bash Tools/lanes.sh status`)
+All worktrees recreated from GitHub (`lanes.sh create`); girl12 / washer34 fast-forwarded and s56 / ui merged with the integration head (normal merges).
+NEW lane **arch56** (`claude/lane-s56-arch-d847dce2`, lighting-visual-matching): `WebDemo/src/s56_arch.js` + `WebDemo/tools/arch56/`, switch `,arch56`
+(the coordinator's hook in `s56_tunnel.js` section 0 lets it replace sections 1-4 and own the camera). s56 (screen4-water-motion-engineer) now owns only
+the water (sections 5-7, heroOffset, WAVES/CHOP, S56.water/hero/splash). Running: arch56, s56 water, washer34 (water-vfx-engineer: drum continuity into
+Scene 5, Scene 4 water), QA (gameplay-visual-testing baseline, game-art-director inventory). Paused (4 CPUs, software WebGL; the user's newest
+priority is Scenes 5/6): girl12, ui. Merge order: s56, arch56, ui, washer34, girl12. Evidence: `Previews/WebDemo/six_scenes/11_scene56_match_d847dce2/`.
+
+## Lane status (earlier: 9 November 2026 ~13:10 UTC, session f28099bc)
 The previous session's five lane agents all died at 12:08 UTC on a usage limit; only s56 had saved code. This session recreated all four worktrees
 from GitHub (`bash Tools/lanes.sh create`), fast-forwarded girl12 / washer34 / ui to the integration head (no game source had changed since their
 base 6f5d6dfd), merged the integration head into s56 (83c6225a, docs/tools only) and relaunched every specialist on its lane (live test = real task).
