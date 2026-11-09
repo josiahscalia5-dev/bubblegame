@@ -30,8 +30,8 @@ export const BRUSH6 = {
   // above the water's centre-line base height (m), scale s = the pink bell's radius in metres (the brush is built in bell radii, below)
   anchor: 206, every: 26, spans: [[150, 258]], far: 60, near: -4, minX: 1.05,   // (minX: the coordinator's bound of session ddf175f2, was 1.25)
   // (fitted by tools/brush6/fit_eval.js at shots56's `206` shot, hero at u 209.1 in the picture: inner tips exactly at minX)
-  left: { du: 5.431, x: 2.057, h: -0.632, s: 0.612, hat: 0.5, dir: 1 },
-  right: { du: 5.379, x: -1.89, h: -0.618, s: 0.485, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
+  left: { du: 5.431, x: 2.057, h: -0.632, s: 0.612, sy: 1, flare: 0, hat: 0.5, dir: 1 },
+  right: { du: 5.379, x: -1.89, h: -0.618, s: 0.485, sy: 1, flare: 0, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
   spin: 3.0,   // rad/s about the brush's own axis (about 0.5 rev/s: faster strobes the strands at 30-60 fps)
   // the depth pull (session 3849f5c8, after the first real frame): within the lane bound the brushes' bodies stand at x 1.25-2.85 m, INSIDE the
   // bank (deck face ~1.5 m, rail 1.56 m, tanks beyond), so the bank's rail, deck and machinery were drawn over most of the bristles. The near
@@ -137,6 +137,11 @@ void main() {
 }`;
 
 // ---------------------------------------------------------------- geometry (bell-radius units, axis +Y, y = 0 at the lowest tips)
+// a side's skirts: the tip radii flared by S.flare toward the foot (pink x 1, white x (1 + flare/3), blue x (1 + 2 flare/3), pale x (1 + flare))
+function tiersFor(P, sk) {
+  const fl = P[sk].flare || 0;
+  return P.tiers.map(([y0, y1, r0, r1], k) => [y0, y1, r0, r1 * (1 + (fl * k) / 3)]);
+}
 // every skirt: `rows` scalloped cones (one ridge per tuft, the relief growing toward the tips), the front row `gap` out and half a tuft round
 function bristleGeometry(P, seg, along, rows) {
   const F = P.fur, pos = [], sAt = [], dir = [], idx = [];
@@ -235,18 +240,28 @@ export async function buildBrush6(ctx) {
   const bellMat = pullStd(new THREE.MeshStandardMaterial({ color: new THREE.Color(B.color), emissive: new THREE.Color(B.emissive), emissiveIntensity: B.ei, metalness: B.metal, roughness: B.rough, envMap: env, envMapIntensity: 1.2 }), 'bell');
   const G = P.gold, goldMat = pullStd(new THREE.MeshStandardMaterial({ color: new THREE.Color(G.color), emissive: new THREE.Color(G.emissive), emissiveIntensity: G.ei, metalness: G.metal, roughness: G.rough, envMap: env, envMapIntensity: 1.25 }), 'gold');
   const mats0 = { bell: bellMat, gold: goldMat };
-  const bristleG = bristleGeometry(P, P.fur.seg, P.fur.along, P.fur.rows), liteG = bristleGeometry(P, P.lod.seg, P.lod.along, 1);
+  // per side: the skirts flared wider toward the foot (S.flare: the pale tier's tip radius x (1 + flare), the tiers between in proportion)
+  const geo = { left: null, right: null }, built = { left: NaN, right: NaN };
+  function sideGeometry(sk) {
+    const fl = P[sk].flare || 0;
+    if (geo[sk] && built[sk] === fl) return geo[sk];
+    if (geo[sk]) { geo[sk].full.dispose(); geo[sk].lite.dispose(); }
+    const Q = { ...P, tiers: tiersFor(P, sk) };
+    geo[sk] = { full: bristleGeometry(Q, P.fur.seg, P.fur.along, P.fur.rows), lite: bristleGeometry(Q, P.lod.seg, P.lod.along, 1) }; built[sk] = fl;
+    return geo[sk];
+  }
+  sideGeometry('left'); sideGeometry('right');
   const caps = { left: capGeometries(P, P.left.hat), right: capGeometries(P, P.right.hat) };
   const mats = { left: mkBristleMat(1), right: mkBristleMat(-1) };
-  const tris = { bristles: bristleG.index.count / 3, lite: liteG.index.count / 3, left: 0, right: 0 };
+  const tris = { bristles: geo.left.full.index.count / 3, lite: geo.left.lite.index.count / 3, left: 0, right: 0 };
   for (const k of ['left', 'right']) tris[k] = tris.bristles + caps[k].gold.attributes.position.count / 3 + caps[k].bell.index.count / 3;
 
   const brushes = [], F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
   function make(sideKey) {
     const holder = new THREE.Group(); holder.name = 'b6Brush_' + sideKey; holder.matrixAutoUpdate = false;
     const spin = new THREE.Group(); holder.add(spin);
-    const fur = new THREE.Mesh(bristleG, mats[sideKey]); fur.name = 'b6Bristles';
-    const lite = new THREE.Mesh(liteG, mats[sideKey]); lite.name = 'b6BristlesLod'; lite.visible = false;
+    const fur = new THREE.Mesh(geo[sideKey].full, mats[sideKey]); fur.name = 'b6Bristles';
+    const lite = new THREE.Mesh(geo[sideKey].lite, mats[sideKey]); lite.name = 'b6BristlesLod'; lite.visible = false;
     const gold = new THREE.Mesh(caps[sideKey].gold, goldMat); gold.name = 'b6Gold';
     const bell = new THREE.Mesh(caps[sideKey].bell, bellMat); bell.name = 'b6Bell';
     spin.add(fur, lite, gold, bell); group.add(holder);
@@ -259,10 +274,11 @@ export async function buildBrush6(ctx) {
     let n = 0;
     for (const u of us) for (const sk of ['left', 'right']) {
       const S = P[sk], b = brushes[n] || (brushes[n] = make(sk)); n++;
+      const g = sideGeometry(sk); b.fur.geometry = g.full; b.lite.geometry = g.lite;
       const uu = u + S.du; TR.frame(uu, F);
       const base = W.baseHeight(L, 0, uu);
       b.holder.matrix.makeBasis(F.R, F.U, F.T).setPosition(F.P.clone().addScaledVector(F.R, S.x).addScaledVector(F.U, base + S.h));
-      b.holder.matrixWorldNeedsUpdate = true; b.spin.scale.setScalar(S.s); b.u = uu; b.phase = (uu * 1.7) % 6.283; b.holder.visible = true;
+      b.holder.matrixWorldNeedsUpdate = true; b.spin.scale.set(S.s, S.s * (S.sy || 1), S.s); b.u = uu; b.phase = (uu * 1.7) % 6.283; b.holder.visible = true;
     }
     for (let i = n; i < brushes.length; i++) brushes[i].holder.visible = false;
     P.placed = brushes.filter((b) => b.holder.visible).map((b) => ({ side: b.side, u: +b.u.toFixed(2) }));
@@ -276,21 +292,22 @@ export async function buildBrush6(ctx) {
     for (const b of brushes) {
       if (!b.holder.visible || Math.abs(b.u - (P.anchor + P[b.side].du)) > 0.01) continue;
       b.holder.updateMatrixWorld(true);
-      const S = P[b.side], m = new THREE.Matrix4().copy(b.holder.matrixWorld).multiply(new THREE.Matrix4().makeScale(S.s, S.s, S.s));
+      const S = P[b.side], m = new THREE.Matrix4().copy(b.holder.matrixWorld).multiply(new THREE.Matrix4().makeScale(S.s, S.s * (S.sy || 1), S.s));
+      const TT = tiersFor(P, b.side), rx = 1 + P.fur.scallop * 0.45;   // (rx: the tufts' ridges stand out of the nominal cone)
       const proj = (r, y, a) => { v.set(Math.cos(a) * r, y, Math.sin(a) * r).applyMatrix4(m).project(camera); return [(v.x + 1) / 2, (1 - v.y) / 2, v.z]; };
       const ring = (r, y) => { const pts = []; for (let i = 0; i < 64; i++) { const p = proj(r, y, (i / 64) * Math.PI * 2); if (p[2] < 1) pts.push(p); } return pts; };
       if (!ring(1.0, 2.0).length) { out[b.side] = null; continue; }   // (behind the camera)
       const inner = (pts) => (!pts.length ? NaN : b.side === 'left' ? Math.max(...pts.map((p) => p[0])) : Math.min(...pts.map((p) => p[0])));
       const innerPt = (pts) => (!pts.length ? [NaN, NaN] : pts.reduce((best, p) => ((b.side === 'left' ? p[0] > best[0] : p[0] < best[0]) ? p : best), pts[0]));
-      const topY = P.cap.flange[0] + S.hat, wl = -S.h / S.s;   // the water base height in bell radii (local y)
+      const topY = P.cap.flange[0] + S.hat, wl = -S.h / (S.s * (S.sy || 1));   // the water base height in bell radii (local y)
       out[b.side] = {
-        top: +Math.min(...ring(0.45, topY).map((p) => p[1])).toFixed(4),
+        top: +Math.min(...ring(S.hat > 0.02 ? 0.45 : P.cap.flange[1] * 0.5, topY).map((p) => p[1])).toFixed(4),
         bellInner: +inner(ring(1.0, P.cap.rim[1] + 0.06)).toFixed(4),
-        tipsInner: P.tiers.map(([, y1, , r1]) => +inner(ring(r1, y1)).toFixed(4)),
-        tipsY: P.tiers.map(([, y1, , r1]) => +innerPt(ring(r1, y1))[1].toFixed(4)),
-        bottom: +Math.max(...ring(P.tiers[3][3], 0).map((p) => p[1])).toFixed(4),
+        tipsInner: TT.map(([, y1, , r1]) => +inner(ring(r1 * rx, y1)).toFixed(4)),
+        tipsY: TT.map(([, y1, , r1]) => +innerPt(ring(r1 * rx, y1))[1].toFixed(4)),
+        bottom: +Math.max(...ring(TT[3][3], 0).map((p) => p[1])).toFixed(4),
         waterAtInner: +innerPt(ring(1.25, wl))[1].toFixed(4),
-        innerX_m: +(Math.abs(S.x) - S.s * Math.max(...P.tiers.map((t) => t[3]))).toFixed(3),
+        innerX_m: +(Math.abs(S.x) - S.s * rx * Math.max(...TT.map((t) => t[3] + P.fur.gap))).toFixed(3),
         u: b.u,
       };
     }
@@ -306,7 +323,7 @@ export async function buildBrush6(ctx) {
       if (!b.holder.visible) continue;
       const drawn = b.holder.visible && b.spin.visible && group.visible && root.visible;
       b.holder.updateMatrixWorld(true); w.setFromMatrixPosition(b.holder.matrixWorld);
-      const S = P[b.side], m = new THREE.Matrix4().copy(b.holder.matrixWorld).multiply(new THREE.Matrix4().makeScale(S.s, S.s, S.s));
+      const S = P[b.side], m = new THREE.Matrix4().copy(b.holder.matrixWorld).multiply(new THREE.Matrix4().makeScale(S.s, S.s * (S.sy || 1), S.s));
       let x0 = 9, y0 = 9, x1 = -9, y1 = -9, n = 0;
       const ys = [0, ...P.tiers.map((t) => t[1]), ...P.tiers.map((t) => t[0]), P.cap.rim[1], P.cap.bell, P.cap.flange[0] + S.hat];
       const rs = [P.tiers[3][3], ...P.tiers.map((t) => t[3]), ...P.tiers.map((t) => t[2]), 1.0, P.cap.flange[1], 0.5];
