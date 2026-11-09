@@ -36,7 +36,7 @@ export const SIX2 = {
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
     [-1, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],   // reference 01: fitted to 13 measured landmarks (her eyes, knee, shoe, hip, hands; basket rim, base; his eyes; porthole), 60 px rms
     [0.0, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],
-    [0.9, [0.3, 0.52, 4.05], [-0.25, 0.49, 0.68], 40],
+    [0.9, [0.08, 0.56, 4.1], [-0.33, 0.5, 0.6], 41],   // (lifting the towel at the basket: scene 1's framing, a little higher)
     [2.0, [0.524, 0.538, 3.976], [-0.155, 0.515, 0.796], 39.1],   // reference 02: fitted to 11 measured landmarks (her eye, hands, hip; basket; his eyes; drum opening), 91 px rms
     [3.2, [0.524, 0.538, 3.976], [-0.155, 0.515, 0.796], 39.1],
     [4.0, [0.18, 0.8, 1.55], [0.32, 0.6, -0.2], 50],
@@ -323,7 +323,7 @@ export function installSix2(ctx) {
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
     // ---- the blue towel: draped over him (a hood) -> lifted by both hands (hanging cloth) -> pushed into the drum -> lying in the drum -> flipped onto his head
     const rB = OPENING3D.heroW * 0.5 * 0.62, camRight = V(1, 0, 0).applyQuaternion(camera.quaternion);
-    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.1, rB * 2.7, -0.74, camYaw + 0.18, rB * 1.25, it, 0.26);   // (front edge at his brow, flaps down past his cheeks, asymmetric)
+    const hoodAt = (out, c) => blue.hood(out, c, rB * 1.1, rB * 3.3, -0.74, camYaw + 0.18, rB * 1.7, it, 0.3);   // (front edge at his brow, flaps down past his cheeks, asymmetric)
     bG.visible = true; bG.position.set(0, 0, 0); bG.rotation.set(0, 0, 0); bG.scale.setScalar(1);
     const placeLocal = (src, pos, rx, ry, rz, k = 1) => { const m = new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz, 'YXZ')), V(k, k, k)); const o = new Float32Array(src.length); const v = new THREE.Vector3(); for (let i = 0; i < src.length; i += 3) { v.set(src[i], src[i + 1], src[i + 2]).applyMatrix4(m); o[i] = v.x; o[i + 1] = v.y; o[i + 2] = v.z; } return o; };
     const hoodPos = inBasket.clone().add(V(0, 0.012, -0.01)), hoodRot = [-0.32, camYaw, 0];
