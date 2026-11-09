@@ -1,0 +1,2 @@
+4.1s loaded
+4.3s {"ready":false,"o3d":true,"hero":false,"t2":false,"t3":false} []
