@@ -1,0 +1,8 @@
+toss_idle_1.5: 0 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_1.20: 1 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_2.75: 1195 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_3.60: 0 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_4.90: 866 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_6.30: 345659 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_6.80: 0 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)
+seq_7.40: 0 px differ of 345668 (explicit ?s3=...,six,tripo3 at bundle 87243676 vs PLAIN launch at bundle 45f21c4a)

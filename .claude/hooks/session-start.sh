@@ -13,6 +13,10 @@ try: print(json.load(sys.stdin).get('$1') or '')
 except Exception: print('')" 2>/dev/null; }
 sid="$(field session_id)"; log="$(field transcript_path)"
 [ -n "$sid" ] && [ -n "$log" ] || exit 0
+# (9 November 2026, session 6ddc157f, the user's standing requirement) the read-only development-environment preflight, every session start,
+# on any branch, before the autosave logic below (which is unchanged): branch, active game, agents, skill, plugin, MCP builds, tools, Tripo,
+# autosave. It installs nothing and stores no key; its summary is printed for Claude, the full report goes to ~/.bubblewash-autosave/.
+[ -f Tools/session_preflight.sh ] && timeout 40 bash Tools/session_preflight.sh "$sid" 2>/dev/null || true
 branch="$(git branch --show-current 2>/dev/null || true)"
 case "$branch" in ""|main|master) exit 0 ;; esac          # never on the default branch or a detached HEAD
 exec 9> /tmp/bw-autosave-hook.lock; flock -n 9 || exit 0   # one hook at a time
