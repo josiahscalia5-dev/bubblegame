@@ -643,8 +643,9 @@ export function mountOpening3D(container, opts = {}) {
     const goldT = washer.goldM, glassG = new THREE.MeshStandardMaterial({ color: 0xd8b8ff, emissive: 0xb07cff, emissiveIntensity: 1.1, roughness: 0.15, transparent: true, opacity: 0.85 });
     const wy = OPENING3D.waterY, rad = (d) => THREE.MathUtils.lerp(rO, 0.42, sm(0.0, 0.7, d)) + 0.43 * sm(1.6, 2.6, d);
     const at6 = (side, d, up) => { const r = rad(d) * 0.78; return V([P.x + side * Math.sqrt(Math.max(0, r * r - (up - P.y) ** 2)), up, P.z - d]); };
+    const housings = [];   // (tripo3 replaces their looks)
     for (const [side, d] of [[-1, 2.3], [1, 2.6], [-1, 3.1], [-1, 3.9], [1, 4.3], [-1, 4.7], [1, 5.1], [-1, 5.5], [1, 5.9], [-1, 6.3], [1, 6.8], [-1, 7.2]]) {   // (pass 3: the walls lined with housings, as in panel 5)
-      const g = new THREE.Group(); g.position.copy(at6(side, d, wy + 0.16)); g.rotation.y = side * 0.5; tun.add(g);
+      const g = new THREE.Group(); g.position.copy(at6(side, d, wy + 0.16)); g.rotation.y = side * 0.5; tun.add(g); housings.push(g);
       const body = new THREE.Mesh(new RoundedBoxGeometry(0.26, 0.24, 0.3, 3, 0.05), pinkM); body.position.y = 0.12; g.add(body);
       for (const y of [0.03, 0.22]) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.27, 0.02, 0.31), goldT); b.position.y = y; g.add(b); }
       const gl = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.16, 20), glassG); gl.position.y = 0.32; g.add(gl);
@@ -662,9 +663,9 @@ export function mountOpening3D(container, opts = {}) {
     const lampM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 1.4, 0.9) });
     for (let d = 1.6; d <= 7.5; d += 0.9) for (const a of [-0.5, 0.5]) { const r = rad(d) * 0.94, l = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 8), lampM); l.position.set(P.x + Math.sin(a) * r, P.y + Math.cos(a) * r, P.z - d); tun.add(l); }
     const bubT = bubbleMaterial(); for (let i = 0; i < 9; i++) { const b = new THREE.Mesh(new THREE.SphereGeometry(0.035 + 0.03 * ((i * 7) % 3), 18, 12), bubT); b.position.copy(at6(i % 2 ? 1 : -1, 2.2 + i * 0.6, wy + 0.3 + 0.06 * (i % 3))); tun.add(b); }
-    return { pinkM, lights6, dial, med, stand, towel, cloth, drape, tun };
+    return { pinkM, lights6, dial, med, stand, towel, cloth, drape, tun, gear, housings };
   })() : null;
-  if (TRIPO3_ON && six) applyTripo3({ washer, six, basket, env, P: OPENING3D.porthole });   // (tripo3: opening_tripo3.js; looks only)
+  if (TRIPO3_ON && six) applyTripo3({ washer, six, basket, env, P: OPENING3D.porthole, vortex });   // (tripo3: opening_tripo3.js; looks only)
 
   // ------------------------------------------------ the timeline
   const P = OPENING3D.porthole;
