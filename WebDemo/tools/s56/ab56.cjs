@@ -49,9 +49,11 @@ const VARIANTS = [
   ['p_nobloom', { post: { bloom: false } }],
   ['p_nograde', { post: { nograde: true } }],
   ['p_nos4grade', { post: { nos4grade: true } }],
+  ['p_herograde', { post: { herograde: true } }],   // (tunnel_r7_hero.js's hero grade, which replaces the drum grade while uHero = 1; 0 past the tunnel end)
   ['p_notonemap', { post: { notm: true } }],
   ['p_exp090', { post: { exposure: 0.9 } }],
 ];
+if (process.env.VARS) VARIANTS.splice(0, VARIANTS.length, ...JSON.parse(process.env.VARS));   // (VARS='[[tag, {...}], ...]': a custom list, e.g. S56.water candidates)
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.webp': 'image/webp' };
 const server = http.createServer((req, res) => { const p = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html');
   if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
@@ -109,12 +111,13 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
       if (bloomPass && 'bloom' in P) bloomPass.enabled = P.bloom;
       if (grade && P.nograde) { grade.uniforms.uSat.value = 1; grade.uniforms.uContrast.value = 1; }
       const s4g = grade && grade.uniforms.uS4Grade ? grade.uniforms.uS4Grade.value : null; if (grade && P.nos4grade && grade.uniforms.uS4Grade) grade.uniforms.uS4Grade.value = 0;
+      const hg = grade && grade.uniforms.uHero ? grade.uniforms.uHero.value : null; if (grade && P.herograde && grade.uniforms.uHero) grade.uniforms.uHero.value = 1;
       if (P.notm) d.renderer.toneMapping = 0;
       if (P.exposure) d.renderer.toneMappingExposure = P.exposure;
       // (the water's per-frame uniforms come from S56.water in update(); push them without stepping the game)
       if (window.__bwS56Sync) window.__bwS56Sync();
       B.render(); const url = d.renderer.domElement.toDataURL('image/png');
-      if (bloomPass) bloomPass.enabled = bl; if (grade) { grade.uniforms.uSat.value = sat; grade.uniforms.uContrast.value = con; if (s4g !== null) grade.uniforms.uS4Grade.value = s4g; } d.renderer.toneMapping = tm; d.renderer.toneMappingExposure = ex;
+      if (bloomPass) bloomPass.enabled = bl; if (grade) { grade.uniforms.uSat.value = sat; grade.uniforms.uContrast.value = con; if (s4g !== null) grade.uniforms.uS4Grade.value = s4g; if (hg !== null) grade.uniforms.uHero.value = hg; } d.renderer.toneMapping = tm; d.renderer.toneMappingExposure = ex;
       for (const o of hidden) o.visible = true;
       if (mat.fragmentShader !== A.frag) { mat.fragmentShader = A.frag; mat.needsUpdate = true; }
       if (S && S.water && A.water0) { Object.assign(S.water, A.water0); delete S.water.mask; if (window.__bwS56Sync) window.__bwS56Sync(); }
