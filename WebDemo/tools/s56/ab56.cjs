@@ -2,7 +2,7 @@
 // (render() never steps the game: every variant is the SAME frame, camera, drops and bubbles). Canvas pixels only (no HUD), so the numbers
 // measure the 3D picture. Each variant changes ONE thing: a named layer hidden, one term of the s56 water shader removed, or one post setting.
 //   flock /tmp/bw_browser.lock node ab56.cjs <ABSOLUTE WebDemo dir> <out dir>     [ZS=tap,206 LANE=1 VW=432 VH=768 DPR=1 ONLY=tag,tag FOOT=1]
-// FOOT=1 also hides every distinct visible mesh name (one at a time) and counts the pixels that change (> 24 in any channel): each layer's
+// FOOT=1 (FOOTONLY=name,name to limit it) also hides every distinct visible mesh name (one at a time) and counts the pixels that change (> 24 in any channel): each layer's
 // screen footprint (an ID buffer by ablation), written to foot_<z>.json. Measure the frames with ab56.py.
 // Water variants are string patches of the s56 water fragment shader: they apply to the shader that contains the statement (old or new);
 // a variant whose statement is missing is reported (and its frame equals `full`). The new shader (pass 3) exposes the same switches as
@@ -95,7 +95,7 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
       const S = window.__bwS56; if (S && S.water && A.water0) { Object.assign(S.water, A.water0); if (v.water) for (const k in v.water) if (k in S.water) S.water[k] = v.water[k]; if (v.mask) S.water.mask = 1; }
       if (f !== mat.fragmentShader) { mat.fragmentShader = f; mat.needsUpdate = true; }
       const hidden = [];
-      for (const n of v.hide || []) d.scene.traverse((o) => { const nm = o === d.particles ? '@particles' : o.name; if (nm === n && o.visible) { o.visible = false; if (!o.visible) hidden.push(o); } });
+      for (const n of v.hide || []) d.scene.traverse((o) => { const nm = o === d.particles ? '@particles' : (o.name || '(noname:' + (o.parent && o.parent.name) + ')'); if (nm === n && o.visible) { o.visible = false; if (!o.visible) hidden.push(o); } });
       const bl = bloomPass ? bloomPass.enabled : null, sat = grade && grade.uniforms.uSat.value, con = grade && grade.uniforms.uContrast.value, tm = d.renderer.toneMapping, ex = d.renderer.toneMappingExposure;
       const P = v.post || {};
       if (bloomPass && 'bloom' in P) bloomPass.enabled = P.bloom;
@@ -119,7 +119,7 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     }
     if (FOOT) {
       // each visible name hidden alone: its changed pixels = its footprint on this frame
-      const names = Object.keys(layers);
+      const names = Object.keys(layers).filter((n) => !process.env.FOOTONLY || process.env.FOOTONLY.split(',').includes(n));
       fs.mkdirSync(path.join(OUT, 'foot_' + z), { recursive: true });
       for (const n of names) {
         const r = await renderVariant('foot', { hide: [n] });
