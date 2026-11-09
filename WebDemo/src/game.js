@@ -1062,7 +1062,7 @@ function updateMascot(dt) {
   }
   if (level1) level1.swim(m, t, dt, running, surf, fx);   // ?s3=...,level1: her swim strokes, drawn only (level1.js); her state is untouched
   if (BLEND_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend: drawn only (tunnel_s4_blend.js); her state is untouched
-  if (s56) s56.heroOffset(m, t, dt);   // ?s3=...,s56: he rides the s56 water's own waves, a little submerged (drawn only; his state is untouched)
+  if (s56) s56.heroOffset(m, t, dt, BLEND_ON);   // ?s3=...,s56: he rides the s56 water's own waves, a little submerged (drawn only; his state is untouched)
 
   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
   // side spray while changing lanes, gentle ripples while bobbing at the start.
@@ -1104,7 +1104,8 @@ function updateMascot(dt) {
   m.lastSlope = slopeAll;
   mats.fur.uTime.value = t;
   mats.fur.uCentre.value.copy(m.root.position);
-  if (BLEND_ON) blendFurCentre(mats.fur.uCentre.value, m);   // ?s3=intunnel,blend: the fur's light centre on her drawn body
+  if (BLEND_ON) blendFurCentre(mats.fur.uCentre.value, m);
+  if (s56) s56.furCentre(mats.fur.uCentre.value, m);   // ?s3=...,s56: the fur's light centre on his drawn body   // ?s3=intunnel,blend: the fur's light centre on her drawn body
   TR.frame(m.z, F); mats.fur.uUp.value.copy(F.U);
 
   document.body.classList.toggle('inDrum', (running || INTUNNEL_ON && state.phase === 'intro') && m.z > L.tunnelStart - (R7_ON ? ROUND6.r7.hudEarly : 0.5));   // (?s3=intunnel: the tunnel's HUD from Tap to Start)   // round7: the mission card at the hero moment
@@ -1732,7 +1733,7 @@ async function main() {
     }
     if (level1 && (TRIPO1_ON || SCENE07_ON)) await applyTripo1({ scene, loader: gltfLoader, env: mats.env, TR, camera, fx });   // ?s3=...,level1,tripo1 / scene07 (tripo_l1.js): looks only
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
-    if (S56_ON && level1) { s56 = await buildS56({ scene, TR, L, W, env: mats.env, loader: gltfLoader, mascot }); s56.hideLegacy(); }   // ?s3=...,level1,s56 (s56_tunnel.js)
+    if (S56_ON && level1) { s56 = await buildS56({ scene, TR, L, W, env: mats.env, loader: gltfLoader, mascot, legacy: [water] }); s56.hideLegacy(); }   // ?s3=...,level1,s56 (s56_tunnel.js)
     resize();
     resetRun();
     state.phase = 'intro';

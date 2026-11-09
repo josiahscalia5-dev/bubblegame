@@ -28,7 +28,7 @@ export const TRIPO1_ON = LIST.includes('level1') && LIST.includes('tripo1');
 // plain tube; BLUE GEARS with a lavender rim and a gold hub (the board's top corners), built here, not the copper gear.glb; big iridescent
 // bubbles; and, only while the camera is in this stretch, the game's particle bursts (sparkles, droplets) at 55 % size (the user: "rich
 // saturated blue water without excessive white sparkles"; the exact previous value restored outside). No credits; no random numbers.
-export const SCENE07_ON = LIST.includes('level1') && LIST.includes('scene07');
+export const SCENE07_ON = LIST.includes('level1') && LIST.includes('scene07') && !LIST.includes('s56');   // (s56, session ac4e3449: the approved Scene 5/6 tunnel replaces the chamber's look for the whole run, one camera; its gameplay is level1.js's, unchanged)
 export const SCENE07 = {
   facing: 0.6,   // radians toward the camera from facing the centre line
   // [side (+1 = screen-left, -1 = screen-right), u, radius, wall height, inner edge x (m from the centre line)]

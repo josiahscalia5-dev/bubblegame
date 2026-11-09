@@ -419,8 +419,72 @@ Report under 450 words: tool availability (worked / failed / missing), then the 
 - 11:43 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
 - 11:44 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__scene_tree`
 - 11:44 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:44 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:44 `Grep`: 'spCurls'|'spLumps'|'openingLook'|'l1Bubbles'|'heroWalls'
+- 11:44 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:45 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:45 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 11:45 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 11:45 `Read`: /tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_motion/tap.png
+**Lead → agent** (11:45 UTC):
 
-_53 tool steps._
+[Image: original 1905x2053, displayed at 1848x1991. Multiply coordinates by 1.03 to map to original image.]
+
+- 11:45 `Grep`: uniform vec4 uTunnel;   // start z|export function (buildWater|createWater)|function buildWater
+- 11:45 `Grep`: \.visible = (true|false|.*r3Swirl|.*swirl)
+- 11:45 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__list_console_messages`
+- 11:45 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__material_details`
+- 11:45 `mcp__plugin_parallax-threejs_threejs-devtools-mcp__object_details`
+**Agent** (11:46 UTC):
+
+I captured Tap to Start in `?s3=intunnel,structmatch,level1,tripo1,scene07,six,tripo3` (phase `intro`, her z = 1.59), but threejs-devtools could not reach the game scene. I edited no files.
+
+**Tools.** The machine is overloaded: three browser GPU processes (two from other sessions), load average about 13 on 4 cores. While the game loop ran freely, every page call timed out. I reloaded with the seed-7 init script; `__BW_TEST__` stops the loop, and after that calls worked.
+- **chrome-devtools:**
+  - `navigate_page` worked; both loads committed, though both calls reported timeouts.
+  - `evaluate_script` worked after the reload (5 timeouts before it).
+  - `take_screenshot` and `list_console_messages` worked on the second try. The console shows only the SwiftShader fallback warning.
+- **threejs-devtools:**
+  - `bridge_status` worked; `renderer_info` worked once (frame 114), then timed out.
+  - `scene_tree` returns the wrong scene (six unnamed children), so `object_details` and `material_details` reply "not found: heroSwell", and `run_js` timed out.
+  - `shader_source`, `set_uniform` and `geometry_details` were not tried.
+  - I used `__bw.debug().scene` through `evaluate_script` instead.
+
+**What draws at Tap to Start** (logged by `onBeforeRender` for one `__bw.render()`: 203 draws). Everything below is visible. "T" means transparent, "dw" depthWrite, "ro" renderOrder; custom blending is mode 5.
+
+| | Object (module) | ro | T | dw | World z |
+|---|---|---|---|---|---|
+| (a) | `heroWalls` (`tunnel_r7_hero.js:259`, reskinned `tunnel_r8_liquid.js:602-621`), double-sided | 0 | no | yes | 3.5–41.2, fixed |
+| (a) | `heroCollar` (`tunnel_r7_hero.js:399`); `r6Porthole` / `r6Face` / `r6Bezel` (`tunnel_r6.js:590-615`) | 0 | no | yes | 1.8–4.0 |
+| (a) | `tunnelDecor` rings (`scenery.js:148`): 17 opaque; 15 additive, no dw | 0 / 3 | no / yes | yes / no | 5.1–38.8 |
+| (a) | far end disc (unnamed, `uMatch*`); `l1Wall` (`level1.js:353`) | 0 | no | yes | 41.2–42; l1Wall from 35.4 |
+| (b) | `lqFloor` (`tunnel_r8_liquid.js:461`), normal blend | −1 | yes | **yes** | −8.1–43.2, fixed geometry; `uLqPlayer` follows her |
+| (b) | `heroSwell` (`tunnel_r7_hero_water.js:184`), normal blend | 5 | yes | no | placed by `uC`/`uR`/`uU`/`uT` = her frame (`uC` = 0, 0.03, 1.59): it moves with her |
+| (b) | `heroSplash` (`:338`), custom blend, her frame | 8 | yes | no | follows her |
+| (b) | slide water (`game.js:292`, shader in `world.js:79`) | 0 | no | yes | −46.7–6.4; the drum's own water sheet (3.4–43.2) is **hidden** |
+| (c) | `heroGlow` 3; `mwTunnelBubbles` 4; `s3Bubbles` ×2 and `s4Bubbles` 5; `openingLook` bubbles 5/6; `heroBubbles`, `spLumps` and particles 6; `spCurls` and `lqWaterlineBubbles` 7; `r2Halo` 4; `s3IcyEdge` 2 | 2–7 | yes | no | — |
+| (d) | `BubbleWash_PinkFuzzyMascot_Small` (`game.js:917-919`), `structFill` (`tunnel_s4_struct.js:259`), `structShellFur` (`:359`, double-sided) | 0 | no | yes | body root at y 0.457, z 1.592 |
+
+`r3Swirl` is hidden at Tap to Start (`tunnel_r3.js:284`). `r6Walls`, `r4GlowRings`, `r4GoldRings`, `r6Flanges` and `s4Rings` are hidden too.
+
+**Hook** (line numbers are from the current working tree, where an uncommitted edit shifted them by +2):
+- `game.js:1009-1023`: the game state. `surf`, a bob of 0.05, `rideY = surf + W.FLOAT_H + bob`, then `m.yAbs`.
+- `:1051`: `TR.map(m.x, m.yAbs, m.z, m.root.position)`.
+- `:1059`: the swim3 bob, `m.squash.position.y = sp.dy`. It sits inside the tilt rotation, so it turns with the somersault.
+- `:1063`: `level1.swim`; `:1064`: `blendPose`.
+- `:1065`: another session's uncommitted `s56.heroOffset`, which adds to `m.root.position` (`s56_tunnel.js:443`).
+
+**That `root.position` offset changes gameplay.** `updateCollectibles` (`:1616` then `:1617`) measures pickup distance from `mascot.root.position` (`:1273-1274`). So shifting her root moves the coin, gem and sock pickup zones. The camera (`:1231`) and the hazards use `m.yAbs`.
+
+**The cleanest place** is right after `:1064`: `m.tilt.position.y = (BLEND_ON ? m.tilt.position.y : 0) + waveDy`.
+- `tilt` is in the root's track-up frame and is not rotated by her flip or lean; it is 0 here.
+- Only the blend pass also writes it (`tunnel_s4_blend.js:57`).
+- Also shift the fur's light centre at `:1106`, as `tunnel_s4_blend.js:62` does.
+
+The screenshot is at `/tmp/claude-0/-workspace-bubblegame/ac4e3449-bbf5-5857-a09c-8f213d7d2fa0/scratchpad/agent_motion/tap.png`.
+
+
+_65 tool steps._
 
 ---
 

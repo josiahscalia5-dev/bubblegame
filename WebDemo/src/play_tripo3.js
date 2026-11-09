@@ -16,8 +16,8 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 const SIX = LIST.includes('six');
 export const SOCK3_ON = SIX && LIST.includes('sock3');
-export const COIN3_ON = SIX && LIST.includes('coin3');
-export const ENEMY3_ON = SIX && LIST.includes('enemy3');
+export const COIN3_ON = SIX && (LIST.includes('coin3') || LIST.includes('s56'));   // (s56: the approved Scene 6's embossed gold paw coin)
+export const ENEMY3_ON = SIX && (LIST.includes('enemy3') || LIST.includes('s56'));   // (s56: the approved Scene 6's angry purple enemy)
 export const PLAY3 = {
   sock: 'models/sock_v2_tripo.glb', coin: 'models/coin_v2_tripo.glb', coinLo: 'models/coin_v2_tripo_lo.glb', enemy: 'models/l1_enemy_v2_tripo.glb',
   coinD: 0.6, coinThick: 0.75,

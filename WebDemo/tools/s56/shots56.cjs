@@ -3,7 +3,7 @@
 //   flock /tmp/bw_browser.lock node shots56.cjs <ABSOLUTE WebDemo dir> <out dir>
 // `tap` = the Tap to Start view (Scene 5's composition in the game); a number = the mascot placed at that track distance u (running) in LANE;
 // `tapR<sec>` = Tap to Start, then running from the start for <sec> seconds (real gameplay frames, no placement).
-// TUNE is merged into window.__bwS56 before each shot (live tuning). DUMP=1 prints the visible named meshes near the camera (legacy hunt).
+// EVAL = JS run in the page before each shot (d = __bw.debug(), scene, B = __bw); TAG = a file-name suffix. TUNE is merged into window.__bwS56 before each shot (live tuning). DUMP=1 prints the visible named meshes near the camera (legacy hunt).
 const { chromium } = require('/opt/node-tools/node_modules/playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const [ROOT, OUT] = process.argv.slice(2);
@@ -30,21 +30,22 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
   let started = false; const out = [];
   for (const z of ZS) {
     await tune();
-    const info = await page.evaluate(({ z, LANE, started, dump }) => {
+    const info = await page.evaluate(({ z, LANE, started, dump, code }) => {
       const B = window.__bw, d = B.debug();
       if (z === 'tap') { B.advance(1.0); }
       else if (z.startsWith('tapR')) { if (!started) B.tap(); B.advance(+z.slice(4)); }
       else { if (!started) { B.tap(); B.step(0.3); } const m = d.mascotState; m.z = +z - 1.0; m.lane = LANE; m.x = (1 - LANE) * 0.7; B.step(1.0 / 7.2, 30); m.z = +z; m.lane = LANE; m.x = (1 - LANE) * 0.7; B.advance(0.4); }
+      if (code) (new Function('d', 'scene', 'B', code))(d, d.scene, B), B.advance(1 / 30);
       const st = B.state(), r = { z, state: { phase: st.phase, z: st.z, x: st.x, coins: st.coins, socks: st.socks, hearts: st.hearts }, s56: window.__bwS56Report || null };
       if (dump) { const cam = d.camera, seen = {}; const V = cam.position.constructor, v = new V();
         d.scene.traverse((o) => { if (!o.isMesh && !o.isPoints && !o.isSprite) return; let vis = true, p = o; while (p) { if (!p.visible) { vis = false; break; } p = p.parent; } if (!vis) return;
           o.getWorldPosition(v); if (v.distanceTo(cam.position) > 40 && !(o.geometry && o.geometry.boundingSphere && o.geometry.boundingSphere.radius > 30)) return;
           const n = (o.name || '(noname)') + ':' + o.type + ':' + (o.material && (o.material.type || '')); seen[n] = (seen[n] || 0) + 1; });
         r.visible = seen; }
-      return r; }, { z, LANE, started, dump: !!process.env.DUMP });
+      return r; }, { z, LANE, started, dump: !!process.env.DUMP, code: process.env.EVAL || '' });
     if (z !== 'tap') started = true;
     await page.waitForTimeout(150);
-    const file = path.join(OUT, `s56_${z}.png`); await page.screenshot({ path: file, timeout: 300000 }); log('shot', z);
+    const file = path.join(OUT, `s56_${z}${process.env.TAG || ''}.png`); await page.screenshot({ path: file, timeout: 300000 }); log('shot', z);
     out.push(info);
   }
   console.log(JSON.stringify({ errors: errs.slice(0, 10), shots: out }, null, 1));

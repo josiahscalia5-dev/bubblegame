@@ -18,6 +18,7 @@
 // Private random numbers only (the game's seeded Math.random is never used).
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
@@ -26,12 +27,12 @@ export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
 export const S56 = {
   u0: -4, u1: 262, chunk: 20,
   R: 2.42, axisH: 1.5,
-  arch: { step: 2.6, from: 3.4 },
+  arch: { step: 4.2, from: 3.4 },
   bank: { step: 3.9, inner: 1.5 },
   gears: [[7.2, -1], [44, 1], [88, -1], [132, 1], [176, -1], [214, 1], [240, -1]],   // [u, side] (side +1 = screen-left)
   gear: { d: 1.45, h: 1.05, x: 1.72, spin: 0.55 },
   // the Scene 5 / 6 camera (track frame, from his ride height): behind and above his back, looking down the tunnel
-  cam: { off: [0, 0.9, -3.0], look: [0, 0.16, 6.0], fov: 66 },
+  cam: { off: [0, 0.58, -3.0], look: [0, 0.45, 6.0], fov: 66 },   // (fitted: his back 0.41 W at y 0.57-0.72, vanishing point y ~0.49)
   hero: { sink: 0.1, follow: 1.0 },
   splash: { rate: 26, burst: 22, speed: 2.1 },
 };
@@ -40,8 +41,8 @@ if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 // ---------------------------------------------------------------- the waves (one table: GLSL and JS stay in step)
 // [amplitude m, k across, k along, angular speed, phase]: h = sum A sin(kx x + ku u - w t + p). Phase speeds 2-3 m/s forward (he swims at 7.2).
 export const WAVES = [
-  [0.095, 0.22, 0.60, 2.0, 0.0],
-  [0.055, -0.85, 1.30, 3.1, 1.3],
+  [0.12, 0.22, 0.60, 2.0, 0.0],
+  [0.07, -0.85, 1.30, 3.1, 1.3],
   [0.032, 1.60, 2.60, 4.4, 0.4],
   [0.018, -2.40, 4.90, 6.2, 2.1],
   [0.022, 2.10, 0.45, -1.2, 0.7],
@@ -83,6 +84,7 @@ const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
  */
 export async function buildS56(ctx) {
   const { scene, TR, W, env, loader } = ctx, S = S56, rnd = mulberry(0x5c56);
+  loader.setMeshoptDecoder(MeshoptDecoder);   // (the user's Tripo models are meshopt-compressed)
   const report = { on: true, parts: [], hidden: [], errors: [] };
   const root = new THREE.Group(); root.name = 's56Tunnel'; scene.add(root);
   const F = { P: new THREE.Vector3(), R: new THREE.Vector3(), U: new THREE.Vector3(), T: new THREE.Vector3() };
@@ -94,11 +96,11 @@ export async function buildS56(ctx) {
   const M = {
     pink: new THREE.MeshStandardMaterial({ color: 0xe8459f, emissive: 0xa0106a, emissiveIntensity: 0.5, metalness: 0.15, roughness: 0.3, envMap: env, envMapIntensity: 0.9 }),
     pinkDeep: new THREE.MeshStandardMaterial({ color: 0xe63a9a, emissive: 0x8a0e55, emissiveIntensity: 0.35, metalness: 0.2, roughness: 0.35, envMap: env, envMapIntensity: 0.8 }),
-    gold: new THREE.MeshStandardMaterial({ color: 0xf7993f, emissive: 0x7a2c00, emissiveIntensity: 0.6, metalness: 0.92, roughness: 0.26, envMap: env, envMapIntensity: 1.25 }),
+    gold: new THREE.MeshStandardMaterial({ color: 0xffb347, emissive: 0x5a3800, emissiveIntensity: 0.55, metalness: 0.92, roughness: 0.26, envMap: env, envMapIntensity: 1.25 }),
     lav: new THREE.MeshStandardMaterial({ color: 0xa070d0, emissive: 0x4a1a70, emissiveIntensity: 0.45, metalness: 0.75, roughness: 0.28, envMap: env, envMapIntensity: 1.1 }),
     deck: new THREE.MeshStandardMaterial({ color: 0x9a6fd8, emissive: 0x3a1a70, emissiveIntensity: 0.4, metalness: 0.6, roughness: 0.35, envMap: env }),
-    glass: new THREE.MeshStandardMaterial({ color: 0xd845f7, emissive: 0xb020f0, emissiveIntensity: 1.35, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.82, envMap: env, envMapIntensity: 1.4 }),
-    core: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 1.35, 2.6) }),
+    glass: new THREE.MeshStandardMaterial({ color: 0xa82ae8, emissive: 0x8a18d8, emissiveIntensity: 0.75, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.82, envMap: env, envMapIntensity: 1.4 }),
+    core: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 1.1, 2.4) }),
     amber: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 1.35, 0.55) }),
     cyan: new THREE.MeshBasicMaterial({ color: new THREE.Color(0.5, 1.9, 2.2) }),
     yellow: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.0, 1.7, 0.4) }),
@@ -266,11 +268,11 @@ export async function buildS56(ctx) {
   }
   // crown pipes along the ceiling (both sides of the lamps), with flanges at every arch
   for (const side of [-1, 1]) {
-    const ang = side * 0.36, rr = S.R - 0.2;
+    const ang = side * 0.98, rr = S.R - 0.16;
     for (let ci = 0; ci < nCh; ci++) {
       const ua = U0 + ci * S.chunk, ub = Math.min(U1, ua + S.chunk), pts = [];
       for (let u = ua; u <= ub + 0.01; u += 0.5) { TR.frame(u, F); pts.push(F.P.clone().addScaledVector(F.R, Math.sin(ang) * rr).addScaledVector(F.U, S.axisH + Math.cos(ang) * rr)); }
-      const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), Math.max(8, pts.length * 2), 0.06, 10);
+      const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), Math.max(8, pts.length * 2), 0.085, 12);
       const c = chunks[ci]; if (!c.has(M.gold)) c.set(M.gold, []); c.get(M.gold).push(g);
     }
   }
@@ -345,27 +347,27 @@ export async function buildS56(ctx) {
         float n1 = s5f(rp), n2 = s5f(rp * 2.3 + vec2(4.1, -uTime * 1.3));
         N = normalize(N + vec3(n1 - 0.5, 0.0, n2 - 0.5) * 0.35);
         float ndv = clamp(dot(N, V), 0.0, 1.0);
-        // body colour: deep cobalt in the troughs, saturated azure on the slopes, turquoise on the lifted crests
-        vec3 deep = vec3(0.0, 0.07, 0.67), cob = vec3(0.0, 0.26, 0.95), turq = vec3(0.06, 0.54, 0.98);
-        float lift = smoothstep(-0.12, 0.16, vH + (n1 - 0.5) * 0.08);
-        vec3 c = mix(deep, cob, smoothstep(-0.2, 0.05, vH));
-        c = mix(c, turq, lift * 0.75);
-        c = mix(c, turq * 1.15, (1.0 - ndv) * 0.35);
-        // reflection of the lavender drum and pink lamps at grazing angles
+        // body colour: deep cobalt in the troughs, saturated azure on the slopes, turquoise on the lifted faces (lighting measurements:
+        // deep #004dd5, mid #068cf9, turquoise #48c2fd, crest #e9f5ff, ~12 % white)
+        vec3 deep = vec3(0.0, 0.025, 0.36), cob = vec3(0.0, 0.2, 0.9), turq = vec3(0.02, 0.5, 1.0);
+        float hh = vH + (n1 - 0.5) * 0.07;
+        vec3 c = mix(deep, cob, smoothstep(-0.16, 0.06, hh));
+        c = mix(c, turq, smoothstep(0.04, 0.2, hh) * 0.8);
+        float face = clamp(dot(N, normalize(V + vec3(0.0, 0.6, 0.0))), 0.0, 1.0);
+        c *= 0.62 + 0.5 * face;
         float fr = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);
-        c = mix(c, vec3(0.72, 0.55, 1.0), fr * 0.55);
-        // glints: the tunnel's far glow and the lamps on the crests
+        c = mix(c, vec3(0.25, 0.5, 1.0), fr * 0.25);
         vec3 Rf = reflect(-V, N), Dv = vW - cameraPosition; Dv.y = 0.0; Dv = normalize(Dv);
-        float sp = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.12, 0.0))), 0.0, 1.0), 90.0);   // the tunnel's bright far end
-        float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 45.0);   // the ceiling lamps
-        c += vec3(0.9, 0.97, 1.2) * sp * 1.1 + vec3(1.0, 0.75, 0.9) * gl * 0.45 * (0.4 + lift);
-        // white: controlled crests (high and broken), his contact collar and wake, a few streaks
-        float crest = smoothstep(0.13, 0.2, vH + (n2 - 0.5) * 0.09) * smoothstep(0.45, 0.75, s5f(vXU * vec2(4.0, 2.0) + uTime * 0.6));
-        float collar = smoothstep(0.35, 0.75, vRing * (0.6 + 0.8 * s5f(vXU * vec2(9.0, 7.0) + vec2(0.0, -uTime * 3.0))));
-        float wk = smoothstep(0.3, 0.7, vWake * (0.5 + s5f(vXU * vec2(8.0, 5.0) + vec2(0.0, -uTime * 2.0))));
-        float streak = smoothstep(0.78, 0.86, s5f(vec2(vXU.x * 2.0, vXU.y * 0.5 - uTime * 0.9))) * 0.5;
-        float white = clamp(crest + collar + wk * 0.8 + streak * lift, 0.0, 1.0);
-        c = mix(c, vec3(0.92, 0.97, 1.05), white * 0.85);
+        float sp = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.12, 0.0))), 0.0, 1.0), 90.0);
+        float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 45.0);
+        c += vec3(0.85, 0.97, 1.2) * sp * 1.1 + vec3(0.8, 0.9, 1.1) * gl * 0.3;
+        float crest = smoothstep(0.12, 0.18, hh + (n2 - 0.5) * 0.1) * smoothstep(0.42, 0.62, s5f(vXU * vec2(7.0, 3.5) + vec2(0.0, uTime * 0.8)));
+        crest += smoothstep(0.66, 0.74, s5f(vXU * vec2(11.0, 5.0) - vec2(0.0, uTime * 1.6))) * smoothstep(0.02, 0.12, hh) * 0.8;   // lace on the slopes
+        float collar = smoothstep(0.4, 0.8, vRing * (0.55 + 0.8 * s5f(vXU * vec2(9.0, 7.0) + vec2(0.0, -uTime * 3.0))));
+        float wk = smoothstep(0.35, 0.75, vWake * (0.5 + s5f(vXU * vec2(8.0, 5.0) + vec2(0.0, -uTime * 2.0))));
+        float streak = smoothstep(0.8, 0.88, s5f(vec2(vXU.x * 2.0, vXU.y * 0.5 - uTime * 0.9))) * 0.3 * smoothstep(0.0, 0.15, hh);
+        float white = clamp(crest + collar + wk * 0.8 + streak, 0.0, 1.0);
+        c = mix(c, vec3(0.86, 0.93, 1.02), white * 0.85);
         c = s56Haze(c, vW);
         gl_FragColor = vec4(c, 1.0);
         #include <colorspace_fragment>
@@ -410,9 +412,13 @@ export async function buildS56(ctx) {
   };
 
   // ------------------------------------------------ 7. hiding the old blue tunnel's water and overlays where s56 is drawn
+  // sticky: these stay hidden whatever later code sets (the old blue tunnel's water, swell, overlays, rings and Screen 3/4 props); gameplay
+  // objects (coins, gems, socks, enemies, the lane brushes, soap bars, paths) are never touched
+  const LEGACY = /^(heroSwell|heroSplash|heroFloor|heroWalls|heroCollar|heroGlow|heroBubbles|lqFloor|lqWaterlineBubbles|lqSpraySheets|spCurls|spLumps|matchFloor|matchWall|r3Swirl|r6Walls|r6BowWave|r6Porthole|r6Bezel|r6Face|r6Flanges|r7Glow|mwTunnelBubbles|structWater|btBaseDomes|s3IcyEdge|s3Paint|s3Castle|s3Entrance|s3Machinery|s3Brush|BubbleWash_SideWashingRoller|waterChunk|wetChunk|l1Water|l1Hoops|l1Wall|tunnelDecor|swirl)/i;
+  const lock = (o) => { if (o.userData.s56Hidden) return; o.userData.s56Hidden = true; Object.defineProperty(o, 'visible', { get: () => false, set: () => {}, configurable: true }); report.hidden.push(o.name || o.type); };
   function hideLegacy() {
-    const names = /^(heroSwell|heroSplash|heroFloor|heroWalls|lqFloor|lqWaterlineBubbles|lqSpraySheets|spCurls|spLumps|matchFloor|matchWall|r3Swirl|structWater|waterChunk|wetChunk|l1Water|swirl)/i;
-    scene.traverse((o) => { if (o === root || !o.name || o.userData.s56Keep) return; let p = o; while (p) { if (p === root) return; p = p.parent; } if (names.test(o.name) && o.visible) { o.visible = false; o.userData.s56Hidden = true; report.hidden.push(o.name); } });
+    for (const o of ctx.legacy || []) if (o) lock(o);
+    scene.traverse((o) => { if (o === root || !o.name || o.userData.s56Hidden) return; let p = o.parent; while (p) { if (p === root) return; p = p.parent; } if (LEGACY.test(o.name)) lock(o); });
   }
 
   // ------------------------------------------------ per frame
@@ -439,16 +445,20 @@ export async function buildS56(ctx) {
     }
     dropMesh.instanceMatrix.needsUpdate = true;
   }
-  // his ride on the s56 waves (visual only): the difference between the new wave and the game's own small waves, a little lower (submerged)
-  function heroOffset(m, t, dt) {
+  // his ride on the s56 waves (visual only): the difference between the new wave and the game's own small waves, a little lower (submerged).
+  // On m.tilt (in his root's track-up frame), NEVER m.root: the pickups measure from m.root.position (the water-motion specialist's audit).
+  // additive: another pass (tunnel_s4_blend.js) already wrote m.tilt.position.y this frame
+  function heroOffset(m, t, dt, additive = false) {
     const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - S.hero.sink;
     heroOff += (target - heroOff) * Math.min(1, dt * 14);
-    TR.frame(m.z, F); m.root.position.addScaledVector(F.U, heroOff);
-    // lean with the slope of the water under him (a gentle roll and pitch)
+    m.tilt.position.y = (additive ? m.tilt.position.y : 0) + heroOff;
+    // a gentle roll and pitch with the slope of the water under him
     const e = 0.25, hx = s56Wave(m.x + e, m.z, t) - s56Wave(m.x - e, m.z, t), hu = s56Wave(m.x, m.z + e, t) - s56Wave(m.x, m.z - e, t);
-    if (!m.air) { m.root.rotateZ(-hx * 0.9); m.root.rotateX(-hu * 0.6); }
+    if (!m.air) { m.tilt.rotation.z += hx * 0.9; m.tilt.rotation.x -= hu * 0.6; }
   }
+  // the fur's light centre follows his drawn body
+  function furCentre(c, m) { TR.frame(m.z, F); c.addScaledVector(F.U, heroOff); }
   function camera(off, look) { off.set(...S.cam.off); look.set(...S.cam.look); return S.cam.fov; }
   if (typeof window !== 'undefined') window.__bwS56Report = report;
-  return { update, heroOffset, camera, hideLegacy, report, root };
+  return { update, heroOffset, furCentre, camera, hideLegacy, report, root };
 }
