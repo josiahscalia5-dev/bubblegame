@@ -5,7 +5,7 @@
 # Then continue START_HERE_NEXT_CLAUDE_ACCOUNT.md -> SIX_SCENE_IMPLEMENTATION_STATUS.md (the user's six-scene direction).
 set -u
 cd "$(dirname "$0")/.." || exit 1
-WORK=claude/bubble-wash-account-transfer-52t7ym   # (session bb87ba9f: the newest working branch; rollback checkpoint: claude/bubble-wash-account-switch-e1nndb at 0aa21621)
+WORK=claude/bubble-wash-restore-transfer-kc4ecl   # (9 November 2026, session d847dce2: the user's PRIMARY branch; 52t7ym is historical only; rollback checkpoints: see START_HERE_NEXT_CLAUDE_ACCOUNT.md)
 T=$(mktemp -d)
 # (9 November 2026, session f28099bc) run the idempotent setup whenever an ESSENTIAL tool is missing, not only when the whole folder is: at that
 # session's start the folder existed but the environment's setup had been cut off inside the PyTorch download, so the Tripo CLI, glTF tools,
