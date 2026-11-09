@@ -121,7 +121,7 @@ function bristleGeometry(P) {
       for (let i = 0; i < cols; i++) {
         const a = i / F.around, ph = a * Math.PI * 2, c = Math.cos(ph), s = Math.sin(ph);
         pos.push(r * c, y, r * s); nrm.push((-dy / l) * c, dr / l, (-dy / l) * s); dir.push((dr / l) * c, dy / l, (dr / l) * s); sAt.push(t, a, tier, 0);
-        if (i < F.around && j < F.along) { const q = base + j * cols + i; idx.push(q, q + cols, q + 1, q + 1, q + cols, q + cols + 1); }
+        if (i < F.around && j < F.along) { const q = base + j * cols + i; idx.push(q, q + 1, q + cols, q + 1, q + cols + 1, q + cols); }   // (front faces outward)
       }
     }
     base += cols * (F.along + 1);
