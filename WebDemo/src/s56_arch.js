@@ -58,8 +58,29 @@ export const ARCH56 = {
   cam: null,
   ungrade: 1.0,   // how much of the base grade the lit arch56 materials undo past the old drum (see UNGRADE)
   hideDecoBrushes: true,   // the old drum's high decorative wall brushes (s4Brush with hazard false: they never collide) cover the gear and the crown
+  // (session ddf175f2, the user's URGENT Scene 6 mandate: the COMPLETE approved environment, big structure first) past `from` the drum widens to
+  // R6 (the approved Scene 6 machinery stands ~2.9 m tall inside it: with R 2.55 its tank tops would cut the wall) and every bay between two
+  // arches holds the approved Scene 6 modules: left (L) a pink oval cabinet with a gold paw medallion, a lavender deck and a gold railing, a
+  // tall violet glowing glass tank on a pedestal, a lavender control box with two glowing bulbs over a panel with a yellow and a teal light,
+  // a gold elbow pipe from the box over into the tank's dome; right (Rt) a violet glowing tank nearest the camera, then a pink oval drum
+  // housing with two big gold stars and a railing on its deck. Laid out with the live camera at u 206 (tools/arch56/proj6.js, camfit.py,
+  // inv.py) against TARGETS.md. The arches beyond `from` are shifted by `shift` (the near arch's lamp bars land on the approved's) and carry
+  // big capsule lamp bars at +-bar.a and smaller dashes; the hanging lamp is the approved's size and height, its pipe ends above the gear.
+  // `,noarch6` = arch56 exactly as before this pass.
+  s6: {
+    from: 30, ramp: 10, R: 3.0, shift: 0.5, off: -1.884,
+    bar: { a: 0.68, len: 0.78, r: 0.075 }, dash: { a: [-1.08, -0.32, 0.32, 1.08], len: 0.42, r: 0.05 },
+    lamp: { y: 2.57, z: 0.0 },   // the lamp's top under the crown (axis frame) and its z behind the ring
+    lampPipe: [[-0.17, 2.4, 0], [-0.95, 1.8, 0], [-1.3, 1.5, 0], [-1.3, 1.42, 0.0], [-1.3, 1.42, 1.3]],   // axis frame (y from the axis), from the bell
+    gear: { dz: -2.35, h: 1.95 },
+    L: { cab: { x: 1.95, rx: 0.65, rz: 1.62, top: 1.05, z: 0.0 }, paw: { ang: 0.62, y: 0.55, r: 0.24 },
+      tank: { x: 1.56, z: 0.1, ped: 1.6, rg: 0.31, hg: 0.82 }, box: { x: 2.0, z: -0.65, y0: 1.62, w: 0.56, h: 0.56, d: 0.44, ang: 0.45 },
+      panel: { y: 1.62, h: 0.42 } },
+    Rt: { cab: { x: 2.15, rx: 0.62, rz: 1.15, top: 1.2, z: 0.45 }, tank: { x: 2.12, z: -1.45, ped: 1.36, rg: 0.33, hg: 0.68 } },
+  },
 };
 const NOTM = LIST.includes('notm');   // ,arch56,notm: the procedural modules (B) instead of the user's models
+const S6 = !LIST.includes('noarch6');   // (session ddf175f2) the Scene 6 pass (see ARCH56.s6); ,noarch6 = before it
 if (ARCH56_ON && typeof window !== 'undefined') window.__bwArch56 = ARCH56;
 
 function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -91,6 +112,10 @@ export async function buildArch56(ctx) {
   const U0 = S.u0, U1 = S.u1, nCh = Math.ceil((U1 - U0) / P.chunk);
   const wid = (u) => (FLOW ? flowWiden(u) : 0);
   const lift = (u) => (FLOW ? ledgeLift(u) : 0);
+  // (ddf175f2) the drum's radius along the run: P.R (Scene 5) widening to s6.R past s6.from; the arches past s6.from shifted by s6.shift
+  const Q6 = P.s6, sm01 = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const Ru = (u) => (S6 ? P.R + (Q6.R - P.R) * sm01(Q6.from, Q6.from + Q6.ramp, u) : P.R);
+  const in6 = (u) => S6 && u >= Q6.from;
   const group = priv(() => new THREE.Group()); group.name = 'arch56'; root.add(group);
   const stats = { rings: 0, lamps: 0, modsA: 0, modsB: 0, gears: 0 };
 
@@ -120,12 +145,15 @@ vec3 a56Ungrade(vec3 c) {
   // the u 206 chain backwards: the warm light, round4, the knee, the vibrance, the base vignette, contrast and saturation
   vec2 wq = (uv - vec2(0.9, 0.8)) * vec2(0.5, 1.0); vec3 y = max(c - vec3(1.0, 0.7, 0.6) * exp(-dot(wq, wq) / 0.09) * 0.3 * uA56S4, 0.0);
   vec3 h = (y - 0.5) / 1.4 + 0.5; float lh = a56L(h); h = lh + (h - lh) / 1.2; y = mix(y, h / 0.84, uA56S4);
-  float lp = a56L(y); if (lp > 0.62) { float b = lp - 0.62; y *= mix(1.0, (0.62 + b / max(1.0 - 1.6 * b, 0.05)) / lp, uA56S4); }
+  // (session ddf175f2, measured: the uncapped knee inverse multiplied the HDR lamp / strip / core colours by up to 20x, linear luminance 214)
+  // the knee's inverse is taken at most at b 0.45 (x2.08) and held there for brighter colours
+  float lp = a56L(y); if (lp > 0.62) { float b = min(lp - 0.62, 0.45); y *= mix(1.0, (0.62 + b / max(1.0 - 1.6 * b, 0.05)) / (0.62 + b), uA56S4); }
   float lg = a56L(y); vec3 g = y;
   for (int i = 0; i < 2; i++) { float mx = max(g.r, max(g.g, g.b)), mn = min(g.r, min(g.g, g.b)); float k = 1.0 + 0.25 * (1.0 - (mx - mn) / max(mx, 1e-4)) * smoothstep(0.05, 0.35, lg) * uA56S4; g = lg + (y - lg) / k; }
   vec2 dv = (uv - 0.5) * vec2(0.6, 1.0); g /= mix(vec3(1.0), vec3(0.7, 0.66, 0.92), smoothstep(0.4, 0.8, length(dv)) * 0.36);
   g = (g - 0.18) / 1.12 + 0.18; float l = a56L(g); g = l + (g - l) / 1.32;
-  return max(g, 0.0);
+  g = max(g, 0.0); float lo = a56L(g); if (lo > 3.0) g *= 3.0 / lo;   // (ddf175f2) no lamp past ~3 linear
+  return g;
 }`;
   const hazeIt = (m, ungrade = true) => {
     m.onBeforeCompile = (sh) => {
@@ -213,13 +241,13 @@ vec3 a56Ungrade(vec3 c) {
 
   // ------------------------------------------------ 1. the drum: perforated violet metal, its axis at the camera's height
   const shellMat = priv(() => new THREE.ShaderMaterial({
-    uniforms: { uTime: timeU, uArch: { value: new THREE.Vector2(P.ring.step, P.ring.u0) }, uA56Ungrade: UNG, uA56S4: US4 },
+    uniforms: { uTime: timeU, uArch: { value: new THREE.Vector2(P.ring.step, P.ring.u0) }, uS6: { value: new THREE.Vector2(S6 ? Q6.from : 1e9, S6 ? Q6.shift : 0) }, uA56Ungrade: UNG, uA56S4: US4 },
     vertexShader: /* glsl */ `
       attribute vec2 aAU; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
       varying vec4 vA56Clip;
       void main() { vAU = aAU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(normal); gl_Position = projectionMatrix * viewMatrix * w; vA56Clip = gl_Position; }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform vec2 uArch; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
+      uniform float uTime; uniform vec2 uArch, uS6; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
       ${NOISE}
       ${HAZE}
       ${UNGRADE}
@@ -247,7 +275,7 @@ vec3 a56Ungrade(vec3 c) {
         c = mix(c, mix(vec3(0.035, 0.008, 0.09), vec3(0.05, 0.03, 0.30), smoothstep(5.0, 14.0, dc)), hole * 0.92 * vis);
         c += vec3(0.38, 0.18, 0.40) * lip * clamp(0.6 - q.y * 2.2, 0.0, 1.0) * vis;
         // warm light round every arch (its light strips), a pool round each hanging lamp on the crown
-        float da = u - uArch.y, ka = da - uArch.x * floor(da / uArch.x + 0.5);
+        float da = u - uArch.y - (u >= uS6.x ? uS6.y : 0.0), ka = da - uArch.x * floor(da / uArch.x + 0.5);
         float glow = exp(-ka * ka / 0.3);
         c += vec3(0.62, 0.05, 0.36) * glow * 0.22 * (0.4 + 0.6 * smoothstep(-0.6, 0.6, up));
         c += vec3(1.0, 0.55, 0.18) * glow * 0.25 * exp(-pow((abs(a) - 0.72) / 0.2, 2.0));
@@ -272,7 +300,7 @@ vec3 a56Ungrade(vec3 c) {
       const rows = Math.round((ub - ua) / du) + 1;
       const pos = new Float32Array(rows * (NA + 1) * 3), nor = new Float32Array(rows * (NA + 1) * 3), au = new Float32Array(rows * (NA + 1) * 2), idx = [];
       for (let i = 0; i < rows; i++) {
-        const u = ua + (ub - ua) * (i / (rows - 1)); TR.frame(u, F); const Rr = P.R + wid(u);
+        const u = ua + (ub - ua) * (i / (rows - 1)); TR.frame(u, F); const Rr = Ru(u) + wid(u);
         for (let j = 0; j <= NA; j++) {
           const a = A0 + (A1 - A0) * (j / NA), sx = Math.sin(a), cy = Math.cos(a), k = i * (NA + 1) + j;
           p.copy(F.P).addScaledVector(F.R, Rr * sx).addScaledVector(F.U, P.A + Rr * cy);
