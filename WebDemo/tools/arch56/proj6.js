@@ -11,5 +11,8 @@ const camT = [+rel.dot(F.R).toFixed(3), +rel.dot(F.U).toFixed(3), +rel.dot(F.T).
 const grid = {};
 for (const du of (window.__P6DU || [1, 2, 3, 4, 5, 6, 8, 10, 13, 17, 24, 35])) for (const x of (window.__P6X || [2.4, 2.0, 1.6, 1.25, -1.25, -1.6, -2.0, -2.4])) for (const y of (window.__P6Y || [0, 1, 2, 2.6, 3.2])) grid[`${du}|${x}|${y}`] = proj(at(du, x, y));
 const vp = proj(at(80, 0, 0.84));
-const ri = d.renderer.info.render;
-return { camT, fov: cam.fov, aspect: cam.aspect, mz: m.z, vp, calls: ri.calls, tris: ri.triangles, grid };
+const R = d.renderer; R.info.autoReset = false; R.info.reset(); B.render(); const ri = { calls: R.info.render.calls, triangles: R.info.render.triangles }; R.info.autoReset = true;
+// arch56's own share: render once with the arch56 group hidden
+let a56 = null; scene.traverse((o) => { if (o.name === 'arch56') a56 = o; });
+let own = null; if (a56) { a56.visible = false; R.info.autoReset = false; R.info.reset(); B.render(); own = { calls: ri.calls - R.info.render.calls, triangles: ri.triangles - R.info.render.triangles }; R.info.autoReset = true; a56.visible = true; }
+return { camT, fov: cam.fov, aspect: cam.aspect, mz: m.z, vp, calls: ri.calls, tris: ri.triangles, arch56: own, grid };
