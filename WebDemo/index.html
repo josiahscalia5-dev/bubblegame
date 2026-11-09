@@ -352,12 +352,16 @@
 // shows). Every visual pass is an ?s3= switch list; a plain launch (no ?s3= in the address, no ?classic and no test override) now runs the
 // full six-scene game with the user's new Tripo girl, washer, door, gear and machine housings. Any explicit ?s3=... runs exactly as before,
 // e.g. ?s3=intunnel (the accepted Classic Screen 4) or ?s3=, (the previous plain launch); rollback branch: claude/bubble-wash-rollback-before-tripo3-default.
+// (9 November 2026, session ac4e3449, the user's direction: ONE pink-and-gold lavender laundry world from the girl's washer into the actual swimming
+// game, never the old blue spiral tunnel as the main gameplay environment) the plain launch adds six2 (the six approved portrait scenes as the
+// opening) and s56 (the approved Scene 5 / 6 tunnel as the run's environment, s56_tunnel.js). The previous plain launch is
+// ?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3; rollback branch: claude/bubble-wash-rollback-before-s56-default.
 if (!window.__BW_S3__ && !/[?&]s3=/.test(location.search) && !/[?&]classic(=|&|$)/.test(location.search)) {
-  window.__BW_S3__ = ['intunnel', 'structmatch', 'home', 'level1', 'tripo1', 'tripo2', 'scene07', 'six', 'tripo3'];
-  window.__BW_DEFAULT_GAME__ = 'six+tripo3';
+  window.__BW_S3__ = ['intunnel', 'structmatch', 'home', 'level1', 'tripo1', 'tripo2', 'scene07', 'six', 'tripo3', 'six2', 's56'];
+  window.__BW_DEFAULT_GAME__ = 'six2+s56';
 }
 </script>
-<script type="module" src="game.bundle.js?v=7441f94b"></script>
+<script type="module" src="game.bundle.js?v=d384708f"></script>
 
 </body>
 </html>

@@ -48,6 +48,9 @@ export const SIX2 = {
   scenes: [[-1, 1], [0.0, 2], [3.25, 3], [5.3, 4], [7.3, 5], [9.15, 6]],   // [from t, scene number] for the captions
   water: { rise: 0.17 },
 };
+// (s56, session ac4e3449) the live game behind is the approved Scene 5 / 6 tunnel: the opening hands over as soon as its camera is inside the drum
+// behind him (the crossfade runs from the washer's drum into the same lavender tunnel; the game's camera then follows him in, s56_tunnel.js)
+if (SIX2_ON && LIST.includes('s56')) Object.assign(SIX2, { handOver: 8.95, seqEnd: 9.75 });   // (real seconds: story 8.45, inside the drum)
 if (SIX2_ON && typeof window !== 'undefined') window.__bwSix2 = SIX2;
 
 // ---------------------------------------------------------------- small helpers

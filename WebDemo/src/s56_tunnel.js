@@ -33,6 +33,9 @@ export const S56 = {
   gear: { d: 1.45, h: 1.05, x: 1.72, spin: 0.55 },
   // the Scene 5 / 6 camera (track frame, from his ride height): behind and above his back, looking down the tunnel
   cam: { off: [0, 0.58, -3.0], look: [0, 0.45, 6.0], fov: 66 },   // (fitted: his back 0.41 W at y 0.57-0.72, vanishing point y ~0.49)
+  // Scene 5's follow-in after the opening's hand-over (only when the 3D opening ran): from just behind him (where the opening's camera ends)
+  // back to the Scene 5 framing
+  glide: { secs: 1.8, off: [0, 0.38, -1.15], look: [0, 0.32, 6.0], fov: 60 },
   hero: { sink: 0.1, follow: 1.0 },
   splash: { rate: 26, burst: 22, speed: 2.1 },
 };
@@ -42,8 +45,8 @@ if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 // [amplitude m, k across, k along, angular speed, phase]: h = sum A sin(kx x + ku u - w t + p). Phase speeds 2-3 m/s forward (he swims at 7.2).
 export const WAVES = [
   [0.12, 0.22, 0.60, 2.0, 0.0],
-  [0.07, -0.85, 1.30, 3.1, 1.3],
-  [0.032, 1.60, 2.60, 4.4, 0.4],
+  [0.085, -0.85, 1.30, 3.1, 1.3],
+  [0.045, 1.60, 2.60, 4.4, 0.4],
   [0.018, -2.40, 4.90, 6.2, 2.1],
   [0.022, 2.10, 0.45, -1.2, 0.7],
 ];
@@ -361,12 +364,17 @@ export async function buildS56(ctx) {
         float sp = pow(clamp(dot(Rf, normalize(Dv + vec3(0.0, 0.12, 0.0))), 0.0, 1.0), 90.0);
         float gl = pow(clamp(dot(Rf, normalize(Dv * 0.6 + vec3(0.0, 1.0, 0.0))), 0.0, 1.0), 45.0);
         c += vec3(0.85, 0.97, 1.2) * sp * 1.1 + vec3(0.8, 0.9, 1.1) * gl * 0.3;
-        float crest = smoothstep(0.12, 0.18, hh + (n2 - 0.5) * 0.1) * smoothstep(0.42, 0.62, s5f(vXU * vec2(7.0, 3.5) + vec2(0.0, uTime * 0.8)));
-        crest += smoothstep(0.66, 0.74, s5f(vXU * vec2(11.0, 5.0) - vec2(0.0, uTime * 1.6))) * smoothstep(0.02, 0.12, hh) * 0.8;   // lace on the slopes
+        // crests: thin broken white lines riding the two main waves' real crests (not blotches), lace foam on their lee side
+        float p1 = 0.22 * vXU.x + 0.60 * vXU.y - 2.0 * uTime, p2 = -0.85 * vXU.x + 1.30 * vXU.y - 3.1 * uTime + 1.3;
+        float ridge = 0.62 * sin(p1) + 0.38 * sin(p2) + (n2 - 0.5) * 0.35;
+        float brk = s5f(vXU * vec2(6.0, 2.5) + vec2(0.0, -uTime * 1.1));
+        float crest = smoothstep(0.66, 0.84, ridge) * smoothstep(0.35, 0.55, brk);
+        float lace = smoothstep(0.62, 0.7, s5f(vXU * vec2(13.0, 6.0) + vec2(uTime * 0.4, -uTime * 1.8))) * smoothstep(0.3, 0.7, ridge) * 0.85;
+        crest = max(crest, lace);
         float collar = smoothstep(0.4, 0.8, vRing * (0.55 + 0.8 * s5f(vXU * vec2(9.0, 7.0) + vec2(0.0, -uTime * 3.0))));
         float wk = smoothstep(0.35, 0.75, vWake * (0.5 + s5f(vXU * vec2(8.0, 5.0) + vec2(0.0, -uTime * 2.0))));
         float streak = smoothstep(0.8, 0.88, s5f(vec2(vXU.x * 2.0, vXU.y * 0.5 - uTime * 0.9))) * 0.3 * smoothstep(0.0, 0.15, hh);
-        float white = clamp(crest + collar + wk * 0.8 + streak, 0.0, 1.0);
+        float white = clamp(crest + collar + wk * 0.8, 0.0, 1.0);
         c = mix(c, vec3(0.86, 0.93, 1.02), white * 0.85);
         c = s56Haze(c, vW);
         gl_FragColor = vec4(c, 1.0);
@@ -425,7 +433,7 @@ export async function buildS56(ctx) {
   const mm = new THREE.Matrix4(), q = new THREE.Quaternion(), sv = new THREE.Vector3(), pv = new THREE.Vector3();
   let heroOff = 0;
   function update(dt, time, phase, m) {
-    timeU.value = time;
+    timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;
@@ -458,7 +466,13 @@ export async function buildS56(ctx) {
   }
   // the fur's light centre follows his drawn body
   function furCentre(c, m) { TR.frame(m.z, F); c.addScaledVector(F.U, heroOff); }
-  function camera(off, look) { off.set(...S.cam.off); look.set(...S.cam.look); return S.cam.fov; }
+  let introT = 0, glideOn = typeof window !== 'undefined' && !!window.__bwO3D;
+  function camera(off, look) {
+    off.set(...S.cam.off); look.set(...S.cam.look); let fov = S.cam.fov;
+    if (glideOn && introT < S.glide.secs) { const g = S.glide, k = sm(0, g.secs, introT);
+      off.lerpVectors(new THREE.Vector3(...g.off), off, k); look.lerpVectors(new THREE.Vector3(...g.look), look, k); fov = g.fov + (fov - g.fov) * k; }
+    return fov;
+  }
   if (typeof window !== 'undefined') window.__bwS56Report = report;
   return { update, heroOffset, furCentre, camera, hideLegacy, report, root };
 }
