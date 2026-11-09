@@ -1,4 +1,4 @@
-# Session 9ee07777 design agents (six approved portrait scenes)
+# Session 9ee07777, design agents
 
 Each agent's brief and messages from the lead, its notes, one line per tool step (tool output left out) and its final report. The work itself is in the commits on this branch. Keys and passwords are replaced with [REDACTED].
 
