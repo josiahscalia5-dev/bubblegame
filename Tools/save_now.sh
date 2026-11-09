@@ -33,7 +33,7 @@ fi
 if git diff --cached --quiet; then
   committed="no (nothing new since the last commit)"
 else
-  trailer="Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+  trailer="${BW_COAUTHOR:-Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>}"   # (session 208385b7) the session's own attribution line; override with BW_COAUTHOR
   [ -n "${CLAUDE_SESSION_URL:-}" ] && trailer="$trailer
 Claude-Session: $CLAUDE_SESSION_URL"
   if [ -n "$BODY" ]; then git commit -q -m "$SUBJECT" -m "$BODY" -m "$trailer"; else git commit -q -m "$SUBJECT" -m "$trailer"; fi
