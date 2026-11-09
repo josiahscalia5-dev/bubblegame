@@ -473,3 +473,156 @@ Frames are in `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f
 
 
 _48 tool steps._
+
+---
+
+## screen4-water-motion-engineer: Water-motion engineer live MCP test (started 02:17 UTC)
+
+**Lead → agent** (02:17 UTC):
+
+Environment-verification test of your LIVE runtime tools on Bubble Wash Kingdom. STRICTLY READ-ONLY: do not edit or write any repository file (/home/user/bubblegame), do not call set_uniform or any other setter, do not rebuild.
+A static server is already running at http://localhost:3000 serving /home/user/bubblegame/WebDemo.
+1. First list exactly which MCP tools are actually available to you in this session (chrome-devtools-mcp and threejs-devtools-mcp names), and say which of your declared tools are missing.
+2. With chrome-devtools: navigate_page to http://localhost:3000/index.html?s3=intunnel (the accepted game, starts inside the blue tunnel), wait until document.body.classList.contains('ready') (poll in evaluate_script up to ~90 s), then evaluate: window.__THREE__ (three.js revision), WebGL2 availability, canvas size, and — if the game exposes it — window.__bw (list its keys) and anything that reveals the water objects (e.g. names containing 'heroSwell', 'lqFloor', 'matchFloor', 'matchWall', 'r3Swirl'): try to find them via any exposed scene reference (search window.__bw* objects for a THREE.Scene and traverse it, counting meshes and listing those names with their material type and visibility).
+3. take_screenshot to /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/water_motion/live.png and list_console_messages (errors/warnings).
+4. If any threejs-devtools tool is available, call bridge_status and renderer_info; if not, say so plainly.
+Report under 300 words: tools present/missing, the live values you read, whether you could reach the water objects, and a verdict FULLY WORKING / PARTIALLY WORKING with the exact limitation.
+
+- 02:17 `Grep`: ^tools:|mcp__
+- 02:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__navigate_page`
+- 02:17 `Bash`: List declared MCP tools in agent definition
+- 02:17 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 02:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 02:18 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 02:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 02:19 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+- 02:20 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__take_screenshot`
+- 02:20 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__list_console_messages`
+- 02:20 `Read`: /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/water_motion/live.png
+**Lead → agent** (02:20 UTC):
+
+[Image: original 1905x2053, displayed at 1848x1991. Multiply coordinates by 1.03 to map to original image.]
+
+- 02:20 `mcp__plugin_parallax-threejs_chrome-devtools-mcp__evaluate_script`
+**Agent** (02:21 UTC):
+
+**Verdict: PARTIALLY WORKING.** Chrome-devtools works and I could reach the water objects through the game's own debug hook. All threejs-devtools tools are unavailable because that server timed out when connecting, and the spector server closed its connection. I changed nothing: no setters, no file edits.
+
+**Tools**
+- **Present (chrome-devtools-mcp):** `navigate_page`, `evaluate_script`, `take_screenshot`, `list_console_messages`.
+- **Missing (threejs-devtools-mcp, all 9 declared):** `bridge_status`, `renderer_info`, `scene_tree`, `object_details`, `material_details`, `geometry_details`, `shader_source`, `set_uniform`, `run_js`. So I could not call `bridge_status` or `renderer_info` (step 4).
+
+**Live values** (`?s3=intunnel`, page was ready at once)
+- Switches: `["intunnel","bt","focus"]`. `__BW_OPENING_OFF__` is `["art"]`.
+- three.js revision 170. WebGL2 is available and the canvas uses it.
+- Canvas is 1027x2053 at device pixel ratio 1. Tone mapping 7, output sRGB. The composer has 4 passes.
+- The GPU is software (SwiftShader driver).
+- `window.__bw` keys: ready, state, blast, turbo, pause, hazards, tap, swipe, advance, step, info, render, lookBack, setBloom, setSideMachinery, setDecor, getDecor, pick, project, setFraming, clearanceTrace, debug.
+- `__bw.debug()` gives scene, water, mascot, renderer, composer, camera and track.
+- Game state: phase `intro`, speed 0, lane 1, coins 1280, gems 36, hearts 5.
+
+**Water objects** (the scene has 595 objects, 389 drawables, 244 effectively visible)
+
+| Name | Material | Visible | Blending | depthWrite | renderOrder |
+|---|---|---|---|---|---|
+| `heroSwell` | Shader | yes | 1 | false | 5 |
+| `lqFloor` | Shader | yes | 1 | true | -1 |
+| `lqWaterlineBubbles` | Shader | yes | 5 | false | 7 |
+| `r3Swirl` | Shader | **no** | 5 | false | 3 |
+
+- No objects are named `matchFloor` or `matchWall`.
+- `r3Swirl` reads as hidden between frames here. The diagnosis says it is shown again every frame (`tunnel_r3.js:286`), so it is probably switched on inside the render loop; I could not confirm this without stepping frames.
+- Uniforms can be read directly through `evaluate_script`.
+
+**Screenshot and console**
+- Screenshot: `/tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/water_motion/live.png`. It shows the blue tunnel, the character on the water, and the HUD with Tap to Start.
+- Console: no errors. One warning, twice: Chrome's deprecation notice about automatic fallback to software WebGL.
+
+**Limitation:** with threejs-devtools down, I can't read compiled shaders or set uniforms through its tools. Workaround: `evaluate_script` with `__bw.debug()`. The connection should be retried before any shader or uniform work.
+
+
+_12 tool steps._
+
+---
+
+## parallax-threejs:visual-debugger: Visual-debugger capability test (started 02:17 UTC)
+
+**Lead → agent** (02:17 UTC):
+
+Environment-verification test (READ-ONLY: never modify files under /home/user/bubblegame; never change uniforms or scene state). First list exactly which tools you actually have in this session (any mcp__* threejs-devtools / chrome-devtools / playwright / spector tools, and Bash). Then do the most a runtime inspection can with what you have, on the running game at http://localhost:3000/index.html?s3=intunnel (a static server is already running): if you have browser MCP tools, load the page, wait for document.body.classList.contains('ready'), and read the three.js revision (window.__THREE__), WebGL2 support and console errors; if you only have Bash, use it to run a short headless Playwright check: node -e with require('playwright') (Chromium is preinstalled; launch with args ['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist'], never run 'playwright install'), open the URL, wait up to 120 s for body.ready, print window.__THREE__, canvas count, and console errors, and save a screenshot to /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/visual_debugger/shot.png. Report under 200 words: tools present/missing, what you measured, and a verdict FULLY WORKING / PARTIALLY WORKING (state the limitation).
+
+**Agent** (02:17 UTC):
+
+I have only the Bash tool in this session; no MCP tools are surfaced. I'll run the headless Playwright check.
+
+- 02:17 `Bash`: Locate playwright module and check the server responds
+**Agent** (02:17 UTC):
+
+The three.js-devtools and Spector MCP servers failed to connect (connection closed / timeout), so I'll continue with the Bash Playwright check.
+
+- 02:17 `Bash`: Run headless Playwright check of the game page
+**Agent** (02:18 UTC):
+
+The screenshot timed out (likely SwiftShader software rendering keeping the main thread busy). I'll log the measurements before the screenshot and give the screenshot a longer timeout.
+
+- 02:18 `Bash`: Rerun Playwright check with a longer screenshot timeout
+**Agent** (02:19 UTC):
+
+Measurements are in. I'll check that the screenshot isn't blank.
+
+- 02:19 `Bash`: Compute pixel statistics of the screenshot
+**Agent** (02:19 UTC):
+
+**Verdict: PARTIALLY WORKING.** The headless runtime check worked, but the three.js-devtools and Spector tools did not connect, so I couldn't inspect the scene graph or GL state.
+
+**Tools:**
+- **Present:** Bash only.
+- **Did not connect:** `plugin:parallax-threejs:threejs-devtools-mcp` timed out; `plugin:parallax-threejs:spector` and `spector` closed the connection. These are connection failures, not missing setup, so a reconnect or retry should fix them.
+- **Not offered at all:** chrome-devtools and playwright MCP tools.
+
+**Measured** with headless Playwright (Chromium on SwiftShader, 412x915 viewport, `?s3=intunnel`):
+- `body.ready` became true after 7.1 s.
+- `window.__THREE__` is `"170"`, matching r170.
+- There are 2 canvases; the game canvas is 412x915 and uses WebGL2 ("WebGL 2.0 (OpenGL ES 3.0 Chromium)").
+- No console errors, page errors or warnings, before or after the screenshot.
+- Screenshot saved to /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/visual_debugger/shot.png. Its colours are mostly blue with high variation (157,774 distinct colours), so the scene really rendered. I didn't look at the image by eye.
+
+**Limitation:** with software rendering, the first screenshot timed out at Playwright's default 30 s. It succeeded on a rerun with a 180 s timeout and took 21.9 s, so future scripts need the longer timeout.
+
+Nothing under /home/user/bubblegame was changed, and no uniforms or scene state were touched.
+
+
+_4 tool steps._
+
+---
+
+## parallax-threejs:scenario-author: Scenario-author capability test (started 02:17 UTC)
+
+**Lead → agent** (02:17 UTC):
+
+Environment-verification test. Do NOT write any file inside /home/user/bubblegame (no test/visual/scenarios file is wanted yet: nothing has been approved by the user). First list exactly which tools you actually have in this session (is any playwright MCP tool attached?). Then read /home/user/bubblegame/test/ (if it exists: list test/visual/ and its scenario format docs or examples) and /home/user/bubblegame/deno.json tasks, and DRAFT (in your reply only, or as a file under /tmp/claude-0/-home-user-bubblegame/6ddc157f-87dd-5127-838f-c2c4f3664923/scratchpad/agents/scenario_author/) a scenario that would protect the new opt-in tripo3 six-scene opening: URL http://localhost:3000/index.html?s3=intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3, readiness condition window.__bwTripo3 && window.__bwTripo3.ready, keyframes at window.__bwO3D.seek(6+s, s) for s = 0.3, 2.75, 4.9, 7.4 (after clicking '#bwHome .screen:not(.off) .go' twice). Report under 250 words: tools present/missing, whether the repository's visual-regression harness exists and runs (you may run `deno task --help` or list tasks, but do not run a full visual:run), the draft scenario, and a verdict FULLY WORKING / PARTIALLY WORKING with the limitation.
+
+**Agent** (02:17 UTC):
+
+My tools in this session are Read, Glob, Write and Bash. No Playwright MCP tool is attached. Next I'll check the repository's harness.
+
+- 02:17 `Bash`: Check for test dir, deno.json, and deno binary
+- 02:17 `Glob`: **/{deno.json,deno.jsonc,AGENTS.md,types.ts}
+- 02:17 `Bash`: Show deno.json and list harness lib and scenario files
+- 02:17 `Read`: /home/user/bubblegame/test/visual/lib/types.ts
+- 02:17 `Read`: /home/user/bubblegame/test/visual/lib/capture.ts
+- 02:18 `Bash`: List scripts dir and show run.ts head
+- 02:18 `Bash`: Show replay.ts and check playwright browser cache
+- 02:18 `Bash`: List deno tasks, deno cache dir, browser binaries, dev server status
+- 02:18 `Bash`: Check browser binaries and tripo3/O3D hooks in source
+- 02:18 `Bash`: Inspect tripo3 readiness flag and seek hook, renderer exposure
+- 02:18 `Bash`: Check lockfile and opening3d loop/seek behavior
+- 02:18 `Read`: /home/user/bubblegame/WebDemo/src/opening3d.js
+- 02:18 `Bash`: Find opening handOver and seqEnd timings
+- 02:19 `Bash`: Write draft scenario and validation driver to scratchpad
+- 02:19 `Bash`: Run draft scenario twice through captureScenario and diff
+- 02:21 `Bash`: Find when the home Go button is disabled/enabled
+- 02:21 `Bash`: Show home screen ready gating logic
+- 02:21 `Bash`: Add body.ready wait and rerun validation
+
+_18 tool steps._

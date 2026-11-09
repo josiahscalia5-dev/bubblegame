@@ -24,7 +24,7 @@ T="${BUBBLEWASH_TOOLS:-$HOME/.bubblewash-tools}"
 BLENDER_VERSION=5.2.3
 PY_PACKAGES="opencv-python-headless==5.0.0.93 scikit-image==0.26.0 numpy==2.5.4 pillow==13.0.0 scipy==1.18.1"
 NODE_PACKAGES="@gltf-transform/cli@4.5.1 @gltf-transform/core@4.5.1 @gltf-transform/extensions@4.5.1 \
-@gltf-transform/functions@4.5.1 gltf-validator@2.0.0-dev.3.10 vite@8.3.5 tripo-cli@0.11.2"
+@gltf-transform/functions@4.5.1 gltf-validator@2.0.0-dev.3.10 vite@8.3.5 tripo-cli@0.11.2 gltfpack@0.25.0 meshoptimizer@0.25.0"   # (gltfpack: 9 November, session 6ddc157f)
 
 failed=()
 mkdir -p "$T/setup_logs"   # every run's output is also kept in ~/.bubblewash-tools/setup_logs/ (7 November, the user's request)
@@ -93,7 +93,7 @@ else
   else fail "Python metrics tools (needs uv)"; fi
 fi
 
-step "Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI)"
+step "Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI, gltfpack)"
 mkdir -p "$T/node"
 [ -f "$T/node/package.json" ] || echo '{"name":"bubblewash-dev-tools","private":true,"description":"Dev tools for Bubble Wash Kingdom, outside the game"}' > "$T/node/package.json"
 (cd "$T/node" && npm install --no-audit --no-fund --loglevel=error $NODE_PACKAGES > /dev/null) && echo "  installed" \
@@ -130,6 +130,7 @@ echo "  glTF Transform $(gltf-transform --version 2>/dev/null | tail -1 || echo 
 echo "  glTF Validator $(node -e "console.log(require('$T/node/node_modules/gltf-validator').version())" 2>/dev/null || echo MISSING)"
 echo "  $(vite --version 2>/dev/null || echo 'Vite: MISSING')"
 echo "  Tripo CLI $(tripo --version 2>/dev/null | tail -1 || echo MISSING) (sign-in: see Tools/DEV_TOOLS.md)"
+echo "  $(gltfpack -v 2>/dev/null | head -1 || echo 'gltfpack: MISSING')"
 echo "  Node.js $(node -v 2>/dev/null || echo MISSING), npm $(npm -v 2>/dev/null || echo MISSING), $(python3 --version 2>&1)"
 echo "  $(convert -version 2>/dev/null | sed -n 1p || echo 'ImageMagick: MISSING')"
 echo "  $(ffmpeg -version 2>/dev/null | sed -n 1p || echo 'FFmpeg: MISSING')"

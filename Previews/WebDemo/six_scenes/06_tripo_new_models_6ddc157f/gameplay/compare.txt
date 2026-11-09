@@ -1,0 +1,24 @@
+frame | u | lane | route | socks | coins | gems | hearts | popped | phase | complete
+tap | 1.592 | 1 | main | 0 | 1280 | 36 | 5 | 0 | intro | False
+6 | 6.597 | 2 | main | 2 | 1281 | 36 | 5 | 0 | running | False
+12 | 12.314 | 1 | main | 2 | 1282 | 36 | 5 | 0 | running | False
+20 | 20.244 | 2 | main | 2 | 1291 | 37 | 5 | 0 | running | False
+28 | 28.683 | 1 | main | 3 | 1296 | 37 | 5 | 0 | running | False
+36 | 36.211 | 1 | main | 3 | 1298 | 37 | 5 | 0 | running | False
+46 | 46.119 | 0 | main | 3 | 1302 | 37 | 5 | 0 | running | False
+end | 341.773 | 1 | main | 5 | 1705 | 48 | 4 | 2 | complete | True
+events: swipes 11 spins 3 blocked []
+   ["sock", 3, 1, "main"]
+   ["sock", 6.6, 2, "main"]
+   ["sock", 21.5, 3, "main"]
+   ["swipe onto side path", 56.6, 0.86]
+   ["sock", 126.6, 4, "lower path"]
+   ["spin", 228.1]
+   ["spin", 234.4]
+   ["KNOCK (heart lost)", 240.7, "lane 1", "near: {\"brushes\":[],\"enemies\":[[241.41,0,0.7,false],[241.41,2,-0.7,false]],\"bars\":[],\"drum\":[]}"]
+   ["spin", 240.7]
+   ["sock", 304, 5, "main"]
+end result: {"socks": 5, "coins": 125, "gems": 2, "stars": 3, "rewards": {"coins": 300, "gems": 10, "socks": 5}}
+logs A: []
+logs B: []
+TOTAL GAMEPLAY DIFFS: 0
