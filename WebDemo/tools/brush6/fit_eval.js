@@ -3,6 +3,7 @@
 // (the art director's grid measures, qa/art_director_ranking.md), with the lane bound as a hard penalty (inner bristle tips at
 // |x| >= BRUSH6.minX). The water hides what is below it, so the visible foot is the higher of the tips and the waterline.
 // Usage: EVAL="$(cat tools/brush6/fit_eval.js)" ... shots56.cjs   (FIT=0 in window.__b6NoFit to only measure)
+// With BRUSH6.pull.on the brush is drawn over the water and the bank (depth pull), so its whole height counts; `drawn` = BRUSH6.report(camera).
 const b = window.__bwBrush6, cam = d.camera;
 // (shots56's `206` places him at u 206 and runs 0.4 s, so he is at ~208.9 here and ~209.1 in the picture, after one more 1/30 s step)
 if (!b || Math.abs(d.mascotState.z - b.anchor) > 6) return { skipped: 'not at the anchor', z: d.mascotState.z };
@@ -15,7 +16,7 @@ const WT = { top: 1, bellInner: 2, pink: 2, blue: 3, bottom: 1 };
 const keys = ['du', 'x', 'h', 's'];
 function errs(side) {
   b.place(); const m = b.measure(cam)[side]; if (!m) return null;
-  const vis = Math.min(m.bottom, m.waterAtInner);
+  const vis = b.pull && b.pull.on ? m.bottom : Math.min(m.bottom, m.waterAtInner);   // (pulled: drawn over the water, the whole brush shows)
   return { m, e: { top: m.top - T[side].top, bellInner: m.bellInner - T[side].bellInner, pink: m.tipsInner[0] - T[side].pink, blue: m.tipsInner[2] - T[side].blue, bottom: vis - T[side].bottom } };
 }
 function cost(side, v) {
@@ -23,7 +24,7 @@ function cost(side, v) {
   const r = errs(side); if (!r) return 1e9;
   let c = 0; for (const k in r.e) c += WT[k] * r.e[k] * r.e[k];
   if (r.m.innerX_m < b.minX) c += 50 * (b.minX - r.m.innerX_m) ** 2;           // never over the play lanes
-  if (r.m.bottom < r.m.waterAtInner - 0.004) c += 5 * (r.m.waterAtInner - r.m.bottom) ** 2;   // standing in the water, not floating
+  if (!(b.pull && b.pull.on) && r.m.bottom < r.m.waterAtInner - 0.004) c += 5 * (r.m.waterAtInner - r.m.bottom) ** 2;   // standing in the water, not floating
   if (v[3] < 0.2) c += 10;
   return c;
 }
@@ -55,4 +56,4 @@ for (const side of ['left', 'right']) {
   if (!window.__b6NoFit) { b[side].du += lead; res[side].set.du = +b[side].du.toFixed(3); }   // (errors above: before the lead)
 }
 b.place();
-return { fit: res, z: d.mascotState.z, lead, cam: cam.position.toArray().map((v) => +v.toFixed(3)), fov: cam.fov };
+return { fit: res, z: d.mascotState.z, lead, minX: b.minX, pull: b.pull, cam: cam.position.toArray().map((v) => +v.toFixed(3)), fov: cam.fov, drawn: b.report ? b.report(cam) : null };

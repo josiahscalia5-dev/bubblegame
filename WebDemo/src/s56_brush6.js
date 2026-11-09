@@ -33,6 +33,13 @@ export const BRUSH6 = {
   left: { du: 5.431, x: 2.057, h: -0.632, s: 0.612, hat: 0.5, dir: 1 },
   right: { du: 5.379, x: -1.89, h: -0.618, s: 0.485, hat: 0.0, dir: -1 },   // (the approved right brush shows no gold top drum)
   spin: 3.0,   // rad/s about the brush's own axis (about 0.5 rev/s: faster strobes the strands at 30-60 fps)
+  // the depth pull (session 3849f5c8, after the first real frame): within the lane bound the brushes' bodies stand at x 1.25-2.85 m, INSIDE the
+  // bank (deck face ~1.5 m, rail 1.56 m, tanks beyond), so the bank's rail, deck and machinery were drawn over most of the bristles. The near
+  // pair is drawn with its view depth pulled toward the camera (each vertex moved ALONG its own view ray, so the picture position, size and
+  // shading are exactly the same; only the depth test changes): view depth d > near maps to near + (d - near) * k, blending back to the true
+  // depth between far[0] and far[1] (the far pairs are untouched). near = just behind him (the camera is 3.0 m behind him), so he, his splash
+  // and everything nearer than him are still drawn in front of the brushes. on 0 = the true depth (the bank hides the bristles).
+  pull: { on: 1, near: 3.45, k: 0.15, far: [10, 15] },
   // the skirts, top to bottom: [yRoot, yTip, rRoot, rTip] in bell radii (y from the lowest tips). The art director's measured shares of the
   // bristle height (qa/art_director_ranking.md): pink 26 %, white-lavender 23 %, royal blue 34 %, pale blue 17 %; bristles 62 % of the brush
   tiers: [[2.80, 2.00, 0.62, 1.08], [2.30, 1.38, 0.70, 1.20], [1.75, 0.46, 0.74, 1.27], [0.95, 0.0, 0.78, 1.32]],
@@ -62,12 +69,23 @@ vec3 b6Haze(vec3 c, vec3 wp) {   // the same far glow as s56_tunnel.js s56Haze, 
   return mix(c, far, k * 0.9);
 }`;
 
+const PULL = /* glsl */ `
+uniform vec4 uPull;   // near, k, far0, far1 (BRUSH6.pull; k = 1: the true depth)
+vec4 b6Project(vec4 mv) {   // the same picture position; the view depth pulled toward the camera (BRUSH6.pull)
+  float d = -mv.z;
+  if (d <= uPull.x || uPull.y >= 0.999) return projectionMatrix * mv;
+  float a = uPull.x + (d - uPull.x) * uPull.y, b = uPull.x + (uPull.z - uPull.x) * uPull.y;
+  float f = d < uPull.z ? a : (d < uPull.w ? mix(b, uPull.w, (d - uPull.z) / (uPull.w - uPull.z)) : d);
+  return projectionMatrix * vec4(mv.xyz * (f / d), 1.0);
+}`;
+
 const BRISTLE_VERTEX = /* glsl */ `
 attribute float aLayer;   // instanced: 0 the solid inner shell .. 1 the outer shell
 attribute vec4 aS;        // t (root 0 .. tip 1), angle (0..1 round the axis), tier (0 pink .. 3 pale), unused
 attribute vec3 aDir;      // the strand's direction, root to tip
 uniform float uThick, uFlare, uSide;
 varying vec4 vS; varying float vH; varying vec3 vN; varying vec3 vD; varying vec3 vW; varying vec3 vL;
+${PULL}
 void main() {
   float h = aLayer, t = aS.x;
   vec3 n = normalize(normal);
@@ -79,7 +97,7 @@ void main() {
   vec3 C = (modelMatrix * vec4(0.0, 2.0, 0.0, 1.0)).xyz, toCam = cameraPosition - C; toCam.y = 0.0;
   vec3 camR = vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
   vL = normalize(normalize(toCam) + camR * uSide + vec3(0.0, 0.8, 0.0));
-  gl_Position = projectionMatrix * viewMatrix * w;
+  gl_Position = b6Project(viewMatrix * w);
 }`;
 const BRISTLE_FRAGMENT = /* glsl */ `
 uniform float uStrands, uTufts, uAmb, uDif, uSpec, uSheen, uSolid; uniform vec2 uWide;
@@ -180,8 +198,22 @@ export async function buildBrush6(ctx) {
   const { TR, W, L, env, root, report } = ctx, P = BRUSH6;
   const group = new THREE.Group(); group.name = 'b6Brushes'; root.add(group);
   const C = P.colours, col = (a) => a.map((h) => new THREE.Color(h));
+  const uPull = { value: new THREE.Vector4(P.pull.near, 1, P.pull.far[0], P.pull.far[1]) };
+  const setPull = () => { const Q = P.pull; uPull.value.set(Q.near, Q.on ? Q.k : 1, Q.far[0], Q.far[1]); };
+  setPull();
+  // the cap's MeshStandardMaterials take the same depth pull (their lighting still uses the true view position: the same shading)
+  const pullStd = (mat, key) => {
+    mat.onBeforeCompile = (sh) => {
+      sh.uniforms.uPull = uPull;
+      sh.vertexShader = sh.vertexShader.replace('void main() {', PULL + '\nvoid main() {')
+        .replace('#include <project_vertex>', '#include <project_vertex>\n\tgl_Position = b6Project(mvPosition);');
+    };
+    mat.customProgramCacheKey = () => 'b6pull_' + key;
+    return mat;
+  };
   const mkBristleMat = (side) => new THREE.ShaderMaterial({
     uniforms: {
+      uPull,
       uThick: { value: P.fur.thick }, uFlare: { value: P.fur.flare }, uSide: { value: side * P.light.side },
       uStrands: { value: P.fur.strands }, uTufts: { value: P.fur.tufts }, uWide: { value: new THREE.Vector2(...P.fur.wide) }, uSolid: { value: P.fur.solid },
       uAmb: { value: P.light.amb }, uDif: { value: P.light.dif }, uSpec: { value: P.light.spec }, uSheen: { value: P.light.sheen },
@@ -190,8 +222,9 @@ export async function buildBrush6(ctx) {
     vertexShader: BRISTLE_VERTEX, fragmentShader: BRISTLE_FRAGMENT,
   });
   const B = P.bell;
-  const bellMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(B.color), emissive: new THREE.Color(B.emissive), emissiveIntensity: B.ei, metalness: B.metal, roughness: B.rough, envMap: env, envMapIntensity: 1.2 });
-  const G = P.gold, goldMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(G.color), emissive: new THREE.Color(G.emissive), emissiveIntensity: G.ei, metalness: G.metal, roughness: G.rough, envMap: env, envMapIntensity: 1.25 });
+  const bellMat = pullStd(new THREE.MeshStandardMaterial({ color: new THREE.Color(B.color), emissive: new THREE.Color(B.emissive), emissiveIntensity: B.ei, metalness: B.metal, roughness: B.rough, envMap: env, envMapIntensity: 1.2 }), 'bell');
+  const G = P.gold, goldMat = pullStd(new THREE.MeshStandardMaterial({ color: new THREE.Color(G.color), emissive: new THREE.Color(G.emissive), emissiveIntensity: G.ei, metalness: G.metal, roughness: G.rough, envMap: env, envMapIntensity: 1.25 }), 'gold');
+  const mats0 = { bell: bellMat, gold: goldMat };
   const bristleG = bristleGeometry(P), caps = { left: capGeometries(P, P.left.hat), right: capGeometries(P, P.right.hat) };
   const mats = { left: mkBristleMat(1), right: mkBristleMat(-1) };
   const tris = { bristles: (bristleG.index.count / 3) * P.fur.layers, left: 0, right: 0 };
@@ -252,11 +285,40 @@ export async function buildBrush6(ctx) {
     return out;
   }
 
-  P.place = place; P.measure = measure; P.tris = tris;
+  // proof that the pair is really drawn (the coordinator's check): per brush its flags, world position, projected screen box (fractions,
+  // y down; from 400 points on its surface, those in front of the camera), its view depth, the pulled depth and the draw settings
+  function drawReport(camera) {
+    const v = new THREE.Vector3(), w = new THREE.Vector3(), out = [];
+    camera.updateMatrixWorld(); const Q = P.pull;
+    for (const b of brushes) {
+      if (!b.holder.visible) continue;
+      const drawn = b.holder.visible && b.spin.visible && group.visible && root.visible;
+      b.holder.updateMatrixWorld(true); w.setFromMatrixPosition(b.holder.matrixWorld);
+      const S = P[b.side], m = new THREE.Matrix4().copy(b.holder.matrixWorld).multiply(new THREE.Matrix4().makeScale(S.s, S.s, S.s));
+      let x0 = 9, y0 = 9, x1 = -9, y1 = -9, n = 0;
+      const ys = [0, ...P.tiers.map((t) => t[1]), ...P.tiers.map((t) => t[0]), P.cap.rim[1], P.cap.bell, P.cap.flange[0] + S.hat];
+      const rs = [P.tiers[3][3], ...P.tiers.map((t) => t[3]), ...P.tiers.map((t) => t[2]), 1.0, P.cap.flange[1], 0.5];
+      for (let j = 0; j < ys.length; j++) for (let i = 0; i < 40; i++) {
+        const a = (i / 40) * Math.PI * 2; v.set(Math.cos(a) * rs[j], ys[j], Math.sin(a) * rs[j]).applyMatrix4(m);
+        const vz = v.clone().applyMatrix4(camera.matrixWorldInverse).z; if (vz > -0.05) continue;
+        v.project(camera); const sx = (v.x + 1) / 2, sy = (1 - v.y) / 2; n++;
+        x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy);
+      }
+      const d = -w.clone().applyMatrix4(camera.matrixWorldInverse).z;
+      const pulled = !Q.on || d <= Q.near ? d : d < Q.far[0] ? Q.near + (d - Q.near) * Q.k : d < Q.far[1] ? (Q.near + (Q.far[0] - Q.near) * Q.k) + ((d - Q.far[0]) / (Q.far[1] - Q.far[0])) * (Q.far[1] - (Q.near + (Q.far[0] - Q.near) * Q.k)) : d;
+      const box = n ? [x0, y0, x1, y1].map((x) => +x.toFixed(4)) : null;
+      const onScreen = !!box && box[2] > 0 && box[0] < 1 && box[3] > 0 && box[1] < 1;
+      out.push({ side: b.side, u: +b.u.toFixed(2), drawn, onScreen, world: w.toArray().map((x) => +x.toFixed(3)), viewDepth: +d.toFixed(2), pulledDepth: +pulled.toFixed(2),
+        box, renderOrder: [b.spin.children.map((c) => c.renderOrder)], frustumCulled: b.spin.children.map((c) => c.frustumCulled), meshes: b.spin.children.map((c) => c.name) });
+    }
+    return out.filter((r) => r.onScreen || r.viewDepth < 40);
+  }
+
+  P.place = place; P.measure = measure; P.report = drawReport; P.tris = tris;
   report.parts.push(`brush6 x${brushes.filter((b) => b.holder.visible).length} (${tris.left} / ${tris.right} triangles each, 3 draw calls each)`);
 
   function update(dt, time, phase, m) {
-    const hu = m ? m.z : 0;
+    const hu = m ? m.z : 0; setPull();
     for (const b of brushes) {
       if (!b.holder.visible) continue;
       const d = b.u - hu, on = d > P.near && d < P.far;   // only the brushes near him are drawn (the rest are far down the tunnel or behind)
@@ -264,5 +326,5 @@ export async function buildBrush6(ctx) {
       if (on) b.spin.rotation.y = b.phase + time * P.spin * P[b.side].dir;
     }
   }
-  return { update, place, measure, brushes };
+  return { update, place, measure, report: drawReport, brushes, mats: mats0 };
 }
