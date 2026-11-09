@@ -27,7 +27,7 @@ export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
 // every number the staging uses (window.__bwSix2 in the browser, for live tuning; the timeline reads them each frame)
 export const SIX2 = {
   handOver: 9.15, seqEnd: 9.95,
-  girl: { scale: 1.3, k1: [-0.6, 1.02], yaw1: 1.05, k2: [-0.5, 0.66], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
+  girl: { scale: 1.42, k1: [-0.5, 1.06], yaw1: 1.0, k2: [-0.5, 0.66], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
   basket: { pos: [-0.14, 1.16], scale: 1.12, yaw: 0.0 },
   door: { open: -2.92 },
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
@@ -70,10 +70,10 @@ function terryTex(base, dark, light) {   // a soft looped terry-cloth texture
 export function makeCloth(material, n = 24) {
   const geo = new THREE.PlaneGeometry(1, 1, n, n), mesh = new THREE.Mesh(geo, material); mesh.frustumCulled = false;
   const U = geo.attributes.position.array.slice(), cnt = geo.attributes.position.count, A = new Float32Array(cnt * 3), B = new Float32Array(cnt * 3);
-  const drape = (out, r, L, wrap, hang, t, flut) => {
+  const drape = (out, r, L, wrap, hang, t, flut, sh = 0) => {
     const D = L * Math.SQRT2, arc = r * Math.PI * 0.5;
     for (let i = 0; i < cnt; i++) {
-      const u = U[i * 3] * 2, v = U[i * 3 + 1] * 2, d = Math.hypot(u, v) * L, th = Math.atan2(v, u);
+      const u = U[i * 3] * 2, v = U[i * 3 + 1] * 2 - sh, d = Math.hypot(u, v) * L, th = Math.atan2(v, u);
       const wr = 0.014 * Math.sin(th * 7 + d * 22) * Math.min(1, d / L) * (r / 0.15);
       let ax, ay, az;
       if (d < arc) { const ph = d / r, rr = r + wr; ax = Math.sin(ph) * Math.cos(th) * rr; ay = Math.cos(ph) * rr; az = Math.sin(ph) * Math.sin(th) * rr; }
@@ -107,40 +107,40 @@ export function buildRoom2(env) {
   const g = new THREE.Group(); g.name = 'six2Room';
   const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, envMap: env, envMapIntensity: 0.6, emissive: color, emissiveIntensity: 0.22, ...o });
   // the back wall: lavender-pink with soft vertical panelling, brighter round the window
-  const wallT = canvasTex(512, 512, (c, w, h) => { const gr = c.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#a98be6'); gr.addColorStop(0.55, '#d6a9ee'); gr.addColorStop(1, '#f2b8e6'); c.fillStyle = gr; c.fillRect(0, 0, w, h);
+  const wallT = canvasTex(512, 512, (c, w, h) => { const gr = c.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#8a62d8'); gr.addColorStop(0.5, '#b585e6'); gr.addColorStop(1, '#e49ad8'); c.fillStyle = gr; c.fillRect(0, 0, w, h);
     c.globalAlpha = 0.12; for (let x = 0; x < w; x += 32) { c.fillStyle = '#ffffff'; c.fillRect(x, 0, 3, h); c.fillStyle = '#7a52c0'; c.fillRect(x + 3, 0, 2, h); } c.globalAlpha = 1; });
-  const wall = new THREE.Mesh(new THREE.PlaneGeometry(7, 4.4), std(0xffffff, { map: wallT, emissiveMap: wallT, emissiveIntensity: 0.55, roughness: 0.8 })); wall.position.set(0, 2.0, -1.3); g.add(wall);
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(7, 4.4), std(0xffffff, { map: wallT, emissiveMap: wallT, emissiveIntensity: 0.42, roughness: 0.8 })); wall.position.set(0, 2.0, -1.3); g.add(wall);
   const side = new THREE.Mesh(new THREE.PlaneGeometry(4.5, 4.4), std(0xffffff, { map: wallT, emissiveMap: wallT, emissiveIntensity: 0.5, roughness: 0.8 })); side.rotation.y = Math.PI / 2; side.position.set(-2.4, 2.0, 0.9); g.add(side);
   // the floor: glossy pale pink tiles
-  const floorT = canvasTex(512, 512, (c, w, h) => { c.fillStyle = '#f3c6e6'; c.fillRect(0, 0, w, h); for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { c.fillStyle = (i + j) % 2 ? '#f7d3ec' : '#eebde2'; c.fillRect(i * 128 + 3, j * 128 + 3, 122, 122); }
+  const floorT = canvasTex(512, 512, (c, w, h) => { c.fillStyle = '#eab0dc'; c.fillRect(0, 0, w, h); for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { c.fillStyle = (i + j) % 2 ? '#f2c2e4' : '#e6acd8'; c.fillRect(i * 128 + 3, j * 128 + 3, 122, 122); }
     c.fillStyle = 'rgba(190,140,210,0.6)'; for (let i = 0; i <= 4; i++) { c.fillRect(i * 128 - 2, 0, 4, h); c.fillRect(0, i * 128 - 2, w, 4); } });
   floorT.wrapS = floorT.wrapT = THREE.RepeatWrapping; floorT.repeat.set(5, 4);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(9, 7), std(0xffffff, { map: floorT, emissiveMap: floorT, emissiveIntensity: 0.35, roughness: 0.18, metalness: 0.1, envMapIntensity: 1.3 }));
   floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, 1.2); g.add(floor);
   // the window: a tall sunlit window (warm sky, a sunlit garden glow), white frame, mullions, behind blue curtains
-  const win = new THREE.Group(); win.name = 'six2Window'; win.position.set(0.55, 1.62, -1.27); g.add(win);
+  const win = new THREE.Group(); win.name = 'six2Window'; win.position.set(0.04, 1.36, -1.27); g.add(win);
   const skyT = canvasTex(256, 384, (c, w, h) => { const gr = c.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#ffe7b0'); gr.addColorStop(0.45, '#fff3cf'); gr.addColorStop(0.7, '#ffd6a0'); gr.addColorStop(1, '#f6b0c8'); c.fillStyle = gr; c.fillRect(0, 0, w, h);
     const r = c.createRadialGradient(w * 0.62, h * 0.55, 4, w * 0.62, h * 0.55, w * 0.7); r.addColorStop(0, 'rgba(255,255,240,1)'); r.addColorStop(1, 'rgba(255,240,200,0)'); c.fillStyle = r; c.fillRect(0, 0, w, h);
     c.fillStyle = 'rgba(150,190,120,0.45)'; for (let i = 0; i < 18; i++) { c.beginPath(); c.arc(rnd() * w, h * (0.72 + rnd() * 0.25), 18 + rnd() * 30, 0, 7); c.fill(); } });
   const skyM = new THREE.MeshBasicMaterial({ map: skyT, color: new THREE.Color(1.25, 1.18, 1.08) });
-  const W = 0.9, H = 1.3; const sky = new THREE.Mesh(new THREE.PlaneGeometry(W, H), skyM); win.add(sky);
+  const W = 0.6, H = 1.05; const sky = new THREE.Mesh(new THREE.PlaneGeometry(W, H), skyM); win.add(sky);
   const frameM = std(0xfff4fb, { emissiveIntensity: 0.45, roughness: 0.4 });
   for (const [w, h, x, y] of [[W + 0.1, 0.06, 0, H / 2], [W + 0.1, 0.07, 0, -H / 2], [0.06, H, -W / 2, 0], [0.06, H, W / 2, 0], [0.035, H, 0, 0], [W, 0.035, 0, H * 0.18]]) { const b = new THREE.Mesh(new RoundedBoxGeometry(w, h, 0.06, 2, 0.012), frameM); b.position.set(x, y, 0.03); win.add(b); }
   const sill = new THREE.Mesh(new RoundedBoxGeometry(W + 0.24, 0.05, 0.2, 2, 0.015), frameM); sill.position.set(0, -H / 2 - 0.04, 0.08); win.add(sill);
   // warm light from the window
-  const sun = new THREE.PointLight(0xffd9a8, 3.2, 4.5, 1.6); sun.position.set(0.55, 1.7, -0.8); g.add(sun);
+  const sun = new THREE.PointLight(0xffc890, 3.6, 4.5, 1.6); sun.position.set(0.04, 1.45, -0.7); g.add(sun);
   const rayM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.0, 0.9, 0.7), transparent: true, opacity: 0.07, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
-  for (let i = 0; i < 3; i++) { const r = new THREE.Mesh(new THREE.PlaneGeometry(0.3 + i * 0.08, 2.6), rayM); r.position.set(0.3 + i * 0.2, 1.1, -0.6 + i * 0.12); r.rotation.set(0.2, 0, -0.5); g.add(r); }
+  for (let i = 0; i < 3; i++) { const r = new THREE.Mesh(new THREE.PlaneGeometry(0.22 + i * 0.06, 2.2), rayM); r.position.set(0.1 + i * 0.16, 0.95, -0.7 + i * 0.12); r.rotation.set(0.25, 0, -0.45); g.add(r); }
   // blue curtains: velvet folds, a rod, gathered at the sides of the window
   const curT = canvasTex(64, 256, (c, w, h) => { const gr = c.createLinearGradient(0, 0, w, 0); for (let i = 0; i <= 8; i++) gr.addColorStop(i / 8, i % 2 ? '#3f5fd8' : '#7a98ff'); c.fillStyle = gr; c.fillRect(0, 0, w, h); });
   curT.wrapS = THREE.RepeatWrapping;
   const curM = std(0xffffff, { map: curT, emissiveMap: curT, emissiveIntensity: 0.35, roughness: 0.7, side: THREE.DoubleSide });
-  for (const [x, w] of [[-0.72, 0.62], [0.72, 0.6]]) {
-    const cg = new THREE.PlaneGeometry(w, 1.85, 24, 8), p = cg.attributes.position;
-    for (let i = 0; i < p.count; i++) { const u = p.getX(i) / w + 0.5, v = p.getY(i) / 1.85 + 0.5; p.setZ(i, 0.05 * Math.sin(u * Math.PI * 7) * (0.6 + 0.4 * v)); p.setX(i, p.getX(i) * (1 - 0.35 * (1 - v) * sm(0.0, 0.5, 1 - v))); }
-    cg.computeVertexNormals(); const c = new THREE.Mesh(cg, curM); c.position.set(win.position.x + x, 1.66, -1.18); g.add(c);
+  for (const [x, w] of [[-0.43, 0.32], [0.45, 0.34]]) {
+    const cg = new THREE.PlaneGeometry(w, 1.6, 24, 8), p = cg.attributes.position;
+    for (let i = 0; i < p.count; i++) { const u = p.getX(i) / w + 0.5, v = p.getY(i) / 1.85 + 0.5; p.setZ(i, 0.04 * Math.sin(u * Math.PI * 5) * (0.6 + 0.4 * v)); p.setX(i, p.getX(i) * (1 - 0.35 * (1 - v) * sm(0.0, 0.5, 1 - v))); }
+    cg.computeVertexNormals(); const c = new THREE.Mesh(cg, curM); c.position.set(win.position.x + x, 1.4, -1.18); g.add(c);
   }
-  const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 2.3, 10), std(0xffd27a, { metalness: 0.9, roughness: 0.25, emissiveIntensity: 0.4 })); rod.rotation.z = Math.PI / 2; rod.position.set(win.position.x, 2.6, -1.16); g.add(rod);
+  const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 2.3, 10), std(0xffd27a, { metalness: 0.9, roughness: 0.25, emissiveIntensity: 0.4 })); rod.rotation.z = Math.PI / 2; rod.position.set(win.position.x, 2.2, -1.16); g.add(rod);
   // shelves of folded towels and bottles: the left wall area and beside the window
   const shelfM = std(0xf8e2f2, { emissiveIntensity: 0.4, roughness: 0.45 });
   const towelCols = [0xd9b8ff, 0xffb3dc, 0xb7c8ff, 0xc9a2ff, 0xffc8e8, 0xa9d8ff];
@@ -175,7 +175,11 @@ export function buildRoom2(env) {
   for (const [x, z, col, n] of [[-0.95, 1.95, 0xffd25a, 2], [-0.95, 1.95, 0xc6a2ff, 1], [0.75, 2.0, 0x8fd0ff, 2]]) {
     for (let k = 0; k < n; k++) { const t = new THREE.Mesh(new RoundedBoxGeometry(0.36, 0.09, 0.26, 3, 0.04), std(col, { map: towelT, emissiveIntensity: 0.45, roughness: 0.95 })); t.position.set(x + (rnd() - 0.5) * 0.04, 0.045 + (col === 0xc6a2ff ? 0.18 : k * 0.09), z); t.rotation.y = (rnd() - 0.5) * 0.4; g.add(t); fg.push(t); }
   }
-  return { g, rug, win, sun };
+  const shT = canvasTex(128, 128, (c, w, h) => { const r = c.createRadialGradient(w / 2, h / 2, 2, w / 2, h / 2, w / 2); r.addColorStop(0, 'rgba(60,20,90,0.55)'); r.addColorStop(0.6, 'rgba(60,20,90,0.25)'); r.addColorStop(1, 'rgba(60,20,90,0)'); c.fillStyle = r; c.fillRect(0, 0, w, h); });
+  const shadow = (sx, sz) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: shT, transparent: true, depthWrite: false })); m.rotation.x = -Math.PI / 2; m.scale.set(sx, sz, 1); m.renderOrder = 1; g.add(m); return m; };
+  const shadows = { girl: shadow(0.7, 0.55), basket: shadow(0.75, 0.55), washer: shadow(1.5, 0.5) };
+  shadows.washer.position.set(0.3, 0.006, 0.32);
+  return { g, rug, win, sun, shadows };
 }
 
 // the gold paw medallion (the basket's badge and the washer's crest)
@@ -208,7 +212,7 @@ export function installSix2(ctx) {
   const R2 = buildRoom2(env); scene.add(R2.g);
   six.stand.visible = false;
   // the basket on the rug, its gold paw badge toward the camera
-  const badge = pawMedallion(washer.goldM, 0.055); badge.name = 'six2BasketBadge'; basket.add(badge);
+  const badge = pawMedallion(washer.goldM, 0.085); badge.name = 'six2BasketBadge'; basket.add(badge);
   // the blue towel and the yellow towel as cloth (the blue one is the six towel's own material)
   const blueM = six.cloth.material.clone(); blueM.map = terryTex('#86c2ff', '#4f8fe8', '#d6ecff'); blueM.map.wrapS = blueM.map.wrapT = THREE.RepeatWrapping; blueM.map.repeat.set(2, 2); blueM.color = new THREE.Color(0xffffff); blueM.emissive = new THREE.Color(0x2a5cc0); blueM.emissiveIntensity = 0.3;
   const yelM = blueM.clone(); yelM.map = terryTex('#ffd85a', '#e8b030', '#fff2b0'); yelM.map.wrapS = yelM.map.wrapT = THREE.RepeatWrapping; yelM.map.repeat.set(2, 2); yelM.emissive = new THREE.Color(0x8a6010);
@@ -271,8 +275,9 @@ export function installSix2(ctx) {
     let sc = 1; for (const [t0, n] of S.scenes) if (s >= t0) sc = n; if (sc !== scene0) { scene0 = sc; if (ctx.onScene) ctx.onScene(sc); }
     // ---- basket on the rug (badge to the camera)
     const BS = S.basket; basket.position.set(BS.pos[0], 0.135 * BS.scale, BS.pos[1]); basket.rotation.set(0, BS.yaw, 0); basket.scale.setScalar(BS.scale);
-    badge.position.set(0, 0.03, 0.235); badge.rotation.set(-0.12, 0, 0);
+    badge.position.set(0, 0.03, 0.262); badge.rotation.set(-0.16, 0, 0);
     R2.rug.position.set(BS.pos[0] + 0.05, 0.004, BS.pos[1] - 0.02);
+    R2.shadows.basket.position.set(BS.pos[0], 0.008, BS.pos[1] + 0.02);
     basket.updateMatrixWorld(true);
     const rimC = V(0, 0.2, 0.02).applyMatrix4(basket.matrixWorld);   // the laundry's top in the basket (world)
     // ---- the door: shut while waiting; it swings open at START (with a bounce); she swings it shut in scene 4 (swing, stop, latch)
@@ -341,13 +346,14 @@ export function installSix2(ctx) {
       reachBones(B.upperarmR, B.forearmR, B.handR, tR, cw.clone().addScaledVector(latOf(s0.yaw), -0.5).add(V(0, -0.35, 0)).addScaledVector(fwd, -0.1));
       for (const l of g2.lids) { l.visible = blink > 0.04; l.scale.set(1.08, 0.04 + blink * 1.02, 0.5); }
       handsW.near = B.handL.getWorldPosition(new THREE.Vector3()); handsW.far = B.handR.getWorldPosition(new THREE.Vector3());
+      const km = gs.knees.L.clone().add(gs.knees.R).multiplyScalar(0.5).addScaledVector(fwd, -0.12); R2.shadows.girl.position.set(km.x, 0.007, km.z); R2.shadows.girl.rotation.z = s0.yaw;
     }
     const hA = handsW.near && handsW.far ? (handsW.near.dot(V(1, 0, 0).applyQuaternion(camera.quaternion)) < handsW.far.dot(V(1, 0, 0).applyQuaternion(camera.quaternion)) ? [handsW.near, handsW.far] : [handsW.far, handsW.near]) : [gripA, gripB];
     // ---- the hero: under the blue towel in the basket (peeking); left in the yellow laundry when the blue towel is lifted ("!"); scooped inside the
     // yellow towel; tumbling into the drum; sitting in the drum (towel on his head); the water rises; carried into the tunnel
     let hp, scl = 0.62, surprise = 0; const rot = new THREE.Euler();
     const camYaw = Math.atan2(camera.position.x - rimC.x, camera.position.z - rimC.z);
-    const inBasket = rimC.clone().add(V(0.0, 0.035 + 0.008 * Math.abs(Math.sin(it * 1.6)), 0.0));
+    const inBasket = rimC.clone().add(V(0.0, 0.085 + 0.008 * Math.abs(Math.sin(it * 1.6)), 0.0));
     if (s < 2.95) { hp = inBasket; rot.set(0.05 * Math.sin(it * 0.9), camYaw + 0.12 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); surprise = sm(0.5, 0.65, s) * (1 - sm(1.6, 1.9, s)) + sm(2.5, 2.6, s); if (s > 2.7) hp.y -= sm(2.7, 2.95, s) * 0.05; }
     else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0, -0.06, 0)); rot.set(0.1 * Math.sin(s * 6), camYaw - 0.3, 0.1 * Math.sin(s * 5)); surprise = 1; scl = 0.62; }
     else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.62 + (1 - 0.62) * k; surprise = 1; }
@@ -363,10 +369,10 @@ export function installSix2(ctx) {
     if (s > 4.75) vortex.WU.uHit.value.y = Math.max(0, 1 - (s - 4.75) * 0.8);
     // ---- the blue towel: draped over him (a hood) -> lifted by both hands (hanging cloth) -> pushed into the drum -> lying in the drum -> flipped onto his head
     const rB = OPENING3D.heroW * 0.5 * 0.62;
-    const drapeHood = (out) => blue.drape(out, rB * 1.02, rB * 1.9, 0, rB * 0.7, it, 0.3);
+    const drapeHood = (out) => blue.drape(out, rB * 1.06, rB * 2.7, 0, rB * 1.15, it, 0.3, 0.42);
     bG.visible = true; bG.position.set(0, 0, 0); bG.rotation.set(0, 0, 0); bG.scale.setScalar(1);
     const placeLocal = (src, pos, rx, ry, rz, k = 1) => { const m = new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz, 'YXZ')), V(k, k, k)); const o = new Float32Array(src.length); const v = new THREE.Vector3(); for (let i = 0; i < src.length; i += 3) { v.set(src[i], src[i + 1], src[i + 2]).applyMatrix4(m); o[i] = v.x; o[i + 1] = v.y; o[i + 2] = v.z; } return o; };
-    const hoodPos = inBasket.clone().add(V(0, 0.03, -0.02)), hoodRot = [-0.95, camYaw + Math.PI / 4, 0];
+    const hoodPos = inBasket.clone().add(V(0, 0.012, -0.01)), hoodRot = [-0.32, camYaw, 0];
     if (s < 0.45) { drapeHood(blue.A); blue.apply(placeLocal(blue.A, hoodPos, ...hoodRot)); }
     else if (s < 2.55) {
       drapeHood(blue.A); const A = placeLocal(blue.A, hoodPos, ...hoodRot);
@@ -412,5 +418,6 @@ export function installSix2(ctx) {
     ctx.bubbles.visible = !inDrum; ctx.front.visible = false; ctx.foam.visible = !inDrum && s > 4.0;
     marks.visible = marks.visible && !inDrum;
   }
+  if (typeof window !== 'undefined') window.__bwSix2dbg = { g2, legs, basket, hero, heroBody, camera, scene, R2, blue, yel, washer };   // (for the live DevTools checks)
   return { pose, sparkWin, room2: R2 };
 }
