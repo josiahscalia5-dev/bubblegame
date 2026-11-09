@@ -100,25 +100,50 @@ export async function buildArch56(ctx) {
   // base grade (shaders.js GradeShader: saturation 1.32 then contrast 1.12 per channel, on linear values before tone mapping): every gold turned
   // orange-red and every pink red at u 206 (measured: rail #f53c3b, housing #df4262; the lights are the same at tap and 206). The lit arch56
   // materials undo that base grade themselves (its exact inverse, by P.ungrade) wherever the hero grade is off, so they read as designed all run.
-  const UNG = { value: 0 };
+  // (session 3849f5c8, measured with the live grade shader) the cause of the RED tint at u 206 is the GRADE, not a light (the lights are neutral:
+  // hemisphere ffe9ff / 6ea8ff, two white directionals): past the old drum (uHero 0) the whole chain runs on every pixel -- the base grade
+  // (saturation 1.32, contrast 1.12 round 0.18), then uS4Grade's branch, 1 for the whole run: vibrance, a knee at 0.62, round4 (x 0.84, saturation 1.2,
+  // CONTRAST 1.4 ROUND 0.5, clamped at 0: blue leaves the pinks and green the golds, so pink -> red, gold -> red-orange) and round7's warm peach light
+  // added at the top right (vUv 0.9 / 0.8: +0.19 linear red on the gear). At Tap to Start uHero 1 replaces that chain by the gentle hero grade.
+  // So every lit arch56 material renders what the hero grade makes of it, pre-inverted through the u 206 chain (checked numerically: error <= 0.015,
+  // except under the warm light, which a dark colour cannot cancel). Driven by the LIVE uniforms (uA56Ungrade = 1 - uHero, uA56S4 = uS4Grade):
+  // if the grade changes, this follows. Additive glows are not inverted (the inverse's offsets would light their whole quads).
+  const UNG = { value: 0 }, US4 = { value: 0 };
   const UNGRADE = /* glsl */ `
-uniform float uA56Ungrade;
-vec3 a56Ungrade(vec3 c) { vec3 g = (c - 0.18) / 1.12 + 0.18; float l = dot(g, vec3(0.2126, 0.7152, 0.0722)); return max(vec3(l) + (g - l) / 1.32, 0.0); }`;
-  const hazeIt = (m) => {
+uniform float uA56Ungrade, uA56S4; varying vec4 vA56Clip;
+float a56L(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+vec3 a56Ungrade(vec3 c) {
+  vec2 uv = vA56Clip.xy / vA56Clip.w * 0.5 + 0.5;
+  // the hero grade (tunnel_r7_hero.js heroGrade): luminance contrast round 0.18, saturation 1.16, the cobalt vignette
+  c = max(c, 0.0); float L0 = a56L(c); c *= pow(max(L0, 1e-4) / 0.18, 0.08); float L1 = a56L(c); c = max(L1 + (c - L1) * 1.16, 0.0);
+  vec2 hv = (uv - 0.5) * vec2(0.6, 1.0); c *= mix(vec3(1.0), vec3(0.0232, 0.1144, 0.7454), smoothstep(0.42, 0.85, length(hv)) * 0.28);
+  // the u 206 chain backwards: the warm light, round4, the knee, the vibrance, the base vignette, contrast and saturation
+  vec2 wq = (uv - vec2(0.9, 0.8)) * vec2(0.5, 1.0); vec3 y = max(c - vec3(1.0, 0.7, 0.6) * exp(-dot(wq, wq) / 0.09) * 0.3 * uA56S4, 0.0);
+  vec3 h = (y - 0.5) / 1.4 + 0.5; float lh = a56L(h); h = lh + (h - lh) / 1.2; y = mix(y, h / 0.84, uA56S4);
+  float lp = a56L(y); if (lp > 0.62) { float b = lp - 0.62; y *= mix(1.0, (0.62 + b / max(1.0 - 1.6 * b, 0.05)) / lp, uA56S4); }
+  float lg = a56L(y); vec3 g = y;
+  for (int i = 0; i < 2; i++) { float mx = max(g.r, max(g.g, g.b)), mn = min(g.r, min(g.g, g.b)); float k = 1.0 + 0.25 * (1.0 - (mx - mn) / max(mx, 1e-4)) * smoothstep(0.05, 0.35, lg) * uA56S4; g = lg + (y - lg) / k; }
+  vec2 dv = (uv - 0.5) * vec2(0.6, 1.0); g /= mix(vec3(1.0), vec3(0.7, 0.66, 0.92), smoothstep(0.4, 0.8, length(dv)) * 0.36);
+  g = (g - 0.18) / 1.12 + 0.18; float l = a56L(g); g = l + (g - l) / 1.32;
+  return max(g, 0.0);
+}`;
+  const hazeIt = (m, ungrade = true) => {
     m.onBeforeCompile = (sh) => {
-      sh.uniforms.uA56Ungrade = UNG;
-      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;')
-        .replace('#include <project_vertex>', '#include <project_vertex>\n{ vec4 hz = vec4(transformed, 1.0);\n#ifdef USE_INSTANCING\n hz = instanceMatrix * hz;\n#endif\n vHzW = (modelMatrix * hz).xyz; }');
+      sh.uniforms.uA56Ungrade = UNG; sh.uniforms.uA56S4 = US4;
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW; varying vec4 vA56Clip;')
+        .replace('#include <project_vertex>', '#include <project_vertex>\nvA56Clip = gl_Position;\n{ vec4 hz = vec4(transformed, 1.0);\n#ifdef USE_INSTANCING\n hz = instanceMatrix * hz;\n#endif\n vHzW = (modelMatrix * hz).xyz; }');
       sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vHzW;\n' + HAZE + UNGRADE)
-        .replace('#include <opaque_fragment>', 'outgoingLight = a56Haze(outgoingLight, vHzW);\noutgoingLight = mix(outgoingLight, a56Ungrade(outgoingLight), uA56Ungrade);\n#include <opaque_fragment>');
+        .replace('#include <opaque_fragment>', 'outgoingLight = a56Haze(outgoingLight, vHzW);\n' + (ungrade ? 'outgoingLight = mix(outgoingLight, a56Ungrade(outgoingLight), uA56Ungrade);\n' : '') + '#include <opaque_fragment>');
     };
-    m.customProgramCacheKey = () => 'a56haze';
+    m.customProgramCacheKey = () => (ungrade ? 'a56haze' : 'a56haze0');
     return m;
   };
+  let gradePass = null;   // the game's grade pass (its live uHero / uS4Grade), found once
+  const liveGrade = () => { if (gradePass === null) { try { gradePass = window.__bw.debug().composer.passes.find((p) => p.uniforms && p.uniforms.uS4Grade) || false; } catch (e) { gradePass = false; } } return gradePass; };
   const heroGradeOn = (z) => { const L = ctx.L, sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
     return L ? sm(L.tunnelStart - 12, L.tunnelStart - 8, z) * (1 - sm(L.tunnelEnd - 2, L.tunnelEnd + 4, z)) : 1; };   // = tunnel_r7_hero.js's uHero
   const std = (o) => hazeIt(new THREE.MeshStandardMaterial({ envMap: env, ...o }));
-  const basic = (r, g, b, o = {}) => hazeIt(new THREE.MeshBasicMaterial({ color: new THREE.Color(r, g, b), ...o }));
+  const basic = (r, g, b, o = {}) => hazeIt(new THREE.MeshBasicMaterial({ color: new THREE.Color(r, g, b), ...o }), o.blending !== THREE.AdditiveBlending);
   const MT = priv(() => ({
     // glossy pink housings (#be2963 .. #eb478b), magenta on the right (#df22ca)
     pink: std({ color: 0xb8305f, emissive: 0x400418, emissiveIntensity: 0.4, metalness: 0.25, roughness: 0.24, envMapIntensity: 1.0 }),
@@ -188,14 +213,16 @@ vec3 a56Ungrade(vec3 c) { vec3 g = (c - 0.18) / 1.12 + 0.18; float l = dot(g, ve
 
   // ------------------------------------------------ 1. the drum: perforated violet metal, its axis at the camera's height
   const shellMat = priv(() => new THREE.ShaderMaterial({
-    uniforms: { uTime: timeU, uArch: { value: new THREE.Vector2(P.ring.step, P.ring.u0) } },
+    uniforms: { uTime: timeU, uArch: { value: new THREE.Vector2(P.ring.step, P.ring.u0) }, uA56Ungrade: UNG, uA56S4: US4 },
     vertexShader: /* glsl */ `
       attribute vec2 aAU; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
-      void main() { vAU = aAU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(normal); gl_Position = projectionMatrix * viewMatrix * w; }`,
+      varying vec4 vA56Clip;
+      void main() { vAU = aAU; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(normal); gl_Position = projectionMatrix * viewMatrix * w; vA56Clip = gl_Position; }`,
     fragmentShader: /* glsl */ `
       uniform float uTime; uniform vec2 uArch; varying vec2 vAU; varying vec3 vW; varying vec3 vN;
       ${NOISE}
       ${HAZE}
+      ${UNGRADE}
       void main() {
         float a = vAU.x, u = vAU.y, up = cos(a), s = a * ${f(P.R)};
         float dc = length(vW - cameraPosition);
@@ -232,6 +259,7 @@ vec3 a56Ungrade(vec3 c) { vec3 g = (c - 0.18) / 1.12 + 0.18; float l = dot(g, ve
         // darker toward the water line, the water's turquoise reflected on it
         c = mix(c, c * vec3(0.5, 0.55, 1.0) + vec3(0.0, 0.07, 0.16), smoothstep(-0.25, -0.5, up));
         c = a56Haze(c, vW);
+        c = mix(c, a56Ungrade(c), uA56Ungrade);
         gl_FragColor = vec4(c, 1.0);
         #include <colorspace_fragment>
       }`,
@@ -501,7 +529,9 @@ vec3 a56Ungrade(vec3 c) { vec3 g = (c - 0.18) / 1.12 + 0.18; float l = dot(g, ve
   if (typeof window !== 'undefined') window.__bwArch56Info = { stats, meshes, mats: MT };
 
   function update(dt, time, phase, m) {
-    if (m) UNG.value = P.ungrade * (1 - heroGradeOn(m.z));
+    const gp = liveGrade();
+    if (gp) { UNG.value = P.ungrade * (1 - (gp.uniforms.uHero ? gp.uniforms.uHero.value : 0)); US4.value = gp.uniforms.uS4Grade.value; }
+    else if (m) { UNG.value = P.ungrade * (1 - heroGradeOn(m.z)); US4.value = 1; }
     for (const g of gears) { if (g.userData.axleX) g.rotation.x = time * P.gear.spin; else g.rotation.z = time * P.gear.spin; }
     if (m && lodSets.length) { const a = m.z - 6, b = m.z + P.tm.near;
       for (const [ua, ub, near, far] of lodSets) { const n = ub > a && ua < b; for (const x of near) x.visible = n; for (const x of far) x.visible = !n; } }
