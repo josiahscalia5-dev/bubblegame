@@ -22,5 +22,11 @@
     "agents": "ChatHistory/2026-11-07_session_4fd798d9_design_agent_transcripts.md",
     "title": "Eighteenth session (7 November, second account): account transfer continuation",
     "url": "https://claude.ai/code/session_013kxR3MQKMNKd97WASrysYD"
+  },
+  "95f7eae5-6a2e-5c67-b077-0b0e896bba45": {
+    "chat": "ChatHistory/2026-11-07_session_95f7eae5.md",
+    "agents": "ChatHistory/2026-11-07_session_95f7eae5_design_agent_transcripts.md",
+    "title": "Nineteenth session (7 November, account transfer): restoration on branch claude/bubble-wash-transfer-tcgbof",
+    "url": "https://claude.ai/code/session_01L8bvJgHqB9KziNd3i9K2wk"
   }
 }

@@ -1,0 +1,5 @@
+motion trace gameplay fields (53_swim/motion/trace_accepted_swipejump.json vs 60_fidelity/motion/trace_fidelity_swipejump.json): 152 vs 152 frames x 17 fields (t, phase, x, xv, lane, air, yAbs, surf, speed, hearts, coins, gems, socks, knocks, bumps, z, cam): 0 differences []
+  drawn only, for information: drawn largest change 81.1000
+  drawn only, for information: drawnAboveSwellBase largest change 0.1390
+  drawn only, for information: squashY largest change 0.1278
+  drawn only, for information: swellC largest change 0.0669

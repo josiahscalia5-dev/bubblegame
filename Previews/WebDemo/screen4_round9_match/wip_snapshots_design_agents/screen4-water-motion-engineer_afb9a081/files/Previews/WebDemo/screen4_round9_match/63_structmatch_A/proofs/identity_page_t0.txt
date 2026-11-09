@@ -1,0 +1,3 @@
+accepted ?s3=intunnel Tap to Start PAGE captures with the HUD (s3_shot.cjs, 538 x 1076):
+  committed bundle 38466b67 captured now vs this build captured now: 4029 pixels differ
+  62_/frames_accepted/t0.png (captured earlier) vs this build: 4029; vs the committed bundle captured now: 0 (the HUD counters animate in real time)
