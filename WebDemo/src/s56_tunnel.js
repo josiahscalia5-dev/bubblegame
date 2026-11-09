@@ -19,6 +19,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { ARCH56_ON, buildArch56 } from './s56_arch.js';   // (session d847dce2, coordinator hook) the Scene 5 / 6 architecture pass `arch56`
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const S56_ON = LIST.includes('s56') && LIST.includes('level1');
@@ -141,6 +142,14 @@ export async function buildS56(ctx) {
     cream: new THREE.MeshStandardMaterial({ color: 0xffe2a0, emissive: 0x8a5a10, emissiveIntensity: 0.6, metalness: 0.7, roughness: 0.3, envMap: env }),
   };
 
+  // ------------------------------------------------ 0. (session d847dce2, coordinator hook) `?s3=...,arch56`: the architecture pass (s56_arch.js, lane arch56)
+  // builds the drum, arches, banks, machinery and the camera framing itself; it returns which of sections 1-4 below it replaces (skip.shell,
+  // skip.arches, skip.banks, skip.models). Without arch56 nothing below changes (the build is the same as before the hook).
+  const T4 = (x, y, z, rx = 0, ry = 0, rz = 0, s = 1) => new THREE.Matrix4().compose(new THREE.Vector3(x, y, z), new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz)), new THREE.Vector3(s, s, s));
+  let arch = null;
+  if (ARCH56_ON) { try { arch = await buildArch56({ scene, TR, W, L: ctx.L, env, loader, root, S, M, F, frameM, T4, timeU, heroU, report }); } catch (e) { report.errors.push('arch56: ' + ((e && e.message) || e)); } }
+  const skip = (arch && arch.skip) || {};
+
   // ------------------------------------------------ 1. the drum shell (perforated lavender metal), in chunks so each can be culled
   const shellMat = new THREE.ShaderMaterial({
     uniforms: { uTime: timeU, uArch: { value: new THREE.Vector2(S.arch.step, S.arch.from) } },
@@ -190,7 +199,7 @@ export async function buildS56(ctx) {
       }`,
     side: THREE.BackSide,
   });
-  {
+  if (!skip.shell) {
     const NA = 72, A0 = -2.36, A1 = 2.36, du = 0.5;
     for (let ci = 0; ci < nCh; ci++) {
       const ua = U0 + ci * S.chunk, ub = Math.min(U1, ua + S.chunk), rows = Math.round((ub - ua) / du) + 1;
@@ -213,7 +222,7 @@ export async function buildS56(ctx) {
   }
 
   // ------------------------------------------------ 2. the arches (instanced along the run in the track's frames)
-  {
+  if (!skip.arches) {
     const r = S.R - 0.06, beta = Math.asin(S.axisH / r), arc = Math.PI + 2 * beta;
     const ring = (rad, tube, rs, ts, zScale, z = 0) => { const g = new THREE.TorusGeometry(rad, tube, rs, ts, arc); g.rotateZ(-beta); g.scale(1, 1, zScale); g.translate(0, S.axisH, z); return g; };
     const lampAt = (ang, rad) => { const g = new THREE.CapsuleGeometry(0.055, 0.46, 4, 10); g.rotateZ(-ang); g.translate(Math.sin(ang) * rad, S.axisH + Math.cos(ang) * rad, -0.05); return g; };
@@ -248,7 +257,6 @@ export async function buildS56(ctx) {
     const g = geo.clone(); if (local) g.applyMatrix4(local); g.applyMatrix4(frameM(u));
     const c = chunks[ci]; if (!c.has(mat)) c.set(mat, []); c.get(mat).push(g);
   };
-  const T4 = (x, y, z, rx = 0, ry = 0, rz = 0, s = 1) => new THREE.Matrix4().compose(new THREE.Vector3(x, y, z), new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz)), new THREE.Vector3(s, s, s));
   const G = {
     cyl: (rt, rb, h, n = 28) => new THREE.CylinderGeometry(rt, rb, h, n),
     tor: (r, t, n = 28) => new THREE.TorusGeometry(r, t, 8, n),
@@ -265,6 +273,7 @@ export async function buildS56(ctx) {
   };
   const bankX = (h) => Math.sqrt(Math.max(0, S.R * S.R - (h - S.axisH) ** 2));
   let tankN = 0;
+  if (!skip.banks) {
   for (let u = S.u0 + 2, k = 0; u < U1 - 1; u += S.bank.step / 2, k++) {
     const s = k % 2 === 0 ? 1 : -1, variant = Math.floor(k / 2) % 3, xi = S.bank.inner;
     // the deck along the bank (the platform the machines stand on, lapped by the water) and its gold railing
@@ -311,12 +320,13 @@ export async function buildS56(ctx) {
   }
   chunks.forEach((c, ci) => { for (const [mat, list] of c) { const g = mergeGeometries(list.map((x) => (x.index ? x : x)), false); if (!g) continue; g.computeBoundingSphere(); const m = new THREE.Mesh(g, mat); m.name = 's56Bank' + ci; root.add(m); for (const x of list) x.dispose(); } });
   report.parts.push('banks (' + tankN + ' tanks)');
+  }   // (!skip.banks)
 
   // ------------------------------------------------ 4. the user's Tripo models: machine housings on the banks, the cobalt gear
   const load = (url) => new Promise((ok, no) => loader.load(url, ok, undefined, no));
   const dress = (o) => o.traverse((c) => { if (c.isMesh) { c.material = c.material.clone(); c.material.envMap = env; c.material.envMapIntensity = 1.0; c.material.emissive = new THREE.Color(0x3a0f30); c.material.emissiveIntensity = 0.5; } });
   const gears = [];
-  try {
+  if (!skip.models) try {
     const [gh, gg] = await Promise.all([load('models/opening/housing_tripo_821.glb'), load('models/opening/gear_v2_tripo.glb')]);
     // housings: one instanced mesh per chunk (culled per chunk), between the drum housings, long side along the run
     let hm = null; gh.scene.traverse((c) => { if (c.isMesh && !hm) hm = c; });
@@ -464,6 +474,7 @@ export async function buildS56(ctx) {
   let heroOff = 0;
   function update(dt, time, phase, m) {
     timeU.value = time; introT = phase === 'intro' ? introT + dt : 99;
+    if (arch && arch.update) arch.update(dt, time, phase, m);
     for (const g of gears) g.spin.rotation.z = -time * S.gear.spin * g.side;
     if (m) {
       const vx = lastX === null ? 0 : (m.x - lastX) / Math.max(dt, 1e-3); lastX = m.x;
@@ -498,7 +509,8 @@ export async function buildS56(ctx) {
   function furCentre(c, m) { TR.frame(m.z, F); c.addScaledVector(F.U, heroOff); }
   let introT = 0, glideOn = typeof window !== 'undefined' && !!window.__bwO3D;
   function camera(off, look) {
-    off.set(...S.cam.off); look.set(...S.cam.look); let fov = S.cam.fov;
+    const C = (arch && arch.cam) || S.cam;   // arch56 may own the Scene 5 / 6 framing
+    off.set(...C.off); look.set(...C.look); let fov = C.fov;
     if (glideOn && introT < S.glide.secs) { const g = S.glide, k = sm(0, g.secs, introT);
       off.lerpVectors(new THREE.Vector3(...g.off), off, k); look.lerpVectors(new THREE.Vector3(...g.look), look, k); fov = g.fov + (fov - g.fov) * k; }
     return fov;
