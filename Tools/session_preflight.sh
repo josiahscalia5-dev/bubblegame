@@ -46,7 +46,7 @@ v="$(grep -o 'game.bundle.js?v=[0-9a-f]*' WebDemo/index.html 2>/dev/null | cut -
 mm=0; for f in WebDemo/models/opening/{girl_v2_rigged,washer_tripo_hj748,door_tripo_oit748_gold,gear_v2_tripo,housing_tripo_821}.glb WebDemo/models/{mascot,l1_enemy_v2_tripo,coin_v2_tripo,coin_v2_tripo_lo,sock_v2_tripo,layout}.*; do [ -s "$f" ] || { mm=$((mm+1)); say "$NI" "model $f missing"; }; done
 [ "$mm" = 0 ] && say "$A" "essential models present (girl, washer, door, gear, housing, mascot, enemy, coin, sock, layout)"
 nr=$(ls Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/0[1-6]_*.png 2>/dev/null | wc -l); [ "$nr" = 6 ] && say "$A" "the six approved portrait references present" || say "$NI" "approved references: $nr/6 in Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user"
-[ -d WebDemo/node_modules/three ] && say "$A" "WebDemo dependencies installed (three $(node -e "console.log(require('./WebDemo/node_modules/three/package.json').version)" 2>/dev/null))" || say "$NI" "WebDemo/node_modules missing: cd WebDemo && npm ci"
+[ -d WebDemo/node_modules/three ] && say "$A" "WebDemo dependencies installed (three $(python3 -I -c "import json; print(json.load(open('WebDemo/node_modules/three/package.json'))['version'])" 2>/dev/null))" || say "$NI" "WebDemo/node_modules missing: cd WebDemo && npm ci"
 
 # --- AI AGENTS and SKILLS (they load from the repository; launching one is Claude's live check)
 na=0; for a in game-art-director gameplay-visual-testing lighting-visual-matching water-vfx-engineer screen4-water-motion-engineer; do

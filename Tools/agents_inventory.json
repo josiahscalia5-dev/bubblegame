@@ -1,0 +1,38 @@
+{
+  "note": "Bubble Wash Kingdom AI agents, skills and MCP servers: definitions, tools, restore path and the LAST LIVE TEST (session ac4e3449, 9 November 2026). Human-readable: AGENTS_AND_SPECIALISTS_INVENTORY.md. Project agents and the skill load automatically from the repository on any account; plugin agents and MCP servers need the parallax-threejs plugin enabled on the account (cannot travel through Git).",
+  "agents": {
+    "game-art-director": {"source": ".claude/agents/game-art-director.md (project)", "tools": ["Read", "Grep", "Glob", "Bash"], "restore": "automatic from the repository",
+      "last_live_test": "2026-11-09 ac4e3449 PASSED: ranked the 8 largest Scene 5/6 differences with measured targets (vanishing point, hero width/height, gear, water palette)",
+      "limits": "no MCP or browser; its standing text names Classic Screen 4, so give it the six-scene references explicitly", "use_for": "reference matching, gap ranking, before/after judgement"},
+    "gameplay-visual-testing": {"source": ".claude/agents/gameplay-visual-testing.md (project)", "tools": ["Read", "Grep", "Glob", "Bash"], "restore": "automatic from the repository",
+      "last_live_test": "2026-11-09 ac4e3449: running the route test + identity proof (QA lane); an earlier run waited behind the shared browser lock",
+      "limits": "read-only; Playwright through Bash (flock /tmp/bw_browser.lock)", "use_for": "flow_routes gameplay checks, identity proofs, captures, recordings"},
+    "lighting-visual-matching": {"source": ".claude/agents/lighting-visual-matching.md (project)", "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write"], "restore": "automatic from the repository",
+      "last_live_test": "2026-11-09 ac4e3449 PASSED: measured the Scene 5 colour / geometry targets (walls, arches, lamps, housings, gold, tanks, gear, water, vanishing point (438,749))",
+      "limits": "no MCP", "use_for": "lane girl12 (room, light, girl pose); materials and lighting"},
+    "water-vfx-engineer": {"source": ".claude/agents/water-vfx-engineer.md (project)", "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write"], "restore": "automatic from the repository",
+      "last_live_test": "2026-11-09 ac4e3449 PASSED: audited the track/world API, every water surface near the hero and proposed the shared wave function",
+      "limits": "no MCP", "use_for": "lane washer34 (Scene 3-4 water and accident)"},
+    "screen4-water-motion-engineer": {"source": ".claude/agents/screen4-water-motion-engineer.md (project)", "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "chrome-devtools: navigate_page, evaluate_script, take_screenshot, list_console_messages", "threejs-devtools: bridge_status, scene_tree, object_details, material_details, shader_source, set_uniform, run_js, geometry_details, renderer_info"], "restore": "automatic from the repository; its MCP tools need the parallax-threejs plugin",
+      "last_live_test": "2026-11-09 ac4e3449 PARTIALLY WORKING: chrome-devtools navigate/evaluate/screenshot/console worked; threejs-devtools bridge_status and renderer_info worked, scene_tree picked the opening's scene instead of the game's, run_js timed out under load. It found the real bug that pickups measure from mascot.root.position",
+      "limits": "threejs-devtools sees the first renderer only (the opening's) when both canvases exist; use __bw.debug() through evaluate_script", "use_for": "lane s56 (Scene 5/6 water and swim)"},
+    "parallax-threejs:scenario-author": {"source": "plugin parallax-threejs 0.4.12 (account-level)", "tools": ["Read", "Glob", "Write", "Bash"], "restore": "enable the plugin on the account, new session",
+      "last_live_test": "2026-11-09 ac4e3449 PASSED capability check: no Playwright MCP (plugin naming defect); the Parallax harness (test/visual) is present but has no scenarios and needs a seed / SwiftShader change for this game",
+      "limits": "no MCP tools", "use_for": "a permanent scenario once a scene is accepted by the user"},
+    "parallax-threejs:shader-reviewer": {"source": "plugin parallax-threejs 0.4.12 (account-level)", "tools": ["Read", "Grep", "Glob", "Bash"], "restore": "enable the plugin on the account, new session",
+      "last_live_test": "2026-11-09 ac4e3449 PASSED: reviewed the tunnel lane's GLSL (no blockers, 2 fixes applied), compiled the shaders in headless Chromium through Bash",
+      "limits": "no threejs-devtools MCP (plugin naming defect)", "use_for": "review GLSL before merging a lane"},
+    "parallax-threejs:visual-debugger": {"source": "plugin parallax-threejs 0.4.12 (account-level)", "tools": ["Bash", "mcp__spector__* (project server, 12 tools)"], "restore": "enable the plugin on the account, new session; Spector via .mcp.json",
+      "last_live_test": "2026-11-09 ac4e3449 PASSED: Spector list_canvases; measured the hero's screen box with a Playwright probe",
+      "limits": "no threejs-devtools / chrome-devtools / playwright MCP (plugin naming defect)", "use_for": "runtime diagnosis of a wrong-looking frame"}
+  },
+  "skills": {
+    "bubble-wash-screen-matcher": {"source": ".claude/skills/bubble-wash-screen-matcher/SKILL.md (project)", "restore": "automatic from the repository", "last_live_test": "present; its text names Screens 3/4: give it the six-scene references explicitly", "use_for": "approved-vs-game comparisons"}
+  },
+  "mcp_servers": {
+    "plugin:parallax-threejs:chrome-devtools-mcp": {"last_live_test": "2026-11-09 ac4e3449 ACTIVE AND TESTED: list_pages, navigate_page", "reconnect": "/mcp"},
+    "plugin:parallax-threejs:threejs-devtools-mcp": {"last_live_test": "2026-11-09 ac4e3449 ACTIVE AND TESTED: bridge_status, renderer_info through the 9222 proxy (page at http://localhost:9222/...)", "reconnect": "/mcp"},
+    "plugin:parallax-threejs:playwright-mcp": {"last_live_test": "2026-11-09 ac4e3449 ACTIVE AND TESTED: browser_tabs list", "reconnect": "/mcp"},
+    "spector (project .mcp.json) and plugin:parallax-threejs:spector": {"last_live_test": "2026-11-09 ac4e3449 ACTIVE AND TESTED: load_url, list_canvases (2 canvases)", "reconnect": "/mcp; the build lives in ~/.bubblewash-tools/spector (Tools/cloud_env_setup.sh)"}
+  }
+}
