@@ -98,6 +98,7 @@ export const S56 = {
   // (approved: x 0.26-0.74, top 0.600); with scaleS6 [1.07, 1, 1.07] (tunnel_s4_struct.js) his width matches. fur: the shell fur short and
   // radial (the approved's dense short fur radiating from his crown; match5's long combed strands made a bush), only with water6 + hero6
   hero6: { sink: 0.78, squash: 1.6, wide: 1.0, fur: { len: 0.06, comb: 0.0, lean: 0.05 } },
+  water6Hero: { sink: 0.4, squash: 1.0, wide: 1.0 },   // (ddf175f2) water6 WITHOUT hero6: v2's body as before
   splash6: { rate: 70, size: [0.016, 0.04], stretch: 2.2, speed: 2.4, n: 220 },   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
 };
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
@@ -723,13 +724,13 @@ export async function buildS56(ctx) {
   // On m.tilt (in his root's track-up frame), NEVER m.root: the pickups measure from m.root.position (the water-motion specialist's audit).
   // additive: another pass (tunnel_s4_blend.js) already wrote m.tilt.position.y this frame
   function heroOffset(m, t, dt, additive = false) {
-    const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - (WATER6_ON ? S.hero6.sink : S.hero.sink);   // (water6: sunk to about his widest line)
+    const target = m.air ? 0 : (s56Wave(m.x, m.z, t) - W.waves(m.x, m.z, t)) * S.hero.follow - (HERO6W ? S.hero6.sink : WATER6_ON ? S.water6Hero.sink : S.hero.sink);   // (water6: sunk to about his widest line; with hero6 to his nubs)
     heroOff += (target - heroOff) * Math.min(1, dt * 14);
     m.tilt.position.y = (additive ? m.tilt.position.y : 0) + heroOff;
     // a gentle roll and pitch with the slope of the water under him
     const e = 0.25, hx = s56Wave(m.x + e, m.z, t) - s56Wave(m.x - e, m.z, t), hu = s56Wave(m.x, m.z + e, t) - s56Wave(m.x, m.z - e, t);
     if (!m.air) { m.tilt.rotation.z += hx * 0.9; m.tilt.rotation.x -= hu * 0.6; }
-    if (WATER6_ON) { const H6 = S.hero6, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw); }   // (his drawn dome; back to round in the air)
+    if (WATER6_ON) { const H6 = HERO6W ? S.hero6 : S.water6Hero, k = m.air ? 0 : 1; heroSq += (k - heroSq) * Math.min(1, dt * 10); const sy = 1 + (H6.squash - 1) * heroSq, sw = 1 + (H6.wide - 1) * heroSq; m.tilt.scale.set(sw, sy, sw); }   // (his drawn dome; back to round in the air)
   }
   let heroSq = 1;
   // the fur's light centre follows his drawn body
