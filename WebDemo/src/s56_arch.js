@@ -36,10 +36,10 @@ export const ARCH56 = {
   mod: { off: -1.6, aEvery: 5 },   // the modules of ring k stand at its u + off on both banks; every fifth the tall housing (A), else a model bay (M; B with ,notm)
   gearK: [0, 7, 14, 21, 28, 35, 42, 49, 56, 63],   // rings with the cobalt gear on the right wall (dz behind the ring)
   // (session 47f75e22, the user's Scene 6 mandate) the user's Tripo cobalt gear blue_jt (mobile LOD1), d 1.4 m, its axle turned to the oncoming
-  // camera and 20 degrees out to the wall: at u 206 (ring 56) it stands ~9.5 m ahead, centre ~(0.78, 0.39), d ~0.20 W, behind the right chamber
-  // as in approved Scene 6; ring 0 has its own place for Scene 5 (gear0: centre ~(0.815, 0.44), d ~0.23 W)
-  gear: { d: 1.4, x: 1.95, h: 1.8, dz: -0.6, out: 0.35, spin: 0.45 },
-  gear0: { d: 1.35, x: 1.86, h: 1.15, dz: 1.6, out: 0.35 },
+  // camera and 20 degrees out to the wall: at u 206 (ring 56) it stands ~8.3 m ahead, centre ~(0.78, 0.39), d ~0.20 W, behind the right chamber
+  // as in approved Scene 6 (the art director: centre (0.807, 0.392), ~0.24 W); ring 0 has its own place for Scene 5 (gear0: centre ~(0.815, 0.44), d ~0.23 W)
+  gear: { d: 1.42, x: 1.92, h: 1.75, dz: -1.85, out: 0.35, spin: 0.45 },   // (inner edge x - d/2 = 1.21 m: the lanes stay clear)
+  gear0: { d: 1.35, x: 1.88, h: 1.25, dz: 1.6, out: 0.35 },
   pipe: { r: 0.12, x: 1.38 },
   // (session 47f75e22) the user's Tripo models in every bay that is not a tall housing (A): left the Machinery cluster (control box with two
   // screen eyes, glass chamber, pink paw housing, railings, brass elbow), right a pink star housing with the violet glass chamber 913_914 on its
@@ -111,8 +111,10 @@ export async function buildArch56(ctx) {
     pink: std({ color: 0xb8305f, emissive: 0x400418, emissiveIntensity: 0.4, metalness: 0.25, roughness: 0.24, envMapIntensity: 1.0 }),
     magenta: std({ color: 0xc02aae, emissive: 0x500848, emissiveIntensity: 0.4, metalness: 0.25, roughness: 0.24, envMapIntensity: 1.0 }),
     // metallic gold (#ec8c5a with #fdd98b highlights); the lamp's and pipes' darker copper brass (#9d4333 .. #cb6948)
-    gold: std({ color: 0xffcc8a, emissive: 0x4a3008, emissiveIntensity: 0.45, metalness: 1.0, roughness: 0.22, envMapIntensity: 1.3 }),
-    brass: std({ color: 0xc88a5e, emissive: 0x2a1004, emissiveIntensity: 0.35, metalness: 1.0, roughness: 0.28, envMapIntensity: 1.1 }),
+    // (session 47f75e22: the art director saw the railings red-orange and the domes salmon at u 206 -- the peach base colour reflected the
+    // magenta drum; a yellower base and a yellow-gold emissive floor hold the hue: approved gold #ec8c5a .. #fdd98b, brass #cb6948 .. #e8a050)
+    gold: std({ color: 0xffd060, emissive: 0x7a5200, emissiveIntensity: 0.55, metalness: 0.9, roughness: 0.24, envMapIntensity: 1.15 }),
+    brass: std({ color: 0xe0a060, emissive: 0x5a3000, emissiveIntensity: 0.45, metalness: 0.9, roughness: 0.28, envMapIntensity: 1.0 }),
     paw: std({ color: 0xffd98a, emissive: 0x6a4a10, emissiveIntensity: 0.5, metalness: 0.85, roughness: 0.3, envMapIntensity: 1.1 }),
     // the arches: magenta-lavender metal (#c739ad, #e448be lit, #7f2f8a dark), a lighter glossy lip
     ring: std({ color: 0xa83a9c, emissive: 0x3a0a40, emissiveIntensity: 0.35, metalness: 0.6, roughness: 0.28, envMapIntensity: 1.1 }),
@@ -122,6 +124,9 @@ export async function buildArch56(ctx) {
     // violet glass with a light inside (#9c1ff1 .. #f65cfb)
     glass: std({ color: 0xb03af0, emissive: 0xa020e0, emissiveIntensity: 0.85, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.6, envMapIntensity: 1.4, depthWrite: false }),
     halo: basic(0.85, 0.22, 1.05, { transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }),
+    // the glow inside the models' glass chambers (approved glass #dc52f6 with a white-pink core): additive, so the model's violet glass reads lit
+    tmHalo: basic(0.62, 0.10, 0.72, { transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false }),
+    tmCore: basic(1.0, 0.55, 1.0, { transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }),
     lampHalo: basic(1.0, 0.6, 0.2, { transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false }),
     bub: std({ color: 0xd8b8ff, emissive: 0x5a3aa0, emissiveIntensity: 0.5, metalness: 0.2, roughness: 0.1, transparent: true, opacity: 0.55, envMapIntensity: 1.4 }),
     core: basic(2.2, 1.0, 2.4),
@@ -338,39 +343,136 @@ export async function buildArch56(ctx) {
     for (const y of [1.36, 1.2]) out.push([G.cyl(0.03, 0.03, len, 10).rotateX(Math.PI / 2).translate(s * (wx0 + 0.03), y, 0), MT.gold]);
     return out;
   }
-  const MOD = priv(() => ({ A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) } }));
+  // (session 47f75e22) the approved Scene 6 right bank: a wide glossy pink drum housing (an oval along the run) with two big gold stars and a
+  // smaller one on its channel face, gold bands, a lavender deck on top with a gold railing along its inner edge; the user's glass chamber
+  // (913_914) stands on its near outer corner (placed with the models below)
+  function moduleStar(s) {
+    const T = P.tm.star, r = T.r, zs = T.zs, x = s * (T.inner + r), out = [];
+    const oval = (g) => g.scale(1, 1, zs).translate(x, 0, 0);
+    out.push([oval(G.cyl(r, r + 0.02, T.h + 0.3, 48).translate(0, (T.h - 0.3) / 2, 0)), MT.pink]);
+    for (const y of [0.1, T.h - 0.08]) out.push([oval(G.tor(r + 0.015, 0.045, 48, 6).rotateX(Math.PI / 2).translate(0, y, 0)), MT.gold]);
+    out.push([oval(G.cyl(r + 0.05, r + 0.05, 0.08, 48).translate(0, T.h + 0.02, 0)), MT.gold], [oval(G.cyl(r - 0.02, r + 0.03, 0.06, 48).translate(0, T.h + 0.09, 0)), MT.lav]);
+    const riv = []; for (let i = 0; i < 22; i++) { const a = (i / 22) * Math.PI * 2; for (const y of [0.2, T.h - 0.18]) riv.push(G.sph(0.022, 6, 4).translate(Math.cos(a) * (r + 0.012), y, Math.sin(a) * (r + 0.012) * zs)); }
+    out.push([merge(riv).translate(x, 0, 0), MT.gold]);
+    // the stars on the oval's channel face, turned toward the oncoming camera: two big (r 0.24) and a small one
+    const onOval = (ang, y, sr) => { const n = dirN(s, ang), t = 1 / Math.sqrt((n[0] * n[0]) / (r * r) + (n[1] * n[1]) / (r * r * zs * zs));
+      return [starG(sr).applyMatrix4(facing(x + n[0] * t, y, n[1] * t, n[0], n[1])), MT.gold]; };
+    out.push(onOval(0.2, 0.5, 0.24), onOval(0.95, 0.5, 0.22), onOval(-0.45, 0.62, 0.13));
+    // the railing along the deck's inner edge
+    const xr = s * (T.inner + 0.12), len = 2 * r * zs * 0.82, posts = [];
+    for (let z = -len / 2; z <= len / 2 + 1e-3; z += len / 4) posts.push(G.cyl(0.026, 0.026, 0.34, 8).translate(xr, T.h + 0.27, z), G.sph(0.042, 8, 6).translate(xr, T.h + 0.45, z));
+    out.push([merge(posts), MT.gold]);
+    for (const y of [T.h + 0.42, T.h + 0.26]) out.push([G.cyl(0.028, 0.028, len, 10).rotateX(Math.PI / 2).translate(xr, y, 0), MT.gold]);
+    return out;
+  }
+  const MOD = priv(() => ({ A: { 1: moduleA(1), [-1]: moduleA(-1) }, B: { 1: moduleB(1, P.ring.step), [-1]: moduleB(-1, P.ring.step) }, S: { [-1]: moduleStar(-1), 1: moduleStar(1) } }));
   const gearSet = new Set(P.gearK);
+
+  // ------------------------------------------------ 3b. (session 47f75e22) the user's Tripo models, mobile copies in models/s56tm/ (made from the
+  // user's originals of 9 November with gltfpack; no Tripo job): Machinery_tiny (the left cluster) and 913_914 (the glowing violet glass chamber).
+  // One InstancedMesh per chunk, model and level of detail: LOD1 near him, a lighter copy further on (switched per chunk in update()).
+  const loadG = (url) => new Promise((ok, no) => loader.load(url, ok, undefined, no));
+  let TM = null;
+  if (!NOTM) try {
+    const files = ['Machinery_tiny_lod1', 'Machinery_tiny_far', '913_914_lod1', '913_914_lod2'];
+    const got = await Promise.all(files.map((n) => loadG(`models/s56tm/${n}.glb`)));
+    TM = priv(() => {
+      const toF = (a) => { const o = new Float32Array(a.count * 3); for (let i = 0; i < a.count; i++) { o[i * 3] = a.getX(i); o[i * 3 + 1] = a.getY(i); o[i * 3 + 2] = a.getZ(i); } return new THREE.BufferAttribute(o, 3); };
+      // h: drawn height; the model is re-based (its base at y 0, centred across and along) in metres; at(p) maps a point of the original model
+      const prep = (gltf, h, emis) => {
+        let mesh = null; gltf.scene.updateMatrixWorld(true); gltf.scene.traverse((c) => { if (c.isMesh && !mesh) mesh = c; });
+        const g = new THREE.BufferGeometry(); g.setAttribute('position', toF(mesh.geometry.attributes.position)); g.setAttribute('normal', toF(mesh.geometry.attributes.normal));
+        g.setAttribute('uv', mesh.geometry.attributes.uv); g.setIndex(mesh.geometry.index);
+        g.applyMatrix4(mesh.matrixWorld); g.normalizeNormals(); g.computeBoundingBox();
+        const b = g.boundingBox.clone(), k = h / (b.max.y - b.min.y), off = new THREE.Vector3(-(b.min.x + b.max.x) / 2, -b.min.y, -(b.min.z + b.max.z) / 2);
+        g.translate(off.x, off.y, off.z); g.scale(k, k, k); g.computeBoundingBox(); g.computeBoundingSphere();
+        const mat = mesh.material.clone(); mat.envMap = env; mat.envMapIntensity = 0.9;
+        if (mat.map) { mat.emissiveMap = mat.map; mat.emissive = new THREE.Color(...emis); mat.emissiveIntensity = 1.0; }
+        hazeIt(mat);
+        return { g, mat, size: g.boundingBox.getSize(new THREE.Vector3()), at: (x, y, z) => new THREE.Vector3(x, y, z).add(off).multiplyScalar(k), k };
+      };
+      return { mach: [prep(got[0], P.tm.mach.h, [0.3, 0.27, 0.32]), prep(got[1], P.tm.mach.h, [0.3, 0.27, 0.32])],
+        ch: [prep(got[2], P.tm.ch.h, [0.34, 0.26, 0.38]), prep(got[3], P.tm.ch.h, [0.34, 0.26, 0.38])] };
+    });
+  } catch (e) { report.errors.push('arch56 models: ' + ((e && e.message) || e)); TM = null; }
+  const inst = { mach: Array.from({ length: nCh }, () => []), ch: Array.from({ length: nCh }, () => []) };
+  const ry = (t) => new THREE.Matrix4().makeRotationY(t);
+  const turn = (s, ang) => (s > 0 ? Math.PI - ang : ang);   // the models' front (local +x) to the channel, ang toward the oncoming camera
+  const firstGear = P.gearK.length ? P.gearK[0] : null;
   priv(() => {
     for (const [k, ur] of ringUs) {
       const u = ur + P.mod.off; if (u < U0 + 0.5) continue;
-      const type = mod(k, P.mod.aEvery) === 0 ? 'A' : 'B';
+      const type = mod(k, P.mod.aEvery) === 0 ? 'A' : TM ? 'M' : 'B';
       for (const s of [1, -1]) {
-        if (s < 0 && gearSet.has(k - 1)) continue;   // the gear stands in that bay (right after a gear ring, on the right)
         const L = new THREE.Matrix4().makeTranslation(s * wid(u), lift(u), 0);
+        if (type === 'M') {
+          const ci = chunkOf(u);
+          if (s > 0) {   // left: the Machinery cluster, its front to the channel, turned toward the camera, its far-front corner at `inner`
+            const T = P.tm.mach, z = TM.mach[0].size, ext = (z.x / 2) * Math.cos(T.ang) + (z.z / 2) * Math.sin(T.ang);
+            const Lm = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * (T.inner + ext), T.y, T.dz)).multiply(ry(turn(s, T.ang)));
+            inst.mach[ci].push(frameM(u).multiply(Lm));
+            // the glow in its glass chamber (original model coordinates, from the model's own front view)
+            const hp = TM.mach[0].at(0.06, 0.09, -0.26);
+            put(u, G.sph(0.07 * TM.mach[0].k, 14, 10).scale(0.8, 1.15, 0.8), MT.tmHalo, Lm.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
+          } else {   // right: the pink star housing (none in the bay right after the Scene 5 gear: the gear stands there)
+            if (!(firstGear === 0 && k - 1 === 0)) { for (const [g, m] of MOD.S[s]) put(u, g, m, L); stats.stars = (stats.stars || 0) + 1; }
+            const T = P.tm.ch, Lc = L.clone().multiply(new THREE.Matrix4().makeTranslation(s * T.x, T.y, T.dz)).multiply(ry(turn(s, T.ang)));
+            inst.ch[ci].push(frameM(u).multiply(Lc));
+            const hp = TM.ch[0].at(0.1, -0.02, 0), kk = TM.ch[0].k;
+            put(u, G.sph(0.2 * kk, 16, 12).scale(0.7, 1.2, 1), MT.tmHalo, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x, hp.y, hp.z)));
+            put(u, G.sph(0.075 * kk, 12, 8), MT.tmCore, Lc.clone().multiply(new THREE.Matrix4().makeTranslation(hp.x + 0.05 * kk, hp.y, hp.z)));
+          }
+          stats.modsM = (stats.modsM || 0) + 1; continue;
+        }
+        if (type === 'B' && s < 0 && gearSet.has(k - 1)) continue;   // the gear stands in that bay (right after a gear ring, on the right)
         for (const [g, m] of MOD[type][s]) put(u, g, m, L);
         if (type === 'A') stats.modsA++; else stats.modsB++;
       }
     }
   });
+  const lodSets = [];   // per chunk: [near meshes, far meshes]
+  if (TM) priv(() => {
+    for (let ci = 0; ci < nCh; ci++) {
+      const near = [], far = [];
+      for (const key of ['mach', 'ch']) {
+        const list = inst[key][ci]; if (!list.length) continue;
+        TM[key].forEach((lod, li) => {
+          const im = new THREE.InstancedMesh(lod.g, lod.mat, list.length); im.name = 'a56M_' + key + li + '_' + ci;
+          list.forEach((mm, i) => im.setMatrixAt(i, mm)); im.instanceMatrix.needsUpdate = true; im.computeBoundingSphere(); im.visible = li === 1;
+          group.add(im); (li === 0 ? near : far).push(im);
+        });
+      }
+      lodSets.push([U0 + ci * P.chunk, U0 + (ci + 1) * P.chunk, near, far]);
+    }
+  });
 
   // ------------------------------------------------ 4. the user's Tripo cobalt gear (gear_v2_tripo.glb), large on the right wall, turned toward
   // the oncoming camera, turning on its gold hub; a lavender mount into the wall behind it
+  // (session 47f75e22) the user's newer Tripo cobalt gear blue_jt (mobile LOD1, 16k triangles; its axle is the model's x, a gold hub on both faces):
+  // the approved Scene 6 gear (cobalt #1e3cda, gold hub, nearly face-on). Its axle points back to the oncoming camera, turned `out` toward the
+  // wall; no violet glow (the art director: s56's magenta emissive turned it navy-violet), its own texture lit a little instead. gear_v2 with ,gearv2.
   const gears = [];
   try {
-    const gg = await new Promise((ok, no) => loader.load('models/opening/gear_v2_tripo.glb', ok, undefined, no));
+    const V2 = LIST.includes('gearv2');
+    const gg = await loadG(V2 ? 'models/opening/gear_v2_tripo.glb' : 'models/s56tm/blue_jt_tiny_lod1.glb');
     priv(() => {
-      const gb = new THREE.Box3().setFromObject(gg.scene), gs = gb.getSize(new THREE.Vector3()), gc = gb.getCenter(new THREE.Vector3()), kg = P.gear.d / Math.max(gs.x, gs.y);
+      const gb = new THREE.Box3().setFromObject(gg.scene), gs = gb.getSize(new THREE.Vector3()), gc = gb.getCenter(new THREE.Vector3());
       const dressed = gg.scene.clone(true);
-      dressed.traverse((c) => { if (c.isMesh) { c.material = c.material.clone(); c.material.envMap = env; c.material.envMapIntensity = 1.1; c.material.emissive = new THREE.Color(0x0a1250); c.material.emissiveIntensity = 0.5; hazeIt(c.material); } });
-      const mountG = G.cyl(0.32, 0.4, 0.9, 24).rotateX(Math.PI / 2);
+      dressed.traverse((c) => { if (c.isMesh) { c.material = c.material.clone(); c.material.envMap = env; c.material.envMapIntensity = 1.0;
+        if (!V2 && c.material.map) { c.material.emissiveMap = c.material.map; c.material.emissive = new THREE.Color(0.28, 0.28, 0.3); c.material.emissiveIntensity = 1.0; }
+        else { c.material.emissive = new THREE.Color(0x0a1250); c.material.emissiveIntensity = 0.5; }
+        hazeIt(c.material); } });
+      // the disc's plane: blue_jt's axle is x (its disc spans y, z); gear_v2's is z
+      const axleX = !V2, dia = axleX ? Math.max(gs.y, gs.z) : Math.max(gs.x, gs.y);
       for (const [k, ur] of ringUs) {
         if (!gearSet.has(k)) continue;
-        const u = ur + P.gear.dz, s = -1;
+        const Q = k === 0 && P.gear0 ? { ...P.gear, ...P.gear0 } : P.gear, kg = Q.d / dia;
+        const u = ur + Q.dz, s = -1;
         const holder = new THREE.Group(); holder.name = 'a56Gear'; holder.matrixAutoUpdate = false;
-        holder.matrix.copy(frameM(u).multiply(T4(s * (P.gear.x + wid(u)), P.gear.h + lift(u), 0, 0, Math.PI / 2 + P.gear.yaw, 0)));
-        const spin = new THREE.Group(); holder.add(spin);
+        // the axle (local +x after the turn) to (-sin out, 0, -cos out) in the track frame (back to the camera, out to the right wall)
+        holder.matrix.copy(frameM(u).multiply(T4(s * (Q.x + wid(u)), Q.h + lift(u), 0, 0, axleX ? Math.PI / 2 + Q.out : Math.PI + Q.out, 0)));
+        const spin = new THREE.Group(); holder.add(spin); spin.userData.axleX = axleX;
         const m = dressed.clone(true); m.scale.setScalar(kg); m.position.copy(gc).multiplyScalar(-kg); spin.add(m);
-        const mount = new THREE.Mesh(mountG, MT.lav); mount.position.z = -0.5; holder.add(mount);
         group.add(holder); gears.push(spin); stats.gears++;
       }
     });
@@ -381,9 +483,13 @@ export async function buildArch56(ctx) {
   priv(() => {
     chunks.forEach((c, ci) => { for (const [mat, list] of c) { const g = mergeGeometries(list, false); for (const x of list) x.dispose(); if (!g) continue; g.computeBoundingSphere(); const mesh = new THREE.Mesh(g, mat); mesh.name = 'a56Chunk' + ci; group.add(mesh); meshes++; } });
   });
-  report.parts.push(`arch56: drum (axis ${P.A} m, R ${P.R} m), rings x${stats.rings}, lamps x${stats.lamps}, modules A x${stats.modsA} B x${stats.modsB}, gears x${stats.gears}, ${meshes} chunk meshes`);
+  report.parts.push(`arch56: drum (axis ${P.A} m, R ${P.R} m), rings x${stats.rings}, lamps x${stats.lamps}, modules A x${stats.modsA} B x${stats.modsB} M x${stats.modsM || 0}, gears x${stats.gears}, ${meshes} chunk meshes, ${lodSets.length} model chunks`);
   if (typeof window !== 'undefined') window.__bwArch56Info = { stats, meshes, mats: MT };
 
-  function update(dt, time) { for (const g of gears) g.rotation.z = time * P.gear.spin; }
-  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: null };
+  function update(dt, time, phase, m) {
+    for (const g of gears) { if (g.userData.axleX) g.rotation.x = time * P.gear.spin; else g.rotation.z = time * P.gear.spin; }
+    if (m && lodSets.length) { const a = m.z - 6, b = m.z + P.tm.near;
+      for (const [ua, ub, near, far] of lodSets) { const n = ub > a && ua < b; for (const x of near) x.visible = n; for (const x of far) x.visible = !n; } }
+  }
+  return { skip: { shell: true, arches: true, banks: true, models: true }, update, cam: P.cam };
 }

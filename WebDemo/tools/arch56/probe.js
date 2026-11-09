@@ -11,7 +11,8 @@ const bb = (o) => { const pts = []; o.updateMatrixWorld(true); o.traverse((c) =>
   for (let i = 0; i < 8; i++) pts.push(proj(new V(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).applyMatrix4(c.matrixWorld))); });
   const f = pts.filter((p) => p[2] < 1 && p[2] > -1); if (!f.length) return null;
   return { x0: Math.min(...f.map((p) => p[0])).toFixed(3), x1: Math.max(...f.map((p) => p[0])).toFixed(3), y0: Math.min(...f.map((p) => p[1])).toFixed(3), y1: Math.max(...f.map((p) => p[1])).toFixed(3) }; };
-const out = { camPos: cam.position.toArray().map((v) => +v.toFixed(3)), fov: cam.fov, mz: m.z, vp, mascot: bb(d.mascot), gears: [], models: [] };
+TR.frame(m.z - 3.0, F); const camH = +cam.position.clone().sub(F.P).dot(F.U).toFixed(3); TR.frame(m.z, F); const heroH = +d.mascot.position.clone().sub(F.P).dot(F.U).toFixed(3);
+const out = { camH, heroH, camPos: cam.position.toArray().map((v) => +v.toFixed(3)), fov: cam.fov, mz: m.z, vp, mascot: bb(d.mascot), gears: [], models: [] };
 d.scene.traverse((o) => { if (o.name === 'a56Gear' || o.name === 's56Gear') { const w = o.getWorldPosition(new V()); const p = proj(w); if (p[2] < 1 && p[0] > -0.5 && p[0] < 1.5) out.gears.push({ c: p, box: bb(o), dist: +w.distanceTo(cam.position).toFixed(2) }); }
   if (o.name && o.name.startsWith('a56M_')) { const w = o.getWorldPosition(new V()); const p = proj(w); if (p[2] < 1 && p[0] > -0.3 && p[0] < 1.3 && w.distanceTo(cam.position) < 30) out.models.push({ n: o.name, c: p, box: bb(o), dist: +w.distanceTo(cam.position).toFixed(2) }); } });
 return out;
