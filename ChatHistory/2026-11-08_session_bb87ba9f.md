@@ -1987,3 +1987,104 @@ Recording and identity proof are both running in the background; I'll be re-invo
 
 _Background command "Run the five-checkpoint identity proof against v5" completed (exit code 0)_
 
+---
+
+### Claude · 2026-11-09 00:06 UTC
+
+The regression proof is saved at `9bfc483`: with `six` off, nothing you already had changed. The continuous recording is still running at about 4 s per frame. When it finishes I'll encode the video, capture Scene 5 stills of the latest build, run the gameplay route test, and send the full report.
+
+---
+
+### Automatic check · 2026-11-09 00:06 UTC
+
+Stop hook feedback:
+[command hook]: There are 1 unpushed commit(s) on branch 'claude/bubble-wash-account-transfer-52t7ym'. Please push these changes to the remote repository.
+
+---
+
+### Claude · 2026-11-09 00:06 UTC
+
+Nothing is unpushed now: the 5-minute autosave had already pushed its latest commit. Your computer's copy and GitHub both show branch `claude/bubble-wash-account-transfer-52t7ym` at commit `5f7ab9b1`.
+
+The continuous recording is still running. When it finishes I'll encode the video, capture Scene 5 stills of the latest build, run the gameplay route test, and send the full report.
+
+---
+
+### You · 2026-11-09 00:07 UTC
+
+Claude, I AM ABOUT TO RUN OUT OF CREDITS AND SWITCH TO MY OTHER CLAUDE ACCOUNT. THIS IS MY FINAL EMERGENCY BACKUP REQUEST.
+
+Please stop starting new development tasks and immediately save absolutely everything from our current Bubble Wash Kingdom session to my GitHub repository "josiahscalia5-dev/bubblegame".
+
+I want you to preserve the entire existing game, all six-scene implementation progress, the latest code, unfinished work, character models, Tripo assets, rigging, animations, textures, shaders, the new six-scene reference artwork, gameplay recordings, screenshots, agent reports, and all relevant project configurations.
+
+I also want ALL FIVE project design agents, the screen-matching skill, specialist instructions, Parallax Three.js restoration information, development tools, plugins, MCP servers, hooks, scripts, environment configurations, autosave setup, and GitHub restoration instructions preserved or fully documented.
+
+Remember that I will be moving to a different Claude account, so clearly document which tools and agents will restore from GitHub and which account-level plugins, permissions, and Tripo connections must be reactivated manually. Never commit API keys or credentials.
+
+Before saving, capture any unfinished agent work and update "START_HERE_NEXT_CLAUDE_ACCOUNT.md", "SIX_SCENE_IMPLEMENTATION_STATUS.md", "AGENTS_AND_SPECIALISTS_INVENTORY.md", and "TOOLS_AND_PLUGINS_RESTORE.md" with our latest progress and the exact next development task.
+
+Please use the project's existing emergency save procedure, including "Tools/save_now.sh" and "Tools/preservation_audit.sh", to save and verify the current branch. Do not force-push, overwrite an older checkpoint, or change the accepted game.
+
+I NEED ACTUAL GITHUB VERIFICATION, NOT JUST A MESSAGE SAYING EVERYTHING IS SAVED.
+
+When finished, give me the exact working branch, full commit SHA, confirmation that GitHub reports "Push: VERIFIED", and confirmation that the six-scene references, 3D assets, five project agents, restoration files, and latest development progress are included.
+
+Clearly identify anything that could not be saved or verified. Do not claim that account-level plugins or secrets have transferred.
+
+DO THIS BACKUP NOW BEFORE MY CREDITS RUN OUT. MY OTHER CLAUDE ACCOUNT MUST BE ABLE TO CONTINUE THE SAME GAME WITHOUT STARTING OVER.
+
+---
+
+### Claude · 2026-11-09 00:07 UTC
+
+Stopping development. Doing the final backup now: the partial recording first, then the four documents, then the preservation audit, the save, and GitHub verification.
+
+All four documents carry the latest state and the exact next task. Running the project's preservation audit, then the verified save.
+
+The video was held back as "still being written" because it was created moments ago. Saving it in a second pass.
+
+Now I'll check, in GitHub's own copy of that commit, that every required item is actually there.
+
+Everything verified on GitHub. Stopping the leftover background recording, since it's no longer needed.
+
+The backup is saved and verified on GitHub. Your other account can continue the same game.
+
+| | |
+|---|---|
+| **Repository** | https://github.com/josiahscalia5-dev/bubblegame |
+| **Working branch** | `claude/bubble-wash-account-transfer-52t7ym` |
+| **Commit** | `d79c54cbb7a3e8ad9bcacc34996a4024caa4cba6` |
+| **GitHub check** | `save_now.sh` reported `Push: VERIFIED`, and GitHub's copy of the branch is at the same commit as mine |
+| **Rollback point** | `claude/bubble-wash-account-switch-e1nndb` at `0aa21621`, the last build before the six-scene work, left unchanged |
+
+**Checked in GitHub's own copy of the commit:**
+- **Required files:** all 31 handoff, agent, script, code, model and proof files I checked are there; none missing.
+- **Six-scene references:** 20 files in `Design/ReferencePacks/Six_Scene_New_Direction/`.
+- **3D assets:** your 6 Tripo GLBs, the girl's rigging script, and all 29 game models. They are real model files, not placeholders.
+- **Agents and setup:** the five project agents, the screen-matcher skill, the autosave hook, `.claude/settings.json` and `.mcp.json`.
+- **Six-scene progress:** the latest code (build `7d39b9e6`), 42 screenshots, the reference-versus-game sheet, the 23-second recording, and the proof that your accepted game is unchanged.
+- **Documents:** the seven handoff documents. `START_HERE_NEXT_CLAUDE_ACCOUNT.md` is the entry point, and it ends with the exact next task.
+- **Preservation audit:** 67 items present, 0 missing, no files too large for GitHub, and no keys or tokens in the repository.
+- **Restore test:** a fresh copy downloaded from GitHub rebuilt the game byte-for-byte identical.
+
+**Not saved, or not transferable:**
+- **Recording:** it is partial. It covers the Laundry Toss, START, the whole six-scene opening and the hand-over into the live game, then stops; it doesn't reach the later swimming. It was made on the build just before the last Scene 5 tunnel improvements.
+- **Not yet done:** stills of Scene 5 from the latest build, and the gameplay route test. Both are written up as the exact next task.
+- **Agent reports:** they exist only as the chat history the autosave exported to `ChatHistory/`.
+- **Account-level items:** these do not transfer, and you must re-enable them on the new account. They are listed in `TOOLS_AND_PLUGINS_RESTORE.md` section 1.
+  - The **parallax-threejs** plugin. It brings the Chrome DevTools, Three.js DevTools and Playwright connections plus its three agents. After enabling it, start a new session.
+  - Your **GitHub** connection and the Claude GitHub App on the repository.
+  - The **cloud environment**: its allowed hosts, including `openapi-dl.data.tripo3d.com` which I added this session, and its setup script.
+  - Your **Tripo key**, as a network secret for `openapi.tripo3d.ai`.
+
+**Six-scene status:** all six scenes run as real 3D behind the `six` switch, and none is approved; that's your call.
+- **Close to your references:** the girl never looks at him; Scene 3 has the tumble with the towel on his head; Scene 4 is the porthole framed by the pink machine.
+- **Still different:**
+  - Scene 1: the girl wears her own outfit, not the pink hoodie.
+  - Scene 2: she turns toward the washer but doesn't walk to it.
+  - Scene 5: it is less dense than your panel.
+  - Scene 6: it is the existing level, not yet tuned toward your panel 6.
+
+To start on the new account, open a session on `claude/bubble-wash-account-transfer-52t7ym` and tell it to read `START_HERE_NEXT_CLAUDE_ACCOUNT.md` first.
+
