@@ -92,8 +92,25 @@ Now the module builders (written to a script file this time).
 - 18:29 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs1.png
 - 18:30 `Bash`: Find brush placement code
 - 18:30 `Bash`: Check import graph for cycles
+**Agent** (18:30 UTC):
 
-_47 tool steps._
+Now the brush-bay split, the glowing tank shader, and the hot pink material.
+
+- 18:31 `Bash`: Glass shader, pink6, brush-bay split
+- 18:31 `Bash`: Capture second pass with render stats
+- 18:33 `Bash`: Side-by-side second pass
+- 18:33 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/sbs2.png
+- 18:34 `Bash`: Glass core spot and empty left brush bay
+- 18:34 `Bash`: Find banner DOM element
+- 18:34 `Bash`: Rebuild, capture with banner hidden, side-by-side
+- 18:35 `Bash`: List the user's Tripo model LODs
+- 18:35 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/12_eight_models_47f75e22/01_eight_originals_sheet.png
+- 18:35 `Bash`: Read model verdicts
+- 18:35 `Bash`: Inspect model bounds and LOD script
+- 18:35 `Bash`: Check capture and orient tool usage
+- 18:35 `Bash`: Copy LODs and render orientation sheet
+
+_60 tool steps._
 
 ---
 
@@ -250,8 +267,23 @@ Now the `tiersFor` helper and the drawReport scale.
 Build OK. Now one run: the fit, then live variants for the specular/sheen reduction, a nearer depth pull, and a particle-free frame for clean colour measurement.
 
 - 18:29 `Bash`: Fit placement and test colour and depth variants
+**Agent** (18:32 UTC):
 
-_51 tool steps._
+The fit lands within 0.008 of every target (left inner tips 1.40 m from the centre-line, right 1.053 m, at the bound). Let me look.
+
+- 18:32 `Bash`: Crop sheet and tier colours for pass 2 variants
+- 18:32 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/p2_crops.png
+**Lead → agent** (18:32 UTC):
+
+[Image: original 2140x707, displayed at 2000x661. Multiply coordinates by 1.07 to map to original image.]
+
+- 18:33 `Bash`: Zoom approved vs game bristle tiers at 2x
+- 18:33 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/zoom2.png
+- 18:34 `Bash`: Apply denser strand look, colours, profile and flare changes, then build
+- 18:34 `Bash`: Refit and capture pass 3, measure colours, zoom
+- 18:35 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/b6/zoom3.png
+
+_58 tool steps._
 
 ---
 
@@ -337,5 +369,18 @@ I'll start by reading the targets, my lane's handoff, and the water parts of the
 [Image: original 3096x400, displayed at 2000x258. Multiply coordinates by 1.55 to map to original image.]
 
 - 18:30 `Bash`: Test short radial fur with larger round body variants
+- 18:32 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/01_hero/crop_g.png
+**Lead → agent** (18:32 UTC):
 
-_36 tool steps._
+[Image: original 3096x400, displayed at 2000x258. Multiply coordinates by 1.55 to map to original image.]
+
+- 18:33 `Bash`: Probe the mascot geometry and camera relative to him
+- 18:34 `Bash`: Test pitching the model's top toward the camera
+- 18:34 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/water6/01_hero/crop_r.png
+**Lead → agent** (18:34 UTC):
+
+[Image: original 3096x400, displayed at 2000x258. Multiply coordinates by 1.55 to map to original image.]
+
+- 18:35 `Bash`: Test vertical stretch with deeper sink so nubs sit at the waterline
+
+_41 tool steps._
