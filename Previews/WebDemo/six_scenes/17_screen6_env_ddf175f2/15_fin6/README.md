@@ -19,3 +19,4 @@ Proofs after every step: the plain launch's 3D canvas 0 px changed at u 206; Cla
 Remaining (honest): the hero's model is a squat body (a mound, not the approved round dome; changing it would touch the shared mascot);
 his fur speckled vs the approved soft radial fur; the gear hidden behind the gameplay coin arc at u 206; the tunnel curves at u 206, so the
 approved straight vanishing point cannot show; the walls lighter than the approved (L 0.55 vs 0.51) with smaller holes; the left brush streaky.
+| F | Larger, darker oval perforations and deeper metal on the walls (neutral at u 206: most wall is under the HUD and arches) | `F1_wall_holes.png`, `SBS_FINAL_approved_vs_game_fin6.png` |

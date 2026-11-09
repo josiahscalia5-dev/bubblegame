@@ -86,7 +86,8 @@ export const ARCH56 = {
     mtank: { x: 1.62, z: 1.42, ped: 1.55, rg: 0.3, hg: 0.85 },
     ch6: { h: 1.5, ped: 1.0, ang: 0.5, glow: [0.15, -0.02, 0.0] }, jj: { k: 0.62, up: 0.0 },
     bigTank: { rg: 0.42, hg: 1.0, dx: 0.0, dy: 0.0, dz: 0.0 },
-    fin: { strip: [3.4, 2.7, 1.0], lamp: [3.4, 2.9, 1.6] },   // (fin6) lamp colours (linear HDR)
+    fin: { strip: [3.4, 2.7, 1.0], lamp: [3.4, 2.9, 1.6] },
+    holes: { cell: [0.42, 0.34], r: 0.33, metal: 0.82 },   // (fin6) the approved perforation: larger, darker oval holes (cell m around x along; hole radius in cells); the metal x this   // (fin6) lamp colours (linear HDR)
     box6: { screenY: 0.56, screenH: 0.6, bulbX: 0.13, bulbR: 0.1, lightR: 0.085, halo: 1.9 },   // (fin6) the control box's face   // (tank6) the right bank's big glowing tank (glass radius / height, offsets)
     chunk: 15, near: 18,   // the models' instancing chunks (m) and their LOD1 window ahead of him (behind him from 1 m: LOD2)
     wall: [0.6, 0.5, 0.8],   // the drum's metal past `from` (multiplier; the approved walls are a deeper violet-grey with black holes)
@@ -356,10 +357,10 @@ vec3 a56Ungrade(vec3 c) {
         float seam = 1.0 - smoothstep(0.0, 0.025 + fwidth(u / 1.27), min(pu, 1.0 - pu));
         c *= 1.0 - 0.35 * seam;
         // the oval perforations: dark violet holes with a lit lip, staggered rows, faded where they would alias
-        vec2 g = vec2(s / 0.34, u / 0.27); g.x += 0.5 * mod(floor(g.y), 2.0);
+        vec2 g = vec2(s / ${f(FIN6 ? Q6.holes.cell[0] : 0.34)}, u / ${f(FIN6 ? Q6.holes.cell[1] : 0.27)}); g.x += 0.5 * mod(floor(g.y), 2.0);
         vec2 q = (fract(g) - 0.5) * vec2(1.0, 1.7);
-        float hr = length(q), aa = max(0.04, 2.0 * length(fwidth(g)));
-        float hole = 1.0 - smoothstep(0.27 - aa, 0.27 + aa, hr), lip = smoothstep(0.25, 0.31, hr) * (1.0 - smoothstep(0.31, 0.39 + aa, hr));
+        float hr = length(q), aa = max(0.04, 2.0 * length(fwidth(g))), HR = ${f(FIN6 ? Q6.holes.r : 0.27)};
+        float hole = 1.0 - smoothstep(HR - aa, HR + aa, hr), lip = smoothstep(HR - 0.02, HR + 0.04, hr) * (1.0 - smoothstep(HR + 0.04, HR + 0.12 + aa, hr));
         float vis = 1.0 - smoothstep(0.25, 0.6, aa);
         c = mix(c, mix(vec3(0.035, 0.008, 0.09), vec3(0.05, 0.03, 0.30), smoothstep(5.0, 14.0, dc)), hole * 0.92 * vis);
         c += vec3(0.38, 0.18, 0.40) * lip * clamp(0.6 - q.y * 2.2, 0.0, 1.0) * vis;
@@ -371,6 +372,7 @@ vec3 a56Ungrade(vec3 c) {
         float kl = da - 0.5 - uArch.x * ${f(P.lampEvery)} * floor((da - 0.5) / (uArch.x * ${f(P.lampEvery)}) + 0.5);
         c += vec3(1.0, 0.6, 0.25) * exp(-kl * kl / 0.6) * exp(-a * a / 0.08) * 0.45;
         if (u >= uS6.x) c *= mix(vec3(1.0), uS6W, smoothstep(uS6.x, uS6.x + 10.0, u));   // (ddf175f2) the Scene 6 drum's deeper metal
+        ${FIN6 ? 'c *= ' + Q6.holes.metal.toFixed(3) + ';   // (fin6) the approved deeper violet metal (measured: the walls L 0.55 vs 0.51)' : ''}
         // a soft sheen where the wall turns from the camera
         vec3 V = normalize(cameraPosition - vW); float fr = pow(1.0 - abs(dot(V, vN)), 3.0);
         c += vec3(0.20, 0.12, 0.38) * fr * 0.4;
