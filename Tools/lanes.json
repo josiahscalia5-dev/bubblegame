@@ -1,42 +1,41 @@
 {
   "note": "Parallel specialist lanes (session ac4e3449, 9 November 2026). The coordinator (the main Claude session on claude/bubble-wash-account-transfer-52t7ym) owns every file not listed under a lane, merges lanes in the order below after a visual review, rebuilds and tests. A lane edits ONLY its own files (and, in WebDemo/src/opening_six2.js, only its own named blocks). Nothing is approved until the user reviews it. Human-readable version: PARALLEL_LANES.md.",
   "merge_order": [
-    "s56",
+    "girl12",
     "arch56",
+    "s56",
     "brush6",
     "ui",
-    "washer34",
-    "girl12"
+    "washer34"
   ],
   "lanes": {
     "girl12": {
       "branch": "claude/lane-s12-girl-room-ac4e3449",
-      "specialist": "SPECIALIST 1 - girl / laundry room / opening (Scenes 1-2)",
-      "agent": "lighting-visual-matching",
+      "specialist": "SPECIALIST 1 - character animation: the girl, the basket, loading the washer and the accidental fall (Screens 1-3)",
+      "agent": "character-animation-specialist (.claude/agents/character-animation-specialist.md; launched as general-purpose with that definition in session 3849f5c8, because a new agent file loads only at the next session start)",
       "files": [
-        "WebDemo/src/opening_six2_room.js"
+        "WebDemo/src/opening_six2_room.js",
+        "WebDemo/src/opening3d.js: the heroFace / heroExpr block only (the mascot face in the opening)"
       ],
       "blocks_in_opening_six2_js": [
         "SIX2.girl",
         "SIX2.basket",
-        "SIX2.cam entries with t <= 3.2",
+        "SIX2.cam entries with t <= 5.3",
         "the girl's knee timeline",
         "basket on the rug",
         "the girl",
-        "the blue towel"
+        "the blue towel",
+        "the yellow towel",
+        "the hero path for story s < 5.3 (basket, scooped, tumble into the drum)"
       ],
-      "task": "Scene 1 kneeling girl + hidden hero under the blue towel, room (window, curtains, shelves, rug, light); Scene 2 she lifts the towel, turns and loads it into the open washer, never noticing him; the girl alive and moving",
-      "status": "d847dce2 backup: 8b2fa7e9, paused"
+      "task": "The user's sequence correction of 9 November (Design/ReferencePacks/2026-11-09_Sequence_Priority_Correction_from_user/): (1) Screen 3 the accidental fall: he stays VISIBLE from the basket into the washer (face and eyes out of the yellow bundle, surprised, slipping out and tumbling in a readable arc), no detached eyes in the tumble (5.0 s), his face toward the camera at the key moment; (2) Screen 2: her face visible while she loads (camera 2.0-3.2 s, reference 02), the blue towel a soft towel held in both hands, believable arm / hand motion; (3) Screen 1 small polish only. Behind ,seq7.",
+      "status": "3849f5c8: redirected to the sequence (Screens 1-3); fast-forwarded to the integration head 4c40aa5d"
     },
     "washer34": {
       "branch": "claude/lane-s34-washer-ac4e3449",
       "specialist": "SPECIALIST 2 - washer accident / wash start (Scenes 3-4)",
       "agent": "water-vfx-engineer",
-      "files": [
-        "WebDemo/src/opening_six2_water.js",
-        "WebDemo/src/opening_six2_tunnel.js (the washer look; its scene-5 props are frozen)",
-        "WebDemo/src/opening3d.js: the SIX2_DRUM_END GLSL constant only"
-      ],
+      "files": [],
       "blocks_in_opening_six2_js": [
         "SIX2.door",
         "SIX2.water",
@@ -47,7 +46,7 @@
         "the washer"
       ],
       "task": "Scene 3 the believable accident (he slides out of the yellow bundle behind the rim, tumbles into the drum; she never notices); Scene 4 the approved washer look (glossy pink, deep gold rim, paw badge, lights, purple-blue interior) with clearly visible moving cobalt water swirling round him behind the glass. Resumes the interrupted water lane of session 9ee07777 (no code was saved; its diagnosis is in Previews/WebDemo/six_scenes/08_six_portrait_scenes_9ee07777/specialist_lanes/water/)",
-      "status": "d847dce2 backup: 605b8951, no code change (stopped after its tool check). Next: close the drum far end before the hand-over"
+      "status": "3849f5c8: PAUSED; its files moved: opening_six2_water.js -> s56 (water specialist), opening_six2_tunnel.js + SIX2_DRUM_END -> arch56 (architecture specialist)"
     },
     "s56": {
       "branch": "claude/lane-s56-tunnel-ac4e3449",
@@ -55,11 +54,14 @@
       "agent": "screen4-water-motion-engineer",
       "files": [
         "WebDemo/src/s56_tunnel.js",
-        "WebDemo/tools/s56/"
+        "WebDemo/tools/s56/",
+        "WebDemo/src/opening_six2_water.js"
       ],
-      "blocks_in_opening_six2_js": [],
-      "task": "The approved Scene 5/6 lavender laundry-machine tunnel (s56) in the live game: water (saturated cobalt, real waves, crests, no pale foam blanket), his swim on the same wave height (submerged lower body, round fluffy back), splashes/wake, arches/holes/machinery/tanks/gear/pipes placement against the references; gameplay untouched",
-      "status": "47f75e22: Scene 6 water mandate: saturated cobalt / turquoise dimensional waves, no pale-white patches or white cloud round him"
+      "blocks_in_opening_six2_js": [
+        "the hero motion for story s >= 5.3 (in the drum, the water rising, carried into the tunnel), as a bob/tilt offset"
+      ],
+      "task": "The user's sequence correction: (1) Screens 3-4 the wash water behind the glass: water rising and churning round him at chest height with white foam crests and bubbles (reference 04), no flat blue band across his face, his body bobbing / tilting with it; (2) the drum fly-through (8.0-8.95 s): real waves, not a flat solid plane; (3) then Screen 6 water (water6 v2: azure / turquoise, thin crests, no white clouds, sink him ~0.3 m on m.tilt). Behind ,seq7 (water6 stays its own switch until merged).",
+      "status": "3849f5c8: redirected (wash water first, then Screen 6 water); merged the integration head (541a07ea)"
     },
     "ui": {
       "branch": "claude/lane-ui-hud-ac4e3449",
@@ -87,11 +89,15 @@
       "agent": "lighting-visual-matching",
       "files": [
         "WebDemo/src/s56_arch.js",
-        "WebDemo/tools/arch56/"
+        "WebDemo/tools/arch56/",
+        "WebDemo/src/opening_six2_tunnel.js",
+        "WebDemo/src/opening3d.js: the SIX2_DRUM_END GLSL constant and buildVortex's drum geometry only"
       ],
-      "blocks_in_opening_six2_js": [],
-      "task": "Switch ?s3=...,arch56 (s56_arch.js, called by the coordinator hook in s56_tunnel.js section 0; it may skip sections 1-4 and own the camera via arch.cam). Rebuild the approved Scene 5 architecture: perforated lavender drum + reflective rings, LEFT pink-and-gold cylindrical housings with gold paw medallion, turquoise fitting, violet glass chambers, curved gold pipes and rounded gold rails; RIGHT cobalt toothed gear (gear_v2_tripo.glb) with gold hub, violet vessels, lights, stars; TOP amber lamp + thick brass pipes with elbows, warm arch light strips; banks close enough to frame the view like the reference (~+/-0.9-1.2 m at his depth) while the lanes +/-0.7 m stay clear; depth repetition; PBR + lighting under the Neutral tone-mapping knee.",
-      "status": "47f75e22: Scene 6 mandate: left/right machinery density, cobalt gear upper right behind the right machinery, camera/composition vs approved Scene 6 at u 206"
+      "blocks_in_opening_six2_js": [
+        "the inDrum visibility line (room / washer / basket hidden)"
+      ],
+      "task": "The user's sequence correction: (1) the washer-to-tunnel transition: a closed perforated drum back behind him from 4.2 s (no laundry room visible through the drum, references 03/04), opening into the glowing tunnel only during the fly-through 8.0-8.95 s; the room hidden from the moment the camera looks only through the porthole (the 8.5 s frame now shows the room's window); (2) continuity of the Screen 5 tunnel into the live game; (3) then Scene 6 machinery / gear and the red tint at u 206 (its own ,arch56 switch). Behind ,seq7 for the opening parts.",
+      "status": "3849f5c8: redirected (transition first); merged the integration head (6fabf71b, bundle rebuilt)"
     },
     "brush6": {
       "branch": "claude/lane-s6-brush-47f75e22",
@@ -103,8 +109,9 @@
       ],
       "blocks_in_opening_six2_js": [],
       "task": "Switch ?s3=...,s56,brush6 (s56_brush6.js, called by the coordinator hook in s56_tunnel.js section 0 after arch56). The approved Scene 6's large fluffy rotating laundry brushes at the left and right foreground: vertical roller brushes with a glossy pink cap and gold band, bristle bands pink / white / blue / pale blue, cut by the frame edges at about x 0-0.2 and 0.8-1.0 W, y 0.37-0.72 of the 864x1536 frame at the Scene 6 moment (u 206); reuse the existing brush code/models first (fluffy_brush.js shell fur, models/brush_p2.glb, s3_brush.glb, Design/MeshyDeliveries/WashingRoller); rotation animation; gameplay brushes, hitboxes and lanes untouched.",
-      "status": "47f75e22: created; hook + empty stub on the integration branch"
+      "status": "3849f5c8: continue (first real look at the brushes at u 206, gameplay untouched); merged the integration head (83916bf6)"
     }
   },
-  "status_doc": "PARALLEL_LANES.md, section \"Lane status\""
+  "status_doc": "PARALLEL_LANES.md, section \"Lane status\"",
+  "candidate_switch": "seq7 (session 3849f5c8): every lane gates its new work on LIST.includes(\"seq7\"); the plain launch is unchanged until the user approves"
 }
