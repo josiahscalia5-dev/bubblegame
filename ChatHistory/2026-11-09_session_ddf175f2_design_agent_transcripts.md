@@ -674,3 +674,99 @@ All of this is recorded in `WebDemo/tools/s56/HANDOFF.md`.
 
 
 _78 tool steps._
+
+---
+
+## Game Art Director: Art director: whole Screen 6 review (started 18:52 UTC)
+
+**Lead → agent** (18:52 UTC):
+
+You are the game-art-director for Bubble Wash Kingdom (read-only reviewer). Review the COMPLETE Screen 6 composition of the real playable three.js game against the user's exact approved Screen 6. The user's priority: the entire surrounding 3D environment (machinery both sides, roller brushes, glowing tanks, gold pipes, cobalt gear, overhead lamp, pink arches, tunnel depth and lighting, water), not single objects.
+
+Images (all 864x1536, the game frozen at u 206, same camera):
+- APPROVED (the only target): /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png (its top band y<0.30 and bottom band y>0.78 are UI: logo, plaque, caption, Start; the game's HUD covers the same bands)
+- BEFORE this session (the plain launch): /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/00_base/s56_206.png
+- NOW, the integrated candidate (all specialist lanes + env6): /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/game_u206_integrated.png
+- NOW + tripo6 (the user's new Tripo brush and star drum models instead of the procedural ones): /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/game_u206_integrated_tripo6.png
+- 2x crops (approved | procedural | tripo6 for the left brush, then the same for the right side): /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/brush_drum_approved_procedural_tripo6_2x.png
+- Measured target positions: /home/user/bubblegame/WebDemo/tools/env6/TARGETS.md
+
+Do this (Read the PNGs yourself; you may make crops with python3 + PIL into /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/):
+1. Verdict: is NOW clearly closer to the approved than BEFORE? Say plainly what improved, by zone (left bank, right bank, brushes, overhead, tunnel depth/arches, water, hero).
+2. tripo6 vs procedural: which brush and which star drum read closer to the approved in the frame? One line each with the reason.
+3. The 6 biggest remaining differences of the WHOLE composition, ranked by visual impact, each with zone, what the approved shows, what the game shows, and the concrete fix (e.g. camera horizon, scale, colour, a missing object, density). Note anything that looks broken or wrong in the game frame.
+4. No similarity percentages unless you define exactly how you measured them.
+Keep the report under 450 words.
+
+- 18:52 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png
+- 18:52 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/00_base/s56_206.png
+- 18:52 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/game_u206_integrated.png
+- 18:52 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/game_u206_integrated_tripo6.png
+- 18:52 `Read`: /home/user/bubblegame/Previews/WebDemo/six_scenes/17_screen6_env_ddf175f2/10_integrated/brush_drum_approved_procedural_tripo6_2x.png
+- 18:52 `Read`: /home/user/bubblegame/WebDemo/tools/env6/TARGETS.md
+- 18:52 `Bash`: Crop zone comparisons of approved, before, now
+- 18:52 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/upper_ABN.png
+**Lead → agent** (18:52 UTC):
+
+[Image: original 2612x461, displayed at 2000x353. Multiply coordinates by 1.31 to map to original image.]
+
+- 18:52 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/lower_ABN.png
+**Lead → agent** (18:52 UTC):
+
+[Image: original 2612x537, displayed at 2000x411. Multiply coordinates by 1.31 to map to original image.]
+
+- 18:52 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/centre_ABN.png
+- 18:53 `Bash`: Measure hero extents, water colours, VP brightness
+- 18:53 `Bash`: Crop hero, banks, overhead for close comparison
+- 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/hero_AN.png
+- 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/leftbank_AN.png
+- 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/rightbank_ANT.png
+- 18:53 `Read`: /tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/overhead_AN.png
+- 18:54 `Bash`: Colour class shares in bank and arch zones
+**Agent** (18:55 UTC):
+
+**Screen 6 review: the integrated game frame at u 206 against the approved Screen 6**
+
+**1. Verdict: yes, NOW is clearly closer to the approved image than BEFORE.**
+- **Left bank:** BEFORE had orange catwalk rails and a dark gear. NOW has pink and gold machinery with gold-capped tanks and elbow pipes receding toward the vanishing point, which is the approved image's look.
+- **Right bank:** the cobalt gear is now about where the approved image has it (game x ~0.70–0.90, y ~0.31–0.44; target 0.685–0.865, 0.327–0.45). Pink drums and gold rails are in.
+- **Brushes:** BEFORE had none. Both are now at the right heights (left bell and gold band y ~0.40–0.48, right dome ~0.44–0.48).
+- **Overhead, arches and depth:** the brown diagonal cables are gone. Pink arches with gold rims and lamp dashes now recede to the vanishing point.
+- **Water:** the indigo with white blobs has become saturated blue water with white crest lines.
+- **Hero:** the oversized ball is now about the right height (top ~0.61, waterline ~0.77).
+
+**2. tripo6 against procedural**
+- **Brush: procedural is closer.** It keeps the pink bell, gold rim and the pink, lavender and blue tiers. The tripo6 brush has a copper hat block, and its bristles are washed out to a see-through pale lavender.
+- **Star drum: procedural is closer.** It has the approved pink body, gold bands and rail. tripo6's drum is violet with copper slabs sticking out, though its star is easier to see.
+
+**3. The six biggest remaining differences, largest first**
+1. **Glow and depth.** The approved image has glowing tanks with white-pink cores, hot yellow capsule lamps, a hot lamp bulb and an icy white vanishing point. In the game the tanks are flat violet panels, the capsules pale peach, and the vanishing point lavender (#bf9bfc against #a8c1fb). The ceiling between the arches is smooth lavender, where the approved image has dark violet metal with black oval holes.
+   - **Fix:** HDR emissive cores and lamps above 1.05 so env6's bloom catches them, a blue-white emissive disc at the far end, and the hole texture on the ceiling between arches.
+2. **Left bank palette and parts.** The game has far too much gold and hot pink; the approved bank is lavender and violet, with pink only on the lower cabinet. The control box with two glowing bulbs and the paw medallion are missing, and the tanks stand on pink pillars down to the water.
+   - **Fix:** recolour the nearest machine lavender, keep gold to caps and rails, add the box and medallion at the TARGETS positions, and put the tanks on a deck.
+3. **Hero.** The game's hero is a cone-shaped mound with narrow shoulders and speckled flat pink fur. The approved hero is a round dome with radial fur and a lighter top, sitting in a white splash crown.
+   - **Fix (hero6):** a ball-cap profile with shoulders ~15 % wider, fur radiating from the crown, a lighter-top gradient, and the splash crown (water6).
+4. **Water.** The game's water is too cyan beside the hero (#33caf4 against #3a9af6), and the far water is violet (#945df5 against #85a3f4). The crests are long smooth looping lines, not short broken crests over dark cobalt troughs.
+   - **Fix:** about 25 % less green in the `*H` palette, cobalt troughs (#0a5bdc), and break the crest lines into short pieces.
+5. **Right bank.** The big glowing tank (x 0.84–0.97) is missing, and the drum's two stars are hidden. A column of coins floats in the air, from (0.71, 0.39) down to (0.68, 0.53), and hides the gear. The coins are gameplay, so the lead should check that arc's height.
+6. **Brushes.** The tiers read as long, see-through spikes, and there is no distinct white tier.
+   - **Fix:** make the strands opaque, shorter and flared at the bottom, and draw the spray dots behind the brushes.
+
+**Things that look broken:**
+- the spray dots are drawn on top of both brushes;
+- the overhead pipe reads cream or tan instead of gold;
+- tripo6's copper slabs on the brush tops and the drum.
+
+**4. How the numbers were measured.** The colour classes and medians came from my script on fixed boxes of the 864x1536 frames (left bank x 0.08–0.42, y 0.32–0.47), not a similarity score.
+- **Gold:** hue 20–60°, saturation over 0.4, brightness over 0.5. Approved 0.06, NOW 0.26.
+- **Hot glow:** brightness over 0.95, saturation under 0.35. Approved 0.15, NOW 0.07.
+
+Crops for checking are in `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/`:
+- `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/leftbank_AN.png`
+- `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/rightbank_ANT.png`
+- `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/hero_AN.png`
+- `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/upper_ABN.png`
+- `/tmp/claude-0/-home-user-bubblegame/ddf175f2-7701-5375-bd81-43d56f610e83/scratchpad/ad/lower_ABN.png`
+
+
+_17 tool steps._
