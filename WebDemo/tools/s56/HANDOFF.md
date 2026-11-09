@@ -1,3 +1,13 @@
+# Lane s56 (water): session 3849f5c8 update (9 November ~17:40 UTC). NOTHING is approved.
+
+## Priority (coordinator, the user): SCREEN 6 water FIRST (water6 v2 at u 206), then Screen 5; the wash water of Screens 3-4 is POSTPONED.
+- Screens 3-4 (postponed, not started in code): `tools/s56/op56.cjs` = fast opening frames + probes (hero / porthole projected) with VARIANTS;
+  plan noted below. No `seq7` code exists yet in `opening_six2_water.js` / `opening_six2.js` (the plain launch is untouched).
+- Plan for Screens 3-4 when resumed (gate on `seq7`): replace `vortex.water`'s material in `opening_six2_water.js` with a churning surface (rolling
+  waves 0.04-0.06 m, turquoise faces, thin white crests, foam band round him), level from the drum bottom (story 4.6) to his chest (~0.46 m, his mouth
+  is at ~0.486, eyes ~0.572) during story 5.3-7.3, climbing the drum wall on one side (swirl); bob/tilt him in the `s < 7.7` branch; fly-through
+  (story 7.5-8.45) real waves continuous with the s56 water.
+
 # Lane s56 (water) handoff: session 47f75e22, screen4-water-motion-engineer
 
 Branch `claude/lane-s56-tunnel-ac4e3449`. Target: ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png`.
