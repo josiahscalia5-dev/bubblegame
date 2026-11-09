@@ -11,6 +11,7 @@ import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
 import { TRIPO1_ON, SCENE07_ON, applyTripo1, scene07Camera } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
 import { flowCamX } from './level1_flow.js';
 import { S56_ON, buildS56 } from './s56_tunnel.js';
+import { ENV6_ON, env6Post } from './s56_env6.js';   // ?s3=...,s56,...,env6 (session ddf175f2): the integrated Screen 6 candidate's post (bloom only on HDR lights)
 import { installHud56 } from './hud56.js';   // ?s3=...,s56: the approved screens' HUD look (hud56.js, CSS under body.s56 only)   // ?s3=...,level1,s56 (session ac4e3449): the approved Scene 5 / 6 lavender laundry-machine tunnel as the run's environment (s56_tunnel.js)   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -1644,6 +1645,7 @@ function render() {
     renderer.render(scene, side.cam);
   } else {
     if (fx) fx.u.uScale.value = (stage.clientHeight * pixelRatio * 0.5) / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+    if (ENV6_ON && s56) env6Post(bloom);   // ?s3=...,env6: the last word on the bloom (s56_env6.js)
     composer.render();
   }
   if (side || SHOW_TOUCHES) drawOverlay();
