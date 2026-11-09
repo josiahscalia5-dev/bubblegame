@@ -30,7 +30,7 @@ export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
 // every number the staging uses (window.__bwSix2 in the browser, for live tuning; the timeline reads them each frame)
 export const SIX2 = {
   handOver: 9.65, seqEnd: 10.45, warp: [2.65, 4.45, 3.95],   // (real 2.65..4.45 s = story 2.65..3.95 s: the trip back to the basket; later story times +0.5 s)
-  girl: { scale: 1.42, k1: [-0.52, 1.5], yaw1: 1.3, k2: [-0.27, 0.64], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
+  girl: { scale: 1.42, k1: [-0.52, 1.5], yaw1: 1.3, k2: [-0.4, 0.66], yaw2: 1.62, sit: 0.35 },   // knee spots (x, z) for scenes 1 and 2
   basket: { pos: [-0.055, 1.47], scale: 1.12, yaw: 0.0 },
   door: { open: -2.92 },
   cam: [   // [t (s after START; -1 = waiting), position, target, vertical fov]
@@ -153,7 +153,7 @@ export function installSix2(ctx) {
   const R2 = buildRoom2(env); scene.add(R2.g);
   six.stand.visible = false;
   // the basket on the rug, its gold paw badge toward the camera
-  const badge = pawMedallion(washer.goldM, 0.072); badge.name = 'six2BasketBadge'; scene.add(badge);
+  const badge = pawMedallion(washer.goldM, 0.062); badge.name = 'six2BasketBadge'; scene.add(badge);
   // the blue towel and the yellow towel as cloth (the blue one is the six towel's own material)
   const blueM = six.cloth.material.clone(); blueM.map = terryTex('#86c2ff', '#4f8fe8', '#d6ecff'); blueM.map.wrapS = blueM.map.wrapT = THREE.RepeatWrapping; blueM.map.repeat.set(2, 2); blueM.color = new THREE.Color(0xffffff); blueM.emissive = new THREE.Color(0x2a5cc0); blueM.emissiveIntensity = 0.3;
   const yelM = blueM.clone(); yelM.map = terryTex('#ffd85a', '#e8b030', '#fff2b0'); yelM.map.wrapS = yelM.map.wrapT = THREE.RepeatWrapping; yelM.map.repeat.set(2, 2); yelM.emissive = new THREE.Color(0x8a6010);
@@ -222,11 +222,11 @@ export function installSix2(ctx) {
     if (s > 6.37 && s < 6.6) camPos.y += 0.005 * Math.sin((s - 6.37) * 60) * (1 - sm(6.37, 6.6, s));   // the latch's thunk
     camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix(); camera.updateMatrixWorld();
     // the hero's eyes: the references' dark brown (his face is built on load in opening3d.js with blue irises)
-    if (!irisDone && heroBody.children.length > 1) { irisDone = true; heroBody.traverse((o) => { if (o.isMesh && o.material && o.material.isMeshBasicMaterial && o.material.color.getHex() === 0x2f86e8) { o.material = o.material.clone(); o.material.color.setHex(0x5a3218); } }); }
+    if (!irisDone && heroBody.children.length > 1) { irisDone = true; heroBody.traverse((o) => { if (o.isMesh && o.material && o.material.isMeshBasicMaterial && o.material.color.getHex() === 0x2f86e8) { o.material = o.material.clone(); o.material.color.setHex(0x3a1c0e); } }); }
     // ---- basket on the rug (badge to the camera; tripo2 hides the basket's own children when it loads, so the badge is re-shown here)
     badge.visible = true;
-    const BS = S.basket; basket.position.set(BS.pos[0], 0.135 * BS.scale, BS.pos[1]); basket.rotation.set(0, BS.yaw, 0); basket.scale.set(BS.scale * 1.18, BS.scale * 0.86, BS.scale * 1.1);
-    badge.position.set(BS.pos[0], 0.19, BS.pos[1] + 0.262); badge.rotation.set(-0.17, 0, 0);
+    const BS = S.basket; basket.position.set(BS.pos[0], 0.135 * BS.scale * 0.7, BS.pos[1]); basket.rotation.set(0, BS.yaw, 0); basket.scale.set(BS.scale * 1.18, BS.scale * 0.7, BS.scale * 1.1);
+    { const ba = Math.atan2(camPos.x - BS.pos[0], camPos.z - BS.pos[1]) * 0.85; badge.position.set(BS.pos[0] + Math.sin(ba) * 0.275, 0.14, BS.pos[1] + Math.cos(ba) * 0.262); badge.rotation.set(-0.17, ba, 0, 'YXZ'); }
     R2.rug.position.set(BS.pos[0] + 0.05, 0.004, BS.pos[1] - 0.02);
     R2.shadows.basket.position.set(BS.pos[0], 0.008, BS.pos[1] + 0.02);
     basket.updateMatrixWorld(true);
@@ -239,6 +239,7 @@ export function installSix2(ctx) {
     else if (s < 6.05) dr = dOpen + (-1.55 - dOpen) * sm(5.55, 6.05, s);   // her hand on the edge
     else { const k = clamp01((s - 6.05) / 0.32); dr = -1.55 * (1 - k * k); if (s > 6.37) dr = -0.07 * Math.exp(-(s - 6.37) * 10) * Math.abs(Math.sin((s - 6.37) * 26)); }   // swings on, stops at the latch, a little bounce
     washer.door.rotation.y = dr;
+    { const gm = washer.glass.material, k = s < 0 ? 1 : 1 - sm(0.0, 0.4, s); gm.opacity = 0.07 + 0.43 * k; gm.color.setRGB(0.85 - 0.25 * k, 0.9 - 0.45 * k, 1.0); }
     // ---- the girl
     const gs = girlState(t), s0 = gs.s, fwd = fwdOf(s0.yaw);
     const blink = blinkAt(it, 3.1, 0.4);
@@ -303,10 +304,10 @@ export function installSix2(ctx) {
     const hA = handsW.near && handsW.far ? (handsW.near.dot(V(1, 0, 0).applyQuaternion(camera.quaternion)) < handsW.far.dot(V(1, 0, 0).applyQuaternion(camera.quaternion)) ? [handsW.near, handsW.far] : [handsW.far, handsW.near]) : [gripA, gripB];
     // ---- the hero: under the blue towel in the basket (peeking); left in the yellow laundry when the blue towel is lifted ("!"); scooped inside the
     // yellow towel; tumbling into the drum; sitting in the drum (towel on his head); the water rises; carried into the tunnel
-    let hp, scl = 0.62, surprise = 0; const rot = new THREE.Euler();
+    let hp, scl = 0.56, surprise = 0; const rot = new THREE.Euler();
     const camYaw = Math.atan2(camera.position.x - rimC.x, camera.position.z - rimC.z);
     const duck = s < 0 ? 0 : 0.07 * sm(0.5, 0.7, s) * (1 - sm(1.7, 1.95, s)) + 0.06 * sm(2.55, 2.75, s);
-    const inBasket = rimC.clone().add(V(0.0, 0.045 - duck + 0.006 * Math.abs(Math.sin(it * 1.6)), 0.0));
+    const inBasket = rimC.clone().add(V(0.015, 0.03 - duck + 0.006 * Math.abs(Math.sin(it * 1.6)), 0.0));
     if (s < 2.95) { hp = inBasket; rot.set(0.05 * Math.sin(it * 0.9), camYaw + 0.12 * Math.sin(it * 0.5), 0.04 * Math.sin(it * 1.3)); surprise = sm(0.5, 0.65, s) * (1 - sm(1.6, 1.9, s)) + sm(2.5, 2.6, s); if (s > 2.7) hp.y -= sm(2.7, 2.95, s) * 0.05; }
     else if (s < 3.95) { hp = (gripA.clone().add(gripB).multiplyScalar(0.5)).add(V(0, -0.06, 0)); rot.set(0.1 * Math.sin(s * 6), camYaw - 0.3, 0.1 * Math.sin(s * 5)); surprise = 1; scl = 0.62; }
     else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.62 + (1 - 0.62) * k; surprise = 1; }

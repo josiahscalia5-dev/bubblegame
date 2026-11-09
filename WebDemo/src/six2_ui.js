@@ -26,7 +26,10 @@ export const SIX2_CSS = `
 #bwHome.six2 .s6sq svg { width: 66%; height: 66%; }
 #bwHome .s6layer { position: absolute; inset: 0; pointer-events: none; transition: opacity .5s ease; }
 #bwHome .s6layer > * { pointer-events: auto; }
-#bwHome .s6logo { position: absolute; left: 50%; top: calc(var(--a) * 4 + env(safe-area-inset-top, 0px)); transform: translateX(-50%); text-align: center; line-height: .86; pointer-events: none; }
+#bwHome .s6logo { position: absolute; left: 50%; top: calc(var(--a) * 4 + env(safe-area-inset-top, 0px)); transform: translateX(-50%); text-align: center; line-height: .86; pointer-events: none; z-index: 3; }
+#bwHome .s6logo .cloud { position: absolute; left: -16%; right: -16%; bottom: calc(var(--a) * -14); height: calc(var(--a) * 40); z-index: -1; border-radius: calc(var(--a) * 30);
+  background: radial-gradient(circle at 10% 55%, #fff 0 18%, transparent 19%), radial-gradient(circle at 24% 40%, #f6f2ff 0 22%, transparent 23%), radial-gradient(circle at 40% 62%, #fff 0 20%, transparent 21%), radial-gradient(circle at 56% 38%, #f2eeff 0 23%, transparent 24%), radial-gradient(circle at 72% 60%, #fff 0 20%, transparent 21%), radial-gradient(circle at 88% 45%, #f4f0ff 0 19%, transparent 20%);
+  filter: drop-shadow(0 calc(var(--a) * 3) 0 #b8a0ee); }
 #bwHome .s6logo .crown { width: calc(var(--a) * 84); height: calc(var(--a) * 50); display: block; margin: 0 auto calc(var(--a) * -12); }
 #bwHome .s6logo b { display: block; font-size: calc(var(--a) * 50); font-weight: 700; color: #fff; letter-spacing: calc(var(--a) * -0.5);
   text-shadow: 0 0 0 #2a5fd8, calc(var(--a) * 3) 0 0 #2a5fd8, calc(var(--a) * -3) 0 0 #2a5fd8, 0 calc(var(--a) * 3) 0 #2a5fd8, 0 calc(var(--a) * -3) 0 #2a5fd8, 0 calc(var(--a) * 7) 0 #173a9e; transform: rotate(-4deg); }
@@ -38,9 +41,9 @@ export const SIX2_CSS = `
 #bwHome .s6plaque { position: absolute; left: 50%; top: calc(var(--a) * 196 + env(safe-area-inset-top, 0px)); transform: translateX(-50%); width: calc(var(--a) * 620); height: calc(var(--a) * 132); pointer-events: none;
   border-radius: calc(var(--a) * 58); background: linear-gradient(#ff7cc8, #f03aa6 45%, #c41686); border: calc(var(--a) * 9) solid #ffd060;
   box-shadow: inset 0 0 0 calc(var(--a) * 5) #ff9bd6, 0 calc(var(--a) * 8) 0 #8a0f5e, 0 0 calc(var(--a) * 30) rgba(255,150,220,.7); display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
-#bwHome .s6plaque span { font-size: calc(var(--a) * 84); font-weight: 700; color: #fff; letter-spacing: calc(var(--a) * -1);
+#bwHome .s6plaque span { font-size: calc(var(--a) * 76); font-weight: 700; color: #fff; letter-spacing: calc(var(--a) * -1);
   text-shadow: calc(var(--a) * 4) 0 0 #6a1a9a, calc(var(--a) * -4) 0 0 #6a1a9a, 0 calc(var(--a) * 4) 0 #6a1a9a, 0 calc(var(--a) * -4) 0 #6a1a9a, 0 calc(var(--a) * 8) 0 #4a0c70; }
-#bwHome .s6plaque .paw { position: absolute; left: 50%; top: calc(var(--a) * -62); transform: translateX(-50%); width: calc(var(--a) * 100); height: calc(var(--a) * 100); border-radius: 50%;
+#bwHome .s6plaque .paw { position: absolute; left: 50%; top: calc(var(--a) * -58); transform: translateX(-50%); width: calc(var(--a) * 92); height: calc(var(--a) * 86); border-radius: 50%;
   background: radial-gradient(circle at 40% 35%, #fff6c0, #ffc93a 45%, #d98a00); border: calc(var(--a) * 6) solid #ffe9a0; box-shadow: 0 calc(var(--a) * 5) 0 #9a5a00; display: flex; align-items: center; justify-content: center; }
 #bwHome .s6plaque .paw svg { width: 62%; height: 62%; fill: #fff3c8; filter: drop-shadow(0 calc(var(--a) * 2) 0 #c07a00); }
 #bwHome .s6plaque .star { position: absolute; top: 50%; width: calc(var(--a) * 74); height: calc(var(--a) * 74); transform: translateY(-50%); fill: #ffd84a; filter: drop-shadow(0 calc(var(--a) * 3) 0 #c08000); }
@@ -52,8 +55,8 @@ export const SIX2_CSS = `
 #bwHome .s6cap .t { margin-left: calc(var(--a) * -26); height: calc(var(--a) * 84); padding: 0 calc(var(--a) * 34) 0 calc(var(--a) * 44); border-radius: calc(var(--a) * 42); background: linear-gradient(#8a4ae6, #5a20b0);
   border: calc(var(--a) * 4) solid #e2c8ff; box-shadow: 0 calc(var(--a) * 4) 0 #3a0c7a; display: flex; align-items: center; font-size: calc(var(--a) * 44); font-weight: 600; color: #fff; white-space: nowrap;
   text-shadow: 0 calc(var(--a) * 3) 0 #3a0c7a; box-sizing: border-box; }
-#bwHome .s6bar { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--a) * 196 + env(safe-area-inset-bottom, 0px)); background: linear-gradient(#ff7ec0, #f04aa0 40%, #e0358e);
-  border-top: calc(var(--a) * 5) solid #ffb2dc; border-radius: calc(var(--a) * 40) calc(var(--a) * 40) 0 0; transition: opacity .35s ease, transform .35s ease; }
+#bwHome .s6bar { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--a) * 188 + env(safe-area-inset-bottom, 0px)); background: linear-gradient(#ff7ec0, #f04aa0 40%, #e0358e);
+  border-top: calc(var(--a) * 5) solid #ffb2dc; border-radius: 50% 50% 0 0 / calc(var(--a) * 34) calc(var(--a) * 34) 0 0; box-shadow: inset 0 calc(var(--a) * 12) 0 calc(var(--a) * -6) rgba(255,255,255,.25); transition: opacity .35s ease, transform .35s ease; }
 #bwHome.six2 .s6bar .home, #bwHome.six2 .s6bar .shop { position: absolute; top: calc(var(--a) * 50); width: calc(var(--a) * 122); height: calc(var(--a) * 112); left: calc(var(--a) * 32); }
 #bwHome.six2 .s6bar .shop { left: auto; right: calc(var(--a) * 30); }
 #bwHome .s6bar .startgo { position: absolute; left: 50%; top: calc(var(--a) * 10); transform: translateX(-50%); width: calc(var(--a) * 444); height: calc(var(--a) * 150); border-radius: calc(var(--a) * 75);
@@ -63,6 +66,7 @@ export const SIX2_CSS = `
 #bwHome .s6bar .startgo .tri { width: 0; height: 0; border-top: calc(var(--a) * 30) solid transparent; border-bottom: calc(var(--a) * 30) solid transparent; border-left: calc(var(--a) * 44) solid #fff; filter: drop-shadow(0 calc(var(--a) * 4) 0 #1a7a1e); }
 #bwHome .s6bar .startgo:active { transform: translateX(-50%) translateY(calc(var(--a) * 5)); }
 #bwHome .s6bar .startgo[disabled] { filter: saturate(.4) brightness(.92); }
+#bwHome .s6bar::before { content: ''; position: absolute; left: 4%; right: 4%; top: calc(var(--a) * 14); border-top: calc(var(--a) * 3) dashed rgba(255,230,245,.75); border-radius: 50% 50% 0 0 / calc(var(--a) * 22) calc(var(--a) * 22) 0 0; pointer-events: none; }
 #bwHome.six2.playing .s6bar { opacity: 0; transform: translateY(40%); pointer-events: none; }
 #bwHome.six2.playing .s6sq { opacity: 0; pointer-events: none; transition: opacity .35s; }
 #bwHome.six2.home1 .s6layer { opacity: 0; pointer-events: none; }
@@ -80,7 +84,7 @@ export function buildSix2UI({ root, top, startBtn, onHome, onShop, onSettings })
   const mail = el('button', 's6sq', MAIL + '<i style="position:absolute;right:-18%;top:-18%;width:42%;height:42%;border-radius:50%;background:#ff3a4a;border:calc(var(--a)*3) solid #fff;color:#fff;font-style:normal;font-weight:700;font-size:calc(var(--a)*26);display:flex;align-items:center;justify-content:center">!</i>');
   mail.setAttribute('aria-label', 'Messages'); Object.assign(mail.style, { right: `${24 / 864 * 100}%`, top: 'calc(var(--a) * 92 + env(safe-area-inset-top, 0px))' });
   set.addEventListener('click', onSettings); mail.addEventListener('click', onSettings);
-  const logo = el('div', 's6logo', `<span class="crown">${CROWN}</span><div style="position:relative"><b>Bubble Wash</b><i>Kingdom</i></div>`);
+  const logo = el('div', 's6logo', `<span class="crown">${CROWN}</span><div style="position:relative"><span class="cloud"></span><b>Bubble Wash</b><i>Kingdom</i></div>`);
   const plaque = el('div', 's6plaque', `<span class="paw">${PAW}</span><span class="star l">${STAR}</span><span>Laundry Toss!</span><span class="star r">${STAR}</span>`);
   const cap = el('div', 's6cap', '<span class="n">1</span><span class="t"></span>');
   const bar = el('div', 's6bar');

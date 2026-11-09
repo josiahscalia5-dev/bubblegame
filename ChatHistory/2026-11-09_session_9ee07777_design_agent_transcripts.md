@@ -579,8 +579,104 @@ Scene 2's upper body read. Now the Scene 2 washer and basket regions.
 - 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2_wash.jpg
 - 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/r2_bask.jpg
 - 10:29 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/g2_bask.jpg
+**Agent** (10:32 UTC):
 
-_37 tool steps._
+Scene 2 read. One more measurement: region colours and luminance, to put numbers on the room's lighting.
+
+- 10:32 `Bash`: Measure mean colour and luminance of key regions
+**Agent** (10:34 UTC):
+
+I've measured both approved references against the current game frames and kept everything read-only. Fractions are of width (W) and height (H). I measured on zoomed crops with a 0.02 grid (good to about ±0.01) and took colours as PIL region means. The crops are in `/tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/ad/`. The temp disk briefly hit 0 MB free during the task, then cleared by itself.
+
+## 1. Landmark chart (x,y)
+
+**Scene 1: reference vs waiting frame**
+| | REF01 | Game |
+|---|---|---|
+| Eyes centre | 0.450,0.393 | 0.381,0.370 |
+| Top of hair / chin | 0.246 / 0.443 | 0.250 / 0.425 |
+| Near shoulder | 0.21,0.47 | 0.24,0.46 |
+| Near hand / far hand | 0.367,0.545 / 0.575,0.487 | 0.39,0.505 / hidden |
+| Hip | 0.15,0.625 | about 0.26,0.59, behind the basket |
+| Near knee / near shoe | 0.285,0.725 / 0.065,0.705 | not visible |
+| Basket rim left/centre/right, base | 0.266/0.536/0.807 at y 0.60; base 0.749 | 0.247/0.521/0.795 at y 0.62; base 0.775 |
+| Badge | 0.536,0.670, diameter 0.116 W | 0.459,0.689, diameter 0.137 W |
+| Hero eyes, how much shows | 0.584,0.549, gap 0.076 W; about 45% of face, 20% of body | 0.527,0.534, gap 0.085 W; about 90% of face, 70% of body |
+| Porthole | 0.93,0.485, gold rim radius 0.128 H, glass radius 0.091 H; door CLOSED, purple glass | 0.90,0.49, radius 0.13 H; no glass, the curtain shows through |
+| Window | warm panes, x 0.60–0.81, y 0.215–0.44 | none; a pale wall at x 0.50–0.62 |
+
+**Scene 2: reference vs 2.10 s (lifting frame at 1.00 s where it matters)**
+| | REF02 | 2.10 s |
+|---|---|---|
+| Eye | 0.485,0.375 | 0.585,0.383 (1.00 s: 0.383,0.330) |
+| Top of hair / chin | 0.260 / 0.431 | 0.224 / 0.436 (1.00 s: about 0.14 / 0.416) |
+| Shoulder / elbow | 0.41,0.46 / 0.52,0.50 | 0.484,0.444 / 0.48,0.50 |
+| Hands | far 0.61,0.44; near 0.69,0.455 | both at 0.61,0.45, at the chin |
+| Hip, legs | about 0.40,0.58; legs hidden | hidden; shoe at 0.69,0.71 |
+| Basket rim left/centre/right, base | 0.029/0.34/0.651 at y 0.645; base 0.756 | cut off at the left edge/0.32/0.637 at y 0.675; base about 0.87 |
+| Badge | 0.379,0.689, diameter 0.108 W | 0.203,0.756, diameter 0.16 W, half under the caption |
+| Hero eyes, how much shows | 0.257,0.598, gap 0.08 W; about 80% of face, 40% of body | 0.311,0.583, gap 0.10 W; whole face, about 80% of body |
+| Drum opening | 0.871,0.512, radius 0.109 H, width:height 0.62; dark navy | 0.90,0.52, radius 0.115 H, 0.79; lavender |
+| Door | open, at x 0.47–0.63 under her arms | at x 0.13–0.30, behind her head |
+
+**UI (REF01 vs game):** Start, Home, Shop and the caption already match to within 0.02. The differences are in the top band and the footer:
+- **Logo:** reference x 0.32–0.68, y 0.004–0.094, sitting on a cloud base. Game x 0.335–0.68, y 0–0.09, no cloud base, and the coin counter covers "Wash".
+- **Plaque:** reference x 0.145–0.854, y 0.13–0.224, paw crest 0.107 W wide. Game x 0.152–0.847, y 0.126–0.212, crest 0.13 W wide.
+- **Title text width:** reference 0.535 W, game 0.60 W.
+- **Footer top:** reference arched and stitched at y 0.878; game flat at 0.866.
+
+## 2. Poses
+
+**REF01:**
+- **Position:** she kneels on both knees beside the basket's left wall, at the basket's own depth. In the game she stands behind it.
+- **Pelvis:** sits back, about 0.04 H above her heels. The hip is 0.10 H above and 0.135 W behind the near knee's contact with the rug.
+- **Near leg:** the thigh runs down toward the basket, 53° below horizontal on screen (about 20–30° in 3D). The knee rests on the rug against the basket's lower left. The shin lies flat on the rug pointing back-left, rising about 15° to the ankle. The foot is pointed with toes tucked, sole facing camera-left.
+- **Far leg:** the knee is also down, hidden. Neither knee is raised.
+- **Torso:** pelvis and chest turned about 45° toward the basket; spine leaning 30° forward of vertical.
+- **Near arm:** upper arm hangs vertical (elbow at 0.22,0.565), elbow bent about 95°, forearm level, palm on the towel's left edge.
+- **Far arm:** reaches forward, palm on top of the towel directly above the hero's eyes.
+- **Head:** forward of the shoulders (chin 0.23 W right of the near shoulder). Turned about 40° to screen-right (near ear visible), tipped about 10° down, tilted about 5° clockwise. Eyes look down-right at the towel; open smile.
+
+**REF02:**
+- **Head and position:** right profile (head turned about 85°), standing 0.10 W further left than in the game.
+- **Torso:** profile, leaning 10–15° forward.
+- **Arm:** shoulder 0.05 H above the drum centre. Upper arm about 30° below horizontal. Elbow at drum-centre height, bent about 130° on screen (straighter in 3D, reaching into depth). Forearm rises about 25°.
+- **Hands:** at or just above shoulder height, 0.06 H above the drum centre. They are 0.06–0.14 W short of the opening's left edge (0.752) and 0.13–0.21 W in front of the chin.
+
+## 3. Biggest differences, ranked, with corrections
+
+1. **Scene 1 kneel.** Set the pose above with these targets: knee 0.285,0.725; shoe 0.065,0.705; hip 0.15,0.625; hands as charted. Her eyes then land at 0.450,0.393, which is 0.07 W right and 0.023 H lower than now. Add contact shadows under the knee, shin and toe.
+2. **Scene 1 hero is fully exposed.**
+   - Move his eyes to 0.584,0.549 and scale him ×0.89.
+   - Sink him until pink shows only between y 0.525 and 0.585.
+   - Drape the blue towel over his head: front edge at y 0.525 across x 0.47–0.70, top about 0.475, spilling over the rim at x 0.27 and 0.80.
+   - Make his irises darker.
+3. **Scene 2 arms and towel.**
+   - Move her 0.10 W left.
+   - Set the hands where charted, with the elbow aimed at 0.52,0.50.
+   - Pin the towel to both hands: 0.30 W wide (x 0.62–0.92), lower edge at 0.62, with about 40% of it inside the drum.
+4. **Scene 2 basket blocks the foreground.**
+   - Basket height from 0.215 to 0.126 H; rim centre at 0.34,0.645.
+   - Turn the basket so the badge sits 0.04 W right of the rim centre (it is 0.12 W left now), at diameter 0.108 W.
+   - Her head ×0.88; the hero ×0.8 with his eyes at 0.257,0.598.
+5. **Room and light.** Average brightness (0–255) of the middle band (y 0.25–0.75): game 153 vs 126 in REF01; 144 vs 128 in Scene 2.
+   - Add the warm multi-pane window at x 0.60–0.81, y 0.215–0.44, with curtains at x 0.53–0.60 and 0.78–0.90.
+   - Cut ambient and hemisphere light by about 20%.
+   - The Scene 1 floor is at 212 brightness and almost uniform; target 172 with visible reflections.
+6. **Washer.**
+   - Scene 1: a closed purple glass door (radius 0.091 H, brightness about 134) instead of the see-through ring.
+   - Scene 2: a dark navy drum (#465fbb, brightness 97) instead of lavender (#c9a1ee, 176).
+   - Scene 2 door: opened 100–110° so it sits at x 0.47–0.63.
+   - Turn the washer about 14° more toward her, so the opening's width:height goes from 0.79 to 0.62.
+7. **Scene 1 badge.** Shrink from 0.137 to 0.116 W and turn the basket about 13°, so the badge moves from 0.459,0.689 to 0.536,0.670.
+8. **UI.**
+   - Crest from 0.13 to 0.107 W, inside a gold scroll frame.
+   - Title text from 0.60 to 0.535 W.
+   - Give the logo its cloud base and draw it over the counters.
+   - Make the footer top arched and stitched at 0.878.
+
+
+_38 tool steps._
 
 ---
 
@@ -674,8 +770,18 @@ I'll start by reading the mandate, the references and my lane's files.
 - 10:27 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/04_The_Wash_Begins.png
 - 10:27 `Bash`: Build lane and back up originals
 - 10:28 `Bash`: Write diagnostic capture script and run baseline
+**Agent** (10:36 UTC):
 
-_16 tool steps._
+While the baseline capture runs, I'll sample the reference colours (REF05 wall regions, REF02 drum opening) so the drum-wall changes have numeric targets.
+
+- 10:36 `Bash`: Sample REF05 region colours
+- 10:36 `Bash`: Show baseline diagnostics
+- 10:36 `Bash`: Build baseline comparison sheet
+- 10:36 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/base_sheet.png
+- 10:36 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/base/t_8.90.png
+- 10:36 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_tunnel/base/t_7.60.png
+
+_22 tool steps._
 
 ---
 
@@ -704,5 +810,19 @@ Verify with REAL frames; `flock /tmp/bw_browser.lock` is MANDATORY for every bro
 Let me take a baseline capture of the lane as it is now.
 
 - 10:27 `Bash`: Build lane and capture baseline frames
+- 10:32 `Bash`: Make baseline comparison sheet
+- 10:32 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/base/sheet.png
+- 10:32 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/base/t_-1.00.png
+- 10:32 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/02_She_Loads_Laundry.png
+- 10:32 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/base/t_2.10.png
+- 10:33 `Bash`: Crop reference window regions with grid ticks
+- 10:33 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/r1_win.png
+- 10:33 `Read`: /tmp/claude-0/-home-user-bubblegame/9ee07777-d936-5734-8140-6e44974442dd/scratchpad/agent_room/r2_win.png
+- 10:33 `Bash`: Project current room objects and triangulate window
+- 10:34 `Bash`: Compare background patch colours reference vs game
+- 10:34 `Bash`: Inspect opening scene lights and env
+- 10:34 `Bash`: Check env setup and other users of room objects
+- 10:34 `Bash`: Find other uses of room2 objects and bubbles
+- 10:36 `Bash`: Compute visible wall/floor extents and fg towel projections
 
-_9 tool steps._
+_23 tool steps._
