@@ -1,0 +1,285 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "tripo2",
+  "scene07",
+  "six",
+  "tripo3",
+  "six2",
+  "s56",
+  "coin6",
+  "hero6",
+  "water6",
+  "brush6",
+  "arch56",
+  "env6",
+  "tank6",
+  "fin6",
+  "hero7",
+  "swim7"
+ ],
+ "route": "upper",
+ "frames": [
+  [
+   "tap",
+   {
+    "u": 1.592,
+    "x": 0,
+    "y": 0.405,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Washer drum",
+    "socks": 0,
+    "coins": 1280,
+    "gems": 36,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "intro",
+    "complete": false,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 209,
+     "textures": 50
+    },
+    "result": null
+   }
+  ],
+  [
+   116.2,
+   {
+    "u": 116.422,
+    "x": 0,
+    "y": 0.347,
+    "lane": 1,
+    "air": false,
+    "route": "lower path",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1327,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Soap bars on the ledges\nSwipe ↓ to dive under",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 270,
+     "textures": 50
+    },
+    "result": null
+   }
+  ],
+  [
+   117.3,
+   {
+    "u": 117.896,
+    "x": 0,
+    "y": 0.366,
+    "lane": 1,
+    "air": false,
+    "route": "lower path",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1329,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Soap bars on the ledges\nSwipe ↓ to dive under",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 270,
+     "textures": 50
+    },
+    "result": null
+   }
+  ],
+  [
+   118,
+   {
+    "u": 118.606,
+    "x": 0,
+    "y": 0.365,
+    "lane": 1,
+    "air": false,
+    "route": "lower path",
+    "lift": 0,
+    "section": "Lower path",
+    "socks": 3,
+    "coins": 1329,
+    "gems": 38,
+    "hearts": 5,
+    "popped": 0,
+    "phase": "running",
+    "complete": false,
+    "banner": "Soap bars on the ledges\nSwipe ↓ to dive under",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 270,
+     "textures": 50
+    },
+    "result": null
+   }
+  ],
+  [
+   "end",
+   {
+    "u": 341.488,
+    "x": 0,
+    "y": 0.325,
+    "lane": 1,
+    "air": false,
+    "route": "main",
+    "lift": 0,
+    "section": "Rescue progress",
+    "socks": 5,
+    "coins": 1702,
+    "gems": 49,
+    "hearts": 5,
+    "popped": 2,
+    "phase": "complete",
+    "complete": true,
+    "banner": "",
+    "info": {
+     "calls": 1,
+     "triangles": 1,
+     "geometries": 325,
+     "textures": 51
+    },
+    "result": {
+     "socks": 5,
+     "coins": 122,
+     "gems": 3,
+     "stars": 3,
+     "rewards": {
+      "coins": 300,
+      "gems": 10,
+      "socks": 5
+     }
+    }
+   }
+  ]
+ ],
+ "events": {
+  "swipes": 12,
+  "blocked": [],
+  "spins": 2,
+  "events": [
+   [
+    "sock",
+    6.4,
+    1,
+    "main"
+   ],
+   [
+    "sock",
+    21.4,
+    2,
+    "main"
+   ],
+   [
+    "sock",
+    28,
+    3,
+    "main"
+   ],
+   [
+    "swipe onto the water ramp",
+    46.7
+   ],
+   [
+    "swim burst",
+    93.1,
+    {
+     "burst": true,
+     "dive": false,
+     "under": false,
+     "bursts": 1,
+     "dives": 0
+    }
+   ],
+   [
+    "sock",
+    126.6,
+    4,
+    "lower path"
+   ],
+   [
+    "swim burst",
+    138.2,
+    {
+     "burst": true,
+     "dive": false,
+     "under": false,
+     "bursts": 2,
+     "dives": 0
+    }
+   ],
+   [
+    "swim burst",
+    187.2,
+    {
+     "burst": true,
+     "dive": false,
+     "under": false,
+     "bursts": 3,
+     "dives": 0
+    }
+   ],
+   [
+    "spin",
+    227.9
+   ],
+   [
+    "spin",
+    240.1
+   ],
+   [
+    "swim burst",
+    258.2,
+    {
+     "burst": true,
+     "dive": false,
+     "under": false,
+     "bursts": 4,
+     "dives": 0
+    }
+   ],
+   [
+    "swim burst",
+    300.1,
+    {
+     "burst": true,
+     "dive": false,
+     "under": false,
+     "bursts": 5,
+     "dives": 0
+    }
+   ],
+   [
+    "sock",
+    303.4,
+    5,
+    "main"
+   ]
+  ],
+  "onRamp": 1,
+  "lastBurst": 300,
+  "bursts": 5
+ },
+ "logs": []
+}
