@@ -23,6 +23,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { buildRoom2, applyRoomLight } from './opening_six2_room.js';   // the room and its light (lighting specialist)
 import { installSix2Tunnel } from './opening_six2_tunnel.js';   // the washer look and the scene 5 tunnel (lighting specialist)
 import { installSix2Water } from './opening_six2_water.js';   // the water of scenes 3-5 (water specialist)
+import { SEQ7_ON as G12_ON, SEQ7 as G12N, clothGrid as g12Grid, softHang as g12Hang, cradle as g12Cradle, tumble as g12Tumble } from './opening_six2_girl12.js';   // seq7, lane girl12: screens 2-3 (character animation)
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
@@ -161,6 +162,7 @@ export function installSix2(ctx) {
   const blueM = six.cloth.material.clone(); blueM.map = terryTex('#86c2ff', '#4f8fe8', '#d6ecff'); blueM.map.wrapS = blueM.map.wrapT = THREE.RepeatWrapping; blueM.map.repeat.set(2, 2); blueM.color = new THREE.Color(0xffffff); blueM.emissive = new THREE.Color(0x2a5cc0); blueM.emissiveIntensity = 0.3;
   const yelM = blueM.clone(); yelM.map = terryTex('#ffd85a', '#e8b030', '#fff2b0'); yelM.map.wrapS = yelM.map.wrapT = THREE.RepeatWrapping; yelM.map.repeat.set(2, 2); yelM.emissive = new THREE.Color(0x8a6010);
   const blue = makeCloth(blueM), yel = makeCloth(yelM);
+  const g12 = G12_ON ? { blueU: g12Grid(blue), yelU: g12Grid(yel) } : null;   // (seq7, lane girl12: the cloths' plane grids for the soft towel and the cradle)
   six.towel.visible = false;   // (the six towel is replaced by the cloths below; the six timeline never runs with six2)
   const bG = new THREE.Group(), yG = new THREE.Group(); bG.add(blue.mesh); yG.add(yel.mesh); scene.add(bG, yG); bG.name = 'six2BlueTowel'; yG.name = 'six2YellowTowel';
   const marks = alertMarks(); scene.add(marks);
@@ -186,7 +188,7 @@ export function installSix2(ctx) {
   };
   // ---- the girl's knee timeline: states (knee midpoint on the floor, yaw, sit) and the steps between them (one knee swings, the other stays planted)
   const st = (kx, kz, yaw, sit) => ({ kx, kz, yaw, sit });
-  const G = S.girl;
+  const G = G12_ON ? { ...S.girl, yaw2: G12N.yaw2 } : S.girl;   // (seq7: at the washer she faces the camera's side more, her face 3/4 to it)
   const S1 = st(G.k1[0], G.k1[1], G.yaw1, 0.55), S1u = st(G.k1[0], G.k1[1], G.yaw1 + 0.15, 0.1);
   const mid = st((G.k1[0] + G.k2[0]) / 2 + 0.02, (G.k1[1] + G.k2[1]) / 2, (G.yaw1 + G.yaw2) / 2 + 0.1, 0.08), S2 = st(G.k2[0], G.k2[1], G.yaw2, 0.08);
   const S2b = st(-0.29, 1.06, 0.45, 0.12);   // back at the basket (two knee steps) for the second armful
@@ -265,6 +267,14 @@ export function installSix2(ctx) {
     else if (s < 5.5) { [gripA, gripB] = hold(chestFront(0.18, 0.4), 0.16); }
     else if (s < 6.1) { const e = doorEdge(); gripA = e.clone(); gripB = chestFront(0.15, 0.4).addScaledVector(lat, -0.16); }
     else { const k = sm(6.1, 6.6, s); [gripA, gripB] = hold(chestFront(0.18 + 0.1 * (1 - k), 0.4 + 0.15 * (1 - k)), 0.16); }
+    // (seq7, lane girl12) the second armful: her hands come back to the basket, close on the yellow towel's sides round him, lift, carry him to the
+    // door and push the towel in, then come back to her chest (no jump of the hand targets)
+    const g12Carry = (q) => { const low = rimC.clone().add(V(0.015, -0.035, 0.0)), up = rimC.clone().add(V(0.01, 0.13, 0.05)), door = inDoor.clone().add(V(0.02, -0.03, 0.03)), push = inDoor.clone().add(V(0.03, -0.02, -0.07));
+      if (q < 3.15) return inDoor.clone().lerp(low, sm(2.6, 3.12, q)); if (q < 3.35) return low.lerp(up, sm(3.15, 3.35, q)); if (q < 3.86) return up.lerp(door, sm(3.35, 3.84, q)); return door.lerp(push, sm(3.86, 3.95, q)); };
+    if (g12 && s >= 2.55 && s < 4.4) {
+      if (s < 3.95) [gripA, gripB] = hold(g12Carry(s), 0.08 + (G12N.hold - 0.08) * sm(2.6, 3.1, s));
+      else [gripA, gripB] = hold(g12Carry(3.95).lerp(chestFront(0.18, 0.4), sm(3.95, 4.35, s)), G12N.hold + (0.16 - G12N.hold) * sm(3.95, 4.35, s));
+    }
     if (g2.ready && legs.ready) {
       const B = g2.B, root = g2.root;
       for (const b of Object.values(B)) b.quaternion.copy(b.userData.rest);
@@ -286,10 +296,11 @@ export function installSix2(ctx) {
       rotateBoneWorld(B.spine, lat2, lean * 0.7 + 0.02 * Math.sin(it * 1.3));
       rotateBoneWorld(B.chest, lat2, lean * 0.35);
       rotateBoneWorld(B.chest, V(0, 1, 0), 0.03 * Math.sin(it * 0.9));
+      if (g12) rotateBoneWorld(B.chest, V(0, 1, 0), G12N.chestTwist * sm(1.0, 1.6, s) * (1 - sm(4.9, 5.4, s)));   // (seq7: her chest turns to the door, her hips and face toward the camera's side)
       const toWasher = Math.atan2(P.x - s0.kx, P.z - s0.kz) - s0.yaw;   // the washer's bearing from her body
       const headYaw = keys(s, [[-1, -0.3], [0.0, -0.3], [1.0, 0.0], [2.6, 0.1], [2.9, -0.2], [3.3, 0.1], [5.5, 0.4], [6.2, 0.3]]);
       const headUp = keys(s, [[-1, 0.08], [0.0, 0.08], [0.4, 0.08], [1.0, 0.05], [2.6, 0.05], [3.0, -0.15], [3.4, 0.05]]);
-      rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher);
+      rotateBoneWorld(B.head, V(0, 1, 0), (s < 0 ? -0.2 : 0) + headYaw + 0.06 * Math.sin(it * 0.6) + 0.0 * toWasher + (g12 ? keys(s, G12N.head) : 0));
       rotateBoneWorld(B.head, lat2, -headUp * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
       // arms: two-bone IK to the hand targets (the hand nearer each target takes it)
@@ -316,10 +327,18 @@ export function installSix2(ctx) {
     else if (s < 4.75) { const k = sm(3.95, 4.75, s); const from = inDoor.clone().add(V(0, -0.02, 0)); hp = bez(from, V(P.x - 0.02, P.y + 0.2, P.z - 0.16), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.56 + (1 - 0.56) * k; surprise = 1; }
     else if (s < 7.7) { const wet = sm(6.6, 7.2, s); hp = heroSit.clone(); hp.y += 0.01 * Math.sin((s - 4.75) * 9) * Math.exp(-(s - 4.75) * 3) + wet * (0.03 + 0.015 * Math.sin((s - 6.6) * 6.5)); rot.set(0.04 * Math.sin(s * 3), 0.25 * Math.sin((s - 4.6) * 1.7) * (s < 6.6 ? 1 : 0.4), 0.05 * Math.sin(s * 2.4)); scl = 1; surprise = s < 6.7 ? 1 : 0; }
     else { const k = sm(7.65, 8.45, s), tn = sm(7.7, 8.2, s); hp = heroSit.clone().lerp(heroLand, k); hp.y += 0.012 * Math.sin((s - 7.7) * 6.5); rot.set(0.04 * Math.sin(s * 4), Math.PI * tn, 0.04 * Math.sin(s * 3.1)); scl = 1; }
+    if (g12 && s >= 2.95 && s < 4.75) {   // (seq7, lane girl12) he stays VISIBLE: lifted sitting in the yellow towel (head and eyes out), then the tumble
+      const toCam = (p) => Math.atan2(camPos.x - p.x, camPos.z - p.z);
+      if (s < G12N.tumble.start) { const lift = sm(3.08, 3.3, s), base = inBasket.clone().add(V(0, -0.05, 0));
+        hp = base.lerp(g12Carry(s).add(V(0, G12N.sitUp, 0)), lift).add(V(0.008 * Math.sin(s * 11) * lift, 0.006 * Math.sin(s * 8.3) * lift, 0));
+        rot.set(0.1 * lift + 0.07 * Math.sin(s * 6) * lift, toCam(hp) + 0.14 * Math.sin(s * 4) * lift, 0.1 * Math.sin(s * 5) * lift, 'XYZ'); surprise = 1; scl = 0.56; }
+      else { const T = g12Tumble(s, g12Carry(G12N.tumble.start).add(V(0, G12N.sitUp, 0)), V(P.x - 0.03, P.y + G12N.tumble.lift, P.z - 0.12), heroSit, camPos, bez);
+        hp = T.hp; rot.copy(T.rot); scl = 0.56 + 0.44 * T.k; surprise = 1; }
+    }
     hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
-    heroExpr({ lid: blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
+    heroExpr({ lid: g12 && s >= 2.95 && s < 5.3 ? 0 : blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
     // the "!" marks: while he peeks (waiting) and when the towel is lifted off him
-    const mk = s < 0 ? 0.6 + 0.4 * Math.max(0, Math.sin(it * 1.4)) : sm(0.55, 0.7, s) * (1 - sm(1.4, 1.6, s));
+    const mk = s < 0 ? 0.6 + 0.4 * Math.max(0, Math.sin(it * 1.4)) : sm(0.55, 0.7, s) * (1 - sm(1.4, 1.6, s)) + (g12 ? sm(3.12, 3.22, s) * (1 - sm(3.6, 3.75, s)) : 0);   // (seq7: "!" again as he is lifted)
     marks.visible = mk > 0.02; marks.position.copy(hp).add(V(0.09, 0.115 * scl / 0.56, 0.05)); marks.quaternion.copy(camera.quaternion); marks.scale.setScalar(0.9 + 0.15 * Math.sin(it * 8)); marks.userData.m.opacity = mk;
     if (!landed && s >= 4.75) { landed = true; for (let i = 0; i < 60; i++) { const a = rnd() * Math.PI * 2, v = 0.3 + rnd() * 0.7; splash.emit(V(hp.x + Math.cos(a) * 0.12, OPENING3D.waterY + 0.02, hp.z + Math.sin(a) * 0.1), V(Math.cos(a) * v * 0.5, 0.6 + rnd() * 0.9, Math.sin(a) * v * 0.3), 0.5 + rnd() * 0.4); } vortex.WU.uHit.value.set(hp.x - P.x, 1, P.z - hp.z); }
     if (s < 0) landed = false;
@@ -333,11 +352,14 @@ export function installSix2(ctx) {
     if (s < 0.45) { hoodAt(blue.A, hoodPos); blue.apply(blue.A); }
     else if (s < 2.55) {
       hoodAt(blue.A, hoodPos); const A = blue.A;
-      const pL = hA[0].clone(), pR = hA[1].clone(); blue.hangW(blue.B, pL, pR, 0.62, it, s < 1.95 ? 1 : 0.4, s > 1.95 ? sm(1.95, 2.45, s) * -0.6 : 0, camRight);
+      const pL = hA[0].clone(), pR = hA[1].clone();
+      if (g12) g12Hang(g12.blueU, blue.B, pL, pR, 0.62, it, s < 1.95 ? 1 : 0.4, V(0.12, 0, -0.55).multiplyScalar(sm(1.95, 2.45, s)), camRight);   // (seq7: a soft towel in both hands)
+      else blue.hangW(blue.B, pL, pR, 0.62, it, s < 1.95 ? 1 : 0.4, s > 1.95 ? sm(1.95, 2.45, s) * -0.6 : 0, camRight);
       const k = sm(0.45, 0.85, s); const o = new Float32Array(A.length); for (let i = 0; i < A.length; i++) o[i] = A[i] + (blue.B[i] - A[i]) * k; blue.apply(o);
     } else if (s < 4.75) {   // in the drum: let go at the door, it slides in and lies on the drum floor
       const k = sm(2.5, 2.9, s); blue.drape(blue.A, 0.08, 0.2, 0, 0.02, it, 0.2); const A = placeLocal(blue.A, lieBlue.clone().add(V(0, -0.06, 0)), 0, 0.3, 0, 1);
-      blue.hangW(blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.46, it, 0.4, -0.6, camRight);
+      if (g12) g12Hang(g12.blueU, blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.5, it, 0.4, V(0.12, 0, -0.55), camRight);
+      else blue.hangW(blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.46, it, 0.4, -0.6, camRight);
       const o = new Float32Array(A.length); for (let i = 0; i < A.length; i++) o[i] = blue.B[i] + (A[i] - blue.B[i]) * k; blue.apply(o);
     } else {   // flipped onto his head by his landing; the water lifts it off and carries it away in scene 4
       const off = sm(6.7, 7.3, s), kk = scl, flip = sm(4.75, 5.05, s);
@@ -346,9 +368,15 @@ export function installSix2(ctx) {
       blue.apply(hat); bG.visible = s < 7.5;
     }
     // ---- the yellow towel: in the basket heap until she scoops it (with him inside: a bundle), pushed in, unrolling beside him in the drum
-    yG.visible = s >= 2.9 && s < 7.5;
-    if (heap) heap[0].visible = s < 2.9;
-    if (yG.visible) {
+    yG.visible = s >= (g12 ? 3.08 : 2.9) && s < 7.5;
+    if (heap) heap[0].visible = s < (g12 ? 3.08 : 2.9);
+    if (g12 && yG.visible) {   // (seq7, lane girl12) a soft cradle round his lower half while she carries him; it opens as he slips out and falls in beside him
+      const R = OPENING3D.heroW * 0.5 * 0.56, T0 = G12N.tumble.start;
+      if (s < T0) g12Cradle(g12.yelU, yel.B, hp.clone(), R, R * 1.8, sm(3.08, 3.3, s), 0.3, Math.atan2(camPos.x - hp.x, camPos.z - hp.z), it, 1, 0);
+      else { const k = sm(T0, 4.6, s), c = bez(g12Carry(T0).add(V(0, G12N.sitUp, 0)), V(P.x - 0.12, P.y + 0.04, P.z - 0.1), lieYel, k);
+        g12Cradle(g12.yelU, yel.B, c, R * (1 - 0.25 * k), R * 1.8, 1 - 0.6 * k, 0.3 + 0.5 * k, Math.atan2(camPos.x - c.x, camPos.z - c.z) + 0.6 * k, it, 0.6, sm(T0 - 0.02, T0 + 0.12, s)); }
+      yel.apply(yel.B);
+    } else if (yG.visible) {
       if (s < 3.95) { yel.drape(yel.A, rB * 1.05, rB * 1.6, sm(2.9, 3.2, s), rB * 0.5, it, 1.0); yel.apply(placeLocal(yel.A, hp.clone().add(V(0, 0.01, 0)), 0.2, camYaw, 0.1 * Math.sin(s * 5))); }
       else { const k = sm(3.95, 4.6, s), p = bez(inDoor, V(P.x - 0.1, P.y + 0.12, P.z - 0.1), lieYel, k);
         yel.drape(yel.A, rB * (1.05 - 0.5 * k), rB * 1.6, 1 - k, rB * (0.5 - 0.3 * k), it, 0.6); yel.apply(placeLocal(yel.A, p, 0.3 * (1 - k), 0.4 + k, 0.2 - 0.4 * k, 1)); }
