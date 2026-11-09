@@ -65,8 +65,64 @@ Same pixels. Let me look at the active Scene 6 code to name concrete settings in
 The masks are clean. Now the water: colour classes, pale share, crest size and texture, in matching regions with the UI and objects excluded.
 
 - 15:41 `Bash`
+**Agent** (15:42 UTC):
 
-_19 tool steps._
+The foreground water is the same pale share (19.7 vs 19.8 %), but its hue, saturation and relief differ a lot. Next: water body percentiles, vanishing point, gear, coins, enemies.
+
+- 15:42 `Bash`
+**Agent** (15:42 UTC):
+
+The brightness peak is confounded by tanks and coins; I'll locate the vanishing point on gridded crops instead.
+
+- 15:42 `Bash`
+- 15:42 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/vp_a.png
+- 15:42 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/vp_g.png
+- 15:42 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/vp_t.png
+**Agent** (15:42 UTC):
+
+Vanishing point is close in both (about 0.50, 0.44-0.455). Now gear, coins, enemies and the brush regions.
+
+- 15:43 `Bash`
+**Agent** (15:43 UTC):
+
+Gear, coins and enemy numbers are in. Now the brush bands (row by row in the side strips) and the machinery density on both banks.
+
+- 15:43 `Bash`
+- 15:43 `Bash`
+- 15:43 `Bash`
+**Agent** (15:43 UTC):
+
+The colour scan misses the lavender-white band; I'll read the brush extents off a gridded crop.
+
+- 15:43 `Bash`
+- 15:43 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/br_l.png
+- 15:43 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/ad/br_r.png
+**Agent** (15:44 UTC):
+
+Brush and gear geometry are measured from the gridded crops. Next: machinery density on both banks, the drum wall's colour, and the orange diagonal lines.
+
+- 15:45 `Bash`
+- 15:45 `Bash`
+**Agent** (15:45 UTC):
+
+Two long diagonal lines found in the u206 frame (about 37-40 and -50 degrees), none in the approved. Let me find which object draws them, and check the railing and pipe colours.
+
+- 15:45 `Bash`
+- 15:45 `Read`: /home/user/bubblegame/WebDemo/src/s56_tunnel.js
+- 15:45 `Read`: /home/user/bubblegame/WebDemo/src/s56_tunnel.js
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:45 `Bash`
+- 15:46 `Bash`
+- 15:46 `Bash`
+- 15:47 `Bash`
+
+_47 tool steps._
 
 ---
 
@@ -118,8 +174,63 @@ Building the lane and taking the first arch56 capture (tap and 206).
 
 - 15:40 `Bash`: Check lane models and build bundle
 - 15:40 `Bash`: Capture arch56 frames at tap and 206
+- 15:42 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c1/s56_206.png
+- 15:42 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c1/s56_tap.png
+**Agent** (15:42 UTC):
 
-_12 tool steps._
+The `home` overlay hides the game in my capture. Let me check how the coordinator's baseline was taken.
+
+- 15:42 `Bash`: Inspect baseline and info for home overlay handling
+- 15:42 `Bash`: Read the coordinator's identity proof notes
+- 15:42 `Bash`: Look for the baseline's capture command
+**Agent** (15:42 UTC):
+
+The baseline was taken with the tool's default list (no `home`, which puts up the Home screen). I'll capture with that list plus `,arch56`.
+
+- 15:42 `Bash`: Capture arch56 frames without home overlay
+- 15:43 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c2/s56_206.png
+- 15:43 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/c2/s56_tap.png
+**Agent** (15:43 UTC):
+
+arch56 renders and the long orange diagonals from the baseline are gone in it. Let me see what DUMP lists as visible, to identify those diagonals in the baseline.
+
+- 15:43 `Bash`: List visible meshes and s56 mesh names
+- 15:43 `Read`: /home/user/bubblegame_lanes/arch56/WebDemo/src/s56_tunnel.js
+- 15:44 `Bash`: List references, scripts, python env, model renders
+- 15:44 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/05_Into_The_Laundry_Tunnel.png
+- 15:44 `Bash`: Read the coordinator's model evaluation stats
+**Agent** (15:44 UTC):
+
+Each of the new models is about 1.9 M triangles. Let me look at the renders.
+
+- 15:44 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/eval8/out/Machinery_tiny.png
+- 15:44 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/eval8/out/911_tiny.png
+- 15:44 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/eval8/out/912_tiny.png
+- 15:44 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/eval8/out/913_914.png
+- 15:44 `Bash`: List model files and renders
+- 15:44 `Bash`: Read the eight-model delivery notes
+**Agent** (15:44 UTC):
+
+The coordinator has already produced mobile LODs. Let me check their triangle counts and texture sizes.
+
+- 15:44 `Bash`: Inspect mobile LOD triangle and texture stats
+- 15:45 `Bash`: Inspect lane's existing model LODs and machine load
+- 15:45 `Bash`: Find the debug API fields in game.js
+**Agent** (15:46 UTC):
+
+I'll write a probe (EVAL code) that projects the key points (tunnel vanishing point, mascot bounds, gear bounds, nearest modules) from the live camera, so each capture yields measurements.
+
+- 15:46 `Bash`: Write the arch56 projection probe
+- 15:46 `Bash`: Remove placeholder lines from probe
+**Agent** (15:46 UTC):
+
+Let me zoom into the approved Scene 6's left and right banks to read the machinery precisely.
+
+- 15:46 `Bash`: Crop approved left and right banks with tick marks
+- 15:46 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/appr_left.png
+- 15:46 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/arch56/appr_right.png
+
+_39 tool steps._
 
 ---
 
@@ -159,8 +270,47 @@ FINAL REPLY (at most 400 words): live-test result; the measured cause of the pal
 - 15:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
 - 15:41 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
 - 15:41 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:42 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:42 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:42 `Bash`: Locate section 5-7 lines
+- 15:42 `Bash`: Save main version and find old material lines
+- 15:42 `Bash`: Insert original water material as default
+**Agent** (15:42 UTC):
 
-_22 tool steps._
+Now gate the update/hideLegacy differences (suds hide, syncWater, wake growth) under `WATER6_ON`.
+
+- 15:42 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:42 `Edit`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:42 `Read`: /home/user/bubblegame_lanes/s56/WebDemo/src/s56_tunnel.js
+- 15:42 `Bash`: Gate suds hiding and sync under water6
+- 15:42 `Bash`: Check removed lines vs main and other diffs
+**Agent** (15:42 UTC):
+
+Now build, then commit the merge/restructure.
+
+- 15:42 `Bash`: Build lane bundle
+- 15:42 `Bash`: Read coordinator identity proof
+- 15:42 `Bash`: Capture lane default at tap and 206
+- 15:45 `Bash`: Compare lane default to baseline
+- 15:45 `Bash`: Montage baseline vs lane default
+- 15:45 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/cmp0.png
+- 15:45 `Bash`: Diff capture tool versions
+- 15:45 `Bash`: Find test-mode hooks for opening and home
+- 15:45 `Bash`: Read home screen flow in screens12.js
+- 15:45 `Bash`: Inspect coordinator's baseline commit
+- 15:45 `Bash`: Read top of PARALLEL_LANES
+- 15:45 `Bash`: Check test mode loop behaviour
+- 15:45 `Bash`: Find game loop and test API
+- 15:45 `Bash`: Read frame loop and __bw API
+- 15:45 `Bash`: Capture lane default with default S3 and compare
+- 15:46 `Bash`: Compare lane default vs coordinator hook-off capture
+- 15:46 `Bash`: Commit merge and switch restructure
+- 15:46 `Bash`: Verify merge graph
+- 15:46 `Bash`: Push lane branch
+- 15:47 `Bash`: Read A/B metric script
+- 15:47 `Bash`: Run layer/term ablations on default build
+
+_53 tool steps._
 
 ---
 
@@ -205,5 +355,44 @@ Let me zoom into the approved brushes for detail.
 - 15:41 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/appR.png
 - 15:41 `Grep`: s56\w*\.camera\(|S56_ON|s56\.camera
 - 15:41 `Read`: /home/user/bubblegame_lanes/brush6/WebDemo/src/game.js
+**Agent** (15:42 UTC):
 
-_15 tool steps._
+The camera is placed in the track frame from the mascot. Let me check the world's height functions and the track frame so I can place brushes correctly.
+
+- 15:42 `Grep`: export (const|function) (baseHeight|FLOAT_H|WATER|AXIS_H|slopeAt|waves)|FLOAT_H\s*=|WATER\s*=|AXIS_H\s*=
+- 15:42 `Bash`: Peek at the arch56 lane file for context
+- 15:42 `Bash`: Read baseHeight and track frame
+- 15:42 `Grep`: gears\.push|const gears|baseHeight\(
+**Agent** (15:42 UTC):
+
+Let me check whether Level 1's flow course uses side paths beyond the lanes, where brushes might interfere.
+
+- 15:42 `Bash`: Search flow course for side path x positions
+- 15:42 `Bash`: Read flow constants and level1 sections
+**Agent** (15:43 UTC):
+
+The flow course uses x ±1.38-1.62 for side paths/ledges at u ~56-150, so brushes must avoid those stretches. Let me look at the existing brush models before deciding what to reuse.
+
+- 15:43 `Bash`: Check model viewer tool and Meshy roller readme
+- 15:43 `Bash`: Render 4-side views of the two brush GLBs
+- 15:45 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/brush_p2.png
+- 15:45 `Read`: /tmp/claude-0/-home-user-bubblegame/47f75e22-8adf-5f3c-8204-a5df57e889cb/scratchpad/b6/s3_brush.png
+- 15:46 `Bash`: Check tone mapping and output pass usage
+**Agent** (15:46 UTC):
+
+Now let me sample the approved brush colours (median per band) so the materials start from measured values.
+
+- 15:46 `Bash`: Sample median/dark/light colours of brush bands
+**Agent** (15:46 UTC):
+
+Let me check the approved Scene 5 (the Tap to Start view) so brushes don't appear where it has none.
+
+- 15:46 `Bash`: List approved scenes and baseline frames
+- 15:46 `Read`: /home/user/bubblegame/Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/05_Into_The_Laundry_Tunnel.png
+**Agent** (15:46 UTC):
+
+Scene 5 shows no brushes, so I'll keep them out of the opening stretch. Let me check what the flow course places beyond u 150.
+
+- 15:46 `Bash`: Read flow course section definitions
+
+_30 tool steps._
