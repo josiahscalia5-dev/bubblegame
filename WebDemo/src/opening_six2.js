@@ -26,7 +26,7 @@ import { installSix2Water } from './opening_six2_water.js';   // the water of sc
 import { OPEN9_ON, OPEN9, installOpen9 } from './opening_six2_open9.js';   // open9 (session d742a298): the washer spin with 3D water and the direct hand-over into the live Screen 6
 import { SEQ7_ON as G12_ON, SEQ7 as G12N, clothGrid as g12Grid, softHang as g12Hang, cradle as g12Cradle, tumble as g12Tumble } from './opening_six2_girl12.js';   // seq7, lane girl12: screens 2-3 (character animation)
 import { G13_ON, buildGirl13, poseGirl13 } from './opening_six2_girl13.js';
-import { installGirl3, updateGirl3 } from './opening_six2_girl3.js';   // girl3 (session b57cc1e7): the Blender-prepared girl with a skeletal clip (pipeline check)   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
+import { G3_ON, G3, installGirl3, updateGirl3, g3CamKeys } from './opening_six2_girl3.js';   // girl3 (session b57cc1e7): the Blender-prepared girl with a skeletal clip (pipeline check)   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
@@ -60,6 +60,8 @@ if (SIX2_ON && LIST.includes('s56')) Object.assign(SIX2, { handOver: 8.95, seqEn
 if (SIX2_ON && LIST.includes('s56') && LIST.includes('seq7')) Object.assign(SIX2, { wash: [6.85, 0.45, 1.3], handOver: 8.95 + 0.85, seqEnd: 9.75 + 0.85 });   // (real seconds: story 8.45, inside the drum)
 // (session d742a298, open9) the opening ends inside the water passage: the live game is released as the passage's end opens onto it (story OPEN9.T.open)
 // and the opening is removed once its mouth has swept past the frame (OPEN9.T.end); the captions follow
+// (girl3, session b57cc1e7) the story clock stretched for her laundry beat: real 0..LAND s = story 0..4.75 s; the hand-over and the end move back
+if (G3_ON) Object.assign(SIX2, { warp: [0, G3.LAND, 4.75], handOver: SIX2.handOver + G3.LAND - 4.75, seqEnd: SIX2.seqEnd + G3.LAND - 4.75 });
 if (OPEN9_ON) Object.assign(SIX2, { handOver: OPEN9.T.open + OPEN9.real, seqEnd: OPEN9.T.end + OPEN9.real, scenes: [[-1, 1], [0.0, 2], [3.25, 3], [5.3, 4], [OPEN9.T.dive, 5], [OPEN9.T.open, 6]] });
 if (SIX2_ON && typeof window !== 'undefined') window.__bwSix2 = SIX2;
 
@@ -180,6 +182,7 @@ export function installSix2(ctx) {
   const O9 = OPEN9_ON ? installOpen9(ctx) : null;   // (open9: the 3D wash water, his tumble, the passage into the live game)
   if (O9) S.cam = O9.camKeys(S.cam);
   installGirl3({ scene, g2 });   // (girl3 only)
+  if (G3_ON) S.cam = g3CamKeys(S.cam);   // (girl3: her camera keys before story 4.9)
   // the heap in the basket (tripo2's yellow, blue, pink towels): the blue heap towel is the cloth now; the pink one becomes lavender
   let heap = null;
   Promise.resolve(typeof window !== 'undefined' && window.__bwTripo2Ready).then(() => {
@@ -423,7 +426,7 @@ export function installSix2(ctx) {
     const inDrum = camera.position.z < P.z - 0.05;
     R2.g.visible = washer.g.visible = basket.visible = badge.visible = !inDrum;
     if (g2.ready) { g2.root.visible = !inDrum; g2.stool.visible = false; }
-    updateGirl3(s, { g2, S, inDrum });   // (girl3 only: shows the Blender girl, hides this one)
+    if (G3_ON) updateGirl3(st0, s, it, { g2, S, inDrum, hero, heroBody, blue, yG, heap, marks, P, heroSit, placeLocal, hoodAt, hoodPos, rB, camRight, camYaw });   // (girl3: her clip, the towel and him from her hands)
     ctx.girl.root.visible = false;
     ctx.bubbles.visible = !inDrum; ctx.front.visible = false; ctx.foam.visible = !inDrum && s > 4.0 && !(O9 && s > 6.4);
     marks.visible = marks.visible && !inDrum;

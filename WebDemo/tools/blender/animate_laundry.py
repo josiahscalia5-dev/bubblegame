@@ -23,6 +23,7 @@ for o in [o for o in bpy.data.objects if o.type == 'MESH' and o is not mesh]: bp
 for b in arm.pose.bones: b.custom_shape = None
 sc = bpy.context.scene; sc.render.fps = FPS; vl = bpy.context.view_layer
 S = LM['S']; SCL = S['scale']; YAW0 = S['yaw1']
+arm.rotation_mode = 'XYZ'   # (the glTF importer leaves objects in quaternion mode, where rotation_euler is ignored)
 arm.location = G([S['k1'][0], 0, S['k1'][1]]); arm.rotation_euler = (0, 0, YAW0); arm.scale = (SCL, SCL, SCL); vl.update()
 AW = arm.matrix_world.copy(); AWi = AW.inverted()
 
@@ -32,7 +33,7 @@ def fwd(yaw): return Vector((math.sin(yaw), -math.cos(yaw), 0))   # her front at
 def left(yaw): return Vector((math.cos(yaw), math.sin(yaw), 0))    # her left
 UP = Vector((0, 0, 1))
 # the spot in front of the door where she stands to load (0.4 m in front of the glass, slightly to its left), facing the glass
-SPOT = GLASS + Vector((-0.12, -0.40, 0)); SPOT.z = 0
+SPOT = GLASS + Vector((-0.30, -0.24, 0)); SPOT.z = 0   # (front-left of the door, as in reference 02: she loads it in near profile; the open door lies behind her left)
 YAW_DOOR = math.atan2(GLASS.x - SPOT.x, -(GLASS.y - SPOT.y))
 
 # ---- rig: targets and constraints
@@ -128,16 +129,17 @@ def default_keys():
     grab_h = lambda s: (HERO0 + lf0 * (0.095 if s == 'L' else -0.095) - fw0 * 0.01 - UP * 0.02, hand_rot(y0, -1.35, 0.85, 1 if s == 'L' else -1))
     hold_h = lambda pos, yaw, h=0.43, out=0.075, f=0.13, pitch=-0.2: {s: (pos + fwd(yaw) * f + left(yaw) * (out if s == 'L' else -out) + UP * h, hand_rot(yaw, pitch, 0.9, 1 if s == 'L' else -1)) for s in 'LR'}
     look_door = GLASS + UP * 0.05
+    CAMW = G(LM['camWait'][1]); look_basket = HERO0 + UP * 0.1 + (CAMW - HERO0).normalized() * 0.25   # (reference 01: she smiles down at the laundry, her face to the camera)
     # 0.0-0.8 s: kneeling at the basket, hands resting on the towel's top, looking at the washer (breathing in the curve)
-    kneel_pose(y0, 0.12, {s: rest_h(s) for s in 'LR'}, look_door, 0)
-    kneel_pose(y0, 0.14, {s: rest_h(s) for s in 'LR'}, look_door, 18, hips_lift=0.004)
+    kneel_pose(y0, 0.12, {s: rest_h(s) for s in 'LR'}, look_basket, 0)
+    kneel_pose(y0, 0.14, {s: rest_h(s) for s in 'LR'}, look_basket, 18, hips_lift=0.004)
     # 0.8-1.6 s: a small rise (anticipation), then reach down into the basket and grip the towel's sides (he is under it)
-    kneel_pose(y0, 0.05, {s: (rest_h(s)[0] + UP * 0.03, rest_h(s)[1]) for s in 'LR'}, look_door, 26, hips_lift=0.01)
+    kneel_pose(y0, 0.05, {s: (rest_h(s)[0] + UP * 0.03, rest_h(s)[1]) for s in 'LR'}, look_basket, 26, hips_lift=0.01)
     kneel_pose(y0, 0.42, {s: grab_h(s) for s in 'LR'}, HERO0 + UP * 0.02, 44, spine=(0.18, 0.1, 0.05))
     kneel_pose(y0, 0.44, {s: (grab_h(s)[0] - UP * 0.01 + lf0 * (-0.012 if s == 'L' else 0.012), grab_h(s)[1]) for s in 'LR'}, HERO0, 50, spine=(0.2, 0.1, 0.05))
     # 1.6-2.4 s: lift the bundle to her chest (heavier than it looks: she sits back a little as it comes up), eyes back to the door
-    kneel_pose(y0, 0.2, hold_h(K1, y0, h=0.34, f=0.2), (HERO0 + look_door) / 2, 62, spine=(0.06, 0.05, 0.0))
-    kneel_pose(y0, 0.02, hold_h(K1, y0, h=0.4, f=0.16), look_door, 74, spine=(0.0, 0.02, 0.0), hips_lift=0.012)
+    kneel_pose(y0, 0.2, hold_h(K1, y0, h=0.34, f=0.2), look_basket, 62, spine=(0.06, 0.05, 0.0))
+    kneel_pose(y0, 0.02, hold_h(K1, y0, h=0.4, f=0.16), (look_basket + look_door) / 2, 74, spine=(0.0, 0.02, 0.0), hips_lift=0.012)
     # 2.4-3.6 s: rise: the right foot comes forward (half kneel), she pushes up, turning toward the washer
     y1 = y0 + 0.45; fw1, lf1 = fwd(y1), left(y1)
     stand_pose(K1 + fw1 * 0.05, y1, 0.28, hold_h(K1 + fw1 * 0.05, y1, h=0.36, f=0.17), look_door, 86, hip_drop=0.15,
@@ -163,7 +165,7 @@ def default_keys():
     stand_pose(SPOT, YAW_DOOR, 0.12, {s: (pin - fwd(YAW_DOOR) * 0.16 + left(YAW_DOOR) * (0.12 if s == 'L' else -0.12) - UP * 0.04, hand_rot(YAW_DOOR, -0.3, 0.3, 1 if s == 'L' else -1)) for s in 'LR'}, GLASS, 206, spine=(0.06, 0.04, 0.0))
     # 7.2-8.6 s: she turns back toward the basket (never looking into the drum), arms down, one step
     yb = YAW_DOOR - 1.9; fb, lb = fwd(yb), left(yb)
-    down = lambda p, yaw: {s: (p + left(yaw) * (0.15 if s == 'L' else -0.15) + UP * 0.2 + fwd(yaw) * 0.02, hand_rot(yaw, -1.45, 0.0, 1 if s == 'L' else -1)) for s in 'LR'}
+    down = lambda p, yaw: {s: (p + left(yaw) * (0.16 if s == 'L' else -0.16) + UP * 0.4 + fwd(yaw) * 0.03, hand_rot(yaw, -1.45, 0.0, 1 if s == 'L' else -1)) for s in 'LR'}   # (relaxed arms within her short reach)
     stand_pose(SPOT, YAW_DOOR - 0.8, 0.02, down(SPOT, YAW_DOOR - 0.8), RIM + UP * 0.2, 226)
     stand_pose(SPOT + fb * 0.1, yb, 0.0, down(SPOT + fb * 0.1, yb), RIM + UP * 0.1, 246, step={'L': (SPOT + fb * 0.18 + lb * HIP_W + UP * ANK, -0.1)})
     stand_pose(SPOT + fb * 0.14, yb, 0.0, down(SPOT + fb * 0.14, yb), RIM + UP * 0.1, 258)
@@ -205,7 +207,7 @@ cam = bpy.data.objects.new('cam', bpy.data.cameras.new('cam')); sc.collection.ob
 CC = G(LM['camWait'][1]); CT = G(LM['camWait'][2]); cam.data.sensor_fit = 'VERTICAL'; cam.data.angle = math.radians(LM['camWait'][3] + 8)
 cam.location = CC + Vector((0.25, 0, 0.1)); cam.rotation_euler = ((CT + Vector((0.3, 0.2, 0))) - cam.location).to_track_quat('-Z', 'Y').to_euler()
 sc.render.resolution_x, sc.render.resolution_y = 300, 533
-for f in (0, 26, 50, 74, 86, 104, 138, 162, 192, 206, 246):
+for f in (0, 26, 50, 74, 86, 104, 120, 138, 156, 174, 192, 206, 226, 246):
     sc.frame_set(f); sc.render.filepath = os.path.join(prev, f'k_{f:03d}.png'); bpy.ops.render.render(write_still=True)
 
 # ---- contact report: hand / foot distances to their targets (IK reach) at each key
@@ -217,6 +219,7 @@ for f in range(0, END + 1, 6):
         miss.setdefault('hand' + s, []).append(round(((AW @ PB['hand.' + s].head) - T['hand' + s].matrix_world.translation).length, 3))
         miss.setdefault('foot' + s, []).append(round(((AW @ PB['foot.' + s].head) - T['foot' + s].matrix_world.translation).length, 3))
 REP['ik_miss_max_m'] = {k: max(v) for k, v in miss.items()}
+REP['ik_miss_by_frame'] = {k: {f: m for f, m in zip(range(0, END + 1, 6), v) if m > 0.03} for k, v in miss.items()}
 # ---- bake to plain bone keys (visual keying), drop the constraints and the helpers, put the armature back at the origin, export
 for o in bpy.data.objects: o.select_set(False)
 vl.objects.active = arm; arm.select_set(True); bpy.ops.object.mode_set(mode='POSE')
