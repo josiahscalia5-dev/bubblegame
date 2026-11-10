@@ -209,6 +209,10 @@ REP['weights'] = {'vertices_reweighted': int(len(changed)), 'pruned_to_4_influen
                   'per_bone_vertices_dominant_new': {n: int(((chainw.argmax(1) == k) & (chainw.max(1) > 0.05)).sum()) for k, n in enumerate(NEWB)},
                   'rigid_kept': {'pink_head_vertices': int((pink & (dom == 'head')).sum()), 'skin_front_head_vertices': int((skin & (y < 0.03) & (dom == 'head')).sum())},
                   'max_new_weight_on_pink_or_face': float(total[~movable & (dom == 'head')].max()) if (~movable & (dom == 'head')).any() else 0.0}
+# hair vertices that the input weighted partly to her body (chest / neck / shoulders: the thin spikes to her hood in fast head turns): their body share now
+_part = [i for i in changed if any(k != 'head' for k in OLDW[i])]
+REP['weights']['hair_vertices_partly_on_body_in_input'] = {'count': len(_part), 'max_body_share_before': round(max((1 - OLDW[i].get('head', 0) for i in _part), default=0), 3),
+    'max_body_share_after': round(max(((1 - OLDW[i].get('head', 0)) * (1 - total[i]) for i in _part), default=0), 3)}
 # seam check: the largest new-weight step across an edge that touches a forced-rigid vertex (the bow / headband / face border), and per cm anywhere
 gi2 = {gp.index: gp.name for gp in mesh.vertex_groups}
 fr = (~movable) & (dom == 'head'); bd = fr[ev[:, 0]] ^ fr[ev[:, 1]]; tw = np.zeros(NV)
@@ -453,7 +457,7 @@ def plain_roundtrip_count(path):
 if DO_VALIDATE:
     V = {}
     RT_COUNT = plain_roundtrip_count(SRC)
-    CHECK = list(range(F0, F1 + 1, 6)) + [F1]
+    CHECK = sorted(set(range(F0, F1 + 1, 6)) | {F1})
     JN = ORIG_BONES
     ri, pi, armI, meshI = sample(SRC, CHECK, JN)
     # the input's vertex sets: moving hair (by the weights computed above, same vertex order) and her body / face
@@ -524,7 +528,7 @@ if DO_VALIDATE:
         dd_ = [(kdf.find(loc[i])[2] - dface_rest[i], i) for i in near]; m_ = min(dd_, default=(0.0, -1))
         dfmin.append(m_[0]); worst.append((m_[0], F0 + fi, m_[1]))
     V['head_check'] = {'vertex_frames_entering_skull_ellipsoid': viol, 'max_inward_change_in_skull_radius_units': round(-min(rmin), 4),
-                       'max_approach_to_face_ears_bow_cm(vertices within 3 cm at rest)': round(-min(dfmin) * 100, 2)}
+                       'max_approach_to_face_ears_bow_cm(vertices within 3 cm at rest)': round(float(-min(dfmin)) * 100, 2)}
     wv = min(worst); j = hairI[wv[2]]; Dinv = np.linalg.inv(DhO[wv[1] - F0]); lw = Dinv[:3, :3] @ trO[wv[1] - F0, wv[2]] + Dinv[:3, 3]
     nf = faceI[kdf.find(lw)[1]]
     V['head_check']['closest_approach'] = {'frame': int(wv[1]), 'hair_vertex_rest': [round(float(v), 3) for v in co[j]], 'rest_gap_cm': round(float(dface_rest[wv[2]] * 100), 2),
