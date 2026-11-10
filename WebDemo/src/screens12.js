@@ -27,6 +27,7 @@ let o3d = null;
 // the artwork's own coordinates (864 x 1536): the cut-out character, the washer's tunnel, the arrow's path
 const ART = { w: 864, h: 1536, sprite: { x: 287, y: 554, w: 334, h: 319 }, tunnel: { x: 575, y: 1112 }, arrow: { x: 700, y: 790 } };
 let holding = HOME_ON;
+const OPEN9_S = typeof window !== 'undefined' && ['six', 'six2', 's56', 'seq7', 'open9'].every((k) => (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(',')).includes(k));   // (open9, session d742a298)
 let seed = 0x5c12;   // a private random sequence for the sparkle sizes (the game's Math.random is never used here)
 const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };   // the game's frames are held while the screens cover it (game.js frame); released for the dive
 export function homeHolds() { return holding; }
@@ -150,7 +151,9 @@ function build() {
   if (O3D_ON) {   // ?s3=...,home,level1: the live 3D scene behind both screens instead of the painted picture
     art.style.display = 'none';
     o3d = mountOpening3D(root, { test: !!window.__BW_TEST__, onScene: (n) => { if (ui6) ui6.setScene(n); },
-      onHandOver: () => { holding = false; root.style.transition = 'opacity .8s ease'; root.style.opacity = '0'; root.style.pointerEvents = 'none'; },
+      onHandOver: () => { holding = false; root.style.pointerEvents = 'none';
+        if (OPEN9_S) { root.style.background = 'transparent'; for (const c of root.children) if (c.tagName !== 'CANVAS') { c.style.transition = 'opacity .35s ease'; c.style.opacity = '0'; } }   // (open9: no cross-fade: the live game shows through the end of the opening's water passage)
+        else { root.style.transition = 'opacity .8s ease'; root.style.opacity = '0'; } },
       onDone: () => { clearInterval(syncT); o3d.dispose(); root.remove(); window.dispatchEvent(new Event('bw:home-done')); } });
   }
 

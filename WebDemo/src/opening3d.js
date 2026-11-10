@@ -480,12 +480,13 @@ class Puffs {
  * Mounts the 3D opening in `container` (behind the screens' real UI). opts: { onHandOver, onDone, test }.
  * Returns { play(), seek(idleT, seqT) (tests), dispose() }.
  */
+const O9L = ['six', 'six2', 's56', 'seq7', 'open9'].every((k) => LIST6.includes(k));   // (open9, session d742a298: opening_six2_open9.js)
 export function mountOpening3D(container, opts = {}) {
   const rnd = mulberry(0x0be3d);
   const canvas = document.createElement('canvas'); canvas.className = 'o3d';
   Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block' });
   container.prepend(canvas);
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: !!opts.test });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: O9L, preserveDrawingBuffer: !!opts.test });   // (open9: the passage's end is transparent onto the live game)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.18;
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0xb59af0);
@@ -604,8 +605,9 @@ export function mountOpening3D(container, opts = {}) {
   });
   function heroExpr({ lid = 0, surprise = 0, open = 0.6 }) {
     if (!heroFace.ready) return;
-    for (const l of heroFace.lids) l.scale.y = 0.1 + lid * 1.05;
-    for (const e of heroFace.eyes) e.sc.scale.set(0.9 + surprise * 0.15, 1.1 + surprise * 0.2, 0.55);
+    for (const l of heroFace.lids) { l.scale.y = 0.1 + lid * 1.05; if (O9L) l.visible = lid > 0.06; }   // (open9: open eyes have no lid line across them)
+    const es = O9L ? 0.5 : surprise;   // (open9: his eyes keep one size)
+    for (const e of heroFace.eyes) e.sc.scale.set(0.9 + es * 0.15, 1.1 + es * 0.2, 0.55);
     heroFace.mouth.visible = surprise < 0.5; heroFace.tongue.visible = surprise < 0.5; heroFace.O.visible = surprise >= 0.5;
     heroFace.mouth.scale.y = 0.4 + open; heroFace.O.scale.set(0.9, 1.15 + surprise * 0.3, 0.35);
   }
@@ -697,7 +699,7 @@ export function mountOpening3D(container, opts = {}) {
   const P = OPENING3D.porthole;
   const blinkAt = (t, every, off) => { const k = ((t + off) % every); return k < 0.13 ? Math.sin(k / 0.13 * Math.PI) : 0; };
   // six2 (opening_six2.js): the staging and timeline of the six approved portrait screens (the same objects; the six timeline is not used with it)
-  const six2 = SIX2_ON && six ? installSix2({ scene, camera, env, room, washer, basket, g2, GIRL2, girl, hero, heroBody, heroExpr, six, vortex, laundry, splash, glowL, bubbles, front, foam, bub, fb,
+  const six2 = SIX2_ON && six ? installSix2({ scene, camera, renderer, env, room, washer, basket, g2, GIRL2, girl, hero, heroBody, heroExpr, six, vortex, laundry, splash, glowL, bubbles, front, foam, bub, fb,
     rotateBoneWorld, aimBone, reachBones, blinkAt, bez, OPENING3D, onScene: opts.onScene }) : null;
   const basketHome = LEVEL1_PARTS.girl2 ? V([-0.37, 0.95, -0.01]) : V([-0.3, 1.04, 0.16]);   // (girl2: in front of her chest, within her shorter arms' reach)
   const heroLaunch = LEVEL1_PARTS.girl2 ? basketHome.clone().add(V([0.42, 0.5, 0.15])) : V([-0.02, 1.47, 0.24]), heroApex = V([0.5, 2.05, 0.6]), heroRim = V([P.x - 0.01, P.y + 0.05, P.z + 0.22]);
