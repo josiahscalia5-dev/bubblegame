@@ -22,6 +22,9 @@ export const G3 = {
   file: 'models/opening/girl_v3_laundry.glb', clip: 'girl3_laundry',
   LAND: 7.4,                         // (real s) he lands on the drum seat = story 4.75 s
   grip: [1.35, 1.9], release: 6.45,  // (real s) her hands close on the towel; she lets go at the door
+  // her blinks (real s) and her eyelids: skin caps on her head bone over her painted eyes (model coordinates measured on her face; the face is
+  // rolled ~10.5 deg in her model), closing from both edges to a line
+  blinks: [0.55, 2.05, 3.3, 4.95, 6.95, 8.6, 9.7], eyes: [[-0.078, 0.756], [0.034, 0.777]], lidR: 0.034, roll: 0.185, skin: 0xf0aa84,
   // camera keys in REAL seconds [t, position, target, vertical fov]; after LAND the opening's own keys (from story 4.9) continue
   cam: [
     [-1, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],
@@ -30,8 +33,8 @@ export const G3 = {
     [3.4, [0.25, 0.58, 3.7], [-0.12, 0.5, 0.8], 41],
     [5.0, [0.6, 0.64, 3.25], [0.02, 0.55, 0.5], 42],
     [6.1, [0.82, 0.68, 2.45], [0.08, 0.56, 0.42], 44],
-    [7.0, [0.98, 0.76, 1.95], [0.32, 0.58, 0.0], 46],
-    [7.4, [0.64, 0.75, 1.5], [0.34, 0.57, -0.2], 48],
+    [7.0, [1.08, 0.76, 1.95], [0.33, 0.58, 0.0], 46],
+    [7.4, [0.72, 0.75, 1.5], [0.35, 0.57, -0.2], 48],
   ],
 };
 export const storyOf = (r) => (r < 0 ? -1 : r < G3.LAND ? r * 4.75 / G3.LAND : r - (G3.LAND - 4.75));
@@ -50,7 +53,15 @@ export function installGirl3({ scene, g2 }) {
     const clip = gl.animations.find((a) => a.name === G3.clip) || gl.animations[0];
     if (!mesh || !clip) { api.errors.push(`girl3: ${mesh ? '' : 'no skinned mesh '}${clip ? '' : 'no clip'}`); return; }
     const mixer = new THREE.AnimationMixer(gl.scene), action = mixer.clipAction(clip); action.play();
-    Object.assign(api, { ready: true, root, mesh, B, mixer, action, clip: clip.name, dur: clip.duration, tracks: clip.tracks.length, bones: mesh.skeleton.bones.length, shared: false });
+    // eyelids: raycast her face in her rest pose (straight back along her model's -z) for the surface at each painted eye
+    root.updateMatrixWorld(true);
+    const lidM = new THREE.MeshStandardMaterial({ color: G3.skin, roughness: 0.75, emissive: 0x3a2a40, emissiveIntensity: 0.3 }), ray = new THREE.Raycaster();
+    const lids = G3.eyes.map(([ex, ey]) => {
+      ray.set(new THREE.Vector3(ex, ey, 0.8), new THREE.Vector3(0, 0, -1)); const hit = ray.intersectObject(mesh, false)[0];
+      const lid = new THREE.Mesh(new THREE.SphereGeometry(G3.lidR, 20, 14), lidM); lid.name = 'girl3Lid';
+      lid.position.set(ex, ey, hit ? hit.point.z - G3.lidR * 0.35 : 0.19); lid.rotation.set(0, 0, G3.roll); root.add(lid); B.head.attach(lid); lid.visible = false; return lid;
+    });
+    Object.assign(api, { ready: true, root, mesh, B, mixer, action, lids, clip: clip.name, dur: clip.duration, tracks: clip.tracks.length, bones: mesh.skeleton.bones.length, shared: false });
     api.share = () => { if (g2.ready && !api.shared) { let m = null; g2.root.traverse((o) => { if (o.isSkinnedMesh && !m) m = o.material; }); if (m) { mesh.material = m; api.shared = true; } } };
     api.share();
   }, undefined, (e) => api.errors.push('girl3 load: ' + (e && e.message)));
@@ -74,6 +85,8 @@ export function updateGirl3(r, s, it, H) {
   const t = api.t != null ? api.t : Math.max(0, r);
   api.mixer.setTime(Math.min(api.dur - 1e-4, t));
   root.updateMatrixWorld(true);
+  { let b = 0; for (const t0 of G3.blinks) { const d = r - t0; if (d > 0 && d < 0.17) b = Math.max(b, d < 0.06 ? d / 0.06 : d < 0.08 ? 1 : 1 - (d - 0.08) / 0.09); }
+    for (const l of api.lids) { l.visible = b > 0.04; l.scale.set(1.06, 0.04 + b * 1.02, 0.55); } }
   if (yG) yG.visible = false; if (heap && heap[0]) heap[0].visible = true; if (marks) marks.visible = false;   // (the yellow towel stays in the basket; he is hidden)
   if (s >= 4.75 || api.t != null && api.t >= G3.LAND) return;   // (from his landing on, the opening's own staging)
   // her grip points: a little beyond each wrist along the forearm; her front from her shoulders

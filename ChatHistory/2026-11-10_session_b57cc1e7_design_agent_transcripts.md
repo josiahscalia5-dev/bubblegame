@@ -175,3 +175,69 @@ Files are in /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b439
 
 
 _48 tool steps._
+
+---
+
+## character-animation-specialist: Ponytail secondary motion in Blender (started 03:32 UTC)
+
+**Lead → agent** (03:32 UTC):
+
+Task: add natural HAIR SECONDARY MOTION (ponytail and a few face-framing curls) to the girl's existing laundry animation, with real Blender scripting. One self-contained step; do not edit any other files.
+
+Context (Bubble Wash Kingdom, /home/user/bubblegame). The girl's rigged model girl_v3 (T-pose rest; 23 joints: hips, spine, chest, neck, head, eye.L/R, shoulder/upper_arm/forearm/hand .L/.R, thigh/shin/foot/toe .L/.R; no hair joints) plays one baked skeletal action `girl3_laundry` (259 frames, 30 fps, 8.6 s: she kneels at a basket, reaches, lifts a towel bundle, stands up while turning, walks 3 steps, pushes the bundle into a washer, turns back). Her hair (a big curly brown high ponytail with a pink bow, plus curls round her face) is currently weighted rigidly to the `head` bone (about 22,000 vertices follow `head`), so it never moves on its own.
+
+Tools: Blender 5.2.3 as a Python module: run scripts with `~/.bubblewash-tools/blender-bpy/bin/python <script.py> ...` (bpy, background). Examples of working scripts in /home/user/bubblegame/WebDemo/tools/blender/ (prepare_girl_v3.py, validate_girl_v3.py, animate_laundry.py) show: importing GLB (`bpy.ops.import_scene.gltf`; delete the extra 'Icosphere' bone-shape mesh the importer adds; pick the mesh with the most vertices), the armature object is in QUATERNION rotation mode after import, glTF export settings that work (`export_animation_mode='ACTIONS', export_force_sampling=True, export_skins=True`), Blender 5 API notes (bone selection via `bpy.ops.pose.select_all`, no `Bone.select`), and Cycles CPU preview renders. Coordinates after import: Z up, her front is -Y, her left is +X; the model is 1.0 m tall (head bone head at about z 0.60; the hair mass spans roughly z 0.6-1.0 and extends behind the head to about y +0.23).
+
+Input: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/girl_v3_laundry_in.glb
+Output: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/girl_v3_laundry_hair.glb (same mesh, same action name `girl3_laundry`, same frame range, all existing joints and their animation unchanged) plus preview renders and a short report in the same folder.
+Write your script to /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py (that is the only repository file you create).
+
+Do:
+1. Find the ponytail and curl vertices from the geometry and the texture (brown hair texels; behind / above the head; the bow is pink and must stay rigid on the head; the face, ears and scalp must stay rigid). Add a ponytail chain (3-4 bones from its base at the back of the crown down/back along the ponytail) parented to `head`, and 2 short chains for the larger face-framing curl clusters (one each side) if they exist. Reweight ONLY those hair vertices with a smooth falloff (root weighted to head, tips to the last chain bone). Use unique names without dots or spaces issues, e.g. `hair_tail_1..4`, `hair_side_L_1..2`.
+2. Bake secondary motion for the new bones over the whole action: a damped spring per bone driven by the head's world-space motion (lag, overshoot, settle) plus gravity (the ponytail hangs down/back, it swings when she leans in, stands up, turns and stops). Keep it natural for a lively child: noticeable but not rubbery; no interpenetration with the head/back as far as you can check (limit angles). Key every frame.
+3. Export the GLB. Validate: re-import the output in a fresh scene and check the joint count, the action name and frame range, that the 23 original joints' keys are unchanged (compare a few frames' world positions of head/hands/feet with the input), that no vertex is unweighted, and the max ponytail deflection.
+4. Render with Cycles (CPU, low samples, ~400x500) a small contact sheet of 6 frames where the head moves fast (e.g. frames 40-60 lean in, 74-110 rise and turn, 150-165 stop at the door, 210-240 turn back) from a 3/4 side view, input vs output side by side, so the hair motion can be judged. Save as hair_compare.png in the output folder.
+
+Report back (short): bones added and vertex counts per chain, spring settings, max deflection (degrees), the validation results (numbers), the paths of the GLB, script and contact sheet, and any problem you could not fix. Do not touch the game code, models in the repository, or git.
+
+**Agent** (03:32 UTC):
+
+I'll start by inspecting the existing Blender scripts and the input file.
+
+- 03:32 `Bash`: List blender tools and input folder
+- 03:32 `Read`: /home/user/bubblegame/WebDemo/tools/blender/animate_laundry.py
+- 03:32 `Read`: /home/user/bubblegame/WebDemo/tools/blender/validate_girl_v3.py
+- 03:32 `Read`: /home/user/bubblegame/WebDemo/tools/blender/prepare_girl_v3.py
+**Agent** (03:32 UTC):
+
+Let me inspect the input GLB with a quick probe script in the scratchpad.
+
+- 03:32 `Bash`: Probe the input GLB structure
+- 03:32 `Bash`: Dump vertex data and render head views
+- 03:32 `Bash`: Check PIL availability
+- 03:32 `Bash`: Combine head renders into one sheet
+- 03:32 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/heads.png
+- 03:33 `Bash`: Scatter-plot head vertices by texture colour
+- 03:33 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/sc_side.png
+**Agent** (03:33 UTC):
+
+The scatter is too sparse to read. I'll check mesh connectivity instead, since separate shells would make the ponytail and curls easy to isolate.
+
+- 03:33 `Bash`: Compute mesh connected components
+**Agent** (03:33 UTC):
+
+The 1,329 components are mostly UV-seam splits (glTF duplicates vertices at seams). I'll weld by position and recompute to get the real geometric shells.
+
+- 03:33 `Bash`: Weld seams and recompute shells
+**Agent** (03:34 UTC):
+
+It is one welded shell, so the ponytail and curls have to be separated by geometry and colour rather than by mesh islands. I'll look at cross-sections to find where the ponytail meets the skull.
+
+- 03:34 `Bash`: Classify colours and draw sagittal sections
+- 03:34 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/secs.png
+- 03:34 `Bash`: Draw horizontal sections of head
+- 03:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/hsecs.png
+- 03:35 `Bash`: Draw coronal sections of head
+- 03:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/head_front.png
+
+_19 tool steps._

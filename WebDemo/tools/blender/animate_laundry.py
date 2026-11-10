@@ -163,15 +163,27 @@ def default_keys():
     stand_pose(SPOT, YAW_DOOR, 0.3, {s: (pin + left(YAW_DOOR) * (0.06 if s == 'L' else -0.06), hand_rot(YAW_DOOR, -0.1, 0.9, 1 if s == 'L' else -1)) for s in 'LR'}, GLASS + Vector((0, 0.2, 0)), 192, spine=(0.16, 0.1, 0.0))
     # 6.6-7.2 s: let go: hands open and come back; she straightens
     stand_pose(SPOT, YAW_DOOR, 0.12, {s: (pin - fwd(YAW_DOOR) * 0.16 + left(YAW_DOOR) * (0.12 if s == 'L' else -0.12) - UP * 0.04, hand_rot(YAW_DOOR, -0.3, 0.3, 1 if s == 'L' else -1)) for s in 'LR'}, GLASS, 206, spine=(0.06, 0.04, 0.0))
-    # 7.2-8.6 s: she turns back toward the basket (never looking into the drum), arms down, one step
-    yb = YAW_DOOR - 1.9; fb, lb = fwd(yb), left(yb)
+    # 7.2-10.0 s: she turns round through the camera (smiling, never looking into the drum) and walks three steps to her left, out of the
+    # wash scene's frame (reference 04 shows the washer alone), back toward the basket for the next armful
     down = lambda p, yaw: {s: (p + left(yaw) * (0.16 if s == 'L' else -0.16) + UP * 0.4 + fwd(yaw) * 0.03, hand_rot(yaw, -1.45, 0.0, 1 if s == 'L' else -1)) for s in 'LR'}   # (relaxed arms within her short reach)
-    stand_pose(SPOT, YAW_DOOR - 0.8, 0.02, down(SPOT, YAW_DOOR - 0.8), RIM + UP * 0.2, 226)
-    stand_pose(SPOT + fb * 0.1, yb, 0.0, down(SPOT + fb * 0.1, yb), RIM + UP * 0.1, 246, step={'L': (SPOT + fb * 0.18 + lb * HIP_W + UP * ANK, -0.1)})
-    stand_pose(SPOT + fb * 0.14, yb, 0.0, down(SPOT + fb * 0.14, yb), RIM + UP * 0.1, 258)
-    return 258
+    CAMW = G(LM['camWait'][1])
+    y_cam = math.atan2(CAMW.x - SPOT.x, -(CAMW.y - SPOT.y)); y_out = -1.42   # (facing the camera; then facing her right side of the screen-left, out of the frame: one continuous turn)
+    stand_pose(SPOT, YAW_DOOR - 1.0, 0.02, down(SPOT, YAW_DOOR - 1.0), SPOT + fwd(YAW_DOOR - 1.0) * 0.6 + UP * 0.75, 220)
+    stand_pose(SPOT, y_cam, 0.0, down(SPOT, y_cam), CAMW, 232)
+    OUT = SPOT + fwd(y_out) * 0.56
+    p0 = SPOT; path = OUT - SPOT
+    for f, k, lead in ((244, 0.0, 'L'), (256, 0.3, 'R'), (268, 0.62, 'L'), (280, 0.9, 'R'), (292, 1.0, None)):
+        p = p0 + path * k; yaw = y_cam + (y_out - y_cam) * min(1, (f - 232) / 24); fwy, lfy = fwd(yaw), left(yaw); step = {}
+        if lead:
+            sg = 1 if lead == 'L' else -1
+            step[lead] = (p + lfy * sg * HIP_W * 1.05 + fwy * 0.09 + UP * ANK, -0.12)
+            other = 'R' if lead == 'L' else 'L'; so = -sg
+            step[other] = (p + lfy * so * HIP_W * 1.05 - fwy * 0.08 + UP * (ANK + 0.012), 0.35)
+        stand_pose(p, yaw, 0.05, down(p, yaw), p + fwd(yaw) * 0.8 + UP * 0.7, f, step=step, bob=0.012 * (1 if lead else 0), roll=0.03 * (1 if lead == 'L' else -1 if lead else 0))
+    stand_pose(OUT, y_out, 0.02, down(OUT, y_out), OUT + fwd(y_out) * 0.8 + UP * 0.7, 300)
+    return 300
 END = exec(KEYS_SRC, globals()) if KEYS_SRC else default_keys()
-END = globals().get('END_FRAME', END) or 258
+END = globals().get('END_FRAME', END) or 300
 sc.frame_start, sc.frame_end = 0, END
 
 # ---- the poles' angle: per limb, the pole_angle that puts the elbow / knee nearest its pole target (checked at a mid frame)
@@ -207,7 +219,7 @@ cam = bpy.data.objects.new('cam', bpy.data.cameras.new('cam')); sc.collection.ob
 CC = G(LM['camWait'][1]); CT = G(LM['camWait'][2]); cam.data.sensor_fit = 'VERTICAL'; cam.data.angle = math.radians(LM['camWait'][3] + 8)
 cam.location = CC + Vector((0.25, 0, 0.1)); cam.rotation_euler = ((CT + Vector((0.3, 0.2, 0))) - cam.location).to_track_quat('-Z', 'Y').to_euler()
 sc.render.resolution_x, sc.render.resolution_y = 300, 533
-for f in (0, 26, 50, 74, 86, 104, 120, 138, 156, 174, 192, 206, 226, 246):
+for f in (0, 26, 50, 74, 86, 104, 120, 138, 156, 174, 192, 206, 232, 256, 280, 300):
     sc.frame_set(f); sc.render.filepath = os.path.join(prev, f'k_{f:03d}.png'); bpy.ops.render.render(write_still=True)
 
 # ---- contact report: hand / foot distances to their targets (IK reach) at each key
