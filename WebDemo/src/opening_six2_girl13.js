@@ -21,9 +21,10 @@ export const G13 = {
   face: { x0: -0.16, x1: 0.16, y0: 0.6, y1: 0.92, n: 56, lift: 0.0016, maxStep: 0.035, debug: false, off: false,
     skin: '#f6a175',   // the graded atlas skin (below) as an albedo: the layer's skin patches use it so they melt into the atlas
     // eyes: centre (model x, y), half width, half height; iris radius, its offset (where she looks); the outer corner is away from x = 0
-    eyes: [{ x: -0.058, y: 0.765 }, { x: 0.058, y: 0.765 }], ew: 0.03, eh: 0.027, ir: 0.0185, look: [0.004, -0.002],
-    mouth: { x: -0.006, y: 0.707, w: 0.04, top: 0.008, open: 0.034 },   // half width; the top edge's rise at the corners; the drop at the centre
-    nose: { x: 0.0, y: 0.737 }, blush: { x: 0.075, y: 0.727, r: 0.026, a: 0.34 }, brow: { y: 0.808, w: 0.026, t: 0.0045 },
+    // (measured on her painted face through the debug grid: her face is rolled ~10.5 deg in her model, the eyes at (-0.078, 0.756) and (0.034, 0.777))
+    roll: 0.185, eyes: [{ x: -0.078, y: 0.756 }, { x: 0.034, y: 0.777 }], ew: 0.032, eh: 0.029, ir: 0.019, look: [0.004, -0.002],
+    mouth: { x: -0.03, y: 0.708, w: 0.041, top: 0.008, open: 0.034 },   // half width; the top edge's rise at the corners; the drop at the centre
+    nose: { x: -0.02, y: 0.736 }, blush: { x: 0.07, y: 0.722, r: 0.027, a: 0.46 }, brow: null, lower: false,
     freckles: 14,
   },
   tex: { on: true, skin: [3, 0.88, 1.05], hair: [3, 0.92, 0.9], pink: [7, 0.76, 1.05], purple: [6, 0.82, 1.06] },   // hue shift (deg), saturation x, value x
@@ -87,23 +88,25 @@ function paintFace(cv, F) {
     c.beginPath(); c.arc(0, 0, rx * k, 0, 6.2832); c.fill(); c.restore(); };
   // skin patches over the painted mouth and round the painted eyes (the new features are larger and cover the rest)
   const M = F.mouth;
-  soft(M.x, M.y - 0.006, M.w * 1.6, 0.03, F.skin, 1, 0.7);
+  soft(M.x, M.y - 0.004, M.w * 1.75, 0.032, F.skin, 1, 0.7);
   for (const e of F.eyes) soft(e.x, e.y, F.ew * 1.5, F.eh * 1.5, F.skin, 1, 0.66);
   // blush and freckles
+  const fcx = (F.eyes[0].x + F.eyes[1].x) / 2, fcy = (F.eyes[0].y + F.eyes[1].y) / 2, ca = Math.cos(F.roll || 0), sa = Math.sin(F.roll || 0);
+  const rot = (dx, dy) => [fcx + dx * ca - dy * sa, fcy + dx * sa + dy * ca];   // (face-relative offsets, rolled with her face)
   for (const sx of [-1, 1]) {
-    const bx = F.blush.x * sx; c.save(); c.translate(X(bx), Y(F.blush.y)); c.scale(1, 0.62); const g = c.createRadialGradient(0, 0, 0, 0, 0, F.blush.r * k);
+    const [bx, by] = rot(F.blush.x * sx, F.blush.y - 0.767); c.save(); c.translate(X(bx), Y(by)); c.scale(1, 0.62); const g = c.createRadialGradient(0, 0, 0, 0, 0, F.blush.r * k);
     g.addColorStop(0, `rgba(255,96,120,${F.blush.a})`); g.addColorStop(0.55, `rgba(255,110,130,${F.blush.a * 0.55})`); g.addColorStop(1, 'rgba(255,120,140,0)'); c.fillStyle = g; c.beginPath(); c.arc(0, 0, F.blush.r * k, 0, 6.2832); c.fill(); c.restore();
   }
   let sd = 0x5eed13; const r = () => { sd = (sd * 1664525 + 1013904223) >>> 0; return sd / 4294967296; };   // (private)
   for (let i = 0; i < F.freckles; i++) {
-    const side = i % 2 ? 1 : -1, fx = side * (0.012 + r() * 0.06), fy = F.blush.y + 0.004 + (r() - 0.5) * 0.02 + Math.abs(fx) * 0.08;
+    const side = i % 2 ? 1 : -1, dx = side * (0.012 + r() * 0.06), [fx, fy] = rot(dx, F.blush.y - 0.767 + 0.004 + (r() - 0.5) * 0.02 + Math.abs(dx) * 0.08);
     c.fillStyle = `rgba(176,84,48,${0.45 + r() * 0.25})`; c.beginPath(); c.ellipse(X(fx), Y(fy), (0.0013 + r() * 0.0009) * k, (0.0011 + r() * 0.0007) * k, r() * 3, 0, 6.2832); c.fill();
   }
   // the button nose: a soft shadow under it and a pink tip
   soft(F.nose.x, F.nose.y - 0.006, 0.011, 0.004, 'rgba(196,92,62,0.5)', 1, 0.2);
   soft(F.nose.x, F.nose.y, 0.008, 0.006, 'rgba(255,128,120,0.55)', 1, 0.15);
-  // brows: soft brown arcs
-  for (const e of F.eyes) {
+  // brows: soft brown arcs (off: her own painted brows stay)
+  if (F.brow) for (const e of F.eyes) {
     const sx = Math.sign(e.x), bx = e.x + sx * 0.004, by = F.brow.y, w = F.brow.w;
     c.strokeStyle = 'rgba(88,40,20,0.9)'; c.lineCap = 'round'; c.lineWidth = F.brow.t * k;
     c.beginPath(); c.moveTo(...P(bx - sx * w * 0.95, by - 0.004)); c.quadraticCurveTo(...P(bx - sx * w * 0.1, by + 0.007), ...P(bx + sx * w, by - 0.002)); c.stroke();
@@ -111,6 +114,7 @@ function paintFace(cv, F) {
   // eyes
   for (const e of F.eyes) {
     const sx = Math.sign(e.x) || 1, ex = X(e.x), ey = Y(e.y), w = F.ew * k, h = F.eh * k;
+    c.save(); c.translate(ex, ey); c.rotate(-(F.roll || 0)); c.translate(-ex, -ey);   // (her face's roll in her model)
     const shape = () => { c.beginPath(); c.moveTo(ex - w, ey + h * 0.15); c.bezierCurveTo(ex - w * 0.9, ey - h * 1.25, ex + w * 0.9, ey - h * 1.25, ex + w, ey + h * 0.05);
       c.bezierCurveTo(ex + w * 0.85, ey + h * 1.12, ex - w * 0.85, ey + h * 1.12, ex - w, ey + h * 0.15); c.closePath(); };
     c.save(); shape(); c.fillStyle = '#fffaf8'; c.fill(); c.clip();
@@ -129,12 +133,14 @@ function paintFace(cv, F) {
     c.lineWidth = h * 0.24; c.beginPath(); c.moveTo(ex - w * 1.02, ey + h * 0.1); c.bezierCurveTo(ex - w * 0.9, ey - h * 1.28, ex + w * 0.9, ey - h * 1.28, ex + w * 1.04, ey + h * 0.0); c.stroke();
     const ox = ex + sx * w, oy = ey - h * 0.05;
     for (let f = 0; f < 3; f++) { c.lineWidth = h * (0.16 - f * 0.03); c.beginPath(); c.moveTo(ox - sx * w * (0.1 + f * 0.22), oy - h * (0.35 + f * 0.25)); c.quadraticCurveTo(ox + sx * w * 0.2, oy - h * (0.6 + f * 0.3), ox + sx * w * (0.32 + f * 0.05), oy - h * (0.65 + f * 0.38)); c.stroke(); }
-    c.lineWidth = h * 0.07; c.strokeStyle = 'rgba(60,24,14,0.7)'; c.beginPath(); c.moveTo(ex - w * 0.7, ey + h * 0.9); c.quadraticCurveTo(ex, ey + h * 1.12, ex + w * 0.75, ey + h * 0.85); c.stroke();
+    if (F.lower) { c.lineWidth = h * 0.07; c.strokeStyle = 'rgba(60,24,14,0.7)'; c.beginPath(); c.moveTo(ex - w * 0.7, ey + h * 0.9); c.quadraticCurveTo(ex, ey + h * 1.12, ex + w * 0.75, ey + h * 0.85); c.stroke(); }
+    c.restore();
     c.restore();
   }
   // the open laugh: a D-shaped mouth, the upper teeth along its top, the tongue at the bottom, a soft lip edge
   {
     const mx = X(M.x), my = Y(M.y), w = M.w * k, rise = M.top * k, open = M.open * k;
+    c.save(); c.translate(mx, my); c.rotate(-(F.roll || 0)); c.translate(-mx, -my);
     const shape = () => { c.beginPath(); c.moveTo(mx - w, my - rise); c.quadraticCurveTo(mx, my + rise * 0.35, mx + w, my - rise);
       c.bezierCurveTo(mx + w * 0.82, my + open * 0.95, mx - w * 0.82, my + open * 0.95, mx - w, my - rise); c.closePath(); };
     c.save(); shape(); c.fillStyle = '#5a1222'; c.fill(); c.clip();
@@ -144,6 +150,7 @@ function paintFace(cv, F) {
     c.restore();
     c.save(); shape(); c.strokeStyle = 'rgba(150,50,40,0.75)'; c.lineWidth = 0.0018 * k; c.stroke(); c.restore();
     for (const sx of [-1, 1]) { c.strokeStyle = 'rgba(190,80,60,0.45)'; c.lineWidth = 0.0016 * k; c.lineCap = 'round'; c.beginPath(); c.moveTo(mx + sx * w * 1.02, my - rise * 1.1); c.quadraticCurveTo(mx + sx * w * 1.18, my - rise * 0.6, mx + sx * w * 1.12, my - rise * 0.05); c.stroke(); }
+    c.restore();
   }
   if (F.mask) { c.save(); c.globalCompositeOperation = 'destination-in'; c.imageSmoothingEnabled = true; c.drawImage(F.mask, 0, 0, W, H); c.restore(); }   // (hair strands in front of her face stay as they are)
 }
