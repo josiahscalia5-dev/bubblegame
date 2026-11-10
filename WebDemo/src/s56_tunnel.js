@@ -107,6 +107,10 @@ export const S56 = {
   water6Hero: { sink: 0.4, squash: 1.0, wide: 1.0 },   // (ddf175f2) water6 WITHOUT hero6: v2's body as before
   splash6: { rate: 110, size: [0.010, 0.026], stretch: 3.0, speed: 2.4, n: 220 },   // (ddf175f2: finer, more, longer streaks: v2's round drops read as white dots)   // `water6`: crisp droplets thrown from his sides (n: the pool, fixed at build)
 };
+// (open9, session d742a298) the opening's water passage opens directly onto this live scene: the camera comes in from further behind him, where
+// the passage's mouth is, and flies forward to the Scene 5 / 6 framing (it does not start inside his fur). Nothing else of Screen 6 changes.
+if (S56_ON && typeof window !== 'undefined' && ['six', 'six2', 'seq7', 'open9'].every((k) => (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(',')).includes(k)))
+  Object.assign(S56.glide, { secs: 1.7, off: [0, 1.0, -6.0], look: [0, 0.4, 6.0], fov: 60 });
 if (S56_ON && typeof window !== 'undefined') window.__bwS56 = S56;
 
 // ---------------------------------------------------------------- the waves (one table: GLSL and JS stay in step)

@@ -23,6 +23,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { buildRoom2, applyRoomLight } from './opening_six2_room.js';   // the room and its light (lighting specialist)
 import { installSix2Tunnel } from './opening_six2_tunnel.js';   // the washer look and the scene 5 tunnel (lighting specialist)
 import { installSix2Water } from './opening_six2_water.js';   // the water of scenes 3-5 (water specialist)
+import { OPEN9_ON, OPEN9, installOpen9 } from './opening_six2_open9.js';   // open9 (session d742a298): the washer spin with 3D water and the direct hand-over into the live Screen 6
 import { SEQ7_ON as G12_ON, SEQ7 as G12N, clothGrid as g12Grid, softHang as g12Hang, cradle as g12Cradle, tumble as g12Tumble } from './opening_six2_girl12.js';   // seq7, lane girl12: screens 2-3 (character animation)
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
@@ -55,6 +56,9 @@ if (SIX2_ON && LIST.includes('s56')) Object.assign(SIX2, { handOver: 8.95, seqEn
 // (session 8da775c4, seq7) THE WASH BEGINS gets time to be seen: story 6.85..7.30 (the water up round him, the drum turning, before the spin) plays over
 // 1.3 s of real time instead of 0.45 s (wash: [story start, story length, real length]); the hand-over and the end move back by the same 0.85 s
 if (SIX2_ON && LIST.includes('s56') && LIST.includes('seq7')) Object.assign(SIX2, { wash: [6.85, 0.45, 1.3], handOver: 8.95 + 0.85, seqEnd: 9.75 + 0.85 });   // (real seconds: story 8.45, inside the drum)
+// (session d742a298, open9) the opening ends inside the water passage: the live game is released as the passage's end opens onto it (story OPEN9.T.open)
+// and the opening is removed once its mouth has swept past the frame (OPEN9.T.end); the captions follow
+if (OPEN9_ON) Object.assign(SIX2, { handOver: OPEN9.T.open + OPEN9.real, seqEnd: OPEN9.T.end + OPEN9.real, scenes: [[-1, 1], [0.0, 2], [3.25, 3], [5.3, 4], [OPEN9.T.dive, 5], [OPEN9.T.open, 6]] });
 if (SIX2_ON && typeof window !== 'undefined') window.__bwSix2 = SIX2;
 
 // ---------------------------------------------------------------- small helpers
@@ -171,6 +175,8 @@ export function installSix2(ctx) {
   const marks = alertMarks(); scene.add(marks);
   const T2 = installSix2Tunnel(ctx);   // the washer's look and scene 5's tunnel (opening_six2_tunnel.js)
   const W2 = installSix2Water(ctx);   // the water of scenes 3-5 (opening_six2_water.js)
+  const O9 = OPEN9_ON ? installOpen9(ctx) : null;   // (open9: the 3D wash water, his tumble, the passage into the live game)
+  if (O9) S.cam = O9.camKeys(S.cam);
   // the heap in the basket (tripo2's yellow, blue, pink towels): the blue heap towel is the cloth now; the pink one becomes lavender
   let heap = null;
   Promise.resolve(typeof window !== 'undefined' && window.__bwTripo2Ready).then(() => {
@@ -215,7 +221,7 @@ export function installSix2(ctx) {
   // the door: hinge on the LEFT (opening_tripo3.js mirrors the door with six2); open = S.door.open
   const doorEdge = () => { washer.door.updateMatrixWorld(true); return washer.door.localToWorld(V(washer.door.userData.edge || 0.78, 0, 0.03)); };   // its free edge (opening_tripo3.js sets userData.edge)
   // ---- the hero's path and the cloth
-  const inDoor = V(P.x - 0.06, P.y + 0.04, P.z - 0.02), heroSit = V(P.x + 0.03, OPENING3D.waterY + 0.1 * hk + 0.02, P.z - 0.36), heroLand = V(P.x, OPENING3D.waterY + 0.1 * hk, P.z - 2.8);
+  const inDoor = V(P.x - 0.06, P.y + 0.04, P.z - 0.02), heroSit = O9 ? O9.sit.clone() : V(P.x + 0.03, OPENING3D.waterY + 0.1 * hk + 0.02, P.z - 0.36), heroLand = V(P.x, OPENING3D.waterY + 0.1 * hk, P.z - 2.8);
   const lieBlue = V(P.x - 0.02, OPENING3D.waterY + 0.02, P.z - 0.4), lieYel = V(P.x - 0.17, OPENING3D.waterY + 0.05, P.z - 0.3);
   let landed = false, scene0 = 0, irisDone = false;
   const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3();
@@ -230,6 +236,7 @@ export function installSix2(ctx) {
     if (s < 0) camPos.add(V(0.015 * Math.sin(it * 0.3), 0.01 * Math.sin(it * 0.4), 0));
     if (s > 6.37 && s < 6.6) camPos.y += 0.005 * Math.sin((s - 6.37) * 60) * (1 - sm(6.37, 6.6, s));   // the latch's thunk
     camera.position.copy(camPos); camera.lookAt(camTgt); camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+    if (O9) { O9.state(s, it); O9.cameraAt(s, camera, camPos, camTgt); }   // (open9: the water's state for this frame; the dive through the glass and down the passage)
     // the hero's eyes: the references' dark brown (his face is built on load in opening3d.js with blue irises)
     if (!irisDone && heroBody.children.length > 1) { irisDone = true; heroBody.traverse((o) => { if (o.isMesh && o.material && o.material.isMeshBasicMaterial && o.material.color.getHex() === 0x2f86e8) { o.material = o.material.clone(); o.material.color.setHex(0x3a1c0e); } }); }
     // ---- basket on the rug (badge to the camera; tripo2 hides the basket's own children when it loads, so the badge is re-shown here)
@@ -344,11 +351,14 @@ export function installSix2(ctx) {
         hp = base.lerp(g12Carry(s).add(V(0, G12N.sitUp, 0)), lift).add(V(0.008 * Math.sin(s * 11) * lift, 0.006 * Math.sin(s * 8.3) * lift, 0));
         rot.set(0.1 * lift + 0.07 * Math.sin(s * 6) * lift, toCam(hp) + 0.14 * Math.sin(s * 4) * lift, 0.1 * Math.sin(s * 5) * lift, 'XYZ'); surprise = 1; scl = 0.56; }
       else { const T = g12Tumble(s, g12Carry(G12N.tumble.start).add(V(0, G12N.sitUp, 0)), V(P.x - 0.03, P.y + G12N.tumble.lift, P.z - 0.12), heroSit, camPos, bez);
-        hp = T.hp; rot.copy(T.rot); scl = 0.56 + 0.44 * T.k; surprise = 1; }
+        hp = T.hp; rot.copy(T.rot); scl = 0.56 + (O9 ? OPEN9.hero.scale - 0.56 : 0.44) * T.k; surprise = 1; }
     }
+    let o9H = null;
+    if (O9 && s >= 4.75) { o9H = O9.heroAt(s, it); hp = o9H.hp; rot.copy(o9H.rot); scl = o9H.scl; surprise = o9H.surprise; }   // (open9: afloat, rocking, rolling with the drum, down the passage)
     hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
     if (W2.hero) W2.hero(hero, s, it);   // (seq7, wash8) he bobs, rocks and rolls with the wash water
-    heroExpr({ lid: g12 && s >= 2.95 && s < 5.3 ? 0 : blinkAt(it, 2.6, 1.1), surprise, open: 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
+    heroExpr({ lid: (g12 && s >= 2.95 && s < 5.3) || (O9 && s >= O9.T.roll[0]) ? 0 : blinkAt(it, 2.6, 1.1), surprise, open: o9H ? o9H.open : 0.55 + 0.25 * Math.sin(it * 2) + (s > 4.0 && s < 5.4 ? 0.4 : 0) });
+    if (O9) hero.visible = O9.heroOn(s);
     // the "!" marks: while he peeks (waiting) and when the towel is lifted off him
     const mk = s < 0 ? 0.6 + 0.4 * Math.max(0, Math.sin(it * 1.4)) : sm(0.55, 0.7, s) * (1 - sm(1.4, 1.6, s)) + (g12 ? sm(3.12, 3.22, s) * (1 - sm(3.6, 3.75, s)) : 0);   // (seq7: "!" again as he is lifted)
     marks.visible = mk > 0.02; marks.position.copy(hp).add(V(0.09, 0.115 * scl / 0.56, 0.05)); marks.quaternion.copy(camera.quaternion); marks.scale.setScalar(0.9 + 0.15 * Math.sin(it * 8)); marks.userData.m.opacity = mk;
@@ -373,6 +383,8 @@ export function installSix2(ctx) {
       if (g12) g12Hang(g12.blueU, blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.5, it, 0.4, V(0.12, 0, -0.55), camRight);
       else blue.hangW(blue.B, inDoor.clone().add(V(-0.1, 0, 0.02)), inDoor.clone().add(V(0.1, 0, 0.02)), 0.46, it, 0.4, -0.6, camRight);
       const o = new Float32Array(A.length); for (let i = 0; i < A.length; i++) o[i] = blue.B[i] + (A[i] - blue.B[i]) * k; blue.apply(o);
+    } else if (O9 && s >= O9.towelFrom) {   // (open9) the rising water lifts it off his head: it floats beside him, then tumbles round with the wash
+      const kk = scl; O9.towelAt(blue, 'blue', s, it, { pos: hp.clone().add(V(-0.03, rB / 0.62 * kk * 0.28, 0)), r: rB / 0.62 * kk * 0.95, L: rB / 0.62 * kk * 1.3, rx: -0.5, ry: rot.y, rz: rot.z - 0.3 });
     } else {   // flipped onto his head by his landing; the water lifts it off and carries it away in scene 4
       const off = sm(6.7, 7.3, s), kk = scl, flip = sm(4.75, 5.05, s);
       blue.drape(blue.A, rB / 0.62 * kk * 0.95, rB / 0.62 * kk * 1.3, 0, rB / 0.62 * kk * (0.35 + off * 0.5), it, 0.6 + off);
@@ -380,9 +392,11 @@ export function installSix2(ctx) {
       blue.apply(hat); bG.visible = s < 7.5;
     }
     // ---- the yellow towel: in the basket heap until she scoops it (with him inside: a bundle), pushed in, unrolling beside him in the drum
-    yG.visible = s >= (g12 ? 3.08 : 2.9) && s < 7.5;
+    yG.visible = s >= (g12 ? 3.08 : 2.9) && (s < 7.5 || !!O9);
     if (heap) heap[0].visible = s < (g12 ? 3.08 : 2.9);
-    if (g12 && yG.visible) {   // (seq7, lane girl12) a soft cradle round his lower half while she carries him; it opens as he slips out and falls in beside him
+    if (O9 && yG.visible && s >= O9.towelFrom) {   // (open9) afloat beside him, then tumbling round with the wash
+      O9.towelAt(yel, 'yellow', s, it, { pos: lieYel.clone(), r: 0.07, L: 0.21, rx: 0.8, ry: 0.6, rz: 0 });
+    } else if (g12 && yG.visible) {   // (seq7, lane girl12) a soft cradle round his lower half while she carries him; it opens as he slips out and falls in beside him
       const R = OPENING3D.heroW * 0.5 * 0.56, T0 = G12N.tumble.start;
       if (s < T0) g12Cradle(g12.yelU, yel.B, hp.clone(), R, R * 1.8, sm(3.08, 3.3, s), 0.3, Math.atan2(camPos.x - hp.x, camPos.z - hp.z), it, 1, 0);
       else { const k = sm(T0, 4.6, s), c = bez(g12Carry(T0).add(V(0, G12N.sitUp, 0)), V(P.x - 0.12, P.y + 0.04, P.z - 0.1), lieYel, k);
@@ -405,8 +419,9 @@ export function installSix2(ctx) {
     R2.g.visible = washer.g.visible = basket.visible = badge.visible = !inDrum;
     if (g2.ready) { g2.root.visible = !inDrum; g2.stool.visible = false; }
     ctx.girl.root.visible = false;
-    ctx.bubbles.visible = !inDrum; ctx.front.visible = false; ctx.foam.visible = !inDrum && s > 4.0;
+    ctx.bubbles.visible = !inDrum; ctx.front.visible = false; ctx.foam.visible = !inDrum && s > 4.0 && !(O9 && s > 6.4);
     marks.visible = marks.visible && !inDrum;
+    if (O9) O9.update(s, it, { hero: hp });   // (last: inside the passage only the water, him and the light are drawn; the live game shows through its end)
   }
   if (typeof window !== 'undefined') window.__bwSix2dbg = { g2, legs, basket, hero, heroBody, camera, scene, R2, blue, yel, washer };   // (for the live DevTools checks)
   return { pose, sparkWin, room2: R2 };

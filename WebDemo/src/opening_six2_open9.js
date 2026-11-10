@@ -49,7 +49,6 @@ export const OPEN9 = {
   tube: { d0: 0.055, back: 1.02, end: 6.2, r: 0.42, mouth: 0.22 },
   towel: { blue: [-0.15, 0.62], yellow: [0.16, 0.5], orbit: 0.2 },   // [across the pool m, depth m] while they float
   flash: { at: -0.16, fall: 0.5, size: 0.42 },
-  glide: { secs: 1.7, off: [0, 1.0, -6.0], look: [0, 0.4, 6.0], fov: 60 },   // the live game's fly-in (s56_tunnel.js reads this)
   centre: 0.61,                                     // where the passage's end sits in the frame (0 top .. 1 bottom): the live game's hero at the fly-in's start
 };
 if (OPEN9_ON) {
