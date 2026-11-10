@@ -22,7 +22,6 @@ export const G3 = {
   file: 'models/opening/girl_v3_laundry.glb', clip: 'girl3_laundry',
   LAND: 7.4,                         // (real s) he lands on the drum seat = story 4.75 s
   grip: [1.35, 1.9], release: 6.45,  // (real s) her hands close on the towel; she lets go at the door
-  bundle: 0.36,                      // the gathered towel's hang below her hands (m)
   // camera keys in REAL seconds [t, position, target, vertical fov]; after LAND the opening's own keys (from story 4.9) continue
   cam: [
     [-1, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],
@@ -31,8 +30,8 @@ export const G3 = {
     [3.4, [0.25, 0.58, 3.7], [-0.12, 0.5, 0.8], 41],
     [5.0, [0.6, 0.64, 3.25], [0.02, 0.55, 0.5], 42],
     [6.1, [0.82, 0.68, 2.45], [0.08, 0.56, 0.42], 44],
-    [7.0, [0.55, 0.75, 1.9], [0.28, 0.57, 0.0], 46],
-    [7.4, [0.32, 0.76, 1.45], [0.32, 0.57, -0.2], 48],
+    [7.0, [0.78, 0.78, 1.95], [0.3, 0.58, 0.0], 46],
+    [7.4, [0.48, 0.77, 1.5], [0.32, 0.57, -0.2], 48],
   ],
 };
 export const storyOf = (r) => (r < 0 ? -1 : r < G3.LAND ? r * 4.75 / G3.LAND : r - (G3.LAND - 4.75));
@@ -82,26 +81,24 @@ export function updateGirl3(r, s, it, H) {
   const pL = grip('L'), pR = grip('R'), mid = pL.clone().add(pR).multiplyScalar(0.5);
   const sl = B.upper_armL.getWorldPosition(_b), sr = B.upper_armR.getWorldPosition(_c), front = sl.clone().sub(sr).cross(V(0, 1, 0)).normalize();
   const kG = sm(G3.grip[0], G3.grip[1], r), rel = r >= G3.release;
-  // ---- the towel
-  const hang = () => blue.hangW(blue.B, pL, pR, G3.bundle, it, 0.6, r > 5.7 ? -0.5 * sm(5.7, 6.3, r) : 0, camRight);
+  // ---- him and the towel: under the hood in the basket (the opening's own place) -> her hands close round the towel and it wraps him into a
+  // bundle centred between her hands (he is fully inside, hidden) -> carried -> at the release he tumbles out into the drum, the towel round him
+  const yawF = Math.atan2(front.x, front.z);
+  const bundle = (out, c) => { blue.drape(out, rB * 1.12, rB * 1.75, 1, rB * 0.42, it, 0.8); return placeLocal(out, c, 0.18, yawF, 0.07 * Math.sin(r * 4.1)); };
+  let hp = hero.position.clone(), scl = 0.56; const rot = new THREE.Euler().copy(hero.rotation);
   if (r < G3.grip[0]) { hoodAt(blue.A, hoodPos); blue.apply(blue.A); }
   else if (!rel) {
-    hoodAt(blue.A, hoodPos); hang(); const o = new Float32Array(blue.A.length);
-    for (let i = 0; i < o.length; i++) o[i] = blue.A[i] + (blue.B[i] - blue.A[i]) * kG; blue.apply(o);
-  }
-  // ---- him: under the hood in the basket (the opening's own place) -> inside the bundle -> out of it into the drum (the towel round him)
-  let hp = hero.position.clone(), scl = 0.56; const rot = new THREE.Euler().copy(hero.rotation);
-  if (r >= G3.grip[0] && !rel) {
-    const inB = mid.clone().addScaledVector(front, -0.035).add(V(0, -0.075 * kG, 0));
-    hp = hp.lerp(inB, kG); rot.set(0.1 * Math.sin(r * 6), camYaw - 0.3, 0.1 * Math.sin(r * 5)); relPos = hp.clone();
-  } else if (rel) {
+    hp = hp.lerp(mid.clone().add(V(0, -0.012, 0)), kG); rot.set(0.08 * Math.sin(r * 6) * kG, rot.y + (camYaw - 0.3 - rot.y) * kG, 0.08 * Math.sin(r * 5) * kG); relPos = hp.clone();
+    hoodAt(blue.A, hp.clone().add(V(0, 0.012, -0.01))); const W = bundle(blue.B, hp), o = new Float32Array(W.length);
+    for (let i = 0; i < o.length; i++) o[i] = blue.A[i] + (W[i] - blue.A[i]) * kG; blue.apply(o);
+  } else {
     const k = sm(G3.release, G3.LAND, r), from = relPos || mid;
     hp = bez(from, V(P.x - 0.02, P.y + 0.16, P.z - 0.12), heroSit, k); rot.set(-k * Math.PI * 2, (1 - k) * 0.5, 0.25 * Math.sin(k * 6)); scl = 0.56 + 0.44 * k;
     // the towel goes in with him, round him like a cloak: the opening's own "hat" before it flips onto his head at 4.75 s
     const kk = scl; blue.drape(blue.A, rB / 0.62 * kk * 0.95, rB / 0.62 * kk * 1.3, 0, rB / 0.62 * kk * 0.35, it, 0.6);
     const hat = placeLocal(blue.A, hp.clone().add(V(-0.03, rB / 0.62 * kk * 0.28, 0)), -0.5 - 2.5, rot.y, rot.z - 0.3, 1);
-    hang(); const kb = sm(G3.release, G3.release + 0.3, r), o = new Float32Array(hat.length);
-    for (let i = 0; i < o.length; i++) o[i] = blue.B[i] + (hat[i] - blue.B[i]) * kb; blue.apply(o);
+    const W = bundle(blue.B, hp), kb = sm(G3.release, G3.release + 0.35, r), o = new Float32Array(hat.length);   // (the bundle opens as he slips out)
+    for (let i = 0; i < o.length; i++) o[i] = W[i] + (hat[i] - W[i]) * kb; blue.apply(o);
   }
   hero.position.copy(hp); hero.rotation.copy(rot); heroBody.scale.setScalar(scl);
 }
