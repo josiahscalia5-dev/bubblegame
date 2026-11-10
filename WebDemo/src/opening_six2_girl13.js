@@ -189,7 +189,7 @@ export function buildGirl13(g2) {
   for (let j = 0; j <= N; j++) for (let i = 0; i <= N; i++) {
     const x = F.x0 + (F.x1 - F.x0) * i / N, y = F.y0 + (F.y1 - F.y0) * j / N;
     ray.set(root.localToWorld(new THREE.Vector3(x, y, 0.8)), dir);
-    const h = ray.intersectObject(region, false)[0];   // (region: only the front of her head)
+    const h = ray.intersectObject(region, false)[0];
     if (!h) { P.push(new THREE.Vector3()); ok.push(false); continue; }
     const nrm = h.face.normal.clone().applyMatrix3(nm.getNormalMatrix(region.matrixWorld)).normalize();
     if (nrm.dot(dir) > 0) nrm.negate();
