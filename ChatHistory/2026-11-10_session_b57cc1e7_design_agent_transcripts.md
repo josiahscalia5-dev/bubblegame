@@ -261,5 +261,13 @@ The labelled render kept the frame-1 kneeling pose because I didn't reset the po
 - 03:40 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab3_sheet.png
 - 03:41 `Bash`: Measure hair centroids per height band
 - 03:44 `Bash`: Check head weights, body proximity, glTF structure
+- 03:50 `Write`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
 
-_33 tool steps._
+_41 tool steps._

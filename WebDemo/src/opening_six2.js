@@ -61,7 +61,8 @@ if (SIX2_ON && LIST.includes('s56') && LIST.includes('seq7')) Object.assign(SIX2
 // (session d742a298, open9) the opening ends inside the water passage: the live game is released as the passage's end opens onto it (story OPEN9.T.open)
 // and the opening is removed once its mouth has swept past the frame (OPEN9.T.end); the captions follow
 // (girl3, session b57cc1e7) the story clock stretched for her laundry beat: real 0..LAND s = story 0..4.75 s; the hand-over and the end move back
-if (G3_ON) Object.assign(SIX2, { warp: [0, G3.LAND, 4.75], handOver: SIX2.handOver + G3.LAND - 4.75, seqEnd: SIX2.seqEnd + G3.LAND - 4.75 });
+if (G3_ON) Object.assign(SIX2, { warp: [0, G3.LAND, 4.75], handOver: SIX2.handOver + G3.LAND - 4.75 - 0.5, seqEnd: SIX2.seqEnd + G3.LAND - 4.75 - 0.5 });   // (the default warp already added 0.5 s)
+if (G3_ON && OPEN9_ON) OPEN9.real += G3.LAND - 4.75 - 0.5;   // (open9's real = story + offset after the wash begins: her stretch replaces the default warp's 0.5 s)
 if (OPEN9_ON) Object.assign(SIX2, { handOver: OPEN9.T.open + OPEN9.real, seqEnd: OPEN9.T.end + OPEN9.real, scenes: [[-1, 1], [0.0, 2], [3.25, 3], [5.3, 4], [OPEN9.T.dive, 5], [OPEN9.T.open, 6]] });
 if (SIX2_ON && typeof window !== 'undefined') window.__bwSix2 = SIX2;
 
