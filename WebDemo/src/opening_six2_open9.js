@@ -201,13 +201,12 @@ export function installOpen9(ctx) {
     vertexShader: 'varying vec2 vQ; void main() { vQ = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: /* glsl */ `uniform float uTime, uOpen; varying vec2 vQ; ${NOISE}
       void main() { float r = length(vQ), a = atan(vQ.y, vQ.x);
-        float e = r * (1.0 + 0.16 * sin(a * 5.0 + uTime * 5.0) + 0.3 * (o9f(vec2(cos(a), sin(a)) * 2.4 + uTime * 0.7) - 0.5)) - uOpen * 1.5;
+        float e = r * (1.0 + 0.06 * sin(a * 5.0 + uTime * 5.0) + 0.12 * (o9f(vec2(cos(a), sin(a)) * 2.0 + uTime * 0.7) - 0.5)) - uOpen * 1.5;
         if (uOpen > 0.0 && e < 0.0) discard;
         vec3 c = mix(vec3(1.12, 1.1, 1.2), vec3(0.74, 0.86, 1.16), smoothstep(0.0, 0.36, r)); c = mix(c, vec3(0.36, 0.62, 1.08), smoothstep(0.3, 0.85, r));
         c += vec3(0.5, 0.2, 0.6) * exp(-pow((r - 0.42) / 0.09, 2.0)) * 0.6;
         float rays = pow(0.5 + 0.5 * sin(a * 9.0 + uTime * 1.6 + 2.0 * o9n(vec2(a * 2.0, uTime))), 3.0) * smoothstep(1.25, 0.12, r);
         c += vec3(0.75, 0.8, 1.0) * rays * 0.22 + vec3(0.6, 0.75, 1.0) * (0.5 + 0.5 * sin(r * 26.0 - uTime * 7.0)) * smoothstep(1.1, 0.2, r) * 0.1;
-        c += vec3(1.0) * step(0.985, o9h(floor(vQ * 34.0) + floor(uTime * 9.0))) * smoothstep(1.2, 0.2, r) * 0.7;
         c += vec3(1.0, 1.0, 1.1) * (1.0 - smoothstep(0.0, 0.07, e)) * step(0.001, uOpen);
         gl_FragColor = vec4(c, 1.0); }` }));
   cap.name = 'open9End'; cap.position.set(P.x, P.y, P.z - O.tube.end - 0.02); cap.visible = false; scene.add(cap);
@@ -316,7 +315,7 @@ export function installOpen9(ctx) {
     if (back === null) back = scene.getObjectByName('seq7DrumBack') || false;
     if (back) { const bu7 = back.material.uniforms, dk = sm(T.back[0] + 0.12, T.back[1], s); bu7.uOpen.value = 1.12 * sm(T.back[0] - 0.15, T.back[0] + 0.2, s); bu7.uDiss.value = dk; bu7.uFill.value = 0; back.visible = dk < 1 && !inPassage; }
     { const lit = sm(6.55, 7.05, s), gone = sm(T.back[0] + 0.1, T.back[1], s); glowU.uK.value = lit * (0.7 + 0.12 * Math.sin(it * 2.3)) * (1 - gone); glow.visible = lit > 0.01 && gone < 1 && !inPassage;
-      if (glow0) ctx.glowL.color.copy(glow0).lerp(glowV, lit * 0.8); }
+      if (glow0) ctx.glowL.color.copy(glow0).lerp(glowV, lit * 0.4); }
     vortex.U.uFill.value = 0;   // (the painted water on the drum's wall: the 3D water replaces it)
     vortex.water.visible = false;
     // the copy of the tunnel is never shown: Screen 6 is the live game
