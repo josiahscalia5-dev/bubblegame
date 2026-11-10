@@ -27,7 +27,12 @@ export const G13 = {
     freckles: 14,
   },
   tex: { on: true, skin: [3, 0.88, 1.05], hair: [3, 0.92, 0.9], pink: [7, 0.76, 1.05], purple: [6, 0.82, 1.06] },   // hue shift (deg), saturation x, value x
-  pose: { headUp: 0.36, neckUp: 0.1 },   // (rad) Scene 1's head lift, easing out by s 0.9
+  pose: { headUp: 0.36, neckUp: 0.1 },
+  // the bow (art director: 1.5x too wide in the frame, flat on the crown; the references' bow is smaller, further back at the ponytail's base,
+  // tilted): her pink texels above yCut on the head are scaled about their centre, moved (model units) and tilted (rad about her x axis)
+  // ringlets: springy curls on her head bone, anchored on her own hair surface (the ponytail behind, and a few framing her face)
+  hair: { on: true, tail: 34, face: 6, coil: 0.022, tube: 0.0085, len: [0.1, 0.24], turns: [2.6, 4.2], cols: ['#3b1407', '#6e3015', '#a35a2a'] },
+  bow: { on: false, yCut: 0.97, scale: 0.78, move: [0, -0.01, -0.06], tilt: 0.3, roll: -0.2 },   // (rad) Scene 1's head lift, easing out by s 0.9
   fgTowels: false,   // the lower-left towel stack of Scene 1
 };
 
@@ -39,7 +44,7 @@ if (G13_ON && !G13.fgTowels) ROOM2.fgTowels = [];   // (the room is built after 
 
 // the girl's skinned positions in her current pose, as a plain triangle soup limited to a box in her root's coordinates (fast raycasts)
 function bakeRegion(skinned, root, box) {
-  const pos = skinned.geometry.attributes.position, idx = skinned.geometry.index, v = new THREE.Vector3();
+  const pos = skinned.geometry.attributes.position, uvA = skinned.geometry.attributes.uv, idx = skinned.geometry.index, v = new THREE.Vector3();
   const inv = new THREE.Matrix4().copy(root.matrixWorld).invert();
   const W = new Float32Array(pos.count * 3), inBox = new Uint8Array(pos.count);
   skinned.updateMatrixWorld(true); skinned.skeleton.update();
@@ -48,14 +53,14 @@ function bakeRegion(skinned, root, box) {
     W[i * 3] = v.x; W[i * 3 + 1] = v.y; W[i * 3 + 2] = v.z;
     v.applyMatrix4(inv); inBox[i] = v.x > box.x0 - 0.05 && v.x < box.x1 + 0.05 && v.y > box.y0 - 0.05 && v.y < box.y1 + 0.05 && v.z > 0.05 ? 1 : 0;
   }
-  const tri = [];
+  const tri = [], tuv = [];
   const n = idx ? idx.count : pos.count;
   for (let t = 0; t < n; t += 3) {
     const a = idx ? idx.getX(t) : t, b = idx ? idx.getX(t + 1) : t + 1, c = idx ? idx.getX(t + 2) : t + 2;
     if (inBox[a] + inBox[b] + inBox[c] < 2) continue;
-    for (const q of [a, b, c]) tri.push(W[q * 3], W[q * 3 + 1], W[q * 3 + 2]);
+    for (const q of [a, b, c]) { tri.push(W[q * 3], W[q * 3 + 1], W[q * 3 + 2]); tuv.push(uvA ? uvA.getX(q) : 0, uvA ? uvA.getY(q) : 0); }
   }
-  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(tri, 3)); g.computeVertexNormals();
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(tri, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(tuv, 2)); g.computeVertexNormals();
   return new THREE.Mesh(g, new THREE.MeshBasicMaterial({ side: THREE.DoubleSide }));
 }
 
@@ -75,9 +80,10 @@ function paintFace(cv, F) {
   if (F.off) return;
   const k = W / (F.x1 - F.x0);   // canvas px per model unit
   const P = (x, y) => [X(x), Y(y)];
-  const soft = (x, y, rx, ry, col, a = 1, hard = 0.55) => {   // a feathered ellipse
+  const clear = (col) => { const t = document.createElement('canvas').getContext('2d'); t.fillStyle = col; t.fillRect(0, 0, 1, 1); const d = t.getImageData(0, 0, 1, 1).data; return `rgba(${d[0]},${d[1]},${d[2]},0)`; };
+  const soft = (x, y, rx, ry, col, a = 1, hard = 0.55) => {   // a feathered ellipse (fading to the same colour, never toward black)
     c.save(); c.translate(X(x), Y(y)); c.scale(1, ry / rx); const g = c.createRadialGradient(0, 0, 0, 0, 0, rx * k);
-    g.addColorStop(0, col); g.addColorStop(hard, col); g.addColorStop(1, 'rgba(0,0,0,0)'); c.globalAlpha = a; c.fillStyle = g;
+    g.addColorStop(0, col); g.addColorStop(hard, col); g.addColorStop(1, clear(col)); c.globalAlpha = a; c.fillStyle = g;
     c.beginPath(); c.arc(0, 0, rx * k, 0, 6.2832); c.fill(); c.restore(); };
   // skin patches over the painted mouth and round the painted eyes (the new features are larger and cover the rest)
   const M = F.mouth;
@@ -139,6 +145,7 @@ function paintFace(cv, F) {
     c.save(); shape(); c.strokeStyle = 'rgba(150,50,40,0.75)'; c.lineWidth = 0.0018 * k; c.stroke(); c.restore();
     for (const sx of [-1, 1]) { c.strokeStyle = 'rgba(190,80,60,0.45)'; c.lineWidth = 0.0016 * k; c.lineCap = 'round'; c.beginPath(); c.moveTo(mx + sx * w * 1.02, my - rise * 1.1); c.quadraticCurveTo(mx + sx * w * 1.18, my - rise * 0.6, mx + sx * w * 1.12, my - rise * 0.05); c.stroke(); }
   }
+  if (F.mask) { c.save(); c.globalCompositeOperation = 'destination-in'; c.imageSmoothingEnabled = true; c.drawImage(F.mask, 0, 0, W, H); c.restore(); }   // (hair strands in front of her face stay as they are)
 }
 
 // her atlas graded toward the references (per texel, by colour class; returns a new texture in the same UV layout)
@@ -174,6 +181,81 @@ export function poseGirl13(B, lat, s, rotateBoneWorld) {
   rotateBoneWorld(B.head, lat, -G13.pose.headUp * k);
 }
 
+// the bow: select her pink vertices high on her head (in her root's coordinates, rest pose) and scale / move / tilt them in place
+function reshapeBow(skinned, root, texel, Bw) {
+  const g = skinned.geometry, pos = g.attributes.position, uv = g.attributes.uv, v = new THREE.Vector3(), u = new THREE.Vector2();
+  const M = new THREE.Matrix4().copy(root.matrixWorld).invert().multiply(skinned.matrixWorld), Mi = M.clone().invert();
+  const sel = [], pts = [];
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i).applyMatrix4(M); if (v.y < Bw.yCut) continue;
+    const t = texel(u.fromBufferAttribute(uv, i)); if (!t) continue;
+    const mx = Math.max(...t), mn = Math.min(...t), sat = (mx - mn) / Math.max(1, mx); const pink = t[0] >= t[1] && t[2] > t[1] && sat > 0.3 && mx > 120;
+    if (pink) { sel.push(i); pts.push(v.clone()); }
+  }
+  if (!sel.length) return { n: 0 };
+  const box = new THREE.Box3().setFromPoints(pts), c = box.getCenter(new THREE.Vector3());
+  const stats = { n: sel.length, c: c.toArray().map((x) => +x.toFixed(3)), min: box.min.toArray().map((x) => +x.toFixed(3)), max: box.max.toArray().map((x) => +x.toFixed(3)) };
+  if (!Bw.on) return stats;
+  const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(Bw.tilt, 0, Bw.roll)), mv = new THREE.Vector3(...Bw.move);
+  sel.forEach((i, k) => { const p = pts[k].clone().sub(c).multiplyScalar(Bw.scale).applyQuaternion(q).add(c).add(mv).applyMatrix4(Mi); pos.setXYZ(i, p.x, p.y, p.z); });
+  pos.needsUpdate = true; g.computeBoundingSphere();
+  return stats;
+}
+
+// one ringlet: a tapered tube round a helix hanging from a (root-space) anchor along dir; vertex colours dark at the root, caramel toward the tip
+function ringlet(A, dir, L, turns, coil, tube, phase, cols) {
+  const d = dir.clone().normalize(), e1 = new THREE.Vector3().crossVectors(d, Math.abs(d.y) < 0.9 ? new THREE.Vector3(0, 1, 0) : new THREE.Vector3(1, 0, 0)).normalize(), e2 = new THREE.Vector3().crossVectors(d, e1);
+  const pts = [];
+  for (let i = 0; i <= 80; i++) { const t = i / 80, th = phase + t * turns * 6.2832, rc = coil * (0.55 + 0.45 * Math.min(1, t * 4)) * (1 + 0.15 * t);
+    pts.push(A.clone().addScaledVector(d, t * L).addScaledVector(e1, Math.cos(th) * rc).addScaledVector(e2, Math.sin(th) * rc)); }
+  const curve = new THREE.CatmullRomCurve3(pts), seg = 120, rad = 7;
+  const g = new THREE.TubeGeometry(curve, seg, tube, rad, false);
+  // taper and colour along the tube
+  const pos = g.attributes.position, nor = g.attributes.normal, col = new Float32Array(pos.count * 3), C = cols.map((h) => new THREE.Color(h)), tmp = new THREE.Color(), p = new THREE.Vector3(), q = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    const t = Math.floor(i / (rad + 1)) / seg, c = curve.getPointAt(Math.min(1, t)), w = 1 - 0.65 * t * t;
+    p.fromBufferAttribute(pos, i); q.copy(p).sub(c).multiplyScalar(w); pos.setXYZ(i, c.x + q.x, c.y + q.y, c.z + q.z);
+    const hi = Math.max(0, nor.getY(i)) * 0.5 + 0.5 * Math.max(0, -nor.getZ(i));
+    tmp.copy(C[0]).lerp(C[1], Math.min(1, t * 2.2)).lerp(C[2], 0.35 * hi * Math.min(1, t * 1.5)); col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
+  }
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3)); g.computeVertexNormals();
+  return g;
+}
+
+// the ringlets: anchors on her hair (pink-free brown texels) behind her head (the ponytail) and at her temples (the face-framing curls)
+function buildHair(skinned, root, B, texel, Hh, mat) {
+  const g = skinned.geometry, pos = g.attributes.position, uv = g.attributes.uv, nrm = g.attributes.normal, v = new THREE.Vector3(), n = new THREE.Vector3(), u = new THREE.Vector2();
+  const M = new THREE.Matrix4().copy(root.matrixWorld).invert().multiply(skinned.matrixWorld), Nm = new THREE.Matrix3().getNormalMatrix(M);
+  const back = [], temple = [];
+  for (let i = 0; i < pos.count; i += 3) {
+    v.fromBufferAttribute(pos, i).applyMatrix4(M);
+    const t = texel(u.fromBufferAttribute(uv, i)); if (!t) continue; const mx = Math.max(...t), mn = Math.min(...t);
+    if (!(mx < 170 && (mx - mn) / Math.max(1, mx) > 0.4 && t[0] > t[2])) continue;   // brown hair
+    n.fromBufferAttribute(nrm, i).applyMatrix3(Nm).normalize();
+    if (v.z < -0.06 && v.y > 0.62 && v.y < 1.02 && n.z < -0.2 && n.y < 0.4) back.push([v.clone(), n.clone()]);
+    else if (Math.abs(v.x) > 0.11 && Math.abs(v.x) < 0.2 && v.y > 0.7 && v.y < 0.84 && v.z > -0.02 && v.z < 0.1 && n.y < 0.2) temple.push([v.clone(), n.clone()]);
+  }
+  let sd = 0x4a17; const r = () => { sd = (sd * 1664525 + 1013904223) >>> 0; return sd / 4294967296; };   // (private)
+  const grp = new THREE.Group(); grp.name = 'girl13Ringlets';
+  const add = (list, count, scale, down) => {
+    for (let k = 0; k < count && list.length; k++) {
+      const [A, nn] = list[Math.floor(r() * list.length)];
+      const dir = new THREE.Vector3(0, -1, 0).multiplyScalar(down).addScaledVector(nn, 1 - down * 0.6).add(new THREE.Vector3((r() - 0.5) * 0.4, 0, (r() - 0.5) * 0.3));
+      const L = (Hh.len[0] + r() * (Hh.len[1] - Hh.len[0])) * scale, turns = Hh.turns[0] + r() * (Hh.turns[1] - Hh.turns[0]);
+      const geo = ringlet(A.clone().addScaledVector(nn, -0.004), dir, L, turns * (0.7 + 0.3 * scale), Hh.coil * (0.8 + r() * 0.45) * (0.6 + 0.4 * scale), Hh.tube * (0.85 + r() * 0.3) * (0.7 + 0.3 * scale), r() * 6.28, Hh.cols);
+      geo.applyMatrix4(root.matrixWorld);   // root space -> world (rest pose)
+      const m = new THREE.Mesh(geo, mat); m.frustumCulled = false; grp.add(m);
+    }
+  };
+  add(back, Hh.tail, 1, 0.75);
+  add(temple, Hh.face, 0.55, 0.9);
+  // into the head bone's space (they follow her head)
+  B.head.updateMatrixWorld(true); const inv = new THREE.Matrix4().copy(B.head.matrixWorld).invert();
+  for (const m of grp.children) m.geometry.applyMatrix4(inv);
+  B.head.add(grp);
+  return { back: back.length, temple: temple.length, n: grp.children.length };
+}
+
 // build everything once her model is in its rest pose (root at the origin, unrotated, at its opening scale)
 export function buildGirl13(g2) {
   if (!G13_ON || api.ready) return;
@@ -184,13 +266,28 @@ export function buildGirl13(g2) {
   root.updateMatrixWorld(true);
   const F = G13.face, region = bakeRegion(skinned, root, F);
   // the grid: raycast each point straight back onto her face (model -z), lift it off the surface along the surface normal
+  const gm = skinned.material;
+  if (G13.tex.on && gm.map && gm.map.image) { const old = gm.map; gm.map = gradeAtlas(old, G13.tex); gm.needsUpdate = true; api.atlas = gm.map; api.atlasOld = old; }
+  // the (graded) atlas's texels: her skin colour and the hair test
+  const AT = gm.map && gm.map.image, aw = AT ? AT.width : 0, ah = AT ? AT.height : 0;
+  const ad = AT ? (() => { const cc = document.createElement('canvas'); cc.width = aw; cc.height = ah; const x2 = cc.getContext('2d'); x2.drawImage(AT, 0, 0); return x2.getImageData(0, 0, aw, ah).data; })() : null;
+  const texel = (uv) => { if (!ad || !uv) return null; const px = Math.min(aw - 1, Math.max(0, Math.floor(uv.x * aw))), py = Math.min(ah - 1, Math.max(0, Math.floor(uv.y * ah))), i = (py * aw + px) * 4; return [ad[i], ad[i + 1], ad[i + 2]]; };
+  const hairAt = (uv) => { const t = texel(uv); if (!t) return true; const mx = Math.max(...t), mn = Math.min(...t); return mx < 150 && (mx - mn) / Math.max(1, mx) > 0.35; };
+  api.bow = reshapeBow(skinned, root, texel, G13.bow);
+  if (G13.hair.on) {
+    const hm = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.42, metalness: 0, sheen: 1, sheenColor: new THREE.Color('#c87a48'), sheenRoughness: 0.32,
+      emissive: gm.emissive ? gm.emissive.clone() : new THREE.Color(0), emissiveIntensity: (gm.emissiveIntensity || 0) * 0.6, envMap: gm.envMap || null, envMapIntensity: (gm.envMapIntensity || 1) * 1.2 });
+    api.hair = buildHair(skinned, root, B, texel, G13.hair, hm);
+  }
+  const strand = [];
   const N = F.n, P = [], ok = [], ray = new THREE.Raycaster(), dir = new THREE.Vector3(0, 0, -1).transformDirection(root.matrixWorld);
   const nm = new THREE.Matrix3();
   for (let j = 0; j <= N; j++) for (let i = 0; i <= N; i++) {
     const x = F.x0 + (F.x1 - F.x0) * i / N, y = F.y0 + (F.y1 - F.y0) * j / N;
     ray.set(root.localToWorld(new THREE.Vector3(x, y, 0.8)), dir);
-    const h = ray.intersectObject(region, false)[0];
-    if (!h) { P.push(new THREE.Vector3()); ok.push(false); continue; }
+    const hs = ray.intersectObject(region, false), h = hs[0];
+    if (!h) { P.push(new THREE.Vector3()); ok.push(false); strand.push(false); continue; }
+    strand.push((y > 0.745 || Math.abs(x) > 0.095) && hs.length > 1 && hs[1].distance - h.distance < 0.07 && hairAt(h.uv));
     const nrm = h.face.normal.clone().applyMatrix3(nm.getNormalMatrix(region.matrixWorld)).normalize();
     if (nrm.dot(dir) > 0) nrm.negate();
     P.push(h.point.clone().addScaledVector(nrm, F.lift)); ok.push(true);
@@ -207,10 +304,19 @@ export function buildGirl13(g2) {
     index.push(a, b, d, a, d, c);
   }
   const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(index); geo.computeVertexNormals();
+  // her skin colour: the median graded atlas texel under her cheeks, chin and the bridge of her nose
+  if (F.skinAuto !== false) {
+    const S = []; for (const [x, y] of [[-0.085, 0.715], [0.085, 0.715], [-0.07, 0.73], [0.07, 0.73], [0, 0.665], [0.03, 0.668], [-0.03, 0.668], [0, 0.755], [-0.1, 0.74], [0.1, 0.74]]) {
+      ray.set(root.localToWorld(new THREE.Vector3(x, y, 0.8)), dir); const h = ray.intersectObject(region, false)[0]; const t = h && texel(h.uv); if (t) S.push(t); }
+    if (S.length) { const med = (i) => S.map((t) => t[i]).sort((p, q) => p - q)[S.length >> 1]; F.skin = `rgb(${med(0)},${med(1)},${med(2)})`; api.skinSamples = S; }
+  }
+  // the mask: 1 on her face, 0 where a hair strand hangs in front of it (in the layer's own u, v)
+  const mk = document.createElement('canvas'); mk.width = mk.height = N + 1; { const c2 = mk.getContext('2d'), id = c2.createImageData(N + 1, N + 1);
+    for (let k2 = 0; k2 < P.length; k2++) { const i = k2 % (N + 1), j = Math.floor(k2 / (N + 1)), row = N - j; id.data[(row * (N + 1) + i) * 4 + 3] = ok[k2] && !strand[k2] ? 255 : 0; }
+    c2.putImageData(id, 0, 0); }
+  F.mask = mk; api.strands = strand.filter(Boolean).length;
   const cv = document.createElement('canvas'); cv.width = cv.height = 1024; paintFace(cv, F);
   const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
-  const gm = skinned.material;
-  if (G13.tex.on && gm.map && gm.map.image) { const old = gm.map; gm.map = gradeAtlas(old, G13.tex); gm.needsUpdate = true; api.atlas = gm.map; api.atlasOld = old; }
   const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4,
     roughness: 0.62, metalness: 0, emissive: gm.emissive ? gm.emissive.clone() : new THREE.Color(0), emissiveIntensity: gm.emissiveIntensity || 0, envMap: gm.envMap || null, envMapIntensity: gm.envMapIntensity || 1 });
   const face = new THREE.Mesh(geo, mat); face.name = 'girl13Face'; face.frustumCulled = false; face.renderOrder = 2;

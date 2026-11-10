@@ -1,6 +1,6 @@
 // girl13 (10 November 2026, session b57cc1e7): real frames of the opening's Scene 1 waiting frame, plus a close-up of the girl's head, and the
 // projected screen positions of her bones. Usage:
-//   [S3=list] [VW=432 VH=768 DPR=1] [CLOSE=1 CLOSED=1.5 CLOSEUP=0.14] [TUNE='{json merged into window.__bwSix2}'] [G13='{json merged into window.__bwGirl13}'] [T=-1]
+//   [S3=list] [VW=432 VH=768 DPR=1] [CLOSE=1 CLOSED=1.5 CLOSEUP=0.14] [FRONT=1] [FIT='{json}'] [TUNE='{json merged into window.__bwSix2}'] [G13='{json merged into window.__bwGirl13}'] [T=-1]
 //   flock /tmp/bw_browser.lock node tools/girl13/probe.cjs <ABSOLUTE WebDemo dir> <out dir> [tag]
 // Writes <tag>_full.png (the game camera), <tag>_close.png (CLOSE=1: a close-up of her head along the game camera's line of sight) and <tag>.json.
 // T = real seconds after START (-1 = the waiting Laundry Toss screen), as in tools/six2/shots6.cjs.
@@ -40,6 +40,33 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     const V = (o) => { const v = new cam.position.constructor(); o.getWorldPosition(v); return v; };
     for (const [k, b] of Object.entries(d.g2.B || {})) { const w = V(b), p = w.clone().project(cam); out.bones[k] = { w: w.toArray().map((v) => +v.toFixed(3)), sx: +((p.x + 1) / 2).toFixed(3), sy: +((1 - p.y) / 2).toFixed(3) }; }
     return out; });
+  if (process.env.FIT) {   // a real game camera fitted to a reference's framing: FIT='{"band":1.7067,"G":[x,y],"M":[x,y],"H":[x,y],"W":[x,y]}' (fractions of the reference)
+    const fit = await page.evaluate(([fitJ, aspect]) => {
+      const R = JSON.parse(fitJ), d = window.__bwSix2dbg, cam = d.camera, V3 = cam.position.constructor, F = window.__bwGirl13 && window.__bwGirl13.frame ? window.__bwGirl13.frame() : null;
+      const head = new V3(); d.g2.B.head.getWorldPosition(head);
+      const G = F ? F.c.clone() : head.clone().add(new V3(0, 0.2, 0)), Mo = G.clone().add(new V3(0, -0.07, 0));
+      const H = new V3(); d.hero.getWorldPosition(H); H.y += 0.04;
+      const Wp = new V3(); (d.washer.glass || d.washer.door || d.washer.g).getWorldPosition(Wp);
+      const bh = aspect / R.band, top = (1 - bh) / 2, T = (f) => [f[0], top + f[1] * bh];
+      const L = [[G, T(R.G), 3], [Mo, T(R.M), 2], [H, T(R.H), 2], [Wp, T(R.W), 1]];
+      const c = cam.clone(); c.aspect = aspect;
+      const err = (p) => { c.position.set(p[0], p[1], p[2]); c.lookAt(p[3], p[4], p[5]); c.fov = p[6]; c.updateProjectionMatrix(); c.updateMatrixWorld(true);
+        let e = 0; for (const [w, t, k] of L) { const v = w.clone().project(c); if (v.z > 1) return 1e9; const sx = (v.x + 1) / 2, sy = (1 - v.y) / 2; e += k * (((sx - t[0]) * aspect) ** 2 + (sy - t[1]) ** 2); } return e; };
+      let sd = 99; const r = () => { sd = (sd * 1664525 + 1013904223) >>> 0; return sd / 4294967296; };
+      const tg = new V3(); cam.getWorldDirection(tg); tg.multiplyScalar(2).add(cam.position);
+      let best = 1e9, bp = null;
+      for (let run = 0; run < 6; run++) {
+        let p = [cam.position.x, cam.position.y, cam.position.z - 1.0 - run * 0.2, G.x + 0.3, G.y - 0.1, G.z, 34], b = err(p); const st = [0.25, 0.15, 0.3, 0.2, 0.15, 0.2, 5];
+        for (let it = 0; it < 9000; it++) { const i = it % 7, q = p.slice(); q[i] += (r() - 0.5) * 2 * st[i] * (1 - it / 10000); q[6] = Math.min(60, Math.max(14, q[6])); const e = err(q); if (e < b) { b = e; p = q; } }
+        if (b < best) { best = b; bp = p; }
+      }
+      window.__bwSix2.cam = [[-1, bp.slice(0, 3), bp.slice(3, 6), bp[6]], [99, bp.slice(0, 3), bp.slice(3, 6), bp[6]]];
+      return { err: best, cam: bp.map((x) => +x.toFixed(3)), band: [top, bh] };
+    }, [process.env.FIT, VW / VH]);
+    await seekTo(); await page.waitForTimeout(200);
+    await page.screenshot({ path: path.join(OUT, `${TAG}_fit.png`), timeout: 240000 }); log('fit', JSON.stringify(fit));
+    fs.writeFileSync(path.join(OUT, `${TAG}_fit.json`), JSON.stringify(fit));
+  }
   if (process.env.FRONT === '1') {   // straight in front of her face (girl13's face frame), for placing the face layer's features
     await page.evaluate(([dist]) => { const F = window.__bwGirl13.frame(), P = F.c.clone().addScaledVector(F.f, dist);
       window.__bwSix2.cam = [[-1, P.toArray(), F.c.toArray(), 24], [99, P.toArray(), F.c.toArray(), 24]]; window.__bwFrontUp = F.up.toArray(); }, [+(process.env.CLOSED || 0.7)]);
