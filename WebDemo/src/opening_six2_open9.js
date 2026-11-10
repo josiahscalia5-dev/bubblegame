@@ -39,13 +39,13 @@ const V = (a, b, c) => new THREE.Vector3(a, b, c);
 // every number (window.__bwOpen9 in the browser). Times are STORY seconds; real seconds after START = story + `real` once the wash has begun.
 export const OPEN9 = {
   real: 1.35,
-  T: { pool: [3.3, 4.3], fill: [6.45, 7.05], ring: [7.6, 8.1], roll: [7.4, 9.4], back: [8.02, 8.42], room: 8.1, dive: 8.2, glass: 8.75, open: 10.0, end: 10.72 },
-  level: { land: -0.215, wash: -0.118 },            // the pool's surface below the drum's axis (m)
+  T: { pool: [3.3, 4.3], fill: [6.45, 7.05], ring: [7.6, 8.1], roll: [7.4, 9.1], back: [8.02, 8.42], room: 8.1, dive: 8.2, glass: 8.75, open: 10.0, end: 10.72 },
+  level: { land: -0.215, wash: -0.062 },            // the pool's surface below the drum's axis (m)
   slosh: { amp: 0.11, rate: 2.5, drag: 0.85 },      // the pool's rocking; how far the turning drum drags it up the side (rad)
   drum: { from: 6.5, w0: 0.7, w1: 13.0, until: 8.15 },
   ring: { thick: 0.105 },
-  hero: { scale: 0.62, float: 0.068, d: 0.4, orbit: 0.075, turns: 2, ahead: 1.5, aheadEnd: 1.42 },
-  cam: { wash: [0.3, 0.7, 2.46], washAt: [0.3, 0.625, 0.27], spin: [0.3, 0.675, 1.4], spinAt: [0.3, 0.618, 0.27], speed: 3.4, fov: 60, tilt: 0.126 },
+  hero: { scale: 0.62, float: 0.056, d: 0.4, orbit: 0.095, turns: 2, ahead: 1.5, aheadEnd: 1.42 },
+  cam: { wash: [0.3, 0.78, 2.42], washAt: [0.3, 0.612, 0.27], spin: [0.3, 0.675, 1.4], spinAt: [0.3, 0.618, 0.27], speed: 3.4, fov: 60, tilt: 0.126 },
   tube: { d0: 0.055, back: 1.02, end: 6.2, r: 0.42, mouth: 0.22 },
   towel: { blue: [-0.15, 0.62], yellow: [0.16, 0.5], orbit: 0.2 },   // [across the pool m, depth m] while they float
   flash: { at: -0.16, fall: 0.5, size: 0.42 },
@@ -134,24 +134,24 @@ export function installOpen9(ctx) {
         float pat = mix(flow * 1.3 + vWave * 0.5, rib, sp);
         vec3 L1 = normalize(vec3(-0.25, 0.85, 0.5));
         float lit = clamp(dot(n, L1) * 0.5 + 0.5, 0.0, 1.0), depth = smoothstep(0.0, 0.14, vThick);
-        vec3 deep = vec3(0.0, 0.12, 0.66), mid = vec3(0.02, 0.40, 0.98), light = vec3(0.16, 0.82, 1.05);
+        vec3 deep = vec3(0.0, 0.10, 0.62), mid = vec3(0.03, 0.42, 1.0), light = vec3(0.2, 0.86, 1.06);
         vec3 c = mix(mid, deep, depth * 0.7);
         c = mix(c, deep, smoothstep(0.1, -0.75, pat) * 0.6);
         c = mix(c, light, smoothstep(0.3, 0.95, pat) * 0.62 * (0.4 + 0.6 * lit));
-        c *= 0.72 + 0.46 * lit;
+        c *= 0.8 + 0.4 * lit;
         // the drum's violet-pink lights in the water: at grazing angles, and as drifting glints
-        float fr = pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 3.0);
-        c += vec3(0.50, 0.24, 0.86) * fr * (0.45 + 0.4 * uLit);
+        float fr = pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 4.0);
+        c += vec3(0.40, 0.2, 0.9) * fr * (0.14 + 0.2 * uLit) * (1.0 - 0.6 * sp);
         c += vec3(0.78, 0.30, 0.82) * smoothstep(0.62, 0.92, n2) * (0.16 + 0.2 * uLit);
         vec3 h = normalize(L1 + v); c += vec3(1.0, 1.0, 1.05) * pow(max(dot(n, h), 0.0), 64.0) * 0.85;
         // foam: crests, where the water thins against the drum, round him, spiral streaks, small bubbles
         float fn = o9f(vec2(vW.x * 30.0 + t * 0.9, vD * 30.0 - t * 0.7) + sw * 3.0);
         float crest = smoothstep(0.5, 1.0, vWave + (fn - 0.5) * 0.6) * (1.0 - 0.45 * sp);
-        float edge = smoothstep(0.034 + 0.03 * fn, 0.008, vThick) * (1.0 - pass);
+        float edge = smoothstep(0.018 + 0.02 * fn, 0.006, vThick) * (1.0 - pass);
         vec2 hq = vec2(vW.x - uHero.x, vD - uHero.y); float hr = length(hq);
         float ring = smoothstep(0.045, 0.0, abs(hr - 0.118 - 0.014 * sin(atan(hq.y, hq.x) * 5.0 + t * 5.0))) * smoothstep(0.28, 0.6, fn) * uHero.z;
-        float streak = smoothstep(0.9, 0.99, rib * 0.5 + 0.5) * smoothstep(0.38, 0.62, n2) * sp;
-        float bub = smoothstep(0.80, 0.87, o9n(vec2(vW.x, vD) * 64.0 + sw * 9.0 + t * 0.4));
+        float streak = smoothstep(0.88, 0.99, rib * 0.5 + 0.5) * smoothstep(0.36, 0.7, n2) * sp;
+        float bub = smoothstep(0.82, 0.9, o9n(vec2(vW.x, vD) * 46.0 + sw * 9.0 + t * 0.4)) * (1.0 - 0.75 * pass);
         float foam = clamp(crest * 0.92 + edge + ring + streak * 0.85 + bub * (0.25 + 0.6 * crest), 0.0, 1.0);
         c = mix(c, vec3(1.06, 1.1, 1.16), foam);
         // against the glass: the water's cross-section, darker with depth, light shafts and bubbles in it, foam along its top
@@ -185,7 +185,7 @@ export function installOpen9(ctx) {
   // ------------------------------------------------ foam lumps riding the water, soap bubbles in the air of the drum and the passage
   const NF = 54, foamM = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.02, 1.07, 1.14) });
   const foam = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8), foamM, NF); foam.name = 'open9Foam'; foam.frustumCulled = false; foam.visible = false; scene.add(foam);
-  const fo = []; for (let i = 0; i < NF; i++) fo.push({ a: (rnd() - 0.5) * 2.2, d: 0.07 + rnd() * rnd() * 0.75, s: 0.007 + rnd() * 0.013, ph: rnd() * 6.28, lag: 0.55 + rnd() * 0.5 });
+  const fo = []; for (let i = 0; i < NF; i++) fo.push({ a: (rnd() - 0.5) * 2.2, d: 0.07 + rnd() * rnd() * 0.75, s: 0.003 + rnd() * 0.006, ph: rnd() * 6.28, lag: 0.55 + rnd() * 0.5 });
   const NB = 64;
   const bubM = new THREE.ShaderMaterial({ transparent: true, depthWrite: false,
     vertexShader: 'varying vec3 vN, vV; void main() { vec4 mv = modelViewMatrix * instanceMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * mat3(instanceMatrix) * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
@@ -205,6 +205,9 @@ export function installOpen9(ctx) {
         if (uOpen > 0.0 && e < 0.0) discard;
         vec3 c = mix(vec3(1.12, 1.1, 1.2), vec3(0.74, 0.86, 1.16), smoothstep(0.0, 0.36, r)); c = mix(c, vec3(0.36, 0.62, 1.08), smoothstep(0.3, 0.85, r));
         c += vec3(0.5, 0.2, 0.6) * exp(-pow((r - 0.42) / 0.09, 2.0)) * 0.6;
+        float rays = pow(0.5 + 0.5 * sin(a * 9.0 + uTime * 1.6 + 2.0 * o9n(vec2(a * 2.0, uTime))), 3.0) * smoothstep(1.25, 0.12, r);
+        c += vec3(0.75, 0.8, 1.0) * rays * 0.22 + vec3(0.6, 0.75, 1.0) * (0.5 + 0.5 * sin(r * 26.0 - uTime * 7.0)) * smoothstep(1.1, 0.2, r) * 0.1;
+        c += vec3(1.0) * step(0.985, o9h(floor(vQ * 34.0) + floor(uTime * 9.0))) * smoothstep(1.2, 0.2, r) * 0.7;
         c += vec3(1.0, 1.0, 1.1) * (1.0 - smoothstep(0.0, 0.07, e)) * step(0.001, uOpen);
         gl_FragColor = vec4(c, 1.0); }` }));
   cap.name = 'open9End'; cap.position.set(P.x, P.y, P.z - O.tube.end - 0.02); cap.visible = false; scene.add(cap);
@@ -212,6 +215,20 @@ export function installOpen9(ctx) {
     r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(0.3, 'rgba(255,250,255,0.92)'); r.addColorStop(0.62, 'rgba(210,225,255,0.4)'); r.addColorStop(1, 'rgba(190,210,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128);
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
   const flash = new THREE.Sprite(new THREE.SpriteMaterial({ map: flashTex, transparent: true, depthTest: false, depthWrite: false, opacity: 0 })); flash.name = 'open9Flash'; flash.renderOrder = 999; flash.visible = false; scene.add(flash);
+
+  // the drum's own light (approved 04: a glowing violet-pink interior with rings of light), just in front of its back; additive
+  const glowU = { uTime: U.uTime, uRot: U.uRot, uK: { value: 0 } };
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.9), new THREE.ShaderMaterial({ uniforms: glowU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: 'varying vec2 vQ; void main() { vQ = position.xy / 0.43; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: /* glsl */ `uniform float uTime, uRot, uK; varying vec2 vQ;
+      void main() { float r = length(vQ), a = atan(vQ.y, vQ.x); if (r > 1.0) discard;
+        float rings = pow(0.5 + 0.5 * sin(r * 24.0 - uTime * 1.8), 2.0) * smoothstep(1.0, 0.25, r) * smoothstep(0.05, 0.3, r);
+        float streak = pow(0.5 + 0.5 * cos(a * 4.0 + uRot), 5.0) * (1.0 - r);
+        vec3 c = mix(vec3(1.0, 0.72, 1.0), vec3(0.66, 0.26, 1.0), smoothstep(0.0, 0.7, r));
+        float g = 0.6 * (1.0 - r) * (1.0 - r) + 0.3 * rings + 0.28 * streak;
+        gl_FragColor = vec4(c, clamp(g * uK, 0.0, 1.0)); }` }));
+  glow.name = 'open9DrumGlow'; glow.position.set(P.x, P.y, P.z - O.tube.back + 0.07); glow.visible = false; scene.add(glow);
+  const glow0 = ctx.glowL ? ctx.glowL.color.clone() : null, glowV = new THREE.Color(0xc070ff);
 
   // ------------------------------------------------ the camera
   const zDive = (s) => { const z0 = O.cam.spin[2], acc = O.cam.speed / (T.glass - T.dive), q = s - T.dive; return s < T.glass ? z0 - 0.5 * acc * q * q : z0 - 0.5 * acc * (T.glass - T.dive) ** 2 - O.cam.speed * (s - T.glass); };
@@ -291,22 +308,24 @@ export function installOpen9(ctx) {
     const d = P.z - camera.position.z, inPassage = d > O.tube.d0 + 0.03;
     // the water
     U.uTime.value = it; U.uLevel.value = st.level; U.uPhi.value = st.phi; U.uSpin.value = st.spin; U.uRot.value = SG * ang * 0.62;
-    U.uAmp.value = 0.008 + 0.012 * sm(T.fill[0], T.fill[1], s) + 0.012 * sm(1, 6, st.w);
+    U.uAmp.value = 0.008 + 0.016 * sm(T.fill[0], T.fill[1], s) + 0.01 * sm(1, 6, st.w);
     U.uPass.value = sm(T.ring[0] + 0.15, T.ring[1], s); U.uGlow.value = sm(T.back[0], T.glass, s); U.uLit.value = sm(6.55, 7.0, s);
     if (o && o.hero) U.uHero.value.set(o.hero.x, P.z - o.hero.z, (1 - st.spin) * sm(4.7, 4.85, s));
     water.visible = s > T.pool[0] && s < T.end + 0.2;
     // the drum's back: its holes glow, its iris opens, then it melts away from the centre onto the passage
     if (back === null) back = scene.getObjectByName('seq7DrumBack') || false;
     if (back) { const bu7 = back.material.uniforms, dk = sm(T.back[0] + 0.12, T.back[1], s); bu7.uOpen.value = 1.12 * sm(T.back[0] - 0.15, T.back[0] + 0.2, s); bu7.uDiss.value = dk; bu7.uFill.value = 0; back.visible = dk < 1 && !inPassage; }
+    { const lit = sm(6.55, 7.05, s), gone = sm(T.back[0] + 0.1, T.back[1], s); glowU.uK.value = lit * (0.7 + 0.12 * Math.sin(it * 2.3)) * (1 - gone); glow.visible = lit > 0.01 && gone < 1 && !inPassage;
+      if (glow0) ctx.glowL.color.copy(glow0).lerp(glowV, lit * 0.8); }
     vortex.U.uFill.value = 0;   // (the painted water on the drum's wall: the 3D water replaces it)
     vortex.water.visible = false;
     // the copy of the tunnel is never shown: Screen 6 is the live game
     if (replica === null) { replica = [scene.getObjectByName('six2TunnelArches'), six.gear, ...(six.housings || []), six.tun].filter(Boolean); }
     for (const r of replica) r.visible = false;
     // foam lumps on the water: carried round with it
-    foam.visible = water.visible && d < 0.6;
+    foam.visible = water.visible && d < -0.45;
     if (foam.visible) for (let i = 0; i < NF; i++) { const f = fo[i], a = f.a + st.phi * (1 - st.spin) + SG * ang * 0.62 * f.lag * st.spin, r = surfR(a, f.d), dry = Rd(f.d) - r < 0.012;
-      const p = polar(a, r - f.s * 0.35, f.d), k = dry ? 0 : f.s * (1 + 0.25 * Math.sin(it * 4 + f.ph)); M.compose(p, Q, V(k, k, k)); foam.setMatrixAt(i, M); }
+      const p = polar(a, r - f.s * 0.35, f.d), k = dry ? 0 : f.s * (1 + 0.25 * Math.sin(it * 4 + f.ph)) * (1 - 0.4 * st.spin); M.compose(p, Q, V(k, k, k)); foam.setMatrixAt(i, M); }
     foam.instanceMatrix.needsUpdate = true;
     // bubbles: rising in the drum's air, whirled round by the spin, streaming past in the passage
     bubs.visible = s > T.fill[0] && s < T.end;
@@ -317,6 +336,8 @@ export function installOpen9(ctx) {
         M.compose(p, Q, V(k, k, k)); bubs.setMatrixAt(i, M); }
       bubs.instanceMatrix.needsUpdate = true; }
     // spray thrown off the turning water
+    if (splash && s > T.fill[0] + 0.2 && st.w <= 2 && dtI > 0) { emitCarry += dtI * 16; for (; emitCarry >= 1; emitCarry--) { const xa = (rnd() - 0.5) * 0.3, dd = 0.1 + rnd() * 0.3, f = floatAt(xa, dd, 0.01), p = polar(f.a, f.r, dd);
+      splash.emit(p, V((rnd() - 0.5) * 0.3, 0.5 + rnd() * 0.5, (rnd() - 0.5) * 0.2), 0.3 + rnd() * 0.3); } }
     if (splash && st.w > 2 && s < T.glass) { emitCarry += dtI * 60 * sm(2, 9, st.w); for (; emitCarry >= 1; emitCarry--) { const a = rnd() * 6.28, dd = 0.12 + rnd() * 0.5, r = surfR(a, dd), p = polar(a, r, dd);
       splash.emit(p, V(-Math.sin(a) * 0.5 + SG * Math.cos(a) * 0.9, Math.cos(a) * 0.5 + SG * Math.sin(a) * 0.9, 0.3 * (rnd() - 0.5)), 0.25 + rnd() * 0.3); } }
     // the passage's end: the light, opening onto the live game; the flash as he reaches it
