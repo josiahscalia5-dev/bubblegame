@@ -1,0 +1,132 @@
+{
+ "source": "girl_v2_plain.glb",
+ "tpose_arm_dirs": {
+  "L": [
+   1.0,
+   -0.0,
+   0.0
+  ],
+  "R": [
+   -1.0,
+   0.0,
+   -0.0
+  ]
+ },
+ "feet_min_z": 0.0,
+ "height": 1.0,
+ "feet": {
+  "L": {
+   "ankle": [
+    0.1038,
+    -0.0927,
+    0.06
+   ],
+   "ball": [
+    0.1038,
+    -0.1415,
+    0.02
+   ],
+   "tip": [
+    0.1038,
+    -0.1665,
+    0.015
+   ],
+   "knee_z": 0.16
+  },
+  "R": {
+   "ankle": [
+    -0.1083,
+    -0.0931,
+    0.06
+   ],
+   "ball": [
+    -0.1083,
+    -0.1415,
+    0.02
+   ],
+   "tip": [
+    -0.1083,
+    -0.1661,
+    0.015
+   ],
+   "knee_z": 0.16
+  }
+ },
+ "reweighted_vertices": {
+  "leg.L": 3549,
+  "arm.L": 1381,
+  "leg.R": 3497,
+  "arm.R": 1493
+ },
+ "dominant_bone_vertex_counts_after": {
+  "head": 22322,
+  "chest": 2517,
+  "spine": 2963,
+  "shoulder.R": 1399,
+  "neck": 264,
+  "shoulder.L": 1390,
+  "upper_arm.L": 254,
+  "foot.R": 824,
+  "shin.R": 2399,
+  "foot.L": 781,
+  "shin.L": 2489,
+  "thigh.R": 274,
+  "thigh.L": 279,
+  "hips": 906,
+  "upper_arm.R": 319,
+  "forearm.R": 637,
+  "forearm.L": 605,
+  "hand.R": 363,
+  "hand.L": 369
+ },
+ "bones": [
+  "hips",
+  "spine",
+  "chest",
+  "neck",
+  "head",
+  "eye.R",
+  "eye.L",
+  "shoulder.L",
+  "upper_arm.L",
+  "forearm.L",
+  "hand.L",
+  "shoulder.R",
+  "upper_arm.R",
+  "forearm.R",
+  "hand.R",
+  "thigh.L",
+  "shin.L",
+  "foot.L",
+  "toe.L",
+  "thigh.R",
+  "shin.R",
+  "foot.R",
+  "toe.R"
+ ],
+ "joint_names_deepmotion": [
+  "Hips",
+  "Spine",
+  "Spine1",
+  "Neck",
+  "Head",
+  "RightEye",
+  "LeftEye",
+  "LeftShoulder",
+  "LeftArm",
+  "LeftForeArm",
+  "LeftHand",
+  "RightShoulder",
+  "RightArm",
+  "RightForeArm",
+  "RightHand",
+  "LeftUpLeg",
+  "LeftLeg",
+  "LeftFoot",
+  "LeftToeBase",
+  "RightUpLeg",
+  "RightLeg",
+  "RightFoot",
+  "RightToeBase"
+ ]
+}

@@ -25,7 +25,8 @@ import { installSix2Tunnel } from './opening_six2_tunnel.js';   // the washer lo
 import { installSix2Water } from './opening_six2_water.js';   // the water of scenes 3-5 (water specialist)
 import { OPEN9_ON, OPEN9, installOpen9 } from './opening_six2_open9.js';   // open9 (session d742a298): the washer spin with 3D water and the direct hand-over into the live Screen 6
 import { SEQ7_ON as G12_ON, SEQ7 as G12N, clothGrid as g12Grid, softHang as g12Hang, cradle as g12Cradle, tumble as g12Tumble } from './opening_six2_girl12.js';   // seq7, lane girl12: screens 2-3 (character animation)
-import { G13_ON, buildGirl13, poseGirl13 } from './opening_six2_girl13.js';   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
+import { G13_ON, buildGirl13, poseGirl13 } from './opening_six2_girl13.js';
+import { installGirl3, updateGirl3 } from './opening_six2_girl3.js';   // girl3 (session b57cc1e7): the Blender-prepared girl with a skeletal clip (pipeline check)   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
@@ -178,6 +179,7 @@ export function installSix2(ctx) {
   const W2 = installSix2Water(ctx);   // the water of scenes 3-5 (opening_six2_water.js)
   const O9 = OPEN9_ON ? installOpen9(ctx) : null;   // (open9: the 3D wash water, his tumble, the passage into the live game)
   if (O9) S.cam = O9.camKeys(S.cam);
+  installGirl3({ scene, g2 });   // (girl3 only)
   // the heap in the basket (tripo2's yellow, blue, pink towels): the blue heap towel is the cloth now; the pink one becomes lavender
   let heap = null;
   Promise.resolve(typeof window !== 'undefined' && window.__bwTripo2Ready).then(() => {
@@ -421,6 +423,7 @@ export function installSix2(ctx) {
     const inDrum = camera.position.z < P.z - 0.05;
     R2.g.visible = washer.g.visible = basket.visible = badge.visible = !inDrum;
     if (g2.ready) { g2.root.visible = !inDrum; g2.stool.visible = false; }
+    updateGirl3(s, { g2, S, inDrum });   // (girl3 only: shows the Blender girl, hides this one)
     ctx.girl.root.visible = false;
     ctx.bubbles.visible = !inDrum; ctx.front.visible = false; ctx.foam.visible = !inDrum && s > 4.0 && !(O9 && s > 6.4);
     marks.visible = marks.visible && !inDrum;

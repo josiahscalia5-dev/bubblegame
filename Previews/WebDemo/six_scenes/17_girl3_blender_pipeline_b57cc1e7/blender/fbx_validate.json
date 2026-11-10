@@ -1,0 +1,124 @@
+{
+ "file": "girl_v3_tpose_deepmotion.fbx",
+ "joints": [
+  "Hips",
+  "Spine",
+  "Spine1",
+  "Neck",
+  "Head",
+  "RightEye",
+  "LeftEye",
+  "LeftShoulder",
+  "LeftArm",
+  "LeftForeArm",
+  "LeftHand",
+  "RightShoulder",
+  "RightArm",
+  "RightForeArm",
+  "RightHand",
+  "LeftUpLeg",
+  "LeftLeg",
+  "LeftFoot",
+  "LeftToeBase",
+  "RightUpLeg",
+  "RightLeg",
+  "RightFoot",
+  "RightToeBase"
+ ],
+ "n_joints": 23,
+ "verts": 41354,
+ "bbox_min": [
+  -0.3527,
+  -0.2262,
+  0.0
+ ],
+ "bbox_max": [
+  0.3522,
+  0.2262,
+  1.0
+ ],
+ "images": [
+  "Color_34ece7fe-07c9-4e15-b4da-6ba47612c356",
+  "NormalGL_34ece7fe-07c9-4e15-b4da-6ba47612c356"
+ ],
+ "roots": [
+  "Hips"
+ ],
+ "mapped": {
+  "spine": "Spine",
+  "chest": "Spine1",
+  "head": "Head",
+  "armL": "LeftArm",
+  "foreL": "LeftForeArm",
+  "armR": "RightArm",
+  "foreR": "RightForeArm",
+  "thighL": "LeftUpLeg",
+  "shinL": "LeftLeg",
+  "footL": "LeftFoot",
+  "thighR": "RightUpLeg",
+  "shinR": "RightLeg"
+ },
+ "rest_arm_angle_below_horizontal_deg": 0.0,
+ "posed_tails": {
+  "spine": [
+   0.0,
+   -0.099,
+   0.443
+  ],
+  "chest": [
+   0.0,
+   -0.152,
+   0.521
+  ],
+  "head": [
+   0.0,
+   -0.24,
+   0.766
+  ],
+  "armL": [
+   0.154,
+   -0.259,
+   0.534
+  ],
+  "foreL": [
+   0.159,
+   -0.342,
+   0.532
+  ],
+  "armR": [
+   -0.154,
+   -0.256,
+   0.536
+  ],
+  "foreR": [
+   -0.16,
+   -0.34,
+   0.534
+  ],
+  "thighL": [
+   0.056,
+   -0.205,
+   0.286
+  ],
+  "shinL": [
+   0.076,
+   -0.186,
+   0.185
+  ],
+  "footL": [
+   0.087,
+   -0.213,
+   0.129
+  ],
+  "thighR": [
+   -0.056,
+   -0.205,
+   0.286
+  ],
+  "shinR": [
+   -0.08,
+   -0.185,
+   0.185
+  ]
+ }
+}
