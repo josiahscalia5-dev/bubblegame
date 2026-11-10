@@ -20,8 +20,8 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const page = await (await browser.newContext({ viewport: { width: VW, height: VH }, deviceScaleFactor: DPR })).newPage();
   const logs = []; page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text().slice(0, 300)); }); page.on('pageerror', (e) => logs.push('PAGEERROR ' + e.message + ' ' + (e.stack || '').slice(0, 400)));
-  await page.addInitScript(([s3, g13]) => { window.__BW_S3__ = s3; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art']; if (g13) window.__bwGirl13Init = JSON.parse(g13);
-    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }, [S3, process.env.G13 || '']);
+  await page.addInitScript(([s3, g13, g3]) => { window.__BW_S3__ = s3; window.__BW_TEST__ = true; window.__BW_OPENING_OFF__ = ['art']; if (g13) window.__bwGirl13Init = JSON.parse(g13); if (g3) window.__bwGirl3Init = JSON.parse(g3);
+    let a = 7 >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }, [S3, process.env.G13 || '', process.env.G3INIT || '']);
   await page.goto(`http://localhost:${server.address().port}/index.html`); log('loaded');
   const cond = () => ({ ready: document.body.classList.contains('ready'), hero: !!(window.__bwO3D && window.__bwO3D.state().heroReady), t2: !!(window.__bwTripo2 && window.__bwTripo2.ready), t3: !!(window.__bwTripo3 && window.__bwTripo3.ready), g13: !window.__bwGirl13 || !!window.__bwGirl13.ready, g3: !window.__bwGirl3 || !!window.__bwGirl3.ready || window.__bwGirl3.errors.length > 0 });
   for (let i = 0; i < 120; i++) { const c = await page.evaluate(cond); if (c.ready && c.hero && c.t2 && c.t3 && c.g13 && c.g3) break; if (i % 10 === 0) log(JSON.stringify(c), logs.slice(-2)); await page.waitForTimeout(2000); }
@@ -57,6 +57,12 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
       await page.screenshot({ path: path.join(OUT, `${TAG}_g3_${t.toFixed(2)}.png`), timeout: 240000 }); log('g3', t);
     }
     info.g3 = await page.evaluate(() => { const a = window.__bwGirl3; return { ready: a.ready, clip: a.clip, dur: a.dur, tracks: a.tracks, bones: a.bones, shared: a.shared, errors: a.errors }; });
+  }
+  if (process.env.CLOSE3 === '1') {   // girl3: a close-up of her face (along the game camera's line of sight), with her lids forced to BLINK (0..1)
+    await page.evaluate(([dist, b]) => { const a = window.__bwGirl3, d = window.__bwSix2dbg, cam = d.camera, H = new cam.position.constructor(); a.B.head.getWorldPosition(H); H.y += 0.2;
+      H.y -= 0.2; if (a.lids && a.lids[0]) { a.lids[0].getWorldPosition(H); } const P = cam.position.clone().sub(H).normalize().multiplyScalar(dist).add(H); window.__bwSix2.cam = [[-1, P.toArray(), H.toArray(), 26], [99, P.toArray(), H.toArray(), 26]]; a.blink = b; }, [+(process.env.CLOSED || 0.8), +(process.env.BLINK || 0)]);
+    await seekTo(); await page.waitForTimeout(200);
+    await page.screenshot({ path: path.join(OUT, `${TAG}_close3.png`), timeout: 240000 }); log('close3', JSON.stringify(await page.evaluate(() => window.__bwGirl3.eyes)));
   }
   if (process.env.FIT) {   // a real game camera fitted to a reference's framing: FIT='{"band":1.7067,"G":[x,y],"M":[x,y],"H":[x,y],"W":[x,y]}' (fractions of the reference)
     const fit = await page.evaluate(([fitJ, aspect]) => {

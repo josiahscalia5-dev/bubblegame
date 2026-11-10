@@ -239,5 +239,25 @@ It is one welded shell, so the ponytail and curls have to be separated by geomet
 - 03:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/hsecs.png
 - 03:35 `Bash`: Draw coronal sections of head
 - 03:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/head_front.png
+- 03:35 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/csecs.png
+- 03:36 `Bash`: Write labelled render helper
+**Agent** (03:37 UTC):
 
-_19 tool steps._
+Before choosing the side chains, I'll render the lower side hair coloured by depth band (front / middle / back) to see which clusters frame the face.
+
+- 03:37 `Bash`: Render side hair coloured by depth band
+- 03:38 `Bash`: Show label render errors
+- 03:38 `Bash`: Rerun label render with absolute paths
+- 03:38 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab1_sheet.png
+**Agent** (03:38 UTC):
+
+The labelled render kept the frame-1 kneeling pose because I didn't reset the pose bones. I'll fix that and re-render.
+
+- 03:38 `Bash`: Reset pose in label render and rerun
+- 03:38 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab1_sheet.png
+- 03:40 `Bash`: Render distance-outside-skull heat map
+- 03:40 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab2_sheet.png
+- 03:40 `Bash`: Close-up of left side free-hanging hair bands
+- 03:40 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab3_sheet.png
+
+_31 tool steps._

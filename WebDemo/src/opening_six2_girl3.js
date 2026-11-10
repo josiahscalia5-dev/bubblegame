@@ -24,7 +24,7 @@ export const G3 = {
   grip: [1.35, 1.9], release: 6.45,  // (real s) her hands close on the towel; she lets go at the door
   // her blinks (real s) and her eyelids: skin caps on her head bone over her painted eyes (model coordinates measured on her face; the face is
   // rolled ~10.5 deg in her model), closing from both edges to a line
-  blinks: [0.55, 2.05, 3.3, 4.95, 6.95, 8.6, 9.7], eyes: [[-0.078, 0.756], [0.034, 0.777]], lidR: 0.034, roll: 0.185, skin: 0xf0aa84,
+  blinks: [0.55, 2.05, 3.3, 4.95, 6.95, 8.6, 9.7], eyes: [[-0.078, 0.756], [0.034, 0.777]], lidR: 0.034, roll: 0.185, skin: 0xe2916c,
   // camera keys in REAL seconds [t, position, target, vertical fov]; after LAND the opening's own keys (from story 4.9) continue
   cam: [
     [-1, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],
@@ -38,8 +38,8 @@ export const G3 = {
   ],
 };
 export const storyOf = (r) => (r < 0 ? -1 : r < G3.LAND ? r * 4.75 / G3.LAND : r - (G3.LAND - 4.75));
-const api = { G3, ready: false, t: null, dur: 0, errors: [] };
-if (G3_ON && typeof window !== 'undefined') window.__bwGirl3 = api;
+const api = { G3, ready: false, t: null, dur: 0, errors: [], blink: null };
+if (G3_ON && typeof window !== 'undefined') { if (window.__bwGirl3Init) Object.assign(G3, window.__bwGirl3Init); window.__bwGirl3 = api; }
 
 // the opening's camera keys with hers in front (story time)
 export function g3CamKeys(cam) { return G3.cam.map(([t, p, g, f]) => [t < 0 ? -1 : storyOf(t), p, g, f]).concat(cam.filter(([t]) => t >= 4.9)); }
@@ -53,19 +53,45 @@ export function installGirl3({ scene, g2 }) {
     const clip = gl.animations.find((a) => a.name === G3.clip) || gl.animations[0];
     if (!mesh || !clip) { api.errors.push(`girl3: ${mesh ? '' : 'no skinned mesh '}${clip ? '' : 'no clip'}`); return; }
     const mixer = new THREE.AnimationMixer(gl.scene), action = mixer.clipAction(clip); action.play();
-    // eyelids: raycast her face in her rest pose (straight back along her model's -z) for the surface at each painted eye
+    // eyelids: her painted eyes found on her own mesh in her rest pose (the dark pupil / iris / lash texels on the front of her face, in two
+    // clusters), a skin cap on her head bone over each, sized to the eye
     root.updateMatrixWorld(true);
-    const lidM = new THREE.MeshStandardMaterial({ color: G3.skin, roughness: 0.75, emissive: 0x3a2a40, emissiveIntensity: 0.3 }), ray = new THREE.Raycaster();
-    const lids = G3.eyes.map(([ex, ey]) => {
-      ray.set(new THREE.Vector3(ex, ey, 0.8), new THREE.Vector3(0, 0, -1)); const hit = ray.intersectObject(mesh, false)[0];
-      const lid = new THREE.Mesh(new THREE.SphereGeometry(G3.lidR, 20, 14), lidM); lid.name = 'girl3Lid';
-      lid.position.set(ex, ey, hit ? hit.point.z - G3.lidR * 0.35 : 0.19); lid.rotation.set(0, 0, G3.roll); root.add(lid); B.head.attach(lid); lid.visible = false; return lid;
+    const eyes = findEyes(mesh) || G3.eyes.map(([x, y]) => ({ c: new THREE.Vector3(x, y, 0.19), w: G3.lidR, h: G3.lidR }));
+    const lidM = new THREE.MeshStandardMaterial({ color: G3.skin, roughness: 0.75, emissive: 0x3a2a40, emissiveIntensity: 0.3 });
+    const lids = eyes.map((e) => {
+      const lid = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), lidM); lid.name = 'girl3Lid';
+      lid.position.copy(e.c); lid.rotation.set(0, 0, G3.roll); lid.userData.wh = [e.w, e.h]; root.add(lid); B.head.attach(lid); lid.visible = false; return lid;
     });
+    api.eyes = eyes.map((e) => ({ c: e.c.toArray().map((x) => +x.toFixed(4)), w: +e.w.toFixed(4), h: +e.h.toFixed(4), n: e.n }));
     Object.assign(api, { ready: true, root, mesh, B, mixer, action, lids, clip: clip.name, dur: clip.duration, tracks: clip.tracks.length, bones: mesh.skeleton.bones.length, shared: false });
     api.share = () => { if (g2.ready && !api.shared) { let m = null; g2.root.traverse((o) => { if (o.isSkinnedMesh && !m) m = o.material; }); if (m) { mesh.material = m; api.shared = true; } } };
     api.share();
   }, undefined, (e) => api.errors.push('girl3 load: ' + (e && e.message)));
   return api;
+}
+
+// her painted eyes on her mesh (rest pose, model space): the dark texels of the front of her face between her cheeks and her brows, two clusters
+function findEyes(mesh) {
+  const map = mesh.material && mesh.material.map, img = map && map.image; if (!img) return null;
+  const cv = document.createElement('canvas'); cv.width = img.width; cv.height = img.height; const c = cv.getContext('2d'); c.drawImage(img, 0, 0);
+  const D = c.getImageData(0, 0, cv.width, cv.height).data, W = cv.width, Hh = cv.height;
+  const pos = mesh.geometry.attributes.position, uv = mesh.geometry.attributes.uv, v = new THREE.Vector3(), pts = [];
+  mesh.updateMatrixWorld(true);
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i); mesh.applyBoneTransform(i, v); v.applyMatrix4(mesh.matrixWorld);
+    if (v.y < 0.725 || v.y > 0.795 || v.z < 0.12 || Math.abs(v.x) > 0.13) continue;
+    const px = Math.min(W - 1, Math.max(0, Math.floor(uv.getX(i) * W))), py = Math.min(Hh - 1, Math.max(0, Math.floor(uv.getY(i) * Hh))), k = (py * W + px) * 4;
+    if (Math.max(D[k], D[k + 1], D[k + 2]) < 75) pts.push(v.clone());
+  }
+  if (pts.length < 8) return null;
+  let a = pts.reduce((m, p) => (p.x < m.x ? p : m)).clone(), b = pts.reduce((m, p) => (p.x > m.x ? p : m)).clone();
+  for (let it = 0; it < 10; it++) {   // two-means on x, y
+    const A = [], Bs = []; for (const p of pts) ((p.x - a.x) ** 2 + (p.y - a.y) ** 2 < (p.x - b.x) ** 2 + (p.y - b.y) ** 2 ? A : Bs).push(p);
+    const mean = (L) => L.reduce((m, p) => m.add(p), new THREE.Vector3()).multiplyScalar(1 / Math.max(1, L.length)); if (!A.length || !Bs.length) return null; a = mean(A); b = mean(Bs);
+    if (it === 9) return [A, Bs].map((L) => { const m = mean(L), sx = Math.max(...L.map((p) => Math.abs(p.x - m.x))), sy = Math.max(...L.map((p) => Math.abs(p.y - m.y))), zf = Math.max(...L.map((p) => p.z));
+      return { c: new THREE.Vector3(m.x, m.y, zf - Math.max(sx, sy) * 0.45), w: Math.max(0.02, sx * 1.05), h: Math.max(0.018, sy * 1.15), n: L.length }; });
+  }
+  return null;
 }
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z), sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -85,8 +111,8 @@ export function updateGirl3(r, s, it, H) {
   const t = api.t != null ? api.t : Math.max(0, r);
   api.mixer.setTime(Math.min(api.dur - 1e-4, t));
   root.updateMatrixWorld(true);
-  { let b = 0; for (const t0 of G3.blinks) { const d = r - t0; if (d > 0 && d < 0.17) b = Math.max(b, d < 0.06 ? d / 0.06 : d < 0.08 ? 1 : 1 - (d - 0.08) / 0.09); }
-    for (const l of api.lids) { l.visible = b > 0.04; l.scale.set(1.06, 0.04 + b * 1.02, 0.55); } }
+  { let b = api.blink != null ? api.blink : 0; if (api.blink == null) for (const t0 of G3.blinks) { const d = r - t0; if (d > 0 && d < 0.17) b = Math.max(b, d < 0.06 ? d / 0.06 : d < 0.08 ? 1 : 1 - (d - 0.08) / 0.09); }
+    for (const l of api.lids) { const [w, h] = l.userData.wh; l.visible = b > 0.04; l.scale.set(w * 1.15, (0.04 + b * 1.02) * h * 1.2, Math.min(w, h) * 0.5); } }
   if (yG) yG.visible = false; if (heap && heap[0]) heap[0].visible = true; if (marks) marks.visible = false;   // (the yellow towel stays in the basket; he is hidden)
   if (s >= 4.75 || api.t != null && api.t >= G3.LAND) return;   // (from his landing on, the opening's own staging)
   // her grip points: a little beyond each wrist along the forearm; her front from her shoulders
