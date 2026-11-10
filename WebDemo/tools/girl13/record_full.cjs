@@ -32,13 +32,10 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
   for (let i = 0; i < Math.round(WAIT * FPS); i++) { await page.evaluate((it) => window.__bwO3D.seek(it, -1, 1 / 30), 4.5 + i / FPS); await frame(); }
   const b = (await page.$('#bwHome .s6bar .startgo')) || (await page.$('#bwHome .screen:not(.off) .go')); if (b) await b.click(); L.inputs.push(['START', 0]);
   // the opening on its own clock, then the hand-over (the live game behind it is drawn by the same seek)
-  let s = 0, done = false;
-  while (s < MAXSEQ) {
+  let s = 0, done = false; const END = await page.evaluate(() => (window.__bwSix2 && window.__bwSix2.seqEnd) || 0); L.seqEnd = END; log('seqEnd', END);
+  while (s < Math.min(MAXSEQ, END + 0.35)) {
     s += 1 / FPS; const st = await page.evaluate(([a, bb, d]) => { window.__bwO3D.seek(a, bb, d); return window.__bwO3D.state(); }, [6 + s, s, 1 / FPS]);
     await frame(); if (n % FPS === 0) { L.states.push(['opening', +s.toFixed(2), st && st.seq]); log('seq', s.toFixed(2)); }
-    const gs = await page.evaluate(() => { try { const x = window.__bw.state(); return { phase: x.phase }; } catch (e) { return null; } });
-    if (gs && gs.phase && gs.phase !== 'opening' && s > 8 && !done) { done = true; L.handOverSeen = { s: +s.toFixed(2), phase: gs.phase }; }
-    if (done && s > L.handOverSeen.s + 1.2) break;
   }
   // the live game: Tap to Start, then real play stepped at FPS with swipes
   const st0 = await page.evaluate(() => window.__bw.state()); L.afterOpening = { phase: st0.phase, z: st0.z, lane: st0.lane };

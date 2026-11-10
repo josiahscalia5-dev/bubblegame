@@ -35,6 +35,7 @@ DO_VALIDATE = os.environ.get('HAIR_VALIDATE', '1') != '0'
 P = {
     # skull ellipsoid (her scalp, face and ears; rest pose, armature space)
     'skull_c': [0.0, -0.07, 0.795], 'skull_r': [0.152, 0.14, 0.135], 'skull_scale': 0.14,
+    'neck': [[0.0, -0.05, 0.45], [0.0, -0.05, 0.70], 0.07],   # neck capsule (axis ends, radius): the nape hair under the ponytail stays with it
     # chains (rest joints, armature space): the ponytail on her midline; the side bunches (left = +X; the right one is mirrored)
     'tail': [[0.0, 0.025, 0.945], [0.0, 0.11, 0.91], [0.0, 0.145, 0.815], [0.0, 0.14, 0.715], [0.0, 0.13, 0.615]],
     'side': [[0.11, 0.075, 0.895], [0.15, 0.12, 0.76], [0.152, 0.09, 0.625]],
@@ -60,7 +61,7 @@ P = {
     'colliders': [[[0.0, 0.0, 0.50], 0.095], [[0.12, -0.06, 0.52], 0.06], [[-0.12, -0.06, 0.52], 0.06]],
     'tail_radius': [0.0, 0.02, 0.035, 0.04], 'side_radius': [0.02, 0.03],
     # previews: frame windows for the contact sheet (the frame of largest swing in each window is shown)
-    'windows': [[40, 60], [74, 92], [92, 110], [150, 165], [210, 225], [225, 240]],
+    'windows': [[40, 60], [74, 92], [92, 110], [150, 165], [205, 218], [218, 240]],
     'render_size': [400, 500], 'render_samples': 16,
 }
 if PFILE: P.update(json.load(open(PFILE)))
@@ -108,6 +109,9 @@ OLDW = [{gi[e.group]: e.weight for e in v.groups if e.weight > 0} for v in me.ve
 dom = np.array([max(w, key=w.get) if w else '' for w in OLDW])
 C = np.array(P['skull_c']); R = np.array(P['skull_r'])
 rho = np.linalg.norm((co - C) / R, axis=1); dout = (rho - 1) * P['skull_scale']
+na, nb_, nr = np.array(P['neck'][0]), np.array(P['neck'][1]), P['neck'][2]
+tn = np.clip(((co - na) @ (nb_ - na)) / ((nb_ - na) @ (nb_ - na)), 0, 1)
+dout = np.minimum(dout, np.linalg.norm(co - (na + tn[:, None] * (nb_ - na)), axis=1) - nr)   # (distance outside skull OR neck)
 x, y, z = co.T
 
 def chain_param(pts, J, sigma):
@@ -436,8 +440,19 @@ def deformed_track(arm2, mesh2, frames, idx):
         Dh.append(np.array(arm2.pose.bones['head'].matrix @ Bh.inverted()))
     return np.array(out), np.array(Dh)
 
+def plain_roundtrip_count(path):
+    """the same import + export with NO change: how many vertices Blender's glTF round trip itself writes (it re-splits a few seam vertices)"""
+    a_, m_, _ = load(path); tmp = os.path.join(OUT, '_roundtrip_check.glb')
+    for o in bpy.data.objects: o.select_set(False)
+    a_.select_set(True); m_.select_set(True); bpy.context.view_layer.objects.active = a_
+    bpy.ops.export_scene.gltf(filepath=tmp, export_format='GLB', use_selection=True, export_skins=True, export_animations=True, export_yup=True,
+                              export_force_sampling=True, export_frame_range=True, export_animation_mode='ACTIONS')
+    J_, _ = glb_json(tmp); os.remove(tmp)
+    return sum(J_['accessors'][pr['attributes']['POSITION']]['count'] for pr in J_['meshes'][0]['primitives'])
+
 if DO_VALIDATE:
     V = {}
+    RT_COUNT = plain_roundtrip_count(SRC)
     CHECK = list(range(F0, F1 + 1, 6)) + [F1]
     JN = ORIG_BONES
     ri, pi, armI, meshI = sample(SRC, CHECK, JN)
@@ -462,8 +477,12 @@ if DO_VALIDATE:
     V['original_joint_world_positions_max_diff_m'] = dj
     V['original_joint_world_positions_checked'] = {'frames': CHECK, 'joints': len(JN)}
     V['head_hands_feet_at_frames'] = {f: {n: [round(v, 4) for v in po[f][n]] for n in ('head', 'hand.L', 'hand.R', 'foot.L', 'foot.R')} for f in (0, 42, 102, 162, 228, F1)}
-    V['mesh_same_vertex_order_as_input'] = bool(len(coO) == NV and np.abs(coO - co).max() < 1e-6)
-    V['mesh_rest_positions_max_diff_m'] = float(np.abs(np.sort(coO, 0) - np.sort(co, 0)).max()) if len(coO) == NV else None
+    kdi = KDTree(NV)
+    for i, p in enumerate(co): kdi.insert(p, i)
+    kdi.balance()
+    V['mesh'] = {'vertices_in': NV, 'vertices_out': len(coO), 'vertices_after_plain_roundtrip_of_input': RT_COUNT,
+                 'max_dist_output_vertex_to_input_vertex_m': float(max(kdi.find(p)[2] for p in coO)),
+                 'max_dist_input_vertex_to_output_vertex_m': float(max(kd.find(p)[2] for p in co))}
     # glTF level: the 23 original joints' channels (times and values) and rest transforms
     JI, nI, AI, RI = glb_anim(SRC); JO, nO, AO, RO = glb_anim(DST)
     dmax = 0.0; dkeys = []
@@ -471,6 +490,8 @@ if DO_VALIDATE:
         t2, v2 = AO[key]
         if len(t2) != len(t) or np.abs(t2 - t).max() > 1e-6: dkeys.append(key)
         else: dmax = max(dmax, float(np.abs(v2.astype(float) - val.astype(float)).max()))
+    V['mesh']['gltf_indices_in_out'] = [sum(JI['accessors'][pr['indices']]['count'] for pr in JI['meshes'][0]['primitives']),
+                                         sum(JO['accessors'][pr['indices']]['count'] for pr in JO['meshes'][0]['primitives'])]
     V['gltf'] = {'animation_name': nO, 'channels_in': len(AI), 'channels_out': len(AO), 'samples_per_channel_out': sorted({len(t) for t, _ in AO.values()}),
                  'time_range_out_s': [float(min(t.min() for t, _ in AO.values())), float(max(t.max() for t, _ in AO.values()))],
                  'original_channels_max_value_diff': dmax, 'original_channels_with_different_times': [list(k) for k in dkeys],
@@ -487,21 +508,28 @@ if DO_VALIDATE:
         return np.array(out)
     cI = clearance(trI); cO = clearance(trO)
     V['hair_to_body_clearance_cm'] = {'input_min': round(float(cI.min() * 100), 2), 'output_min': round(float(cO.min() * 100), 2),
-                                      'frames_output_closer_than_0.5cm_and_closer_than_input': int(((cO < 0.005) & (cO < cI - 0.001)).sum()),
+                                      'frames_output_closer_than_0.5cm_and_closer_than_input': [(int(F0 + i), round(float(cO[i] * 100), 2), round(float(cI[i] * 100), 2)) for i in np.where((cO < 0.005) & (cO < cI - 0.001))[0]],
+                                      'frames_output_below_0.5cm': int((cO < 0.005).sum()), 'frames_input_below_0.5cm': int((cI < 0.005).sum()),
                                       'worst_frames_output_vs_input_cm': sorted([(int(F0 + i), round(float(cO[i] * 100), 2), round(float(cI[i] * 100), 2)) for i in np.argsort(cO - cI)[:5]])}
     # head: moving hair in her head's frame (skull ellipsoid radius; and distance to her face / ears / bow, which are rigid on the head)
     rest_h = co[hairI]; rho_rest = np.linalg.norm((rest_h - C) / R, axis=1)
     kdf = KDTree(len(faceI))
     for i, j in enumerate(faceI): kdf.insert(co[j], i)
     kdf.balance(); dface_rest = np.array([kdf.find(p)[2] for p in rest_h]); near = np.where(dface_rest < 0.03)[0]
-    rmin = []; dfmin = []; viol = 0
+    rmin = []; dfmin = []; viol = 0; worst = []
     for fi in range(len(ALLF)):
         Dinv = np.linalg.inv(DhO[fi]); loc = (Dinv[:3, :3] @ trO[fi, :nh].T).T + Dinv[:3, 3]
         rh = np.linalg.norm((loc - C) / R, axis=1); m = rho_rest > 1.05
         rmin.append(float((rh[m] - rho_rest[m]).min())); viol += int(((rh < 1.0) & m).sum())
-        dfmin.append(min((kdf.find(loc[i])[2] - dface_rest[i] for i in near), default=0.0))
+        dd_ = [(kdf.find(loc[i])[2] - dface_rest[i], i) for i in near]; m_ = min(dd_, default=(0.0, -1))
+        dfmin.append(m_[0]); worst.append((m_[0], F0 + fi, m_[1]))
     V['head_check'] = {'vertex_frames_entering_skull_ellipsoid': viol, 'max_inward_change_in_skull_radius_units': round(-min(rmin), 4),
                        'max_approach_to_face_ears_bow_cm(vertices within 3 cm at rest)': round(-min(dfmin) * 100, 2)}
+    wv = min(worst); j = hairI[wv[2]]; Dinv = np.linalg.inv(DhO[wv[1] - F0]); lw = Dinv[:3, :3] @ trO[wv[1] - F0, wv[2]] + Dinv[:3, 3]
+    nf = faceI[kdf.find(lw)[1]]
+    V['head_check']['closest_approach'] = {'frame': int(wv[1]), 'hair_vertex_rest': [round(float(v), 3) for v in co[j]], 'rest_gap_cm': round(float(dface_rest[wv[2]] * 100), 2),
+        'gap_now_cm': round(float(kdf.find(lw)[2] * 100), 2), 'rigid_neighbour_rest': [round(float(v), 3) for v in co[nf]], 'rigid_neighbour_is': 'pink (bow / headband / hood collar)' if pink[nf] else 'skin (face / ear)',
+        'hair_vertex_new_weight': round(float(total[j]), 3)}
     REP['validation'] = V
     print('VALIDATION', json.dumps({k: V[k] for k in ('original_joint_world_positions_max_diff_m', 'hair_to_body_clearance_cm', 'head_check')}, default=str))
 
@@ -519,7 +547,7 @@ def render_frames(path, frames, tag, cams):
     for f in frames:
         s2.frame_set(f); loc, rot = cams[f]; cam.location = loc; cam.rotation_euler = rot
         dist = 0.2; hh = 2 * dist * (cam.data.sensor_height / 2 / cam.data.lens); ww = hh * P['render_size'][0] / P['render_size'][1]   # (visible size at dist)
-        to.location = (-ww / 2 + 0.004, hh / 2 - 0.009, -dist); cu.body = f'{tag}  frame {f}'
+        to.location = (-ww / 2 + 0.004, hh / 2 - 0.009, -dist); cu.body = f'{tag}  f{f}'
         fp = os.path.join(OUT, f'_{tag}_{f:03d}.png'); s2.render.filepath = fp; bpy.ops.render.render(write_still=True); tiles.append(read_png(fp)); os.remove(fp)
     return tiles
 
@@ -529,13 +557,13 @@ if DO_RENDER:
     armI, meshI, _ = load(SRC); s2 = bpy.context.scene; cams = {}
     Bhip = armI.data.bones['hips'].matrix_local.to_3x3()
     for f in frames:
-        s2.frame_set(f); hp = armI.pose.bones['head']; tgt = armI.matrix_world @ ((hp.head + hp.tail) / 2) + Vector((0, 0, -0.07))
+        s2.frame_set(f); hp = armI.pose.bones['head']; tgt = armI.matrix_world @ ((hp.head + hp.tail) / 2) + Vector((0, 0, -0.05))
         Rh = armI.pose.bones['hips'].matrix.to_3x3() @ Bhip.inverted(); fwd = Rh @ Vector((0, -1, 0)); fwd.z = 0; fwd.normalize()
         lft = Rh @ Vector((1, 0, 0)); lft.z = 0; lft.normalize()
-        d = (lft * 0.8 - fwd * 0.55 + Vector((0, 0, 0.12))).normalized(); loc = tgt + d * 1.55
+        d = (lft * 0.8 - fwd * 0.55 + Vector((0, 0, 0.12))).normalized(); loc = tgt + d * 1.7
         cams[f] = (loc, (-d).to_track_quat('-Z', 'Y').to_euler())
-    tin = render_frames(SRC, frames, 'INPUT (rigid hair)', cams)
-    tout = render_frames(DST, frames, 'OUTPUT (hair springs)', cams)
+    tin = render_frames(SRC, frames, 'INPUT rigid', cams)
+    tout = render_frames(DST, frames, 'OUTPUT springs', cams)
     sep = np.ones((P['render_size'][1], 6, 4), dtype=np.float32)
     pairs = [np.concatenate([a, sep, b, sep * 0.2 + np.array([0, 0, 0, 0.8], dtype=np.float32)], 1) for a, b in zip(tin, tout)]
     while len(pairs) % 3: pairs.append(np.ones_like(pairs[0]))
@@ -544,4 +572,26 @@ if DO_RENDER:
     REP['contact_sheet'] = {'file': os.path.join(OUT, 'hair_compare.png'), 'frames': frames, 'view': "3/4 from her left-back, following her head and body turn"}
 
 json.dump(REP, open(os.path.join(OUT, 'hair_report.json'), 'w'), indent=1, default=str)
+# short human-readable summary next to the JSON
+L_ = ['girl3 hair secondary motion (hair_secondary.py)', f'input  {SRC}', f'output {DST}', '',
+      'bones added (parent): ' + ', '.join(f"{n} ({REP['bones_added'][n]['parent']})" for n in NEWB),
+      'vertices re-weighted: %d; per chain (new weight > 0.05): %s' % (REP['weights']['vertices_reweighted'], REP['weights']['per_chain_vertices_over_0.05']),
+      'springs (Hz, damping ratio, limits out/in/side deg): tail %s; side %s; side roots follow ponytail bone %d by %.0f%%; gravity %.1f m/s2; drag %.1f/s; %d substeps; %.0f s pre-roll' % (
+          P['tail_spring'], P['side_spring'], P['side_follow'][0] + 1, P['side_follow'][1] * 100, P['gravity'], P['air_drag'], SUB, P['preroll_s']),
+      'ponytail root->tip swing vs her head (deg): %s; tip offset (cm): %s' % (REP['deflection']['ponytail_root_to_tip_deg'], REP['deflection']['ponytail_tip_offset_cm']),
+      'contact-sheet frames (largest swing per window): %s' % REP['deflection']['windows']]
+if 'validation' in REP:
+    V = REP['validation']
+    L_ += ['', 'validation (fresh scene re-import):',
+           '  joints %d -> %d (new: %s); action %s, frames %s (in %s); unweighted vertices %d; max influences %d' % (V['input']['joints'], V['output']['joints'], ', '.join(V['output']['new_joints']),
+               V['output']['action'], V['output']['range'], V['input']['range'], V['output']['unweighted_vertices'], V['output']['max_influences']),
+           '  23 original joints, world positions, %d frames: max diff %.2e m; glTF channels %d -> %d, original channels max value diff %.1e, rest TRS diff %.1e' % (
+               len(V['original_joint_world_positions_checked']['frames']), V['original_joint_world_positions_max_diff_m'], V['gltf']['channels_in'], V['gltf']['channels_out'],
+               V['gltf']['original_channels_max_value_diff'], V['gltf']['original_rest_TRS_max_diff']),
+           '  mesh: vertices %d -> %d (a plain Blender round trip of the input also gives %d), indices %s, max position mismatch %.1e m' % (
+               V['mesh']['vertices_in'], V['mesh']['vertices_out'], V['mesh']['vertices_after_plain_roundtrip_of_input'], V['mesh']['gltf_indices_in_out'], V['mesh']['max_dist_output_vertex_to_input_vertex_m']),
+           '  hair to body clearance (cm): %s' % {k: V['hair_to_body_clearance_cm'][k] for k in ('input_min', 'output_min', 'frames_output_below_0.5cm', 'frames_input_below_0.5cm')},
+           '  head: %s' % {k: v for k, v in V['head_check'].items() if k != 'closest_approach'}]
+if 'contact_sheet' in REP: L_ += ['', 'contact sheet: %s (frames %s, %s)' % (REP['contact_sheet']['file'], REP['contact_sheet']['frames'], REP['contact_sheet']['view']), 'weights: ' + os.path.join(OUT, 'hair_weights.png')]
+open(os.path.join(OUT, 'hair_report.txt'), 'w').write('\n'.join(L_) + '\n')
 print('REPORT', os.path.join(OUT, 'hair_report.json'))
