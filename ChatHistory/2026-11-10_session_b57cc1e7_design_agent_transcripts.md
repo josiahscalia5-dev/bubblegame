@@ -406,5 +406,9 @@ Meanwhile, I'll read the rest of flow_routes.cjs to learn its output format.
 Now I'll wait for check 1 to finish.
 
 - 04:07 `Bash`: Wait for check 1 to finish and show outputs
+**Agent** (04:15 UTC):
+
+You've hit your 5-hour limit · resets 6:20am (UTC)
+
 
 _20 tool steps._
