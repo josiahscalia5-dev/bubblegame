@@ -30,8 +30,8 @@ export const G3 = {
     [3.4, [0.25, 0.58, 3.7], [-0.12, 0.5, 0.8], 41],
     [5.0, [0.6, 0.64, 3.25], [0.02, 0.55, 0.5], 42],
     [6.1, [0.82, 0.68, 2.45], [0.08, 0.56, 0.42], 44],
-    [7.0, [0.78, 0.78, 1.95], [0.3, 0.58, 0.0], 46],
-    [7.4, [0.48, 0.77, 1.5], [0.32, 0.57, -0.2], 48],
+    [7.0, [0.98, 0.76, 1.95], [0.32, 0.58, 0.0], 46],
+    [7.4, [0.64, 0.75, 1.5], [0.34, 0.57, -0.2], 48],
   ],
 };
 export const storyOf = (r) => (r < 0 ? -1 : r < G3.LAND ? r * 4.75 / G3.LAND : r - (G3.LAND - 4.75));
@@ -84,7 +84,7 @@ export function updateGirl3(r, s, it, H) {
   // ---- him and the towel: under the hood in the basket (the opening's own place) -> her hands close round the towel and it wraps him into a
   // bundle centred between her hands (he is fully inside, hidden) -> carried -> at the release he tumbles out into the drum, the towel round him
   const yawF = Math.atan2(front.x, front.z);
-  const bundle = (out, c) => { blue.drape(out, rB * 1.12, rB * 1.75, 1, rB * 0.42, it, 0.8); return placeLocal(out, c, 0.18, yawF, 0.07 * Math.sin(r * 4.1)); };
+  const bundle = (out, c) => { blue.drape(out, rB * 1.12, rB * 2.3, 0.92, rB * 0.85, it, 1.2)   // (wrapped round him, the corners hanging); return placeLocal(out, c, 0.18, yawF, 0.07 * Math.sin(r * 4.1)); };
   let hp = hero.position.clone(), scl = 0.56; const rot = new THREE.Euler().copy(hero.rotation);
   if (r < G3.grip[0]) { hoodAt(blue.A, hoodPos); blue.apply(blue.A); }
   else if (!rel) {
