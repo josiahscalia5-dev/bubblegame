@@ -316,5 +316,12 @@ The largest per-edge step dropped from 0.85 to 0.28. Let me look at the weight m
 - 03:55 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/crop_p6.png
 - 03:56 `Bash`: Apply coupling and tuning, rerun sim
 - 03:56 `Bash`: Print head turn rate around frame 210
+- 03:57 `Bash`: Damp the limit stops and measure smoothness
+- 03:57 `Bash`: Full run with validation and renders
+**Agent** (04:01 UTC):
 
-_64 tool steps._
+The 3 min 40 s was mostly waiting for the shared lock (16 s CPU). The validation crashed because frame 44 isn't in the sampled set (every 6th frame). I'll use sampled frames instead.
+
+- 04:01 `Bash`: Rerun full pipeline after fix
+
+_67 tool steps._

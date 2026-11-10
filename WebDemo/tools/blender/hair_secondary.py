@@ -54,6 +54,7 @@ P = {
     'gravity': 1.0,                # m/s^2 of extra pull when her head tilts away from upright (the model's shape already hangs at rest)
     'air_drag': 1.0,               # 1/s
     'soft_stop': 0.6,              # fraction of each limit where the progressive stop starts
+    'stop_damping': 0.9,           # damping ratio inside the progressive stop
     'substeps': 8, 'preroll_s': 2.0,
     # colliders on her chest (rest centre, radius) and particle radii (tail bones 1..4, side bones 1..2)
     'colliders': [[[0.0, 0.0, 0.50], 0.095], [[0.12, -0.06, 0.52], 0.06], [[-0.12, -0.06, 0.52], 0.06]],
@@ -253,7 +254,8 @@ class Chain:
             th_in = math.atan2(dd.dot(a_in), ct); th_s = math.atan2(dd.dot(a_sd), ct)
             rr_ = math.hypot(th_in / (li_ if th_in > 0 else lo), th_s / ls)
             boost = 1 + 12 * max(0.0, (rr_ - P['soft_stop']) / (1 - P['soft_stop'])) ** 2
-            acc = (t - p) * (w * w * boost) + (u - v) * (2 * zeta * w) - v * P['air_drag'] + (down - Qpar @ down) * G
+            zeta_e = zeta + (P['stop_damping'] - zeta) * min(1.0, (boost - 1) / 3)          # (the stop is near-critically damped: no ringing)
+            acc = (t - p) * (w * w * boost) + (u - v) * (2 * zeta_e * w * math.sqrt(boost)) - v * P['air_drag'] + (down - Qpar @ down) * G
             xn = p + (v + acc * h) * h
             d = xn - base; d = d.normalized() if d.length > 1e-9 else tdir
             # hard limits (asymmetric: inward = toward her head / nape)
@@ -328,6 +330,8 @@ win = {}
 for a0, a1 in P['windows']:
     seg = TIPDEFL[a0 - F0:a1 - F0 + 1]; win[f'{a0}-{a1}'] = {'frame': int(a0 + seg.argmax()), 'deg': round(float(seg.max()), 2), 'tip_cm': round(float(TIPCM[a0 - F0 + seg.argmax()]), 2)}
 REP['deflection']['windows'] = win
+REP['deflection']['smoothness_max_change_per_frame_deg'] = {n: round(float(np.abs(np.diff(DEFL[n])).max()), 2) for n in NEWB}
+REP['deflection']['smoothness_max_change_per_frame_deg']['ponytail_root_to_tip'] = round(float(np.abs(np.diff(TIPDEFL)).max()), 2)
 tilt = [math.degrees((D.to_3x3() @ Vector((0, 0, 1))).angle(Vector((0, 0, 1)), 0.0)) for D in DH]
 spin = [0.0] + [math.degrees(DH[i - 1].to_quaternion().rotation_difference(DH[i].to_quaternion()).angle) * FPS for i in range(1, len(DH))]
 REP['series_every_frame'] = {'ponytail_deg': [round(v, 2) for v in TIPDEFL], 'ponytail_tip_cm': [round(v, 2) for v in TIPCM],
@@ -457,7 +461,7 @@ if DO_VALIDATE:
     V['output']['new_joints'] = [n for n in ro['bones'] if n not in ri['bones']]
     V['original_joint_world_positions_max_diff_m'] = dj
     V['original_joint_world_positions_checked'] = {'frames': CHECK, 'joints': len(JN)}
-    V['head_hands_feet_at_frames'] = {f: {n: [round(v, 4) for v in po[f][n]] for n in ('head', 'hand.L', 'hand.R', 'foot.L', 'foot.R')} for f in (0, 44, 104, 162, 226, F1)}
+    V['head_hands_feet_at_frames'] = {f: {n: [round(v, 4) for v in po[f][n]] for n in ('head', 'hand.L', 'hand.R', 'foot.L', 'foot.R')} for f in (0, 42, 102, 162, 228, F1)}
     V['mesh_same_vertex_order_as_input'] = bool(len(coO) == NV and np.abs(coO - co).max() < 1e-6)
     V['mesh_rest_positions_max_diff_m'] = float(np.abs(np.sort(coO, 0) - np.sort(co, 0)).max()) if len(coO) == NV else None
     # glTF level: the 23 original joints' channels (times and values) and rest transforms

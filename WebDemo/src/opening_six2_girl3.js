@@ -42,7 +42,8 @@ const api = { G3, ready: false, t: null, dur: 0, errors: [], blink: null };
 if (G3_ON && typeof window !== 'undefined') { if (window.__bwGirl3Init) Object.assign(G3, window.__bwGirl3Init); window.__bwGirl3 = api; }
 
 // the opening's camera keys with hers in front (story time)
-export function g3CamKeys(cam) { return G3.cam.map(([t, p, g, f]) => [t < 0 ? -1 : storyOf(t), p, g, f]).concat(cam.filter(([t]) => t >= 4.9)); }
+export function g3CamKeys(cam) {   // (the opening's close key at story 4.9 sat at her side of the door: hers comes from the right, her head stays out of the landing)
+  return G3.cam.map(([t, p, g, f]) => [t < 0 ? -1 : storyOf(t), p, g, f]).concat([[4.9, [0.82, 0.74, 1.25], [0.35, 0.57, -0.22], 44]], cam.filter(([t]) => t > 4.9)); }
 
 // his face in the opening, as in the approved references (01 hiding, 03 "Oops", 04 the wash begins): the eyes are mostly a large dark-brown iris
 // with a big highlight upper left and a small one lower right (the build in opening3d.js shows a small iris inside a large white, which reads as
