@@ -25,6 +25,7 @@ import { installSix2Tunnel } from './opening_six2_tunnel.js';   // the washer lo
 import { installSix2Water } from './opening_six2_water.js';   // the water of scenes 3-5 (water specialist)
 import { OPEN9_ON, OPEN9, installOpen9 } from './opening_six2_open9.js';   // open9 (session d742a298): the washer spin with 3D water and the direct hand-over into the live Screen 6
 import { SEQ7_ON as G12_ON, SEQ7 as G12N, clothGrid as g12Grid, softHang as g12Hang, cradle as g12Cradle, tumble as g12Tumble } from './opening_six2_girl12.js';   // seq7, lane girl12: screens 2-3 (character animation)
+import { G13_ON, buildGirl13 } from './opening_six2_girl13.js';   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
@@ -194,6 +195,7 @@ export function installSix2(ctx) {
     legs.kr = 0.045 * S.girl.scale;   // the knee's radius above the floor
     for (const side of ['L', 'R']) { const sh = B['shin' + side], tail = new THREE.Object3D(); tail.name = 'six2ShinTail' + side; const p = w(sh).add(V(0, -legs.kneeY0 * 0.85, 0)); sh.attach(tail); tail.position.copy(sh.worldToLocal(p)); legs['tail' + side] = tail; }
     legs.ready = true; g2.stool.visible = false;
+    if (G13_ON) buildGirl13(g2);   // (girl13: built in her rest pose, parented to her bones)
   };
   // ---- the girl's knee timeline: states (knee midpoint on the floor, yaw, sit) and the steps between them (one knee swings, the other stays planted)
   const st = (kx, kz, yaw, sit) => ({ kx, kz, yaw, sit });

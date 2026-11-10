@@ -66,5 +66,112 @@ Be specific and quantitative; no general praise. Keep the report under about 900
 - 02:06 `Bash`: Zoom washer and window regions
 - 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/ref_wash.png
 - 02:06 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/game_wash.png
+- 02:07 `Bash`: Sample more feature colours
+- 02:07 `Bash`: Zoom on body and clothing regions
+- 02:07 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/ref_body.png
+- 02:07 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/game_body.png
+- 02:08 `Bash`: Side-by-side faces normalised by head height
+- 02:08 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/face_sbs.png
+- 02:09 `Bash`: Zoom on torso clothing details
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/ref_torso.png
+- 02:09 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev/game_torso.png
+**Agent** (02:10 UTC):
 
-_39 tool steps._
+I made no file edits. I measured by hand on zoomed crops with pixel ticks. Positions are accurate to about ±0.006 of the frame. Colours are medians of small patches in each image, lighting included. Both frames are 9:16, so x and y are fractions of width (W) and height (H) and can be compared directly. "Head" means skull top to chin: 247 px in REF01 and 158 px in the game.
+
+## 1. The girl, reference vs game
+
+**The face reads worst, because the head is bowed.** In REF01 the head is upright. In the game it is pitched down: the eyes sit 74% of the way down from the crown (REF01: 55%). Eye to chin is 0.053 H against 0.072 H, a lower face 0.74 times the reference.
+- **Fix:** turn the head bone up about 20-25° and the neck about 6°, and turn the face 3/4 toward the basket.
+
+**Eyes**
+- Height is 0.14 of the head (REF01: 0.18); height/width is 0.72 (REF01: 0.90).
+- The whites are lilac `#e8a7da` (REF01: near-white `#fbe5f2`).
+- The iris is near-black plum `#260831`; REF01 has an amber-brown ring round a large black pupil.
+- One small glint instead of two bold white highlights, and thin lashes instead of thick black lashes with outer flicks.
+- **Fix:** separate glossy eye meshes on the head bone, 1.25 times taller: unlit white whites, an amber iris texture, two highlight sprites (large upper-left, small right) and a lash card.
+
+**Mouth**
+- A narrow closed smile, 0.15 of the head wide and about 0.05 open. REF01 is a wide laugh, 0.23 wide and 0.16 open, with an upper row of teeth and a pink tongue.
+- **Fix:** a face decal projected from the head bone (open mouth, teeth, tongue), over a skin-coloured fill hiding the painted mouth.
+
+**Skin, freckles, blush, nose, brows**
+- Skin is redder and darker: forehead `#e97b64`, cheek `#e36d68`. REF01 is warm peach: `#faa079` and `#fd8d66`, about 8-13° warmer in hue and 8% brighter.
+- No freckles. REF01 has about 10-15 dots across the nose bridge and each cheek.
+- The flush covers the nose tip; REF01 has a small button nose with a pink tip and blush ovals on the cheeks.
+- Brows are about 0.6 times REF01's thickness.
+- **Fix:** shift the skin colour in the texture, and paint freckles and blush into the same decal.
+
+**Hair**
+- Copper and maroon: shadows `#631f29`, highlights orange `#ee7c5d`. REF01 is chocolate: shadows `#4b1104`, mid tones `#8d4337`, caramel highlights.
+- The ponytail mass is 0.66 × 1.28 head heights (REF01: 0.97 × 1.52), made of loose flat S-waves instead of tight round ringlets about 0.18 head across.
+- REF01 has a curl standing up on the crown and ringlets in front of the ear and along the cheek. The game has a few thin strands.
+- Scene 2 (`scene2_t2.10.png` against REF02) shows the same problem: a narrow vertical sheet instead of a spray of ringlets out the back.
+- **Fix:** hue-shift the hair's texture region; add about 30-40 ringlet meshes (spiral tubes) on the head bone at the ponytail base, reaching 1.0 head back and 1.5 down.
+
+**Bow and headband**
+- The bow is 0.248 W wide in the frame (REF01: 0.162 W), 1.19 times larger relative to the head.
+- It sits flat and centred on the crown. REF01's bow is tilted about 20° and placed 0.34 head heights further back, at the ponytail base.
+- It is more saturated magenta, `#f256c1` (REF01: `#f76db8`), with no satin sheen.
+- The headband matches.
+- **Fix:** hide the bow's region of the texture; add a new two-loop bow mesh with a sheen material at 0.84 times its current size, moved back and tilted.
+
+**Clothing**
+- The hoodie is hot magenta `#de2f9e` (saturation 0.79, brightness 0.87). REF01 is candy pink `#f565af` (0.59, 0.96). The game's jacket has puffer-style panels and creases; REF01 is smooth fleece.
+- The crown on the sleeve is a gold smear. REF01 has a crisp crown about 0.16 head wide with a pink gem.
+- Missing: the white band on the sleeve and the pink stripe on the white top.
+- The hood lining is close.
+- The backpack is saturated violet `#a73de9`; REF01's is lavender-purple with a gold paw patch.
+- The shorts, striped socks and pink paw sneakers are not visible at all (hidden by the towels, see the chart).
+- **Fix:** desaturate the jacket region of the texture; add decals for the crown and the sleeve band.
+
+**Proportions and hands**
+- Head width / shoulder width is 0.97 (REF01: 1.29), so she reads less chibi.
+- **Fix:** scale the head bone 1.12 and the shoulders and upper arms 0.9.
+- The hands are 0.095 W apart, clumped on the dome. REF01's are 0.23 W apart and spread over the towel tent.
+
+## 2. Scene 1 composition (x, y as fractions of the frame)
+
+| Item | REF01 | Game |
+|---|---|---|
+| Hair top (ponytail) | y 0.251 | y 0.206 |
+| Head centre | (0.388, 0.376) | (0.382, 0.363) |
+| Head height / width | 0.161 H / 0.313 W | 0.206 H / 0.331 W |
+| Eye line; near eye | 0.390; (0.400, 0.385) | 0.409; (0.356, 0.413) |
+| Mouth centre, width | (0.442, 0.430), 0.067 W | (0.394, 0.451), 0.058 W |
+| Bow centre, width | (0.303, 0.296), 0.162 W | (0.352, 0.289), 0.248 W |
+| Near / far hand | (0.359, 0.542) / (0.590, 0.488) | (0.419, 0.540) / (0.514, 0.495) |
+| Basket centre, width, rim to base | (0.536, 0.672), 0.544 W, 0.594-0.749 | (0.579, 0.674), 0.509 W, 0.599-0.749 |
+| His eyes (centre, each eye's width) | (0.573, 0.546), 0.052 W, both open | (0.565, 0.570), 0.035 W, one half-hidden |
+| Porthole: centre, vertical radius, left edge | (≈0.95, 0.508), 0.124 H, x 0.74 | (≈0.93, 0.447), 0.134 H, x 0.695 |
+| Top of washer | 0.31 (small bottle) | 0.17 (tall blue jar) |
+| Window centre (extent) | (0.71, 0.32) (x 0.61-0.80, y 0.22-0.42) | (0.64, 0.26) (x 0.53-0.76, y 0.13-0.39), blown out |
+| Rug: y range, flattening | 0.715-0.77, 0.11 (camera looks down about 6.5°) | 0.69-0.78, about 0.23 (about 13°) |
+| Lower left | her kneeling legs and sneaker (0-0.17, 0.65-0.76) | towel stack (0-0.33, 0.60-0.90) |
+
+**Where the UI sits in REF01:** the banner covers y 0-0.225; the caption and Start button cover 0.775-1.0.
+- REF01's scene sits entirely in the clear band, y 0.25-0.77: her hair top just under the banner, the rug just above the caption.
+- The game's content runs from 0.206 to 0.90. Her ponytail top would sit about 0.02 H under the banner, and the towel stack would sit under the caption.
+
+## 3. Top 8 differences in a static Scene 1 frame
+
+1. **The bowed head.** Eyes 74% of the way down from the crown (REF01: 55%); lower face 0.74 times REF01's.
+2. **The eyes.** Lilac whites, a black-plum iris, 0.77 times REF01's height, one small glint.
+3. **The expression.** A closed smile 0.15 of the head wide (REF01: an open laugh 0.23 wide, 0.16 open).
+4. **The hair.** Ponytail 0.66 × 1.28 head heights (REF01: 0.97 × 1.52); copper instead of chocolate; waves instead of ringlets.
+5. **The towel stack.** It covers 0.33 W × 0.30 H and hides her kneeling legs, the shorts, socks and sneakers.
+6. **The bow.** 1.53 times too wide in the frame, centred and flat instead of 0.34 head heights back and tilted 20°, too magenta.
+7. **The hoodie.** Saturation 0.79 instead of 0.59, a smeared crown, puffer panels; head/shoulder ratio 0.97 against 1.29.
+8. **Camera and washer.** The camera looks down about 13° (REF01: about 6.5°); the porthole is 0.06 H too high; the jar adds 0.14 H above REF01's washer top; the window is 0.07 W left and 0.06 H high.
+   - Him: eyes 0.035 W against 0.052 W, one covered by the flat yellow slab.
+   - The towel is a smooth sky-blue dome (`#97b8f9`); REF01 drapes a periwinkle towel (`#beb0eb`) over him like a tent.
+
+Two things already match within 0.02 of the frame: the head centre and eye line, and the basket's rim, base and paw medallion. Leave those anchors alone while fixing the pose.
+
+Files are in /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/rev:
+- face_sbs.png — the two faces side by side, scaled to the same head height
+- ref_grid.png
+- game_grid.png
+
+
+_48 tool steps._
