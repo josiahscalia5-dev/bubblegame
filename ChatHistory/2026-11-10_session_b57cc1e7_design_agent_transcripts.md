@@ -269,5 +269,52 @@ The labelled render kept the frame-1 kneeling pose because I didn't reset the po
 - 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
 - 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
 - 03:51 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+**Agent** (03:51 UTC):
 
-_41 tool steps._
+Now a first run with renders and validation off, to check the weights and the simulated deflections quickly.
+
+- 03:51 `Bash`: First run of hair script without renders
+- 03:51 `Bash`: Debug large weight steps across edges
+- 03:52 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:52 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:52 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:52 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+**Agent** (03:52 UTC):
+
+Now a rerun with gravity lowered to 1.5 m/s², printing the head tilt and turn rate alongside the ponytail swing.
+
+- 03:52 `Bash`: Rerun with anchors and lower gravity
+- 03:53 `Bash`: Locate remaining large weight steps
+- 03:53 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:53 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:53 `Read`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:53 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+- 03:53 `Edit`: /home/user/bubblegame/WebDemo/tools/blender/hair_secondary.py
+**Agent** (03:53 UTC):
+
+Now a run with renders on (validation still off) to see the weight map and the first contact sheet.
+
+- 03:54 `Bash`: Run with renders to preview weights and motion
+**Agent** (03:54 UTC):
+
+`setup_render` used the module-level scene, which the factory reset in `load()` invalidated. I'll switch it to the current context scene.
+
+- 03:54 `Bash`: Patch render helpers to use current scene
+- 03:54 `Bash`: Rerun with renders after scene fix
+**Agent** (03:54 UTC):
+
+The largest per-edge step dropped from 0.85 to 0.28. Let me look at the weight map and the contact sheet.
+
+- 03:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/t3/hair_weights.png
+- 03:54 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/t3/hair_compare.png
+**Lead → agent** (03:54 UTC):
+
+[Image: original 2436x1000, displayed at 2000x821. Multiply coordinates by 1.22 to map to original image.]
+
+- 03:55 `Bash`: Crop pairs 5 and 6 from contact sheet
+- 03:55 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/crop_p5.png
+- 03:55 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/crop_p6.png
+- 03:56 `Bash`: Apply coupling and tuning, rerun sim
+- 03:56 `Bash`: Print head turn rate around frame 210
+
+_64 tool steps._

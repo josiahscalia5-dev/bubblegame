@@ -33,8 +33,8 @@ export const G3 = {
     [3.4, [0.25, 0.58, 3.7], [-0.12, 0.5, 0.8], 41],
     [5.0, [0.6, 0.64, 3.25], [0.02, 0.55, 0.5], 42],
     [6.1, [0.82, 0.68, 2.45], [0.08, 0.56, 0.42], 44],
-    [7.0, [1.08, 0.76, 1.95], [0.33, 0.58, 0.0], 46],
-    [7.4, [0.72, 0.75, 1.5], [0.35, 0.57, -0.2], 48],
+    [7.0, [1.12, 0.74, 1.8], [0.36, 0.58, 0.02], 40],
+    [7.4, [0.92, 0.74, 1.38], [0.36, 0.57, -0.16], 42],
   ],
 };
 export const storyOf = (r) => (r < 0 ? -1 : r < G3.LAND ? r * 4.75 / G3.LAND : r - (G3.LAND - 4.75));
@@ -43,6 +43,24 @@ if (G3_ON && typeof window !== 'undefined') { if (window.__bwGirl3Init) Object.a
 
 // the opening's camera keys with hers in front (story time)
 export function g3CamKeys(cam) { return G3.cam.map(([t, p, g, f]) => [t < 0 ? -1 : storyOf(t), p, g, f]).concat(cam.filter(([t]) => t >= 4.9)); }
+
+// his face in the opening, as in the approved references (01 hiding, 03 "Oops", 04 the wash begins): the eyes are mostly a large dark-brown iris
+// with a big highlight upper left and a small one lower right (the build in opening3d.js shows a small iris inside a large white, which reads as
+// googly / cross-eyed); the surprised mouth is an open smile, not a small round O. His own eye meshes are resized in place (they stay on his body).
+function approvedFace(heroBody) {
+  let n = 0;
+  heroBody.traverse((g) => {
+    if (!g.isGroup || g.children.length < 5 || g.userData.g3face) return;
+    const [sc, ir, pu, hl] = g.children; if (!(sc.isMesh && ir.isMesh && pu.isMesh && hl.isMesh) || !sc.geometry.parameters || Math.abs(sc.geometry.parameters.radius - 0.042) > 1e-4) return;
+    g.userData.g3face = true; n++;
+    ir.scale.set(1.3, 1.36, 0.55); ir.position.z = 0.019; ir.material = ir.material.clone(); ir.material.color.setHex(0x3e1d0c);
+    pu.scale.set(1.25, 1.3, 0.45); pu.position.z = 0.03; pu.material = pu.material.clone(); pu.material.color.setHex(0x0b0503);
+    hl.scale.setScalar(1.55); hl.position.set(-0.012, 0.016, 0.04);
+    const h2 = hl.clone(); h2.scale.setScalar(0.75); h2.position.set(0.014, -0.012, 0.039); g.add(h2);
+  });
+  heroBody.traverse((o) => { if (o.isMesh && o.geometry.parameters && Math.abs((o.geometry.parameters.radius || 0) - 0.022) < 1e-4 && o.material.color && o.material.color.getHex() === 0x8a1236) o.userData.g3O = true; });
+  return n;
+}
 
 export function installGirl3({ scene, g2 }) {
   if (!G3_ON) return null;
@@ -104,6 +122,8 @@ export function updateGirl3(r, s, it, H) {
   if (!G3_ON || !api.ready) return;
   const { g2, S, inDrum, hero, heroBody, blue, yG, heap, marks, P, heroSit, placeLocal, hoodAt, hoodPos, rB, camRight, camYaw } = H;
   if (!api.shared) api.share();
+  if (!api.face && heroBody.children.length > 1) { api.face = approvedFace(heroBody); heroBody.traverse((o) => { if (o.userData.g3O) api.Omouth = o; }); }
+  if (api.Omouth) api.Omouth.scale.set(1.45, 1.05, 0.35);   // (the surprised mouth: a wide open smile)
   const k1 = S.girl.k1, root = api.root;
   root.position.set(k1[0], 0, k1[1]); root.rotation.set(0, S.girl.yaw1, 0); root.scale.setScalar(S.girl.scale);
   root.visible = !inDrum;
@@ -125,8 +145,10 @@ export function updateGirl3(r, s, it, H) {
   const yawF = Math.atan2(front.x, front.z);
   const bundle = (out, c) => { blue.drape(out, rB * 1.12, rB * 2.3, 0.92, rB * 0.85, it, 1.2) /* (wrapped round him, the corners hanging) */; return placeLocal(out, c, 0.18, yawF, 0.07 * Math.sin(r * 4.1)); };
   let hp = hero.position.clone(), scl = 0.56; const rot = new THREE.Euler().copy(hero.rotation);
-  if (r < G3.grip[0]) { hoodAt(blue.A, hoodPos); blue.apply(blue.A); }
-  else if (!rel) {
+  if (r < G3.grip[0]) {   // he sees her hands coming and ducks deeper under the towel (the hood stays: she sees only laundry)
+    const duck = sm(0.75, 1.15, r); hp.y -= 0.05 * duck; rot.x += 0.25 * duck; relPos = null;
+    hoodAt(blue.A, hoodPos); blue.apply(blue.A);
+  } else if (!rel) {
     hp = hp.lerp(mid.clone().add(V(0, -0.012, 0)), kG); rot.set(0.08 * Math.sin(r * 6) * kG, rot.y + (camYaw - 0.3 - rot.y) * kG, 0.08 * Math.sin(r * 5) * kG); relPos = hp.clone();
     hoodAt(blue.A, hp.clone().add(V(0, 0.012, -0.01))); const W = bundle(blue.B, hp), o = new Float32Array(W.length);
     for (let i = 0; i < o.length; i++) o[i] = blue.A[i] + (W[i] - blue.A[i]) * kG; blue.apply(o);

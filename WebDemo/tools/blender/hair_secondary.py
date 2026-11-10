@@ -39,16 +39,19 @@ P = {
     'tail': [[0.0, 0.025, 0.945], [0.0, 0.11, 0.91], [0.0, 0.145, 0.815], [0.0, 0.14, 0.715], [0.0, 0.13, 0.615]],
     'side': [[0.11, 0.075, 0.895], [0.15, 0.12, 0.76], [0.152, 0.09, 0.625]],
     # weight fields (metres)
-    'free': [0.006, 0.05],         # distance outside the skull: rigid below the first, free above the second
+    'free': [0.004, 0.07],         # distance outside the skull: rigid below the first, free above the second
+    'anchor': [0.008, 0.06],       # distance to the nearest rigid vertex (bow, headband, hood collar, face, ears, body): rigid -> free
     'back': [-0.03, 0.035],        # y: in front of the first (ears, face, temple wisps) nothing moves
     'lateral': [0.075, 0.125],     # |x|: the ponytail's centre -> the side bunches
-    'ramp_tail': [0.03, 0.15],     # arc length from the ponytail root: rigid -> free
-    'ramp_side': [0.03, 0.12],
+    'ramp_tail': [0.02, 0.17],     # arc length from the ponytail root: rigid -> free
+    'ramp_side': [0.02, 0.15],
     'soft_sigma': 0.04,            # soft projection onto the chain polylines
+    'smooth_iter': 12, 'smooth_alpha': 0.5,   # weight smoothing on the surface graph (anchors fixed at 0)
     # springs per bone: frequency (Hz), damping ratio, limits (deg): outward, inward (toward her head / nape), sideways
-    'tail_spring': [[2.8, 0.40, 5.0, 1.0, 4.0], [2.3, 0.33, 8.0, 3.0, 7.0], [2.0, 0.28, 10.0, 5.0, 9.0], [1.8, 0.25, 12.0, 7.0, 11.0]],
-    'side_spring': [[2.5, 0.35, 7.0, 2.0, 6.0], [2.1, 0.28, 11.0, 5.0, 10.0]],
-    'gravity': 3.0,                # m/s^2 of extra pull when her head tilts away from upright (the model's shape already hangs at rest)
+    'tail_spring': [[2.6, 0.45, 4.0, 1.0, 4.0], [2.3, 0.40, 6.0, 2.0, 6.0], [2.2, 0.36, 7.0, 3.0, 7.0], [2.1, 0.33, 8.0, 4.0, 8.0]],
+    'side_spring': [[2.4, 0.40, 5.0, 1.5, 5.0], [2.2, 0.35, 7.0, 3.0, 7.0]],
+    'side_follow': [1, 0.7],       # the side bunches belong to the ponytail: their root target follows ponytail bone 2's swing by this share
+    'gravity': 1.0,                # m/s^2 of extra pull when her head tilts away from upright (the model's shape already hangs at rest)
     'air_drag': 1.0,               # 1/s
     'soft_stop': 0.6,              # fraction of each limit where the progressive stop starts
     'substeps': 8, 'preroll_s': 2.0,
@@ -130,7 +133,15 @@ def hat_weights(s, S):
 TAILJ = [Vector(p) for p in P['tail']]
 SIDEJ = {'L': [Vector(p) for p in P['side']], 'R': [Vector((-p[0], p[1], p[2])) for p in P['side']]}
 movable = (dom == 'head') & ~pink & ~(skin & (y < 0.03))
-free = ss(*P['free'], dout); back = ss(*P['back'], y); lam = ss(*P['lateral'], np.abs(x))
+# anchors: everything that must not move with the hair (the bow, the headband, her hood's collar where the nape hair meets it, face, ears, the
+# body); the hair stiffens smoothly toward them (no weight step at their border)
+anchor = ~movable
+kda = KDTree(int(anchor.sum()))
+for i, j in enumerate(np.where(anchor)[0]): kda.insert(co[j], i)
+kda.balance()
+dz = np.zeros(NV); cand = np.where(movable & (y > P['back'][0]))[0]
+for j in cand: dz[j] = kda.find(co[j])[2]
+free = ss(*P['free'], dout) * ss(*P['anchor'], dz); back = ss(*P['back'], y); lam = ss(*P['lateral'], np.abs(x))
 sT, ST = chain_param(co, [tuple(v) for v in TAILJ], P['soft_sigma'])
 sL, SS = chain_param(co, [tuple(v) for v in SIDEJ['L']], P['soft_sigma']); sR, _ = chain_param(co, [tuple(v) for v in SIDEJ['R']], P['soft_sigma'])
 sS = np.where(x >= 0, sL, sR)
@@ -158,8 +169,17 @@ VG = {gp.name: gp for gp in mesh.vertex_groups}
 chainw = np.concatenate([BT, BS[:, :len(SIDEN['L'])] * (x >= 0)[:, None], BS[:, :len(SIDEN['R'])] * (x < 0)[:, None]], 1)   # columns in NEWB order
 # the glTF mesh has duplicate vertices along UV seams (same position, different texels): give every duplicate the same weights (mean), or it cracks
 _, WID = np.unique(np.round(co / 2e-5).astype(np.int64), axis=0, return_inverse=True); WID = WID.ravel()
-gs_ = np.bincount(WID).astype(float)
-chainw = np.stack([np.bincount(WID, weights=chainw[:, k]) / gs_ for k in range(chainw.shape[1])], 1)[WID]
+gs_ = np.bincount(WID).astype(float); NW = int(WID.max() + 1)
+CW = np.stack([np.bincount(WID, weights=chainw[:, k]) / gs_ for k in range(chainw.shape[1])], 1)
+# constrained smoothing on the welded surface graph (softens the steepest steps over ~2 cm; the anchors stay at 0)
+ev = np.zeros(len(me.edges) * 2, dtype=np.int64); me.edges.foreach_get('vertices', ev); ev = ev.reshape(-1, 2)
+we = np.unique(np.sort(WID[ev], 1), axis=0); we = we[we[:, 0] != we[:, 1]]
+deg = np.bincount(we.ravel(), minlength=NW).astype(float)
+anc_w = np.bincount(WID, weights=anchor.astype(float), minlength=NW) > 0
+for _ in range(int(P['smooth_iter'])):
+    nb = np.zeros_like(CW); np.add.at(nb, we[:, 0], CW[we[:, 1]]); np.add.at(nb, we[:, 1], CW[we[:, 0]])
+    CW = (1 - P['smooth_alpha']) * CW + P['smooth_alpha'] * nb / np.maximum(deg, 1)[:, None]; CW[anc_w] = 0
+chainw = CW[WID]
 BT = chainw[:, :len(TAILN)]; BS = chainw[:, len(TAILN):len(TAILN) + len(SIDEN['L'])] + chainw[:, len(TAILN) + len(SIDEN['L']):]
 total = chainw.sum(1)
 REP['seam_duplicates'] = {'vertices': NV, 'unique_positions': int(WID.max() + 1)}
@@ -168,8 +188,13 @@ for i in changed:
     ws = {k: v * (1 - total[i]) for k, v in OLDW[i].items()}
     for k, n in enumerate(NEWB):
         if chainw[i, k] > 1e-4: ws[n] = chainw[i, k]
-    if len(ws) > 4:
-        pruned += 1; ws = dict(sorted(ws.items(), key=lambda kv: -kv[1])[:4])
+    if len(ws) > 4:   # (the lateral blend: head + 2 ponytail + 2 side bones) merge the smaller bone of a chain pair into its neighbour
+        pruned += 1
+        for chain in (TAILN, SIDEN['L'], SIDEN['R']):
+            pr = sorted([n for n in chain if n in ws], key=lambda n: ws[n])
+            while len(ws) > 4 and len(pr) > 1:
+                ws[pr[1]] += ws.pop(pr[0]); pr = pr[1:]
+        ws = dict(sorted(ws.items(), key=lambda kv: -kv[1])[:4])
     s = sum(ws.values()); ws = {k: v / s for k, v in ws.items() if v / s > 1e-4}
     for k in OLDW[i]: VG[k].remove([int(i)])
     for k, v in ws.items(): VG[k].add([int(i)], v, 'REPLACE')
@@ -179,11 +204,14 @@ REP['weights'] = {'vertices_reweighted': int(len(changed)), 'pruned_to_4_influen
                   'per_bone_vertices_dominant_new': {n: int(((chainw.argmax(1) == k) & (chainw.max(1) > 0.05)).sum()) for k, n in enumerate(NEWB)},
                   'rigid_kept': {'pink_head_vertices': int((pink & (dom == 'head')).sum()), 'skin_front_head_vertices': int((skin & (y < 0.03) & (dom == 'head')).sum())},
                   'max_new_weight_on_pink_or_face': float(total[~movable & (dom == 'head')].max()) if (~movable & (dom == 'head')).any() else 0.0}
-# seam check: the largest new-weight step across an edge that touches a forced-rigid vertex (the bow / headband / face border)
-ev = np.zeros(len(me.edges) * 2, dtype=np.int64); me.edges.foreach_get('vertices', ev); ev = ev.reshape(-1, 2)
-fr = (~movable) & (dom == 'head'); bd = fr[ev[:, 0]] ^ fr[ev[:, 1]]
-REP['weights']['max_new_weight_next_to_rigid_border'] = round(float(np.abs(total[ev[bd, 0]] - total[ev[bd, 1]]).max()) if bd.any() else 0.0, 4)
-REP['weights']['max_new_weight_step_along_any_edge'] = round(float(np.abs(total[ev[:, 0]] - total[ev[:, 1]]).max()), 4)
+# seam check: the largest new-weight step across an edge that touches a forced-rigid vertex (the bow / headband / face border), and per cm anywhere
+gi2 = {gp.index: gp.name for gp in mesh.vertex_groups}
+fr = (~movable) & (dom == 'head'); bd = fr[ev[:, 0]] ^ fr[ev[:, 1]]; tw = np.zeros(NV)
+for i in changed: tw[i] = sum(v for k, v in ((gi2[e.group], e.weight) for e in me.vertices[int(i)].groups) if k in NEWB)
+stepw = np.abs(tw[ev[:, 0]] - tw[ev[:, 1]]); elen = np.linalg.norm(co[ev[:, 0]] - co[ev[:, 1]], axis=1)
+REP['weights']['max_new_weight_next_to_rigid_border'] = round(float(stepw[bd].max()) if bd.any() else 0.0, 4)
+REP['weights']['max_new_weight_step_along_any_edge'] = round(float(stepw.max()), 4)
+REP['weights']['max_new_weight_change_per_cm'] = round(float((stepw / np.maximum(elen, 1e-4)).max() / 100), 4)
 
 # ---------------------------------------------------------------- 4. the head (and chest) motion of the clip
 PB = arm.pose.bones
@@ -201,7 +229,7 @@ class Chain:
     def __init__(self, names, J, springs, radii, centre):
         self.names = names; self.J = J; self.n = len(J) - 1
         self.e = [J[k + 1] - J[k] for k in range(self.n)]; self.len = [v.length for v in self.e]
-        self.sp = springs; self.rad = radii
+        self.sp = springs; self.rad = radii; self.follow = None   # (chain, bone index, share): the root target follows another chain's swing
         self.nin = []                                              # rest 'inward' direction of each bone (toward her head centre), perpendicular to it
         for k in range(self.n):
             m = (J[k] + J[k + 1]) / 2; v = centre - m; d = self.e[k].normalized(); v = v - d * v.dot(d); self.nin.append(v.normalized())
@@ -210,6 +238,7 @@ class Chain:
         self.Q = [R.copy() for _ in range(self.n)]; self.tprev = [None] * self.n; self.angles = [(0.0, 0.0)] * self.n
     def step(self, D, Dc, h):
         Rh = D.to_quaternion(); base = D @ self.J[0]; self.p[0] = base; Qpar = Rh
+        if self.follow: fc, fk, fs = self.follow; Qpar = Rh.slerp(fc.Q[fk], fs)
         down = Vector((0, 0, -1)); G = P['gravity']
         cols = [(Dc @ Vector(c), rr) for c, rr in P['colliders']]
         for k in range(self.n):
@@ -247,6 +276,7 @@ class Chain:
 centre = Vector(P['skull_c'])
 CH = [Chain(TAILN, TAILJ, P['tail_spring'], P['tail_radius'], centre)] + \
      [Chain(SIDEN[s], SIDEJ[s], P['side_spring'], P['side_radius'], centre) for s in 'LR']
+for c in CH[1:]: c.follow = (CH[0], int(P['side_follow'][0]), float(P['side_follow'][1]))
 h = 1.0 / (FPS * SUB)
 for c in CH: c.reset(DH[0])
 for _ in range(int(P['preroll_s'] * FPS * SUB)):
@@ -298,7 +328,11 @@ win = {}
 for a0, a1 in P['windows']:
     seg = TIPDEFL[a0 - F0:a1 - F0 + 1]; win[f'{a0}-{a1}'] = {'frame': int(a0 + seg.argmax()), 'deg': round(float(seg.max()), 2), 'tip_cm': round(float(TIPCM[a0 - F0 + seg.argmax()]), 2)}
 REP['deflection']['windows'] = win
-REP['springs'] = {'tail (Hz, damping ratio, limit out/in/side deg)': P['tail_spring'], 'side': P['side_spring'], 'gravity_m_s2': P['gravity'],
+tilt = [math.degrees((D.to_3x3() @ Vector((0, 0, 1))).angle(Vector((0, 0, 1)), 0.0)) for D in DH]
+spin = [0.0] + [math.degrees(DH[i - 1].to_quaternion().rotation_difference(DH[i].to_quaternion()).angle) * FPS for i in range(1, len(DH))]
+REP['series_every_frame'] = {'ponytail_deg': [round(v, 2) for v in TIPDEFL], 'ponytail_tip_cm': [round(v, 2) for v in TIPCM],
+                             'head_tilt_from_upright_deg': [round(v, 1) for v in tilt], 'head_turn_rate_deg_s': [round(v, 1) for v in spin]}
+REP['springs'] = {'tail (Hz, damping ratio, limit out/in/side deg)': P['tail_spring'], 'side': P['side_spring'], 'side_follow_tail_bone_share': P['side_follow'], 'gravity_m_s2': P['gravity'],
                   'air_drag_per_s': P['air_drag'], 'substeps_per_frame': SUB, 'preroll_s': P['preroll_s']}
 print('DEFLECTION', json.dumps(REP['deflection']['ponytail_root_to_tip_deg']), json.dumps(win))
 
@@ -332,13 +366,14 @@ def weight_preview():
     save_png(os.path.join(OUT, 'hair_weights.png'), np.concatenate(tiles, 1))
 
 def setup_render(wpx, hpx, samples):
-    sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'; sc.cycles.samples = samples; sc.cycles.use_denoising = False
-    sc.render.resolution_x, sc.render.resolution_y = wpx, hpx; sc.render.resolution_percentage = 100
-    sc.render.image_settings.file_format = 'PNG'; sc.render.film_transparent = False
-    w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
+    s = bpy.context.scene   # (the current scene: load() replaces it)
+    s.render.engine = 'CYCLES'; s.cycles.device = 'CPU'; s.cycles.samples = samples; s.cycles.use_denoising = False
+    s.render.resolution_x, s.render.resolution_y = wpx, hpx; s.render.resolution_percentage = 100
+    s.render.image_settings.file_format = 'PNG'; s.render.film_transparent = False
+    w = bpy.data.worlds.new('w'); s.world = w; w.use_nodes = True
     w.node_tree.nodes['Background'].inputs[0].default_value = (0.82, 0.8, 0.88, 1); w.node_tree.nodes['Background'].inputs[1].default_value = 1.3
 def new_cam():
-    cam = bpy.data.objects.new('cam', bpy.data.cameras.new('cam')); sc.collection.objects.link(cam); sc.camera = cam; return cam
+    s = bpy.context.scene; cam = bpy.data.objects.new('cam', bpy.data.cameras.new('cam')); s.collection.objects.link(cam); s.camera = cam; return cam
 def read_png(fp):
     im = bpy.data.images.load(fp); a = np.zeros(im.size[0] * im.size[1] * 4, dtype=np.float32); im.pixels.foreach_get(a)
     a = a.reshape(im.size[1], im.size[0], 4); bpy.data.images.remove(im); return a
@@ -473,14 +508,14 @@ def render_frames(path, frames, tag, cams):
     cam = new_cam(); cam.data.lens = 50; cam.data.sensor_fit = 'VERTICAL'; cam.data.sensor_height = 24
     key = bpy.data.lights.new('key', 'AREA'); key.energy = 60; key.size = 1.0; ko = bpy.data.objects.new('key', key); s2.collection.objects.link(ko); ko.parent = cam; ko.location = (0.6, 0.6, 0.3)
     ko.rotation_euler = (Vector((0, 0, -1.2)) - Vector((0.6, 0.6, 0.3))).to_track_quat('-Z', 'Y').to_euler()
-    cu = bpy.data.curves.new('lbl', 'FONT'); cu.size = 0.032; to = bpy.data.objects.new('lbl', cu); s2.collection.objects.link(to); to.parent = cam
-    lm = bpy.data.materials.new('lbl'); lm.use_nodes = True; bs = lm.node_tree.nodes['Principled BSDF']; bs.inputs['Base Color'].default_value = (0.05, 0.02, 0.1, 1)
-    bs.inputs['Emission Color'].default_value = (0.05, 0.02, 0.1, 1); cu.materials.append(lm)
+    cu = bpy.data.curves.new('lbl', 'FONT'); cu.size = 0.0062; to = bpy.data.objects.new('lbl', cu); s2.collection.objects.link(to); to.parent = cam
+    lm = bpy.data.materials.new('lbl'); lm.use_nodes = True; nt = lm.node_tree; nt.nodes.clear(); em = nt.nodes.new('ShaderNodeEmission'); mo = nt.nodes.new('ShaderNodeOutputMaterial')
+    em.inputs['Color'].default_value = (0.0, 0.0, 0.0, 1); nt.links.new(em.outputs[0], mo.inputs['Surface']); cu.materials.append(lm)
     tiles = []
     for f in frames:
         s2.frame_set(f); loc, rot = cams[f]; cam.location = loc; cam.rotation_euler = rot
-        dist = 0.9; hh = 2 * dist * (cam.data.sensor_height / 2 / cam.data.lens); ww = hh * P['render_size'][0] / P['render_size'][1]   # (visible size at dist)
-        to.location = (-ww / 2 + 0.02, hh / 2 - 0.05, -dist); cu.body = f'{tag}  frame {f}'
+        dist = 0.2; hh = 2 * dist * (cam.data.sensor_height / 2 / cam.data.lens); ww = hh * P['render_size'][0] / P['render_size'][1]   # (visible size at dist)
+        to.location = (-ww / 2 + 0.004, hh / 2 - 0.009, -dist); cu.body = f'{tag}  frame {f}'
         fp = os.path.join(OUT, f'_{tag}_{f:03d}.png'); s2.render.filepath = fp; bpy.ops.render.render(write_still=True); tiles.append(read_png(fp)); os.remove(fp)
     return tiles
 
@@ -490,10 +525,10 @@ if DO_RENDER:
     armI, meshI, _ = load(SRC); s2 = bpy.context.scene; cams = {}
     Bhip = armI.data.bones['hips'].matrix_local.to_3x3()
     for f in frames:
-        s2.frame_set(f); hp = armI.pose.bones['head']; tgt = armI.matrix_world @ ((hp.head + hp.tail) / 2) + Vector((0, 0, -0.04))
+        s2.frame_set(f); hp = armI.pose.bones['head']; tgt = armI.matrix_world @ ((hp.head + hp.tail) / 2) + Vector((0, 0, -0.07))
         Rh = armI.pose.bones['hips'].matrix.to_3x3() @ Bhip.inverted(); fwd = Rh @ Vector((0, -1, 0)); fwd.z = 0; fwd.normalize()
         lft = Rh @ Vector((1, 0, 0)); lft.z = 0; lft.normalize()
-        d = (lft * 0.8 - fwd * 0.55 + Vector((0, 0, 0.3))).normalized(); loc = tgt + d * 1.15
+        d = (lft * 0.8 - fwd * 0.55 + Vector((0, 0, 0.12))).normalized(); loc = tgt + d * 1.55
         cams[f] = (loc, (-d).to_track_quat('-Z', 'Y').to_euler())
     tin = render_frames(SRC, frames, 'INPUT (rigid hair)', cams)
     tout = render_frames(DST, frames, 'OUTPUT (hair springs)', cams)
