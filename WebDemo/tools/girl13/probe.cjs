@@ -40,6 +40,12 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     const V = (o) => { const v = new cam.position.constructor(); o.getWorldPosition(v); return v; };
     for (const [k, b] of Object.entries(d.g2.B || {})) { const w = V(b), p = w.clone().project(cam); out.bones[k] = { w: w.toArray().map((v) => +v.toFixed(3)), sx: +((p.x + 1) / 2).toFixed(3), sy: +((1 - p.y) / 2).toFixed(3) }; }
     return out; });
+  if (process.env.FRONT === '1') {   // straight in front of her face (girl13's face frame), for placing the face layer's features
+    await page.evaluate(([dist]) => { const F = window.__bwGirl13.frame(), P = F.c.clone().addScaledVector(F.f, dist);
+      window.__bwSix2.cam = [[-1, P.toArray(), F.c.toArray(), 24], [99, P.toArray(), F.c.toArray(), 24]]; window.__bwFrontUp = F.up.toArray(); }, [+(process.env.CLOSED || 0.7)]);
+    await seekTo(); await page.waitForTimeout(200);
+    await page.screenshot({ path: path.join(OUT, `${TAG}_front.png`), timeout: 240000 }); log('front');
+  }
   if (process.env.CLOSE === '1') {   // a close-up of her head along the game camera's line of sight (the same light, the same frame)
     await page.evaluate(([dist, up]) => { const d = window.__bwSix2dbg, cam = d.camera, H = new cam.position.constructor(); d.g2.B.head.getWorldPosition(H); H.y += up;
       const P = cam.position.clone().sub(H).normalize().multiplyScalar(dist).add(H);
@@ -47,7 +53,8 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     await seekTo(); await page.waitForTimeout(200);
     await page.screenshot({ path: path.join(OUT, `${TAG}_close.png`), timeout: 240000 }); log('close');
   }
+  info.g13 = await page.evaluate(() => window.__bwGirl13 ? { ready: window.__bwGirl13.ready, ms: window.__bwGirl13.ms, cells: window.__bwGirl13.cells } : null);
   fs.writeFileSync(path.join(OUT, `${TAG}.json`), JSON.stringify({ logs, info }, null, 1));
-  console.log(JSON.stringify({ logs: logs.slice(0, 6), cam: info.cam, head: info.bones.head }));
+  console.log(JSON.stringify({ logs: logs.slice(0, 6), cam: info.cam, head: info.bones.head, g13: info.g13 }));
   await browser.close(); server.close();
 })().catch((e) => { console.error(e); process.exit(1); });

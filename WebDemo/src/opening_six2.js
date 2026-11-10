@@ -25,7 +25,7 @@ import { installSix2Tunnel } from './opening_six2_tunnel.js';   // the washer lo
 import { installSix2Water } from './opening_six2_water.js';   // the water of scenes 3-5 (water specialist)
 import { OPEN9_ON, OPEN9, installOpen9 } from './opening_six2_open9.js';   // open9 (session d742a298): the washer spin with 3D water and the direct hand-over into the live Screen 6
 import { SEQ7_ON as G12_ON, SEQ7 as G12N, clothGrid as g12Grid, softHang as g12Hang, cradle as g12Cradle, tumble as g12Tumble } from './opening_six2_girl12.js';   // seq7, lane girl12: screens 2-3 (character animation)
-import { G13_ON, buildGirl13 } from './opening_six2_girl13.js';   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
+import { G13_ON, buildGirl13, poseGirl13 } from './opening_six2_girl13.js';   // girl13 (session b57cc1e7): the approved girl's look (face layer, materials) for screens 1-2
 
 const LIST = typeof window === 'undefined' ? [] : (window.__BW_S3__ || ((location.search.match(/[?&]s3=([^&]*)/) || [])[1] || '').split(','));
 export const SIX2_ON = LIST.includes('six') && LIST.includes('six2');
@@ -323,6 +323,7 @@ export function installSix2(ctx) {
       rotateBoneWorld(B.head, V(0, 1, 0), yawH);
       rotateBoneWorld(B.head, lat2, -upH * 0.8 + 0.03 * Math.sin(it * 0.8));
       rotateBoneWorld(B.head, fwd, 0.08 + 0.05 * Math.sin(it * 0.7));
+      if (G13_ON) poseGirl13(B, lat2, s, rotateBoneWorld);   // (girl13: Scene 1's upright head)
       // arms: two-bone IK to the hand targets (the hand nearer each target takes it)
       const cw = B.chest.getWorldPosition(new THREE.Vector3());
       const hl = B.handL.getWorldPosition(new THREE.Vector3()), hr = B.handR.getWorldPosition(new THREE.Vector3());
