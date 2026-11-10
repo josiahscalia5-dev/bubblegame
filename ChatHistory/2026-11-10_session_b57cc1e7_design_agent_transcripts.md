@@ -259,5 +259,7 @@ The labelled render kept the frame-1 kneeling pose because I didn't reset the po
 - 03:40 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab2_sheet.png
 - 03:40 `Bash`: Close-up of left side free-hanging hair bands
 - 03:40 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/lab3_sheet.png
+- 03:41 `Bash`: Measure hair centroids per height band
+- 03:44 `Bash`: Check head weights, body proximity, glTF structure
 
-_31 tool steps._
+_33 tool steps._

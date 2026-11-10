@@ -22,9 +22,9 @@ export const G3 = {
   file: 'models/opening/girl_v3_laundry.glb', clip: 'girl3_laundry',
   LAND: 7.4,                         // (real s) he lands on the drum seat = story 4.75 s
   grip: [1.35, 1.9], release: 6.45,  // (real s) her hands close on the towel; she lets go at the door
-  // her blinks (real s) and her eyelids: skin caps on her head bone over her painted eyes (model coordinates measured on her face; the face is
-  // rolled ~10.5 deg in her model), closing from both edges to a line
-  blinks: [0.55, 2.05, 3.3, 4.95, 6.95, 8.6, 9.7], eyes: [[-0.078, 0.756], [0.034, 0.777]], lidR: 0.034, roll: 0.185, skin: 0xe2916c,
+  // her blinks (real s) and her eyelids: skin caps on her head bone over her painted eyes (found on her mesh at load; eyes = fallback model
+  // coordinates), closing from both edges to a line
+  blinks: [0.55, 2.05, 3.3, 4.95, 6.95, 8.6, 9.7], eyes: [[-0.078, 0.756], [0.034, 0.777]], lidR: 0.034, roll: 0.0, skin: 0xeea078,
   // camera keys in REAL seconds [t, position, target, vertical fov]; after LAND the opening's own keys (from story 4.9) continue
   cam: [
     [-1, [0.002, 0.5, 4.116], [-0.349, 0.458, 0.555], 41.2],
@@ -79,9 +79,9 @@ function findEyes(mesh) {
   mesh.updateMatrixWorld(true);
   for (let i = 0; i < pos.count; i++) {
     v.fromBufferAttribute(pos, i); mesh.applyBoneTransform(i, v); v.applyMatrix4(mesh.matrixWorld);
-    if (v.y < 0.725 || v.y > 0.795 || v.z < 0.12 || Math.abs(v.x) > 0.13) continue;
+    if (v.y < 0.725 || v.y > 0.795 || v.z < 0.12 || Math.abs(v.x) > 0.115) continue;
     const px = Math.min(W - 1, Math.max(0, Math.floor(uv.getX(i) * W))), py = Math.min(Hh - 1, Math.max(0, Math.floor(uv.getY(i) * Hh))), k = (py * W + px) * 4;
-    if (Math.max(D[k], D[k + 1], D[k + 2]) < 75) pts.push(v.clone());
+    if (Math.max(D[k], D[k + 1], D[k + 2]) < 62 && D[k] - D[k + 2] < 32) pts.push(v.clone());   // (near-black pupils and lashes; not the brown curls by her temples)
   }
   if (pts.length < 8) return null;
   let a = pts.reduce((m, p) => (p.x < m.x ? p : m)).clone(), b = pts.reduce((m, p) => (p.x > m.x ? p : m)).clone();
@@ -89,7 +89,7 @@ function findEyes(mesh) {
     const A = [], Bs = []; for (const p of pts) ((p.x - a.x) ** 2 + (p.y - a.y) ** 2 < (p.x - b.x) ** 2 + (p.y - b.y) ** 2 ? A : Bs).push(p);
     const mean = (L) => L.reduce((m, p) => m.add(p), new THREE.Vector3()).multiplyScalar(1 / Math.max(1, L.length)); if (!A.length || !Bs.length) return null; a = mean(A); b = mean(Bs);
     if (it === 9) return [A, Bs].map((L) => { const m = mean(L), sx = Math.max(...L.map((p) => Math.abs(p.x - m.x))), sy = Math.max(...L.map((p) => Math.abs(p.y - m.y))), zf = Math.max(...L.map((p) => p.z));
-      return { c: new THREE.Vector3(m.x, m.y, zf - Math.max(sx, sy) * 0.45), w: Math.max(0.02, sx * 1.05), h: Math.max(0.018, sy * 1.15), n: L.length }; });
+      return { c: new THREE.Vector3(m.x - Math.sign(m.x) * sx * 0.22, m.y - sy * 0.3, zf - Math.max(sx, sy) * 0.45), w: Math.max(0.02, sx * 1.05), h: Math.max(0.018, sy * 1.15), n: L.length }; });   // (the black lash line pulls the centroid up)
   }
   return null;
 }
@@ -112,7 +112,7 @@ export function updateGirl3(r, s, it, H) {
   api.mixer.setTime(Math.min(api.dur - 1e-4, t));
   root.updateMatrixWorld(true);
   { let b = api.blink != null ? api.blink : 0; if (api.blink == null) for (const t0 of G3.blinks) { const d = r - t0; if (d > 0 && d < 0.17) b = Math.max(b, d < 0.06 ? d / 0.06 : d < 0.08 ? 1 : 1 - (d - 0.08) / 0.09); }
-    for (const l of api.lids) { const [w, h] = l.userData.wh; l.visible = b > 0.04; l.scale.set(w * 1.15, (0.04 + b * 1.02) * h * 1.2, Math.min(w, h) * 0.5); } }
+    for (const l of api.lids) { const [w, h] = l.userData.wh; l.visible = b > 0.04; l.scale.set(w * 1.05, (0.04 + b * 1.02) * h * 0.72, Math.min(w, h) * 0.5);   /* (the cluster's extent includes brow and lash texels: the lid is sized to the eye, measured on a close-up) */ } }
   if (yG) yG.visible = false; if (heap && heap[0]) heap[0].visible = true; if (marks) marks.visible = false;   // (the yellow towel stays in the basket; he is hidden)
   if (s >= 4.75 || api.t != null && api.t >= G3.LAND) return;   // (from his landing on, the opening's own staging)
   // her grip points: a little beyond each wrist along the forearm; her front from her shoulders
