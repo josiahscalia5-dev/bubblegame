@@ -84,7 +84,7 @@ export function updateGirl3(r, s, it, H) {
   // ---- him and the towel: under the hood in the basket (the opening's own place) -> her hands close round the towel and it wraps him into a
   // bundle centred between her hands (he is fully inside, hidden) -> carried -> at the release he tumbles out into the drum, the towel round him
   const yawF = Math.atan2(front.x, front.z);
-  const bundle = (out, c) => { blue.drape(out, rB * 1.12, rB * 2.3, 0.92, rB * 0.85, it, 1.2)   // (wrapped round him, the corners hanging); return placeLocal(out, c, 0.18, yawF, 0.07 * Math.sin(r * 4.1)); };
+  const bundle = (out, c) => { blue.drape(out, rB * 1.12, rB * 2.3, 0.92, rB * 0.85, it, 1.2) /* (wrapped round him, the corners hanging) */; return placeLocal(out, c, 0.18, yawF, 0.07 * Math.sin(r * 4.1)); };
   let hp = hero.position.clone(), scl = 0.56; const rot = new THREE.Euler().copy(hero.rotation);
   if (r < G3.grip[0]) { hoodAt(blue.A, hoodPos); blue.apply(blue.A); }
   else if (!rel) {
