@@ -323,5 +323,52 @@ The largest per-edge step dropped from 0.85 to 0.28. Let me look at the weight m
 The 3 min 40 s was mostly waiting for the shared lock (16 s CPU). The validation crashed because frame 44 isn't in the sampled set (every 6th frame). I'll use sampled frames instead.
 
 - 04:01 `Bash`: Rerun full pipeline after fix
+- 04:02 `Bash`: Show full validation report
+- 04:02 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/t6/hair_compare.png
+**Lead → agent** (04:02 UTC):
 
-_67 tool steps._
+[Image: original 2436x1000, displayed at 2000x821. Multiply coordinates by 1.22 to map to original image.]
+
+**Agent** (04:02 UTC):
+
+The framing works now. The output frame numbers are cut off, so I'll shorten the labels. Let me zoom into the two most energetic pairs (frames 59 and 214) to check for rubbery deformation.
+
+- 04:02 `Bash`: Crop frames 59 and 214 pairs
+- 04:02 `Read`: /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/hair/work/crop_t6.png
+- 04:02 `Bash`: Test plain round trip vertex count
+- 04:03 `Bash`: Add detailed mesh and proximity diagnostics
+- 04:03 `Bash`: Add plain round-trip vertex count proof
+- 04:03 `Bash`: Full run with new diagnostics
+- 04:04 `Bash`: Add neck capsule rigidity and revalidate
+- 04:06 `Bash`: Final run into the requested output folder
+
+_77 tool steps._
+
+---
+
+## Gameplay & Visual Testing specialist: Regression tests for girl3 opening (started 04:06 UTC)
+
+**Lead → agent** (04:06 UTC):
+
+Run regression checks on the Bubble Wash Kingdom game in /home/user/bubblegame/WebDemo (three.js, built bundle WebDemo/game.bundle.js is current; do NOT rebuild, do NOT edit or commit any repository file; write only under /tmp/claude-0/-home-user-bubblegame/b57cc1e7-0233-5fa9-aa57-c07b43997888/scratchpad/qa/). Every browser run must go through the lock: `flock /tmp/bw_browser.lock ...` (software WebGL, one capture at a time).
+
+Context: this session added a reversible candidate switch `girl3` (opening: a Blender-animated girl loads the laundry; the hidden pink character goes into the washer) on top of the existing opening candidates `seq7` and `open9` (washer water, spin, passage directly into the live Screen 6). The full candidate list is:
+CAND = intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,seq7,open9,girl3,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7
+The plain launch (no ?s3=) is: intunnel,structmatch,home,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56. The baseline bundle before this session's opening work is in git commit a23469c7 (`git show a23469c7:WebDemo/game.bundle.js`; also its index.html). To compare old vs new, make a scratch copy of WebDemo (symlink or copy the models/ dir, serve the old bundle + old index.html from the scratch copy) under the scratchpad qa folder; never overwrite the repository files.
+
+Tools that exist: WebDemo/tools/six2/shots6.cjs (opening frames: `S3=<list> TIMES=-1,2.1,... VW=432 VH=768 DPR=1 UI=0 flock /tmp/bw_browser.lock node tools/six2/shots6.cjs <ABS WebDemo dir> <out>`), WebDemo/tools/level1/flow_routes.cjs (Level 1 route test; read its header for usage, e.g. ROUTE=upper), WebDemo/tools/journey/jrun.cjs + p_canvas.cjs (identity probe of the raw canvas), WebDemo/tools/girl13/record_full.cjs (full opening -> hand-over -> tap -> play; read its header).
+
+Checks (report pass/fail with numbers):
+1. Identity: the plain launch's opening frames (TIMES=-1,2.1,5.4) and Classic Screen 4 (`?s3=intunnel`) are pixel-identical between the a23469c7 bundle and the current bundle (count differing pixels).
+2. The Level 1 route (ROUTE=upper, and one other route if quick) on the plain launch AND on CAND: outcome (Level Complete or not), socks, coins, gems, stars, console errors; compare with the documented baseline (Level Complete, 5 socks, 125 coins, 2 gems, 3 stars, 0 console errors).
+3. The CAND opening: run record_full.cjs with FPS=3 WAIT=0.5 PLAY=4 into the scratch folder; report its JSON (frames, after-opening phase, final phase, lane changes, console errors) and look at the last ~15 frames: is the hero visible in Screen 6 after the hand-over, does the camera sit behind him at the normal gameplay distance (no camera inside his fur, no frozen character), does the HUD show.
+Keep the report short (under ~400 words) with the exact commands you ran and the numbers.
+
+- 04:06 `Bash`: Show git state and list test tools
+- 04:06 `Bash`: Read headers of shots6 and flow_routes tools
+- 04:06 `Bash`: Read record_full, p_canvas, jrun headers
+- 04:06 `Bash`: Diff WebDemo assets since baseline commit
+- 04:06 `Bash`: Create scratch copy of WebDemo with old bundle
+- 04:07 `Bash`: Inspect plain launch logic in index.html
+
+_6 tool steps._
