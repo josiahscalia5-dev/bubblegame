@@ -40,6 +40,17 @@ const T0 = Date.now(), log = (...a) => console.error(((Date.now() - T0) / 1000).
     const V = (o) => { const v = new cam.position.constructor(); o.getWorldPosition(v); return v; };
     for (const [k, b] of Object.entries(d.g2.B || {})) { const w = V(b), p = w.clone().project(cam); out.bones[k] = { w: w.toArray().map((v) => +v.toFixed(3)), sx: +((p.x + 1) / 2).toFixed(3), sy: +((1 - p.y) / 2).toFixed(3) }; }
     return out; });
+  if (process.env.DUMP === '1') {   // world landmarks for animation authoring (basket, laundry top, porthole, door hinge, his seat in the drum)
+    const d1 = await page.evaluate(() => { const d = window.__bwSix2dbg, V3 = d.camera.position.constructor, w = (o) => { const v = new V3(); o.getWorldPosition(v); return v.toArray().map((x) => +x.toFixed(4)); };
+      d.basket.updateMatrixWorld(true); const rim = new V3(0, 0.2, 0.02).applyMatrix4(d.basket.matrixWorld);
+      return { basket: w(d.basket), basketScale: d.basket.scale.toArray(), rimC: rim.toArray().map((x) => +x.toFixed(4)), heroWaiting: w(d.hero), glass: d.washer.glass ? w(d.washer.glass) : null, door: d.washer.door ? w(d.washer.door) : null,
+        doorRot: d.washer.door ? d.washer.door.rotation.y : null, washerG: w(d.washer.g), S: window.__bwSix2.girl, camWait: window.__bwSix2.cam[0] }; });
+    const seek = async (real) => { let s = 0; while (s < real - 1e-6) { const dd = Math.min(1 / 30, real - s); s += dd; await page.evaluate(([a, b, x]) => window.__bwO3D.seek(a, b, x), [6 + s, s, dd]); } };
+    await seek(5.4);   // (story 4.9 with the default warp: he sits in the drum)
+    const d2 = await page.evaluate(() => { const d = window.__bwSix2dbg, V3 = d.camera.position.constructor, v = new V3(); d.hero.getWorldPosition(v); const g = new V3(); d.washer.door.getWorldPosition(g);
+      return { heroSit: v.toArray().map((x) => +x.toFixed(4)), doorOpenRot: d.washer.door.rotation.y, blueAt: (() => { const p = d.blue.mesh.geometry.attributes.position; const c = new V3(); for (let i = 0; i < p.count; i++) { c.x += p.getX(i); c.y += p.getY(i); c.z += p.getZ(i); } return c.multiplyScalar(1 / p.count).toArray().map((x) => +x.toFixed(4)); })() }; });
+    fs.writeFileSync(path.join(OUT, `${TAG}_dump.json`), JSON.stringify({ ...d1, ...d2 }, null, 1)); log('dump', JSON.stringify({ ...d1, ...d2 }));
+  }
   if (process.env.G3T) {   // girl3: frames at these clip times (s), the rest of the scene held at the waiting frame
     for (const t of process.env.G3T.split(',').map(Number)) {
       await page.evaluate((tt) => { window.__bwGirl3.t = tt; }, t); await seekTo(); await page.waitForTimeout(150);
