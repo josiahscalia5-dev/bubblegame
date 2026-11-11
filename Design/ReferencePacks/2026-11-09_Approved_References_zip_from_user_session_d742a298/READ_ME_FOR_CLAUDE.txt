@@ -1,0 +1,1 @@
+These are the user-approved original visual references for Bubble Wash Kingdom. Prioritize matching the opening girl, basket, washer and wash spin. Connect the end of the opening to the EXISTING playable Screen 6; do not rebuild Screen 6. Images are reference artwork, not rigged 3D models.

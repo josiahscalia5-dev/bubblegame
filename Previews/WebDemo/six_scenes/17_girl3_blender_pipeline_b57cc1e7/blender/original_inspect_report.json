@@ -1,0 +1,359 @@
+{
+ "objects": [
+  {
+   "name": "GirlRig",
+   "type": "ARMATURE",
+   "dims": [
+    0.3335,
+    0.038,
+    0.6208
+   ]
+  },
+  {
+   "name": "tripo_node_34ece7fe-07c9-4e15-b4da-6ba47612c356",
+   "type": "MESH",
+   "dims": [
+    0.3934,
+    0.4524,
+    1.0
+   ]
+  }
+ ],
+ "mesh": {
+  "verts": 41354,
+  "faces": 57208,
+  "tris": 57208,
+  "uv_layers": [
+   "UVMap"
+  ],
+  "materials": [
+   "tripo_material_34ece7fe-07c9-4e15-b4da-6ba47612c356"
+  ],
+  "bbox_min": [
+   -0.1967,
+   -0.2262,
+   -0.0
+  ],
+  "bbox_max": [
+   0.1967,
+   0.2262,
+   1.0
+  ],
+  "shape_keys": false
+ },
+ "images": [
+  {
+   "name": "Color_34ece7fe-07c9-4e15-b4da-6ba47612c356",
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "name": "NormalGL_34ece7fe-07c9-4e15-b4da-6ba47612c356",
+   "size": [
+    512,
+    512
+   ]
+  },
+  {
+   "name": "ORM_34ece7fe-07c9-4e15-b4da-6ba47612c356",
+   "size": [
+    512,
+    512
+   ]
+  }
+ ],
+ "bones": [
+  {
+   "name": "hips",
+   "parent": null,
+   "head": [
+    0.0,
+    -0.0656,
+    0.3
+   ],
+   "tail": [
+    0.0,
+    -0.0656,
+    0.36
+   ],
+   "len": 0.06
+  },
+  {
+   "name": "spine",
+   "parent": "hips",
+   "head": [
+    0.0,
+    -0.0656,
+    0.36
+   ],
+   "tail": [
+    0.0,
+    -0.0656,
+    0.45
+   ],
+   "len": 0.09
+  },
+  {
+   "name": "chest",
+   "parent": "spine",
+   "head": [
+    0.0,
+    -0.0656,
+    0.45
+   ],
+   "tail": [
+    0.0,
+    -0.0656,
+    0.5354
+   ],
+   "len": 0.0854
+  },
+  {
+   "name": "neck",
+   "parent": "chest",
+   "head": [
+    0.0,
+    -0.0656,
+    0.56
+   ],
+   "tail": [
+    0.0,
+    -0.0656,
+    0.6
+   ],
+   "len": 0.04
+  },
+  {
+   "name": "head",
+   "parent": "neck",
+   "head": [
+    0.0,
+    -0.0656,
+    0.6
+   ],
+   "tail": [
+    0.0,
+    -0.0656,
+    0.64
+   ],
+   "len": 0.04
+  },
+  {
+   "name": "shoulder.L",
+   "parent": "chest",
+   "head": [
+    0.03,
+    -0.0656,
+    0.53
+   ],
+   "tail": [
+    0.118,
+    -0.0848,
+    0.535
+   ],
+   "len": 0.0902
+  },
+  {
+   "name": "upper_arm.L",
+   "parent": "shoulder.L",
+   "head": [
+    0.118,
+    -0.0848,
+    0.535
+   ],
+   "tail": [
+    0.1671,
+    -0.0848,
+    0.44
+   ],
+   "len": 0.107
+  },
+  {
+   "name": "forearm.L",
+   "parent": "upper_arm.L",
+   "head": [
+    0.1671,
+    -0.0848,
+    0.44
+   ],
+   "tail": [
+    0.1614,
+    -0.0969,
+    0.3578
+   ],
+   "len": 0.0832
+  },
+  {
+   "name": "hand.L",
+   "parent": "forearm.L",
+   "head": [
+    0.1614,
+    -0.0969,
+    0.3578
+   ],
+   "tail": [
+    0.158,
+    -0.1002,
+    0.2747
+   ],
+   "len": 0.0832
+  },
+  {
+   "name": "shoulder.R",
+   "parent": "chest",
+   "head": [
+    -0.03,
+    -0.0656,
+    0.53
+   ],
+   "tail": [
+    -0.118,
+    -0.0822,
+    0.535
+   ],
+   "len": 0.0897
+  },
+  {
+   "name": "upper_arm.R",
+   "parent": "shoulder.R",
+   "head": [
+    -0.118,
+    -0.0822,
+    0.535
+   ],
+   "tail": [
+    -0.1664,
+    -0.0822,
+    0.44
+   ],
+   "len": 0.1066
+  },
+  {
+   "name": "forearm.R",
+   "parent": "upper_arm.R",
+   "head": [
+    -0.1664,
+    -0.0822,
+    0.44
+   ],
+   "tail": [
+    -0.1622,
+    -0.0956,
+    0.3566
+   ],
+   "len": 0.0845
+  },
+  {
+   "name": "hand.R",
+   "parent": "forearm.R",
+   "head": [
+    -0.1622,
+    -0.0956,
+    0.3566
+   ],
+   "tail": [
+    -0.156,
+    -0.1036,
+    0.2727
+   ],
+   "len": 0.0845
+  },
+  {
+   "name": "thigh.L",
+   "parent": "hips",
+   "head": [
+    0.07,
+    -0.0656,
+    0.3
+   ],
+   "tail": [
+    0.085,
+    -0.0656,
+    0.16
+   ],
+   "len": 0.1408
+  },
+  {
+   "name": "shin.L",
+   "parent": "thigh.L",
+   "head": [
+    0.085,
+    -0.0656,
+    0.16
+   ],
+   "tail": [
+    0.0885,
+    -0.0656,
+    0.0192
+   ],
+   "len": 0.1408
+  },
+  {
+   "name": "thigh.R",
+   "parent": "hips",
+   "head": [
+    -0.07,
+    -0.0656,
+    0.3
+   ],
+   "tail": [
+    -0.085,
+    -0.0656,
+    0.16
+   ],
+   "len": 0.1408
+  },
+  {
+   "name": "shin.R",
+   "parent": "thigh.R",
+   "head": [
+    -0.085,
+    -0.0656,
+    0.16
+   ],
+   "tail": [
+    -0.0885,
+    -0.0656,
+    0.0192
+   ],
+   "len": 0.1408
+  }
+ ],
+ "arm_angle_below_horizontal_deg": 62.7,
+ "weights": {
+  "influences_histogram_0_to_8": [
+   0,
+   21371,
+   7276,
+   2529,
+   10178,
+   0,
+   0,
+   0,
+   0
+  ],
+  "unweighted": 0,
+  "dominant_bone_vertex_counts": {
+   "head": 22322,
+   "chest": 2517,
+   "spine": 2963,
+   "shoulder.R": 1447,
+   "neck": 264,
+   "shoulder.L": 1431,
+   "upper_arm.L": 200,
+   "shin.R": 3215,
+   "shin.L": 3265,
+   "thigh.R": 282,
+   "thigh.L": 284,
+   "hips": 906,
+   "forearm.R": 646,
+   "upper_arm.R": 261,
+   "forearm.L": 616,
+   "hand.R": 364,
+   "hand.L": 371
+  }
+ },
+ "animations": []
+}

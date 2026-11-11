@@ -11,6 +11,9 @@ const [ROOT, OUT] = process.argv.slice(2);
 const S3 = (process.env.S3 || 'intunnel,structmatch,level1').split(',').filter(Boolean), ROUTE = process.env.ROUTE || 'upper';
 const SHOTS = (process.env.SHOTS || '').split(',').filter(Boolean).map(Number).sort((a, b) => a - b);
 const VW = +(process.env.VW || 412), VH = +(process.env.VH || 915), MAXT = +(process.env.MAXT || 75);
+// (session 8da775c4) with `swim7` in S3: no jumps. The side path is entered at the water ramp's foot, soap bars are dived under (swipe down),
+// ROUTE=dive also dives under the grime balls instead of spinning, and a few swim bursts (swipe up) are made on open water.
+const SWIM = S3.includes('swim7');
 fs.mkdirSync(OUT, { recursive: true });
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.webp': 'image/webp' };
 const server = http.createServer((req, res) => {
@@ -33,7 +36,7 @@ const server = http.createServer((req, res) => {
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 300000 });
   const stage = await page.locator('#stage').boundingBox();
   // the in-page autopilot and route intents; it steps the game itself (no drawing) until u reaches `until` or the run ends
-  const drive = (until) => page.evaluate(({ until, route }) => {
+  const drive = (until) => page.evaluate(({ until, route, swim }) => {
     const ev = window.__flowEv || (window.__flowEv = { swipes: 0, blocked: [], spins: 0, events: [] });
     const B = window.__bw;
     for (let guard = 0; guard < 4000; guard++) {
@@ -47,22 +50,28 @@ const server = http.createServer((req, res) => {
       // grime balls: spin-attack one that is about to reach her (the flow's interaction), else keep out of its way
       for (const [eu, el, ex, dead] of plan.enemies) {
         if (dead) continue; const d = eu - u;
-        if (d > 0.25 && d < 1.3 && Math.abs(ex - st.x) < 0.7) { B.tap(); ev.spins++; ev.events.push(['spin', +u.toFixed(1)]); }
+        if (swim && route === 'dive') { if (d > 1.0 && d < 3.0 && Math.abs(ex - st.x) < 0.8 && !(st.swim && st.swim.dive)) { B.swipe('down'); ev.dives = (ev.dives || 0) + 1; ev.events.push(['dive enemy', +u.toFixed(1)]); } }
+        else if (d > 0.25 && d < 1.3 && Math.abs(ex - st.x) < 0.7) { B.tap(); ev.spins++; ev.events.push(['spin', +u.toFixed(1)]); }
         if (route === 'dodge' && d > -0.6 && d < 3.8) blocked[el] = true;
       }
       // soap bars (flow: [u, lane] on the ledges): jump them
-      for (const b of plan.bars) { const [bu, bl] = Array.isArray(b) ? b : [b, null]; const d = bu - u; if (d > 0.75 && d < 1.6 && (bl === null || bl === lane) && !st.air) { B.swipe('up'); act = 'jump'; ev.events.push(['jump bar', +u.toFixed(1)]); } }
+      for (const b of plan.bars) { const [bu, bl] = Array.isArray(b) ? b : [b, null]; const d = bu - u;
+        if (swim) { if (d > 1.2 && d < 2.8 && (bl === null || bl === lane) && !st.air && !(st.swim && st.swim.dive)) { B.swipe('down'); act = 'dive'; ev.dives = (ev.dives || 0) + 1; ev.events.push(['dive bar', +u.toFixed(1)]); } }
+        else if (d > 0.75 && d < 1.6 && (bl === null || bl === lane) && !st.air) { B.swipe('up'); act = 'jump'; ev.events.push(['jump bar', +u.toFixed(1)]); } }
+      if (swim) for (const bu of [93, 138, 187, 258, 300]) if (u > bu && u < bu + 0.8 && !(st.swim && st.swim.burst) && ev.lastBurst !== bu) { ev.lastBurst = bu; B.swipe('up'); ev.bursts = (ev.bursts || 0) + 1; ev.events.push(['swim burst', +u.toFixed(1), B.state().swim]); }
       let want = null;
       if (route === 'upper') {
         if (lane === -1) want = -1;
+        else if (swim && u > 40 && u < 54.3) { want = 0; if (lane === 0 && u > 46.3 && !ev.onRamp) { B.swipe('left'); if (B.state().lane === -1) { ev.onRamp = 1; ev.events.push(['swipe onto the water ramp', +u.toFixed(1)]); } want = -1; } }   // (swim7) the water ramp's foot
+        else if (swim) { if (u > 99 && u < 136) want = 1; }
         else if (u > 44 && u < 56.4) want = 0;                                              // to the bounce pad
         else if (st.air && u > 56.6 && u < 60.5 && lane === 0) { B.swipe('left'); ev.events.push(['swipe onto side path', +u.toFixed(1), +st.y.toFixed(2)]); want = -1; }
         else if (u > 99 && u < 136) want = 1;                                                // the lower path
-      } else if (route === 'ledge') {
+      } else if (route === 'ledge' || route === 'dive') {   // (dive, swim7: the ledge route with the grime balls dived under)
         if (u > 99 && u < 136) want = 0;                                                      // the left upper ledge
       } else if (route === 'blocked') {
         if (u > 44 && u < 50) want = 0;
-        if (!ev.t1 && u > 60 && lane === 0 && !st.air) { ev.t1 = 1; const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['onto side path from the water', +u.toFixed(2), before, after]); }
+        if (!ev.t1 && u > (swim ? 56.5 : 60) && lane === 0 && !st.air) { ev.t1 = 1; const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['onto side path from the water', +u.toFixed(2), before, after]); }
         if (u > 99 && u < 136) want = 1;
         if (!ev.t2 && u > 121 && lane === 1) { ev.t2 = 1; const before = lane; B.swipe('left'); const after = B.state().lane; ev.blocked.push(['lower path back up to a ledge', +u.toFixed(2), before, after]); }
       }
@@ -86,7 +95,7 @@ const server = http.createServer((req, res) => {
     }
     const st = B.state();
     return { u: st.z, phase: st.phase };
-  }, { until, route: ROUTE });
+  }, { until, route: ROUTE, swim: SWIM });
   const snap = () => page.evaluate(() => { const s = window.__bw.state(), l = window.__bwLevel1 || {};
     return { u: s.z, x: s.x, y: s.y, lane: s.lane, air: s.air, route: l.route, lift: l.lift, section: l.section, socks: s.socks, coins: s.coins, gems: s.gems, hearts: s.hearts,
       popped: l.popped, phase: s.phase, complete: l.complete, banner: (document.querySelector('#l1Banner.show') || {}).innerText || '', info: window.__bw.info(), result: l.result }; });

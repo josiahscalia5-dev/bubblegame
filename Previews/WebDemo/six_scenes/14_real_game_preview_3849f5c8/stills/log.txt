@@ -1,0 +1,15 @@
+4.1s loaded
+4.3s {"ready":false,"o3d":true,"hero":false,"t2":false,"t3":false} []
+13.9s ready
+40.2s shot -1
+88.1s shot 1.2
+133.4s shot 2.4
+166.5s shot 3.3
+201.2s shot 4.2
+227.8s shot 5
+249.2s shot 5.6
+276.6s shot 6.4
+305.2s shot 7.2
+333.1s shot 7.9
+358.1s shot 8.5
+368.3s shot 8.9

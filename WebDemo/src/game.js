@@ -11,6 +11,8 @@ import { LEVEL1_ON, COURSE, buildLevel1 } from './level1.js';
 import { TRIPO1_ON, SCENE07_ON, applyTripo1, scene07Camera } from './tripo_l1.js';   // ?s3=...,level1,tripo1 (session 57091b57): Tripo models from the original board, looks only
 import { flowCamX } from './level1_flow.js';
 import { S56_ON, buildS56 } from './s56_tunnel.js';
+import { SWIM7_ON, SWIM7, swim7Reset, swim7Burst, swim7Dive, swim7Speed, swim7Pose, swim7Camera } from './swim7.js';   // ?s3=...,level1,swim7 (session 8da775c4): natural swimming controls (swipe up = swim burst, swipe down = dive; no jump gesture)
+import { ENV6_ON, env6Post, env6Grade, installFin6Grade } from './s56_env6.js';   // ?s3=...,s56,...,env6 (session ddf175f2): the integrated Screen 6 candidate's post (bloom only on HDR lights)
 import { installHud56 } from './hud56.js';   // ?s3=...,s56: the approved screens' HUD look (hud56.js, CSS under body.s56 only)   // ?s3=...,level1,s56 (session ac4e3449): the approved Scene 5 / 6 lavender laundry-machine tunnel as the run's environment (s56_tunnel.js)   // ?s3=...,level1 (flow on by default; ,noflow = before): the camera on Level 1's side paths   // ?s3=...,level1: the run goes on through Level 1's sections (no loop), her swim strokes; the 3D Laundry Toss opening
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -27,7 +29,7 @@ import { buildScenery } from './scenery.js';
 import { buildDecor, DECOR } from './decor.js';
 import { buildOpening, OPENING_ON, OPENING_PARTS, withPrivateRandom, withPrivateRandomAsync, makeRandom } from './opening.js';
 import { S3 as S3_SWITCHES } from './screen3_models.js';
-import { SOCK3_ON, COIN3_ON, PLAY3, play3Loader, coin3Prepare } from './play_tripo3.js';   // ?s3=...,six,sock3 / coin3 (session 6ddc157f): the user's new Tripo sock and paw coin, looks only
+import { SOCK3_ON, COIN3_ON, COIN6_ON, PLAY3, play3Loader, coin3Prepare } from './play_tripo3.js';   // ?s3=...,six,sock3 / coin3 (session 6ddc157f): the user's new Tripo sock and paw coin, looks only
 import { pawCoinGeometry, pawCoinMaterial } from './paw_coin.js';
 import { ROUND3, mulberry } from './tunnel_r3.js';
 import { ROUND4 } from './tunnel_r4.js';
@@ -693,6 +695,7 @@ function buildCollectibles(gemGltf, face, coinP2 = null) {
     p = TR.map(p.x, p.y, p.z);   // straight layout -> 3D path
     const m = paw ? withPrivateRandom(makeRandom(0x9a3d + coins.length), () => { const lod = new THREE.LOD(); lod.addLevel(new THREE.Mesh(paw.hi, paw.mat), 0); lod.addLevel(new THREE.Mesh(paw.lo, paw.mat), 9);
       if (HERO_ON) for (const lv of lod.levels) lv.object.scale.setScalar(HERO.coinScale);   // ?s3=hero: the approved picture's bigger coins
+      if (COIN6_ON) for (const lv of lod.levels) lv.object.scale.multiplyScalar(PLAY3.coin6Scale);   // ?s3=...,coin6 (session 3849f5c8): approved Screen 6's smaller coins, looks only
       return lod; })
       : new THREE.Mesh(coinGeo, coinMats);
     m.position.copy(p); scene.add(m);
@@ -941,6 +944,7 @@ function resetRun() {
   if (side) side.n = 0;
   rig.snap = true;
   if (level1) level1.reset();   // ?s3=...,level1
+  if (SWIM7_ON) swim7Reset(m);   // ?s3=...,swim7
 }
 
 function changeLane(dir) {
@@ -965,6 +969,24 @@ function jump() {
   sfx('splash');
 }
 function spin() { if (state.phase === 'running') { mascot.spinV = Math.PI * 2 / 0.5; mascot.spinLeft = Math.PI * 2; sfx('swish'); } }
+// ?s3=...,swim7 (swim7.js): swipe up = a forward swimming burst, swipe down = a short dive under the surface (no jump gesture). Their particles
+// are drawn on a private random sequence (the game's seeded one is not consumed by them).
+const swim7Rnd = makeRandom(0x5717);
+const swim7Fx = { emit: (...a) => fx.emitT(...a), burst: (...a) => withPrivateRandom(swim7Rnd, () => fx.burstT(...a)), ripple: (x, u, s) => addRipple(x, u, s), sfx: (n) => sfx(n), rnd: swim7Rnd };
+function swimUp() {
+  if (state.phase !== 'running' || !swim7Burst(mascot)) return false;
+  const m = mascot; m.sqV += 4;
+  swim7Fx.burst(m.x, W.surface(L, m.x, m.z, state.time) + 0.05, m.z - 0.2, 18, 1.0, { vz: m.speed * 0.2 });
+  addRipple(m.x, m.z, 1.1); sfx('swish');
+  return true;
+}
+function swimDown() {
+  if (state.phase !== 'running' || !swim7Dive(mascot)) return false;
+  const m = mascot; m.sqV -= 5;
+  swim7Fx.burst(m.x, W.surface(L, m.x, m.z, state.time) + 0.05, m.z, 14, 0.8, { vz: m.speed * 0.5 });
+  addRipple(m.x, m.z, 1.4); sfx('splash');
+  return true;
+}
 // A knock from a spinning brush (only the ?s3=tunnel test calls this; screen3_models.js / tunnel_s4.js): the mascot is
 // bounced toward the middle lane, slowed (its speed comes back over about a second), squashed and splashed.
 function bumpMascot(side) {
@@ -997,11 +1019,12 @@ function updateMascot(dt) {
   const slope = W.slopeAt(L, m.x, m.z);                 // the slide's hills and swells (track space)
   const slopeAll = slope + Math.tan(TR.pitch(m.z));     // plus the climb or drop of the tube itself
   const targetSpeed = running ? W.CRUISE * (1 + THREE.MathUtils.clamp(-slopeAll * 1.6, -0.22, 0.4)) * (R2 && state.turboT > 0 ? R2_RULES.turboSpeed : 1) : 0;
-  m.speed += (targetSpeed - m.speed) * Math.min(1, dt * (running ? 2.2 : 4));
+  const s7 = SWIM7_ON ? swim7Speed(m, dt, running) : null;   // ?s3=...,swim7: the current's pace and the swim burst (swim7.js)
+  m.speed += ((s7 ? targetSpeed * s7.mul : targetSpeed) - m.speed) * Math.min(1, dt * (running ? (s7 ? s7.rate : 2.2) : 4));
   m.z += m.speed * dt;
   // Lane change: Unity's Mathf.SmoothDamp with the runner's 0.18 s lane-change time.
   {
-    const omega = 2 / 0.18, k = omega * dt, ex = 1 / (1 + k + 0.48 * k * k + 0.235 * k * k * k);
+    const omega = 2 / (SWIM7_ON ? SWIM7.lane.time : 0.18), k = omega * dt, ex = 1 / (1 + k + 0.48 * k * k + 0.235 * k * k * k);
     const target = level1 && level1.flow ? level1.flow.laneTarget() : W.laneX(m.lane), change = m.x - target, temp = (m.xv + omega * change) * dt;   // (flow: the routes' lanes)
     m.xv = (m.xv - omega * temp) * ex;
     m.x = target + (change + temp) * ex;
@@ -1064,10 +1087,11 @@ function updateMascot(dt) {
   if (level1) level1.swim(m, t, dt, running, surf, fx);   // ?s3=...,level1: her swim strokes, drawn only (level1.js); her state is untouched
   if (BLEND_ON) blendPose(m, dt, rideY);   // ?s3=intunnel,blend: drawn only (tunnel_s4_blend.js); her state is untouched
   if (s56) s56.heroOffset(m, t, dt, BLEND_ON);   // ?s3=...,s56: he rides the s56 water's own waves, a little submerged (drawn only; his state is untouched)
+  if (SWIM7_ON) swim7Pose(m, t, dt, running, surf, swim7Fx);   // ?s3=...,swim7: the swim rhythm, the burst's dip-and-surge, the dive (drawn only, m.tilt)
 
   // Splashes that answer the motion: wake spray (more when fast or dropping downhill), bow foam,
   // side spray while changing lanes, gentle ripples while bobbing at the start.
-  if (!m.air) {
+  if (!m.air && !m.s7under) {   // (swim7: none while he is under the surface)
     const speed01 = m.speed / W.CRUISE;
     m.wakeCarry += (running ? 8 + 22 * speed01 + 50 * m.downhill + Math.abs(m.xv) * 18 : 2) * dt;
     for (; m.wakeCarry >= 1; m.wakeCarry--) {
@@ -1227,6 +1251,7 @@ function updateCamera(dt) {
   const off = S3.off.clone().lerp(S4.off, k), lk = S3.look.clone().lerp(S4.look, k);
   let fovV = THREE.MathUtils.lerp(S3.fov, S4.fov, k);
   if (s56) fovV = s56.camera(off, lk);   // ?s3=...,s56: the approved Scene 5 / 6 framing for the whole run (one camera, one tunnel)
+  if (SWIM7_ON) fovV = swim7Camera(m, off, lk, fovV, dt);   // ?s3=...,swim7: the camera opens a little and falls back during a swim burst
   else if (SCENE07_ON) scene07Camera(m.z, off, lk);   // ?s3=...,scene07 (pass 13, session ce30359f): the Avoid Enemies stretch's own aim (tripo_l1.js)
   // Follow: 55 % of lane moves, the ride height fully (smoothed), 35 % of jumps and bobbing.
   const rideY = W.baseHeight(L, m.x, m.z) + W.FLOAT_H;
@@ -1451,7 +1476,10 @@ stage.addEventListener('pointermove', (e) => {
     const before = mascot.lane; changeLane(dx < 0 ? -1 : 1);
     noteGesture(`Swipe ${dx < 0 ? '←' : '→'}  ·  ${before === mascot.lane ? 'edge lane' : `lane ${LANE_NAME[before]} → ${LANE_NAME[mascot.lane]}`}`);
   } else if (dy < -th && Math.abs(dy) > Math.abs(dx)) {
-    touch.used = true; if (state.phase === 'intro') startRun(); jump(); noteGesture('Swipe ↑  ·  jump');
+    touch.used = true; if (state.phase === 'intro') startRun();
+    if (SWIM7_ON) { swimUp(); noteGesture('Swipe ↑  ·  swim burst'); } else { jump(); noteGesture('Swipe ↑  ·  jump'); }
+  } else if (SWIM7_ON && dy > th && Math.abs(dy) > Math.abs(dx)) {   // ?s3=...,swim7: swipe down = dive
+    touch.used = true; if (state.phase === 'intro') startRun(); swimDown(); noteGesture('Swipe ↓  ·  dive');
   }
 });
 stage.addEventListener('pointerup', (e) => {
@@ -1474,7 +1502,8 @@ window.addEventListener('keydown', (e) => {
   if (state.phase === 'intro' && [' ', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'a', 'd', 'w'].includes(k)) { startRun(); if (k === ' ' || k === 'Enter') { e.preventDefault(); return; } }
   if (k === 'ArrowLeft' || k === 'a') changeLane(-1);
   else if (k === 'ArrowRight' || k === 'd') changeLane(1);
-  else if (k === 'ArrowUp' || k === 'w') jump();
+  else if (k === 'ArrowUp' || k === 'w') { if (SWIM7_ON) swimUp(); else jump(); }
+  else if (SWIM7_ON && (k === 'ArrowDown' || k === 's')) swimDown();
   else if (k === ' ') { e.preventDefault(); spin(); }
 });
 function toggleSound() {
@@ -1630,6 +1659,7 @@ function step(dt) {
   if (SWIM2_ON && fx.u.uMaxPx) fx.u.uMaxPx.value = swim2CapPx(renderer.domElement.height, WATER7.maxPx);   // ?s3=intunnel,swim2: the cap eases in as she starts
   updateCamera(dt);
   if (level1) level1.update(dt, state.time, state.phase);   // ?s3=...,level1 (after the camera: its water and walls use the camera's place)
+  if (ENV6_ON && s56) env6Grade(gradePass, mascot);   // ?s3=...,env6: the hero grade inside the s56 tunnel (s56_env6.js), read by s56 / arch56 below
   if (s56) s56.update(dt, state.time, state.phase, mascot);   // ?s3=...,s56: the tunnel's water, gears and splashes
   fadeStartPanels();
   if (opening) opening.update(dt, state.time, state.phase);
@@ -1643,6 +1673,7 @@ function render() {
     renderer.render(scene, side.cam);
   } else {
     if (fx) fx.u.uScale.value = (stage.clientHeight * pixelRatio * 0.5) / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+    if (ENV6_ON && s56) { env6Grade(gradePass, mascot); env6Post(bloom); }   // ?s3=...,env6: the last word on the bloom (s56_env6.js)
     composer.render();
   }
   if (side || SHOW_TOUCHES) drawOverlay();
@@ -1734,7 +1765,7 @@ async function main() {
     }
     if (level1 && (TRIPO1_ON || SCENE07_ON)) await applyTripo1({ scene, loader: gltfLoader, env: mats.env, TR, camera, fx });   // ?s3=...,level1,tripo1 / scene07 (tripo_l1.js): looks only
     if (MATCH_ON) await MATCH_READY;   // ?s3=match: the tunnel textures derived from the approved picture (tunnel_r9_match.js)
-    if (S56_ON && level1) { s56 = await buildS56({ scene, TR, L, W, env: mats.env, loader: gltfLoader, mascot, legacy: [water] }); s56.hideLegacy(); installHud56(); }   // ?s3=...,level1,s56 (s56_tunnel.js, hud56.js)
+    if (S56_ON && level1) { s56 = await buildS56({ scene, TR, L, W, env: mats.env, loader: gltfLoader, mascot, legacy: [water] }); s56.hideLegacy(); installHud56(); installFin6Grade(composer); }   // ?s3=...,level1,s56 (s56_tunnel.js, hud56.js)
     resize();
     resetRun();
     state.phase = 'intro';
@@ -1767,12 +1798,13 @@ window.__bw = {
     camera: camera.position.toArray().map((v) => +v.toFixed(3)), cameraPitchDeg: +THREE.MathUtils.radToDeg(Math.asin(camera.getWorldDirection(new THREE.Vector3()).y)).toFixed(2),
     particles: fx ? fx.life.reduce((n, l) => n + (l > 0 ? 1 : 0), 0) : 0, repairedNormals: state.repairedNormals, machineryInnerX: state.machineryInnerX ?? null, decorClear: state.decorClear ?? null,
     rollerCandidate: state.rollerCandidate ?? null,
+    ...(SWIM7_ON && mascot.s7 ? { swim: { burst: mascot.s7.burst >= 0, dive: mascot.s7.dive >= 0, under: !!mascot.s7under, bursts: mascot.s7.bursts, dives: mascot.s7.dives } } : {}),
     ...(R2 ? { hearts: state.hearts, blasts: state.blasts, turbos: state.turbos, paused: state.paused, blastT: +state.blastT.toFixed(2), turboT: +state.turboT.toFixed(2), knocks: state.knocks, restarts: state.restarts, bumps: state.bumps || 0 } : {}),
   }),
   blast: () => useBlast(), turbo: () => useTurbo(), pause: (v) => setPaused(v),
   hazards: () => (r2Hooks.hazards ? r2Hooks.hazards() : null),
   tap: () => { if (state.phase === 'intro') startRun(); else spin(); },
-  swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') jump(); },
+  swipe: (dir) => { if (state.phase === 'intro') startRun(); if (dir === 'left') changeLane(-1); else if (dir === 'right') changeLane(1); else if (dir === 'up') { if (SWIM7_ON) swimUp(); else jump(); } else if (dir === 'down' && SWIM7_ON) swimDown(); },
   advance: (seconds, fps = 30) => { const n = Math.max(1, Math.round(seconds * fps)); for (let i = 0; i < n; i++) step(1 / fps); render(); return window.__bw.state(); },
   step: (seconds, fps = 30) => { const n = Math.max(1, Math.round(seconds * fps)); for (let i = 0; i < n; i++) step(1 / fps); },   // (tests: the same steps without drawing)
   info: () => ({ calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures }),

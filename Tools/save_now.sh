@@ -33,7 +33,7 @@ fi
 if git diff --cached --quiet; then
   committed="no (nothing new since the last commit)"
 else
-  trailer="Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+  trailer="${BW_COAUTHOR:-Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>}"   # (session 208385b7) the session's own attribution line; override with BW_COAUTHOR
   [ -n "${CLAUDE_SESSION_URL:-}" ] && trailer="$trailer
 Claude-Session: $CLAUDE_SESSION_URL"
   if [ -n "$BODY" ]; then git commit -q -m "$SUBJECT" -m "$BODY" -m "$trailer"; else git commit -q -m "$SUBJECT" -m "$trailer"; fi
@@ -81,10 +81,13 @@ if [ "$remote" = "$HEAD_SHA" ]; then
 else
   echo "Push:      FAILED, GitHub's $BRANCH is at ${remote:-nothing}; local is ${HEAD_SHA:0:7}"
 fi
-# (9 November 2026, session f28099bc, the user's mandate "use my branch claude/bubble-wash-account-transfer-52t7ym"): when this session works
-# on another branch (a harness branch such as claude/...-kc4ecl or ccr-*) that CONTAINS the user's branch, fast-forward the user's branch to
-# the same verified commit. A plain push (never --force): if the user's branch has commits this one lacks, GitHub refuses it and nothing changes.
-USER_BRANCH="${BW_USER_BRANCH:-claude/bubble-wash-account-transfer-52t7ym}"
+# (9 November 2026, session f28099bc; updated session d847dce2: the user's PRIMARY branch is now claude/bubble-wash-restore-transfer-kc4ecl,
+# and claude/bubble-wash-account-transfer-52t7ym is historical only): when this session works on another branch (a harness ccr-* branch) that
+# CONTAINS the user's branch, fast-forward the user's branch to the same verified commit. A plain push (never --force): if the user's branch has
+# commits this one lacks, GitHub refuses it and nothing changes.
+# (9 November 2026, session 3849f5c8: the user named claude/bubble-wash-restore-tamzio as the transfer branch; it equals kc4ecl, so BOTH are
+# fast-forwarded, each only when it is an ancestor of the verified commit.)
+for USER_BRANCH in ${BW_USER_BRANCH:-claude/bubble-wash-transfer-screen6-to82gp claude/bubble-wash-restore-tamzio claude/bubble-wash-restore-transfer-kc4ecl}; do   # (session 8da775c4: to82gp, the user's ACTIVE development branch, first)
 if [ "$remote" = "$HEAD_SHA" ] && [ "$BRANCH" != "$USER_BRANCH" ]; then
   ub="$(git ls-remote origin "refs/heads/$USER_BRANCH" 2>/dev/null | cut -f1)"
   if [ -n "$ub" ] && [ "$ub" != "$HEAD_SHA" ] && git merge-base --is-ancestor "$ub" "$HEAD_SHA" 2>/dev/null; then
@@ -94,6 +97,7 @@ if [ "$remote" = "$HEAD_SHA" ] && [ "$BRANCH" != "$USER_BRANCH" ]; then
   elif [ "$ub" = "$HEAD_SHA" ]; then echo "User branch: $USER_BRANCH already at ${HEAD_SHA:0:7}"
   elif [ -n "$ub" ]; then echo "User branch: $USER_BRANCH has commits this branch lacks: NOT touched (merge it here first)"; fi
 fi
+done
 if [ -n "$files" ]; then
   echo "Files saved ($(printf '%s\n' "$files" | wc -l)):"; printf '%s\n' "$files" | sed 's/^/  /' | head -60
 else

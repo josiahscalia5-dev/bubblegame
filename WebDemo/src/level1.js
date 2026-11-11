@@ -678,6 +678,9 @@ export function buildLevel1(ctx) {
   // (flow) the Screen 4 drum's far socks are parked (kept in the game's list, so its seeded random sequence is unchanged): with
   // them the goal was reached inside the drum; now two drum socks + one per route of the side paths and the drop + the Kingdom's = 5
   const parked = FLOW && ctx.socksList ? ctx.socksList.filter((s) => s.u > C.parkDrumSocks[0] && s.u < C.parkDrumSocks[1]) : [];
+  // (swim7, session 8da775c4: the drum's first sock is 1.6 m from the start line, out of reach of the smoother lane change; the nearer of the two
+  // parked ones is put back, so five can still be rescued on any route: six are out, the HUD and the goal count five)
+  if (LIST.includes('swim7') && parked.length > 1) { parked.sort((a, b) => a.u - b.u); parked.shift(); }
   const park = () => { for (const s of parked) { s.live = false; s.pop = -1; s.obj.visible = false; } };
   park();
   report.parkedDrumSocks = parked.map((s) => s.u);
@@ -914,7 +917,7 @@ body.l1f2done #blastBtn, body.l1f2done #turboBtn { opacity: 0 !important; pointe
       b.holder.scale.setScalar(1 - 0.95 * smooth(-0.4, -1.8, ahead));
       if (!running) continue;
       if (Math.abs(ahead) > 0.42) { if (ahead < -1.5) b.hit = false; continue; }
-      if (b.hit || m.yAbs - W.surface(L, m.x, m.z, t) > 0.5) continue;
+      if (b.hit || m.yAbs - W.surface(L, m.x, m.z, t) > 0.5 || m.s7under) continue;   // (swim7: he dives under a soap bar)
       if (b.x !== null && Math.abs(m.x - b.x) > 0.62) continue;   // (flow: a short bar on one ledge)
       b.hit = true; ctx.bumpMascot(m.x >= 0 ? 1 : -1);
     }
@@ -936,6 +939,7 @@ body.l1f2done #blastBtn, body.l1f2done #turboBtn { opacity: 0 !important; pointe
       if (Math.abs(ahead) > 0.6) { if (ahead < -1.5) e.hit = false; continue; }
       if (e.hit || Math.abs(m.x - e.x) > e.hw) continue;
       if (m.air && m.yAbs - W.surface(L, m.x, m.z, t) > 0.75) continue;
+      if (m.s7under) continue;   // (swim7: he dives under a grime ball)
       // (flow: board 07's enemy interaction: a tap-spin, Turbo Spin or Bubble Blast pops it for 5 coins; otherwise it knocks her)
       if (FLOW && (m.spinLeft > 0 || state.turboT > 0 || state.blastT > 0)) {
         e.dead = true; e.hit = true; e.holder.visible = false; state.coins += 5; state.level1Popped = (state.level1Popped || 0) + 1;

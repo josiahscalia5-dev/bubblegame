@@ -1,5 +1,50 @@
 # Bubble Wash Kingdom: rules for every Claude session
 
+## READ FIRST, NEWEST (9 November 2026 ~20:40 UTC, session ddf175f2, ACCOUNT-TRANSFER BACKUP). This block overrides anything older below.
+- **Next account: paste `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 0000.** Work branch: `claude/bubble-wash-transfer-screen6-to82gp` (contains ccr-68def37c-grxgz1, kc4ecl, tamzio);
+  fixed snapshot `claude/bubble-wash-account-transfer-backup-ddf175f2`; checkpoints `claude/bubble-wash-checkpoint-screen6-before-*-ddf175f2`.
+- **Screen 6 candidate** (not approved): add `,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7` after `s56` in the plain-launch list.
+  `hero7` = the approved pink fur character (shell fur, `s56_hero7.js`); `fin6` = the finishing pass; `env6` = grade/bloom fix; `tank6` = modelled glowing tank.
+  Status, measurements and the remaining differences: `CURRENT_PROJECT_STATUS.md` (top). Tools: `TOOLS_AND_PLUGINS_RESTORE.md` section 0.
+- **Next task: C, natural SWIMMING controls** (swipe = swim, no hopping), then D (opening, the girl never notices him), E (washer entrance + magical spin
+  into Screen 6). Jump is a gameplay dependency (side path, enemies): adapt it, do not delete it (facts in CURRENT_PROJECT_STATUS.md).
+- **Measuring tools:** `WebDemo/tools/env6/var6.cjs` (frozen u 206 frame, JS variants), `WebDemo/tools/env6/sbs6.py` (approved | game, full size),
+  `WebDemo/tools/hero7/` (hero silhouette by render difference, colour bands, perf, motion), `WebDemo/tools/level1/flow_routes.cjs` (gameplay route).
+- **Rules learned:** the scene grade (fin6 exposure 0.72) dims white to grey: whites must be over 1 (HDR); judge on the frozen frame, never on code;
+  Tripo/AI image-to-3D cannot make transparent glowing glass (bakes opaque textures); library assets did not match the cartoon style. No credits without approval.
+
+## READ FIRST, NEWEST (9 November 2026 ~16:20 UTC, session 47f75e22, EMERGENCY BACKUP). This block overrides anything older below.
+- **Next account: paste `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 000.** Backup proof: `BACKUP_VERIFICATION.md` (top). Branch: primary
+  `claude/bubble-wash-restore-transfer-kc4ecl` (= this session's `claude/bubble-wash-restore-tamzio`; contains `ccr-212bb6a5-36pep9`); `save_now.sh` fast-forwards it.
+- **Current task (the user's highest priority): SCENE 6.** Target ONLY `Design/ReferencePacks/2026-11-09_Six_Approved_Portrait_Scenes_from_user/06_Swim_Collect_Avoid_Enemies.png`
+  vs the game at u 206 (864x1536). Measured gaps: `Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/art_director_ranking.md`. Lanes (each with
+  `WebDemo/tools/<lane>/HANDOFF.md` on its branch): **brush6** (NEW, `claude/lane-s6-brush-47f75e22`, `s56_brush6.js`, switch `,brush6`, coordinator hook in
+  `s56_tunnel.js` section 0), **arch56** (gear, machinery, camera; uses the user's Tripo LODs), **s56** (water, mascot height). Nothing merged into the
+  default game; nothing approved. Merge only into ONE reversible candidate switch after review, then show the user.
+- **The user's eight Tripo models (received this session, exact bytes verified):** `Design/TripoDeliveries/2026-11-09_Eight_Models_from_user/` + `mobile/` LODs;
+  verdicts `Previews/WebDemo/six_scenes/12_eight_models_47f75e22/README.md`; inventory `MODEL_INVENTORY_2026-11-09_session_47f75e22.md`. LOD lesson: gltf-transform
+  `simplify` smears Tripo textures at UV seams; use `gltfpack -si` (LOD0) as in `mobile/optimize_mobile.sh`.
+- **Plugin:** parallax-threejs 0.4.12 arrived through the organization's synced plugins (`~/.claude/plugins/synced/...`), so `ListPlugins` shows nothing although it
+  is loaded. threejs-devtools timed out at session start but starts from a shell in 1.4 s: the user types `/mcp` -> reconnect.
+- **Identity proofs:** `shots56.cjs` frames at a placed u (e.g. 206) are NOT bit-reproducible (the game runs live ~150 ms before the shot); prove 0 px with
+  `tools/screen4/layer_diag.cjs` (fixed clock, as `Previews/WebDemo/screen4_round9_match/77_scene07_pass15_upper/scripts/identity.sh`). Tap frames are reproducible.
+- **Disk:** the metrics venv (PyTorch) needs ~6 GB; after it installs, `uv cache clean` frees ~10 GB (the venv's files are hard links and survive).
+
+## READ FIRST, NEWEST (9 November 2026 ~14:50 UTC, session d847dce2, ACCOUNT-TRANSFER BACKUP). This block overrides anything older below.
+- **Next account: start with `START_HERE_NEXT_CLAUDE_ACCOUNT.md` section 00 (copy-ready prompt).** Backup proof: `BACKUP_VERIFICATION.md` (top);
+  models: `MODEL_INVENTORY_2026-11-09_session_d847dce2.md`; lanes and next steps: `PARALLEL_LANES.md`; status: `CURRENT_PROJECT_STATUS.md`.
+- **Disk lesson:** never run `git ls-tree --long` (or anything that needs blob sizes) in a `--filter=blob:none` clone: it downloads every blob (~6 GB of
+  Previews) and filled the disk. Use `--name-only`.
+
+## READ FIRST, (9 November 2026 ~13:30 UTC, session d847dce2, account restore). This block overrides anything older below.
+- **Branch:** the user's PRIMARY branch is now `claude/bubble-wash-restore-transfer-kc4ecl` (the user's instruction of 9 November). `claude/bubble-wash-account-transfer-52t7ym`
+  is historical recovery information only. If the session opens on a `ccr-*` branch, check it CONTAINS kc4ecl, develop there; `Tools/save_now.sh`
+  (and so the autosave) fast-forwards kc4ecl to every verified save (never force). Scripts: `save_now.sh` USER_BRANCH, `restore_session.sh` / `session_preflight.sh` WORK.
+- **Tripo:** the key is a network secret for `openapi.tripo3d.ai` on the environment `bubblegame` (saved this session; balance 1,060, 0 frozen). Still NO credits without the user's approval.
+- **Plugins on this account:** `parallax-threejs` is NOT enabled (ListPlugins empty; only the org's synced `playwright` (Microsoft) and `typescript-lsp`), so there is no
+  chrome-devtools / threejs-devtools MCP and no scenario-author / shader-reviewer / visual-debugger agents until the user enables it and starts a new session.
+  The project's Spector MCP (`.mcp.json`) and the synced Playwright MCP work. Report: `ENVIRONMENT_VERIFICATION_2026-11-09_session_d847dce2.md`.
+
 ## READ FIRST, NEWEST (9 November 2026, session f28099bc, account transfer). This block overrides anything older below.
 - **Branch:** the user's branch is `claude/bubble-wash-account-transfer-52t7ym`. If the session opens on another branch (`claude/...-kc4ecl`, `ccr-*`),
   check that it CONTAINS 52t7ym, develop there and fast-forward 52t7ym to it at every verified save (`git push origin HEAD:refs/heads/claude/bubble-wash-account-transfer-52t7ym`, never force).

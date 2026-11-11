@@ -1,0 +1,49 @@
+{
+ "s3": [
+  "intunnel",
+  "structmatch",
+  "level1",
+  "tripo1",
+  "scene07",
+  "six",
+  "tripo3",
+  "s56",
+  "coin6",
+  "hero6",
+  "water6",
+  "brush6",
+  "arch56",
+  "env6"
+ ],
+ "z": 206,
+ "state": {
+  "phase": "running",
+  "z": 208.864,
+  "x": 0,
+  "coins": 1281,
+  "hearts": 5
+ },
+ "vars": [
+  {
+   "tag": "x1",
+   "ret": null
+  },
+  {
+   "tag": "x2",
+   "ret": null
+  },
+  {
+   "tag": "x3",
+   "ret": null
+  },
+  {
+   "tag": "x4",
+   "ret": null
+  },
+  {
+   "tag": "x5",
+   "ret": null
+  }
+ ],
+ "errors": []
+}

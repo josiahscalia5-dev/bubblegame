@@ -33,6 +33,74 @@ step() { printf '\n== %s\n' "$*"; }
 fail() { echo "  FAILED: $*"; failed+=("$*"); }
 mkdir -p "$T"
 
+# (9 November 2026, session 3849f5c8) ORDER: the quick steps the session needs at start come FIRST (Node tools, the game's npm packages,
+# the MCP servers' prerequisites: Deno, the Spector build + plugin link, the threejs-devtools npx cache), then Blender (~350 MB), Mesa, the
+# Python visual venv, the checks, and the optional PyTorch LAST. At that session's start the environment's setup was cut off inside the
+# Python step (~8 minutes in, after Blender and Mesa): the Spector build did not exist when Claude Code spawned both Spector servers
+# (MODULE_NOT_FOUND, CONNECTION_CLOSED) and threejs-devtools-mcp was not cached (CONNECT_TIMEOUT after 30 s).
+step "Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI, gltfpack)"
+mkdir -p "$T/node"
+[ -f "$T/node/package.json" ] || echo '{"name":"bubblewash-dev-tools","private":true,"description":"Dev tools for Bubble Wash Kingdom, outside the game"}' > "$T/node/package.json"
+(cd "$T/node" && npm install --no-audit --no-fund --loglevel=error $NODE_PACKAGES > /dev/null) && echo "  installed" \
+  || fail "Node tools"
+cat > "$T/activate.sh" << 'EOF'
+# Puts the Bubble Wash Kingdom node tools (gltf-transform, vite, tripo) on PATH. Tools/bw_tools_env.sh sources this.
+_bw_t="${BUBBLEWASH_TOOLS:-$HOME/.bubblewash-tools}"
+case ":$PATH:" in *":$_bw_t/node/node_modules/.bin:"*) ;; *) export PATH="$_bw_t/node/node_modules/.bin:$PATH" ;; esac
+unset _bw_t
+EOF
+
+
+step "Game dependencies (WebDemo: three and esbuild, pinned in its package.json)"
+demo=""
+for d in "bubblegame/WebDemo" "$(dirname "$0")/../WebDemo" "WebDemo"; do
+  [ -f "$d/package.json" ] && [ -f "$d/build.mjs" ] && { demo="$d"; break; }
+done
+if [ -n "$demo" ]; then
+  (cd "$demo" && npm install --no-audit --no-fund --loglevel=error > /dev/null) && echo "  installed in $demo" \
+    || fail "WebDemo npm install"
+else
+  echo "  WebDemo not found from $(pwd): run 'cd WebDemo && npm install' in the session"
+fi
+
+
+step "MCP servers' prerequisites (Deno, Spector MCP build + plugin link, threejs-devtools-mcp cache)"
+# (8 November 2026, session 57091b57's audit) the parallax-threejs plugin's extras, both outside the repository and optional (a failure
+# here is reported, never fatal): Deno for its checkpoint / diff / sweep / ship-check tasks and its shader-binding check (npm's `deno`
+# package, 2.x), and its Spector MCP server, which the plugin ships without (its own scripts/setup-spector.sh clones Spector.js and
+# builds vendor/spector/mcp; the server joins a session at the next session start, or after /mcp reconnect).
+command -v deno > /dev/null 2>&1 || npm install -g deno@2 --no-audit --no-fund > /dev/null 2>&1 || echo "  Deno: install failed (optional)"
+# (8 November 2026, session ce30359f) Spector is built HERE, in $T/spector, because this script runs before Claude starts and the
+# plugin's folder (~/.claude/plugins/synced/...) is only synced when the session starts, AFTER its MCP servers were spawned (session
+# ce30359f's log: spawn 17:27:13, MODULE_NOT_FOUND). The project's .mcp.json therefore starts this copy as its own server `spector`. Two fixes over the plugin's own scripts/setup-spector.sh: npm's install scripts
+# are skipped (upstream Spector.js now pulls unrs-resolver, whose postinstall needs a missing napi-postinstall: exit 127), and
+# Playwright is pinned to the version of the image's pre-installed Chromium (Spector's own 1.59 looks for a browser build the image
+# does not have, so load_url failed; `playwright install` must never run here).
+if [ ! -f "$T/spector/mcp/dist/index.js" ]; then
+  pwv="$(node -p "require('playwright/package.json').version" 2>/dev/null || echo 1.63.0)"
+  { [ -d "$T/spector/.git" ] || git clone -q --depth 1 https://github.com/BabylonJS/Spector.js.git "$T/spector"; } \
+    && (cd "$T/spector/mcp" && npm install --ignore-scripts --no-audit --no-fund --loglevel=error > /dev/null \
+        && npm install --ignore-scripts --no-audit --no-fund --loglevel=error "playwright@$pwv" > /dev/null && npm run -s build > /dev/null) \
+    && echo "  Spector MCP built in $T/spector (Playwright $pwv)" || echo "  Spector MCP build failed (optional)"
+fi
+for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do   # a plugin folder already synced (a re-run in a session)
+  [ -f "$pj" ] || continue; pr="$(dirname "$(dirname "$pj")")"
+  grep -q '"parallax-threejs"' "$pj" && [ ! -e "$pr/vendor/spector" ] && [ -f "$T/spector/mcp/dist/index.js" ] \
+    && ln -s "$T/spector" "$pr/vendor/spector" && echo "  Spector linked into the parallax-threejs plugin (reconnect: /mcp)"
+done
+echo "  $(deno --version 2>/dev/null | sed -n 1p || echo 'Deno: MISSING (optional)')"
+# (9 November 2026, session 6ddc157f) the plugin starts threejs-devtools-mcp with `npx -y threejs-devtools-mcp@0.2.1`: on a fresh machine that
+# first download made the server miss Claude's connection timeout (CONNECT_TIMEOUT at session start). Run it once here, before Claude starts,
+# with no input (it exits on end of input or at the time limit), so npx has it cached and the server connects at once.
+ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 \
+  || { DEV_PORT=3000 HEADLESS=true timeout 90 npx -y threejs-devtools-mcp@0.2.1 < /dev/null > /dev/null 2>&1; true; }
+ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 && echo "  threejs-devtools-mcp cached for the plugin" || echo "  threejs-devtools-mcp: not cached (optional)"
+
+
+step "Git LFS"
+command -v git-lfs > /dev/null || { command -v apt-get > /dev/null && apt-get install -y -qq git-lfs > /dev/null; }
+git lfs install --skip-repo > /dev/null 2>&1 && echo "  $(git lfs version)" || fail "Git LFS"
+
 step "Blender $BLENDER_VERSION"
 B="$T/blender-$BLENDER_VERSION-linux-x64"
 if "$B/blender" --version 2>/dev/null | grep -q "Blender $BLENDER_VERSION"; then
@@ -67,38 +135,12 @@ if "$T/visual/bin/python" -c "import cv2, skimage, numpy, PIL, scipy" 2>/dev/nul
 else
   UV="$(command -v uv || true)"; [ -z "$UV" ] && [ -x "$HOME/.local/bin/uv" ] && UV="$HOME/.local/bin/uv"
   if [ -n "$UV" ]; then
-    "$UV" venv -q --python "$(command -v python3)" "$T/visual" && "$UV" pip install -q --python "$T/visual/bin/python" $PY_PACKAGES
+    # (9 November 2026, session 3849f5c8: --allow-existing, so a venv left EMPTY by a setup cut off mid-install is filled on the next run
+    # instead of failing at once on "A virtual environment already exists"; it happened at this session's start)
+    "$UV" venv -q --allow-existing --python "$(command -v python3)" "$T/visual" && "$UV" pip install -q --python "$T/visual/bin/python" $PY_PACKAGES
   else
     python3 -m venv "$T/visual" && "$T/visual/bin/pip" install -q $PY_PACKAGES
   fi && echo "  installed" || fail "Python visual tools"
-fi
-
-step "Node tools (glTF Transform, glTF Validator, Vite, Tripo CLI, gltfpack)"
-mkdir -p "$T/node"
-[ -f "$T/node/package.json" ] || echo '{"name":"bubblewash-dev-tools","private":true,"description":"Dev tools for Bubble Wash Kingdom, outside the game"}' > "$T/node/package.json"
-(cd "$T/node" && npm install --no-audit --no-fund --loglevel=error $NODE_PACKAGES > /dev/null) && echo "  installed" \
-  || fail "Node tools"
-cat > "$T/activate.sh" << 'EOF'
-# Puts the Bubble Wash Kingdom node tools (gltf-transform, vite, tripo) on PATH. Tools/bw_tools_env.sh sources this.
-_bw_t="${BUBBLEWASH_TOOLS:-$HOME/.bubblewash-tools}"
-case ":$PATH:" in *":$_bw_t/node/node_modules/.bin:"*) ;; *) export PATH="$_bw_t/node/node_modules/.bin:$PATH" ;; esac
-unset _bw_t
-EOF
-
-step "Git LFS"
-command -v git-lfs > /dev/null || { command -v apt-get > /dev/null && apt-get install -y -qq git-lfs > /dev/null; }
-git lfs install --skip-repo > /dev/null 2>&1 && echo "  $(git lfs version)" || fail "Git LFS"
-
-step "Game dependencies (WebDemo: three and esbuild, pinned in its package.json)"
-demo=""
-for d in "bubblegame/WebDemo" "$(dirname "$0")/../WebDemo" "WebDemo"; do
-  [ -f "$d/package.json" ] && [ -f "$d/build.mjs" ] && { demo="$d"; break; }
-done
-if [ -n "$demo" ]; then
-  (cd "$demo" && npm install --no-audit --no-fund --loglevel=error > /dev/null) && echo "  installed in $demo" \
-    || fail "WebDemo npm install"
-else
-  echo "  WebDemo not found from $(pwd): run 'cd WebDemo && npm install' in the session"
 fi
 
 step "Checks"
@@ -117,37 +159,6 @@ echo "  $(ffmpeg -version 2>/dev/null | sed -n 1p || echo 'FFmpeg: MISSING')"
 echo "  $(git lfs version 2>/dev/null || echo 'Git LFS: MISSING')"
 node -e "require('playwright').chromium.launch().then(async (b) => { console.log('  Playwright', require('playwright/package.json').version, '/ Chromium', b.version()); await b.close(); })" 2>/dev/null \
   || echo "  Playwright: not found from here (normal while the environment is being built; check in the session)"
-
-# (8 November 2026, session 57091b57's audit) the parallax-threejs plugin's extras, both outside the repository and optional (a failure
-# here is reported, never fatal): Deno for its checkpoint / diff / sweep / ship-check tasks and its shader-binding check (npm's `deno`
-# package, 2.x), and its Spector MCP server, which the plugin ships without (its own scripts/setup-spector.sh clones Spector.js and
-# builds vendor/spector/mcp; the server joins a session at the next session start, or after /mcp reconnect).
-command -v deno > /dev/null 2>&1 || npm install -g deno@2 --no-audit --no-fund > /dev/null 2>&1 || echo "  Deno: install failed (optional)"
-# (8 November 2026, session ce30359f) Spector is built HERE, in $T/spector, because this script runs before Claude starts and the
-# plugin's folder (~/.claude/plugins/synced/...) is only synced when the session starts, AFTER its MCP servers were spawned (session
-# ce30359f's log: spawn 17:27:13, MODULE_NOT_FOUND). The project's .mcp.json therefore starts this copy as its own server `spector`. Two fixes over the plugin's own scripts/setup-spector.sh: npm's install scripts
-# are skipped (upstream Spector.js now pulls unrs-resolver, whose postinstall needs a missing napi-postinstall: exit 127), and
-# Playwright is pinned to the version of the image's pre-installed Chromium (Spector's own 1.59 looks for a browser build the image
-# does not have, so load_url failed; `playwright install` must never run here).
-if [ ! -f "$T/spector/mcp/dist/index.js" ]; then
-  pwv="$(node -p "require('playwright/package.json').version" 2>/dev/null || echo 1.63.0)"
-  { [ -d "$T/spector/.git" ] || git clone -q --depth 1 https://github.com/BabylonJS/Spector.js.git "$T/spector"; } \
-    && (cd "$T/spector/mcp" && npm install --ignore-scripts --no-audit --no-fund --loglevel=error > /dev/null \
-        && npm install --ignore-scripts --no-audit --no-fund --loglevel=error "playwright@$pwv" > /dev/null && npm run -s build > /dev/null) \
-    && echo "  Spector MCP built in $T/spector (Playwright $pwv)" || echo "  Spector MCP build failed (optional)"
-fi
-for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do   # a plugin folder already synced (a re-run in a session)
-  [ -f "$pj" ] || continue; pr="$(dirname "$(dirname "$pj")")"
-  grep -q '"parallax-threejs"' "$pj" && [ ! -e "$pr/vendor/spector" ] && [ -f "$T/spector/mcp/dist/index.js" ] \
-    && ln -s "$T/spector" "$pr/vendor/spector" && echo "  Spector linked into the parallax-threejs plugin (reconnect: /mcp)"
-done
-echo "  $(deno --version 2>/dev/null | sed -n 1p || echo 'Deno: MISSING (optional)')"
-# (9 November 2026, session 6ddc157f) the plugin starts threejs-devtools-mcp with `npx -y threejs-devtools-mcp@0.2.1`: on a fresh machine that
-# first download made the server miss Claude's connection timeout (CONNECT_TIMEOUT at session start). Run it once here, before Claude starts,
-# with no input (it exits on end of input or at the time limit), so npx has it cached and the server connects at once.
-ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 \
-  || { DEV_PORT=3000 HEADLESS=true timeout 90 npx -y threejs-devtools-mcp@0.2.1 < /dev/null > /dev/null 2>&1; true; }
-ls -d "$HOME"/.npm/_npx/*/node_modules/threejs-devtools-mcp > /dev/null 2>&1 && echo "  threejs-devtools-mcp cached for the plugin" || echo "  threejs-devtools-mcp: not cached (optional)"
 
 # (9 November 2026, session f28099bc) the optional PyTorch / LPIPS / Optuna step now runs LAST: at this session's start the environment's
 # setup phase was cut off inside this ~5.6 GB download, so the Node tools (Tripo CLI, glTF Transform, gltfpack, the validator), the

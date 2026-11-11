@@ -1,0 +1,4 @@
+[["m0_swim",""],["m1_swim","B.advance(0.2);"],["m2_swim","B.advance(0.2);"],
+ ["m3_lane_left","B.swipe('left'); B.advance(0.15);"],["m4_lane_done","B.advance(0.35);"],
+ ["m5_jump","B.swipe('up'); B.advance(0.25);"],["m6_jump_top","B.advance(0.15);"],["m7_landed","B.advance(0.6);"],
+ ["m8_spin","B.tap(); B.advance(0.12);"],["m9_after","B.advance(0.5);"]]

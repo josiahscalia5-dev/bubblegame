@@ -17,6 +17,20 @@ sid="$(field session_id)"; log="$(field transcript_path)"
 # on any branch, before the autosave logic below (which is unchanged): branch, active game, agents, skill, plugin, MCP builds, tools, Tripo,
 # autosave. It installs nothing and stores no key; its summary is printed for Claude, the full report goes to ~/.bubblewash-autosave/.
 [ -f Tools/session_preflight.sh ] && timeout 40 bash Tools/session_preflight.sh "$sid" 2>/dev/null || true
+# (9 November 2026, session 3849f5c8) the parallax-threejs plugin ships its Spector server without the build (vendor/spector), and Claude Code
+# creates the plugin's folder only at session start (that session: hook 17:07:21.8, plugin folder 17:07:22, plugin spector spawned 17:07:29.4).
+# A detached background job waits up to 90 s for the folder and links the setup's Spector build into it, so the plugin's `spector` can start.
+# It only creates a symlink (never overwrites an existing vendor/spector), installs nothing and does not delay the session.
+if [ -f "$HOME/.bubblewash-tools/spector/mcp/dist/index.js" ]; then
+  ( for _ in $(seq 1 180); do
+      for pj in "$HOME"/.claude/plugins/synced/*/*/.claude-plugin/plugin.json; do
+        [ -f "$pj" ] && grep -q '"parallax-threejs"' "$pj" || continue
+        pr="$(dirname "$(dirname "$pj")")"; [ -e "$pr/vendor/spector" ] || ln -s "$HOME/.bubblewash-tools/spector" "$pr/vendor/spector" 2>/dev/null
+        exit 0
+      done; sleep 0.5
+    done ) > /dev/null 2>&1 < /dev/null &
+  disown 2>/dev/null || true
+fi
 branch="$(git branch --show-current 2>/dev/null || true)"
 case "$branch" in ""|main|master) exit 0 ;; esac          # never on the default branch or a detached HEAD
 exec 9> /tmp/bw-autosave-hook.lock; flock -n 9 || exit 0   # one hook at a time

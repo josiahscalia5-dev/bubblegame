@@ -1,5 +1,34 @@
 # Agents and specialists: inventory
 
+## NEWEST: 9 November 2026 ~16:20 UTC, session 47f75e22 (emergency backup). A saved definition does NOT activate anything on another account.
+PROJECT-owned (travel with Git, `.claude/`): 5 agents, 1 skill, the SessionStart hook (`.claude/hooks/session-start.sh`, registered in `.claude/settings.json`),
+the project Spector MCP server (`.mcp.json`, enabled in settings). PLUGIN-supplied (do NOT travel with Git; need the parallax-threejs 0.4.12 plugin on the account):
+3 agents, 9 commands/skills (checkpoint, diff, export-report, init, memcheck, replay, ship-check, sweep, sync-view), 4 MCP servers.
+| Agent / skill | Owner | Live test this session | Status |
+|---|---|---|---|
+| game-art-director | PROJECT `.claude/agents/game-art-director.md` | finished a real task: measured Scene 6 ranking (`Previews/WebDemo/six_scenes/13_scene6_match_47f75e22/qa/art_director_ranking.md`) | WORKING AND VERIFIED |
+| lighting-visual-matching | PROJECT | two instances running on lanes arch56 and brush6: built, captured and committed real code (s56_arch.js +483 lines, 5 model LODs; s56_brush6.js +258) | WORKING (mid-task at the backup; resume from each lane's HANDOFF.md) |
+| screen4-water-motion-engineer | PROJECT | running on lane s56: committed s56_tunnel.js water work (+202 lines), probe / tune captures in `.../13_scene6_match_47f75e22/water/` | WORKING (mid-task; HANDOFF.md) |
+| water-vfx-engineer | PROJECT | not launched this session (no free lane; avoid extra launches) | SAVED BUT NOT TESTED |
+| gameplay-visual-testing | PROJECT | not launched yet (runs the route test on the merged Scene 6 candidate) | SAVED BUT NOT TESTED |
+| bubble-wash-screen-matcher (skill) | PROJECT `.claude/skills/bubble-wash-screen-matcher/` | listed by the session; not invoked | SAVED BUT NOT TESTED |
+| parallax-threejs:shader-reviewer | PLUGIN | launched: review of the s56 water GLSL / bindings (result in the chat history) | see BACKUP_VERIFICATION.md |
+| parallax-threejs:scenario-author | PLUGIN | launched: a scenario protecting the accepted `?s3=intunnel` in `test/visual/scenarios/` | see BACKUP_VERIFICATION.md |
+| parallax-threejs:visual-debugger | PLUGIN | listed by the Agent tool; not launched | INSTALLED (plugin) BUT NOT TESTED |
+Known plugin defect (unchanged): the plugin agents' frontmatter names `mcp__playwright-mcp` etc., which do not match the real tool names, so they get no MCP tools.
+
+## NEWEST: 9 November 2026 ~14:40 UTC, session d847dce2 (account-transfer backup). Saving a definition does NOT activate it on another account.
+| Agent / skill | Owner (where it lives) | Declared tools | Live test this session (a real task) | Status | Restore on the next account |
+|---|---|---|---|---|---|
+| game-art-director | PROJECT: `.claude/agents/game-art-director.md` | Read, Grep, Glob, Bash | launched (Scene 5/6 inventory); stopped by the user's pause before its report | INVOKED, result not delivered | loads from the repo by itself; relaunch with a real task |
+| gameplay-visual-testing | PROJECT: `.claude/agents/gameplay-visual-testing.md` | Read, Grep, Glob, Bash | ran the route test: 3 routes to Level Complete, 5 socks, 0 errors (`Previews/.../11_scene56_match_d847dce2/qa/routes/`) | WORKING (Bash + Playwright scripts) | loads from the repo |
+| lighting-visual-matching | PROJECT: `.claude/agents/lighting-visual-matching.md` | Read, Grep, Glob, Bash, Edit, Write | wrote `s56_arch.js` (+361 lines, builds) on lane arch56 | WORKING, task unfinished | loads from the repo; continue lane arch56 |
+| screen4-water-motion-engineer | PROJECT: `.claude/agents/screen4-water-motion-engineer.md` | Read, Grep, Glob, Bash, Edit, Write + plugin chrome-devtools / threejs-devtools tools | water A/B tools and frames on lane s56; its MCP tools were ABSENT (plugin not enabled) | PARTIAL (works with Bash; no DevTools) | loads from the repo; DevTools need the plugin |
+| water-vfx-engineer | PROJECT: `.claude/agents/water-vfx-engineer.md` | Read, Grep, Glob, Bash, Edit, Write | launched on lane washer34; confirmed its tools; stopped by the pause before any edit | INVOKED, no output | loads from the repo |
+| bubble-wash-screen-matcher (skill) | PROJECT: `.claude/skills/bubble-wash-screen-matcher/SKILL.md` | (instructions) | loaded with the Skill tool; header updated with the current Scene 5/6 targets and the no-credits rule | WORKING | loads from the repo |
+| scenario-author, shader-reviewer, visual-debugger | PLUGIN `parallax-threejs` 0.4.12 (not in the repo) | Read / Bash only (known plugin defect: no MCP tools in subagents) | not available: the plugin is not enabled on this account (ListPlugins empty) | MISSING, NEEDS USER ACTION | the user enables `parallax-threejs` (claude.ai -> Customize -> Plugins), then a NEW session; test each with a real task |
+| SessionStart hook | PROJECT: `.claude/hooks/session-start.sh` + `.claude/settings.json` | runs `Tools/session_preflight.sh`, starts ONE autosave | ran at this session's start and resume | WORKING | loads from the repo |
+
 ## NEWEST: live tests of 9 November 2026, session f28099bc (account transfer). Each agent's live test was a REAL task.
 
 | Agent / skill | Source | Tools it really had | Live test this session | Result |

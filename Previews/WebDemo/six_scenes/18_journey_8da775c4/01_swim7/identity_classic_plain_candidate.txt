@@ -1,0 +1,9 @@
+classic classic_T3.png: 0 pixels differ of 331776 (?s3=intunnel)
+classic classic_start.png: 0 pixels differ of 331776 (?s3=intunnel)
+plain plain_T12.png: 0 pixels differ of 331776 (?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56)
+plain plain_T3.png: 0 pixels differ of 331776 (?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56)
+plain plain_start.png: 0 pixels differ of 331776 (?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56)
+candidate candidate_T3.png: 0 pixels differ of 331776 (?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7)
+candidate candidate_T30.png: 0 pixels differ of 331776 (?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7)
+candidate candidate_start.png: 0 pixels differ of 331776 (?s3=intunnel,structmatch,level1,tripo1,tripo2,scene07,six,tripo3,six2,s56,coin6,hero6,water6,brush6,arch56,env6,tank6,fin6,hero7)
+old bundle 5ab6ee34 (b49a16e), new bundle a8c0153d, canvas 432x768

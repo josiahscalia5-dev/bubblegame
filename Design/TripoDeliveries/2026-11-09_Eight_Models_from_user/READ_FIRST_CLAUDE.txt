@@ -1,0 +1,26 @@
+BUBBLE WASH KINGDOM — CLAUDE CODE MODEL TRANSFER (6 ZIP PACKS)
+==============================================================
+
+These are SIX SEPARATE, VALID ZIP archives with the 8 original full-quality
+GLB files, unchanged byte-for-byte. No visual degradation or lost geometry.
+All six ZIPs are required to recover all eight files.
+
+1. Download all six ZIP packs and attach them to Claude Code (or upload to its
+   workspace/cloud files if ZIP attachments are accepted there).
+2. In Claude's workspace, extract ALL ZIP packs into the SAME folder.
+3. Seven GLB models extract immediately as full files.
+4. The large Yo JJ model is divided into two .part files. Run:
+      python3 rebuild_yo_jj.py
+   to reconstruct its byte-identical GLB.
+5. Run:
+      python3 verify_all_glbs.py
+   to validate file size and SHA-256 for every model.
+6. Import models only after verification. Check for existing repo duplicates first.
+7. Safely save all models in your GitHub repository, and record paths/hashes.
+
+WARNING: A smaller ZIP cannot retain all 118MB of already-compressed 3D data
+losslessly. These are lossless transport packages, NOT mobile-optimized geometry.
+Claude must still test and optimize polygon counts before adding them to gameplay.
+
+If Claude.ai chat rejects .zip files, use a Claude Code workspace/file transfer
+or GitHub; renaming a ZIP to another extension does not make it supported.
